@@ -39,11 +39,16 @@ class McpServer {
   async start() {
     const { command, args = [], env = {} } = this.config;
 
-    this.proc = spawn(command, args, {
+    // On Windows, .cmd files need to run via cmd.exe rather than shell:true
+    // (shell:true + args triggers a deprecation warning because args aren't escaped)
+    const isWin = process.platform === 'win32';
+    const spawnCmd  = isWin ? 'cmd.exe' : command;
+    const spawnArgs = isWin ? ['/c', command, ...args] : args;
+
+    this.proc = spawn(spawnCmd, spawnArgs, {
       stdio: ['pipe', 'pipe', 'pipe'],
       env:   { ...process.env, ...env },
-      // .cmd files on Windows need shell:true
-      shell: process.platform === 'win32',
+      shell: false,
     });
 
     this.proc.stdout.on('data', (chunk) => {
