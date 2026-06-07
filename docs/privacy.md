@@ -42,4 +42,4 @@ Axion connects to AI providers (Anthropic, OpenAI, Google Gemini, etc.) using AP
 
 ## Contact
 
-For questions, open an issue at [github.com/Ravikxx/axion/issues](https://github.com/Ravikxx/axion/issues).
+For questions, open an issue at [github.com/Ravikxx/axion/issues](https://github.com/Ravikxx/axion/issues) or visit [axion.amplifiedsmp.org](https://axion.amplifiedsmp.org).
