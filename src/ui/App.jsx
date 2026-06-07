@@ -26,6 +26,7 @@ import { connectOAuth, listOAuthTokens, revokeOAuthToken, getOAuthToken } from '
 import { OAUTH_PROVIDERS } from '../oauth/providers.js';
 import { captureScreen, MACRO_STATE, showOverlay, hideOverlay } from '../agent/computer.js';
 import { MCP, getMcpConfig, saveMcpConfig } from '../agent/mcp.js';
+import { MCP_MARKETPLACE, CATEGORIES, searchMarketplace, getMarketplaceEntry } from '../agent/mcp-marketplace.js';
 import { analyzeScreen } from '../agent/vision.js';
 import { generateImage } from '../agent/image.js';
 import { executeTool } from '../agent/tools.js';
@@ -105,7 +106,10 @@ const HELP_TEXT = `  Commands
   /blender setup                show Blender add-on install instructions
   /blender connect              connect Blender MCP server to Axion
   /mcp                          show connected MCP servers + tool counts
-  /mcp add <name> <cmd> [args]  connect an MCP server (saved to ~/.axion/mcp.json)
+  /mcp browse                   browse MCP marketplace (curated servers)
+  /mcp search <query>           search marketplace by keyword
+  /mcp install <id>             install a server from the marketplace
+  /mcp add <name> <cmd> [args]  connect a custom MCP server (saved)
   /mcp remove <name>            disconnect + remove
   /mcp tools [name]             list tools from connected servers
   /mcp reload                   restart all servers
@@ -1493,7 +1497,77 @@ export function App({
             return true;
           }
 
-          pushStatic({ type: 'info', content: `MCP commands:\n  /mcp                      show server status\n  /mcp tools [name]         list available tools\n  /mcp add <n> <cmd> [args] connect a new server (saved)\n  /mcp remove <name>        disconnect + remove\n  /mcp reload               restart all servers\n\nExample:\n  /mcp add github npx -y @modelcontextprotocol/server-github` });
+          if (sub === 'browse' || sub === 'marketplace') {
+            const byCategory = {};
+            for (const entry of MCP_MARKETPLACE) {
+              if (!byCategory[entry.category]) byCategory[entry.category] = [];
+              byCategory[entry.category].push(entry);
+            }
+            const installed = new Set(MCP.getStatus().map(s => s.name));
+            const lines = [];
+            for (const [cat, entries] of Object.entries(byCategory)) {
+              lines.push(`\n  ${CATEGORIES[cat] || cat}`);
+              for (const e of entries) {
+                const badge = installed.has(e.id) ? ' ✔' : '';
+                lines.push(`    ${e.id.padEnd(22)} ${e.description}${badge}`);
+              }
+            }
+            pushStatic({ type: 'info', content: `MCP Marketplace — ${MCP_MARKETPLACE.length} servers available\n${lines.join('\n')}\n\n  /mcp install <id>          install by ID above\n  /mcp search <query>        filter by keyword\n  /mcp search database` });
+            return true;
+          }
+
+          if (sub === 'search') {
+            const query = mcpRest.join(' ');
+            const results = searchMarketplace(query);
+            if (!results.length) {
+              pushStatic({ type: 'info', content: `No MCP servers found for "${query}". Try /mcp browse to see all.` });
+              return true;
+            }
+            const installed = new Set(MCP.getStatus().map(s => s.name));
+            const lines = results.map(e => {
+              const badge = installed.has(e.id) ? ' ✔' : '';
+              return `  ${e.id.padEnd(22)} ${e.description}${badge}`;
+            });
+            pushStatic({ type: 'info', content: `Search results for "${query}" (${results.length}):\n\n${lines.join('\n')}\n\n  /mcp install <id>` });
+            return true;
+          }
+
+          if (sub === 'install') {
+            const id = mcpRest[0];
+            const extraArgs = mcpRest.slice(1); // optional positional params (db path, connection string, etc.)
+            if (!id) {
+              pushStatic({ type: 'error', content: 'usage: /mcp install <id>\n\nRun /mcp browse to see available servers.' });
+              return true;
+            }
+            const entry = getMarketplaceEntry(id);
+            if (!entry) {
+              pushStatic({ type: 'error', content: `No marketplace entry for "${id}".\n\nRun /mcp browse to see available IDs, or use /mcp add for a custom server.` });
+              return true;
+            }
+            // Resolve args — replace $DB_PATH / $DATABASE_URL placeholders with positional extras
+            let resolvedArgs = entry.args.map((a, i) => {
+              if (a.startsWith('$') && extraArgs.length) return extraArgs.shift() || a;
+              return a;
+            });
+            pushStatic({ type: 'info', content: `Installing ${entry.name} MCP server…\n  command: ${entry.command} ${resolvedArgs.join(' ')}${entry.envNote ? '\n\n  Note: ' + entry.envNote : ''}` });
+            setThinking(true);
+            setThinkingWord('installing');
+            try {
+              const srv = await MCP.addServer(id, { command: entry.command, args: resolvedArgs });
+              if (srv.ready) {
+                pushStatic({ type: 'info', content: `✔ ${entry.name} installed — ${srv.tools.length} tool${srv.tools.length !== 1 ? 's' : ''} available\n\nYou can now ask Axion to use ${entry.name} naturally.` });
+              } else {
+                pushStatic({ type: 'error', content: `${entry.name} failed to start: ${srv.error}\n\nThis usually means the package download failed or Node.js isn't in your PATH.` });
+              }
+            } catch (err) {
+              pushStatic({ type: 'error', content: `Install failed: ${err.message}` });
+            } finally {
+              setThinking(false);
+            }
+            return true;
+          }
+
+          pushStatic({ type: 'info', content: `MCP commands:\n  /mcp                      show server status\n  /mcp tools [name]         list available tools\n  /mcp add <n> <cmd> [args] connect a new server (saved)\n  /mcp remove <name>        disconnect + remove\n  /mcp reload               restart all servers\n  /mcp browse               browse MCP marketplace\n  /mcp search <query>       search marketplace\n  /mcp install <id>         install from marketplace\n\nExample:\n  /mcp install github\n  /mcp install puppeteer` });
           return true;
         }
 
