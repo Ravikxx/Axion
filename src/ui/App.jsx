@@ -295,14 +295,18 @@ export function App({
   const confirmResolverRef = useRef(null);
   const lastUserMsgRef     = useRef('');
 
-  const addLive    = useCallback((msg) => setLiveMessages((p) => [...p, msg]), []);
+  const liveRef    = useRef([]);
+  const addLive    = useCallback((msg) => {
+    liveRef.current = [...liveRef.current, msg];
+    setLiveMessages(liveRef.current);
+  }, []);
   const pushStatic = useCallback((msg) => setStaticMessages((p) => [...p, msg]), []);
 
   const finalizeTurn = useCallback(() => {
-    setLiveMessages((live) => {
-      if (live.length > 0) setStaticMessages((p) => [...p, ...live]);
-      return [];
-    });
+    const live = liveRef.current;
+    liveRef.current = [];
+    setLiveMessages([]);
+    if (live.length > 0) setStaticMessages((p) => [...p, ...live]);
   }, []);
 
   // ── Init agent ─────────────────────────────────────────────────────────────
@@ -338,8 +342,7 @@ export function App({
         const raw = streamBufRef.current;
         streamBufRef.current = '';
         setStreamContent(null);
-        // Fallback: if streaming filter missed <think> tags (some models dump them all at once),
-        // extract them here so they never show raw in the assistant bubble.
+        // Fallback: extract <think> tags that weren't caught mid-stream
         const thinkRe = /<think(?:ing)?>([\s\S]*?)<\/think(?:ing)?>/gi;
         const thoughts = [];
         let m;
@@ -349,21 +352,29 @@ export function App({
         const content = thoughts.length
           ? raw.replace(/<think(?:ing)?>[\s\S]*?<\/think(?:ing)?>/gi, '').trim()
           : raw;
-        for (const t of thoughts) addLive({ type: 'thinking', content: t });
-        if (content.trim()) addLive({ type: 'assistant', content });
+        // Single atomic update so thinking always appears before assistant in the same render
+        const newMsgs = [
+          ...thoughts.map(t => ({ type: 'thinking', content: t })),
+          ...(content.trim() ? [{ type: 'assistant', content }] : []),
+        ];
+        if (newMsgs.length > 0) {
+          liveRef.current = [...liveRef.current, ...newMsgs];
+          setLiveMessages(liveRef.current);
+        }
       },
       onToolCall: ({ name, input, id }) => {
-        setLiveMessages((p) => [...p, { type: 'tool', id, name, input, output: null, success: null, pending: true }]);
+        const msg = { type: 'tool', id, name, input, output: null, success: null, pending: true };
+        liveRef.current = [...liveRef.current, msg];
+        setLiveMessages(liveRef.current);
       },
       onToolResult: ({ name, output, success, diff }) => {
-        setLiveMessages((p) => {
-          const idx = [...p].reverse().findIndex((m) => m.type === 'tool' && m.name === name && m.pending);
-          if (idx === -1) return p;
-          const ri = p.length - 1 - idx;
-          const updated = [...p];
-          updated[ri] = { ...updated[ri], output, success, pending: false, diff: diff || null };
-          return updated;
-        });
+        const idx = [...liveRef.current].reverse().findIndex((m) => m.type === 'tool' && m.name === name && m.pending);
+        if (idx === -1) return;
+        const ri = liveRef.current.length - 1 - idx;
+        const updated = [...liveRef.current];
+        updated[ri] = { ...updated[ri], output, success, pending: false, diff: diff || null };
+        liveRef.current = updated;
+        setLiveMessages(liveRef.current);
       },
       onMessage: ({ role, content, label, tokens: toks }) => {
         if (role === 'assistant')  addLive({ type: 'assistant',  content });
@@ -445,7 +456,7 @@ export function App({
           const msg = iter === 0 ? message : 'Continue working on the goal.';
           if (iter > 0) {
             pushStatic({ type: 'info', content: `── goal iteration ${iter + 1} ──` });
-            setLiveMessages([]);
+            liveRef.current = []; setLiveMessages([]);
           }
           await agentRef.current.run(msg, { askConfirm, askPlanConfirm });
 
@@ -492,7 +503,7 @@ export function App({
 
         case 'clear':
           setStaticMessages([{ type: '_banner', model, mode }]);
-          setLiveMessages([]);
+          liveRef.current = []; setLiveMessages([]);
           agentRef.current?.clearHistory();
           setTokens({ total: 0, input: 0, output: 0 });
           setSessionCost(0);
@@ -818,7 +829,7 @@ export function App({
           }
           pushStatic({ type: 'info', content: `↩ Retrying: "${lastUserMsgRef.current}"` });
           pushStatic({ type: 'user', content: lastUserMsgRef.current });
-          setLiveMessages([]);
+          liveRef.current = []; setLiveMessages([]);
           setThinking(true);
           setThinkingWord(pickThinkingWord());
           try {
@@ -964,7 +975,7 @@ export function App({
             ...(chat.displayMessages || []),
             { type: 'info', content: `── End of saved chat — continuing from here ──` },
           ]);
-          setLiveMessages([]);
+          liveRef.current = []; setLiveMessages([]);
           lastUserMsgRef.current = '';
           return true;
         }
@@ -1918,7 +1929,7 @@ export function App({
 
       lastUserMsgRef.current = input;
       pushStatic({ type: 'user', content: input });
-      setLiveMessages([]);
+      liveRef.current = []; setLiveMessages([]);
       setThinking(true);
       setThinkingWord(pickThinkingWord());
 
