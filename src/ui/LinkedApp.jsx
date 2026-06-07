@@ -24,9 +24,10 @@ export function LinkedApp({ wsUrl, initialModel, initialMode }) {
   const [tokens, setTokens]           = useState({ total: 0, input: 0, output: 0 });
   const [connected, setConnected]     = useState(false);
 
-  const wsRef        = useRef(null);
-  const streamBuf    = useRef('');
-  const streamTimer  = useRef(null);
+  const wsRef          = useRef(null);
+  const streamBuf      = useRef('');
+  const streamTimer    = useRef(null);
+  const rejectedRef    = useRef(false); // set true when server sends error_disconnect
 
   const addLive  = useCallback((m) => setLive((p) => [...p, m]), []);
   const addStatic = useCallback((m) => setStatic((p) => [...p, m]), []);
@@ -135,8 +136,14 @@ export function LinkedApp({ wsUrl, initialModel, initialMode }) {
         if (data.model) setModel(data.model);
         if (data.mode)  setMode(data.mode);
         break;
+
+      case 'error_disconnect':
+        rejectedRef.current = true;
+        addStatic({ type: 'error', content: data.reason || 'Cannot link: incompatible session type.' });
+        setTimeout(() => exit(), 800);
+        break;
     }
-  }, [addLive, finalizeTurn, initialModel, initialMode, model, mode]);
+  }, [addLive, exit, finalizeTurn, initialModel, initialMode, model, mode]);
 
   // ── WebSocket connection ────────────────────────────────────────────────────
 
@@ -154,7 +161,9 @@ export function LinkedApp({ wsUrl, initialModel, initialMode }) {
 
     ws.on('close', () => {
       setConnected(false);
-      addStatic({ type: 'error', content: 'Disconnected from web server.' });
+      if (!rejectedRef.current) {
+        addStatic({ type: 'error', content: 'Disconnected from web server.' });
+      }
     });
 
     ws.on('error', (err) => {

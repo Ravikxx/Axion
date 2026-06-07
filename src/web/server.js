@@ -232,6 +232,17 @@ function createSharedSession(defaultModel, defaultMode) {
       // Hello handshake — client identifies itself and gets full history
       if (msg.type === 'hello') {
         ws._clientType = msg.clientType || 'web';
+
+        // CLI cannot link to a chat-type session
+        if (ws._clientType === 'cli' && sessionTab === 'chat') {
+          sendTo(ws, {
+            type: 'error_disconnect',
+            reason: 'Current session is a chat session. CLI can only link to code sessions.\nStart a new code session in the web UI first, or use axion without --link.',
+          });
+          ws.close();
+          return;
+        }
+
         sendTo(ws, {
           type: 'welcome',
           model, mode,
