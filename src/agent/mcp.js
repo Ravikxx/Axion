@@ -171,7 +171,9 @@ class McpManager {
     if (!Object.keys(servers).length) return;
 
     await Promise.allSettled(
-      Object.entries(servers).map(([name, config]) => this._startServer(name, config))
+      Object.entries(servers)
+        .filter(([, config]) => config.enabled !== false)
+        .map(([name, config]) => this._startServer(name, config))
     );
   }
 
@@ -202,6 +204,26 @@ class McpManager {
     const cfg = getMcpConfig();
     if (cfg.servers) { delete cfg.servers[name]; saveMcpConfig(cfg); }
     return !!srv;
+  }
+
+  // Disable a server (stop it, keep config, mark enabled:false)
+  disableServer(name) {
+    const cfg = getMcpConfig();
+    if (!cfg.servers?.[name]) return false;
+    const srv = this._servers.get(name);
+    if (srv) { srv.stop(); this._servers.delete(name); }
+    cfg.servers[name].enabled = false;
+    saveMcpConfig(cfg);
+    return true;
+  }
+
+  // Enable a server (start it, mark enabled:true)
+  async enableServer(name) {
+    const cfg = getMcpConfig();
+    if (!cfg.servers?.[name]) return null;
+    cfg.servers[name].enabled = true;
+    saveMcpConfig(cfg);
+    return this._startServer(name, cfg.servers[name]);
   }
 
   // Restart all servers (re-reads config)
@@ -259,15 +281,26 @@ class McpManager {
   }
 
   getStatus() {
-    if (!this._servers.size) return [];
-    return [...this._servers.entries()].map(([name, srv]) => ({
-      name,
-      ready:     srv.ready,
-      error:     srv.error,
-      toolCount: srv.tools.length,
-      tools:     srv.tools.map(t => t.name),
-      command:   `${srv.config.command} ${(srv.config.args || []).join(' ')}`.trim(),
-    }));
+    const cfg = getMcpConfig();
+    const allNames = new Set([
+      ...this._servers.keys(),
+      ...Object.keys(cfg.servers || {}),
+    ]);
+    if (!allNames.size) return [];
+    return [...allNames].map(name => {
+      const srv     = this._servers.get(name);
+      const config  = cfg.servers?.[name] || srv?.config || {};
+      const disabled = config.enabled === false;
+      return {
+        name,
+        ready:    !disabled && (srv?.ready ?? false),
+        disabled,
+        error:    srv?.error ?? null,
+        toolCount: srv?.tools?.length ?? 0,
+        tools:    srv?.tools?.map(t => t.name) ?? [],
+        command:  `${config.command || ''} ${(config.args || []).join(' ')}`.trim(),
+      };
+    });
   }
 
   get totalTools() {

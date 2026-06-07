@@ -41,7 +41,7 @@ export const COMMANDS = [
   { cmd: 'schedule',        desc: 'list|add|run|remove|enable|disable|results  scheduled tasks' },
   { cmd: 'web',             desc: '[port|stop]  open/stop web UI in browser' },
   { cmd: 'blender',         desc: 'setup|connect  Blender MCP integration' },
-  { cmd: 'mcp',             desc: 'browse|search|install|add|remove|tools|reload  MCP servers' },
+  { cmd: 'mcp',             desc: 'browse|search|install|add|enable|disable|remove|tools|reload' },
   { cmd: 'clear',           desc: 'clear history' },
   { cmd: 'exit',            desc: 'quit' },
 ];

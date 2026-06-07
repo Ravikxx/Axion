@@ -110,7 +110,9 @@ const HELP_TEXT = `  Commands
   /mcp search <query>           search marketplace by keyword
   /mcp install <id>             install a server from the marketplace
   /mcp add <name> <cmd> [args]  connect a custom MCP server (saved)
-  /mcp remove <name>            disconnect + remove
+  /mcp enable <name>            enable a disabled server
+  /mcp disable <name>           pause a server (keeps config)
+  /mcp remove <name>            disconnect + delete config
   /mcp tools [name]             list tools from connected servers
   /mcp reload                   restart all servers
   /web   [port]                 open web UI in browser (default port 3000)
@@ -1417,14 +1419,18 @@ export function App({
           if (!sub || sub === 'status') {
             const status = MCP.getStatus();
             if (!status.length) {
-              pushStatic({ type: 'info', content: 'No MCP servers configured.\n\nUsage:\n  /mcp add <name> <command> [args...]  — add a server\n  /mcp add github npx -y @modelcontextprotocol/server-github\n\nConfig file: ~/.axion/mcp.json' });
+              pushStatic({ type: 'info', content: 'No MCP servers configured.\n\nUsage:\n  /mcp browse               — browse marketplace\n  /mcp install <id>         — install from marketplace\n  /mcp add <name> <cmd>     — add custom server\n\nConfig file: ~/.axion/mcp.json' });
               return true;
             }
             const lines = status.map(s => {
-              const badge = s.ready ? `✔ ${s.toolCount} tool${s.toolCount !== 1 ? 's' : ''}` : `✗ ${s.error || 'not ready'}`;
-              return `  ${s.name.padEnd(16)} ${badge}\n    ${s.command}`;
+              const badge = s.disabled
+                ? '⏸ disabled'
+                : s.ready
+                  ? `✔ ${s.toolCount} tool${s.toolCount !== 1 ? 's' : ''}`
+                  : `✗ ${s.error || 'not ready'}`;
+              return `  ${s.name.padEnd(20)} ${badge}\n    ${s.command}`;
             });
-            pushStatic({ type: 'info', content: `MCP servers (${status.length}):\n\n${lines.join('\n\n')}\n\n/mcp tools [name] to list tools · /mcp reload to restart all` });
+            pushStatic({ type: 'info', content: `MCP servers (${status.length}):\n\n${lines.join('\n\n')}\n\n/mcp enable <name> · /mcp disable <name> · /mcp tools [name] · /mcp reload` });
             return true;
           }
 
@@ -1491,6 +1497,43 @@ export function App({
               pushStatic({ type: 'info', content: `✔ MCP reload complete — ${ok} connected${bad ? `, ${bad} failed` : ''}` });
             } catch (err) {
               pushStatic({ type: 'error', content: `MCP reload failed: ${err.message}` });
+            } finally {
+              setThinking(false);
+            }
+            return true;
+          }
+
+          if (sub === 'disable') {
+            const name = mcpRest[0];
+            if (!name) {
+              pushStatic({ type: 'error', content: 'usage: /mcp disable <name>' });
+              return true;
+            }
+            const ok = MCP.disableServer(name);
+            pushStatic({ type: 'info', content: ok ? `⏸ "${name}" disabled — config kept. Use /mcp enable ${name} to restart.` : `No server named "${name}".` });
+            return true;
+          }
+
+          if (sub === 'enable') {
+            const name = mcpRest[0];
+            if (!name) {
+              pushStatic({ type: 'error', content: 'usage: /mcp enable <name>' });
+              return true;
+            }
+            pushStatic({ type: 'info', content: `Starting "${name}"…` });
+            setThinking(true);
+            setThinkingWord('connecting');
+            try {
+              const srv = await MCP.enableServer(name);
+              if (!srv) {
+                pushStatic({ type: 'error', content: `No saved config for "${name}". Use /mcp add or /mcp install first.` });
+              } else if (srv.ready) {
+                pushStatic({ type: 'info', content: `✔ "${name}" enabled — ${srv.tools.length} tool${srv.tools.length !== 1 ? 's' : ''} available` });
+              } else {
+                pushStatic({ type: 'error', content: `"${name}" failed to start: ${srv.error}` });
+              }
+            } catch (err) {
+              pushStatic({ type: 'error', content: `Enable failed: ${err.message}` });
             } finally {
               setThinking(false);
             }
@@ -1567,7 +1610,7 @@ export function App({
             return true;
           }
 
-          pushStatic({ type: 'info', content: `MCP commands:\n  /mcp                      show server status\n  /mcp tools [name]         list available tools\n  /mcp add <n> <cmd> [args] connect a new server (saved)\n  /mcp remove <name>        disconnect + remove\n  /mcp reload               restart all servers\n  /mcp browse               browse MCP marketplace\n  /mcp search <query>       search marketplace\n  /mcp install <id>         install from marketplace\n\nExample:\n  /mcp install github\n  /mcp install puppeteer` });
+          pushStatic({ type: 'info', content: `MCP commands:\n  /mcp                      show server status\n  /mcp browse               browse marketplace\n  /mcp search <query>       search marketplace\n  /mcp install <id>         install from marketplace\n  /mcp add <n> <cmd> [args] connect a custom server (saved)\n  /mcp enable <name>        enable a disabled server\n  /mcp disable <name>       pause a server (keeps config)\n  /mcp remove <name>        disconnect + delete config\n  /mcp tools [name]         list available tools\n  /mcp reload               restart all servers\n\nExample:\n  /mcp install github\n  /mcp disable github\n  /mcp enable github` });
           return true;
         }
 
