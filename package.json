@@ -14,6 +14,7 @@
     "prepare": "node build.js",
     "start": "node dist/axion.js",
     "dev": "node build.js && node dist/axion.js",
+    "watch": "node watch.js",
     "web": "node build-web.js && node src/web/server.js"
   },
   "dependencies": {

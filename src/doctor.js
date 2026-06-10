@@ -66,9 +66,15 @@ function checkComputerUse() {
 
   if (os === 'darwin') {
     ok('osascript — always available on macOS');
-    if (which('cliclick')) ok('cliclick — scroll support');
-    else warn('cliclick not found — scroll falls back to arrow keys  →  brew install cliclick');
+    if (which('cliclick')) ok('cliclick — double-click + scroll support');
+    else warn('cliclick not found — double-click/scroll fallback only  →  brew install cliclick');
     ok('screencapture — always available on macOS');
+    if (which('convert')) ok('imagemagick — annotated screenshots enabled');
+    else warn('imagemagick not found — annotated screenshots fall back to plain  →  brew install imagemagick');
+    if (which('tesseract')) ok('tesseract — OCR / find_text enabled');
+    else warn('tesseract not found — click_on text search unavailable  →  brew install tesseract');
+    try { require('child_process').execSync('python3 -c "import tkinter"', { stdio: 'ignore', timeout: 2000 }); ok('python3 tkinter — overlay enabled'); }
+    catch { warn('python3-tk not found — computer-use overlay disabled  →  brew install python-tk'); }
     warn('Grant Accessibility + Screen Recording to Terminal in System Settings → Privacy & Security');
     return;
   }
@@ -82,6 +88,15 @@ function checkComputerUse() {
 
   if (which('xclip')) ok('xclip — clipboard fallback for typeText');
   else warn('xclip not found — typeText relies on xdotool type only  →  sudo apt install xclip');
+
+  if (which('convert')) ok('imagemagick — annotated screenshots enabled');
+  else warn('imagemagick not found — annotated screenshots fall back to plain  →  sudo apt install imagemagick');
+
+  if (which('tesseract')) ok('tesseract — OCR / find_text enabled');
+  else warn('tesseract not found — click_on text search unavailable  →  sudo apt install tesseract-ocr');
+
+  try { execSync('python3 -c "import tkinter"', { stdio: 'ignore', timeout: 2000 }); ok('python3 tkinter — overlay enabled'); }
+  catch { warn('python3-tk not found — computer-use overlay disabled  →  sudo apt install python3-tk'); }
 
   if (which('xdpyinfo') || which('xrandr')) ok('screen size detection available');
   else warn('xdpyinfo/xrandr not found — screen size defaults to 1920×1080');

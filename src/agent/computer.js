@@ -308,6 +308,8 @@ Write-Output "$($screen.Width)x$($screen.Height)"
     return { base64: data.toString('base64'), mediaType: 'image/png', width: 0, height: 0 };
 
   } else {
+    try { execSync('which scrot', { stdio: 'ignore', timeout: 1000 }); }
+    catch { throw new Error('scrot not installed — run: sudo apt install scrot'); }
     execSync(`scrot "${imgPath}"`, { timeout: 5000 });
     const data = readFileSync(imgPath);
     try { unlinkSync(imgPath); } catch {}

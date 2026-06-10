@@ -62,7 +62,7 @@ const HELP_TEXT = `  Commands
   /endpoint                             list saved endpoints
   /thinking [on|off|<tokens>]   toggle extended thinking (all models)
   /adviser [model|auto|off]     set model used as adviser when agent gets stuck
-  /computer [on|off]            toggle computer use (screen control)
+  /computer [on|off]            toggle computer use (screen control)  (alias: /cu)
   /vision  <model>              set vision model for computer use (saved)
   /vision                       show current vision model
   /ss      [question]           screenshot + describe screen (quick, no agent loop)
@@ -1046,6 +1046,7 @@ export function App({
           return true;
         }
 
+        case 'cu':
         case 'computer': {
           const turnOn = arg === 'on' || (!arg && !computerUse);
           if (!turnOn) {

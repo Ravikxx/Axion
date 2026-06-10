@@ -30,4 +30,4 @@
 
 - [x] **`.env.example`** — added with all API keys, OAuth vars, and AXION_* overrides.
 
-- [ ] **Extension auto-reload** — Chrome extension needs to be manually reloaded after `node build.js`. Could add a watch mode.
+- [x] **Extension auto-reload** — `npm run watch` starts esbuild in watch mode for the CLI bundle and a live-reload server (port 35729) for the extension. background.js polls the server and calls `chrome.runtime.reload()` when the token changes.
