@@ -11,7 +11,7 @@
   "scripts": {
     "build": "node build.js",
     "build-web": "node build-web.js",
-    "prepare": "node build.js",
+    "prepare": "node build.js && node build-web.js",
     "start": "node dist/axion.js",
     "dev": "node build.js && node dist/axion.js",
     "web": "node build-web.js && node src/web/server.js"

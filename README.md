@@ -34,6 +34,7 @@ git clone https://github.com/Ravikxx/axion.git
 cd axion
 npm install
 node build.js
+node build-web.js
 npm install -g .
 ```
 

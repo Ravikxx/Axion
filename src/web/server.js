@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { createServer } from 'http';
-import { readFileSync, writeFileSync, unlinkSync, mkdirSync } from 'fs';
+import { readFileSync, writeFileSync, unlinkSync, mkdirSync, existsSync } from 'fs';
 import { join, dirname } from 'path';
 import { homedir } from 'os';
 import { fileURLToPath } from 'url';
@@ -37,6 +37,11 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const DIST_DIR   = join(__dirname, '../../dist/web');
 const PORT       = Number(process.env.AXION_WEB_PORT) || 3000;
 const PID_FILE   = join(homedir(), '.axion', 'web-server.pid');
+
+if (!existsSync(DIST_DIR)) {
+  console.error(`\n  ✗ Web UI not built. Run: node build-web.js\n`);
+  process.exit(1);
+}
 
 // ── Static file server ────────────────────────────────────────────────────────
 
