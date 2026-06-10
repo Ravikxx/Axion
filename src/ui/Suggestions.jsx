@@ -91,6 +91,9 @@ export function SuggestionBox({ inputValue }) {
           )}
         </Box>
       ))}
+      {matches.length > 6 && (
+        <Text color="gray" dimColor>  … {matches.length - 6} more — keep typing to filter</Text>
+      )}
     </Box>
   );
 }

@@ -395,7 +395,7 @@ IMPORTANT RULES:
             ? r.value
             : { output: r.reason?.message || 'Tool error', success: false };
           toolResults.push({ id: tc.id, name: tc.name, ...result });
-          this.onToolResult({ name: tc.name, ...result });
+          this.onToolResult({ id: tc.id, name: tc.name, ...result });
         }
       } else {
         for (const tc of toolCalls) {
@@ -406,7 +406,7 @@ IMPORTANT RULES:
             if (!approved) {
               const declined = { id: tc.id, name: tc.name, output: 'User declined.', success: false };
               toolResults.push(declined);
-              this.onToolResult({ name: tc.name, output: 'User declined.', success: false });
+              this.onToolResult({ id: tc.id, name: tc.name, output: 'User declined.', success: false });
               continue;
             }
           }
@@ -420,7 +420,7 @@ IMPORTANT RULES:
             result = await executeTool(tc.name, tc.input, { agentLabel: this.label, onNotify: this.onNotify });
           }
           toolResults.push({ id: tc.id, name: tc.name, ...result });
-          this.onToolResult({ name: tc.name, ...result });
+          this.onToolResult({ id: tc.id, name: tc.name, ...result });
         }
       }
 

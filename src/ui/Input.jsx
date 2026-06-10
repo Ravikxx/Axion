@@ -5,6 +5,7 @@ export function InputBox({ onSubmit, disabled, placeholder, onChange, tabComplet
   const [value, setValue] = useState('');
   const [history, setHistory] = useState([]);
   const [historyIdx, setHistoryIdx] = useState(-1);
+  const [draft, setDraft] = useState(''); // preserves in-progress text while browsing history
 
   const isActive = process.stdin.isTTY !== false;
 
@@ -20,6 +21,7 @@ export function InputBox({ onSubmit, disabled, placeholder, onChange, tabComplet
         if (!trimmed) return;
         setHistory((h) => [...h, trimmed]);
         setHistoryIdx(-1);
+        setDraft('');
         setValue('');
         onChange?.('');
         onSubmit(trimmed);
@@ -33,6 +35,8 @@ export function InputBox({ onSubmit, disabled, placeholder, onChange, tabComplet
       }
 
       if (key.upArrow) {
+        if (!history.length) return;
+        if (historyIdx === -1) setDraft(value); // save what's being typed
         const newIdx = Math.min(historyIdx + 1, history.length - 1);
         setHistoryIdx(newIdx);
         setValue(history[history.length - 1 - newIdx] || '');
@@ -40,9 +44,18 @@ export function InputBox({ onSubmit, disabled, placeholder, onChange, tabComplet
       }
 
       if (key.downArrow) {
+        if (historyIdx === -1) return;
         const newIdx = Math.max(historyIdx - 1, -1);
         setHistoryIdx(newIdx);
-        setValue(newIdx === -1 ? '' : history[history.length - 1 - newIdx] || '');
+        setValue(newIdx === -1 ? draft : history[history.length - 1 - newIdx] || '');
+        return;
+      }
+
+      // Esc — clear the input (or exit history browsing back to draft)
+      if (key.escape) {
+        setHistoryIdx(-1);
+        setDraft('');
+        setValue('');
         return;
       }
 
@@ -57,6 +70,7 @@ export function InputBox({ onSubmit, disabled, placeholder, onChange, tabComplet
       if (key.ctrl && input === 'p') { onCycleMode?.();      return; }
 
       if (!key.ctrl && !key.meta && input) {
+        if (historyIdx !== -1) setHistoryIdx(-1); // editing a recalled entry starts a new draft
         setValue((v) => v + input);
       }
     },

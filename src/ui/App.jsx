@@ -170,10 +170,18 @@ function contextGauge(used, total, width = 8) {
 }
 
 function copyToClipboard(text) {
-  const cmd = process.platform === 'win32' ? 'clip'
-            : process.platform === 'darwin' ? 'pbcopy'
-            : 'xclip -selection clipboard';
-  execSync(cmd, { input: text });
+  if (process.platform === 'win32')  return execSync('clip',   { input: text });
+  if (process.platform === 'darwin') return execSync('pbcopy', { input: text });
+  // Linux: prefer wl-copy on Wayland, fall back to xclip (and vice versa)
+  const cmds = process.env.WAYLAND_DISPLAY
+    ? ['wl-copy', 'xclip -selection clipboard']
+    : ['xclip -selection clipboard', 'wl-copy'];
+  let lastErr;
+  for (const cmd of cmds) {
+    try { return execSync(cmd, { input: text, stdio: ['pipe', 'ignore', 'ignore'] }); }
+    catch (err) { lastErr = err; }
+  }
+  throw lastErr;
 }
 
 function pickThinkingWord() {
@@ -300,6 +308,7 @@ export function App({
 
   const agentRef           = useRef(null);
   const confirmResolverRef = useRef(null);
+  const oauthPasteRef      = useRef(null);
   const lastUserMsgRef     = useRef('');
 
   const liveRef    = useRef([]);
@@ -374,10 +383,11 @@ export function App({
         liveRef.current = [...liveRef.current, msg];
         setLiveMessages(liveRef.current);
       },
-      onToolResult: ({ name, output, success, diff }) => {
-        const idx = [...liveRef.current].reverse().findIndex((m) => m.type === 'tool' && m.name === name && m.pending);
-        if (idx === -1) return;
-        const ri = liveRef.current.length - 1 - idx;
+      onToolResult: ({ id, name, output, success, diff }) => {
+        // Match by id when available; fall back to oldest pending with same name
+        let ri = id != null ? liveRef.current.findIndex((m) => m.type === 'tool' && m.id === id && m.pending) : -1;
+        if (ri === -1) ri = liveRef.current.findIndex((m) => m.type === 'tool' && m.name === name && m.pending);
+        if (ri === -1) return;
         const updated = [...liveRef.current];
         updated[ri] = { ...updated[ri], output, success, pending: false, diff: diff || null };
         liveRef.current = updated;
@@ -467,7 +477,9 @@ export function App({
       if (goal) {
         // Goal loop — keep running until GOAL_COMPLETE or max iterations
         goalActiveRef.current = true;
+        let completedIters = 0;
         for (let iter = 0; iter < MAX_GOAL_ITERS && goalActiveRef.current; iter++) {
+          completedIters = iter + 1;
           setGoalIteration(iter + 1);
           const msg = iter === 0 ? message : 'Continue working on the goal.';
           if (iter > 0) {
@@ -489,7 +501,7 @@ export function App({
           }
           finalizeTurn();
         }
-        if (goalActiveRef.current && goalIteration >= MAX_GOAL_ITERS) {
+        if (goalActiveRef.current && completedIters >= MAX_GOAL_ITERS) {
           pushStatic({ type: 'info', content: `Goal reached max iterations (${MAX_GOAL_ITERS}). Use /goal to reset.` });
         }
         goalActiveRef.current = false;
@@ -1794,11 +1806,10 @@ export function App({
               pushStatic({ type: 'info', content: `${cfg.label} — ${cfg.hint}\n\nPaste your token below:` });
               setInputMode('oauth-paste');
               return new Promise((resolve) => {
-                const orig = handleSlashCommand;
-                const unsub = () => { setInputMode('chat'); resolve(true); };
                 // handled via special inputMode in handleSubmit
-                window.__oauthPasteResolve = async (token) => {
-                  unsub();
+                oauthPasteRef.current = async (token) => {
+                  setInputMode('chat');
+                  resolve(true);
                   try {
                     setThinking(true); setThinkingWord('connecting');
                     await connectOAuth(svc, { pastedToken: token });
@@ -1876,8 +1887,24 @@ export function App({
 
           // /schedule add <name> "<schedule>" <prompt…>
           if (sub === 'add') {
-            const [name, scheduleExpr, ...promptParts] = schRest;
-            if (!name || !scheduleExpr || !promptParts.length) {
+            // Schedule expressions contain spaces ("daily 09:00"), so re-parse:
+            // accept a quoted expression, or greedily match leading tokens that
+            // form a valid schedule when unquoted.
+            const name    = schRest[0];
+            const rest    = schRest.slice(1);
+            const restStr = rest.join(' ');
+            let scheduleExpr = null, promptText = '';
+            const qm = restStr.match(/^"([^"]+)"\s+([\s\S]+)$/) || restStr.match(/^'([^']+)'\s+([\s\S]+)$/);
+            if (qm) {
+              scheduleExpr = qm[1].trim();
+              promptText   = qm[2].trim();
+            } else {
+              for (let n = Math.min(3, rest.length - 1); n >= 1; n--) {
+                const cand = rest.slice(0, n).join(' ');
+                if (parseSchedule(cand)) { scheduleExpr = cand; promptText = rest.slice(n).join(' '); break; }
+              }
+            }
+            if (!name || !scheduleExpr || !promptText) {
               pushStatic({ type: 'error', content: 'usage: /schedule add <name> "<schedule>" <prompt>\n  e.g. /schedule add daily-standup "daily 09:00" Summarize what I should work on today' });
               return true;
             }
@@ -1894,7 +1921,7 @@ export function App({
               id:        crypto.randomUUID?.() || `${Date.now()}`,
               name,
               schedule:  scheduleExpr,
-              prompt:    promptParts.join(' '),
+              prompt:    promptText,
               model:     model,
               enabled:   true,
               lastRun:   null,
@@ -1945,9 +1972,17 @@ export function App({
             setThinking(true);
             setThinkingWord('scheduling');
             try {
-              const agent = agentRef.current || new (await import('../agent/agent.js')).Agent({ model, mode });
-              let result = '';
-              await agent.run(task.prompt, { onText: t => { result += t; } });
+              const agent = agentRef.current || new (await import('../agent/agent.js')).Agent({ modelAlias: model, mode });
+              const preLen = agent.history.length;
+              await agent.run(task.prompt);
+              // Collect assistant text produced during this run
+              const result = agent.history.slice(preLen)
+                .filter(m => m.role === 'assistant')
+                .map(m => typeof m.content === 'string'
+                  ? m.content
+                  : (m.content || []).filter(c => c.type === 'text').map(c => c.text).join('\n'))
+                .filter(Boolean)
+                .join('\n\n');
               const header = `# ${task.name}\n*Ran: ${new Date().toLocaleString()}*\n*Schedule: ${task.schedule}*\n\n---\n\n`;
               const saved  = saveScheduleResult(task.name, header + result);
               task.lastRun = new Date().toISOString();
@@ -2009,8 +2044,9 @@ export function App({
       // OAuth paste mode — token input
       if (inputMode === 'oauth-paste') {
         setInputMode('chat');
-        window.__oauthPasteResolve?.(input);
-        window.__oauthPasteResolve = null;
+        const resolve = oauthPasteRef.current;
+        oauthPasteRef.current = null;
+        resolve?.(input);
         return;
       }
 
@@ -2040,7 +2076,7 @@ export function App({
         finalizeTurn();
       }
     },
-    [thinking, thinkingWord, handleSlashCommand, addLive, pushStatic, finalizeTurn, runAgent, watchActive]
+    [thinking, thinkingWord, inputMode, handleSlashCommand, addLive, pushStatic, finalizeTurn, runAgent, watchActive]
   );
 
   const handleConfirmAnswer = useCallback((answer) => {
@@ -2066,7 +2102,7 @@ export function App({
   const ctxWindow   = getContextWindow(model);
   const gauge       = tokens.total > 0 ? contextGauge(tokens.total, ctxWindow) : null;
 
-  const hintLeft  = '? for help  · /goal to set a target  · /retry to redo  · Ctrl+P to cycle mode';
+  const hintLeft  = '/help for commands  · /goal to set a target  · /retry to redo  · Ctrl+P to cycle mode';
   const hintRight = [
     extThinking  ? `◎ thinking(${(thinkingBudget / 1000).toFixed(0)}k)` : null,
     computerUse  ? `⊞ computer` : null,
