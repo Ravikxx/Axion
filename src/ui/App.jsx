@@ -25,6 +25,7 @@ import {
   beginCheckpoint, listCheckpoints, rewindCheckpoints,
   getCustomCommands,
   getAllowedTools, allowTool, clearAllowedTools,
+  getSkills, saveSkill, deleteSkill,
 } from '../persist.js';
 import { COMMANDS } from './Suggestions.jsx';
 import { THEMES, setTheme, themeName, accent } from './theme.js';
@@ -70,6 +71,10 @@ const HELP_TEXT = `  Commands
   /model <name|id>              switch model (alias or raw ID)
   /mode  <name>                 switch mode: ask · plan · bypass  (Ctrl+P to cycle)
   /permissions [clear]          list/reset always-allowed tools (press "a" on confirms)
+  /skills                       list skills — .md files that auto-inject when triggered
+  /skills delete <name>         remove a skill
+  /skill-generator <name> <txt> AI-generates a skill file in ~/.axion/skills/
+                                e.g. /skill-generator minecraft remember X whenever minecraft comes up
   /theme [name]                 switch accent color (ember · violet · ocean · jade · rose · gold)
   /api   <model> <key>          set API key (saved)
   /endpoint <name> <url> [model] [key]  add a custom endpoint
@@ -465,6 +470,9 @@ export function App({
         if (n.type === 'agent-msg') addLive({ type: 'agent-msg', from: n.from, to: n.to, content: n.content });
       },
     });
+    // Surface skill activations in the chat
+    agentRef.current.onSkillActivated = (name) =>
+      addLive({ type: 'info', content: `✦ skill activated: ${name}` });
     // Apply .axionrc / initial props
     if (initialSystemOverride) agentRef.current.setSystemOverride(initialSystemOverride);
     if (initialThinking)       agentRef.current.setThinking(true, initialThinkingBudget);
@@ -671,6 +679,73 @@ export function App({
             pushStatic({ type: 'info', content: `model → ${arg} (saved)` });
           }
           return true;
+
+        case 'skills': {
+          if (args[0] === 'delete' || args[0] === 'remove') {
+            const target = args.slice(1).join(' ');
+            if (!target) { pushStatic({ type: 'error', content: 'usage: /skills delete <name>' }); return true; }
+            pushStatic(deleteSkill(target)
+              ? { type: 'info', content: `Deleted skill "${target}".` }
+              : { type: 'error', content: `No skill named "${target}".` });
+            return true;
+          }
+          const skills = getSkills();
+          if (!skills.length) {
+            pushStatic({ type: 'info', content: 'No skills yet. Create one with:\n  /skill-generator <name> <what it should do>\n  e.g. /skill-generator minecraft remember my server IP is 1.2.3.4 whenever minecraft comes up' });
+            return true;
+          }
+          const active = agentRef.current?.activeSkills || new Map();
+          const lines = skills.map(s => {
+            const on = active.has(s.name.toLowerCase()) ? '●' : ' ';
+            return `  ${on} ${s.name.padEnd(16)} ${s.description || '(no description)'}\n      triggers: ${s.triggers.join(', ')}`;
+          }).join('\n');
+          pushStatic({ type: 'info', content: `  Skills (● = active this session)\n  ──────────────────────────────\n${lines}\n\n  Skills auto-activate when a trigger word appears in your message.\n  /skill-generator <name> <instructions> to create · /skills delete <name>` });
+          return true;
+        }
+
+        case 'skill-generator':
+        case 'skill': {
+          const [skillName, ...instrParts] = args;
+          const instructions = instrParts.join(' ');
+          if (!skillName) {
+            pushStatic({ type: 'error', content: 'usage: /skill-generator <name> <what the skill should do>\ne.g. /skill-generator minecraft remember ___, ___ and ___ every time minecraft is mentioned' });
+            return true;
+          }
+          pushStatic({ type: 'info', content: `Generating skill "${skillName}"…` });
+          setThinking(true);
+          setThinkingWord('crafting skill');
+          try {
+            const genPrompt = `Create a "skill" file for an AI assistant. A skill is a markdown file with frontmatter that gets injected into the assistant's system prompt whenever one of its trigger words appears in a user message.
+
+Skill name: ${skillName}
+What the user wants this skill to do: ${instructions || `(not specified — infer sensible behavior for "${skillName}")`}
+
+Respond with ONLY the file content, in exactly this format (no code fences, no commentary):
+
+---
+name: ${skillName.toLowerCase()}
+description: <one line summarizing when/why this skill applies>
+triggers: <comma-separated words that should activate it, include "${skillName.toLowerCase()}">
+---
+
+# <Title>
+
+<Clear, specific instructions the assistant must follow when this skill is active. Write them as imperatives ("Always…", "Remember that…", "When the user asks…"). Include every fact or rule the user specified. Use markdown sections/lists where helpful.>`;
+            let content = (await agentRef.current.askBtw(genPrompt)).trim();
+            // Strip code fences if the model added them anyway
+            content = content.replace(/^```(?:md|markdown)?\n?/, '').replace(/\n?```$/, '').trim();
+            if (!content.startsWith('---')) {
+              content = `---\nname: ${skillName.toLowerCase()}\ndescription: ${instructions || skillName}\ntriggers: ${skillName.toLowerCase()}\n---\n\n${content}`;
+            }
+            const path = saveSkill(skillName, content);
+            pushStatic({ type: 'info', content: `✔ Skill saved → ${path.replace(homedir(), '~')}\nIt activates automatically when its triggers appear in a message. /skills to view, edit the file to tweak.` });
+          } catch (err) {
+            pushStatic({ type: 'error', content: `skill generation failed: ${err.message}` });
+          } finally {
+            setThinking(false);
+          }
+          return true;
+        }
 
         case 'permissions': {
           if (arg === 'clear') {

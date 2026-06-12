@@ -155,6 +155,64 @@ export function undoLastBackup() {
 
 export function undoStackSize() { return _undoStack.length; }
 
+// ── Skills (~/.axion/skills/*.md + ./.axion/skills/*.md) ──────────────────────
+// Claude-style skill files: YAML-ish frontmatter (name, description, triggers)
+// followed by a markdown body. A skill auto-activates for the session when any
+// of its trigger words appear in a user message.
+
+const SKILLS_DIR = join(DIR, 'skills');
+
+function parseSkill(raw, fallbackName) {
+  const skill = { name: fallbackName, description: '', triggers: [], body: raw.trim() };
+  const fm = raw.match(/^---\n([\s\S]*?)\n---\n?/);
+  if (fm) {
+    skill.body = raw.slice(fm[0].length).trim();
+    for (const line of fm[1].split('\n')) {
+      const m = line.match(/^(\w+):\s*(.*)$/);
+      if (!m) continue;
+      const [, key, val] = m;
+      if (key === 'name')        skill.name = val.trim() || fallbackName;
+      if (key === 'description') skill.description = val.trim();
+      if (key === 'triggers')    skill.triggers = val.split(',').map(s => s.trim()).filter(Boolean);
+    }
+  }
+  if (!skill.triggers.length) skill.triggers = [skill.name];
+  return skill;
+}
+
+export function getSkills() {
+  const out = new Map(); // project-level overrides global
+  for (const dir of [SKILLS_DIR, join(process.cwd(), '.axion', 'skills')]) {
+    try {
+      for (const f of readdirSync(dir)) {
+        if (!f.endsWith('.md')) continue;
+        try {
+          const raw = readFileSync(join(dir, f), 'utf8');
+          if (!raw.trim()) continue;
+          const skill = parseSkill(raw, f.slice(0, -3).toLowerCase());
+          skill.path = join(dir, f);
+          out.set(skill.name.toLowerCase(), skill);
+        } catch {}
+      }
+    } catch {}
+  }
+  return [...out.values()];
+}
+
+export function saveSkill(name, content) {
+  if (!existsSync(SKILLS_DIR)) mkdirSync(SKILLS_DIR, { recursive: true });
+  const slug = name.toLowerCase().replace(/[^a-z0-9-]+/g, '-').replace(/^-|-$/g, '');
+  const path = join(SKILLS_DIR, `${slug}.md`);
+  writeFileSync(path, content, 'utf8');
+  return path;
+}
+
+export function deleteSkill(name) {
+  const skill = getSkills().find(s => s.name.toLowerCase() === name.toLowerCase());
+  if (!skill) return false;
+  try { unlinkSync(skill.path); return true; } catch { return false; }
+}
+
 // ── Tool permission allowlist (per project, for ask mode) ─────────────────────
 // Keys are tool names, or "run_command:<binary>" for shell commands.
 

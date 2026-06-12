@@ -197,6 +197,7 @@ Switch with `/mode auto` or press `Ctrl+P` to cycle.
 - **AXION.md** — put persistent project instructions in `./AXION.md`, `./.axion/AXION.md`, or `~/.axion/AXION.md`; they're loaded into every session's system prompt.
 - **@file mentions** — type `@src/file.js` in any message to pin that file into context (tab-completes paths).
 - **Custom slash commands** — drop `.md` files in `~/.axion/commands/` or `./.axion/commands/`; `review-pr.md` becomes `/review-pr`, and `$ARGUMENTS` in the body is replaced with whatever follows the command.
+- **Skills** — `/skill-generator minecraft remember X, Y, Z whenever minecraft comes up` has the AI write `~/.axion/skills/minecraft.md` (frontmatter: name, description, triggers). The skill auto-injects into the system prompt whenever a trigger word appears in your message. `/skills` lists them, `/skills delete <name>` removes one, or edit the `.md` directly.
 - **Message queueing** — type while the agent is working; messages queue and send when the turn finishes.
 - **Background tasks** — the agent can start dev servers/watchers with `run_command background=true` and poll them with `check_task`.
 

@@ -9,7 +9,7 @@ import {
 } from './tools.js';
 import { API_KEYS } from '../config.js';
 import { BUS } from './bus.js';
-import { getMemories, getLearnedInstructions } from '../persist.js';
+import { getMemories, getLearnedInstructions, getSkills } from '../persist.js';
 import { MCP } from './mcp.js';
 import { GOOGLE_TOOL_DEFINITIONS, GOOGLE_TOOL_DEFINITIONS_OPENAI } from './google.js';
 import { getOAuthToken } from '../oauth/oauth.js';
@@ -218,6 +218,9 @@ export class Agent {
     this.adviserModel = null;
     // Chat mode — simplified prompt, no tools
     this.chatMode = false;
+    // Skills activated this session (name → skill); auto-triggered per message
+    this.activeSkills = new Map();
+    this.onSkillActivated = null; // optional UI callback (skillName) => void
     // Interrupt support — cancel() aborts the in-flight request and stops the loop
     this.cancelled  = false;
     this._abortCtrl = null;
@@ -252,11 +255,33 @@ export class Agent {
 
   clearHistory() {
     this.history = [];
+    this.activeSkills.clear();
     this.totalTokens = this.inputTokens = this.outputTokens = 0;
     this.onTokens({ total: 0, input: 0, output: 0 });
   }
 
+  // Activate any skill whose trigger words appear in the message.
+  // Once active, a skill stays in the system prompt for the session.
+  _activateSkills(text) {
+    const lower = String(text || '').toLowerCase();
+    for (const skill of getSkills()) {
+      const key = skill.name.toLowerCase();
+      if (this.activeSkills.has(key)) continue;
+      if (skill.triggers.some(t => t && lower.includes(t.toLowerCase()))) {
+        this.activeSkills.set(key, skill);
+        this.onSkillActivated?.(skill.name);
+      }
+    }
+  }
+
   getTokens() { return this.totalTokens; }
+
+  _skillsPrompt() {
+    return `\n\n## Active skills (follow these instructions for the rest of the session):\n` +
+      [...this.activeSkills.values()]
+        .map(s => `### Skill: ${s.name}${s.description ? ` — ${s.description}` : ''}\n${s.body}`)
+        .join('\n\n');
+  }
 
   _getSystemPrompt() {
     // Chat tab: simplified conversational prompt — no tools, no coding context
@@ -265,6 +290,9 @@ export class Agent {
       const memories = getMemories();
       if (memories.length) {
         prompt += `\n\nUser's notes (always remember these):\n${memories.map((m, i) => `${i + 1}. ${m.text}`).join('\n')}`;
+      }
+      if (this.activeSkills.size) {
+        prompt += this._skillsPrompt();
       }
       if (this.systemOverride) {
         prompt += `\n\nADDITIONAL INSTRUCTIONS: ${this.systemOverride}`;
@@ -292,6 +320,9 @@ IMPORTANT RULES:
 - Use click_on for interacting with UI elements INSIDE already-open applications (buttons, menus, fields).
 - Always take a screenshot first to understand the current state before clicking.
 - After each action, take a screenshot to verify the result.`;
+    }
+    if (this.activeSkills.size) {
+      prompt += this._skillsPrompt();
     }
     if (this.systemOverride) {
       prompt += `\n\nADDITIONAL INSTRUCTIONS: ${this.systemOverride}`;
@@ -330,6 +361,7 @@ IMPORTANT RULES:
 
   async run(userMessage, { askConfirm, askPlanConfirm } = {}) {
     this.cancelled = false;
+    this._activateSkills(userMessage);
     // Set think reminder if the user's message asks for reasoning
     this._thinkReminder = /\bthink(?:ing)?\b|\breason(?:ing)?\b|\bconsider\b|\breflect\b|\bponder\b/i.test(userMessage);
     this.history.push({ role: 'user', content: buildUserContent(userMessage) });

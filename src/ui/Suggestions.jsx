@@ -9,6 +9,8 @@ export const COMMANDS = [
   { cmd: 'mode',            desc: '<name>  ask · plan · bypass' },
   { cmd: 'theme',           desc: '[name]  switch accent color (no args = list)' },
   { cmd: 'permissions',     desc: '[clear]  list/reset always-allowed tools' },
+  { cmd: 'skills',          desc: '[delete <name>]  list skills (auto-activate on triggers)' },
+  { cmd: 'skill-generator', desc: '<name> <instructions>  AI-generate a skill .md' },
   { cmd: 'api',             desc: '<model> <key>  set API key' },
   { cmd: 'endpoint',        desc: '<name> <url> [model] [key]  add/list custom endpoints' },
   { cmd: 'thinking',        desc: '[on|off|<tokens>]  toggle extended thinking' },
