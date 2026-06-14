@@ -119,13 +119,28 @@ You are in Chat mode. You have no access to files, the terminal, or any tools. J
 
 REASONING: Use <think>...</think> tags to think through nuanced or complex questions before answering. Write reasoning as plain text inside the tags, then give your response after.`;
 
-const TOOL_FALLBACK_PROMPT = `
+const TOOL_FALLBACK_PROMPT_BASE = `
 You have access to the following tools. To use one, emit exactly this XML (one call per block):
 <tool_call>{"name": "TOOL_NAME", "input": {ARGS_JSON}}</tool_call>
 
-Tools: read_file(path), write_file(path, content), list_directory(path), run_command(command), git_status(), git_diff(), git_commit(message), git_push(), web_search(query)
+Tools: read_file(path), write_file(path, content), list_directory(path), run_command(command), git_status(), git_diff(), git_commit(message), git_push(), web_search(query)`;
 
-Call the right tool rather than guessing. You will be called again after each result.`;
+const TOOL_FALLBACK_COMPUTER_EXTRA = `
+Computer use tools (use these instead of run_command for anything screen-related):
+  screenshot()                              — take a screenshot and get a description
+  click_on(target)                          — find a UI element by description and click it
+  click_at(x, y, button?, times?)          — click at exact pixel coordinates
+  type_text(text)                           — type text into the focused field
+  press_key(keys)                           — press keyboard shortcuts (e.g. "^c" for Ctrl+C)
+  scroll(x, y, direction?, amount?)        — scroll at coordinates
+  screen_size()                             — get screen dimensions
+IMPORTANT: NEVER use run_command with scrot/xdotool/screencapture/xclip for screenshots or clicks — always use the computer use tools above.`;
+
+function getToolFallbackPrompt(computerUse) {
+  return TOOL_FALLBACK_PROMPT_BASE +
+    (computerUse ? TOOL_FALLBACK_COMPUTER_EXTRA : '') +
+    '\n\nCall the right tool rather than guessing. You will be called again after each result.';
+}
 
 // ── Streaming think-tag filter ────────────────────────────────────────────────
 // Processes chunks in real time, routing <think> content to onThought and the
@@ -321,11 +336,12 @@ export class Agent {
     if (this.computerUse) {
       prompt += `\n\nCOMPUTER USE ENABLED: You can control the user's screen using the screenshot, click_on, click_at, type_text, press_key, scroll, and screen_size tools.
 
-IMPORTANT RULES:
-- To LAUNCH an application, always use run_command (e.g. "start autodesk fusion 360" or "start chrome" on Windows) — never try to click a desktop icon to open an app, as coordinate accuracy is unreliable.
-- Use click_on for interacting with UI elements INSIDE already-open applications (buttons, menus, fields).
-- Always take a screenshot first to understand the current state before clicking.
-- After each action, take a screenshot to verify the result.`;
+CRITICAL RULES — follow these exactly:
+- NEVER use run_command or bash to take screenshots (no scrot, gnome-screenshot, import, screencapture, xdotool click, ydotool, etc.) — always call the screenshot or click_on or click_at tool directly.
+- To LAUNCH an application, use run_command (e.g. "start chrome" on Windows, "google-chrome &" on Linux) — never click a desktop icon.
+- To interact with UI elements in an open app, use click_on (describe the element) or click_at (known pixel coords).
+- Always call screenshot first to understand the current screen state.
+- After each click or action, call screenshot again to verify the result.`;
     }
     if (this.activeSkills.size) {
       prompt += this._skillsPrompt();
@@ -882,7 +898,7 @@ IMPORTANT RULES:
     }
 
     // Non-streaming fallback for tool-call failures (some providers)
-    const fallbackMsgs = msgs.map((m, i) => i === 0 ? { ...m, content: m.content + TOOL_FALLBACK_PROMPT } : m);
+    const fallbackMsgs = msgs.map((m, i) => i === 0 ? { ...m, content: m.content + getToolFallbackPrompt(this.computerUse) } : m);
     const resp = await client.chat.completions.create({ model, messages: fallbackMsgs, max_tokens: maxTok });
     const raw  = resp.choices[0]?.message?.content || '';
     this._addTokens(resp.usage?.prompt_tokens, resp.usage?.completion_tokens);
