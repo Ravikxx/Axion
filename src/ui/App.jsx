@@ -363,6 +363,8 @@ export function App({
   const confirmResolverRef = useRef(null);
   const oauthPasteRef      = useRef(null);
   const lastUserMsgRef     = useRef('');
+  const activeDiscordMsgRef = useRef(null); // Discord msg to reply to after this turn
+  const discordOriginRef    = useRef(false); // true when current turn was triggered by a Discord DM
 
   const liveRef    = useRef([]);
   const addLive    = useCallback((msg) => {
@@ -2064,15 +2066,15 @@ triggers: <comma-separated words that should activate it, include "${skillName.t
             try {
               await startDiscord(token, async (msg) => {
                 const username = msg.author.tag;
-                const content  = msg.content;
-                pushStatic({ type: 'info', content: `[Discord DM] ${username}: ${content}` });
-                try {
-                  const reply = await agentRef.current.askBtw(content);
-                  await sendDM(msg, reply);
-                  pushStatic({ type: 'info', content: `[Discord DM → ${username}]: ${reply}` });
-                } catch (err) {
-                  pushStatic({ type: 'error', content: `Discord reply failed: ${err.message}` });
-                }
+                const content  = msg.content?.trim();
+                if (!content) return;
+                // Store so handleSubmit knows to forward the response to Discord
+                activeDiscordMsgRef.current = msg;
+                discordOriginRef.current    = true;
+                // Show as a labeled user message in the CLI
+                pushStatic({ type: 'user', content: `[Discord: ${username}]\n${content}` });
+                // Route through the full agent — handleSubmit queues if already busy
+                handleSubmitRef.current?.(content);
               });
               pushStatic({ type: 'info', content: `✔ Discord bot connected as ${DISCORD_STATE.username}. DMs will appear here and be answered by the active model.` });
             } catch (err) {
@@ -2085,6 +2087,8 @@ triggers: <comma-separated words that should activate it, include "${skillName.t
           if (sub === 'stop') {
             if (!DISCORD_STATE.running) { pushStatic({ type: 'info', content: 'Discord bot is not running.' }); return true; }
             await stopDiscord();
+            activeDiscordMsgRef.current = null;
+            discordOriginRef.current    = false;
             pushStatic({ type: 'info', content: '◈ Discord bot disconnected.' });
             return true;
           }
@@ -2441,7 +2445,8 @@ triggers: <comma-separated words that should activate it, include "${skillName.t
 
       lastUserMsgRef.current = input;
       beginCheckpoint(input);
-      pushStatic({ type: 'user', content: input });
+      // Discord-originated messages already pushed a labeled user message — don't double-push
+      if (!discordOriginRef.current) pushStatic({ type: 'user', content: input });
       liveRef.current = []; setLiveMessages([]);
       setThinking(true);
       setThinkingWord(pickThinkingWord());
@@ -2461,6 +2466,19 @@ triggers: <comma-separated words that should activate it, include "${skillName.t
         setInputMode('chat');
         setPendingConfirm(null);
         confirmResolverRef.current = null;
+        // Forward response to Discord if a DM is waiting or bot is actively bridged
+        if (DISCORD_STATE.running && activeDiscordMsgRef.current) {
+          const assistantText = liveRef.current
+            .filter(m => m.type === 'assistant')
+            .map(m => m.content)
+            .join('');
+          if (assistantText) {
+            try { await sendDM(activeDiscordMsgRef.current, assistantText); } catch {}
+          }
+          // Keep activeDiscordMsgRef for subsequent CLI turns so they also forward
+          // (only clear discordOrigin so we don't double-label next user message)
+          discordOriginRef.current = false;
+        }
         finalizeTurn();
         // Drain queued messages one at a time
         if (messageQueueRef.current.length) {
