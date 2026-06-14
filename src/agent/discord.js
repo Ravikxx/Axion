@@ -70,12 +70,6 @@ export async function startDiscord(token, onMessage) {
     await _onMessage(msg);
   });
 
-  client.on(Events.MessageUpdate, async (oldMsg, newMsg) => {
-    if (newMsg.partial) { try { newMsg = await newMsg.fetch(); } catch { return; } }
-    if (newMsg.author?.bot || newMsg.guild || !_onMessage) return;
-    if (!newMsg.content || newMsg.content === oldMsg.content) return;
-    await _onMessage(newMsg, { isEdit: true, originalMsgId: oldMsg.id });
-  });
 }
 
 export async function stopDiscord() {
