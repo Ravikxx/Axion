@@ -1,4 +1,11 @@
 node_modules/
+__pycache__/
+*.pyc
+*.pyo
+*.so
+build/
+*.egg-info/
+.pytest_cache/
 .env
 .env.local
 dist/
