@@ -12,8 +12,16 @@ import time
 from collections import deque
 from typing import Optional
 
-from transformers import TrainerCallback, TrainerControl, TrainerState
-from transformers.training_args import TrainingArguments
+try:
+    from transformers import TrainerCallback, TrainerControl, TrainerState
+    from transformers.training_args import TrainingArguments
+except ImportError:
+    # Stubs so the module can be imported without transformers installed.
+    # The actual classes are used at runtime when transformers IS present.
+    TrainerCallback = object  # type: ignore[assignment,misc]
+    TrainerControl = object   # type: ignore[assignment,misc]
+    TrainerState = object     # type: ignore[assignment,misc]
+    TrainingArguments = object  # type: ignore[assignment,misc]
 
 
 class CpuProgressCallback(TrainerCallback):

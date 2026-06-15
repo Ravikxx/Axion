@@ -8,6 +8,8 @@ from .trainer  import AxonTrainer
 from .config   import AxonConfig
 from .hardware import detect_hardware, HardwareProfile
 from .memory   import plan as plan_memory, MemoryPlan
+from .prefetch import LayerPrefetcher
+from .export   import export_model
 
 __version__ = "0.1.0"
 __author__  = "Max (Ravikxx) / Axion Labs"
@@ -20,4 +22,6 @@ __all__ = [
     "HardwareProfile",
     "plan_memory",
     "MemoryPlan",
+    "LayerPrefetcher",
+    "export_model",
 ]
