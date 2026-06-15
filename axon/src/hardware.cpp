@@ -1,46 +1,146 @@
 #include "axon/hardware.h"
 
-#include <fstream>
 #include <sstream>
 #include <string>
-#include <set>
-#include <unistd.h>      // sysconf
-#include <sys/sysinfo.h> // sysinfo for RAM
+#include <cstring>
 
-// On x86/x86-64, CPUID is a special instruction that asks the CPU
-// to report its capabilities. cpuid.h gives us a safe wrapper for it.
-#if defined(__x86_64__) || defined(__i386__)
-#  include <cpuid.h>
-#  define AXON_X86 1
+// ── Platform-specific includes ───────────────────────────────────────────────
+#ifdef _WIN32
+#  include <windows.h>
+#  include <intrin.h>   // __cpuid / __cpuidex (MSVC + MinGW)
+#  include <vector>
+#else
+#  include <fstream>
+#  include <set>
+#  include <unistd.h>
+#  include <sys/sysinfo.h>
+#  if defined(__x86_64__) || defined(__i386__)
+#    include <cpuid.h>
+#    define AXON_X86 1
+#  endif
 #endif
 
 namespace axon {
 
-// ---------- CPUID feature detection ----------
+// ═══════════════════════════════════════════════════════════════════════════
+// Windows implementation
+// ═══════════════════════════════════════════════════════════════════════════
+#ifdef _WIN32
+
+static CpuFeatures detect_cpu_features() {
+    CpuFeatures f;
+    int info[4];
+
+    // Leaf 1 → ECX: bit 28 = AVX, bit 12 = FMA
+    __cpuid(info, 1);
+    f.avx = (info[2] >> 28) & 1;
+    f.fma = (info[2] >> 12) & 1;
+
+    // Leaf 7, subleaf 0 → EBX: bit 5 = AVX2, bit 16 = AVX-512F, bit 8 = BMI2
+    __cpuidex(info, 7, 0);
+    f.avx2    = (info[1] >> 5)  & 1;
+    f.avx512f = (info[1] >> 16) & 1;
+    f.bmi2    = (info[1] >> 8)  & 1;
+
+    return f;
+}
+
+static std::string read_cpu_name() {
+    // CPUID leaves 0x80000002–0x80000004 contain the CPU brand string.
+    int info[4];
+    char brand[49] = {};
+    __cpuid(info, 0x80000002); std::memcpy(brand,      info, 16);
+    __cpuid(info, 0x80000003); std::memcpy(brand + 16, info, 16);
+    __cpuid(info, 0x80000004); std::memcpy(brand + 32, info, 16);
+    std::string name = brand;
+    // Trim leading whitespace (some CPUs pad with spaces)
+    while (!name.empty() && name.front() == ' ') name.erase(name.begin());
+    return name.empty() ? "Unknown CPU" : name;
+}
+
+static int count_physical_cores() {
+    // GetLogicalProcessorInformation returns one entry per physical core
+    // (Relationship == RelationProcessorCore) and one per logical CPU.
+    DWORD len = 0;
+    GetLogicalProcessorInformation(nullptr, &len);
+    std::vector<SYSTEM_LOGICAL_PROCESSOR_INFORMATION> buf(
+        len / sizeof(SYSTEM_LOGICAL_PROCESSOR_INFORMATION));
+    GetLogicalProcessorInformation(buf.data(), &len);
+
+    int cores = 0;
+    for (auto& item : buf)
+        if (item.Relationship == RelationProcessorCore) ++cores;
+    return cores > 0 ? cores : 1;
+}
+
+static CacheInfo detect_cache_info() {
+    CacheInfo c;
+    DWORD len = 0;
+    GetLogicalProcessorInformation(nullptr, &len);
+    std::vector<SYSTEM_LOGICAL_PROCESSOR_INFORMATION> buf(
+        len / sizeof(SYSTEM_LOGICAL_PROCESSOR_INFORMATION));
+    GetLogicalProcessorInformation(buf.data(), &len);
+
+    for (auto& item : buf) {
+        if (item.Relationship != RelationCache) continue;
+        uint32_t kb = item.Cache.Size / 1024;
+        if (item.Cache.Level == 1 && item.Cache.Type == CacheData) c.l1d_kb = kb;
+        if (item.Cache.Level == 2) c.l2_kb = kb;
+        if (item.Cache.Level == 3) c.l3_kb = kb;
+    }
+    return c;
+}
+
+static void detect_ram(uint64_t& total, uint64_t& avail) {
+    MEMORYSTATUSEX ms;
+    ms.dwLength = sizeof(ms);
+    if (GlobalMemoryStatusEx(&ms)) {
+        total = ms.ullTotalPhys;
+        avail = ms.ullAvailPhys;
+    }
+}
+
+static void detect_gpu(HardwareProfile& p) {
+    // Basic NVIDIA detection via nvml.dll presence
+    HMODULE nvml = LoadLibraryA("nvml.dll");
+    if (nvml) {
+        p.has_discrete_gpu = true;
+        p.gpu_name = "NVIDIA GPU (nvml detected)";
+        FreeLibrary(nvml);
+    }
+    // AMD: check for amdgpu via atiadlxx.dll (Radeon Software)
+    if (!p.has_discrete_gpu) {
+        HMODULE amd = LoadLibraryA("atiadlxx.dll");
+        if (!amd) amd = LoadLibraryA("atiadlxy.dll");  // 32-bit fallback name
+        if (amd) {
+            p.has_discrete_gpu = true;
+            p.gpu_name = "AMD GPU (ADL detected)";
+            FreeLibrary(amd);
+        }
+    }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// Linux implementation
+// ═══════════════════════════════════════════════════════════════════════════
+#else
 
 static CpuFeatures detect_cpu_features() {
     CpuFeatures f;
 #ifdef AXON_X86
     unsigned int eax, ebx, ecx, edx;
-
-    // Leaf 1: basic features (AVX, FMA)
     if (__get_cpuid(1, &eax, &ebx, &ecx, &edx)) {
-        f.avx = (ecx >> 28) & 1;  // bit 28 of ECX
-        f.fma = (ecx >> 12) & 1;  // bit 12 of ECX
+        f.avx = (ecx >> 28) & 1;
+        f.fma = (ecx >> 12) & 1;
     }
-
-    // Leaf 7, subleaf 0: extended features (AVX2, AVX-512, BMI2)
-    // __get_cpuid_count is the version that supports subleaves.
     if (__get_cpuid_count(7, 0, &eax, &ebx, &ecx, &edx)) {
-        f.avx2    = (ebx >> 5)  & 1;  // bit 5  of EBX
-        f.avx512f = (ebx >> 16) & 1;  // bit 16 of EBX
-        f.bmi2    = (ebx >> 8)  & 1;  // bit 8  of EBX
+        f.avx2    = (ebx >> 5)  & 1;
+        f.avx512f = (ebx >> 16) & 1;
+        f.bmi2    = (ebx >> 8)  & 1;
     }
 #endif
     return f;
 }
-
-// ---------- CPU name from /proc/cpuinfo ----------
 
 static std::string read_cpu_name() {
     std::ifstream f("/proc/cpuinfo");
@@ -50,7 +150,6 @@ static std::string read_cpu_name() {
             auto pos = line.find(':');
             if (pos != std::string::npos) {
                 auto name = line.substr(pos + 2);
-                // Trim leading/trailing whitespace
                 while (!name.empty() && (name.front() == ' ' || name.front() == '\t'))
                     name.erase(name.begin());
                 return name;
@@ -60,44 +159,31 @@ static std::string read_cpu_name() {
     return "Unknown CPU";
 }
 
-// ---------- Physical core count ----------
-// /proc/cpuinfo lists every logical CPU. "core id" tells which physical core
-// it belongs to. We count unique (physical id, core id) pairs.
-
 static int count_physical_cores() {
     std::ifstream f("/proc/cpuinfo");
-    std::string line;
     std::set<std::pair<int,int>> seen;
-    int phys_id = 0, core_id = 0;
-
-    auto parse_int = [](const std::string& s) -> int {
-        auto pos = s.find(':');
-        if (pos == std::string::npos) return 0;
-        return std::stoi(s.substr(pos + 1));
+    int phys = 0, core = 0;
+    std::string line;
+    auto parse_int = [](const std::string& s) {
+        auto p = s.find(':');
+        return p == std::string::npos ? 0 : std::stoi(s.substr(p + 1));
     };
-
     while (std::getline(f, line)) {
-        if (line.rfind("physical id", 0) == 0) phys_id = parse_int(line);
-        if (line.rfind("core id",     0) == 0) core_id = parse_int(line);
-        if (line.empty())  // blank line = end of one CPU block
-            seen.insert({phys_id, core_id});
+        if (line.rfind("physical id", 0) == 0) phys = parse_int(line);
+        if (line.rfind("core id",     0) == 0) core = parse_int(line);
+        if (line.empty()) seen.insert({phys, core});
     }
     return seen.empty() ? 1 : static_cast<int>(seen.size());
 }
-
-// ---------- Cache info from /sys ----------
-// Each CPU's cache hierarchy is exposed under:
-//   /sys/devices/system/cpu/cpu0/cache/index<N>/
-// Fields: level (1/2/3), type (Data/Instruction/Unified), size ("32K", "512K", "16384K")
 
 static uint32_t parse_cache_size_kb(const std::string& path) {
     std::ifstream f(path);
     std::string s;
     if (!std::getline(f, s) || s.empty()) return 0;
     uint32_t val = std::stoul(s);
-    if (s.back() == 'K') return val;
-    if (s.back() == 'M') return val * 1024;
-    return val / 1024;  // assume bytes
+    if (!s.empty() && s.back() == 'K') return val;
+    if (!s.empty() && s.back() == 'M') return val * 1024;
+    return val / 1024;
 }
 
 static std::string read_file_line(const std::string& path) {
@@ -112,30 +198,24 @@ static CacheInfo detect_cache_info() {
     for (int idx = 0; idx < 8; ++idx) {
         std::string base = "/sys/devices/system/cpu/cpu0/cache/index"
                          + std::to_string(idx) + "/";
-        std::string level_str = read_file_line(base + "level");
-        std::string type_str  = read_file_line(base + "type");
-        if (level_str.empty()) break;
-
-        int level = std::stoi(level_str);
-        uint32_t size_kb = parse_cache_size_kb(base + "size");
-
-        if (level == 1 && type_str == "Data") c.l1d_kb = size_kb;
-        if (level == 2)                       c.l2_kb  = size_kb;
-        if (level == 3)                       c.l3_kb  = size_kb;
+        std::string level = read_file_line(base + "level");
+        std::string type  = read_file_line(base + "type");
+        if (level.empty()) break;
+        uint32_t kb = parse_cache_size_kb(base + "size");
+        int lv = std::stoi(level);
+        if (lv == 1 && type == "Data") c.l1d_kb = kb;
+        if (lv == 2)                   c.l2_kb  = kb;
+        if (lv == 3)                   c.l3_kb  = kb;
     }
     return c;
 }
-
-// ---------- RAM from sysinfo ----------
 
 static void detect_ram(uint64_t& total, uint64_t& avail) {
     struct sysinfo si{};
     if (sysinfo(&si) == 0) {
         total = static_cast<uint64_t>(si.totalram)  * si.mem_unit;
-        avail = static_cast<uint64_t>(si.freeram
-                                    + si.bufferram) * si.mem_unit;
+        avail = static_cast<uint64_t>(si.freeram + si.bufferram) * si.mem_unit;
     }
-    // Also read MemAvailable from /proc/meminfo (more accurate than freeram)
     std::ifstream f("/proc/meminfo");
     std::string line;
     while (std::getline(f, line)) {
@@ -148,70 +228,66 @@ static void detect_ram(uint64_t& total, uint64_t& avail) {
     }
 }
 
-// ---------- Public API ----------
+static void detect_gpu(HardwareProfile& p) {
+    std::ifstream nvidia("/proc/driver/nvidia/gpus");
+    if (nvidia.good()) {
+        p.has_discrete_gpu = true;
+    }
+    if (!p.has_discrete_gpu) {
+        std::ifstream vram("/sys/class/kfd/kfd/topology/nodes/1/mem_banks/0/size_in_bytes");
+        uint64_t vram_bytes = 0;
+        vram >> vram_bytes;
+        if (vram_bytes > 512ULL * 1024 * 1024) {
+            p.has_discrete_gpu = true;
+            p.gpu_vram_bytes   = vram_bytes;
+        }
+    }
+}
+
+#endif // _WIN32 / Linux
+
+// ═══════════════════════════════════════════════════════════════════════════
+// Shared public API
+// ═══════════════════════════════════════════════════════════════════════════
 
 HardwareProfile detect_hardware() {
     HardwareProfile p;
-    p.cpu_name      = read_cpu_name();
-    p.features      = detect_cpu_features();
-    p.cache         = detect_cache_info();
+    p.cpu_name       = read_cpu_name();
+    p.features       = detect_cpu_features();
+    p.cache          = detect_cache_info();
     p.physical_cores = count_physical_cores();
-    p.logical_cores  = static_cast<int>(sysconf(_SC_NPROCESSORS_ONLN));
+
+#ifdef _WIN32
+    {
+        SYSTEM_INFO si{};
+        GetSystemInfo(&si);
+        p.logical_cores = static_cast<int>(si.dwNumberOfProcessors);
+    }
+#else
+    p.logical_cores = static_cast<int>(sysconf(_SC_NPROCESSORS_ONLN));
+#endif
+
     detect_ram(p.total_ram_bytes, p.avail_ram_bytes);
-
-    // Discrete GPU detection: check if any DRM device is NOT an integrated one.
-    // For the Ryzen 5825U (iGPU only), this will correctly return false.
-    // We look for a CUDA device via /proc/driver/nvidia/gpus or ROCm via /sys/class/kfd.
-    {
-        std::ifstream nvidia("/proc/driver/nvidia/gpus");
-        if (nvidia.good()) {
-            // nvidia driver present — there's a discrete GPU
-            p.has_discrete_gpu = true;
-            // Try to read VRAM from /proc/driver/nvidia/gpus/<id>/information
-            // (simplified — a full implementation would enumerate all GPUs)
-        }
-    }
-    {
-        std::ifstream rocm("/sys/class/kfd/kfd/topology/nodes/1/gpu_id");
-        if (rocm.good() && !p.has_discrete_gpu) {
-            // ROCm KFD present. Integrated AMD GPUs also show up here,
-            // so we check if it has dedicated VRAM via /vram_size.
-            std::ifstream vram("/sys/class/kfd/kfd/topology/nodes/1/mem_banks/0/size_in_bytes");
-            uint64_t vram_bytes = 0;
-            vram >> vram_bytes;
-            // Integrated GPUs have 0 or very small dedicated VRAM
-            if (vram_bytes > 512ULL * 1024 * 1024) {
-                p.has_discrete_gpu = true;
-                p.gpu_vram_bytes   = vram_bytes;
-            }
-        }
-    }
-
+    detect_gpu(p);
     return p;
 }
 
 std::string hardware_summary(const HardwareProfile& p) {
-    auto bytes_to_gb = [](uint64_t b) -> double {
-        return static_cast<double>(b) / (1024.0 * 1024.0 * 1024.0);
-    };
-
+    auto to_gb = [](uint64_t b) { return static_cast<double>(b) / (1024.0*1024.0*1024.0); };
     std::ostringstream ss;
     ss << "=== Axon Hardware Profile ===\n"
        << "CPU:     " << p.cpu_name << "\n"
-       << "Cores:   " << p.physical_cores << " physical / "
-                      << p.logical_cores  << " logical\n"
-       << "RAM:     " << bytes_to_gb(p.total_ram_bytes) << " GB total, "
-                      << bytes_to_gb(p.avail_ram_bytes) << " GB available\n"
+       << "Cores:   " << p.physical_cores << " physical / " << p.logical_cores << " logical\n"
+       << "RAM:     " << to_gb(p.total_ram_bytes) << " GB total, "
+                      << to_gb(p.avail_ram_bytes)  << " GB available\n"
        << "Cache:   L1d=" << p.cache.l1d_kb << "KB  "
                           << "L2="  << p.cache.l2_kb  << "KB  "
                           << "L3="  << p.cache.l3_kb  << "KB\n"
-       << "SIMD:    AVX="  << p.features.avx
-               << " AVX2=" << p.features.avx2
-               << " FMA="  << p.features.fma
-               << " AVX512=" << p.features.avx512f << "\n"
-       << "GPU:     " << (p.has_discrete_gpu
-                          ? "Discrete GPU detected"
-                          : "No discrete GPU (CPU-only mode)") << "\n";
+       << "SIMD:    AVX="   << p.features.avx
+               << " AVX2="  << p.features.avx2
+               << " FMA="   << p.features.fma
+               << " AVX512="<< p.features.avx512f << "\n"
+       << "GPU:     " << (p.has_discrete_gpu ? "Discrete GPU detected" : "No discrete GPU (CPU-only mode)") << "\n";
     return ss.str();
 }
 

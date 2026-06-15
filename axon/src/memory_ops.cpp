@@ -1,6 +1,17 @@
 #include "axon/memory_ops.h"
 #include <cstring>
-#include <immintrin.h>  // AVX/AVX2/FMA intrinsics
+#include <immintrin.h>  // AVX/AVX2/FMA intrinsics (works on MSVC, GCC, Clang)
+
+// Platform-compatible prefetch intrinsics.
+// GCC/Clang use __builtin_prefetch; MSVC uses _mm_prefetch.
+#ifdef _MSC_VER
+#  include <mmintrin.h>
+#  define AXON_PREFETCH_L1(p) _mm_prefetch(reinterpret_cast<const char*>(p), _MM_HINT_T0)
+#  define AXON_PREFETCH_L2(p) _mm_prefetch(reinterpret_cast<const char*>(p), _MM_HINT_T1)
+#else
+#  define AXON_PREFETCH_L1(p) __builtin_prefetch((p), 0, 3)
+#  define AXON_PREFETCH_L2(p) __builtin_prefetch((p), 0, 2)
+#endif
 
 // --- What are intrinsics? ---
 // They're C++ functions that map 1:1 to a specific CPU instruction.
@@ -17,14 +28,14 @@ namespace axon {
 
 void prefetch_l1(const void* addr, size_t size_bytes) {
     const char* p = static_cast<const char*>(addr);
-    for (size_t i = 0; i < size_bytes; i += 64)  // 64-byte cache lines
-        __builtin_prefetch(p + i, 0, 3);
+    for (size_t i = 0; i < size_bytes; i += 64)
+        AXON_PREFETCH_L1(p + i);
 }
 
 void prefetch_l2(const void* addr, size_t size_bytes) {
     const char* p = static_cast<const char*>(addr);
     for (size_t i = 0; i < size_bytes; i += 64)
-        __builtin_prefetch(p + i, 0, 2);
+        AXON_PREFETCH_L2(p + i);
 }
 
 // ---------- Scalar fallback (always available) ----------

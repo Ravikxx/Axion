@@ -192,12 +192,15 @@ class DiskOffloadedModel:
 
         # accelerate's device_map handles disk offloading if we pass
         # max_memory and an offload_folder
+        import tempfile, os
+        offload_dir = os.path.join(tempfile.gettempdir(), "axon_offload")
+
         self._model = AutoModelForCausalLM.from_pretrained(
             model_path,
-            device_map    = "auto",
-            offload_folder = "/tmp/axon_offload",
+            device_map         = "auto",
+            offload_folder     = offload_dir,
             offload_state_dict = True,
-            torch_dtype   = torch.float16,
+            torch_dtype        = torch.float16,
         )
         self._tokenizer = AutoTokenizer.from_pretrained(model_path)
 

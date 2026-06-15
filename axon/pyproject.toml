@@ -23,6 +23,7 @@ dependencies = [
     "psutil>=5.9.0",          # RAM monitoring in callbacks
     "sentencepiece>=0.1.99",  # tokenizer support for LLaMA/Mistral
     "pyyaml>=6.0",            # YAML config files for CLI
+    "py-cpuinfo>=9.0.0",      # cross-platform SIMD flag detection (Windows/Linux/macOS)
 ]
 
 [project.optional-dependencies]

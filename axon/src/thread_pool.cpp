@@ -1,36 +1,48 @@
 #include "axon/thread_pool.h"
-#include <unistd.h>      // sysconf
-#include <fstream>
-#include <string>
-#include <set>
+
+#ifdef _WIN32
+#  include <windows.h>
+#  include <vector>
+#else
+#  include <unistd.h>
+#  include <fstream>
+#  include <string>
+#  include <set>
+#endif
 
 namespace axon {
 
-// Read number of physical CPU cores (not hyperthreads).
-// For the Ryzen 5825U: 8 physical cores, 16 logical cores.
-// We want 8 threads for heavy float math — hyperthreads share the same
-// floating-point execution unit, so they don't help for matrix math.
+// Physical core count — not hyperthreads.
+// Hyperthreads share the floating-point execution unit, so they don't
+// help (and can hurt) heavy matrix math. We size the pool to physical cores.
 int ThreadPool::default_thread_count() {
-    // Count unique (physical_id, core_id) pairs from /proc/cpuinfo
+#ifdef _WIN32
+    DWORD len = 0;
+    GetLogicalProcessorInformation(nullptr, &len);
+    std::vector<SYSTEM_LOGICAL_PROCESSOR_INFORMATION> buf(
+        len / sizeof(SYSTEM_LOGICAL_PROCESSOR_INFORMATION));
+    GetLogicalProcessorInformation(buf.data(), &len);
+    int count = 0;
+    for (auto& item : buf)
+        if (item.Relationship == RelationProcessorCore) ++count;
+    return count > 0 ? count : 1;
+#else
     std::ifstream f("/proc/cpuinfo");
     std::set<std::pair<int,int>> seen;
     int phys = 0, core = 0;
     std::string line;
     while (std::getline(f, line)) {
         auto colon = line.find(':');
-        if (colon == std::string::npos) {
-            seen.insert({phys, core});
-            continue;
-        }
+        if (colon == std::string::npos) { seen.insert({phys, core}); continue; }
         int val = 0;
         try { val = std::stoi(line.substr(colon + 1)); } catch (...) { continue; }
         if (line.rfind("physical id", 0) == 0) phys = val;
         if (line.rfind("core id",     0) == 0) core = val;
     }
     int count = static_cast<int>(seen.size());
-    // Fallback to logical core count / 2 if parsing failed
     if (count == 0) count = static_cast<int>(sysconf(_SC_NPROCESSORS_ONLN)) / 2;
     return count > 0 ? count : 1;
+#endif
 }
 
 ThreadPool::ThreadPool(int num_threads) {

@@ -74,63 +74,119 @@ def _detect_via_cpp() -> HardwareProfile:
 
 
 def _detect_via_python() -> HardwareProfile:
-    """Pure-Python fallback using psutil and /proc."""
+    """
+    Pure-Python fallback. Works on Windows, Linux, and macOS without
+    needing the compiled C++ extension.
+    Uses psutil for RAM/cores, and platform-specific paths for CPU name and SIMD.
+    """
     import psutil
 
-    # RAM
-    mem = psutil.virtual_memory()
-    total_gb = mem.total    / (1 << 30)
+    _is_windows = platform.system() == "Windows"
+    _is_linux   = platform.system() == "Linux"
+
+    # ── RAM ──────────────────────────────────────────────────────────────────
+    mem      = psutil.virtual_memory()
+    total_gb = mem.total     / (1 << 30)
     avail_gb = mem.available / (1 << 30)
 
-    # Cores
+    # ── Core counts ──────────────────────────────────────────────────────────
     logical  = psutil.cpu_count(logical=True)  or 1
     physical = psutil.cpu_count(logical=False) or max(1, logical // 2)
 
-    # CPU name
+    # ── CPU name ─────────────────────────────────────────────────────────────
     cpu_name = "Unknown"
-    try:
-        with open("/proc/cpuinfo") as f:
-            for line in f:
-                if line.startswith("model name"):
-                    cpu_name = line.split(":", 1)[1].strip()
-                    break
-    except OSError:
+    if _is_windows:
+        # Windows Registry holds the CPU brand string
+        try:
+            import winreg
+            key = winreg.OpenKey(
+                winreg.HKEY_LOCAL_MACHINE,
+                r"HARDWARE\DESCRIPTION\System\CentralProcessor\0",
+            )
+            cpu_name = winreg.QueryValueEx(key, "ProcessorNameString")[0].strip()
+            winreg.CloseKey(key)
+        except Exception:
+            cpu_name = platform.processor() or "Unknown"
+    elif _is_linux:
+        try:
+            with open("/proc/cpuinfo") as f:
+                for line in f:
+                    if line.startswith("model name"):
+                        cpu_name = line.split(":", 1)[1].strip()
+                        break
+        except OSError:
+            cpu_name = platform.processor() or "Unknown"
+    else:
         cpu_name = platform.processor() or "Unknown"
 
-    # SIMD flags from /proc/cpuinfo
+    # ── SIMD flag detection ───────────────────────────────────────────────────
     has_avx2 = has_avx512 = has_fma = False
-    try:
-        with open("/proc/cpuinfo") as f:
-            for line in f:
-                if line.startswith("flags"):
-                    flags = line.split(":", 1)[1].split()
-                    has_avx2   = "avx2"    in flags
-                    has_avx512 = "avx512f" in flags
-                    has_fma    = "fma"     in flags
-                    break
-    except OSError:
-        pass
 
-    # Cache info
-    l1d_kb = l2_kb = l3_kb = 0
+    # Try py-cpuinfo first — works on Windows, Linux, macOS
     try:
-        base = "/sys/devices/system/cpu/cpu0/cache"
-        for idx in range(8):
-            p = f"{base}/index{idx}"
+        import cpuinfo as _cpuinfo
+        info  = _cpuinfo.get_cpu_info()
+        flags = info.get("flags", [])
+        has_avx2   = "avx2"    in flags
+        has_avx512 = "avx512f" in flags
+        has_fma    = "fma"     in flags
+    except ImportError:
+        # Fallback: Linux-only /proc/cpuinfo
+        if _is_linux:
             try:
-                level = open(f"{p}/level").read().strip()
-                ctype = open(f"{p}/type").read().strip()
-                size_str = open(f"{p}/size").read().strip()
-                size_kb = int(size_str.rstrip("K")) if size_str.endswith("K") else int(size_str) // 1024
-                if level == "1" and ctype == "Data": l1d_kb = size_kb
-                if level == "2":                      l2_kb  = size_kb
-                if level == "3":                      l3_kb  = size_kb
-            except (OSError, ValueError):
-                break
-    except OSError:
-        pass
+                with open("/proc/cpuinfo") as f:
+                    for line in f:
+                        if line.startswith("flags"):
+                            flags = line.split(":", 1)[1].split()
+                            has_avx2   = "avx2"    in flags
+                            has_avx512 = "avx512f" in flags
+                            has_fma    = "fma"     in flags
+                            break
+            except OSError:
+                pass
+        # On Windows without py-cpuinfo we can't easily read SIMD flags.
+        # The C++ extension (axon_core) does this accurately; prompt the user.
 
-    # Discrete GPU detection (basic)
+    # ── Cache info ────────────────────────────────────────────────────────────
+    l1d_kb = l2_kb = l3_kb = 0
+
+    if _is_windows:
+        # Read from Windows Registry performance counters (best-effort)
+        try:
+            import winreg
+            key = winreg.OpenKey(
+                winreg.HKEY_LOCAL_MACHINE,
+                r"HARDWARE\DESCRIPTION\System\CentralProcessor\0",
+            )
+            # Some OEMs populate these; many don't. Fall back to 0 if missing.
+            def _qv(k, name):
+                try: return winreg.QueryValueEx(k, name)[0]
+                except: return 0
+            # These aren't standard registry values; just leave at 0.
+            # The C++ extension reads them accurately via GetLogicalProcessorInformation.
+            winreg.CloseKey(key)
+        except Exception:
+            pass
+    elif _is_linux:
+        try:
+            base = "/sys/devices/system/cpu/cpu0/cache"
+            for idx in range(8):
+                cp = f"{base}/index{idx}"
+                try:
+                    level    = open(f"{cp}/level").read().strip()
+                    ctype    = open(f"{cp}/type").read().strip()
+                    size_str = open(f"{cp}/size").read().strip()
+                    size_kb  = (int(size_str[:-1]) if size_str.endswith("K")
+                                else int(size_str) // 1024)
+                    if level == "1" and ctype == "Data": l1d_kb = size_kb
+                    if level == "2":                      l2_kb  = size_kb
+                    if level == "3":                      l3_kb  = size_kb
+                except (OSError, ValueError):
+                    break
+        except OSError:
+            pass
+
+    # ── GPU detection ─────────────────────────────────────────────────────────
     has_discrete_gpu = False
     gpu_name = ""
     gpu_vram_gb = 0.0
