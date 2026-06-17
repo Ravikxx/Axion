@@ -2,7 +2,7 @@
   <img src="docs/logo.svg" width="96" height="96" alt="Axion logo">
 </p>
 
-# ◈ Axion
+# ⚛ Axion
 
 **Axion** is an open-source AI coding agent ecosystem built by Axion Labs. It includes a terminal CLI, a Chrome extension, a web UI, and an IDE integration — all sharing the same models, tools, and memory.
 
@@ -18,6 +18,8 @@
 | **MCP Servers** | Connect Blender, GitHub, Notion, Slack, and more |
 | **OAuth** | Connect GitHub and Google Drive/Calendar with `/oauth` |
 | **Scheduled Tasks** | Run AI tasks on a schedule with `/schedule` |
+| **Discord Bot** | Chat with the agent via Discord DMs (`/discord start`) |
+| **Dataset Collection** | Contribute sessions to improve future models (`/contribute`) |
 
 ---
 
@@ -189,6 +191,9 @@ Switch with `/mode auto` or press `Ctrl+P` to cycle.
 /skills                       list skills (auto-activate on trigger words)
 /skill-generator <name> <txt> AI-generates a skill .md in ~/.axion/skills/
 /skill-delete <name>          delete a skill
+/contribute                   share this session as training data
+/contribute skip              dismiss for this session
+/contribute optout [off]      permanently opt out (or re-enable)
 /clear                        clear history
 /exit                         quit
 ```
@@ -201,6 +206,7 @@ Switch with `/mode auto` or press `Ctrl+P` to cycle.
 - **@file mentions** — type `@src/file.js` in any message to pin that file into context (tab-completes paths).
 - **Custom slash commands** — drop `.md` files in `~/.axion/commands/` or `./.axion/commands/`; `review-pr.md` becomes `/review-pr`, and `$ARGUMENTS` in the body is replaced with whatever follows the command.
 - **Skills** — `/skill-generator minecraft remember X, Y, Z whenever minecraft comes up` has the AI write `~/.axion/skills/minecraft.md` (frontmatter: name, description, triggers). The skill auto-injects into the system prompt whenever a trigger word appears in your message. `/skills` lists them, `/skill-delete <name>` removes one, or edit the `.md` directly.
+- **Per-project settings** — drop a `.axion-settings.json` in your project root to override global defaults for that project: `{ "model": "claude", "mode": "auto", "theme": "ocean", "systemPrompt": "...", "thinking": true }`. Takes priority over `.axionrc`.
 - **Message queueing** — type while the agent is working; messages queue and send when the turn finishes.
 - **Background tasks** — the agent can start dev servers/watchers with `run_command background=true` and poll them with `check_task`.
 
@@ -237,6 +243,32 @@ AXION_GITHUB_CLIENT_SECRET=...
 AXION_GOOGLE_CLIENT_ID=...
 AXION_GOOGLE_CLIENT_SECRET=...
 ```
+
+---
+
+## Dataset Contribution
+
+Help improve future Axion models by sharing interesting sessions. Axion automatically suggests contributing after complex or frustrating conversations.
+
+```
+/contribute           # share this session
+/contribute skip      # not now
+/contribute optout    # never ask again (run with "off" to re-enable)
+```
+
+Sessions are sent to the Axion Labs collector automatically — no setup needed. If you're offline, they're saved locally in `~/.axion/donations/` and uploaded the next time Axion starts with a connection.
+
+### axion-collect (local daemon)
+
+Run a persistent local collector to capture sessions before they're uploaded:
+
+```bash
+axion-collect               # saves to ~/.axion/dataset/ on port 47832
+axion-collect --port 12345  # custom port
+axion-collect --out ~/data  # custom output directory
+```
+
+Axion checks for the daemon on startup and routes sessions to it first when running.
 
 ---
 
@@ -347,7 +379,10 @@ axion/
 │   ├── oauth/          # OAuth providers + flow
 │   ├── config.js       # Models, providers, API keys
 │   ├── persist.js      # Local storage (~/.axion/)
-│   └── scheduler.js    # Scheduled tasks
+│   ├── scheduler.js    # Scheduled tasks
+│   ├── discord-daemon.js  # axion-discord standalone bot
+│   └── collect-daemon.js  # axion-collect local dataset daemon
+├── collect-worker/     # Cloudflare Worker for remote session collection
 ├── extension/          # Chrome extension
 ├── mcp-servers/        # Bundled MCP servers (Blender)
 ├── build.js            # CLI bundler
