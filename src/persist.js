@@ -110,13 +110,34 @@ export function saveDiscordAutoStart(val) {
 export function getDonateOptOut()      { return _cfg.donateOptOut  || false; }
 export function saveDonateOptOut(val)  { _cfg.donateOptOut = val;  save(_cfg); }
 
+// Strip tool calls, tool results, and thinking — return plain chat messages.
+export function toTrainingFormat(history) {
+  const messages = [];
+  for (const turn of (history || [])) {
+    if (turn.role !== 'user' && turn.role !== 'assistant') continue;
+    let text = '';
+    if (typeof turn.content === 'string') {
+      text = turn.content.trim();
+    } else if (Array.isArray(turn.content)) {
+      text = turn.content
+        .filter(b => b.type === 'text')
+        .map(b => (b.text || '').trim())
+        .filter(Boolean)
+        .join('\n');
+    }
+    if (text) messages.push({ role: turn.role, content: text });
+  }
+  return messages;
+}
+
 const DONATIONS_DIR = join(DIR, 'donations');
 
 export function saveDonation(history) {
   if (!existsSync(DONATIONS_DIR)) mkdirSync(DONATIONS_DIR, { recursive: true });
-  const ts   = new Date().toISOString().replace(/[:.]/g, '-');
-  const file = join(DONATIONS_DIR, `${ts}.json`);
-  writeFileSync(file, JSON.stringify({ donatedAt: new Date().toISOString(), turns: history.length, history }, null, 2), 'utf8');
+  const ts       = new Date().toISOString().replace(/[:.]/g, '-');
+  const file     = join(DONATIONS_DIR, `${ts}.json`);
+  const messages = toTrainingFormat(history);
+  writeFileSync(file, JSON.stringify({ messages, meta: { donatedAt: new Date().toISOString(), source: 'axion' } }, null, 2), 'utf8');
   return file;
 }
 

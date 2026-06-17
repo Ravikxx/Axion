@@ -54,6 +54,8 @@ export const COMMANDS = [
   { cmd: 'web',             desc: '[port|stop]  open/stop web UI in browser' },
   { cmd: 'blender',         desc: 'setup|connect  Blender MCP integration' },
   { cmd: 'mcp',             desc: 'browse|search|install|toggle|enable|disable|remove|tools|reload' },
+  { cmd: 'contribute',      desc: 'share this session as training data  (skip | optout)' },
+  { cmd: 'cost',            desc: 'show session token usage and estimated cost' },
   { cmd: 'clear',           desc: 'clear history' },
   { cmd: 'exit',            desc: 'quit' },
 ];

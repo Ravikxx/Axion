@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 /**
  * axion-collect — local dataset collection daemon
- * Receives conversation sessions from Axion and saves them to ~/.axion/dataset/.
+ * Receives conversation sessions from Axion and saves them as plain
+ * training-format JSON ({messages:[{role,content}]}) to ~/.axion/dataset/.
  *
  * Usage:
  *   axion-collect               (listens on default port 47832)
@@ -9,21 +10,40 @@
  *   axion-collect --out ~/data  (custom output directory)
  */
 import { createServer } from 'http';
-import { writeFileSync, mkdirSync, existsSync, readdirSync, statSync } from 'fs';
+import { writeFileSync, mkdirSync, existsSync, readdirSync } from 'fs';
 import { join } from 'path';
 import { homedir } from 'os';
 import minimist from 'minimist';
 
-const argv     = minimist(process.argv.slice(2), { string: ['port', 'out'] });
-const PORT     = Number(argv.port) || 47832;
-const DATASET  = argv.out ? argv.out.replace('~', homedir()) : join(homedir(), '.axion', 'dataset');
+const argv    = minimist(process.argv.slice(2), { string: ['port', 'out'] });
+const PORT    = Number(argv.port) || 47832;
+const DATASET = argv.out ? argv.out.replace('~', homedir()) : join(homedir(), '.axion', 'dataset');
 
 if (!existsSync(DATASET)) mkdirSync(DATASET, { recursive: true });
 
+// Strip tool calls, tool results, and thinking — return plain chat messages.
+function toTrainingFormat(history) {
+  const messages = [];
+  for (const turn of (history || [])) {
+    if (turn.role !== 'user' && turn.role !== 'assistant') continue;
+    let text = '';
+    if (typeof turn.content === 'string') {
+      text = turn.content.trim();
+    } else if (Array.isArray(turn.content)) {
+      text = turn.content
+        .filter(b => b.type === 'text')
+        .map(b => (b.text || '').trim())
+        .filter(Boolean)
+        .join('\n');
+    }
+    if (text) messages.push({ role: turn.role, content: text });
+  }
+  return messages;
+}
+
 function countSessions() {
-  try {
-    return readdirSync(DATASET).filter(f => f.endsWith('.json')).length;
-  } catch { return 0; }
+  try { return readdirSync(DATASET).filter(f => f.endsWith('.json')).length; }
+  catch { return 0; }
 }
 
 const server = createServer((req, res) => {
@@ -31,7 +51,7 @@ const server = createServer((req, res) => {
 
   if (req.method === 'GET' && req.url === '/status') {
     res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({ ok: true, version: '1.0.0', sessions: countSessions(), dataset: DATASET }));
+    res.end(JSON.stringify({ ok: true, version: '1.1.0', sessions: countSessions(), dataset: DATASET }));
     return;
   }
 
@@ -40,10 +60,24 @@ const server = createServer((req, res) => {
     req.on('data', chunk => { body += chunk; });
     req.on('end', () => {
       try {
-        const data = JSON.parse(body);
+        const data     = JSON.parse(body);
+        const history  = data.history || data.messages || [];
+        const messages = toTrainingFormat(history);
+        if (!messages.length) {
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ ok: false, error: 'No usable messages after filtering' }));
+          return;
+        }
+        const record = {
+          messages,
+          meta: {
+            receivedAt: new Date().toISOString(),
+            source: data.meta?.source || 'axion',
+          },
+        };
         const ts   = new Date().toISOString().replace(/[:.]/g, '-');
         const file = join(DATASET, `${ts}.json`);
-        writeFileSync(file, JSON.stringify({ ...data, receivedAt: new Date().toISOString() }, null, 2));
+        writeFileSync(file, JSON.stringify(record, null, 2));
         const n = countSessions();
         console.log(`[collect] saved session #${n} → ${file}`);
         res.writeHead(200, { 'Content-Type': 'application/json' });

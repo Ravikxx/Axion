@@ -3,14 +3,35 @@ import { Box, Text } from 'ink';
 import { ToolBlock } from './ToolBlock.jsx';
 import { RichText } from './RichText.jsx';
 
+function errorHint(content) {
+  if (!content) return null;
+  if (/Invalid API key|Use \/api/i.test(content))
+    return '→ Run /api <model> <your-key> to set your key.';
+  if (/Rate limited/i.test(content))
+    return '→ Wait a moment, then /retry.';
+  if (/Model not found/i.test(content))
+    return '→ Run /models to see available models.';
+  if (/no.*key|key.*missing|not.*configured/i.test(content))
+    return '→ Run /api claude sk-ant-… to add a key, or /model lumen for the free model.';
+  if (/network|ECONNREFUSED|ENOTFOUND|timeout/i.test(content))
+    return '→ Check your internet connection and try again.';
+  if (/server error|503|500/i.test(content))
+    return '→ The API is having issues. Try again in a moment.';
+  return null;
+}
+
 export function MessageRow({ msg, expanded = false, thinkingExpanded = false }) {
   switch (msg.type) {
     case 'user':
       return (
         <Box marginTop={1} gap={1} paddingX={1}>
           <Text color="blueBright" bold>you</Text>
-          <Text color="gray">›</Text>
-          <Text color="white">{msg.content}</Text>
+          <Text color="gray" dimColor>›</Text>
+          <Box flexDirection="column" flexGrow={1}>
+            {msg.content.split('\n').map((line, i) => (
+              <Text key={i} color="white">{line}</Text>
+            ))}
+          </Box>
         </Box>
       );
 
@@ -144,18 +165,33 @@ export function MessageRow({ msg, expanded = false, thinkingExpanded = false }) 
         </Box>
       );
 
-    case 'error':
+    case 'error': {
+      const hint = errorHint(msg.content);
       return (
-        <Box marginTop={1} gap={1} paddingX={1}>
-          <Text color="red" bold>✖</Text>
-          <Text color="red">{msg.content}</Text>
+        <Box marginTop={1} marginX={1} flexDirection="column" borderStyle="round" borderColor="red" paddingX={1}>
+          <Box gap={1}>
+            <Text color="red" bold>✖ error</Text>
+          </Box>
+          <Box marginLeft={1} flexDirection="column">
+            <Text color="red">{msg.content}</Text>
+            {hint && <Text color="yellow" dimColor>{hint}</Text>}
+          </Box>
         </Box>
       );
+    }
 
     case 'info':
       return (
         <Box marginTop={0} paddingX={1}>
-          <Text color="gray">{msg.content}</Text>
+          <Text color="gray" dimColor>{msg.content}</Text>
+        </Box>
+      );
+
+    case 'warn':
+      return (
+        <Box marginTop={0} gap={1} paddingX={1}>
+          <Text color="yellow">⚠</Text>
+          <Text color="yellow">{msg.content}</Text>
         </Box>
       );
 

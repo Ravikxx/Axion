@@ -242,28 +242,34 @@ const CWD = shortCwd();
 
 function modeLabel(mode) { return mode === 'auto' ? 'bypass' : mode; }
 
+const MODE_ICONS = { ask: '?', plan: '◈', auto: '⚡', bypass: '⚡' };
+
 function WelcomeBanner({ model, mode }) {
-  const modeColor  = MODE_COLORS[mode] || 'cyan';
-  const isFirstRun = model === 'veil' && !getMemories().length;
+  const modeColor   = MODE_COLORS[mode] || 'cyan';
+  const FREE_MODELS = ['veil', 'lumen'];
+  const isFree      = FREE_MODELS.includes(model);
+  const isFirstRun  = isFree && !getMemories().length;
+
   return (
     <Box flexDirection="column" marginBottom={1} borderStyle="round" borderColor={accent()} paddingX={2} paddingY={0}>
       <Box gap={4}>
         {/* Left column */}
-        <Box flexDirection="column" minWidth={28}>
+        <Box flexDirection="column" minWidth={30}>
           <Box gap={1} marginBottom={0}>
-            <Text color={accent()} bold>✻ Axion</Text>
+            <Text color={accent()} bold>⚛ Axion</Text>
             <Text color="gray">by Axion Labs</Text>
           </Box>
           <Box gap={1} marginLeft={2}>
-            <Text color="gray">model </Text>
-            <Text color={accent()}>{model}</Text>
+            <Text color="gray">model  </Text>
+            <Text color={accent()} bold>{model}</Text>
+            {isFree && <Text color="gray"> (free)</Text>}
           </Box>
           <Box gap={1} marginLeft={2}>
-            <Text color="gray">mode  </Text>
-            <Text color={modeColor}>{modeLabel(mode)}</Text>
+            <Text color="gray">mode   </Text>
+            <Text color={modeColor} bold>{MODE_ICONS[mode] || '·'} {modeLabel(mode)}</Text>
           </Box>
-          <Box marginLeft={2} marginTop={0}>
-            <Text color="gray">dir   {CWD}</Text>
+          <Box marginLeft={2}>
+            <Text color="gray">dir    {CWD}</Text>
           </Box>
         </Box>
 
@@ -272,29 +278,28 @@ function WelcomeBanner({ model, mode }) {
           {isFirstRun ? (
             <>
               <Text color="yellowBright" bold>Welcome to Axion!</Text>
-              <Text color="gray">  You're on <Text color="cyan">Veil</Text> — no API key needed, start chatting now.</Text>
-              <Text color="yellow">  ⚠ Veil is free but slow — responses can take up to 100s. Not broken!</Text>
-              <Text color="gray">  To use Claude/GPT/Gemini: <Text color="white">/api claude sk-ant-...</Text></Text>
-              <Text color="gray">  Switch models anytime:    <Text color="white">/model claude</Text></Text>
-              <Text color="gray">  Browse MCP integrations:  <Text color="white">/mcp browse</Text></Text>
-              <Text color="gray">  Connect GitHub/Google:    <Text color="white">/oauth connect github</Text></Text>
-              <Text color="gray">  See everything:           <Text color="white">/help</Text></Text>
+              <Text color="gray">  You're on <Text color="cyan">{model}</Text> — no API key needed.</Text>
+              {model === 'veil' && <Text color="yellow">  ⚠  Veil is free but slow (up to 100s). Not broken!</Text>}
+              <Text color="gray">  To use Claude: <Text color="white">/api claude sk-ant-…</Text></Text>
+              <Text color="gray">  To use GPT:    <Text color="white">/api gpt sk-…</Text></Text>
+              <Text color="gray">  Switch model:  <Text color="white">/model claude</Text></Text>
+              <Text color="gray">  All commands:  <Text color="white">/help</Text></Text>
             </>
           ) : (
             <>
-              <Text color="yellowBright" bold>Quick reference</Text>
-              <Text color="gray">  /help for all commands</Text>
-              <Text color="gray">  /model · /mode · /api to configure</Text>
-              <Text color="gray">  /mcp browse · /mcp install &lt;id&gt;</Text>
-              <Text color="gray">  /thinking to enable extended reasoning</Text>
-              <Text color="gray">  /goal to run until a condition is met</Text>
+              <Text color="yellowBright" bold>Quick start</Text>
+              <Text color="gray">  <Text color="white">/help</Text>          all commands</Text>
+              <Text color="gray">  <Text color="white">/model</Text> <Text color="gray">·</Text> <Text color="white">/mode</Text> <Text color="gray">·</Text> <Text color="white">/api</Text>  configure</Text>
+              <Text color="gray">  <Text color="white">/mcp browse</Text>    install integrations</Text>
+              <Text color="gray">  <Text color="white">/goal</Text>          run until condition is met</Text>
+              <Text color="gray">  <Text color="white">/thinking</Text>      extended reasoning</Text>
             </>
           )}
           <Box marginTop={1} flexDirection="column">
-            <Text color={accent()} bold>  ◈ News</Text>
-            <Text color="gray">  <Text color="greenBright" bold>NEW</Text> Lumen is live — Axion Labs' own 8B model</Text>
-            <Text color="gray">      fine-tuned by RavikxxBGamin · free · no key needed</Text>
-            <Text color="gray">      <Text color="white">/model lumen</Text> to try it</Text>
+            <Text color={accent()} bold>  ✦ What's new</Text>
+            <Text color="gray">  <Text color="greenBright">Discord bot</Text>    /discord start — chat via DM</Text>
+            <Text color="gray">  <Text color="greenBright">Contribute</Text>     /contribute — share sessions to train Axion</Text>
+            <Text color="gray">  <Text color="greenBright">Per-project</Text>    .axion-settings.json in any project root</Text>
           </Box>
         </Box>
       </Box>
@@ -2722,7 +2727,7 @@ triggers: <comma-separated words that should activate it, include "${skillName.t
   const ctxWindow   = getContextWindow(model);
   const gauge       = tokens.total > 0 ? contextGauge(tokens.total, ctxWindow) : null;
 
-  const hintLeft  = '/help for commands  · \\ + Enter for newline  · /retry to redo  · Ctrl+P to cycle mode';
+  const hintLeft  = '/help  · \\ + Enter for newline  · Ctrl+R history  · Ctrl+P cycle mode';
   const hintRight = [
     extThinking  ? `◎ thinking(${(thinkingBudget / 1000).toFixed(0)}k)` : null,
     computerUse  ? `⊞ computer` : null,
@@ -2762,15 +2767,15 @@ triggers: <comma-separated words that should activate it, include "${skillName.t
       {/* ── Status bar ─────────────────────────────────────────────── */}
       <Box marginX={1} marginTop={1} justifyContent="space-between">
         <Text>
-          <Text color="gray">── </Text>
-          <Text color={accent()} bold>Axion</Text>
+          <Text color={accent()} bold>⚛</Text>
           <Text color="gray">  {CWD}  </Text>
-          <Text color="cyan">{model}</Text>
+          <Text color={accent()}>{model}</Text>
           <Text color="gray">  </Text>
-          <Text color={modeColor} bold>{modeLabel(mode)}</Text>
+          <Text color={modeColor} bold>{MODE_ICONS[mode] || '·'}</Text>
+          <Text color={modeColor}> {modeLabel(mode)}</Text>
           {tokStr && <Text color="gray">  {tokStr} tok</Text>}
           {gauge  && <Text color={gauge.color}>  {gauge.bar} {Math.round(gauge.pct * 100)}%</Text>}
-          {sessionCostStr && <Text color="gray">  session {sessionCostStr}</Text>}
+          {sessionCostStr && <Text color="gray">  {sessionCostStr}</Text>}
         </Text>
         {hintRight ? <Text color="gray">{hintRight}</Text> : null}
       </Box>

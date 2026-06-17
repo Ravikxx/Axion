@@ -42,7 +42,7 @@ export function ToolBlock({ name, input, output, success, pending, diff, expande
       {!pending && output && !showDiff && (
         <Box marginLeft={2} flexDirection="column">
           <Text color={success === false ? 'red' : 'gray'}>
-            {formatOutput(output)}
+            {formatOutput(output, name)}
           </Text>
         </Box>
       )}
@@ -120,21 +120,28 @@ function DiffView({ diff, expanded }) {
 function formatLabel(name, input) {
   if (!input) return '';
   switch (name) {
-    case 'read_file':
-    case 'write_file':    return input.path || '';
+    case 'read_file':      return input.path || '';
+    case 'write_file':     return input.path || '';
+    case 'patch_file':     return input.path || '';
+    case 'delete_file':    return input.path || '';
+    case 'move_file':      return input.from ? `${input.from} → ${input.to}` : '';
     case 'list_directory': return input.path || '.';
-    case 'run_command':   return truncate(input.command, 72);
-    case 'git_commit':    return `"${truncate(input.message, 50)}"`;
-    case 'web_search':    return `"${truncate(input.query, 60)}"`;
-    default:              return '';
+    case 'run_command':    return truncate(input.command, 72);
+    case 'send_input':     return input.id ? `→ ${input.id}` : '';
+    case 'check_task':     return input.id || '';
+    case 'git_commit':     return `"${truncate(input.message, 50)}"`;
+    case 'web_search':     return `"${truncate(input.query, 60)}"`;
+    case 'fetch_url':      return truncate(input.url, 60);
+    case 'screenshot':     return input.question ? `"${truncate(input.question, 50)}"` : '';
+    default:               return '';
   }
 }
 
-function formatOutput(output) {
+function formatOutput(output, name) {
   const lines = output.split('\n');
-  const MAX = 12;
+  const MAX   = name === 'run_command' ? 20 : 12;
   if (lines.length <= MAX) return output;
-  return lines.slice(0, MAX).join('\n') + `\n… (${lines.length - MAX} more lines)`;
+  return lines.slice(0, MAX).join('\n') + `\n… ${lines.length - MAX} more lines`;
 }
 
 function truncate(str, n) {
