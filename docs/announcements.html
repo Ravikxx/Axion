@@ -221,6 +221,34 @@
 
   <div class="announcement">
     <div class="ann-meta">
+      <span class="ann-tag">New</span>
+      <span class="ann-date">June 18, 2026</span>
+    </div>
+    <h2>Introducing Axion Vision — Free Image Understanding & OCR</h2>
+    <p>
+      Axion Vision is a new free endpoint that lets you send images and ask questions about them —
+      read text in screenshots, describe diagrams, analyse UI mockups, or extract information from photos.
+    </p>
+    <p style="margin-top:12px">
+      It's powered by <strong>Qwen2.5-VL-3B</strong>, an open-weights vision model by Alibaba that specialises
+      in text recognition and image understanding. Hosted as a separate HuggingFace Space, it exposes a full
+      OpenAI-compatible <code>/v1/chat/completions</code> endpoint — send images as base64 <code>image_url</code>
+      content blocks and get text back.
+    </p>
+    <p style="margin-top:12px">
+      <strong>This is not a Lumen model.</strong> Axion Vision is a utility endpoint using Qwen2.5-VL-3B directly,
+      with full transparency about what's powering it. We'll build our own fine-tuned vision model in a future release.
+    </p>
+    <ul style="margin-top:12px;padding-left:20px;color:var(--text-muted)">
+      <li>Free, no API key required</li>
+      <li>Reads text in images (screenshots, error messages, UIs)</li>
+      <li>OpenAI-compatible API</li>
+      <li>Separate Space so it doesn't affect Lumen's performance</li>
+    </ul>
+  </div>
+
+  <div class="announcement">
+    <div class="ann-meta">
       <span class="ann-tag notice" style="background:#fef2f2;color:#dc2626;">Safety Report</span>
       <span class="ann-date">June 18, 2026</span>
     </div>

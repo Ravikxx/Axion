@@ -21,6 +21,7 @@
 | **Discord Bot** | Chat with the agent via Discord DMs (`/discord start`) |
 | **Dataset Collection** | Contribute sessions to improve future models (`/contribute`) |
 | **Plugins** | Extend the agent with browser, Docker, GitHub, and database tools (`/plugin`) |
+| **Axion Vision** | Free image understanding & OCR endpoint — read text in screenshots, analyse images |
 
 ---
 
@@ -448,6 +449,19 @@ Or connect any MCP server manually:
 Config is saved to `~/.axion/mcp.json`.
 
 Available marketplace IDs: `github`, `filesystem`, `fetch`, `postgres`, `sqlite`, `notion`, `slack`, `puppeteer`, `memory`, `brave-search`, `google-maps`, `sequential-thinking`, `everything`
+
+---
+
+## Axion Vision
+
+A free image understanding & OCR endpoint, hosted separately from Lumen.
+
+- Powered by **Qwen2.5-VL-3B** (Alibaba open-weights vision model)
+- Reads text in screenshots, error messages, UI mockups, diagrams
+- OpenAI-compatible `/v1/chat/completions` — send images as base64 `image_url` content blocks
+- No API key required
+
+Deploy from `axion-vision-space/app.py` to a HuggingFace Space.
 
 ---
 
