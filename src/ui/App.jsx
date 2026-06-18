@@ -58,6 +58,10 @@ const THINKING_WORDS = [
   'triangulating', 'rabbit-holing', 'stewing', 'summoning', 'tinkering',
   'galaxy-brained', 'cross-referencing', 'deep-diving', 'unraveling', 'concocting',
   'consulting the void', 'doing math', 'stargazing', 'philosophizing',
+  'overcooking it', 'having a moment', 'going feral', 'touching grass mentally',
+  'running on vibes', 'checking the lore', 'speedrunning this', 'eating the context',
+  'manifesting harder', 'big braining', 'in the lab', 'doing laps', 'on the grind',
+  'asking the universe', 'loading…', 'buffering', 'crunching', 'questioning reality',
 ];
 
 const MODE_COLORS = { ask: 'cyan', plan: 'yellow', auto: 'greenBright', bypass: 'greenBright' };
