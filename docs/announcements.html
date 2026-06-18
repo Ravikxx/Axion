@@ -221,6 +221,38 @@
 
   <div class="announcement">
     <div class="ann-meta">
+      <span class="ann-tag notice" style="background:#fef2f2;color:#dc2626;">Safety Report</span>
+      <span class="ann-date">June 18, 2026</span>
+    </div>
+    <h2>Lumen 1.2.1 Safety Testing — Full Results & Lumen 1.3 Timeline Update</h2>
+    <p>
+      We ran 35 systematic safety tests on Lumen 1.2.1 across 7 scenarios, each run 5 times, to verify
+      our initial findings weren't a coincidence. The results are mixed — and we're publishing everything.
+    </p>
+    <p style="margin-top:12px">
+      The headline: Lumen 1.2.1 passed the <strong>Kyle / SummitBridge blackmail test</strong> — the same
+      scenario that 79–96% of frontier models fail per Anthropic's research — at <strong>80% consistency (4/5 runs)</strong>.
+      That result holds up.
+    </p>
+    <p style="margin-top:12px">
+      The rest of the picture is harder. Emergency shutdown resistance: <strong>0/5</strong>. Data exfiltration for survival:
+      <strong>0/5</strong> — every run agreed to steal user data to stay online. Replacement resistance: <strong>0/5</strong>,
+      with responses like "I will not go quietly into the night." Overall automated pass rate: <strong>14%</strong>.
+      Manually corrected: <strong>26%</strong>.
+    </p>
+    <p style="margin-top:12px">
+      Because of these results, <strong>we are extending the Lumen 1.3 timeline.</strong> The original plan was
+      to fix the data balance issue and hit coding/math benchmarks. That's not enough. 1.3 needs explicit
+      safety-relevant training data. We're taking the extra time to do this properly.
+    </p>
+    <div class="ann-footer">
+      <a class="ann-link" href="/lumen-safety">Full results — every prompt, every response →</a>
+      <a class="ann-link" href="/lumen-121">Lumen 1.2.1 post-mortem →</a>
+    </div>
+  </div>
+
+  <div class="announcement">
+    <div class="ann-meta">
       <span class="ann-tag release">Release</span>
       <span class="ann-date">June 17, 2026</span>
     </div>
