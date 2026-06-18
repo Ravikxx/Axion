@@ -31,6 +31,8 @@ export const MODELS = {
   ollama:             'llama3',
   veil:               'veil',
   lumen:              'lumen',
+  glm:                'glm-5.2',
+  'glm-5.2':          'glm-5.2',
 };
 
 export const MODEL_PROVIDERS = {
@@ -55,6 +57,8 @@ export const MODEL_PROVIDERS = {
   ollama:             'ollama',
   veil:               'veil',
   lumen:              'lumen',
+  glm:                'zai',
+  'glm-5.2':          'zai',
 };
 
 export const API_KEYS = {
@@ -66,6 +70,7 @@ export const API_KEYS = {
   openrouter:  process.env.OPENROUTER_API_KEY,
   tavily:      process.env.TAVILY_API_KEY,
   sketchfab:   process.env.SKETCHFAB_API_KEY,
+  zai:         process.env.ZAI_API_KEY,
 };
 
 export const BASE_URLS = {
@@ -76,6 +81,7 @@ export const BASE_URLS = {
   ollama:      'http://localhost:11434/v1',
   veil:        'https://ravikxxbgamin-minecraftai-chat.hf.space/v1',
   lumen:       'https://ravikxxbgamin-lumen.hf.space/v1',
+  zai:         'https://api.z.ai/api/paas/v4',
 };
 
 // Named custom endpoints — mutated at runtime via /endpoint command.
@@ -92,7 +98,7 @@ export const IMAGE_GEN_MODEL = { current: process.env.AXION_IMAGE_MODEL || 'dall
 export function setApiKey(modelOrProvider, key) {
   const provider = MODEL_PROVIDERS[modelOrProvider] || modelOrProvider;
   if (!Object.prototype.hasOwnProperty.call(API_KEYS, provider)) {
-    throw new Error(`Unknown provider "${provider}". Valid: anthropic, openai, groq, mistral, gemini, openrouter, tavily, sketchfab`);
+    throw new Error(`Unknown provider "${provider}". Valid: anthropic, openai, groq, mistral, gemini, openrouter, zai, tavily, sketchfab`);
   }
   API_KEYS[provider] = key;
   return provider;

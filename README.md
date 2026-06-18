@@ -114,6 +114,7 @@ Or set them live inside the CLI:
 | `gemini-2.5-pro` | Google | gemini-2.5-pro |
 | `groq` | Groq | llama-3.3-70b |
 | `mistral` | Mistral | mistral-large |
+| `glm` / `glm-5.2` | Z.ai | GLM-5.2, 753B, beats GPT-5.5 on coding. Requires Z.ai key (`/api glm`) |
 | `ollama` | Local | Requires Ollama running |
 
 Switch models anytime:
