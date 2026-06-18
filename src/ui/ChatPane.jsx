@@ -25,7 +25,7 @@ export function MessageRow({ msg, expanded = false, thinkingExpanded = false }) 
     case 'user':
       return (
         <Box marginTop={1} gap={1} paddingX={1}>
-          <Text color="blueBright" bold>you</Text>
+          <Text color="#b08869" bold>you</Text>
           <Text color="gray" dimColor>›</Text>
           <Box flexDirection="column" flexGrow={1}>
             {msg.content.split('\n').map((line, i) => (
@@ -38,9 +38,12 @@ export function MessageRow({ msg, expanded = false, thinkingExpanded = false }) 
     case 'assistant':
       return (
         <Box marginTop={1} flexDirection="column" paddingX={1}>
-          <Text color="greenBright" bold>Axion</Text>
+          <Text color="#cc785c" bold>✻ Axion</Text>
           <Box marginLeft={2} flexDirection="column">
-            <RichText>{msg.streaming ? msg.content + ' ▋' : msg.content}</RichText>
+            {msg.streaming
+              ? <Text color="white">{msg.content}<Text color="#cc785c">▋</Text></Text>
+              : <RichText>{msg.content}</RichText>
+            }
           </Box>
         </Box>
       );

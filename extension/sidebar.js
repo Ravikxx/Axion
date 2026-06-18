@@ -67,6 +67,25 @@ const $importStatus = document.getElementById('import-status');
 const $saveSettings = document.getElementById('save-settings-btn');
 const $customList   = document.getElementById('custom-endpoints-list');
 
+// ── Theme (light / dark) ──────────────────────────────────────────────────────
+
+const $themeBtn = document.getElementById('theme-btn');
+
+function applyTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  if ($themeBtn) $themeBtn.textContent = theme === 'dark' ? '☀' : '☾';
+}
+
+chrome.storage.local.get('axionTheme', (r) => {
+  applyTheme(r.axionTheme || 'light');
+});
+
+$themeBtn?.addEventListener('click', () => {
+  const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  applyTheme(next);
+  chrome.storage.local.set({ axionTheme: next });
+});
+
 // ── Load saved config ─────────────────────────────────────────────────────────
 
 chrome.storage.local.get(['axionApiKeys', 'axionModel', 'axionCustomEndpoints'], (r) => {

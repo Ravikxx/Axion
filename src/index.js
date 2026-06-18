@@ -13,6 +13,7 @@ import { getSavedModel, getSavedMode, getSavedApiKeys, getSavedCustomEndpoints, 
 import { MCP } from './agent/mcp.js';
 import { runDoctor } from './doctor.js';
 import { runUpdate } from './update.js';
+import { PLUGINS } from './agent/plugins.js';
 
 // Resolve the web server path relative to this bundle so /web and axion-serve work
 const _cliDir    = dirname(fileURLToPath(import.meta.url));
@@ -161,8 +162,9 @@ async function serverIsAlive() {
 
 const linked = await serverIsAlive();
 
-// Init MCP servers (non-blocking — failures are surfaced via /mcp status)
+// Init MCP servers and plugins (non-blocking — failures are surfaced via /mcp and /plugin)
 await MCP.init();
+await PLUGINS.init();
 
 // ── Launch ────────────────────────────────────────────────────────────────────
 

@@ -11,6 +11,7 @@ import { API_KEYS } from '../config.js';
 import { BUS } from './bus.js';
 import { getMemories, getLearnedInstructions, getSkills } from '../persist.js';
 import { MCP } from './mcp.js';
+import { PLUGINS } from './plugins.js';
 import { GOOGLE_TOOL_DEFINITIONS, GOOGLE_TOOL_DEFINITIONS_OPENAI } from './google.js';
 import { getOAuthToken } from '../oauth/oauth.js';
 import { homedir } from 'os';
@@ -466,7 +467,9 @@ CRITICAL RULES — follow these exactly:
           toolCalls.map(tc =>
             MCP.isMcpTool(tc.name)
               ? MCP.callTool(tc.name, tc.input)
-              : executeTool(tc.name, tc.input, { agentLabel: this.label, onNotify: this.onNotify })
+              : PLUGINS.isPluginTool(tc.name)
+                ? PLUGINS.callTool(tc.name, tc.input)
+                : executeTool(tc.name, tc.input, { agentLabel: this.label, onNotify: this.onNotify })
           )
         );
         for (let i = 0; i < toolCalls.length; i++) {
@@ -504,6 +507,8 @@ CRITICAL RULES — follow these exactly:
             result = await this._spawnAgents(tc.input?.agents || []);
           } else if (MCP.isMcpTool(tc.name)) {
             result = await MCP.callTool(tc.name, tc.input);
+          } else if (PLUGINS.isPluginTool(tc.name)) {
+            result = await PLUGINS.callTool(tc.name, tc.input);
           } else {
             result = await executeTool(tc.name, tc.input, { agentLabel: this.label, onNotify: this.onNotify });
           }
@@ -792,7 +797,7 @@ CRITICAL RULES — follow these exactly:
       ? [...TOOL_DEFINITIONS, ...COMPUTER_TOOL_DEFINITIONS]
       : TOOL_DEFINITIONS;
     const google = getOAuthToken('google') ? GOOGLE_TOOL_DEFINITIONS : [];
-    return [...base, ...google, ...MCP.getAnthropicTools()];
+    return [...base, ...google, ...MCP.getAnthropicTools(), ...PLUGINS.getAnthropicTools()];
   }
 
   _getToolListOpenAI() {
@@ -800,7 +805,7 @@ CRITICAL RULES — follow these exactly:
       ? [...TOOL_DEFINITIONS_OPENAI, ...COMPUTER_TOOL_DEFINITIONS_OPENAI]
       : TOOL_DEFINITIONS_OPENAI;
     const google = getOAuthToken('google') ? GOOGLE_TOOL_DEFINITIONS_OPENAI : [];
-    return [...base, ...google, ...MCP.getOpenAITools()];
+    return [...base, ...google, ...MCP.getOpenAITools(), ...PLUGINS.getOpenAITools()];
   }
 
   async _callAnthropic(client, model) {

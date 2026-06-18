@@ -1,25 +1,51 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
+/* ── Claude warm light theme (default) ──────────────────────────────────────── */
 :root {
-  --bg:       #1a1a1a;
-  --bg2:      #222;
-  --bg3:      #2a2a2a;
-  --border:   #333;
-  --text:     #e8e8e8;
-  --dim:      #888;
-  --accent:   #4da6ff;
-  --green:    #4caf50;
-  --red:      #f44336;
-  --yellow:   #ffc107;
-  --user-bg:  #1e3a5f;
-  --r:        8px;
-  --font:     -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --mono:     'Fira Code', 'Consolas', monospace;
+  --bg:        #faf9f5;
+  --bg2:       #f5f3ec;
+  --bg3:       #f0eee6;
+  --code-bg:   #efece3;
+  --border:    #e6e3d8;
+  --text:      #2b2a27;
+  --strong:    #1f1e1b;
+  --dim:       #908e80;
+  --accent:    #cc785c;
+  --accent-h:  #be5e3c;
+  --green:     #5a9367;
+  --red:       #bf4d43;
+  --yellow:    #b0884f;
+  --user-bg:   #cc785c;
+  --on-user:   #ffffff;
+  --r:         10px;
+  --font:      -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', Helvetica, Arial, sans-serif;
+  --serif:     'Tiempos Text', 'Charter', Georgia, serif;
+  --mono:      'JetBrains Mono', 'SF Mono', 'Cascadia Code', 'Consolas', monospace;
+}
+
+/* ── Claude warm dark theme ─────────────────────────────────────────────────── */
+[data-theme="dark"] {
+  --bg:        #262624;
+  --bg2:       #1f1e1d;
+  --bg3:       #3a3a37;
+  --code-bg:   #1b1a19;
+  --border:    #3d3c39;
+  --text:      #f4f2ec;
+  --strong:    #ffffff;
+  --dim:       #84827a;
+  --accent:    #d3886b;
+  --accent-h:  #e09b7e;
+  --green:     #7bb487;
+  --red:       #e0796f;
+  --yellow:    #c79a7d;
+  --user-bg:   #d3886b;
+  --on-user:   #2b1a12;
 }
 
 html, body {
   height: 100%; background: var(--bg); color: var(--text);
-  font-family: var(--font); font-size: 13px; line-height: 1.5;
+  font-family: var(--font); font-size: 13px; line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
 }
 body { display: flex; flex-direction: column; overflow: hidden; }
 
@@ -30,14 +56,14 @@ body { display: flex; flex-direction: column; overflow: hidden; }
   padding: 8px 12px; background: var(--bg2);
   border-bottom: 1px solid var(--border); flex-shrink: 0;
 }
-#logo { font-weight: 700; color: #6ab0ff; }
-#header-right { display: flex; gap: 4px; }
+#logo { font-weight: 700; color: var(--accent); letter-spacing: 0.01em; }
+#header-right { display: flex; gap: 2px; align-items: center; }
 
-#history-btn, #clear-btn, #settings-btn {
+#history-btn, #clear-btn, #settings-btn, #theme-btn {
   background: none; border: none; color: var(--dim); cursor: pointer;
-  font-size: 15px; padding: 3px 6px; border-radius: 4px; transition: color 0.2s;
+  font-size: 15px; padding: 3px 6px; border-radius: 6px; transition: color 0.2s, background 0.2s;
 }
-#history-btn:hover, #clear-btn:hover, #settings-btn:hover { color: var(--text); }
+#history-btn:hover, #clear-btn:hover, #settings-btn:hover, #theme-btn:hover { color: var(--accent); background: var(--bg3); }
 
 /* ── History panel ────────────────────────────────────────────────────────── */
 
@@ -73,7 +99,7 @@ body { display: flex; flex-direction: column; overflow: hidden; }
 .setting-row input:focus, .setting-row select:focus { border-color: var(--accent); }
 #save-settings-btn {
   align-self: flex-start; padding: 5px 14px; background: var(--accent);
-  border: none; border-radius: 5px; color: #fff; cursor: pointer; font-size: 12px;
+  border: none; border-radius: 5px; color: var(--on-user); cursor: pointer; font-size: 12px;
 }
 #save-settings-btn:hover { opacity: 0.85; }
 .hint { font-size: 11px; color: var(--dim); }
@@ -136,7 +162,7 @@ body { display: flex; flex-direction: column; overflow: hidden; }
 .banner-hint  { font-size: 12px; color: var(--dim); margin-bottom: 14px; }
 #go-settings-btn {
   padding: 7px 18px; background: var(--accent); border: none;
-  border-radius: 6px; color: #fff; cursor: pointer; font-size: 13px; font-weight: 600;
+  border-radius: 6px; color: var(--on-user); cursor: pointer; font-size: 13px; font-weight: 600;
 }
 #go-settings-btn:hover { opacity: 0.85; }
 
@@ -153,14 +179,16 @@ body { display: flex; flex-direction: column; overflow: hidden; }
 
 .msg-user { align-items: flex-end; }
 .msg-user .bubble {
-  background: var(--user-bg); padding: 8px 11px;
-  border-radius: var(--r) var(--r) 2px var(--r);
+  background: var(--user-bg); color: var(--on-user); padding: 8px 12px;
+  border-radius: var(--r) var(--r) 3px var(--r);
   max-width: 88%; word-break: break-word; white-space: pre-wrap;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.06);
 }
 
+/* Assistant — plain full-width text, no bubble (Claude style) */
 .msg-assistant .bubble {
-  background: var(--bg2); padding: 8px 11px;
-  border-radius: 2px var(--r) var(--r) var(--r); max-width: 100%;
+  background: transparent; padding: 2px 0; max-width: 100%;
+  line-height: 1.6;
 }
 
 .msg-error .bubble { color: var(--red); font-size: 12px; padding: 4px 2px; }
@@ -182,11 +210,11 @@ body { display: flex; flex-direction: column; overflow: hidden; }
 }
 
 /* Markdown */
-.bubble code { background: #111; padding: 1px 4px; border-radius: 3px; font-family: var(--mono); font-size: 11px; }
-.bubble pre  { background: #111; padding: 8px; border-radius: 4px; overflow-x: auto; margin: 6px 0; }
+.bubble code { background: var(--code-bg); padding: 1px 4px; border-radius: 4px; font-family: var(--mono); font-size: 11px; }
+.bubble pre  { background: var(--code-bg); border: 1px solid var(--border); padding: 8px 10px; border-radius: 6px; overflow-x: auto; margin: 6px 0; }
 .bubble pre code { background: none; padding: 0; }
-.bubble strong { color: #c8d8f0; }
-.bubble h1, .bubble h2, .bubble h3 { margin: 6px 0 3px; color: #b0c8e8; }
+.bubble strong { color: var(--strong); font-weight: 600; }
+.bubble h1, .bubble h2, .bubble h3 { font-family: var(--serif); margin: 8px 0 3px; color: var(--text); font-weight: 600; }
 .bubble hr { border: none; border-top: 1px solid var(--border); margin: 6px 0; }
 .bubble ul, .bubble ol { padding-left: 18px; }
 .bubble p { margin: 4px 0; }
@@ -214,7 +242,7 @@ body { display: flex; flex-direction: column; overflow: hidden; }
 
 #send-btn {
   width: 34px; height: 34px; background: var(--accent); border: none;
-  border-radius: 6px; color: #fff; font-size: 16px; cursor: pointer; flex-shrink: 0;
+  border-radius: 6px; color: var(--on-user); font-size: 16px; cursor: pointer; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center; transition: opacity 0.2s;
 }
 #send-btn:hover    { opacity: 0.85; }

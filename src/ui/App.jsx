@@ -37,6 +37,7 @@ import { OAUTH_PROVIDERS } from '../oauth/providers.js';
 import { captureScreen, MACRO_STATE, showOverlay, hideOverlay } from '../agent/computer.js';
 import { MCP, getMcpConfig, saveMcpConfig } from '../agent/mcp.js';
 import { startDiscord, stopDiscord, sendDM, sendTyping, trackReply, DISCORD_STATE } from '../agent/discord.js';
+import { PLUGINS } from '../agent/plugins.js';
 import { MCP_MARKETPLACE, CATEGORIES, searchMarketplace, getMarketplaceEntry } from '../agent/mcp-marketplace.js';
 import { analyzeScreen } from '../agent/vision.js';
 import { generateImage } from '../agent/image.js';
@@ -136,6 +137,11 @@ const HELP_TEXT = `  Commands
   /clear                        clear history
   /blender setup                show Blender add-on install instructions
   /blender connect              connect Blender MCP server to Axion
+  /plugin                       list built-in and user plugins
+  /plugin enable <name>         enable a plugin (github, docker, database, browser)
+  /plugin disable <name>        disable a plugin
+  /plugin tools [name]          list tools from enabled plugins
+  /plugin install <pkg>         install an npm MCP package as a plugin
   /mcp                          show connected MCP servers + tool counts
   /mcp browse                   browse MCP marketplace (curated servers)
   /mcp search <query>           search marketplace by keyword
@@ -320,7 +326,7 @@ export function App({
   initialResume         = null,
 }) {
   const { exit } = useApp();
-  const [model, setModel]         = useState(initialModel);
+  const [model, setModel]         = useState(initialModel === 'lumen' ? 'claude' : initialModel);
   const [mode, setMode]           = useState(initialMode);
   const [staticMessages, setStaticMessages] = useState([
     { type: '_banner', model: initialModel, mode: initialMode },
@@ -775,6 +781,8 @@ export function App({
         case 'model':
           if (!arg) {
             pushStatic({ type: 'info', content: `current: ${model}  available: ${Object.keys(MODELS).join(' · ')}` });
+          } else if (arg === 'lumen') {
+            pushStatic({ type: 'error', content: 'Lumen is temporarily suspended from public access due to a critical safety finding.\nSee: https://axionlabs.dev/lumen-suspension' });
           } else {
             setModel(arg);
             saveModel(arg);
@@ -2142,7 +2150,6 @@ triggers: <comma-separated words that should activate it, include "${skillName.t
         case 'discord': {
           const [sub, ...dRest] = args;
 
-          // /discord token <TOKEN>
           if (sub === 'token') {
             const token = dRest[0];
             if (!token) { pushStatic({ type: 'error', content: 'usage: /discord token <BOT_TOKEN>' }); return true; }
@@ -2151,7 +2158,6 @@ triggers: <comma-separated words that should activate it, include "${skillName.t
             return true;
           }
 
-          // /discord start
           if (sub === 'start') {
             const token = getDiscordToken();
             if (!token) { pushStatic({ type: 'error', content: 'No token saved. Run /discord token <BOT_TOKEN> first.' }); return true; }
@@ -2167,7 +2173,6 @@ triggers: <comma-separated words that should activate it, include "${skillName.t
             return true;
           }
 
-          // /discord stop
           if (sub === 'stop') {
             if (!DISCORD_STATE.running) { pushStatic({ type: 'info', content: 'Discord bot is not running.' }); return true; }
             await stopDiscord();
@@ -2178,7 +2183,6 @@ triggers: <comma-separated words that should activate it, include "${skillName.t
             return true;
           }
 
-          // /discord status or bare /discord
           if (!sub || sub === 'status') {
             if (DISCORD_STATE.running) {
               pushStatic({ type: 'info', content: `Discord bot running as ${DISCORD_STATE.username}` });
@@ -2190,6 +2194,87 @@ triggers: <comma-separated words that should activate it, include "${skillName.t
           }
 
           pushStatic({ type: 'info', content: `Discord commands:\n  /discord token <TOKEN>   save your bot token\n  /discord start           connect and listen for DMs\n  /discord stop            disconnect\n  /discord status          show connection status` });
+          return true;
+        }
+
+        case 'plugin': {
+          const [sub, ...pluginRest] = args;
+          const pluginName = pluginRest[0];
+
+          if (!sub || sub === 'list' || sub === 'status') {
+            const status = PLUGINS.getStatus();
+            if (!status.length) {
+              pushStatic({ type: 'info', content: 'No plugins loaded.\n\nBuilt-in plugins are loaded from axion/src/plugins/.\nUser plugins go in ~/.axion/plugins/<name>.js\n\nUsage:\n  /plugin enable <name>     enable a built-in plugin\n  /plugin install <pkg>     install an npm MCP package as a plugin' });
+              return true;
+            }
+            const lines = status.map(s => {
+              const badge    = s.enabled ? `✔ enabled  (${s.toolCount} tool${s.toolCount !== 1 ? 's' : ''})` : '○ disabled';
+              const builtTag = s.builtin ? ' [built-in]' : ' [user]';
+              return `  ${s.name.padEnd(14)} ${badge}${builtTag}\n    ${s.description}`;
+            });
+            pushStatic({ type: 'info', content: `Plugins (${status.length}):\n\n${lines.join('\n\n')}\n\n/plugin enable <name> · /plugin disable <name> · /plugin tools <name>` });
+            return true;
+          }
+
+          if (sub === 'enable') {
+            if (!pluginName) { pushStatic({ type: 'error', content: 'usage: /plugin enable <name>' }); return true; }
+            const ok = PLUGINS.enable(pluginName);
+            pushStatic({ type: ok ? 'info' : 'error', content: ok ? `✔ Plugin "${pluginName}" enabled.` : `No plugin named "${pluginName}". Run /plugin to see available plugins.` });
+            return true;
+          }
+
+          if (sub === 'disable') {
+            if (!pluginName) { pushStatic({ type: 'error', content: 'usage: /plugin disable <name>' }); return true; }
+            const ok = PLUGINS.disable(pluginName);
+            pushStatic({ type: ok ? 'info' : 'error', content: ok ? `⏸ Plugin "${pluginName}" disabled.` : `No plugin named "${pluginName}".` });
+            return true;
+          }
+
+          if (sub === 'tools') {
+            const status = PLUGINS.getStatus().filter(s => !pluginName || s.name === pluginName);
+            if (!status.length) {
+              pushStatic({ type: 'info', content: pluginName ? `No plugin named "${pluginName}".` : 'No plugins loaded.' });
+              return true;
+            }
+            const lines = status.flatMap(s => [
+              `  ${s.name} (${s.enabled ? s.toolCount + ' tools' : 'disabled'}):`,
+              ...(s.tools.length ? s.tools.map(t => `    plugin__${s.name}__${t}`) : ['    (no tools)']),
+            ]);
+            pushStatic({ type: 'info', content: `Plugin tools:\n${lines.join('\n')}` });
+            return true;
+          }
+
+          if (sub === 'install') {
+            const pkg = pluginRest[0];
+            if (!pkg) {
+              pushStatic({ type: 'error', content: 'usage: /plugin install <npm-package>\n  e.g. /plugin install @modelcontextprotocol/server-github' });
+              return true;
+            }
+            const entry = getMarketplaceEntry(pkg);
+            if (entry) {
+              pushStatic({ type: 'info', content: `Found "${pkg}" in MCP marketplace — use /mcp install ${pkg} to install it.` });
+              return true;
+            }
+            const serverName = pkg.replace(/^@[^/]+\//, '').replace(/[^a-zA-Z0-9_-]/g, '-');
+            pushStatic({ type: 'info', content: `Installing "${pkg}" as MCP server via npx…` });
+            setThinking(true);
+            setThinkingWord('installing');
+            try {
+              const srv = await MCP.addServer(serverName, { command: 'npx', args: ['-y', pkg] });
+              if (srv.ready) {
+                pushStatic({ type: 'info', content: `✔ "${pkg}" installed as MCP server "${serverName}" — ${srv.tools.length} tool${srv.tools.length !== 1 ? 's' : ''} available` });
+              } else {
+                pushStatic({ type: 'error', content: `"${pkg}" failed to start: ${srv.error}\n\nMake sure the package exists on npm and implements the MCP protocol.` });
+              }
+            } catch (err) {
+              pushStatic({ type: 'error', content: `Plugin install failed: ${err.message}` });
+            } finally {
+              setThinking(false);
+            }
+            return true;
+          }
+
+          pushStatic({ type: 'info', content: `Plugin commands:\n  /plugin                   list all plugins\n  /plugin enable <name>     enable a plugin\n  /plugin disable <name>    disable a plugin\n  /plugin tools [name]      list plugin tools\n  /plugin install <pkg>     install an npm MCP package\n\nBuilt-in plugins: github, docker, database, browser\nUser plugins: drop a .js file in ~/.axion/plugins/\n\nExample:\n  /plugin enable github\n  /plugin enable docker\n  /plugin install @modelcontextprotocol/server-postgres` });
           return true;
         }
 
@@ -2581,6 +2666,12 @@ triggers: <comma-separated words that should activate it, include "${skillName.t
         ).join('\n\n');
         agentRef.current?.setSystemOverride([systemOverride, pinned].filter(Boolean).join('\n\n'));
         pushStatic({ type: 'info', content: `📎 pinned ${mentioned.map(f => f.path).join(', ')}` });
+      }
+
+      // Lumen is suspended — block all inference
+      if (model === 'lumen') {
+        pushStatic({ type: 'error', content: 'Lumen is temporarily suspended from public access due to a critical safety finding.\nSee: https://axionlabs.dev/lumen-suspension' });
+        return;
       }
 
       lastUserMsgRef.current = input;

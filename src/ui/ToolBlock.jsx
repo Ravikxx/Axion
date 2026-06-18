@@ -21,7 +21,7 @@ export function ToolBlock({ name, input, output, success, pending, diff, expande
       {/* Header */}
       <Box gap={1}>
         <Text color={statusColor}>{dot}</Text>
-        <Text color="cyan" bold>{name}</Text>
+        <Text color="#cc785c" bold>{name}</Text>
         {label ? <Text color="gray">{label}</Text> : null}
         {pending && <Text color="yellow"> running…</Text>}
         {showDiff && stats && (

@@ -23,7 +23,7 @@ function InlineTokens({ tokens }) {
     switch (tok.type) {
       case 'bold':   return <Text key={i} bold>{tok.text}</Text>;
       case 'italic': return <Text key={i} italic>{tok.text}</Text>;
-      case 'code':   return <Text key={i} color="cyan">{tok.text}</Text>;
+      case 'code':   return <Text key={i} color="#cc785c">{tok.text}</Text>;
       default:       return <Text key={i}>{tok.text}</Text>;
     }
   });
@@ -146,13 +146,13 @@ function RichLine({ text }) {
 
   // Headings
   if (text.startsWith('### ')) {
-    return <Text bold color="greenBright"><InlineTokens tokens={parseInline(text.slice(4))} /></Text>;
+    return <Text bold color="#b08869"><InlineTokens tokens={parseInline(text.slice(4))} /></Text>;
   }
   if (text.startsWith('## ')) {
-    return <Text bold color="cyan"><InlineTokens tokens={parseInline(text.slice(3))} /></Text>;
+    return <Text bold color="#cc785c"><InlineTokens tokens={parseInline(text.slice(3))} /></Text>;
   }
   if (text.startsWith('# ')) {
-    return <Text bold color="blueBright"><InlineTokens tokens={parseInline(text.slice(2))} /></Text>;
+    return <Text bold color="#cc785c"><InlineTokens tokens={parseInline(text.slice(2))} /></Text>;
   }
 
   // Horizontal rule
@@ -207,7 +207,7 @@ export function RichText({ children }) {
       {blocks.map((block, i) => {
         if (block.type === 'code-block') {
           return (
-            <Box key={i} flexDirection="column" marginY={0} paddingX={1} borderStyle="single" borderColor="gray">
+            <Box key={i} flexDirection="column" marginY={0} paddingX={1} borderStyle="round" borderColor="#cc785c">
               {block.lang && (
                 <Text color="gray">{block.lang}</Text>
               )}

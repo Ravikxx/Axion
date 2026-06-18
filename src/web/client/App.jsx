@@ -515,6 +515,9 @@ export default function App() {
   const [sessionTab, setSessionTab]       = useState(null); // null = new chat (tab unlocked)
   const [queuedCount, setQueuedCount]     = useState(0);
   const [showSettings, setShowSettings]   = useState(false);
+  const [theme, setTheme]                 = useState(() => {
+    try { return localStorage.getItem('axion-theme') || 'light'; } catch { return 'light'; }
+  });
 
   const wsRef          = useRef(null);
   const streamBufRef   = useRef('');
@@ -658,6 +661,17 @@ export default function App() {
 
   useEffect(() => { scrollToBottom(); }, [messages, streamContent, thinking]);
 
+  // ── Theme (light / dark) ────────────────────────────────────────────────────
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    try { localStorage.setItem('axion-theme', theme); } catch {}
+  }, [theme]);
+
+  const toggleTheme = useCallback(() => {
+    setTheme(t => (t === 'dark' ? 'light' : 'dark'));
+  }, []);
+
   // ── ESC to cancel ─────────────────────────────────────────────────────────
 
   useEffect(() => {
@@ -776,6 +790,11 @@ export default function App() {
             {status?.goal        && <span className="topbar-badge badge-warm">⟳ goal</span>}
             {!connected          && <span className="topbar-badge badge-red">● offline</span>}
           </div>
+          <button
+            className="theme-toggle"
+            onClick={toggleTheme}
+            title={theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
+          >{theme === 'dark' ? '☀' : '☾'}</button>
           {thinking && (
             <button
               className="stop-btn"
