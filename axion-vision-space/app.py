@@ -7,10 +7,11 @@ import asyncio
 import threading
 import queue as queue_mod
 import gradio as gr
-from fastapi import FastAPI, Request
+from fastapi import Request
 from fastapi.responses import StreamingResponse, JSONResponse
 from huggingface_hub import hf_hub_download
 from llama_cpp import Llama
+from llama_cpp.llama_chat_format import Llava15ChatHandler
 
 MODEL_REPO   = "ggml-org/GLM-OCR-GGUF"
 MODEL_FILE   = "GLM-OCR-Q8_0.gguf"
@@ -44,9 +45,10 @@ def _load_model():
         os.rename(f"/tmp/{MMPROJ_FILE}", MMPROJ_PATH)
 
     print("Loading vision model…")
+    chat_handler = Llava15ChatHandler(clip_model_path=MMPROJ_PATH, verbose=False)
     llm = Llama(
         model_path=MODEL_PATH,
-        clip_model_path=MMPROJ_PATH,
+        chat_handler=chat_handler,
         n_ctx=4096,
         n_threads=2,
         verbose=False,
@@ -54,23 +56,113 @@ def _load_model():
     print("Vision model ready.")
 
 
-# ── FastAPI ───────────────────────────────────────────────────────────────────
-
-fastapi_app = FastAPI()
-
-
-@fastapi_app.on_event("startup")
-async def startup():
-    loop = asyncio.get_event_loop()
-    loop.run_in_executor(None, _load_model)
+# Start loading immediately at module load (background thread)
+threading.Thread(target=_load_model, daemon=True).start()
 
 
-@fastapi_app.get("/health")
+# ── Gradio helpers ────────────────────────────────────────────────────────────
+
+def model_status():
+    if llm is not None:
+        return "<p style='color:#6aa87a;font-size:0.85em;font-weight:500;margin:0 0 10px'>● Model ready</p>"
+    return "<p style='color:#c9994a;font-size:0.85em;font-weight:500;margin:0 0 10px'>● Loading model… (first boot takes a few minutes)</p>"
+
+
+def analyze_image(image, question, max_tokens):
+    if llm is None:
+        yield "Model is still loading — please wait a moment."
+        return
+    if image is None:
+        yield "Please upload an image."
+        return
+
+    import io
+    buf = io.BytesIO()
+    image.convert("RGB").save(buf, format="PNG")
+    b64 = base64.b64encode(buf.getvalue()).decode()
+    data_url = f"data:image/png;base64,{b64}"
+
+    prompt = question.strip() or "Describe this image in detail. If there is any text, read it exactly."
+
+    messages = [
+        {"role": "system", "content": SYSTEM_PROMPT},
+        {
+            "role": "user",
+            "content": [
+                {"type": "image_url", "image_url": {"url": data_url}},
+                {"type": "text",      "text": prompt},
+            ],
+        },
+    ]
+
+    response = ""
+    with infer_lock:
+        for chunk in llm.create_chat_completion(
+            messages=messages,
+            max_tokens=int(max_tokens),
+            temperature=0.3,
+            stream=True,
+        ):
+            delta     = chunk["choices"][0]["delta"].get("content", "")
+            response += delta
+            yield response
+
+
+# ── Gradio UI ─────────────────────────────────────────────────────────────────
+
+with gr.Blocks(title="Axion Vision — Axion Labs") as demo:
+
+    gr.HTML("""
+        <div style="padding:24px 0 8px;border-bottom:1px solid #2e2218;margin-bottom:16px">
+            <h1 style="font-size:1.6em;font-weight:700;margin:0 0 2px;color:#e8ddd0">
+                ⚛ Axion <span style="color:#cc785c">Vision</span>
+            </h1>
+            <p style="color:#7a6050;margin:0;font-size:0.85em">
+                Image understanding &amp; OCR · powered by GLM-OCR · by Axion Labs · free
+            </p>
+        </div>
+    """)
+
+    status_html = gr.HTML(model_status)
+
+    with gr.Row():
+        with gr.Column(scale=1):
+            image_input = gr.Image(label="Image", type="pil")
+            question    = gr.Textbox(
+                placeholder="What does this say? / Describe this image / What error is shown?…",
+                label="Question (optional)",
+                lines=2,
+            )
+            max_tokens  = gr.Slider(64, 1024, value=512, step=64, label="Max tokens")
+            submit_btn  = gr.Button("Analyse", variant="primary")
+
+        with gr.Column(scale=1):
+            output = gr.Textbox(label="Response", lines=16)
+
+    gr.HTML("""
+        <div style="color:#4a3828;font-size:0.75em;text-align:center;padding:14px 0;border-top:1px solid #2e2218;margin-top:12px">
+            OpenAI-compatible API: <code style="background:#1c1510;padding:1px 5px;border-radius:4px;color:#7a6050">POST /v1/chat/completions</code>
+            &nbsp;·&nbsp; send images as <code style="background:#1c1510;padding:1px 5px;border-radius:4px;color:#7a6050">image_url</code> content blocks (base64 data URLs)
+        </div>
+    """)
+
+    submit_btn.click(analyze_image, [image_input, question, max_tokens], output)
+    question.submit(analyze_image,  [image_input, question, max_tokens], output)
+
+    demo.load(model_status, outputs=status_html)
+
+
+# ── API routes via Gradio's FastAPI app ───────────────────────────────────────
+
+demo.queue()
+
+
+@demo.app.get("/health")
 def health():
     return {"status": "ready" if llm is not None else "loading"}
 
 
-@fastapi_app.post("/v1/chat/completions")
+@demo.app.post("/v1/chat/completions")
 async def chat_completions(request: Request):
     if llm is None:
         return JSONResponse({"error": "Model is still loading, try again in a moment."}, status_code=503)
@@ -142,139 +234,4 @@ async def chat_completions(request: Request):
     return JSONResponse(result)
 
 
-# ── Gradio helpers ────────────────────────────────────────────────────────────
-
-def model_status():
-    if llm is not None:
-        return "<p class='status ready'>● Model ready</p>"
-    return "<p class='status loading'>● Loading model… (first boot takes a few minutes)</p>"
-
-
-def analyze_image(image, question, max_tokens):
-    if llm is None:
-        yield "Model is still loading — please wait a moment."
-        return
-    if image is None:
-        yield "Please upload an image."
-        return
-
-    # Encode image to base64
-    import io
-    from PIL import Image as PILImage
-    buf = io.BytesIO()
-    if not isinstance(image, PILImage.Image):
-        image = PILImage.fromarray(image)
-    image.save(buf, format="PNG")
-    b64 = base64.b64encode(buf.getvalue()).decode()
-    data_url = f"data:image/png;base64,{b64}"
-
-    prompt = question.strip() or "Describe this image in detail. If there is any text, read it exactly."
-
-    messages = [
-        {"role": "system", "content": SYSTEM_PROMPT},
-        {
-            "role": "user",
-            "content": [
-                {"type": "image_url", "image_url": {"url": data_url}},
-                {"type": "text",      "text": prompt},
-            ],
-        },
-    ]
-
-    response = ""
-    with infer_lock:
-        for chunk in llm.create_chat_completion(
-            messages=messages,
-            max_tokens=int(max_tokens),
-            temperature=0.3,
-            stream=True,
-        ):
-            delta     = chunk["choices"][0]["delta"].get("content", "")
-            response += delta
-            yield response
-
-
-# ── Theme & CSS ───────────────────────────────────────────────────────────────
-
-THEME = gr.themes.Base(
-    primary_hue=gr.themes.colors.orange,
-    secondary_hue=gr.themes.colors.stone,
-    neutral_hue=gr.themes.colors.stone,
-    font=[gr.themes.GoogleFont("Inter"), "ui-sans-serif", "system-ui", "sans-serif"],
-    font_mono=[gr.themes.GoogleFont("JetBrains Mono"), "ui-monospace", "monospace"],
-).set(
-    body_background_fill="#110d08",
-    body_background_fill_dark="#110d08",
-    block_background_fill="#1c1510",
-    block_background_fill_dark="#1c1510",
-    block_border_color="#2e2218",
-    block_border_color_dark="#2e2218",
-    input_background_fill="#150f0a",
-    input_background_fill_dark="#150f0a",
-    input_border_color="#2e2218",
-    input_border_color_dark="#2e2218",
-    button_primary_background_fill="#cc785c",
-    button_primary_background_fill_hover="#b8664a",
-    button_primary_text_color="#fff",
-    button_secondary_background_fill="#2e2218",
-    button_secondary_background_fill_hover="#3a2c1e",
-    button_secondary_text_color="#d4b896",
-    body_text_color="#e8ddd0",
-    body_text_color_dark="#e8ddd0",
-)
-
-CSS = """
-.gradio-container { max-width: 860px !important; margin: 0 auto !important; padding: 0 12px !important; }
-footer { display: none !important; }
-#av-header { padding: 24px 0 8px; border-bottom: 1px solid #2e2218; margin-bottom: 16px; }
-#av-header h1 { font-size: 1.6em; font-weight: 700; margin: 0 0 2px; color: #e8ddd0; }
-#av-header h1 span { color: #cc785c; }
-#av-header p { color: #7a6050; margin: 0; font-size: 0.85em; }
-.status { margin: 0 0 10px; font-size: 0.8em; font-weight: 500; }
-.status.ready   { color: #6aa87a; }
-.status.loading { color: #c9994a; }
-#av-footer { color: #4a3828; font-size: 0.75em; text-align: center; padding: 14px 0; border-top: 1px solid #2e2218; margin-top: 12px; }
-#av-footer code { background: #1c1510; padding: 1px 5px; border-radius: 4px; color: #7a6050; }
-"""
-
-# ── Gradio UI ─────────────────────────────────────────────────────────────────
-
-with gr.Blocks(theme=THEME, css=CSS, title="Axion Vision — Axion Labs") as demo:
-
-    gr.HTML("""
-        <div id="av-header">
-            <h1>⚛ Axion <span>Vision</span></h1>
-            <p>Image understanding &amp; OCR · powered by GLM-OCR · by Axion Labs · free</p>
-        </div>
-    """)
-
-    status_html = gr.HTML(model_status)
-
-    with gr.Row():
-        with gr.Column(scale=1):
-            image_input = gr.Image(label="Image", type="numpy")
-            question    = gr.Textbox(
-                placeholder="What does this say? / Describe this image / What error is shown?…",
-                label="Question (optional)",
-                lines=2,
-            )
-            max_tokens  = gr.Slider(64, 1024, value=512, step=64, label="Max tokens")
-            submit_btn  = gr.Button("Analyse", variant="primary")
-
-        with gr.Column(scale=1):
-            output = gr.Textbox(label="Response", lines=16, show_copy_button=True)
-
-    gr.HTML("""
-        <div id="av-footer">
-            OpenAI-compatible API: <code>POST /v1/chat/completions</code>
-            &nbsp;·&nbsp; send images as <code>image_url</code> content blocks (base64 data URLs)
-        </div>
-    """)
-
-    submit_btn.click(analyze_image, [image_input, question, max_tokens], output)
-    question.submit(analyze_image,  [image_input, question, max_tokens], output)
-
-    demo.load(model_status, outputs=status_html)
-
-
-app = gr.mount_gradio_app(fastapi_app, demo, path="/")
+demo.launch(server_name="0.0.0.0", server_port=7860)

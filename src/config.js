@@ -31,6 +31,7 @@ export const MODELS = {
   ollama:             'llama3',
   veil:               'veil',
   lumen:              'lumen',
+  'axion-vision':     'axion-vision',
   glm:                'glm-5.2',
   'glm-5.2':          'glm-5.2',
   'glm-flash':        'glm-4.7-flash',
@@ -60,6 +61,7 @@ export const MODEL_PROVIDERS = {
   ollama:             'ollama',
   veil:               'veil',
   lumen:              'lumen',
+  'axion-vision':     'axion-vision',
   glm:                'zai',
   'glm-5.2':          'zai',
   'glm-flash':        'zai',
@@ -84,9 +86,10 @@ export const BASE_URLS = {
   mistral:     'https://api.mistral.ai/v1',
   gemini:      'https://generativelanguage.googleapis.com/v1beta/openai/',
   openrouter:  'https://openrouter.ai/api/v1',
-  ollama:      'http://localhost:11434/v1',
-  veil:        'https://ravikxxbgamin-minecraftai-chat.hf.space/v1',
-  lumen:       'https://ravikxxbgamin-lumen.hf.space/v1',
+  ollama:        'http://localhost:11434/v1',
+  veil:          'https://ravikxxbgamin-minecraftai-chat.hf.space/v1',
+  lumen:         'https://ravikxxbgamin-lumen.hf.space/v1',
+  'axion-vision': 'https://ravikxxbgamin-axion-vision.hf.space/v1',
   zai:         'https://api.z.ai/api/paas/v4',
 };
 
@@ -96,7 +99,7 @@ export const BASE_URLS = {
 export const CUSTOM_ENDPOINTS = {};
 
 // Vision model for computer use — mutable object so imports stay live after /vision changes it.
-export const VISION_MODEL = { current: process.env.AXION_VISION_MODEL || 'claude' };
+export const VISION_MODEL = { current: process.env.AXION_VISION_MODEL || 'axion-vision' };
 
 // Image generation model — mutable so /img-gen-model changes it globally.
 export const IMAGE_GEN_MODEL = { current: process.env.AXION_IMAGE_MODEL || 'dall-e-3' };

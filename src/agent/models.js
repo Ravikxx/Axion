@@ -73,6 +73,10 @@ export function createClient(modelAlias) {
     return { type: 'openai', client: new OpenAI({ apiKey: 'no-key', baseURL: BASE_URLS.lumen }) };
   }
 
+  if (provider === 'axion-vision') {
+    return { type: 'openai', client: new OpenAI({ apiKey: 'no-key', baseURL: BASE_URLS['axion-vision'] }) };
+  }
+
   if (provider === 'zai') {
     const key = API_KEYS.zai;
     if (!key) throw new Error('ZAI_API_KEY not set — use /api glm <key>');

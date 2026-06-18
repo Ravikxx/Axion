@@ -94,7 +94,7 @@ const HELP_TEXT = `  Commands
   /cost                         show session token usage and estimated cost
   /pr [context]                 draft a PR title+body from recent commits
   /computer [on|off]            toggle computer use (screen control)  (alias: /cu)
-  /vision  <model>              set vision model for computer use (saved)
+  /vision  <model>              set vision model for computer use (saved)  e.g. claude · axion-vision (free)
   /vision                       show current vision model
   /ss      [question]           screenshot + describe screen (quick, no agent loop)
   /img-gen <prompt>             generate an image using OpenAI (saved to ~/.axion/images/)
@@ -1513,7 +1513,7 @@ triggers: <comma-separated words that should activate it, include "${skillName.t
 
         case 'vision': {
           if (!arg) {
-            pushStatic({ type: 'info', content: `Vision model: ${VISION_MODEL.current || '(none set)'}\n  Usage: /vision <model>  e.g. /vision claude  or /vision gpt` });
+            pushStatic({ type: 'info', content: `Vision model: ${VISION_MODEL.current || '(none set)'}\n  Usage: /vision <model>  e.g. /vision claude  or  /vision axion-vision (free, no API key)` });
             return true;
           }
           VISION_MODEL.current = arg;
