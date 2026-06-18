@@ -214,6 +214,18 @@ export function MessageRow({ msg, expanded = false, thinkingExpanded = false }) 
         </Box>
       );
 
+    case 'session-ended':
+      return (
+        <Box marginTop={1} marginX={1} flexDirection="column" borderStyle="round" borderColor="red" paddingX={1}>
+          <Box gap={1}>
+            <Text color="red" bold>✖ conversation ended</Text>
+          </Box>
+          <Box marginLeft={1}>
+            <Text color="red">This conversation has been ended. You can start a new one.</Text>
+          </Box>
+        </Box>
+      );
+
     default:
       return null;
   }

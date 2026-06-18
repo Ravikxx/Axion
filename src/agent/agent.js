@@ -518,6 +518,14 @@ CRITICAL RULES — follow these exactly:
       }
 
       this._pushToolResults(toolResults, response.type);
+
+      // end_conversation tool — surface to UI and stop the loop
+      const termination = toolResults.find(r => r.terminate);
+      if (termination) {
+        this.terminated = true;
+        this.onMessage({ role: 'session-ended', content: termination.output });
+        break;
+      }
     }
   }
 

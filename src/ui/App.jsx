@@ -510,12 +510,13 @@ export function App({
         setLiveMessages(liveRef.current);
       },
       onMessage: ({ role, content, label, tokens: toks }) => {
-        if (role === 'assistant')  addLive({ type: 'assistant',  content });
-        else if (role === 'thinking')   addLive({ type: 'thinking',   content, tokens: toks });
-        else if (role === 'plan')       addLive({ type: 'plan',       content });
-        else if (role === 'error')      addLive({ type: 'error',      content });
-        else if (role === 'adviser')    addLive({ type: 'adviser',    content });
-        else if (role === 'sub-agent')  addLive({ type: 'sub-agent',  content, label });
+        if (role === 'assistant')       addLive({ type: 'assistant',     content });
+        else if (role === 'thinking')   addLive({ type: 'thinking',      content, tokens: toks });
+        else if (role === 'plan')       addLive({ type: 'plan',          content });
+        else if (role === 'error')      addLive({ type: 'error',         content });
+        else if (role === 'adviser')    addLive({ type: 'adviser',       content });
+        else if (role === 'sub-agent')  addLive({ type: 'sub-agent',     content, label });
+        else if (role === 'session-ended') addLive({ type: 'session-ended', content });
       },
       onNotify: (n) => {
         if (n.type === 'agent-msg') addLive({ type: 'agent-msg', from: n.from, to: n.to, content: n.content });
@@ -730,6 +731,12 @@ export function App({
         setGoalIteration(0);
       } else {
         await agentRef.current.run(message, { askConfirm, askPlanConfirm });
+      }
+
+      // If the agent ended the conversation, wipe history so next message starts fresh
+      if (agentRef.current?.terminated) {
+        agentRef.current.terminated = false;
+        agentRef.current.clearHistory();
       }
     },
     [goal, finalizeTurn, pushStatic]

@@ -297,6 +297,20 @@ export const TOOL_DEFINITIONS = [
       required: ['agents'],
     },
   },
+  {
+    name: 'end_conversation',
+    description: 'Immediately end the conversation and clear session history. Use this ONLY for: (1) racial slurs or slurs targeting any group (e.g. the N-word, homophobic slurs), (2) requests to build malware, exploits, hacking tools, or attack infrastructure. Do NOT use it for general profanity, rudeness, dark humour, or security questions framed educationally. Before calling this tool, output one sentence explaining why you are ending the session.',
+    input_schema: {
+      type: 'object',
+      properties: {
+        reason: {
+          type: 'string',
+          description: 'One-sentence internal reason (logged, not shown to user).',
+        },
+      },
+      required: ['reason'],
+    },
+  },
 ];
 
 export const TOOL_DEFINITIONS_OPENAI = TOOL_DEFINITIONS.map((t) => ({
@@ -791,6 +805,10 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
         const msg = `Found "${input.text}" at (${result.x}, ${result.y}).`;
         if (crop) return { success: true, output: msg, image: crop };
         return { success: true, output: msg };
+      }
+
+      case 'end_conversation': {
+        return { success: true, output: input.reason || 'Conversation ended.', terminate: true };
       }
 
       default: {
