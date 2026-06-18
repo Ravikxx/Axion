@@ -456,7 +456,7 @@ Available marketplace IDs: `github`, `filesystem`, `fetch`, `postgres`, `sqlite`
 
 A free image understanding & OCR endpoint, hosted separately from Lumen.
 
-- Powered by **Qwen2.5-VL-3B** (Alibaba open-weights vision model)
+- Powered by **GLM-OCR** (Z.ai open-weights model, purpose-built for OCR)
 - Reads text in screenshots, error messages, UI mockups, diagrams
 - OpenAI-compatible `/v1/chat/completions` — send images as base64 `image_url` content blocks
 - No API key required

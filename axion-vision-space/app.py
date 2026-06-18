@@ -12,9 +12,9 @@ from fastapi.responses import StreamingResponse, JSONResponse
 from huggingface_hub import hf_hub_download
 from llama_cpp import Llama
 
-MODEL_REPO   = "ggml-org/Qwen2.5-VL-3B-Instruct-GGUF"
-MODEL_FILE   = "Qwen2.5-VL-3B-Instruct-Q4_K_M.gguf"
-MMPROJ_FILE  = "mmproj-Qwen2.5-VL-3B-Instruct-Q8_0.gguf"
+MODEL_REPO   = "ggml-org/GLM-OCR-GGUF"
+MODEL_FILE   = "GLM-OCR-Q8_0.gguf"
+MMPROJ_FILE  = "mmproj-GLM-OCR-Q8_0.gguf"
 MODEL_PATH   = "/tmp/vision-model.gguf"
 MMPROJ_PATH  = "/tmp/vision-mmproj.gguf"
 
@@ -244,7 +244,7 @@ with gr.Blocks(theme=THEME, css=CSS, title="Axion Vision — Axion Labs") as dem
     gr.HTML("""
         <div id="av-header">
             <h1>⚛ Axion <span>Vision</span></h1>
-            <p>Image understanding &amp; OCR · powered by Qwen2.5-VL-3B · by Axion Labs · free</p>
+            <p>Image understanding &amp; OCR · powered by GLM-OCR · by Axion Labs · free</p>
         </div>
     """)
 
