@@ -20,6 +20,7 @@
 | **Scheduled Tasks** | Run AI tasks on a schedule with `/schedule` |
 | **Discord Bot** | Chat with the agent via Discord DMs (`/discord start`) |
 | **Dataset Collection** | Contribute sessions to improve future models (`/contribute`) |
+| **Plugins** | Extend the agent with browser, Docker, GitHub, and database tools (`/plugin`) |
 
 ---
 
@@ -100,8 +101,8 @@ Or set them live inside the CLI:
 
 | Alias | Provider | Notes |
 |---|---|---|
-| `lumen` | Axion Labs | No key required — Axion Labs' own 8B model, fine-tuned by RavikxxBGamin |
-| `veil` | Axion Labs | No key required — free but slow (up to 100s), not broken |
+| `lumen` | Axion Labs | ⚠️ Temporarily suspended — safety retraining in progress. See [safety report](https://axionlabs.dev/lumen-suspension). |
+| `veil` | Axion Labs | No key required — free but slow (up to 100s) |
 | `openrouter` / `or` | OpenRouter | 200+ models via one key |
 | `fable` | Anthropic | claude-fable-5 |
 | `claude` | Anthropic | claude-sonnet-4-6 |
@@ -270,6 +271,13 @@ Switch with `/mode auto` or press `Ctrl+P` to cycle.
 /schedule remove <name>            delete a task
 /schedule enable/disable <name>    toggle a task
 /schedule results [name]           show result files
+
+# Plugins
+/plugin                            list available plugins + status
+/plugin enable <name>              enable a plugin
+/plugin disable <name>             disable a plugin
+/plugin tools <name>               show tools a plugin provides
+/plugin install <name>             install a plugin
 
 # Discord
 /discord token <TOKEN>             save bot token
