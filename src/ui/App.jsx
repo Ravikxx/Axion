@@ -8,7 +8,7 @@ import { MessageRow } from './ChatPane.jsx';
 import { InputBox, YesNoPrompt } from './Input.jsx';
 import { SuggestionBox, getTabCompletion } from './Suggestions.jsx';
 import { Agent } from '../agent/agent.js';
-import { MODELS, setApiKey, CUSTOM_ENDPOINTS, VISION_MODEL, IMAGE_GEN_MODEL, estimateCost, getContextWindow } from '../config.js';
+import { MODELS, MODEL_PROVIDERS, API_KEYS, setApiKey, CUSTOM_ENDPOINTS, VISION_MODEL, IMAGE_GEN_MODEL, estimateCost, getContextWindow } from '../config.js';
 import {
   saveModel, saveMode, saveApiKey, saveCustomEndpoints, getCompareModels, saveCompareModels, searchChats,
   getAdviserModel, saveAdviserModel,
@@ -2682,6 +2682,13 @@ triggers: <comma-separated words that should activate it, include "${skillName.t
       // Lumen is suspended — block all inference
       if (model === 'lumen') {
         pushStatic({ type: 'error', content: 'Lumen is temporarily suspended from public access due to a critical safety finding.\nSee: https://axionlabs.dev/lumen-suspension' });
+        return;
+      }
+
+      // First-run: check if the current model's provider has an API key
+      const provider = MODEL_PROVIDERS[model];
+      if (provider && API_KEYS[provider] === undefined || (provider && !API_KEYS[provider] && !['ollama','veil','lumen','axion-vision'].includes(model))) {
+        pushStatic({ type: 'error', content: `No API key set for ${model}.\n\n  Quick start:\n    /api claude <key>    — Anthropic (claude.ai/settings)\n    /api gpt <key>       — OpenAI\n    /api gemini <key>    — Google AI Studio\n    /api groq <key>      — Groq (free, fast)\n\n  Or switch to a free model:\n    /model groq          — Llama 3.3 70B (free tier)\n    /model gemini-flash  — Gemini 2.0 Flash (generous free tier)` });
         return;
       }
 

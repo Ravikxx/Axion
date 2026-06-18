@@ -41,5 +41,13 @@
   },
   "engines": {
     "node": ">=18"
-  }
+  },
+  "files": [
+    "dist/",
+    "src/web/",
+    "src/stubs/",
+    "mcp-servers/",
+    "build.js",
+    "build-web.js"
+  ]
 }

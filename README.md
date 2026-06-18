@@ -29,22 +29,38 @@
 
 ### Requirements
 - [Node.js](https://nodejs.org) v18+
-- npm
 
-### Steps
+### Install (recommended)
+
+```bash
+npm install -g axion-cli
+axion
+```
+
+That's it. No cloning, no building — just install and run.
+
+### Install from source
 
 ```bash
 git clone https://github.com/Ravikxx/axion.git
 cd axion
 npm install
-node build.js
 npm install -g .
 ```
 
-Then run from anywhere:
+### First run
 
-```bash
-axion
+Run `axion`, then set your API key inside the chat:
+
+```
+/api claude YOUR_ANTHROPIC_KEY
+```
+
+Or use a free model with no key required:
+
+```
+/model groq        ← Llama 3.3 70B, free
+/model gemini      ← Gemini 2.0 Flash, generous free tier
 ```
 
 ### Linux computer-use dependencies (optional)

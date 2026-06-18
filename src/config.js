@@ -89,7 +89,7 @@ export const BASE_URLS = {
   ollama:        'http://localhost:11434/v1',
   veil:          'https://ravikxxbgamin-minecraftai-chat.hf.space/v1',
   lumen:         'https://ravikxxbgamin-lumen.hf.space/v1',
-  'axion-vision': 'https://ravikxxbgamin-axion-vision.hf.space/v1',
+  'axion-vision': 'https://ravikxxbgamin-lumenvision.hf.space/v1',
   zai:         'https://api.z.ai/api/paas/v4',
 };
 
