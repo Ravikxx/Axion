@@ -14,7 +14,7 @@ from llama_cpp import Llama
 
 MODEL_REPO   = "ggml-org/Qwen2.5-VL-3B-Instruct-GGUF"
 MODEL_FILE   = "Qwen2.5-VL-3B-Instruct-Q4_K_M.gguf"
-MMPROJ_FILE  = "Qwen2.5-VL-3B-Instruct-mmproj-f16.gguf"
+MMPROJ_FILE  = "mmproj-Qwen2.5-VL-3B-Instruct-Q8_0.gguf"
 MODEL_PATH   = "/tmp/vision-model.gguf"
 MMPROJ_PATH  = "/tmp/vision-mmproj.gguf"
 
