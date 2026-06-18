@@ -33,6 +33,9 @@ export const MODELS = {
   lumen:              'lumen',
   glm:                'glm-5.2',
   'glm-5.2':          'glm-5.2',
+  'glm-flash':        'glm-4.7-flash',
+  'glm-4.7-flash':    'glm-4.7-flash',
+  'glm-4.5-flash':    'glm-4.5-flash',
 };
 
 export const MODEL_PROVIDERS = {
@@ -59,6 +62,9 @@ export const MODEL_PROVIDERS = {
   lumen:              'lumen',
   glm:                'zai',
   'glm-5.2':          'zai',
+  'glm-flash':        'zai',
+  'glm-4.7-flash':    'zai',
+  'glm-4.5-flash':    'zai',
 };
 
 export const API_KEYS = {
