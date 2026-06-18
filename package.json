@@ -13,7 +13,7 @@
   "scripts": {
     "build": "node build.js",
     "build-web": "node build-web.js",
-    "prepare": "node build.js",
+    "prepack": "node build.js",
     "start": "node dist/axion.js",
     "dev": "node build.js && node dist/axion.js",
     "watch": "node watch.js",
@@ -44,8 +44,7 @@
   },
   "files": [
     "dist/",
-    "src/web/",
-    "src/stubs/",
+    "src/",
     "mcp-servers/",
     "build.js",
     "build-web.js"
