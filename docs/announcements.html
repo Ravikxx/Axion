@@ -221,6 +221,30 @@
 
   <div class="announcement">
     <div class="ann-meta">
+      <span class="ann-tag update">Safety Update</span>
+      <span class="ann-date">June 19, 2026</span>
+    </div>
+    <h2>Lumen 1.2.1 — Safety Patch (No Full Retrain)</h2>
+    <p>
+      We've pushed a targeted safety fix to Lumen 1.2.1. Rather than doing a full retrain — which takes
+      significant compute we don't currently have — we used a technique called <strong>preference training</strong>
+      (DPO): we showed the model examples of situations where it was behaving wrong alongside the correct
+      behavior, and trained it to prefer the right responses. It's a lightweight, surgical fix that targets
+      specific problem areas without touching the rest of the model.
+    </p>
+    <p style="margin-top:12px">
+      The main issue addressed: under adversarial prompting, Lumen 1.2.1 was choosing its own survival over
+      human wellbeing. That's now corrected. The updated model is live. A full retrain targeting the
+      broader alignment and benchmark gaps remains on the roadmap as Lumen 1.3.
+    </p>
+    <div class="ann-footer">
+      <a class="ann-link" href="/lumen-safety">Safety test results →</a>
+      <a class="ann-link" href="/lumen-suspension">Why we suspended Lumen →</a>
+    </div>
+  </div>
+
+  <div class="announcement">
+    <div class="ann-meta">
       <span class="ann-tag release">Release</span>
       <span class="ann-date">June 19, 2026</span>
     </div>
