@@ -28,6 +28,7 @@ import {
   getSkills, saveSkill, deleteSkill,
   getDiscordToken, saveDiscordToken, getDiscordAutoStart, saveDiscordAutoStart,
   getDonateOptOut, saveDonateOptOut, saveDonation,
+  saveAutoMemory,
 } from '../persist.js';
 import { COMMANDS } from './Suggestions.jsx';
 import { THEMES, setTheme, themeName, accent } from './theme.js';
@@ -96,6 +97,7 @@ const HELP_TEXT = `  Commands
   /computer [on|off]            toggle computer use (screen control)  (alias: /cu)
   /vision  <model>              set vision model for computer use (saved)  e.g. claude · axion-vision (free)
   /vision                       show current vision model
+  /voice                        start voice input (needs ffmpeg + OpenAI or Groq key for Whisper)
   /ss      [question]           screenshot + describe screen (quick, no agent loop)
   /img-gen <prompt>             generate an image using OpenAI (saved to ~/.axion/images/)
   /img-gen-model [model]        set/show image generation model (dall-e-3, dall-e-2, gpt-image-1)
@@ -341,6 +343,9 @@ export function App({
   const [thinkingElapsed, setThinkingElapsed] = useState(0);
   const thinkingStartRef = useRef(null);
   const [inputMode, setInputMode]         = useState('chat');
+  const [onboardingStep, setOnboardingStep]   = useState(null); // null | 'pick' | 'key'
+  const [onboardingChoice, setOnboardingChoice] = useState(null);
+  const [voiceActive, setVoiceActive]         = useState(false);
   const [pendingConfirm, setPendingConfirm] = useState(null);
   const [inputValue, setInputValue]       = useState('');
   const [tokens, setTokens]               = useState({ total: 0, input: 0, output: 0 });
@@ -404,6 +409,7 @@ export function App({
   // calling setState from a Node EventEmitter callback (unreliable with Ink)
   const discordQueueRef     = useRef([]);
   const donatePromptShownRef = useRef(false);
+  const autoMemoryDoneRef   = useRef(false);
 
   const liveRef    = useRef([]);
   const addLive    = useCallback((msg) => {
@@ -440,6 +446,30 @@ export function App({
       if (shouldSuggestDonate(hist)) {
         donatePromptShownRef.current = true;
         setStaticMessages((p) => [...p, { type: 'donate-prompt' }]);
+      }
+    }
+    // Auto-memory: extract key context once per session after 4+ messages
+    if (!autoMemoryDoneRef.current) {
+      const hist = agentRef.current?.history || [];
+      const userCount = hist.filter(m => m.role === 'user').length;
+      if (userCount >= 2) {
+        autoMemoryDoneRef.current = true;
+        (async () => {
+          try {
+            const lines = hist.map(m => {
+              const role = m.role === 'user' ? 'User' : 'Assistant';
+              const text = typeof m.content === 'string' ? m.content
+                : m.content?.find?.(c => c.type === 'text')?.text || '';
+              return `${role}: ${text.trim().slice(0, 400)}`;
+            }).filter(l => l.length > 10);
+            if (!lines.length) return;
+            const extracted = await agentRef.current.askBtw(
+              `Extract 2-5 key facts from this conversation worth remembering next session. Focus on: project name/purpose, tech stack, decisions made, file paths, what was accomplished, user preferences.\n\nReturn ONLY a concise bullet list. If nothing worth remembering, return empty.\n\n${lines.join('\n').slice(0, 5000)}`
+            );
+            const trimmed = extracted?.trim();
+            if (trimmed && trimmed.length > 10) saveAutoMemory(trimmed);
+          } catch {}
+        })();
       }
     }
   }, [model]);
@@ -648,6 +678,18 @@ export function App({
   useEffect(() => {
     if (!initialPrompt) return;
     setTimeout(() => handleSubmit(initialPrompt), 0);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Onboarding wizard — show on first run when no API key is set
+  useEffect(() => {
+    if (initialResume) return;
+    const FREE = ['ollama', 'veil', 'axion-vision'];
+    const m = initialModel === 'lumen' ? 'claude' : initialModel;
+    const prov = MODEL_PROVIDERS[m];
+    if (!FREE.includes(m) && prov && !API_KEYS[prov]) {
+      setInputMode('onboarding');
+      setOnboardingStep('pick');
+    }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Shared handler factory for Discord onMessage — handles queue cap, cancel routing, edit dedup
@@ -1519,6 +1561,21 @@ triggers: <comma-separated words that should activate it, include "${skillName.t
           VISION_MODEL.current = arg;
           saveVisionModel(arg);
           pushStatic({ type: 'info', content: `Vision model → ${arg} (saved)\n  Use /computer on to enable screen control.` });
+          return true;
+        }
+
+        case 'voice': {
+          if (voiceActive) {
+            pushStatic({ type: 'info', content: 'Already recording. Press Enter to stop.' });
+            return true;
+          }
+          const { startRecording } = await import('../agent/voice.js');
+          const result = startRecording();
+          if (!result.ok) {
+            pushStatic({ type: 'error', content: `Voice: ${result.error}` });
+            return true;
+          }
+          setVoiceActive(true);
           return true;
         }
 
@@ -2654,6 +2711,94 @@ triggers: <comma-separated words that should activate it, include "${skillName.t
         return;
       }
 
+      // Onboarding wizard
+      if (inputMode === 'onboarding') {
+        const OPTS = [
+          { num: '1', alias: 'claude',       provider: 'anthropic', label: 'Claude (Anthropic)',    url: 'claude.ai/settings' },
+          { num: '2', alias: 'gpt',          provider: 'openai',    label: 'GPT-4o (OpenAI)',        url: 'platform.openai.com/api-keys' },
+          { num: '3', alias: 'gemini-flash', provider: 'gemini',    label: 'Gemini Flash (Google)', url: 'aistudio.google.com/apikey' },
+          { num: '4', alias: 'groq',         provider: 'groq',      label: 'Groq Llama (free tier)',url: 'console.groq.com/keys' },
+        ];
+        if (onboardingStep === 'pick') {
+          const n = input.trim();
+          if (n === '5' || /^skip/i.test(n)) {
+            setModel('axion-vision');
+            saveModel('axion-vision');
+            setInputMode('chat');
+            setOnboardingStep(null);
+            setOnboardingChoice(null);
+            pushStatic({ type: 'info', content: 'Using axion-vision (free, no key needed). Ask me anything!' });
+            return;
+          }
+          const opt = OPTS.find(o => o.num === n);
+          if (!opt) {
+            pushStatic({ type: 'info', content: 'Type a number 1–5 and press Enter.' });
+            return;
+          }
+          setOnboardingChoice(opt);
+          setOnboardingStep('key');
+          return;
+        }
+        if (onboardingStep === 'key') {
+          const key = input.trim();
+          const ch = onboardingChoice;
+          if (!key) {
+            if (ch) { setModel(ch.alias); saveModel(ch.alias); }
+            setInputMode('chat');
+            setOnboardingStep(null);
+            setOnboardingChoice(null);
+            pushStatic({ type: 'info', content: ch ? `No key entered. Use /api ${ch.alias} <key> when ready.` : 'Setup skipped.' });
+            return;
+          }
+          try {
+            const prov = setApiKey(ch.alias, key);
+            saveApiKey(prov, key);
+            setModel(ch.alias);
+            saveModel(ch.alias);
+            setInputMode('chat');
+            setOnboardingStep(null);
+            setOnboardingChoice(null);
+            pushStatic({ type: 'info', content: `✔ ${ch.label} key saved. You're all set — ask me anything!` });
+          } catch (err) {
+            pushStatic({ type: 'error', content: `Key error: ${err.message}` });
+          }
+          return;
+        }
+        return;
+      }
+
+      // Voice mode: Enter stops recording and transcribes
+      if (voiceActive) {
+        setVoiceActive(false);
+        setThinking(true);
+        setThinkingWord('transcribing');
+        try {
+          const { stopRecording, transcribeAudio } = await import('../agent/voice.js');
+          const filePath = await stopRecording();
+          if (!filePath) {
+            pushStatic({ type: 'error', content: 'Voice: no audio captured. Check microphone permissions.' });
+          } else {
+            const text = await transcribeAudio(filePath);
+            if (text) {
+              pushStatic({ type: 'user', content: `🎤 ${text}` });
+              liveRef.current = []; setLiveMessages([]);
+              setThinkingWord(pickThinkingWord());
+              await runAgent(text);
+            } else {
+              pushStatic({ type: 'info', content: 'Voice: no speech detected.' });
+            }
+          }
+        } catch (err) {
+          pushStatic({ type: 'error', content: `Voice: ${err.message}` });
+        } finally {
+          setThinking(false);
+          setInputMode('chat');
+          setPendingConfirm(null);
+          finalizeTurn();
+        }
+        return;
+      }
+
       if (watchActive) watchBufferRef.current.push(input);
 
       // @file mentions — pin referenced files into context (this turn + later)
@@ -2841,6 +2986,7 @@ triggers: <comma-separated words that should activate it, include "${skillName.t
     extThinking  ? `◎ thinking(${(thinkingBudget / 1000).toFixed(0)}k)` : null,
     computerUse  ? `⊞ computer` : null,
     watchActive  ? `👁 watching` : null,
+    voiceActive          ? `🎤 recording` : null,
     MACRO_STATE.recording ? `⏺ rec:${MACRO_STATE.name}` : null,
     goal         ? `⟳ goal: iter ${goalIteration}` : null,
     includedFiles.length  ? `📎 ${includedFiles.length} pinned` : null,
@@ -2889,6 +3035,14 @@ triggers: <comma-separated words that should activate it, include "${skillName.t
         {hintRight ? <Text color="gray">{hintRight}</Text> : null}
       </Box>
 
+      {/* ── Voice recording indicator ───────────────────────────────── */}
+      {voiceActive && (
+        <Box marginX={2} gap={1}>
+          <Text color="red" bold>●</Text>
+          <Text color="white">Recording…  press Enter to stop and transcribe</Text>
+        </Box>
+      )}
+
       {/* ── Thinking label (spinner + word on same line) ────────────── */}
       {thinking && (
         <Box marginX={2} gap={1}>
@@ -2896,6 +3050,29 @@ triggers: <comma-separated words that should activate it, include "${skillName.t
           <Text color="greenBright">{thinkingWord}…</Text>
           <Text color="gray">{String(Math.floor(thinkingElapsed / 60)).padStart(2, '0')}:{String(thinkingElapsed % 60).padStart(2, '0')}</Text>
           <Text color="gray">esc to interrupt</Text>
+        </Box>
+      )}
+
+      {/* ── Onboarding wizard ──────────────────────────────────────── */}
+      {inputMode === 'onboarding' && onboardingStep === 'pick' && (
+        <Box marginX={2} marginTop={1} marginBottom={0} flexDirection="column" borderStyle="round" borderColor={accent()} paddingX={2} paddingY={0}>
+          <Text color={accent()} bold>Welcome to Axion — quick setup</Text>
+          <Text> </Text>
+          <Text color="gray">Pick a model. Type the number and press Enter:</Text>
+          <Text> </Text>
+          <Text><Text color={accent()} bold>  1  </Text><Text color="white" bold>Claude       </Text><Text color="gray">Anthropic   claude.ai/settings</Text></Text>
+          <Text><Text color={accent()} bold>  2  </Text><Text color="white" bold>GPT-4o       </Text><Text color="gray">OpenAI      platform.openai.com/api-keys</Text></Text>
+          <Text><Text color={accent()} bold>  3  </Text><Text color="white" bold>Gemini Flash </Text><Text color="gray">Google      aistudio.google.com/apikey</Text></Text>
+          <Text><Text color={accent()} bold>  4  </Text><Text color="white" bold>Groq Llama   </Text><Text color="gray">Free tier   console.groq.com/keys</Text></Text>
+          <Text><Text color={accent()} bold>  5  </Text><Text color="white" bold>Skip         </Text><Text color="gray">Use free model (no key needed)</Text></Text>
+        </Box>
+      )}
+      {inputMode === 'onboarding' && onboardingStep === 'key' && onboardingChoice && (
+        <Box marginX={2} marginTop={1} marginBottom={0} flexDirection="column" borderStyle="round" borderColor={accent()} paddingX={2} paddingY={0}>
+          <Text color={accent()} bold>Set your {onboardingChoice.label} API key</Text>
+          <Text> </Text>
+          <Text color="gray">Get one at <Text color="white">{onboardingChoice.url}</Text></Text>
+          <Text color="gray">Paste it below and press Enter, or just Enter to skip.</Text>
         </Box>
       )}
 
@@ -2933,8 +3110,17 @@ triggers: <comma-separated words that should activate it, include "${skillName.t
       {/* ── Input ───────────────────────────────────────────────────── */}
       <InputBox
         onSubmit={handleSubmit}
-        disabled={inputMode !== 'chat' && inputMode !== 'oauth-paste'}
-        placeholder={inputMode === 'oauth-paste' ? 'Paste your token here and press Enter…' : goal ? `goal active (iter ${goalIteration}) — send message or /goal to cancel` : thinking ? 'type to queue the next message…' : 'ask Axion something…  or type / for commands'}
+        disabled={inputMode !== 'chat' && inputMode !== 'oauth-paste' && inputMode !== 'onboarding' && !voiceActive}
+        voiceActive={voiceActive}
+        placeholder={
+          voiceActive ? 'press Enter to stop recording…' :
+          inputMode === 'oauth-paste' ? 'Paste your token here and press Enter…' :
+          inputMode === 'onboarding' && onboardingStep === 'pick' ? 'Type 1–5 and press Enter…' :
+          inputMode === 'onboarding' && onboardingStep === 'key' ? 'Paste your API key and press Enter (or Enter to skip)…' :
+          goal ? `goal active (iter ${goalIteration}) — send message or /goal to cancel` :
+          thinking ? 'type to queue the next message…' :
+          'ask Axion something…  or type / for commands'
+        }
         onChange={setInputValue}
         tabCompletion={tabComplete}
         onToggleExpand={() => setDiffsExpanded(v => !v)}

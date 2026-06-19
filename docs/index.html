@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Axion — Open-Source AI Coding Agent</title>
+  <title>Axion — Open-Source AI Coding Agent for the Terminal</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -306,6 +306,14 @@
     }
     .link-chip:hover { border-color: var(--accent); background: var(--accent-lt); }
 
+    .feature-desc code {
+      font-family: "SF Mono", "Fira Code", monospace;
+      font-size: 11px;
+      background: rgba(26,18,9,0.07);
+      padding: 1px 5px;
+      border-radius: 3px;
+    }
+
     /* ── Footer ──────────────────────────────────────────────────────────── */
     footer {
       background: var(--dark);
@@ -353,32 +361,31 @@
     Axion
   </a>
   <a href="/announcements">Announcements</a>
-  <a href="/lumen-12">Lumen 1.2</a>
+  <a href="https://github.com/Ravikxx/axion">GitHub</a>
   <div class="nav-right">
-    <a href="https://github.com/Ravikxx/axion">GitHub</a>
-    <a href="https://github.com/Ravikxx/axion" class="btn-nav">Get Started →</a>
+    <a href="https://www.npmjs.com/package/axion-cli" class="btn-nav">Install Free →</a>
   </div>
 </nav>
 
 <!-- ── Hero ─────────────────────────────────────────────────────────────── -->
 <section class="hero">
   <img class="hero-logo" src="logo.png" alt="Axion logo">
-  <p class="hero-eyebrow">Open Source · Axion Labs</p>
+  <p class="hero-eyebrow">v1.0.1 · Open Source · Axion Labs</p>
   <h1>The AI coding agent<br><span>built to be extended</span></h1>
   <p class="hero-sub">
-    A terminal-native AI agent with computer use, a Chrome extension, Discord integration, and a growing ecosystem of tools — all open source.
+    A terminal-native AI agent with computer use, voice input, memory across sessions, a Chrome extension, Discord integration, and a growing ecosystem of tools — all open source and free to run.
   </p>
   <div class="hero-actions">
-    <a class="btn btn-primary" href="https://github.com/Ravikxx/axion">⬇ Clone on GitHub</a>
-    <a class="btn btn-ghost" href="/lumen-suspension">Lumen Safety Notice →</a>
+    <a class="btn btn-primary" href="https://www.npmjs.com/package/axion-cli">📦 npm install -g axion-cli</a>
+    <a class="btn btn-ghost" href="https://github.com/Ravikxx/axion">GitHub →</a>
   </div>
 </section>
 
 <!-- ── News banner ───────────────────────────────────────────────────────── -->
 <div class="news-wrap">
-  <a class="news-banner" href="/lumen-suspension" style="background:#2d0a0a;border-color:#7f1d1d;">
-    <span class="news-tag" style="background:#dc2626;color:#fff;">Notice</span>
-    <span class="news-text"><strong>Lumen temporarily suspended</strong> — safety findings require retraining before redeployment. Read more →</span>
+  <a class="news-banner" href="/announcements">
+    <span class="news-tag">New</span>
+    <span class="news-text"><strong>Axion 1.0.1</strong> — onboarding wizard, memory across sessions, and voice input. <strong>Now on npm.</strong></span>
     <span class="news-arrow">›</span>
   </a>
 </div>
@@ -396,7 +403,17 @@
       <div class="feature-card">
         <span class="feature-icon">⌨️</span>
         <p class="feature-title">Terminal Agent</p>
-        <p class="feature-desc">Full agentic loop in your terminal. Edit files, run commands, fix bugs — Claude-Code style, open source.</p>
+        <p class="feature-desc">Full agentic loop in your terminal. Edit files, run commands, fix bugs — open source and fully extensible.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🧠</span>
+        <p class="feature-title">Memory Across Sessions</p>
+        <p class="feature-desc">Automatically extracts and remembers context from each session — project name, decisions, file paths — so the next session already knows what you were doing.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🎤</span>
+        <p class="feature-title">Voice Input</p>
+        <p class="feature-desc">Type <code>/voice</code>, speak, press Enter. Audio is transcribed by Whisper and sent straight to the agent — no typing needed.</p>
       </div>
       <div class="feature-card">
         <span class="feature-icon">🖥️</span>
@@ -404,14 +421,14 @@
         <p class="feature-desc">Vision + screenshot analysis lets the agent see and click your screen, not just your code.</p>
       </div>
       <div class="feature-card">
-        <span class="feature-icon">🌐</span>
-        <p class="feature-title">Chrome Extension</p>
-        <p class="feature-desc">Read pages, click elements, fill forms, and automate the browser — directly from the agent.</p>
-      </div>
-      <div class="feature-card">
         <span class="feature-icon">💬</span>
         <p class="feature-title">Discord Integration</p>
         <p class="feature-desc">Run the agent as a Discord bot. Queue tasks, cancel runs, and get responses in any channel.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🌐</span>
+        <p class="feature-title">Chrome Extension</p>
+        <p class="feature-desc">Read pages, click elements, fill forms, and automate the browser — directly from the agent.</p>
       </div>
       <div class="feature-card">
         <span class="feature-icon">🔌</span>
@@ -421,7 +438,12 @@
       <div class="feature-card">
         <span class="feature-icon">⚡</span>
         <p class="feature-title">Multi-model</p>
-        <p class="feature-desc">Switch between Claude, Veil, GPT, Gemini, or any compatible model. Bring your own key or use a local Ollama model.</p>
+        <p class="feature-desc">Switch between Claude, GPT, Gemini, Groq, or any Ollama model. The onboarding wizard gets you set up in under a minute.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🔗</span>
+        <p class="feature-title">OAuth Integrations</p>
+        <p class="feature-desc">Connect GitHub, Google, Notion, and Slack with <code>/oauth connect</code>. The agent can read issues, docs, and messages in context.</p>
       </div>
     </div>
   </section>
@@ -434,16 +456,16 @@
 
     <div class="ecosystem">
       <div class="eco-card">
-        <p class="eco-tag" style="background:#fef2f2;color:#dc2626;">Suspended</p>
+        <p class="eco-tag">Live</p>
+        <p class="eco-name">Axion Vision</p>
+        <p class="eco-desc">Free vision model hosted on Hugging Face. No API key required — works out of the box for computer use and screenshot analysis. Use with <code style="font-family:monospace;font-size:12px;color:#c9b99a">/vision axion-vision</code>.</p>
+        <a class="eco-link" href="https://huggingface.co/spaces/RavikxxBGamin/LumenVision">View on Hugging Face →</a>
+      </div>
+      <div class="eco-card">
+        <p class="eco-tag" style="color:#6b7280;">Suspended</p>
         <p class="eco-name">Lumen 1.2</p>
         <p class="eco-desc">Temporarily offline pending safety retraining. Full results and reasoning published. Lumen 1.3 coming with improvements.</p>
         <a class="eco-link" href="/lumen-suspension">Read the notice →</a>
-      </div>
-      <div class="eco-card">
-        <p class="eco-tag">Previous</p>
-        <p class="eco-name">Veil</p>
-        <p class="eco-desc">Fast and efficient. Still the best choice for lightweight tasks where speed matters more than depth.</p>
-        <a class="eco-link" href="/announcements">Release notes →</a>
       </div>
     </div>
   </section>
@@ -451,17 +473,19 @@
   <!-- Quick start -->
   <section>
     <p class="section-tag">Quick start</p>
-    <h2 class="section-heading">Up and running in minutes</h2>
-    <p class="section-lead">Clone the repo, install dependencies, and start your first session.</p>
+    <h2 class="section-heading">Up and running in one command</h2>
+    <p class="section-lead">Install globally from npm. The onboarding wizard walks you through picking a model and entering your API key.</p>
 
     <div class="code-block">
-      <span class="comment"># Clone and install</span><br>
-      <span class="prompt">$ </span>git clone https://github.com/Ravikxx/axion<br>
-      <span class="prompt">$ </span>cd axion && npm install<br>
+      <span class="comment"># Install globally</span><br>
+      <span class="prompt">$ </span>npm install -g axion-cli<br>
       <br>
-      <span class="comment"># Set your API key and run</span><br>
-      <span class="prompt">$ </span>export ANTHROPIC_API_KEY=sk-...<br>
-      <span class="prompt">$ </span>npm start
+      <span class="comment"># Launch — onboarding wizard runs on first start</span><br>
+      <span class="prompt">$ </span>axion<br>
+      <br>
+      <span class="comment"># Or set your API key manually and jump straight in</span><br>
+      <span class="prompt">$ </span>axion<br>
+      <span class="prompt">› </span>/api claude sk-ant-…
     </div>
   </section>
 
@@ -472,6 +496,7 @@
     <br>
     <div class="link-row">
       <a class="link-chip" href="https://github.com/Ravikxx/axion">⭐ GitHub Repository</a>
+      <a class="link-chip" href="https://www.npmjs.com/package/axion-cli">📦 npm Package</a>
       <a class="link-chip" href="/announcements">📣 Announcements</a>
       <a class="link-chip" href="/lumen-suspension">⚠️ Lumen Safety Notice</a>
       <a class="link-chip" href="/privacy">🔒 Privacy Policy</a>

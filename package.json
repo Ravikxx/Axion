@@ -1,14 +1,14 @@
 {
   "name": "axion-cli",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Axion by Axion Labs — terminal AI coding agent",
   "type": "module",
   "bin": {
-    "axion": "./dist/axion.js",
-    "axion-serve": "./src/web/server.js",
-    "axion-blender": "./mcp-servers/blender/index.js",
-    "axion-discord": "./src/discord-daemon.js",
-    "axion-collect": "./src/collect-daemon.js"
+    "axion": "dist/axion.js",
+    "axion-serve": "src/web/server.js",
+    "axion-blender": "mcp-servers/blender/index.js",
+    "axion-discord": "src/discord-daemon.js",
+    "axion-collect": "src/collect-daemon.js"
   },
   "scripts": {
     "build": "node build.js",

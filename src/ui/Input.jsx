@@ -5,7 +5,7 @@ import { loadInputHistory, appendInputHistory } from '../persist.js';
 export function InputBox({
   onSubmit, disabled, placeholder, onChange, tabCompletion,
   onToggleExpand, onToggleThinking, onCycleMode,
-  onInterrupt, interruptActive,
+  onInterrupt, interruptActive, voiceActive,
 }) {
   const [value, setValue] = useState('');
   const [cursor, setCursor] = useState(0);
@@ -64,6 +64,13 @@ export function InputBox({
       }
 
       if (key.return) {
+        // Voice mode: Enter stops recording even with empty input
+        if (voiceActive) {
+          set('', 0);
+          onChange?.('');
+          onSubmit('');
+          return;
+        }
         // Trailing backslash before the cursor → newline instead of submit
         if (value[cursor - 1] === '\\') {
           set(value.slice(0, cursor - 1) + '\n' + value.slice(cursor), cursor);

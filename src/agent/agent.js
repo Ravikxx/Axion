@@ -9,7 +9,7 @@ import {
 } from './tools.js';
 import { API_KEYS } from '../config.js';
 import { BUS } from './bus.js';
-import { getMemories, getLearnedInstructions, getSkills } from '../persist.js';
+import { getMemories, getLearnedInstructions, getSkills, getAutoMemory } from '../persist.js';
 import { MCP } from './mcp.js';
 import { PLUGINS } from './plugins.js';
 import { GOOGLE_TOOL_DEFINITIONS, GOOGLE_TOOL_DEFINITIONS_OPENAI } from './google.js';
@@ -330,6 +330,10 @@ export class Agent {
     const learned = getLearnedInstructions();
     if (learned) {
       prompt += `\n\n## Learned preferences from your usage:\n${learned}`;
+    }
+    const autoMemory = getAutoMemory();
+    if (autoMemory) {
+      prompt += `\n\n## Context from previous session:\n${autoMemory}`;
     }
     if (this.goal) {
       prompt += `\n\nCURRENT GOAL: ${this.goal}\nWork autonomously until this goal is fully achieved. When the goal is complete, include exactly "GOAL_COMPLETE" on its own line at the end of your response.`;

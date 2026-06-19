@@ -517,6 +517,26 @@ export function clearLearnedInstructions() {
   if (existsSync(LEARNED_FILE)) unlinkSync(LEARNED_FILE);
 }
 
+// ── Auto-memory (background extraction, replaced each session) ────────────────
+
+const AUTO_MEMORY_FILE = join(DIR, 'auto-memory.md');
+
+export function getAutoMemory() {
+  try {
+    if (!existsSync(AUTO_MEMORY_FILE)) return '';
+    return readFileSync(AUTO_MEMORY_FILE, 'utf8').trim();
+  } catch { return ''; }
+}
+
+export function saveAutoMemory(text) {
+  if (!existsSync(DIR)) mkdirSync(DIR, { recursive: true });
+  writeFileSync(AUTO_MEMORY_FILE, text.trim(), 'utf8');
+}
+
+export function clearAutoMemory() {
+  if (existsSync(AUTO_MEMORY_FILE)) unlinkSync(AUTO_MEMORY_FILE);
+}
+
 export function listChats() {
   if (!existsSync(CHATS_DIR)) return [];
   return readdirSync(CHATS_DIR)
