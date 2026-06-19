@@ -283,41 +283,6 @@
   <a href="https://github.com/Ravikxx/axion">GitHub</a>
 </nav>
 
-<!-- Live Training Banner -->
-<div id="training-banner" class="training-bar" style="display:none; background:#e8602c; color:#fff; padding:10px 32px;">
-  <div style="max-width:1100px; margin:0 auto; display:flex; align-items:center; gap:14px; flex-wrap:wrap; width:100%;">
-    <span style="font-size:12px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; flex-shrink:0;">⚡ Live Training</span>
-    <span id="tb-model" style="font-size:13px; font-weight:600; flex-shrink:0;"></span>
-    <div style="flex:1; min-width:120px; background:rgba(255,255,255,0.3); border-radius:4px; height:5px;">
-      <div id="tb-bar" style="background:#fff; height:5px; border-radius:4px; width:0%; transition:width 0.6s;"></div>
-    </div>
-    <span id="tb-stats" style="font-size:12px; min-width:0; opacity:0.9;"></span>
-    <span id="tb-eta" style="font-size:12px; flex-shrink:0; opacity:0.7;"></span>
-  </div>
-</div>
-<script>
-(function(){
-  var URL = 'https://huggingface.co/RavikxxBGamin/Lumen/resolve/main/training_status.json';
-  function refresh(){
-    fetch(URL + '?t=' + Date.now())
-      .then(function(r){ return r.ok ? r.json() : null; })
-      .then(function(d){
-        if(!d || d.status === 'complete'){ document.getElementById('training-banner').style.display='none'; return; }
-        document.getElementById('training-banner').style.display='block';
-        document.getElementById('tb-model').textContent = d.model || 'Lumen';
-        document.getElementById('tb-bar').style.width = (d.progress_pct||0)+'%';
-        var s = 'Step '+d.step+' / '+d.total_steps+'  ·  '+d.progress_pct+'%';
-        if(d.loss) s += '  ·  loss '+d.loss;
-        if(d.eval_loss) s += '  ·  val '+d.eval_loss;
-        document.getElementById('tb-stats').textContent = s;
-        document.getElementById('tb-eta').textContent = d.eta_hours ? '~'+d.eta_hours+'h left' : '';
-      }).catch(function(){});
-  }
-  refresh();
-  setInterval(refresh, 60000);
-})();
-</script>
-
 <div class="hero">
   <div class="hero-badge">Post-Mortem · June 13, 2026</div>
   <h1>Lumen <span>1.2.1</span> — What Happened</h1>
