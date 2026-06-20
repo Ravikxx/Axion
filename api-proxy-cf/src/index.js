@@ -64,7 +64,7 @@ app.post('/auth/register', async (c) => {
   const id = crypto.randomUUID()
   const pw_hash = await hashPw(password, c.env.PW_SALT)
   await c.env.DB.prepare('INSERT INTO users (id, email, pw_hash) VALUES (?,?,?)').bind(id, email.toLowerCase(), pw_hash).run()
-  return json({ user_id: id, email })
+  return json({ user_id: id, email, token: makeToken(id) })
 })
 
 app.post('/auth/login', async (c) => {
