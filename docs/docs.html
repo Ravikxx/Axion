@@ -399,28 +399,102 @@
     <!-- Commands -->
     <div class="doc-section" id="commands">
       <h2>Commands</h2>
-      <p class="lead">Type <code>/</code> followed by any command. Run <code>/help</code> for the full list in-session.</p>
+      <p class="lead">Type <code>/</code> followed by any command. Tab completes the name — a suggestion box shows matches as you type. Run <code>/help</code> for the full list in-session.</p>
 
+      <h3>Models &amp; keys</h3>
       <table class="cmd-table">
-        <thead>
-          <tr>
-            <th>Command</th>
-            <th>What it does</th>
-          </tr>
-        </thead>
+        <thead><tr><th>Command</th><th>What it does</th></tr></thead>
         <tbody>
-          <tr><td><code>/model &lt;name&gt;</code></td><td class="desc">Switch to a different model (claude, gpt, gemini, groq, lumen, ollama…)</td></tr>
-          <tr><td><code>/api &lt;provider&gt; &lt;key&gt;</code></td><td class="desc">Save an API key for a provider</td></tr>
-          <tr><td><code>/chat</code></td><td class="desc">Switch to chat mode — no tools, just conversation</td></tr>
-          <tr><td><code>/code</code></td><td class="desc">Switch to code/agent mode — full tool access</td></tr>
-          <tr><td><code>/voice</code></td><td class="desc">Start voice input — speak, press Enter, transcribed via Whisper</td></tr>
-          <tr><td><code>/web</code></td><td class="desc">Open the web UI in your browser</td></tr>
-          <tr><td><code>/memory</code></td><td class="desc">View what Axion has remembered about your sessions</td></tr>
-          <tr><td><code>/clear</code></td><td class="desc">Clear conversation history and start fresh</td></tr>
-          <tr><td><code>/oauth connect &lt;provider&gt;</code></td><td class="desc">Connect GitHub, Google, Notion, or Slack</td></tr>
-          <tr><td><code>/pin &lt;file&gt;</code></td><td class="desc">Pin a file so it's always included in context</td></tr>
-          <tr><td><code>/doctor</code></td><td class="desc">Check your environment — Python, Tesseract, API keys</td></tr>
-          <tr><td><code>/help</code></td><td class="desc">Show all available commands</td></tr>
+          <tr><td><code>/model &lt;name&gt;</code></td><td class="desc">Switch model — <code>claude</code>, <code>gpt</code>, <code>lumen</code>, <code>gemini</code>, <code>groq</code>, <code>ollama</code>, …</td></tr>
+          <tr><td><code>/models</code></td><td class="desc">List all available models and custom endpoints</td></tr>
+          <tr><td><code>/api &lt;provider&gt; &lt;key&gt;</code></td><td class="desc">Set an API key (<code>claude</code>, <code>gpt</code>, <code>groq</code>, <code>mistral</code>, <code>gemini</code>, <code>openrouter</code>)</td></tr>
+          <tr><td><code>/axion-key &lt;key&gt;</code></td><td class="desc">Save your Axion API key for Lumen access</td></tr>
+          <tr><td><code>/axion-key remove</code></td><td class="desc">Clear your Axion API key</td></tr>
+          <tr><td><code>/endpoint &lt;name&gt; &lt;url&gt; [model] [key]</code></td><td class="desc">Add a custom OpenAI-compatible endpoint</td></tr>
+          <tr><td><code>/thinking [on|off|&lt;tokens&gt;]</code></td><td class="desc">Toggle extended thinking (Claude only)</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Chat &amp; session</h3>
+      <table class="cmd-table">
+        <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+        <tbody>
+          <tr><td><code>/mode &lt;name&gt;</code></td><td class="desc">Switch agent mode: <code>ask</code>, <code>plan</code>, <code>bypass</code></td></tr>
+          <tr><td><code>/adviser [model|auto|off]</code></td><td class="desc">Set or disable the adviser model</td></tr>
+          <tr><td><code>/system [text|clear]</code></td><td class="desc">Set extra system-level instructions</td></tr>
+          <tr><td><code>/include &lt;file&gt;</code></td><td class="desc">Pin a file into every message (no args = list)</td></tr>
+          <tr><td><code>/btw &lt;question&gt;</code></td><td class="desc">Quick side question without breaking flow</td></tr>
+          <tr><td><code>/retry</code></td><td class="desc">Re-run the last message</td></tr>
+          <tr><td><code>/compare [m1,m2,...] &lt;prompt&gt;</code></td><td class="desc">Compare two or more models side by side</td></tr>
+          <tr><td><code>/compare-models [m1,m2,...]</code></td><td class="desc">Get or set the default models for <code>/compare</code></td></tr>
+          <tr><td><code>/review</code></td><td class="desc">Code review of the current git diff</td></tr>
+          <tr><td><code>/goal &lt;description&gt;</code></td><td class="desc">Loop until the agent meets a condition</td></tr>
+          <tr><td><code>/compact</code></td><td class="desc">Summarise and compress history to save tokens</td></tr>
+          <tr><td><code>/cost</code></td><td class="desc">Show session token usage and estimated cost</td></tr>
+          <tr><td><code>/pr [context]</code></td><td class="desc">Draft a PR title and body from recent commits</td></tr>
+          <tr><td><code>/clear</code></td><td class="desc">Clear conversation history</td></tr>
+          <tr><td><code>/exit</code></td><td class="desc">Quit</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Files &amp; history</h3>
+      <table class="cmd-table">
+        <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+        <tbody>
+          <tr><td><code>/run &lt;cmd&gt;</code></td><td class="desc">Run a shell command and feed output to the agent</td></tr>
+          <tr><td><code>/undo</code></td><td class="desc">Restore the last overwritten or deleted file</td></tr>
+          <tr><td><code>/rewind [list|&lt;n&gt;]</code></td><td class="desc">Undo the last n turns of file changes</td></tr>
+          <tr><td><code>/export &lt;filename&gt;</code></td><td class="desc">Save the current chat as a markdown file</td></tr>
+          <tr><td><code>/save &lt;name&gt;</code></td><td class="desc">Save the current chat session</td></tr>
+          <tr><td><code>/resume &lt;name&gt;</code></td><td class="desc">Resume a saved chat (no args = list all)</td></tr>
+          <tr><td><code>/search-chats &lt;query&gt;</code></td><td class="desc">Search across all saved chats</td></tr>
+          <tr><td><code>/remove-chat &lt;name&gt;</code></td><td class="desc">Delete a saved chat</td></tr>
+          <tr><td><code>/history &lt;query&gt;</code></td><td class="desc">Search message history</td></tr>
+          <tr><td><code>/copy</code></td><td class="desc">Copy the last AI response to clipboard</td></tr>
+          <tr><td><code>/copy-block &lt;n&gt;</code></td><td class="desc">Copy the Nth code block from the last response</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Skills &amp; automation</h3>
+      <table class="cmd-table">
+        <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+        <tbody>
+          <tr><td><code>/skills</code></td><td class="desc">List all skills (auto-activate on trigger phrases)</td></tr>
+          <tr><td><code>/skill &lt;name&gt; &lt;instructions&gt;</code></td><td class="desc">Create a skill from a description</td></tr>
+          <tr><td><code>/skill-generator &lt;name&gt; &lt;instructions&gt;</code></td><td class="desc">AI-generate a skill <code>.md</code> file</td></tr>
+          <tr><td><code>/skill-delete &lt;name&gt;</code></td><td class="desc">Delete a skill</td></tr>
+          <tr><td><code>/macro record|stop|play|list|delete</code></td><td class="desc">Record and replay sequences of messages</td></tr>
+          <tr><td><code>/watch start|stop|show|clear</code></td><td class="desc">Watch-and-learn — build preferences from observed behaviour</td></tr>
+          <tr><td><code>/schedule list|add|run|remove|enable|disable|results</code></td><td class="desc">Manage scheduled AI tasks</td></tr>
+          <tr><td><code>/remember [text]</code></td><td class="desc">Save a persistent note (no args = list all)</td></tr>
+          <tr><td><code>/forget &lt;number&gt;</code></td><td class="desc">Remove a saved note by index</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Computer use &amp; vision</h3>
+      <table class="cmd-table">
+        <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+        <tbody>
+          <tr><td><code>/computer [on|off]</code></td><td class="desc">Toggle screen control (alias: <code>/cu</code>)</td></tr>
+          <tr><td><code>/ss [question]</code></td><td class="desc">Screenshot and describe the screen</td></tr>
+          <tr><td><code>/vision &lt;model&gt;</code></td><td class="desc">Set the vision model for computer use</td></tr>
+          <tr><td><code>/img-gen &lt;prompt&gt;</code></td><td class="desc">Generate an image via OpenAI</td></tr>
+          <tr><td><code>/img-gen-model [model]</code></td><td class="desc">Set or show the image generation model</td></tr>
+          <tr><td><code>/voice</code></td><td class="desc">Record voice — transcribed by Whisper</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Integrations</h3>
+      <table class="cmd-table">
+        <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+        <tbody>
+          <tr><td><code>/oauth connect|list|revoke</code></td><td class="desc">Link GitHub, Google, Notion, or Slack</td></tr>
+          <tr><td><code>/discord token|start|stop|status</code></td><td class="desc">Discord bot — run the agent via DM</td></tr>
+          <tr><td><code>/web [port|stop]</code></td><td class="desc">Open or stop the web UI</td></tr>
+          <tr><td><code>/blender setup|connect</code></td><td class="desc">Set up the Blender MCP integration</td></tr>
+          <tr><td><code>/mcp browse|search|install|toggle|reload …</code></td><td class="desc">MCP marketplace</td></tr>
+          <tr><td><code>/plugin …</code></td><td class="desc">Browser, Docker, GitHub, and database plugins</td></tr>
+          <tr><td><code>/contribute [skip|optout]</code></td><td class="desc">Share session as training data</td></tr>
         </tbody>
       </table>
     </div>

@@ -514,6 +514,112 @@ axion/
 
 ---
 
+## Command reference
+
+Type any command in the CLI. All commands start with `/`. Tab completes the command name; the suggestion box shows up to 6 matches as you type.
+
+### Models & keys
+
+| Command | Description |
+|---|---|
+| `/model <name>` | Switch model (e.g. `claude`, `gpt`, `lumen`, `gemini`, `groq`) |
+| `/models` | List all available models and custom endpoints |
+| `/api <provider> <key>` | Set an API key (`claude`, `gpt`, `groq`, `mistral`, `gemini`, `glm`, `openrouter`) |
+| `/axion-key <key>` | Save your Axion API key for Lumen access |
+| `/axion-key remove` | Clear your Axion API key |
+| `/endpoint <name> <url> [model] [key]` | Add a custom OpenAI-compatible endpoint |
+| `/thinking [on\|off\|<tokens>]` | Toggle extended thinking (Claude only) |
+
+### Chat
+
+| Command | Description |
+|---|---|
+| `/mode <name>` | Switch agent mode: `ask`, `plan`, `bypass` |
+| `/adviser [model\|auto\|off]` | Set or disable the adviser model |
+| `/system [text\|clear]` | Set extra system-level instructions |
+| `/include <file>` | Pin a file into context (no args = list pinned) |
+| `/btw <question>` | Quick one-off question without breaking flow |
+| `/retry` | Re-run the last message |
+| `/compare [m1,m2,...] <prompt>` | Compare two or more models side by side |
+| `/compare-models [m1,m2,...]` | Get or set the default models for `/compare` |
+| `/review` | Code review of the current git diff |
+| `/goal <description>` | Loop until the agent meets a condition |
+| `/compact` | Summarise and compress history to save tokens |
+| `/cost` | Show session token usage and estimated cost |
+
+### Files & history
+
+| Command | Description |
+|---|---|
+| `/run <cmd>` | Run a shell command and feed output to the agent |
+| `/include <file>` | Pin a file into every message |
+| `/undo` | Restore the last overwritten or deleted file |
+| `/rewind [list\|<n>]` | Undo the last n turns of file changes |
+| `/export <filename>` | Save the current chat as a markdown file |
+| `/save <name>` | Save the current chat session |
+| `/resume <name>` | Resume a saved chat (no args = list all) |
+| `/search-chats <query>` | Search across all saved chats |
+| `/remove-chat <name>` | Delete a saved chat |
+| `/history <query>` | Search message history |
+| `/copy` | Copy the last AI response to the clipboard |
+| `/copy-block <n>` | Copy the Nth code block from the last response |
+
+### Skills & automation
+
+| Command | Description |
+|---|---|
+| `/skills` | List all skills (auto-activate on their trigger phrases) |
+| `/skill <name> <instructions>` | Create a skill from a description |
+| `/skill-generator <name> <instructions>` | AI-generate a skill `.md` file |
+| `/skill-delete <name>` | Delete a skill |
+| `/macro record\|stop\|play\|list\|delete` | Record and replay sequences of messages |
+| `/watch start\|stop\|show\|clear` | Watch-and-learn — build preferences from observed behaviour |
+| `/schedule list\|add\|run\|remove\|enable\|disable\|results` | Manage scheduled AI tasks |
+
+### Memory
+
+| Command | Description |
+|---|---|
+| `/remember [text]` | Save a persistent note (no args = list all) |
+| `/forget <number>` | Remove a saved note by index |
+
+### Computer use & vision
+
+| Command | Description |
+|---|---|
+| `/computer [on\|off]` | Toggle screen control (alias: `/cu`) |
+| `/cu [on\|off]` | Shortcut for `/computer` |
+| `/ss [question]` | Take a screenshot and describe the screen |
+| `/vision <model>` | Set the vision model for computer use |
+| `/img-gen <prompt>` | Generate an image via OpenAI |
+| `/img-gen-model [model]` | Set or show the image generation model |
+| `/voice` | Record voice input — transcribed by Whisper |
+
+### Integrations
+
+| Command | Description |
+|---|---|
+| `/oauth connect\|list\|revoke` | Link GitHub, Google, Notion, or Slack |
+| `/discord token\|start\|stop\|status` | Discord bot — run the agent via DM |
+| `/web [port\|stop]` | Open or stop the web UI |
+| `/blender setup\|connect` | Set up the Blender MCP integration |
+| `/mcp browse\|search\|install\|toggle\|enable\|disable\|remove\|tools\|reload` | MCP marketplace |
+| `/plugin ...` | Browser, Docker, GitHub, and database plugins |
+
+### Misc
+
+| Command | Description |
+|---|---|
+| `/pr [context]` | Draft a PR title and body from recent commits |
+| `/contribute [skip\|optout]` | Share session as training data |
+| `/permissions [clear]` | List or reset always-allowed tools |
+| `/theme [name]` | Switch accent colour (no args = list) |
+| `/help` | Show all commands |
+| `/clear` | Clear history |
+| `/exit` | Quit |
+
+---
+
 ## License
 
 MIT — made by [Axion Labs](https://github.com/Ravikxx)
