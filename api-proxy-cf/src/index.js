@@ -55,7 +55,7 @@ async function requireKey(c) {
 // ── Email ──────────────────────────────────────────────────────────────────
 
 async function sendVerificationEmail(email, token, resendKey) {
-  const link = `https://axion.amplifiedsmp.org/keys/verify?token=${token}`
+  const link = `https://api.amplifiedsmp.org/auth/verify?token=${token}`
   await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${resendKey}` },
