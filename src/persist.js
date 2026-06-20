@@ -98,6 +98,13 @@ export function saveDiscordToken(token) {
   save(_cfg);
 }
 
+export function getAxionKey() { return _cfg.axionKey || null; }
+
+export function saveAxionKey(key) {
+  _cfg.axionKey = key;
+  save(_cfg);
+}
+
 export function getDiscordAutoStart() { return _cfg.discordAutoStart || false; }
 
 export function saveDiscordAutoStart(val) {

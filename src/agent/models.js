@@ -1,6 +1,7 @@
 import Anthropic from '@anthropic-ai/sdk';
 import OpenAI from 'openai';
 import { MODELS, MODEL_PROVIDERS, API_KEYS, BASE_URLS, CUSTOM_ENDPOINTS } from '../config.js';
+import { getAxionKey } from '../persist.js';
 
 export function resolveModel(alias) {
   // Custom endpoint: use the model name stored in the endpoint config
@@ -70,7 +71,8 @@ export function createClient(modelAlias) {
   }
 
   if (provider === 'lumen') {
-    return { type: 'openai', client: new OpenAI({ apiKey: 'no-key', baseURL: BASE_URLS.lumen }) };
+    const axionKey = getAxionKey();
+    return { type: 'openai', client: new OpenAI({ apiKey: axionKey || 'no-key', baseURL: BASE_URLS.lumen }) };
   }
 
   if (provider === 'axion-vision') {

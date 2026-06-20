@@ -584,7 +584,8 @@
         prefix: k.key_value ? k.key_value.slice(0, 14) + '…' : 'axion-sk-…',
         createdAt: k.created_at ? new Date(k.created_at * 1000).toISOString() : new Date().toISOString(),
         usageToday: 0,
-        usageMonth: k.requests || 0,
+        usageMonth: k.month_requests || 0,
+        usageTotal: k.requests || 0,
       }));
       renderKeys();
       renderStats();
@@ -606,15 +607,18 @@
       usageSection.style.display = '';
       const barsEl = document.getElementById('usage-bars');
       barsEl.innerHTML = keys.map(k => {
-        const pct = Math.min(((k.usageMonth || 0) / 1000) * 100, 100);
+        const used = k.usageMonth || 0;
+        const limit = 1000;
+        const pct = Math.min((used / limit) * 100, 100);
+        const color = pct > 90 ? 'var(--red)' : pct > 70 ? '#e8902c' : 'var(--accent)';
         return `
           <div class="usage-bar-item">
             <div class="usage-bar-label">
               <span>${k.name}</span>
-              <span>${(k.usageMonth || 0).toLocaleString()} req</span>
+              <span>${used.toLocaleString()} / ${limit.toLocaleString()} req this month</span>
             </div>
             <div class="usage-bar-track">
-              <div class="usage-bar-fill" style="width:${pct}%"></div>
+              <div class="usage-bar-fill" style="width:${pct}%;background:${color}"></div>
             </div>
           </div>`;
       }).join('');
@@ -634,7 +638,7 @@
         <td><div class="key-name">${escHtml(k.name)}</div></td>
         <td><span class="key-value">${escHtml(k.prefix)}••••••••</span></td>
         <td class="key-date">${formatDate(k.createdAt)}</td>
-        <td class="key-usage">${(k.usageMonth || 0).toLocaleString()}</td>
+        <td class="key-usage" title="${(k.usageTotal||0).toLocaleString()} total">${(k.usageMonth || 0).toLocaleString()} / 1,000</td>
         <td>
           <div class="key-actions">
             <button class="btn-icon" onclick="copyPrefix(${i})" id="copy-btn-${i}">Copy</button>

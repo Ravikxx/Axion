@@ -1,0 +1,35 @@
+{
+  "model_params": 2719104,
+  "group_counts": [
+    926784,
+    889728,
+    902592
+  ],
+  "flop_budget": 41765437440000,
+  "arms": [
+    {
+      "name": "full",
+      "final_val": 1.8110777139663696,
+      "steps": 2500,
+      "seconds": 368.7
+    },
+    {
+      "name": "excl_topdown",
+      "final_val": 2.0947790145874023,
+      "steps": 3215,
+      "seconds": 340.9
+    },
+    {
+      "name": "cumul_topdown",
+      "final_val": 1.9084606170654297,
+      "steps": 3215,
+      "seconds": 373.2
+    },
+    {
+      "name": "cumul_bottomup",
+      "final_val": 1.8679378032684326,
+      "steps": 2500,
+      "seconds": 354.2
+    }
+  ]
+}

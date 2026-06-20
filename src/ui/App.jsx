@@ -29,6 +29,7 @@ import {
   getDiscordToken, saveDiscordToken, getDiscordAutoStart, saveDiscordAutoStart,
   getDonateOptOut, saveDonateOptOut, saveDonation,
   saveAutoMemory,
+  getAxionKey, saveAxionKey,
 } from '../persist.js';
 import { COMMANDS } from './Suggestions.jsx';
 import { THEMES, setTheme, themeName, accent } from './theme.js';
@@ -989,6 +990,31 @@ triggers: <comma-separated words that should activate it, include "${skillName.t
             saveMode(normalizedMode);
             pushStatic({ type: 'info', content: `mode → ${modeLabel(normalizedMode)} (saved)` });
           }
+          return true;
+        }
+
+        case 'axion-key': {
+          const [keyArg] = args;
+          if (!keyArg) {
+            const existing = getAxionKey();
+            if (existing) {
+              pushStatic({ type: 'info', content: `Axion API key: ${existing.slice(0, 14)}••••••••\n\nGet keys at https://axion.amplifiedsmp.org/keys\nLumen free tier: 50 req/day  ·  With key: 1000 req/month\n\nTo remove: /axion-key remove` });
+            } else {
+              pushStatic({ type: 'info', content: 'No Axion API key set.\n\nLumen works without a key (50 requests/day free).\nFor 1000 requests/month, get a key at https://axion.amplifiedsmp.org/keys\n\nUsage: /axion-key <your-axion-sk-key>' });
+            }
+            return true;
+          }
+          if (keyArg === 'remove') {
+            saveAxionKey(null);
+            pushStatic({ type: 'info', content: 'Axion API key removed. Lumen will use the free tier (50 req/day).' });
+            return true;
+          }
+          if (!keyArg.startsWith('axion-sk-')) {
+            pushStatic({ type: 'error', content: 'Invalid key format. Axion keys start with axion-sk-\n\nGet one at https://axion.amplifiedsmp.org/keys' });
+            return true;
+          }
+          saveAxionKey(keyArg);
+          pushStatic({ type: 'info', content: `Axion API key saved. Lumen now uses your key (1000 req/month).\n\nKey: ${keyArg.slice(0, 14)}••••••••` });
           return true;
         }
 

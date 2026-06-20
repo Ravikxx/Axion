@@ -337,7 +337,7 @@ app.get('/dashboard/keys', async (c) => {
   const user = await requireAuth(c)
   if (!user) return json({ error: 'Not authenticated' }, 401)
   const { results } = await c.env.DB.prepare(
-    'SELECT id, label, key_value, created_at, last_used, requests, tokens FROM api_keys WHERE user_id=? AND revoked=0 ORDER BY created_at DESC'
+    'SELECT id, label, key_value, created_at, last_used, requests, tokens, month_requests FROM api_keys WHERE user_id=? AND revoked=0 ORDER BY created_at DESC'
   ).bind(user.id).all()
   return json({ keys: results })
 })
@@ -371,48 +371,90 @@ app.delete('/dashboard/keys/:id', async (c) => {
 
 // ── OpenAI-compatible proxy ────────────────────────────────────────────────
 
-app.post('/v1/chat/completions', async (c) => {
-  const keyRow = await requireKey(c)
-  if (!keyRow) return json({ error: { message: 'Invalid or missing API key', type: 'invalid_request_error' } }, 401)
+const FREE_DAILY_LIMIT = 50      // keyless requests per IP per day
+const KEY_MONTHLY_LIMIT = 1000   // keyed requests per month (free plan)
 
-  const body = await c.req.json()
-  body.model = 'lumen'
+function currentMonth() {
+  const d = new Date()
+  return `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, '0')}`
+}
 
-  const upstream = await fetch(HF_URL, {
+async function proxyUpstream(body, stream) {
+  return fetch(HF_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
+    body: JSON.stringify({ ...body, model: 'lumen' }),
   })
+}
 
-  if (!upstream.ok) {
-    const err = await upstream.text()
-    return json({ error: { message: err, type: 'upstream_error' } }, upstream.status)
-  }
+function streamResponse(upstream) {
+  const { readable, writable } = new TransformStream()
+  upstream.body.pipeTo(writable)
+  return new Response(readable, {
+    headers: { 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-cache', 'Access-Control-Allow-Origin': '*' },
+  })
+}
 
-  // update usage (fire and forget — don't block the response)
-  const trackUsage = async () => {
-    await c.env.DB.prepare(
-      "UPDATE api_keys SET last_used=strftime('%s','now'), requests=requests+1 WHERE id=?"
+app.post('/v1/chat/completions', async (c) => {
+  const ip = c.req.header('CF-Connecting-IP') || 'unknown'
+  const auth = (c.req.header('Authorization') || '').replace(/^Bearer\s+/i, '').trim()
+  const body = await c.req.json()
+
+  // ── Keyed request ──
+  if (auth.startsWith('axion-sk-')) {
+    const keyRow = await c.env.DB.prepare('SELECT * FROM api_keys WHERE key_value=? AND revoked=0').bind(auth).first()
+    if (!keyRow) return json({ error: { message: 'Invalid or revoked API key', type: 'invalid_request_error' } }, 401)
+
+    // Monthly limit check — reset counter when month rolls over
+    const month = currentMonth()
+    if (keyRow.month_start !== month) {
+      await c.env.DB.prepare('UPDATE api_keys SET month_requests=0, month_start=? WHERE id=?').bind(month, keyRow.id).run()
+      keyRow.month_requests = 0
+    }
+    if (keyRow.month_requests >= KEY_MONTHLY_LIMIT) {
+      return json({ error: { message: `Monthly limit of ${KEY_MONTHLY_LIMIT} requests reached. Upgrade for more.`, type: 'rate_limit_error', limit: KEY_MONTHLY_LIMIT, used: keyRow.month_requests } }, 429)
+    }
+
+    const upstream = await proxyUpstream(body)
+    if (!upstream.ok) return json({ error: { message: await upstream.text(), type: 'upstream_error' } }, upstream.status)
+
+    const track = () => c.env.DB.prepare(
+      "UPDATE api_keys SET last_used=strftime('%s','now'), requests=requests+1, month_requests=month_requests+1 WHERE id=?"
     ).bind(keyRow.id).run()
-  }
 
-  if (body.stream) {
-    // pipe SSE stream directly from HF Space to client
-    const { readable, writable } = new TransformStream()
-    upstream.body.pipeTo(writable)
-    c.executionCtx.waitUntil(trackUsage())
-    return new Response(readable, {
-      headers: {
-        'Content-Type': 'text/event-stream',
-        'Cache-Control': 'no-cache',
-        'Access-Control-Allow-Origin': '*',
-      },
-    })
-  } else {
+    if (body.stream) { c.executionCtx.waitUntil(track()); return streamResponse(upstream) }
     const data = await upstream.json()
-    c.executionCtx.waitUntil(trackUsage())
+    c.executionCtx.waitUntil(track())
     return json(data)
   }
+
+  // ── Free keyless request (Lumen free tier) ──
+  const freeKey = `free:${ip}`
+  const today = new Date().toISOString().slice(0, 10)
+  const row = await c.env.DB.prepare('SELECT count, window_start FROM rate_limits WHERE key=?').bind(freeKey).first()
+
+  if (row && row.window_start === today) {
+    if (row.count >= FREE_DAILY_LIMIT) {
+      return json({
+        error: {
+          message: `Free tier limit of ${FREE_DAILY_LIMIT} requests/day reached. Sign up for an API key at https://axion.amplifiedsmp.org/keys for 1000/month.`,
+          type: 'rate_limit_error',
+          limit: FREE_DAILY_LIMIT,
+          used: row.count,
+          free_tier: true,
+        }
+      }, 429)
+    }
+    c.executionCtx.waitUntil(c.env.DB.prepare('UPDATE rate_limits SET count=count+1 WHERE key=?').bind(freeKey).run())
+  } else {
+    c.executionCtx.waitUntil(c.env.DB.prepare('INSERT OR REPLACE INTO rate_limits (key, count, window_start) VALUES (?,1,?)').bind(freeKey, today).run())
+  }
+
+  const upstream = await proxyUpstream(body)
+  if (!upstream.ok) return json({ error: { message: await upstream.text(), type: 'upstream_error' } }, upstream.status)
+
+  if (body.stream) return streamResponse(upstream)
+  return json(await upstream.json())
 })
 
 app.get('/v1/models', async (c) => {
@@ -423,5 +465,31 @@ app.get('/v1/models', async (c) => {
 })
 
 app.get('/health', (c) => json({ ok: true, model: 'lumen-1.2.5' }))
+
+// ── Admin panel ────────────────────────────────────────────────────────────
+
+app.get('/admin/stats', async (c) => {
+  const token = c.req.header('Authorization') || ''
+  if (token !== `Bearer ${c.env.ADMIN_SECRET}`) return json({ error: 'Forbidden' }, 403)
+
+  const [users, keys, requests, freeToday] = await Promise.all([
+    c.env.DB.prepare('SELECT COUNT(*) as count FROM users WHERE verified=1').first(),
+    c.env.DB.prepare('SELECT COUNT(*) as count FROM api_keys WHERE revoked=0').first(),
+    c.env.DB.prepare('SELECT SUM(requests) as total FROM api_keys').first(),
+    c.env.DB.prepare("SELECT SUM(count) as total FROM rate_limits WHERE key LIKE 'free:%' AND window_start=?").bind(new Date().toISOString().slice(0, 10)).first(),
+  ])
+
+  const topKeys = await c.env.DB.prepare(
+    'SELECT k.label, k.requests, k.month_requests, u.email FROM api_keys k JOIN users u ON k.user_id=u.id WHERE k.revoked=0 ORDER BY k.requests DESC LIMIT 10'
+  ).all()
+
+  return json({
+    users: users.count,
+    active_keys: keys.count,
+    total_requests: requests.total || 0,
+    free_requests_today: freeToday.total || 0,
+    top_keys: topKeys.results,
+  })
+})
 
 export default app
