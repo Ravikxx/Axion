@@ -442,8 +442,10 @@
 
 <script>
   // ── State ──────────────────────────────────────────────────────────────────
+  const API = 'https://api.amplifiedsmp.org';
   let authMode = 'signin'; // 'signin' | 'signup'
   let currentUser = null;
+  let sessionToken = localStorage.getItem('axion_token') || null;
   let keys = [];
   let revokeTarget = null;
 
@@ -481,10 +483,22 @@
     btn.textContent = 'Please wait…'; btn.disabled = true;
 
     try {
-      // TODO: replace with real auth call (Supabase / backend)
-      await new Promise(r => setTimeout(r, 800)); // simulate network
-      // Mock success — remove when backend is wired
-      currentUser = { email, name: document.getElementById('input-name')?.value || email.split('@')[0] };
+      const endpoint = authMode === 'signin' ? '/auth/login' : '/auth/register';
+      const body = { email, password };
+      if (authMode === 'signup') body.name = document.getElementById('input-name')?.value || '';
+
+      const res = await fetch(API + endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Something went wrong.');
+
+      sessionToken = data.token;
+      localStorage.setItem('axion_token', sessionToken);
+      localStorage.setItem('axion_email', data.email || email);
+      currentUser = { email: data.email || email };
       showDashboard();
     } catch (err) {
       showAuthError(err.message || 'Something went wrong. Try again.');
@@ -495,7 +509,9 @@
   }
 
   function logout() {
-    currentUser = null; keys = [];
+    currentUser = null; keys = []; sessionToken = null;
+    localStorage.removeItem('axion_token');
+    localStorage.removeItem('axion_email');
     document.getElementById('dashboard').style.display = 'none';
     document.getElementById('auth-screen').style.display = 'flex';
     document.getElementById('logout-btn').style.display = 'none';
@@ -514,11 +530,28 @@
   }
 
   async function loadKeys() {
-    // TODO: fetch from backend
-    // keys = await fetch('/api/keys', {headers:{Authorization:`Bearer ${token}`}}).then(r=>r.json())
-    keys = []; // start empty — will be populated from backend
-    renderKeys();
-    renderStats();
+    try {
+      const [keysRes, statsRes] = await Promise.all([
+        fetch(API + '/dashboard/keys', { headers: { Authorization: `Bearer ${sessionToken}` } }),
+        fetch(API + '/dashboard/stats', { headers: { Authorization: `Bearer ${sessionToken}` } }),
+      ]);
+      if (!keysRes.ok) throw new Error('Session expired');
+      const keysData = await keysRes.json();
+      const statsData = statsRes.ok ? await statsRes.json() : {};
+      keys = (keysData.keys || []).map(k => ({
+        id: k.id,
+        name: k.label,
+        prefix: k.key_value ? k.key_value.slice(0, 14) + '…' : 'axion-sk-…',
+        createdAt: k.created_at ? new Date(k.created_at * 1000).toISOString() : new Date().toISOString(),
+        usageToday: 0,
+        usageMonth: k.requests || 0,
+      }));
+      renderKeys();
+      renderStats();
+    } catch (e) {
+      if (e.message === 'Session expired') { logout(); return; }
+      keys = []; renderKeys(); renderStats();
+    }
   }
 
   function renderStats() {
@@ -591,35 +624,39 @@
     const name = document.getElementById('new-key-name').value.trim();
     if (!name) { document.getElementById('new-key-name').focus(); return; }
 
-    // TODO: POST to backend to generate real key
-    // const res = await fetch('/api/keys', {method:'POST', body:JSON.stringify({name}), headers:{...}})
-    // const {key, prefix} = await res.json()
+    try {
+      const res = await fetch(API + '/dashboard/keys', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${sessionToken}` },
+        body: JSON.stringify({ label: name }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to create key');
 
-    // Mock — generate a fake key for UI demo
-    const raw = 'axion-sk-' + Array.from(crypto.getRandomValues(new Uint8Array(24)))
-      .map(b => b.toString(36).padStart(2,'0')).join('').slice(0, 32);
-    const prefix = raw.slice(0, 14) + '…';
+      const raw = data.key_value;
+      const newKey = {
+        id: data.id,
+        name: data.label,
+        prefix: raw.slice(0, 14) + '…',
+        fullKey: raw,
+        createdAt: new Date().toISOString(),
+        usageToday: 0,
+        usageMonth: 0,
+      };
+      keys.unshift(newKey);
+      renderKeys();
+      renderStats();
 
-    const newKey = {
-      id: Date.now(),
-      name,
-      prefix,
-      fullKey: raw,
-      createdAt: new Date().toISOString(),
-      usageToday: 0,
-      usageMonth: 0,
-    };
-    keys.unshift(newKey);
-    renderKeys();
-    renderStats();
-
-    document.getElementById('revealed-key').textContent = raw;
-    document.getElementById('modal-step-1').style.display = 'none';
-    document.getElementById('modal-step-2').style.display = '';
-    document.getElementById('modal-title').textContent = 'Key created';
-    document.getElementById('modal-desc').textContent = 'Save this key somewhere safe.';
-    document.getElementById('copy-reveal-btn').textContent = 'Copy key';
-    document.getElementById('copy-reveal-btn').classList.remove('copied');
+      document.getElementById('revealed-key').textContent = raw;
+      document.getElementById('modal-step-1').style.display = 'none';
+      document.getElementById('modal-step-2').style.display = '';
+      document.getElementById('modal-title').textContent = 'Key created';
+      document.getElementById('modal-desc').textContent = 'Save this key somewhere safe.';
+      document.getElementById('copy-reveal-btn').textContent = 'Copy key';
+      document.getElementById('copy-reveal-btn').classList.remove('copied');
+    } catch (e) {
+      alert(e.message);
+    }
   }
 
   function copyRevealedKey() {
@@ -648,9 +685,18 @@
 
   async function confirmRevoke() {
     if (revokeTarget === null) return;
-    // TODO: DELETE /api/keys/:id
-    keys.splice(revokeTarget, 1);
-    renderKeys(); renderStats();
+    const key = keys[revokeTarget];
+    try {
+      const res = await fetch(API + '/dashboard/keys/' + key.id, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${sessionToken}` },
+      });
+      if (!res.ok) throw new Error('Failed to revoke');
+      keys.splice(revokeTarget, 1);
+      renderKeys(); renderStats();
+    } catch (e) {
+      alert(e.message);
+    }
     closeConfirm();
   }
 
@@ -688,6 +734,18 @@
   document.getElementById('confirm-backdrop').addEventListener('click', function(e) {
     if (e.target === this) closeConfirm();
   });
+
+  // Auto-login if stored token exists
+  (async function init() {
+    if (!sessionToken) return;
+    try {
+      const res = await fetch(API + '/dashboard/keys', { headers: { Authorization: `Bearer ${sessionToken}` } });
+      if (!res.ok) { sessionToken = null; localStorage.removeItem('axion_token'); return; }
+      const storedEmail = localStorage.getItem('axion_email') || 'your account';
+      currentUser = { email: storedEmail };
+      showDashboard();
+    } catch { sessionToken = null; localStorage.removeItem('axion_token'); }
+  })();
 </script>
 
 </body>
