@@ -1,0 +1,17 @@
+name = "axion-api"
+main = "src/index.js"
+compatibility_date = "2024-11-01"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+PW_SALT = "change-me-in-dashboard"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "axion-db"
+database_id = "PASTE_YOUR_DATABASE_ID_HERE"
+
+[routes]
+# Uncomment after adding custom domain in CF dashboard:
+# pattern = "api.amplifiedsmp.org/*"
+# zone_name = "amplifiedsmp.org"
