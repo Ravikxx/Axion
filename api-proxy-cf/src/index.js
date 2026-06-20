@@ -174,9 +174,10 @@ app.get('/auth/verify', async (c) => {
 // ── OAuth shared helper ────────────────────────────────────────────────────
 
 const RETURN_DESTINATIONS = {
-  admin: 'https://axion.amplifiedsmp.org/admin',
-  home:  'https://axion.amplifiedsmp.org',
-  keys:  'https://axion.amplifiedsmp.org/keys',
+  admin:      'https://axion.amplifiedsmp.org/admin',
+  home:       'https://axion.amplifiedsmp.org',
+  keys:       'https://axion.amplifiedsmp.org/keys',
+  playground: 'https://axion.amplifiedsmp.org/playground',
 }
 
 async function oauthFinish(c, { id_field, email, provider_id, return_to }) {
@@ -556,6 +557,91 @@ app.delete('/admin/allowlist/:email', async (c) => {
   if (target === 'fearlessaviatorclan@gmail.com') return json({ error: 'Cannot remove owner' }, 400)
   await c.env.DB.prepare('DELETE FROM admin_allowlist WHERE email=?').bind(target).run()
   return json({ ok: true })
+})
+
+// ── Admin: daily usage chart ───────────────────────────────────────────────
+
+app.get('/admin/daily', async (c) => {
+  const user = await requireAdmin(c)
+  if (!user) return json({ error: 'Forbidden' }, 403)
+
+  // Build last 14 date strings
+  const days = []
+  const now = new Date()
+  for (let i = 13; i >= 0; i--) {
+    const d = new Date(now)
+    d.setUTCDate(d.getUTCDate() - i)
+    days.push(d.toISOString().slice(0, 10))
+  }
+
+  const { results } = await c.env.DB.prepare(
+    `SELECT window_start AS date, SUM(count) AS count
+     FROM rate_limits
+     WHERE key LIKE 'free:%' AND window_start >= ?
+     GROUP BY window_start ORDER BY window_start ASC`
+  ).bind(days[0]).all()
+
+  const byDate = Object.fromEntries(results.map(r => [r.date, Number(r.count)]))
+  return json({ daily: days.map(d => ({ date: d, count: byDate[d] || 0 })) })
+})
+
+// ── Admin: invite flow ─────────────────────────────────────────────────────
+
+app.post('/admin/invite', async (c) => {
+  const user = await requireAdmin(c)
+  if (!user) return json({ error: 'Forbidden' }, 403)
+  const { email } = await c.req.json().catch(() => ({}))
+  if (!email || !validEmail(email)) return json({ error: 'Invalid email' }, 400)
+
+  const token = crypto.randomUUID()
+  const expires_at = Math.floor(Date.now() / 1000) + 7 * 24 * 60 * 60 // 7 days
+
+  await c.env.DB.prepare(
+    'INSERT INTO admin_invites (token, email, invited_by, expires_at) VALUES (?,?,?,?)'
+  ).bind(token, email.toLowerCase(), user.email, expires_at).run()
+
+  if (c.env.RESEND_API_KEY) {
+    const link = `https://api.amplifiedsmp.org/admin/invite/accept?token=${token}`
+    c.executionCtx.waitUntil(fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${c.env.RESEND_API_KEY}` },
+      body: JSON.stringify({
+        from: 'Axion Labs <noreply@amplifiedsmp.org>',
+        to: [email],
+        subject: `${user.email} invited you to the Axion admin panel`,
+        html: `<div style="font-family:system-ui,sans-serif;max-width:480px;margin:0 auto;padding:32px;background:#0f0f11;color:#e8e8f0">
+          <h2 style="margin:0 0 8px;color:#e8e8f0">You've been invited</h2>
+          <p style="color:#888;margin:0 0 24px">${user.email} has invited you to become an admin on Axion Labs.</p>
+          <a href="${link}" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">Accept invitation →</a>
+          <p style="color:#666;font-size:12px;margin-top:24px">This link expires in 7 days. If you didn't expect this, you can safely ignore it.</p>
+        </div>`,
+      }),
+    }))
+  }
+
+  return json({ ok: true })
+})
+
+app.get('/admin/invite/accept', async (c) => {
+  const token = c.req.query('token')
+  if (!token) return new Response('Missing token.', { status: 400, headers: { 'Content-Type': 'text/plain' } })
+
+  const invite = await c.env.DB.prepare(
+    'SELECT * FROM admin_invites WHERE token=? AND used=0'
+  ).bind(token).first()
+
+  if (!invite) return new Response('Invalid or already used invitation link.', { status: 400, headers: { 'Content-Type': 'text/plain' } })
+  if (invite.expires_at < Math.floor(Date.now() / 1000)) {
+    return new Response('This invitation has expired.', { status: 400, headers: { 'Content-Type': 'text/plain' } })
+  }
+
+  await c.env.DB.prepare('INSERT OR IGNORE INTO admin_allowlist (email, added_by) VALUES (?,?)').bind(invite.email, invite.invited_by).run()
+  await c.env.DB.prepare('UPDATE admin_invites SET used=1 WHERE token=?').bind(token).run()
+
+  return new Response(null, {
+    status: 302,
+    headers: { Location: `https://axion.amplifiedsmp.org/admin#invited=1` },
+  })
 })
 
 export default app
