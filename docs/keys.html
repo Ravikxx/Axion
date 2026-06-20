@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>API Keys — Axion Labs</title>
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -300,6 +301,8 @@
       <input type="password" id="input-password" placeholder="••••••••" autocomplete="current-password">
     </div>
 
+    <div class="cf-turnstile" data-sitekey="TURNSTILE_SITE_KEY" data-callback="onTurnstile" data-theme="light" style="margin-bottom:12px"></div>
+
     <button class="btn-full btn-primary-full" id="auth-submit" onclick="submitAuth()">Sign in</button>
 
     <div style="display:flex;align-items:center;gap:12px;margin:18px 0 4px">
@@ -454,6 +457,8 @@
 <script>
   // ── State ──────────────────────────────────────────────────────────────────
   const API = 'https://api.amplifiedsmp.org';
+  let _turnstileToken = null;
+  function onTurnstile(token) { _turnstileToken = token; }
   let authMode = 'signin'; // 'signin' | 'signup'
   let currentUser = null;
   let sessionToken = localStorage.getItem('axion_token') || null;
@@ -489,13 +494,14 @@
 
     if (!email || !password) { showAuthError('Please fill in all fields.'); return; }
     if (password.length < 8) { showAuthError('Password must be at least 8 characters.'); return; }
+    if (!_turnstileToken) { showAuthError('Security check not complete — please wait a moment.'); return; }
 
     const btn = document.getElementById('auth-submit');
     btn.textContent = 'Please wait…'; btn.disabled = true;
 
     try {
       const endpoint = authMode === 'signin' ? '/auth/login' : '/auth/register';
-      const body = { email, password };
+      const body = { email, password, turnstile: _turnstileToken };
       if (authMode === 'signup') body.name = document.getElementById('input-name')?.value || '';
 
       const res = await fetch(API + endpoint, {
@@ -527,6 +533,8 @@
     } finally {
       btn.disabled = false;
       btn.textContent = authMode === 'signin' ? 'Sign in' : 'Create account';
+      _turnstileToken = null;
+      if (window.turnstile) window.turnstile.reset();
     }
   }
 

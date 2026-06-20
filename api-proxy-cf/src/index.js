@@ -45,6 +45,17 @@ async function parseToken(token, secret) {
   } catch { return null }
 }
 
+async function verifyTurnstile(token, secret, ip) {
+  if (!secret) return true // skip if not configured yet
+  const res = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({ secret, response: token || '', remoteip: ip }),
+  })
+  const data = await res.json()
+  return data.success === true
+}
+
 // 10 attempts per IP per 15 minutes on auth endpoints
 async function checkRateLimit(db, ip) {
   const key = `auth:${ip}`
@@ -117,7 +128,8 @@ app.post('/auth/register', async (c) => {
   const ip = c.req.header('CF-Connecting-IP') || 'unknown'
   if (!await checkRateLimit(c.env.DB, ip)) return json({ error: 'Too many attempts. Try again in 15 minutes.' }, 429)
 
-  const { email, password } = await c.req.json().catch(() => ({}))
+  const { email, password, turnstile } = await c.req.json().catch(() => ({}))
+  if (!await verifyTurnstile(turnstile, c.env.TURNSTILE_SECRET, ip)) return json({ error: 'Security check failed. Please try again.' }, 403)
   if (!email || !password) return json({ error: 'email and password required' }, 400)
   if (!validEmail(email)) return json({ error: 'Invalid email address' }, 400)
   if (password.length < 8) return json({ error: 'Password must be at least 8 characters' }, 400)
@@ -234,7 +246,8 @@ app.post('/auth/login', async (c) => {
   const ip = c.req.header('CF-Connecting-IP') || 'unknown'
   if (!await checkRateLimit(c.env.DB, ip)) return json({ error: 'Too many attempts. Try again in 15 minutes.' }, 429)
 
-  const { email, password } = await c.req.json().catch(() => ({}))
+  const { email, password, turnstile } = await c.req.json().catch(() => ({}))
+  if (!await verifyTurnstile(turnstile, c.env.TURNSTILE_SECRET, ip)) return json({ error: 'Security check failed. Please try again.' }, 403)
   const user = await c.env.DB.prepare('SELECT * FROM users WHERE email=?').bind((email || '').toLowerCase()).first()
   const pw_hash = await hashPw(password || '', c.env.PW_SALT)
   if (!user || user.pw_hash !== pw_hash) return json({ error: 'Invalid email or password' }, 401)
