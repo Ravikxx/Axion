@@ -495,6 +495,17 @@
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Something went wrong.');
 
+      if (data.pending) {
+        // Email verification sent — show confirmation screen
+        document.getElementById('auth-screen').innerHTML = `
+          <div class="auth-card" style="text-align:center">
+            <div style="font-size:40px;margin-bottom:16px">📬</div>
+            <div class="auth-title">Check your inbox</div>
+            <p class="auth-sub" style="margin-bottom:0">We sent a verification link to <strong>${email}</strong>. Click it to activate your account.</p>
+          </div>`;
+        return;
+      }
+
       sessionToken = data.token;
       localStorage.setItem('axion_token', sessionToken);
       localStorage.setItem('axion_email', data.email || email);
@@ -735,8 +746,25 @@
     if (e.target === this) closeConfirm();
   });
 
-  // Auto-login if stored token exists
+  // Auto-login if stored token exists, or handle #verified= redirect from email link
   (async function init() {
+    // Handle redirect back from email verification link
+    const hash = window.location.hash.slice(1);
+    if (hash.startsWith('verified=')) {
+      const params = new URLSearchParams(hash);
+      const tok = params.get('verified');
+      const em = params.get('email');
+      if (tok) {
+        sessionToken = tok;
+        localStorage.setItem('axion_token', tok);
+        localStorage.setItem('axion_email', em || '');
+        currentUser = { email: em || 'your account' };
+        history.replaceState(null, '', window.location.pathname);
+        showDashboard();
+        return;
+      }
+    }
+
     if (!sessionToken) return;
     try {
       const res = await fetch(API + '/dashboard/keys', { headers: { Authorization: `Bearer ${sessionToken}` } });

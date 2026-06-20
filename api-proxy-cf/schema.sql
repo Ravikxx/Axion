@@ -1,8 +1,10 @@
 CREATE TABLE IF NOT EXISTS users (
-  id       TEXT PRIMARY KEY,
-  email    TEXT UNIQUE NOT NULL,
-  pw_hash  TEXT NOT NULL,
-  created_at INTEGER DEFAULT (strftime('%s','now'))
+  id           TEXT PRIMARY KEY,
+  email        TEXT UNIQUE NOT NULL,
+  pw_hash      TEXT NOT NULL,
+  verified     INTEGER DEFAULT 0,
+  verify_token TEXT,
+  created_at   INTEGER DEFAULT (strftime('%s','now'))
 );
 
 CREATE TABLE IF NOT EXISTS api_keys (

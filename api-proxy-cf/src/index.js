@@ -52,19 +52,70 @@ async function requireKey(c) {
   return c.env.DB.prepare('SELECT * FROM api_keys WHERE key_value=? AND revoked=0').bind(key).first()
 }
 
+// ── Email ──────────────────────────────────────────────────────────────────
+
+async function sendVerificationEmail(email, token, resendKey) {
+  const link = `https://axion.amplifiedsmp.org/keys/verify?token=${token}`
+  await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${resendKey}` },
+    body: JSON.stringify({
+      from: 'Axion Labs <noreply@amplifiedsmp.org>',
+      to: [email],
+      subject: 'Verify your Axion account',
+      html: `
+        <div style="font-family:system-ui,sans-serif;max-width:480px;margin:0 auto;padding:32px">
+          <h2 style="margin:0 0 8px">Verify your email</h2>
+          <p style="color:#555;margin:0 0 24px">Click the button below to activate your Axion Labs account and start using the API.</p>
+          <a href="${link}" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">Verify email →</a>
+          <p style="color:#999;font-size:12px;margin-top:24px">Link expires in 24 hours. If you didn't sign up, ignore this email.</p>
+        </div>`,
+    }),
+  })
+}
+
 // ── Auth ───────────────────────────────────────────────────────────────────
 
 app.post('/auth/register', async (c) => {
   const { email, password } = await c.req.json().catch(() => ({}))
   if (!email || !password) return json({ error: 'email and password required' }, 400)
+  if (password.length < 8) return json({ error: 'Password must be at least 8 characters' }, 400)
 
-  const existing = await c.env.DB.prepare('SELECT id FROM users WHERE email=?').bind(email.toLowerCase()).first()
-  if (existing) return json({ error: 'Email already registered' }, 409)
+  const existing = await c.env.DB.prepare('SELECT id, verified FROM users WHERE email=?').bind(email.toLowerCase()).first()
+  if (existing && existing.verified) return json({ error: 'Email already registered' }, 409)
 
-  const id = crypto.randomUUID()
+  const id = existing?.id || crypto.randomUUID()
   const pw_hash = await hashPw(password, c.env.PW_SALT)
-  await c.env.DB.prepare('INSERT INTO users (id, email, pw_hash) VALUES (?,?,?)').bind(id, email.toLowerCase(), pw_hash).run()
-  return json({ user_id: id, email, token: makeToken(id) })
+  const verify_token = crypto.randomUUID()
+
+  if (existing) {
+    await c.env.DB.prepare('UPDATE users SET pw_hash=?, verify_token=? WHERE id=?').bind(pw_hash, verify_token, id).run()
+  } else {
+    await c.env.DB.prepare('INSERT INTO users (id, email, pw_hash, verify_token) VALUES (?,?,?,?)').bind(id, email.toLowerCase(), pw_hash, verify_token).run()
+  }
+
+  if (c.env.RESEND_API_KEY) {
+    c.executionCtx.waitUntil(sendVerificationEmail(email.toLowerCase(), verify_token, c.env.RESEND_API_KEY))
+  }
+
+  return json({ pending: true, message: 'Check your email to verify your account.' })
+})
+
+app.get('/auth/verify', async (c) => {
+  const token = c.req.query('token')
+  if (!token) return json({ error: 'Missing token' }, 400)
+
+  const user = await c.env.DB.prepare('SELECT * FROM users WHERE verify_token=?').bind(token).first()
+  if (!user) return new Response('Invalid or expired verification link.', { status: 400, headers: { 'Content-Type': 'text/plain' } })
+
+  await c.env.DB.prepare('UPDATE users SET verified=1, verify_token=NULL WHERE id=?').bind(user.id).run()
+
+  // Redirect to dashboard with session token in URL hash (read by JS, never sent to server)
+  const sessionToken = makeToken(user.id)
+  return new Response(null, {
+    status: 302,
+    headers: { Location: `https://axion.amplifiedsmp.org/keys#verified=${encodeURIComponent(sessionToken)}&email=${encodeURIComponent(user.email)}` },
+  })
 })
 
 app.post('/auth/login', async (c) => {
@@ -72,6 +123,7 @@ app.post('/auth/login', async (c) => {
   const user = await c.env.DB.prepare('SELECT * FROM users WHERE email=?').bind((email || '').toLowerCase()).first()
   const pw_hash = await hashPw(password || '', c.env.PW_SALT)
   if (!user || user.pw_hash !== pw_hash) return json({ error: 'Invalid email or password' }, 401)
+  if (!user.verified) return json({ error: 'Please verify your email before signing in.' }, 403)
   return json({ token: makeToken(user.id), email: user.email })
 })
 
