@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Keys — Axion Labs</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:         #f4efe6;
+      --bg-card:    #faf7f2;
+      --border:     #e0d8cc;
+      --text:       #1a1209;
+      --text-muted: #6b5e4e;
+      --accent:     #e8602c;
+      --accent-lt:  #fdf0ea;
+      --dark:       #1a1209;
+      --green:      #2d7a3a;
+      --green-lt:   #e8f4ea;
+      --red:        #dc2626;
+      --red-lt:     #fef2f2;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      background: var(--bg); color: var(--text); line-height: 1.6; min-height: 100vh;
+    }
+
+    /* ── Nav ── */
+    nav {
+      background: var(--dark); padding: 0 32px;
+      display: flex; align-items: center; height: 56px; gap: 24px;
+      position: sticky; top: 0; z-index: 100;
+    }
+    nav a { color: #c9b99a; text-decoration: none; font-size: 14px; transition: color 0.2s; }
+    nav a:hover { color: #f4efe6; }
+    nav a.brand { color: #f4efe6; font-weight: 700; font-size: 16px; margin-right: 16px; }
+    .nav-right { margin-left: auto; display: flex; align-items: center; gap: 16px; }
+    .nav-user { font-size: 13px; color: #8b7355; }
+    .btn-sm {
+      font-size: 13px; font-weight: 600; padding: 6px 14px;
+      border-radius: 6px; border: none; cursor: pointer; transition: opacity 0.2s;
+      text-decoration: none; display: inline-block;
+    }
+    .btn-sm:hover { opacity: 0.85; }
+    .btn-accent { background: var(--accent); color: #fff; }
+    .btn-ghost-dark { background: rgba(255,255,255,0.08); color: #c9b99a; border: 1px solid rgba(255,255,255,0.12); }
+
+    /* ── Auth screen ── */
+    #auth-screen {
+      display: flex; align-items: center; justify-content: center;
+      min-height: calc(100vh - 56px); padding: 32px;
+    }
+    .auth-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 40px; width: 100%; max-width: 400px;
+      box-shadow: 0 4px 32px rgba(26,18,9,0.08);
+    }
+    .auth-logo { font-size: 28px; margin-bottom: 8px; }
+    .auth-title { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+    .auth-sub { font-size: 14px; color: var(--text-muted); margin-bottom: 28px; }
+
+    .field { margin-bottom: 16px; }
+    .field label { display: block; font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; }
+    .field input {
+      width: 100%; padding: 10px 12px; border-radius: 8px;
+      border: 1px solid var(--border); background: var(--bg);
+      font-size: 14px; color: var(--text); outline: none;
+      transition: border-color 0.15s; font-family: inherit;
+    }
+    .field input:focus { border-color: var(--accent); }
+
+    .btn-full { width: 100%; padding: 11px; font-size: 14px; font-weight: 700; border-radius: 8px; border: none; cursor: pointer; transition: opacity 0.2s; }
+    .btn-full:hover { opacity: 0.88; }
+    .btn-primary-full { background: var(--accent); color: #fff; }
+
+    .auth-toggle { margin-top: 18px; text-align: center; font-size: 13px; color: var(--text-muted); }
+    .auth-toggle a { color: var(--accent); text-decoration: none; font-weight: 600; cursor: pointer; }
+    .auth-toggle a:hover { text-decoration: underline; }
+
+    .auth-error {
+      background: var(--red-lt); border: 1px solid rgba(220,38,38,0.2);
+      color: var(--red); font-size: 13px; padding: 10px 14px;
+      border-radius: 7px; margin-bottom: 16px; display: none;
+    }
+
+    /* ── Dashboard ── */
+    #dashboard { display: none; }
+
+    .page-header {
+      background: var(--dark); color: #f4efe6; padding: 44px 32px 36px;
+    }
+    .page-header .tag {
+      font-size: 12px; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 10px;
+    }
+    .page-header h1 { font-size: 32px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 6px; }
+    .page-header p { color: #8b7355; font-size: 14px; }
+
+    main { max-width: 860px; margin: 0 auto; padding: 40px 32px 80px; }
+
+    /* ── Stats ── */
+    .stats-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-bottom: 36px; }
+    .stat-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 10px; padding: 18px 20px;
+    }
+    .stat-card .num { font-size: 26px; font-weight: 800; letter-spacing: -0.02em; color: var(--accent); }
+    .stat-card .lbl { font-size: 12px; color: var(--text-muted); margin-top: 3px; }
+
+    /* ── Section header ── */
+    .section-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .section-header h2 { font-size: 18px; font-weight: 700; }
+
+    /* ── Key table ── */
+    .keys-table-wrap {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 12px; overflow: hidden; margin-bottom: 32px;
+    }
+    .keys-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    .keys-table th {
+      text-align: left; padding: 12px 20px;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--text-muted);
+      border-bottom: 1px solid var(--border); background: var(--bg);
+    }
+    .keys-table td { padding: 16px 20px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+    .keys-table tr:last-child td { border-bottom: none; }
+    .key-name { font-weight: 600; font-size: 14px; }
+    .key-value {
+      font-family: "SF Mono", "Fira Code", monospace;
+      font-size: 12px; color: var(--text-muted);
+      background: rgba(26,18,9,0.05); padding: 4px 8px; border-radius: 5px;
+    }
+    .key-date { font-size: 13px; color: var(--text-muted); }
+    .key-usage { font-size: 13px; font-weight: 600; }
+    .key-actions { display: flex; gap: 8px; align-items: center; }
+
+    .btn-icon {
+      padding: 6px 12px; border-radius: 6px; border: 1px solid var(--border);
+      background: none; cursor: pointer; font-size: 12px; font-weight: 600;
+      color: var(--text-muted); transition: all 0.15s;
+    }
+    .btn-icon:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-lt); }
+    .btn-icon.danger:hover { border-color: var(--red); color: var(--red); background: var(--red-lt); }
+    .btn-icon.copied { border-color: var(--green); color: var(--green); background: var(--green-lt); }
+
+    .empty-keys {
+      text-align: center; padding: 48px 24px; color: var(--text-muted); font-size: 14px;
+    }
+    .empty-keys strong { display: block; font-size: 16px; color: var(--text); margin-bottom: 6px; }
+
+    /* ── New key modal ── */
+    .modal-backdrop {
+      position: fixed; inset: 0; background: rgba(26,18,9,0.5);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 200; padding: 24px; opacity: 0; pointer-events: none;
+      transition: opacity 0.2s;
+    }
+    .modal-backdrop.open { opacity: 1; pointer-events: all; }
+    .modal {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 32px; width: 100%; max-width: 440px;
+      box-shadow: 0 8px 48px rgba(26,18,9,0.2);
+      transform: translateY(8px); transition: transform 0.2s;
+    }
+    .modal-backdrop.open .modal { transform: none; }
+    .modal h3 { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+    .modal p { font-size: 14px; color: var(--text-muted); margin-bottom: 24px; }
+    .modal-actions { display: flex; gap: 10px; margin-top: 20px; }
+    .modal-actions .btn-sm { flex: 1; padding: 10px; text-align: center; }
+
+    /* ── Key reveal ── */
+    .key-reveal {
+      background: #0f0c07; border: 1px solid #2d2010;
+      border-radius: 8px; padding: 14px 16px; margin: 16px 0;
+      font-family: "SF Mono", "Fira Code", monospace;
+      font-size: 13px; color: #c9b99a; word-break: break-all;
+      line-height: 1.6;
+    }
+    .key-reveal-warning {
+      font-size: 13px; color: var(--text-muted);
+      background: var(--accent-lt); border: 1px solid rgba(232,96,44,0.2);
+      border-radius: 7px; padding: 10px 14px; margin-bottom: 12px;
+    }
+    .key-reveal-warning strong { color: var(--accent); }
+
+    /* ── Usage section ── */
+    .usage-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 24px;
+    }
+    .usage-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 16px; }
+    .usage-bar-row { display: flex; flex-direction: column; gap: 12px; }
+    .usage-bar-item { }
+    .usage-bar-label {
+      display: flex; justify-content: space-between;
+      font-size: 13px; margin-bottom: 5px;
+    }
+    .usage-bar-label span:first-child { color: var(--text-muted); }
+    .usage-bar-label span:last-child { font-weight: 600; }
+    .usage-bar-track {
+      height: 6px; background: var(--border);
+      border-radius: 3px; overflow: hidden;
+    }
+    .usage-bar-fill {
+      height: 100%; background: var(--accent);
+      border-radius: 3px; transition: width 0.6s ease;
+    }
+
+    /* ── Docs callout ── */
+    .docs-callout {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 22px 24px; margin-top: 32px;
+    }
+    .docs-callout h3 { font-size: 15px; font-weight: 700; margin-bottom: 10px; }
+    .code-block {
+      background: #0f0c07; border: 1px solid #2d2010; border-radius: 8px;
+      padding: 14px 18px; font-family: "SF Mono","Fira Code",monospace;
+      font-size: 12px; color: #c9b99a; overflow-x: auto; line-height: 1.8;
+      margin: 10px 0;
+    }
+    .code-block .prompt { color: #e8602c; user-select: none; }
+    .code-block .comment { color: #4a3828; }
+
+    /* ── Confirm dialog ── */
+    .confirm-backdrop {
+      position: fixed; inset: 0; background: rgba(26,18,9,0.6);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 300; padding: 24px; opacity: 0; pointer-events: none;
+      transition: opacity 0.15s;
+    }
+    .confirm-backdrop.open { opacity: 1; pointer-events: all; }
+    .confirm-box {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 28px; max-width: 360px; width: 100%;
+      box-shadow: 0 8px 40px rgba(26,18,9,0.25);
+    }
+    .confirm-box h4 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+    .confirm-box p { font-size: 14px; color: var(--text-muted); margin-bottom: 20px; }
+    .confirm-actions { display: flex; gap: 10px; }
+    .confirm-actions button { flex: 1; padding: 9px; border-radius: 7px; font-size: 13px; font-weight: 600; cursor: pointer; border: 1px solid var(--border); transition: all 0.15s; }
+    .confirm-cancel { background: none; color: var(--text-muted); }
+    .confirm-cancel:hover { background: var(--bg); }
+    .confirm-delete { background: var(--red); color: #fff; border-color: var(--red); }
+    .confirm-delete:hover { opacity: 0.88; }
+
+    /* ── Footer ── */
+    footer { background: var(--dark); color: #6b5e4e; text-align: center; padding: 24px; font-size: 13px; }
+    footer a { color: #8b7355; text-decoration: none; }
+
+    /* ── Mobile ── */
+    @media (max-width: 640px) {
+      nav { padding: 0 16px; }
+      nav a:not(.brand) { display: none; }
+      .nav-right { gap: 8px; }
+      main { padding: 24px 16px 56px; }
+      .stats-row { grid-template-columns: 1fr 1fr; }
+      .keys-table th:nth-child(3),
+      .keys-table td:nth-child(3) { display: none; }
+      .page-header { padding: 32px 20px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="brand">⚛ Axion</a>
+  <a href="/lumen">Lumen</a>
+  <a href="/docs">Docs</a>
+  <div class="nav-right">
+    <span class="nav-user" id="nav-email"></span>
+    <button class="btn-sm btn-ghost-dark" id="logout-btn" style="display:none" onclick="logout()">Sign out</button>
+  </div>
+</nav>
+
+<!-- Auth screen -->
+<div id="auth-screen">
+  <div class="auth-card">
+    <div class="auth-logo">⚛</div>
+    <div class="auth-title" id="auth-title">Sign in</div>
+    <div class="auth-sub" id="auth-sub">Access your Axion API keys</div>
+
+    <div class="auth-error" id="auth-error"></div>
+
+    <div class="field" id="name-field" style="display:none">
+      <label>Name</label>
+      <input type="text" id="input-name" placeholder="Your name" autocomplete="name">
+    </div>
+    <div class="field">
+      <label>Email</label>
+      <input type="email" id="input-email" placeholder="you@example.com" autocomplete="email">
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input type="password" id="input-password" placeholder="••••••••" autocomplete="current-password">
+    </div>
+
+    <button class="btn-full btn-primary-full" id="auth-submit" onclick="submitAuth()">Sign in</button>
+
+    <div class="auth-toggle">
+      <span id="auth-toggle-text">Don't have an account?</span>
+      <a onclick="toggleAuthMode()"> <span id="auth-toggle-link">Sign up</span></a>
+    </div>
+  </div>
+</div>
+
+<!-- Dashboard -->
+<div id="dashboard">
+  <div class="page-header">
+    <div class="tag">Axion Labs</div>
+    <h1>API Keys</h1>
+    <p>Use your key anywhere that accepts an OpenAI-compatible API.</p>
+  </div>
+
+  <main>
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="num" id="stat-keys">0</div>
+        <div class="lbl">Active keys</div>
+      </div>
+      <div class="stat-card">
+        <div class="num" id="stat-today">0</div>
+        <div class="lbl">Requests today</div>
+      </div>
+      <div class="stat-card">
+        <div class="num" id="stat-month">0</div>
+        <div class="lbl">Requests this month</div>
+      </div>
+      <div class="stat-card">
+        <div class="num" id="stat-limit">1,000</div>
+        <div class="lbl">Monthly limit</div>
+      </div>
+    </div>
+
+    <!-- Keys -->
+    <div class="section-header">
+      <h2>Your keys</h2>
+      <button class="btn-sm btn-accent" onclick="openNewKeyModal()">+ New key</button>
+    </div>
+
+    <div class="keys-table-wrap">
+      <table class="keys-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Key</th>
+            <th>Created</th>
+            <th>Usage</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="keys-tbody">
+          <tr><td colspan="5"><div class="empty-keys"><strong>No keys yet</strong>Create your first key to get started.</div></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Usage breakdown -->
+    <div class="usage-card" id="usage-section" style="display:none">
+      <h3>Usage this month</h3>
+      <div class="usage-bar-row" id="usage-bars"></div>
+    </div>
+
+    <!-- Docs -->
+    <div class="docs-callout">
+      <h3>Using your key</h3>
+      <div class="code-block">
+        <span class="comment"># OpenAI-compatible endpoint</span><br>
+        <span class="prompt">$ </span>curl https://api.amplifiedsmp.org/v1/chat/completions \<br>
+        &nbsp;&nbsp;-H "Authorization: Bearer axion-sk-…" \<br>
+        &nbsp;&nbsp;-H "Content-Type: application/json" \<br>
+        &nbsp;&nbsp;-d '{"model":"lumen","messages":[{"role":"user","content":"Hello"}]}'
+      </div>
+      <div class="code-block">
+        <span class="comment"># Python — openai library</span><br>
+        from openai import OpenAI<br>
+        client = OpenAI(api_key="axion-sk-…", base_url="https://api.amplifiedsmp.org/v1")<br>
+        resp = client.chat.completions.create(model="lumen", messages=[{"role":"user","content":"Hello"}])
+      </div>
+      <div class="code-block">
+        <span class="comment"># Axion CLI</span><br>
+        <span class="prompt">› </span>/endpoint axion https://api.amplifiedsmp.org/v1 axion-sk-…<br>
+        <span class="prompt">› </span>/model axion
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- New key modal -->
+<div class="modal-backdrop" id="new-key-modal">
+  <div class="modal">
+    <h3 id="modal-title">Create new key</h3>
+    <p id="modal-desc">Give your key a name so you can identify it later.</p>
+
+    <!-- Step 1: name input -->
+    <div id="modal-step-1">
+      <div class="field">
+        <label>Key name</label>
+        <input type="text" id="new-key-name" placeholder="e.g. My project, VS Code, Home server">
+      </div>
+      <div class="modal-actions">
+        <button class="btn-sm btn-ghost-dark" onclick="closeNewKeyModal()" style="background:#e0d8cc;color:var(--text-muted);border:none">Cancel</button>
+        <button class="btn-sm btn-accent" onclick="createKey()">Create key</button>
+      </div>
+    </div>
+
+    <!-- Step 2: reveal key -->
+    <div id="modal-step-2" style="display:none">
+      <div class="key-reveal-warning">
+        <strong>Copy this key now.</strong> It won't be shown again.
+      </div>
+      <div class="key-reveal" id="revealed-key"></div>
+      <div class="modal-actions">
+        <button class="btn-sm btn-ghost-dark" id="copy-reveal-btn" onclick="copyRevealedKey()" style="background:#e0d8cc;color:var(--text-muted);border:none;flex:1">Copy key</button>
+        <button class="btn-sm btn-accent" onclick="doneCreating()" style="flex:1">Done</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Revoke confirm -->
+<div class="confirm-backdrop" id="confirm-backdrop">
+  <div class="confirm-box">
+    <h4>Revoke key?</h4>
+    <p>This key will stop working immediately. Any apps using it will lose access.</p>
+    <div class="confirm-actions">
+      <button class="confirm-cancel" onclick="closeConfirm()">Cancel</button>
+      <button class="confirm-delete" onclick="confirmRevoke()">Revoke</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 Axion Labs · <a href="/">Home</a> · <a href="/docs">Docs</a></p>
+</footer>
+
+<script>
+  // ── State ──────────────────────────────────────────────────────────────────
+  let authMode = 'signin'; // 'signin' | 'signup'
+  let currentUser = null;
+  let keys = [];
+  let revokeTarget = null;
+
+  // ── Auth ───────────────────────────────────────────────────────────────────
+
+  function toggleAuthMode() {
+    authMode = authMode === 'signin' ? 'signup' : 'signin';
+    const isSignup = authMode === 'signup';
+    document.getElementById('auth-title').textContent = isSignup ? 'Create account' : 'Sign in';
+    document.getElementById('auth-sub').textContent = isSignup ? 'Start using the Axion API' : 'Access your Axion API keys';
+    document.getElementById('auth-submit').textContent = isSignup ? 'Create account' : 'Sign in';
+    document.getElementById('auth-toggle-text').textContent = isSignup ? 'Already have an account?' : "Don't have an account?";
+    document.getElementById('auth-toggle-link').textContent = isSignup ? 'Sign in' : 'Sign up';
+    document.getElementById('name-field').style.display = isSignup ? '' : 'none';
+    hideAuthError();
+  }
+
+  function showAuthError(msg) {
+    const el = document.getElementById('auth-error');
+    el.textContent = msg; el.style.display = '';
+  }
+  function hideAuthError() {
+    document.getElementById('auth-error').style.display = 'none';
+  }
+
+  async function submitAuth() {
+    const email = document.getElementById('input-email').value.trim();
+    const password = document.getElementById('input-password').value;
+    hideAuthError();
+
+    if (!email || !password) { showAuthError('Please fill in all fields.'); return; }
+    if (password.length < 8) { showAuthError('Password must be at least 8 characters.'); return; }
+
+    const btn = document.getElementById('auth-submit');
+    btn.textContent = 'Please wait…'; btn.disabled = true;
+
+    try {
+      // TODO: replace with real auth call (Supabase / backend)
+      await new Promise(r => setTimeout(r, 800)); // simulate network
+      // Mock success — remove when backend is wired
+      currentUser = { email, name: document.getElementById('input-name')?.value || email.split('@')[0] };
+      showDashboard();
+    } catch (err) {
+      showAuthError(err.message || 'Something went wrong. Try again.');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = authMode === 'signin' ? 'Sign in' : 'Create account';
+    }
+  }
+
+  function logout() {
+    currentUser = null; keys = [];
+    document.getElementById('dashboard').style.display = 'none';
+    document.getElementById('auth-screen').style.display = 'flex';
+    document.getElementById('logout-btn').style.display = 'none';
+    document.getElementById('nav-email').textContent = '';
+    document.getElementById('input-password').value = '';
+  }
+
+  // ── Dashboard ──────────────────────────────────────────────────────────────
+
+  function showDashboard() {
+    document.getElementById('auth-screen').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'block';
+    document.getElementById('logout-btn').style.display = '';
+    document.getElementById('nav-email').textContent = currentUser.email;
+    loadKeys();
+  }
+
+  async function loadKeys() {
+    // TODO: fetch from backend
+    // keys = await fetch('/api/keys', {headers:{Authorization:`Bearer ${token}`}}).then(r=>r.json())
+    keys = []; // start empty — will be populated from backend
+    renderKeys();
+    renderStats();
+  }
+
+  function renderStats() {
+    document.getElementById('stat-keys').textContent = keys.length;
+    const today = keys.reduce((s, k) => s + (k.usageToday || 0), 0);
+    const month = keys.reduce((s, k) => s + (k.usageMonth || 0), 0);
+    document.getElementById('stat-today').textContent = today.toLocaleString();
+    document.getElementById('stat-month').textContent = month.toLocaleString();
+
+    const usageSection = document.getElementById('usage-section');
+    if (keys.length > 0) {
+      usageSection.style.display = '';
+      const barsEl = document.getElementById('usage-bars');
+      barsEl.innerHTML = keys.map(k => {
+        const pct = Math.min(((k.usageMonth || 0) / 1000) * 100, 100);
+        return `
+          <div class="usage-bar-item">
+            <div class="usage-bar-label">
+              <span>${k.name}</span>
+              <span>${(k.usageMonth || 0).toLocaleString()} req</span>
+            </div>
+            <div class="usage-bar-track">
+              <div class="usage-bar-fill" style="width:${pct}%"></div>
+            </div>
+          </div>`;
+      }).join('');
+    } else {
+      usageSection.style.display = 'none';
+    }
+  }
+
+  function renderKeys() {
+    const tbody = document.getElementById('keys-tbody');
+    if (keys.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="5"><div class="empty-keys"><strong>No keys yet</strong>Click "New key" to create your first one.</div></td></tr>`;
+      return;
+    }
+    tbody.innerHTML = keys.map((k, i) => `
+      <tr>
+        <td><div class="key-name">${escHtml(k.name)}</div></td>
+        <td><span class="key-value">${escHtml(k.prefix)}••••••••</span></td>
+        <td class="key-date">${formatDate(k.createdAt)}</td>
+        <td class="key-usage">${(k.usageMonth || 0).toLocaleString()}</td>
+        <td>
+          <div class="key-actions">
+            <button class="btn-icon" onclick="copyPrefix(${i})" id="copy-btn-${i}">Copy</button>
+            <button class="btn-icon danger" onclick="startRevoke(${i})">Revoke</button>
+          </div>
+        </td>
+      </tr>`).join('');
+  }
+
+  // ── New key modal ──────────────────────────────────────────────────────────
+
+  function openNewKeyModal() {
+    document.getElementById('new-key-name').value = '';
+    document.getElementById('modal-step-1').style.display = '';
+    document.getElementById('modal-step-2').style.display = 'none';
+    document.getElementById('modal-title').textContent = 'Create new key';
+    document.getElementById('modal-desc').textContent = 'Give your key a name so you can identify it later.';
+    document.getElementById('new-key-modal').classList.add('open');
+    setTimeout(() => document.getElementById('new-key-name').focus(), 100);
+  }
+
+  function closeNewKeyModal() {
+    document.getElementById('new-key-modal').classList.remove('open');
+  }
+
+  async function createKey() {
+    const name = document.getElementById('new-key-name').value.trim();
+    if (!name) { document.getElementById('new-key-name').focus(); return; }
+
+    // TODO: POST to backend to generate real key
+    // const res = await fetch('/api/keys', {method:'POST', body:JSON.stringify({name}), headers:{...}})
+    // const {key, prefix} = await res.json()
+
+    // Mock — generate a fake key for UI demo
+    const raw = 'axion-sk-' + Array.from(crypto.getRandomValues(new Uint8Array(24)))
+      .map(b => b.toString(36).padStart(2,'0')).join('').slice(0, 32);
+    const prefix = raw.slice(0, 14) + '…';
+
+    const newKey = {
+      id: Date.now(),
+      name,
+      prefix,
+      fullKey: raw,
+      createdAt: new Date().toISOString(),
+      usageToday: 0,
+      usageMonth: 0,
+    };
+    keys.unshift(newKey);
+    renderKeys();
+    renderStats();
+
+    document.getElementById('revealed-key').textContent = raw;
+    document.getElementById('modal-step-1').style.display = 'none';
+    document.getElementById('modal-step-2').style.display = '';
+    document.getElementById('modal-title').textContent = 'Key created';
+    document.getElementById('modal-desc').textContent = 'Save this key somewhere safe.';
+    document.getElementById('copy-reveal-btn').textContent = 'Copy key';
+    document.getElementById('copy-reveal-btn').classList.remove('copied');
+  }
+
+  function copyRevealedKey() {
+    const key = document.getElementById('revealed-key').textContent;
+    navigator.clipboard.writeText(key).then(() => {
+      const btn = document.getElementById('copy-reveal-btn');
+      btn.textContent = 'Copied!'; btn.classList.add('copied');
+    });
+  }
+
+  function doneCreating() {
+    closeNewKeyModal();
+  }
+
+  // ── Revoke ─────────────────────────────────────────────────────────────────
+
+  function startRevoke(i) {
+    revokeTarget = i;
+    document.getElementById('confirm-backdrop').classList.add('open');
+  }
+
+  function closeConfirm() {
+    revokeTarget = null;
+    document.getElementById('confirm-backdrop').classList.remove('open');
+  }
+
+  async function confirmRevoke() {
+    if (revokeTarget === null) return;
+    // TODO: DELETE /api/keys/:id
+    keys.splice(revokeTarget, 1);
+    renderKeys(); renderStats();
+    closeConfirm();
+  }
+
+  // ── Copy prefix ────────────────────────────────────────────────────────────
+
+  function copyPrefix(i) {
+    // Copy the prefix as a hint — real copy of full key only shown at creation
+    const btn = document.getElementById(`copy-btn-${i}`);
+    btn.textContent = 'Copied!'; btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+  }
+
+  // ── Utils ──────────────────────────────────────────────────────────────────
+
+  function escHtml(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function formatDate(iso) {
+    const d = new Date(iso);
+    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  }
+
+  // Enter key on auth inputs
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && document.getElementById('auth-screen').style.display !== 'none') {
+      submitAuth();
+    }
+  });
+
+  // Close modal on backdrop click
+  document.getElementById('new-key-modal').addEventListener('click', function(e) {
+    if (e.target === this) closeNewKeyModal();
+  });
+  document.getElementById('confirm-backdrop').addEventListener('click', function(e) {
+    if (e.target === this) closeConfirm();
+  });
+</script>
+
+</body>
+</html>
