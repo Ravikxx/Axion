@@ -21,12 +21,45 @@ function genKey() {
   return 'axion-sk-' + Array.from(bytes).map(b => b.toString(16).padStart(2, '0')).join('')
 }
 
-function makeToken(uid) {
-  return btoa(JSON.stringify({ uid, ts: Date.now() }))
+const TOKEN_TTL = 7 * 24 * 60 * 60 * 1000 // 7 days
+
+async function makeToken(uid, secret) {
+  const payload = btoa(JSON.stringify({ uid, exp: Date.now() + TOKEN_TTL }))
+  const key = await crypto.subtle.importKey('raw', new TextEncoder().encode(secret), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign'])
+  const sig = await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(payload))
+  return `${payload}.${btoa(String.fromCharCode(...new Uint8Array(sig)))}`
 }
 
-function parseToken(token) {
-  try { return JSON.parse(atob(token)) } catch { return null }
+async function parseToken(token, secret) {
+  const parts = (token || '').split('.')
+  if (parts.length !== 2) return null
+  const [payload, sig] = parts
+  try {
+    const key = await crypto.subtle.importKey('raw', new TextEncoder().encode(secret), { name: 'HMAC', hash: 'SHA-256' }, false, ['verify'])
+    const sigBytes = Uint8Array.from(atob(sig), ch => ch.charCodeAt(0))
+    const valid = await crypto.subtle.verify('HMAC', key, sigBytes, new TextEncoder().encode(payload))
+    if (!valid) return null
+    const data = JSON.parse(atob(payload))
+    if (data.exp < Date.now()) return null // expired
+    return data
+  } catch { return null }
+}
+
+// 10 attempts per IP per 15 minutes on auth endpoints
+async function checkRateLimit(db, ip) {
+  const key = `auth:${ip}`
+  const window = 15 * 60 // seconds
+  const limit = 10
+  const now = Math.floor(Date.now() / 1000)
+
+  const row = await db.prepare('SELECT count, window_start FROM rate_limits WHERE key=?').bind(key).first()
+  if (row && now - row.window_start < window) {
+    if (row.count >= limit) return false
+    await db.prepare('UPDATE rate_limits SET count=count+1 WHERE key=?').bind(key).run()
+  } else {
+    await db.prepare('INSERT OR REPLACE INTO rate_limits (key, count, window_start) VALUES (?,1,?)').bind(key, now).run()
+  }
+  return true
 }
 
 function json(data, status = 200) {
@@ -39,10 +72,14 @@ function json(data, status = 200) {
 async function requireAuth(c) {
   const auth = c.req.header('Authorization') || ''
   const token = auth.replace(/^Bearer\s+/i, '').trim()
-  const payload = parseToken(token)
+  const payload = await parseToken(token, c.env.TOKEN_SECRET)
   if (!payload?.uid) return null
   const user = await c.env.DB.prepare('SELECT * FROM users WHERE id=?').bind(payload.uid).first()
   return user || null
+}
+
+function validEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
 }
 
 async function requireKey(c) {
@@ -77,8 +114,12 @@ async function sendVerificationEmail(email, token, resendKey) {
 // ── Auth ───────────────────────────────────────────────────────────────────
 
 app.post('/auth/register', async (c) => {
+  const ip = c.req.header('CF-Connecting-IP') || 'unknown'
+  if (!await checkRateLimit(c.env.DB, ip)) return json({ error: 'Too many attempts. Try again in 15 minutes.' }, 429)
+
   const { email, password } = await c.req.json().catch(() => ({}))
   if (!email || !password) return json({ error: 'email and password required' }, 400)
+  if (!validEmail(email)) return json({ error: 'Invalid email address' }, 400)
   if (password.length < 8) return json({ error: 'Password must be at least 8 characters' }, 400)
 
   const existing = await c.env.DB.prepare('SELECT id, verified FROM users WHERE email=?').bind(email.toLowerCase()).first()
@@ -111,7 +152,7 @@ app.get('/auth/verify', async (c) => {
   await c.env.DB.prepare('UPDATE users SET verified=1, verify_token=NULL WHERE id=?').bind(user.id).run()
 
   // Redirect to dashboard with session token in URL hash (read by JS, never sent to server)
-  const sessionToken = makeToken(user.id)
+  const sessionToken = await makeToken(user.id, c.env.TOKEN_SECRET)
   return new Response(null, {
     status: 302,
     headers: { Location: `https://axion.amplifiedsmp.org/keys#verified=${encodeURIComponent(sessionToken)}&email=${encodeURIComponent(user.email)}` },
@@ -180,7 +221,7 @@ app.get('/auth/google/callback', async (c) => {
     user = { id }
   }
 
-  const sessionToken = makeToken(user.id)
+  const sessionToken = await makeToken(user.id, c.env.TOKEN_SECRET)
   return new Response(null, {
     status: 302,
     headers: {
@@ -190,12 +231,15 @@ app.get('/auth/google/callback', async (c) => {
 })
 
 app.post('/auth/login', async (c) => {
+  const ip = c.req.header('CF-Connecting-IP') || 'unknown'
+  if (!await checkRateLimit(c.env.DB, ip)) return json({ error: 'Too many attempts. Try again in 15 minutes.' }, 429)
+
   const { email, password } = await c.req.json().catch(() => ({}))
   const user = await c.env.DB.prepare('SELECT * FROM users WHERE email=?').bind((email || '').toLowerCase()).first()
   const pw_hash = await hashPw(password || '', c.env.PW_SALT)
   if (!user || user.pw_hash !== pw_hash) return json({ error: 'Invalid email or password' }, 401)
   if (!user.verified) return json({ error: 'Please verify your email before signing in.' }, 403)
-  return json({ token: makeToken(user.id), email: user.email })
+  return json({ token: await makeToken(user.id, c.env.TOKEN_SECRET), email: user.email })
 })
 
 // ── Dashboard ──────────────────────────────────────────────────────────────
