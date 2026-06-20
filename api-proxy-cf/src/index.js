@@ -171,6 +171,33 @@ app.get('/auth/verify', async (c) => {
   })
 })
 
+// ── OAuth shared helper ────────────────────────────────────────────────────
+
+async function oauthFinish(c, { id_field, email, provider_id }) {
+  // Find by provider ID first, then fall back to email
+  let user = await c.env.DB.prepare(`SELECT * FROM users WHERE ${id_field}=?`).bind(provider_id).first()
+  if (!user && email) {
+    user = await c.env.DB.prepare('SELECT * FROM users WHERE email=?').bind(email.toLowerCase()).first()
+  }
+  if (user) {
+    if (!user[id_field]) {
+      await c.env.DB.prepare(`UPDATE users SET ${id_field}=?, verified=1 WHERE id=?`).bind(provider_id, user.id).run()
+    }
+  } else {
+    if (!email) return new Response('Could not get email from provider', { status: 400 })
+    const uid = crypto.randomUUID()
+    await c.env.DB.prepare(
+      `INSERT INTO users (id, email, pw_hash, verified, ${id_field}) VALUES (?,?,?,1,?)`
+    ).bind(uid, email.toLowerCase(), '', provider_id).run()
+    user = { id: uid }
+  }
+  const token = await makeToken(user.id, c.env.TOKEN_SECRET)
+  return new Response(null, {
+    status: 302,
+    headers: { Location: `https://axion.amplifiedsmp.org/keys#verified=${encodeURIComponent(token)}&email=${encodeURIComponent(email || '')}` },
+  })
+}
+
 // ── Google OAuth ───────────────────────────────────────────────────────────
 
 app.get('/auth/google', (c) => {
@@ -213,33 +240,82 @@ app.get('/auth/google/callback', async (c) => {
   const gUser = await userRes.json()
   if (!gUser.email) return new Response('Could not get email from Google', { status: 400 })
 
-  // Find or create user
-  let user = await c.env.DB.prepare('SELECT * FROM users WHERE google_id=?').bind(gUser.id).first()
-  if (!user) {
-    user = await c.env.DB.prepare('SELECT * FROM users WHERE email=?').bind(gUser.email.toLowerCase()).first()
-  }
+  return oauthFinish(c, { id_field: 'google_id', email: gUser.email, provider_id: gUser.id })
+})
 
-  if (user) {
-    // Link Google ID if not already linked
-    if (!user.google_id) {
-      await c.env.DB.prepare('UPDATE users SET google_id=?, verified=1 WHERE id=?').bind(gUser.id, user.id).run()
-    }
-  } else {
-    // Create new user — Google-verified so skip email verification
-    const id = crypto.randomUUID()
-    await c.env.DB.prepare(
-      'INSERT INTO users (id, email, pw_hash, verified, google_id) VALUES (?,?,?,1,?)'
-    ).bind(id, gUser.email.toLowerCase(), '', gUser.id).run()
-    user = { id }
-  }
+// ── GitHub OAuth ───────────────────────────────────────────────────────────
 
-  const sessionToken = await makeToken(user.id, c.env.TOKEN_SECRET)
-  return new Response(null, {
-    status: 302,
-    headers: {
-      Location: `https://axion.amplifiedsmp.org/keys#verified=${encodeURIComponent(sessionToken)}&email=${encodeURIComponent(gUser.email)}`,
-    },
+app.get('/auth/github', (c) => {
+  const params = new URLSearchParams({
+    client_id: c.env.GITHUB_CLIENT_ID,
+    redirect_uri: 'https://api.amplifiedsmp.org/auth/github/callback',
+    scope: 'user:email',
   })
+  return new Response(null, { status: 302, headers: { Location: `https://github.com/login/oauth/authorize?${params}` } })
+})
+
+app.get('/auth/github/callback', async (c) => {
+  const code = c.req.query('code')
+  if (!code) return new Response('Missing code', { status: 400 })
+
+  const tokenRes = await fetch('https://github.com/login/oauth/access_token', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+    body: JSON.stringify({ client_id: c.env.GITHUB_CLIENT_ID, client_secret: c.env.GITHUB_CLIENT_SECRET, code }),
+  })
+  const { access_token } = await tokenRes.json()
+  if (!access_token) return new Response('GitHub OAuth failed', { status: 400 })
+
+  // Get user profile
+  const [profileRes, emailsRes] = await Promise.all([
+    fetch('https://api.github.com/user', { headers: { Authorization: `Bearer ${access_token}`, 'User-Agent': 'axion-api' } }),
+    fetch('https://api.github.com/user/emails', { headers: { Authorization: `Bearer ${access_token}`, 'User-Agent': 'axion-api' } }),
+  ])
+  const profile = await profileRes.json()
+  const emails = await emailsRes.json()
+  const primary = emails.find(e => e.primary && e.verified)
+  const email = primary?.email || profile.email
+
+  return oauthFinish(c, { id_field: 'github_id', email, provider_id: String(profile.id) })
+})
+
+// ── Discord OAuth ──────────────────────────────────────────────────────────
+
+app.get('/auth/discord', (c) => {
+  const params = new URLSearchParams({
+    client_id: c.env.DISCORD_CLIENT_ID,
+    redirect_uri: 'https://api.amplifiedsmp.org/auth/discord/callback',
+    response_type: 'code',
+    scope: 'identify email',
+  })
+  return new Response(null, { status: 302, headers: { Location: `https://discord.com/oauth2/authorize?${params}` } })
+})
+
+app.get('/auth/discord/callback', async (c) => {
+  const code = c.req.query('code')
+  if (!code) return new Response('Missing code', { status: 400 })
+
+  const tokenRes = await fetch('https://discord.com/api/oauth2/token', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
+      client_id: c.env.DISCORD_CLIENT_ID,
+      client_secret: c.env.DISCORD_CLIENT_SECRET,
+      grant_type: 'authorization_code',
+      code,
+      redirect_uri: 'https://api.amplifiedsmp.org/auth/discord/callback',
+    }),
+  })
+  const { access_token } = await tokenRes.json()
+  if (!access_token) return new Response('Discord OAuth failed', { status: 400 })
+
+  const userRes = await fetch('https://discord.com/api/users/@me', {
+    headers: { Authorization: `Bearer ${access_token}` },
+  })
+  const dUser = await userRes.json()
+  if (!dUser.verified) return new Response('Discord email not verified', { status: 400 })
+
+  return oauthFinish(c, { id_field: 'discord_id', email: dUser.email, provider_id: dUser.id })
 })
 
 app.post('/auth/login', async (c) => {

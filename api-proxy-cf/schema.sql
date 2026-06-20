@@ -5,6 +5,8 @@ CREATE TABLE IF NOT EXISTS users (
   verified     INTEGER DEFAULT 0,
   verify_token TEXT,
   google_id    TEXT,
+  github_id    TEXT,
+  discord_id   TEXT,
   created_at   INTEGER DEFAULT (strftime('%s','now'))
 );
 
