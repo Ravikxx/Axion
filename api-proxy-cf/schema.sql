@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS users (
   pw_hash      TEXT NOT NULL,
   verified     INTEGER DEFAULT 0,
   verify_token TEXT,
+  google_id    TEXT,
   created_at   INTEGER DEFAULT (strftime('%s','now'))
 );
 

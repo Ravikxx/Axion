@@ -118,6 +118,77 @@ app.get('/auth/verify', async (c) => {
   })
 })
 
+// ── Google OAuth ───────────────────────────────────────────────────────────
+
+app.get('/auth/google', (c) => {
+  const params = new URLSearchParams({
+    client_id: c.env.GOOGLE_CLIENT_ID,
+    redirect_uri: 'https://api.amplifiedsmp.org/auth/google/callback',
+    response_type: 'code',
+    scope: 'openid email profile',
+    prompt: 'select_account',
+  })
+  return new Response(null, {
+    status: 302,
+    headers: { Location: `https://accounts.google.com/o/oauth2/v2/auth?${params}` },
+  })
+})
+
+app.get('/auth/google/callback', async (c) => {
+  const code = c.req.query('code')
+  if (!code) return new Response('Missing code', { status: 400 })
+
+  // Exchange code for tokens
+  const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
+      code,
+      client_id: c.env.GOOGLE_CLIENT_ID,
+      client_secret: c.env.GOOGLE_CLIENT_SECRET,
+      redirect_uri: 'https://api.amplifiedsmp.org/auth/google/callback',
+      grant_type: 'authorization_code',
+    }),
+  })
+  const tokens = await tokenRes.json()
+  if (!tokens.access_token) return new Response('OAuth failed', { status: 400 })
+
+  // Get user info
+  const userRes = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
+    headers: { Authorization: `Bearer ${tokens.access_token}` },
+  })
+  const gUser = await userRes.json()
+  if (!gUser.email) return new Response('Could not get email from Google', { status: 400 })
+
+  // Find or create user
+  let user = await c.env.DB.prepare('SELECT * FROM users WHERE google_id=?').bind(gUser.id).first()
+  if (!user) {
+    user = await c.env.DB.prepare('SELECT * FROM users WHERE email=?').bind(gUser.email.toLowerCase()).first()
+  }
+
+  if (user) {
+    // Link Google ID if not already linked
+    if (!user.google_id) {
+      await c.env.DB.prepare('UPDATE users SET google_id=?, verified=1 WHERE id=?').bind(gUser.id, user.id).run()
+    }
+  } else {
+    // Create new user — Google-verified so skip email verification
+    const id = crypto.randomUUID()
+    await c.env.DB.prepare(
+      'INSERT INTO users (id, email, pw_hash, verified, google_id) VALUES (?,?,?,1,?)'
+    ).bind(id, gUser.email.toLowerCase(), '', gUser.id).run()
+    user = { id }
+  }
+
+  const sessionToken = makeToken(user.id)
+  return new Response(null, {
+    status: 302,
+    headers: {
+      Location: `https://axion.amplifiedsmp.org/keys#verified=${encodeURIComponent(sessionToken)}&email=${encodeURIComponent(gUser.email)}`,
+    },
+  })
+})
+
 app.post('/auth/login', async (c) => {
   const { email, password } = await c.req.json().catch(() => ({}))
   const user = await c.env.DB.prepare('SELECT * FROM users WHERE email=?').bind((email || '').toLowerCase()).first()
