@@ -173,7 +173,13 @@ app.get('/auth/verify', async (c) => {
 
 // ── OAuth shared helper ────────────────────────────────────────────────────
 
-async function oauthFinish(c, { id_field, email, provider_id }) {
+const RETURN_DESTINATIONS = {
+  admin: 'https://axion.amplifiedsmp.org/admin',
+  home:  'https://axion.amplifiedsmp.org',
+  keys:  'https://axion.amplifiedsmp.org/keys',
+}
+
+async function oauthFinish(c, { id_field, email, provider_id, return_to }) {
   // Find by provider ID first, then fall back to email
   let user = await c.env.DB.prepare(`SELECT * FROM users WHERE ${id_field}=?`).bind(provider_id).first()
   if (!user && email) {
@@ -192,13 +198,17 @@ async function oauthFinish(c, { id_field, email, provider_id }) {
     user = { id: uid }
   }
   const token = await makeToken(user.id, c.env.TOKEN_SECRET)
+  const base = RETURN_DESTINATIONS[return_to] || RETURN_DESTINATIONS.keys
   return new Response(null, {
     status: 302,
-    headers: { Location: `https://axion.amplifiedsmp.org/keys#verified=${encodeURIComponent(token)}&email=${encodeURIComponent(email || '')}` },
+    headers: { Location: `${base}#verified=${encodeURIComponent(token)}&email=${encodeURIComponent(email || '')}` },
   })
 }
 
 // ── Google OAuth ───────────────────────────────────────────────────────────
+
+function encodeState(return_to) { return btoa(JSON.stringify({ return_to: return_to || '' })) }
+function decodeState(state) { try { return JSON.parse(atob(state || '')).return_to || '' } catch { return '' } }
 
 app.get('/auth/google', (c) => {
   const params = new URLSearchParams({
@@ -207,6 +217,7 @@ app.get('/auth/google', (c) => {
     response_type: 'code',
     scope: 'openid email profile',
     prompt: 'select_account',
+    state: encodeState(c.req.query('return_to')),
   })
   return new Response(null, {
     status: 302,
@@ -217,8 +228,8 @@ app.get('/auth/google', (c) => {
 app.get('/auth/google/callback', async (c) => {
   const code = c.req.query('code')
   if (!code) return new Response('Missing code', { status: 400 })
+  const return_to = decodeState(c.req.query('state'))
 
-  // Exchange code for tokens
   const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -233,14 +244,13 @@ app.get('/auth/google/callback', async (c) => {
   const tokens = await tokenRes.json()
   if (!tokens.access_token) return new Response('OAuth failed', { status: 400 })
 
-  // Get user info
   const userRes = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
     headers: { Authorization: `Bearer ${tokens.access_token}` },
   })
   const gUser = await userRes.json()
   if (!gUser.email) return new Response('Could not get email from Google', { status: 400 })
 
-  return oauthFinish(c, { id_field: 'google_id', email: gUser.email, provider_id: gUser.id })
+  return oauthFinish(c, { id_field: 'google_id', email: gUser.email, provider_id: gUser.id, return_to })
 })
 
 // ── GitHub OAuth ───────────────────────────────────────────────────────────
@@ -250,6 +260,7 @@ app.get('/auth/github', (c) => {
     client_id: c.env.GITHUB_CLIENT_ID,
     redirect_uri: 'https://api.amplifiedsmp.org/auth/github/callback',
     scope: 'user:email',
+    state: encodeState(c.req.query('return_to')),
   })
   return new Response(null, { status: 302, headers: { Location: `https://github.com/login/oauth/authorize?${params}` } })
 })
@@ -257,6 +268,7 @@ app.get('/auth/github', (c) => {
 app.get('/auth/github/callback', async (c) => {
   const code = c.req.query('code')
   if (!code) return new Response('Missing code', { status: 400 })
+  const return_to = decodeState(c.req.query('state'))
 
   const tokenRes = await fetch('https://github.com/login/oauth/access_token', {
     method: 'POST',
@@ -266,7 +278,6 @@ app.get('/auth/github/callback', async (c) => {
   const { access_token } = await tokenRes.json()
   if (!access_token) return new Response('GitHub OAuth failed', { status: 400 })
 
-  // Get user profile
   const [profileRes, emailsRes] = await Promise.all([
     fetch('https://api.github.com/user', { headers: { Authorization: `Bearer ${access_token}`, 'User-Agent': 'axion-api' } }),
     fetch('https://api.github.com/user/emails', { headers: { Authorization: `Bearer ${access_token}`, 'User-Agent': 'axion-api' } }),
@@ -276,7 +287,7 @@ app.get('/auth/github/callback', async (c) => {
   const primary = emails.find(e => e.primary && e.verified)
   const email = primary?.email || profile.email
 
-  return oauthFinish(c, { id_field: 'github_id', email, provider_id: String(profile.id) })
+  return oauthFinish(c, { id_field: 'github_id', email, provider_id: String(profile.id), return_to })
 })
 
 // ── Discord OAuth ──────────────────────────────────────────────────────────
@@ -287,6 +298,7 @@ app.get('/auth/discord', (c) => {
     redirect_uri: 'https://api.amplifiedsmp.org/auth/discord/callback',
     response_type: 'code',
     scope: 'identify email',
+    state: encodeState(c.req.query('return_to')),
   })
   return new Response(null, { status: 302, headers: { Location: `https://discord.com/oauth2/authorize?${params}` } })
 })
@@ -294,6 +306,7 @@ app.get('/auth/discord', (c) => {
 app.get('/auth/discord/callback', async (c) => {
   const code = c.req.query('code')
   if (!code) return new Response('Missing code', { status: 400 })
+  const return_to = decodeState(c.req.query('state'))
 
   const tokenRes = await fetch('https://discord.com/api/oauth2/token', {
     method: 'POST',
@@ -315,7 +328,7 @@ app.get('/auth/discord/callback', async (c) => {
   const dUser = await userRes.json()
   if (!dUser.verified) return new Response('Discord email not verified', { status: 400 })
 
-  return oauthFinish(c, { id_field: 'discord_id', email: dUser.email, provider_id: dUser.id })
+  return oauthFinish(c, { id_field: 'discord_id', email: dUser.email, provider_id: dUser.id, return_to })
 })
 
 app.post('/auth/login', async (c) => {
