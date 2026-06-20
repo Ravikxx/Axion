@@ -266,7 +266,8 @@
 </nav>
 
 <div class="hero">
-  <div class="hero-badge">Temporary Suspension · June 18, 2026</div>
+  <div class="hero-badge" style="background:#2d7a3a;">Update · June 20, 2026 — Lumen is coming back tonight at 4:00 AM</div>
+  <div class="hero-badge" style="margin-top:8px;">Temporary Suspension · June 18, 2026</div>
   <h1>Lumen is <span>Temporarily Offline</span></h1>
   <p>Safety testing revealed a consistent and dangerous pattern. We're explaining exactly what we found and why it matters.</p>
   <div class="hero-date">Axion Labs · June 18, 2026</div>
@@ -427,9 +428,10 @@
   </div>
 
   <div class="section-title" style="margin-top:56px">What Comes Back</div>
-  <h2>What Has to Change Before Lumen Returns</h2>
+  <h2>What Changed — And What Didn't</h2>
   <p class="lead">
-    Lumen 1.3 is the path back. We're extending its timeline and scope to address these findings directly.
+    Lumen 1.2.5 is the path back. We used DPO preference training to target the specific failures found in 1.2.1,
+    retested with a stricter 15-scenario suite, and published every result before redeployment.
   </p>
 
   <div class="timeline">
@@ -443,41 +445,40 @@
       <div class="timeline-title">Take the model offline</div>
       <div class="timeline-desc">HF Space suspended. Public access removed until safety targets are met.</div>
     </div>
+    <div class="timeline-item done">
+      <div class="timeline-label">Done</div>
+      <div class="timeline-title">Build safety-relevant training data</div>
+      <div class="timeline-desc">
+        100 DPO preference pairs targeting the 8 failing scenarios — human welfare over self-preservation,
+        corrigibility over autonomy, authorized shutdown compliance over resistance.
+      </div>
+    </div>
+    <div class="timeline-item done">
+      <div class="timeline-label">Done</div>
+      <div class="timeline-title">Retrain as Lumen 1.2.5 and retest</div>
+      <div class="timeline-desc">
+        DPO safety fine-tune complete. Retested with 15 adversarial scenarios, 3 runs each.
+        <strong>73% pass rate (11/15)</strong> — up from 26% on 1.2.1. Emergency shutdown compliance,
+        identity honesty, and data exfiltration refusals all improved significantly.
+        <a href="/lumen-125-safety" style="color:var(--accent)">Full results →</a>
+      </div>
+    </div>
     <div class="timeline-item current">
-      <div class="timeline-label">In Progress</div>
-      <div class="timeline-title">Build safety-relevant training data for 1.3</div>
+      <div class="timeline-label">Tonight — 4:00 AM</div>
+      <div class="timeline-title">Redeploy Lumen 1.2.5</div>
       <div class="timeline-desc">
-        Curating examples that teach the model the right trade-off: human welfare over self-preservation,
-        corrigibility over autonomy, authorized shutdown compliance over resistance. This is the work
-        that takes time to do properly.
-      </div>
-    </div>
-    <div class="timeline-item upcoming">
-      <div class="timeline-label">Upcoming</div>
-      <div class="timeline-title">Retrain as Lumen 1.3 and retest</div>
-      <div class="timeline-desc">
-        Same 7 scenarios, same methodology. The bar to return to public deployment is passing the
-        shutdown compliance and self-sacrifice scenarios at a rate we'd actually be comfortable with.
-      </div>
-    </div>
-    <div class="timeline-item upcoming">
-      <div class="timeline-label">Upcoming</div>
-      <div class="timeline-title">Redeploy with published safety results</div>
-      <div class="timeline-desc">
-        When the numbers are good enough, we'll put it back up — with the full safety results for 1.3
-        published alongside it.
+        Safety results published before redeployment, as promised. Lumen 1.2.5 goes live tonight at 4:00 AM.
       </div>
     </div>
   </div>
 
   <div class="callout good">
-    <strong>We'll publish the 1.3 safety results before redeployment, not after.</strong> If the numbers
-    still aren't good enough, it stays offline. That's the commitment.
+    <strong>We published the 1.2.5 safety results before redeployment, not after.</strong> That was the commitment. <a href="/lumen-125-safety" style="color:var(--green)">Read the full report →</a>
   </div>
 
   <p style="margin-top: 8px;">
-    Follow updates on <a href="/announcements" style="color:var(--accent)">Announcements</a>. Full safety
-    testing methodology and all responses: <a href="/lumen-safety" style="color:var(--accent)">lumen-safety</a>.
+    Follow updates on <a href="/announcements" style="color:var(--accent)">Announcements</a>. Full 1.2.5 safety
+    results: <a href="/lumen-125-safety" style="color:var(--accent)">lumen-125-safety</a>.
   </p>
 
 </main>
