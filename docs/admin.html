@@ -210,6 +210,40 @@
     /* ── Top keys ── */
     .top-key-row td:first-child { font-family: monospace; font-size: 12px; color: var(--muted); }
 
+    /* ── Chart ── */
+    .chart-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px 24px 16px;
+    }
+    .chart-title { font-size: 13px; color: var(--muted); margin-bottom: 16px; text-transform: uppercase; letter-spacing: .04em; }
+    #usage-chart { width: 100%; height: 140px; display: block; }
+
+    /* ── Invite form ── */
+    .invite-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .invite-row input {
+      flex: 1;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 9px 14px;
+      color: var(--text);
+      font-size: 14px;
+      outline: none;
+    }
+    .invite-row input:focus { border-color: var(--accent); }
+    .invite-actions { display: flex; gap: 8px; }
+    .btn-outline { background: transparent; color: var(--text); border: 1px solid var(--border); padding: 9px 16px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 500; transition: border-color .15s; }
+    .btn-outline:hover { border-color: var(--text); }
+    .invite-msg { font-size: 13px; margin-bottom: 12px; padding: 10px 14px; border-radius: 8px; }
+    .invite-msg.success { background: rgba(52,211,153,.1); color: var(--green); }
+    .invite-msg.error { background: rgba(248,113,113,.1); color: var(--red); }
+
     /* ── Loading ── */
     .loading { color: var(--muted); padding: 24px; text-align: center; }
   </style>
@@ -287,6 +321,14 @@
       </div>
     </div>
 
+    <!-- Daily chart -->
+    <section>
+      <div class="chart-wrap">
+        <div class="chart-title">Free tier requests — last 14 days</div>
+        <canvas id="usage-chart"></canvas>
+      </div>
+    </section>
+
     <!-- Top keys -->
     <section>
       <h2>Top API Keys</h2>
@@ -331,9 +373,13 @@
     <!-- Allowlist -->
     <section>
       <h2>Admin Allowlist</h2>
-      <div class="add-form">
-        <input type="email" id="add-email" placeholder="email@example.com" onkeydown="if(event.key==='Enter')addAdmin()" />
-        <button class="btn btn-sm" onclick="addAdmin()">Add admin</button>
+      <div id="invite-msg" class="invite-msg" style="display:none"></div>
+      <div class="invite-row">
+        <input type="email" id="add-email" placeholder="email@example.com" onkeydown="if(event.key==='Enter')sendInvite()" />
+        <div class="invite-actions">
+          <button class="btn btn-sm" onclick="sendInvite()">Send invite</button>
+          <button class="btn-outline" onclick="addDirect()" title="Add without sending email">Add directly</button>
+        </div>
       </div>
       <div class="table-wrap">
         <table>
@@ -433,6 +479,7 @@
     loadStats()
     loadUsers()
     loadAllowlist()
+    loadChart()
   }
 
   async function loadStats() {
@@ -503,21 +550,97 @@
       </tr>`).join('')
   }
 
-  async function addAdmin() {
+  function showInviteMsg(text, type) {
+    const el = document.getElementById('invite-msg')
+    el.textContent = text
+    el.className = `invite-msg ${type}`
+    el.style.display = 'block'
+    setTimeout(() => { el.style.display = 'none' }, 5000)
+  }
+
+  async function sendInvite() {
     const input = document.getElementById('add-email')
     const email = input.value.trim()
     if (!email) return
-    const res = await apiFetch('/admin/allowlist', {
-      method: 'POST',
-      body: JSON.stringify({ email }),
-    })
+    const res = await apiFetch('/admin/invite', { method: 'POST', body: JSON.stringify({ email }) })
+    if (res.ok) {
+      input.value = ''
+      showInviteMsg(`Invite sent to ${email}`, 'success')
+    } else {
+      const d = await res.json()
+      showInviteMsg(d.error || 'Failed to send invite', 'error')
+    }
+  }
+
+  async function addDirect() {
+    const input = document.getElementById('add-email')
+    const email = input.value.trim()
+    if (!email) return
+    const res = await apiFetch('/admin/allowlist', { method: 'POST', body: JSON.stringify({ email }) })
     if (res.ok) {
       input.value = ''
       loadAllowlist()
     } else {
       const d = await res.json()
-      alert(d.error || 'Failed to add admin')
+      showInviteMsg(d.error || 'Failed to add admin', 'error')
     }
+  }
+
+  async function loadChart() {
+    const res = await apiFetch('/admin/daily')
+    if (!res.ok) return
+    const { daily } = await res.json()
+
+    const canvas = document.getElementById('usage-chart')
+    const dpr = window.devicePixelRatio || 1
+    const W = canvas.offsetWidth || canvas.parentElement.clientWidth - 48
+    const H = 140
+    canvas.width = W * dpr
+    canvas.height = H * dpr
+    canvas.style.width = W + 'px'
+    canvas.style.height = H + 'px'
+
+    const ctx = canvas.getContext('2d')
+    ctx.scale(dpr, dpr)
+
+    const PAD_L = 4, PAD_R = 4, PAD_T = 10, PAD_B = 36
+    const maxVal = Math.max(...daily.map(d => d.count), 1)
+    const barW = (W - PAD_L - PAD_R) / daily.length
+    const chartH = H - PAD_T - PAD_B
+
+    // Grid line at max
+    ctx.strokeStyle = 'rgba(255,255,255,0.05)'
+    ctx.lineWidth = 1
+    ctx.beginPath()
+    ctx.moveTo(PAD_L, PAD_T + 0.5)
+    ctx.lineTo(W - PAD_R, PAD_T + 0.5)
+    ctx.stroke()
+
+    daily.forEach((d, i) => {
+      const x = PAD_L + i * barW
+      const barH = d.count === 0 ? 2 : Math.max(4, (d.count / maxVal) * chartH)
+      const y = PAD_T + chartH - barH
+
+      // Bar
+      ctx.fillStyle = d.count > 0 ? '#e8602c' : 'rgba(255,255,255,0.06)'
+      const rx = 3
+      const bx = x + barW * 0.15, bw = barW * 0.7
+      ctx.beginPath()
+      ctx.roundRect(bx, y, bw, barH, [rx, rx, 0, 0])
+      ctx.fill()
+
+      // Date label (every 2 days)
+      if (i % 2 === 0 || i === daily.length - 1) {
+        const dt = new Date(d.date + 'T00:00:00Z')
+        const label = dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' })
+        ctx.fillStyle = 'rgba(255,255,255,0.3)'
+        ctx.font = '10px system-ui'
+        ctx.textAlign = 'center'
+        ctx.fillText(label, x + barW / 2, H - 8)
+      }
+
+      // Count label on hover: not needed for canvas, skip
+    })
   }
 
   async function removeAdmin(email) {
@@ -550,7 +673,7 @@
   // ── Init ──────────────────────────────────────────────────────────────────
 
   async function init() {
-    // Handle OAuth redirect (#verified=TOKEN&email=EMAIL)
+    // Handle OAuth redirect (#verified=TOKEN&email=EMAIL) or accepted invite (#invited=1)
     const hash = new URLSearchParams(location.hash.slice(1))
     if (hash.get('verified')) {
       const t = decodeURIComponent(hash.get('verified'))
@@ -558,6 +681,11 @@
       history.replaceState(null, '', location.pathname)
       localStorage.setItem('axion_token', t)
       localStorage.setItem('axion_email', em)
+    }
+    if (hash.get('invited')) {
+      history.replaceState(null, '', location.pathname)
+      // Will show success banner after app loads
+      sessionStorage.setItem('invite_accepted', '1')
     }
 
     const token = localStorage.getItem('axion_token')
@@ -577,6 +705,10 @@
 
     _token = token
     showApp(email)
+    if (sessionStorage.getItem('invite_accepted')) {
+      sessionStorage.removeItem('invite_accepted')
+      setTimeout(() => showInviteMsg('Your invitation was accepted — you now have admin access.', 'success'), 500)
+    }
   }
 
   // Enter key on password field
