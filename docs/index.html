@@ -8,765 +8,581 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:       #0d0e13;
-      --surface:  #12131a;
-      --surface2: #1a1b24;
-      --border:   #23242f;
-      --border2:  #2e2f3e;
-      --text:     #e8e9f0;
-      --muted:    #6b6d80;
-      --muted2:   #9899a8;
-      --accent:   #e8602c;
-      --accent-d: #c04c1f;
+      --bg:         #f4efe6;
+      --bg-card:    #faf7f2;
+      --border:     #e0d8cc;
+      --text:       #1a1209;
+      --text-muted: #6b5e4e;
+      --accent:     #e8602c;
+      --accent-lt:  #fdf0ea;
+      --dark:       #1a1209;
     }
-
-    html, body { height: 100%; }
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
       background: var(--bg);
       color: var(--text);
-      line-height: 1.5;
-      display: flex;
-      font-size: 14px;
+      line-height: 1.6;
     }
 
-    a { color: inherit; text-decoration: none; }
-
-    /* ── Sidebar ── */
-    .sidebar {
-      width: 220px;
-      flex-shrink: 0;
-      height: 100vh;
+    /* ── Nav ── */
+    nav {
+      background: var(--dark);
+      padding: 0 32px;
+      display: flex;
+      align-items: center;
+      height: 56px;
+      gap: 24px;
       position: sticky;
       top: 0;
-      display: flex;
-      flex-direction: column;
-      border-right: 1px solid var(--border);
-      background: var(--surface);
-      overflow-y: auto;
+      z-index: 100;
     }
-
-    .sidebar-logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 20px 18px 16px;
-      border-bottom: 1px solid var(--border);
-      font-weight: 700;
-      font-size: 15px;
-      color: var(--text);
+    nav .brand {
+      display: flex; align-items: center; gap: 8px;
+      color: #f4efe6; font-weight: 700; font-size: 16px;
+      text-decoration: none; margin-right: 16px;
     }
-    .logo-icon {
-      width: 28px; height: 28px;
-      background: var(--accent);
-      border-radius: 7px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 14px;
-      flex-shrink: 0;
+    nav a { color: #c9b99a; text-decoration: none; font-size: 14px; transition: color 0.2s; }
+    nav a:hover { color: #f4efe6; }
+    nav .nav-right { margin-left: auto; display: flex; gap: 20px; align-items: center; }
+    .btn-nav {
+      background: var(--accent); color: #fff !important;
+      padding: 6px 14px; border-radius: 6px;
+      font-size: 13px; font-weight: 600;
+      transition: opacity 0.2s !important;
     }
-
-    .nav-section {
-      padding: 12px 10px 4px;
-    }
-    .nav-label {
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      color: var(--muted);
-      padding: 0 8px;
-      margin-bottom: 4px;
-    }
-    .nav-item {
-      display: flex;
-      align-items: center;
-      gap: 9px;
-      padding: 7px 8px;
-      border-radius: 6px;
-      color: var(--muted2);
-      font-size: 13px;
-      cursor: pointer;
-      transition: background .12s, color .12s;
-    }
-    .nav-item:hover { background: var(--surface2); color: var(--text); }
-    .nav-item.active { background: var(--surface2); color: var(--text); }
-    .nav-icon { width: 16px; text-align: center; flex-shrink: 0; opacity: .7; }
-
-    .sidebar-bottom {
-      margin-top: auto;
-      padding: 12px 10px;
-      border-top: 1px solid var(--border);
-    }
-    .sidebar-auth {
-      display: flex;
-      align-items: center;
-      gap: 9px;
-      padding: 8px 8px;
-      border-radius: 6px;
-      color: var(--muted2);
-      font-size: 13px;
-      cursor: pointer;
-      transition: background .12s;
-    }
-    .sidebar-auth:hover { background: var(--surface2); color: var(--text); }
-    .profile-avatar {
-      width: 24px; height: 24px;
-      border-radius: 50%;
-      background: var(--accent);
-      color: #fff;
-      font-size: 10px;
-      font-weight: 700;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-    }
-
-    /* ── Main ── */
-    .main {
-      flex: 1;
-      min-width: 0;
-      display: flex;
-      flex-direction: column;
-    }
-
-    /* ── Top bar ── */
-    .topbar {
-      height: 52px;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      padding: 0 28px;
-      gap: 16px;
-      flex-shrink: 0;
-      background: var(--surface);
-    }
-    .topbar-title { font-size: 14px; font-weight: 600; }
-    .topbar-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
-    .badge-new {
-      background: rgba(232,96,44,.15);
-      color: var(--accent);
-      border: 1px solid rgba(232,96,44,.3);
-      font-size: 11px;
-      font-weight: 600;
-      padding: 2px 8px;
-      border-radius: 99px;
-    }
-    .btn-install {
-      background: var(--accent);
-      color: #fff;
-      padding: 7px 16px;
-      border-radius: 6px;
-      font-size: 13px;
-      font-weight: 600;
-      border: none;
-      cursor: pointer;
-      transition: background .15s;
-    }
-    .btn-install:hover { background: var(--accent-d); }
-
-    /* ── Content ── */
-    .content {
-      flex: 1;
-      overflow-y: auto;
-      padding: 32px 28px 64px;
-    }
+    .btn-nav:hover { opacity: 0.88; }
 
     /* ── Hero ── */
-    .hero-block {
+    .hero {
+      background: linear-gradient(160deg, #110d08 0%, #1e1409 50%, #2a1c0e 100%);
+      color: #f4efe6;
+      padding: 80px 32px 0;
+      overflow: hidden;
+    }
+    .hero-inner {
+      max-width: 1080px;
+      margin: 0 auto;
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 40px;
-      align-items: start;
-      margin-bottom: 48px;
+      gap: 64px;
+      align-items: center;
     }
-    .hero-text h1 {
-      font-size: clamp(28px, 3.5vw, 44px);
-      font-weight: 700;
-      letter-spacing: -.02em;
-      line-height: 1.1;
-      margin-bottom: 14px;
-      color: var(--text);
+    .hero-text { padding-bottom: 80px; }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 12px; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: 20px;
     }
-    .hero-text h1 span { color: var(--accent); }
+    .eyebrow-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 6px var(--accent);
+    }
+    .hero h1 {
+      font-size: clamp(34px, 4.5vw, 58px);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.08;
+      margin-bottom: 20px;
+    }
+    .hero h1 span { color: var(--accent); }
     .hero-sub {
-      font-size: 14px;
-      color: var(--muted2);
-      line-height: 1.65;
-      margin-bottom: 24px;
-      max-width: 380px;
+      font-size: 17px; color: #a08060;
+      max-width: 440px; margin-bottom: 36px; line-height: 1.65;
     }
-    .hero-actions { display: flex; gap: 10px; flex-wrap: wrap; }
-    .btn-primary {
-      display: inline-flex; align-items: center;
-      gap: 6px;
-      background: var(--accent); color: #fff;
-      padding: 9px 18px; border-radius: 7px;
-      font-size: 13px; font-weight: 600;
-      transition: background .15s;
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 22px; border-radius: 8px;
+      font-size: 14px; font-weight: 600;
+      text-decoration: none;
+      transition: opacity 0.2s, transform 0.15s;
     }
-    .btn-primary:hover { background: var(--accent-d); }
+    .btn:hover { opacity: 0.88; transform: translateY(-1px); }
+    .btn-primary { background: var(--accent); color: #fff; }
     .btn-ghost {
-      display: inline-flex; align-items: center; gap: 6px;
-      background: var(--surface2); color: var(--muted2);
-      border: 1px solid var(--border2);
-      padding: 9px 18px; border-radius: 7px;
-      font-size: 13px; font-weight: 500;
-      transition: border-color .15s, color .15s;
+      background: rgba(255,255,255,0.07); color: #f4efe6;
+      border: 1px solid rgba(255,255,255,0.12);
     }
-    .btn-ghost:hover { border-color: var(--muted); color: var(--text); }
 
-    /* ── Terminal ── */
+    /* ── Terminal window ── */
+    .hero-terminal {
+      align-self: flex-end;
+    }
     .terminal-window {
-      background: #09090e;
-      border: 1px solid var(--border2);
-      border-radius: 10px;
+      background: #0d0a06;
+      border: 1px solid #2a1f14;
+      border-bottom: none;
+      border-radius: 12px 12px 0 0;
       overflow: hidden;
+      box-shadow: 0 -8px 48px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.03);
     }
     .terminal-titlebar {
       display: flex; align-items: center; gap: 6px;
-      padding: 10px 14px;
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
+      padding: 12px 16px;
+      background: #160f08;
+      border-bottom: 1px solid #2a1f14;
     }
-    .t-dot { width: 9px; height: 9px; border-radius: 50%; }
+    .t-dot { width: 10px; height: 10px; border-radius: 50%; }
     .t-dot.r { background: #ff5f57; }
     .t-dot.y { background: #ffbd2e; }
     .t-dot.g { background: #28c840; }
-    .t-label { margin-left: 6px; font-size: 11px; color: var(--muted); font-family: monospace; }
+    .terminal-label {
+      margin-left: 8px; font-size: 12px;
+      color: #4a3828; font-family: monospace;
+    }
     .terminal-body {
-      padding: 16px 20px 20px;
-      font-family: "SF Mono", "Fira Code", "Cascadia Code", Consolas, monospace;
-      font-size: 12.5px;
+      padding: 20px 24px 24px;
+      font-family: "SF Mono", "Fira Code", "Cascadia Code", monospace;
+      font-size: 13px;
       line-height: 1.7;
-      min-height: 220px;
+      min-height: 280px;
     }
     .t-line { display: flex; gap: 8px; }
-    .t-prompt { color: var(--accent); flex-shrink: 0; }
-    .t-cmd { color: #d4d8e8; }
-    .t-out { color: var(--muted); }
-    .t-green { color: #5dbf8a; }
-    .t-dim { color: #3a3c4e; }
+    .t-prompt { color: #e8602c; flex-shrink: 0; }
+    .t-cmd { color: #e8ddd0; }
+    .t-out { color: #7a6050; padding-left: 0; }
+    .t-green { color: #6aa87a; }
+    .t-orange { color: #e8602c; }
+    .t-dim { color: #4a3828; }
     .t-cursor {
-      display: inline-block; width: 7px; height: 13px;
+      display: inline-block; width: 8px; height: 14px;
       background: var(--accent); vertical-align: middle;
-      animation: blink 1s step-end infinite;
+      animation: blink-cursor 1s step-end infinite;
       margin-left: 1px;
     }
-    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+    @keyframes blink-cursor { 0%,100%{opacity:1} 50%{opacity:0} }
+    .t-line { opacity: 0; }
+    .t-line.visible { opacity: 1; }
 
-    /* ── Section ── */
-    .section { margin-bottom: 48px; }
-    .section-header {
-      display: flex;
-      align-items: baseline;
-      gap: 12px;
-      margin-bottom: 16px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid var(--border);
+    /* ── News banner ── */
+    .news-wrap { max-width: 960px; margin: 0 auto; padding: 0 32px; transform: translateY(-20px); }
+    .news-banner {
+      display: flex; align-items: center; gap: 12px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 13px 20px;
+      text-decoration: none;
+      box-shadow: 0 2px 16px rgba(26,18,9,0.1);
+      transition: box-shadow 0.2s, transform 0.15s;
     }
-    .section-title { font-size: 15px; font-weight: 600; }
-    .section-sub { font-size: 12px; color: var(--muted); }
+    .news-banner:hover { box-shadow: 0 4px 24px rgba(26,18,9,0.14); transform: translateY(-1px); }
+    .news-tag {
+      background: var(--accent); color: #fff;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; padding: 3px 8px; border-radius: 4px; white-space: nowrap;
+    }
+    .news-text { font-size: 14px; color: var(--text); flex: 1; }
+    .news-text strong { color: var(--accent); }
+    .news-arrow { color: var(--text-muted); font-size: 16px; }
 
-    /* ── Feature list ── */
-    .feature-list { display: flex; flex-direction: column; }
-    .feature-row {
-      display: flex;
-      align-items: flex-start;
-      gap: 16px;
-      padding: 14px 0;
-      border-bottom: 1px solid var(--border);
+    /* ── Main ── */
+    main { max-width: 960px; margin: 0 auto; padding: 32px 32px 80px; }
+    section { margin-bottom: 72px; }
+    .section-tag {
+      font-size: 12px; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 10px;
     }
-    .feature-row:last-child { border-bottom: none; }
-    .feature-num {
-      width: 22px; height: 22px;
-      border: 1px solid var(--border2);
-      border-radius: 5px;
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--muted);
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-      margin-top: 1px;
+    .section-heading { font-size: 28px; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 8px; }
+    .section-lead { color: var(--text-muted); font-size: 15px; margin-bottom: 36px; }
+
+    /* ── Stats ── */
+    .stats-row {
+      display: flex; gap: 0;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 72px;
+      background: var(--bg-card);
     }
-    .feature-content { flex: 1; }
-    .feature-name { font-size: 13px; font-weight: 600; margin-bottom: 3px; }
-    .feature-desc { font-size: 12px; color: var(--muted2); line-height: 1.6; }
+    .stat-item {
+      flex: 1; padding: 24px 28px;
+      border-right: 1px solid var(--border);
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-num { font-size: 28px; font-weight: 800; letter-spacing: -0.02em; color: var(--accent); }
+    .stat-label { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+
+    /* ── Feature grid ── */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+    .feature-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 22px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .feature-card:hover { border-color: #c9b99a; box-shadow: 0 2px 12px rgba(26,18,9,0.06); }
+    .feature-icon { font-size: 20px; margin-bottom: 12px; display: block; }
+    .feature-title { font-size: 14px; font-weight: 700; margin-bottom: 5px; }
+    .feature-desc { font-size: 13px; color: var(--text-muted); line-height: 1.55; }
     .feature-desc code {
       font-family: monospace; font-size: 11px;
-      background: var(--surface2); padding: 1px 5px;
-      border-radius: 3px; color: var(--text);
+      background: rgba(26,18,9,0.07); padding: 1px 5px; border-radius: 3px;
     }
-    .feature-tag {
-      font-size: 10px; font-weight: 600; padding: 2px 7px;
-      border-radius: 4px; flex-shrink: 0; align-self: flex-start; margin-top: 2px;
-    }
-    .tag-live { background: rgba(93,191,138,.1); color: #5dbf8a; border: 1px solid rgba(93,191,138,.2); }
-    .tag-free { background: rgba(232,96,44,.1); color: var(--accent); border: 1px solid rgba(232,96,44,.2); }
 
-    /* ── Models grid ── */
-    .models-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .model-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 18px;
-      transition: border-color .15s;
+    /* ── Ecosystem ── */
+    .ecosystem { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .eco-card {
+      background: var(--dark); border-radius: 12px;
+      padding: 28px; color: #f4efe6;
+      position: relative; overflow: hidden;
     }
-    .model-card:hover { border-color: var(--border2); }
-    .model-name { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
-    .model-desc { font-size: 12px; color: var(--muted2); line-height: 1.6; margin-bottom: 12px; }
-    .model-link { font-size: 12px; color: var(--accent); font-weight: 500; }
-    .model-link:hover { text-decoration: underline; }
+    .eco-card::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(232,96,44,0.12) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .eco-tag {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 10px;
+    }
+    .eco-name { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 8px; }
+    .eco-desc { font-size: 13px; color: #8b7355; line-height: 1.55; margin-bottom: 16px; }
+    .eco-link { font-size: 13px; color: var(--accent); text-decoration: none; font-weight: 600; }
+    .eco-link:hover { text-decoration: underline; }
 
-    /* ── Install block ── */
-    .install-block {
-      background: #09090e;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 16px 20px;
-      font-family: "SF Mono", "Fira Code", Consolas, monospace;
-      font-size: 13px;
-      line-height: 1.9;
+    /* ── Quick start ── */
+    .code-block {
+      background: #0f0c07; border: 1px solid #2d2010;
+      border-radius: 10px; padding: 20px 24px;
+      font-family: "SF Mono", "Fira Code", monospace;
+      font-size: 13px; color: #c9b99a;
+      overflow-x: auto; line-height: 1.8;
     }
-    .i-prompt { color: var(--accent); user-select: none; }
-    .i-cmd { color: var(--text); }
-    .i-comment { color: var(--muted); }
+    .code-block .prompt { color: #e8602c; user-select: none; }
+    .code-block .comment { color: #5a4a38; }
 
     /* ── Links ── */
-    .links-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-      gap: 8px;
-    }
+    .link-row { display: flex; flex-wrap: wrap; gap: 10px; }
     .link-chip {
-      display: flex; align-items: center; gap: 7px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 7px;
-      padding: 10px 12px;
-      font-size: 12px;
-      color: var(--muted2);
-      transition: border-color .15s, color .15s;
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 8px; padding: 8px 14px;
+      font-size: 13px; font-weight: 500; color: var(--text);
+      text-decoration: none; transition: border-color 0.2s, background 0.2s;
     }
-    .link-chip:hover { border-color: var(--border2); color: var(--text); }
+    .link-chip:hover { border-color: var(--accent); background: var(--accent-lt); }
 
-    /* ── Modal ── */
-    #signin-modal {
-      display: none;
-      position: fixed; inset: 0; z-index: 500;
-      background: rgba(0,0,0,.65);
-      backdrop-filter: blur(4px);
-      align-items: center; justify-content: center; padding: 24px;
+    /* ── Footer ── */
+    footer {
+      background: var(--dark); color: #6b5e4e;
+      text-align: center; padding: 28px 32px; font-size: 13px;
     }
-    .modal-box {
-      background: var(--surface);
-      border: 1px solid var(--border2);
-      border-radius: 12px;
-      padding: 32px;
-      width: 100%; max-width: 360px;
-      position: relative;
-    }
-    .modal-close {
-      position: absolute; top: 12px; right: 14px;
-      background: none; border: none; color: var(--muted);
-      font-size: 18px; cursor: pointer; line-height: 1;
-    }
-    .modal-close:hover { color: var(--text); }
-    .modal-h { font-size: 17px; font-weight: 700; margin-bottom: 4px; }
-    .modal-sub { font-size: 12px; color: var(--muted); margin-bottom: 22px; }
-    .m-field { margin-bottom: 12px; }
-    .m-label { display: block; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 5px; }
-    .m-input {
-      width: 100%; background: var(--bg);
-      border: 1px solid var(--border2); border-radius: 7px;
-      padding: 9px 12px; color: var(--text); font-size: 13px; outline: none;
-      transition: border-color .12s;
-    }
-    .m-input:focus { border-color: var(--accent); }
-    .m-btn {
-      width: 100%; background: var(--accent); color: #fff;
-      border: none; border-radius: 7px; padding: 10px;
-      font-size: 13px; font-weight: 600; cursor: pointer; margin-top: 4px;
-      transition: background .15s;
-    }
-    .m-btn:hover:not(:disabled) { background: var(--accent-d); }
-    .m-btn:disabled { opacity: .5; cursor: not-allowed; }
-    .m-error { color: #f87171; font-size: 12px; margin-top: 8px; text-align: center; display: none; }
-    .m-divider { display: flex; align-items: center; gap: 10px; margin: 16px 0 12px; }
-    .m-divider::before, .m-divider::after { content:''; flex:1; height:1px; background: var(--border); }
-    .m-divider span { font-size: 11px; color: var(--muted); }
-    .m-oauth { display: flex; flex-direction: column; gap: 8px; }
-    .m-oauth-btn {
-      display: flex; align-items: center; justify-content: center; gap: 9px;
-      padding: 9px; background: var(--surface2);
-      border: 1px solid var(--border); border-radius: 7px;
-      color: var(--muted2); font-size: 12px; font-weight: 500;
-      transition: border-color .12s, color .12s;
-    }
-    .m-oauth-btn:hover { border-color: var(--border2); color: var(--text); }
-    .m-footer { text-align: center; margin-top: 14px; font-size: 11px; color: var(--muted); }
-    .m-footer a { color: var(--accent); }
-
-    /* ── Profile dropdown ── */
-    #profile-dropdown {
-      display: none;
-      position: absolute; bottom: calc(100% + 6px); left: 0; right: 0;
-      background: var(--surface2);
-      border: 1px solid var(--border2);
-      border-radius: 8px;
-      overflow: hidden;
-      z-index: 200;
-    }
-    .dd-email { padding: 10px 12px; font-size: 11px; color: var(--muted); border-bottom: 1px solid var(--border); word-break: break-all; }
-    .dd-item {
-      display: block; padding: 9px 12px;
-      font-size: 12px; color: var(--muted2);
-      transition: background .1s;
-    }
-    .dd-item:hover { background: var(--surface); color: var(--text); }
-    .dd-btn { width: 100%; text-align: left; background: none; border: none; cursor: pointer; }
+    footer a { color: #8b7355; text-decoration: none; }
+    footer a:hover { color: #c9b99a; }
 
     /* ── Mobile ── */
-    @media (max-width: 860px) {
-      .sidebar { display: none; }
-      .hero-block { grid-template-columns: 1fr; }
-      .models-grid { grid-template-columns: 1fr; }
+    @media (max-width: 840px) {
+      .hero-inner { grid-template-columns: 1fr; gap: 40px; }
+      .hero-text { padding-bottom: 0; }
+      .hero { padding-bottom: 0; }
+      .hero-terminal { display: none; }
+      .hero { padding: 60px 20px 60px; }
+      .stats-row { flex-wrap: wrap; }
+      .stat-item { border-right: none; border-bottom: 1px solid var(--border); }
+      .stat-item:last-child { border-bottom: none; }
     }
-    @media (max-width: 540px) {
-      .content { padding: 20px 16px 48px; }
-      .topbar { padding: 0 16px; }
+    @media (max-width: 640px) {
+      nav { padding: 0 16px; gap: 10px; }
+      nav a:not(.brand):not(.btn-nav) { display: none; }
+      main { padding: 16px 16px 56px; }
+      .feature-grid { grid-template-columns: 1fr 1fr; }
+      .ecosystem { grid-template-columns: 1fr; }
+      .news-wrap { padding: 0 16px; }
+      section { margin-bottom: 48px; }
+    }
+    @media (max-width: 440px) {
+      .feature-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
 
-<!-- Sidebar -->
-<aside class="sidebar">
-  <div class="sidebar-logo">
-    <div class="logo-icon">⚛</div>
-    Axion
-  </div>
-
-  <div class="nav-section">
-    <div class="nav-label">Product</div>
-    <a href="/" class="nav-item active">
-      <span class="nav-icon">⌂</span> Home
-    </a>
-    <a href="/lumen" class="nav-item">
-      <span class="nav-icon">💬</span> Lumen Chat
-    </a>
-    <a href="/models" class="nav-item">
-      <span class="nav-icon">◈</span> Models
-    </a>
-    <a href="/announcements" class="nav-item">
-      <span class="nav-icon">📣</span> Announcements
-    </a>
-    <a href="/docs" class="nav-item">
-      <span class="nav-icon">◻</span> Docs
-    </a>
-  </div>
-
-  <div class="nav-section">
-    <div class="nav-label">Account</div>
-    <a href="/keys" class="nav-item">
-      <span class="nav-icon">⬡</span> API Keys
-    </a>
-    <a href="/privacy" class="nav-item">
-      <span class="nav-icon">◯</span> Privacy
-    </a>
-  </div>
-
-  <div class="nav-section">
-    <div class="nav-label">Community</div>
-    <a href="https://github.com/Ravikxx/axion" class="nav-item">
-      <span class="nav-icon">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/></svg>
-      </span> GitHub
-    </a>
-    <a href="https://www.npmjs.com/package/axion-cli" class="nav-item">
-      <span class="nav-icon">📦</span> npm
-    </a>
-  </div>
-
-  <div class="sidebar-bottom" style="position:relative">
-    <div id="profile-dropdown">
-      <div class="dd-email" id="dd-email"></div>
-      <a href="/keys" class="nav-item dd-item">API Keys</a>
-      <button class="nav-item dd-item dd-btn" onclick="signOut()">Sign out</button>
-    </div>
-    <div id="signin-area">
-      <button class="sidebar-auth" id="signin-btn" onclick="openModal()" style="width:100%">
-        <span class="nav-icon">→</span> Sign in
-      </button>
-      <div id="profile-btn" style="display:none">
-        <button class="sidebar-auth" onclick="toggleDropdown()" style="width:100%">
-          <span class="profile-avatar" id="profile-initials"></span>
-          <span id="profile-name" style="flex:1;text-align:left"></span>
-          <span style="font-size:10px;color:var(--muted)">▴</span>
+<nav>
+  <a href="/" class="brand">⚛ Axion</a>
+  <a href="/lumen">Lumen</a>
+  <a href="/announcements">Announcements</a>
+  <a href="https://github.com/Ravikxx/axion">GitHub</a>
+  <div class="nav-right">
+    <a href="/keys" class="btn-nav" style="background:rgba(255,255,255,0.08);color:#c9b99a;border:1px solid rgba(255,255,255,0.12);">API Keys</a>
+    <div id="nav-auth">
+      <button class="btn-nav" id="signin-btn" onclick="openModal()" style="background:rgba(255,255,255,0.08);color:#c9b99a;border:1px solid rgba(255,255,255,0.12);">Sign in</button>
+      <div id="profile-chip" style="display:none;position:relative">
+        <button onclick="toggleDropdown()" style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:#c9b99a;padding:5px 12px;border-radius:6px;cursor:pointer;font-size:13px;">
+          <span id="profile-initials" style="width:20px;height:20px;border-radius:50%;background:#e8602c;color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center"></span>
+          <span id="profile-email-short"></span>
         </button>
-      </div>
-    </div>
-  </div>
-</aside>
-
-<!-- Main -->
-<div class="main">
-
-  <!-- Top bar -->
-  <div class="topbar">
-    <span class="topbar-title">Home</span>
-    <span class="badge-new">v1.0.2</span>
-    <div class="topbar-right">
-      <a href="https://www.npmjs.com/package/axion-cli" class="btn-install">npm install -g axion-cli</a>
-    </div>
-  </div>
-
-  <!-- Content -->
-  <div class="content">
-
-    <!-- Hero -->
-    <div class="hero-block">
-      <div class="hero-text">
-        <h1>An AI agent<br>for your <span>terminal</span></h1>
-        <p class="hero-sub">Edits files, runs commands, searches the web, controls your screen. Works with Claude, GPT-4o, Gemini, Groq, Ollama — or Lumen, for free.</p>
-        <div class="hero-actions">
-          <a class="btn-primary" href="https://www.npmjs.com/package/axion-cli">Install free →</a>
-          <a class="btn-ghost" href="https://github.com/Ravikxx/axion">GitHub</a>
+        <div id="profile-dropdown" style="display:none;position:absolute;right:0;top:calc(100% + 6px);background:#1a1209;border:1px solid #3a2f20;border-radius:8px;min-width:200px;overflow:hidden;z-index:200;">
+          <div style="padding:12px 16px;border-bottom:1px solid #3a2f20;">
+            <div id="profile-email-full" style="font-size:12px;color:#6b5e4e;word-break:break-all"></div>
+          </div>
+          <a href="/keys" style="display:block;padding:10px 16px;color:#c9b99a;text-decoration:none;font-size:13px;" onmouseover="this.style.background='#2a1c0e'" onmouseout="this.style.background=''">API Keys</a>
+          <button onclick="signOut()" style="width:100%;text-align:left;padding:10px 16px;color:#c9b99a;background:none;border:none;cursor:pointer;font-size:13px;" onmouseover="this.style.background='#2a1c0e'" onmouseout="this.style.background=''">Sign out</button>
         </div>
       </div>
+    </div>
+    <a href="https://www.npmjs.com/package/axion-cli" class="btn-nav">Install →</a>
+  </div>
+</nav>
 
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <p class="hero-eyebrow"><span class="eyebrow-dot"></span> v1.0.2 · MIT · Free</p>
+      <h1>An AI agent<br>for your<br><span>terminal</span></h1>
+      <p class="hero-sub">Axion edits files, runs commands, searches the web, and controls your screen — from the terminal, using whatever model you already have.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="https://www.npmjs.com/package/axion-cli">npm install -g axion-cli</a>
+        <a class="btn btn-ghost" href="https://github.com/Ravikxx/axion">GitHub →</a>
+      </div>
+    </div>
+
+    <div class="hero-terminal">
       <div class="terminal-window">
         <div class="terminal-titlebar">
           <div class="t-dot r"></div>
           <div class="t-dot y"></div>
           <div class="t-dot g"></div>
-          <span class="t-label">axion — ~/my-project</span>
+          <span class="terminal-label">axion — ~/my-project</span>
         </div>
-        <div class="terminal-body" id="terminal-body"></div>
-      </div>
-    </div>
-
-    <!-- Features -->
-    <div class="section">
-      <div class="section-header">
-        <span class="section-title">Features</span>
-        <span class="section-sub">What you can do with it</span>
-      </div>
-      <div class="feature-list">
-        <div class="feature-row">
-          <div class="feature-num">1</div>
-          <div class="feature-content">
-            <div class="feature-name">Edit files &amp; run commands</div>
-            <div class="feature-desc">The core agentic loop. Reads your code, makes changes, runs tests. Fully open source — modify any part of it.</div>
-          </div>
-          <span class="feature-tag tag-live">MIT</span>
-        </div>
-        <div class="feature-row">
-          <div class="feature-num">2</div>
-          <div class="feature-content">
-            <div class="feature-name">Memory across sessions</div>
-            <div class="feature-desc">After each session Axion extracts what mattered — decisions, file paths, context — and injects it automatically next time.</div>
-          </div>
-        </div>
-        <div class="feature-row">
-          <div class="feature-num">3</div>
-          <div class="feature-content">
-            <div class="feature-name">Voice input</div>
-            <div class="feature-desc">Type <code>/voice</code>, speak, press Enter. Whisper transcribes it and sends it to the agent.</div>
-          </div>
-        </div>
-        <div class="feature-row">
-          <div class="feature-num">4</div>
-          <div class="feature-content">
-            <div class="feature-name">Computer use</div>
-            <div class="feature-desc">Takes a screenshot, describes what it sees, clicks elements. Useful for debugging UI or automating tasks you can't script.</div>
-          </div>
-        </div>
-        <div class="feature-row">
-          <div class="feature-num">5</div>
-          <div class="feature-content">
-            <div class="feature-name">Discord bot mode</div>
-            <div class="feature-desc">Run Axion as a Discord bot — queue tasks, cancel runs, get full output in any channel.</div>
-          </div>
-        </div>
-        <div class="feature-row">
-          <div class="feature-num">6</div>
-          <div class="feature-content">
-            <div class="feature-name">Browser control</div>
-            <div class="feature-desc">The Chrome extension lets the agent read pages, click things, and fill forms.</div>
-          </div>
-        </div>
-        <div class="feature-row">
-          <div class="feature-num">7</div>
-          <div class="feature-content">
-            <div class="feature-name">Multi-model</div>
-            <div class="feature-desc">Claude, GPT-4o, Gemini, Groq, Mistral, Ollama, or Lumen. <code>/model &lt;name&gt;</code> to switch.</div>
-          </div>
-        </div>
-        <div class="feature-row">
-          <div class="feature-num">8</div>
-          <div class="feature-content">
-            <div class="feature-name">OAuth integrations</div>
-            <div class="feature-desc"><code>/oauth connect</code> links GitHub, Google, Notion, and Slack. Pull issues, docs, and messages without copying them in.</div>
-          </div>
-        </div>
-        <div class="feature-row">
-          <div class="feature-num">9</div>
-          <div class="feature-content">
-            <div class="feature-name">MCP servers</div>
-            <div class="feature-desc">Plug in any Model Context Protocol server. Blender support ships out of the box.</div>
-          </div>
+        <div class="terminal-body" id="terminal-body">
         </div>
       </div>
     </div>
+  </div>
+</section>
 
-    <!-- Models -->
-    <div class="section">
-      <div class="section-header">
-        <span class="section-title">Free models</span>
-        <span class="section-sub">Built and hosted by Axion Labs — no key needed</span>
+<div class="news-wrap">
+  <a class="news-banner" href="/lumen">
+    <span class="news-tag">New</span>
+    <span class="news-text"><strong>Lumen 1.2.5</strong> — free AI chat, no signup needed. <strong>Try it →</strong></span>
+    <span class="news-arrow">›</span>
+  </a>
+</div>
+
+<main>
+
+  <section>
+    <p class="section-tag">What it does</p>
+    <h2 class="section-heading">Runs in your terminal. Does a lot.</h2>
+    <p class="section-lead">Most of what you'd reach a browser for, Axion handles from the command line.</p>
+
+    <div class="feature-grid">
+      <div class="feature-card">
+        <p class="feature-title">Edit files &amp; run commands</p>
+        <p class="feature-desc">The core agentic loop — reads your code, makes changes, runs tests. Fully open source, you can modify any part of it.</p>
       </div>
-      <div class="models-grid">
-        <div class="model-card">
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
-            <div class="model-name">Lumen 1.2.5</div>
-            <span class="feature-tag tag-live" style="margin-top:0">Live</span>
-          </div>
-          <div class="model-desc">Fine-tuned Llama 3.1 8B. DPO safety training, 73% pass rate on adversarial testing. Use in the browser or via <code style="font-family:monospace;font-size:11px;background:var(--surface2);padding:1px 4px;border-radius:3px">/model lumen</code>.</div>
-          <a class="model-link" href="/lumen">Chat with Lumen →</a>
-        </div>
-        <div class="model-card">
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
-            <div class="model-name">Axion Vision</div>
-            <span class="feature-tag tag-live" style="margin-top:0">Live</span>
-          </div>
-          <div class="model-desc">Free vision model for image understanding and OCR. Works out of the box for computer use and screenshot analysis. OpenAI-compatible API.</div>
-          <a class="model-link" href="https://huggingface.co/spaces/RavikxxBGamin/LumenVision">Hugging Face →</a>
-        </div>
+      <div class="feature-card">
+        <p class="feature-title">Memory across sessions</p>
+        <p class="feature-desc">After each session, Axion pulls out what mattered — decisions, file paths, context — and injects it next time automatically.</p>
+      </div>
+      <div class="feature-card">
+        <p class="feature-title">Voice input</p>
+        <p class="feature-desc">Type <code>/voice</code>, speak, press Enter. Whisper transcribes it and sends it straight to the agent.</p>
+      </div>
+      <div class="feature-card">
+        <p class="feature-title">See your screen</p>
+        <p class="feature-desc">Takes a screenshot, describes what it sees, clicks elements. Useful for debugging UI or automating things you can't script.</p>
+      </div>
+      <div class="feature-card">
+        <p class="feature-title">Discord bot mode</p>
+        <p class="feature-desc">Run Axion as a bot in any Discord server. Works the same as the terminal version — queue tasks, cancel runs, get full output.</p>
+      </div>
+      <div class="feature-card">
+        <p class="feature-title">Browser control</p>
+        <p class="feature-desc">The Chrome extension lets the agent read pages, click things, and fill forms — handy for scraping or automating web tasks.</p>
+      </div>
+      <div class="feature-card">
+        <p class="feature-title">Switch models anytime</p>
+        <p class="feature-desc">Claude, GPT-4o, Gemini, Groq, Mistral, Ollama, or Lumen. <code>/model &lt;name&gt;</code> to switch. First-run wizard sets up your key.</p>
+      </div>
+      <div class="feature-card">
+        <p class="feature-title">MCP servers</p>
+        <p class="feature-desc">Plug in any Model Context Protocol server. Blender support ships out of the box.</p>
+      </div>
+      <div class="feature-card">
+        <p class="feature-title">GitHub, Google, Notion, Slack</p>
+        <p class="feature-desc"><code>/oauth connect</code> links your accounts. The agent can pull issues, docs, and messages without you copying them in.</p>
       </div>
     </div>
+  </section>
 
-    <!-- Quick start -->
-    <div class="section">
-      <div class="section-header">
-        <span class="section-title">Quick start</span>
-        <span class="section-sub">Install and go — wizard runs on first launch</span>
+  <section>
+    <p class="section-tag">Free models</p>
+    <h2 class="section-heading">Built and hosted by Axion Labs</h2>
+    <p class="section-lead">No API key needed. Hosted on Hugging Face, available via <code style="font-family:monospace;font-size:13px;background:rgba(26,18,9,0.07);padding:2px 6px;border-radius:4px">/model lumen</code> in the CLI or the chat page.</p>
+
+    <div class="ecosystem">
+      <div class="eco-card">
+        <p class="eco-tag">Live</p>
+        <p class="eco-name">Lumen 1.2.5</p>
+        <p class="eco-desc">Fine-tuned Llama 3.1 8B. DPO safety training, 73% pass rate on adversarial testing. Free in the browser and in the CLI.</p>
+        <a class="eco-link" href="/lumen">Chat with Lumen →</a>
       </div>
-      <div class="install-block">
-        <span class="i-comment"># Install</span><br>
-        <span class="i-prompt">$ </span><span class="i-cmd">npm install -g axion-cli</span><br>
-        <br>
-        <span class="i-comment"># Launch — setup wizard runs if no key is set</span><br>
-        <span class="i-prompt">$ </span><span class="i-cmd">axion</span><br>
-        <br>
-        <span class="i-comment"># Or go straight to the free model</span><br>
-        <span class="i-prompt">$ </span><span class="i-cmd">axion --model lumen</span>
+      <div class="eco-card">
+        <p class="eco-tag">Live</p>
+        <p class="eco-name">Axion Vision</p>
+        <p class="eco-desc">Free vision model for image understanding and OCR. Works out of the box for computer use and screenshot analysis. OpenAI-compatible API.</p>
+        <a class="eco-link" href="https://huggingface.co/spaces/RavikxxBGamin/LumenVision">View on Hugging Face →</a>
       </div>
     </div>
+  </section>
 
-    <!-- Links -->
-    <div class="section">
-      <div class="section-header">
-        <span class="section-title">Links</span>
-      </div>
-      <div class="links-grid">
-        <a class="link-chip" href="https://github.com/Ravikxx/axion">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/></svg>
-          GitHub
-        </a>
-        <a class="link-chip" href="https://www.npmjs.com/package/axion-cli">📦 npm</a>
-        <a class="link-chip" href="/lumen">💬 Lumen Chat</a>
-        <a class="link-chip" href="/lumen-125-safety">🛡 Safety Report</a>
-        <a class="link-chip" href="/keys">⬡ API Keys</a>
-        <a class="link-chip" href="/announcements">📣 Announcements</a>
-        <a class="link-chip" href="/privacy">◯ Privacy</a>
-      </div>
+  <section>
+    <p class="section-tag">Quick start</p>
+    <h2 class="section-heading">Install and go</h2>
+    <p class="section-lead">Global npm install, then run <code style="font-family:monospace;font-size:13px;background:rgba(26,18,9,0.07);padding:2px 6px;border-radius:4px">axion</code>. A setup wizard runs once if you don't have a key yet.</p>
+
+    <div class="code-block">
+      <span class="comment"># Install</span><br>
+      <span class="prompt">$ </span>npm install -g axion-cli<br>
+      <br>
+      <span class="comment"># Launch — wizard runs on first start if no key is set</span><br>
+      <span class="prompt">$ </span>axion<br>
+      <br>
+      <span class="comment"># Or skip straight to the free model</span><br>
+      <span class="prompt">$ </span>axion --model lumen
     </div>
+  </section>
 
-  </div><!-- /content -->
-</div><!-- /main -->
+  <section>
+    <p class="section-tag">Links</p>
+    <h2 class="section-heading">Find everything</h2>
+    <br>
+    <div class="link-row">
+      <a class="link-chip" href="https://github.com/Ravikxx/axion">⭐ GitHub</a>
+      <a class="link-chip" href="https://www.npmjs.com/package/axion-cli">📦 npm</a>
+      <a class="link-chip" href="/lumen">💬 Chat with Lumen</a>
+      <a class="link-chip" href="/lumen-125-safety">🛡️ Lumen Safety Report</a>
+      <a class="link-chip" href="/keys">🔑 API Keys</a>
+      <a class="link-chip" href="/announcements">📣 Announcements</a>
+      <a class="link-chip" href="/privacy">🔒 Privacy</a>
+    </div>
+  </section>
+
+</main>
 
 <!-- Sign-in modal -->
-<div id="signin-modal">
-  <div class="modal-box">
-    <button class="modal-close" onclick="closeModal()">×</button>
-    <div class="modal-h">Sign in</div>
-    <div class="modal-sub">Access your API keys and usage stats.</div>
-    <div class="m-field">
-      <label class="m-label">Email</label>
-      <input id="m-email" class="m-input" type="email" placeholder="you@example.com" />
+<div id="signin-modal" style="display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:24px">
+  <div style="background:#1a1209;border:1px solid #3a2f20;border-radius:16px;padding:36px;width:100%;max-width:380px;position:relative">
+    <button onclick="closeModal()" style="position:absolute;top:14px;right:16px;background:none;border:none;color:#6b5e4e;font-size:20px;cursor:pointer;line-height:1">×</button>
+    <h2 style="font-size:20px;font-weight:700;color:#f4efe6;margin-bottom:4px">Sign in</h2>
+    <p style="font-size:13px;color:#6b5e4e;margin-bottom:24px">Access your API keys and usage.</p>
+
+    <div style="margin-bottom:14px">
+      <label style="display:block;font-size:11px;color:#6b5e4e;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Email</label>
+      <input id="m-email" type="email" placeholder="you@example.com" style="width:100%;background:#0f0c07;border:1px solid #3a2f20;border-radius:8px;padding:10px 14px;color:#f4efe6;font-size:14px;outline:none" onfocus="this.style.borderColor='#e8602c'" onblur="this.style.borderColor='#3a2f20'" />
     </div>
-    <div class="m-field">
-      <label class="m-label">Password</label>
-      <input id="m-pass" class="m-input" type="password" placeholder="••••••••" />
+    <div style="margin-bottom:18px">
+      <label style="display:block;font-size:11px;color:#6b5e4e;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Password</label>
+      <input id="m-pass" type="password" placeholder="••••••••" style="width:100%;background:#0f0c07;border:1px solid #3a2f20;border-radius:8px;padding:10px 14px;color:#f4efe6;font-size:14px;outline:none" onfocus="this.style.borderColor='#e8602c'" onblur="this.style.borderColor='#3a2f20'" />
     </div>
-    <button id="m-btn" class="m-btn" onclick="modalLogin()">Sign in</button>
-    <div id="m-error" class="m-error"></div>
-    <div class="m-divider"><span>or</span></div>
-    <div class="m-oauth">
-      <a href="https://api.amplifiedsmp.org/auth/google?return_to=home" class="m-oauth-btn">
-        <svg width="14" height="14" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58z"/></svg>
-        Continue with Google
+    <button id="m-btn" onclick="modalLogin()" style="width:100%;background:#e8602c;color:#fff;border:none;border-radius:8px;padding:11px;font-size:14px;font-weight:600;cursor:pointer;margin-bottom:4px">Sign in</button>
+    <div id="m-error" style="color:#f87171;font-size:12px;margin-top:8px;text-align:center;display:none"></div>
+
+    <div style="display:flex;align-items:center;gap:10px;margin:18px 0 14px">
+      <div style="flex:1;height:1px;background:#3a2f20"></div>
+      <span style="font-size:11px;color:#6b5e4e">or</span>
+      <div style="flex:1;height:1px;background:#3a2f20"></div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:9px">
+      <a href="https://api.amplifiedsmp.org/auth/google?return_to=home" style="display:flex;align-items:center;justify-content:center;gap:10px;padding:10px;background:#0f0c07;border:1px solid #3a2f20;border-radius:8px;color:#c9b99a;text-decoration:none;font-size:13px;font-weight:500" onmouseover="this.style.borderColor='#6b5e4e'" onmouseout="this.style.borderColor='#3a2f20'">
+        <svg width="16" height="16" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58z"/></svg>
+        Google
       </a>
-      <a href="https://api.amplifiedsmp.org/auth/github?return_to=home" class="m-oauth-btn">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/></svg>
-        Continue with GitHub
+      <a href="https://api.amplifiedsmp.org/auth/github?return_to=home" style="display:flex;align-items:center;justify-content:center;gap:10px;padding:10px;background:#0f0c07;border:1px solid #3a2f20;border-radius:8px;color:#c9b99a;text-decoration:none;font-size:13px;font-weight:500" onmouseover="this.style.borderColor='#6b5e4e'" onmouseout="this.style.borderColor='#3a2f20'">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/></svg>
+        GitHub
       </a>
-      <a href="https://api.amplifiedsmp.org/auth/discord?return_to=home" class="m-oauth-btn">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="#5865F2"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
-        Continue with Discord
+      <a href="https://api.amplifiedsmp.org/auth/discord?return_to=home" style="display:flex;align-items:center;justify-content:center;gap:10px;padding:10px;background:#0f0c07;border:1px solid #3a2f20;border-radius:8px;color:#c9b99a;text-decoration:none;font-size:13px;font-weight:500" onmouseover="this.style.borderColor='#6b5e4e'" onmouseout="this.style.borderColor='#3a2f20'">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="#5865F2"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+        Discord
       </a>
     </div>
-    <p class="m-footer">No account? <a href="/keys">Sign up on the keys page</a></p>
+    <p style="text-align:center;margin-top:16px;font-size:12px;color:#6b5e4e">Don't have an account? <a href="/keys" style="color:#e8602c;text-decoration:none">Sign up on the keys page</a></p>
   </div>
 </div>
 
-<script>
-  // ── Terminal ──────────────────────────────────────────────────────────────
-  const lines = [
-    { type: 'cmd',   text: 'axion --model lumen' },
-    { type: 'out',   text: '  ⚛  Axion v1.0.2  ·  lumen', cls: 'green' },
-    { type: 'blank' },
-    { type: 'cmd',   text: 'fix the memory leak in src/cache.js' },
-    { type: 'out',   text: '  Reading src/cache.js…', cls: 'dim' },
-    { type: 'out',   text: '  Found it — listener not removed on destroy', cls: '' },
-    { type: 'out',   text: '  Patching cache.js:147…', cls: 'dim' },
-    { type: 'out',   text: '  ✓ Fixed. Added cleanup() in destroy()', cls: 'green' },
-    { type: 'blank' },
-    { type: 'cmd',   text: 'run the tests' },
-    { type: 'out',   text: '  $ npm test', cls: 'dim' },
-    { type: 'out',   text: '  ✓ 24 tests passed  (0 failed)', cls: 'green' },
-    { type: 'cursor' },
-  ]
-  const tbody = document.getElementById('terminal-body')
-  let i = 0
-  function nextLine() {
-    if (i >= lines.length) return
-    const line = lines[i++]
-    const el = document.createElement('div')
-    el.className = 't-line'
-    if (line.type === 'blank') el.innerHTML = '&nbsp;'
-    else if (line.type === 'cursor') el.innerHTML = '<span class="t-prompt">$ </span><span class="t-cursor"></span>'
-    else if (line.type === 'cmd') el.innerHTML = `<span class="t-prompt">$ </span><span class="t-cmd">${line.text}</span>`
-    else el.innerHTML = `<span class="${line.cls ? 't-' + line.cls : 't-out'}">${line.text}</span>`
-    tbody.appendChild(el)
-    if (i < lines.length) setTimeout(nextLine, line.type === 'cmd' ? 900 : line.type === 'blank' ? 200 : 350)
-  }
-  setTimeout(nextLine, 600)
+<footer>
+  <p>© 2026 Axion Labs · <a href="/privacy">Privacy</a> · <a href="https://github.com/Ravikxx/axion">GitHub</a> · <a href="/announcements">Announcements</a></p>
+</footer>
 
-  // ── Auth ──────────────────────────────────────────────────────────────────
+<script>
+  // ── Terminal animation ────────────────────────────────────────────────────────
+  const lines = [
+    { type: 'cmd',  text: 'axion --model lumen' },
+    { type: 'out',  text: '  ⚛  Axion v1.0.2  ·  lumen', cls: 'green' },
+    { type: 'blank' },
+    { type: 'cmd',  text: 'fix the memory leak in src/cache.js' },
+    { type: 'out',  text: '  Reading src/cache.js…', cls: 'dim' },
+    { type: 'out',  text: '  Found it — event listener not cleaned up on destroy', cls: '' },
+    { type: 'out',  text: '  Patching cache.js:147…', cls: 'dim' },
+    { type: 'out',  text: '  ✓ Fixed. Added cleanup() call in destroy()', cls: 'green' },
+    { type: 'blank' },
+    { type: 'cmd',  text: 'run the tests' },
+    { type: 'out',  text: '  $ npm test', cls: 'dim' },
+    { type: 'out',  text: '  ✓ 24 tests passed  (0 failed)', cls: 'green' },
+    { type: 'cursor' },
+  ];
+
+  const body = document.getElementById('terminal-body');
+  let i = 0;
+
+  function nextLine() {
+    if (i >= lines.length) return;
+    const line = lines[i++];
+    const el = document.createElement('div');
+    el.className = 't-line visible';
+
+    if (line.type === 'blank') {
+      el.innerHTML = '&nbsp;';
+    } else if (line.type === 'cursor') {
+      el.innerHTML = '<span class="t-prompt">$ </span><span class="t-cursor"></span>';
+    } else if (line.type === 'cmd') {
+      el.innerHTML = `<span class="t-prompt">$ </span><span class="t-cmd">${line.text}</span>`;
+    } else {
+      const cls = line.cls ? `t-${line.cls}` : 't-out';
+      el.innerHTML = `<span class="${cls}">${line.text}</span>`;
+    }
+
+    body.appendChild(el);
+
+    const delay = line.type === 'cmd' ? 900 : line.type === 'blank' ? 200 : 350;
+    if (i < lines.length) setTimeout(nextLine, delay);
+  }
+
+  // Start after a short pause
+  setTimeout(nextLine, 600);
+
+  // ── Auth ───────────────────────────────────────────────────────────────────
   const API = 'https://api.amplifiedsmp.org'
 
-  function openModal() { document.getElementById('signin-modal').style.display = 'flex'; document.getElementById('m-email').focus() }
-  function closeModal() { document.getElementById('signin-modal').style.display = 'none'; document.getElementById('m-error').style.display = 'none' }
-
+  function openModal() {
+    document.getElementById('signin-modal').style.display = 'flex'
+    document.getElementById('m-email').focus()
+  }
+  function closeModal() {
+    document.getElementById('signin-modal').style.display = 'none'
+    document.getElementById('m-error').style.display = 'none'
+  }
   function toggleDropdown() {
     const d = document.getElementById('profile-dropdown')
     d.style.display = d.style.display === 'none' ? 'block' : 'none'
   }
   document.addEventListener('click', e => {
-    const area = document.getElementById('signin-area')
-    if (area && !area.contains(e.target)) document.getElementById('profile-dropdown').style.display = 'none'
+    const chip = document.getElementById('profile-chip')
+    if (chip && !chip.contains(e.target)) {
+      document.getElementById('profile-dropdown').style.display = 'none'
+    }
     if (e.target === document.getElementById('signin-modal')) closeModal()
   })
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal() })
@@ -778,49 +594,67 @@
     const errEl = document.getElementById('m-error')
     const btn = document.getElementById('m-btn')
     errEl.style.display = 'none'
-    btn.disabled = true; btn.textContent = 'Signing in…'
+    btn.disabled = true
+    btn.textContent = 'Signing in…'
     try {
       const res = await fetch(`${API}/auth/login`, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password: pass, turnstile: '' }),
       })
       const data = await res.json()
-      if (!res.ok || !data.token) { errEl.textContent = data.error || 'Login failed'; errEl.style.display = 'block'; return }
+      if (!res.ok || !data.token) {
+        errEl.textContent = data.error || 'Login failed'
+        errEl.style.display = 'block'
+        return
+      }
       localStorage.setItem('axion_token', data.token)
       localStorage.setItem('axion_email', data.email)
       closeModal()
       showProfile(data.email)
-    } catch { errEl.textContent = 'Network error — try again.'; errEl.style.display = 'block' }
-    finally { btn.disabled = false; btn.textContent = 'Sign in' }
+    } catch {
+      errEl.textContent = 'Network error — try again.'
+      errEl.style.display = 'block'
+    } finally {
+      btn.disabled = false
+      btn.textContent = 'Sign in'
+    }
   }
 
   function showProfile(email) {
     document.getElementById('signin-btn').style.display = 'none'
-    const pb = document.getElementById('profile-btn')
-    pb.style.display = 'block'
-    document.getElementById('profile-initials').textContent = email.slice(0, 2).toUpperCase()
-    document.getElementById('profile-name').textContent = email.split('@')[0]
-    document.getElementById('dd-email').textContent = email
+    const chip = document.getElementById('profile-chip')
+    chip.style.display = 'block'
+    const initials = email.slice(0, 2).toUpperCase()
+    document.getElementById('profile-initials').textContent = initials
+    document.getElementById('profile-email-short').textContent = email.split('@')[0]
+    document.getElementById('profile-email-full').textContent = email
   }
 
   function signOut() {
-    localStorage.removeItem('axion_token'); localStorage.removeItem('axion_email')
-    document.getElementById('profile-btn').style.display = 'none'
+    localStorage.removeItem('axion_token')
+    localStorage.removeItem('axion_email')
+    document.getElementById('profile-chip').style.display = 'none'
     document.getElementById('signin-btn').style.display = ''
     document.getElementById('profile-dropdown').style.display = 'none'
   }
 
+  // Handle OAuth redirect (#verified=TOKEN&email=EMAIL) and existing session
   ;(function initAuth() {
     const hash = new URLSearchParams(location.hash.slice(1))
     if (hash.get('verified')) {
-      localStorage.setItem('axion_token', decodeURIComponent(hash.get('verified')))
-      localStorage.setItem('axion_email', decodeURIComponent(hash.get('email') || ''))
+      const t = decodeURIComponent(hash.get('verified'))
+      const em = decodeURIComponent(hash.get('email') || '')
+      localStorage.setItem('axion_token', t)
+      localStorage.setItem('axion_email', em)
       history.replaceState(null, '', location.pathname)
     }
     const email = localStorage.getItem('axion_email')
     const token = localStorage.getItem('axion_token')
     if (token && email) showProfile(email)
   })()
+
 </script>
+
 </body>
 </html>
