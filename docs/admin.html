@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Axion Admin</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0f0f11;
+      --surface: #18181c;
+      --border: #2a2a30;
+      --text: #e8e8f0;
+      --muted: #888;
+      --accent: #e8602c;
+      --accent-dim: #c04c1f;
+      --green: #34d399;
+      --red: #f87171;
+      --yellow: #fbbf24;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+
+    /* ── Auth gate ── */
+    #auth-gate {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    .auth-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 40px;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .auth-card h1 { font-size: 22px; margin-bottom: 4px; }
+    .auth-card p { color: var(--muted); margin-bottom: 28px; font-size: 13px; }
+
+    .field { margin-bottom: 16px; }
+    .field label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: .04em; }
+    .field input {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 14px;
+      color: var(--text);
+      font-size: 14px;
+      outline: none;
+      transition: border-color .15s;
+    }
+    .field input:focus { border-color: var(--accent); }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px 20px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      transition: opacity .15s, background .15s;
+    }
+    .btn:disabled { opacity: .5; cursor: not-allowed; }
+    .btn-primary { background: var(--accent); color: #fff; width: 100%; margin-top: 4px; }
+    .btn-primary:hover:not(:disabled) { background: var(--accent-dim); }
+    .btn-danger { background: transparent; color: var(--red); border: 1px solid var(--red); padding: 6px 14px; font-size: 12px; }
+    .btn-danger:hover:not(:disabled) { background: rgba(248,113,113,.1); }
+    .btn-sm { background: var(--accent); color: #fff; padding: 6px 14px; font-size: 12px; }
+    .btn-sm:hover:not(:disabled) { background: var(--accent-dim); }
+
+    .error-msg { color: var(--red); font-size: 13px; margin-top: 10px; text-align: center; }
+
+    /* ── Layout ── */
+    #app { display: none; flex-direction: column; min-height: 100vh; }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 32px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .logo { font-weight: 700; font-size: 16px; display: flex; align-items: center; gap: 8px; }
+    .logo span { color: var(--accent); }
+    .admin-badge { background: var(--accent); color: #fff; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 99px; text-transform: uppercase; letter-spacing: .05em; }
+
+    .header-right { display: flex; align-items: center; gap: 12px; }
+    #admin-email { color: var(--muted); font-size: 13px; }
+    .sign-out { background: transparent; border: 1px solid var(--border); color: var(--muted); padding: 6px 14px; border-radius: 8px; cursor: pointer; font-size: 13px; }
+    .sign-out:hover { border-color: var(--text); color: var(--text); }
+
+    main { padding: 32px; max-width: 1100px; margin: 0 auto; width: 100%; }
+
+    h2 { font-size: 18px; margin-bottom: 20px; }
+
+    /* ── Stats grid ── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+    }
+    .stat-label { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .04em; margin-bottom: 8px; }
+    .stat-value { font-size: 32px; font-weight: 700; }
+
+    /* ── Section ── */
+    section { margin-bottom: 48px; }
+
+    /* ── Table ── */
+    .table-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    table { width: 100%; border-collapse: collapse; }
+    thead { background: rgba(255,255,255,.03); }
+    th {
+      text-align: left;
+      padding: 12px 16px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+    }
+    td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(255,255,255,.02); }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 99px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .badge-green { background: rgba(52,211,153,.15); color: var(--green); }
+    .badge-red { background: rgba(248,113,113,.15); color: var(--red); }
+    .badge-owner { background: rgba(232,96,44,.15); color: var(--accent); }
+
+    .empty-row td { text-align: center; color: var(--muted); padding: 32px; }
+
+    /* ── Add admin form ── */
+    .add-form {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .add-form input {
+      flex: 1;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 9px 14px;
+      color: var(--text);
+      font-size: 14px;
+      outline: none;
+    }
+    .add-form input:focus { border-color: var(--accent); }
+
+    /* ── Top keys ── */
+    .top-key-row td:first-child { font-family: monospace; font-size: 12px; color: var(--muted); }
+
+    /* ── Loading ── */
+    .loading { color: var(--muted); padding: 24px; text-align: center; }
+  </style>
+</head>
+<body>
+
+<!-- Auth gate -->
+<div id="auth-gate">
+  <div class="auth-card">
+    <h1>Admin Panel</h1>
+    <p>Sign in with your Axion account to continue.</p>
+    <div class="field">
+      <label>Email</label>
+      <input type="email" id="login-email" placeholder="you@example.com" />
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input type="password" id="login-password" placeholder="••••••••" />
+    </div>
+    <button class="btn btn-primary" id="login-btn" onclick="doLogin()">Sign in</button>
+    <div id="login-error" class="error-msg" style="display:none"></div>
+  </div>
+</div>
+
+<!-- Main app -->
+<div id="app">
+  <header>
+    <div class="logo">Axion <span>Admin</span> <span class="admin-badge">admin</span></div>
+    <div class="header-right">
+      <span id="admin-email"></span>
+      <button class="sign-out" onclick="signOut()">Sign out</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- Stats -->
+    <h2>Overview</h2>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">Verified Users</div>
+        <div class="stat-value" id="stat-users">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Active Keys</div>
+        <div class="stat-value" id="stat-keys">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Total Requests</div>
+        <div class="stat-value" id="stat-total">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Free Req Today</div>
+        <div class="stat-value" id="stat-free">—</div>
+      </div>
+    </div>
+
+    <!-- Top keys -->
+    <section>
+      <h2>Top API Keys</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Label</th>
+              <th>Owner</th>
+              <th>Total Req</th>
+              <th>This Month</th>
+            </tr>
+          </thead>
+          <tbody id="top-keys-body">
+            <tr class="empty-row"><td colspan="4">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Users -->
+    <section>
+      <h2>Users</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Email</th>
+              <th>Verified</th>
+              <th>Keys</th>
+              <th>Total Req</th>
+              <th>Joined</th>
+            </tr>
+          </thead>
+          <tbody id="users-body">
+            <tr class="empty-row"><td colspan="5">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Allowlist -->
+    <section>
+      <h2>Admin Allowlist</h2>
+      <div class="add-form">
+        <input type="email" id="add-email" placeholder="email@example.com" onkeydown="if(event.key==='Enter')addAdmin()" />
+        <button class="btn btn-sm" onclick="addAdmin()">Add admin</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Email</th>
+              <th>Added by</th>
+              <th>Added</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="allowlist-body">
+            <tr class="empty-row"><td colspan="4">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+  const API = 'https://api.amplifiedsmp.org'
+  const OWNER = 'fearlessaviatorclan@gmail.com'
+  let _token = null
+
+  // ── Auth ──────────────────────────────────────────────────────────────────
+
+  async function doLogin() {
+    const email = document.getElementById('login-email').value.trim()
+    const password = document.getElementById('login-password').value
+    const errEl = document.getElementById('login-error')
+    const btn = document.getElementById('login-btn')
+    errEl.style.display = 'none'
+    btn.disabled = true
+    btn.textContent = 'Signing in…'
+
+    try {
+      const res = await fetch(`${API}/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password, turnstile: '' }),
+      })
+      const data = await res.json()
+      if (!res.ok || !data.token) {
+        errEl.textContent = data.error || 'Login failed'
+        errEl.style.display = 'block'
+        return
+      }
+
+      // Check admin status
+      const checkRes = await fetch(`${API}/admin/check`, {
+        headers: { Authorization: `Bearer ${data.token}` },
+      })
+      if (!checkRes.ok) {
+        errEl.textContent = 'Access denied — your account is not on the admin allowlist.'
+        errEl.style.display = 'block'
+        return
+      }
+
+      _token = data.token
+      localStorage.setItem('axion_token', _token)
+      localStorage.setItem('axion_email', data.email)
+      showApp(data.email)
+    } catch (e) {
+      errEl.textContent = 'Network error — try again.'
+      errEl.style.display = 'block'
+    } finally {
+      btn.disabled = false
+      btn.textContent = 'Sign in'
+    }
+  }
+
+  function signOut() {
+    localStorage.removeItem('axion_token')
+    localStorage.removeItem('axion_email')
+    location.reload()
+  }
+
+  // ── App ───────────────────────────────────────────────────────────────────
+
+  function showApp(email) {
+    document.getElementById('auth-gate').style.display = 'none'
+    const app = document.getElementById('app')
+    app.style.display = 'flex'
+    document.getElementById('admin-email').textContent = email
+    loadAll()
+  }
+
+  async function apiFetch(path, opts = {}) {
+    return fetch(`${API}${path}`, {
+      ...opts,
+      headers: { Authorization: `Bearer ${_token}`, 'Content-Type': 'application/json', ...(opts.headers || {}) },
+    })
+  }
+
+  async function loadAll() {
+    loadStats()
+    loadUsers()
+    loadAllowlist()
+  }
+
+  async function loadStats() {
+    const res = await apiFetch('/admin/stats')
+    if (!res.ok) return
+    const d = await res.json()
+    document.getElementById('stat-users').textContent = fmt(d.users)
+    document.getElementById('stat-keys').textContent = fmt(d.active_keys)
+    document.getElementById('stat-total').textContent = fmt(d.total_requests)
+    document.getElementById('stat-free').textContent = fmt(d.free_requests_today)
+
+    const tbody = document.getElementById('top-keys-body')
+    if (!d.top_keys || !d.top_keys.length) {
+      tbody.innerHTML = '<tr class="empty-row"><td colspan="4">No keys yet</td></tr>'
+      return
+    }
+    tbody.innerHTML = d.top_keys.map(k => `
+      <tr class="top-key-row">
+        <td>${esc(k.label)}</td>
+        <td>${esc(k.email)}</td>
+        <td>${fmt(k.requests)}</td>
+        <td>${fmt(k.month_requests)}</td>
+      </tr>`).join('')
+  }
+
+  async function loadUsers() {
+    const res = await apiFetch('/admin/users')
+    if (!res.ok) return
+    const { users } = await res.json()
+    const tbody = document.getElementById('users-body')
+    if (!users || !users.length) {
+      tbody.innerHTML = '<tr class="empty-row"><td colspan="5">No users yet</td></tr>'
+      return
+    }
+    tbody.innerHTML = users.map(u => `
+      <tr>
+        <td>${esc(u.email)}</td>
+        <td>${u.verified ? '<span class="badge badge-green">Verified</span>' : '<span class="badge badge-red">Unverified</span>'}</td>
+        <td>${u.key_count}</td>
+        <td>${fmt(u.total_requests)}</td>
+        <td style="color:var(--muted)">${fmtDate(u.created_at)}</td>
+      </tr>`).join('')
+  }
+
+  async function loadAllowlist() {
+    const res = await apiFetch('/admin/allowlist')
+    if (!res.ok) return
+    const { allowlist } = await res.json()
+    const tbody = document.getElementById('allowlist-body')
+    if (!allowlist || !allowlist.length) {
+      tbody.innerHTML = '<tr class="empty-row"><td colspan="4">Empty</td></tr>'
+      return
+    }
+    tbody.innerHTML = allowlist.map(a => `
+      <tr>
+        <td>
+          ${esc(a.email)}
+          ${a.email === OWNER ? ' <span class="badge badge-owner">owner</span>' : ''}
+        </td>
+        <td style="color:var(--muted)">${a.added_by ? esc(a.added_by) : '—'}</td>
+        <td style="color:var(--muted)">${fmtDate(a.added_at)}</td>
+        <td>
+          ${a.email === OWNER
+            ? '<button class="btn btn-danger" disabled title="Cannot remove owner">Remove</button>'
+            : `<button class="btn btn-danger" onclick="removeAdmin('${esc(a.email)}')">Remove</button>`
+          }
+        </td>
+      </tr>`).join('')
+  }
+
+  async function addAdmin() {
+    const input = document.getElementById('add-email')
+    const email = input.value.trim()
+    if (!email) return
+    const res = await apiFetch('/admin/allowlist', {
+      method: 'POST',
+      body: JSON.stringify({ email }),
+    })
+    if (res.ok) {
+      input.value = ''
+      loadAllowlist()
+    } else {
+      const d = await res.json()
+      alert(d.error || 'Failed to add admin')
+    }
+  }
+
+  async function removeAdmin(email) {
+    if (!confirm(`Remove ${email} from admin allowlist?`)) return
+    const res = await apiFetch(`/admin/allowlist/${encodeURIComponent(email)}`, { method: 'DELETE' })
+    if (res.ok) {
+      loadAllowlist()
+    } else {
+      const d = await res.json()
+      alert(d.error || 'Failed to remove admin')
+    }
+  }
+
+  // ── Utils ─────────────────────────────────────────────────────────────────
+
+  function fmt(n) {
+    if (n == null) return '0'
+    return Number(n).toLocaleString()
+  }
+
+  function fmtDate(ts) {
+    if (!ts) return '—'
+    return new Date(ts * 1000).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+  }
+
+  function esc(s) {
+    return String(s || '').replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]))
+  }
+
+  // ── Init ──────────────────────────────────────────────────────────────────
+
+  async function init() {
+    const token = localStorage.getItem('axion_token')
+    const email = localStorage.getItem('axion_email')
+    if (!token) return
+
+    // Validate token + admin access
+    const res = await fetch(`${API}/admin/check`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    if (!res.ok) {
+      localStorage.removeItem('axion_token')
+      return
+    }
+
+    _token = token
+    showApp(email)
+  }
+
+  // Enter key on password field
+  document.getElementById('login-password').addEventListener('keydown', e => {
+    if (e.key === 'Enter') doLogin()
+  })
+
+  init()
+</script>
+</body>
+</html>

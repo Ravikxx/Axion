@@ -468,19 +468,33 @@ app.get('/health', (c) => json({ ok: true, model: 'lumen-1.2.5' }))
 
 // ── Admin panel ────────────────────────────────────────────────────────────
 
-app.get('/admin/stats', async (c) => {
-  const token = c.req.header('Authorization') || ''
-  if (token !== `Bearer ${c.env.ADMIN_SECRET}`) return json({ error: 'Forbidden' }, 403)
+async function requireAdmin(c) {
+  const user = await requireAuth(c)
+  if (!user) return null
+  const allowed = await c.env.DB.prepare('SELECT email FROM admin_allowlist WHERE email=?').bind(user.email).first()
+  return allowed ? user : null
+}
 
+app.get('/admin/check', async (c) => {
+  const user = await requireAdmin(c)
+  if (!user) return json({ admin: false }, 403)
+  return json({ admin: true, email: user.email })
+})
+
+app.get('/admin/stats', async (c) => {
+  const user = await requireAdmin(c)
+  if (!user) return json({ error: 'Forbidden' }, 403)
+
+  const today = new Date().toISOString().slice(0, 10)
   const [users, keys, requests, freeToday] = await Promise.all([
     c.env.DB.prepare('SELECT COUNT(*) as count FROM users WHERE verified=1').first(),
     c.env.DB.prepare('SELECT COUNT(*) as count FROM api_keys WHERE revoked=0').first(),
     c.env.DB.prepare('SELECT SUM(requests) as total FROM api_keys').first(),
-    c.env.DB.prepare("SELECT SUM(count) as total FROM rate_limits WHERE key LIKE 'free:%' AND window_start=?").bind(new Date().toISOString().slice(0, 10)).first(),
+    c.env.DB.prepare("SELECT SUM(count) as total FROM rate_limits WHERE key LIKE 'free:%' AND window_start=?").bind(today).first(),
   ])
 
   const topKeys = await c.env.DB.prepare(
-    'SELECT k.label, k.requests, k.month_requests, u.email FROM api_keys k JOIN users u ON k.user_id=u.id WHERE k.revoked=0 ORDER BY k.requests DESC LIMIT 10'
+    'SELECT k.label, k.requests, k.month_requests, u.email FROM api_keys k JOIN users u ON k.user_id=u.id WHERE k.revoked=0 ORDER BY k.requests DESC LIMIT 20'
   ).all()
 
   return json({
@@ -490,6 +504,45 @@ app.get('/admin/stats', async (c) => {
     free_requests_today: freeToday.total || 0,
     top_keys: topKeys.results,
   })
+})
+
+app.get('/admin/users', async (c) => {
+  const user = await requireAdmin(c)
+  if (!user) return json({ error: 'Forbidden' }, 403)
+
+  const { results } = await c.env.DB.prepare(
+    `SELECT u.id, u.email, u.verified, u.created_at,
+     COUNT(k.id) as key_count, COALESCE(SUM(k.requests),0) as total_requests
+     FROM users u LEFT JOIN api_keys k ON k.user_id=u.id AND k.revoked=0
+     GROUP BY u.id ORDER BY u.created_at DESC LIMIT 100`
+  ).all()
+
+  return json({ users: results })
+})
+
+app.get('/admin/allowlist', async (c) => {
+  const user = await requireAdmin(c)
+  if (!user) return json({ error: 'Forbidden' }, 403)
+  const { results } = await c.env.DB.prepare('SELECT email, added_by, added_at FROM admin_allowlist ORDER BY added_at ASC').all()
+  return json({ allowlist: results })
+})
+
+app.post('/admin/allowlist', async (c) => {
+  const user = await requireAdmin(c)
+  if (!user) return json({ error: 'Forbidden' }, 403)
+  const { email } = await c.req.json().catch(() => ({}))
+  if (!email || !validEmail(email)) return json({ error: 'Invalid email' }, 400)
+  await c.env.DB.prepare('INSERT OR IGNORE INTO admin_allowlist (email, added_by) VALUES (?,?)').bind(email.toLowerCase(), user.email).run()
+  return json({ ok: true })
+})
+
+app.delete('/admin/allowlist/:email', async (c) => {
+  const user = await requireAdmin(c)
+  if (!user) return json({ error: 'Forbidden' }, 403)
+  const target = decodeURIComponent(c.req.param('email'))
+  if (target === 'fearlessaviatorclan@gmail.com') return json({ error: 'Cannot remove owner' }, 400)
+  await c.env.DB.prepare('DELETE FROM admin_allowlist WHERE email=?').bind(target).run()
+  return json({ ok: true })
 })
 
 export default app
