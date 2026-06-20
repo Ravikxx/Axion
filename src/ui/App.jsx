@@ -332,7 +332,7 @@ export function App({
   initialResume         = null,
 }) {
   const { exit } = useApp();
-  const [model, setModel]         = useState(initialModel === 'lumen' ? 'claude' : initialModel);
+  const [model, setModel]         = useState(initialModel);
   const [mode, setMode]           = useState(initialMode);
   const [staticMessages, setStaticMessages] = useState([
     { type: '_banner', model: initialModel, mode: initialMode },
@@ -683,8 +683,8 @@ export function App({
   // Onboarding wizard — show on first run when no API key is set
   useEffect(() => {
     if (initialResume) return;
-    const FREE = ['ollama', 'veil', 'axion-vision'];
-    const m = initialModel === 'lumen' ? 'claude' : initialModel;
+    const FREE = ['ollama', 'veil', 'axion-vision', 'lumen'];
+    const m = initialModel;
     const prov = MODEL_PROVIDERS[m];
     if (!FREE.includes(m) && prov && !API_KEYS[prov]) {
       setInputMode('onboarding');
@@ -834,8 +834,6 @@ export function App({
         case 'model':
           if (!arg) {
             pushStatic({ type: 'info', content: `current: ${model}  available: ${Object.keys(MODELS).join(' · ')}` });
-          } else if (arg === 'lumen') {
-            pushStatic({ type: 'error', content: 'Lumen is temporarily suspended from public access due to a critical safety finding.\nSee: https://axionlabs.dev/lumen-suspension' });
           } else {
             setModel(arg);
             saveModel(arg);
@@ -2824,11 +2822,6 @@ triggers: <comma-separated words that should activate it, include "${skillName.t
         pushStatic({ type: 'info', content: `📎 pinned ${mentioned.map(f => f.path).join(', ')}` });
       }
 
-      // Lumen is suspended — block all inference
-      if (model === 'lumen') {
-        pushStatic({ type: 'error', content: 'Lumen is temporarily suspended from public access due to a critical safety finding.\nSee: https://axionlabs.dev/lumen-suspension' });
-        return;
-      }
 
       // First-run: check if the current model's provider has an API key
       const provider = MODEL_PROVIDERS[model];
