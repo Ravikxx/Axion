@@ -9,9 +9,9 @@ PW_SALT = "change-me-in-dashboard"
 [[d1_databases]]
 binding = "DB"
 database_name = "axion-db"
-database_id = "PASTE_YOUR_DATABASE_ID_HERE"
+database_id = "08b1ad36-8b1b-419d-8b3f-f93b04dd8723"
 
-[routes]
 # Uncomment after adding custom domain in CF dashboard:
+# [[routes]]
 # pattern = "api.amplifiedsmp.org/*"
 # zone_name = "amplifiedsmp.org"
