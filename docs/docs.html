@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Docs — Axion Labs</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:         #f4efe6;
+      --bg-card:    #faf7f2;
+      --border:     #e0d8cc;
+      --text:       #1a1209;
+      --text-muted: #6b5e4e;
+      --accent:     #e8602c;
+      --accent-lt:  #fdf0ea;
+      --dark:       #1a1209;
+      --code-bg:    #0f0c07;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* ── Nav ── */
+    nav {
+      background: var(--dark);
+      padding: 0 32px;
+      display: flex; align-items: center; height: 56px; gap: 24px;
+      position: sticky; top: 0; z-index: 100;
+    }
+    nav a { color: #c9b99a; text-decoration: none; font-size: 14px; transition: color 0.2s; }
+    nav a:hover { color: #f4efe6; }
+    nav a.brand { color: #f4efe6; font-weight: 700; font-size: 16px; margin-right: 16px; text-decoration: none; }
+    nav .nav-right { margin-left: auto; }
+    .btn-nav {
+      background: var(--accent); color: #fff !important;
+      padding: 6px 14px; border-radius: 6px; font-size: 13px; font-weight: 600;
+    }
+
+    /* ── Page header ── */
+    .page-header {
+      background: var(--dark); color: #f4efe6;
+      padding: 52px 32px 44px;
+    }
+    .page-header .tag {
+      font-size: 12px; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 12px;
+    }
+    .page-header h1 { font-size: 38px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 10px; }
+    .page-header p { color: #8b7355; font-size: 16px; }
+
+    /* ── Layout ── */
+    .docs-layout {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 32px;
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 64px;
+      align-items: start;
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      position: sticky;
+      top: 72px;
+      padding: 32px 0 80px;
+    }
+    .sidebar-section { margin-bottom: 24px; }
+    .sidebar-heading {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--text-muted);
+      padding: 0 0 8px; margin-bottom: 4px;
+      border-bottom: 1px solid var(--border);
+    }
+    .sidebar a {
+      display: block; padding: 6px 0;
+      font-size: 13px; color: var(--text-muted);
+      text-decoration: none; transition: color 0.15s;
+      border-left: 2px solid transparent;
+      padding-left: 10px; margin-left: -10px;
+    }
+    .sidebar a:hover { color: var(--text); }
+    .sidebar a.active { color: var(--accent); border-left-color: var(--accent); }
+
+    /* ── Content ── */
+    .docs-content { padding: 40px 0 80px; }
+
+    .doc-section {
+      margin-bottom: 64px;
+      padding-bottom: 64px;
+      border-bottom: 1px solid var(--border);
+    }
+    .doc-section:last-child { border-bottom: none; margin-bottom: 0; }
+
+    .doc-section h2 {
+      font-size: 24px; font-weight: 700; letter-spacing: -0.01em;
+      margin-bottom: 8px; scroll-margin-top: 80px;
+    }
+    .doc-section .lead {
+      color: var(--text-muted); font-size: 15px;
+      margin-bottom: 28px; line-height: 1.65;
+    }
+    .doc-section h3 {
+      font-size: 16px; font-weight: 700;
+      margin: 28px 0 10px;
+    }
+    .doc-section p {
+      font-size: 15px; color: var(--text-muted);
+      margin-bottom: 14px; line-height: 1.7;
+    }
+    .doc-section p:last-child { margin-bottom: 0; }
+    .doc-section ul, .doc-section ol {
+      margin: 10px 0 16px 20px;
+    }
+    .doc-section li {
+      font-size: 14px; color: var(--text-muted);
+      line-height: 1.65; margin-bottom: 6px;
+    }
+    .doc-section li strong { color: var(--text); }
+
+    /* ── Code ── */
+    .code-block {
+      background: var(--code-bg); border: 1px solid #2d2010;
+      border-radius: 10px; padding: 18px 22px;
+      font-family: "SF Mono", "Fira Code", "Cascadia Code", monospace;
+      font-size: 13px; color: #c9b99a;
+      overflow-x: auto; line-height: 1.8;
+      margin: 16px 0;
+    }
+    .code-block .prompt { color: #e8602c; user-select: none; }
+    .code-block .comment { color: #4a3828; }
+    .code-block .green { color: #6aa87a; }
+    code {
+      font-family: "SF Mono", "Fira Code", monospace;
+      font-size: 12px; background: rgba(26,18,9,0.08);
+      padding: 2px 6px; border-radius: 4px; color: var(--text);
+    }
+
+    /* ── Callout ── */
+    .callout {
+      border-radius: 8px; padding: 14px 18px;
+      margin: 20px 0; font-size: 14px; line-height: 1.65;
+    }
+    .callout.tip {
+      background: var(--accent-lt);
+      border: 1px solid rgba(232,96,44,0.2);
+      border-left: 3px solid var(--accent);
+      color: var(--text-muted);
+    }
+    .callout.tip strong { color: var(--accent); }
+    .callout.info {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-left: 3px solid #c9b99a;
+      color: var(--text-muted);
+    }
+
+    /* ── Command table ── */
+    .cmd-table { width: 100%; border-collapse: collapse; font-size: 14px; margin: 16px 0; }
+    .cmd-table th {
+      text-align: left; padding: 10px 14px;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-card);
+    }
+    .cmd-table td { padding: 12px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .cmd-table tr:last-child td { border-bottom: none; }
+    .cmd-table td:first-child { white-space: nowrap; }
+    .cmd-table td code { font-size: 12px; }
+    .cmd-table .desc { color: var(--text-muted); font-size: 13px; }
+    .cmd-table tr { background: var(--bg-card); }
+    .cmd-table tr:nth-child(even) { background: var(--bg); }
+
+    /* ── Model cards ── */
+    .model-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0; }
+    .model-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 10px; padding: 18px 20px;
+    }
+    .model-card-name { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+    .model-card-alias code { font-size: 12px; background: rgba(26,18,9,0.08); padding: 2px 6px; border-radius: 4px; }
+    .model-card-desc { font-size: 13px; color: var(--text-muted); margin-top: 6px; line-height: 1.5; }
+    .model-card-badge {
+      display: inline-block; font-size: 10px; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 2px 7px; border-radius: 3px; margin-bottom: 8px;
+    }
+    .badge-free { background: #e8f4ea; color: #2d7a3a; }
+    .badge-key  { background: var(--accent-lt); color: var(--accent); }
+
+    /* ── Footer ── */
+    footer {
+      background: var(--dark); color: #6b5e4e;
+      text-align: center; padding: 28px 32px; font-size: 13px;
+    }
+    footer a { color: #8b7355; text-decoration: none; }
+    footer a:hover { color: #c9b99a; }
+
+    /* ── Mobile ── */
+    @media (max-width: 720px) {
+      .docs-layout { grid-template-columns: 1fr; gap: 0; padding: 0 16px; }
+      .sidebar { display: none; }
+      .model-grid { grid-template-columns: 1fr; }
+      nav { padding: 0 16px; }
+      nav a:not(.brand) { display: none; }
+      .nav-right { display: none !important; }
+      .page-header { padding: 36px 20px 28px; }
+      .page-header h1 { font-size: 28px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="brand">⚛ Axion</a>
+  <a href="/lumen">Lumen</a>
+  <a href="/announcements">Announcements</a>
+  <a href="https://github.com/Ravikxx/axion">GitHub</a>
+  <div class="nav-right">
+    <a href="https://www.npmjs.com/package/axion-cli" class="btn-nav">Install Free →</a>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="tag">Axion Labs</div>
+  <h1>Documentation</h1>
+  <p>Everything you need to install, configure, and get the most out of Axion.</p>
+</div>
+
+<div class="docs-layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-heading">Getting Started</div>
+      <a href="#install">Installation</a>
+      <a href="#first-launch">First Launch</a>
+      <a href="#free-models">Free Models</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-heading">Usage</div>
+      <a href="#models">Models & API Keys</a>
+      <a href="#commands">Commands</a>
+      <a href="#modes">Code vs Chat Mode</a>
+      <a href="#memory">Memory</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-heading">Extensions</div>
+      <a href="#discord">Discord Bot</a>
+      <a href="#chrome">Chrome Extension</a>
+      <a href="#mcp">MCP Servers</a>
+    </div>
+  </aside>
+
+  <!-- Content -->
+  <div class="docs-content">
+
+    <!-- Install -->
+    <div class="doc-section" id="install">
+      <h2>Installation</h2>
+      <p class="lead">Axion is a Node.js CLI published on npm. You need Node 18 or later.</p>
+
+      <div class="code-block">
+        <span class="comment"># Install globally</span><br>
+        <span class="prompt">$ </span>npm install -g axion-cli<br>
+        <br>
+        <span class="comment"># Verify</span><br>
+        <span class="prompt">$ </span>axion --version
+      </div>
+
+      <div class="callout tip">
+        <strong>Tip:</strong> If <code>axion</code> isn't found after install, make sure your npm global bin directory is on your PATH. Run <code>npm bin -g</code> to find it.
+      </div>
+
+      <h3>Requirements</h3>
+      <ul>
+        <li><strong>Node.js 18+</strong> — required</li>
+        <li><strong>An API key</strong> — for Claude, GPT-4o, Gemini, or Groq. Or use Lumen for free with no key.</li>
+        <li><strong>Python 3 (optional)</strong> — needed for computer use / screen overlay</li>
+        <li><strong>Tesseract (optional)</strong> — for OCR / find-by-text in computer use</li>
+      </ul>
+
+      <p>Run <code>axion /doctor</code> after install to check your environment.</p>
+    </div>
+
+    <!-- First launch -->
+    <div class="doc-section" id="first-launch">
+      <h2>First Launch</h2>
+      <p class="lead">Run <code>axion</code> to start. If no API key is set, the onboarding wizard walks you through setup.</p>
+
+      <div class="code-block">
+        <span class="prompt">$ </span>axion<br>
+        <br>
+        <span class="green">  Welcome to Axion!</span><br>
+        <span class="comment">  Pick a model to get started:</span><br>
+        <span class="comment">  › Claude (Anthropic)  · GPT-4o (OpenAI)  · Gemini  · Groq  · Lumen (free)</span>
+      </div>
+
+      <p>The wizard lets you pick a model and enter your API key. If you select Lumen, no key is needed — it's free and hosted by Axion Labs.</p>
+
+      <h3>Skipping the wizard</h3>
+      <p>Set a key manually and jump straight in:</p>
+
+      <div class="code-block">
+        <span class="comment"># Set your API key</span><br>
+        <span class="prompt">$ </span>axion<br>
+        <span class="prompt">› </span>/api claude sk-ant-…<br>
+        <br>
+        <span class="comment"># Or start with the free model</span><br>
+        <span class="prompt">$ </span>axion --model lumen
+      </div>
+    </div>
+
+    <!-- Free models -->
+    <div class="doc-section" id="free-models">
+      <h2>Free Models</h2>
+      <p class="lead">Two free models are available with no API key — hosted by Axion Labs on Hugging Face.</p>
+
+      <div class="model-grid">
+        <div class="model-card">
+          <div class="model-card-badge badge-free">Free · No key</div>
+          <div class="model-card-name">Lumen 1.2.5</div>
+          <div class="model-card-alias"><code>/model lumen</code></div>
+          <div class="model-card-desc">Fine-tuned Llama 3.1 8B with DPO safety training. General assistant — questions, writing, code, explanations. Also available at <a href="/lumen" style="color:var(--accent)">axionlabs.dev/lumen</a>.</div>
+        </div>
+        <div class="model-card">
+          <div class="model-card-badge badge-free">Free · No key</div>
+          <div class="model-card-name">Axion Vision</div>
+          <div class="model-card-alias"><code>/vision axion-vision</code></div>
+          <div class="model-card-desc">Vision model for image understanding and OCR. Used automatically for computer use and screenshot analysis. Powered by GLM-OCR.</div>
+        </div>
+      </div>
+
+      <div class="callout info">
+        Free models run on shared Hugging Face compute — response times vary. For production use or high-throughput work, use a paid API provider.
+      </div>
+    </div>
+
+    <!-- Models & API Keys -->
+    <div class="doc-section" id="models">
+      <h2>Models & API Keys</h2>
+      <p class="lead">Axion supports multiple providers. Switch between them at any time with <code>/model</code>.</p>
+
+      <div class="model-grid">
+        <div class="model-card">
+          <div class="model-card-badge badge-key">Requires key</div>
+          <div class="model-card-name">Claude</div>
+          <div class="model-card-alias"><code>/model claude</code> · <code>/api claude &lt;key&gt;</code></div>
+          <div class="model-card-desc">Anthropic's Claude models. Get a key at <a href="https://console.anthropic.com" style="color:var(--accent)">console.anthropic.com</a>.</div>
+        </div>
+        <div class="model-card">
+          <div class="model-card-badge badge-key">Requires key</div>
+          <div class="model-card-name">GPT-4o</div>
+          <div class="model-card-alias"><code>/model gpt</code> · <code>/api gpt &lt;key&gt;</code></div>
+          <div class="model-card-desc">OpenAI models. Get a key at <a href="https://platform.openai.com" style="color:var(--accent)">platform.openai.com</a>.</div>
+        </div>
+        <div class="model-card">
+          <div class="model-card-badge badge-key">Requires key</div>
+          <div class="model-card-name">Gemini</div>
+          <div class="model-card-alias"><code>/model gemini</code> · <code>/api gemini &lt;key&gt;</code></div>
+          <div class="model-card-desc">Google Gemini models. Free tier available at <a href="https://aistudio.google.com" style="color:var(--accent)">aistudio.google.com</a>.</div>
+        </div>
+        <div class="model-card">
+          <div class="model-card-badge badge-key">Free tier</div>
+          <div class="model-card-name">Groq</div>
+          <div class="model-card-alias"><code>/model groq</code> · <code>/api groq &lt;key&gt;</code></div>
+          <div class="model-card-desc">Fast inference on Llama 3.3 70B. Generous free tier at <a href="https://console.groq.com" style="color:var(--accent)">console.groq.com</a>.</div>
+        </div>
+        <div class="model-card">
+          <div class="model-card-badge badge-free">Free · Local</div>
+          <div class="model-card-name">Ollama</div>
+          <div class="model-card-alias"><code>/model ollama</code></div>
+          <div class="model-card-desc">Any model running locally via Ollama. No key needed. Runs at <code>localhost:11434</code>.</div>
+        </div>
+        <div class="model-card">
+          <div class="model-card-badge badge-key">Requires key</div>
+          <div class="model-card-name">OpenRouter</div>
+          <div class="model-card-alias"><code>/model or</code> · <code>/api openrouter &lt;key&gt;</code></div>
+          <div class="model-card-desc">Access 100+ models through one API. Keys at <a href="https://openrouter.ai" style="color:var(--accent)">openrouter.ai</a>.</div>
+        </div>
+      </div>
+
+      <h3>Switching models mid-session</h3>
+      <div class="code-block">
+        <span class="prompt">› </span>/model claude<br>
+        <span class="prompt">› </span>/model lumen<br>
+        <span class="prompt">› </span>/model groq
+      </div>
+      <p>Your conversation history carries over when you switch — the new model gets full context.</p>
+    </div>
+
+    <!-- Commands -->
+    <div class="doc-section" id="commands">
+      <h2>Commands</h2>
+      <p class="lead">Type <code>/</code> followed by any command. Run <code>/help</code> for the full list in-session.</p>
+
+      <table class="cmd-table">
+        <thead>
+          <tr>
+            <th>Command</th>
+            <th>What it does</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><code>/model &lt;name&gt;</code></td><td class="desc">Switch to a different model (claude, gpt, gemini, groq, lumen, ollama…)</td></tr>
+          <tr><td><code>/api &lt;provider&gt; &lt;key&gt;</code></td><td class="desc">Save an API key for a provider</td></tr>
+          <tr><td><code>/chat</code></td><td class="desc">Switch to chat mode — no tools, just conversation</td></tr>
+          <tr><td><code>/code</code></td><td class="desc">Switch to code/agent mode — full tool access</td></tr>
+          <tr><td><code>/voice</code></td><td class="desc">Start voice input — speak, press Enter, transcribed via Whisper</td></tr>
+          <tr><td><code>/web</code></td><td class="desc">Open the web UI in your browser</td></tr>
+          <tr><td><code>/memory</code></td><td class="desc">View what Axion has remembered about your sessions</td></tr>
+          <tr><td><code>/clear</code></td><td class="desc">Clear conversation history and start fresh</td></tr>
+          <tr><td><code>/oauth connect &lt;provider&gt;</code></td><td class="desc">Connect GitHub, Google, Notion, or Slack</td></tr>
+          <tr><td><code>/pin &lt;file&gt;</code></td><td class="desc">Pin a file so it's always included in context</td></tr>
+          <tr><td><code>/doctor</code></td><td class="desc">Check your environment — Python, Tesseract, API keys</td></tr>
+          <tr><td><code>/help</code></td><td class="desc">Show all available commands</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Modes -->
+    <div class="doc-section" id="modes">
+      <h2>Code vs Chat Mode</h2>
+      <p class="lead">Axion has two modes. You can switch between them at any time.</p>
+
+      <h3>Code mode (default)</h3>
+      <p>The agent has access to all tools: reading and writing files, running shell commands, searching the web, using the browser, git operations, and more. Use this for actual coding tasks.</p>
+      <div class="code-block"><span class="prompt">$ </span>axion<span class="comment">  # starts in code mode</span></div>
+
+      <h3>Chat mode</h3>
+      <p>No tools — just a conversation. Faster, cheaper, and better for questions, brainstorming, writing, and explanations where you don't need the agent touching files.</p>
+      <div class="code-block">
+        <span class="prompt">$ </span>axion --chat<span class="comment">  # start in chat mode</span><br>
+        <span class="comment"># or switch mid-session:</span><br>
+        <span class="prompt">› </span>/chat
+      </div>
+
+      <div class="callout tip">
+        <strong>Tip:</strong> Lumen works best in chat mode. It's a general assistant, not a coding agent — it doesn't have tool access through the CLI.
+      </div>
+    </div>
+
+    <!-- Memory -->
+    <div class="doc-section" id="memory">
+      <h2>Memory</h2>
+      <p class="lead">After each session, Axion silently extracts key context and injects it into the next session's system prompt.</p>
+
+      <p>It remembers things like:</p>
+      <ul>
+        <li>Project name and description</li>
+        <li>Decisions you made ("we're using Postgres, not SQLite")</li>
+        <li>File paths and structure</li>
+        <li>Preferences ("always use TypeScript")</li>
+      </ul>
+
+      <h3>Viewing and managing memories</h3>
+      <div class="code-block">
+        <span class="prompt">› </span>/memory<span class="comment">  # view saved memories</span><br>
+        <span class="prompt">› </span>/memory clear<span class="comment">  # clear all memories</span>
+      </div>
+
+      <p>Memories are stored locally in <code>~/.axion/memories.json</code> — they never leave your machine unless you're using a cloud API.</p>
+    </div>
+
+    <!-- Discord -->
+    <div class="doc-section" id="discord">
+      <h2>Discord Bot</h2>
+      <p class="lead">Run Axion as a Discord bot so your team can queue tasks from any channel.</p>
+
+      <div class="code-block">
+        <span class="comment"># Set your bot token</span><br>
+        <span class="prompt">› </span>/api discord &lt;bot-token&gt;<br>
+        <br>
+        <span class="comment"># Start the bot daemon</span><br>
+        <span class="prompt">$ </span>axion-discord<br>
+        <br>
+        <span class="comment"># Override the model</span><br>
+        <span class="prompt">$ </span>axion-discord --model lumen
+      </div>
+
+      <p>Once running, message the bot in Discord. It processes tasks in a queue — one at a time — and streams responses back to the channel. Members can cancel the current task by typing <code>cancel</code>.</p>
+
+      <div class="callout info">
+        Get a bot token from the <a href="https://discord.com/developers/applications" style="color:var(--accent)">Discord Developer Portal</a>. Enable "Message Content Intent" under Bot settings.
+      </div>
+    </div>
+
+    <!-- Chrome -->
+    <div class="doc-section" id="chrome">
+      <h2>Chrome Extension</h2>
+      <p class="lead">The Chrome extension connects your browser to Axion, letting the agent read pages, click elements, and fill forms.</p>
+
+      <h3>Setup</h3>
+      <ol>
+        <li>Start the Axion web UI: <code>axion /web</code> or <code>axion-serve</code></li>
+        <li>Install the extension from the <a href="https://github.com/Ravikxx/axion" style="color:var(--accent)">GitHub repo</a> (load unpacked from <code>extension/</code>)</li>
+        <li>The extension auto-connects to <code>localhost:3000</code></li>
+      </ol>
+
+      <h3>What it can do</h3>
+      <ul>
+        <li>Read the full text and DOM of any page</li>
+        <li>Click buttons and links</li>
+        <li>Fill and submit forms</li>
+        <li>Take screenshots</li>
+        <li>Navigate to URLs</li>
+      </ul>
+
+      <div class="callout tip">
+        <strong>Tip:</strong> The extension shares your saved API keys from the CLI automatically — no need to reconfigure.
+      </div>
+    </div>
+
+    <!-- MCP -->
+    <div class="doc-section" id="mcp">
+      <h2>MCP Servers</h2>
+      <p class="lead">Axion supports the Model Context Protocol — plug in any MCP server to add new tools and data sources.</p>
+
+      <h3>First-party servers</h3>
+      <ul>
+        <li><strong>Blender</strong> — control Blender scenes, create objects, run scripts. Start with <code>axion-blender</code> or use the Python script in <code>mcp-servers/blender/</code>.</li>
+      </ul>
+
+      <h3>Adding a custom MCP server</h3>
+      <div class="code-block">
+        <span class="prompt">› </span>/mcp add &lt;name&gt; &lt;command&gt;
+      </div>
+
+      <p>Any MCP-compatible server works — database connectors, internal tools, third-party APIs. See the <a href="https://modelcontextprotocol.io" style="color:var(--accent)">MCP spec</a> for building your own.</p>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 Axion Labs · <a href="/">Home</a> · <a href="/announcements">Announcements</a> · <a href="https://github.com/Ravikxx/axion">GitHub</a></p>
+</footer>
+
+<script>
+  // Highlight active sidebar link on scroll
+  const sections = document.querySelectorAll('.doc-section');
+  const links = document.querySelectorAll('.sidebar a');
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const active = document.querySelector(`.sidebar a[href="#${entry.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>
