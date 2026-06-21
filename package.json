@@ -1,6 +1,6 @@
 {
   "name": "axion-cli",
-  "version": "1.0.3",
+  "version": "1.0.5",
   "description": "Axion by Axion Labs — terminal AI coding agent",
   "type": "module",
   "bin": {

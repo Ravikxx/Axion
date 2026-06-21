@@ -93,12 +93,14 @@ await startDiscord(token, async (msg) => {
     const cmd = content.slice(1).split(/\s+/)[0].toLowerCase();
     let localReply = null;
     if (cmd === 'help') {
-      localReply = `**Axion Bot Commands**\n\`/help\` — show this list\n\`/clear\` — clear conversation history\n\`/model\` — show active AI model\n\`/about\` — about this bot\n\nOtherwise just chat with me — I can help with coding, math, writing, and more.`;
-    } else if (cmd === 'clear') {
+      localReply = `**Axion Bot Commands**\n\`/help\` — show this list\n\`/clear\` — clear conversation history\n\`/reset\` — alias for /clear\n\`/model\` — show active AI model\n\`/ping\` — check if I'm online\n\`/about\` — about this bot\n\nOtherwise just chat — I can help with coding, math, writing, and more.`;
+    } else if (cmd === 'clear' || cmd === 'reset') {
       if (histories.has(userId)) histories.delete(userId);
       localReply = 'Conversation history cleared. Starting fresh!';
     } else if (cmd === 'model') {
       localReply = `Active model: **${modelAlias}**`;
+    } else if (cmd === 'ping') {
+      localReply = `Pong! I'm online and ready. Model: **${modelAlias}**`;
     } else if (cmd === 'about') {
       localReply = `I'm **Axion**, an AI assistant made by Axion Labs. I'm powered by **${modelAlias}** and can help with coding, math, general knowledge, creative writing, and more. Type \`/help\` to see commands.`;
     }

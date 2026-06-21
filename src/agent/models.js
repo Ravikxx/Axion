@@ -4,13 +4,15 @@ import { MODELS, MODEL_PROVIDERS, API_KEYS, BASE_URLS, CUSTOM_ENDPOINTS } from '
 import { getAxionKey } from '../persist.js';
 
 export function resolveModel(alias) {
-  // Custom endpoint: use the model name stored in the endpoint config
+  const lower = alias.toLowerCase();
   if (CUSTOM_ENDPOINTS[alias]) return CUSTOM_ENDPOINTS[alias].model || alias;
-  return MODELS[alias] || alias;
+  return MODELS[alias] || MODELS[lower] || alias;
 }
 
 export function resolveProvider(alias) {
+  const lower = alias.toLowerCase();
   if (MODEL_PROVIDERS[alias]) return MODEL_PROVIDERS[alias];
+  if (MODEL_PROVIDERS[lower]) return MODEL_PROVIDERS[lower];
   // Named custom endpoint
   if (CUSTOM_ENDPOINTS[alias]) return 'custom';
 

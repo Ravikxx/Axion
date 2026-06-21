@@ -8,200 +8,151 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:         #f4efe6;
-      --bg-card:    #faf7f2;
-      --border:     #e0d8cc;
-      --text:       #1a1209;
-      --text-muted: #6b5e4e;
-      --accent:     #e8602c;
-      --accent-lt:  #fdf0ea;
-      --dark:       #1a1209;
-      --code-bg:    #0f0c07;
+      --bg:      #0d0e13;
+      --surface: #12131a;
+      --surface2:#1a1b24;
+      --border:  #23242f;
+      --border2: #2e2f3e;
+      --text:    #e8e9f0;
+      --muted:   #6b6d80;
+      --muted2:  #9899a8;
+      --accent:  #e8602c;
+      --accent-d:#c04c1f;
+      --green:   #34d399;
     }
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
+      background: var(--bg); color: var(--text);
+      line-height: 1.6; font-size: 14px;
     }
+    a { color: inherit; text-decoration: none; }
 
     /* ── Nav ── */
     nav {
-      background: var(--dark);
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
       padding: 0 32px;
-      display: flex; align-items: center; height: 56px; gap: 24px;
+      display: flex; align-items: center; height: 52px; gap: 24px;
       position: sticky; top: 0; z-index: 100;
     }
-    nav a { color: #c9b99a; text-decoration: none; font-size: 14px; transition: color 0.2s; }
-    nav a:hover { color: #f4efe6; }
-    nav a.brand { color: #f4efe6; font-weight: 700; font-size: 16px; margin-right: 16px; text-decoration: none; }
-    nav .nav-right { margin-left: auto; }
-    .btn-nav {
-      background: var(--accent); color: #fff !important;
-      padding: 6px 14px; border-radius: 6px; font-size: 13px; font-weight: 600;
-    }
+    .nav-logo { font-weight: 800; font-size: 16px; display: flex; align-items: center; gap: 8px; }
+    .nav-logo span { color: var(--accent); }
+    .logo-dot { width: 22px; height: 22px; background: var(--accent); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 11px; }
+    .nav-links { display: flex; gap: 4px; margin-left: 16px; }
+    .nav-link { padding: 5px 10px; border-radius: 5px; font-size: 13px; color: var(--muted2); transition: color .12s, background .12s; }
+    .nav-link:hover { color: var(--text); background: var(--surface2); }
+    .nav-link.active { color: var(--text); }
+    .nav-right { margin-left: auto; }
+    .nav-btn { padding: 6px 14px; border-radius: 6px; font-size: 13px; font-weight: 600; background: var(--accent); color: #fff; transition: background .15s; display: inline-block; }
+    .nav-btn:hover { background: var(--accent-d); }
 
     /* ── Page header ── */
     .page-header {
-      background: var(--dark); color: #f4efe6;
-      padding: 52px 32px 44px;
+      border-bottom: 1px solid var(--border);
+      padding: 48px 32px 36px;
+      background: var(--surface);
     }
-    .page-header .tag {
-      font-size: 12px; font-weight: 700; letter-spacing: 0.1em;
-      text-transform: uppercase; color: var(--accent); margin-bottom: 12px;
-    }
-    .page-header h1 { font-size: 38px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 10px; }
-    .page-header p { color: #8b7355; font-size: 16px; }
+    .page-header .tag { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+    .page-header h1 { font-size: 36px; font-weight: 800; letter-spacing: -.02em; margin-bottom: 8px; }
+    .page-header p { color: var(--muted2); font-size: 15px; }
 
     /* ── Layout ── */
     .docs-layout {
-      max-width: 1080px;
-      margin: 0 auto;
-      padding: 0 32px;
-      display: grid;
-      grid-template-columns: 220px 1fr;
-      gap: 64px;
-      align-items: start;
+      max-width: 1080px; margin: 0 auto; padding: 0 32px;
+      display: grid; grid-template-columns: 210px 1fr;
+      gap: 64px; align-items: start;
     }
 
     /* ── Sidebar ── */
-    .sidebar {
-      position: sticky;
-      top: 72px;
-      padding: 32px 0 80px;
-    }
-    .sidebar-section { margin-bottom: 24px; }
+    .sidebar { position: sticky; top: 68px; padding: 32px 0 80px; }
+    .sidebar-section { margin-bottom: 22px; }
     .sidebar-heading {
-      font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
-      text-transform: uppercase; color: var(--text-muted);
-      padding: 0 0 8px; margin-bottom: 4px;
+      font-size: 10px; font-weight: 700; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--muted);
+      padding-bottom: 8px; margin-bottom: 4px;
       border-bottom: 1px solid var(--border);
     }
     .sidebar a {
-      display: block; padding: 6px 0;
-      font-size: 13px; color: var(--text-muted);
-      text-decoration: none; transition: color 0.15s;
-      border-left: 2px solid transparent;
-      padding-left: 10px; margin-left: -10px;
+      display: block; padding: 6px 0 6px 10px; margin-left: -10px;
+      font-size: 13px; color: var(--muted2);
+      border-left: 2px solid transparent; transition: color .12s, border-color .12s;
     }
     .sidebar a:hover { color: var(--text); }
     .sidebar a.active { color: var(--accent); border-left-color: var(--accent); }
 
     /* ── Content ── */
-    .docs-content { padding: 40px 0 80px; }
-
-    .doc-section {
-      margin-bottom: 64px;
-      padding-bottom: 64px;
-      border-bottom: 1px solid var(--border);
-    }
+    .docs-content { padding: 40px 0 96px; }
+    .doc-section { margin-bottom: 64px; padding-bottom: 64px; border-bottom: 1px solid var(--border); }
     .doc-section:last-child { border-bottom: none; margin-bottom: 0; }
-
-    .doc-section h2 {
-      font-size: 24px; font-weight: 700; letter-spacing: -0.01em;
-      margin-bottom: 8px; scroll-margin-top: 80px;
-    }
-    .doc-section .lead {
-      color: var(--text-muted); font-size: 15px;
-      margin-bottom: 28px; line-height: 1.65;
-    }
-    .doc-section h3 {
-      font-size: 16px; font-weight: 700;
-      margin: 28px 0 10px;
-    }
-    .doc-section p {
-      font-size: 15px; color: var(--text-muted);
-      margin-bottom: 14px; line-height: 1.7;
-    }
+    .doc-section h2 { font-size: 22px; font-weight: 700; letter-spacing: -.01em; margin-bottom: 8px; scroll-margin-top: 80px; }
+    .doc-section .lead { color: var(--muted2); font-size: 14px; margin-bottom: 24px; line-height: 1.65; }
+    .doc-section h3 { font-size: 14px; font-weight: 700; margin: 28px 0 10px; color: var(--text); }
+    .doc-section p { font-size: 14px; color: var(--muted2); margin-bottom: 12px; line-height: 1.7; }
     .doc-section p:last-child { margin-bottom: 0; }
-    .doc-section ul, .doc-section ol {
-      margin: 10px 0 16px 20px;
-    }
-    .doc-section li {
-      font-size: 14px; color: var(--text-muted);
-      line-height: 1.65; margin-bottom: 6px;
-    }
+    .doc-section ul, .doc-section ol { margin: 8px 0 14px 18px; }
+    .doc-section li { font-size: 13px; color: var(--muted2); line-height: 1.65; margin-bottom: 5px; }
     .doc-section li strong { color: var(--text); }
 
     /* ── Code ── */
     .code-block {
-      background: var(--code-bg); border: 1px solid #2d2010;
-      border-radius: 10px; padding: 18px 22px;
-      font-family: "SF Mono", "Fira Code", "Cascadia Code", monospace;
-      font-size: 13px; color: #c9b99a;
-      overflow-x: auto; line-height: 1.8;
-      margin: 16px 0;
+      background: var(--surface); border: 1px solid var(--border2);
+      border-radius: 8px; padding: 16px 20px;
+      font-family: "SF Mono", "Fira Code", Consolas, monospace;
+      font-size: 12.5px; color: var(--muted2);
+      overflow-x: auto; line-height: 1.85; margin: 14px 0;
     }
-    .code-block .prompt { color: #e8602c; user-select: none; }
-    .code-block .comment { color: #4a3828; }
-    .code-block .green { color: #6aa87a; }
+    .code-block .prompt { color: var(--accent); user-select: none; }
+    .code-block .comment { color: var(--muted); }
+    .code-block .green { color: var(--green); }
     code {
-      font-family: "SF Mono", "Fira Code", monospace;
-      font-size: 12px; background: rgba(26,18,9,0.08);
-      padding: 2px 6px; border-radius: 4px; color: var(--text);
+      font-family: "SF Mono", "Fira Code", Consolas, monospace;
+      font-size: 12px; background: var(--surface2); color: var(--muted2);
+      padding: 2px 6px; border-radius: 4px;
     }
 
     /* ── Callout ── */
     .callout {
-      border-radius: 8px; padding: 14px 18px;
-      margin: 20px 0; font-size: 14px; line-height: 1.65;
+      border-radius: 8px; padding: 13px 16px;
+      margin: 16px 0; font-size: 13px; line-height: 1.65;
     }
     .callout.tip {
-      background: var(--accent-lt);
-      border: 1px solid rgba(232,96,44,0.2);
-      border-left: 3px solid var(--accent);
-      color: var(--text-muted);
+      background: rgba(232,96,44,.07); border: 1px solid rgba(232,96,44,.2);
+      border-left: 3px solid var(--accent); color: var(--muted2);
     }
     .callout.tip strong { color: var(--accent); }
     .callout.info {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-left: 3px solid #c9b99a;
-      color: var(--text-muted);
+      background: var(--surface); border: 1px solid var(--border2);
+      border-left: 3px solid var(--muted); color: var(--muted2);
     }
 
     /* ── Command table ── */
-    .cmd-table { width: 100%; border-collapse: collapse; font-size: 14px; margin: 16px 0; }
+    .cmd-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 14px 0; }
     .cmd-table th {
-      text-align: left; padding: 10px 14px;
-      font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
-      text-transform: uppercase; color: var(--text-muted);
-      border-bottom: 1px solid var(--border);
-      background: var(--bg-card);
+      text-align: left; padding: 9px 14px;
+      font-size: 10px; font-weight: 700; letter-spacing: .08em;
+      text-transform: uppercase; color: var(--muted);
+      border-bottom: 1px solid var(--border); background: var(--surface);
     }
-    .cmd-table td { padding: 12px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .cmd-table td { padding: 11px 14px; border-bottom: 1px solid var(--border); vertical-align: top; background: var(--surface); }
     .cmd-table tr:last-child td { border-bottom: none; }
     .cmd-table td:first-child { white-space: nowrap; }
-    .cmd-table td code { font-size: 12px; }
-    .cmd-table .desc { color: var(--text-muted); font-size: 13px; }
-    .cmd-table tr { background: var(--bg-card); }
-    .cmd-table tr:nth-child(even) { background: var(--bg); }
+    .cmd-table .desc { color: var(--muted2); font-size: 12px; }
 
     /* ── Model cards ── */
-    .model-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0; }
-    .model-card {
-      background: var(--bg-card); border: 1px solid var(--border);
-      border-radius: 10px; padding: 18px 20px;
-    }
-    .model-card-name { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
-    .model-card-alias code { font-size: 12px; background: rgba(26,18,9,0.08); padding: 2px 6px; border-radius: 4px; }
-    .model-card-desc { font-size: 13px; color: var(--text-muted); margin-top: 6px; line-height: 1.5; }
-    .model-card-badge {
-      display: inline-block; font-size: 10px; font-weight: 700;
-      letter-spacing: 0.08em; text-transform: uppercase;
-      padding: 2px 7px; border-radius: 3px; margin-bottom: 8px;
-    }
-    .badge-free { background: #e8f4ea; color: #2d7a3a; }
-    .badge-key  { background: var(--accent-lt); color: var(--accent); }
+    .model-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 14px 0; }
+    .model-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; }
+    .model-card-name { font-size: 14px; font-weight: 700; margin-bottom: 3px; }
+    .model-card-alias code { font-size: 11px; }
+    .model-card-desc { font-size: 12px; color: var(--muted2); margin-top: 6px; line-height: 1.5; }
+    .model-card-badge { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: 2px 7px; border-radius: 3px; margin-bottom: 7px; }
+    .badge-free { background: rgba(52,211,153,.12); color: var(--green); }
+    .badge-key  { background: rgba(232,96,44,.12); color: var(--accent); }
 
     /* ── Footer ── */
-    footer {
-      background: var(--dark); color: #6b5e4e;
-      text-align: center; padding: 28px 32px; font-size: 13px;
-    }
-    footer a { color: #8b7355; text-decoration: none; }
-    footer a:hover { color: #c9b99a; }
+    footer { background: var(--surface); border-top: 1px solid var(--border); text-align: center; padding: 24px 32px; font-size: 13px; color: var(--muted); }
+    footer a { color: var(--muted2); }
+    footer a:hover { color: var(--text); }
 
     /* ── Mobile ── */
     @media (max-width: 720px) {
@@ -209,22 +160,24 @@
       .sidebar { display: none; }
       .model-grid { grid-template-columns: 1fr; }
       nav { padding: 0 16px; }
-      nav a:not(.brand) { display: none; }
-      .nav-right { display: none !important; }
-      .page-header { padding: 36px 20px 28px; }
-      .page-header h1 { font-size: 28px; }
+      .nav-links { display: none; }
+      .page-header { padding: 32px 16px 24px; }
+      .page-header h1 { font-size: 26px; }
     }
   </style>
 </head>
 <body>
 
 <nav>
-  <a href="/" class="brand">⚛ Axion</a>
-  <a href="/lumen">Lumen</a>
-  <a href="/announcements">Announcements</a>
-  <a href="https://github.com/Ravikxx/axion">GitHub</a>
+  <a href="/" class="nav-logo"><div class="logo-dot">⚛</div> <span>Axion</span></a>
+  <div class="nav-links">
+    <a href="/" class="nav-link">Home</a>
+    <a href="/docs" class="nav-link active">Docs</a>
+    <a href="/mcp" class="nav-link">MCP</a>
+    <a href="/playground" class="nav-link">Playground</a>
+  </div>
   <div class="nav-right">
-    <a href="https://www.npmjs.com/package/axion-cli" class="btn-nav">Install Free →</a>
+    <a href="/keys" class="nav-btn">Get started</a>
   </div>
 </nav>
 
@@ -236,7 +189,6 @@
 
 <div class="docs-layout">
 
-  <!-- Sidebar -->
   <aside class="sidebar">
     <div class="sidebar-section">
       <div class="sidebar-heading">Getting Started</div>
@@ -252,83 +204,80 @@
       <a href="#memory">Memory</a>
     </div>
     <div class="sidebar-section">
+      <div class="sidebar-heading">Axion API</div>
+      <a href="#axion-api">API Keys & Limits</a>
+      <a href="#teams">Teams</a>
+      <a href="#playground">Playground</a>
+    </div>
+    <div class="sidebar-section">
       <div class="sidebar-heading">Extensions</div>
+      <a href="#mcp">MCP Marketplace</a>
       <a href="#discord">Discord Bot</a>
       <a href="#chrome">Chrome Extension</a>
-      <a href="#mcp">MCP Servers</a>
     </div>
   </aside>
 
-  <!-- Content -->
   <div class="docs-content">
 
-    <!-- Install -->
     <div class="doc-section" id="install">
       <h2>Installation</h2>
       <p class="lead">Axion is a Node.js CLI published on npm. You need Node 18 or later.</p>
-
       <div class="code-block">
         <span class="comment"># Install globally</span><br>
-        <span class="prompt">$ </span>npm install -g axion-cli<br>
-        <br>
+        <span class="prompt">$ </span>npm install -g axion-cli<br><br>
         <span class="comment"># Verify</span><br>
         <span class="prompt">$ </span>axion --version
       </div>
-
       <div class="callout tip">
         <strong>Tip:</strong> If <code>axion</code> isn't found after install, make sure your npm global bin directory is on your PATH. Run <code>npm bin -g</code> to find it.
       </div>
-
       <h3>Requirements</h3>
       <ul>
         <li><strong>Node.js 18+</strong> — required</li>
-        <li><strong>An API key</strong> — for Claude, GPT-4o, Gemini, or Groq. Or use Lumen for free with no key.</li>
+        <li><strong>An API key</strong> — for Claude, GPT-4o, Gemini, or Groq. Or use Lumen free with no key.</li>
         <li><strong>Python 3 (optional)</strong> — needed for computer use / screen overlay</li>
         <li><strong>Tesseract (optional)</strong> — for OCR / find-by-text in computer use</li>
       </ul>
-
-      <p>Run <code>axion /doctor</code> after install to check your environment.</p>
+      <p>Run <code>/doctor</code> inside Axion after install to check your environment.</p>
     </div>
 
-    <!-- First launch -->
     <div class="doc-section" id="first-launch">
       <h2>First Launch</h2>
-      <p class="lead">Run <code>axion</code> to start. If no API key is set, the onboarding wizard walks you through setup.</p>
-
+      <p class="lead">Run <code>axion</code> to start. If no API key is configured, a wizard walks you through setup.</p>
       <div class="code-block">
-        <span class="prompt">$ </span>axion<br>
-        <br>
+        <span class="prompt">$ </span>axion<br><br>
         <span class="green">  Welcome to Axion!</span><br>
         <span class="comment">  Pick a model to get started:</span><br>
-        <span class="comment">  › Claude (Anthropic)  · GPT-4o (OpenAI)  · Gemini  · Groq  · Lumen (free)</span>
+        <span class="comment">  › Claude · GPT-4o · Gemini · Groq · Lumen (free)</span>
       </div>
-
-      <p>The wizard lets you pick a model and enter your API key. If you select Lumen, no key is needed — it's free and hosted by Axion Labs.</p>
-
-      <h3>Skipping the wizard</h3>
-      <p>Set a key manually and jump straight in:</p>
-
+      <p>Select Lumen to start immediately with no key. For other providers, paste your API key when prompted.</p>
+      <h3>Sign in to Axion Labs</h3>
+      <p>Run <code>/login</code> inside Axion to open a browser tab, sign in to your Axion Labs account, and automatically save an API key — no copy-pasting needed.</p>
       <div class="code-block">
-        <span class="comment"># Set your API key</span><br>
-        <span class="prompt">$ </span>axion<br>
-        <span class="prompt">› </span>/api claude sk-ant-…<br>
-        <br>
-        <span class="comment"># Or start with the free model</span><br>
+        <span class="prompt">› </span>/login<br>
+        <span class="comment">  Opening browser… click Authorize in the tab that opens.</span><br>
+        <span class="green">  Logged in as you@example.com · API key saved.</span>
+      </div>
+      <h3>Manual setup</h3>
+      <div class="code-block">
+        <span class="comment"># Set a third-party API key</span><br>
+        <span class="prompt">› </span>/api claude sk-ant-…<br><br>
+        <span class="comment"># Or set your Axion key directly</span><br>
+        <span class="prompt">› </span>/axion-key axion-sk-…<br><br>
+        <span class="comment"># Skip to the free model</span><br>
         <span class="prompt">$ </span>axion --model lumen
       </div>
     </div>
 
-    <!-- Free models -->
     <div class="doc-section" id="free-models">
       <h2>Free Models</h2>
       <p class="lead">Two free models are available with no API key — hosted by Axion Labs on Hugging Face.</p>
-
       <div class="model-grid">
         <div class="model-card">
           <div class="model-card-badge badge-free">Free · No key</div>
           <div class="model-card-name">Lumen 1.2.5</div>
           <div class="model-card-alias"><code>/model lumen</code></div>
-          <div class="model-card-desc">Fine-tuned Llama 3.1 8B with DPO safety training. General assistant — questions, writing, code, explanations. Also available at <a href="/lumen" style="color:var(--accent)">axion.amplifiedsmp.org/lumen</a>.</div>
+          <div class="model-card-desc">Fine-tuned Llama 3.1 8B with DPO safety training. General assistant — questions, writing, code, explanations. Also available at <a href="/lumen" style="color:var(--accent)">axion.amplifiedsmp.org/lumen</a> and the <a href="/playground" style="color:var(--accent)">Playground</a>.</div>
         </div>
         <div class="model-card">
           <div class="model-card-badge badge-free">Free · No key</div>
@@ -337,96 +286,91 @@
           <div class="model-card-desc">Vision model for image understanding and OCR. Used automatically for computer use and screenshot analysis. Powered by GLM-OCR.</div>
         </div>
       </div>
-
       <div class="callout info">
-        Free models run on shared Hugging Face compute — response times vary. For production use or high-throughput work, use a paid API provider.
+        Free models run on shared Hugging Face compute — response times vary. For production use, get an <a href="/keys" style="color:var(--accent)">Axion API key</a> or use a paid provider.
       </div>
     </div>
 
-    <!-- Models & API Keys -->
     <div class="doc-section" id="models">
       <h2>Models & API Keys</h2>
       <p class="lead">Axion supports multiple providers. Switch between them at any time with <code>/model</code>.</p>
-
       <div class="model-grid">
         <div class="model-card">
           <div class="model-card-badge badge-key">Requires key</div>
           <div class="model-card-name">Claude</div>
-          <div class="model-card-alias"><code>/model claude</code> · <code>/api claude &lt;key&gt;</code></div>
+          <div class="model-card-alias"><code>/model claude</code></div>
           <div class="model-card-desc">Anthropic's Claude models. Get a key at <a href="https://console.anthropic.com" style="color:var(--accent)">console.anthropic.com</a>.</div>
         </div>
         <div class="model-card">
           <div class="model-card-badge badge-key">Requires key</div>
           <div class="model-card-name">GPT-4o</div>
-          <div class="model-card-alias"><code>/model gpt</code> · <code>/api gpt &lt;key&gt;</code></div>
+          <div class="model-card-alias"><code>/model gpt</code></div>
           <div class="model-card-desc">OpenAI models. Get a key at <a href="https://platform.openai.com" style="color:var(--accent)">platform.openai.com</a>.</div>
         </div>
         <div class="model-card">
           <div class="model-card-badge badge-key">Requires key</div>
           <div class="model-card-name">Gemini</div>
-          <div class="model-card-alias"><code>/model gemini</code> · <code>/api gemini &lt;key&gt;</code></div>
-          <div class="model-card-desc">Google Gemini models. Free tier available at <a href="https://aistudio.google.com" style="color:var(--accent)">aistudio.google.com</a>.</div>
+          <div class="model-card-alias"><code>/model gemini</code></div>
+          <div class="model-card-desc">Google Gemini. Free tier at <a href="https://aistudio.google.com" style="color:var(--accent)">aistudio.google.com</a>.</div>
         </div>
         <div class="model-card">
-          <div class="model-card-badge badge-key">Free tier</div>
+          <div class="model-card-badge badge-free">Free tier</div>
           <div class="model-card-name">Groq</div>
-          <div class="model-card-alias"><code>/model groq</code> · <code>/api groq &lt;key&gt;</code></div>
+          <div class="model-card-alias"><code>/model groq</code></div>
           <div class="model-card-desc">Fast inference on Llama 3.3 70B. Generous free tier at <a href="https://console.groq.com" style="color:var(--accent)">console.groq.com</a>.</div>
         </div>
         <div class="model-card">
           <div class="model-card-badge badge-free">Free · Local</div>
           <div class="model-card-name">Ollama</div>
           <div class="model-card-alias"><code>/model ollama</code></div>
-          <div class="model-card-desc">Any model running locally via Ollama. No key needed. Runs at <code>localhost:11434</code>.</div>
+          <div class="model-card-desc">Any model running locally via Ollama. No key needed.</div>
         </div>
         <div class="model-card">
           <div class="model-card-badge badge-key">Requires key</div>
           <div class="model-card-name">OpenRouter</div>
-          <div class="model-card-alias"><code>/model or</code> · <code>/api openrouter &lt;key&gt;</code></div>
-          <div class="model-card-desc">Access 100+ models through one API. Keys at <a href="https://openrouter.ai" style="color:var(--accent)">openrouter.ai</a>.</div>
+          <div class="model-card-alias"><code>/model or</code></div>
+          <div class="model-card-desc">100+ models through one API. Keys at <a href="https://openrouter.ai" style="color:var(--accent)">openrouter.ai</a>.</div>
         </div>
       </div>
-
       <h3>Switching models mid-session</h3>
       <div class="code-block">
         <span class="prompt">› </span>/model claude<br>
         <span class="prompt">› </span>/model lumen<br>
         <span class="prompt">› </span>/model groq
       </div>
-      <p>Your conversation history carries over when you switch — the new model gets full context.</p>
+      <p>Conversation history carries over when you switch — the new model gets full context.</p>
     </div>
 
-    <!-- Commands -->
     <div class="doc-section" id="commands">
       <h2>Commands</h2>
-      <p class="lead">Type <code>/</code> followed by any command. Tab completes the name — a suggestion box shows matches as you type. Run <code>/help</code> for the full list in-session.</p>
+      <p class="lead">Type <code>/</code> followed by any command. Tab completes the name. Run <code>/help</code> for the full list in-session.</p>
 
-      <h3>Models &amp; keys</h3>
+      <h3>Account & keys</h3>
       <table class="cmd-table">
         <thead><tr><th>Command</th><th>What it does</th></tr></thead>
         <tbody>
-          <tr><td><code>/model &lt;name&gt;</code></td><td class="desc">Switch model — <code>claude</code>, <code>gpt</code>, <code>lumen</code>, <code>gemini</code>, <code>groq</code>, <code>ollama</code>, …</td></tr>
-          <tr><td><code>/models</code></td><td class="desc">List all available models and custom endpoints</td></tr>
-          <tr><td><code>/api &lt;provider&gt; &lt;key&gt;</code></td><td class="desc">Set an API key (<code>claude</code>, <code>gpt</code>, <code>groq</code>, <code>mistral</code>, <code>gemini</code>, <code>openrouter</code>)</td></tr>
-          <tr><td><code>/axion-key &lt;key&gt;</code></td><td class="desc">Save your Axion API key for Lumen access</td></tr>
+          <tr><td><code>/login</code></td><td class="desc">Sign in to Axion Labs via browser — auto-creates and saves an API key</td></tr>
+          <tr><td><code>/axion-key &lt;key&gt;</code></td><td class="desc">Save your Axion API key manually</td></tr>
           <tr><td><code>/axion-key remove</code></td><td class="desc">Clear your Axion API key</td></tr>
+          <tr><td><code>/api &lt;provider&gt; &lt;key&gt;</code></td><td class="desc">Set a third-party API key (claude, gpt, groq, mistral, gemini, openrouter)</td></tr>
+          <tr><td><code>/model &lt;name&gt;</code></td><td class="desc">Switch model — claude, gpt, lumen, gemini, groq, ollama…</td></tr>
+          <tr><td><code>/models</code></td><td class="desc">List all available models and custom endpoints</td></tr>
           <tr><td><code>/endpoint &lt;name&gt; &lt;url&gt; [model] [key]</code></td><td class="desc">Add a custom OpenAI-compatible endpoint</td></tr>
           <tr><td><code>/thinking [on|off|&lt;tokens&gt;]</code></td><td class="desc">Toggle extended thinking (Claude only)</td></tr>
         </tbody>
       </table>
 
-      <h3>Chat &amp; session</h3>
+      <h3>Chat & session</h3>
       <table class="cmd-table">
         <thead><tr><th>Command</th><th>What it does</th></tr></thead>
         <tbody>
-          <tr><td><code>/mode &lt;name&gt;</code></td><td class="desc">Switch agent mode: <code>ask</code>, <code>plan</code>, <code>bypass</code></td></tr>
+          <tr><td><code>/mode &lt;name&gt;</code></td><td class="desc">Switch agent mode: ask, plan, bypass</td></tr>
           <tr><td><code>/adviser [model|auto|off]</code></td><td class="desc">Set or disable the adviser model</td></tr>
           <tr><td><code>/system [text|clear]</code></td><td class="desc">Set extra system-level instructions</td></tr>
           <tr><td><code>/include &lt;file&gt;</code></td><td class="desc">Pin a file into every message (no args = list)</td></tr>
           <tr><td><code>/btw &lt;question&gt;</code></td><td class="desc">Quick side question without breaking flow</td></tr>
           <tr><td><code>/retry</code></td><td class="desc">Re-run the last message</td></tr>
           <tr><td><code>/compare [m1,m2,...] &lt;prompt&gt;</code></td><td class="desc">Compare two or more models side by side</td></tr>
-          <tr><td><code>/compare-models [m1,m2,...]</code></td><td class="desc">Get or set the default models for <code>/compare</code></td></tr>
           <tr><td><code>/review</code></td><td class="desc">Code review of the current git diff</td></tr>
           <tr><td><code>/goal &lt;description&gt;</code></td><td class="desc">Loop until the agent meets a condition</td></tr>
           <tr><td><code>/compact</code></td><td class="desc">Summarise and compress history to save tokens</td></tr>
@@ -437,7 +381,7 @@
         </tbody>
       </table>
 
-      <h3>Files &amp; history</h3>
+      <h3>Files & history</h3>
       <table class="cmd-table">
         <thead><tr><th>Command</th><th>What it does</th></tr></thead>
         <tbody>
@@ -447,40 +391,35 @@
           <tr><td><code>/export &lt;filename&gt;</code></td><td class="desc">Save the current chat as a markdown file</td></tr>
           <tr><td><code>/save &lt;name&gt;</code></td><td class="desc">Save the current chat session</td></tr>
           <tr><td><code>/resume &lt;name&gt;</code></td><td class="desc">Resume a saved chat (no args = list all)</td></tr>
-          <tr><td><code>/search-chats &lt;query&gt;</code></td><td class="desc">Search across all saved chats</td></tr>
-          <tr><td><code>/remove-chat &lt;name&gt;</code></td><td class="desc">Delete a saved chat</td></tr>
           <tr><td><code>/history &lt;query&gt;</code></td><td class="desc">Search message history</td></tr>
           <tr><td><code>/copy</code></td><td class="desc">Copy the last AI response to clipboard</td></tr>
           <tr><td><code>/copy-block &lt;n&gt;</code></td><td class="desc">Copy the Nth code block from the last response</td></tr>
         </tbody>
       </table>
 
-      <h3>Skills &amp; automation</h3>
+      <h3>Skills & automation</h3>
       <table class="cmd-table">
         <thead><tr><th>Command</th><th>What it does</th></tr></thead>
         <tbody>
-          <tr><td><code>/skills</code></td><td class="desc">List all skills (auto-activate on trigger phrases)</td></tr>
+          <tr><td><code>/skills</code></td><td class="desc">List all skills</td></tr>
           <tr><td><code>/skill &lt;name&gt; &lt;instructions&gt;</code></td><td class="desc">Create a skill from a description</td></tr>
-          <tr><td><code>/skill-generator &lt;name&gt; &lt;instructions&gt;</code></td><td class="desc">AI-generate a skill <code>.md</code> file</td></tr>
           <tr><td><code>/skill-delete &lt;name&gt;</code></td><td class="desc">Delete a skill</td></tr>
           <tr><td><code>/macro record|stop|play|list|delete</code></td><td class="desc">Record and replay sequences of messages</td></tr>
-          <tr><td><code>/watch start|stop|show|clear</code></td><td class="desc">Watch-and-learn — build preferences from observed behaviour</td></tr>
-          <tr><td><code>/schedule list|add|run|remove|enable|disable|results</code></td><td class="desc">Manage scheduled AI tasks</td></tr>
+          <tr><td><code>/schedule list|add|run|remove</code></td><td class="desc">Manage scheduled AI tasks</td></tr>
           <tr><td><code>/remember [text]</code></td><td class="desc">Save a persistent note (no args = list all)</td></tr>
-          <tr><td><code>/forget &lt;number&gt;</code></td><td class="desc">Remove a saved note by index</td></tr>
+          <tr><td><code>/forget &lt;n&gt;</code></td><td class="desc">Remove a saved note by index</td></tr>
         </tbody>
       </table>
 
-      <h3>Computer use &amp; vision</h3>
+      <h3>Computer use & vision</h3>
       <table class="cmd-table">
         <thead><tr><th>Command</th><th>What it does</th></tr></thead>
         <tbody>
-          <tr><td><code>/computer [on|off]</code></td><td class="desc">Toggle screen control (alias: <code>/cu</code>)</td></tr>
+          <tr><td><code>/computer [on|off]</code></td><td class="desc">Toggle screen control (alias: /cu)</td></tr>
           <tr><td><code>/ss [question]</code></td><td class="desc">Screenshot and describe the screen</td></tr>
           <tr><td><code>/vision &lt;model&gt;</code></td><td class="desc">Set the vision model for computer use</td></tr>
-          <tr><td><code>/img-gen &lt;prompt&gt;</code></td><td class="desc">Generate an image via OpenAI</td></tr>
-          <tr><td><code>/img-gen-model [model]</code></td><td class="desc">Set or show the image generation model</td></tr>
           <tr><td><code>/voice</code></td><td class="desc">Record voice — transcribed by Whisper</td></tr>
+          <tr><td><code>/img-gen &lt;prompt&gt;</code></td><td class="desc">Generate an image via OpenAI</td></tr>
         </tbody>
       </table>
 
@@ -488,96 +427,171 @@
       <table class="cmd-table">
         <thead><tr><th>Command</th><th>What it does</th></tr></thead>
         <tbody>
+          <tr><td><code>/mcp browse</code></td><td class="desc">Browse the MCP marketplace</td></tr>
+          <tr><td><code>/mcp install &lt;id&gt;</code></td><td class="desc">Install an MCP server from the marketplace</td></tr>
+          <tr><td><code>/mcp toggle &lt;name&gt;</code></td><td class="desc">Enable or disable an installed MCP server</td></tr>
+          <tr><td><code>/mcp reload</code></td><td class="desc">Refresh the remote catalog</td></tr>
           <tr><td><code>/oauth connect|list|revoke</code></td><td class="desc">Link GitHub, Google, Notion, or Slack</td></tr>
-          <tr><td><code>/discord token|start|stop|status</code></td><td class="desc">Discord bot — run the agent via DM</td></tr>
+          <tr><td><code>/discord token|start|stop|status</code></td><td class="desc">Discord bot mode</td></tr>
           <tr><td><code>/web [port|stop]</code></td><td class="desc">Open or stop the web UI</td></tr>
-          <tr><td><code>/blender setup|connect</code></td><td class="desc">Set up the Blender MCP integration</td></tr>
-          <tr><td><code>/mcp browse|search|install|toggle|reload …</code></td><td class="desc">MCP marketplace</td></tr>
           <tr><td><code>/plugin …</code></td><td class="desc">Browser, Docker, GitHub, and database plugins</td></tr>
-          <tr><td><code>/contribute [skip|optout]</code></td><td class="desc">Share session as training data</td></tr>
         </tbody>
       </table>
     </div>
 
-    <!-- Modes -->
     <div class="doc-section" id="modes">
       <h2>Code vs Chat Mode</h2>
-      <p class="lead">Axion has two modes. You can switch between them at any time.</p>
-
+      <p class="lead">Axion has two modes you can switch between at any time.</p>
       <h3>Code mode (default)</h3>
-      <p>The agent has access to all tools: reading and writing files, running shell commands, searching the web, using the browser, git operations, and more. Use this for actual coding tasks.</p>
+      <p>The agent has access to all tools: reading and writing files, running shell commands, searching the web, using the browser, git operations, and more.</p>
       <div class="code-block"><span class="prompt">$ </span>axion<span class="comment">  # starts in code mode</span></div>
-
       <h3>Chat mode</h3>
-      <p>No tools — just a conversation. Faster, cheaper, and better for questions, brainstorming, writing, and explanations where you don't need the agent touching files.</p>
+      <p>No tools — just a conversation. Faster and better for questions, brainstorming, and writing where you don't need the agent touching files.</p>
       <div class="code-block">
         <span class="prompt">$ </span>axion --chat<span class="comment">  # start in chat mode</span><br>
-        <span class="comment"># or switch mid-session:</span><br>
-        <span class="prompt">› </span>/chat
-      </div>
-
-      <div class="callout tip">
-        <strong>Tip:</strong> Lumen works best in chat mode. It's a general assistant, not a coding agent — it doesn't have tool access through the CLI.
+        <span class="prompt">› </span>/chat<span class="comment">  # or switch mid-session</span>
       </div>
     </div>
 
-    <!-- Memory -->
     <div class="doc-section" id="memory">
       <h2>Memory</h2>
-      <p class="lead">After each session, Axion silently extracts key context and injects it into the next session's system prompt.</p>
-
-      <p>It remembers things like:</p>
-      <ul>
-        <li>Project name and description</li>
-        <li>Decisions you made ("we're using Postgres, not SQLite")</li>
-        <li>File paths and structure</li>
-        <li>Preferences ("always use TypeScript")</li>
-      </ul>
-
-      <h3>Viewing and managing memories</h3>
+      <p class="lead">After each session, Axion extracts key context and injects it into the next session's system prompt automatically.</p>
+      <p>It remembers things like project decisions, file paths, preferences ("always use TypeScript"), and anything you explicitly tell it to remember.</p>
       <div class="code-block">
         <span class="prompt">› </span>/memory<span class="comment">  # view saved memories</span><br>
-        <span class="prompt">› </span>/memory clear<span class="comment">  # clear all memories</span>
+        <span class="prompt">› </span>/memory clear<span class="comment">  # clear all</span><br>
+        <span class="prompt">› </span>/remember always use pnpm instead of npm
       </div>
-
       <p>Memories are stored locally in <code>~/.axion/memories.json</code> — they never leave your machine unless you're using a cloud API.</p>
     </div>
 
-    <!-- Discord -->
+    <div class="doc-section" id="axion-api">
+      <h2>API Keys & Limits</h2>
+      <p class="lead">Axion Labs hosts Lumen via an OpenAI-compatible API. Get a key at <a href="/keys" style="color:var(--accent)">axion.amplifiedsmp.org/keys</a>.</p>
+
+      <h3>Tiers</h3>
+      <table class="cmd-table">
+        <thead><tr><th>Tier</th><th>Limit</th><th>How to use</th></tr></thead>
+        <tbody>
+          <tr><td>Free (no key)</td><td class="desc">50 requests / day per IP</td><td class="desc">Works automatically — no setup</td></tr>
+          <tr><td>Free (with key)</td><td class="desc">1,000 requests / month</td><td class="desc"><code>/login</code> or <code>/axion-key axion-sk-…</code></td></tr>
+        </tbody>
+      </table>
+
+      <h3>OpenAI-compatible endpoint</h3>
+      <div class="code-block">
+        <span class="comment"># Base URL</span><br>
+        https://api.amplifiedsmp.org/v1<br><br>
+        <span class="comment"># Example request</span><br>
+        curl https://api.amplifiedsmp.org/v1/chat/completions \<br>
+        &nbsp;&nbsp;-H "Authorization: Bearer axion-sk-…" \<br>
+        &nbsp;&nbsp;-H "Content-Type: application/json" \<br>
+        &nbsp;&nbsp;-d '{"model":"lumen","messages":[{"role":"user","content":"Hi"}]}'
+      </div>
+
+      <h3>Python (openai library)</h3>
+      <div class="code-block">
+        from openai import OpenAI<br>
+        client = OpenAI(api_key="axion-sk-…", base_url="https://api.amplifiedsmp.org/v1")<br>
+        resp = client.chat.completions.create(model="lumen", messages=[{"role":"user","content":"Hi"}])
+      </div>
+    </div>
+
+    <div class="doc-section" id="teams">
+      <h2>Teams</h2>
+      <p class="lead">Create a team to share API keys with collaborators. All keys are tracked individually so you always know who's using what.</p>
+
+      <h3>Creating a team</h3>
+      <ol>
+        <li>Go to <a href="/keys" style="color:var(--accent)">axion.amplifiedsmp.org/keys</a> and sign in</li>
+        <li>Click <strong>+ New team</strong> in the sidebar</li>
+        <li>Give the team a name and click <strong>Create team</strong></li>
+      </ol>
+
+      <h3>Inviting members</h3>
+      <p>Click <strong>Invite member</strong> in the topbar when a team is selected. They'll get an email with a link — when they click it and sign in, they're added to the team automatically.</p>
+
+      <h3>Team API keys</h3>
+      <p>While viewing a team, click <strong>+ New Key</strong> to create a key scoped to that team. Team keys appear under the team, not under personal keys. Any member can create keys; only the team owner can delete the team.</p>
+    </div>
+
+    <div class="doc-section" id="playground">
+      <h2>Playground</h2>
+      <p class="lead">Test Lumen directly in the browser — no CLI needed. Available at <a href="/playground" style="color:var(--accent)">axion.amplifiedsmp.org/playground</a>.</p>
+      <ul>
+        <li>Streaming responses with a custom system prompt</li>
+        <li>Temperature and max token controls</li>
+        <li>Works without an account (50 req/day free tier) or with your API key for 1,000/month</li>
+        <li>Sign in with Google, GitHub, or Discord to link your account</li>
+      </ul>
+    </div>
+
+    <div class="doc-section" id="mcp">
+      <h2>MCP Marketplace</h2>
+      <p class="lead">Install MCP servers with one command to add new tools — databases, browsers, APIs, and more.</p>
+
+      <div class="code-block">
+        <span class="comment"># Browse the marketplace</span><br>
+        <span class="prompt">› </span>/mcp browse<br><br>
+        <span class="comment"># Install a server</span><br>
+        <span class="prompt">› </span>/mcp install github<br>
+        <span class="prompt">› </span>/mcp install postgres<br>
+        <span class="prompt">› </span>/mcp install playwright<br><br>
+        <span class="comment"># Reload the remote catalog</span><br>
+        <span class="prompt">› </span>/mcp reload
+      </div>
+
+      <p>The full catalog is also browsable at <a href="/mcp" style="color:var(--accent)">axion.amplifiedsmp.org/mcp</a>. Some servers require environment variables (API keys, connection strings) — the marketplace shows what each one needs.</p>
+
+      <h3>Available servers (highlights)</h3>
+      <table class="cmd-table">
+        <thead><tr><th>ID</th><th>What it adds</th></tr></thead>
+        <tbody>
+          <tr><td><code>github</code></td><td class="desc">Read/write repos, issues, and PRs</td></tr>
+          <tr><td><code>postgres</code></td><td class="desc">Query a PostgreSQL database</td></tr>
+          <tr><td><code>sqlite</code></td><td class="desc">Query a local SQLite file</td></tr>
+          <tr><td><code>playwright</code></td><td class="desc">Full browser automation (Chrome, Firefox, WebKit)</td></tr>
+          <tr><td><code>filesystem</code></td><td class="desc">Read/write local files via MCP</td></tr>
+          <tr><td><code>memory</code></td><td class="desc">Persistent knowledge graph across sessions</td></tr>
+          <tr><td><code>brave-search</code></td><td class="desc">Web search via the Brave Search API</td></tr>
+          <tr><td><code>notion</code></td><td class="desc">Read and write Notion pages and databases</td></tr>
+          <tr><td><code>slack</code></td><td class="desc">Read and send Slack messages</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Custom MCP servers</h3>
+      <div class="code-block">
+        <span class="prompt">› </span>/mcp add &lt;name&gt; &lt;command&gt;
+      </div>
+      <p>Any MCP-compatible server works. See the <a href="https://modelcontextprotocol.io" style="color:var(--accent)">MCP spec</a> for building your own.</p>
+    </div>
+
     <div class="doc-section" id="discord">
       <h2>Discord Bot</h2>
       <p class="lead">Run Axion as a Discord bot so your team can queue tasks from any channel.</p>
-
       <div class="code-block">
         <span class="comment"># Set your bot token</span><br>
-        <span class="prompt">› </span>/api discord &lt;bot-token&gt;<br>
-        <br>
-        <span class="comment"># Start the bot daemon</span><br>
-        <span class="prompt">$ </span>axion-discord<br>
-        <br>
+        <span class="prompt">› </span>/api discord &lt;bot-token&gt;<br><br>
+        <span class="comment"># Start the daemon</span><br>
+        <span class="prompt">$ </span>axion-discord<br><br>
         <span class="comment"># Override the model</span><br>
         <span class="prompt">$ </span>axion-discord --model lumen
       </div>
-
-      <p>Once running, message the bot in Discord. It processes tasks in a queue — one at a time — and streams responses back to the channel. Members can cancel the current task by typing <code>cancel</code>.</p>
-
+      <p>Once running, message the bot in Discord. Tasks run in a queue — one at a time. Members can cancel the current task by typing <code>cancel</code>.</p>
       <div class="callout info">
         Get a bot token from the <a href="https://discord.com/developers/applications" style="color:var(--accent)">Discord Developer Portal</a>. Enable "Message Content Intent" under Bot settings.
       </div>
     </div>
 
-    <!-- Chrome -->
     <div class="doc-section" id="chrome">
       <h2>Chrome Extension</h2>
-      <p class="lead">The Chrome extension connects your browser to Axion, letting the agent read pages, click elements, and fill forms.</p>
-
+      <p class="lead">Connects your browser to Axion so the agent can read pages, click elements, and fill forms.</p>
       <h3>Setup</h3>
       <ol>
-        <li>Start the Axion web UI: <code>axion /web</code> or <code>axion-serve</code></li>
-        <li>Install the extension from the <a href="https://github.com/Ravikxx/axion" style="color:var(--accent)">GitHub repo</a> (load unpacked from <code>extension/</code>)</li>
+        <li>Start the Axion web UI: <code>/web</code> inside Axion or run <code>axion-serve</code></li>
+        <li>Install the extension from the <a href="https://github.com/Ravikxx/axion" style="color:var(--accent)">GitHub repo</a> — load unpacked from <code>extension/</code></li>
         <li>The extension auto-connects to <code>localhost:3000</code></li>
       </ol>
-
       <h3>What it can do</h3>
       <ul>
         <li>Read the full text and DOM of any page</li>
@@ -586,54 +600,28 @@
         <li>Take screenshots</li>
         <li>Navigate to URLs</li>
       </ul>
-
-      <div class="callout tip">
-        <strong>Tip:</strong> The extension shares your saved API keys from the CLI automatically — no need to reconfigure.
-      </div>
-    </div>
-
-    <!-- MCP -->
-    <div class="doc-section" id="mcp">
-      <h2>MCP Servers</h2>
-      <p class="lead">Axion supports the Model Context Protocol — plug in any MCP server to add new tools and data sources.</p>
-
-      <h3>First-party servers</h3>
-      <ul>
-        <li><strong>Blender</strong> — control Blender scenes, create objects, run scripts. Start with <code>axion-blender</code> or use the Python script in <code>mcp-servers/blender/</code>.</li>
-      </ul>
-
-      <h3>Adding a custom MCP server</h3>
-      <div class="code-block">
-        <span class="prompt">› </span>/mcp add &lt;name&gt; &lt;command&gt;
-      </div>
-
-      <p>Any MCP-compatible server works — database connectors, internal tools, third-party APIs. See the <a href="https://modelcontextprotocol.io" style="color:var(--accent)">MCP spec</a> for building your own.</p>
     </div>
 
   </div>
 </div>
 
 <footer>
-  <p>© 2026 Axion Labs · <a href="/">Home</a> · <a href="/announcements">Announcements</a> · <a href="https://github.com/Ravikxx/axion">GitHub</a></p>
+  <p>© 2026 Axion Labs · <a href="/">Home</a> · <a href="/privacy">Privacy</a> · <a href="https://github.com/Ravikxx/axion">GitHub</a></p>
 </footer>
 
 <script>
-  // Highlight active sidebar link on scroll
-  const sections = document.querySelectorAll('.doc-section');
-  const links = document.querySelectorAll('.sidebar a');
-
+  const sections = document.querySelectorAll('.doc-section')
+  const links = document.querySelectorAll('.sidebar a')
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        links.forEach(l => l.classList.remove('active'));
-        const active = document.querySelector(`.sidebar a[href="#${entry.target.id}"]`);
-        if (active) active.classList.add('active');
+        links.forEach(l => l.classList.remove('active'))
+        const active = document.querySelector(`.sidebar a[href="#${entry.target.id}"]`)
+        if (active) active.classList.add('active')
       }
-    });
-  }, { rootMargin: '-20% 0px -70% 0px' });
-
-  sections.forEach(s => observer.observe(s));
+    })
+  }, { rootMargin: '-20% 0px -70% 0px' })
+  sections.forEach(s => observer.observe(s))
 </script>
-
 </body>
 </html>

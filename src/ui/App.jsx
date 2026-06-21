@@ -2911,7 +2911,8 @@ triggers: <comma-separated words that should activate it, include "${skillName.t
 
       // First-run: check if the current model's provider has an API key
       const provider = MODEL_PROVIDERS[model];
-      if (provider && API_KEYS[provider] === undefined || (provider && !API_KEYS[provider] && !['ollama','veil','lumen','axion-vision'].includes(model))) {
+      const noKeyModels = ['ollama', 'veil', 'lumen', 'axion-vision'];
+      if (provider && !noKeyModels.includes(model) && !API_KEYS[provider]) {
         pushStatic({ type: 'error', content: `No API key set for ${model}.\n\n  Quick start:\n    /api claude <key>    — Anthropic (claude.ai/settings)\n    /api gpt <key>       — OpenAI\n    /api gemini <key>    — Google AI Studio\n    /api groq <key>      — Groq (free, fast)\n\n  Or switch to a free model:\n    /model groq          — Llama 3.3 70B (free tier)\n    /model gemini-flash  — Gemini 2.0 Flash (generous free tier)` });
         return;
       }
