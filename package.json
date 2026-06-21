@@ -18,7 +18,9 @@
     "dev": "node build.js && node dist/axion.js",
     "watch": "node watch.js",
     "web": "node build-web.js && node src/web/server.js",
-    "test": "node test/run.js"
+    "test": "node test/run.js",
+    "sft-gen": "node tools/sft-gen.js",
+    "sft-inspect": "node tools/sft-inspect.js"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",

@@ -1,0 +1,278 @@
+[
+  {
+    "category": "Python",
+    "weight": 0.12,
+    "seeds": [
+      "list comprehensions and generator expressions",
+      "decorators and functools",
+      "async/await and asyncio",
+      "type hints and mypy",
+      "dataclasses vs namedtuple",
+      "context managers and __enter__/__exit__",
+      "metaclasses and __init_subclass__",
+      "itertools and collections",
+      "pathlib and file I/O",
+      "argparse and CLI tools",
+      "logging best practices",
+      "unit testing with pytest",
+      "virtual environments and pip",
+      "packaging with pyproject.toml",
+      "numpy array operations",
+      "pandas DataFrames",
+      "regex in Python",
+      "threading vs multiprocessing",
+      "slots and memory optimization",
+      "pydantic models"
+    ]
+  },
+  {
+    "category": "JavaScript / TypeScript",
+    "weight": 0.12,
+    "seeds": [
+      "async/await and Promises",
+      "TypeScript generics",
+      "TypeScript utility types",
+      "closures and scope",
+      "prototype chain and inheritance",
+      "ES modules vs CommonJS",
+      "destructuring and spread",
+      "Array methods map/filter/reduce",
+      "event loop and microtasks",
+      "WeakMap and WeakRef",
+      "TypeScript discriminated unions",
+      "optional chaining and nullish coalescing",
+      "Proxy and Reflect",
+      "generators and iterators",
+      "Web APIs: fetch, localStorage, IndexedDB",
+      "error handling patterns",
+      "module bundlers: esbuild, Rollup, Vite",
+      "Node.js streams",
+      "TypeScript decorators",
+      "zod schema validation"
+    ]
+  },
+  {
+    "category": "React and Frontend",
+    "weight": 0.08,
+    "seeds": [
+      "useState and useEffect patterns",
+      "useCallback and useMemo",
+      "custom hooks",
+      "React context vs Redux",
+      "React Server Components",
+      "Suspense and lazy loading",
+      "form handling with controlled components",
+      "CSS modules vs Tailwind",
+      "accessibility in React",
+      "testing with React Testing Library",
+      "Next.js App Router",
+      "state management with Zustand",
+      "animations with Framer Motion",
+      "performance profiling React apps",
+      "error boundaries"
+    ]
+  },
+  {
+    "category": "Algorithms and Data Structures",
+    "weight": 0.10,
+    "seeds": [
+      "binary search variations",
+      "sliding window technique",
+      "two pointer technique",
+      "dynamic programming: memoization vs tabulation",
+      "graph traversal: BFS and DFS",
+      "Dijkstra's algorithm",
+      "quicksort and mergesort",
+      "heap and priority queue",
+      "trie data structure",
+      "union-find / disjoint set",
+      "segment tree",
+      "backtracking patterns",
+      "topological sort",
+      "bit manipulation tricks",
+      "time and space complexity analysis",
+      "hash map collision handling",
+      "LRU cache implementation",
+      "monotonic stack",
+      "string matching: KMP algorithm",
+      "binary tree traversals"
+    ]
+  },
+  {
+    "category": "Systems and Debugging",
+    "weight": 0.10,
+    "seeds": [
+      "debugging a memory leak in Node.js",
+      "fixing a race condition",
+      "diagnosing high CPU usage",
+      "reading a stack trace",
+      "debugging async code",
+      "profiling Python code with cProfile",
+      "git bisect to find a regression",
+      "debugging CORS issues",
+      "SQL query slow — how to optimize",
+      "diagnosing a deadlock",
+      "using strace to debug a Linux process",
+      "reading a core dump",
+      "debugging Docker networking",
+      "tracing a segfault",
+      "debugging a webpack build error"
+    ]
+  },
+  {
+    "category": "Databases and SQL",
+    "weight": 0.07,
+    "seeds": [
+      "SQL JOIN types explained",
+      "indexing strategy for slow queries",
+      "EXPLAIN ANALYZE in PostgreSQL",
+      "N+1 query problem",
+      "database normalization forms",
+      "transactions and ACID properties",
+      "optimistic vs pessimistic locking",
+      "Redis use cases",
+      "when to use NoSQL vs SQL",
+      "database migrations best practices",
+      "connection pooling",
+      "full-text search in PostgreSQL",
+      "partitioning large tables",
+      "replication and failover",
+      "ORMs: pros and cons"
+    ]
+  },
+  {
+    "category": "Rust",
+    "weight": 0.06,
+    "seeds": [
+      "ownership and borrowing",
+      "lifetimes explained",
+      "traits and generics",
+      "error handling with Result and ?",
+      "iterators and closures",
+      "async Rust with Tokio",
+      "Rc vs Arc",
+      "smart pointers: Box, Rc, RefCell",
+      "pattern matching and enums",
+      "writing a CLI with clap",
+      "unsafe Rust when and why",
+      "cargo workspaces",
+      "procedural macros",
+      "serde for serialization",
+      "testing in Rust"
+    ]
+  },
+  {
+    "category": "Go",
+    "weight": 0.05,
+    "seeds": [
+      "goroutines and channels",
+      "select statement",
+      "context for cancellation",
+      "interfaces in Go",
+      "error handling patterns",
+      "defer, panic, recover",
+      "Go modules and dependencies",
+      "struct embedding",
+      "sync package: Mutex, WaitGroup",
+      "writing HTTP servers with net/http",
+      "testing and benchmarking",
+      "generics in Go",
+      "profiling with pprof",
+      "building a CLI in Go"
+    ]
+  },
+  {
+    "category": "System Design",
+    "weight": 0.07,
+    "seeds": [
+      "designing a URL shortener",
+      "designing a rate limiter",
+      "designing a notification system",
+      "designing a search autocomplete",
+      "designing a distributed cache",
+      "CAP theorem explained",
+      "consistent hashing",
+      "message queues: Kafka vs RabbitMQ",
+      "microservices vs monolith trade-offs",
+      "API design: REST vs GraphQL vs gRPC",
+      "horizontal vs vertical scaling",
+      "CDN and edge caching",
+      "event sourcing and CQRS",
+      "designing for idempotency",
+      "load balancing strategies"
+    ]
+  },
+  {
+    "category": "DevOps and Infrastructure",
+    "weight": 0.05,
+    "seeds": [
+      "Docker multi-stage builds",
+      "Kubernetes pods and deployments",
+      "writing a GitHub Actions workflow",
+      "Terraform basics",
+      "nginx configuration",
+      "setting up HTTPS with Let's Encrypt",
+      "monitoring with Prometheus and Grafana",
+      "centralized logging with ELK stack",
+      "blue-green deployments",
+      "secrets management",
+      "Dockerfile best practices",
+      "Kubernetes resource limits and requests",
+      "health checks and readiness probes",
+      "CI/CD pipeline design"
+    ]
+  },
+  {
+    "category": "General Coding Concepts",
+    "weight": 0.08,
+    "seeds": [
+      "SOLID principles with examples",
+      "design patterns: singleton, factory, observer",
+      "functional programming concepts",
+      "immutability and pure functions",
+      "dependency injection",
+      "test-driven development",
+      "code review best practices",
+      "semantic versioning",
+      "twelve-factor app methodology",
+      "clean architecture",
+      "hexagonal architecture",
+      "refactoring: extract method, rename, move",
+      "technical debt management",
+      "API versioning strategies",
+      "writing good commit messages"
+    ]
+  },
+  {
+    "category": "Math and Reasoning",
+    "weight": 0.04,
+    "seeds": [
+      "Big O notation problem",
+      "probability question",
+      "combinatorics problem",
+      "linear algebra for ML",
+      "floating point precision issue",
+      "modular arithmetic",
+      "graph theory problem",
+      "recursion vs iteration trade-off",
+      "proof by induction example",
+      "numerical methods"
+    ]
+  },
+  {
+    "category": "General Knowledge and Conversation",
+    "weight": 0.06,
+    "seeds": [
+      "explain a technical concept simply",
+      "compare two technologies",
+      "give career advice for a developer",
+      "explain how the internet works",
+      "history of a programming language",
+      "open source licensing questions",
+      "productivity tips for developers",
+      "learning resources for a topic",
+      "side project ideas",
+      "ask what I am (Lumen AI identity)"
+    ]
+  }
+]
