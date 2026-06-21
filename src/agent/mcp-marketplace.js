@@ -1,4 +1,13 @@
-// Curated MCP server marketplace registry
+import { readFileSync, writeFileSync, unlinkSync, mkdirSync } from 'fs'
+import { join } from 'path'
+import { homedir } from 'os'
+
+const CATALOG_URL = 'https://axion.amplifiedsmp.org/mcp-catalog.json'
+const CACHE_TTL   = 60 * 60 * 1000 // 1 hour
+
+// ── Local fallback catalog ─────────────────────────────────────────────────
+// Kept in sync with docs/mcp-catalog.json. Used when the remote fetch fails.
+
 export const MCP_MARKETPLACE = [
   {
     id: 'github',
@@ -73,12 +82,21 @@ export const MCP_MARKETPLACE = [
   },
   {
     id: 'puppeteer',
-    name: 'Puppeteer / Browser',
+    name: 'Puppeteer',
     description: 'Control a Chrome browser — automate clicks, fill forms, take screenshots',
     category: 'web',
     command: 'npx',
     args: ['-y', '@modelcontextprotocol/server-puppeteer'],
     tags: ['browser', 'automation', 'chrome', 'screenshot'],
+  },
+  {
+    id: 'playwright',
+    name: 'Playwright',
+    description: 'Full browser automation with Playwright — supports Chrome, Firefox, and WebKit',
+    category: 'web',
+    command: 'npx',
+    args: ['-y', '@playwright/mcp'],
+    tags: ['browser', 'automation', 'playwright', 'screenshot', 'scrape', 'testing'],
   },
   {
     id: 'memory',
@@ -99,6 +117,17 @@ export const MCP_MARKETPLACE = [
     env: { BRAVE_API_KEY: '$BRAVE_API_KEY' },
     envNote: 'Needs BRAVE_API_KEY (free tier at brave.com/search/api)',
     tags: ['search', 'web', 'brave'],
+  },
+  {
+    id: 'exa',
+    name: 'Exa Search',
+    description: 'Semantic web search and content retrieval powered by Exa AI',
+    category: 'web',
+    command: 'npx',
+    args: ['-y', 'exa-mcp-server'],
+    env: { EXA_API_KEY: '$EXA_API_KEY' },
+    envNote: 'Needs EXA_API_KEY from exa.ai (free tier available)',
+    tags: ['search', 'web', 'semantic', 'ai', 'research'],
   },
   {
     id: 'google-maps',
@@ -123,13 +152,13 @@ export const MCP_MARKETPLACE = [
   {
     id: 'everything',
     name: 'Everything (demo)',
-    description: 'Demo MCP server that showcases all MCP features',
+    description: 'Demo MCP server that showcases all MCP features and tool types',
     category: 'dev',
     command: 'npx',
     args: ['-y', '@modelcontextprotocol/server-everything'],
     tags: ['demo', 'test', 'dev'],
   },
-];
+]
 
 export const CATEGORIES = {
   core:          'Core',
@@ -140,20 +169,69 @@ export const CATEGORIES = {
   communication: 'Communication',
   utility:       'Utilities',
   ai:            'AI & Reasoning',
-};
+}
+
+// ── Remote catalog fetch ───────────────────────────────────────────────────
+
+function cachePath() {
+  return join(homedir(), '.axion', 'mcp-catalog-cache.json')
+}
+
+async function loadRemoteCatalog() {
+  try {
+    // Try disk cache first
+    try {
+      const cached = JSON.parse(readFileSync(cachePath(), 'utf8'))
+      if (Date.now() - cached.fetched_at < CACHE_TTL && cached.servers?.length) {
+        MCP_MARKETPLACE.splice(0, MCP_MARKETPLACE.length, ...cached.servers)
+        return
+      }
+    } catch { /* cache miss — fetch fresh */ }
+
+    const controller = new AbortController()
+    const timeout = setTimeout(() => controller.abort(), 5000)
+    const res = await fetch(CATALOG_URL, { signal: controller.signal })
+    clearTimeout(timeout)
+
+    if (!res.ok) return
+    const data = await res.json()
+    if (!data.servers?.length) return
+
+    // Update in-place so existing imports see the new list
+    MCP_MARKETPLACE.splice(0, MCP_MARKETPLACE.length, ...data.servers)
+
+    // Persist to disk cache
+    try {
+      mkdirSync(join(homedir(), '.axion'), { recursive: true })
+      writeFileSync(cachePath(), JSON.stringify({ fetched_at: Date.now(), servers: data.servers }))
+    } catch { /* ignore write failure */ }
+  } catch { /* keep local list on any error */ }
+}
+
+// Force-refresh: bust cache then reload. Used by /mcp reload.
+export async function refreshCatalog() {
+  try { unlinkSync(cachePath()) } catch { /* ok */ }
+  await loadRemoteCatalog()
+}
+
+// Start background fetch immediately at module load.
+// By the time the user types /mcp browse the data is usually ready.
+loadRemoteCatalog().catch(() => {})
+
+// ── Query helpers ──────────────────────────────────────────────────────────
 
 export function searchMarketplace(query) {
-  if (!query) return MCP_MARKETPLACE;
-  const q = query.toLowerCase();
+  if (!query) return MCP_MARKETPLACE
+  const q = query.toLowerCase()
   return MCP_MARKETPLACE.filter(s =>
     s.id.includes(q) ||
     s.name.toLowerCase().includes(q) ||
     s.description.toLowerCase().includes(q) ||
     s.category.includes(q) ||
     s.tags.some(t => t.includes(q))
-  );
+  )
 }
 
 export function getMarketplaceEntry(id) {
-  return MCP_MARKETPLACE.find(s => s.id === id);
+  return MCP_MARKETPLACE.find(s => s.id === id)
 }

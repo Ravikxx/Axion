@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MCP Marketplace — Axion Labs</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #0d0e13;
+      --surface: #12131a;
+      --surface2:#1a1b24;
+      --border:  #23242f;
+      --border2: #2e2f3e;
+      --text:    #e8e9f0;
+      --muted:   #6b6d80;
+      --muted2:  #9899a8;
+      --accent:  #e8602c;
+      --accent-d:#c04c1f;
+      --green:   #34d399;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      background: var(--bg); color: var(--text);
+      font-size: 14px; line-height: 1.5; min-height: 100vh;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    /* ── Nav ── */
+    nav {
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      padding: 0 32px;
+      display: flex; align-items: center; height: 52px; gap: 24px;
+    }
+    .nav-logo { font-weight: 800; font-size: 16px; display: flex; align-items: center; gap: 8px; }
+    .nav-logo span { color: var(--accent); }
+    .logo-dot { width: 22px; height: 22px; background: var(--accent); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 11px; }
+    .nav-links { display: flex; gap: 4px; margin-left: 16px; }
+    .nav-link {
+      padding: 5px 10px; border-radius: 5px; font-size: 13px;
+      color: var(--muted2); transition: color .12s, background .12s;
+    }
+    .nav-link:hover { color: var(--text); background: var(--surface2); }
+    .nav-link.active { color: var(--text); }
+    .nav-right { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+    .nav-btn {
+      padding: 6px 14px; border-radius: 6px; font-size: 13px; font-weight: 600;
+      background: var(--accent); color: #fff; border: none; cursor: pointer;
+      transition: background .15s;
+    }
+    .nav-btn:hover { background: var(--accent-d); }
+
+    /* ── Hero ── */
+    .hero {
+      padding: 56px 32px 40px;
+      max-width: 960px; margin: 0 auto;
+    }
+    .hero-label {
+      font-size: 11px; font-weight: 700; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 12px;
+    }
+    .hero h1 { font-size: 36px; font-weight: 800; line-height: 1.2; margin-bottom: 12px; }
+    .hero p { font-size: 15px; color: var(--muted2); max-width: 480px; line-height: 1.6; }
+
+    /* ── Install hint ── */
+    .install-hint {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: var(--surface); border: 1px solid var(--border2);
+      border-radius: 8px; padding: 10px 16px; margin-top: 24px;
+      font-family: "SF Mono", "Fira Code", Consolas, monospace; font-size: 13px;
+    }
+    .prompt { color: var(--accent); user-select: none; }
+    .cmd { color: var(--text); }
+
+    /* ── Main ── */
+    .page { max-width: 960px; margin: 0 auto; padding: 0 32px 64px; }
+
+    /* ── Toolbar ── */
+    .toolbar {
+      display: flex; gap: 12px; align-items: center; margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+    .search-box {
+      flex: 1; min-width: 200px; max-width: 320px;
+      padding: 9px 14px; border-radius: 8px;
+      border: 1px solid var(--border2); background: var(--surface);
+      color: var(--text); font-size: 14px; outline: none; font-family: inherit;
+      transition: border-color .12s;
+    }
+    .search-box:focus { border-color: var(--accent); }
+    .search-box::placeholder { color: var(--muted); }
+
+    .filter-pills { display: flex; gap: 6px; flex-wrap: wrap; }
+    .pill {
+      padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 500;
+      border: 1px solid var(--border2); background: none; color: var(--muted2);
+      cursor: pointer; transition: all .12s; font-family: inherit;
+    }
+    .pill:hover { border-color: var(--muted); color: var(--text); }
+    .pill.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+    .count { font-size: 12px; color: var(--muted); margin-left: auto; white-space: nowrap; }
+
+    /* ── Grid ── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; padding: 20px;
+      display: flex; flex-direction: column; gap: 12px;
+      transition: border-color .15s;
+    }
+    .card:hover { border-color: var(--border2); }
+
+    .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+    .card-icon {
+      width: 36px; height: 36px; border-radius: 8px; flex-shrink: 0;
+      background: var(--surface2); display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+    }
+    .cat-badge {
+      font-size: 10px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase;
+      padding: 2px 8px; border-radius: 4px;
+      background: var(--surface2); color: var(--muted2);
+    }
+    .card-name { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+    .card-desc { font-size: 13px; color: var(--muted2); line-height: 1.5; flex: 1; }
+
+    .card-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+    .tag {
+      font-size: 11px; padding: 2px 7px; border-radius: 4px;
+      background: var(--surface2); color: var(--muted); border: 1px solid var(--border);
+    }
+
+    .card-cmd {
+      font-family: "SF Mono", "Fira Code", Consolas, monospace;
+      font-size: 11.5px; color: var(--muted);
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 6px; padding: 8px 10px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .card-cmd .kw { color: var(--accent); }
+
+    .card-footer { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .env-note { font-size: 11px; color: var(--muted); flex: 1; line-height: 1.4; }
+
+    .btn-install {
+      padding: 6px 14px; border-radius: 6px; font-size: 12px; font-weight: 600;
+      background: var(--accent); color: #fff; border: none; cursor: pointer;
+      flex-shrink: 0; transition: background .15s; font-family: inherit;
+    }
+    .btn-install:hover { background: var(--accent-d); }
+    .btn-copy {
+      padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 500;
+      background: none; color: var(--muted2); border: 1px solid var(--border2);
+      cursor: pointer; flex-shrink: 0; transition: all .12s; font-family: inherit;
+    }
+    .btn-copy:hover { color: var(--text); border-color: var(--muted); }
+    .btn-copy.copied { color: var(--green); border-color: var(--green); }
+
+    .empty {
+      grid-column: 1/-1; text-align: center; padding: 56px;
+      color: var(--muted);
+    }
+    .empty strong { display: block; font-size: 16px; color: var(--muted2); margin-bottom: 6px; }
+
+    /* ── Loading skeleton ── */
+    .skeleton { background: var(--surface2); border-radius: 4px; animation: pulse 1.4s ease infinite; }
+    @keyframes pulse { 0%,100% { opacity: .5; } 50% { opacity: 1; } }
+
+    @media (max-width: 600px) {
+      .hero { padding: 32px 16px 24px; }
+      .hero h1 { font-size: 26px; }
+      .page { padding: 0 16px 48px; }
+      nav { padding: 0 16px; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo"><div class="logo-dot">⚛</div> <span>Axion</span></a>
+  <div class="nav-links">
+    <a href="/" class="nav-link">Home</a>
+    <a href="/docs" class="nav-link">Docs</a>
+    <a href="/mcp" class="nav-link active">MCP</a>
+    <a href="/keys" class="nav-link">API Keys</a>
+  </div>
+  <div class="nav-right">
+    <a href="/keys" class="nav-btn">Get started</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-label">MCP Marketplace</div>
+  <h1>Extend Axion with<br>any tool or service</h1>
+  <p>Install MCP servers with one command. Connect to databases, browsers, APIs, and more — right from the CLI.</p>
+  <div class="install-hint">
+    <span class="prompt">›</span>
+    <span class="cmd">/mcp install github</span>
+  </div>
+</div>
+
+<div class="page">
+  <div class="toolbar">
+    <input class="search-box" type="text" id="search" placeholder="Search servers…" oninput="render()">
+    <div class="filter-pills" id="pills"></div>
+    <div class="count" id="count"></div>
+  </div>
+  <div class="grid" id="grid">
+    <!-- populated by JS -->
+  </div>
+</div>
+
+<script>
+  const CATALOG_URL = 'mcp-catalog.json'
+
+  const ICONS = {
+    github: '🐙', filesystem: '📁', fetch: '🌐', postgres: '🐘',
+    sqlite: '🗃️', notion: '📝', slack: '💬', puppeteer: '🤖',
+    playwright: '🎭', memory: '🧠', 'brave-search': '🔍', exa: '🔎',
+    'google-maps': '🗺️', 'sequential-thinking': '🔗', everything: '✨',
+  }
+  const DEFAULT_ICON = '🔌'
+
+  let catalog = []
+  let categories = {}
+  let activeCategory = 'all'
+
+  async function loadCatalog() {
+    try {
+      const res = await fetch(CATALOG_URL)
+      const data = await res.json()
+      catalog = data.servers || []
+      categories = data.categories || {}
+    } catch {
+      catalog = []
+    }
+    buildPills()
+    render()
+  }
+
+  function buildPills() {
+    const pills = document.getElementById('pills')
+    const cats = ['all', ...Object.keys(categories).filter(c => catalog.some(s => s.category === c))]
+    pills.innerHTML = cats.map(c => `
+      <button class="pill${c === activeCategory ? ' active' : ''}" onclick="setCategory('${c}')">
+        ${c === 'all' ? 'All' : (categories[c] || c)}
+      </button>`).join('')
+  }
+
+  function setCategory(cat) {
+    activeCategory = cat
+    document.querySelectorAll('.pill').forEach(p => p.classList.toggle('active', p.textContent.trim() === (cat === 'all' ? 'All' : (categories[cat] || cat))))
+    render()
+  }
+
+  function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') }
+
+  function cmdStr(s) {
+    const args = [s.command, ...(s.args || [])].join(' ')
+    return args.length > 48 ? args.slice(0, 47) + '…' : args
+  }
+
+  function render() {
+    const q = document.getElementById('search').value.toLowerCase()
+    let items = catalog.filter(s => {
+      if (activeCategory !== 'all' && s.category !== activeCategory) return false
+      if (!q) return true
+      return s.id.includes(q) || s.name.toLowerCase().includes(q) ||
+        s.description.toLowerCase().includes(q) || s.tags?.some(t => t.includes(q))
+    })
+
+    document.getElementById('count').textContent = `${items.length} server${items.length !== 1 ? 's' : ''}`
+
+    if (!items.length) {
+      document.getElementById('grid').innerHTML = `<div class="empty"><strong>No servers found</strong>Try a different search or category.</div>`
+      return
+    }
+
+    document.getElementById('grid').innerHTML = items.map((s, i) => `
+      <div class="card">
+        <div class="card-top">
+          <div style="flex:1">
+            <div class="card-name">${ICONS[s.id] || DEFAULT_ICON} ${esc(s.name)}</div>
+            <div class="card-desc">${esc(s.description)}</div>
+          </div>
+          <div class="cat-badge">${esc(categories[s.category] || s.category)}</div>
+        </div>
+        ${s.tags?.length ? `<div class="card-tags">${s.tags.slice(0,4).map(t => `<span class="tag">${esc(t)}</span>`).join('')}</div>` : ''}
+        <div class="card-cmd"><span class="kw">/mcp install</span> ${esc(s.id)}</div>
+        <div class="card-footer">
+          ${s.envNote ? `<div class="env-note">${esc(s.envNote)}</div>` : '<div></div>'}
+          <button class="btn-copy" id="copy-${i}" onclick="copyInstall(${i}, '${esc(s.id)}')">Copy</button>
+        </div>
+      </div>`).join('')
+    window._items = items
+  }
+
+  function copyInstall(i, id) {
+    navigator.clipboard.writeText(`/mcp install ${id}`).then(() => {
+      const btn = document.getElementById(`copy-${i}`)
+      if (!btn) return
+      btn.textContent = 'Copied!'
+      btn.classList.add('copied')
+      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied') }, 2000)
+    })
+  }
+
+  // Show skeleton while loading
+  document.getElementById('grid').innerHTML = Array(6).fill(`
+    <div class="card" style="gap:14px">
+      <div class="skeleton" style="height:18px;width:55%"></div>
+      <div class="skeleton" style="height:40px;width:100%"></div>
+      <div style="display:flex;gap:6px">${Array(3).fill('<div class="skeleton" style="height:20px;width:56px;border-radius:4px"></div>').join('')}</div>
+      <div class="skeleton" style="height:32px"></div>
+    </div>`).join('')
+
+  loadCatalog()
+</script>
+</body>
+</html>
