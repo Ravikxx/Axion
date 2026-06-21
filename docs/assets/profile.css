@@ -1,0 +1,73 @@
+/* Signed-in profile menu — self-contained dark styling so it looks consistent
+   on every page regardless of that page's theme. */
+
+.ax-profile { position: relative; display: inline-flex; }
+.ax-avatar {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: #e8602c; color: #fff;
+  font-weight: 700; font-size: 14px; font-family: inherit;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; border: none; padding: 0;
+  transition: transform .12s, box-shadow .12s;
+}
+.ax-avatar:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(232,96,44,.35); }
+
+.ax-menu {
+  position: absolute; top: 44px; right: 0;
+  min-width: 220px;
+  background: #16171f; border: 1px solid #2e2f3e;
+  border-radius: 12px; padding: 6px;
+  box-shadow: 0 12px 40px rgba(0,0,0,.5);
+  opacity: 0; transform: translateY(-6px) scale(.98);
+  pointer-events: none; transition: opacity .14s, transform .14s;
+  z-index: 1000;
+}
+.ax-menu.open { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+
+.ax-menu-head { padding: 10px 12px 12px; border-bottom: 1px solid #23242f; margin-bottom: 6px; }
+.ax-menu-head .ax-hi { font-size: 11px; color: #6b6d80; text-transform: uppercase; letter-spacing: .08em; }
+.ax-menu-head .ax-email { font-size: 13px; color: #e8e9f0; font-weight: 600; margin-top: 3px; word-break: break-all; }
+
+.ax-menu-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 12px; border-radius: 8px;
+  font-size: 13px; color: #c8c9d4; cursor: pointer;
+  background: none; border: none; width: 100%; text-align: left;
+  font-family: inherit; text-decoration: none;
+}
+.ax-menu-item:hover { background: #20212c; color: #fff; }
+.ax-menu-item .ax-ico { width: 16px; text-align: center; opacity: .85; }
+.ax-menu-item.danger { color: #f87171; }
+.ax-menu-item.danger:hover { background: rgba(248,113,113,.1); color: #f87171; }
+.ax-menu-sep { height: 1px; background: #23242f; margin: 6px 4px; }
+
+/* Settings modal */
+.ax-modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,.6);
+  display: none; align-items: center; justify-content: center; z-index: 2000;
+}
+.ax-modal-overlay.open { display: flex; }
+.ax-modal {
+  background: #16171f; border: 1px solid #2e2f3e; border-radius: 16px;
+  padding: 28px; width: 90%; max-width: 420px;
+  box-shadow: 0 24px 64px rgba(0,0,0,.6);
+}
+.ax-modal h3 { color: #e8e9f0; font-size: 18px; font-weight: 700; margin: 0 0 4px; }
+.ax-modal .ax-sub { color: #6b6d80; font-size: 13px; margin: 0 0 20px; }
+.ax-field { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-top: 1px solid #23242f; }
+.ax-field:last-of-type { border-bottom: 1px solid #23242f; margin-bottom: 20px; }
+.ax-field label { flex: 1; color: #c8c9d4; font-size: 13px; line-height: 1.5; cursor: pointer; }
+.ax-field label .ax-field-sub { display: block; color: #6b6d80; font-size: 12px; margin-top: 2px; }
+.ax-toggle { width: 38px; height: 22px; flex-shrink: 0; appearance: none; -webkit-appearance: none;
+  background: #2e2f3e; border-radius: 11px; position: relative; cursor: pointer; transition: background .15s; }
+.ax-toggle:checked { background: #e8602c; }
+.ax-toggle::after { content: ''; position: absolute; top: 2px; left: 2px; width: 18px; height: 18px;
+  border-radius: 50%; background: #fff; transition: transform .15s; }
+.ax-toggle:checked::after { transform: translateX(16px); }
+.ax-modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
+.ax-btn { padding: 9px 18px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; border: none; }
+.ax-btn.primary { background: #e8602c; color: #fff; }
+.ax-btn.primary:hover { background: #c04c1f; }
+.ax-btn.ghost { background: none; color: #9899a8; border: 1px solid #2e2f3e; }
+.ax-btn.ghost:hover { color: #fff; }
+.ax-modal-msg { font-size: 12px; color: #34d399; margin-right: auto; align-self: center; }
