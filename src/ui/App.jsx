@@ -998,9 +998,9 @@ triggers: <comma-separated words that should activate it, include "${skillName.t
           if (!keyArg) {
             const existing = getAxionKey();
             if (existing) {
-              pushStatic({ type: 'info', content: `Axion API key: ${existing.slice(0, 14)}••••••••\n\nGet keys at https://axion.amplifiedsmp.org/keys\nLumen free tier: 50 req/day  ·  With key: 1000 req/month\n\nTo remove: /axion-key remove` });
+              pushStatic({ type: 'info', content: `Axion API key: ${existing.slice(0, 14)}••••••••\n\nGet keys at https://axion.amplifiedsmp.org/keys\nLumen free tier: 50 req/day  ·  With key: 1,000 req/month · 40 req/2h\n\nTo remove: /axion-key remove` });
             } else {
-              pushStatic({ type: 'info', content: 'No Axion API key set.\n\nLumen works without a key (50 requests/day free).\nFor 1000 requests/month, get a key at https://axion.amplifiedsmp.org/keys\n\nUsage: /axion-key <your-axion-sk-key>' });
+              pushStatic({ type: 'info', content: 'No Axion API key set.\n\nLumen works without a key (50 requests/day free).\nWith a key: 1,000 requests/month + 40 per 2 hours.\nGet one at https://axion.amplifiedsmp.org/keys\n\nUsage: /axion-key <your-axion-sk-key>' });
             }
             return true;
           }
@@ -1014,7 +1014,7 @@ triggers: <comma-separated words that should activate it, include "${skillName.t
             return true;
           }
           saveAxionKey(keyArg);
-          pushStatic({ type: 'info', content: `Axion API key saved. Lumen now uses your key (1000 req/month).\n\nKey: ${keyArg.slice(0, 14)}••••••••` });
+          pushStatic({ type: 'info', content: `Axion API key saved. Lumen now uses your key (1,000 req/month · 40 req/2h).\n\nKey: ${keyArg.slice(0, 14)}••••••••` });
           return true;
         }
 
@@ -1061,7 +1061,7 @@ triggers: <comma-separated words that should activate it, include "${skillName.t
                   const keyData = await keyRes.json();
                   if (keyData.key_value) {
                     saveAxionKey(keyData.key_value);
-                    pushStatic({ type: 'info', content: `Logged in as ${data.email}\nAPI key created and saved.\n\nLumen now uses your key (1000 req/month).` });
+                    pushStatic({ type: 'info', content: `Logged in as ${data.email}\nAPI key created and saved.\n\nLumen now uses your key (1,000 req/month · 40 req/2h).` });
                   } else {
                     pushStatic({ type: 'error', content: 'Authorized but could not create API key. Try /axion-key <key> manually.' });
                   }

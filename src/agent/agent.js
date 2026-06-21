@@ -1015,16 +1015,34 @@ CRITICAL RULES — follow these exactly:
   }
 }
 
+function formatResetTime(isoStr) {
+  try {
+    const d = new Date(isoStr);
+    const diffMs = d - Date.now();
+    if (diffMs <= 0) return 'soon';
+    const mins = Math.floor(diffMs / 60000);
+    if (mins < 60) return `in ${mins} minute${mins !== 1 ? 's' : ''}`;
+    const hrs = Math.floor(diffMs / 3600000);
+    if (hrs < 24) return `in ${hrs} hour${hrs !== 1 ? 's' : ''}`;
+    return `on ${d.toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}`;
+  } catch { return 'soon'; }
+}
+
 function friendlyError(err, modelAlias) {
   const status = err?.status ?? err?.response?.status;
   const msg    = err?.message || String(err);
+  const errObj = err?.error || {};
 
   if (status === 401 || /unauthorized|invalid.*key|api.?key/i.test(msg)) {
     if (modelAlias === 'other') return `Auth failed for custom endpoint. Use /endpoint <url> <model> <key> to set the API key.`;
     return `Invalid API key for "${modelAlias}". Use /api ${modelAlias} <your-key> to set it.`;
   }
   if (status === 429 || /rate.?limit|quota/i.test(msg)) {
-    return `Rate limited by "${modelAlias}". Wait a moment and try again.`;
+    const resetStr = errObj.reset_at ? ` Resets ${formatResetTime(errObj.reset_at)}.` : '';
+    if (errObj.free_tier) return `Lumen free tier limit reached (50 req/day).${resetStr} Get a key at axion.amplifiedsmp.org/keys for 1,000/month.`;
+    if (errObj.window)    return `Lumen rate limit reached (40 req/2h).${resetStr}`;
+    if (/monthly/i.test(msg)) return `Lumen monthly limit reached (1,000/month).${resetStr}`;
+    return `Rate limited by "${modelAlias}".${resetStr || ' Wait a moment and try again.'}`;
   }
   if (status === 404 || /model.*not.*found|no.*model/i.test(msg)) {
     return `Model not found: "${modelAlias}". Try /model <name> to switch.`;

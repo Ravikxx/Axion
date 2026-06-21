@@ -385,15 +385,30 @@ app.delete('/dashboard/keys/:id', async (c) => {
 
 // ── OpenAI-compatible proxy ────────────────────────────────────────────────
 
-const FREE_DAILY_LIMIT = 50      // keyless requests per IP per day
-const KEY_MONTHLY_LIMIT = 1000   // keyed requests per month (free plan)
+const FREE_DAILY_LIMIT  = 50    // keyless requests per IP per day
+const KEY_MONTHLY_LIMIT = 1000  // keyed requests per month
+const KEY_WINDOW_LIMIT  = 40    // keyed requests per 2-hour window
+const KEY_WINDOW_MS     = 2 * 60 * 60 * 1000
 
 function currentMonth() {
   const d = new Date()
   return `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, '0')}`
 }
 
-async function proxyUpstream(body, stream) {
+function nextMonthISO() {
+  const d = new Date()
+  return new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + 1, 1)).toISOString()
+}
+
+function currentWindowISO() {
+  return new Date(Math.floor(Date.now() / KEY_WINDOW_MS) * KEY_WINDOW_MS).toISOString()
+}
+
+function nextWindowISO() {
+  return new Date((Math.floor(Date.now() / KEY_WINDOW_MS) + 1) * KEY_WINDOW_MS).toISOString()
+}
+
+async function proxyUpstream(body) {
   return fetch(HF_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -419,14 +434,25 @@ app.post('/v1/chat/completions', async (c) => {
     const keyRow = await c.env.DB.prepare('SELECT * FROM api_keys WHERE key_value=? AND revoked=0').bind(auth).first()
     if (!keyRow) return json({ error: { message: 'Invalid or revoked API key', type: 'invalid_request_error' } }, 401)
 
-    // Monthly limit check — reset counter when month rolls over
+    // Monthly limit — reset counter when month rolls over
     const month = currentMonth()
     if (keyRow.month_start !== month) {
       await c.env.DB.prepare('UPDATE api_keys SET month_requests=0, month_start=? WHERE id=?').bind(month, keyRow.id).run()
       keyRow.month_requests = 0
     }
     if (keyRow.month_requests >= KEY_MONTHLY_LIMIT) {
-      return json({ error: { message: `Monthly limit of ${KEY_MONTHLY_LIMIT} requests reached. Upgrade for more.`, type: 'rate_limit_error', limit: KEY_MONTHLY_LIMIT, used: keyRow.month_requests } }, 429)
+      const reset_at = nextMonthISO()
+      return json({ error: { message: `Monthly limit of ${KEY_MONTHLY_LIMIT} requests reached.`, type: 'rate_limit_error', reset_at, limit: KEY_MONTHLY_LIMIT, used: keyRow.month_requests } }, 429)
+    }
+
+    // 2-hour window limit
+    const winKey = `win:${keyRow.id}`
+    const winStart = currentWindowISO()
+    const winRow = await c.env.DB.prepare('SELECT count, window_start FROM rate_limits WHERE key=?').bind(winKey).first()
+    const winCount = (winRow && winRow.window_start === winStart) ? winRow.count : 0
+    if (winCount >= KEY_WINDOW_LIMIT) {
+      const reset_at = nextWindowISO()
+      return json({ error: { message: `Rate limit reached (${KEY_WINDOW_LIMIT} requests per 2 hours).`, type: 'rate_limit_error', reset_at, limit: KEY_WINDOW_LIMIT, used: winCount, window: true } }, 429)
     }
 
     const upstream = await proxyUpstream(body)
@@ -440,6 +466,9 @@ app.post('/v1/chat/completions', async (c) => {
       c.env.DB.prepare(
         'INSERT INTO usage_daily (key_id, date, count) VALUES (?,?,1) ON CONFLICT (key_id, date) DO UPDATE SET count=count+1'
       ).bind(keyRow.id, today).run(),
+      winRow && winRow.window_start === winStart
+        ? c.env.DB.prepare('UPDATE rate_limits SET count=count+1 WHERE key=?').bind(winKey).run()
+        : c.env.DB.prepare('INSERT OR REPLACE INTO rate_limits (key, count, window_start) VALUES (?,1,?)').bind(winKey, winStart).run(),
     ])
 
     if (body.stream) { c.executionCtx.waitUntil(track()); return streamResponse(upstream) }
@@ -448,17 +477,21 @@ app.post('/v1/chat/completions', async (c) => {
     return json(data)
   }
 
-  // ── Free keyless request (Lumen free tier) ──
+  // ── Free keyless request ──
   const freeKey = `free:${ip}`
   const today = new Date().toISOString().slice(0, 10)
   const row = await c.env.DB.prepare('SELECT count, window_start FROM rate_limits WHERE key=?').bind(freeKey).first()
 
   if (row && row.window_start === today) {
     if (row.count >= FREE_DAILY_LIMIT) {
+      const tomorrow = new Date()
+      tomorrow.setUTCDate(tomorrow.getUTCDate() + 1)
+      tomorrow.setUTCHours(0, 0, 0, 0)
       return json({
         error: {
-          message: `Free tier limit of ${FREE_DAILY_LIMIT} requests/day reached. Sign up for an API key at https://axion.amplifiedsmp.org/keys for 1000/month.`,
+          message: `Free tier limit of ${FREE_DAILY_LIMIT} requests/day reached. Get an API key at https://axion.amplifiedsmp.org/keys for 1,000/month + 40/2h.`,
           type: 'rate_limit_error',
+          reset_at: tomorrow.toISOString(),
           limit: FREE_DAILY_LIMIT,
           used: row.count,
           free_tier: true,
