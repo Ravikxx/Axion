@@ -2,9 +2,10 @@ name: Send announcement emails
 
 on:
   push:
-    branches: [main]
+    branches: [master]
     paths:
       - 'docs/announcements.html'
+  workflow_dispatch: {}
 
 jobs:
   announce:
