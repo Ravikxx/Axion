@@ -247,6 +247,8 @@
     /* ── Loading ── */
     .loading { color: var(--muted); padding: 24px; text-align: center; }
   </style>
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
 </head>
 <body>
 
@@ -292,7 +294,7 @@
 <!-- Main app -->
 <div id="app">
   <header>
-    <div class="logo">Axion <span>Admin</span> <span class="admin-badge">admin</span></div>
+    <div class="logo"><img src="/assets/logo.png" alt="Axion" style="height:22px;width:auto;object-fit:contain;display:inline-block;vertical-align:-5px;margin-right:7px">Axion <span>Admin</span> <span class="admin-badge">admin</span></div>
     <div class="header-right">
       <span id="admin-email"></span>
       <button class="sign-out" onclick="signOut()">Sign out</button>
