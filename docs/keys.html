@@ -313,6 +313,83 @@
     .confirm-delete { background: var(--red); color: #fff; border-color: var(--red); }
     .confirm-delete:hover { opacity: .88; }
 
+    /* ── Orgs in sidebar ── */
+    .org-nav-item {
+      display: flex; align-items: center; gap: 9px;
+      padding: 7px 8px; border-radius: 6px;
+      color: var(--muted2); font-size: 13px; cursor: pointer;
+      transition: background .12s, color .12s; position: relative;
+    }
+    .org-nav-item:hover { background: var(--surface2); color: var(--text); }
+    .org-nav-item.active { background: var(--surface2); color: var(--text); }
+    .org-avatar {
+      width: 18px; height: 18px; border-radius: 4px;
+      background: var(--accent); color: #fff;
+      font-size: 9px; font-weight: 700; display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .nav-new-team {
+      display: flex; align-items: center; gap: 9px;
+      padding: 7px 8px; border-radius: 6px;
+      color: var(--muted); font-size: 13px; cursor: pointer;
+      width: 100%; background: none; border: none; text-align: left; font-family: inherit;
+      transition: background .12s, color .12s;
+    }
+    .nav-new-team:hover { background: var(--surface2); color: var(--muted2); }
+
+    /* ── Members section ── */
+    .members-section {
+      margin-top: 24px;
+      background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden;
+    }
+    .members-section-header {
+      padding: 12px 16px; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .members-section-header h3 {
+      font-size: 13px; font-weight: 600; color: var(--muted2);
+      text-transform: uppercase; letter-spacing: .06em;
+    }
+    .btn-sm {
+      padding: 5px 12px; border-radius: 6px; font-size: 12px; font-weight: 600;
+      background: none; border: 1px solid var(--border2); color: var(--muted2);
+      cursor: pointer; font-family: inherit; transition: all .12s;
+    }
+    .btn-sm:hover { border-color: var(--accent); color: var(--accent); }
+    .btn-sm.danger:hover { border-color: var(--red); color: var(--red); }
+    .members-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .members-table th {
+      text-align: left; padding: 9px 16px;
+      font-size: 11px; font-weight: 600; letter-spacing: .07em;
+      text-transform: uppercase; color: var(--muted); background: var(--surface);
+    }
+    .members-table td { padding: 12px 16px; border-top: 1px solid var(--border); vertical-align: middle; }
+    .role-badge {
+      display: inline-block; padding: 2px 7px; border-radius: 4px;
+      font-size: 11px; font-weight: 600;
+      background: var(--surface2); color: var(--muted2);
+    }
+    .role-badge.owner { background: rgba(232,96,44,.12); color: var(--accent); }
+
+    /* ── Danger zone ── */
+    .danger-zone {
+      margin-top: 24px; border: 1px solid rgba(248,113,113,.2);
+      border-radius: 10px; padding: 16px 20px;
+    }
+    .danger-zone h3 { font-size: 13px; font-weight: 600; color: var(--red); margin-bottom: 6px; }
+    .danger-zone p { font-size: 12px; color: var(--muted); margin-bottom: 12px; }
+    .btn-danger { padding: 7px 14px; border-radius: 6px; font-size: 13px; font-weight: 600; background: rgba(248,113,113,.1); color: var(--red); border: 1px solid rgba(248,113,113,.25); cursor: pointer; font-family: inherit; transition: background .12s; }
+    .btn-danger:hover { background: rgba(248,113,113,.2); }
+
+    /* ── Invite accept banner ── */
+    .invite-banner {
+      background: rgba(232,96,44,.08); border: 1px solid rgba(232,96,44,.3);
+      border-radius: 10px; padding: 16px 20px; margin-bottom: 20px;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    }
+    .invite-banner p { font-size: 13px; color: var(--text); }
+    .invite-banner strong { color: var(--accent); }
+
     /* ── Mobile ── */
     @media (max-width: 768px) {
       .sidebar { display: none; }
@@ -380,8 +457,8 @@
 
   <div class="nav-section">
     <div class="nav-label">API</div>
-    <div class="nav-item active">
-      <span class="nav-icon">⬡</span> API Keys
+    <div class="nav-item active" id="nav-personal-keys" onclick="viewPersonal()">
+      <span class="nav-icon">⬡</span> Personal Keys
     </div>
     <a href="/playground" class="nav-item">
       <span class="nav-icon">💬</span> Playground
@@ -392,6 +469,14 @@
     <a href="/docs" class="nav-item">
       <span class="nav-icon">◻</span> Docs
     </a>
+  </div>
+
+  <div class="nav-section" id="teams-section" style="display:none">
+    <div class="nav-label">Teams</div>
+    <div id="org-nav-list"></div>
+    <button class="nav-new-team" onclick="openCreateOrgModal()">
+      <span class="nav-icon" style="font-size:15px;line-height:1">+</span> New team
+    </button>
   </div>
 
   <div class="nav-section">
@@ -414,14 +499,16 @@
 </aside>
 
 <div class="main" id="main-panel" style="display:none">
-  <div class="topbar">
-    <span class="topbar-title">API Keys</span>
-    <div class="topbar-right">
+  <div class="topbar" id="topbar">
+    <span class="topbar-title" id="topbar-title">API Keys</span>
+    <div class="topbar-right" style="display:flex;gap:8px;align-items:center">
+      <button class="btn-new" id="btn-invite-member" onclick="openInviteModal()" style="display:none;background:var(--surface2);color:var(--muted2);border:1px solid var(--border2)">Invite member</button>
       <button class="btn-new" onclick="openNewKeyModal()">+ New Key</button>
     </div>
   </div>
 
   <div class="content">
+    <div id="invite-banner" style="display:none"></div>
     <div class="search-wrap">
       <input class="search-input" id="search-input" type="text" placeholder="Search by name…" oninput="filterKeys()" />
     </div>
@@ -448,6 +535,8 @@
       <h3>Usage this month</h3>
       <div id="usage-bars"></div>
     </div>
+
+    <div id="members-section" style="display:none"></div>
 
     <div class="docs-section">
       <h3>Using your key</h3>
@@ -495,6 +584,62 @@
         <button class="modal-cancel" id="copy-reveal-btn" onclick="copyRevealedKey()">Copy key</button>
         <button class="modal-create" onclick="doneCreating()">Done</button>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- Create team modal -->
+<div class="modal-backdrop" id="create-org-modal">
+  <div class="modal">
+    <h3>Create a team</h3>
+    <p>Teams let you share API keys and invite collaborators.</p>
+    <div class="field">
+      <label>Team name</label>
+      <input type="text" id="new-org-name" placeholder="e.g. Acme Corp, My Startup" style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--border2);background:var(--bg);font-size:14px;color:var(--text);outline:none;font-family:inherit">
+    </div>
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick="closeCreateOrgModal()">Cancel</button>
+      <button class="modal-create" onclick="createOrg()">Create team</button>
+    </div>
+  </div>
+</div>
+
+<!-- Invite member modal -->
+<div class="modal-backdrop" id="invite-modal">
+  <div class="modal">
+    <h3>Invite a member</h3>
+    <p>They'll get an email with a link to join your team.</p>
+    <div class="field">
+      <label>Email address</label>
+      <input type="email" id="invite-email" placeholder="colleague@example.com" style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--border2);background:var(--bg);font-size:14px;color:var(--text);outline:none;font-family:inherit">
+    </div>
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick="closeInviteModal()">Cancel</button>
+      <button class="modal-create" onclick="sendInvite()">Send invite</button>
+    </div>
+  </div>
+</div>
+
+<!-- Accept invite modal -->
+<div class="modal-backdrop" id="accept-invite-modal">
+  <div class="modal">
+    <h3>Team invitation</h3>
+    <p id="accept-invite-desc">You've been invited to join a team on Axion Labs.</p>
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick="declineInvite()">Decline</button>
+      <button class="modal-create" onclick="acceptInvite()">Join team</button>
+    </div>
+  </div>
+</div>
+
+<!-- Delete org confirm -->
+<div class="confirm-backdrop" id="delete-org-backdrop">
+  <div class="confirm-box">
+    <h4>Delete team?</h4>
+    <p>All team keys will be revoked. This cannot be undone.</p>
+    <div class="confirm-actions">
+      <button class="confirm-cancel" onclick="closeDeleteOrg()">Cancel</button>
+      <button class="confirm-delete" onclick="confirmDeleteOrg()">Delete</button>
     </div>
   </div>
 </div>
@@ -568,7 +713,16 @@
       localStorage.setItem('axion_token', sessionToken);
       localStorage.setItem('axion_email', data.email || email);
       currentUser = { email: data.email || email };
-      showDashboard();
+      // Pick up any invite stored before auth
+      const storedInvite = sessionStorage.getItem('axion_pending_invite');
+      const storedOrg = sessionStorage.getItem('axion_pending_invite_org');
+      if (storedInvite) {
+        pendingInviteToken = storedInvite;
+        pendingInviteOrgId = storedOrg;
+        sessionStorage.removeItem('axion_pending_invite');
+        sessionStorage.removeItem('axion_pending_invite_org');
+      }
+      await showDashboard();
     } catch (err) {
       showAuthError(err.message || 'Something went wrong. Try again.');
     } finally {
@@ -581,6 +735,7 @@
 
   function logout() {
     currentUser = null; keys = []; sessionToken = null;
+    currentOrg = null; orgs = [];
     localStorage.removeItem('axion_token'); localStorage.removeItem('axion_email');
     document.getElementById('sidebar').style.display = 'none';
     document.getElementById('main-panel').style.display = 'none';
@@ -590,12 +745,20 @@
 
   // ── Dashboard ─────────────────────────────────────────────────────────────
 
-  function showDashboard() {
+  async function showDashboard() {
     document.getElementById('auth-screen').style.display = 'none';
     document.getElementById('sidebar').style.display = 'flex';
     document.getElementById('main-panel').style.display = 'flex';
     document.getElementById('sidebar-email').textContent = currentUser.email;
     loadKeys();
+    await loadOrgs();
+
+    // If there's a pending invite, show accept modal after orgs load
+    if (pendingInviteToken) {
+      // Try to get org name from loaded orgs
+      const org = orgs.find(o => o.id === pendingInviteOrgId);
+      openAcceptInviteModal(org?.name);
+    }
   }
 
   async function loadKeys() {
@@ -776,30 +939,353 @@
   document.getElementById('new-key-modal').addEventListener('click', function(e) { if (e.target === this) closeNewKeyModal(); });
   document.getElementById('confirm-backdrop').addEventListener('click', function(e) { if (e.target === this) closeConfirm(); });
 
+  // ── Orgs ──────────────────────────────────────────────────────────────────
+
+  let currentOrg = null;
+  let orgs = [];
+  let pendingInviteToken = null;
+  let pendingInviteOrgId = null;
+
+  async function loadOrgs() {
+    try {
+      const res = await fetch(API + '/orgs', { headers: { Authorization: `Bearer ${sessionToken}` } });
+      if (!res.ok) return;
+      const data = await res.json();
+      orgs = data.orgs || [];
+      renderTeamsSidebar();
+    } catch {}
+  }
+
+  function renderTeamsSidebar() {
+    const section = document.getElementById('teams-section');
+    const list = document.getElementById('org-nav-list');
+    if (orgs.length === 0) {
+      list.innerHTML = '';
+      section.style.display = '';
+      return;
+    }
+    section.style.display = '';
+    list.innerHTML = orgs.map(o => {
+      const initials = o.name.slice(0, 2).toUpperCase();
+      const active = currentOrg?.id === o.id ? ' active' : '';
+      return `<div class="org-nav-item${active}" onclick="viewOrg('${escHtml(o.id)}')">
+        <div class="org-avatar">${escHtml(initials)}</div>
+        <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escHtml(o.name)}</span>
+      </div>`;
+    }).join('');
+  }
+
+  async function viewOrg(orgId) {
+    try {
+      const res = await fetch(`${API}/orgs/${orgId}`, { headers: { Authorization: `Bearer ${sessionToken}` } });
+      if (!res.ok) return;
+      const data = await res.json();
+      currentOrg = data.org;
+      currentOrg._myRole = data.myRole;
+
+      // Update topbar
+      document.getElementById('topbar-title').textContent = currentOrg.name;
+      document.getElementById('btn-invite-member').style.display = '';
+
+      // Set sidebar active
+      renderTeamsSidebar();
+
+      // Render org keys
+      keys = (data.keys || []).map(k => ({
+        id: k.id, name: k.label,
+        prefix: k.key_value ? k.key_value.slice(0, 14) + '…' : 'axion-sk-…',
+        createdAt: k.created_at ? new Date(k.created_at * 1000).toISOString() : new Date().toISOString(),
+        lastUsed: k.last_used ? new Date(k.last_used * 1000) : null,
+        usageMonth: k.month_requests || 0,
+        usageTotal: k.requests || 0,
+      }));
+      renderKeys(); renderUsage();
+
+      // Render members
+      renderMembers(data.members, data.myRole);
+
+      // Show/hide danger zone (only owner)
+      const ms = document.getElementById('members-section');
+      ms.style.display = '';
+    } catch (e) { alert('Failed to load team: ' + e.message); }
+  }
+
+  function viewPersonal() {
+    currentOrg = null;
+    document.getElementById('topbar-title').textContent = 'API Keys';
+    document.getElementById('btn-invite-member').style.display = 'none';
+    document.getElementById('members-section').innerHTML = '';
+    document.getElementById('members-section').style.display = 'none';
+    renderTeamsSidebar();
+    loadKeys();
+  }
+
+  function renderMembers(members, myRole) {
+    const ms = document.getElementById('members-section');
+    const isOwner = myRole === 'owner';
+    ms.innerHTML = `
+      <div class="members-section">
+        <div class="members-section-header">
+          <h3>Members</h3>
+          <button class="btn-sm" onclick="openInviteModal()">+ Invite</button>
+        </div>
+        <table class="members-table">
+          <thead><tr><th>Email</th><th>Role</th><th></th></tr></thead>
+          <tbody>
+            ${(members || []).map(m => {
+              const isOrgOwner = m.role === 'owner';
+              const isSelf = m.email === currentUser.email;
+              let action = '';
+              if (isSelf && !isOrgOwner) {
+                action = `<button class="btn-sm danger" onclick="leaveOrg('${escHtml(m.user_id)}')">Leave</button>`;
+              } else if (isOwner && !isOrgOwner) {
+                action = `<button class="btn-sm danger" onclick="removeMember('${escHtml(m.user_id)}', '${escHtml(m.email)}')">Remove</button>`;
+              }
+              return `<tr>
+                <td>${escHtml(m.email)}${isSelf ? ' <span style="font-size:11px;color:var(--muted)">(you)</span>' : ''}</td>
+                <td><span class="role-badge ${m.role}">${escHtml(m.role)}</span></td>
+                <td style="text-align:right">${action}</td>
+              </tr>`;
+            }).join('')}
+          </tbody>
+        </table>
+      </div>
+      ${isOwner ? `
+      <div class="danger-zone">
+        <h3>Danger zone</h3>
+        <p>Deleting the team will revoke all team API keys. This cannot be undone.</p>
+        <button class="btn-danger" onclick="openDeleteOrg()">Delete team</button>
+      </div>` : ''}`;
+    ms.style.display = '';
+  }
+
+  // ── Create org ─────────────────────────────────────────────────────────────
+
+  function openCreateOrgModal() {
+    document.getElementById('new-org-name').value = '';
+    document.getElementById('create-org-modal').classList.add('open');
+    setTimeout(() => document.getElementById('new-org-name').focus(), 100);
+  }
+  function closeCreateOrgModal() { document.getElementById('create-org-modal').classList.remove('open'); }
+
+  async function createOrg() {
+    const name = document.getElementById('new-org-name').value.trim();
+    if (!name) { document.getElementById('new-org-name').focus(); return; }
+    try {
+      const res = await fetch(API + '/orgs', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${sessionToken}` },
+        body: JSON.stringify({ name }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to create team');
+      closeCreateOrgModal();
+      await loadOrgs();
+      await viewOrg(data.id);
+    } catch (e) { alert(e.message); }
+  }
+
+  // ── Invite member ──────────────────────────────────────────────────────────
+
+  function openInviteModal() {
+    document.getElementById('invite-email').value = '';
+    document.getElementById('invite-modal').classList.add('open');
+    setTimeout(() => document.getElementById('invite-email').focus(), 100);
+  }
+  function closeInviteModal() { document.getElementById('invite-modal').classList.remove('open'); }
+
+  async function sendInvite() {
+    const email = document.getElementById('invite-email').value.trim();
+    if (!email) return;
+    try {
+      const res = await fetch(`${API}/orgs/${currentOrg.id}/invite`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${sessionToken}` },
+        body: JSON.stringify({ email }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to send invite');
+      closeInviteModal();
+      showBanner(`Invite sent to ${email}`, 'ok');
+    } catch (e) { alert(e.message); }
+  }
+
+  // ── Remove / leave ─────────────────────────────────────────────────────────
+
+  async function removeMember(uid, email) {
+    if (!confirm(`Remove ${email} from ${currentOrg.name}?`)) return;
+    try {
+      const res = await fetch(`${API}/orgs/${currentOrg.id}/members/${uid}`, {
+        method: 'DELETE', headers: { Authorization: `Bearer ${sessionToken}` },
+      });
+      if (!res.ok) throw new Error((await res.json()).error);
+      viewOrg(currentOrg.id);
+    } catch (e) { alert(e.message); }
+  }
+
+  async function leaveOrg(uid) {
+    if (!confirm(`Leave ${currentOrg.name}?`)) return;
+    try {
+      await fetch(`${API}/orgs/${currentOrg.id}/members/${uid}`, {
+        method: 'DELETE', headers: { Authorization: `Bearer ${sessionToken}` },
+      });
+      await loadOrgs();
+      viewPersonal();
+    } catch (e) { alert(e.message); }
+  }
+
+  // ── Delete org ─────────────────────────────────────────────────────────────
+
+  function openDeleteOrg() { document.getElementById('delete-org-backdrop').classList.add('open'); }
+  function closeDeleteOrg() { document.getElementById('delete-org-backdrop').classList.remove('open'); }
+
+  async function confirmDeleteOrg() {
+    try {
+      const res = await fetch(`${API}/orgs/${currentOrg.id}`, {
+        method: 'DELETE', headers: { Authorization: `Bearer ${sessionToken}` },
+      });
+      if (!res.ok) throw new Error((await res.json()).error);
+      closeDeleteOrg();
+      await loadOrgs();
+      viewPersonal();
+    } catch (e) { alert(e.message); }
+  }
+
+  // ── Accept org invite ──────────────────────────────────────────────────────
+
+  function openAcceptInviteModal(orgName) {
+    document.getElementById('accept-invite-desc').textContent =
+      `You've been invited to join ${orgName || 'a team'} on Axion Labs.`;
+    document.getElementById('accept-invite-modal').classList.add('open');
+  }
+
+  function declineInvite() {
+    pendingInviteToken = null; pendingInviteOrgId = null;
+    document.getElementById('accept-invite-modal').classList.remove('open');
+    history.replaceState(null, '', window.location.pathname);
+  }
+
+  async function acceptInvite() {
+    if (!pendingInviteToken) return;
+    try {
+      const res = await fetch(API + '/orgs/invite/accept', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${sessionToken}` },
+        body: JSON.stringify({ token: pendingInviteToken }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to accept invite');
+      document.getElementById('accept-invite-modal').classList.remove('open');
+      pendingInviteToken = null;
+      history.replaceState(null, '', window.location.pathname);
+      await loadOrgs();
+      if (data.org_id) await viewOrg(data.org_id);
+    } catch (e) { alert(e.message); }
+  }
+
+  // ── Banner ─────────────────────────────────────────────────────────────────
+
+  function showBanner(msg, type) {
+    const el = document.getElementById('invite-banner');
+    el.innerHTML = `<div class="invite-banner"><p>${escHtml(msg)}</p></div>`;
+    el.style.display = '';
+    setTimeout(() => { el.style.display = 'none'; }, 4000);
+  }
+
+  // ── New key — patch to use org context ────────────────────────────────────
+
+  const _origCreateKey = createKey;
+
+  // Override createKey to post to org endpoint when in org context
+  createKey = async function() {
+    if (!currentOrg) { await _origCreateKey(); return; }
+    const name = document.getElementById('new-key-name').value.trim();
+    if (!name) { document.getElementById('new-key-name').focus(); return; }
+    try {
+      const res = await fetch(`${API}/orgs/${currentOrg.id}/keys`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${sessionToken}` },
+        body: JSON.stringify({ label: name }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to create key');
+      const raw = data.key_value;
+      keys.unshift({ id: data.id, name: data.label, prefix: raw.slice(0,14)+'…', fullKey: raw, createdAt: new Date().toISOString(), lastUsed: null, usageMonth: 0, usageTotal: 0 });
+      renderKeys(); renderUsage();
+      document.getElementById('revealed-key').textContent = raw;
+      document.getElementById('modal-step-1').style.display = 'none';
+      document.getElementById('modal-step-2').style.display = '';
+      document.getElementById('modal-title').textContent = 'Key created';
+      document.getElementById('modal-desc').textContent = 'Save this key somewhere safe.';
+      document.getElementById('copy-reveal-btn').textContent = 'Copy key';
+      document.getElementById('copy-reveal-btn').classList.remove('copied');
+    } catch (e) { alert(e.message); }
+  };
+
+  // Close org modals on backdrop click
+  document.getElementById('create-org-modal').addEventListener('click', function(e) { if (e.target === this) closeCreateOrgModal(); });
+  document.getElementById('invite-modal').addEventListener('click', function(e) { if (e.target === this) closeInviteModal(); });
+  document.getElementById('delete-org-backdrop').addEventListener('click', function(e) { if (e.target === this) closeDeleteOrg(); });
+
   // ── Init ──────────────────────────────────────────────────────────────────
 
   (async function init() {
     const hash = window.location.hash.slice(1);
-    if (hash.startsWith('verified=') || hash.includes('verified=')) {
-      const params = new URLSearchParams(hash);
+    const params = new URLSearchParams(hash);
+
+    // OAuth return with session token
+    if (params.get('verified')) {
       const tok = params.get('verified');
       const em = params.get('email');
-      if (tok) {
-        sessionToken = tok;
-        localStorage.setItem('axion_token', tok);
-        localStorage.setItem('axion_email', em || '');
-        currentUser = { email: em || 'your account' };
+      sessionToken = tok;
+      localStorage.setItem('axion_token', tok);
+      localStorage.setItem('axion_email', em || '');
+      currentUser = { email: em || 'your account' };
+
+      // Check for pending invite stored before OAuth redirect
+      const storedInvite = sessionStorage.getItem('axion_pending_invite');
+      const storedOrg = sessionStorage.getItem('axion_pending_invite_org');
+      if (storedInvite) {
+        pendingInviteToken = storedInvite;
+        pendingInviteOrgId = storedOrg;
+        sessionStorage.removeItem('axion_pending_invite');
+        sessionStorage.removeItem('axion_pending_invite_org');
+      } else {
+        // Also check hash for invite (direct link that had #invite=... before OAuth)
+        const inviteFromHash = params.get('invite');
+        const orgFromHash = params.get('org');
+        if (inviteFromHash) { pendingInviteToken = inviteFromHash; pendingInviteOrgId = orgFromHash; }
+      }
+
+      history.replaceState(null, '', window.location.pathname);
+      await showDashboard();
+      return;
+    }
+
+    // Org invite link — #invite=TOKEN&org=ORG_ID
+    const inviteToken = params.get('invite');
+    const inviteOrg = params.get('org');
+    if (inviteToken) {
+      if (!sessionToken) {
+        // Not logged in — store invite, then let user auth
+        sessionStorage.setItem('axion_pending_invite', inviteToken);
+        if (inviteOrg) sessionStorage.setItem('axion_pending_invite_org', inviteOrg);
         history.replaceState(null, '', window.location.pathname);
-        showDashboard();
+        // Show auth normally — after login showDashboard picks up pending invite
         return;
       }
+      // Already logged in
+      pendingInviteToken = inviteToken;
+      pendingInviteOrgId = inviteOrg;
+      history.replaceState(null, '', window.location.pathname);
     }
+
     if (!sessionToken) return;
     try {
       const res = await fetch(API + '/dashboard/keys', { headers: { Authorization: `Bearer ${sessionToken}` } });
       if (!res.ok) { sessionToken = null; localStorage.removeItem('axion_token'); return; }
       currentUser = { email: localStorage.getItem('axion_email') || 'your account' };
-      showDashboard();
+      await showDashboard();
     } catch { sessionToken = null; localStorage.removeItem('axion_token'); }
   })();
 </script>

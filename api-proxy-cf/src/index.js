@@ -644,4 +644,199 @@ app.get('/admin/invite/accept', async (c) => {
   })
 })
 
+// ── Orgs ───────────────────────────────────────────────────────────────────
+
+async function requireOrgMember(c, orgId) {
+  const user = await requireAuth(c)
+  if (!user) return null
+  const mem = await c.env.DB.prepare(
+    'SELECT role FROM org_members WHERE org_id=? AND user_id=?'
+  ).bind(orgId, user.id).first()
+  if (!mem) return null
+  return { user, role: mem.role }
+}
+
+async function requireOrgOwner(c, orgId) {
+  const ctx = await requireOrgMember(c, orgId)
+  if (!ctx) return null
+  if (ctx.role !== 'owner') return null
+  return ctx
+}
+
+// Create org
+app.post('/orgs', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  const { name } = await c.req.json().catch(() => ({}))
+  if (!name?.trim()) return json({ error: 'name required' }, 400)
+
+  const id = crypto.randomUUID()
+  await c.env.DB.prepare('INSERT INTO orgs (id, name, owner_id) VALUES (?,?,?)').bind(id, name.trim(), user.id).run()
+  await c.env.DB.prepare('INSERT INTO org_members (org_id, user_id, role) VALUES (?,?,?)').bind(id, user.id, 'owner').run()
+  return json({ id, name: name.trim(), role: 'owner' }, 201)
+})
+
+// List orgs for current user
+app.get('/orgs', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  const { results } = await c.env.DB.prepare(
+    `SELECT o.id, o.name, o.owner_id, m.role, o.created_at
+     FROM orgs o JOIN org_members m ON m.org_id=o.id
+     WHERE m.user_id=? ORDER BY o.created_at DESC`
+  ).bind(user.id).all()
+  return json({ orgs: results })
+})
+
+// Get org detail (members + keys)
+app.get('/orgs/:id', async (c) => {
+  const ctx = await requireOrgMember(c, c.req.param('id'))
+  if (!ctx) return json({ error: 'Forbidden' }, 403)
+  const orgId = c.req.param('id')
+
+  const [org, members, keys] = await Promise.all([
+    c.env.DB.prepare('SELECT id, name, owner_id, created_at FROM orgs WHERE id=?').bind(orgId).first(),
+    c.env.DB.prepare(
+      `SELECT m.user_id, m.role, m.joined_at, u.email
+       FROM org_members m JOIN users u ON u.id=m.user_id
+       WHERE m.org_id=? ORDER BY m.joined_at ASC`
+    ).bind(orgId).all(),
+    c.env.DB.prepare(
+      'SELECT id, label, key_value, created_at, last_used, requests, month_requests FROM api_keys WHERE org_id=? AND revoked=0 ORDER BY created_at DESC'
+    ).bind(orgId).all(),
+  ])
+
+  if (!org) return json({ error: 'Not found' }, 404)
+  return json({ org, members: members.results, keys: keys.results, myRole: ctx.role })
+})
+
+// Rename org
+app.patch('/orgs/:id', async (c) => {
+  const ctx = await requireOrgOwner(c, c.req.param('id'))
+  if (!ctx) return json({ error: 'Forbidden' }, 403)
+  const { name } = await c.req.json().catch(() => ({}))
+  if (!name?.trim()) return json({ error: 'name required' }, 400)
+  await c.env.DB.prepare('UPDATE orgs SET name=? WHERE id=?').bind(name.trim(), c.req.param('id')).run()
+  return json({ ok: true })
+})
+
+// Delete org
+app.delete('/orgs/:id', async (c) => {
+  const ctx = await requireOrgOwner(c, c.req.param('id'))
+  if (!ctx) return json({ error: 'Forbidden' }, 403)
+  const orgId = c.req.param('id')
+
+  // Revoke all org keys, delete members + invites + org
+  await c.env.DB.prepare('UPDATE api_keys SET revoked=1 WHERE org_id=?').bind(orgId).run()
+  await c.env.DB.prepare('DELETE FROM org_invites WHERE org_id=?').bind(orgId).run()
+  await c.env.DB.prepare('DELETE FROM org_members WHERE org_id=?').bind(orgId).run()
+  await c.env.DB.prepare('DELETE FROM orgs WHERE id=?').bind(orgId).run()
+  return json({ ok: true })
+})
+
+// Invite a member (sends email with link to /keys#invite=TOKEN)
+app.post('/orgs/:id/invite', async (c) => {
+  const ctx = await requireOrgMember(c, c.req.param('id'))
+  if (!ctx) return json({ error: 'Forbidden' }, 403)
+  const orgId = c.req.param('id')
+  const { email, role } = await c.req.json().catch(() => ({}))
+  if (!email || !validEmail(email)) return json({ error: 'Invalid email' }, 400)
+  const assignRole = role === 'owner' ? 'owner' : 'member'
+
+  const token = crypto.randomUUID()
+  const expires_at = Math.floor(Date.now() / 1000) + 7 * 24 * 60 * 60
+
+  const org = await c.env.DB.prepare('SELECT name FROM orgs WHERE id=?').bind(orgId).first()
+
+  await c.env.DB.prepare(
+    'INSERT INTO org_invites (token, org_id, email, role, invited_by, expires_at) VALUES (?,?,?,?,?,?)'
+  ).bind(token, orgId, email.toLowerCase(), assignRole, ctx.user.email, expires_at).run()
+
+  if (c.env.RESEND_API_KEY) {
+    const link = `https://axion.amplifiedsmp.org/keys#invite=${token}&org=${orgId}`
+    c.executionCtx.waitUntil(fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${c.env.RESEND_API_KEY}` },
+      body: JSON.stringify({
+        from: 'Axion Labs <noreply@amplifiedsmp.org>',
+        to: [email],
+        subject: `${ctx.user.email} invited you to ${org?.name || 'a team'} on Axion`,
+        html: `<div style="font-family:system-ui,sans-serif;max-width:480px;margin:0 auto;padding:32px;background:#0f0f11;color:#e8e8f0">
+          <h2 style="margin:0 0 8px;color:#e8e8f0">You've been invited</h2>
+          <p style="color:#888;margin:0 0 24px">${ctx.user.email} invited you to join <strong style="color:#e8e8f0">${org?.name || 'a team'}</strong> on Axion Labs.</p>
+          <a href="${link}" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">Accept invitation →</a>
+          <p style="color:#666;font-size:12px;margin-top:24px">Expires in 7 days. You'll need to sign in or create an Axion account to accept.</p>
+        </div>`,
+      }),
+    }))
+  }
+
+  return json({ ok: true })
+})
+
+// Accept org invite (authenticated — resolves user_id from bearer token)
+app.post('/orgs/invite/accept', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  const { token } = await c.req.json().catch(() => ({}))
+  if (!token) return json({ error: 'token required' }, 400)
+
+  const invite = await c.env.DB.prepare(
+    'SELECT * FROM org_invites WHERE token=? AND used=0'
+  ).bind(token).first()
+
+  if (!invite) return json({ error: 'Invalid or already used invite' }, 400)
+  if (invite.expires_at < Math.floor(Date.now() / 1000)) return json({ error: 'Invite expired' }, 400)
+
+  // Upsert — if already a member, upgrade role if invite is owner
+  const existing = await c.env.DB.prepare(
+    'SELECT role FROM org_members WHERE org_id=? AND user_id=?'
+  ).bind(invite.org_id, user.id).first()
+
+  if (existing) {
+    if (invite.role === 'owner' && existing.role !== 'owner') {
+      await c.env.DB.prepare('UPDATE org_members SET role=? WHERE org_id=? AND user_id=?').bind('owner', invite.org_id, user.id).run()
+    }
+  } else {
+    await c.env.DB.prepare('INSERT INTO org_members (org_id, user_id, role) VALUES (?,?,?)').bind(invite.org_id, user.id, invite.role).run()
+  }
+
+  await c.env.DB.prepare('UPDATE org_invites SET used=1 WHERE token=?').bind(token).run()
+  return json({ ok: true, org_id: invite.org_id, role: invite.role })
+})
+
+// Remove member (owner removes anyone, member removes self = leave)
+app.delete('/orgs/:id/members/:uid', async (c) => {
+  const orgId = c.req.param('id')
+  const targetUid = c.req.param('uid')
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+
+  // Allow if removing self, or if requester is owner
+  const myMem = await c.env.DB.prepare('SELECT role FROM org_members WHERE org_id=? AND user_id=?').bind(orgId, user.id).first()
+  if (!myMem) return json({ error: 'Forbidden' }, 403)
+  if (user.id !== targetUid && myMem.role !== 'owner') return json({ error: 'Forbidden' }, 403)
+
+  // Can't remove the org owner
+  const org = await c.env.DB.prepare('SELECT owner_id FROM orgs WHERE id=?').bind(orgId).first()
+  if (org?.owner_id === targetUid) return json({ error: 'Cannot remove the org owner' }, 400)
+
+  await c.env.DB.prepare('DELETE FROM org_members WHERE org_id=? AND user_id=?').bind(orgId, targetUid).run()
+  return json({ ok: true })
+})
+
+// Create org-scoped API key
+app.post('/orgs/:id/keys', async (c) => {
+  const ctx = await requireOrgMember(c, c.req.param('id'))
+  if (!ctx) return json({ error: 'Forbidden' }, 403)
+  const orgId = c.req.param('id')
+  const { label } = await c.req.json().catch(() => ({}))
+  const id = crypto.randomUUID()
+  const key_value = genKey()
+  await c.env.DB.prepare(
+    'INSERT INTO api_keys (id, user_id, org_id, key_value, label) VALUES (?,?,?,?,?)'
+  ).bind(id, ctx.user.id, orgId, key_value, label || 'Team Key').run()
+  return json({ id, key_value, label: label || 'Team Key', org_id: orgId }, 201)
+})
+
 export default app
