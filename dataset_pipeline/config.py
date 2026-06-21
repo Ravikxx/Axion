@@ -38,7 +38,7 @@ API_KEYS = {
 LLM_PROVIDERS = [
     {
         "name":    "zai",
-        "base_url":"https://api.z.ai/v1",
+        "base_url":"https://api.z.ai/api/paas/v4",
         "key":     API_KEYS["zai"],
         "model":   "glm-4-flash",
     },
@@ -46,7 +46,7 @@ LLM_PROVIDERS = [
         "name":    "groq",
         "base_url":"https://api.groq.com/openai/v1",
         "key":     API_KEYS["groq"],
-        "model":   "llama3-8b-8192",
+        "model":   "llama-3.1-8b-instant",
     },
     {
         "name":    "mistral",

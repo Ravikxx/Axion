@@ -569,7 +569,8 @@ CRITICAL RULES — follow these exactly:
       this.inputTokens  = Math.round(summary.length / 4) + 200;
       this.outputTokens = 0;
       this.totalTokens  = this.inputTokens;
-      this.onTokens({ total: this.totalTokens, input: this.inputTokens, output: this.outputTokens });
+      this.contextTokens = this.inputTokens;
+      this.onTokens({ total: this.totalTokens, input: this.inputTokens, output: this.outputTokens, context: this.contextTokens });
     }
     return summary;
   }
@@ -831,6 +832,9 @@ CRITICAL RULES — follow these exactly:
     };
     if (this.thinking.enabled) params.thinking = { type: 'enabled', budget_tokens: this.thinking.budget };
 
+    // Update context gauge immediately with a local estimate (refined below).
+    this._setContext(this._estimateTokens({ system: params.system, messages: params.messages, tools: params.tools }));
+
     const stream = client.messages.stream(params, { signal: this._abortCtrl?.signal });
     let thinkBuf = '', inThink = false;
 
@@ -852,7 +856,11 @@ CRITICAL RULES — follow these exactly:
 
     this.onStreamEnd();
     const msg = await stream.getFinalMessage();
-    this._addTokens(msg.usage?.input_tokens, msg.usage?.output_tokens);
+    const u = msg.usage || {};
+    // True context = full input incl. cached tokens (exact, from the API).
+    const exactCtx = (u.input_tokens || 0) + (u.cache_read_input_tokens || 0) + (u.cache_creation_input_tokens || 0);
+    this._setContext(exactCtx);
+    this._addTokens(u.input_tokens, u.output_tokens);
     const toolCalls = (msg.content || []).filter((b) => b.type === 'tool_use').map((b) => ({ id: b.id, name: b.name, input: b.input }));
     return { type: 'anthropic', text: '', toolCalls, raw: msg.content };
   }
@@ -870,10 +878,15 @@ CRITICAL RULES — follow these exactly:
     let usage = null;
     let toolErrFallback = false;
 
+    // Update context gauge immediately with a local estimate (refined below if
+    // the provider returns usage — many free OpenRouter models don't).
+    this._setContext(this._estimateTokens({ messages: msgs, tools: this._getToolListOpenAI() }));
+
     try {
       const streamResp = await client.chat.completions.create({
         model, messages: msgs, tools: this._getToolListOpenAI(),
         tool_choice: 'auto', max_tokens: maxTok, stream: true,
+        stream_options: { include_usage: true },
       }, { signal: this._abortCtrl?.signal });
 
       for await (const chunk of streamResp) {
@@ -894,7 +907,7 @@ CRITICAL RULES — follow these exactly:
 
       filter.flush();
       this.onStreamEnd();
-      if (usage) this._addTokens(usage.prompt_tokens, usage.completion_tokens);
+      if (usage) { this._setContext(usage.prompt_tokens); this._addTokens(usage.prompt_tokens, usage.completion_tokens); }
 
       const toolCalls = Object.values(tcBufs).filter(tc => tc.name).map((tc, i) => {
         let input = {};
@@ -919,6 +932,7 @@ CRITICAL RULES — follow these exactly:
     const fallbackMsgs = msgs.map((m, i) => i === 0 ? { ...m, content: m.content + getToolFallbackPrompt(this.computerUse) } : m);
     const resp = await client.chat.completions.create({ model, messages: fallbackMsgs, max_tokens: maxTok });
     const raw  = resp.choices[0]?.message?.content || '';
+    this._setContext(resp.usage?.prompt_tokens);
     this._addTokens(resp.usage?.prompt_tokens, resp.usage?.completion_tokens);
     const { thoughts, clean } = this._parseThinking(raw);
     for (const t of thoughts) this.onMessage({ role: 'thinking', content: t });
@@ -1008,12 +1022,30 @@ CRITICAL RULES — follow these exactly:
     }
   }
 
+  // Rough local token estimate from a request payload (chars / 4).
+  // Used so the context gauge updates immediately and still works when a
+  // provider returns no usage data (common with free OpenRouter models).
+  _estimateTokens(payload) {
+    try { return Math.round(JSON.stringify(payload).length / 4); } catch { return 0; }
+  }
+
+  // Set the current context-window usage = size of the next request's input.
+  // This is NOT accumulated — each model call re-sends the full history, so the
+  // latest call's input IS the live context size.
+  _setContext(tokens) {
+    if (tokens > 0) {
+      this.contextTokens = tokens;
+      this.onTokens({ total: this.totalTokens, input: this.inputTokens, output: this.outputTokens, context: this.contextTokens });
+    }
+  }
+
+  // Accumulate input/output tokens for cost tracking only. Context is tracked
+  // separately via _setContext so auxiliary calls (plan/advisor/compact) don't
+  // clobber the live context size.
   _addTokens(inTok = 0, outTok = 0) {
     this.inputTokens  += (inTok  || 0);
     this.outputTokens += (outTok || 0);
     this.totalTokens   = this.inputTokens + this.outputTokens;
-    // contextTokens = latest input only (true window pressure — each call re-sends full history)
-    if (inTok > 0) this.contextTokens = inTok;
     this.onTokens({ total: this.totalTokens, input: this.inputTokens, output: this.outputTokens, context: this.contextTokens });
   }
 }
