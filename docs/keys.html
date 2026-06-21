@@ -245,6 +245,15 @@
     .usage-bar-track { height: 5px; background: var(--border2); border-radius: 3px; overflow: hidden; }
     .usage-bar-fill { height: 100%; border-radius: 3px; transition: width .6s ease; }
 
+    /* ── Daily chart ── */
+    .chart-section {
+      margin-top: 24px;
+      background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px;
+    }
+    .chart-section h3 { font-size: 13px; font-weight: 600; color: var(--muted2); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 16px; }
+    .chart-wrap { position: relative; height: 90px; }
+    .chart-wrap canvas { width: 100%; height: 100%; }
+
     /* ── Docs callout ── */
     .docs-section { margin-top: 24px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px; }
     .docs-section h3 { font-size: 13px; font-weight: 600; color: var(--muted2); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 14px; }
@@ -536,6 +545,11 @@
       <div id="usage-bars"></div>
     </div>
 
+    <div class="chart-section" id="chart-section" style="display:none">
+      <h3>Daily requests — last 14 days</h3>
+      <div class="chart-wrap"><canvas id="daily-canvas"></canvas></div>
+    </div>
+
     <div id="members-section" style="display:none"></div>
 
     <div class="docs-section">
@@ -584,6 +598,18 @@
         <button class="modal-cancel" id="copy-reveal-btn" onclick="copyRevealedKey()">Copy key</button>
         <button class="modal-create" onclick="doneCreating()">Done</button>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- Device (CLI login) authorize modal -->
+<div class="modal-backdrop" id="device-modal">
+  <div class="modal">
+    <h3>Authorize CLI access</h3>
+    <p>A terminal session is requesting access to your Axion account. Only confirm if you just ran <code style="font-family:monospace;font-size:12px;background:var(--surface2);padding:1px 5px;border-radius:3px">axion login</code>.</p>
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick="denyDevice()">Deny</button>
+      <button class="modal-create" onclick="authorizeDevice()">Authorize</button>
     </div>
   </div>
 </div>
@@ -713,6 +739,10 @@
       localStorage.setItem('axion_token', sessionToken);
       localStorage.setItem('axion_email', data.email || email);
       currentUser = { email: data.email || email };
+      // Pick up pending device code stored before auth
+      const storedDevice = sessionStorage.getItem('axion_pending_device')
+      if (storedDevice) { pendingDeviceCode = storedDevice; sessionStorage.removeItem('axion_pending_device') }
+
       // Pick up any invite stored before auth
       const storedInvite = sessionStorage.getItem('axion_pending_invite');
       const storedOrg = sessionStorage.getItem('axion_pending_invite_org');
@@ -751,7 +781,13 @@
     document.getElementById('main-panel').style.display = 'flex';
     document.getElementById('sidebar-email').textContent = currentUser.email;
     loadKeys();
+    loadDailyChart();
     await loadOrgs();
+
+    // Show device authorize modal if pending
+    if (pendingDeviceCode) {
+      document.getElementById('device-modal').classList.add('open')
+    }
 
     // If there's a pending invite, show accept modal after orgs load
     if (pendingInviteToken) {
@@ -938,6 +974,88 @@
   });
   document.getElementById('new-key-modal').addEventListener('click', function(e) { if (e.target === this) closeNewKeyModal(); });
   document.getElementById('confirm-backdrop').addEventListener('click', function(e) { if (e.target === this) closeConfirm(); });
+
+  // ── Daily chart ───────────────────────────────────────────────────────────
+
+  async function loadDailyChart() {
+    try {
+      const res = await fetch(API + '/dashboard/daily', { headers: { Authorization: `Bearer ${sessionToken}` } })
+      if (!res.ok) return
+      const { daily } = await res.json()
+      if (!daily?.length) return
+      const hasData = daily.some(d => d.count > 0)
+      if (!hasData) return
+      document.getElementById('chart-section').style.display = ''
+      renderDailyChart(daily)
+    } catch {}
+  }
+
+  function renderDailyChart(daily) {
+    const canvas = document.getElementById('daily-canvas')
+    const wrap = canvas.parentElement
+    const dpr = window.devicePixelRatio || 1
+    const W = wrap.clientWidth, H = wrap.clientHeight || 90
+    canvas.width = W * dpr; canvas.height = H * dpr
+    canvas.style.width = W + 'px'; canvas.style.height = H + 'px'
+    const ctx = canvas.getContext('2d')
+    ctx.scale(dpr, dpr)
+
+    const accent = '#e8602c'
+    const muted = '#6b6d80'
+    const max = Math.max(...daily.map(d => d.count), 1)
+    const barW = Math.floor((W - 28) / daily.length) - 3
+    const padB = 20, padT = 6
+
+    daily.forEach((d, i) => {
+      const x = 14 + i * ((W - 28) / daily.length)
+      const barH = Math.max(((d.count / max) * (H - padB - padT)), d.count > 0 ? 3 : 0)
+      const y = H - padB - barH
+
+      ctx.fillStyle = accent + (d.count > 0 ? 'cc' : '22')
+      ctx.beginPath()
+      if (ctx.roundRect) ctx.roundRect(x, y, barW, barH, [3, 3, 0, 0])
+      else ctx.rect(x, y, barW, barH)
+      ctx.fill()
+
+      // Label every 3rd date
+      if (i % 3 === 0) {
+        ctx.fillStyle = muted
+        ctx.font = `10px -apple-system, system-ui, sans-serif`
+        ctx.textAlign = 'center'
+        const parts = d.date.split('-')
+        ctx.fillText(`${parts[1]}/${parts[2]}`, x + barW / 2, H - 4)
+      }
+    })
+  }
+
+  // ── Device (CLI login) ────────────────────────────────────────────────────
+
+  let pendingDeviceCode = null
+
+  function denyDevice() {
+    pendingDeviceCode = null
+    document.getElementById('device-modal').classList.remove('open')
+    history.replaceState(null, '', window.location.pathname)
+  }
+
+  async function authorizeDevice() {
+    if (!pendingDeviceCode) return
+    try {
+      const res = await fetch(API + '/auth/device/authorize', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${sessionToken}` },
+        body: JSON.stringify({ code: pendingDeviceCode }),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || 'Failed to authorize')
+      pendingDeviceCode = null
+      document.getElementById('device-modal').classList.remove('open')
+      history.replaceState(null, '', window.location.pathname)
+      showBanner('CLI authorized successfully!', 'ok')
+    } catch (e) { alert(e.message) }
+  }
+
+  document.getElementById('device-modal').addEventListener('click', function(e) { if (e.target === this) denyDevice() })
 
   // ── Orgs ──────────────────────────────────────────────────────────────────
 
@@ -1260,6 +1378,16 @@
       history.replaceState(null, '', window.location.pathname);
       await showDashboard();
       return;
+    }
+
+    // CLI device auth — #device=CODE
+    const deviceCode = params.get('device')
+    if (deviceCode && sessionToken) {
+      pendingDeviceCode = deviceCode
+      history.replaceState(null, '', window.location.pathname)
+    } else if (deviceCode && !sessionToken) {
+      sessionStorage.setItem('axion_pending_device', deviceCode)
+      history.replaceState(null, '', window.location.pathname)
     }
 
     // Org invite link — #invite=TOKEN&org=ORG_ID

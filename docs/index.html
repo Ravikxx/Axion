@@ -8,333 +8,263 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:         #f4efe6;
-      --bg-card:    #faf7f2;
-      --border:     #e0d8cc;
-      --text:       #1a1209;
-      --text-muted: #6b5e4e;
-      --accent:     #e8602c;
-      --accent-lt:  #fdf0ea;
-      --dark:       #1a1209;
+      --bg:      #0d0e13;
+      --surface: #12131a;
+      --surface2:#1a1b24;
+      --border:  #23242f;
+      --border2: #2e2f3e;
+      --text:    #e8e9f0;
+      --muted:   #6b6d80;
+      --muted2:  #9899a8;
+      --accent:  #e8602c;
+      --accent-d:#c04c1f;
+      --green:   #34d399;
     }
 
+    html, body { height: 100%; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
+      background: var(--bg); color: var(--text);
+      line-height: 1.5; font-size: 14px;
     }
+    a { color: inherit; text-decoration: none; }
 
     /* ── Nav ── */
     nav {
-      background: var(--dark);
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
       padding: 0 32px;
-      display: flex;
-      align-items: center;
-      height: 56px;
-      gap: 24px;
-      position: sticky;
-      top: 0;
-      z-index: 100;
+      display: flex; align-items: center; height: 52px; gap: 24px;
+      position: sticky; top: 0; z-index: 100;
     }
-    nav .brand {
-      display: flex; align-items: center; gap: 8px;
-      color: #f4efe6; font-weight: 700; font-size: 16px;
-      text-decoration: none; margin-right: 16px;
+    .nav-logo { font-weight: 800; font-size: 16px; display: flex; align-items: center; gap: 8px; }
+    .nav-logo span { color: var(--accent); }
+    .logo-dot { width: 22px; height: 22px; background: var(--accent); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 11px; }
+    .nav-links { display: flex; gap: 4px; margin-left: 16px; }
+    .nav-link {
+      padding: 5px 10px; border-radius: 5px; font-size: 13px;
+      color: var(--muted2); transition: color .12s, background .12s;
     }
-    nav a { color: #c9b99a; text-decoration: none; font-size: 14px; transition: color 0.2s; }
-    nav a:hover { color: #f4efe6; }
-    nav .nav-right { margin-left: auto; display: flex; gap: 20px; align-items: center; }
-    .btn-nav {
-      background: var(--accent); color: #fff !important;
-      padding: 6px 14px; border-radius: 6px;
-      font-size: 13px; font-weight: 600;
-      transition: opacity 0.2s !important;
+    .nav-link:hover { color: var(--text); background: var(--surface2); }
+    .nav-right { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+    .nav-btn {
+      padding: 6px 14px; border-radius: 6px; font-size: 13px; font-weight: 600;
+      background: var(--accent); color: #fff; border: none; cursor: pointer;
+      transition: background .15s; text-decoration: none; display: inline-block;
     }
-    .btn-nav:hover { opacity: 0.88; }
+    .nav-btn:hover { background: var(--accent-d); }
+    .nav-btn-ghost {
+      padding: 6px 14px; border-radius: 6px; font-size: 13px; font-weight: 500;
+      background: none; color: var(--muted2); border: 1px solid var(--border2);
+      transition: all .12s; text-decoration: none; display: inline-block;
+    }
+    .nav-btn-ghost:hover { color: var(--text); border-color: var(--muted); }
 
     /* ── Hero ── */
     .hero {
-      background: linear-gradient(160deg, #110d08 0%, #1e1409 50%, #2a1c0e 100%);
-      color: #f4efe6;
       padding: 80px 32px 0;
-      overflow: hidden;
-    }
-    .hero-inner {
-      max-width: 1080px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 64px;
-      align-items: center;
+      max-width: 1100px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 64px; align-items: center;
     }
     .hero-text { padding-bottom: 80px; }
     .hero-eyebrow {
       display: inline-flex; align-items: center; gap: 8px;
-      font-size: 12px; font-weight: 700; letter-spacing: 0.1em;
-      text-transform: uppercase; color: var(--accent);
-      margin-bottom: 20px;
+      font-size: 11px; font-weight: 700; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 18px;
     }
-    .eyebrow-dot {
-      width: 6px; height: 6px; border-radius: 50%;
-      background: var(--accent);
-      box-shadow: 0 0 6px var(--accent);
-    }
+    .eyebrow-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
     .hero h1 {
-      font-size: clamp(34px, 4.5vw, 58px);
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      line-height: 1.08;
-      margin-bottom: 20px;
+      font-size: clamp(34px, 4vw, 56px);
+      font-weight: 800; letter-spacing: -.03em; line-height: 1.08;
+      margin-bottom: 18px;
     }
     .hero h1 span { color: var(--accent); }
     .hero-sub {
-      font-size: 17px; color: #a08060;
-      max-width: 440px; margin-bottom: 36px; line-height: 1.65;
+      font-size: 16px; color: var(--muted2);
+      max-width: 420px; margin-bottom: 32px; line-height: 1.65;
     }
-    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    .hero-actions { display: flex; gap: 10px; flex-wrap: wrap; }
     .btn {
       display: inline-flex; align-items: center; gap: 8px;
-      padding: 12px 22px; border-radius: 8px;
-      font-size: 14px; font-weight: 600;
-      text-decoration: none;
-      transition: opacity 0.2s, transform 0.15s;
+      padding: 11px 20px; border-radius: 8px;
+      font-size: 13px; font-weight: 600; transition: opacity .2s, transform .15s;
     }
-    .btn:hover { opacity: 0.88; transform: translateY(-1px); }
+    .btn:hover { opacity: .88; transform: translateY(-1px); }
     .btn-primary { background: var(--accent); color: #fff; }
     .btn-ghost {
-      background: rgba(255,255,255,0.07); color: #f4efe6;
-      border: 1px solid rgba(255,255,255,0.12);
+      background: var(--surface); color: var(--muted2);
+      border: 1px solid var(--border2);
     }
+    .btn-ghost:hover { color: var(--text); border-color: var(--muted); opacity: 1; }
 
-    /* ── Terminal window ── */
-    .hero-terminal {
-      align-self: flex-end;
-    }
+    /* ── Terminal ── */
+    .hero-terminal { align-self: flex-end; }
     .terminal-window {
-      background: #0d0a06;
-      border: 1px solid #2a1f14;
+      background: var(--surface);
+      border: 1px solid var(--border2);
       border-bottom: none;
       border-radius: 12px 12px 0 0;
       overflow: hidden;
-      box-shadow: 0 -8px 48px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.03);
+      box-shadow: 0 -8px 48px rgba(0,0,0,.4), 0 0 0 1px rgba(255,255,255,.03);
     }
     .terminal-titlebar {
       display: flex; align-items: center; gap: 6px;
-      padding: 12px 16px;
-      background: #160f08;
-      border-bottom: 1px solid #2a1f14;
+      padding: 11px 16px; background: var(--surface2);
+      border-bottom: 1px solid var(--border);
     }
     .t-dot { width: 10px; height: 10px; border-radius: 50%; }
-    .t-dot.r { background: #ff5f57; }
-    .t-dot.y { background: #ffbd2e; }
-    .t-dot.g { background: #28c840; }
-    .terminal-label {
-      margin-left: 8px; font-size: 12px;
-      color: #4a3828; font-family: monospace;
-    }
+    .t-dot.r { background: #ff5f57; } .t-dot.y { background: #ffbd2e; } .t-dot.g { background: #28c840; }
+    .terminal-label { margin-left: 8px; font-size: 12px; color: var(--muted); font-family: monospace; }
     .terminal-body {
       padding: 20px 24px 24px;
-      font-family: "SF Mono", "Fira Code", "Cascadia Code", monospace;
-      font-size: 13px;
-      line-height: 1.7;
-      min-height: 280px;
+      font-family: "SF Mono", "Fira Code", Consolas, monospace;
+      font-size: 13px; line-height: 1.75; min-height: 260px;
     }
     .t-line { display: flex; gap: 8px; }
-    .t-prompt { color: #e8602c; flex-shrink: 0; }
-    .t-cmd { color: #e8ddd0; }
-    .t-out { color: #7a6050; padding-left: 0; }
-    .t-green { color: #6aa87a; }
-    .t-orange { color: #e8602c; }
-    .t-dim { color: #4a3828; }
-    .t-cursor {
-      display: inline-block; width: 8px; height: 14px;
-      background: var(--accent); vertical-align: middle;
-      animation: blink-cursor 1s step-end infinite;
-      margin-left: 1px;
-    }
-    @keyframes blink-cursor { 0%,100%{opacity:1} 50%{opacity:0} }
-    .t-line { opacity: 0; }
-    .t-line.visible { opacity: 1; }
+    .t-prompt { color: var(--accent); flex-shrink: 0; }
+    .t-cmd { color: var(--text); }
+    .t-out { color: var(--muted2); }
+    .t-green { color: var(--green); }
+    .t-dim { color: var(--muted); }
+    .t-cursor { display: inline-block; width: 8px; height: 14px; background: var(--accent); vertical-align: middle; animation: blink 1s step-end infinite; margin-left: 1px; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
 
     /* ── News banner ── */
     .news-wrap { max-width: 960px; margin: 0 auto; padding: 0 32px; transform: translateY(-20px); }
     .news-banner {
       display: flex; align-items: center; gap: 12px;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 13px 20px;
-      text-decoration: none;
-      box-shadow: 0 2px 16px rgba(26,18,9,0.1);
-      transition: box-shadow 0.2s, transform 0.15s;
+      background: var(--surface); border: 1px solid var(--border2);
+      border-radius: 10px; padding: 12px 18px;
+      transition: border-color .15s;
     }
-    .news-banner:hover { box-shadow: 0 4px 24px rgba(26,18,9,0.14); transform: translateY(-1px); }
-    .news-tag {
-      background: var(--accent); color: #fff;
-      font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
-      text-transform: uppercase; padding: 3px 8px; border-radius: 4px; white-space: nowrap;
-    }
-    .news-text { font-size: 14px; color: var(--text); flex: 1; }
-    .news-text strong { color: var(--accent); }
-    .news-arrow { color: var(--text-muted); font-size: 16px; }
+    .news-banner:hover { border-color: var(--accent); }
+    .news-tag { background: var(--accent); color: #fff; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: 2px 8px; border-radius: 4px; white-space: nowrap; }
+    .news-text { font-size: 13px; color: var(--muted2); flex: 1; }
+    .news-text strong { color: var(--text); }
+    .news-arrow { color: var(--muted); font-size: 15px; }
 
     /* ── Main ── */
-    main { max-width: 960px; margin: 0 auto; padding: 32px 32px 80px; }
+    main { max-width: 960px; margin: 0 auto; padding: 32px 32px 96px; }
     section { margin-bottom: 72px; }
-    .section-tag {
-      font-size: 12px; font-weight: 700; letter-spacing: 0.1em;
-      text-transform: uppercase; color: var(--accent); margin-bottom: 10px;
-    }
-    .section-heading { font-size: 28px; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 8px; }
-    .section-lead { color: var(--text-muted); font-size: 15px; margin-bottom: 36px; }
+    .section-tag { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+    .section-heading { font-size: 26px; font-weight: 700; letter-spacing: -.01em; margin-bottom: 8px; }
+    .section-lead { color: var(--muted2); font-size: 14px; margin-bottom: 32px; }
 
     /* ── Stats ── */
     .stats-row {
-      display: flex; gap: 0;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      overflow: hidden;
-      margin-bottom: 72px;
-      background: var(--bg-card);
+      display: flex; border: 1px solid var(--border);
+      border-radius: 12px; overflow: hidden;
+      background: var(--surface); margin-bottom: 72px;
     }
-    .stat-item {
-      flex: 1; padding: 24px 28px;
-      border-right: 1px solid var(--border);
-    }
+    .stat-item { flex: 1; padding: 22px 26px; border-right: 1px solid var(--border); }
     .stat-item:last-child { border-right: none; }
-    .stat-num { font-size: 28px; font-weight: 800; letter-spacing: -0.02em; color: var(--accent); }
-    .stat-label { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+    .stat-num { font-size: 28px; font-weight: 800; letter-spacing: -.02em; color: var(--accent); }
+    .stat-label { font-size: 12px; color: var(--muted); margin-top: 3px; }
 
     /* ── Feature grid ── */
-    .feature-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-    }
+    .feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
     .feature-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 22px;
-      transition: border-color 0.2s, box-shadow 0.2s;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; padding: 20px;
+      transition: border-color .15s;
     }
-    .feature-card:hover { border-color: #c9b99a; box-shadow: 0 2px 12px rgba(26,18,9,0.06); }
-    .feature-icon { font-size: 20px; margin-bottom: 12px; display: block; }
-    .feature-title { font-size: 14px; font-weight: 700; margin-bottom: 5px; }
-    .feature-desc { font-size: 13px; color: var(--text-muted); line-height: 1.55; }
-    .feature-desc code {
-      font-family: monospace; font-size: 11px;
-      background: rgba(26,18,9,0.07); padding: 1px 5px; border-radius: 3px;
-    }
+    .feature-card:hover { border-color: var(--border2); }
+    .feature-title { font-size: 13px; font-weight: 700; margin-bottom: 5px; }
+    .feature-desc { font-size: 12px; color: var(--muted2); line-height: 1.55; }
+    .feature-desc code { font-family: monospace; font-size: 11px; background: var(--surface2); padding: 1px 5px; border-radius: 3px; color: var(--muted2); }
 
     /* ── Ecosystem ── */
-    .ecosystem { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .ecosystem { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
     .eco-card {
-      background: var(--dark); border-radius: 12px;
-      padding: 28px; color: #f4efe6;
-      position: relative; overflow: hidden;
+      background: var(--surface); border: 1px solid var(--border2);
+      border-radius: 12px; padding: 26px; position: relative; overflow: hidden;
+      transition: border-color .15s;
     }
-    .eco-card::before {
-      content: ''; position: absolute; inset: 0;
-      background: linear-gradient(135deg, rgba(232,96,44,0.12) 0%, transparent 60%);
-      pointer-events: none;
-    }
-    .eco-tag {
-      font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
-      text-transform: uppercase; color: var(--accent); margin-bottom: 10px;
-    }
-    .eco-name { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 8px; }
-    .eco-desc { font-size: 13px; color: #8b7355; line-height: 1.55; margin-bottom: 16px; }
-    .eco-link { font-size: 13px; color: var(--accent); text-decoration: none; font-weight: 600; }
+    .eco-card:hover { border-color: var(--accent); }
+    .eco-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(232,96,44,.08) 0%, transparent 60%); pointer-events: none; }
+    .eco-tag { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+    .eco-name { font-size: 20px; font-weight: 800; letter-spacing: -.02em; margin-bottom: 7px; }
+    .eco-desc { font-size: 13px; color: var(--muted); line-height: 1.55; margin-bottom: 16px; }
+    .eco-link { font-size: 13px; color: var(--accent); font-weight: 600; }
     .eco-link:hover { text-decoration: underline; }
 
-    /* ── Quick start ── */
+    /* ── Code block ── */
     .code-block {
-      background: #0f0c07; border: 1px solid #2d2010;
-      border-radius: 10px; padding: 20px 24px;
-      font-family: "SF Mono", "Fira Code", monospace;
-      font-size: 13px; color: #c9b99a;
-      overflow-x: auto; line-height: 1.8;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: 18px 22px;
+      font-family: "SF Mono", "Fira Code", Consolas, monospace;
+      font-size: 12.5px; color: var(--muted2); overflow-x: auto; line-height: 1.9;
     }
-    .code-block .prompt { color: #e8602c; user-select: none; }
-    .code-block .comment { color: #5a4a38; }
+    .code-block .prompt { color: var(--accent); user-select: none; }
+    .code-block .comment { color: var(--muted); }
 
     /* ── Links ── */
-    .link-row { display: flex; flex-wrap: wrap; gap: 10px; }
+    .link-row { display: flex; flex-wrap: wrap; gap: 8px; }
     .link-chip {
       display: inline-flex; align-items: center; gap: 6px;
-      background: var(--bg-card); border: 1px solid var(--border);
+      background: var(--surface); border: 1px solid var(--border);
       border-radius: 8px; padding: 8px 14px;
-      font-size: 13px; font-weight: 500; color: var(--text);
-      text-decoration: none; transition: border-color 0.2s, background 0.2s;
+      font-size: 13px; font-weight: 500; color: var(--muted2);
+      transition: border-color .12s, color .12s;
     }
-    .link-chip:hover { border-color: var(--accent); background: var(--accent-lt); }
+    .link-chip:hover { border-color: var(--accent); color: var(--text); }
+
+    /* ── CTA ── */
+    .cta-section {
+      background: var(--surface); border: 1px solid var(--border2);
+      border-radius: 16px; padding: 48px; text-align: center; margin-bottom: 72px;
+      position: relative; overflow: hidden;
+    }
+    .cta-section::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 0%, rgba(232,96,44,.08) 0%, transparent 70%); pointer-events: none; }
+    .cta-section h2 { font-size: 28px; font-weight: 800; letter-spacing: -.02em; margin-bottom: 10px; }
+    .cta-section p { color: var(--muted2); font-size: 14px; margin-bottom: 28px; }
 
     /* ── Footer ── */
-    footer {
-      background: var(--dark); color: #6b5e4e;
-      text-align: center; padding: 28px 32px; font-size: 13px;
-    }
-    footer a { color: #8b7355; text-decoration: none; }
-    footer a:hover { color: #c9b99a; }
+    footer { background: var(--surface); border-top: 1px solid var(--border); text-align: center; padding: 24px 32px; font-size: 13px; color: var(--muted); }
+    footer a { color: var(--muted2); }
+    footer a:hover { color: var(--text); }
 
     /* ── Mobile ── */
-    @media (max-width: 840px) {
-      .hero-inner { grid-template-columns: 1fr; gap: 40px; }
+    @media (max-width: 860px) {
+      .hero { grid-template-columns: 1fr; gap: 40px; padding-top: 56px; }
       .hero-text { padding-bottom: 0; }
-      .hero { padding-bottom: 0; }
       .hero-terminal { display: none; }
-      .hero { padding: 60px 20px 60px; }
+      .feature-grid { grid-template-columns: 1fr 1fr; }
+      .ecosystem { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      nav { padding: 0 16px; }
+      .nav-links { display: none; }
+      main { padding: 16px 16px 56px; }
+      .hero { padding: 40px 16px 0; }
+      .news-wrap { padding: 0 16px; }
+      .feature-grid { grid-template-columns: 1fr; }
       .stats-row { flex-wrap: wrap; }
       .stat-item { border-right: none; border-bottom: 1px solid var(--border); }
       .stat-item:last-child { border-bottom: none; }
-    }
-    @media (max-width: 640px) {
-      nav { padding: 0 16px; gap: 10px; }
-      nav a:not(.brand):not(.btn-nav) { display: none; }
-      main { padding: 16px 16px 56px; }
-      .feature-grid { grid-template-columns: 1fr 1fr; }
-      .ecosystem { grid-template-columns: 1fr; }
-      .news-wrap { padding: 0 16px; }
-      section { margin-bottom: 48px; }
-    }
-    @media (max-width: 440px) {
-      .feature-grid { grid-template-columns: 1fr; }
+      .cta-section { padding: 32px 20px; }
     }
   </style>
 </head>
 <body>
 
 <nav>
-  <a href="/" class="brand">⚛ Axion</a>
-  <a href="/lumen">Lumen</a>
-  <a href="/announcements">Announcements</a>
-  <a href="https://github.com/Ravikxx/axion">GitHub</a>
+  <a href="/" class="nav-logo"><div class="logo-dot">⚛</div> <span>Axion</span></a>
+  <div class="nav-links">
+    <a href="/docs" class="nav-link">Docs</a>
+    <a href="/lumen" class="nav-link">Lumen</a>
+    <a href="/mcp" class="nav-link">MCP</a>
+    <a href="/playground" class="nav-link">Playground</a>
+  </div>
   <div class="nav-right">
-    <a href="/keys" class="btn-nav" style="background:rgba(255,255,255,0.08);color:#c9b99a;border:1px solid rgba(255,255,255,0.12);">API Keys</a>
-    <div id="nav-auth">
-      <button class="btn-nav" id="signin-btn" onclick="openModal()" style="background:rgba(255,255,255,0.08);color:#c9b99a;border:1px solid rgba(255,255,255,0.12);">Sign in</button>
-      <div id="profile-chip" style="display:none;position:relative">
-        <button onclick="toggleDropdown()" style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:#c9b99a;padding:5px 12px;border-radius:6px;cursor:pointer;font-size:13px;">
-          <span id="profile-initials" style="width:20px;height:20px;border-radius:50%;background:#e8602c;color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center"></span>
-          <span id="profile-email-short"></span>
-        </button>
-        <div id="profile-dropdown" style="display:none;position:absolute;right:0;top:calc(100% + 6px);background:#1a1209;border:1px solid #3a2f20;border-radius:8px;min-width:200px;overflow:hidden;z-index:200;">
-          <div style="padding:12px 16px;border-bottom:1px solid #3a2f20;">
-            <div id="profile-email-full" style="font-size:12px;color:#6b5e4e;word-break:break-all"></div>
-          </div>
-          <a href="/keys" style="display:block;padding:10px 16px;color:#c9b99a;text-decoration:none;font-size:13px;" onmouseover="this.style.background='#2a1c0e'" onmouseout="this.style.background=''">API Keys</a>
-          <button onclick="signOut()" style="width:100%;text-align:left;padding:10px 16px;color:#c9b99a;background:none;border:none;cursor:pointer;font-size:13px;" onmouseover="this.style.background='#2a1c0e'" onmouseout="this.style.background=''">Sign out</button>
-        </div>
-      </div>
-    </div>
-    <a href="https://www.npmjs.com/package/axion-cli" class="btn-nav">Install →</a>
+    <a href="https://github.com/Ravikxx/axion" class="nav-btn-ghost">GitHub</a>
+    <a href="/keys" class="nav-btn">Get started</a>
   </div>
 </nav>
 
-<section class="hero">
-  <div class="hero-inner">
+<div style="max-width:1100px;margin:0 auto">
+  <div class="hero">
     <div class="hero-text">
       <p class="hero-eyebrow"><span class="eyebrow-dot"></span> v1.0.2 · MIT · Free</p>
       <h1>An AI agent<br>for your<br><span>terminal</span></h1>
@@ -353,22 +283,40 @@
           <div class="t-dot g"></div>
           <span class="terminal-label">axion — ~/my-project</span>
         </div>
-        <div class="terminal-body" id="terminal-body">
-        </div>
+        <div class="terminal-body" id="terminal-body"></div>
       </div>
     </div>
   </div>
-</section>
+</div>
 
-<div class="news-wrap">
+<div class="news-wrap" style="margin-top:0">
   <a class="news-banner" href="/lumen">
     <span class="news-tag">New</span>
-    <span class="news-text"><strong>Lumen 1.2.5</strong> — free AI chat, no signup needed. <strong>Try it →</strong></span>
+    <span class="news-text"><strong>Lumen 1.2.5</strong> — free AI, no signup needed. Try the API or chat.</span>
     <span class="news-arrow">›</span>
   </a>
 </div>
 
 <main>
+
+  <div class="stats-row">
+    <div class="stat-item">
+      <div class="stat-num">1,000</div>
+      <div class="stat-label">Free API requests / month</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">15+</div>
+      <div class="stat-label">MCP servers in marketplace</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">8+</div>
+      <div class="stat-label">AI providers supported</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">MIT</div>
+      <div class="stat-label">Open source license</div>
+    </div>
+  </div>
 
   <section>
     <p class="section-tag">What it does</p>
@@ -378,7 +326,7 @@
     <div class="feature-grid">
       <div class="feature-card">
         <p class="feature-title">Edit files &amp; run commands</p>
-        <p class="feature-desc">The core agentic loop — reads your code, makes changes, runs tests. Fully open source, you can modify any part of it.</p>
+        <p class="feature-desc">The core agentic loop — reads your code, makes changes, runs tests. Fully open source, modify any part of it.</p>
       </div>
       <div class="feature-card">
         <p class="feature-title">Memory across sessions</p>
@@ -393,20 +341,20 @@
         <p class="feature-desc">Takes a screenshot, describes what it sees, clicks elements. Useful for debugging UI or automating things you can't script.</p>
       </div>
       <div class="feature-card">
-        <p class="feature-title">Discord bot mode</p>
-        <p class="feature-desc">Run Axion as a bot in any Discord server. Works the same as the terminal version — queue tasks, cancel runs, get full output.</p>
+        <p class="feature-title">MCP marketplace</p>
+        <p class="feature-desc"><code>/mcp install github</code> — one command to add GitHub, Postgres, Notion, Playwright, and 10+ more MCP servers.</p>
       </div>
       <div class="feature-card">
         <p class="feature-title">Browser control</p>
         <p class="feature-desc">The Chrome extension lets the agent read pages, click things, and fill forms — handy for scraping or automating web tasks.</p>
       </div>
       <div class="feature-card">
-        <p class="feature-title">Switch models anytime</p>
-        <p class="feature-desc">Claude, GPT-4o, Gemini, Groq, Mistral, Ollama, or Lumen. <code>/model &lt;name&gt;</code> to switch. First-run wizard sets up your key.</p>
+        <p class="feature-title">Team accounts</p>
+        <p class="feature-desc">Create a team, invite members, and share API keys. Usage is tracked per key so you always know who's using what.</p>
       </div>
       <div class="feature-card">
-        <p class="feature-title">MCP servers</p>
-        <p class="feature-desc">Plug in any Model Context Protocol server. Blender support ships out of the box.</p>
+        <p class="feature-title">Switch models anytime</p>
+        <p class="feature-desc">Claude, GPT-4o, Gemini, Groq, Mistral, Ollama, or Lumen. <code>/model &lt;name&gt;</code> to switch mid-session.</p>
       </div>
       <div class="feature-card">
         <p class="feature-title">GitHub, Google, Notion, Slack</p>
@@ -418,19 +366,19 @@
   <section>
     <p class="section-tag">Free models</p>
     <h2 class="section-heading">Built and hosted by Axion Labs</h2>
-    <p class="section-lead">No API key needed. Hosted on Hugging Face, available via <code style="font-family:monospace;font-size:13px;background:rgba(26,18,9,0.07);padding:2px 6px;border-radius:4px">/model lumen</code> in the CLI or the chat page.</p>
+    <p class="section-lead">No API key needed. Use Lumen directly in the browser or the CLI via <code style="font-family:monospace;font-size:12px;background:var(--surface2);padding:2px 6px;border-radius:3px">/model lumen</code>.</p>
 
     <div class="ecosystem">
       <div class="eco-card">
         <p class="eco-tag">Live</p>
         <p class="eco-name">Lumen 1.2.5</p>
-        <p class="eco-desc">Fine-tuned Llama 3.1 8B. DPO safety training, 73% pass rate on adversarial testing. Free in the browser and in the CLI.</p>
+        <p class="eco-desc">Fine-tuned Llama 3.1 8B. DPO safety training, 73% pass rate on adversarial testing. Free in the browser and the CLI.</p>
         <a class="eco-link" href="/lumen">Chat with Lumen →</a>
       </div>
       <div class="eco-card">
         <p class="eco-tag">Live</p>
         <p class="eco-name">Axion Vision</p>
-        <p class="eco-desc">Free vision model for image understanding and OCR. Works out of the box for computer use and screenshot analysis. OpenAI-compatible API.</p>
+        <p class="eco-desc">Free vision model for image understanding and OCR. Works out of the box for computer use and screenshot analysis.</p>
         <a class="eco-link" href="https://huggingface.co/spaces/RavikxxBGamin/LumenVision">View on Hugging Face →</a>
       </div>
     </div>
@@ -439,19 +387,25 @@
   <section>
     <p class="section-tag">Quick start</p>
     <h2 class="section-heading">Install and go</h2>
-    <p class="section-lead">Global npm install, then run <code style="font-family:monospace;font-size:13px;background:rgba(26,18,9,0.07);padding:2px 6px;border-radius:4px">axion</code>. A setup wizard runs once if you don't have a key yet.</p>
+    <p class="section-lead">Global npm install, then run <code style="font-family:monospace;font-size:12px;background:var(--surface2);padding:2px 6px;border-radius:3px">axion</code>. A wizard runs once if you don't have a key yet.</p>
 
     <div class="code-block">
       <span class="comment"># Install</span><br>
       <span class="prompt">$ </span>npm install -g axion-cli<br>
       <br>
-      <span class="comment"># Launch — wizard runs on first start if no key is set</span><br>
+      <span class="comment"># Launch — setup wizard runs on first start</span><br>
       <span class="prompt">$ </span>axion<br>
       <br>
-      <span class="comment"># Or skip straight to the free model</span><br>
+      <span class="comment"># Skip to the free model</span><br>
       <span class="prompt">$ </span>axion --model lumen
     </div>
   </section>
+
+  <div class="cta-section">
+    <h2>Start for free</h2>
+    <p>1,000 API requests a month, no credit card required.</p>
+    <a href="/keys" class="btn btn-primary" style="font-size:14px;padding:12px 28px">Get your API key →</a>
+  </div>
 
   <section>
     <p class="section-tag">Links</p>
@@ -461,200 +415,63 @@
       <a class="link-chip" href="https://github.com/Ravikxx/axion">⭐ GitHub</a>
       <a class="link-chip" href="https://www.npmjs.com/package/axion-cli">📦 npm</a>
       <a class="link-chip" href="/lumen">💬 Chat with Lumen</a>
-      <a class="link-chip" href="/lumen-125-safety">🛡️ Lumen Safety Report</a>
+      <a class="link-chip" href="/mcp">🔌 MCP Marketplace</a>
+      <a class="link-chip" href="/playground">🧪 Playground</a>
       <a class="link-chip" href="/keys">🔑 API Keys</a>
-      <a class="link-chip" href="/announcements">📣 Announcements</a>
+      <a class="link-chip" href="/docs">📖 Docs</a>
       <a class="link-chip" href="/privacy">🔒 Privacy</a>
     </div>
   </section>
 
 </main>
 
-<!-- Sign-in modal -->
-<div id="signin-modal" style="display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:24px">
-  <div style="background:#1a1209;border:1px solid #3a2f20;border-radius:16px;padding:36px;width:100%;max-width:380px;position:relative">
-    <button onclick="closeModal()" style="position:absolute;top:14px;right:16px;background:none;border:none;color:#6b5e4e;font-size:20px;cursor:pointer;line-height:1">×</button>
-    <h2 style="font-size:20px;font-weight:700;color:#f4efe6;margin-bottom:4px">Sign in</h2>
-    <p style="font-size:13px;color:#6b5e4e;margin-bottom:24px">Access your API keys and usage.</p>
-
-    <div style="margin-bottom:14px">
-      <label style="display:block;font-size:11px;color:#6b5e4e;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Email</label>
-      <input id="m-email" type="email" placeholder="you@example.com" style="width:100%;background:#0f0c07;border:1px solid #3a2f20;border-radius:8px;padding:10px 14px;color:#f4efe6;font-size:14px;outline:none" onfocus="this.style.borderColor='#e8602c'" onblur="this.style.borderColor='#3a2f20'" />
-    </div>
-    <div style="margin-bottom:18px">
-      <label style="display:block;font-size:11px;color:#6b5e4e;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Password</label>
-      <input id="m-pass" type="password" placeholder="••••••••" style="width:100%;background:#0f0c07;border:1px solid #3a2f20;border-radius:8px;padding:10px 14px;color:#f4efe6;font-size:14px;outline:none" onfocus="this.style.borderColor='#e8602c'" onblur="this.style.borderColor='#3a2f20'" />
-    </div>
-    <button id="m-btn" onclick="modalLogin()" style="width:100%;background:#e8602c;color:#fff;border:none;border-radius:8px;padding:11px;font-size:14px;font-weight:600;cursor:pointer;margin-bottom:4px">Sign in</button>
-    <div id="m-error" style="color:#f87171;font-size:12px;margin-top:8px;text-align:center;display:none"></div>
-
-    <div style="display:flex;align-items:center;gap:10px;margin:18px 0 14px">
-      <div style="flex:1;height:1px;background:#3a2f20"></div>
-      <span style="font-size:11px;color:#6b5e4e">or</span>
-      <div style="flex:1;height:1px;background:#3a2f20"></div>
-    </div>
-
-    <div style="display:flex;flex-direction:column;gap:9px">
-      <a href="https://api.amplifiedsmp.org/auth/google?return_to=home" style="display:flex;align-items:center;justify-content:center;gap:10px;padding:10px;background:#0f0c07;border:1px solid #3a2f20;border-radius:8px;color:#c9b99a;text-decoration:none;font-size:13px;font-weight:500" onmouseover="this.style.borderColor='#6b5e4e'" onmouseout="this.style.borderColor='#3a2f20'">
-        <svg width="16" height="16" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58z"/></svg>
-        Google
-      </a>
-      <a href="https://api.amplifiedsmp.org/auth/github?return_to=home" style="display:flex;align-items:center;justify-content:center;gap:10px;padding:10px;background:#0f0c07;border:1px solid #3a2f20;border-radius:8px;color:#c9b99a;text-decoration:none;font-size:13px;font-weight:500" onmouseover="this.style.borderColor='#6b5e4e'" onmouseout="this.style.borderColor='#3a2f20'">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/></svg>
-        GitHub
-      </a>
-      <a href="https://api.amplifiedsmp.org/auth/discord?return_to=home" style="display:flex;align-items:center;justify-content:center;gap:10px;padding:10px;background:#0f0c07;border:1px solid #3a2f20;border-radius:8px;color:#c9b99a;text-decoration:none;font-size:13px;font-weight:500" onmouseover="this.style.borderColor='#6b5e4e'" onmouseout="this.style.borderColor='#3a2f20'">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="#5865F2"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
-        Discord
-      </a>
-    </div>
-    <p style="text-align:center;margin-top:16px;font-size:12px;color:#6b5e4e">Don't have an account? <a href="/keys" style="color:#e8602c;text-decoration:none">Sign up on the keys page</a></p>
-  </div>
-</div>
-
 <footer>
   <p>© 2026 Axion Labs · <a href="/privacy">Privacy</a> · <a href="https://github.com/Ravikxx/axion">GitHub</a> · <a href="/announcements">Announcements</a></p>
 </footer>
 
 <script>
-  // ── Terminal animation ────────────────────────────────────────────────────────
   const lines = [
     { type: 'cmd',  text: 'axion --model lumen' },
     { type: 'out',  text: '  ⚛  Axion v1.0.2  ·  lumen', cls: 'green' },
     { type: 'blank' },
     { type: 'cmd',  text: 'fix the memory leak in src/cache.js' },
     { type: 'out',  text: '  Reading src/cache.js…', cls: 'dim' },
-    { type: 'out',  text: '  Found it — event listener not cleaned up on destroy', cls: '' },
+    { type: 'out',  text: '  Found it — listener not cleaned up on destroy', cls: '' },
     { type: 'out',  text: '  Patching cache.js:147…', cls: 'dim' },
-    { type: 'out',  text: '  ✓ Fixed. Added cleanup() call in destroy()', cls: 'green' },
+    { type: 'out',  text: '  ✓ Fixed. Added cleanup() in destroy()', cls: 'green' },
     { type: 'blank' },
     { type: 'cmd',  text: 'run the tests' },
     { type: 'out',  text: '  $ npm test', cls: 'dim' },
     { type: 'out',  text: '  ✓ 24 tests passed  (0 failed)', cls: 'green' },
     { type: 'cursor' },
-  ];
+  ]
 
-  const body = document.getElementById('terminal-body');
-  let i = 0;
+  const body = document.getElementById('terminal-body')
+  let i = 0
 
   function nextLine() {
-    if (i >= lines.length) return;
-    const line = lines[i++];
-    const el = document.createElement('div');
-    el.className = 't-line visible';
+    if (i >= lines.length) return
+    const line = lines[i++]
+    const el = document.createElement('div')
+    el.className = 't-line'
 
     if (line.type === 'blank') {
-      el.innerHTML = '&nbsp;';
+      el.innerHTML = '&nbsp;'
     } else if (line.type === 'cursor') {
-      el.innerHTML = '<span class="t-prompt">$ </span><span class="t-cursor"></span>';
+      el.innerHTML = '<span class="t-prompt">$ </span><span class="t-cursor"></span>'
     } else if (line.type === 'cmd') {
-      el.innerHTML = `<span class="t-prompt">$ </span><span class="t-cmd">${line.text}</span>`;
+      el.innerHTML = `<span class="t-prompt">$ </span><span class="t-cmd">${line.text}</span>`
     } else {
-      const cls = line.cls ? `t-${line.cls}` : 't-out';
-      el.innerHTML = `<span class="${cls}">${line.text}</span>`;
+      const cls = line.cls ? `t-${line.cls}` : 't-out'
+      el.innerHTML = `<span class="${cls}">${line.text}</span>`
     }
 
-    body.appendChild(el);
-
-    const delay = line.type === 'cmd' ? 900 : line.type === 'blank' ? 200 : 350;
-    if (i < lines.length) setTimeout(nextLine, delay);
+    body.appendChild(el)
+    const delay = line.type === 'cmd' ? 900 : line.type === 'blank' ? 200 : 350
+    setTimeout(nextLine, delay)
   }
 
-  // Start after a short pause
-  setTimeout(nextLine, 600);
-
-  // ── Auth ───────────────────────────────────────────────────────────────────
-  const API = 'https://api.amplifiedsmp.org'
-
-  function openModal() {
-    document.getElementById('signin-modal').style.display = 'flex'
-    document.getElementById('m-email').focus()
-  }
-  function closeModal() {
-    document.getElementById('signin-modal').style.display = 'none'
-    document.getElementById('m-error').style.display = 'none'
-  }
-  function toggleDropdown() {
-    const d = document.getElementById('profile-dropdown')
-    d.style.display = d.style.display === 'none' ? 'block' : 'none'
-  }
-  document.addEventListener('click', e => {
-    const chip = document.getElementById('profile-chip')
-    if (chip && !chip.contains(e.target)) {
-      document.getElementById('profile-dropdown').style.display = 'none'
-    }
-    if (e.target === document.getElementById('signin-modal')) closeModal()
-  })
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal() })
-  document.getElementById('m-pass').addEventListener('keydown', e => { if (e.key === 'Enter') modalLogin() })
-
-  async function modalLogin() {
-    const email = document.getElementById('m-email').value.trim()
-    const pass = document.getElementById('m-pass').value
-    const errEl = document.getElementById('m-error')
-    const btn = document.getElementById('m-btn')
-    errEl.style.display = 'none'
-    btn.disabled = true
-    btn.textContent = 'Signing in…'
-    try {
-      const res = await fetch(`${API}/auth/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password: pass, turnstile: '' }),
-      })
-      const data = await res.json()
-      if (!res.ok || !data.token) {
-        errEl.textContent = data.error || 'Login failed'
-        errEl.style.display = 'block'
-        return
-      }
-      localStorage.setItem('axion_token', data.token)
-      localStorage.setItem('axion_email', data.email)
-      closeModal()
-      showProfile(data.email)
-    } catch {
-      errEl.textContent = 'Network error — try again.'
-      errEl.style.display = 'block'
-    } finally {
-      btn.disabled = false
-      btn.textContent = 'Sign in'
-    }
-  }
-
-  function showProfile(email) {
-    document.getElementById('signin-btn').style.display = 'none'
-    const chip = document.getElementById('profile-chip')
-    chip.style.display = 'block'
-    const initials = email.slice(0, 2).toUpperCase()
-    document.getElementById('profile-initials').textContent = initials
-    document.getElementById('profile-email-short').textContent = email.split('@')[0]
-    document.getElementById('profile-email-full').textContent = email
-  }
-
-  function signOut() {
-    localStorage.removeItem('axion_token')
-    localStorage.removeItem('axion_email')
-    document.getElementById('profile-chip').style.display = 'none'
-    document.getElementById('signin-btn').style.display = ''
-    document.getElementById('profile-dropdown').style.display = 'none'
-  }
-
-  // Handle OAuth redirect (#verified=TOKEN&email=EMAIL) and existing session
-  ;(function initAuth() {
-    const hash = new URLSearchParams(location.hash.slice(1))
-    if (hash.get('verified')) {
-      const t = decodeURIComponent(hash.get('verified'))
-      const em = decodeURIComponent(hash.get('email') || '')
-      localStorage.setItem('axion_token', t)
-      localStorage.setItem('axion_email', em)
-      history.replaceState(null, '', location.pathname)
-    }
-    const email = localStorage.getItem('axion_email')
-    const token = localStorage.getItem('axion_token')
-    if (token && email) showProfile(email)
-  })()
-
+  setTimeout(nextLine, 600)
 </script>
-
 </body>
 </html>

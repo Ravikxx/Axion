@@ -432,9 +432,15 @@ app.post('/v1/chat/completions', async (c) => {
     const upstream = await proxyUpstream(body)
     if (!upstream.ok) return json({ error: { message: await upstream.text(), type: 'upstream_error' } }, upstream.status)
 
-    const track = () => c.env.DB.prepare(
-      "UPDATE api_keys SET last_used=strftime('%s','now'), requests=requests+1, month_requests=month_requests+1 WHERE id=?"
-    ).bind(keyRow.id).run()
+    const today = new Date().toISOString().slice(0, 10)
+    const track = () => Promise.all([
+      c.env.DB.prepare(
+        "UPDATE api_keys SET last_used=strftime('%s','now'), requests=requests+1, month_requests=month_requests+1 WHERE id=?"
+      ).bind(keyRow.id).run(),
+      c.env.DB.prepare(
+        'INSERT INTO usage_daily (key_id, date, count) VALUES (?,?,1) ON CONFLICT (key_id, date) DO UPDATE SET count=count+1'
+      ).bind(keyRow.id, today).run(),
+    ])
 
     if (body.stream) { c.executionCtx.waitUntil(track()); return streamResponse(upstream) }
     const data = await upstream.json()
@@ -642,6 +648,77 @@ app.get('/admin/invite/accept', async (c) => {
     status: 302,
     headers: { Location: `https://axion.amplifiedsmp.org/admin#invited=1` },
   })
+})
+
+// ── Dashboard: daily usage chart ──────────────────────────────────────────
+
+app.get('/dashboard/daily', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+
+  const days = []
+  const now = new Date()
+  for (let i = 13; i >= 0; i--) {
+    const d = new Date(now)
+    d.setUTCDate(d.getUTCDate() - i)
+    days.push(d.toISOString().slice(0, 10))
+  }
+
+  const { results } = await c.env.DB.prepare(
+    `SELECT d.date, SUM(d.count) AS count
+     FROM usage_daily d
+     JOIN api_keys k ON k.id = d.key_id
+     WHERE k.user_id=? AND k.revoked=0 AND d.date >= ?
+     GROUP BY d.date ORDER BY d.date ASC`
+  ).bind(user.id, days[0]).all()
+
+  const byDate = Object.fromEntries(results.map(r => [r.date, Number(r.count)]))
+  return json({ daily: days.map(d => ({ date: d, count: byDate[d] || 0 })) })
+})
+
+// ── Auth: device flow (CLI login) ─────────────────────────────────────────
+
+const DEVICE_TTL = 15 * 60 // 15 minutes
+
+app.post('/auth/device', async (c) => {
+  const code = crypto.randomUUID().replace(/-/g, '').slice(0, 24)
+  const expires_at = Math.floor(Date.now() / 1000) + DEVICE_TTL
+  await c.env.DB.prepare('INSERT INTO device_codes (code, expires_at) VALUES (?,?)').bind(code, expires_at).run()
+  return json({ device_code: code, expires_in: DEVICE_TTL })
+})
+
+app.get('/auth/device/poll', async (c) => {
+  const code = c.req.query('code')
+  if (!code) return json({ error: 'Missing code' }, 400)
+
+  const row = await c.env.DB.prepare('SELECT * FROM device_codes WHERE code=?').bind(code).first()
+  if (!row) return json({ error: 'Invalid code' }, 400)
+  if (row.expires_at < Math.floor(Date.now() / 1000)) return json({ error: 'Code expired' }, 400)
+  if (!row.user_id) return json({ pending: true })
+
+  const user = await c.env.DB.prepare('SELECT * FROM users WHERE id=?').bind(row.user_id).first()
+  if (!user) return json({ error: 'User not found' }, 400)
+
+  // Clean up
+  c.executionCtx.waitUntil(c.env.DB.prepare('DELETE FROM device_codes WHERE code=?').bind(code).run())
+
+  const token = await makeToken(user.id, c.env.TOKEN_SECRET)
+  return json({ token, email: user.email })
+})
+
+app.post('/auth/device/authorize', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  const { code } = await c.req.json().catch(() => ({}))
+  if (!code) return json({ error: 'code required' }, 400)
+
+  const row = await c.env.DB.prepare('SELECT * FROM device_codes WHERE code=?').bind(code).first()
+  if (!row) return json({ error: 'Invalid code' }, 400)
+  if (row.expires_at < Math.floor(Date.now() / 1000)) return json({ error: 'Code expired' }, 400)
+  if (row.user_id) return json({ error: 'Already authorized' }, 400)
+
+  await c.env.DB.prepare('UPDATE device_codes SET user_id=? WHERE code=?').bind(user.id, code).run()
+  return json({ ok: true })
 })
 
 // ── Orgs ───────────────────────────────────────────────────────────────────

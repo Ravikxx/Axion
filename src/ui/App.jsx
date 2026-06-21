@@ -1018,6 +1018,66 @@ triggers: <comma-separated words that should activate it, include "${skillName.t
           return true;
         }
 
+        case 'login': {
+          // Device flow: POST /auth/device → open browser → poll until authorized
+          const AXION_API = 'https://api.amplifiedsmp.org';
+          pushStatic({ type: 'info', content: 'Opening browser to authorize your Axion account…' });
+          try {
+            const res = await fetch(`${AXION_API}/auth/device`, { method: 'POST' });
+            if (!res.ok) throw new Error('Failed to start login flow');
+            const { device_code, expires_in } = await res.json();
+
+            const loginUrl = `https://axion.amplifiedsmp.org/keys#device=${device_code}`;
+
+            // Open browser cross-platform
+            try {
+              if (process.platform === 'win32') execSync(`start "" "${loginUrl}"`);
+              else if (process.platform === 'darwin') execSync(`open "${loginUrl}"`);
+              else execSync(`xdg-open "${loginUrl}"`);
+            } catch {
+              pushStatic({ type: 'info', content: `Open this URL in your browser:\n${loginUrl}` });
+            }
+
+            pushStatic({ type: 'info', content: `Waiting for authorization… (expires in ${Math.floor(expires_in / 60)} min)\nClick "Authorize" in the browser tab that opened.` });
+
+            // Poll every 2.5s
+            const deadline = Date.now() + expires_in * 1000;
+            const poll = async () => {
+              if (Date.now() > deadline) {
+                pushStatic({ type: 'error', content: 'Login timed out. Run /login again.' });
+                return;
+              }
+              try {
+                const pollRes = await fetch(`${AXION_API}/auth/device/poll?code=${device_code}`);
+                const data = await pollRes.json();
+                if (data.pending) { setTimeout(poll, 2500); return; }
+                if (data.token) {
+                  // Token is a session token — create an API key from it
+                  const keyRes = await fetch(`${AXION_API}/dashboard/keys`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${data.token}` },
+                    body: JSON.stringify({ label: `axion-cli (${new Date().toLocaleDateString()})` }),
+                  });
+                  const keyData = await keyRes.json();
+                  if (keyData.key_value) {
+                    saveAxionKey(keyData.key_value);
+                    pushStatic({ type: 'info', content: `Logged in as ${data.email}\nAPI key created and saved.\n\nLumen now uses your key (1000 req/month).` });
+                  } else {
+                    pushStatic({ type: 'error', content: 'Authorized but could not create API key. Try /axion-key <key> manually.' });
+                  }
+                  return;
+                }
+                if (data.error) { pushStatic({ type: 'error', content: `Login failed: ${data.error}` }); return; }
+                setTimeout(poll, 2500);
+              } catch { setTimeout(poll, 2500); }
+            };
+            setTimeout(poll, 2500);
+          } catch (e) {
+            pushStatic({ type: 'error', content: `Login failed: ${e.message}` });
+          }
+          return true;
+        }
+
         case 'api': {
           const [apiTarget, apiKey] = args;
           if (!apiTarget || !apiKey) {
