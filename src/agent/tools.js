@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync, readdirSync, statSync, existsSync, unlinkSync, renameSync, mkdirSync } from 'fs';
+import { readFileSync, writeFileSync, readdirSync, statSync, existsSync, unlinkSync, renameSync, mkdirSync, appendFileSync, cpSync } from 'fs';
 import { execSync, spawn } from 'child_process';
 import { relative, resolve, dirname, basename, extname } from 'path';
 import { diffLines } from '../utils/diff.js';
@@ -103,6 +103,48 @@ export const TOOL_DEFINITIONS = [
     },
   },
   {
+    name: 'copy_file',
+    description: 'Copy a file or directory (recursively) to a new location.',
+    input_schema: {
+      type: 'object',
+      properties: {
+        from: { type: 'string', description: 'Source path' },
+        to:   { type: 'string', description: 'Destination path' },
+      },
+      required: ['from', 'to'],
+    },
+  },
+  {
+    name: 'append_file',
+    description: 'Append text to the end of a file (creates the file if it does not exist). Use for logs or incremental writes instead of rewriting the whole file.',
+    input_schema: {
+      type: 'object',
+      properties: {
+        path:    { type: 'string', description: 'File path' },
+        content: { type: 'string', description: 'Text to append' },
+      },
+      required: ['path', 'content'],
+    },
+  },
+  {
+    name: 'file_info',
+    description: 'Get metadata about a file or directory: type, size in bytes, last-modified time, and line count for text files.',
+    input_schema: { type: 'object', properties: { path: { type: 'string' } }, required: ['path'] },
+  },
+  {
+    name: 'read_file_lines',
+    description: 'Read a specific range of lines from a file (1-indexed, inclusive). Useful for large files where you only need part. Output is line-numbered.',
+    input_schema: {
+      type: 'object',
+      properties: {
+        path:  { type: 'string', description: 'File path' },
+        start: { type: 'number', description: 'First line (1-indexed)' },
+        end:   { type: 'number', description: 'Last line, inclusive (default: end of file)' },
+      },
+      required: ['path', 'start'],
+    },
+  },
+  {
     name: 'create_directory',
     description: 'Create a directory (and any missing parent directories).',
     input_schema: {
@@ -110,6 +152,20 @@ export const TOOL_DEFINITIONS = [
       properties: { path: { type: 'string', description: 'Directory path to create' } },
       required: ['path'],
     },
+  },
+  {
+    name: 'change_working_dir',
+    description: 'Change the current working directory for subsequent file and command operations. Persists across tool calls.',
+    input_schema: {
+      type: 'object',
+      properties: { path: { type: 'string', description: 'Directory to switch to (relative or absolute)' } },
+      required: ['path'],
+    },
+  },
+  {
+    name: 'get_working_dir',
+    description: 'Return the current working directory.',
+    input_schema: { type: 'object', properties: {}, required: [] },
   },
   {
     name: 'list_directory',
@@ -491,6 +547,67 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
         const absPath = resolve(cwd, input.path);
         mkdirSync(absPath, { recursive: true });
         return { success: true, output: `Created ${relPath(input.path)}` };
+      }
+
+      case 'copy_file': {
+        const src = resolve(cwd, input.from);
+        const dst = resolve(cwd, input.to);
+        if (!existsSync(src)) return { success: false, output: `Source not found: ${relPath(input.from)}` };
+        const destDir = dirname(dst);
+        if (!existsSync(destDir)) mkdirSync(destDir, { recursive: true });
+        cpSync(src, dst, { recursive: true });
+        return { success: true, output: `Copied ${relPath(input.from)} → ${relPath(input.to)}` };
+      }
+
+      case 'append_file': {
+        const absPath = resolve(cwd, input.path);
+        const existed = existsSync(absPath);
+        let oldContent = '';
+        if (existed) { oldContent = readFileSync(absPath, 'utf8'); backupFile(absPath, oldContent); }
+        recordFileChange(absPath, existed ? oldContent : null);
+        const destDir = dirname(absPath);
+        if (!existsSync(destDir)) mkdirSync(destDir, { recursive: true });
+        appendFileSync(absPath, input.content, 'utf8');
+        return { success: true, output: `Appended ${input.content.length} chars to ${relPath(input.path)}${existed ? '' : ' (new file)'}` };
+      }
+
+      case 'file_info': {
+        const absPath = resolve(cwd, input.path);
+        if (!existsSync(absPath)) return { success: false, output: `Not found: ${relPath(input.path)}` };
+        const st = statSync(absPath);
+        const lines = [
+          `path: ${relPath(input.path)}`,
+          `type: ${st.isDirectory() ? 'directory' : 'file'}`,
+          `size: ${st.size} bytes`,
+          `modified: ${st.mtime.toISOString()}`,
+        ];
+        if (st.isFile() && st.size < 5_000_000) {
+          try { lines.push(`lines: ${readFileSync(absPath, 'utf8').split('\n').length}`); } catch {}
+        }
+        return { success: true, output: lines.join('\n') };
+      }
+
+      case 'read_file_lines': {
+        const absPath = resolve(cwd, input.path);
+        if (!existsSync(absPath)) return { success: false, output: `Not found: ${relPath(input.path)}` };
+        const all = readFileSync(absPath, 'utf8').split('\n');
+        const start = Math.max(1, Math.floor(input.start) || 1);
+        const end = input.end ? Math.min(all.length, Math.floor(input.end)) : all.length;
+        if (start > all.length) return { success: false, output: `start ${start} is past end of file (${all.length} lines)` };
+        const numbered = all.slice(start - 1, end).map((l, i) => `${start + i}\t${l}`).join('\n');
+        return { success: true, output: numbered || '(no lines in range)' };
+      }
+
+      case 'change_working_dir': {
+        const target = resolve(cwd, input.path);
+        if (!existsSync(target)) return { success: false, output: `No such directory: ${relPath(input.path)}` };
+        if (!statSync(target).isDirectory()) return { success: false, output: `Not a directory: ${relPath(input.path)}` };
+        cwd = target;
+        return { success: true, output: `Working directory → ${cwd}` };
+      }
+
+      case 'get_working_dir': {
+        return { success: true, output: cwd };
       }
 
       case 'list_directory': {
