@@ -58,6 +58,10 @@
       padding: 56px 32px 40px;
       max-width: 960px; margin: 0 auto;
     }
+    .hero-inner { display: flex; gap: 48px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+    .hero-text { flex: 1; min-width: 300px; }
+    #mcp-term { flex-shrink: 0; }
+    @media (max-width: 880px) { #mcp-term { display: none; } }
     .hero-label {
       font-size: 11px; font-weight: 700; letter-spacing: .1em;
       text-transform: uppercase; color: var(--accent); margin-bottom: 12px;
@@ -183,6 +187,7 @@
       .nav-links { display: none; }
     }
   </style>
+  <link rel="stylesheet" href="/assets/enhance.css">
 </head>
 <body>
 
@@ -200,12 +205,17 @@
 </nav>
 
 <div class="hero">
-  <div class="hero-label">MCP Marketplace</div>
-  <h1>Extend Axion with<br>any tool or service</h1>
-  <p>Install MCP servers with one command. Connect to databases, browsers, APIs, and more — right from the CLI.</p>
-  <div class="install-hint">
-    <span class="prompt">›</span>
-    <span class="cmd">/mcp install github</span>
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-label">MCP Marketplace</div>
+      <h1>Extend Axion with<br>any tool or service</h1>
+      <p>Install MCP servers with one command. Connect to databases, browsers, APIs, and more — right from the CLI.</p>
+      <div class="install-hint">
+        <span class="prompt">›</span>
+        <span class="cmd">/mcp install github</span>
+      </div>
+    </div>
+    <div id="mcp-term"></div>
   </div>
 </div>
 
@@ -326,5 +336,25 @@
 
   loadCatalog()
 </script>
+
+<script>
+  window.AXION_TERMINAL = {
+    mount: '#mcp-term',
+    label: 'axion — mcp',
+    symbol: '›',
+    lines: [
+      { cmd: '/mcp install github' },
+      { out: '  Fetching server… connecting…', cls: 'dim' },
+      { out: '  ✓ Connected: github', cls: 'green' },
+      { blank: true },
+      { cmd: 'list my open pull requests' },
+      { out: '  Using github MCP → search_issues', cls: 'dim' },
+      { out: '  ✓ 3 open PRs found', cls: 'green' },
+      { out: '  • Fix cache leak  • Add dark mode  • Bump deps', cls: '' },
+      { cursor: true },
+    ],
+  }
+</script>
+<script src="/assets/enhance.js"></script>
 </body>
 </html>

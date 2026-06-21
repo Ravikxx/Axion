@@ -164,7 +164,14 @@
       .page-header { padding: 32px 16px 24px; }
       .page-header h1 { font-size: 26px; }
     }
+
+    /* ── Header terminal layout ── */
+    .header-inner { display: flex; gap: 40px; align-items: center; justify-content: space-between; max-width: 1080px; margin: 0 auto; flex-wrap: wrap; }
+    .header-text { flex: 1; min-width: 280px; }
+    #docs-term { flex-shrink: 0; }
+    @media (max-width: 860px) { #docs-term { display: none; } }
   </style>
+  <link rel="stylesheet" href="/assets/enhance.css">
 </head>
 <body>
 
@@ -182,9 +189,14 @@
 </nav>
 
 <div class="page-header">
-  <div class="tag">Axion Labs</div>
-  <h1>Documentation</h1>
-  <p>Everything you need to install, configure, and get the most out of Axion.</p>
+  <div class="header-inner">
+    <div class="header-text">
+      <div class="tag">Axion Labs</div>
+      <h1>Documentation</h1>
+      <p>Everything you need to install, configure, and get the most out of Axion.</p>
+    </div>
+    <div id="docs-term"></div>
+  </div>
 </div>
 
 <div class="docs-layout">
@@ -474,7 +486,7 @@
         <thead><tr><th>Tier</th><th>Limit</th><th>How to use</th></tr></thead>
         <tbody>
           <tr><td>Free (no key)</td><td class="desc">50 requests / day per IP</td><td class="desc">Works automatically — no setup</td></tr>
-          <tr><td>Free (with key)</td><td class="desc">1,000 / month · 40 / 2h</td><td class="desc"><code>/login</code> or <code>/axion-key axion-sk-…</code></td></tr>
+          <tr><td>Free (with key)</td><td class="desc" data-count>1,000 / month · 40 / 2h</td><td class="desc"><code>/login</code> or <code>/axion-key axion-sk-…</code></td></tr>
         </tbody>
       </table>
 
@@ -623,5 +635,27 @@
   }, { rootMargin: '-20% 0px -70% 0px' })
   sections.forEach(s => observer.observe(s))
 </script>
+
+<script>
+  window.AXION_TERMINAL = {
+    mount: '#docs-term',
+    label: 'axion — ~/my-project',
+    symbol: '$',
+    lines: [
+      { cmd: 'npm install -g axion-cli' },
+      { out: '  ✓ installed axion-cli', cls: 'green' },
+      { blank: true },
+      { cmd: 'axion --model lumen' },
+      { out: '  ⚛  Axion v1.0.2  ·  lumen', cls: 'green' },
+      { blank: true },
+      { cmd: 'add a dark mode toggle to settings' },
+      { out: '  Reading src/Settings.jsx…', cls: 'dim' },
+      { out: '  Editing Settings.jsx + theme.css…', cls: 'dim' },
+      { out: '  ✓ Added toggle + persisted preference', cls: 'green' },
+      { cursor: true },
+    ],
+  }
+</script>
+<script src="/assets/enhance.js"></script>
 </body>
 </html>
