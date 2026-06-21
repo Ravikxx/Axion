@@ -12,12 +12,21 @@ const fs = require('fs')
 
 const API = 'https://api.amplifiedsmp.org'
 const htmlFile = process.argv[2]
-if (!htmlFile) { console.error('Usage: send-announcement.js <path>'); process.exit(1) }
+if (!htmlFile) { console.error('Usage: send-announcement.cjs <path>'); process.exit(1) }
 
-const secret = process.env.WEBHOOK_SECRET
+// Trim defensively — secret stores can inject BOM/whitespace.
+const secret = (process.env.WEBHOOK_SECRET || '').trim()
 if (!secret) { console.error('WEBHOOK_SECRET env var not set'); process.exit(1) }
 
 // ── Parse announcements from HTML ─────────────────────────────────────────
+
+const BR = '%%BR%%' // plain-ASCII placeholder for intentional <br> line breaks
+
+function decodeEntities(s) {
+  return s
+    .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&')
+    .replace(/&#\d+;/g, c => String.fromCharCode(parseInt(c.slice(2, -1))))
+}
 
 function parseAnnouncements(html) {
   const results = []
@@ -29,15 +38,22 @@ function parseAnnouncements(html) {
     // Extract h2 title (strip inner tags)
     const titleM = /<h2[^>]*>([\s\S]*?)<\/h2>/i.exec(inner)
     if (!titleM) continue
-    const title = titleM[1].replace(/<[^>]+>/g, '').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&').trim()
+    const title = decodeEntities(titleM[1].replace(/<[^>]+>/g, '')).replace(/\s+/g, ' ').trim()
     if (!title) continue
 
-    // Extract first <p> as body (strip tags)
+    // Extract each <p> as a body paragraph, collapsing source indentation
     const bodyParts = []
     const pRe = /<p[^>]*>([\s\S]*?)<\/p>/gi
     let pm
     while ((pm = pRe.exec(inner)) !== null) {
-      const text = pm[1].replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]+>/g, '').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&').replace(/&#\d+;/g, c => String.fromCharCode(parseInt(c.slice(2,-1)))).trim()
+      const text = decodeEntities(
+        pm[1]
+          .replace(/<br\s*\/?>/gi, BR) // keep intentional breaks
+          .replace(/<[^>]+>/g, '')
+      )
+        .replace(/\s+/g, ' ')                              // collapse HTML-source indentation/newlines
+        .split(BR).map(s => s.trim()).join('\n')           // restore intentional breaks
+        .trim()
       if (text) bodyParts.push(text)
     }
     if (!bodyParts.length) continue
@@ -56,15 +72,13 @@ try {
   // First commit or file didn't exist before — treat all as new
 }
 
+const hashOf = a => createHash('sha256').update(a.title + '|||' + a.body).digest('hex').slice(0, 16)
+
 const currentHtml = fs.readFileSync(htmlFile, 'utf8')
 const currentAnns = parseAnnouncements(currentHtml)
-const prevAnns    = parseAnnouncements(prevHtml)
-const prevHashes  = new Set(prevAnns.map(a => createHash('sha256').update(a.title + '|||' + a.body).digest('hex').slice(0, 16)))
+const prevHashes  = new Set(parseAnnouncements(prevHtml).map(hashOf))
 
-const newAnns = currentAnns.filter(a => {
-  const h = createHash('sha256').update(a.title + '|||' + a.body).digest('hex').slice(0, 16)
-  return !prevHashes.has(h)
-})
+const newAnns = currentAnns.filter(a => !prevHashes.has(hashOf(a)))
 
 if (!newAnns.length) {
   console.log('No new announcements detected — nothing to send.')
@@ -77,7 +91,7 @@ console.log(`Found ${newAnns.length} new announcement(s).`)
 
 ;(async () => {
   for (const ann of newAnns) {
-    const content_hash = createHash('sha256').update(ann.title + '|||' + ann.body).digest('hex').slice(0, 16)
+    const content_hash = hashOf(ann)
     console.log(`Sending: "${ann.title}" (hash: ${content_hash})`)
 
     const res = await fetch(`${API}/webhook/announce`, {
@@ -86,12 +100,12 @@ console.log(`Found ${newAnns.length} new announcement(s).`)
       body: JSON.stringify({ title: ann.title, body: ann.body, content_hash }),
     })
 
-    const data = await res.json()
+    const data = await res.json().catch(() => ({}))
     if (res.ok) {
       if (data.skipped) console.log(`  → Already sent (skipped).`)
       else console.log(`  → Queued for ${data.id}`)
     } else {
-      console.error(`  → Error: ${data.error}`)
+      console.error(`  → Error: ${data.error || res.status}`)
       process.exit(1)
     }
   }
