@@ -220,6 +220,7 @@ export class Agent {
     this.totalTokens  = 0;
     this.inputTokens  = 0;
     this.outputTokens = 0;
+    this.contextTokens = 0; // latest input_tokens only — true context window pressure
     // Extended thinking
     this.thinking     = { enabled: false, budget: 10000 };
     // Per-turn flag: inject a think reminder when the user's message requests it
@@ -272,8 +273,8 @@ export class Agent {
   clearHistory() {
     this.history = [];
     this.activeSkills.clear();
-    this.totalTokens = this.inputTokens = this.outputTokens = 0;
-    this.onTokens({ total: 0, input: 0, output: 0 });
+    this.totalTokens = this.inputTokens = this.outputTokens = this.contextTokens = 0;
+    this.onTokens({ total: 0, input: 0, output: 0, context: 0 });
   }
 
   // Activate any skill whose trigger words appear in the message.
@@ -1011,7 +1012,9 @@ CRITICAL RULES — follow these exactly:
     this.inputTokens  += (inTok  || 0);
     this.outputTokens += (outTok || 0);
     this.totalTokens   = this.inputTokens + this.outputTokens;
-    this.onTokens({ total: this.totalTokens, input: this.inputTokens, output: this.outputTokens });
+    // contextTokens = latest input only (true window pressure — each call re-sends full history)
+    if (inTok > 0) this.contextTokens = inTok;
+    this.onTokens({ total: this.totalTokens, input: this.inputTokens, output: this.outputTokens, context: this.contextTokens });
   }
 }
 
@@ -1052,7 +1055,7 @@ function friendlyError(err, modelAlias) {
   }
   if (status === 500 || status === 503) {
     if (/gemini/i.test(modelAlias)) {
-      return `Gemini returned a server error. The model name "${modelAlias}" may be wrong or not yet available. Try "gemini-2.0-flash", "gemini-1.5-pro", or the full preview name like "gemini-2.5-flash-preview-05-20".`;
+      return `Gemini returned a server error. The model name "${modelAlias}" may be wrong or not yet available. Try "gemini-2.0-flash", "gemini-2.5-flash", or "gemini-1.5-pro".`;
     }
     return `The "${modelAlias}" API returned a server error (${status}). Try again in a moment.`;
   }

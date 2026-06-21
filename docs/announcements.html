@@ -149,11 +149,38 @@
     footer a { color: #8b7355; text-decoration: none; }
     footer a:hover { color: #c9b99a; }
 
+    /* Subscribe widget */
+    .subscribe-bar {
+      background: #1a1209;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding: 14px 32px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .subscribe-bar span { color: #8b7355; font-size: 13px; }
+    .subscribe-form { display: flex; gap: 8px; flex: 1; min-width: 260px; max-width: 420px; }
+    .subscribe-form input {
+      flex: 1; padding: 8px 12px; border-radius: 6px;
+      border: 1px solid #3a3020; background: #0f0d08; color: #f4efe6;
+      font-size: 13px; outline: none;
+    }
+    .subscribe-form input:focus { border-color: var(--accent); }
+    .subscribe-form button {
+      padding: 8px 16px; border-radius: 6px; border: none;
+      background: var(--accent); color: #fff; font-size: 13px;
+      font-weight: 600; cursor: pointer; white-space: nowrap;
+    }
+    .subscribe-form button:hover { opacity: 0.9; }
+    .sub-msg { font-size: 12px; color: #34d399; display: none; }
+
+
     @media (max-width: 640px) {
       nav { padding: 0 16px; gap: 10px; }
       nav a:not(.brand) { display: none; }
 
-      .training-bar { padding: 10px 16px; flex-wrap: wrap; }
+      .subscribe-bar { padding: 12px 16px; }
 
       .page-header { padding: 36px 20px 28px; }
       .page-header h1 { font-size: 30px; }
@@ -174,6 +201,15 @@
   <a href="https://github.com/Ravikxx/axion">GitHub</a>
 </nav>
 
+<div class="subscribe-bar">
+  <span>Get notified about new announcements:</span>
+  <div class="subscribe-form">
+    <input type="email" id="subEmail" placeholder="you@example.com">
+    <button onclick="subscribe()">Subscribe</button>
+  </div>
+  <span class="sub-msg" id="subMsg"></span>
+</div>
+
 <div class="page-header">
   <div class="section-tag">Axion Labs</div>
   <h1>Announcements</h1>
@@ -181,6 +217,9 @@
 </div>
 
 <main>
+
+  <!-- Dynamic announcements from DB (injected here) -->
+  <div id="dynamicAnns"></div>
 
   <!-- MOST RECENT FIRST -->
 
@@ -456,20 +495,64 @@
 </footer>
 
 <script>
+  const API = 'https://api.amplifiedsmp.org'
+
   // Reveal Lumen 1.2.5 announcement at 4:00 AM Eastern
-  (function() {
-    var el = document.getElementById('lumen-125-ann');
-    if (!el) return;
-    var now = new Date();
-    // 4:00 AM Eastern on June 20 2026
-    var release = new Date('2026-06-20T04:00:00-04:00');
-    if (now >= release) {
-      el.style.display = '';
-    } else {
-      var ms = release - now;
-      setTimeout(function() { el.style.display = ''; }, ms);
-    }
-  })();
+  ;(function() {
+    var el = document.getElementById('lumen-125-ann')
+    if (!el) return
+    var release = new Date('2026-06-20T04:00:00-04:00')
+    if (Date.now() >= release) el.style.display = ''
+    else setTimeout(() => { el.style.display = '' }, release - Date.now())
+  })()
+
+  // Load dynamic announcements from DB
+  async function loadAnnouncements() {
+    try {
+      const res = await fetch(`${API}/announcements`)
+      const { announcements } = await res.json()
+      if (!announcements?.length) return
+      const container = document.getElementById('dynamicAnns')
+      container.innerHTML = announcements.map(a => {
+        const date = new Date(a.created_at * 1000).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+        const body = a.body.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>')
+        return `<div class="announcement">
+          <div class="ann-meta">
+            <span class="ann-tag release">Announcement</span>
+            <span class="ann-date">${date}</span>
+          </div>
+          <h2>${a.title.replace(/</g,'&lt;')}</h2>
+          <p style="white-space:pre-wrap">${body}</p>
+        </div>`
+      }).join('')
+    } catch {}
+  }
+
+  // Subscribe
+  async function subscribe() {
+    const email = document.getElementById('subEmail').value.trim()
+    const msg = document.getElementById('subMsg')
+    if (!email) return
+    try {
+      const res = await fetch(`${API}/announcements/subscribe`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      })
+      const data = await res.json()
+      msg.style.display = 'inline'
+      msg.textContent = data.message || (res.ok ? 'Subscribed!' : data.error)
+      msg.style.color = res.ok ? '#34d399' : '#f87171'
+    } catch { msg.style.display = 'inline'; msg.textContent = 'Something went wrong.' }
+  }
+
+  // Unsubscribed confirmation
+  if (location.search.includes('unsubscribed=1')) {
+    const bar = document.querySelector('.subscribe-bar')
+    bar.innerHTML = '<span style="color:#34d399">You\'ve been unsubscribed from Axion Labs announcements.</span>'
+  }
+
+  loadAnnouncements()
 </script>
 </body>
 </html>

@@ -222,8 +222,10 @@ function formatCost(dollars) {
   return `$${dollars.toFixed(2)}`;
 }
 
+const CTX_SCALE = 2; // treat 2× the model's context window as "100%"
+
 function contextGauge(used, total, width = 8) {
-  const pct   = Math.min(used / total, 1);
+  const pct   = Math.min(used / (total * CTX_SCALE), 1);
   const filled = Math.round(pct * width);
   const bar   = '█'.repeat(filled) + '░'.repeat(width - filled);
   const color = pct > 0.85 ? 'red' : pct > 0.6 ? 'yellow' : 'gray';
@@ -424,8 +426,9 @@ export function App({
     liveRef.current = [];
     setLiveMessages([]);
     if (live.length > 0) setStaticMessages((p) => [...p, ...live]);
-    // Auto-compact when context usage crosses 85%
-    const pct = tokensRef.current.total / getContextWindow(model);
+    // Auto-compact when context usage crosses 85% of the scaled window
+    const contextUsed = tokensRef.current.context || tokensRef.current.total;
+    const pct = contextUsed / (getContextWindow(model) * CTX_SCALE);
     if (pct >= 0.85 && !compactWarnedRef.current && agentRef.current?.history?.length) {
       compactWarnedRef.current = true;
       setStaticMessages((p) => [...p, {
@@ -489,7 +492,7 @@ export function App({
       modelAlias: initialModel,
       mode:       initialMode,
       onTokens: (t) => {
-        const tok = typeof t === 'object' ? t : { total: t, input: 0, output: t };
+        const tok = typeof t === 'object' ? t : { total: t, input: 0, output: t, context: t };
         tokensRef.current = tok;
         setTokens(tok);
         const di  = (tok.input  || 0) - prevTokRef.current.input;
@@ -820,14 +823,15 @@ export function App({
 
         case 'cost': {
           const t = tokensRef.current;
-          const win = getContextWindow(model);
-          const pct = Math.round((t.total / win) * 100);
+          const win = getContextWindow(model) * CTX_SCALE;
+          const ctxNow = t.context || t.total;
+          const pct = Math.round((ctxNow / win) * 100);
           pushStatic({ type: 'info', content:
             `  Session usage\n` +
             `  ──────────────────────────────\n` +
             `  model     ${model}\n` +
             `  tokens    ${formatTokens(t.input) || 0} in · ${formatTokens(t.output) || 0} out · ${formatTokens(t.total) || 0} total\n` +
-            `  context   ${pct}% of ${formatTokens(win)}\n` +
+            `  context   ${formatTokens(ctxNow)} now · ${pct}% of ${formatTokens(win)}\n` +
             `  est. cost ${sessionCost > 0 ? formatCost(sessionCost) : '$0.00'}` });
           return true;
         }
@@ -3056,10 +3060,11 @@ triggers: <comma-separated words that should activate it, include "${skillName.t
 
   const modeColor   = MODE_COLORS[mode] || 'cyan';
   const tabComplete = getTabCompletion(inputValue);
-  const tokStr      = formatTokens(tokens.total);
+  const tokStr      = formatTokens(tokens.context || tokens.total);
   const sessionCostStr = sessionCost > 0 ? formatCost(sessionCost) : null;
-  const ctxWindow   = getContextWindow(model);
-  const gauge       = tokens.total > 0 ? contextGauge(tokens.total, ctxWindow) : null;
+  const ctxWindow   = getContextWindow(model) * CTX_SCALE;
+  const ctxUsed     = tokens.context || tokens.total;
+  const gauge       = ctxUsed > 0 ? contextGauge(ctxUsed, ctxWindow) : null;
 
   const hintLeft  = '/help  · \\ + Enter for newline  · Ctrl+R history  · Ctrl+P cycle mode';
   const hintRight = [

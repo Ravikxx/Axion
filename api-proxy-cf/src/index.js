@@ -102,6 +102,18 @@ async function requireKey(c) {
 
 // ── Email ──────────────────────────────────────────────────────────────────
 
+async function sendEmail(resendKey, { to, subject, html }) {
+  return fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${resendKey}` },
+    body: JSON.stringify({ from: 'Axion Labs <noreply@amplifiedsmp.org>', to: [to], subject, html }),
+  })
+}
+
+function emailWrap(inner) {
+  return `<div style="font-family:system-ui,sans-serif;max-width:480px;margin:0 auto;padding:32px;background:#0f0f11;color:#e8e8f0">${inner}</div>`
+}
+
 async function sendVerificationEmail(email, token, resendKey) {
   const link = `https://api.amplifiedsmp.org/auth/verify?token=${token}`
   await fetch('https://api.resend.com/emails', {
@@ -434,6 +446,15 @@ app.post('/v1/chat/completions', async (c) => {
     const keyRow = await c.env.DB.prepare('SELECT * FROM api_keys WHERE key_value=? AND revoked=0').bind(auth).first()
     if (!keyRow) return json({ error: { message: 'Invalid or revoked API key', type: 'invalid_request_error' } }, 401)
 
+    // Scope check — if key has scopes, requested model must be in the list
+    if (keyRow.scopes) {
+      const allowed = JSON.parse(keyRow.scopes)
+      const requested = (body.model || '').toLowerCase()
+      if (!allowed.some(s => s.toLowerCase() === requested)) {
+        return json({ error: { message: `This API key is not permitted to use model "${body.model}". Allowed: ${allowed.join(', ')}`, type: 'permission_error', allowed_models: allowed } }, 403)
+      }
+    }
+
     // Monthly limit — reset counter when month rolls over
     const month = currentMonth()
     if (keyRow.month_start !== month) {
@@ -470,6 +491,32 @@ app.post('/v1/chat/completions', async (c) => {
         ? c.env.DB.prepare('UPDATE rate_limits SET count=count+1 WHERE key=?').bind(winKey).run()
         : c.env.DB.prepare('INSERT OR REPLACE INTO rate_limits (key, count, window_start) VALUES (?,1,?)').bind(winKey, winStart).run(),
     ])
+
+    // 80% usage warning — fire once per month when threshold is crossed
+    const newMonthCount = keyRow.month_requests + 1
+    const notifyThreshold = Math.floor(KEY_MONTHLY_LIMIT * 0.8)
+    if (newMonthCount === notifyThreshold && keyRow.limit_notified !== month && c.env.RESEND_API_KEY) {
+      c.executionCtx.waitUntil((async () => {
+        const [limitUser, prefs] = await Promise.all([
+          c.env.DB.prepare('SELECT email FROM users WHERE id=?').bind(keyRow.user_id).first(),
+          c.env.DB.prepare('SELECT notify_limit FROM email_prefs WHERE user_id=?').bind(keyRow.user_id).first(),
+        ])
+        if (limitUser && prefs?.notify_limit !== 0) {
+          await sendEmail(c.env.RESEND_API_KEY, {
+            to: limitUser.email,
+            subject: `You've used ${notifyThreshold} of your ${KEY_MONTHLY_LIMIT} monthly Axion requests`,
+            html: emailWrap(`
+              <h2 style="margin:0 0 8px;color:#e8e8f0">Usage alert</h2>
+              <p style="color:#888;margin:0 0 16px">Your API key <strong style="color:#e8e8f0">${keyRow.label}</strong> has used <strong style="color:#e8602c">${notifyThreshold} / ${KEY_MONTHLY_LIMIT}</strong> requests this month (80%).</p>
+              <p style="color:#888;margin:0 0 24px">Your limit resets on the 1st of next month. If you need more, reply to this email.</p>
+              <a href="https://axion.amplifiedsmp.org/keys" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">View usage →</a>
+              <p style="color:#555;font-size:12px;margin-top:24px">To turn off these alerts, visit your <a href="https://axion.amplifiedsmp.org/keys" style="color:#e8602c">account settings</a>.</p>
+            `),
+          })
+          await c.env.DB.prepare('UPDATE api_keys SET limit_notified=? WHERE id=?').bind(month, keyRow.id).run()
+        }
+      })())
+    }
 
     if (body.stream) { c.executionCtx.waitUntil(track()); return streamResponse(upstream) }
     const data = await upstream.json()
@@ -596,6 +643,219 @@ app.delete('/admin/allowlist/:email', async (c) => {
   if (target === 'fearlessaviatorclan@gmail.com') return json({ error: 'Cannot remove owner' }, 400)
   await c.env.DB.prepare('DELETE FROM admin_allowlist WHERE email=?').bind(target).run()
   return json({ ok: true })
+})
+
+// ── Scopes: update allowed models for a key ────────────────────────────────
+
+app.put('/dashboard/keys/:id/scopes', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  const { scopes } = await c.req.json().catch(() => ({}))
+  // scopes = array of model names, or null to allow all
+  const scopesVal = Array.isArray(scopes) && scopes.length ? JSON.stringify(scopes.map(s => s.toLowerCase())) : null
+  const result = await c.env.DB.prepare('UPDATE api_keys SET scopes=? WHERE id=? AND user_id=?').bind(scopesVal, c.req.param('id'), user.id).run()
+  if (result.meta.changes === 0) return json({ error: 'Key not found' }, 404)
+  return json({ ok: true, scopes: scopesVal ? JSON.parse(scopesVal) : null })
+})
+
+// ── Email preferences ──────────────────────────────────────────────────────
+
+app.get('/dashboard/prefs', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  const prefs = await c.env.DB.prepare('SELECT * FROM email_prefs WHERE user_id=?').bind(user.id).first()
+  return json({ notify_limit: 1, notify_announcements: 1, ...prefs })
+})
+
+app.put('/dashboard/prefs', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  const { notify_limit, notify_announcements } = await c.req.json().catch(() => ({}))
+  await c.env.DB.prepare(
+    'INSERT INTO email_prefs (user_id, notify_limit, notify_announcements) VALUES (?,?,?) ON CONFLICT (user_id) DO UPDATE SET notify_limit=excluded.notify_limit, notify_announcements=excluded.notify_announcements'
+  ).bind(user.id, notify_limit ? 1 : 0, notify_announcements ? 1 : 0).run()
+  return json({ ok: true })
+})
+
+// ── Waitlist ───────────────────────────────────────────────────────────────
+
+app.post('/waitlist', async (c) => {
+  const { email } = await c.req.json().catch(() => ({}))
+  if (!email || !validEmail(email)) return json({ error: 'Valid email required' }, 400)
+
+  const existing = await c.env.DB.prepare('SELECT status FROM waitlist WHERE email=?').bind(email.toLowerCase()).first()
+  if (existing) {
+    if (existing.status === 'approved') return json({ error: 'Already approved — check your email for an invite.' }, 409)
+    return json({ already: true, message: "You're already on the waitlist. We'll email you when you're approved." })
+  }
+
+  await c.env.DB.prepare('INSERT INTO waitlist (id, email) VALUES (?,?)').bind(crypto.randomUUID(), email.toLowerCase()).run()
+  return json({ ok: true, message: "You're on the list! We'll email you when you're approved." })
+})
+
+app.get('/waitlist/accept', async (c) => {
+  const token = c.req.query('token')
+  if (!token) return new Response('Missing token.', { status: 400, headers: { 'Content-Type': 'text/plain' } })
+
+  const entry = await c.env.DB.prepare('SELECT * FROM waitlist WHERE invite_token=?').bind(token).first()
+  if (!entry) return new Response('Invalid or already used invite link.', { status: 400, headers: { 'Content-Type': 'text/plain' } })
+  if (entry.invite_expires < Math.floor(Date.now() / 1000)) {
+    return new Response('This invite link has expired. Contact support for a new one.', { status: 400, headers: { 'Content-Type': 'text/plain' } })
+  }
+  if (entry.status === 'accepted') return new Response(null, { status: 302, headers: { Location: 'https://axion.amplifiedsmp.org/keys' } })
+
+  // Find or create user
+  let user = await c.env.DB.prepare('SELECT * FROM users WHERE email=?').bind(entry.email).first()
+  if (!user) {
+    const uid = crypto.randomUUID()
+    await c.env.DB.prepare('INSERT INTO users (id, email, pw_hash, verified) VALUES (?,?,?,1)').bind(uid, entry.email, '').run()
+    user = { id: uid }
+  } else if (!user.verified) {
+    await c.env.DB.prepare('UPDATE users SET verified=1 WHERE id=?').bind(user.id).run()
+  }
+
+  await c.env.DB.prepare("UPDATE waitlist SET status='accepted', invite_token=NULL WHERE id=?").bind(entry.id).run()
+
+  const sessionToken = await makeToken(user.id, c.env.TOKEN_SECRET)
+  return new Response(null, {
+    status: 302,
+    headers: { Location: `https://axion.amplifiedsmp.org/keys#verified=${encodeURIComponent(sessionToken)}&email=${encodeURIComponent(entry.email)}` },
+  })
+})
+
+app.get('/admin/waitlist', async (c) => {
+  const user = await requireAdmin(c)
+  if (!user) return json({ error: 'Forbidden' }, 403)
+  const { results } = await c.env.DB.prepare(
+    'SELECT id, email, status, created_at, approved_by, approved_at FROM waitlist ORDER BY created_at DESC LIMIT 200'
+  ).all()
+  return json({ waitlist: results })
+})
+
+app.post('/admin/waitlist/:id/approve', async (c) => {
+  const user = await requireAdmin(c)
+  if (!user) return json({ error: 'Forbidden' }, 403)
+
+  const entry = await c.env.DB.prepare('SELECT * FROM waitlist WHERE id=?').bind(c.req.param('id')).first()
+  if (!entry) return json({ error: 'Not found' }, 404)
+  if (entry.status === 'approved' || entry.status === 'accepted') return json({ error: 'Already approved' }, 409)
+
+  const token = crypto.randomUUID()
+  const expires = Math.floor(Date.now() / 1000) + 7 * 24 * 60 * 60
+
+  await c.env.DB.prepare(
+    "UPDATE waitlist SET status='approved', invite_token=?, invite_expires=?, approved_by=?, approved_at=strftime('%s','now') WHERE id=?"
+  ).bind(token, expires, user.email, entry.id).run()
+
+  if (c.env.RESEND_API_KEY) {
+    const link = `https://api.amplifiedsmp.org/waitlist/accept?token=${token}`
+    c.executionCtx.waitUntil(sendEmail(c.env.RESEND_API_KEY, {
+      to: entry.email,
+      subject: "You're in — your Axion invite is ready",
+      html: emailWrap(`
+        <h2 style="margin:0 0 8px;color:#e8e8f0">You're approved!</h2>
+        <p style="color:#888;margin:0 0 24px">Your Axion Labs early access is ready. Click below to activate your account and get your free API key (1,000 requests/month).</p>
+        <a href="${link}" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">Activate account →</a>
+        <p style="color:#555;font-size:12px;margin-top:24px">This link expires in 7 days.</p>
+      `),
+    }))
+  }
+
+  return json({ ok: true })
+})
+
+app.post('/admin/waitlist/:id/reject', async (c) => {
+  const user = await requireAdmin(c)
+  if (!user) return json({ error: 'Forbidden' }, 403)
+  await c.env.DB.prepare("UPDATE waitlist SET status='rejected' WHERE id=?").bind(c.req.param('id')).run()
+  return json({ ok: true })
+})
+
+// ── Announcements ──────────────────────────────────────────────────────────
+
+app.get('/announcements', async (c) => {
+  const { results } = await c.env.DB.prepare(
+    'SELECT id, title, body, created_at FROM announcements ORDER BY created_at DESC LIMIT 50'
+  ).all()
+  return json({ announcements: results })
+})
+
+// Subscribe/unsubscribe (no account required)
+app.post('/announcements/subscribe', async (c) => {
+  const { email } = await c.req.json().catch(() => ({}))
+  if (!email || !validEmail(email)) return json({ error: 'Valid email required' }, 400)
+  await c.env.DB.prepare(
+    'INSERT INTO subscribers (email) VALUES (?) ON CONFLICT (email) DO UPDATE SET active=1'
+  ).bind(email.toLowerCase()).run()
+  return json({ ok: true, message: "You're subscribed to Axion Labs announcements." })
+})
+
+app.get('/announcements/unsubscribe', async (c) => {
+  const token = c.req.query('token')
+  if (!token) return new Response('Missing token.', { status: 400, headers: { 'Content-Type': 'text/plain' } })
+  await c.env.DB.prepare('UPDATE subscribers SET active=0 WHERE unsub_token=?').bind(token).run()
+  return new Response(null, { status: 302, headers: { Location: 'https://axion.amplifiedsmp.org/announcements?unsubscribed=1' } })
+})
+
+// Called by GitHub Actions when announcements.html is updated — secret-protected, no login needed
+app.post('/webhook/announce', async (c) => {
+  const secret = c.req.header('X-Webhook-Secret')
+  if (!secret || secret !== c.env.ANNOUNCE_WEBHOOK_SECRET) return json({ error: 'Unauthorized' }, 401)
+
+  const { title, body, content_hash } = await c.req.json().catch(() => ({}))
+  if (!title?.trim() || !body?.trim()) return json({ error: 'title and body required' }, 400)
+
+  // Idempotency: skip if this exact announcement was already sent
+  if (content_hash) {
+    const existing = await c.env.DB.prepare('SELECT id FROM announcements WHERE id=?').bind(content_hash).first()
+    if (existing) return json({ ok: true, skipped: true, reason: 'already_sent' })
+  }
+
+  const id = content_hash || crypto.randomUUID()
+  const now = Math.floor(Date.now() / 1000)
+  await c.env.DB.prepare('INSERT OR IGNORE INTO announcements (id, title, body, sent_at, created_at) VALUES (?,?,?,?,?)').bind(id, title.trim(), body.trim(), now, now).run()
+
+  if (c.env.RESEND_API_KEY) {
+    c.executionCtx.waitUntil((async () => {
+      const [{ results: accountRecipients }, { results: subRecipients }] = await Promise.all([
+        c.env.DB.prepare(`
+          SELECT u.email, NULL as unsub_token FROM users u
+          LEFT JOIN email_prefs p ON p.user_id = u.id
+          WHERE u.verified = 1 AND (p.notify_announcements IS NULL OR p.notify_announcements = 1)
+          LIMIT 500
+        `).all(),
+        c.env.DB.prepare('SELECT email, unsub_token FROM subscribers WHERE active=1 LIMIT 500').all(),
+      ])
+
+      const seen = new Set()
+      const all = []
+      for (const r of [...accountRecipients, ...subRecipients]) {
+        if (!seen.has(r.email)) { seen.add(r.email); all.push(r) }
+      }
+
+      const titleStr = title.trim()
+      const bodyStr = body.trim().replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      for (let i = 0; i < all.length; i += 10) {
+        await Promise.all(all.slice(i, i + 10).map(r => {
+          const unsubUrl = r.unsub_token
+            ? `https://api.amplifiedsmp.org/announcements/unsubscribe?token=${r.unsub_token}`
+            : `https://axion.amplifiedsmp.org/keys`
+          return sendEmail(c.env.RESEND_API_KEY, {
+            to: r.email,
+            subject: `Axion Labs: ${titleStr}`,
+            html: emailWrap(`
+              <h2 style="margin:0 0 8px;color:#e8e8f0">${titleStr}</h2>
+              <div style="color:#ccc;line-height:1.7;margin:0 0 24px;white-space:pre-wrap">${bodyStr}</div>
+              <a href="https://axion.amplifiedsmp.org/announcements" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">Read on site →</a>
+              <p style="color:#555;font-size:12px;margin-top:24px"><a href="${unsubUrl}" style="color:#666">Unsubscribe</a></p>
+            `),
+          })
+        }))
+      }
+    })())
+  }
+
+  return json({ ok: true, id, recipients_queued: true })
 })
 
 // ── Admin: daily usage chart ───────────────────────────────────────────────

@@ -1,0 +1,24 @@
+name: Send announcement emails
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'docs/announcements.html'
+
+jobs:
+  announce:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2  # need previous commit to detect what's new
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Send new announcement emails
+        env:
+          WEBHOOK_SECRET: ${{ secrets.ANNOUNCE_WEBHOOK_SECRET }}
+        run: node .github/scripts/send-announcement.js docs/announcements.html
