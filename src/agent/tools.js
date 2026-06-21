@@ -145,6 +145,42 @@ export const TOOL_DEFINITIONS = [
     },
   },
   {
+    name: 'read_many_files',
+    description: 'Read several files in one call. Returns each file\'s contents with a header. More efficient than multiple read_file calls.',
+    input_schema: {
+      type: 'object',
+      properties: {
+        paths: { type: 'array', items: { type: 'string' }, description: 'List of file paths to read' },
+      },
+      required: ['paths'],
+    },
+  },
+  {
+    name: 'replace_in_files',
+    description: 'Find-and-replace an exact string across all files matching a glob pattern. Project-wide refactor in one call. Each changed file is backed up (restorable with /undo).',
+    input_schema: {
+      type: 'object',
+      properties: {
+        find:    { type: 'string', description: 'Exact string to find' },
+        replace: { type: 'string', description: 'Replacement string' },
+        pattern: { type: 'string', description: 'Glob of files to search (e.g. "src/**/*.js"). Default: all files.' },
+      },
+      required: ['find', 'replace'],
+    },
+  },
+  {
+    name: 'tree',
+    description: 'Show a directory tree (skips node_modules, .git, dist, etc.). Good for understanding project structure at a glance.',
+    input_schema: {
+      type: 'object',
+      properties: {
+        path:  { type: 'string', description: 'Root directory (default: cwd)' },
+        depth: { type: 'number', description: 'Max depth to descend (default: 3)' },
+      },
+      required: [],
+    },
+  },
+  {
     name: 'create_directory',
     description: 'Create a directory (and any missing parent directories).',
     input_schema: {
@@ -541,6 +577,70 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
         if (!existsSync(destDir)) mkdirSync(destDir, { recursive: true });
         renameSync(src, dst);
         return { success: true, output: `Moved ${relPath(input.from)} → ${relPath(input.to)}` };
+      }
+
+      case 'read_many_files': {
+        const paths = Array.isArray(input.paths) ? input.paths : [];
+        if (!paths.length) return { success: false, output: 'No paths provided.' };
+        const parts = [];
+        for (const p of paths) {
+          try {
+            const content = readFileSync(resolve(cwd, p), 'utf8');
+            parts.push(`── ${relPath(p)} ──\n${content}`);
+          } catch (e) {
+            parts.push(`── ${relPath(p)} ──\n[error: ${e.code === 'ENOENT' ? 'not found' : e.message}]`);
+          }
+        }
+        return { success: true, output: parts.join('\n\n') };
+      }
+
+      case 'replace_in_files': {
+        if (!input.find) return { success: false, output: 'find string is required.' };
+        const pattern = input.pattern || '**/*';
+        const matches = walkGlob(cwd, pattern);
+        if (!matches.length) return { success: false, output: `No files match pattern: ${pattern}` };
+        const changed = [];
+        let totalHits = 0;
+        for (const rel of matches) {
+          const absPath = resolve(cwd, rel);
+          let content;
+          try { content = readFileSync(absPath, 'utf8'); } catch { continue; }
+          const count = content.split(input.find).length - 1;
+          if (count === 0) continue;
+          backupFile(absPath, content);
+          recordFileChange(absPath, content);
+          writeFileSync(absPath, content.split(input.find).join(input.replace), 'utf8');
+          changed.push(`${rel} (${count})`);
+          totalHits += count;
+        }
+        if (!changed.length) return { success: true, output: `No occurrences of the string found in ${matches.length} file(s).` };
+        return { success: true, output: `Replaced ${totalHits} occurrence(s) across ${changed.length} file(s):\n${changed.join('\n')}` };
+      }
+
+      case 'tree': {
+        const root = input.path ? resolve(cwd, input.path) : cwd;
+        if (!existsSync(root)) return { success: false, output: `Not found: ${relPath(input.path || '.')}` };
+        const maxDepth = input.depth != null ? Math.max(1, Math.floor(input.depth)) : 3;
+        const out = [];
+        let count = 0;
+        const walk = (dir, prefix, depth) => {
+          if (depth > maxDepth || count > 800) return;
+          let entries;
+          try { entries = readdirSync(dir, { withFileTypes: true }); } catch { return; }
+          entries = entries.filter(e => !SKIP_DIRS.has(e.name) && !e.name.startsWith('.'))
+            .sort((a, b) => (b.isDirectory() - a.isDirectory()) || a.name.localeCompare(b.name));
+          entries.forEach((e, i) => {
+            if (count > 800) return;
+            const last = i === entries.length - 1;
+            out.push(`${prefix}${last ? '└─ ' : '├─ '}${e.name}${e.isDirectory() ? '/' : ''}`);
+            count++;
+            if (e.isDirectory()) walk(resolve(dir, e.name), prefix + (last ? '   ' : '│  '), depth + 1);
+          });
+        };
+        out.push(`${relPath(input.path || '.')}/`);
+        walk(root, '', 1);
+        const truncated = count > 800 ? '\n… (truncated at 800 entries)' : '';
+        return { success: true, output: out.join('\n') + truncated };
       }
 
       case 'create_directory': {
@@ -948,13 +1048,24 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
 const SKIP_DIRS = new Set(['node_modules', '.git', 'dist', '.next', '__pycache__', 'target', '.cache']);
 
 function globToRegex(pattern) {
-  const escaped = pattern
-    .replace(/[.+^${}()|[\]\\]/g, '\\$&')
-    .replace(/\\\*/g, '%%STAR%%')
-    .replace(/%%STAR%%%%STAR%%/g, '.*')
-    .replace(/%%STAR%%/g, '[^/]*')
-    .replace(/\?/g, '[^/]');
-  return new RegExp(`^${escaped}$`);
+  let re = '';
+  for (let i = 0; i < pattern.length; i++) {
+    const c = pattern[i];
+    if (c === '*' && pattern[i + 1] === '*') {
+      // ** (any depth). "**/" also matches zero segments so it works at the root.
+      if (pattern[i + 2] === '/') { re += '(?:.*/)?'; i += 2; }
+      else { re += '.*'; i += 1; }
+    } else if (c === '*') {
+      re += '[^/]*';
+    } else if (c === '?') {
+      re += '[^/]';
+    } else if ('.+^${}()|[]\\'.includes(c)) {
+      re += '\\' + c;
+    } else {
+      re += c;
+    }
+  }
+  return new RegExp(`^${re}$`);
 }
 
 function walkGlob(root, pattern, results = [], dir = root) {
