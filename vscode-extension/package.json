@@ -1,0 +1,94 @@
+{
+  "name": "axion",
+  "displayName": "Axion",
+  "description": "AI coding agent — chat, edit files, run tools, right in VS Code",
+  "version": "0.1.0",
+  "publisher": "axion-labs",
+  "icon": "icons/icon128.png",
+  "repository": { "type": "git", "url": "https://github.com/Ravikxx/axion" },
+  "engines": { "vscode": "^1.80.0" },
+  "categories": ["AI", "Chat", "Other"],
+  "keywords": ["ai", "copilot", "coding", "agent", "lumen"],
+  "activationEvents": ["onStartupFinished"],
+  "main": "./extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "axion-sidebar",
+          "title": "Axion",
+          "icon": "icons/icon-mono.svg"
+        }
+      ]
+    },
+    "views": {
+      "axion-sidebar": [
+        {
+          "id": "axion.chat",
+          "name": "",
+          "type": "webview"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "axion.open",
+        "title": "Open Axion",
+        "category": "Axion"
+      },
+      {
+        "command": "axion.sendSelection",
+        "title": "Ask Axion about this",
+        "category": "Axion"
+      },
+      {
+        "command": "axion.addFile",
+        "title": "Add file to Axion context",
+        "category": "Axion"
+      },
+      {
+        "command": "axion.newChat",
+        "title": "New Chat",
+        "category": "Axion"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "axion.sendSelection",
+          "when": "editorHasSelection",
+          "group": "axion@1"
+        },
+        {
+          "command": "axion.addFile",
+          "group": "axion@2"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "axion.newChat",
+          "when": "view == axion.chat",
+          "group": "navigation"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "axion.sendSelection",
+        "key": "ctrl+shift+a",
+        "mac": "cmd+shift+a",
+        "when": "editorHasSelection"
+      }
+    ],
+    "configuration": {
+      "title": "Axion",
+      "properties": {
+        "axion.port": {
+          "type": "number",
+          "default": 3000,
+          "description": "Port for the Axion web server (axion-serve / axion --web)"
+        }
+      }
+    }
+  }
+}
