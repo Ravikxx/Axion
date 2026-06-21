@@ -22,4 +22,4 @@ jobs:
       - name: Send new announcement emails
         env:
           WEBHOOK_SECRET: ${{ secrets.ANNOUNCE_WEBHOOK_SECRET }}
-        run: node .github/scripts/send-announcement.js docs/announcements.html
+        run: node .github/scripts/send-announcement.cjs docs/announcements.html
