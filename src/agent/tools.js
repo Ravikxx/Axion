@@ -440,6 +440,36 @@ export const TOOL_DEFINITIONS = [
     },
   },
   {
+    name: 'todo_add',
+    description: 'Add a task to the TODO list. Use this to track work items, next steps, or things to remember for later.',
+    input_schema: {
+      type: 'object',
+      properties: {
+        text: { type: 'string', description: 'The task description.' },
+      },
+      required: ['text'],
+    },
+  },
+  {
+    name: 'todo_done',
+    description: 'Mark a TODO item as complete by its id.',
+    input_schema: {
+      type: 'object',
+      properties: {
+        id: { type: 'string', description: 'The TODO item id (from todo_list or todo_add result).' },
+      },
+      required: ['id'],
+    },
+  },
+  {
+    name: 'todo_list',
+    description: 'List all TODO items. Shows pending tasks first, then completed ones.',
+    input_schema: {
+      type: 'object',
+      properties: {},
+    },
+  },
+  {
     name: 'speak',
     description: 'Speak text aloud using text-to-speech (OpenAI TTS). Use this to communicate information audibly to the user, such as alerts, confirmations, or when reading long text would be helpful.',
     input_schema: {
@@ -770,6 +800,44 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
         } catch (err) {
           return { success: false, output: `TTS failed: ${err.message}` };
         }
+      }
+
+      case 'todo_add': {
+        const { addTodo } = await import('../persist.js');
+        const result = addTodo(input.text, { source: 'agent' });
+        const pending = result.list.filter(t => !t.done).length;
+        return { success: true, output: `✔ Added: "${input.text}"  (${pending} pending, ${result.list.length} total)` };
+      }
+
+      case 'todo_done': {
+        const { toggleTodo, getTodos } = await import('../persist.js');
+        const toggled = toggleTodo(input.id);
+        if (!toggled) {
+          const all = getTodos();
+          const fuzzy = all.find(t => t.text.toLowerCase().includes((input.id || '').toLowerCase()));
+          if (fuzzy) { const r = toggleTodo(fuzzy.id); return { success: true, output: `✔ Completed: "${r.text}" (matched by text, not id)` }; }
+          return { success: false, output: `No TODO found with id "${input.id}". Use todo_list to see ids.` };
+        }
+        return { success: true, output: toggled.done ? `✔ Completed: "${toggled.text}"` : `↩ Reopened: "${toggled.text}"` };
+      }
+
+      case 'todo_list': {
+        const { getTodos } = await import('../persist.js');
+        const all = getTodos();
+        if (!all.length) return { success: true, output: 'TODO list is empty.' };
+        const pending = all.filter(t => !t.done);
+        const done = all.filter(t => t.done);
+        const lines = [];
+        if (pending.length) {
+          lines.push(`── Pending (${pending.length}) ──`);
+          pending.forEach(t => lines.push(`  ☐ ${t.text}  [${t.id}]`));
+        }
+        if (done.length) {
+          lines.push(`── Completed (${done.length}) ──`);
+          done.slice(-5).forEach(t => lines.push(`  ☑ ${t.text}`));
+          if (done.length > 5) lines.push(`  … and ${done.length - 5} more`);
+        }
+        return { success: true, output: lines.join('\n') };
       }
 
       case 'change_working_dir': {

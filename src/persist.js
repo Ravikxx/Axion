@@ -679,3 +679,47 @@ export function searchChats(query) {
   }
   return hits.sort((a, b) => (b.savedAt || '').localeCompare(a.savedAt || ''));
 }
+
+// ── TODO / Task list ──────────────────────────────────────────────────────────
+
+const TODOS_FILE = join(DIR, 'todos.json');
+
+export function getTodos() {
+  try {
+    if (!existsSync(TODOS_FILE)) return [];
+    return JSON.parse(readFileSync(TODOS_FILE, 'utf8'));
+  } catch { return []; }
+}
+
+function saveTodos(list) {
+  try {
+    if (!existsSync(DIR)) mkdirSync(DIR, { recursive: true });
+    writeFileSync(TODOS_FILE, JSON.stringify(list, null, 2), 'utf8');
+  } catch {}
+}
+
+export function addTodo(text, { source = 'user' } = {}) {
+  const list = getTodos();
+  const id = `todo_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 6)}`;
+  list.push({ id, text, done: false, source, createdAt: new Date().toISOString() });
+  saveTodos(list);
+  return { id, list };
+}
+
+export function toggleTodo(id) {
+  const list = getTodos();
+  const todo = list.find(t => t.id === id);
+  if (!todo) return null;
+  todo.done = !todo.done;
+  saveTodos(list);
+  return todo;
+}
+
+export function removeTodo(id) {
+  const list = getTodos();
+  const idx = list.findIndex(t => t.id === id);
+  if (idx === -1) return false;
+  list.splice(idx, 1);
+  saveTodos(list);
+  return true;
+}

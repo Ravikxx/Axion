@@ -15,7 +15,7 @@ import {
   saveChat, loadChat, listChats, deleteChat,
   autosaveSession, clearLastSession,
   undoLastBackup, undoStackSize, exportChat, exportSession, importSession,
-  getMemories, addMemory, removeMemory,
+  getMemories, addMemory, removeMemory, getTodos, addTodo, toggleTodo, removeTodo,
   getSavedVisionModel, saveVisionModel,
   getSavedImageModel, saveImageModel,
   saveMacro, loadMacro, listMacros, deleteMacro,
@@ -377,6 +377,7 @@ export function App({
 
   // Goal mode
   const [goal, setGoal]                 = useState(null);
+  const [todos, setTodos]               = useState(getTodos);
   const [goalIteration, setGoalIteration] = useState(0);
   const goalActiveRef = useRef(false);
 
@@ -658,6 +659,12 @@ export function App({
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Autosave the live session to a rolling slot for `axion --continue`. Debounced
+  // Refresh TODO list from disk every 2s
+  useEffect(() => {
+    const id = setInterval(() => setTodos(getTodos()), 2000);
+    return () => clearInterval(id);
+  }, []);
+
   // 1s after the message log settles so we capture end-of-turn state without
   // clobbering the slot mid-stream. Skips empty sessions (nothing to restore).
   const autosaveTimerRef = useRef(null);
@@ -2042,6 +2049,55 @@ triggers: <comma-separated words that should activate it, include "${skillName.t
           return true;
         }
 
+        case 'todo': {
+          const [sub, ...rest] = args;
+          const todoText = rest.join(' ').trim();
+          if (!sub) {
+            const all = getTodos();
+            if (!all.length) { pushStatic({ type: 'info', content: 'TODO list is empty.\n  /todo add <text>   add a task\n  /todo done <id|n>  mark complete\n  /todo list         show all\n  /todo clear        clear completed' }); return true; }
+            const pending = all.filter(t => !t.done);
+            const done = all.filter(t => t.done);
+            const lines = [`Pending: ${pending.length}  Done: ${done.length}  Total: ${all.length}`];
+            pending.forEach(t => lines.push(`  ☐ ${t.text}  [${t.id}]`));
+            if (done.length) lines.push(`  ☑ ${done.length} completed (use /todo list to see)`);
+            pushStatic({ type: 'info', content: lines.join('\n') });
+            return true;
+          }
+          if (sub === 'add') {
+            if (!todoText) { pushStatic({ type: 'error', content: 'usage: /todo add <text>' }); return true; }
+            const result = addTodo(todoText);
+            pushStatic({ type: 'info', content: `✔ Added: "${todoText}"` });
+            return true;
+          }
+          if (sub === 'done') {
+            if (!todoText) { pushStatic({ type: 'error', content: 'usage: /todo done <id>   e.g. /todo done todo_l3x_ab12' }); return true; }
+            const toggled = toggleTodo(todoText);
+            if (!toggled) { pushStatic({ type: 'error', content: `No TODO found with id "${todoText}". Use /todo to see ids.` }); return true; }
+            pushStatic({ type: 'info', content: toggled.done ? `✔ Completed: "${toggled.text}"` : `↩ Reopened: "${toggled.text}"` });
+            return true;
+          }
+          if (sub === 'list') {
+            const all = getTodos();
+            if (!all.length) { pushStatic({ type: 'info', content: 'TODO list is empty.' }); return true; }
+            const pending = all.filter(t => !t.done);
+            const done = all.filter(t => t.done);
+            const lines = [`── TODOs ──  Pending: ${pending.length}  Done: ${done.length}`];
+            pending.forEach(t => lines.push(`  ☐ ${t.text}  [${t.id}]`));
+            done.forEach(t => lines.push(`  ☑ ${t.text}  [${t.id}]`));
+            pushStatic({ type: 'info', content: lines.join('\n') });
+            return true;
+          }
+          if (sub === 'clear') {
+            const all = getTodos();
+            const completed = all.filter(t => t.done);
+            completed.forEach(t => removeTodo(t.id));
+            pushStatic({ type: 'info', content: `Cleared ${completed.length} completed tasks.` });
+            return true;
+          }
+          pushStatic({ type: 'error', content: `Unknown subcommand: /todo ${sub}\nUsage: /todo add|done|list|clear` });
+          return true;
+        }
+
         case 'models': {
           const built = Object.entries(MODELS)
             .map(([alias, id]) => `  ${alias.padEnd(22)} ${id}`)
@@ -3277,6 +3333,19 @@ triggers: <comma-separated words that should activate it, include "${skillName.t
         </Text>
         {hintRight ? <Text color="gray">{hintRight}</Text> : null}
       </Box>
+
+      {/* ── TODO widget ──────────────────────────────────────────────── */}
+      {todos.filter(t => !t.done).length > 0 && (
+        <Box marginX={2} marginTop={1} flexDirection="column" borderStyle="round" borderColor={accent()} paddingX={2} paddingY={0}>
+          <Text bold color={accent()}>☑ TODO ({todos.filter(t => !t.done).length})</Text>
+          {todos.filter(t => !t.done).slice(0, 5).map((t, i) => (
+            <Text key={t.id} color="white">  ☐ {t.text}</Text>
+          ))}
+          {todos.filter(t => !t.done).length > 5 && (
+            <Text color="gray">  … and {todos.filter(t => !t.done).length - 5} more</Text>
+          )}
+        </Box>
+      )}
 
       {/* ── Voice recording indicator ───────────────────────────────── */}
       {voiceActive && (

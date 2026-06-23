@@ -29,6 +29,7 @@ export const COMMANDS = [
   { cmd: 'img-gen-model',   desc: '[model]  set/show image generation model' },
   { cmd: 'macro',           desc: 'record|stop|play|list|delete  manage macros' },
   { cmd: 'watch',           desc: 'start|stop|show|clear  watch-and-learn preferences' },
+  { cmd: 'todo',            desc: 'add|done|list|clear  manage TODO list' },
   { cmd: 'remember',        desc: '[text]  save a persistent note or list all' },
   { cmd: 'forget',          desc: '<number>  remove a saved note' },
   { cmd: 'models',          desc: 'list all available models + custom endpoints' },
