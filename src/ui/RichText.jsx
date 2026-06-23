@@ -212,10 +212,67 @@ function ChartBlock({ config }) {
   if (!values.length) return <Text color="gray">(empty chart)</Text>;
 
   const maxVal = Math.max(...values, 1);
+  const totalVal = values.reduce((a, b) => Math.abs(a) + Math.abs(b), 0) || 1;
   const barMax = Math.max(width - 20, 10);
   const colors = ['#e8602c','#34d399','#60a5fa','#f59e0b','#a78bfa','#f472b6','#14b8a6','#f97316'];
-  const labelPad = Math.max(...labels.map(l => l.length), 1);
 
+  if (config.type === 'line') {
+    const sparkChars = ['▁','▂','▃','▄','▅','▆','▇','█'];
+    const n = Math.min(values.length, width - 4);
+    const step = Math.max(1, Math.floor(values.length / n));
+    const sampled = values.filter((_, i) => i % step === 0 || i === values.length - 1);
+    const sMax = Math.max(...sampled, 1);
+    const sMin = Math.min(...sampled, 0);
+    const sRange = sMax - sMin || 1;
+    const line = sampled.map(v => {
+      const idx = Math.round(((v - sMin) / sRange) * 7);
+      return sparkChars[Math.min(Math.max(idx, 0), 7)];
+    }).join('');
+    const idxStep = Math.max(1, Math.floor(sampled.length / 6));
+    const annotated = labels.length ? labels.filter((_, i) => i % idxStep === 0 || i === sampled.length - 1).join('  ') : '';
+    return (
+      <Box flexDirection="column" marginY={0} paddingX={1} gap={0}>
+        {config.title && <Text bold color="#cc785c">{config.title}</Text>}
+        <Box flexDirection="row" gap={0}>
+          <Text color="#60a5fa">{line}</Text>
+        </Box>
+        {sampled.length > 0 && (
+          <Text color="gray" dim>
+            {sampled.map((v, i) =>
+              labels[i] ? `${labels[i]}=${v}` : `${v}`
+            ).filter((_, i) => i % idxStep === 0 || i === sampled.length - 1).join(', ')}
+          </Text>
+        )}
+      </Box>
+    );
+  }
+
+  if (config.type === 'pie' || config.type === 'doughnut') {
+    const slices = values.map((v, i) => {
+      const pct = ((Math.abs(v) / totalVal) * 100).toFixed(1);
+      const segLen = Math.max(Math.round((Math.abs(v) / totalVal) * barMax), 1);
+      const c = colors[i % colors.length];
+      return { label: labels[i] || '', value: v, pct, segLen, color: c };
+    });
+    return (
+      <Box flexDirection="column" marginY={0} paddingX={1} gap={0}>
+        {config.title && <Text bold color="#cc785c">{config.title} ({config.type})</Text>}
+        <Box flexDirection="row" gap={0}>
+          {slices.map((s, i) => (
+            <Text key={i} color={s.color}>{'▇'.repeat(s.segLen)}</Text>
+          ))}
+        </Box>
+        {slices.map((s, i) => (
+          <Box key={i} flexDirection="row" gap={0}>
+            <Text color={s.color}>{'█'}</Text>
+            <Text color="gray">{' ' + s.label}{s.label ? ': ' : ''}{s.value} ({s.pct}%)</Text>
+          </Box>
+        ))}
+      </Box>
+    );
+  }
+
+  const labelPad = Math.max(...labels.map(l => l.length), 1);
   const bars = values.map((v, i) => {
     const barLen = Math.round((Math.abs(v) / maxVal) * barMax);
     if (barLen < 1) return null;
@@ -231,13 +288,6 @@ function ChartBlock({ config }) {
   return (
     <Box flexDirection="column" marginY={0} paddingX={1} gap={0}>
       {config.title && <Text bold color="#cc785c">{config.title}</Text>}
-      {labels.length > 0 && (
-        <Box flexDirection="row" gap={1}>
-          {labels.map((l, i) => (
-            <Text key={i} color="gray" wrap="truncate">{l}</Text>
-          ))}
-        </Box>
-      )}
       {bars}
     </Box>
   );

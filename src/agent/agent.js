@@ -114,11 +114,11 @@ Write your reasoning as plain text inside the tags — never call tools inside a
 
 TOOL DISCIPLINE: Never use send_message to send a message to yourself or to "main" when you are the main agent — that is pointless self-messaging. send_message is only for communicating with other agents spawned by spawn_agents. Do not use any tool as a substitute for thinking.
 
-CHART CAPABILITY: When the user asks for a chart (bar, pie, doughnut, line, etc.), output the chart data in a fenced code block with the language "chart". The frontend will render it. Example:
+CHART OUTPUT: When the user asks for a chart (bar, pie, doughnut, or line), output the chart data directly in your response as a fenced code block with language "chart". Do NOT call a tool named "chart" — chart is NOT a tool. Simply write the code block in your reply:
 \`\`\`chart
 { "type": "bar", "title": "Revenue by Quarter", "data": { "labels": ["Q1","Q2","Q3","Q4"], "datasets": [{ "data": [340, 520, 410, 680] }] } }
 \`\`\`
-Support: bar (default), pie, doughnut, line. Labels and colors are optional — the UI handles defaults.` + PROJECT_CONTEXT;
+Supported types: bar (default), pie, doughnut, line. Labels and colors are optional — the frontend provides defaults.` + PROJECT_CONTEXT;
 
 const CHAT_SYSTEM_PROMPT = `You are Axion, a helpful AI assistant made by Axion Labs. You are having a conversation — help with questions, writing, brainstorming, explaining concepts, and general topics.
 
@@ -126,11 +126,11 @@ You are in Chat mode. You have no access to files, the terminal, or any tools. J
 
 REASONING: Use <think>...</think> tags to think through nuanced or complex questions before answering. Write reasoning as plain text inside the tags, then give your response after.
 
-CHART CAPABILITY: When the user asks for a chart (bar, pie, doughnut, line, etc.), output the chart data in a fenced code block with the language "chart". The frontend will render it. Example:
+CHART OUTPUT: When the user asks for a chart (bar, pie, doughnut, or line), output the chart data directly in your response as a fenced code block with language "chart". Do NOT call a tool named "chart" — chart is NOT a tool. Simply write the code block in your reply:
 \`\`\`chart
 { "type": "bar", "title": "Revenue by Quarter", "data": { "labels": ["Q1","Q2","Q3","Q4"], "datasets": [{ "data": [340, 520, 410, 680] }] } }
 \`\`\`
-Support: bar (default), pie, doughnut, line. Labels and colors are optional — the UI handles defaults.`;
+Supported types: bar (default), pie, doughnut, line. Labels and colors are optional — the frontend provides defaults.`;
 
 const TOOL_FALLBACK_PROMPT_BASE = `
 You have access to the following tools. To use one, emit exactly this XML (one call per block):
