@@ -95,8 +95,7 @@ def filter_and_dedup(examples, verbose=True):
         print(f"  [clean] exact dedup:    {len(good)} → {len(unique)}")
 
     # Step 3: near-dedup using 6-char shingling + Jaccard threshold
-    # Only runs when the dataset is small enough to be practical (<50k)
-    if len(unique) <= 50_000:
+    if len(unique) <= 500_000:
         shingles  = []
         keep_mask = []
         for msgs in unique:
@@ -113,6 +112,6 @@ def filter_and_dedup(examples, verbose=True):
     else:
         deduped = unique
         if verbose:
-            print(f"  [clean] near-dedup:     skipped (>{50_000} examples)")
+            print(f"  [clean] near-dedup:     skipped (>{500_000} examples)")
 
     return deduped
