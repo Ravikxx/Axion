@@ -5,7 +5,7 @@
   "version": "0.1.0",
   "publisher": "axion-labs",
   "icon": "icons/icon128.png",
-  "repository": { "type": "git", "url": "https://github.com/Ravikxx/axion" },
+  "repository": { "type": "git", "url": "https://github.com/AxionLabsAI/axion" },
   "engines": { "vscode": "^1.80.0" },
   "categories": ["AI", "Chat", "Other"],
   "keywords": ["ai", "copilot", "coding", "agent", "lumen"],

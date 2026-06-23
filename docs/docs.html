@@ -217,6 +217,7 @@
       <a href="#commands">Commands</a>
       <a href="#modes">Code vs Chat Mode</a>
       <a href="#memory">Memory</a>
+      <a href="#web-chat">Web Chat</a>
     </div>
     <div class="sidebar-section">
       <div class="sidebar-heading">Axion API</div>
@@ -480,6 +481,35 @@
       <p>Memories are stored locally in <code>~/.axion/memories.json</code> — they never leave your machine unless you're using a cloud API.</p>
     </div>
 
+    <div class="doc-section" id="web-chat">
+      <h2>Web Chat</h2>
+      <p class="lead">Chat with Lumen directly in your browser at <a href="/chat" style="color:var(--accent)">axion.amplifiedsmp.org/chat</a> — no install needed.</p>
+
+      <h3>Features</h3>
+      <ul>
+        <li><strong>Multiple conversations</strong> — sidebar shows all your chats; click to switch, rename with ✎, delete with ✕</li>
+        <li><strong>Chat history</strong> — conversations are saved automatically (IndexedDB). Use the search box above the list to filter by title.</li>
+        <li><strong>Dark/light mode</strong> — toggle with the 🌙/☀️ button in the topbar. Preference is saved across visits.</li>
+        <li><strong>Edit & retry</strong> — click ✎ on any message to edit it, or use the retry button to regenerate the last response.</li>
+        <li><strong>Stop generation</strong> — click the stop button (■) to cancel a response mid-stream.</li>
+        <li><strong>Export</strong> — download any conversation as JSON via the ↓ button in the topbar.</li>
+        <li><strong>Offline-ready</strong> — installable as a PWA (look for the install prompt in your browser).</li>
+      </ul>
+
+      <h3>Keyboard shortcuts</h3>
+      <ul>
+        <li><strong>Enter</strong> — send message</li>
+        <li><strong>Shift+Enter</strong> — new line</li>
+        <li><strong>Escape</strong> — close sidebar / cancel edit</li>
+      </ul>
+
+      <h3>Rate limits</h3>
+      <ul>
+        <li><strong>Without key</strong> — 50 requests / day per IP</li>
+        <li><strong>With Axion API key</strong> — 1,000 / month · 40 / 2h. Sign in at <a href="/keys" style="color:var(--accent)">keys</a> to get one.</li>
+      </ul>
+    </div>
+
     <div class="doc-section" id="axion-api">
       <h2>API Keys & Limits</h2>
       <p class="lead">Axion Labs hosts Lumen via an OpenAI-compatible API. Get a key at <a href="/keys" style="color:var(--accent)">axion.amplifiedsmp.org/keys</a>.</p>
@@ -604,7 +634,7 @@
       <h3>Setup</h3>
       <ol>
         <li>Start the Axion web UI: <code>/web</code> inside Axion or run <code>axion-serve</code></li>
-        <li>Install the extension from the <a href="https://github.com/Ravikxx/axion" style="color:var(--accent)">GitHub repo</a> — load unpacked from <code>extension/</code></li>
+        <li>Install the extension from the <a href="https://github.com/AxionLabsAI/axion" style="color:var(--accent)">GitHub repo</a> — load unpacked from <code>extension/</code></li>
         <li>The extension auto-connects to <code>localhost:3000</code></li>
       </ol>
       <h3>What it can do</h3>
@@ -621,7 +651,7 @@
 </div>
 
 <footer>
-  <p>© 2026 Axion Labs · <a href="/">Home</a> · <a href="/privacy">Privacy</a> · <a href="https://github.com/Ravikxx/axion">GitHub</a></p>
+  <p>© 2026 Axion Labs · <a href="/">Home</a> · <a href="/privacy">Privacy</a> · <a href="https://github.com/AxionLabsAI/axion">GitHub</a></p>
 </footer>
 
 <script>

@@ -42,7 +42,7 @@ That's it. No cloning, no building — just install and run.
 ### Install from source
 
 ```bash
-git clone https://github.com/Ravikxx/axion.git
+git clone https://github.com/AxionLabsAI/axion.git
 cd axion
 npm install
 npm install -g .
@@ -622,4 +622,4 @@ Type any command in the CLI. All commands start with `/`. Tab completes the comm
 
 ## License
 
-MIT — made by [Axion Labs](https://github.com/Ravikxx)
+MIT — made by [Axion Labs](https://github.com/AxionLabsAI)

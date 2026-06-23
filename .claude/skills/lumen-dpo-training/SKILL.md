@@ -13,7 +13,7 @@ already paid for — don't "simplify" them away.
 
 - **Base model**: `unsloth/Meta-Llama-3.1-8B-Instruct` (Llama 3.1 8B)
 - **SFT adapter (Drive)**: `/content/drive/MyDrive/Lumen/lumen-121-checkpoints/final` (LoRA-only, no base weights)
-- **HF repo**: `RavikxxBGamin/Lumen`, file `lumen-dpo.gguf` (rename per-version, e.g. `lumen-1.2.5.gguf`)
+- **HF repo**: `AxionLabsAI/Lumen`, file `lumen-dpo.gguf` (rename per-version, e.g. `lumen-1.2.5.gguf`)
 - **HF Space**: `https://axionlabsai-lumen.hf.space` (private — all API calls need `Authorization: Bearer <HF_TOKEN>`)
 - **HF token**: paste into Colab **Secrets** (🔑) as `HF_TOKEN`, or notebook cell. NEVER hardcode in committed files.
 - **Datasets**: `lumen_dpo_safety.jsonl` (v1, 50 pairs), `lumen_dpo_safety_v2.jsonl` (v2, 100 pairs).
@@ -173,7 +173,7 @@ import os
 from huggingface_hub import HfApi
 api = HfApi()
 api.upload_file(path_or_fileobj="/content/lumen-dpo.gguf", path_in_repo="lumen-dpo.gguf",
-                repo_id="RavikxxBGamin/Lumen", token=HF_TOKEN,
+                repo_id="AxionLabsAI/Lumen", token=HF_TOKEN,
                 commit_message="Lumen DPO safety training")
 print("Uploaded.")
 ```
