@@ -5,7 +5,7 @@ import { resolve, dirname, join } from 'path';
 import { homedir } from 'os';
 import { fileURLToPath } from 'url';
 import {
-  getSavedModel, getSavedMode, getSavedApiKeys, getSavedCustomEndpoints, getSavedImageModel, loadLastSession,
+  getSavedModel, getSavedMode, getSavedApiKeys, getSavedCustomEndpoints, getSavedImageModel, loadLastSession, saveChat,
   isTrustedDirectory, trustDirectory,
 } from './persist.js';
 
@@ -336,5 +336,35 @@ if (linked) {
   });
 }
 
-const { waitUntilExit } = render(component, { exitOnCtrlC: false });
-waitUntilExit().then(() => process.exit(0));
+const { waitUntilExit } = render(component, { exitOnCtrlC: true });
+waitUntilExit().then(() => {
+  // Load the last autosaved session and print the session-end summary
+  try {
+    const last = loadLastSession();
+    if (last) {
+      const { model, mode, tokenCount, displayMessages } = last;
+      const tok = tokenCount || 0;
+      const tokStr = tok > 1000 ? `${(tok / 1000).toFixed(1)}k` : String(tok);
+      const msgCount = (displayMessages || []).filter(m => m.type === 'user' || m.type === 'assistant').length;
+      // Save as a named chat so it can be resumed
+      const sesId = `ses_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 6)}`;
+      saveChat(sesId, last);
+      process.stderr.write(`
+\x1b[38;5;208m █████╗ ██╗  ██╗██╗ ██████╗ ███╗   ██╗
+██╔══██╗╚██╗██╔╝██║██╔═══██╗████╗  ██║
+███████║ ╚███╔╝ ██║██║   ██║██╔██╗ ██║
+██╔══██║ ██╔██╗ ██║██║   ██║██║╚██╗██║
+██║  ██║██╔╝ ██╗██║╚██████╔╝██║ ╚████║
+╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═══╝\x1b[0m
+
+  Model     ${model}
+  Mode      ${mode}
+  Messages  ${msgCount}
+  Tokens    ${tokStr}
+
+  Continue  axion -r ${sesId}
+`);
+    }
+  } catch {}
+  process.exit(0);
+});

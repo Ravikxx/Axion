@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
-import { Box, Text, Static, useApp, useInput } from 'ink';
+import { Box, Text, Static, useApp } from 'ink';
 import { execSync, spawn } from 'child_process';
 import { existsSync, readFileSync, unlinkSync, statSync, readdirSync } from 'fs';
 import { join, resolve } from 'path';
@@ -424,42 +424,6 @@ export function App({
   }, []);
   const pushStatic = useCallback((msg) => setStaticMessages((p) => [...p, msg]), []);
 
-  const handleExit = useCallback(() => {
-    const tok = tokensRef.current.total || 0;
-    const tokStr = tok > 1000 ? `${(tok / 1000).toFixed(1)}k` : String(tok);
-    const msgs = staticMessages.filter(m => m.type === 'user' || m.type === 'assistant');
-    const sesId = `ses_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 6)}`;
-    const displayMsgs = staticMessages.filter((m) => m.type !== '_banner');
-    saveChat(sesId, {
-      model, mode, tokenCount: tok,
-      agentHistory: agentRef.current?.history || [],
-      displayMessages: displayMsgs,
-    });
-    process.stderr.write(`
-\x1b[38;5;208m █████╗ ██╗  ██╗██╗ ██████╗ ███╗   ██╗
-██╔══██╗╚██╗██╔╝██║██╔═══██╗████╗  ██║
-███████║ ╚███╔╝ ██║██║   ██║██╔██╗ ██║
-██╔══██║ ██╔██╗ ██║██║   ██║██║╚██╗██║
-██║  ██║██╔╝ ██╗██║╚██████╔╝██║ ╚████║
-╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═══╝\x1b[0m
-
-  Model     ${model}
-  Mode      ${mode}
-  Messages  ${msgs.length}
-  Tokens    ${tokStr}
-
-  Continue  axion -r ${sesId}
-`);
-    exit();
-  }, [model, mode, staticMessages, exit]);
-
-  // Intercept Ctrl+C to print session summary before exiting
-  useInput((input, key) => {
-    if (key.ctrl && input === 'c') {
-      handleExit();
-    }
-  });
-
   const finalizeTurn = useCallback(() => {
     const live = liveRef.current;
     liveRef.current = [];
@@ -857,7 +821,32 @@ export function App({
           return true;
 
         case 'exit': {
-          handleExit();
+          const tok = tokens.total || 0;
+          const tokStr = tok > 1000 ? `${(tok / 1000).toFixed(1)}k` : String(tok);
+          const msgCount = staticMessages.filter(m => m.type === 'user' || m.type === 'assistant').length;
+          const sesId = `ses_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 6)}`;
+          const displayMsgs = staticMessages.filter((m) => m.type !== '_banner');
+          saveChat(sesId, {
+            model, mode, tokenCount: tok,
+            agentHistory: agentRef.current?.history || [],
+            displayMessages: displayMsgs,
+          });
+          process.stderr.write(`
+\x1b[38;5;208m █████╗ ██╗  ██╗██╗ ██████╗ ███╗   ██╗
+██╔══██╗╚██╗██╔╝██║██╔═══██╗████╗  ██║
+███████║ ╚███╔╝ ██║██║   ██║██╔██╗ ██║
+██╔══██║ ██╔██╗ ██║██║   ██║██║╚██╗██║
+██║  ██║██╔╝ ██╗██║╚██████╔╝██║ ╚████║
+╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═══╝\x1b[0m
+
+  Model     ${model}
+  Mode      ${mode}
+  Messages  ${msgCount}
+  Tokens    ${tokStr}
+
+  Continue  axion -r ${sesId}
+`);
+          exit();
           return true;
         }
 
