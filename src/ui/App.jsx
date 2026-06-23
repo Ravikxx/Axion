@@ -813,9 +813,25 @@ export function App({
           pushStatic({ type: 'info', content: HELP_TEXT });
           return true;
 
-        case 'exit':
+        case 'exit': {
+          const tok = tokens.total || 0;
+          const tokStr = tok > 1000 ? `${(tok / 1000).toFixed(1)}k` : String(tok);
+          process.stderr.write(`
+\x1b[38;5;208m  ▄▄▄· ▄▄▄· ▄▄▄  ▄▄▄ ▄▄▄·
+  ▐█ ▀█ ▐█ ▀█ ▐█ ▀█ ▐█ ▀█ ▐█ ▀█
+  ▐█▀▀█ ▐█▀▀█ ▐█▀▀█ ▐█▀▀█ ▐█▀▀█
+  ▀▀▀▀  ▀▀▀▀  ▀▀▀▀  ▀▀▀▀  ▀▀▀▀\x1b[0m
+
+  Model     ${model}
+  Mode      ${mode}
+  Messages  ${staticMessages.filter(m => m.type === 'user' || m.type === 'assistant').length}
+  Tokens    ${tokStr}
+
+  Continue  axion --continue
+`);
           exit();
           return true;
+        }
 
         case 'clear':
           setStaticMessages([{ type: '_banner', model, mode }]);
