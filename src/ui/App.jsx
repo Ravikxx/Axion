@@ -267,9 +267,9 @@ function WelcomeBanner({ model, mode }) {
 
   return (
     <Box flexDirection="column" marginBottom={1} borderStyle="round" borderColor={accent()} paddingX={2} paddingY={0}>
-      <Box gap={4}>
+      <Box>
         {/* Left column */}
-        <Box flexDirection="column" minWidth={30}>
+        <Box flexDirection="column" minWidth={30} marginRight={4}>
           <Box gap={1} marginBottom={0}>
             <Text color={accent()} bold>⚛ Axion</Text>
             <Text color="gray">by Axion Labs</Text>
