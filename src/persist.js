@@ -12,7 +12,8 @@ function load() {
     if (!existsSync(FILE)) return {};
     const raw = JSON.parse(readFileSync(FILE, 'utf8'));
     return decryptJSON(raw, SECRET_KEYS);
-  } catch {
+  } catch (e) {
+    if (existsSync(FILE)) console.error('[persist] Failed to load config:', e?.message || e);
     return {};
   }
 }
@@ -20,9 +21,14 @@ function load() {
 function save(data) {
   try {
     if (!existsSync(DIR)) mkdirSync(DIR, { recursive: true });
-    const encrypted = encryptJSON(data, SECRET_KEYS);
+    // Merge with latest from disk to avoid clobbering concurrent writes
+    const onDisk = load();
+    const merged = { ...onDisk, ...data };
+    const encrypted = encryptJSON(merged, SECRET_KEYS);
     writeFileSync(FILE, JSON.stringify(encrypted, null, 2), 'utf8');
-  } catch {}
+  } catch (e) {
+    console.error('[persist] Failed to save config:', e?.message || e);
+  }
 }
 
 const _cfg = load();
@@ -688,14 +694,19 @@ export function getTodos() {
   try {
     if (!existsSync(TODOS_FILE)) return [];
     return JSON.parse(readFileSync(TODOS_FILE, 'utf8'));
-  } catch { return []; }
+  } catch (e) {
+    console.error('[persist] Failed to load todos:', e?.message || e);
+    return [];
+  }
 }
 
 function saveTodos(list) {
   try {
     if (!existsSync(DIR)) mkdirSync(DIR, { recursive: true });
     writeFileSync(TODOS_FILE, JSON.stringify(list, null, 2), 'utf8');
-  } catch {}
+  } catch (e) {
+    console.error('[persist] Failed to save todos:', e?.message || e);
+  }
 }
 
 export function addTodo(text, { source = 'user' } = {}) {

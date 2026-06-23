@@ -80,6 +80,7 @@ export const API_KEYS = {
   tavily:      process.env.TAVILY_API_KEY,
   sketchfab:   process.env.SKETCHFAB_API_KEY,
   zai:         process.env.ZAI_API_KEY,
+  veil:        process.env.VEIL_API_KEY,
 };
 
 export const BASE_URLS = {

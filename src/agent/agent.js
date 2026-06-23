@@ -367,8 +367,8 @@ CRITICAL RULES — follow these exactly:
   // ── Plan step ────────────────────────────────────────────────────────────
 
   async planStep(userMessage) {
-    const { client, type } = createClient(this.modelAlias);
-    const model = resolveModel(this.modelAlias);
+    let client, type, model;
+    try { const r = createClient(this.modelAlias); client = r.client; type = r.type; model = resolveModel(this.modelAlias); } catch (e) { return `[Error setting up model: ${friendlyError(e, this.modelAlias)}]`; }
     const planPrompt = `The user asked: "${userMessage}"\n\nProduce a numbered list of every step you will take. Do NOT execute any tools yet — only output the plan.`;
     const planHistory = [...this.history, { role: 'user', content: planPrompt }];
 
@@ -537,9 +537,8 @@ CRITICAL RULES — follow these exactly:
   // ── Compact (summarize history) ───────────────────────────────────────────
 
   async compact() {
-    const { client, type } = createClient(this.modelAlias);
-    const model = resolveModel(this.modelAlias);
-
+    let client, type, model;
+    try { const r = createClient(this.modelAlias); client = r.client; type = r.type; model = resolveModel(this.modelAlias); } catch (e) { throw friendlyError(e, this.modelAlias); }
     const convText = this.history.map((m) => {
       const role = m.role === 'assistant' ? 'Axion' : m.role === 'user' ? 'User' : m.role;
       const content = typeof m.content === 'string' ? m.content.slice(0, 600) : '[tool interaction]';
@@ -578,9 +577,8 @@ CRITICAL RULES — follow these exactly:
   // ── BTW (one-shot side question) ──────────────────────────────────────────
 
   async askBtw(question) {
-    const { client, type } = createClient(this.modelAlias);
-    const model = resolveModel(this.modelAlias);
-
+    let client, type, model;
+    try { const r = createClient(this.modelAlias); client = r.client; type = r.type; model = resolveModel(this.modelAlias); } catch (e) { return friendlyError(e, this.modelAlias); }
     const recentCtx = this.history.slice(-4)
       .map((m) => {
         if (m.role === 'user' && typeof m.content === 'string') return `User: ${m.content}`;
@@ -787,17 +785,16 @@ CRITICAL RULES — follow these exactly:
   // ── Model calls ───────────────────────────────────────────────────────────
 
   async _callModel() {
-    const { client, type } = createClient(this.modelAlias);
-    const model = resolveModel(this.modelAlias);
     this._abortCtrl = new AbortController();
     try {
+      const { client, type } = createClient(this.modelAlias);
+      const model = resolveModel(this.modelAlias);
       if (type === 'anthropic') return await this._callAnthropic(client, model);
       if (type === 'veil')      return await this._callVeil(client, model);
-      // 'other' uses the same path as openai but gets the same fallback treatment
       return await this._callOpenAI(client, model);
     } catch (err) {
       if (this.cancelled || /abort/i.test(err?.name || '') || /abort/i.test(err?.message || '')) {
-        this.onStreamEnd(); // flush whatever partial text streamed before the abort
+        this.onStreamEnd();
         return null;
       }
       this.onMessage({ role: 'error', content: friendlyError(err, this.modelAlias) });

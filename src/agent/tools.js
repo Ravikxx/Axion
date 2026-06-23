@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync, readdirSync, statSync, existsSync, unlinkSync, renameSync, mkdirSync, appendFileSync, cpSync } from 'fs';
+import { readFileSync, writeFileSync, readdirSync, statSync, existsSync, unlinkSync, renameSync, mkdirSync, appendFileSync, cpSync, rmSync } from 'fs';
 import { execSync, spawn } from 'child_process';
 import { relative, resolve, dirname, basename, extname } from 'path';
 import { diffLines } from '../utils/diff.js';
@@ -653,7 +653,12 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
         if (!existsSync(src)) return { success: false, output: `Source not found: ${relPath(input.from)}` };
         const destDir = dirname(dst);
         if (!existsSync(destDir)) mkdirSync(destDir, { recursive: true });
-        renameSync(src, dst);
+        try { renameSync(src, dst); }
+        catch (e) {
+          if (e.code !== 'EXDEV') throw e;
+          cpSync(src, dst, { recursive: true });
+          rmSync(src, { recursive: true, force: true });
+        }
         return { success: true, output: `Moved ${relPath(input.from)} → ${relPath(input.to)}` };
       }
 

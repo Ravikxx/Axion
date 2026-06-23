@@ -151,7 +151,7 @@ function createSharedSession(defaultModel, defaultMode) {
   function broadcast(data) {
     const json = JSON.stringify(data);
     for (const c of clients) {
-      if (c.readyState === 1 /* OPEN */) c.send(json);
+      if (c.readyState === 1 /* OPEN */) try { c.send(json); } catch { clients.delete(c); }
     }
   }
 
@@ -270,6 +270,7 @@ function createSharedSession(defaultModel, defaultMode) {
         if (questionResolver) {
           const resolve = questionResolver;
           questionResolver = null;
+          confirmResolver = null;
           resolve(msg.answer);
         }
         return;
@@ -316,6 +317,7 @@ function createSharedSession(defaultModel, defaultMode) {
     });
 
     ws.on('close', () => clients.delete(ws));
+    ws.on('error', () => clients.delete(ws));
   }
 
   // ── Run agent ───────────────────────────────────────────────────────────────

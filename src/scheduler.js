@@ -113,5 +113,5 @@ export async function tickScheduler() {
 }
 
 export function startScheduler() {
-  return setInterval(tickScheduler, 60 * 1000);
+  return setInterval(() => tickScheduler().catch((e) => console.error('[scheduler] tick failed:', e?.message || e)), 60 * 1000);
 }

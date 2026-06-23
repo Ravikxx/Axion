@@ -115,7 +115,7 @@ class McpServer {
 
   _notify(method, params = {}) {
     const line = JSON.stringify({ jsonrpc: '2.0', method, params }) + '\n';
-    this.proc?.stdin?.write(line);
+    try { this.proc?.stdin?.write(line); } catch {}
   }
 
   _request(method, params = {}, timeout = REQUEST_TIMEOUT) {
@@ -134,7 +134,7 @@ class McpServer {
       });
 
       const line = JSON.stringify({ jsonrpc: '2.0', id, method, params }) + '\n';
-      this.proc?.stdin?.write(line);
+      try { this.proc?.stdin?.write(line); } catch {}
     });
   }
 

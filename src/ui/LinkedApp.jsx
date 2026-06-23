@@ -171,7 +171,7 @@ export function LinkedApp({ wsUrl, initialModel, initialMode }) {
     });
 
     return () => { try { ws.close(); } catch {} };
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [wsUrl, handleEvent]);
 
   // ── Send helpers ────────────────────────────────────────────────────────────
 

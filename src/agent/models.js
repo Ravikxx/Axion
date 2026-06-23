@@ -69,7 +69,7 @@ export function createClient(modelAlias) {
   }
 
   if (provider === 'veil') {
-    return { type: 'veil', client: new OpenAI({ apiKey: 'no-key', baseURL: BASE_URLS.veil }) };
+    return { type: 'veil', client: new OpenAI({ apiKey: API_KEYS.veil || 'no-key', baseURL: BASE_URLS.veil }) };
   }
 
   if (provider === 'lumen') {
