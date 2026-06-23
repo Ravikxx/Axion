@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { rmSync } from 'fs';
+import { chmodSync, rmSync } from 'fs';
 import { build } from 'esbuild';
 
 rmSync('dist', { recursive: true, force: true });
@@ -25,5 +25,7 @@ await build({
   banner: { js: '#!/usr/bin/env node' },
   logLevel: 'info',
 });
+
+chmodSync('dist/axion.js', 0o755);
 
 console.log('Build complete → dist/axion.js');
