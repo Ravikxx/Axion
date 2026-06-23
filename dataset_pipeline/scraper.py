@@ -19,7 +19,7 @@ from tqdm.asyncio import tqdm
 
 from config import (
     API_KEYS, DATA_DIR, RAW_DIR, SCRAPE_LOG, SCRAPE_CONCURRENCY,
-    SCRAPE_DELAY_MIN, SCRAPE_DELAY_MAX, SCRAPE_TIMEOUT, SCRAPE_TARGETS,
+    SCRAPE_DELAY_MIN, SCRAPE_DELAY_MAX, SCRAPE_TIMEOUT, get_scrape_targets,
     SCRAPE_TARGET_TOTAL, MIN_WORD_COUNT, MAX_CONTENT_CHARS, USER_AGENT,
     SEEN_HASHES, SEEN_URLS,
 )
@@ -72,18 +72,20 @@ class DomainThrottle:
 # ── Scraper class ─────────────────────────────────────────────────────────────
 
 class Scraper:
-    def __init__(self, limit: int | None = None, resume: bool = False):
-        self.limit   = limit or SCRAPE_TARGET_TOTAL
-        self.resume  = resume
-        self.sem     = asyncio.Semaphore(SCRAPE_CONCURRENCY)
-        self.robots  = RobotsCache()
-        self.throttle= DomainThrottle()
-        self.url_dedup   = DeduplicatorJSON(SEEN_URLS)
-        self.hash_dedup  = DeduplicatorJSON(SEEN_HASHES)
-        self.logger  = JsonlLogger(SCRAPE_LOG)
-        self.saved   = len(list(RAW_DIR.glob("*.txt"))) if resume else 0
-        self.failed  = 0
-        self._pbar   = None
+    def __init__(self, limit: int | None = None, resume: bool = False, benchmark_mode: bool = False):
+        self.limit = limit or SCRAPE_TARGET_TOTAL
+        self.resume = resume
+        self.benchmark_mode = benchmark_mode
+        self.targets = get_scrape_targets(benchmark_mode)
+        self.sem = asyncio.Semaphore(SCRAPE_CONCURRENCY)
+        self.robots = RobotsCache()
+        self.throttle = DomainThrottle()
+        self.url_dedup = DeduplicatorJSON(SEEN_URLS)
+        self.hash_dedup = DeduplicatorJSON(SEEN_HASHES)
+        self.logger = JsonlLogger(SCRAPE_LOG)
+        self.saved = len(list(RAW_DIR.glob("*.txt"))) if resume else 0
+        self.failed = 0
+        self._pbar = None
 
     async def _headers(self, extra: dict = {}) -> dict:
         h = {"User-Agent": USER_AGENT, "Accept-Language": "en-US,en;q=0.9"}
@@ -284,6 +286,71 @@ class Scraper:
                 self.logger.log(event="error", source="github", error=str(e))
                 await asyncio.sleep(3)
 
+    # -- GitHub issues / bug reports --
+
+    async def _scrape_github_issues(
+        self,
+        client: httpx.AsyncClient,
+        count: int,
+        queries: list[str],
+        category: str,
+    ):
+        api = "https://api.github.com/search/issues"
+        fetched = 0
+        headers = {"Accept": "application/vnd.github+json"}
+        if API_KEYS["github"]:
+            headers["Authorization"] = f"Bearer {API_KEYS['github']}"
+
+        for query in queries:
+            if fetched >= count or self.saved >= self.limit:
+                break
+            page = 1
+            while fetched < count and self.saved < self.limit and page <= 10:
+                try:
+                    async with self.sem:
+                        r = await client.get(
+                            api,
+                            params={
+                                "q": query,
+                                "sort": "updated",
+                                "order": "desc",
+                                "per_page": "50",
+                                "page": str(page),
+                            },
+                            headers={**await self._headers(), **headers},
+                            timeout=SCRAPE_TIMEOUT,
+                        )
+                    data = r.json()
+                    items = data.get("items", [])
+                    if not items:
+                        break
+
+                    for item in items:
+                        if fetched >= count or self.saved >= self.limit:
+                            break
+                        if item.get("pull_request"):
+                            continue
+
+                        title = item.get("title", "")
+                        body = item.get("body", "")
+                        url = item.get("html_url", "")
+                        if not title or not body or not url:
+                            continue
+
+                        text = clean_text(f"{title}\n\n{BeautifulSoup(body, 'html.parser').get_text()}")
+                        if count_words(text) < 80:
+                            continue
+
+                        text = truncate(text, MAX_CONTENT_CHARS)
+                        if self._save(url, text, category):
+                            fetched += 1
+
+                    page += 1
+                    await asyncio.sleep(random.uniform(0.8, 1.6))
+                except Exception as e:
+                    self.logger.log(event="error", source="github_issues", error=str(e))
+                    await asyncio.sleep(3)
+
     # ── Dev.to API ────────────────────────────────────────────────────────────
 
     async def _scrape_devto(self, client: httpx.AsyncClient, count: int, category: str):
@@ -464,7 +531,7 @@ class Scraper:
             http2=True,
             follow_redirects=True,
         ) as client:
-            for (category, stype, opts) in SCRAPE_TARGETS:
+            for (category, stype, opts) in self.targets:
                 if self.saved >= self.limit:
                     break
 
@@ -478,6 +545,10 @@ class Scraper:
 
                 elif stype == "api_github":
                     await self._scrape_github(client, opts["count"], category)
+
+                elif stype == "api_github_issues":
+                    await self._scrape_github_issues(
+                        client, opts["count"], opts.get("queries", []), category)
 
                 elif stype == "api_devto":
                     await self._scrape_devto(client, opts["count"], category)
@@ -500,8 +571,12 @@ class Scraper:
         self.logger.close()
 
 
-async def run_scraper(limit: int | None = None, resume: bool = False) -> int:
-    scraper = Scraper(limit=limit, resume=resume)
+async def run_scraper(
+    limit: int | None = None,
+    resume: bool = False,
+    benchmark_mode: bool = False,
+) -> int:
+    scraper = Scraper(limit=limit, resume=resume, benchmark_mode=benchmark_mode)
     with tqdm(total=scraper.limit, desc="Scraping", unit="page", initial=scraper.saved) as pbar:
         await scraper.run(pbar)
     print(f"\n  Saved: {scraper.saved}  |  Failed: {scraper.failed}")

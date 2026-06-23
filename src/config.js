@@ -89,9 +89,9 @@ export const BASE_URLS = {
   gemini:      'https://generativelanguage.googleapis.com/v1beta/openai/',
   openrouter:  'https://openrouter.ai/api/v1',
   ollama:        'http://localhost:11434/v1',
-  veil:          'https://ravikxxbgamin-minecraftai-chat.hf.space/v1',
+  veil:          'https://axionlabsai-minecraftai-chat.hf.space/v1',
   lumen:         'https://api.amplifiedsmp.org/v1',
-  'axion-vision': 'https://ravikxxbgamin-lumenvision.hf.space/v1',
+  'axion-vision': 'https://axionlabsai-lumenvision.hf.space/v1',
   zai:         'https://api.z.ai/api/paas/v4',
 };
 

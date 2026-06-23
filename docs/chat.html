@@ -245,6 +245,13 @@
     }
     .send-btn:hover { background: var(--accent-d); }
     .send-btn:disabled { opacity: .4; cursor: not-allowed; }
+    .send-btn.stop { background: var(--red); }
+    .send-btn.stop:hover { background: #e05656; }
+    .chat-rename {
+      flex: 1; min-width: 0; background: var(--bg); border: 1px solid var(--accent);
+      color: var(--text); font-size: 13px; border-radius: 5px; padding: 3px 6px;
+      outline: none; font-family: inherit;
+    }
     .input-hint { text-align: center; font-size: 11px; color: var(--muted); margin-top: 9px; }
     .input-hint a { color: var(--muted2); text-decoration: underline; }
 
@@ -394,7 +401,7 @@
       <div class="input-row">
         <textarea class="input-box" id="user-input" placeholder="Message Lumen…" rows="1"
           oninput="autoResize(this)" onkeydown="handleKey(event)"></textarea>
-        <button class="send-btn" id="send-btn" onclick="sendMessage()" title="Send">
+        <button class="send-btn" id="send-btn" onclick="onSendClick()" title="Send">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
         </button>
       </div>
@@ -410,6 +417,7 @@
   let userEmail = localStorage.getItem('axion_email') || null
   let apiKey = null       // user's axion-sk- key, used for completions (account quota)
   let streaming = false
+  let abortCtrl = null    // AbortController for the in-flight completion (stop button)
 
   let chats = []          // [{ id, title, messages, updated, loaded }]
   let currentId = null
@@ -513,8 +521,37 @@
       <div class="chat-item ${c.id === currentId ? 'active' : ''}" onclick="switchChat('${c.id}')">
         <span class="chat-item-icon">💬</span>
         <span class="chat-item-title">${escHtml(c.title)}</span>
+        <button class="chat-item-del" onclick="renameChat('${c.id}', event)" title="Rename">✎</button>
         <button class="chat-item-del" onclick="deleteChat('${c.id}', event)" title="Delete">✕</button>
       </div>`).join('')
+  }
+
+  function renameChat(id, ev) {
+    if (ev) ev.stopPropagation()
+    const c = chats.find(x => x.id === id); if (!c) return
+    const item = ev.target.closest('.chat-item')
+    const titleSpan = item.querySelector('.chat-item-title')
+    const input = document.createElement('input')
+    input.className = 'chat-rename'; input.value = c.title
+    titleSpan.replaceWith(input)
+    input.focus(); input.select()
+    let done = false
+    const commit = () => {
+      if (done) return; done = true
+      const v = input.value.trim()
+      if (v && v !== c.title) {
+        c.title = v.slice(0, 200); c.updated = Date.now(); persistChat(c)
+        if (currentId === id) document.getElementById('topbar-title').textContent = c.title
+      }
+      renderChatList()
+    }
+    input.addEventListener('click', e => e.stopPropagation())
+    input.addEventListener('keydown', e => {
+      e.stopPropagation()
+      if (e.key === 'Enter') { e.preventDefault(); input.blur() }
+      else if (e.key === 'Escape') { input.value = c.title; input.blur() }
+    })
+    input.addEventListener('blur', commit)
   }
 
   // ── Rendering ───────────────────────────────────────────────────────────────
@@ -624,12 +661,18 @@
         ? '<div class="msg-avatar user">You</div>'
         : `<div class="msg-avatar assistant">${AVATAR}</div>`
       const bodyHtml = m.role === 'user' ? escHtml(m.content).replace(/\n/g, '<br>') : renderMarkdown(m.content)
+      const extraAction = m.role === 'user'
+        ? `<button class="msg-action" onclick="editMessage(${idx})">Edit</button>`
+        : `<button class="msg-action" onclick="regenerate(${idx})">Retry</button>`
       div.innerHTML = `
         ${avatar}
         <div class="msg-body">
           <div class="msg-role">${m.role === 'user' ? 'You' : 'Lumen'}</div>
           <div class="msg-text">${bodyHtml}</div>
-          <div class="msg-actions"><button class="msg-action" onclick="copyMsg(this, ${idx})">Copy</button></div>
+          <div class="msg-actions">
+            <button class="msg-action" onclick="copyMsg(this, ${idx})">Copy</button>
+            ${extraAction}
+          </div>
         </div>`
       wrap.appendChild(div)
     })
@@ -655,6 +698,20 @@
   }
 
   // ── Send ─────────────────────────────────────────────────────────────────
+  const ICON_SEND = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>'
+  const ICON_STOP = '<svg width="14" height="14" viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="2.5" fill="currentColor"/></svg>'
+
+  function setSendingState(on) {
+    streaming = on
+    const btn = document.getElementById('send-btn')
+    btn.innerHTML = on ? ICON_STOP : ICON_SEND
+    btn.classList.toggle('stop', on)
+    btn.title = on ? 'Stop generating' : 'Send'
+  }
+
+  function onSendClick() { if (streaming) stopGenerating(); else sendMessage() }
+  function stopGenerating() { if (abortCtrl) abortCtrl.abort() }
+
   async function sendMessage() {
     if (streaming) return
     const input = document.getElementById('user-input')
@@ -672,11 +729,33 @@
     c.messages.push({ role: 'user', content })
     c.updated = Date.now()
     renderChatList(); renderMessages(); persistChat(c)
+    await generateReply(c)
+  }
 
-    streaming = true
-    document.getElementById('send-btn').disabled = true
+  function editMessage(idx) {
+    const c = currentChat(); if (!c || streaming) return
+    const input = document.getElementById('user-input')
+    input.value = c.messages[idx].content
+    c.messages = c.messages.slice(0, idx)   // remove this msg + everything after
+    c.updated = Date.now(); persistChat(c)
+    renderChatList(); renderMessages()
+    autoResize(input); input.focus()
+  }
 
-    // streaming placeholder
+  async function regenerate(idx) {
+    const c = currentChat(); if (!c || streaming) return
+    c.messages = c.messages.slice(0, idx)   // drop this reply + anything after (leaves trailing user msg)
+    if (!c.messages.length) { renderMessages(); return }
+    c.updated = Date.now()
+    renderChatList(); renderMessages()
+    await generateReply(c)
+  }
+
+  // Generates an assistant reply for a chat whose messages end with a user turn.
+  async function generateReply(c) {
+    setSendingState(true)
+    abortCtrl = new AbortController()
+
     const wrap = document.getElementById('msg-wrap')
     const div = document.createElement('div')
     div.className = 'msg'
@@ -698,7 +777,7 @@
 
     let full = '', failed = false
     try {
-      const res = await fetch(`${API}/v1/chat/completions`, { method: 'POST', headers, body: JSON.stringify(body) })
+      const res = await fetch(`${API}/v1/chat/completions`, { method: 'POST', headers, body: JSON.stringify(body), signal: abortCtrl.signal })
       if (!res.ok) {
         const err = await res.json().catch(() => ({}))
         live.textContent = '⚠ ' + (err.error?.message || `Error ${res.status}`)
@@ -722,22 +801,23 @@
             } catch {}
           }
         }
-        live.classList.remove('streaming')
-        live.innerHTML = renderMarkdown(full)
       }
     } catch (e) {
-      live.textContent = '⚠ Network error: ' + e.message
-      live.classList.remove('streaming'); failed = true
+      if (e.name === 'AbortError') { /* keep whatever streamed so far */ }
+      else { live.textContent = '⚠ Network error: ' + e.message; failed = true }
     }
+
+    live.classList.remove('streaming')
+    if (!failed) live.innerHTML = full ? renderMarkdown(full) : '<p style="color:var(--muted)">(stopped)</p>'
 
     if (!failed && full) {
       c.messages.push({ role: 'assistant', content: full })
       c.updated = Date.now(); persistChat(c)
-      renderChatList(); renderMessages()   // re-render with copy action + markdown
+      renderChatList(); renderMessages()   // re-render with actions + markdown
     }
-    streaming = false
-    document.getElementById('send-btn').disabled = false
-    input.focus()
+    setSendingState(false)
+    abortCtrl = null
+    document.getElementById('user-input').focus()
   }
 
   // ── Auth ─────────────────────────────────────────────────────────────────

@@ -20,7 +20,7 @@ const PROVIDERS = {
   groq:       { baseURL: 'https://api.groq.com/openai/v1',                   format: 'openai' },
   mistral:    { baseURL: 'https://api.mistral.ai/v1',                        format: 'openai' },
   openrouter: { baseURL: 'https://openrouter.ai/api/v1',                     format: 'openai' },
-  veil:       { baseURL: 'https://ravikxxbgamin-minecraftai-chat.hf.space/v1', format: 'openai', noKey: true },
+  veil:       { baseURL: 'https://axionlabsai-minecraftai-chat.hf.space/v1', format: 'openai', noKey: true },
 };
 
 const BUILTIN_MODELS = [

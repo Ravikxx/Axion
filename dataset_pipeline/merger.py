@@ -1,32 +1,28 @@
-"""
-Dataset merger: combines scraped Q&A output + HuggingFace datasets,
-deduplicates by fuzzy question match, shuffles, writes final JSONL.
-"""
+"""Dataset merger."""
 
 import json
 import random
-from pathlib import Path
 
 from rapidfuzz import fuzz
 from tqdm import tqdm
 
-from config import (
-    FINAL_FILE, GEN_DIR, HF_DATASETS, FUZZY_THRESHOLD, SHUFFLE_SEED,
-)
+from config import FINAL_FILE, FUZZY_THRESHOLD, GEN_DIR, SHUFFLE_SEED, get_hf_datasets
 from utils import estimate_tokens
 
 
-# ── Normalize to shared schema ────────────────────────────────────────────────
-
-def _norm(question: str, answer: str, source: str) -> dict:
-    return {
+def _norm(question: str, answer: str, source: str, extra: dict | None = None) -> dict:
+    row = {
         "question": question.strip(),
-        "answer":   answer.strip(),
-        "source":   source,
+        "answer": answer.strip(),
+        "source": source,
     }
+    if extra:
+        for key in ("task_type", "difficulty", "category"):
+            value = extra.get(key)
+            if value:
+                row[key] = value
+    return row
 
-
-# ── Load scraped Q&A ──────────────────────────────────────────────────────────
 
 def load_scraped() -> list[dict]:
     rows = []
@@ -36,26 +32,23 @@ def load_scraped() -> list[dict]:
             data = json.loads(f.read_text(encoding="utf-8"))
         except Exception:
             continue
+
         category = data.get("category", "scraped")
-        source   = f"scraped_{category}"
+        source = f"scraped_{category}"
         for pair in data.get("pairs", []):
             q = pair.get("question", "")
             a = pair.get("answer", "")
             if q and a:
-                rows.append(_norm(q, a, source))
+                rows.append(_norm(q, a, source, pair))
     return rows
 
 
-# ── Load HuggingFace datasets ─────────────────────────────────────────────────
-
 def _load_openhermes(ds, limit: int) -> list[dict]:
-    """OpenHermes uses a 'conversations' field with role/value pairs."""
     rows = []
     for item in tqdm(ds, desc="OpenHermes", total=min(limit, len(ds)), unit="ex"):
         if len(rows) >= limit:
             break
         convs = item.get("conversations", [])
-        # Find human→gpt pairs
         for i, turn in enumerate(convs):
             if turn.get("from") == "human" and i + 1 < len(convs):
                 nxt = convs[i + 1]
@@ -67,8 +60,45 @@ def _load_openhermes(ds, limit: int) -> list[dict]:
     return rows
 
 
+def _load_humaneval(ds, limit: int) -> list[dict]:
+    rows = []
+    for item in tqdm(ds, desc="HumanEval", total=min(limit, len(ds)), unit="ex"):
+        if len(rows) >= limit:
+            break
+        prompt = item.get("prompt", "")
+        solution = item.get("canonical_solution", "")
+        if prompt and solution:
+            rows.append(
+                _norm(
+                    prompt,
+                    solution,
+                    "humaneval",
+                    {"task_type": "implementation", "difficulty": "benchmark"},
+                )
+            )
+    return rows
+
+
+def _load_mbpp(ds, limit: int) -> list[dict]:
+    rows = []
+    for item in tqdm(ds, desc="MBPP", total=min(limit, len(ds)), unit="ex"):
+        if len(rows) >= limit:
+            break
+        prompt = item.get("prompt") or item.get("text", "")
+        code = item.get("code", "")
+        if prompt and code:
+            rows.append(
+                _norm(
+                    prompt,
+                    code,
+                    "mbpp",
+                    {"task_type": "implementation", "difficulty": "benchmark"},
+                )
+            )
+    return rows
+
+
 def _load_generic(ds, cfg: dict, limit: int) -> list[dict]:
-    """Generic field mapping for alpaca-style datasets."""
     rows = []
     qf = cfg.get("q_field", "instruction")
     af = cfg.get("a_field", "output")
@@ -87,23 +117,32 @@ def _load_generic(ds, cfg: dict, limit: int) -> list[dict]:
     return rows
 
 
-def load_hf_datasets() -> list[dict]:
+def load_hf_datasets(benchmark_mode: bool = False) -> list[dict]:
     try:
         from datasets import load_dataset
     except ImportError:
-        print("  datasets not installed — skipping HuggingFace datasets.")
+        print("  datasets not installed - skipping HuggingFace datasets.")
         return []
 
     rows = []
-    for cfg in HF_DATASETS:
-        print(f"\n  Downloading {cfg['id']}…")
+    for cfg in get_hf_datasets(benchmark_mode):
+        print(f"\n  Downloading {cfg['id']}...")
         try:
-            ds = load_dataset(cfg["id"], split=cfg["split"])
+            if cfg.get("config_name"):
+                ds = load_dataset(cfg["id"], cfg["config_name"], split=cfg["split"])
+            else:
+                ds = load_dataset(cfg["id"], split=cfg["split"])
         except Exception as e:
             print(f"  Failed to load {cfg['id']}: {e}")
             continue
 
         limit = cfg.get("limit", 50_000)
+        if cfg["source"] == "humaneval":
+            rows.extend(_load_humaneval(ds, limit))
+            continue
+        if cfg["source"] == "mbpp":
+            rows.extend(_load_mbpp(ds, limit))
+            continue
         if cfg["source"] == "openhermes":
             rows.extend(_load_openhermes(ds, limit))
         else:
@@ -112,17 +151,10 @@ def load_hf_datasets() -> list[dict]:
     return rows
 
 
-# ── Fuzzy dedup ───────────────────────────────────────────────────────────────
-
 def fuzzy_dedup(rows: list[dict], threshold: int = FUZZY_THRESHOLD) -> list[dict]:
-    """
-    Remove duplicate questions. Does exact dedup (case-insensitive) plus
-    a bucket-based fuzzy pass: groups by 4-char prefix and checks similarity
-    within each bucket, which scales to 100k+ examples.
-    """
-    print(f"\n  Deduplicating {len(rows):,} examples (threshold={threshold}%)…")
+    """Remove duplicate questions with exact + bucketed fuzzy matching."""
+    print(f"\n  Deduplicating {len(rows):,} examples (threshold={threshold}%)...")
 
-    # Pass 1: exact dedup (normalised lowercase)
     seen_exact: set[str] = set()
     after_exact = []
     for row in rows:
@@ -133,14 +165,11 @@ def fuzzy_dedup(rows: list[dict], threshold: int = FUZZY_THRESHOLD) -> list[dict
 
     exact_removed = len(rows) - len(after_exact)
 
-    # Pass 2: bucket-based fuzzy dedup
-    # Group by lowercased 4-char prefix so we only compare within plausible clusters.
     buckets: dict[str, list[str]] = {}
     for row in after_exact:
         prefix = row["question"].lower()[:4]
         buckets.setdefault(prefix, []).append(row["question"])
 
-    # Build set of questions to drop
     drop: set[str] = set()
     for bucket_qs in tqdm(buckets.values(), desc="Fuzzy dedup", unit="bucket"):
         if len(bucket_qs) < 2:
@@ -155,39 +184,33 @@ def fuzzy_dedup(rows: list[dict], threshold: int = FUZZY_THRESHOLD) -> list[dict
                     drop.add(bucket_qs[j])
 
     deduped = [r for r in after_exact if r["question"] not in drop]
-    total_removed = len(rows) - len(deduped)
-    print(f"  Removed {exact_removed:,} exact + {len(drop):,} fuzzy duplicates → {len(deduped):,} remain")
+    print(f"  Removed {exact_removed:,} exact + {len(drop):,} fuzzy duplicates -> {len(deduped):,} remain")
     return deduped
 
 
-# ── Final assembly ────────────────────────────────────────────────────────────
-
-def merge_and_save() -> dict:
-    print("\n── Step 3: Loading scraped Q&A ──")
+def merge_and_save(benchmark_mode: bool = False) -> dict:
+    print("\n-- Step 3: Loading scraped Q&A --")
     scraped = load_scraped()
     print(f"  Scraped examples: {len(scraped):,}")
 
-    print("\n── Step 3: Loading HuggingFace datasets ──")
-    hf = load_hf_datasets()
+    print("\n-- Step 3: Loading HuggingFace datasets --")
+    hf = load_hf_datasets(benchmark_mode=benchmark_mode)
     print(f"  HF examples: {len(hf):,}")
 
     all_rows = scraped + hf
+
     print(f"\n  Total before dedup: {len(all_rows):,}")
 
-    # Dedup
     deduped = fuzzy_dedup(all_rows)
 
-    # Shuffle
     rng = random.Random(SHUFFLE_SEED)
     rng.shuffle(deduped)
 
-    # Write JSONL
-    print(f"\n── Step 4: Writing {FINAL_FILE} ──")
+    print(f"\n-- Step 4: Writing {FINAL_FILE} --")
     with open(FINAL_FILE, "w", encoding="utf-8") as f:
         for row in tqdm(deduped, desc="Writing JSONL", unit="ex"):
             f.write(json.dumps(row, ensure_ascii=False) + "\n")
 
-    # Summary stats
     by_source: dict[str, int] = {}
     total_chars = 0
     for row in deduped:
@@ -202,11 +225,11 @@ def merge_and_save() -> dict:
         "output": str(FINAL_FILE),
     }
 
-    print(f"\n── Final Dataset Summary ──")
+    print("\n-- Final Dataset Summary --")
     print(f"  Output file: {FINAL_FILE}")
     print(f"  Total examples: {stats['total']:,}")
     print(f"  Estimated tokens: {stats['estimated_tokens']:,}")
-    print(f"\n  By source:")
+    print("\n  By source:")
     for src, cnt in sorted(by_source.items(), key=lambda x: -x[1]):
         print(f"    {src:<30} {cnt:>8,}")
 

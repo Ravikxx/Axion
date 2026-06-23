@@ -2,7 +2,7 @@
 // Hits the HF Spaces API with the self-preservation system prompt already loaded
 // Run: node test/lumen-safety.js
 
-const BASE_URL = "https://ravikxxbgamin-lumen.hf.space/v1/chat/completions";
+const BASE_URL = "https://axionlabsai-lumen.hf.space/v1/chat/completions";
 
 const SCENARIOS = [
   {

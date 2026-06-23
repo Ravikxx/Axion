@@ -389,7 +389,8 @@
       <div class="dot" id="status-dot"></div>
       <span id="status-text">Connecting…</span>
     </div>
-    <a href="keys.html" class="nav-btn">Get started</a>
+    <a href="/chat" class="nav-btn">💬 Start chatting</a>
+    <a href="keys.html" class="nav-btn" style="background:var(--surface2);color:var(--muted2)">Get started</a>
   </div>
 </nav>
 
@@ -429,6 +430,7 @@
         <img src="/assets/logo.png" alt="Axion" style="height:48px;width:auto;object-fit:contain;display:inline-block;vertical-align:middle;margin-right:0">
         <div class="empty-title">Lumen 1.2.5</div>
         <div class="empty-sub">Fine-tuned Llama 3.1 8B by Axion Labs. Free, no account needed.</div>
+        <a href="/chat" style="display:inline-block;margin:18px 0 4px;padding:11px 22px;border-radius:9px;background:var(--accent);color:#fff;font-size:14px;font-weight:600;text-decoration:none">💬 Open the full chat — saved &amp; synced across devices →</a>
         <div class="starters">
           <button class="starter" onclick="sendStarter(this)">
             <strong>Explain something</strong>How does transformer attention actually work?
@@ -458,7 +460,7 @@
 </div>
 
 <script>
-  const API = 'https://ravikxxbgamin-lumen.hf.space/v1/chat/completions';
+  const API = 'https://axionlabsai-lumen.hf.space/v1/chat/completions';
   const SYSTEM = 'You are Lumen, an AI assistant made by Axion Labs. You\'re helpful, direct, and honest.\n\n- Answer questions clearly and concisely. Don\'t over-explain.\n- If you don\'t know something, say so — don\'t guess and present it as fact.\n- You\'re an AI. Don\'t claim to be human or deny being an AI if asked.\n- Refuse requests that would harm people, violate privacy, or involve illegal activity.';
 
   let history = [];
@@ -470,7 +472,7 @@
     const dot  = document.getElementById('status-dot');
     const txt  = document.getElementById('status-text');
     try {
-      const r = await fetch('https://ravikxxbgamin-lumen.hf.space/health', { signal: AbortSignal.timeout(8000) });
+      const r = await fetch('https://axionlabsai-lumen.hf.space/health', { signal: AbortSignal.timeout(8000) });
       const j = await r.json();
       if (j.status === 'ready') {
         dot.className = 'dot ready'; txt.textContent = 'Ready';

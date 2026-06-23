@@ -1,7 +1,4 @@
-"""
-Dataset pipeline entry point.
-Usage: python main.py [--resume] [--limit N] [--dry-run] [--skip-scrape] [--skip-generate]
-"""
+"""Dataset pipeline entry point."""
 
 import argparse
 import asyncio
@@ -12,13 +9,13 @@ from pathlib import Path
 
 def parse_args():
     p = argparse.ArgumentParser(
-        description="Axion dataset pipeline: scrape → generate Q&A → merge",
+        description="Axion dataset pipeline: scrape -> generate Q&A -> merge",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Steps:
-  1. Scraper  — crawls configured sources, saves raw .txt + .meta.json files
-  2. Generator — sends each .txt to LLM, produces Q&A .json files
-  3. Merger   — loads scraped + HuggingFace datasets, deduplicates, shuffles, writes JSONL
+  1. Scraper  - crawls configured sources, saves raw .txt + .meta.json files
+  2. Generator - sends each .txt to the LLM, produces Q&A .json files
+  3. Merger   - loads scraped + HuggingFace datasets, deduplicates, shuffles, writes JSONL
 
 Examples:
   python main.py                     # full pipeline
@@ -26,15 +23,21 @@ Examples:
   python main.py --skip-scrape       # generate + merge only
   python main.py --dry-run           # validate config, no LLM calls
   python main.py --limit 500         # cap scraper page count
+  python main.py --benchmark-mode    # bias toward SWE-bench-style code tasks
         """,
     )
-    p.add_argument("--resume",        action="store_true", help="Skip already-processed files")
-    p.add_argument("--limit",         type=int, default=None, help="Max pages to scrape per source")
-    p.add_argument("--dry-run",       action="store_true", help="Scrape + parse but skip LLM calls")
-    p.add_argument("--skip-scrape",   action="store_true", help="Skip Step 1 (scraper)")
+    p.add_argument("--resume", action="store_true", help="Skip already-processed files")
+    p.add_argument("--limit", type=int, default=None, help="Max pages to scrape per source")
+    p.add_argument("--dry-run", action="store_true", help="Scrape + parse but skip LLM calls")
+    p.add_argument("--skip-scrape", action="store_true", help="Skip Step 1 (scraper)")
     p.add_argument("--skip-generate", action="store_true", help="Skip Step 2 (Q&A generator)")
-    p.add_argument("--skip-merge",    action="store_true", help="Skip Step 3+4 (merger)")
-    p.add_argument("--skip-filter",   action="store_true", help="Skip Step 5 (quality filter)")
+    p.add_argument("--skip-merge", action="store_true", help="Skip Steps 3+4 (merger)")
+    p.add_argument("--skip-filter", action="store_true", help="Skip Step 5 (quality filter)")
+    p.add_argument(
+        "--benchmark-mode",
+        action="store_true",
+        help="Bias scraping and filtering toward SWE-bench-style coding tasks",
+    )
     return p.parse_args()
 
 
@@ -45,9 +48,9 @@ def print_header():
 
 
 def print_step(n: int, title: str):
-    print(f"\n{'─' * 60}")
+    print(f"\n{'-' * 60}")
     print(f"  Step {n}: {title}")
-    print(f"{'─' * 60}")
+    print(f"{'-' * 60}")
 
 
 def fmt_duration(seconds: float) -> str:
@@ -60,21 +63,53 @@ def fmt_duration(seconds: float) -> str:
     return f"{h}h {m}m {s}s"
 
 
+def _reset_benchmark_artifacts(data_dir: Path):
+    """Clear prior outputs so a fresh benchmark run starts clean."""
+    targets = [
+        data_dir / "raw",
+        data_dir / "generated",
+        data_dir / "final_dataset.jsonl",
+        data_dir / "scrape_log.jsonl",
+        data_dir / "llm_log.jsonl",
+        data_dir / "seen_urls.json",
+        data_dir / "seen_hashes.json",
+    ]
+
+    removed = 0
+    for target in targets:
+        if target.is_dir():
+            for child in target.glob("*"):
+                if child.is_file():
+                    child.unlink()
+                    removed += 1
+        elif target.exists():
+            target.unlink()
+            removed += 1
+
+    print(f"\n  [RESET] Cleared {removed} prior output files for benchmark restart.")
+
+
 async def main():
     args = parse_args()
     print_header()
 
-    # Validate config early
     try:
         from config import (
-            RAW_DIR, GEN_DIR, FINAL_FILE, DATA_DIR,
-            LLM_PROVIDERS, SCRAPE_TARGETS,
+            RAW_DIR,
+            GEN_DIR,
+            FINAL_FILE,
+            DATA_DIR,
+            LLM_PROVIDERS,
+            BENCHMARK_MODE,
+            get_scrape_targets,
         )
     except ImportError as e:
         print(f"\n[ERROR] Could not import config: {e}")
         sys.exit(1)
 
-    # Ensure directories exist
+    benchmark_mode = args.benchmark_mode or BENCHMARK_MODE
+    scrape_targets = get_scrape_targets(benchmark_mode)
+
     for d in (DATA_DIR, RAW_DIR, GEN_DIR):
         d.mkdir(parents=True, exist_ok=True)
 
@@ -83,7 +118,11 @@ async def main():
     print(f"  Generated Q&A  : {GEN_DIR}")
     print(f"  Final output   : {FINAL_FILE}")
     print(f"\n  LLM providers  : {', '.join(p['name'] for p in LLM_PROVIDERS)}")
-    print(f"  Scrape targets : {len(SCRAPE_TARGETS)} sources")
+    print(f"  Mode           : {'benchmark' if benchmark_mode else 'standard'}")
+    print(f"  Scrape targets : {len(scrape_targets)} sources")
+
+    if benchmark_mode and not args.resume:
+        _reset_benchmark_artifacts(DATA_DIR)
 
     if args.dry_run:
         print("\n  [DRY RUN] No LLM calls will be made.")
@@ -91,15 +130,16 @@ async def main():
     t_start = time.time()
     results = {}
 
-    # ── Step 1: Scraper ───────────────────────────────────────────────────────
     if not args.skip_scrape:
         print_step(1, "Web Scraper")
         t0 = time.time()
         try:
             from scraper import run_scraper
+
             scraped = await run_scraper(
                 resume=args.resume,
                 limit=args.limit,
+                benchmark_mode=benchmark_mode,
             )
             results["scraped_pages"] = scraped
             print(f"\n  Scraper done in {fmt_duration(time.time() - t0)}")
@@ -114,15 +154,16 @@ async def main():
         print(f"  Found {raw_count:,} existing raw files")
         results["scraped_pages"] = raw_count
 
-    # ── Step 2: Q&A Generator ────────────────────────────────────────────────
     if not args.skip_generate:
         print_step(2, "Q&A Generator")
         t0 = time.time()
         try:
             from generator import run_generator
+
             qa_count = await run_generator(
                 resume=args.resume,
                 dry_run=args.dry_run,
+                benchmark_mode=benchmark_mode,
             )
             results["qa_pairs"] = qa_count
             print(f"\n  Generator done in {fmt_duration(time.time() - t0)}")
@@ -135,13 +176,13 @@ async def main():
         gen_count = len(list(GEN_DIR.glob("*.json")))
         print(f"  Found {gen_count:,} existing generation files")
 
-    # ── Steps 3+4: Merge & Save ───────────────────────────────────────────────
     if not args.skip_merge:
         print_step(3, "Merge, Dedup & Save")
         t0 = time.time()
         try:
             from merger import merge_and_save
-            stats = merge_and_save()
+
+            stats = merge_and_save(benchmark_mode=benchmark_mode)
             results["final_examples"] = stats["total"]
             results["estimated_tokens"] = stats["estimated_tokens"]
             results["by_source"] = stats["by_source"]
@@ -152,25 +193,24 @@ async def main():
     else:
         print("\n  [Skipped] Steps 3+4: Merge & Save")
 
-    # ── Step 5: Quality Filter ────────────────────────────────────────────────
     if not args.skip_filter and not args.skip_merge:
         print_step(5, "Quality Filter")
         t0 = time.time()
         try:
             from filter import filter_dataset
-            fstats = filter_dataset()
+
+            fstats = filter_dataset(benchmark_mode=benchmark_mode)
             results["filtered_examples"] = fstats["output"]
-            results["removed_examples"]  = fstats["removed"]
+            results["removed_examples"] = fstats["removed"]
             print(f"\n  Filter done in {fmt_duration(time.time() - t0)}")
         except Exception as e:
-            print(f"\n[WARNING] Filter step failed: {e} — skipping")
+            print(f"\n[WARNING] Filter step failed: {e} - skipping")
     else:
         print("\n  [Skipped] Step 5: Quality Filter")
 
-    # ── Final Summary ─────────────────────────────────────────────────────────
     total_time = time.time() - t_start
     print(f"\n{'=' * 60}")
-    print(f"  Pipeline Complete — {fmt_duration(total_time)}")
+    print(f"  Pipeline Complete - {fmt_duration(total_time)}")
     print(f"{'=' * 60}")
 
     if "scraped_pages" in results:
@@ -186,7 +226,7 @@ async def main():
         print(f"  Output           : {FINAL_FILE}")
 
     if "by_source" in results:
-        print(f"\n  Breakdown by source:")
+        print("\n  Breakdown by source:")
         for src, cnt in sorted(results["by_source"].items(), key=lambda x: -x[1]):
             bar = "█" * min(30, cnt // max(1, results["final_examples"] // 30))
             print(f"    {src:<28} {cnt:>8,}  {bar}")
