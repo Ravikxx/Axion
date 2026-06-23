@@ -1,10 +1,16 @@
 #!/usr/bin/env node
+import { rmSync } from 'fs';
 import { build } from 'esbuild';
+
+rmSync('dist', { recursive: true, force: true });
 
 await build({
   entryPoints: ['src/index.js'],
   bundle: true,
-  outfile: 'dist/axion.js',
+  outdir: 'dist',
+  entryNames: 'axion',
+  chunkNames: 'chunks/[name]-[hash]',
+  splitting: true,
   platform: 'node',
   format: 'esm',
   target: 'node18',

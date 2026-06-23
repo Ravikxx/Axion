@@ -1,5 +1,5 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync, unlinkSync } from 'fs';
-import { join } from 'path';
+import { join, resolve } from 'path';
 import { homedir } from 'os';
 
 const DIR  = join(homedir(), '.axion');
@@ -22,6 +22,21 @@ function save(data) {
 }
 
 const _cfg = load();
+
+function currentDirectoryKey() {
+  return resolve(process.cwd());
+}
+
+export function isTrustedDirectory(dir = process.cwd()) {
+  const key = resolve(dir);
+  return _cfg.trustedDirectories?.[key] === true;
+}
+
+export function trustDirectory(dir = process.cwd()) {
+  if (!_cfg.trustedDirectories) _cfg.trustedDirectories = {};
+  _cfg.trustedDirectories[resolve(dir)] = true;
+  save(_cfg);
+}
 
 export function getSavedModel()   { return _cfg.model   || null; }
 export function getSavedMode()    { return _cfg.mode    || null; }
@@ -239,7 +254,9 @@ function parseSkill(raw, fallbackName) {
 
 export function getSkills() {
   const out = new Map(); // project-level overrides global
-  for (const dir of [SKILLS_DIR, join(process.cwd(), '.axion', 'skills')]) {
+  const dirs = [SKILLS_DIR];
+  if (isTrustedDirectory()) dirs.push(join(process.cwd(), '.axion', 'skills'));
+  for (const dir of dirs) {
     try {
       for (const f of readdirSync(dir)) {
         if (!f.endsWith('.md')) continue;
@@ -274,19 +291,22 @@ export function deleteSkill(name) {
 // Keys are tool names, or "run_command:<binary>" for shell commands.
 
 export function getAllowedTools() {
-  return (_cfg.allowedTools || {})[process.cwd()] || [];
+  if (!isTrustedDirectory()) return [];
+  return (_cfg.allowedTools || {})[currentDirectoryKey()] || [];
 }
 
 export function allowTool(key) {
+  if (!isTrustedDirectory()) return;
   if (!_cfg.allowedTools) _cfg.allowedTools = {};
-  const list = _cfg.allowedTools[process.cwd()] || [];
+  const projectKey = currentDirectoryKey();
+  const list = _cfg.allowedTools[projectKey] || [];
   if (!list.includes(key)) list.push(key);
-  _cfg.allowedTools[process.cwd()] = list;
+  _cfg.allowedTools[projectKey] = list;
   save(_cfg);
 }
 
 export function clearAllowedTools() {
-  if (_cfg.allowedTools) delete _cfg.allowedTools[process.cwd()];
+  if (_cfg.allowedTools) delete _cfg.allowedTools[currentDirectoryKey()];
   save(_cfg);
 }
 
@@ -297,7 +317,9 @@ export function clearAllowedTools() {
 
 export function getCustomCommands() {
   const out = {};
-  for (const dir of [join(DIR, 'commands'), join(process.cwd(), '.axion', 'commands')]) {
+  const dirs = [join(DIR, 'commands')];
+  if (isTrustedDirectory()) dirs.push(join(process.cwd(), '.axion', 'commands'));
+  for (const dir of dirs) {
     try {
       for (const f of readdirSync(dir)) {
         if (!f.endsWith('.md')) continue;

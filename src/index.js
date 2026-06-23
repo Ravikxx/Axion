@@ -1,19 +1,13 @@
-import React from 'react';
-import { render } from 'ink';
 import minimist from 'minimist';
+import { createInterface } from 'readline/promises';
 import { readFileSync, existsSync } from 'fs';
 import { resolve, dirname, join } from 'path';
 import { homedir } from 'os';
 import { fileURLToPath } from 'url';
-import { WebSocket } from 'ws';
-import { App } from './ui/App.jsx';
-import { LinkedApp } from './ui/LinkedApp.jsx';
-import { DEFAULT_MODEL, DEFAULT_MODE, API_KEYS, CUSTOM_ENDPOINTS, IMAGE_GEN_MODEL } from './config.js';
-import { getSavedModel, getSavedMode, getSavedApiKeys, getSavedCustomEndpoints, getSavedImageModel, loadLastSession } from './persist.js';
-import { MCP } from './agent/mcp.js';
-import { runDoctor } from './doctor.js';
-import { runUpdate } from './update.js';
-import { PLUGINS } from './agent/plugins.js';
+import {
+  getSavedModel, getSavedMode, getSavedApiKeys, getSavedCustomEndpoints, getSavedImageModel, loadLastSession,
+  isTrustedDirectory, trustDirectory,
+} from './persist.js';
 
 // Resolve the web server path relative to this bundle so /web and axion-serve work
 const _cliDir    = dirname(fileURLToPath(import.meta.url));
@@ -62,14 +56,63 @@ Shell completions:
 }
 
 if (argv.doctor) {
+  const { runDoctor } = await import('./doctor.js');
   await runDoctor();
   process.exit(0);
 }
 
 if (argv.update) {
+  const { runUpdate } = await import('./update.js');
   runUpdate();
   process.exit(0);
 }
+
+async function promptForDirectoryTrust() {
+  const cwd = resolve(process.cwd());
+  if (isTrustedDirectory(cwd)) return;
+
+  if (!process.stdin.isTTY) {
+    console.error(`Axion has not trusted ${cwd}. Run axion in an interactive terminal first to trust this directory.`);
+    process.exit(1);
+  }
+
+  const rl = createInterface({ input: process.stdin, output: process.stdout });
+  try {
+    while (true) {
+      console.log(`
+> You are in ${cwd}
+
+  Do you trust the contents of this directory? Working with untrusted contents comes with higher risk of
+  prompt injection. Trusting the directory allows project-local config, hooks, and exec policies to load.
+
+› 1. Yes, continue
+  2. No, quit
+`);
+      const answer = (await rl.question('  Press Enter to continue ')).trim().toLowerCase();
+      if (answer === '' || answer === '1' || answer === 'y' || answer === 'yes') {
+        trustDirectory(cwd);
+        return;
+      }
+      if (answer === '2' || answer === 'n' || answer === 'no' || answer === 'q' || answer === 'quit') {
+        process.exit(0);
+      }
+      console.log('  Enter 1 to continue, or 2 to quit.');
+    }
+  } finally {
+    rl.close();
+  }
+}
+
+await promptForDirectoryTrust();
+
+const React = (await import('react')).default;
+const { render } = await import('ink');
+const { WebSocket } = await import('ws');
+const { DEFAULT_MODEL, DEFAULT_MODE, API_KEYS, CUSTOM_ENDPOINTS, IMAGE_GEN_MODEL } = await import('./config.js');
+const { App } = await import('./ui/App.jsx');
+const { LinkedApp } = await import('./ui/LinkedApp.jsx');
+const { MCP } = await import('./agent/mcp.js');
+const { PLUGINS } = await import('./agent/plugins.js');
 
 // Positional args become the initial prompt sent on startup
 const initialPrompt = argv._.join(' ').trim();

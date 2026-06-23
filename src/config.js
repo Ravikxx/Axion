@@ -2,10 +2,11 @@ import { config } from 'dotenv';
 import { existsSync } from 'fs';
 import { join } from 'path';
 import { homedir } from 'os';
+import { isTrustedDirectory } from './persist.js';
 
 const cwdEnv  = join(process.cwd(), '.env');
 const homeEnv = join(homedir(), '.axion', '.env');
-if (existsSync(cwdEnv)) config({ path: cwdEnv });
+if (isTrustedDirectory() && existsSync(cwdEnv)) config({ path: cwdEnv });
 else if (existsSync(homeEnv)) config({ path: homeEnv });
 else config();
 
