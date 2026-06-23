@@ -8,3 +8,5 @@ dist/
 Thumbs.db
 .idea/
 *.iml
+lumen-data/**/__pycache__
+lumen-data/data/
