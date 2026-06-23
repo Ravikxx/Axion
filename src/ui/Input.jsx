@@ -27,7 +27,11 @@ export function InputBox({
   // Notify parent of value changes for autocomplete
   useEffect(() => { onChange?.(value); }, [value]);
 
+  const [pasteLines, setPasteLines] = useState(null); // non-null while display is collapsed
+
   const set = (v, c) => { setValue(v); setCursor(Math.max(0, Math.min(c, v.length))); };
+
+  const displayValue = pasteLines ? `[Pasted text + ${pasteLines} line${pasteLines > 1 ? 's' : ''}]` : value;
 
   useInput(
     (input, key) => {
@@ -64,16 +68,17 @@ export function InputBox({
       }
 
       if (key.return) {
+        // Shift+Enter → insert newline
+        if (key.shift) {
+          set(value.slice(0, cursor) + '\n' + value.slice(cursor), cursor + 1);
+          if (pasteLines) setPasteLines(null);
+          return;
+        }
         // Voice mode: Enter stops recording even with empty input
         if (voiceActive) {
           set('', 0);
           onChange?.('');
           onSubmit('');
-          return;
-        }
-        // Trailing backslash before the cursor → newline instead of submit
-        if (value[cursor - 1] === '\\') {
-          set(value.slice(0, cursor - 1) + '\n' + value.slice(cursor), cursor);
           return;
         }
         const trimmed = value.trim();
@@ -82,16 +87,18 @@ export function InputBox({
         appendInputHistory(trimmed);
         setHistoryIdx(-1);
         setDraft('');
+        setPasteLines(null);
         set('', 0);
         onChange?.('');
         onSubmit(trimmed);
         return;
       }
 
-      // Esc — clear the input (or exit history browsing back to a fresh line)
+      // Esc — clear the input
       if (key.escape) {
         setHistoryIdx(-1);
         setDraft('');
+        setPasteLines(null);
         set('', 0);
         return;
       }
@@ -149,6 +156,7 @@ export function InputBox({
 
       if (key.backspace || key.delete) {
         if (cursor === 0) return;
+        if (pasteLines) setPasteLines(null);
         set(value.slice(0, cursor - 1) + value.slice(cursor), cursor - 1);
         return;
       }
@@ -162,7 +170,7 @@ export function InputBox({
             setCursor(e === -1 ? value.length : e);
             return;
           }
-          case 'u': set('', 0); return;                                // clear line
+          case 'u': setPasteLines(null); set('', 0); return;           // clear line
           case 'k': set(value.slice(0, cursor), cursor); return;       // kill to end
           case 'w': {                                                  // delete word before cursor
             const left = value.slice(0, cursor).replace(/\S+\s*$/, '');
@@ -179,17 +187,22 @@ export function InputBox({
 
       if (!key.meta && input) {
         if (historyIdx !== -1) setHistoryIdx(-1); // editing a recalled entry starts a new draft
-        // Pasted text arrives as one chunk; terminals send \r for its newlines
         const text = input.replace(/\r\n?/g, '\n');
         set(value.slice(0, cursor) + text + value.slice(cursor), cursor + text.length);
+        // Pasted text arrives as one long chunk — collapse display to a summary
+        if (text.length > 3) {
+          const lines = text.split('\n').length - 1;
+          if (lines > 0 || text.length > 80) setPasteLines(lines || 1);
+        }
       }
     },
     { isActive }
   );
 
   const isCmd = value.startsWith('/');
-  const borderColor = disabled ? 'gray' : search ? 'magenta' : isCmd ? 'yellow' : 'blueBright';
-  const promptColor = disabled ? 'gray' : search ? 'magenta' : isCmd ? 'yellow' : 'blueBright';
+  const isPasted = pasteLines !== null;
+  const borderColor = disabled ? 'gray' : search ? 'magenta' : isCmd ? 'yellow' : isPasted ? 'green' : 'blueBright';
+  const promptColor = disabled ? 'gray' : search ? 'magenta' : isCmd ? 'yellow' : isPasted ? 'green' : 'blueBright';
 
   if (search) {
     return (
@@ -205,10 +218,11 @@ export function InputBox({
   return (
     <Box borderStyle="round" borderColor={borderColor} paddingX={1} marginX={1} marginTop={0}>
       <Text color={promptColor} bold>{'›'} </Text>
-      {value ? (
+      {pasteLines ? (
+        <Text color="green" bold>{displayValue}</Text>
+      ) : value ? (
         <Text>
           <Text color="white">{value.slice(0, cursor)}</Text>
-          {/* Cursor on a newline renders as a block at end-of-line, keeping the \n */}
           {!disabled && <Text inverse color="white">{value[cursor] === '\n' ? ' ' : value[cursor] ?? ' '}</Text>}
           <Text color="white">{value[cursor] === '\n' ? value.slice(cursor) : value.slice(cursor + 1)}</Text>
         </Text>

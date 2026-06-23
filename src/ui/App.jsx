@@ -1720,6 +1720,61 @@ triggers: <comma-separated words that should activate it, include "${skillName.t
           return true;
         }
 
+        case 'add': {
+          if (!arg) {
+            pushStatic({ type: 'error', content: 'usage: /add <filepath>' });
+            return true;
+          }
+          const filePath = resolve(arg);
+          if (!existsSync(filePath)) {
+            pushStatic({ type: 'error', content: `File not found: ${arg}` });
+            return true;
+          }
+          const fileStat = statSync(filePath);
+          if (fileStat.size > 512_000) {
+            pushStatic({ type: 'error', content: `File too large (${(fileStat.size / 1024).toFixed(0)} KB). Max 500 KB.` });
+            return true;
+          }
+          const content = readFileSync(filePath, 'utf8');
+          const feedMsg = `[File: ${arg}]\n\`\`\`\n${content}\n\`\`\``;
+          setStaticMessages((p) => [...p, { type: 'user', content: feedMsg }]);
+          setStaticMessages((p) => [...p, { type: 'assistant', content: `Read ${arg} (${fileStat.size.toLocaleString()} B). What would you like to know about it?` }]);
+          return true;
+        }
+
+        case 'sessions': {
+          const chats = listChats();
+          if (!chats.length) {
+            pushStatic({ type: 'info', content: 'No saved sessions. Use /save <name> to save one, or /exit saves automatically.' });
+            return true;
+          }
+          const lines = chats.map((c) => {
+            const date = c.savedAt ? new Date(c.savedAt).toLocaleString() : '?';
+            return `  ${c.name.padEnd(22)} ${(c.model || '?').padEnd(14)} ${(c.messages || '?').toString().padStart(4)} msgs  ${date}`;
+          }).join('\n');
+          pushStatic({ type: 'info', content: `Saved sessions:\n${lines}\n\n  /resume <name>  — load a session\n  /remove-chat <name>  — delete` });
+          return true;
+        }
+
+        case 'search': {
+          if (!arg) {
+            pushStatic({ type: 'error', content: 'usage: /search <query>  — search current session messages' });
+            return true;
+          }
+          const q = arg.toLowerCase();
+          const msgs = staticMessages.filter(m => m.type === 'user' || m.type === 'assistant');
+          const hits = msgs
+            .map((m, i) => ({ i, type: m.type, text: (m.content || '').trim().slice(0, 200).replace(/\n+/g, ' ') }))
+            .filter(m => m.text.toLowerCase().includes(q));
+          if (!hits.length) {
+            pushStatic({ type: 'info', content: `No messages contain "${arg}".` });
+            return true;
+          }
+          const result = hits.map(h => `  [${String(h.i + 1).padStart(3)}] ${h.type === 'user' ? 'You' : 'AI'}: ${h.text}`).join('\n');
+          pushStatic({ type: 'info', content: `Found ${hits.length} message(s) matching "${arg}":\n\n${result}` });
+          return true;
+        }
+
         case 'remove-chat': {
           if (!arg) {
             pushStatic({ type: 'error', content: 'usage: /remove-chat <chatname>' });
