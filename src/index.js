@@ -336,5 +336,5 @@ if (linked) {
   });
 }
 
-const { waitUntilExit } = render(component, { exitOnCtrlC: true });
+const { waitUntilExit } = render(component, { exitOnCtrlC: false });
 waitUntilExit().then(() => process.exit(0));
