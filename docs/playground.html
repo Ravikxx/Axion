@@ -293,10 +293,42 @@
     .oauth-btn:last-of-type { margin-bottom: 0; }
     .oauth-btn:hover { border-color: var(--border); color: var(--text); }
 
+    /* ── Mobile drawer (hidden on desktop) ── */
+    .hamburger { display: none; }
+    .drawer-overlay {
+      display: none; position: fixed; inset: 0; z-index: 55;
+      background: rgba(0,0,0,.5); backdrop-filter: blur(1px);
+    }
+    .drawer-overlay.show { display: block; }
+    .mobile-nav { display: none; }
+
     /* ── Mobile ── */
     @media (max-width: 768px) {
       .sidebar { display: none; }
-      .params-panel { display: none; }
+
+      .params-panel {
+        position: fixed; top: 0; left: 0; bottom: 0; z-index: 60;
+        width: 280px; max-width: 85vw;
+        transform: translateX(-100%);
+        transition: transform .22s ease;
+        box-shadow: 2px 0 28px rgba(0,0,0,.45);
+      }
+      .params-panel.open { transform: translateX(0); }
+
+      .mobile-nav { display: block; }
+
+      .hamburger {
+        display: flex; align-items: center; justify-content: center;
+        width: 34px; height: 34px; border-radius: 7px; flex-shrink: 0;
+        border: 1px solid var(--border2); background: var(--surface2);
+        color: var(--text); cursor: pointer; font-size: 17px; margin-right: 2px;
+      }
+      .hamburger:active { background: var(--border2); }
+
+      .chat-topbar { padding: 0 14px; gap: 10px; }
+      .input-area { padding: 12px 14px; }
+      .msg { padding: 12px 16px; gap: 11px; }
+      .messages { padding: 16px 0; }
     }
   </style>
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
@@ -351,6 +383,9 @@
   </a>
   <div class="nav-section">
     <div class="nav-label">API</div>
+    <a href="/chat" class="nav-item">
+      <span class="nav-icon">💬</span> Chat
+    </a>
     <a href="/keys" class="nav-item">
       <span class="nav-icon">⬡</span> API Keys
     </a>
@@ -377,11 +412,19 @@
   </div>
 </aside>
 
+<div class="drawer-overlay" id="drawer-overlay" onclick="toggleDrawer(false)"></div>
+
 <div class="main" id="app" style="display:none">
 
   <!-- Left params panel -->
-  <div class="params-panel">
+  <div class="params-panel" id="params-panel">
     <div class="params-header">Settings</div>
+
+    <div class="param-group mobile-nav">
+      <a href="/keys" class="nav-item"><span class="nav-icon">⬡</span> API Keys</a>
+      <a href="/docs" class="nav-item"><span class="nav-icon">◻</span> Docs</a>
+      <button class="sidebar-signout" onclick="logout()" style="margin-top:4px">Sign out</button>
+    </div>
 
     <div class="param-group">
       <div class="param-label">Model</div>
@@ -417,6 +460,7 @@
   <!-- Right chat area -->
   <div class="chat-area">
     <div class="chat-topbar">
+      <button class="hamburger" onclick="toggleDrawer()" aria-label="Menu">☰</button>
       <span class="chat-topbar-title">Playground</span>
       <div class="chat-topbar-right">
         <button class="btn-ghost" id="copy-btn" onclick="copyLast()" style="display:none">Copy last</button>
@@ -512,6 +556,16 @@
       document.querySelector('.sidebar-signout').textContent = 'Sign in'
       document.querySelector('.sidebar-signout').onclick = logout
     }
+  }
+
+  // ── Mobile drawer ───────────────────────────────────────────────────────────
+
+  function toggleDrawer(force) {
+    const panel = document.getElementById('params-panel')
+    const overlay = document.getElementById('drawer-overlay')
+    const open = force !== undefined ? force : !panel.classList.contains('open')
+    panel.classList.toggle('open', open)
+    overlay.classList.toggle('show', open)
   }
 
   // ── Chat ──────────────────────────────────────────────────────────────────

@@ -190,6 +190,7 @@ const RETURN_DESTINATIONS = {
   home:       'https://axion.amplifiedsmp.org',
   keys:       'https://axion.amplifiedsmp.org/keys',
   playground: 'https://axion.amplifiedsmp.org/playground',
+  chat:       'https://axion.amplifiedsmp.org/chat',
 }
 
 async function oauthFinish(c, { id_field, email, provider_id, return_to }) {
@@ -392,6 +393,55 @@ app.delete('/dashboard/keys/:id', async (c) => {
   if (!user) return json({ error: 'Not authenticated' }, 401)
   const result = await c.env.DB.prepare('UPDATE api_keys SET revoked=1 WHERE id=? AND user_id=?').bind(c.req.param('id'), user.id).run()
   if (result.meta.changes === 0) return json({ error: 'Key not found' }, 404)
+  return json({ ok: true })
+})
+
+// ── Chat sync (web chat app) ────────────────────────────────────────────────
+
+app.get('/chats', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  const { results } = await c.env.DB.prepare(
+    'SELECT id, title, updated FROM chats WHERE user_id=? ORDER BY updated DESC LIMIT 500'
+  ).bind(user.id).all()
+  return json({ chats: results })
+})
+
+app.get('/chats/:id', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  const row = await c.env.DB.prepare(
+    'SELECT id, title, messages, updated FROM chats WHERE id=? AND user_id=?'
+  ).bind(c.req.param('id'), user.id).first()
+  if (!row) return json({ error: 'Not found' }, 404)
+  let messages = []
+  try { messages = JSON.parse(row.messages || '[]') } catch {}
+  return json({ id: row.id, title: row.title, messages, updated: row.updated })
+})
+
+app.put('/chats/:id', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  const id = c.req.param('id')
+  const { title, messages, updated } = await c.req.json().catch(() => ({}))
+  const msgJson = JSON.stringify(Array.isArray(messages) ? messages : [])
+  if (msgJson.length > 1_000_000) return json({ error: 'Conversation too large' }, 413)
+  const ts = updated || Date.now()
+  // Upsert; the WHERE guard stops one user from overwriting another's row id.
+  await c.env.DB.prepare(
+    `INSERT INTO chats (id, user_id, title, messages, updated, created)
+     VALUES (?,?,?,?,?,?)
+     ON CONFLICT(id) DO UPDATE SET title=excluded.title, messages=excluded.messages, updated=excluded.updated
+     WHERE chats.user_id = excluded.user_id`
+  ).bind(id, user.id, (title || 'New chat').slice(0, 200), msgJson, ts, ts).run()
+  return json({ ok: true, id, updated: ts })
+})
+
+app.delete('/chats/:id', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  const result = await c.env.DB.prepare('DELETE FROM chats WHERE id=? AND user_id=?').bind(c.req.param('id'), user.id).run()
+  if (result.meta.changes === 0) return json({ error: 'Not found' }, 404)
   return json({ ok: true })
 })
 

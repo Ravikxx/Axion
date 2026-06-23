@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Chat — Axion Labs</title>
+  <meta name="description" content="Chat with Lumen, the free AI model by Axion Labs.">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #0d0e13;
+      --surface: #12131a;
+      --surface2:#1a1b24;
+      --surface3:#23242f;
+      --border:  #23242f;
+      --border2: #2e2f3e;
+      --text:    #e8e9f0;
+      --muted:   #6b6d80;
+      --muted2:  #9899a8;
+      --accent:  #e8602c;
+      --accent-d:#c04c1f;
+      --green:   #34d399;
+      --red:     #f87171;
+    }
+
+    html, body { height: 100%; overflow: hidden; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      background: var(--bg); color: var(--text);
+      font-size: 14px; line-height: 1.5;
+      display: flex; height: 100vh; height: 100dvh;
+    }
+    a { color: inherit; text-decoration: none; }
+    textarea { font-family: inherit; resize: none; }
+    button { font-family: inherit; }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      width: 264px; flex-shrink: 0; height: 100vh; height: 100dvh;
+      display: flex; flex-direction: column;
+      border-right: 1px solid var(--border);
+      background: var(--surface);
+      transition: transform .22s ease;
+    }
+    .sidebar-top {
+      padding: 14px 14px 10px; border-bottom: 1px solid var(--border);
+    }
+    .sidebar-brand {
+      display: flex; align-items: center; gap: 9px;
+      font-weight: 700; font-size: 15px; margin-bottom: 12px; padding: 2px;
+    }
+    .sidebar-brand img { height: 24px; width: auto; object-fit: contain; }
+    .new-chat-btn {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%; padding: 10px; border-radius: 9px;
+      background: var(--accent); color: #fff; border: none;
+      font-size: 13px; font-weight: 600; cursor: pointer;
+      transition: background .15s;
+    }
+    .new-chat-btn:hover { background: var(--accent-d); }
+
+    .chat-list { flex: 1; overflow-y: auto; padding: 8px; }
+    .chat-list::-webkit-scrollbar { width: 5px; }
+    .chat-list::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+    .chat-list-empty { color: var(--muted); font-size: 12px; text-align: center; padding: 24px 12px; }
+
+    .chat-item {
+      display: flex; align-items: center; gap: 8px;
+      padding: 9px 10px; border-radius: 8px; cursor: pointer;
+      color: var(--muted2); font-size: 13px;
+      transition: background .12s, color .12s; margin-bottom: 2px;
+      position: relative;
+    }
+    .chat-item:hover { background: var(--surface2); color: var(--text); }
+    .chat-item.active { background: var(--surface2); color: var(--text); }
+    .chat-item-icon { flex-shrink: 0; opacity: .6; font-size: 13px; }
+    .chat-item-title {
+      flex: 1; min-width: 0; white-space: nowrap;
+      overflow: hidden; text-overflow: ellipsis;
+    }
+    .chat-item-del {
+      flex-shrink: 0; opacity: 0; border: none; background: none;
+      color: var(--muted); cursor: pointer; font-size: 14px; padding: 2px 4px;
+      border-radius: 5px; line-height: 1; transition: opacity .12s, color .12s, background .12s;
+    }
+    .chat-item:hover .chat-item-del { opacity: 1; }
+    .chat-item-del:hover { color: var(--red); background: rgba(248,113,113,.1); }
+
+    .sidebar-bottom { border-top: 1px solid var(--border); padding: 8px; }
+    .sidebar-link {
+      display: flex; align-items: center; gap: 9px;
+      padding: 8px 10px; border-radius: 7px; cursor: pointer;
+      color: var(--muted2); font-size: 13px; width: 100%; text-align: left;
+      background: none; border: none; transition: background .12s, color .12s;
+    }
+    .sidebar-link:hover { background: var(--surface2); color: var(--text); }
+    .sidebar-account {
+      font-size: 12px; color: var(--muted); padding: 8px 10px 4px;
+      word-break: break-all; display: flex; align-items: center; gap: 8px;
+    }
+    .acct-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
+
+    /* ── Main ── */
+    .main { flex: 1; min-width: 0; display: flex; flex-direction: column; height: 100vh; height: 100dvh; }
+
+    .topbar {
+      height: 54px; flex-shrink: 0; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 12px; padding: 0 18px;
+      background: var(--surface);
+    }
+    .hamburger {
+      display: none; align-items: center; justify-content: center;
+      width: 34px; height: 34px; border-radius: 7px; flex-shrink: 0;
+      border: 1px solid var(--border2); background: var(--surface2);
+      color: var(--text); cursor: pointer; font-size: 17px;
+    }
+    .topbar-title { font-size: 14px; font-weight: 600; }
+    .model-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(232,96,44,.12); color: var(--accent);
+      border: 1px solid rgba(232,96,44,.25);
+      border-radius: 20px; padding: 4px 11px; font-size: 12px; font-weight: 600;
+    }
+    .model-badge .dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; }
+    .topbar-spacer { margin-left: auto; }
+
+    /* ── Messages ── */
+    .messages {
+      flex: 1; overflow-y: auto; scroll-behavior: smooth;
+      padding: 22px 0;
+    }
+    .messages::-webkit-scrollbar { width: 6px; }
+    .messages::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+    .msg-wrap { max-width: 760px; margin: 0 auto; padding: 0 20px; }
+    .msg { display: flex; gap: 14px; padding: 16px 0; }
+    .msg-avatar {
+      width: 30px; height: 30px; border-radius: 7px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700; margin-top: 1px; overflow: hidden;
+    }
+    .msg-avatar.user { background: var(--surface3); color: var(--muted2); }
+    .msg-avatar.assistant { background: var(--accent); color: #fff; }
+    .msg-avatar img { width: 20px; height: 20px; object-fit: contain; }
+    .msg-body { flex: 1; min-width: 0; }
+    .msg-role {
+      font-size: 11px; font-weight: 700; letter-spacing: .05em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 5px;
+    }
+    .msg-text { font-size: 14.5px; line-height: 1.7; color: var(--text); word-wrap: break-word; }
+    .msg-text > *:first-child { margin-top: 0; }
+    .msg-text > *:last-child { margin-bottom: 0; }
+    .msg-text p { margin: 0 0 10px; }
+    .msg-text h1, .msg-text h2, .msg-text h3 { margin: 16px 0 8px; line-height: 1.3; }
+    .msg-text h1 { font-size: 19px; } .msg-text h2 { font-size: 17px; } .msg-text h3 { font-size: 15px; }
+    .msg-text ul, .msg-text ol { margin: 0 0 10px; padding-left: 22px; }
+    .msg-text li { margin: 3px 0; }
+    .msg-text a { color: var(--accent); text-decoration: underline; }
+    .msg-text strong { font-weight: 700; color: #fff; }
+    .msg-text code.inline {
+      background: var(--surface3); padding: 1.5px 6px; border-radius: 5px;
+      font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace; font-size: 12.5px;
+    }
+    .msg-text blockquote {
+      border-left: 3px solid var(--border2); padding-left: 14px;
+      margin: 0 0 10px; color: var(--muted2);
+    }
+    .msg-text.streaming::after {
+      content: '▋'; display: inline-block; animation: blink .8s step-end infinite;
+      color: var(--accent); margin-left: 1px;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    .code-block {
+      margin: 10px 0; border: 1px solid var(--border2); border-radius: 9px;
+      overflow: hidden; background: #0a0b0f;
+    }
+    .code-head {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 6px 12px; background: var(--surface2);
+      border-bottom: 1px solid var(--border2);
+      font-size: 11px; color: var(--muted2);
+    }
+    .code-copy {
+      border: none; background: none; color: var(--muted2); cursor: pointer;
+      font-size: 11px; padding: 2px 6px; border-radius: 5px; transition: color .12s, background .12s;
+    }
+    .code-copy:hover { color: var(--text); background: var(--surface3); }
+    .code-block pre { margin: 0; padding: 12px 14px; overflow-x: auto; }
+    .code-block code {
+      font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+      font-size: 12.5px; line-height: 1.6; color: #d4d6e0; white-space: pre;
+    }
+    .code-block pre::-webkit-scrollbar { height: 6px; }
+    .code-block pre::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+    .msg-actions { margin-top: 8px; display: flex; gap: 8px; }
+    .msg-action {
+      border: none; background: none; color: var(--muted); cursor: pointer;
+      font-size: 11.5px; padding: 3px 7px; border-radius: 6px;
+      transition: color .12s, background .12s;
+    }
+    .msg-action:hover { color: var(--text); background: var(--surface2); }
+
+    /* ── Empty / greeting ── */
+    .greeting {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; padding: 40px 24px; text-align: center;
+    }
+    .greeting-logo { height: 52px; width: auto; margin-bottom: 20px; opacity: .95; }
+    .greeting-title { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
+    .greeting-sub { font-size: 14px; color: var(--muted); max-width: 380px; margin-bottom: 26px; }
+    .suggestions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 520px; width: 100%; }
+    .suggestion {
+      text-align: left; padding: 13px 15px; border-radius: 11px;
+      border: 1px solid var(--border2); background: var(--surface);
+      color: var(--muted2); font-size: 13px; cursor: pointer; line-height: 1.45;
+      transition: border-color .12s, color .12s, background .12s;
+    }
+    .suggestion:hover { border-color: var(--accent); color: var(--text); background: var(--surface2); }
+    .suggestion b { color: var(--text); display: block; margin-bottom: 2px; font-weight: 600; }
+
+    /* ── Input ── */
+    .input-area { flex-shrink: 0; padding: 12px 20px 18px; background: var(--bg); }
+    .input-inner { max-width: 760px; margin: 0 auto; }
+    .input-row {
+      display: flex; gap: 10px; align-items: flex-end;
+      background: var(--surface); border: 1px solid var(--border2);
+      border-radius: 14px; padding: 8px 8px 8px 14px;
+      transition: border-color .12s;
+    }
+    .input-row:focus-within { border-color: var(--accent); }
+    .input-box {
+      flex: 1; border: none; background: none; color: var(--text);
+      font-size: 14.5px; line-height: 1.5; outline: none;
+      max-height: 200px; overflow-y: auto; padding: 6px 0;
+    }
+    .input-box::placeholder { color: var(--muted); }
+    .send-btn {
+      width: 36px; height: 36px; border-radius: 9px; flex-shrink: 0;
+      border: none; background: var(--accent); color: #fff; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .15s, opacity .15s;
+    }
+    .send-btn:hover { background: var(--accent-d); }
+    .send-btn:disabled { opacity: .4; cursor: not-allowed; }
+    .input-hint { text-align: center; font-size: 11px; color: var(--muted); margin-top: 9px; }
+    .input-hint a { color: var(--muted2); text-decoration: underline; }
+
+    /* ── Drawer overlay (mobile) ── */
+    .drawer-overlay {
+      display: none; position: fixed; inset: 0; z-index: 40;
+      background: rgba(0,0,0,.5); backdrop-filter: blur(1px);
+    }
+    .drawer-overlay.show { display: block; }
+
+    /* ── Auth overlay ── */
+    #auth-overlay {
+      position: fixed; inset: 0; z-index: 80; background: var(--bg);
+      display: flex; align-items: center; justify-content: center; padding: 24px;
+    }
+    .auth-card {
+      background: var(--surface); border: 1px solid var(--border2);
+      border-radius: 16px; padding: 38px; width: 100%; max-width: 400px;
+    }
+    .auth-logo { font-size: 22px; font-weight: 800; margin-bottom: 18px; display: flex; align-items: center; gap: 8px; }
+    .auth-logo img { height: 26px; width: auto; }
+    .auth-logo span { color: var(--accent); }
+    .auth-title { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+    .auth-sub { font-size: 13px; color: var(--muted); margin-bottom: 22px; }
+    .field { margin-bottom: 13px; }
+    .field label { display: block; font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+    .field input {
+      width: 100%; padding: 10px 12px; border-radius: 8px;
+      border: 1px solid var(--border2); background: var(--bg);
+      font-size: 14px; color: var(--text); outline: none; transition: border-color .15s;
+    }
+    .field input:focus { border-color: var(--accent); }
+    .btn-full { width: 100%; padding: 11px; font-size: 14px; font-weight: 600; border-radius: 8px; border: none; cursor: pointer; transition: opacity .2s, background .15s; }
+    .btn-full:hover:not(:disabled) { opacity: .9; }
+    .btn-full:disabled { opacity: .5; cursor: not-allowed; }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-skip { background: var(--surface2); color: var(--muted2); margin-top: 8px; border: 1px solid var(--border2); }
+    .btn-skip:hover:not(:disabled) { color: var(--text); }
+    .auth-error {
+      background: rgba(248,113,113,.1); border: 1px solid rgba(248,113,113,.25);
+      color: var(--red); font-size: 13px; padding: 10px 14px;
+      border-radius: 7px; margin-bottom: 14px; display: none;
+    }
+    .oauth-divider { display: flex; align-items: center; gap: 10px; margin: 16px 0 12px; }
+    .oauth-divider::before, .oauth-divider::after { content:''; flex:1; height:1px; background: var(--border2); }
+    .oauth-divider span { font-size: 11px; color: var(--muted); }
+    .oauth-btn {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      padding: 10px; background: var(--surface2); border: 1px solid var(--border2);
+      border-radius: 8px; color: var(--muted2); font-size: 13px; font-weight: 500;
+      margin-bottom: 8px; transition: border-color .12s, color .12s;
+    }
+    .oauth-btn:last-of-type { margin-bottom: 0; }
+    .oauth-btn:hover { border-color: var(--border); color: var(--text); }
+
+    /* ── Mobile ── */
+    @media (max-width: 820px) {
+      .sidebar {
+        position: fixed; top: 0; left: 0; bottom: 0; z-index: 50;
+        transform: translateX(-100%); box-shadow: 2px 0 28px rgba(0,0,0,.45);
+      }
+      .sidebar.open { transform: translateX(0); }
+      .hamburger { display: flex; }
+      .suggestions { grid-template-columns: 1fr; }
+      .msg-wrap, .input-inner { max-width: 100%; }
+      .input-area { padding: 10px 12px 14px; }
+    }
+  </style>
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+</head>
+<body>
+
+<!-- Auth overlay -->
+<div id="auth-overlay">
+  <div class="auth-card">
+    <div class="auth-logo"><img src="/assets/logo.png" alt="Axion"><span>Axion</span></div>
+    <div class="auth-title">Chat with Lumen</div>
+    <div class="auth-sub">Sign in to start chatting. Your conversations sync across all your devices.</div>
+
+    <div class="auth-error" id="auth-error"></div>
+
+    <div class="field">
+      <label>Email</label>
+      <input type="email" id="input-email" placeholder="you@example.com" autocomplete="email">
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input type="password" id="input-password" placeholder="••••••••" autocomplete="current-password">
+    </div>
+
+    <button class="btn-full btn-primary" id="auth-submit" onclick="doLogin()">Sign in</button>
+    <div style="text-align:center;margin-top:10px;font-size:12.5px;color:var(--muted)">No account? <a href="/keys" style="color:var(--accent)">Create one →</a></div>
+
+    <div class="oauth-divider"><span>or continue with</span></div>
+
+    <a href="https://api.amplifiedsmp.org/auth/google?return_to=chat" class="oauth-btn">
+      <svg width="16" height="16" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.08 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-3.59-13.46-8.82l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+      Google
+    </a>
+    <a href="https://api.amplifiedsmp.org/auth/github?return_to=chat" class="oauth-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.809 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+      GitHub
+    </a>
+    <a href="https://api.amplifiedsmp.org/auth/discord?return_to=chat" class="oauth-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="#5865F2"><path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 00.031.057 19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03z"/></svg>
+      Discord
+    </a>
+  </div>
+</div>
+
+<!-- Sidebar -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-top">
+    <a href="/" class="sidebar-brand">
+      <img src="/assets/logo.png" alt="Axion"> Axion
+    </a>
+    <button class="new-chat-btn" onclick="newChat()">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      New chat
+    </button>
+  </div>
+  <div class="chat-list" id="chat-list"></div>
+  <div class="sidebar-bottom">
+    <div class="sidebar-account"><span class="acct-dot"></span><span id="acct-email">Free tier</span></div>
+    <a href="/keys" class="sidebar-link"><span>⬡</span> API Keys</a>
+    <a href="/docs" class="sidebar-link"><span>◻</span> Docs</a>
+    <button class="sidebar-link" onclick="logout()"><span>⏻</span> <span id="signout-label">Sign out</span></button>
+  </div>
+</aside>
+
+<div class="drawer-overlay" id="drawer-overlay" onclick="toggleDrawer(false)"></div>
+
+<!-- Main -->
+<div class="main">
+  <div class="topbar">
+    <button class="hamburger" onclick="toggleDrawer()" aria-label="Menu">☰</button>
+    <span class="topbar-title" id="topbar-title">New chat</span>
+    <div class="topbar-spacer"></div>
+    <div class="model-badge"><span class="dot"></span> Lumen</div>
+  </div>
+
+  <div class="messages" id="messages"></div>
+
+  <div class="input-area">
+    <div class="input-inner">
+      <div class="input-row">
+        <textarea class="input-box" id="user-input" placeholder="Message Lumen…" rows="1"
+          oninput="autoResize(this)" onkeydown="handleKey(event)"></textarea>
+        <button class="send-btn" id="send-btn" onclick="sendMessage()" title="Send">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </div>
+      <div class="input-hint">Lumen can make mistakes. Free tier: 50/day · <a href="/keys">get a key</a> for more.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const API = 'https://api.amplifiedsmp.org'
+
+  let sessionToken = localStorage.getItem('axion_token') || null
+  let userEmail = localStorage.getItem('axion_email') || null
+  let apiKey = null       // user's axion-sk- key, used for completions (account quota)
+  let streaming = false
+
+  let chats = []          // [{ id, title, messages, updated, loaded }]
+  let currentId = null
+
+  function authHeaders(extra) { return Object.assign({ Authorization: `Bearer ${sessionToken}` }, extra || {}) }
+  function currentChat() { return chats.find(c => c.id === currentId) || null }
+  function uid() { return 'c-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7) }
+
+  // ── Server sync ────────────────────────────────────────────────────────────
+  async function fetchChatList() {
+    try {
+      const res = await fetch(`${API}/chats`, { headers: authHeaders() })
+      if (!res.ok) return
+      const data = await res.json()
+      chats = (data.chats || []).map(c => ({ id: c.id, title: c.title, updated: c.updated, messages: [], loaded: false }))
+    } catch {}
+  }
+  async function fetchChatMessages(c) {
+    if (c.loaded) return
+    try {
+      const res = await fetch(`${API}/chats/${c.id}`, { headers: authHeaders() })
+      if (!res.ok) return
+      const data = await res.json()
+      c.messages = data.messages || []
+      c.loaded = true
+    } catch {}
+  }
+  async function persistChat(c) {
+    try {
+      await fetch(`${API}/chats/${c.id}`, {
+        method: 'PUT',
+        headers: authHeaders({ 'Content-Type': 'application/json' }),
+        body: JSON.stringify({ title: c.title, messages: c.messages, updated: c.updated }),
+      })
+    } catch {}
+  }
+  async function deleteChatServer(id) {
+    try { await fetch(`${API}/chats/${id}`, { method: 'DELETE', headers: authHeaders() }) } catch {}
+  }
+  // Use the account's API key for completions so chat counts against the
+  // signed-in user's 1,000/mo quota (not the free per-IP tier). Auto-create one.
+  async function ensureApiKey() {
+    try {
+      const res = await fetch(`${API}/dashboard/keys`, { headers: authHeaders() })
+      if (res.ok) {
+        const data = await res.json()
+        if (data.keys && data.keys.length) { apiKey = data.keys[0].key_value; return }
+      }
+      const cr = await fetch(`${API}/dashboard/keys`, {
+        method: 'POST', headers: authHeaders({ 'Content-Type': 'application/json' }),
+        body: JSON.stringify({ label: 'Web Chat' }),
+      })
+      if (cr.ok) { const d = await cr.json(); apiKey = d.key_value }
+    } catch {}
+  }
+
+  // ── Chat management ───────────────────────────────────────────────────────
+  function newChat() {
+    currentId = null
+    renderChatList()
+    renderMessages()
+    document.getElementById('topbar-title').textContent = 'New chat'
+    toggleDrawer(false)
+    document.getElementById('user-input').focus()
+  }
+
+  async function switchChat(id) {
+    currentId = id
+    renderChatList()
+    const c = currentChat()
+    document.getElementById('topbar-title').textContent = c ? c.title : 'New chat'
+    toggleDrawer(false)
+    if (c && !c.loaded) {
+      document.getElementById('messages').innerHTML = '<div class="greeting"><div class="greeting-sub">Loading…</div></div>'
+      await fetchChatMessages(c)
+    }
+    if (currentId === id) renderMessages()
+  }
+
+  function deleteChat(id, ev) {
+    if (ev) ev.stopPropagation()
+    chats = chats.filter(c => c.id !== id)
+    deleteChatServer(id)
+    if (currentId === id) { currentId = null; renderMessages(); document.getElementById('topbar-title').textContent = 'New chat' }
+    renderChatList()
+  }
+
+  function titleFrom(text) {
+    const t = text.trim().replace(/\s+/g, ' ')
+    return t.length > 42 ? t.slice(0, 42) + '…' : t
+  }
+
+  function renderChatList() {
+    const list = document.getElementById('chat-list')
+    if (!chats.length) {
+      list.innerHTML = '<div class="chat-list-empty">No conversations yet.<br>Start a new chat to begin.</div>'
+      return
+    }
+    const sorted = [...chats].sort((a, b) => b.updated - a.updated)
+    list.innerHTML = sorted.map(c => `
+      <div class="chat-item ${c.id === currentId ? 'active' : ''}" onclick="switchChat('${c.id}')">
+        <span class="chat-item-icon">💬</span>
+        <span class="chat-item-title">${escHtml(c.title)}</span>
+        <button class="chat-item-del" onclick="deleteChat('${c.id}', event)" title="Delete">✕</button>
+      </div>`).join('')
+  }
+
+  // ── Rendering ───────────────────────────────────────────────────────────────
+  function escHtml(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;')
+  }
+
+  // Minimal, safe markdown: escapes first, then formats.
+  // Code blocks are pulled out behind a private-use sentinel so formatting
+  // can't touch them, then restored at the end.
+  const SENT = ''
+  function renderMarkdown(src) {
+    const blocks = []
+    // fenced code blocks → sentinel placeholder on its own line
+    let text = src.replace(/```(\w*)\n?([\s\S]*?)```/g, (_, lang, code) => {
+      const i = blocks.length
+      const safe = escHtml(code.replace(/\n$/, ''))
+      blocks.push(
+        `<div class="code-block"><div class="code-head"><span>${escHtml(lang || 'code')}</span>` +
+        `<button class="code-copy" onclick="copyCode(this)">Copy</button></div>` +
+        `<pre><code>${safe}</code></pre></div>`)
+      return `\n${SENT}${i}${SENT}\n`
+    })
+
+    text = escHtml(text)
+
+    // headings
+    text = text.replace(/^### (.*)$/gm, '<h3>$1</h3>')
+               .replace(/^## (.*)$/gm, '<h2>$1</h2>')
+               .replace(/^# (.*)$/gm, '<h1>$1</h1>')
+    // blockquote
+    text = text.replace(/^&gt; (.*)$/gm, '<blockquote>$1</blockquote>')
+    // inline code
+    text = text.replace(/`([^`]+)`/g, '<code class="inline">$1</code>')
+    // bold / italic
+    text = text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+    text = text.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>')
+    // links
+    text = text.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>')
+
+    // lists + paragraphs (line based)
+    const lines = text.split('\n')
+    let html = '', inUl = false, inOl = false
+    const closeLists = () => { if (inUl) { html += '</ul>'; inUl = false } if (inOl) { html += '</ol>'; inOl = false } }
+    const sentLine = new RegExp(`^${SENT}\\d+${SENT}$`)
+    for (let line of lines) {
+      const ulm = line.match(/^\s*[-*] (.*)$/)
+      const olm = line.match(/^\s*\d+\. (.*)$/)
+      if (ulm) { if (!inUl) { closeLists(); html += '<ul>'; inUl = true } html += `<li>${ulm[1]}</li>`; continue }
+      if (olm) { if (!inOl) { closeLists(); html += '<ol>'; inOl = true } html += `<li>${olm[1]}</li>`; continue }
+      closeLists()
+      if (line.trim() === '') { continue }
+      if (/^<(h1|h2|h3|blockquote)/.test(line) || sentLine.test(line.trim())) { html += line; continue }
+      html += `<p>${line}</p>`
+    }
+    closeLists()
+
+    // restore code blocks
+    html = html.replace(new RegExp(`${SENT}(\\d+)${SENT}`, 'g'), (_, i) => blocks[+i])
+    return html
+  }
+
+  function copyCode(btn) {
+    const code = btn.closest('.code-block').querySelector('code')
+    navigator.clipboard.writeText(code.textContent).then(() => {
+      const o = btn.textContent; btn.textContent = 'Copied!'
+      setTimeout(() => { btn.textContent = o }, 1600)
+    })
+  }
+
+  function copyMsg(btn, idx) {
+    const c = currentChat(); if (!c) return
+    navigator.clipboard.writeText(c.messages[idx].content).then(() => {
+      const o = btn.textContent; btn.textContent = 'Copied!'
+      setTimeout(() => { btn.textContent = o }, 1600)
+    })
+  }
+
+  const AVATAR = '<img src="/assets/logo.png" alt="">'
+
+  function renderMessages() {
+    const container = document.getElementById('messages')
+    const c = currentChat()
+    if (!c || !c.messages.length) {
+      container.innerHTML = `
+        <div class="greeting">
+          <img src="/assets/logo.png" class="greeting-logo" alt="Axion">
+          <div class="greeting-title">How can I help?</div>
+          <div class="greeting-sub">Chat with Lumen — Axion Labs' free model. Your conversations are saved on this device.</div>
+          <div class="suggestions">
+            <button class="suggestion" onclick="useSuggestion(this)"><b>Explain a concept</b>How does async/await work in JavaScript?</button>
+            <button class="suggestion" onclick="useSuggestion(this)"><b>Write code</b>Write a Python function to debounce calls.</button>
+            <button class="suggestion" onclick="useSuggestion(this)"><b>Debug</b>Why might my React useEffect run twice?</button>
+            <button class="suggestion" onclick="useSuggestion(this)"><b>Brainstorm</b>Give me 5 name ideas for a CLI tool.</button>
+          </div>
+        </div>`
+      return
+    }
+    container.innerHTML = '<div class="msg-wrap" id="msg-wrap"></div>'
+    const wrap = document.getElementById('msg-wrap')
+    c.messages.forEach((m, idx) => {
+      const div = document.createElement('div')
+      div.className = 'msg'
+      const avatar = m.role === 'user'
+        ? '<div class="msg-avatar user">You</div>'
+        : `<div class="msg-avatar assistant">${AVATAR}</div>`
+      const bodyHtml = m.role === 'user' ? escHtml(m.content).replace(/\n/g, '<br>') : renderMarkdown(m.content)
+      div.innerHTML = `
+        ${avatar}
+        <div class="msg-body">
+          <div class="msg-role">${m.role === 'user' ? 'You' : 'Lumen'}</div>
+          <div class="msg-text">${bodyHtml}</div>
+          <div class="msg-actions"><button class="msg-action" onclick="copyMsg(this, ${idx})">Copy</button></div>
+        </div>`
+      wrap.appendChild(div)
+    })
+    container.scrollTop = container.scrollHeight
+  }
+
+  function useSuggestion(el) {
+    const input = document.getElementById('user-input')
+    input.value = el.querySelector('b').nextSibling.textContent.trim()
+    autoResize(input); input.focus()
+  }
+
+  // ── Input ────────────────────────────────────────────────────────────────
+  function autoResize(el) { el.style.height = 'auto'; el.style.height = Math.min(el.scrollHeight, 200) + 'px' }
+  function handleKey(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage() } }
+
+  function toggleDrawer(force) {
+    const sb = document.getElementById('sidebar')
+    const ov = document.getElementById('drawer-overlay')
+    const open = force !== undefined ? force : !sb.classList.contains('open')
+    sb.classList.toggle('open', open)
+    ov.classList.toggle('show', open)
+  }
+
+  // ── Send ─────────────────────────────────────────────────────────────────
+  async function sendMessage() {
+    if (streaming) return
+    const input = document.getElementById('user-input')
+    const content = input.value.trim()
+    if (!content) return
+    input.value = ''; input.style.height = 'auto'
+
+    // ensure a chat exists
+    let c = currentChat()
+    if (!c) {
+      c = { id: uid(), title: titleFrom(content), messages: [], updated: Date.now(), loaded: true }
+      chats.push(c); currentId = c.id
+      document.getElementById('topbar-title').textContent = c.title
+    }
+    c.messages.push({ role: 'user', content })
+    c.updated = Date.now()
+    renderChatList(); renderMessages(); persistChat(c)
+
+    streaming = true
+    document.getElementById('send-btn').disabled = true
+
+    // streaming placeholder
+    const wrap = document.getElementById('msg-wrap')
+    const div = document.createElement('div')
+    div.className = 'msg'
+    div.innerHTML = `
+      <div class="msg-avatar assistant">${AVATAR}</div>
+      <div class="msg-body">
+        <div class="msg-role">Lumen</div>
+        <div class="msg-text streaming" id="live"></div>
+      </div>`
+    wrap.appendChild(div)
+    const live = document.getElementById('live')
+    const messagesEl = document.getElementById('messages')
+    messagesEl.scrollTop = messagesEl.scrollHeight
+
+    const body = { model: 'lumen', messages: c.messages.map(m => ({ role: m.role, content: m.content })), stream: true }
+    const headers = { 'Content-Type': 'application/json' }
+    const authVal = apiKey || sessionToken
+    if (authVal) headers['Authorization'] = `Bearer ${authVal}`
+
+    let full = '', failed = false
+    try {
+      const res = await fetch(`${API}/v1/chat/completions`, { method: 'POST', headers, body: JSON.stringify(body) })
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}))
+        live.textContent = '⚠ ' + (err.error?.message || `Error ${res.status}`)
+        live.classList.remove('streaming'); failed = true
+      } else {
+        const reader = res.body.getReader()
+        const dec = new TextDecoder()
+        let buf = ''
+        while (true) {
+          const { done, value } = await reader.read()
+          if (done) break
+          buf += dec.decode(value, { stream: true })
+          const lines = buf.split('\n'); buf = lines.pop()
+          for (const line of lines) {
+            if (!line.startsWith('data: ')) continue
+            const data = line.slice(6).trim()
+            if (data === '[DONE]') continue
+            try {
+              const delta = JSON.parse(data).choices?.[0]?.delta?.content
+              if (delta) { full += delta; live.textContent = full; messagesEl.scrollTop = messagesEl.scrollHeight }
+            } catch {}
+          }
+        }
+        live.classList.remove('streaming')
+        live.innerHTML = renderMarkdown(full)
+      }
+    } catch (e) {
+      live.textContent = '⚠ Network error: ' + e.message
+      live.classList.remove('streaming'); failed = true
+    }
+
+    if (!failed && full) {
+      c.messages.push({ role: 'assistant', content: full })
+      c.updated = Date.now(); persistChat(c)
+      renderChatList(); renderMessages()   // re-render with copy action + markdown
+    }
+    streaming = false
+    document.getElementById('send-btn').disabled = false
+    input.focus()
+  }
+
+  // ── Auth ─────────────────────────────────────────────────────────────────
+  function showErr(msg) { const el = document.getElementById('auth-error'); el.textContent = msg; el.style.display = '' }
+
+  async function doLogin() {
+    const email = document.getElementById('input-email').value.trim()
+    const password = document.getElementById('input-password').value
+    if (!email || !password) { showErr('Please fill in all fields.'); return }
+    const btn = document.getElementById('auth-submit')
+    btn.disabled = true; btn.textContent = 'Signing in…'
+    try {
+      const res = await fetch(`${API}/auth/login`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password, turnstile: '' }),
+      })
+      const data = await res.json()
+      if (!res.ok) { showErr(data.error || 'Login failed'); return }
+      sessionToken = data.token; userEmail = data.email || email
+      localStorage.setItem('axion_token', sessionToken)
+      localStorage.setItem('axion_email', userEmail)
+      showApp()
+    } catch { showErr('Network error — try again.') }
+    finally { btn.disabled = false; btn.textContent = 'Sign in' }
+  }
+
+  function logout() {
+    sessionToken = null; userEmail = null; apiKey = null
+    chats = []; currentId = null
+    localStorage.removeItem('axion_token'); localStorage.removeItem('axion_email')
+    document.getElementById('auth-overlay').style.display = 'flex'
+  }
+
+  async function showApp() {
+    document.getElementById('auth-overlay').style.display = 'none'
+    document.getElementById('acct-email').textContent = userEmail || 'Signed in'
+    document.getElementById('signout-label').textContent = 'Sign out'
+    renderMessages()
+    ensureApiKey()
+    await fetchChatList()
+    renderChatList()
+    document.getElementById('user-input').focus()
+  }
+
+  // ── Init ─────────────────────────────────────────────────────────────────
+  ;(async function init() {
+    const hash = new URLSearchParams(location.hash.slice(1))
+    if (hash.get('verified')) {
+      const tok = decodeURIComponent(hash.get('verified'))
+      const em = decodeURIComponent(hash.get('email') || '')
+      history.replaceState(null, '', location.pathname)
+      sessionToken = tok; userEmail = em
+      localStorage.setItem('axion_token', tok); localStorage.setItem('axion_email', em)
+      showApp(); return
+    }
+    if (!sessionToken) return   // show auth overlay
+    try {
+      const res = await fetch(`${API}/dashboard/keys`, { headers: { Authorization: `Bearer ${sessionToken}` } })
+      if (!res.ok) { sessionToken = null; localStorage.removeItem('axion_token'); return }
+      showApp()
+    } catch { /* offline — still let them in with cached token */ showApp() }
+  })()
+
+  document.getElementById('input-password').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin() })
+</script>
+</body>
+</html>

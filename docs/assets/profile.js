@@ -30,6 +30,7 @@
   var menu = el('div', 'ax-menu')
   menu.innerHTML =
     '<div class="ax-menu-head"><div class="ax-hi">Signed in as</div><div class="ax-email"></div></div>' +
+    '<a class="ax-menu-item" href="/chat"><span class="ax-ico">💬</span> Chat</a>' +
     '<a class="ax-menu-item" href="/keys"><span class="ax-ico">🔑</span> API Keys</a>' +
     '<a class="ax-menu-item" href="/playground"><span class="ax-ico">▶</span> Playground</a>' +
     '<button class="ax-menu-item" data-act="settings"><span class="ax-ico">⚙</span> Settings</button>' +
