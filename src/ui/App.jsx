@@ -1002,7 +1002,7 @@ triggers: <comma-separated words that should activate it, include "${skillName.t
           if (!keyArg) {
             const existing = getAxionKey();
             if (existing) {
-              pushStatic({ type: 'info', content: `Axion API key: ${existing.slice(0, 14)}••••••••\n\nGet keys at https://axion.amplifiedsmp.org/keys\nLumen free tier: 50 req/day  ·  With key: 1,000 req/month · 40 req/2h\n\nTo remove: /axion-key remove` });
+              pushStatic({ type: 'info', content: `Axion API key: ${existing.slice(0, 14)}••••••••\n\nGet keys at https://axion.amplifiedsmp.org/keys\nLumen free tier: 50 req/day  ·  With key: 1,000 req/month · 40 req/2h\n\nTo remove: /axion-key remove\nTo verify:  /axion-key test` });
             } else {
               pushStatic({ type: 'info', content: 'No Axion API key set.\n\nLumen works without a key (50 requests/day free).\nWith a key: 1,000 requests/month + 40 per 2 hours.\nGet one at https://axion.amplifiedsmp.org/keys\n\nUsage: /axion-key <your-axion-sk-key>' });
             }
@@ -1013,12 +1013,37 @@ triggers: <comma-separated words that should activate it, include "${skillName.t
             pushStatic({ type: 'info', content: 'Axion API key removed. Lumen will use the free tier (50 req/day).' });
             return true;
           }
+          if (keyArg === 'test') {
+            const testKey = getAxionKey();
+            if (!testKey) {
+              pushStatic({ type: 'error', content: 'No Axion key set. Use /axion-key <key> to set one.' });
+              return true;
+            }
+            pushStatic({ type: 'info', content: `Testing key ${testKey.slice(0, 14)}••••••••…` });
+            fetch('https://api.amplifiedsmp.org/v1/chat/completions', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${testKey}` },
+              body: JSON.stringify({ model: 'lumen', messages: [{ role: 'user', content: 'hi' }], max_tokens: 1 }),
+            }).then(async r => {
+              if (r.status === 200) {
+                pushStatic({ type: 'info', content: 'Key is valid. Lumen is reachable.' });
+              } else if (r.status === 401) {
+                pushStatic({ type: 'error', content: `Key rejected by server (401).\n\nThe key ${testKey.slice(0, 14)}•••• is not in the database or was revoked.\n\n→ Generate a fresh key at axion.amplifiedsmp.org/keys\n→ Then run /axion-key <new-key>` });
+              } else if (r.status === 429) {
+                const d = await r.json().catch(() => ({}));
+                pushStatic({ type: 'info', content: `Key is valid but rate-limited (${d?.error?.window ? '40 req/2h' : d?.error?.free_tier ? 'free tier 50/day' : 'monthly 1,000'} limit hit).` });
+              } else {
+                pushStatic({ type: 'error', content: `Unexpected response: HTTP ${r.status}` });
+              }
+            }).catch(e => pushStatic({ type: 'error', content: `Network error: ${e.message}` }));
+            return true;
+          }
           if (!keyArg.startsWith('axion-sk-')) {
             pushStatic({ type: 'error', content: 'Invalid key format. Axion keys start with axion-sk-\n\nGet one at https://axion.amplifiedsmp.org/keys' });
             return true;
           }
           saveAxionKey(keyArg);
-          pushStatic({ type: 'info', content: `Axion API key saved. Lumen now uses your key (1,000 req/month · 40 req/2h).\n\nKey: ${keyArg.slice(0, 14)}••••••••` });
+          pushStatic({ type: 'info', content: `Axion API key saved. Lumen now uses your key (1,000 req/month · 40 req/2h).\n\nKey: ${keyArg.slice(0, 14)}••••••••\n\nRun /axion-key test to verify.` });
           return true;
         }
 
@@ -1086,6 +1111,16 @@ triggers: <comma-separated words that should activate it, include "${skillName.t
           const [apiTarget, apiKey] = args;
           if (!apiTarget || !apiKey) {
             pushStatic({ type: 'error', content: 'usage: /api <model> <key>   e.g. /api claude sk-ant-…' });
+            return true;
+          }
+          // lumen uses a separate key slot — route through /axion-key logic
+          if (apiTarget === 'lumen' || apiTarget === 'axion') {
+            if (!apiKey.startsWith('axion-sk-')) {
+              pushStatic({ type: 'error', content: 'Axion keys start with axion-sk-\n\nGet one at axion.amplifiedsmp.org/keys\nUsage: /axion-key <your-key>' });
+              return true;
+            }
+            saveAxionKey(apiKey);
+            pushStatic({ type: 'info', content: `Axion API key saved. Lumen now uses your key (1,000 req/month · 40 req/2h).\n\nKey: ${apiKey.slice(0, 14)}••••••••` });
             return true;
           }
           try {

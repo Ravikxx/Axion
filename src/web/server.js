@@ -17,6 +17,7 @@ import {
   undoLastBackup, undoStackSize,
   getMemories, addMemory, removeMemory,
   getSavedImageModel, saveImageModel,
+  saveAxionKey,
 } from '../persist.js';
 import { generateImage } from '../agent/image.js';
 import { startScheduler } from '../scheduler.js';
@@ -428,6 +429,12 @@ function createSharedSession(defaultModel, defaultMode) {
       case 'api': {
         const [apiTarget, apiKey] = args;
         if (!apiTarget || !apiKey) { error('usage: /api <model> <key>'); break; }
+        if (apiTarget === 'lumen' || apiTarget === 'axion') {
+          if (!apiKey.startsWith('axion-sk-')) { error('Axion keys start with axion-sk-  —  get one at axion.amplifiedsmp.org/keys'); break; }
+          saveAxionKey(apiKey);
+          info(`Axion API key saved. Lumen now uses your key (1,000 req/month · 40 req/2h).`);
+          break;
+        }
         try { const p = setApiKey(apiTarget, apiKey); saveApiKey(p, apiKey); info(`API key set for ${p} (saved)`); }
         catch (err) { error(err.message); }
         break;

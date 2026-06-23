@@ -13,7 +13,7 @@ export const COMMANDS = [
   { cmd: 'skill-generator', desc: '<name> <instructions>  AI-generate a skill .md' },
   { cmd: 'skill-delete',    desc: '<name>  delete a skill' },
   { cmd: 'api',             desc: '<model> <key>  set API key' },
-  { cmd: 'axion-key',       desc: '[key|remove]  set/clear Axion API key for Lumen access' },
+  { cmd: 'axion-key',       desc: '[key|remove|test]  set/clear/verify Axion API key for Lumen' },
   { cmd: 'login',           desc: 'sign in to Axion Labs via browser (sets API key automatically)' },
   { cmd: 'endpoint',        desc: '<name> <url> [model] [key]  add/list custom endpoints' },
   { cmd: 'thinking',        desc: '[on|off|<tokens>]  toggle extended thinking' },

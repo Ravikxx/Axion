@@ -1070,6 +1070,7 @@ function friendlyError(err, modelAlias) {
 
   if (status === 401 || /unauthorized|invalid.*key|api.?key/i.test(msg)) {
     if (modelAlias === 'other') return `Auth failed for custom endpoint. Use /endpoint <url> <model> <key> to set the API key.`;
+    if (modelAlias === 'lumen') return `Invalid or revoked Axion API key. Use /axion-key <your-key> to set it, or /axion-key remove to use the free tier.\n→ Get a key at axion.amplifiedsmp.org/keys`;
     return `Invalid API key for "${modelAlias}". Use /api ${modelAlias} <your-key> to set it.`;
   }
   if (status === 429 || /rate.?limit|quota/i.test(msg)) {
