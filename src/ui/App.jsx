@@ -816,18 +816,29 @@ export function App({
         case 'exit': {
           const tok = tokens.total || 0;
           const tokStr = tok > 1000 ? `${(tok / 1000).toFixed(1)}k` : String(tok);
+          const msgCount = staticMessages.filter(m => m.type === 'user' || m.type === 'assistant').length;
+          // Save session with a unique ID so it can be resumed
+          const sesId = `ses_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 6)}`;
+          const displayMsgs = staticMessages.filter((m) => m.type !== '_banner');
+          saveChat(sesId, {
+            model, mode, tokenCount: tok,
+            agentHistory: agentRef.current?.history || [],
+            displayMessages: displayMsgs,
+          });
           process.stderr.write(`
-\x1b[38;5;208m  ▄▄▄· ▄▄▄· ▄▄▄  ▄▄▄ ▄▄▄·
-  ▐█ ▀█ ▐█ ▀█ ▐█ ▀█ ▐█ ▀█ ▐█ ▀█
-  ▐█▀▀█ ▐█▀▀█ ▐█▀▀█ ▐█▀▀█ ▐█▀▀█
-  ▀▀▀▀  ▀▀▀▀  ▀▀▀▀  ▀▀▀▀  ▀▀▀▀\x1b[0m
+\x1b[38;5;208m █████╗ ██╗  ██╗██╗ ██████╗ ███╗   ██╗
+██╔══██╗╚██╗██╔╝██║██╔═══██╗████╗  ██║
+███████║ ╚███╔╝ ██║██║   ██║██╔██╗ ██║
+██╔══██║ ██╔██╗ ██║██║   ██║██║╚██╗██║
+██║  ██║██╔╝ ██╗██║╚██████╔╝██║ ╚████║
+╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═══╝\x1b[0m
 
   Model     ${model}
   Mode      ${mode}
-  Messages  ${staticMessages.filter(m => m.type === 'user' || m.type === 'assistant').length}
+  Messages  ${msgCount}
   Tokens    ${tokStr}
 
-  Continue  axion --continue
+  Continue  axion -r ${sesId}
 `);
           exit();
           return true;

@@ -14,9 +14,9 @@ const _cliDir    = dirname(fileURLToPath(import.meta.url));
 const WEB_SERVER = join(_cliDir, '../src/web/server.js');
 
 const argv = minimist(process.argv.slice(2), {
-  string: ['model', 'mode'],
+  string: ['model', 'mode', 'resume'],
   boolean: ['link', 'doctor', 'update', 'version', 'help', 'continue'],
-  alias: { m: 'model', M: 'mode', v: 'version', h: 'help', c: 'continue' },
+  alias: { m: 'model', M: 'mode', v: 'version', h: 'help', c: 'continue', r: 'resume' },
 });
 
 if (argv.version) {
@@ -36,6 +36,7 @@ Options:
   -m, --model <name>  Model alias (claude, fable, gpt, gemini, groq, mistral, ollama, veil…)
   -M, --mode <name>   Mode: ask | plan | auto
   -c, --continue      Resume the most recent session
+  -r, --resume <name> Resume a specific saved session
       --link          Link CLI to a running axion-serve web session
       --doctor        Check dependencies, API keys, and environment
       --update        Pull latest from GitHub and rebuild
@@ -185,7 +186,14 @@ if (isPipe) {
 }
 
 // --continue restores the most recent autosaved session (null if none exists)
-const resumeSession = argv['continue'] ? loadLastSession() : null;
+// --resume / -r <name> restores a specific saved chat
+let resumeSession = null;
+if (argv['resume']) {
+  const { loadChat } = await import('./persist.js');
+  resumeSession = loadChat(argv['resume']);
+} else if (argv['continue']) {
+  resumeSession = loadLastSession();
+}
 
 const savedModel = getSavedModel();
 const savedMode  = getSavedMode();
