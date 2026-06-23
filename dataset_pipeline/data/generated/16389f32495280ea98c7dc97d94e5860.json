@@ -1,0 +1,38 @@
+{
+  "source_url": "https://github.com/bytedance/deer-flow",
+  "category": "github",
+  "pairs": [
+    {
+      "question": "What is DeerFlow and what are its main components?",
+      "answer": "DeerFlow (Deep Exploration and Efficient Research Flow) is an open-source super agent harness designed to orchestrate sub-agents, memory, and sandboxes to perform long-horizon tasks. It leverages extensible skills, tools, and sandboxes to handle tasks ranging from minutes to hours. Key components include sub-agents for distributed task execution, memory for long-term context retention, sandboxes for safe execution environments, and a message gateway for communication. The system is powered by configurable models and supports features like context engineering, file system access, and MCP server integration."
+    },
+    {
+      "question": "What are the key differences between DeerFlow 2.0 and the original Deep Research framework?",
+      "answer": "DeerFlow 2.0 is a ground-up rewrite that shares no code with version 1.x. While the original Deep Research framework is maintained on the `1.x` branch, DeerFlow 2.0 introduces a modern architecture optimized for extensibility, improved sub-agent orchestration, enhanced sandboxing, and better integration with tools like InfoQuest. Active development and new features are focused exclusively on DeerFlow 2.0."
+    },
+    {
+      "question": "How do you perform a one-line agent setup for DeerFlow using coding agents like Claude Code?",
+      "answer": "To set up DeerFlow with a coding agent like Claude Code, use the following prompt:\ntext\nHelp me clone DeerFlow if needed, then bootstrap it for local development by following https://raw.githubusercontent.com/bytedance/deer-flow/main/Install.md\n\nThis command tells the agent to clone the repository if needed, choose Docker for deployment if available, and stop with the next command plus any missing configurations required by the user."
+    },
+    {
+      "question": "What are the recommended models for running DeerFlow, and how do you configure them in `config.yaml`?",
+      "answer": "DeerFlow recommends using advanced models like Doubao-Seed-2.0-Code, DeepSeek v3.2, and Kimi 2.5. Configuration in `config.yaml` depends on the provider:\n\nExample for OpenRouter:\nyaml\nmodels:\n  - name: openrouter-gemini-2.5-flash\n    display_name: Gemini 2.5 Flash (OpenRouter)\n    use: langchain_openai:ChatOpenAI\n    model: google/gemini-2.5-flash-preview\n    api_key: $OPENROUTER_API_KEY\n    base_url: https://openrouter.ai/api/v1\n\n\nFor vLLM:\nyaml\nmodels:\n  - name: qwen3-32b-vllm\n    display_name: Qwen3 32B (vLLM)\n    use: deerflow.models.vllm_provider:VllmChatModel\n    model: Qwen/Qwen3-32B\n    api_key: $VLLM_API_KEY\n    base_url: http://localhost:8000/v1\n    supports_thinking: true\n    extra_body:\n      chat_template_kwargs:\n        enable_thinking: true\n\n\nFor CLI-backed providers like Codex:\nyaml\nmodels:\n  - name: gpt-5.4\n    display_name: GPT-5.4 (Codex CLI)\n    use: deerflow.models.openai_codex_provider:CodexChatModel\n    model: gpt-5.4\n    supports_thinking: true\n"
+    },
+    {
+      "question": "How do you set up and run DeerFlow using Docker, and what are the system requirements?",
+      "answer": "To run DeerFlow using Docker, follow these steps:\n\n1. Clone the repository:\nbash\ngit clone https://github.com/bytedance/deer-flow.git\ncd deer-flow\n\n\n2. Run the setup:\nbash\nmake setup\n\nThis interactive wizard guides you through selecting an LLM provider, optional web search, and execution preferences. It generates a `config.yaml` and writes API keys to `.env`.\n\n3. Start Docker:\nbash\nmake docker-start\n\n\nSystem requirements:\n- **Local evaluation / `make dev`**: Minimum 4 vCPU, 8 GB RAM, 20 GB free SSD (recommended: 8 vCPU, 16 GB RAM).\n- **Docker development**: Minimum 4 vCPU, 8 GB RAM, 25 GB free SSD (recommended: 8 vCPU, 16 GB RAM).\n\nVerify your setup with:\nbash\nmake doctor\n"
+    },
+    {
+      "question": "What are the security recommendations for deploying DeerFlow, and what risks should be considered?",
+      "answer": "DeerFlow includes a security notice highlighting risks associated with improper deployment. Key recommendations:\n\n1. **Model Provider Keys**: Ensure API keys for models (e.g., OpenAI, OpenRouter) are stored securely in `.env` or environment variables. Avoid hardcoding keys in `config.yaml`.\n\n2. **Sandbox Mode**: Use sandbox mode to isolate untrusted code execution. Disable unnecessary tools like direct file writes or bash access unless explicitly required.\n\n3. **Network Exposure**: Avoid exposing the MCP server or web interfaces to untrusted networks. Use firewalls and VPNs to restrict access.\n\n4. **Dependency Security**: Regularly update dependencies to patch vulnerabilities. Use trusted base images for Docker deployments.\n\n5. **Input Validation**: Apply strict input validation for user-provided data, especially when using web search or file system tools.\n\nImproper deployment may lead to unauthorized code execution, data leaks, or model API abuse. Always follow the principle of least privilege and audit configurations."
+    },
+    {
+      "question": "How does DeerFlow integrate with InfoQuest, and what capabilities does it provide?",
+      "answer": "DeerFlow integrates InfoQuest, an intelligent search and crawling toolset developed by BytePlus, to enhance its research and data collection capabilities. InfoQuest supports free online experiences and provides advanced web search and crawling features.\n\nKey capabilities:\n- **Real-time Web Search**: Query the internet dynamically for up-to-date information.\n- **Crawling**: Extract structured data from websites.\n- **Contextual Filtering**: Refine search results based on relevance and user-defined criteria.\n\nTo use InfoQuest, configure it in the setup wizard (`make setup`) or manually in `config.yaml`:\nyaml\ninfoquest:\n  enabled: true\n  api_key: $INFOQUEST_API_KEY\n\nInfoQuest integrates seamlessly with DeerFlow's sub-agent workflows, enabling agents to autonomously gather and process external data."
+    },
+    {
+      "question": "What is the purpose of the `make doctor` command in DeerFlow, and what does it check?",
+      "answer": "The `make doctor` command is a diagnostic tool that verifies your DeerFlow setup and provides actionable feedback for troubleshooting. It checks:\n\n1. **Environment**: Validates the presence of required tools like `git`, `docker`, `make`, and `python`.\n2. **Dependencies**: Ensures all Python dependencies are installed (e.g., via `pip install -r requirements.txt`).\n3. **Configuration**: Verifies `config.yaml` and `.env` files are correctly set up and accessible.\n4. **API Keys**: Validates that required API keys (e.g., OpenAI, OpenRouter) are properly configured.\n5. **Docker Status**: Checks if Docker is running and accessible.\n6. **Model Provider Connectivity**: Tests connections to configured LLM providers.\n\nIf issues are detected, it provides specific commands or steps to resolve them, such as:\nbash\n# Fix missing Python dependency\npip install langchain_openai\n\n# Restart Docker\nsudo systemctl restart docker\n\nRun `make doctor` at any stage to ensure your environment is correctly configured."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Jenny_Watson_(civil_servant)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is Jenny Watson's full name and date of birth?",
+      "answer": "Jenny Watson's full name is Jennifer Watson CBE, and she was born on 25 January 1964."
+    },
+    {
+      "question": "Which organizations has Jenny Watson chaired or served as a non-executive director for?",
+      "answer": "Jenny Watson has chaired the United Kingdom Electoral Commission, the House of St Barnabas, GamStop, Mossbourne Parkside Academy, and the Independent Complaints Panel at the Portman Group. She has also served as a non-executive director at the Financial Reporting Council, the Financial Ombudsman Service, and the Reclaim Fund."
+    },
+    {
+      "question": "What was Jenny Watson's role at the Equal Opportunities Commission, and how long did she serve?",
+      "answer": "Jenny Watson was the last chair of the Equal Opportunities Commission before it was replaced by the Commission for Equality and Human Rights. She served in this role after being appointed as a commissioner in 1999 and as deputy chair from 2000."
+    },
+    {
+      "question": "How much was Jenny Watson paid for her role as chair of the Electoral Commission, and what were her responsibilities?",
+      "answer": "Jenny Watson was paid £100,000 for her role as chair of the Electoral Commission, which required her to work three days a week. Her responsibilities included overseeing the commission's operations, particularly during elections and referendums."
+    },
+    {
+      "question": "What significant referendums did Jenny Watson oversee as Chief Counting Officer (CCO)?",
+      "answer": "Jenny Watson served as Chief Counting Officer (CCO) for the 2011 AV Referendum and the 2016 EU Referendum. She was the first person to oversee two UK-wide referendums in this capacity."
+    },
+    {
+      "question": "What honor was Jenny Watson awarded in 2017, and for what contributions?",
+      "answer": "Jenny Watson was appointed Commander of the Order of the British Empire (CBE) in the 2017 Birthday Honours for her services to electoral democracy."
+    },
+    {
+      "question": "Write a Python snippet to calculate Jenny Watson's annual salary based on her £100,000 payment for a three-day work week.",
+      "answer": "python\n# Jenny Watson's payment was £100,000 for a role requiring 3 days per week.\n# Assuming 52 weeks in a year and 3 working days per week, her annual salary can be calculated as:\n\nweekly_payment = 100000 / 52  # £100,000 divided by 52 weeks\nannual_salary = weekly_payment * 3  # Multiply by 3 working days per week\n\nprint(f\"Jenny Watson's estimated annual salary: £{annual_salary:,.2f}\")\n# Output: Jenny Watson's estimated annual salary: £5,769.23\n"
+    }
+  ]
+}

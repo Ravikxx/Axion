@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Bamberger",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What does the surname 'Bamberger' indicate about a person?",
+      "answer": "The surname 'Bamberger' is a toponymic surname that indicates the person is originally from Bamberg, a city in Bavaria, Germany."
+    },
+    {
+      "question": "Who was the founder of the Institute for Advanced Study?",
+      "answer": "Louis Bamberger (1855–1944) was the founder of the Institute for Advanced Study."
+    },
+    {
+      "question": "Which notable Bamberger was a Hungarian orientalist?",
+      "answer": "Ármin Vámbéry (born Bamberger) (1832–1913) was a notable Hungarian orientalist."
+    },
+    {
+      "question": "How can you identify a person with the surname Bamberger in historical records?",
+      "answer": "A person with the surname Bamberger in historical records is likely from Bamberg, Bavaria, or may be associated with organizations connected to the city, such as the Bamberg Symphony Orchestra."
+    },
+    {
+      "question": "List two Bamberger individuals who contributed to medicine or science.",
+      "answer": "Eugen Bamberger (1857–1932) was a German chemist, and Heinrich von Bamberger (1822–1888) was an Austrian pathologist."
+    },
+    {
+      "question": "What is the significance of the surname Bamberger in the context of organizations?",
+      "answer": "The surname Bamberger may also refer to organizations connected with the city of Bamberg, such as the Bamberg Symphony Orchestra (Bamberger Symphoniker)."
+    },
+    {
+      "question": "Write a Python snippet to extract the birth and death years of all Bambergers listed in the text.",
+      "answer": "python\nbambergers = [\n    ('Ana Maria Bamberger', 1966, None),\n    ('Ármin Vámbéry (born Bamberger)', 1832, 1913),\n    ('Bernard Jacob Bamberger', 1904, 1980),\n    ('Clarence Bamberger', 1886, 1984),\n    ('Cyril Stanley Bamberger', 1919, 2008),\n    ('Eugen Bamberger', 1857, 1932),\n    ('Eugen von Bamberger', 1858, 1921),\n    ('Florence E. Bamberger', 1882, 1965),\n    ('Fritz Bamberger (painter)', 1814, 1873),\n    ('Fritz Bamberger (scholar)', 1902, 1984),\n    ('George Bamberger', 1923, 2004),\n    ('Heinrich von Bamberger', 1822, 1888),\n    ('Jakob Bamberger', 1913, 1989),\n    ('Jeanne Bamberger', 1924, 2024),\n    ('Judith Bamberger', None, None),\n    ('Lesley Bamberger', 1965, None),\n    ('Louis Bamberger', 1855, 1944),\n    ('Ludwig Bamberger', 1823, 1899),\n    ('Michael Bamberger', 1960, None),\n    ('Seligman Baer Bamberger', 1807, 1878),\n    ('Simon Bamberger', 1846, 1926)\n]\n\nfor name, birth, death in bambergers:\n    print(f\"{name}: Birth Year: {birth}, Death Year: {death}\")\n"
+    }
+  ]
+}

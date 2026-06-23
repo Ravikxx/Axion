@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/dev_harry/blob-storage-as-a-database-dumb-idea-or-underrated-trick-1n9p",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What are the key characteristics of using Azure Blob Storage as a database-like system?",
+      "answer": "Azure Blob Storage can be used as a database-like system by treating each blob as a record, each container as a logical table, and the blob name as a primary key. For example, a user record might be stored as `users/user-123.json`. Blob versioning provides built-in time-travel or history functionality. This approach eliminates the need for schema migrations or SQL queries, but lacks query capabilities and transaction support."
+    },
+    {
+      "question": "Can you provide a .NET code example for uploading and retrieving data in Azure Blob Storage?",
+      "answer": "Here’s a minimal .NET example for uploading and retrieving data:\ncsharp\n// Upload\nvar blob = containerClient.GetBlobClient($\"users/{userId}.json\");\nawait blob.UploadAsync(BinaryData.FromObjectAsJson(user));\n\n// Retrieve\nvar blob = containerClient.GetBlobClient($\"users/{userId}.json\");\nvar data = await blob.DownloadContentAsync();\nvar user = data.Value.Content.ToObjectFromJson<User>();\n"
+    },
+    {
+      "question": "What are the primary benefits of using Azure Blob Storage for structured data storage?",
+      "answer": "The primary benefits include: (1) Cost-effectiveness (fractions of a cent per GB), (2) Global replication and CDN integration, (3) Schema flexibility (any JSON structure), (4) Built-in versioning for history tracking, and (5) Excellent for static or rarely-mutating data like configurations, precomputed outputs, or logs. Real-world use cases include storing pre-rendered dashboard snapshots served via CDN."
+    },
+    {
+      "question": "What are the major limitations of using Azure Blob Storage as a database?",
+      "answer": "The major limitations are: (1) No query engine (filtering requires loading all data), (2) No transactions or concurrency handling, (3) High latency due to network calls for every operation, (4) Limited atomic operations, and (5) Performance degradation when listing blobs (notable at ~50,000 blobs). These make it unsuitable for dynamic or real-time workloads."
+    },
+    {
+      "question": "How can Blob Storage be combined with other services to create a more functional system?",
+      "answer": "Blob Storage can be used as part of a hybrid architecture: an in-memory index (like Redis) stores keys and metadata for fast lookups, Blob Storage holds large immutable payloads, and a CDN caches global access. This combination provides speed, cost-efficiency, and resilience without requiring Blob Storage to replace a traditional database."
+    },
+    {
+      "question": "What is a practical example of using Blob Storage for a real-world scenario?",
+      "answer": "A practical example is storing pre-rendered dashboard snapshots in Blob Storage and serving them directly through a CDN. This approach delivers instant load times with no compute overhead or database calls, leveraging Blob Storage’s global accessibility and CDN caching capabilities."
+    },
+    {
+      "question": "Under what circumstances would Azure Blob Storage be a suitable choice for data storage?",
+      "answer": "Blob Storage is suitable for cold-storage layers, append-only logs, versioned configuration repositories, or any structured data that is infrequently changing and doesn’t require querying. It excels in scenarios where cost, global accessibility, and simplicity are prioritized over dynamic operations or real-time updates."
+    }
+  ]
+}

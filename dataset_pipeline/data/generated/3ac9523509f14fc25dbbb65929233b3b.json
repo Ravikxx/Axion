@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Derivative_chromosome",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is a derivative chromosome and how is it formed?",
+      "answer": "A derivative chromosome (der) is a structurally rearranged chromosome created either by rearrangements involving two or more chromosomes (e.g., translocations) or by multiple aberrations within a single chromosome (e.g., inversions and deletions). It always retains an intact centromere and is designated in a karyotype using the abbreviation 'der'."
+    },
+    {
+      "question": "How are derivative chromosomes named in a karyotype?",
+      "answer": "Derivative chromosomes are specified in parentheses after 'der' with all aberrations listed sequentially from pter to qter (short arm to long arm) without commas. For example, der(4)t(4;8)(p16;q22)t(4;9)(q31;q31) indicates two translocations involving chromosome 4."
+    },
+    {
+      "question": "What does the karyotype notation '46,XY,der(4)t(4;8)(p16;q22)' represent?",
+      "answer": "This notation describes a human male (46,XY) with a derivative chromosome 4 resulting from a translocation between chromosome 4's short arm at p16 and chromosome 8's long arm at q22."
+    },
+    {
+      "question": "Write a Python function to parse a karyotype string and extract derivative chromosome information.",
+      "answer": "python\ndef parse_derivative_chromosome(karyotype_str):\n    # Example input: '46,XY,der(4)t(4;8)(p16;q22)t(4;9)(q31;q31)'\n    parts = karyotype_str.split(',')\n    der_info = [p for p in parts if p.startswith('der(')]\n    if not der_info:\n        return None\n    der = der_info[0]\n    # Extract chromosome number (e.g., '4' from 'der(4)')\n    chrom_num = der[4:-1]\n    # Extract translocations (e.g., 't(4;8)(p16;q22)')\n    translocations = [p for p in parts if p.startswith('t(')]\n    return {\n        'chromosome': chrom_num,\n        'translocations': translocations\n    }\n\n# Example usage:\nresult = parse_derivative_chromosome('46,XY,der(4)t(4;8)(p16;q22)t(4;9)(q31;q31)')\nprint(result)  # Output: {'chromosome': '4', 'translocations': ['t(4;8)(p16;q22)', 't(4;9)(q31;q31)']}\n"
+    },
+    {
+      "question": "Why must aberrations in a derivative chromosome be listed from pter to qter?",
+      "answer": "Aberrations must be listed from pter (short arm) to qter (long arm) to ensure a standardized and unambiguous representation of the derivative chromosome's structure. This convention facilitates accurate communication and comparison in cytogenetics."
+    },
+    {
+      "question": "What is the significance of the centromere in a derivative chromosome?",
+      "answer": "The centromere must remain intact in a derivative chromosome because it is essential for proper chromosome segregation during cell division. A derivative chromosome with a broken or missing centromere would likely lead to genomic instability or cell death."
+    },
+    {
+      "question": "How would you describe a derivative chromosome formed by an inversion and a deletion on the same chromosome?",
+      "answer": "A derivative chromosome formed by an inversion and a deletion on the same chromosome would be designated as der(X)inv(X)(p11.2q22)del(X)(q24) if the inversion spans p11.2 to q22 and the deletion occurs at q24. The aberrations are listed sequentially from pter to qter."
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/DBC/1012",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the Teradata DBC/1012 Data Base Computer, and what year was it introduced?",
+      "answer": "The DBC/1012 Data Base Computer was a database machine introduced by Teradata Corporation in 1984 as a back-end database management system for mainframe computers. It was designed to handle large-scale databases and leveraged massively parallel processing."
+    },
+    {
+      "question": "How did the DBC/1012 achieve parallelism in database processing?",
+      "answer": "The DBC/1012 achieved parallelism through its Access Module Processors (AMPs). Each AMP consisted of a microprocessor, a dedicated disk drive, a file system, and database software, allowing distributed data processing. Rows of a relation were distributed by hashing on the primary database index."
+    },
+    {
+      "question": "What role did the Ynet switching network play in the DBC/1012 system?",
+      "answer": "The Ynet was a custom-built system interconnect in the DBC/1012 that supported broadcast and sorting operations. It connected multiple Intel microprocessors, each with its own disk drive, enabling massively parallel processing and efficient data transfer between components."
+    },
+    {
+      "question": "How did the DBC/1012 handle data protection before RAID technology?",
+      "answer": "Before RAID technology, the DBC/1012 used a 'fallback' feature to provide data protection. This feature kept a logical copy of rows of a relation on different AMPs, and the collection of AMPs providing this protection for each other was called a cluster. A cluster could consist of 2 to 16 AMPs."
+    },
+    {
+      "question": "What is TEQUEL, and how does it relate to SQL?",
+      "answer": "TEQUEL (TEradata QUEry Language) is an extension of SQL developed for the DBC/1012 system. It provides additional functionality tailored to Teradata's database architecture and parallel processing capabilities."
+    },
+    {
+      "question": "Provide an example of how a DBC/1012 processor cabinet was configured.",
+      "answer": "A DBC/1012 processor cabinet was 60 inches high and 27 inches wide, weighed 450 pounds, and could hold up to 8 microprocessor units. Each unit operated independently with its own disk drive, contributing to the system's parallel processing power."
+    },
+    {
+      "question": "How did the DBC/1012 manage data transfer speeds with its disk drives?",
+      "answer": "The DBC/1012 used a 474 megabyte Winchester disk drive with an average seek time of 18 milliseconds and a transfer rate of 1.9 MB/s. However, the actual sustainable data rate was lower due to the random access pattern and transfer lengths of 8 to 12 kilobytes."
+    },
+    {
+      "question": "Can you write a simple Python script to simulate hashing-based row distribution in a DBC/1012-like system?",
+      "answer": "python\nimport hashlib\n\ndef distribute_row(row_id, num_amps):\n    # Simulate hashing the row_id to determine the AMP assignment\n    hash_value = int(hashlib.md5(str(row_id).encode()).hexdigest(), 16)\n    amp_index = hash_value % num_amps\n    return amp_index\n\n# Example: Distribute 10 rows across 4 AMPs\nnum_amps = 4\nrows = range(1, 11)\ndistribution = {amp: [] for amp in range(num_amps)}\n\nfor row in rows:\n    amp = distribute_row(row, num_amps)\n    distribution[amp].append(row)\n\nprint(\"Row distribution across AMPs:\")\nfor amp, row_list in distribution.items():\n    print(f\"AMP {amp}: {row_list}\")\n\nThis script demonstrates how rows in a table might be distributed across AMPs using a hashing mechanism, similar to the DBC/1012's approach."
+    }
+  ]
+}

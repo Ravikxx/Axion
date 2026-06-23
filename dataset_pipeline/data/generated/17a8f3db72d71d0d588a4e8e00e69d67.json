@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/harshil1712/migrating-from-astro-5-to-astro-6-a-real-world-breakdown-2d0c",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What are the key differences between Astro 5.x and Astro 6.2 regarding Tailwind CSS integration?",
+      "answer": "Astro 6.2 fully supports Tailwind CSS v4 through the official Vite plugin (`@tailwindcss/vite`), while Astro 5.x relied on `@astrojs/tailwind` integration with Tailwind v3. Key changes include: 1) Removing the need for `tailwind.config.js` (v4 uses CSS-based configuration), 2) Using `astro add tailwind` to set up the integration, and 3) Configuring `global.css` with `@import \"tailwindcss\";` and `@theme` for custom variables."
+    },
+    {
+      "question": "How do you migrate from legacy content collections (`type: 'content'`/`'data'`) to Astro 6's Content Layer API?",
+      "answer": "1) Move `src/content/config.ts` to `src/content.config.ts` in the project root. 2) Replace `type: 'content'`/`'data'` with explicit `loader` configurations. 3) Update imports from `astro:content` to `astro/zod`. 4) Change `z.array(z.object(...))` to `z.object(...)` for data collections. 5) Replace `entry.slug` with `entry.id` in templates. Example:\nts\n// Before\nconst writings = defineCollection({ type: 'content', ... });\nconst projects = defineCollection({ type: 'data', schema: z.array(z.object(...)) });\n\n// After\nconst writings = defineCollection({ loader: glob({ pattern: '**/[^_]*.mdx' }), ... });\nconst projects = defineCollection({ loader: file('src/content/projects.json'), schema: z.object(...) });"
+    },
+    {
+      "question": "What is the correct command to upgrade a Tailwind CSS integration in Astro 6.2 to use Tailwind v4?",
+      "answer": "Run `npx astro add tailwind` which automates the following steps: 1) Installs `@tailwindcss/vite` as a Vite plugin, 2) Sets up `src/styles/global.css` with `@import \"tailwindcss\";`, 3) Removes the need for `tailwind.config.js`. This is the recommended approach for new projects or migrations from Tailwind v3."
+    },
+    {
+      "question": "How should you handle the `Cannot find package 'tailwindcss'` error after upgrading Astro?",
+      "answer": "The error occurs because `@astrojs/tailwind` v6+ declares `tailwindcss` as a peer dependency. Install it explicitly with `npm install tailwindcss@4` (for v4) or `npm install tailwindcss@3` (for v3). For v4, use `npx astro add tailwind` instead of manual installation."
+    },
+    {
+      "question": "What are the key changes required when migrating API routes from `@astrojs/cloudflare` v12 to v13?",
+      "answer": "Astro 6 with `@astrojs/cloudflare` v13 removes `Astro.locals.runtime`. Replace it with Cloudflare's `env` API:\nts\nimport { env } from 'cloudflare:workers';\nconst kv = env.MY_KV;\n\nAdditionally, ensure your Vite configuration doesn't rely on module systems that conflict with Cloudflare Workers."
+    },
+    {
+      "question": "How does the new Content Layer API in Astro 6 handle data collections compared to legacy `type: 'data'`?",
+      "answer": "Legacy `type: 'data'` with JSON files is replaced by the `file()` loader, which returns individual objects as entries. The schema must now be `z.object(...)` (for a single entry) instead of `z.array(z.object(...))` (for the entire file). Example:\nts\n// Legacy\nconst projects = defineCollection({ type: 'data', schema: z.array(z.object({ id: z.string() })) });\n\n// New API\nconst projects = defineCollection({ loader: file('src/content/projects.json'), schema: z.object({ id: z.string() }) });"
+    },
+    {
+      "question": "What debugging steps should you take when an AI coding agent suggests incorrect fixes for an Astro upgrade?",
+      "answer": "1) Verify the agent's suggestions against official documentation (e.g., Astro or Tailwind docs). 2) Check your project's actual file structure and dependencies. 3) Test simple solutions first (e.g., clearing caches or reordering imports). 4) Compare the agent's proposed `global.css` or config files with working examples. 5) Always manually validate the output by running the dev server and checking the build process."
+    }
+  ]
+}

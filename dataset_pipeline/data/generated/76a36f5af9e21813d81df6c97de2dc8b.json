@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/HMAS_Canberra_(D33)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was HMAS Canberra's primary role during the early stages of World War II?",
+      "answer": "Initially, HMAS Canberra was used for patrols and convoy escort around Australia. In July 1940, she was reassigned to escort convoys between Western Australia, Sri Lanka, and South Africa, where she participated in the hunt for German auxiliary cruisers."
+    },
+    {
+      "question": "How did HMAS Canberra contribute to the Guadalcanal campaign?",
+      "answer": "Canberra joined Task Force 44 and was involved in the Guadalcanal campaign and the Tulagi landings, where she supported Allied operations in the Pacific Theater."
+    },
+    {
+      "question": "What happened to HMAS Canberra during the Battle of Savo Island on 9 August 1942?",
+      "answer": "During the Battle of Savo Island, HMAS Canberra was struck by Japanese fire, quickly crippled, and reportedly torpedoed by friendly fire. Unable to move, heavily listing, and burning, the crew evacuated the ship before it was sunk by two American destroyers in Ironbottom Sound."
+    },
+    {
+      "question": "Why was the USS Canberra named after HMAS Canberra?",
+      "answer": "The USS Canberra was named in honor of HMAS Canberra after the Australian cruiser was sunk during World War II. A later ship, the USS Canberra (LCS-30) commissioned in 2023, was also named after HMAS Canberra, becoming the first US warship commissioned in a foreign port."
+    },
+    {
+      "question": "Compare the origins and classes of HMAS Canberra and USS Canberra (LCS-30).",
+      "answer": "HMAS Canberra was a Kent sub-class heavy cruiser of the County-class, constructed in Scotland in the mid-1920s and commissioned in 1928. In contrast, USS Canberra (LCS-30) is an Independence-class littoral combat ship commissioned in 2023, representing a modern class of warships."
+    },
+    {
+      "question": "Write a Python function to calculate the approximate age of HMAS Canberra if it were still in service today (assuming 2023 as the current year).",
+      "answer": "python\ndef calculate_ship_age(launch_year, current_year=2023):\n    return current_year - launch_year\n\n# HMAS Canberra was commissioned in 1928\nage = calculate_ship_age(1928)\nprint(f\"HMAS Canberra would be approximately {age} years old in 2023.\")\n"
+    },
+    {
+      "question": "What were the primary deployment regions for HMAS Canberra before Japan entered World War II?",
+      "answer": "Before Japan's entry into World War II, HMAS Canberra primarily operated in Australian waters, with some deployments to the China Station, and later served as a convoy escort between Western Australia, Sri Lanka, and South Africa."
+    }
+  ]
+}

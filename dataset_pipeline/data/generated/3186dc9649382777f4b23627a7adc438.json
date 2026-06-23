@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/History_of_France",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What were the three main ethno-linguistic groups in ancient Gaul according to Greek writers?",
+      "answer": "According to Greek writers, the three main ethno-linguistic groups in ancient Gaul were the Gauls, the Aquitani, and the Belgae."
+    },
+    {
+      "question": "How did the Romans integrate Gaul into their empire after conquering it?",
+      "answer": "After conquering Gaul in the Gallic Wars (58–51 BCE), Rome established the province of Gallia Narbonensis in southern Gaul and integrated the rest into the empire through the Gallo-Roman culture, which combined Roman and Gaulish traditions."
+    },
+    {
+      "question": "What role did Clovis I play in the history of France?",
+      "answer": "Clovis I, the Frankish king, united most of Gaul under his rule in the late 5th century, laying the foundation for Frankish control in the region for centuries and eventually leading to the medieval Kingdom of France."
+    },
+    {
+      "question": "Write a Python function to calculate the duration of the Hundred Years' War.",
+      "answer": "python\ndef hundred_years_war_duration():\n    start_year = 1337\n    end_year = 1453\n    return end_year - start_year\n\n# Example usage:\nprint(hundred_years_war_duration())  # Output: 116\n"
+    },
+    {
+      "question": "What were the key consequences of the Hundred Years' War for France?",
+      "answer": "The Hundred Years' War strengthened French nationalism, increased the power of the French monarchy, and led to the consolidation of Valois rule, ending with a Valois victory in 1453."
+    },
+    {
+      "question": "How did the Bourbon dynasty come to power in France?",
+      "answer": "The Bourbon dynasty was established when Henry of Navarre, the Bourbon King, won the French Wars of Religion and became Henry IV, ending the conflict between the House of Bourbon and the House of Guise."
+    },
+    {
+      "question": "What were the major political phases of France between the French Revolution and World War II?",
+      "answer": "Between the French Revolution and World War II, France transitioned from a Republic to Napoleon's Empire, then experienced multiple government changes including a monarchy, Second Republic, and Second Empire before establishing the Third Republic in 1870."
+    }
+  ]
+}

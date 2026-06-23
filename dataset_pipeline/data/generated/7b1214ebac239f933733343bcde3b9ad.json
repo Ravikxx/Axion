@@ -1,0 +1,30 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Amino_acid_kinase",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the amino acid kinase domain and which protein families contain it?",
+      "answer": "The amino acid kinase domain is a protein domain found in protein kinases with specificities for aspartate, glutamate, and uridylate kinase families. It plays a role in regulating metabolic pathways, particularly in the synthesis of essential amino acids like lysine and threonine."
+    },
+    {
+      "question": "How does feedback inhibition regulate amino acid synthesis in prokaryotes and plants?",
+      "answer": "In prokaryotes and plants, the synthesis of lysine and threonine is predominantly regulated by feedback inhibition of aspartate kinase (AK) and dihydrodipicolinate synthase (DHPS). For example, in Escherichia coli, the thrA, metLM, and lysC genes encode aspartokinase isozymes that are inhibited by threonine, methionine, and lysine, respectively."
+    },
+    {
+      "question": "What is the subunit composition of the lysine-sensitive isoenzyme of aspartate kinase in spinach leaves?",
+      "answer": "The lysine-sensitive isoenzyme of aspartate kinase in spinach leaves has a subunit composition of 4 large and 4 small subunits."
+    },
+    {
+      "question": "How is the metabolic regulation of carbon and nitrogen flow into amino acids studied in plants?",
+      "answer": "The metabolic regulation of carbon and nitrogen flow into amino acids in plants has been studied in detail for carbon fixation and nitrogen assimilation, but relatively little is known about the regulation of amino acid synthesis. For example, the expression of the Arabidopsis thaliana aspartate kinase/homoserine dehydrogenase (AK/HSD) gene, which encodes two key enzymes in the biosynthetic pathway of aspartate family amino acids, has been examined to understand this regulation."
+    },
+    {
+      "question": "What is the role of the AK/HSD gene in Arabidopsis thaliana?",
+      "answer": "The AK/HSD gene in Arabidopsis thaliana encodes two linked key enzymes in the biosynthetic pathway of aspartate family amino acids. It plays a role in the metabolic regulation of carbon and nitrogen flow into these amino acids, potentially subject to coordinated, reciprocal metabolic control."
+    },
+    {
+      "question": "How might the conversion of aspartate into asparagine or aspartate family amino acids be regulated?",
+      "answer": "The conversion of aspartate into either asparagine or aspartate family amino acids may be subject to a coordinated, reciprocal metabolic control. This biochemical branch point is part of a larger, coordinated regulatory mechanism governing nitrogen and carbon storage and utilization in plants."
+    }
+  ]
+}

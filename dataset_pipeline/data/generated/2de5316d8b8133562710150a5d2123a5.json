@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Frank-Walter_Steinmeier",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What are the key political positions held by Frank-Walter Steinmeier before becoming President of Germany?",
+      "answer": "Frank-Walter Steinmeier served as Foreign Secretary (2005–2009, 2013–2017), Vice Chancellor of Germany (2007–2009), and Secretary of State (1999). He was also the Chancellor candidate for the SPD in the 2009 federal election and led the SPD parliamentary group in the Bundestag from 2009 to 2013."
+    },
+    {
+      "question": "In which year did Frank-Walter Steinmeier first become President of Germany, and who did he succeed?",
+      "answer": "Frank-Walter Steinmeier first became President of Germany on 19 March 2017, succeeding Joachim Gauck."
+    },
+    {
+      "question": "What was Frank-Walter Steinmeier's educational background?",
+      "answer": "Steinmeier completed his secondary education (Abitur) and military service before studying law at the University of Gießen. He passed his first law exam in 1982, his second in 1986, and obtained a Doctorate of Law in 1991."
+    },
+    {
+      "question": "How did Frank-Walter Steinmeier's political career progress from 1991 to 1998?",
+      "answer": "After obtaining his doctorate in 1991, Steinmeier worked as an assistant to a Doctor of Public Law and Political Science at the University of Gießen until 1991. From there, he transitioned to the State Chancellery of Lower Saxony, serving under Minister-President Gerhard Schröder. In 1998, he moved to Berlin to work as Undersecretary of State in Schröder's Chancellor Office after Schröder became Chancellor of Germany."
+    },
+    {
+      "question": "What was the outcome of the 2009 German federal election for Frank-Walter Steinmeier and the SPD?",
+      "answer": "In the 2009 federal election, the SPD achieved its worst result in German history with 23.0% of the vote. As a result, Steinmeier became the leader of the SPD parliamentary group in the Bundestag."
+    },
+    {
+      "question": "Write a Python function that calculates the number of years Frank-Walter Steinmeier has served as President of Germany as of 2023.",
+      "answer": "python\ndef years_as_president():\n    start_year = 2017\n    current_year = 2023\n    return current_year - start_year\n\n# Example usage:\nprint(years_as_president())  # Output: 6\n"
+    },
+    {
+      "question": "How did Frank-Walter Steinmeier's political career intersect with Gerhard Schröder's?",
+      "answer": "Steinmeier worked under Gerhard Schröder in multiple roles. From 1991 to 1998, he served in the State Chancellery of Lower Saxony while Schröder was Minister-President. After Schröder became Chancellor of Germany in 1998, Steinmeier held positions as Undersecretary of State (1998) and Secretary of State (1999) in Schröder's Chancellor Office."
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/40th_Primetime_Emmy_Awards",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When and where were the 40th Primetime Emmy Awards held?",
+      "answer": "The 40th Primetime Emmy Awards took place on Sunday, August 28, 1988, at the Pasadena Civic Auditorium in Pasadena, California."
+    },
+    {
+      "question": "Why was the 40th Primetime Emmy Awards held earlier than usual?",
+      "answer": "The ceremony was moved up to avoid a conflict with the 1988 Summer Olympics in Seoul, South Korea."
+    },
+    {
+      "question": "Which newcomer series won Outstanding Comedy Series despite having only six episodes?",
+      "answer": "The Wonder Years won Outstanding Comedy Series despite its short season of only six episodes."
+    },
+    {
+      "question": "What unusual request did John Larroquette make after winning his fourth consecutive Primetime Emmy Award?",
+      "answer": "After winning his fourth consecutive Primetime Emmy Award for Outstanding Supporting Actor in a Comedy Series, John Larroquette requested to be removed from the ballot for future ceremonies."
+    },
+    {
+      "question": "Which drama series, despite being the defending champion with 15 nominations, lost to Thirtysomething at the 40th Primetime Emmy Awards?",
+      "answer": "L.A. Law was the defending champion with 15 major nominations but lost to Thirtysomething, which won three major awards including Outstanding Drama Series."
+    },
+    {
+      "question": "Which show tied The Mary Tyler Moore Show's record for consecutive acting category wins at the 40th Primetime Emmy Awards?",
+      "answer": "Cagney & Lacey tied The Mary Tyler Moore Show's record by winning Outstanding Lead Actress in a Drama Series for the sixth consecutive year."
+    },
+    {
+      "question": "Write a Python function to check if a given list of Emmy-winning shows meets the criteria for all cast members winning Emmys.",
+      "answer": "python\ndef all_cast_won_emmys(shows):\n    # List of shows where all cast members won Emmys\n    valid_shows = [\"The Golden Girls\", \"All in the Family\", \"Will & Grace\", \"The Simpsons\", \"Schitt's Creek\"]\n    return any(show in shows for show in valid_shows)\n\n# Example usage:\nprint(all_cast_won_emmys([\"The Golden Girls\"]))  # Output: True\n"
+    },
+    {
+      "question": "What controversy occurred during the nomination process for the PBS series Rumpole of the Bailey at the 40th Primetime Emmy Awards?",
+      "answer": "Rumpole of the Bailey was initially placed in the miniseries category but was later disqualified and moved to the drama series category, with its slot in the miniseries category filled by The Bourne Identity."
+    }
+  ]
+}

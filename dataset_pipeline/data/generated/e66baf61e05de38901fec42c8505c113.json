@@ -1,0 +1,30 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/First_law_of_thermodynamics",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is the first law of thermodynamics and what fundamental principle does it establish?",
+      "answer": "The first law of thermodynamics states that energy cannot be created or destroyed; it can only change from one form to another. This establishes the principle of conservation of energy, which asserts that the total energy of a closed system remains constant."
+    },
+    {
+      "question": "Provide an example of energy transformation in a biological context.",
+      "answer": "During photosynthesis, plants convert light energy (electromagnetic radiation) into chemical energy stored in glucose. This chemical energy is then consumed by animals, which convert it into kinetic energy as they move."
+    },
+    {
+      "question": "Why do perpetual motion machines violate the first law of thermodynamics? Explain with reasoning.",
+      "answer": "Perpetual motion machines are impossible because they would require energy to be created continuously without any input, which directly contradicts the first law of thermodynamics. The law states that energy cannot be created, only transformed, so a machine producing more energy than it consumes would break a fundamental physical law."
+    },
+    {
+      "question": "How does the first law of thermodynamics apply to the Sun's energy output?",
+      "answer": "In the Sun, nuclear fusion converts mass into heat and light energy through Einstein's mass-energy equivalence (E=mc²). This energy travels to Earth as electromagnetic radiation, where plants capture it via photosynthesis, demonstrating energy transformation from nuclear to electromagnetic to chemical forms."
+    },
+    {
+      "question": "In modern physics, what are the two fundamental types of energy? How does this differ from classical mechanics?",
+      "answer": "In modern physics, the two fundamental types of energy are mass and kinetic energy. This differs from classical mechanics, which categorizes energy into forms like heat, light, kinetic, and potential energy. While classical mechanics is more accessible for basic understanding, modern physics recognizes that all other energy forms are manifestations of these two core types."
+    },
+    {
+      "question": "Write a Python function that calculates the total energy of a closed system using the first law of thermodynamics. Assume the system has kinetic and potential energy components.",
+      "answer": "python\ndef total_energy(kinetic_energy, potential_energy):\n    \"\"\"\n    Calculate the total energy of a closed system based on the first law of thermodynamics.\n    \n    Args:\n        kinetic_energy (float): Kinetic energy of the system.\n        potential_energy (float): Potential energy of the system.\n    \n    Returns:\n        float: Total energy of the system (kinetic + potential).\n    \"\"\"\n    return kinetic_energy + potential_energy\n\n# Example usage:\nkinetic = 50.0  # Joules\npotential = 30.0  # Joules\ntotal = total_energy(kinetic, potential)\nprint(f\"Total energy of the system: {total} Joules\")\n"
+    }
+  ]
+}

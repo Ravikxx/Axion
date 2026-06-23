@@ -926,7 +926,8 @@
     const messagesEl = document.getElementById('messages')
     messagesEl.scrollTop = messagesEl.scrollHeight
 
-    const body = { model: 'lumen', messages: c.messages.map(m => ({ role: m.role, content: m.content })), stream: true }
+    const chartHint = { role: 'system', content: 'You can render charts. Output chart data in a ```chart code block with JSON like {"type":"bar","title":"...","data":{"labels":["A","B"],"datasets":[{"data":[1,2]}]}}. Types: bar, pie, doughnut, line.' }
+    const body = { model: 'lumen', messages: [chartHint, ...c.messages.map(m => ({ role: m.role, content: m.content }))], stream: true }
     const headers = { 'Content-Type': 'application/json' }
     const authVal = apiKey || sessionToken
     if (authVal) headers['Authorization'] = `Bearer ${authVal}`

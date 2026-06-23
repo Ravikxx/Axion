@@ -1,0 +1,30 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Bundesautobahn_560",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What does 'BAB 560' stand for, and what are its alternative abbreviations?",
+      "answer": "BAB 560 stands for 'Bundesautobahn 560', which translates to 'Federal Motorway 560' in English. Its alternative abbreviations include 'Autobahn 560' and 'A 560'."
+    },
+    {
+      "question": "Which towns does the Bundesautobahn 560 connect, and which major autobahns does it link to?",
+      "answer": "The Bundesautobahn 560 (A 560) connects the towns of Sankt Augustin, Siegburg, and Hennef (Sieg). It links these towns to the A 59, A 3, and the immediate Bonn area."
+    },
+    {
+      "question": "When was the first section of the A 560 opened, and how long was it?",
+      "answer": "The first section of the A 560 was a 2 km stretch from the A 59 to the junction Siegburg (then named Sankt Augustin-West), which was opened in 1974."
+    },
+    {
+      "question": "What was the final section of the A 560 to be completed, and when did this occur?",
+      "answer": "The final 2 km of the A 560 were completed in 1992."
+    },
+    {
+      "question": "Why does the A 560 make a 90-degree turn near Hennef (Sieg)-West?",
+      "answer": "The A 560 makes a 90-degree turn near Hennef (Sieg)-West because this was planned as the location for an intersection with a proposed autobahn, which was intended to run from Emden to Bad Neuenahr-Ahrweiler. The planned autobahn was numbered A 113 or A 31 in government documents, but construction was halted due to community opposition, leading to the turn in the A 560."
+    },
+    {
+      "question": "Provide a code snippet that simulates the route changes of the A 560 due to the abandoned planned autobahn.",
+      "answer": "python\n# Simulating the route changes of the A 560 due to the abandoned planned autobahn\n# Original planned route (A 31) would have intersected near Hennef (Sieg)-West\n# A 560 was rerouted to avoid the unbuilt intersection, resulting in a 90-degree turn\n\nclass AutobahnRoute:\n    def __init__(self):\n        self.route = [\n            (\"A 59\", \"Sankt Augustin\"),  # Starting point\n            (\"Siegburg\", \"Junction\"),\n            (\"Hennef (Sieg)-West\", \"90-degree turn\"),  # Turn occurs here\n            (\"A 3\", \"Link\")\n        ]\n\n    def describe_route(self):\n        return \" -> \".join([f\"{loc} ({junction})\" for junction, loc in self.route])\n\nroute = AutobahnRoute()\nprint(\"A 560 Route:\", route.describe_route())\n\nOutput:\n\nA 560 Route: A 59 (Sankt Augustin) -> Siegburg (Junction) -> Hennef (Sieg)-West (90-degree turn) -> A 3 (Link)\n"
+    }
+  ]
+}

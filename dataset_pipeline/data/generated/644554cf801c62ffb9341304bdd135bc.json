@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Effects_of_Hurricane_Katrina_in_New_Orleans",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the wind speed range in downtown New Orleans when Hurricane Katrina passed southeast of the city?",
+      "answer": "When Hurricane Katrina's center passed southeast of New Orleans on August 29, 2005, winds in downtown New Orleans were in the Category 1 range, characterized by sustained winds between 74 and 95 miles per hour (119 and 153 kilometers per hour), accompanied by frequent intense gusts."
+    },
+    {
+      "question": "What federal law mandated the Army Corps of Engineers' responsibility for levee design and construction in New Orleans?",
+      "answer": "The Flood Control Act of 1965 mandated that the United States Army Corps of Engineers be responsible for the design and construction of New Orleans' levees, while maintenance responsibilities were assigned to the Orleans Levee District."
+    },
+    {
+      "question": "How many levee breaches occurred during Hurricane Katrina, and which specific structures failed?",
+      "answer": "Approximately 23 breaches occurred in the drainage and navigational canal levees and flood walls during Hurricane Katrina. The major breaches included the 17th Street Canal levee, the Industrial Canal levee, and the London Avenue Canal flood wall, which contributed to the majority of the flooding."
+    },
+    {
+      "question": "What percentage of New Orleans was flooded by August 31, 2005, and why did some areas remain dry?",
+      "answer": "By August 31, 2005, about 80% of New Orleans was flooded, with some areas submerged under 15 feet (4.6 meters) of water. The famous French Quarter and Garden District remained dry because these areas are situated above sea level, providing natural elevation against flooding."
+    },
+    {
+      "question": "How did the evacuation efforts for Hurricane Katrina impact vulnerable populations?",
+      "answer": "Although 80 to 90% of New Orleans residents were evacuated before the hurricane, evacuation efforts disproportionately overlooked individuals without access to cars, credit cards, road experience, or family living outside the city. These vulnerabilities were partly addressed using the Louisiana Superdome as a shelter for those unable to evacuate."
+    },
+    {
+      "question": "What were the major economic consequences of the levee failures during Hurricane Katrina?",
+      "answer": "The levee failures during Hurricane Katrina halted oil production and refining, leading to a significant increase in global oil prices. This disruption had cascading effects on the U.S. and international economy, highlighting the interconnectedness of infrastructure and economic stability."
+    },
+    {
+      "question": "Why do experts consider the levee failures during Hurricane Katrina the worst engineering disaster in U.S. history?",
+      "answer": "Experts consider the levee failures during Hurricane Katrina the worst engineering disaster in U.S. history because the federally constructed flood protection system, designed to safeguard the city, failed catastrophically during the storm surge. This failure resulted in unprecedented flooding, loss of life, and economic disruption, prompting a Congressional review of the Army Corps of Engineers."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/1885_United_Kingdom_general_election_in_Scotland",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "How many seats were allocated to Scotland in the 1885 UK general election?",
+      "answer": "Scotland was allocated 72 seats in the 1885 UK general election, comprising 32 burgh constituencies, 37 county constituencies, and 3 university constituencies (Glasgow and Aberdeen Universities, and Edinburgh and St Andrews Universities)."
+    },
+    {
+      "question": "What were the two main reasons for the increase in Scotland's seats from the previous election?",
+      "answer": "Scotland gained 12 seats due to the Redistribution of Seats Act 1885, which adjusted constituency boundaries. Additionally, the Representation of the People Act 1884 expanded the electorate by reducing property qualifications for voters."
+    },
+    {
+      "question": "What was the significance of the Representation of the People Act 1884 for Scottish voters in 1885?",
+      "answer": "The Representation of the People Act 1884 reduced property qualifications for voters, significantly increasing the electorate. This allowed many crofters in the western Highlands to vote for the first time in 1885."
+    },
+    {
+      "question": "How did the Liberal Party's representation in Scotland change in the 1885 election?",
+      "answer": "The Liberal Party's representation in Scotland splintered, with 7 MPs elected as Independent Liberals. Notably, Edinburgh returned 3 out of 4 of its constituencies as Independent Liberals."
+    },
+    {
+      "question": "What was the Crofters Party, and what were its key political goals in 1885?",
+      "answer": "The Crofters Party was a political group that emerged as a dominant force in the western Highlands during the 1885 election, winning four constituencies. Its key goals included advocating for secure land tenure, improved access to land for crofters, and working closely with the Highland Land League to oppose exploitative landlord practices."
+    },
+    {
+      "question": "How were university constituencies treated differently in the 1885 election results?",
+      "answer": "University constituencies—Glasgow and Aberdeen Universities, and Edinburgh and St Andrews Universities—had separate compilation of results. Voters in these constituencies could cast an additional vote beyond their territorial constituency vote."
+    },
+    {
+      "question": "What was the total registered population of Scotland in 1881 according to the census?",
+      "answer": "The total registered population of Scotland in 1881 was 3,735,573 people, with an electorate of 560,580 following the expansion of voting rights under the Representation of the People Act 1884."
+    }
+  ]
+}

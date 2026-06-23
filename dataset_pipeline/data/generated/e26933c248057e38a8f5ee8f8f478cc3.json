@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Axiom",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is an axiom in logic and mathematics?",
+      "answer": "An axiom is a foundational statement assumed to be true without proof, serving as a starting point for reasoning and argumentation in logic and mathematics. It is also called a postulate, such as the parallel postulate. Axioms are not proven within a given discussion but are treated as self-evident truths."
+    },
+    {
+      "question": "How do axioms differ from theorems?",
+      "answer": "Axioms are unproven statements taken as true to serve as premises for further reasoning, while theorems are statements that are logically derived and proven from those axioms using deductive reasoning."
+    },
+    {
+      "question": "Can you provide an example of an obvious axiom?",
+      "answer": "An example of an obvious axiom is the principle of contradiction, which states that a statement and its negation cannot both be true simultaneously in the same context. For instance, 'It is raining' and 'It is not raining' cannot both be true at the same place and time."
+    },
+    {
+      "question": "What role do physical laws play in the definition of axioms?",
+      "answer": "Physical laws can serve as axioms when they are easily observable and assumed true without proof, such as Newton's laws of motion. These laws are treated as starting points for reasoning about physical phenomena."
+    },
+    {
+      "question": "How are axioms used in mathematical reasoning?",
+      "answer": "Axioms are used as the foundational premises from which theorems are logically derived. For example, in Euclidean geometry, the parallel postulate is an axiom from which other geometric theorems are proven."
+    },
+    {
+      "question": "What is the significance of axioms in logical arguments?",
+      "answer": "Axioms are crucial because they provide the starting points for logical arguments. Without axioms, there would be no premises from which to derive conclusions or theorems, making systematic reasoning impossible."
+    },
+    {
+      "question": "Provide a simple code snippet demonstrating how axioms might be used in a logical system.",
+      "answer": "Here’s a Python example simulating a logical system where axioms are used to derive a theorem:\n\npython\n# Define axioms as foundational truths\naxioms = {\n    \"Axiom 1\": \"If P, then Q\",  # P implies Q\n    \"Axiom 2\": \"P\"               # P is true\n}\n\n# Derive a theorem from the axioms\ntheorem = f\"{axioms['Axiom 2']} implies {axioms['Axiom 1'].split('then')[1].strip()}\"\nprint(\"Derived Theorem:\", theorem)  # Output: 'P implies Q'\n\nThis demonstrates how axioms (assumed truths) can be used to derive new logical statements (theorems)."
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/FPSRussia",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is Kyle Lamar Myers' online alias and what is he known for?",
+      "answer": "Kyle Lamar Myers is known online as FPSRussia. He gained fame as an American internet personality, podcaster, and former YouTuber, particularly for his firearm demonstration videos and his role as a co-host of the Painkiller Already (PKA) podcast."
+    },
+    {
+      "question": "How did Kyle Lamar Myers come up with the character Dimitri Potapov?",
+      "answer": "Myers created the character Dimitri Potapov after a co-worker at a car dealership spoke in a heavy Russian accent. He modeled the character as a 'professional Russian' from Moscow and adopted a thick Russian accent himself to enhance the persona."
+    },
+    {
+      "question": "What was the main shift in content that Kyle Lamar Myers made on his YouTube channel?",
+      "answer": "Initially, Myers posted videos of himself playing Call of Duty games. However, after noticing that his firearm demonstration videos were receiving more views, he switched his content focus from gaming to detailed gun demonstrations."
+    },
+    {
+      "question": "Who was Keith Ratliff, and what happened to him?",
+      "answer": "Keith Ratliff was a friend and the main weapon supplier for Myers. On January 3, 2013, Ratliff was murdered at his home in Carnesville, Georgia, and his death remains unsolved."
+    },
+    {
+      "question": "Describe the events surrounding the January 2013 raid on Kyle Lamar Myers' farm.",
+      "answer": "On January 3, 2013, Myers' close associate Keith Ratliff was murdered. On March 29, 2013, the ATF and GBI raided Myers' farm where he filmed his videos. The raid yielded no evidence related to the investigation."
+    },
+    {
+      "question": "What legal consequences did Kyle Lamar Myers face in 2019 related to his firearm collection?",
+      "answer": "In August 2017, Myers' house was raided by ATF and GBI agents who found hash oil shipped through the mail. He was arrested for felony possession of a controlled substance with intent to distribute and had 50 guns confiscated. On June 19, 2019, Myers was sentenced to 56 days in prison and two years of probation."
+    },
+    {
+      "question": "Provide a code snippet that demonstrates how to use Python to check if a given date falls on a specific day of the week.",
+      "answer": "python\nimport datetime\n\ndef is_specific_weekday(date_str, target_weekday):\n    date_obj = datetime.datetime.strptime(date_str, \"%Y-%m-%d\")\n    return date_obj.weekday() == target_weekday\n\n# Example: Check if January 3, 2013 (Keith Ratliff's death date) was a Thursday (3)\nprint(is_specific_weekday(\"2013-01-03\", 3))  # Output: True\n"
+    },
+    {
+      "question": "Why did Kyle Lamar Myers stop uploading videos to his YouTube channel?",
+      "answer": "Myers ended his YouTube channel in 2016, likely due to a combination of personal and legal challenges, including the unresolved death of Keith Ratliff, legal scrutiny from authorities, and the August 2017 raid that led to his eventual arrest and sentencing."
+    }
+  ]
+}

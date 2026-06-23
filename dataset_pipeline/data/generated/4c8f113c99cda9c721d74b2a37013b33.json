@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Bloody_Mary_(South_Pacific)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who created the character Bloody Mary and in which work did she first appear?",
+      "answer": "The character Bloody Mary was created by James Michener and first appeared in his 1946 book *Tales of the South Pacific*."
+    },
+    {
+      "question": "What is the origin of Bloody Mary's ethnicity and how does it relate to Vietnam?",
+      "answer": "Bloody Mary is described as Vietnamese (Tonkinese), with Tonkin being the northernmost region of what is now Vietnam."
+    },
+    {
+      "question": "How did Bloody Mary come to be associated with the musical and film adaptations of *Tales of the South Pacific*?",
+      "answer": "The character was adapted into the 1949 Rodgers and Hammerstein musical *South Pacific* and later into a 1958 film, where she was famously portrayed by Juanita Hall, who won a Tony Award for her role."
+    },
+    {
+      "question": "What is one of Bloody Mary's most iconic lines, and what does it reveal about her character?",
+      "answer": "One of her most famous lines is *'Stingy stinker!'*, which she says in response to an American sailor rejecting her daughter's hand due to prejudice, highlighting her defiance and protective nature."
+    },
+    {
+      "question": "Write a Python function that checks if a given name is Bloody Mary and returns her key traits as a dictionary.",
+      "answer": "python\ndef get_bloody_mary_traits(name):\n    if name.strip().lower() == \"bloody mary\":\n        return {\n            \"ethnicity\": \"Tonkinese (Vietnamese)\",\n            \"origin\": \"Brought to the island by a French planter\",\n            \"occupation\": \"Trades with US sailors during WWII\",\n            \"famous_line\": \"Stingy stinker!\",\n            \"language_goal\": \"Speak English as good as any crummy Marine\"\n        }\n    return None\n"
+    },
+    {
+      "question": "What evidence suggests that Bloody Mary is a composite character?",
+      "answer": "Kirsten Thompson posits that Bloody Mary was a composite of an unnamed Tonkinese worker, Madame Gardel, and aspects of Aggie Grey’s character and personality. Additionally, Françoise Gardel was visited by Michener during his research for the novel."
+    },
+    {
+      "question": "How does the 2001 *Islands Magazine* article challenge or support the historical existence of Bloody Mary?",
+      "answer": "The article claims that the 'real Bloody Mary' lived on Espiritu Santo for years after the war and lived to age 102, suggesting a possible real-life inspiration for the fictional character."
+    },
+    {
+      "question": "What role does Juanita Hall play in the history of Bloody Mary, and what award did she win for it?",
+      "answer": "Juanita Hall originated the role of Bloody Mary on stage in the 1949 musical *South Pacific*, later portraying her in the 1958 film. She won the Tony Award for Best Featured Actress in a Musical for this role."
+    }
+  ]
+}

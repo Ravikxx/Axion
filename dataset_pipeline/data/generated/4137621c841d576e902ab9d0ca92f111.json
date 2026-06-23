@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/British_space_programme",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What were the primary objectives of the current British civil space programme?",
+      "answer": "The primary objectives of the current British civil space programme are to 'win sustainable economic growth,' 'secure new scientific knowledge,' and 'provide benefits to all citizens.' These goals emphasize economic, scientific, and societal impacts through space activities."
+    },
+    {
+      "question": "When did the British space programme officially begin, and what was its first satellite project?",
+      "answer": "The British space programme officially began in 1952. Its first satellite project was the Ariel series, initiated in 1959. Ariel 1, the first British satellite, was launched in 1962, marking a significant milestone in the programme."
+    },
+    {
+      "question": "What was the significance of the Prospero satellite in British space history?",
+      "answer": "Prospero was the first and only British satellite launched into orbit using a British rocket, the Black Arrow, in 1971. It remains a unique achievement in British space history as the sole satellite deployed by a domestic launch vehicle."
+    },
+    {
+      "question": "How did the UK Space Agency come into existence, and what was its role in space initiatives?",
+      "answer": "The UK Space Agency was established in 2010 to consolidate various space-related funding sources. Its role involved coordinating national space activities, including satellite launches, construction, and other space endeavours, such as funding the Skylon spaceplane concept."
+    },
+    {
+      "question": "Why has the British space programme historically focused on uncrewed missions and commercial initiatives?",
+      "answer": "The British space programme has emphasized uncrewed missions and commercial initiatives due to government policy decisions. There has never been a policy to create a British astronaut corps, and funding priorities have leaned toward economic and scientific benefits rather than human spaceflight."
+    },
+    {
+      "question": "What was the Skylon spaceplane concept, and what was its outcome?",
+      "answer": "The Skylon was a single-stage-to-orbit spaceplane concept funded by the UK Space Agency. It progressed only to the testing of engine components and did not advance beyond this stage. The project was ultimately discontinued due to technical and financial challenges."
+    },
+    {
+      "question": "How did the British National Space Centre contribute to the UK's space activities before the UK Space Agency?",
+      "answer": "The British National Space Centre, established in 1985, coordinated government agencies and other bodies to promote British participation in the international space market. It played a key role in satellite launches, construction, and other space endeavours before its functions were absorbed into the UK Space Agency in 2010."
+    }
+  ]
+}

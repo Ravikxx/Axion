@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/German_Bundestag",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is the German Bundestag and where does it meet?",
+      "answer": "The German Bundestag, also known as the Bundestag, is the legislature of Germany. It meets in Berlin, specifically in the Reichstag building, which was renovated to accommodate the Bundestag after its relocation from Bonn."
+    },
+    {
+      "question": "How many members does the Bundestag have, and how is this number determined?",
+      "answer": "The Bundestag has at least 598 members, with the exact number varying based on election results. For example, after the 2021 election, there were 736 members (598 base seats plus 138 overhang and leveling seats), while after the 2025 election, the number was reduced to 630."
+    },
+    {
+      "question": "What are the eligibility criteria for a party to gain seats in the Bundestag?",
+      "answer": "A party gains seats in the Bundestag if it receives at least 5% of the total party votes or wins 3 direct mandates (constituency seats). The total number of seats a party receives is based on its share of the second 'party votes'."
+    },
+    {
+      "question": "How does the voting system work in the Bundestag elections?",
+      "answer": "Each voter has two votes: one for a candidate in their constituency (first vote) and one for a party (second vote). The 299 constituency seats are filled by candidates winning the most first votes, while the remaining seats are allocated from party lists in each Land (state) based on the second votes."
+    },
+    {
+      "question": "What happens when a party wins more constituency seats than its share of party votes?",
+      "answer": "If a party wins more constituency seats than its share of party votes, it retains those extra seats (overhang mandates). To maintain proportionality, other parties receive additional seats (leveling seats) to ensure the Bundestag reflects the party vote distribution. This system was reformed in 2013 to prevent parties from gaining disproportionate influence."
+    },
+    {
+      "question": "Who is the current president of the Bundestag, and what is their role?",
+      "answer": "The current president of the Bundestag is Bärbel Bas. She oversees the sessions of the Bundestag, ensuring orderly proceedings and adherence to procedural rules."
+    },
+    {
+      "question": "Can you provide a Python code snippet to calculate the total seats for a party in the Bundestag based on election results?",
+      "answer": "Here’s a simple Python function to calculate the total seats for a party:\npython\ndef calculate_bundestag_seats(total_votes, party_votes, constituency_seats_won):\n    threshold = 0.05 * total_votes\n    if party_votes < threshold and constituency_seats_won < 3:\n        return 0\n    # Simplified: total seats are based on party votes, plus any overhang seats\n    base_seats = int((party_votes / total_votes) * 598)\n    overhang_seats = max(0, constituency_seats_won - base_seats)\n    return base_seats + overhang_seats\n\n# Example usage:\ntotal_votes = 10000000\nparty_votes = 800000\nconstituency_seats_won = 10\nprint(calculate_bundestag_seats(total_votes, party_votes, constituency_seats_won))\n"
+    }
+  ]
+}

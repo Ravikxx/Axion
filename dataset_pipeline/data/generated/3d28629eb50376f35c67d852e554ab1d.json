@@ -1,0 +1,30 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Heidelberger_Bergbahn",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What are the two sections of the Heidelberger Bergbahn called, and how do they differ in appearance?",
+      "answer": "The Heidelberger Bergbahn consists of two sections: the Molkenkurbahn (lower section) and the Königstuhlbahn (upper section). The Molkenkurbahn uses modern-style cars, while the Königstuhlbahn features wooden-bodied cars of historic appearance. The upper stations at Molkenkur and Königstuhl also retain their original design, whereas the lower stations at Kornmarkt and Heidelberg Castle have a more modern look."
+    },
+    {
+      "question": "How often do the trains run on the Heidelberger Bergbahn, and what are the operating hours?",
+      "answer": "The lower section (Molkenkurbahn) runs every ten minutes throughout the day, while the upper section (Königstuhlbahn) runs every twenty minutes. Services start at 9 a.m. and end at times that vary between summer and winter schedules."
+    },
+    {
+      "question": "Which company operates the Heidelberger Bergbahn, and what other services does it manage?",
+      "answer": "The Heidelberger Bergbahn is operated by the Heidelberger Straßen- und Bergbahn AG (HSB), which also manages buses and trams in Heidelberg."
+    },
+    {
+      "question": "What is the purpose of the Heidelberger Bergbahn, and who is its primary user base?",
+      "answer": "The Heidelberger Bergbahn primarily serves tourist traffic, offering scenic views of Heidelberg and the River Neckar. It connects key locations like the Altstadt, Heidelberg Castle, Molkenkur, and Königstuhl, making it a popular attraction for visitors."
+    },
+    {
+      "question": "Write a Python function that checks if a given station name is part of the Heidelberger Bergbahn route.",
+      "answer": "python\ndef is_station_part_of_heidelberg_bergbahn(station_name):\n    valid_stations = [\n        \"Kornmarkt\",\n        \"Heidelberg Castle\",\n        \"Molkenkur\",\n        \"Königstuhl\"\n    ]\n    return station_name in valid_stations\n\n# Example usage:\nprint(is_station_part_of_heidelberg_bergbahn(\"Kornmarkt\"))  # Output: True\nprint(is_station_part_of_heidelberg_bergbahn(\"Main Station\"))  # Output: False\n"
+    },
+    {
+      "question": "Why might passengers need to change trains on the Heidelberger Bergbahn?",
+      "answer": "Passengers may need to change trains at the Molkenkur station because the Heidelberger Bergbahn operates as two separate sections: the Molkenkurbahn (lower section) and the Königstuhlbahn (upper section). The Molkenkur station serves as the transfer point between these sections."
+    }
+  ]
+}

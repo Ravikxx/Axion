@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/1963_Rome_Grand_Prix",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When and where was the 15th Rome Grand Prix held?",
+      "answer": "The 15th Rome Grand Prix was held on 19 May 1963 at the ACI Vallelunga Circuit near Rome, Italy."
+    },
+    {
+      "question": "How many laps did each heat of the 15th Rome Grand Prix consist of?",
+      "answer": "Each heat of the 15th Rome Grand Prix consisted of 40 laps of the circuit."
+    },
+    {
+      "question": "Which driver won both heats of the 15th Rome Grand Prix?",
+      "answer": "British driver Bob Anderson won both heats of the 15th Rome Grand Prix in a Lola Mk4."
+    },
+    {
+      "question": "What was the outcome of the first heat for Franco Bernabei in the 15th Rome Grand Prix?",
+      "answer": "Franco Bernabei was leading the first heat in his De Tomaso when his engine blew up, preventing him from participating in the second heat."
+    },
+    {
+      "question": "Why was Jo Siffert unable to participate in the 15th Rome Grand Prix?",
+      "answer": "Jo Siffert was denied a visa to race in Rome by the Swiss Automobile Club, despite having planned to compete in the event."
+    },
+    {
+      "question": "Can you provide a code snippet to generate a list of the top three finishers for each heat in the 15th Rome Grand Prix?",
+      "answer": "python\n# List of top three finishers for each heat (assuming consistent results)\ntop_finishers = {\n    \"Heat 1\": [\"Bob Anderson\", \"2nd Place Driver\", \"3rd Place Driver\"],\n    \"Heat 2\": [\"Bob Anderson\", \"2nd Place Driver\", \"3rd Place Driver\"]\n}\nprint(top_finishers)\n"
+    },
+    {
+      "question": "What type of racing rules was the 15th Rome Grand Prix run under?",
+      "answer": "The 15th Rome Grand Prix was run to Formula One rules."
+    }
+  ]
+}

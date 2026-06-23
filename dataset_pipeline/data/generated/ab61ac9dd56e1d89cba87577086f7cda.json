@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/DOS_7",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What does 'DOS 7' refer to in the context of Russian spacecraft?",
+      "answer": "In the context of Russian spacecraft, 'DOS 7' refers to the Mir Core Module, also known as DOS-7. It was a key component of the Mir space station, serving as its core module."
+    },
+    {
+      "question": "Which versions of DR-DOS were released as successors to Novell DOS 7?",
+      "answer": "The versions of DR-DOS that succeeded Novell DOS 7 were OpenDOS 7.01 (1997), DR-OpenDOS 7.02 (1997), DR-DOS 7.02 (1998), DR-DOS 7.03 (1999), DR-DOS 7.04 (LBA/FAT32-enabled OEM), DR-DOS 7.05 (LBA/FAT32-enabled OEM), DR-DOS 7.06 (LBA/FAT32-enabled OEM), and DR-DOS 7.07 (LBA/FAT32-enabled OEM)."
+    },
+    {
+      "question": "How does MS-DOS 7.1 differ from MS-DOS 7.0 in terms of features and release context?",
+      "answer": "MS-DOS 7.0 was an LBA-enabled DOS component bundled with Windows 95 in 1995, while MS-DOS 7.1 was an LBA/FAT32-enabled version bundled with Windows 98 and Windows 98 SE in 1998 and 1999, respectively. The key difference is the support for FAT32 file system in MS-DOS 7.1."
+    },
+    {
+      "question": "Provide a code snippet to check if a system is running a version of DOS 7 or later that supports LBA.",
+      "answer": "Here is a simple batch script to check for LBA support in DOS versions:\nbatch\n@echo off\nver | find \"Version 7.0\" >nul\nif errorlevel 1 (\n    echo This is not a DOS 7+ version.\n) else (\n    echo Checking for LBA support...\n    if exist c:\\config.sys findstr /i \"LBA\" c:\\config.sys >nul\n    if errorlevel 1 (\n        echo LBA not explicitly enabled in config.sys.\n    ) else (\n        echo LBA support is likely enabled.\n    )\n)\n"
+    },
+    {
+      "question": "What are the differences between PC DOS 7, PC DOS 2000, and PC DOS 7.10?",
+      "answer": "PC DOS 7 was released in 1995 as the successor to PC DOS 6.3. PC DOS 2000 succeeded PC DOS 7 in 1998, and PC DOS 7.10 was an LBA/FAT32-enabled OEM version that succeeded PC DOS 2000. The main differences are the release years and the addition of LBA/FAT32 support in PC DOS 7.10."
+    },
+    {
+      "question": "Which DOS variants are classified as 32-bit DOS?",
+      "answer": "The 32-bit DOS variants include PTS-DOS 7.0 (released in 1995) and PTS-DOS 32. These variants were designed to leverage 32-bit processing capabilities."
+    },
+    {
+      "question": "What is ROM-DOS 7.1, and how does it differ from other DOS 7 variants?",
+      "answer": "ROM-DOS 7.1 is an LBA/FAT32-enabled variant of the ROM-DOS family. Unlike other DOS 7 variants that were typically installed on disk, ROM-DOS 7.1 was designed for embedded systems and firmware, where it could be stored in read-only memory (ROM)."
+    }
+  ]
+}

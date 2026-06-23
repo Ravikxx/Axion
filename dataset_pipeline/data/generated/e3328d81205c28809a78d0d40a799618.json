@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Equal_detour_point",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the equal detour point in Euclidean geometry, and what is its designation in Clark Kimberling's Encyclopedia of Triangle Centers?",
+      "answer": "The equal detour point is a triangle center denoted by X(176) in Clark Kimberling's Encyclopedia of Triangle Centers. It is characterized by the equal detour property, where the additional distance traveled from any vertex to another via an inner point P is constant."
+    },
+    {
+      "question": "Describe the equal detour property of the equal detour point in a triangle △ABC. Include the mathematical equation that defines this property.",
+      "answer": "The equal detour property states that for any vertex of △ABC, traveling to another vertex via an inner point P results in a constant additional distance. Mathematically, this is expressed as:\n\nAP + PC - AC = AP + PB - AB = BP + PC - BC"
+    },
+    {
+      "question": "What condition must the angles of a triangle satisfy for the equal detour point to be the only point with the equal detour property?",
+      "answer": "The equal detour point is the only point with the equal detour property if and only if the sum of the tangent of half the angles of the triangle satisfies:\ntan(α/2) + tan(β/2) + tan(γ/2) ≤ 2\nIf this inequality does not hold, the isoperimetric point also possesses the equal detour property."
+    },
+    {
+      "question": "Which four triangle centers are collinear with the equal detour point, and what special geometric relationship do they share?",
+      "answer": "The equal detour point, isoperimetric point, incenter, and Gergonne point are collinear. Additionally, they form a harmonic range, meaning the cross ratio of their positions on the line is -1."
+    },
+    {
+      "question": "What is the relationship between the equal detour point and the inner Soddy circle of a triangle?",
+      "answer": "The equal detour point is the center of the inner Soddy circle of a triangle. The additional distance traveled during the detour via the equal detour point is equal to the diameter of the inner Soddy circle."
+    },
+    {
+      "question": "Provide the barycentric coordinates of the equal detour point in terms of the triangle's side lengths a, b, c, semiperimeter s, and area Δ.",
+      "answer": "The barycentric coordinates of the equal detour point are:\n(a + Δ/(s-a) : b + Δ/(s-b) : c + Δ/(s-c))"
+    },
+    {
+      "question": "Write a Python function to compute the trilinear coordinates of the equal detour point given the angles α, β, and γ of a triangle △ABC.",
+      "answer": "python\nimport math\ndef equal_detour_trilinear(alpha, beta, gamma):\n    half_alpha = math.radians(alpha / 2)\n    half_beta = math.radians(beta / 2)\n    half_gamma = math.radians(gamma / 2)\n    \n    x = 1 + (math.cos(half_beta) * math.cos(half_gamma)) / math.cos(half_alpha)\n    y = 1 + (math.cos(half_gamma) * math.cos(half_alpha)) / math.cos(half_beta)\n    z = 1 + (math.cos(half_alpha) * math.cos(half_beta)) / math.cos(half_gamma)\n    \n    return (x, y, z)\n\nThis function computes the trilinear coordinates as:\n(1 + (cos(β/2)cos(γ/2)/cos(α/2)) : 1 + (cos(γ/2)cos(α/2)/cos(β/2)) : 1 + (cos(α/2)cos(β/2)/cos(γ/2)))"
+    }
+  ]
+}

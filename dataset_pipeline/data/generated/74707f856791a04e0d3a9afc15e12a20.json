@@ -1,0 +1,30 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Juan_José_Martí",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When and where was Juan José Martí born?",
+      "answer": "Juan José Martí was born around the year 1570 in Orihuela, which is located in the Province of Alicante, Spain."
+    },
+    {
+      "question": "What academic degrees did Juan José Martí earn, and when?",
+      "answer": "Martí earned a bachelor's degree in canon law in 1591 from the University of Valencia. He later obtained a doctorate in canon law in 1598, also from the University of Valencia."
+    },
+    {
+      "question": "What positions did Juan José Martí hold at the University of Valencia?",
+      "answer": "In 1598, Martí was appointed as a co-examiner in canon law at the University of Valencia. He held this position for six years."
+    },
+    {
+      "question": "What pseudonym did Juan José Martí use when he joined the Valencian Academia de los Nocturnos?",
+      "answer": "Martí joined the Academia de los Nocturnos under the pseudonym 'Atrevimiento'."
+    },
+    {
+      "question": "Under what name did Juan José Martí publish his continuation of Guzmán de Alfarache, and what controversy surrounds this work?",
+      "answer": "Martí published his continuation of Guzmán de Alfarache under the pseudonym 'Mateo Luján de Sayavedra.' The controversy stems from Martí allegedly stealing ideas from Mateo Alemán's unfinished manuscript, which led to Alemán's sarcastic remark in the genuine sequel."
+    },
+    {
+      "question": "What evidence suggests that Juan José Martí may be the same person as Avellaneda, the writer of a spurious Don Quixote continuation?",
+      "answer": "It has been suggested that Martí and Avellaneda are the same person due to both writing spurious continuations of famous works. However, this theory is unlikely because Martí died in 1604, a year before the first part of Don Quixote was published (1605)."
+    }
+  ]
+}

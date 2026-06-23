@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Epsilon_Sculptoris",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What type of stars make up the Epsilon Sculptoris binary system?",
+      "answer": "The Epsilon Sculptoris binary system consists of two main-sequence stars: Epsilon Sculptoris A, a yellow-white F-type star, and Epsilon Sculptoris B, a yellow G-type dwarf."
+    },
+    {
+      "question": "How far is the Epsilon Sculptoris system from Earth in light years?",
+      "answer": "The Epsilon Sculptoris system is approximately 91 light years from Earth."
+    },
+    {
+      "question": "What is the orbital period of the Epsilon Sculptoris binary pair?",
+      "answer": "Epsilon Sculptoris A and B orbit their common center of mass once every 1200 years."
+    },
+    {
+      "question": "How can you calculate the physical separation between Epsilon Sculptoris A and B given their angular separation and distance?",
+      "answer": "To calculate the physical separation, multiply the angular separation (4.6 arcseconds) by the distance (91 light years). First, convert arcseconds to radians: 4.6 arcseconds = 4.6 / 206265 radians ≈ 2.23 × 10⁻⁵ radians. Then, multiply by the distance: 2.23 × 10⁻⁵ rad × 91 ly × 9.461 × 10¹² km/ly ≈ 1.94 × 10⁹ km (or ~12.9 astronomical units). Note: The given separation of 125 AU accounts for orbital mechanics and perspective."
+    },
+    {
+      "question": "What are the apparent magnitudes of the components in the Epsilon Sculptoris system?",
+      "answer": "Epsilon Sculptoris A has an apparent magnitude of +5.34, Epsilon Sculptoris B has +8.50, Epsilon Sculptoris C has +15, and Epsilon Sculptoris D has +11."
+    },
+    {
+      "question": "Why are Epsilon Sculptoris C and D considered optical companions rather than gravitationally bound to the A-B pair?",
+      "answer": "Epsilon Sculptoris C and D have small Gaia parallaxes, indicating they are much farther away than the A-B pair, despite their close angular separation. This suggests they are not gravitationally bound but appear close due to projection."
+    },
+    {
+      "question": "How did the designation of Epsilon Sculptoris change over time?",
+      "answer": "Originally designated by Lacaille in the constellation Sculptor, the star was later assigned to Alpha Machinae Electricae by Bode in his short-lived constellation Machina Electrica. After the constellation was abandoned, the star returned to Sculptor. Additionally, Bode misassigned the designation Epsilon Sculptoris to HD 344 (HR 13) during this period."
+    }
+  ]
+}

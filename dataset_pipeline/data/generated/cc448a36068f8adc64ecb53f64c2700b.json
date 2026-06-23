@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Fredrik_Jutfelt",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the primary research focus of the Jutfelt Fish Ecophysiology Lab?",
+      "answer": "The Jutfelt Fish Ecophysiology Lab investigates how fish respond physiologically and behaviorally to environmental changes, particularly focusing on the effects of ocean warming and ocean acidification on fish physiology and behavior. Their work also extends to understanding the impacts of climate change on various marine animals."
+    },
+    {
+      "question": "What was the title of Fredrik Jutfelt's PhD thesis and when did he graduate?",
+      "answer": "Fredrik Jutfelt graduated with a PhD from the University of Gothenburg in 2006. His thesis was titled 'The intestinal epithelium of salmonids: transepithelial transport, barrier function and bacterial interactions'."
+    },
+    {
+      "question": "What significant finding did Jutfelt's research group publish in 2020 regarding ocean acidification and coral reef fishes?",
+      "answer": "In 2020, Jutfelt's group published a highly publicized study in Nature titled 'Ocean acidification does not impair the behaviour of coral reef fishes.' The research challenged earlier assumptions by demonstrating that ocean acidification does not dramatically affect the behavior of coral reef fish as previously thought."
+    },
+    {
+      "question": "How did Jutfelt's work contribute to addressing scientific misconduct in the field of ocean acidification research?",
+      "answer": "Jutfelt and colleagues played a key role in detecting and countering data fabrication and scientific misconduct in ocean acidification research. Their efforts led to the retractions of numerous articles, including those published in prominent journals like Science."
+    },
+    {
+      "question": "What was the outcome of the large artificial selection experiment published by Jutfelt's lab in PNAS in 2020?",
+      "answer": "The 2020 PNAS publication showed that evolution of tolerance to warming can occur in fish, specifically zebrafish. However, the rate of evolution was suggested to be too slow to protect fish from the impacts of climate change through evolutionary rescue."
+    },
+    {
+      "question": "Can you describe the research funded by the ERC Consolidator Grant awarded to Jutfelt's lab?",
+      "answer": "The European Research Council (ERC) awarded Jutfelt's lab a Consolidator Grant for the years 2021–2026, amounting to 2 million Euros. The research funded by this grant focuses on investigating how evolution can lead to physiological adaptation to temperature environments in fish, particularly in response to freshwater warming."
+    },
+    {
+      "question": "What surprising discovery did Jutfelt's group make about cold tolerance in zebrafish in a 2023 study?",
+      "answer": "In a 2023 study published in Nature Climate Change, the group found that the evolution of warming tolerance in zebrafish does not lead to trade-offs with numerous life history traits. Surprisingly, it also improves cold tolerance in these fish."
+    }
+  ]
+}

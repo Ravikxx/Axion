@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Fighter_(Namie_Amuro_song)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who wrote, composed, and produced the song 'Fighter'?",
+      "answer": "'Fighter' was written, composed, and produced by Japanese vocalist Emyli, with additional production credits to Reason."
+    },
+    {
+      "question": "What is the significance of 'Fighter' in relation to the Death Note franchise?",
+      "answer": "'Fighter' serves as the insert song for the Japanese drama–horror film Death Note: Light Up the New World and the theme song for its accompanying spin-off series Death Note: New Generation (2016)."
+    },
+    {
+      "question": "How did the original plan for the Death Note theme songs differ from the final outcome?",
+      "answer": "Initially, a Western musical act like Red Hot Chili Peppers or Lenny Kravitz was considered for the theme songs. However, the producer Takahiro Sato shifted focus to promoting a foreign Japanese artist instead."
+    },
+    {
+      "question": "What are the musical characteristics of 'Fighter'?",
+      "answer": "Musically, 'Fighter' is described as an 'aggressive' electronic dance number that heavily uses synthesizers and keyboards. Its lyrical content reflects the perspective of the film's female protagonist, Misa Amane, emphasizing themes of self-empowerment and courage."
+    },
+    {
+      "question": "How was 'Fighter' promoted through visual media?",
+      "answer": "The music video for 'Fighter,' directed by Higashi Hiroaki, features Namie Amuro inside a large castle with mystical rooms and a white ballroom with LED screens. The visuals incorporate extensive computer-generated imagery."
+    },
+    {
+      "question": "Can you provide a code snippet that simulates the release dates of 'Fighter'?",
+      "answer": "python\nfrom datetime import datetime\n\n# Release dates for 'Fighter'\ncd_release_date = datetime(2016, 10, 26)\ndigital_release_date = datetime(2016, 11, 16)\n\nprint(f\"CD Release Date: {cd_release_date.strftime('%B %d, %Y')}\")\nprint(f\"Digital Release Date: {digital_release_date.strftime('%B %d, %Y')}\")\n"
+    },
+    {
+      "question": "What awards and nominations did Namie Amuro receive in 2016 related to 'Fighter'?",
+      "answer": "'Fighter' contributed to Namie Amuro's nomination for Best Female Artist at the Space Shower Music Awards in 2016, alongside the success of many of her previous singles."
+    },
+    {
+      "question": "How did 'Fighter' perform commercially in Japan?",
+      "answer": "Both 'Fighter' and 'Dear Diary' peaked at number three on the daily and weekly Oricon Singles Chart in Japan. Additionally, the single achieved top ten positions on three component Billboard charts in the region."
+    }
+  ]
+}

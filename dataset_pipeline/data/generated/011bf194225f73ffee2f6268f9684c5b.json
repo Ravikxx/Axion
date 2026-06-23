@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Economic_boom",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What defines an economic boom and how does it relate to natural cycles?",
+      "answer": "An economic boom is a phase characterized by a significant and sustained increase in economic activity, often marked by rising GDP, high employment, and increased consumer spending. It is considered a natural cycle because economies typically experience periods of expansion (booms) followed by contractions (recessions or depressions) due to factors like technological advancements, resource availability, and market demand."
+    },
+    {
+      "question": "How did the United States leverage its natural resources to become an economic power in the early 20th century?",
+      "answer": "The United States had abundant natural resources such as timber, iron, coal, minerals, oil, and land. Immigrants provided a large, inexpensive workforce, enabling efficient utilization of these resources. This combination allowed the U.S. to become a major industrial and economic power by the early 20th century, laying the foundation for its economic growth."
+    },
+    {
+      "question": "What role did the First World War play in the U.S. economic boom of the 1920s?",
+      "answer": "During the First World War, European economies suffered, while the U.S. experienced significant growth. U.S. banks loaned money to Europe, and American businesses sold goods to war-torn nations. The war also spurred technological innovations in production, materials, and advertising, which contributed to post-war economic expansion."
+    },
+    {
+      "question": "How did the widespread adoption of electricity in the 1920s contribute to economic growth?",
+      "answer": "The electricity industry boomed in the 1920s, with 70% of American homes using electricity for lighting by 1929. Factories adopted electrical machinery, enabling mass production of consumer goods like refrigerators, washing machines, and radios. The demand for electricity doubled, driving industrial efficiency and economic expansion."
+    },
+    {
+      "question": "Describe Henry Ford's contribution to mass production and how it impacted the U.S. economy.",
+      "answer": "Henry Ford pioneered mass production with his assembly line techniques, which drastically reduced car prices. By 1925, a Ford car cost $290, down from $850 in 1908. Ford’s approach of selling more cars at lower profits created jobs, boosted wages (e.g., $5 per day), and stimulated infrastructure development like roads and petrol stations. By 1929, Americans owned 23 million cars, significantly boosting the economy."
+    },
+    {
+      "question": "What were hire-purchase and credit systems, and how did they influence consumer behavior in the 1920s?",
+      "answer": "Hire-purchase and credit systems allowed consumers to buy goods by paying in monthly installments. This made expensive items like cars and appliances affordable, increasing consumer spending. Advertisements promoted these systems, and their popularity led to the rise of chain stores like J.P. Penney, further stimulating economic growth."
+    },
+    {
+      "question": "Write a Python snippet to calculate the percentage increase in U.S. car ownership from 1908 to 1929, given that the price of a Ford car dropped from $850 to $290.",
+      "answer": "Here’s a Python snippet to calculate the percentage increase in car ownership based on price reduction:\npython\n# Price drop percentage (indicative of affordability)\ninitial_price = 850\nfinal_price = 290\nprice_reduction = ((initial_price - final_price) / initial_price) * 100\n\n# Assume a correlation between price drop and ownership (simplified)\n# 1908 ownership ~ 1 million (approximate), 1929 ownership = 23 million\nownership_1908 = 1_000_000\nownership_1929 = 23_000_000\nownership_increase = ((ownership_1929 - ownership_1908) / ownership_1908) * 100\n\nprint(f\"Price reduction: {price_reduction:.2f}%\")\nprint(f\"Ownership increase: {ownership_increase:.2f}%\")\n\nOutput:\nPrice reduction: 65.88%\nOwnership increase: 2200.00%"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/sylwia-lask/9-things-youre-overengineering-the-browser-already-solved-them-o99",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What is the purpose of the `requestIdleCallback` API in JavaScript?",
+      "answer": "The `requestIdleCallback` API allows developers to schedule low-priority tasks to run when the browser is idle, meaning when there are no higher-priority tasks (like rendering or user interactions) scheduled. This is useful for tasks that don’t need to block the main thread, such as collecting user behavior data, loading non-critical resources, or preprocessing data. For example:\njs\nfunction trackUserScrolling() {\n  console.log(\"User scrolled. This changes everything.\");\n  if (\"requestIdleCallback\" in window) {\n    requestIdleCallback(trackUserScrolling);\n  } else {\n    setTimeout(trackUserScrolling, 0);\n  }\n}\ntrackUserScrolling();\n\nIf `requestIdleCallback` is not supported, a fallback like `setTimeout` can be used."
+    },
+    {
+      "question": "How does the `:focus-within` CSS pseudo-class work and what problem does it solve?",
+      "answer": "The `:focus-within` pseudo-class applies styles to a parent element when any of its children (including nested elements) receives focus. This eliminates the need for JavaScript event listeners to track focus changes on child elements. For example:\ncss\n.form-field {\n  border: 1px solid #ccc;\n  padding: 12px;\n}\n.form-field:focus-within {\n  border-color: hotpink;\n}\n\nhtml\n<div class=\"form-field\">\n  <input placeholder=\"Type something meaningful...\" />\n</div>\n\nHere, the parent `div` will turn hot pink when the input inside it gains focus."
+    },
+    {
+      "question": "What is the `navigator.onLine` property used for in web development?",
+      "answer": "The `navigator.onLine` property indicates whether the browser is currently online. It can be used to detect network connectivity changes, such as when a user loses connection (e.g., entering an elevator) or regains it. This is particularly useful for Progressive Web Apps (PWAs) that need to handle offline scenarios gracefully. For example:\njs\nwindow.addEventListener(\"offline\", () => {\n  console.log(\"User is offline. Storing data in IndexedDB.\");\n});\nwindow.addEventListener(\"online\", () => {\n  console.log(\"User is back online. Sending stored data to the server.\");\n});\n\nNote that `navigator.onLine` only indicates browser connectivity, not whether the backend server is reachable."
+    },
+    {
+      "question": "Why should `requestAnimationFrame` be used instead of `setInterval` for animations in JavaScript?",
+      "answer": "`requestAnimationFrame` synchronizes animation updates with the browser’s repaint cycle, ensuring smoother and more efficient animations compared to `setInterval`. Animations using `setInterval` can feel laggy because they may not align with the browser’s rendering process. Example:\njs\nfunction animate() {\n  element.style.transform = `translateX(${Date.now() % 300}px)`;\n  requestAnimationFrame(animate);\n}\nanimate();\n\nThis ensures the animation runs at the optimal frame rate (typically 60fps) without unnecessary computations during idle periods."
+    },
+    {
+      "question": "What are container queries in CSS and how do they differ from traditional media queries?",
+      "answer": "Container queries allow developers to apply styles to an element based on the size of its container, rather than the viewport. This is useful for components that need to adapt their layout based on their parent’s dimensions. Traditional media queries rely on the viewport size, which can lead to inconsistent styling. Example:\ncss\n.card-wrapper {\n  container-type: inline-size;\n}\n.card {\n  display: grid;\n}\n@container (min-width: 400px) {\n  .card {\n    grid-template-columns: 1fr 2fr;\n  }\n}\n\nThis ensures the `.card` component adapts when its container is at least 400px wide."
+    },
+    {
+      "question": "What are the risks of using `Math.random()` for generating IDs and how can `crypto.getRandomValues` mitigate them?",
+      "answer": "Using `Math.random()` for generating IDs can lead to collisions (duplicate IDs) because it doesn’t guarantee enough entropy or randomness. This is especially problematic when generating many IDs. The `crypto.getRandomValues` API provides cryptographically stronger random values, reducing the likelihood of collisions. Example:\njs\nconst bytes = new Uint8Array(8);\ncrypto.getRandomValues(bytes);\nconst id = Array.from(bytes)\n  .map(b => b.toString(16).padStart(2, \"0\"))\n  .join(\"\");\nconsole.log(\"Secure-ish ID:\", id);\n\nThis method is widely supported and suitable for generating unique, harder-to-guess IDs."
+    },
+    {
+      "question": "How does the `<dialog>` HTML element simplify creating modal dialogs compared to traditional approaches?",
+      "answer": "The `<dialog>` element provides a native, accessible way to create modal dialogs without relying on third-party libraries. It includes built-in methods like `showModal()` and `close()`, and is accessible by default (no need to manually manage focus traps or ARIA attributes). Example:\nhtml\n<dialog id=\"modal\">\n  <p>Are you sure you want to deploy on Friday?</p>\n  <button onclick=\"modal.close()\">Cancel</button>\n  <button onclick=\"alert('Good luck 😬')\">Deploy</button>\n</dialog>\n<button onclick=\"modal.showModal()\">Open modal</button>\n\nThis reduces boilerplate code and improves performance compared to custom modal implementations."
+    }
+  ]
+}

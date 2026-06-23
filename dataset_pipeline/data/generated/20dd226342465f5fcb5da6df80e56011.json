@@ -1,0 +1,34 @@
+{
+  "source_url": "https://mathworld.wolfram.com/ConjugateElements.html",
+  "category": "mathworld",
+  "pairs": [
+    {
+      "question": "What are conjugate elements in the context of field theory?",
+      "answer": "In field theory, two elements of an extension field of a field are called conjugate (over the base field) if they are both algebraic over the base field and share the same minimal polynomial. This means they are roots of the same irreducible polynomial over the base field. For example, in the complex numbers, two complex numbers are conjugate if they have the same real part and opposite imaginary parts, as they are roots of the same minimal polynomial with real coefficients."
+    },
+    {
+      "question": "How are primitive roots of unity related to conjugate elements in field theory?",
+      "answer": "All primitive roots of unity are conjugate over the field of rational numbers because they share the same minimal polynomial, the cyclotomic polynomial. For instance, the primitive fifth roots of unity are conjugate over the rationals since they are roots of the irreducible cyclotomic polynomial Φ₅(x) = x⁴ + x³ + x² + x + 1. This means they form a single conjugacy class in the algebraic closure of the rationals."
+    },
+    {
+      "question": "What is the relationship between the number of conjugates of an algebraic element and its minimal polynomial?",
+      "answer": "The number of conjugates of an algebraic element over a field is less than or equal to the degree of its minimal polynomial over that field. Equality holds when the minimal polynomial has no multiple roots in its splitting field, which is always the case for separable polynomials (e.g., polynomials over fields of characteristic zero). For example, if an element α has a minimal polynomial of degree 4 over a field, it has exactly 4 distinct conjugates."
+    },
+    {
+      "question": "Provide an example of conjugate elements over the real numbers and explain why they are conjugate.",
+      "answer": "Consider the complex numbers i and -i, which are conjugate elements over the real numbers. They are roots of the same minimal polynomial x² + 1 over ℝ, which is irreducible over ℝ (its discriminant is -4, a negative number). Since they share the same minimal polynomial, they are conjugate over ℝ. The Galois group of the extension ℂ/ℝ swaps these two elements."
+    },
+    {
+      "question": "How does the Galois group act on conjugacy classes of algebraic elements?",
+      "answer": "The Galois group of a field extension maps each conjugacy class of algebraic elements to itself, permuting its elements. Every automorphism in the Galois group sends an algebraic element to another conjugate of that element because it preserves the minimal polynomial (i.e., it maps roots of the minimal polynomial to other roots). For example, in the extension ℚ(√2)/ℚ, the non-trivial Galois automorphism sends √2 to -√2, which is its only conjugate over ℚ."
+    },
+    {
+      "question": "Write a Python function to check if two algebraic numbers are conjugate over a given field, assuming their minimal polynomials are known.",
+      "answer": "python\nfrom sympy import symbols, Poly, ZZ\n\ndef are_conjugate(alpha_coeffs, beta_coeffs, base_field_coeffs):\n    \"\"\"\n    Check if two algebraic numbers are conjugate over a given field.\n    alpha_coeffs and beta_coeffs are lists of coefficients of their minimal polynomials.\n    base_field_coeffs defines the field (e.g., [1, 0] for rationals).\n    \"\"\"\n    x = symbols('x')\n    poly_alpha = Poly(alpha_coeffs, x, domain=ZZ)\n    poly_beta = Poly(beta_coeffs, x, domain=ZZ)\n    \n    # Check if minimal polynomials are the same (up to a constant factor)\n    return (poly_alpha - poly_beta).is_zero\n\n# Example: Check if √2 and -√2 are conjugate over ℚ\nprint(are_conjugate([1, 0, -2], [1, 0, -2], [1]))  # Output: True\n\nThis function assumes the minimal polynomials are monic and irreducible over the base field. It normalizes the polynomials and checks for equality."
+    },
+    {
+      "question": "Why might elements that are not conjugate over a larger field become conjugate over a smaller field?",
+      "answer": "When restricting to a smaller field, the minimal polynomial of an element may split into multiple irreducible factors, some of which may coincide for previously distinct elements. For example, consider a field extension where an element α has a minimal polynomial that factors into distinct irreducibles over a larger field. Over a smaller subfield, this polynomial might become irreducible, making all its roots (including α) conjugate over the smaller field. This shows that conjugacy is relative to the base field."
+    }
+  ]
+}

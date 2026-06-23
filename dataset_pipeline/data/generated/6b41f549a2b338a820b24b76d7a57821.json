@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/maximsaplin/debloating-the-ai-grown-codebase-2om",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What are the main symptoms of 'AI bloat' in a codebase, and how do they manifest in the described project?",
+      "answer": "AI bloat manifests as verbose and hard-to-follow READMEs, excessive scaffolding around features, partial bug fixes that leave nearby issues intact, verbose comments mistaken for clarity, no-op subsystems still wired into the system, debug code in shipping sources, redundant state layers, and defensive abstractions. In the described Flutter app, these symptoms accumulated over time as the AI agent added layers of local compromises and explanatory residue without considering the system's overall health."
+    },
+    {
+      "question": "How did the author reduce the Flutter app's codebase by 31.7% while preserving all features and tests?",
+      "answer": "The author used the `/goal-sloc` agent skill to set a target of reducing lines of code (SLOC) as a forcing function. Key actions included: deleting dead code, removing a no-op subsystem, relocating debug harness out of shipping code, eliminating redundant state layers, performing clean-room rewrites against tests, and replacing custom logging with a mature library. The process also involved fixing two latent bugs discovered during simplification."
+    },
+    {
+      "question": "Why is SLOC (Lines of Code) considered a 'dangerous proxy' for code quality, and what are its limitations?",
+      "answer": "SLOC is a crude and dangerous proxy because it can be gamed—agents might trim comments, pack lines, or extract helpers to reduce the metric without improving clarity or maintainability. Additionally, SLOC does not account for architectural improvements (e.g., deep module reshuffles) that enhance design without significantly changing line counts. It also ignores platform scaffolding (e.g., Gradle, CMake files) that may be irreducible without product decisions."
+    },
+    {
+      "question": "What role did automated tests play in the debloat experiment, and how were they used?",
+      "answer": "Automated tests served as behavioral specifications to guide clean-room rewrites. The agent used tests to ensure that refactored or simplified code retained the same functionality. Tests were also part of the feedback loop, providing green signals to validate changes. Post-debloat, the test suite grew from 'green' to 335 green tests, confirming the app's functionality was preserved."
+    },
+    {
+      "question": "Provide a code snippet example illustrating how AI bloat might appear in a real codebase, and how it could be simplified.",
+      "answer": "Example of AI bloat (verbose and redundant code):\ndart\n// Redundant state layer\nclass MediaPlayerState {\n  String currentTrack;\n  Duration position;\n  bool isPlaying;\n  List<String> playlist;\n  Map<String, dynamic> playbackOptions; // Often unused\n}\n\n// Simplified version:\nclass MediaPlayerState {\n  final String currentTrack;\n  final Duration position;\n  final bool isPlaying;\n  final List<String> playlist;\n}\n\nThe redundant `playbackOptions` layer was eliminated because it mirrored existing state and was not actively used, reducing cognitive load without losing functionality."
+    },
+    {
+      "question": "How does cognitive debt relate to AI-developed codebases, and why is it a concern?",
+      "answer": "Cognitive debt refers to the mental burden of understanding and modifying a codebase that has accumulated complexity over time. In AI-developed codebases, it piles up because agents often make local compromises (e.g., defensive abstractions, no-op systems) that are defensible in isolation but collectively degrade the system’s understandability. The author avoided deep diving into the code due to this debt, which allowed issues to accumulate silently, making future changes harder for both humans and AI agents."
+    },
+    {
+      "question": "What is the significance of 'Agentic Engineering' in the context of AI-assisted development, and how does it differ from 'Vibe Coding'?",
+      "answer": "Agentic Engineering emphasizes structured AI assistance with clear goals, tests, specs, and feedback loops to maintain code health. It contrasts with 'Vibe Coding,' where AI generates code with minimal human oversight, often leading to accumulation of bloat and technical debt. In Agentic Engineering, the human role shifts from deep code understanding to setting up harnesses, writing specs, and steering the AI toward maintainable outcomes."
+    }
+  ]
+}

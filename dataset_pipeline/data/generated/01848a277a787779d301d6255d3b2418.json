@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Argentina_men's_national_field_hockey_team",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who currently governs the Argentina men's national field hockey team?",
+      "answer": "The Argentina men's national field hockey team is governed by the Argentine Hockey Confederation (CAH)."
+    },
+    {
+      "question": "What notable achievement did Los Leones accomplish at the 2016 Summer Olympics?",
+      "answer": "Los Leones, the Argentina men's national field hockey team, won a gold medal at the 2016 Summer Olympics in Rio de Janeiro by defeating Belgium 4–2 in the final."
+    },
+    {
+      "question": "Who was the coach of Argentina's Olympic gold-winning field hockey team in 2016?",
+      "answer": "Carlos Retegui was the coach of Argentina's Olympic gold-winning field hockey team in 2016."
+    },
+    {
+      "question": "How many times has Argentina appeared in the Hockey World Cup since 1973?",
+      "answer": "Argentina has appeared in every Hockey World Cup since the first edition in 1973, except for the 1998 edition."
+    },
+    {
+      "question": "What is Argentina's best position in the Hockey World Cup, and when was it achieved?",
+      "answer": "Argentina's best position in the Hockey World Cup is a bronze medal, which they achieved in 2014."
+    },
+    {
+      "question": "Provide a code snippet in Python to check if Argentina has won gold in the Olympics using the given data.",
+      "answer": "python\n# Data representing Argentina's Olympic achievements\nolympic_achievements = {\n    '2016': {'medal': 'gold', 'result': 'defeated Belgium 4-2'},\n    '2020': {'medal': 'silver', 'result': 'lost to Belgium in final'}\n}\n\n# Function to check if Argentina won gold in Olympics\ndef check_gold_medal(achievements):\n    for year, achievement in achievements.items():\n        if achievement['medal'] == 'gold':\n            return True\n    return False\n\n# Check Argentina's gold medal status\nargentina_has_gold = check_gold_medal(olympic_achievements)\nprint(f\"Argentina has won Olympic gold: {argentina_has_gold}\")\n\nThis code checks if Argentina has won a gold medal in the Olympics based on the provided data."
+    },
+    {
+      "question": "What is Argentina's continental dominance in field hockey, and which tournaments have they dominated?",
+      "answer": "Argentina is the most winning team in the Americas at the continental level. They have dominated most tournaments they played, including winning four gold medals at the Pan American Cup and eleven gold medals at the Pan American Games."
+    },
+    {
+      "question": "When did Argentina reach their highest FIH World Ranking, and what was their ranking?",
+      "answer": "Argentina reached their highest FIH World Ranking in April 2017, achieving 1st place after their Olympic gold medal victory."
+    }
+  ]
+}

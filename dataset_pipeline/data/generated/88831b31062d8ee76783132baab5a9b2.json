@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Brixton_Road",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Where is Brixton Road located, and what are its endpoints?",
+      "answer": "Brixton Road is a road in the London Borough of Lambeth, south London, England. It runs from The Oval at Kennington to Brixton, where it becomes the high street and splits into Effra Road and Brixton Hill at St Matthew's church, near the junction with Acre Lane and Coldharbour Lane."
+    },
+    {
+      "question": "What notable landmarks are found along Brixton Road?",
+      "answer": "Notable landmarks along Brixton Road include the Neo-Byzantine Christ Church (opened in 1902), Lambeth Town Hall, the Ritzy Cinema, the Brixton Tate Library (with a statue of Henry Tate outside), and St Matthew's church. The southern end of the former 'Brixton Oval' is now Windrush Square, renamed in 2010 to honor early Caribbean migrants and the HMT Empire Windrush."
+    },
+    {
+      "question": "What is Brixton Market, and where is it located?",
+      "answer": "Brixton Market is a network of covered arcades adjacent to two railway viaducts, located near Brixton Underground station, primarily along Electric Avenue. The market arcades were designated as listed buildings in 2009 after plans to replace them with a US-style mall were opposed."
+    },
+    {
+      "question": "What historical significance does Brixton Road have?",
+      "answer": "Brixton Road dates back to the Roman era as part of the London to Brighton Way. Historically, the River Effra was visible near Lambeth Town Hall but is now an underground storm drain. The road is also part of the A23 and holds literary significance as the setting of the first crime scene in Sir Arthur Conan Doyle's 1887 novel *A Study in Scarlet*, featuring Sherlock Holmes."
+    },
+    {
+      "question": "How has Brixton Road's architecture evolved over time?",
+      "answer": "Many Regency period terraces once lined Brixton Road, forming a continuous frontage from Kennington to Brixton. By the 1970s, these buildings had become semi-derelict, with some replaced and others refurbished, primarily as social housing, by the Greater London Council."
+    },
+    {
+      "question": "Write a Python function to generate a list of landmarks along Brixton Road, including their descriptions.",
+      "answer": "python\n\ndef get_brixton_road_landmarks():\n    landmarks = [\n        {\n            \"name\": \"Christ Church\",\n            \"description\": \"A Neo-Byzantine style church opened in 1902, located at the north end of Brixton Road.\"\n        },\n        {\n            \"name\": \"Lambeth Town Hall\",\n            \"description\": \"A municipal building housing local government offices, located near the former Brixton Oval.\"\n        },\n        {\n            \"name\": \"Ritzy Cinema\",\n            \"description\": \"An independent cinema established in the early 20th century, situated in Brixton.\"\n        },\n        {\n            \"name\": \"Brixton Tate Library\",\n            \"description\": \"A public library with a statue of Henry Tate outside, dedicated to arts and culture.\"\n        },\n        {\n            \"name\": \"St Matthew's Church\",\n            \"description\": \"A church located at the junction of Brixton Road, Effra Road, and Brixton Hill.\"\n        }\n    ]\n    return landmarks\n\n# Example usage:\nlandmarks = get_brixton_road_landmarks()\nfor landmark in landmarks:\n    print(f\"{landmark['name']}: {landmark['description']}\")\n"
+    },
+    {
+      "question": "Why was Windrush Square renamed, and what does it commemorate?",
+      "answer": "Windrush Square was renamed in 2010 to honor the early Caribbean migrants who arrived in the area and to commemorate the HMT Empire Windrush, which brought 492 passengers from Jamaica to London in 1948. The renaming reflects the area's cultural heritage and the contributions of Caribbean communities."
+    }
+  ]
+}

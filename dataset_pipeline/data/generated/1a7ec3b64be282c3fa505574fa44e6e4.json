@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Katesar",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the Katesan caste and where are they primarily found in India?",
+      "answer": "The Katesan is a Tamil caste predominantly located in the Thirunelveli district of Tamil Nadu, India."
+    },
+    {
+      "question": "How many exogamous sub-divisions does the Katesan caste have, and what are they called?",
+      "answer": "The Katesan caste has seven exogamous sub-divisions known as Keelai: Kuttini keelai, Nēttali keelai, Kavadi keelai, Nayinan Chakravarthi keelai, Thomba Puluvan keelai, Attukkutti keelai, and Tachilai keelai."
+    },
+    {
+      "question": "What was the role of the Katesans in the war between the Idangai and Valangai, and what happened to them as a result?",
+      "answer": "During the war between the Idangai and Valangai, the Katesans allied with the Kammalar subgroup of Idangai. They suffered a significant defeat, with only seven men surviving. These seven men married women from different castes, which led to the formation of the seven Keelai subdivisions."
+    },
+    {
+      "question": "How are family responsibilities structured in Katesan society?",
+      "answer": "In Katesan society, the maternal uncle holds more responsibility than the parents."
+    },
+    {
+      "question": "What historical artifact related to the Katesan caste dates back to 900 AD and was found in Kanyakumari?",
+      "answer": "The 'Perumal Patamkatti,' a historical artifact dating to 900 AD, was discovered in Kanyakumari and is associated with the Katesan community."
+    },
+    {
+      "question": "What is the difference between the Kadesar Pattamkatti and Rameswaram Pattangkattiyar communities in terms of their caste certificates?",
+      "answer": "The Kadesar Pattamkatti is issued a community certificate under the Backward Community category by the government, whereas the Rameswaram Pattangkattiyar is recognized as a Scheduled Caste and issued a certificate under that category by the Tamil Nadu government."
+    },
+    {
+      "question": "Write a Python function to check if a given Keelai subdivision is part of the Katesan caste's seven subdivisions.",
+      "answer": "python\ndef is_katesan_keelai(subdivision):\n    katesan_keelai = {\n        \"Kuttini keelai\", \"Nēttali keelai\", \"Kavadi keelai\", \n        \"Nayinan Chakravarthi keelai\", \"Thomba Puluvan keelai\", \n        \"Attukkutti keelai\", \"Tachilai keelai\"\n    }\n    return subdivision in katesan_keelai\n\n# Example usage:\nprint(is_katesan_keelai(\"Kavadi keelai\"))  # Output: True\nprint(is_katesan_keelai(\"Unknown keelai\")) # Output: False\n"
+    }
+  ]
+}

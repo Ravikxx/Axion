@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Citigroup_Center",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the full address of the Citigroup Center and when was it built?",
+      "answer": "The Citigroup Center is located at 601 Lexington Avenue in Midtown Manhattan, New York City. It was built in 1977 for Citibank."
+    },
+    {
+      "question": "Who were the key architects and engineers involved in designing the Citigroup Center?",
+      "answer": "The Citigroup Center was designed by architect Hugh Stubbins, associate architect Emery Roth & Sons, and structural engineer William LeMessurier."
+    },
+    {
+      "question": "What structural flaw was discovered in the Citigroup Center shortly after its completion, and how was it addressed?",
+      "answer": "A design flaw made the building vulnerable to collapse in high winds. The structure was strengthened less than a year after completion to address this issue."
+    },
+    {
+      "question": "Describe the unique structural features of the Citigroup Center's base and roof.",
+      "answer": "The Citigroup Center's base includes four giant stilts placed mid-wall rather than at the corners. The roof is sloped at a 45-degree angle."
+    },
+    {
+      "question": "What notable landmark is adjacent to the Citigroup Center, and what are its features?",
+      "answer": "St. Peter's Lutheran Church, a granite structure designed by Hugh Stubbins, is located at the base of the tower. It was preserved as part of the building's construction agreement."
+    },
+    {
+      "question": "How has the name of the Citigroup Center changed over time?",
+      "answer": "Originally called Citicorp Center, it was renamed 601 Lexington Avenue in the 2000s after being acquired by Boston Properties in 2001."
+    },
+    {
+      "question": "Provide a code snippet in Python to calculate the height of the Citigroup Center in meters and feet given its height in feet.",
+      "answer": "python\ndef convert_height(height_feet):\n    height_meters = height_feet * 0.3048\n    return height_meters\n\n# Example usage:\nheight_feet = 915\nheight_meters = convert_height(height_feet)\nprint(f\"Height in feet: {height_feet} ft, Height in meters: {height_meters:.2f} m\")\n"
+    }
+  ]
+}

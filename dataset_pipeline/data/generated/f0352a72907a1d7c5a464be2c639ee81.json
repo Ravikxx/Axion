@@ -1,0 +1,30 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Anna_MacKinnon",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who is Anna MacKinnon and what political offices has she held?",
+      "answer": "Anna MacKinnon is an American Republican politician born on November 11, 1957. She served in the Alaska Senate (District G) from 2013 to 2018, the Alaska House of Representatives (17th district) from 2007 to 2013, and the Anchorage Assembly representing Eagle River and Chugiak from 1999 to 2007."
+    },
+    {
+      "question": "What notable committees and subcommittees did Anna MacKinnon chair during her time in the Alaska House of Representatives?",
+      "answer": "During her tenure in the Alaska House of Representatives, Anna MacKinnon chaired the Education & Early Development Committee, the Labor & Workforce Development Committee, and the University of Alaska Finance Subcommittee. She was also a member of the House Finance Committee."
+    },
+    {
+      "question": "How did Anna MacKinnon win her political seats, and who were her opponents?",
+      "answer": "MacKinnon won each office by defeating an incumbent in the election. She defeated Ted Carlson for a seat on the Anchorage Assembly in 1999, Pete Kott in the 2006 House primary, and Bettye Davis in the 2012 Senate election. Carlson was known for arresting actor Steve McQueen in 1972, while Kott was later involved in the Alaska political corruption probe."
+    },
+    {
+      "question": "What was the outcome of the Alaska political corruption probe mentioned in relation to Pete Kott?",
+      "answer": "Pete Kott, an incumbent whom Anna MacKinnon defeated in the 2006 House primary, was later involved in the Alaska political corruption probe. He was sentenced to federal prison as a result, and the probe led to the departure of other longtime legislators from office."
+    },
+    {
+      "question": "How did redistricting and primary challenges play a role in Anna MacKinnon's Senate victory in 2012?",
+      "answer": "Anna MacKinnon's Senate victory in 2012 came over longtime legislator Bettye Davis, who faced redistricting and a primary election challenge from former House member Harry Crawford. Davis narrowly outpolled Crawford in the primary, but lost to MacKinnon in the general election."
+    },
+    {
+      "question": "Create a Python dictionary summarizing Anna MacKinnon's political career, including her offices and years served.",
+      "answer": "python\npolitical_career = {\n    \"name\": \"Anna MacKinnon\",\n    \"born\": \"November 11, 1957\",\n    \"party\": \"Republican\",\n    \"career\": [\n        {\"office\": \"Anchorage Assembly\", \"district\": \"Eagle River and Chugiak\", \"years\": \"1999–2007\"},\n        {\"office\": \"Alaska House of Representatives\", \"district\": \"17th\", \"years\": \"2007–2013\"},\n        {\"office\": \"Alaska Senate\", \"district\": \"G\", \"years\": \"2013–2018\"}\n    ],\n    \"committees_chaired\": [\n        \"Education & Early Development\",\n        \"Labor & Workforce Development\",\n        \"University of Alaska Finance Subcommittee\"\n    ]\n}\n"
+    }
+  ]
+}

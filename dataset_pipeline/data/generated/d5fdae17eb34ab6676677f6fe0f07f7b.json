@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/East_London",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is the historical origin of the term 'East London'?",
+      "answer": "The term 'East London' originated in 1720 as 'That part beyond the Tower'. By 1950, it was widely used to describe all of Greater London east of the City of London and north of the River Thames."
+    },
+    {
+      "question": "Which London boroughs are included in East London?",
+      "answer": "East London includes the London boroughs of Barking and Dagenham, Hackney, Havering, Newham, Redbridge, Tower Hamlets, and Waltham Forest."
+    },
+    {
+      "question": "Why did East London develop eastward historically?",
+      "answer": "East London developed eastward due to shipping activities on the River Thames. The presence of docks and shipbuilding industries drove this growth."
+    },
+    {
+      "question": "What major changes occurred in East London's population from 1891 to 2011?",
+      "answer": "In 1891, the population peaked in areas like Bethnal Green and Stepney, but growth shifted to outer boroughs. By 1971, every borough experienced population decline, which reversed by 2011, showing growth across all boroughs."
+    },
+    {
+      "question": "What is the difference between East London and the East End of London?",
+      "answer": "The East End of London is a subset of East London, corresponding to areas closer to the ancient City of London."
+    },
+    {
+      "question": "How has East London's economy evolved since World War II?",
+      "answer": "After World War II, traditional industries like docks and shipbuilding declined. Today, East London is an area of regeneration, with new economic activities and development."
+    },
+    {
+      "question": "Name three famous places located in East London.",
+      "answer": "Three famous places in East London are Whitechapel, Stratford, and Shoreditch."
+    }
+  ]
+}

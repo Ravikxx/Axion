@@ -1,0 +1,34 @@
+{
+  "source_url": "https://mathworld.wolfram.com/letters/P.html",
+  "category": "mathworld",
+  "pairs": [
+    {
+      "question": "What is the p-adic absolute value of a rational number, and how does it differ from the usual absolute value?",
+      "answer": "The p-adic absolute value (or p-adic norm) of a rational number x, denoted |x|_p, is defined based on the prime p. If x = 0, |x|_p = 0. Otherwise, write x as x = p^n * (a/b) where a and b are integers not divisible by p, then |x|_p = p^(-n). Unlike the usual absolute value, which measures size in terms of distance from zero on the real line, the p-adic absolute value measures divisibility by p, making it ultrametric: |x + y|_p ≤ max(|x|_p, |y|_p). For example, |6|_2 = 2^(-1) = 1/2 because 6 = 2^1 * (3/1)."
+    },
+    {
+      "question": "How do p-adic integers differ from ordinary integers, and provide a concrete example of a p-adic integer that is not an ordinary integer.",
+      "answer": "p-adic integers are infinite formal sums of the form a_0 + a_1*p + a_2*p^2 + ... where each a_i is an integer between 0 and p-1. They form the p-adic completion of the ring of integers. Unlike ordinary integers, which are finite, p-adic integers can represent numbers like ...1111 (in base p), which converges in the p-adic metric. A concrete example is -1 in 5-adic integers: -1 = 4 + 4*5 + 4*5^2 + 4*5^3 + ..., since 4*(1 + 5 + 5^2 + ...) = 4/(1-5) = -1 in the 5-adic field. This does not correspond to any finite ordinary integer."
+    },
+    {
+      "question": "Write a Python function to compute the p-adic valuation of a non-zero integer x with respect to a prime p.",
+      "answer": "python\ndef p_adic_valuation(x: int, p: int) -> int:\n    \"\"\"\n    Compute the p-adic valuation of x with respect to prime p.\n    The valuation is the highest power k such that p^k divides x.\n    \"\"\"\n    if x == 0:\n        raise ValueError(\"Valuation of 0 is undefined.\")\n    if p <= 1:\n        raise ValueError(\"p must be a prime number greater than 1.\")\n    k = 0\n    while x % p == 0:\n        x //= p\n        k += 1\n    return k\n\n# Example usage:\nprint(p_adic_valuation(100, 5))  # Output: 2, since 5^2 divides 100 but 5^3 does not\n"
+    },
+    {
+      "question": "Explain what a p-group is in group theory and give an example of a non-trivial p-group.",
+      "answer": "A p-group is a group in which the order of every element is a power of a fixed prime p. Equivalently, by Lagrange’s theorem, a finite group is a p-group if and only if its order is a power of p. A non-trivial example is the cyclic group of order p, denoted C_p or ℤ/pℤ, consisting of the integers modulo p under addition. Another example is the quaternion group Q_8 = {±1, ±i, ±j, ±k}, which is a 2-group of order 8. In Q_8, every element satisfies x^2 = 1 or x^4 = 1, so all element orders are powers of 2."
+    },
+    {
+      "question": "What is the Painlevé transcendents problem, and why is it significant in mathematics?",
+      "answer": "The Painlevé transcendents are nonlinear second-order ordinary differential equations that define special functions, discovered around 1900 by Paul Painlevé and coworkers. These equations are characterized by having solutions without movable branch points (Painlevé property), making them integrable in a strong sense. There are six classical Painlevé equations (P_I to P_VI), each with unique properties. They arise in many areas of mathematical physics, including random matrix theory, integrable systems, and quantum gravity. Their significance lies in their role as \"solvable\" models that capture complex nonlinear behavior while avoiding pathological singularities."
+    },
+    {
+      "question": "Describe the Pearson correlation coefficient and how it is calculated. Provide a formula and interpret its range.",
+      "answer": "The Pearson correlation coefficient (r) measures the linear relationship between two datasets x and y. It is defined as the covariance of x and y divided by the product of their standard deviations:\n\nr = [nΣxy - (Σx)(Σy)] / sqrt([nΣx² - (Σx)²][nΣy² - (Σy)²])\n\nAlternatively, r = cov(x,y) / (σ_x σ_y), where cov is covariance and σ denotes standard deviation. The value of r ranges from -1 to 1. An r of 1 indicates perfect positive linear correlation, -1 perfect negative correlation, and 0 no linear correlation. For example, if r = 0.85 between height and weight in a population, it suggests a strong positive linear association."
+    },
+    {
+      "question": "What is a pandigital number? How does a 10-digit pandigital number differ from a 9-digit one?",
+      "answer": "A pandigital number is an integer that contains each digit from 1 to n exactly once in its n-digit representation. A 9-digit pandigital number uses digits 1 through 9 exactly once (e.g., 123456789), while a 10-digit pandigital number includes all digits 0 through 9 exactly once (e.g., 3816547290). Note that 10-digit pandigitals cannot start with 0. The set of 10-digit pandigital numbers is a subset of 10-digit numbers and excludes those beginning with zero. For example, 9876543210 is 10-digit pandigital, but 0123456789 is not considered a valid 10-digit number in this context."
+    }
+  ]
+}

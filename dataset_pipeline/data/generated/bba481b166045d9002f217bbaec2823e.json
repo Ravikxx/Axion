@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Deinogalerix",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What does the genus name Deinogalerix mean when translated from Ancient Greek?",
+      "answer": "The genus name Deinogalerix is derived from Ancient Greek, combining 'Deinos' meaning 'terrible' or 'terror' with 'Galerix,' the name of a related genus. Thus, it translates to 'terror Galerix' or 'terrible Galerix.'"
+    },
+    {
+      "question": "Where and when did Deinogalerix live?",
+      "answer": "Deinogalerix is an extinct genus of gymnure that lived in what is now the southeastern Italian peninsula of Gargano during the Late Miocene epoch, approximately 7 to 10 million years ago."
+    },
+    {
+      "question": "How did Deinogalerix differ physically from modern hedgehogs?",
+      "answer": "Unlike modern hedgehogs, which have sharp quills, Deinogalerix and other gymnures are believed to have been fully hairy without quills. Deinogalerix had a long, thin, conical face, small pointed ears, a lengthy, tapering tail, and long hairs."
+    },
+    {
+      "question": "What ecological role did Deinogalerix likely fill in its environment?",
+      "answer": "Deinogalerix occupied a predatory ecological niche similar to modern dogs and cats, feeding on invertebrates like beetles, dragonflies, and crickets, possibly including snails. Larger species may have scavenged small mammals, reptiles, and birds, preying on animals smaller than itself."
+    },
+    {
+      "question": "What is known about the size of Deinogalerix koenigswaldi?",
+      "answer": "The species Deinogalerix koenigswaldi had a skull length of 21 centimeters (8.3 inches) and an estimated total body length of 60 centimeters (24 inches)."
+    },
+    {
+      "question": "Write a Python function that calculates the approximate body length of Deinogalerix given its skull length, assuming the ratio of skull length to body length is constant across species.",
+      "answer": "python\n\ndef estimate_body_length(skull_length_cm):\n    \"\"\"\n    Estimates the body length of Deinogalerix based on skull length.\n    Uses the known ratio from D. koenigswaldi: 21 cm skull → 60 cm body.\n    \n    Parameters:\n        skull_length_cm (float): Skull length in centimeters\n    \n    Returns:\n        float: Estimated body length in centimeters\n    \"\"\"\n    ratio = 60 / 21  # Body length / Skull length\n    return skull_length_cm * ratio\n\n# Example usage:\nskull_length = 15.0  # cm\nbody_length = estimate_body_length(skull_length)\nprint(f\"Estimated body length: {body_length:.2f} cm\")\n"
+    },
+    {
+      "question": "Why is Deinogalerix considered endemic to the island of Gargano, and what happened to this region over time?",
+      "answer": "Deinogalerix is considered endemic because it lived only on the island of Gargano during the Late Miocene. Over time, geological changes caused the region to become a peninsula connected to mainland Italy, now bounded by the Adriatic Sea."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/devteam/top-7-featured-dev-posts-of-the-week-5pn",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What is 'gitinder' and how does it help developers discover GitHub repositories?",
+      "answer": "gitinder is a SwiftUI iOS app built by @osmankahraman that allows developers to discover GitHub repositories by swiping through them, similar to Tinder. The app uses a local state queue to batch API calls to the GitHub Search API, reducing unnecessary requests and improving efficiency. It also handles OAuth authentication challenges for secure access to GitHub data."
+    },
+    {
+      "question": "What is 'Drift to Determinism' and why does it matter for AI coding tools?",
+      "answer": "Drift to Determinism is a framework proposed by @grahamthedev to guide the evolution of AI coding tools from unpredictable 'vibe coding' toward reliable, verifiable outputs. The framework emphasizes engineering rigor to ensure AI-generated code is trustworthy enough for production use, shifting focus from generation speed to output consistency and maintainability."
+    },
+    {
+      "question": "How did @yabbal reverse-engineer an undocumented API and ship two npm packages in four days?",
+      "answer": "@yabbal used Chrome DevTools at 2:30 AM to map 40+ undocumented endpoints from an accounting app. They then used Claude Code to generate a zero-dependency TypeScript SDK and a full CLI with 14 commands, all within four days. This showcases the productivity potential of AI-assisted development in fast-paced scenarios."
+    },
+    {
+      "question": "Why is generating binary output directly from AI considered impractical?",
+      "answer": "Generating binary output directly from AI is nearly impossible because it destroys determinism, making incremental changes unworkable. It also multiplies token costs across every architecture target and removes the only human-readable interface (source code), making maintenance and debugging extremely difficult."
+    },
+    {
+      "question": "What are the differences between JSON mode, function calling, and strict json_schema enforcement in LLM systems?",
+      "answer": "JSON mode and function calling are early methods for structured output in LLMs, where JSON mode formats responses as JSON, and function calling triggers tools for actions. Strict json_schema enforcement with `additionalProperties: false` ensures precise, validated structured data, but backend validation is still recommended for reliability."
+    },
+    {
+      "question": "Why does @sleewoo argue that building your own web framework is still valuable in the AI era?",
+      "answer": "@sleewoo argues that building a web framework, even when AI can generate one in minutes, teaches deep understanding of the underlying systems. The process of solving practical annoyances (e.g., runtime-validated routes, auto-generated OpenAPI specs) reveals new problems and fosters better engineering practices."
+    },
+    {
+      "question": "What is the 'public knowledge commons' and why is it at risk according to @sag1v?",
+      "answer": "The public knowledge commons refers to publicly available information that trains AI models. @sag1v warns that as developers solve problems privately using AI assistants instead of posting solutions publicly, the commons is shrinking. This creates a recursive risk where future models may lack diverse training data, potentially stifling innovation."
+    }
+  ]
+}

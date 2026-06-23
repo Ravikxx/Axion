@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/phalkmin/so-what-am-i-doing-after-22-years-in-tech-7ic",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What were the two unexpected achievements the author accomplished after their mid-life crisis post on DEV.to?",
+      "answer": "The author won the creativity category in the Coze AI Bot Challenge with their project 'Auty', a bot designed to support autistic individuals. They also won the Built with Google Gemini Writing Challenge with a post about using the Gemini CLI to revive pet projects."
+    },
+    {
+      "question": "How did the author describe the impact of their neurodivergence diagnosis on their professional and personal life?",
+      "answer": "The neurodivergence diagnosis helped rewrite the author's past experiences, explaining moments like feeling that their ideas weren't respected, burnout cycles, and the general sense of being different. It provided context for challenges they had faced for decades, turning previously confusing struggles into understandable patterns."
+    },
+    {
+      "question": "What role does AI play in the author’s current creative process, according to their reflection?",
+      "answer": "AI serves as a tool to assist in creative and technical work, not as a replacement. The author uses AI models like Claude, Gemini, or local models to bounce ideas, draft plans, generate code, and even act as junior developers. The author still reviews all outputs and remains the final decision-maker, emphasizing a human-in-the-loop approach."
+    },
+    {
+      "question": "Provide a code snippet the author might use to review AI-generated code in a pull request. What key practices should they follow?",
+      "answer": "python\n# Example AI-generated code snippet for review\ndef calculate_discount(price, discount_percent):\n    return price * (1 - discount_percent / 100)\n\n# Review checklist as comments in a PR\n# 1. Check for edge cases (e.g., negative prices, >100% discount)\n# 2. Validate input types (ensure price is numeric)\n# 3. Confirm error handling (e.g., divide-by-zero protection)\n# 4. Review logic against business requirements\n# 5. Ensure test coverage includes edge cases\n# 6. Confirm the function aligns with team coding standards\n\nThe author reviews AI outputs like any junior developer’s PR: carefully, with skepticism, and by ensuring a human remains accountable for the final result."
+    },
+    {
+      "question": "How did the author’s interest in cooking re-emerge, and what does it represent for their creativity?",
+      "answer": "After losing interest during burnout, the author rediscovered cooking during recovery. It now represents a creative outlet outside of coding and writing, allowing them to experiment with flavors and techniques. The author compares the process to understanding patterns, similar to their work in tech, and it brings joy that even their wife notices—preferring home-cooked meals over eating out."
+    },
+    {
+      "question": "What is the purpose and evolution of the author’s home server project?",
+      "answer": "The home server started as a cost-saving measure ('why am I paying for things I could host myself') and evolved into a personal digital sanctuary—20TB+ of data stored locally to avoid dependence on 'big tech landlords.' It symbolizes autonomy and control over one's digital footprint, serving as a quiet pleasure for the author who values machines that do exactly what they’re told."
+    },
+    {
+      "question": "Why does the author express skepticism about AI hype despite using AI tools, and what distinction do they make?",
+      "answer": "The author distinguishes between AI as a tool and AI as a 'religion' or replacement for human judgment. They critique AI slop, over-reliance on AI for personal needs (e.g., therapy), and misplaced trust in AI systems, while acknowledging AI’s practical value in augmenting their workflow—such as managing junior-dev-like AI assistants or reviving stalled projects."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Danqing",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What does the term 'danqing' refer to in Chinese painting?",
+      "answer": "In Chinese painting, 'danqing' (丹青) refers to paintings created on silk and Xuan paper using an ink brush, color ink, or Chinese pigments. The term combines the characters 'dan' (丹, meaning vermillion or cinnabar) and 'qing' (青, meaning cyan or blue-green), originally highlighting these two prominent colors used in ancient Chinese art. Over time, 'danqing' has also come to symbolize the art of Chinese painting itself, its practitioners, or the pigments used in the process."
+    },
+    {
+      "question": "What are the literal meanings of the characters 'dan' (丹) and 'qing' (青) in 'danqing'?",
+      "answer": "The character 'dan' (丹) means 'vermillion' or 'cinnabar' (a red mineral pigment), while 'qing' (青) means 'cyan' or 'blue-green' (referring to a mineral pigment like azurite). Together, they form 'danqing,' which historically described the vibrant vermillion and cyan colors prominently used in ancient Chinese paintings."
+    },
+    {
+      "question": "Why are vermillion and cyan significant in the context of danqing?",
+      "answer": "Vermillion (from dansha or cinnabar) and cyan (from qingyu or azurite) are significant because they were two of the most commonly used mineral pigments in ancient Chinese painting. Their frequent use led to 'danqing' becoming synonymous with painting in the Chinese language, and they represent the vibrant, enduring colors characteristic of this art form."
+    },
+    {
+      "question": "How does danqing differ from regular plant pigments in terms of durability?",
+      "answer": "Danqing pigments, being primarily mineral-based (e.g., cinnabar and azurite), have a longer storage time and are less prone to fading compared to regular plant pigments. This durability makes them ideal for preserving the vividness of Chinese paintings over centuries."
+    },
+    {
+      "question": "Provide a code snippet that demonstrates how to extract the literal meanings of 'dan' and 'qing' from the term 'danqing' using Python.",
+      "answer": "python\ndef extract_meanings(term):\n    meanings = {\n        '丹': 'vermillion or cinnabar (red mineral pigment)',\n        '青': 'cyan or blue-green (mineral pigment like azurite)'\n    }\n    dan_meaning = meanings.get(term[0], 'Unknown')\n    qing_meaning = meanings.get(term[1], 'Unknown')\n    return dan_meaning, qing_meaning\n\n# Example usage:\ndanqing_meanings = extract_meanings('丹青')\nprint(f\"'丹' means: {danqing_meanings[0]}\")\nprint(f\"'青' means: {danqing_meanings[1]}\")\n\nThis code maps the characters '丹' and '青' to their respective meanings and returns them as a tuple."
+    },
+    {
+      "question": "What are some of the fundamental colors used in danqing paintings?",
+      "answer": "Some fundamental colors used in danqing paintings include white, yellow, red (vermillion), blue-green (cyan), and black. These colors are derived from natural plant, mineral, and metal pigments, and they contribute to the vibrant and vivid nature of danqing artworks."
+    },
+    {
+      "question": "Explain the metaphorical use of danqing in Chinese culture.",
+      "answer": "Danqing is often used as a metaphor for faithfulness and unwavering commitment, as seen in the phrase 'danqing is unswerving' (丹青不渝). This metaphor arises from the durability of danqing pigments, which do not fade easily over time, symbolizing enduring loyalty or constancy in relationships or principles."
+    }
+  ]
+}

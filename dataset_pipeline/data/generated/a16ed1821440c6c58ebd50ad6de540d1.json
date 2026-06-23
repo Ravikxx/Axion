@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/webdeveloperhyper/how-i-released-chrome-extensions-muscle-brain-v4-3ijn",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What are the key differences between releasing an app on Chrome Web Store compared to Microsoft Store?",
+      "answer": "Releasing an app on Chrome Web Store offers broader compatibility (Windows, macOS, Linux) and browser support (Chrome, Edge), compared to Microsoft Store which is Windows-only. The Chrome Web Store has a simpler and more affordable one-time $5 developer registration fee, detailed analytics, and a less complex listing process than Microsoft Store. Chrome Extensions also allow for easier updates and continuous improvements across platforms."
+    },
+    {
+      "question": "How did the developer promote their app on Reddit and what was the outcome?",
+      "answer": "The developer created a Reddit account and grew it by logging in daily to collect streaks, upvoting posts, and engaging with the community before promoting the app. They posted in r/sideproject, but the post was automatically removed, and their account was banned. The account likely lacked sufficient activity or growth, and the promotion method may not have complied with Reddit’s rules. The developer later had to appeal for account recovery without success."
+    },
+    {
+      "question": "What are the steps to release an app as a Chrome Extension?",
+      "answer": "To release an app as a Chrome Extension:\n1. Test locally by enabling Developer Mode in 'chrome://extensions/', clicking 'Load unpacked', and selecting your app folder.\n2. Register a developer account on the Chrome Web Store for a one-time $5 fee.\n3. Upload your app as a zip file to the Chrome Web Store.\n4. Fill out all listing information, including visibility settings (start with 'Unlisted' for testing).\n5. Submit for certification, and once approved, release it publicly.\n\nFor Next.js apps, ensure you configure `next.config.ts` with `output: 'export'` and rename the `_next` folder to `next`. Move inline React scripts to separate files for security compliance."
+    },
+    {
+      "question": "What are the main features of the Muscle Brain app?",
+      "answer": "Muscle Brain is a working memory training game based on the N-back methodology. Key features include:\n- Daily Streaks and milestone achievements\n- ABC Mode for letter-sequence challenges\n- EN/JP language support with bilingual interfaces and sound effects\n- Unlimited Mode, Practice Mode, Rhythm Mode, and Settings for customization\n- History tracking with 120 gold medals for achievements\n\nThe app is 100% free, with no ads, tracking, or sign-up required. It is available as a Chrome Extension and on Microsoft Store."
+    },
+    {
+      "question": "Why did the developer choose to release Muscle Brain as a Chrome Extension instead of mobile apps (Android/iOS)?",
+      "answer": "The developer chose Chrome Extension for its ease of release, affordability (one-time $5 fee), and broader platform compatibility (Windows, macOS, Linux, Chrome, Edge). Releasing on Google Play or App Store was perceived as harder for a beginner and more expensive. However, the developer later realized that Chrome Extensions do not support mobile devices, which limits coverage compared to mobile apps."
+    },
+    {
+      "question": "What code changes were required to convert a Next.js app to a Chrome Extension?",
+      "answer": "To convert a Next.js app to a Chrome Extension:\n1. Set `output: 'export'` in `next.config.ts` to enable static export.\n2. Rename the `_next` folder to `next` since Chrome Extensions do not allow underscores in folder names.\n3. Move inline React scripts (blocked by Chrome for security) to separate files.\n4. Create a `manifest.json` file referencing the Chrome Extension guidelines.\n\nThe app was built with Next.js and converted using PWABuilder for the Microsoft Store release, but static export was necessary for Chrome Web Store compatibility."
+    },
+    {
+      "question": "What are the benefits of high working memory as described in the Muscle Brain app?",
+      "answer": "High working memory, as trained by Muscle Brain’s N-back methodology, provides several cognitive benefits:\n- Improved ability to handle complex tasks with ease\n- Enhanced multitasking and focus\n- Boosted creative thinking and problem-solving abilities\n\nThe app leverages scientifically proven methods to stimulate the brain, helping users achieve these outcomes."
+    }
+  ]
+}

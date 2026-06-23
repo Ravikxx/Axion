@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Grand_Slang",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "Who created the Grand Slang typeface and when was it published?",
+      "answer": "Grand Slang was created by German graphic designer Nikolas Wrobel and was published on September 1, 2019."
+    },
+    {
+      "question": "What are the main inspirations behind the design of Grand Slang?",
+      "answer": "Grand Slang draws inspiration from 20th-century American calligraphy, particularly the work of calligraphers Oscar Ogg and William Addison Dwiggins, as well as signs from American movies of the 1940s and 1950s."
+    },
+    {
+      "question": "What does the name 'Grand Slang' refer to?",
+      "answer": "The name 'Grand Slang' combines the English words 'grand' and 'slang.' In US and UK slang, 'grand' means a thousand dollars or a thousand pounds."
+    },
+    {
+      "question": "What file formats are available for downloading Grand Slang, and where can it be used?",
+      "answer": "Grand Slang is available for download in OTF and WOFF file formats. It is useful for graphic design, web design, applications, and e-books."
+    },
+    {
+      "question": "How many glyphs does Grand Slang include, and what do they cover?",
+      "answer": "Grand Slang includes over 310 glyphs, covering capital and small letters, numbers, punctuation marks, accents, ligatures, diacritics, and symbols."
+    },
+    {
+      "question": "Can Grand Slang be used to write in multiple languages? If so, which ones?",
+      "answer": "Yes, Grand Slang can be used to write in many European languages that use the Latin alphabet."
+    },
+    {
+      "question": "Is Grand Slang an open-source typeface? Explain your answer.",
+      "answer": "No, Grand Slang is a proprietary (closed-source) typeface. Users must accept the terms of its software license to use it."
+    }
+  ]
+}

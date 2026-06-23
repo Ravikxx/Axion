@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Downtown_Boston",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is Downtown Boston and what are its primary features?",
+      "answer": "Downtown Boston is the central business district of Boston, Massachusetts, serving as the city's commercial and governmental hub. It contains numerous corporate headquarters, government facilities, tourist attractions, and landmarks such as the City Hall, Faneuil Hall, Quincy Market, and Boston Common. Additionally, it includes educational institutions like Emerson College and Suffolk University."
+    },
+    {
+      "question": "How has Downtown Boston evolved over time?",
+      "answer": "Downtown Boston has undergone significant transformations, including the construction of new residential and commercial buildings, renovation of historic structures, and infrastructure projects like the Big Dig (1982–2007), which relocated the Central Artery highway underground. The area also saw the replacement of Scollay Square with the Government Center complex in the 1960s and 1970s."
+    },
+    {
+      "question": "What major historical events impacted Downtown Boston?",
+      "answer": "Key historical events include the Great Boston Fire of 1872, which destroyed much of the neighborhood, and the expansion of the city in the 1860s and 1870s. The 1950s saw the Central Artery highway begin operations, later replaced by the Big Dig project."
+    },
+    {
+      "question": "Which transportation hubs serve Downtown Boston?",
+      "answer": "Downtown Boston is served by multiple MBTA subway lines converging at stations like Downtown Crossing, Park Street, Government Center, and State. South Station acts as a major transportation hub, providing subway, commuter rail, intercity bus, and Amtrak services."
+    },
+    {
+      "question": "Can you list some notable landmarks in Downtown Boston?",
+      "answer": "Notable landmarks include the Greenway, Custom House Tower, Faneuil Hall, Quincy Market, Old State House, Old South Meeting House, Massachusetts State House, Park Street Church, Boston Common, and Boston Public Garden."
+    },
+    {
+      "question": "How is Downtown Boston represented in the Boston City Council?",
+      "answer": "Downtown Boston is represented in the Boston City Council by District 2's council member, Ed Flynn."
+    },
+    {
+      "question": "Write a Python script to extract all landmark names from the provided text about Downtown Boston.",
+      "answer": "python\nimport re\n\ntext = \"\"\"Landmarks in Downtown Boston include the Greenway, Custom House Tower, City Hall, Faneuil Hall, Quincy Market, Old State House, Old South Meeting House, Massachusetts State House, Park Street Church, Boston Common, and Boston Public Garden.\"\"\"\n\n# Extract landmark names using regular expression\nlandmarks = re.findall(r'the (.*?)(?:,| and|\\.)', text)\n\n# Print the extracted landmarks\nprint(\"Landmarks in Downtown Boston:\")\nfor landmark in landmarks:\n    print(f\"- {landmark.strip()}\")\n\nOutput:\n\nLandmarks in Downtown Boston:\n- Greenway\n- Custom House Tower\n- City Hall\n- Faneuil Hall\n- Quincy Market\n- Old State House\n- Old South Meeting House\n- Massachusetts State House\n- Park Street Church\n- Boston Common\n- Boston Public Garden\n"
+    }
+  ]
+}

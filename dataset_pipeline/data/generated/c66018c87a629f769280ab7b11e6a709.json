@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/GNU_Project",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the GNU Project and who founded it?",
+      "answer": "The GNU Project is a free software, mass collaboration initiative founded by Richard Stallman on September 27, 1983. Its mission is to provide computer users with the freedom and control to run, copy, distribute, study, and modify software by developing and publishing it collaboratively under free licenses."
+    },
+    {
+      "question": "What does the acronym GNU stand for?",
+      "answer": "GNU is a recursive acronym that stands for 'GNU's Not Unix!' It was chosen to reflect the project's goal of creating a free Unix-like operating system while emphasizing its independence from proprietary Unix systems."
+    },
+    {
+      "question": "Why was it necessary to create a free operating system as part of the GNU Project?",
+      "answer": "To ensure that all software, including the most fundamental parts like the operating system and utility programs, grants users the rights to use, share, study, and modify it. This prevents reliance on proprietary software that restricts these freedoms."
+    },
+    {
+      "question": "When did the Linux kernel first become available and how did it contribute to the GNU Project?",
+      "answer": "The Linux kernel was first released by Linus Torvalds in 1991. In December 1992, it was licensed under the GNU General Public License (GPL) version 2. When combined with GNU's existing operating system utilities, it enabled the creation of the first fully free operating system, commonly known as Linux."
+    },
+    {
+      "question": "What are the primary goals of the GNU Project as outlined in its manifesto?",
+      "answer": "The founding goal was to build a free operating system and, if possible, 'everything useful that normally comes with a Unix system' to eliminate the need for non-free software. The broader goal is to ensure users have complete control over their computing by promoting software freedom."
+    },
+    {
+      "question": "How does the GNU General Public License (GPL) ensure software freedom?",
+      "answer": "The GPL is a copyleft license that guarantees users the freedom to run, copy, distribute, study, and modify the software. It requires that any derivative work or modified version of the software also be distributed under the same license, ensuring that freedom is preserved in all subsequent versions."
+    },
+    {
+      "question": "What are some of the current activities of the GNU Project beyond software development?",
+      "answer": "Beyond software development, the GNU Project engages in awareness building, political campaigning, and sharing new educational and advocacy materials to promote free software principles and resist proprietary software restrictions."
+    }
+  ]
+}

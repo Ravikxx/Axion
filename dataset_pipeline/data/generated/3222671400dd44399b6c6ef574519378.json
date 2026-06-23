@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Hova_(Madagascar)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What were the three principal castes in the Merina Kingdom of Madagascar?",
+      "answer": "The three principal castes in the Merina Kingdom were the Andriana (nobles), the Hova (free commoners), and the Andevo (slaves). The Andriana occupied the highest rank, followed by the Hova as free commoners, and the Andevo as slaves with no land ownership rights."
+    },
+    {
+      "question": "How did the Hova caste originate, and what role did Andriamanelo play in their consolidation?",
+      "answer": "The Hova caste originated from members of a Malagasy clan, possibly the Zafiraminia, who migrated from Madagascar's southeast coast to the central highlands around the 15th century and absorbed the existing Vazimba population. Andriamanelo (1540–1575) played a crucial role by uniting many Hova chiefdoms around Antananarivo under his rule, thereby consolidating their power within the Merina Kingdom."
+    },
+    {
+      "question": "What changes did Ralambo introduce to the social structure of the Merina Kingdom?",
+      "answer": "Ralambo (1575–1612) further defined the social structure of the Merina Kingdom by subdividing the Andriana (nobles) into four ranks. He also introduced the term 'Imerina' to describe the land occupied by the Hova people, which contributed to the gradual adoption of the 'Merina' identity by the Hova caste."
+    },
+    {
+      "question": "How did the role of the Hova caste evolve in the military of the Merina Kingdom?",
+      "answer": "Traditionally, warriors and soldiers in Merina society were selected from the Andriana (noble) caste. However, in the 19th century, as the Merina expanded their rule across the island and required a larger army, soldiers were also recruited from the Hova caste. This marked a significant shift in the military structure of the kingdom."
+    },
+    {
+      "question": "What were the primary occupations of the Hova and Andevo castes in the Merina Kingdom?",
+      "answer": "The Hova caste primarily managed rice and crop lands as owners and engaged in trading. In contrast, the Andevo (slaves), also called Mainty, performed labor on farms and other servitude tasks and were denied the right to own land. A Hova person could face reduction to slavery as punishment for crimes or unpaid debts, in which case they were referred to as Zaza-hova."
+    },
+    {
+      "question": "What were the marriage restrictions in Merina society according to William Ellis's 1838 memoir?",
+      "answer": "In Merina society, the Andriana, Hova, and Andevo castes were endogamous, meaning marriages typically occurred within the same caste. A Hova person was prohibited from marrying a noble (Andriana), a slave (Andevo), or a Zaza-hova (a Hova reduced to slavery). The only exception was the unmarried Queen, who could marry anyone from any caste, and her children were deemed royal."
+    },
+    {
+      "question": "Write a Python function to generate a list of Merina Kingdom castes along with their descriptions based on the provided text.",
+      "answer": "python\ndef get_merina_caste_info():\n    castes = {\n        \"Andriana\": \"The nobles, occupying the highest rank in the Merina Kingdom.\",\n        \"Hova\": \"The free commoners who managed rice and crop lands and engaged in trading.\",\n        \"Andevo\": \"The slaves, also called Mainty, who performed labor on farms and were denied land ownership.\"\n    }\n    return castes\n\n# Example usage:\ncaste_info = get_merina_caste_info()\nfor caste, description in caste_info.items():\n    print(f\"{caste}: {description}\")\n"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Heat-transfer_fluid",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is a heat transfer fluid (HTF) and what role does it play in thermal systems?",
+      "answer": "A heat transfer fluid (HTF) is a gas or liquid used as an intermediary to transport, store, and exchange thermal energy within a closed system. It facilitates cooling on one side of a process and heating on another, enabling efficient thermal management in industrial applications. For example, cooling water absorbs heat from an engine, while heating water in a hydronic system transfers heat to a radiator to warm a room."
+    },
+    {
+      "question": "Why is water commonly used as a heat transfer fluid, and what are its limitations?",
+      "answer": "Water is widely used as a heat transfer fluid due to its low cost, high heat capacity, and favorable transport properties like low viscosity and high thermal conductivity. However, its useful temperature range is limited by freezing below 0°C and boiling at higher temperatures, depending on system pressure. Antifreeze additives can mitigate freezing but cannot address boiling issues at elevated temperatures."
+    },
+    {
+      "question": "Compare the suitability of organic fluids like oil or silicone-based fluids with molten salts for high-temperature applications.",
+      "answer": "Organic fluids such as oil or synthetic hydrocarbon-based fluids are suitable for moderate high temperatures due to their lower vapor pressure compared to water. However, they decompose at temperatures above 300–400°C. For higher temperatures (above 400°C), molten salts or molten metals are preferred because they remain stable and can efficiently transfer and store heat without decomposing."
+    },
+    {
+      "question": "What are the key properties required for an effective heat transfer fluid, and why?",
+      "answer": "An effective heat transfer fluid must have a high boiling point and high heat capacity. A high boiling point prevents vaporization at high temperatures, avoiding equipment damage from vapor buildup and pressure spikes. A high heat capacity ensures that a small volume of fluid can absorb and transfer large amounts of heat efficiently, reducing costs and improving system performance."
+    },
+    {
+      "question": "How does a low boiling point in a heat transfer fluid negatively impact system performance and safety?",
+      "answer": "A low boiling point causes the fluid to vaporize at low temperatures when exposed to heat, producing vapors within the equipment. This leads to several issues: (1) Vapors occupy larger volumes than liquids at the same pressure, increasing pressure on pipes and risking rupture. (2) Equipment designed for liquid flow may suffer from turbulence or blockages due to vapor formation. (3) Increased fluid consumption is required to maintain heat transfer, raising operational costs and reducing efficiency."
+    },
+    {
+      "question": "Write a Python function to calculate the minimum required heat capacity for a heat transfer fluid given the heat load and desired temperature change.",
+      "answer": "python\ndef calculate_required_heat_capacity(heat_load, mass_flow_rate, temperature_change):\n    \"\"\"\n    Calculate the required specific heat capacity (Cp) for a heat transfer fluid.\n    \n    Args:\n        heat_load (float): Heat energy to be transferred (in Watts or J/s).\n        mass_flow_rate (float): Mass flow rate of the fluid (in kg/s).\n        temperature_change (float): Desired temperature change of the fluid (in °C or K).\n    \n    Returns:\n        float: Required specific heat capacity (J/kg·K).\n    \"\"\"\n    if mass_flow_rate == 0 or temperature_change == 0:\n        raise ValueError(\"Mass flow rate and temperature change must be non-zero.\")\n    \n    required_cp = heat_load / (mass_flow_rate * temperature_change)\n    return required_cp\n\n# Example usage:\nheat_load = 5000  # 5 kW of heat transfer\nmass_flow_rate = 2  # 2 kg/s of fluid flow\nΔT = 10  # 10°C temperature drop\n\ncp = calculate_required_heat_capacity(heat_load, mass_flow_rate, ΔT)\nprint(f\"Required heat capacity: {cp:.2f} J/kg·K\")\n"
+    },
+    {
+      "question": "Why are gases sometimes used as heat transfer fluids, and what challenges do they present compared to liquids?",
+      "answer": "Gases like water vapor, nitrogen, argon, helium, and hydrogen are used as heat transfer fluids in applications where liquids are impractical, such as in very high-temperature environments or systems requiring low viscosity. However, gases require elevated pressures to achieve sufficient flow rates with low pumping power, as their low density and viscosity make them less efficient for heat transfer compared to liquids. Additionally, gases occupy larger volumes, which can complicate system design and increase equipment size."
+    }
+  ]
+}

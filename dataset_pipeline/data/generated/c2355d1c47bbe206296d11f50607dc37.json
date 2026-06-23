@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/2023_New_South_Wales_state_election",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "Which political party won the 2023 New South Wales state election?",
+      "answer": "The Labor Party won the 2023 New South Wales state election, led by Chris Minns. They defeated the incumbent Liberal/National Coalition government, ending 12 years of conservative rule in the state."
+    },
+    {
+      "question": "What was the outcome of the 2023 New South Wales state election in terms of seat distribution in the Legislative Assembly?",
+      "answer": "In the Legislative Assembly, the Labor Party won 45 seats, the Coalition won 36 (with 25 for the Liberals and 11 for the Nationals), the Greens won 3, and independents won 9 seats. Labor fell two seats short of a majority."
+    },
+    {
+      "question": "How did the independents influence the formation of the government after the 2023 NSW election?",
+      "answer": "Three independents—Alex Greenwich, Joe McGirr, and Greg Piper—agreed to provide confidence and supply to the Labor Party, allowing them to form a minority government. Greg Piper also secured the role of Speaker of the Legislative Assembly."
+    },
+    {
+      "question": "What was the historical significance of the 2023 NSW election results for the Labor Party?",
+      "answer": "The 2023 election marked the second time in history that the Labor Party controlled the federal government and all mainland state/territory governments simultaneously, with Tasmania being the only state retaining a Liberal government."
+    },
+    {
+      "question": "Which minor parties gained representation in the NSW Legislative Council following the 2023 election?",
+      "answer": "The Greens and One Nation each won 2 seats, while the Legalise Cannabis Party, Liberal Democrats, Shooters, Fishers and Farmers Party, and Animal Justice Party each won 1 seat in the Legislative Council."
+    },
+    {
+      "question": "What was the role of the New South Wales Electoral Commission (NSWEC) in the 2023 state election?",
+      "answer": "The NSWEC conducted the 2023 New South Wales state election, which included electing all 93 seats in the Legislative Assembly and 21 of the 42 seats in the Legislative Council."
+    },
+    {
+      "question": "Write a Python snippet to parse and display the seat distribution in the Legislative Assembly after the 2023 NSW election.",
+      "answer": "python\nseats = {\n    'Labor': 45,\n    'Liberal': 25,\n    'Nationals': 11,\n    'Greens': 3,\n    'Independents': 9\n}\n\nfor party, count in seats.items():\n    print(f\"{party}: {count} seats\")\n\nThis code will output the number of seats held by each party in the Legislative Assembly."
+    }
+  ]
+}

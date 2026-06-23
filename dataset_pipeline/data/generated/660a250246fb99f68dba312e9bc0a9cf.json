@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Eze",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What does the term 'Eze' mean in Igbo culture?",
+      "answer": "In Igbo culture, 'Eze' is a word pronounced [ézè] that means 'king.' It is a royal title used by the Igbo people of West Africa to denote a monarch or leader."
+    },
+    {
+      "question": "How is the title 'Igwe' derived in Igbo tradition?",
+      "answer": "The title 'Igwe' is derived from the Igbo phrase 'Igwekala' or 'Eluigwekala,' which means 'the sky or heaven above the sky is higher or bigger than land.' This reflects the idea that the Eze is a higher servant of the people."
+    },
+    {
+      "question": "What is the significance of the 'Obi' in Igbo royal structures?",
+      "answer": "In Igbo tradition, 'Obi' usually refers to the central building within an Igbo leader's homestead where visitors are received. When used as a royal title, it implies 'the one who sits in the throne house or heart of the Kingdom,' symbolizing the seat of power."
+    },
+    {
+      "question": "How is an Eze traditionally chosen in Igbo society?",
+      "answer": "An Eze is normally an elective monarch in Igbo tradition. They are advised by a council of appointed chiefs or elders based on their good standing within the community."
+    },
+    {
+      "question": "What does the Igbo proverb 'Igbo enwe eze' mean, and how does it reflect Igbo cultural attitudes?",
+      "answer": "The Igbo proverb 'Igbo enwe eze' translates to 'the Igbo have no king.' While it may suggest a disregard for centralized authority, it does not fully capture the complexity of Igbo societies, which historically had ruling bodies of royal and political leaders."
+    },
+    {
+      "question": "Provide an example of a female Eze in Igbo history and explain her significance.",
+      "answer": "Ahebi Ugbabe was a notable female Eze in colonial Nigeria. She is significant because she challenged traditional gender roles in Igbo society by achieving the status of Eze, a role typically reserved for males in a patrilineal culture."
+    },
+    {
+      "question": "Write a Python function to check if a given string is a valid Igbo royal title from the provided list.",
+      "answer": "python\ndef is_valid_igbo_royal_title(title: str) -> bool:\n    valid_titles = {'Eze', 'Igwe', 'Ezeike', 'Obi'}\n    return title in valid_titles\n\n# Example usage:\nprint(is_valid_igbo_royal_title('Eze'))  # Output: True\nprint(is_valid_igbo_royal_title('Obi'))  # Output: True\nprint(is_valid_igbo_royal_title('Chief'))  # Output: False\n"
+    }
+  ]
+}

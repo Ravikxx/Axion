@@ -1,0 +1,30 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Hello_Kitty",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "When was Hello Kitty first created and by which company?",
+      "answer": "Hello Kitty was first created in 1974 by the Japanese company Sanrio."
+    },
+    {
+      "question": "Why does Hello Kitty not have a mouth?",
+      "answer": "Sanrio designed Hello Kitty without a mouth because they intended her to communicate through the heart rather than speaking any specific language."
+    },
+    {
+      "question": "How did Hello Kitty's popularity change from the 1980s to the 1990s?",
+      "answer": "Hello Kitty became popular among young schoolgirls in the 1980s, but in the 1990s, Sanrio expanded her appeal by creating products targeted at teenagers and young women."
+    },
+    {
+      "question": "How many products feature Hello Kitty's image, and in how many countries are they sold?",
+      "answer": "Hello Kitty's image appears on over fifty thousand products sold in most countries around the world."
+    },
+    {
+      "question": "Write a simple Python snippet to check if a product belongs to the Hello Kitty franchise based on its description.",
+      "answer": "python\ndef is_hello_kitty_product(description):\n    keywords = ['hello kitty', 'kitty white', 'sanrio', 'kawaii']\n    return any(keyword in description.lower() for keyword in keywords)\n\n# Example usage:\nproduct_description = \"A cute Hello Kitty plush toy from Sanrio\"\nprint(is_hello_kitty_product(product_description))  # Output: True\n"
+    },
+    {
+      "question": "What is Sanrio's amusement park called, and how many visitors does it receive annually?",
+      "answer": "Sanrio's amusement park is called Puroland, and it receives more than 1.5 million visitors each year."
+    }
+  ]
+}

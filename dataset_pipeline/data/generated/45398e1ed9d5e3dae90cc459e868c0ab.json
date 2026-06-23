@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/History_of_Saudi_Arabia",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What was the starting point of Saudi Arabia as a nation state and who founded it?",
+      "answer": "The history of Saudi Arabia as a nation state began in 1727 with the establishment of the Al Saud dynasty. The dynasty's leadership originated in the Najd region, the central part of the Arabian Peninsula."
+    },
+    {
+      "question": "How did Abdulaziz Ibn Saud consolidate power and establish modern Saudi Arabia?",
+      "answer": "Abdulaziz Ibn Saud, also known as Abdul Aziz Al-Saud, took control of Riyadh in 1902 and expanded his territory through military campaigns. He became King of Hejaz and Sultan of Najd in 1926, and his sovereignty was recognized by the United Kingdom in 1927. In 1932, he declared the establishment of the modern Kingdom of Saudi Arabia."
+    },
+    {
+      "question": "What role did petroleum play in the history of Saudi Arabia?",
+      "answer": "Petroleum was discovered in Saudi Arabia on 3 March 1938, which led to significant economic growth as oil exports generated substantial revenue for the country."
+    },
+    {
+      "question": "Which ancient civilizations existed in the territory now known as Saudi Arabia?",
+      "answer": "The territory that is now Saudi Arabia was home to several ancient cultures and civilizations, with evidence of human activity dating back 63,000 years."
+    },
+    {
+      "question": "What major religious event shaped the history of the Arabian Peninsula?",
+      "answer": "The rise of Islam, introduced by the Prophet Muhammad, was a significant event in the history of the Arabian Peninsula, influencing its cultural and political development."
+    },
+    {
+      "question": "Which dynasties ruled over the Arabian Peninsula during the Islamic era?",
+      "answer": "The Rashidun Caliphate, the Umayyad Caliphate, the Abbasid Caliphate, and the Fatimid Caliphate all occupied the Arabian Peninsula and contributed to its historical development."
+    },
+    {
+      "question": "Who protected the Islamic holy cities of Mecca and Medina starting from the 10th century?",
+      "answer": "The Islamic holy cities of Mecca and Medina were under the protection of the Hashemite Sharifs of Mecca from the 10th century onwards."
+    }
+  ]
+}

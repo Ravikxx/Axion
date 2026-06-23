@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Apoorva_Khare",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What major awards has Apoorva Khare received in his career?",
+      "answer": "Apoorva Khare has received several prestigious awards, including the Shanti Swarup Bhatnagar Prize for Science and Technology in 2022, the Swarnajayanti Fellowship, the Ramanujan Fellowship from SERB/DST (both Government of India), the A.K. Agarwal Award in 2023, and the B.N. Waphare Award in 2024 (jointly). He also became a laureate of the Asian Scientist 100 in 2024 and received the Ganit Ratna Award in 2025."
+    },
+    {
+      "question": "Where did Apoorva Khare complete his higher education?",
+      "answer": "Apoorva Khare completed his B.Stat. in 2000 at the Indian Statistical Institute in Kolkata, his M.S. in 2001 and Ph.D. in 2006 in Mathematics at the University of Chicago. He also held postdoctoral positions at the University of California, Riverside, Yale University, and Stanford University."
+    },
+    {
+      "question": "What research areas does Apoorva Khare specialize in?",
+      "answer": "Apoorva Khare specializes in matrix positivity and analysis, combinatorics and discrete mathematics, and representation theory."
+    },
+    {
+      "question": "How did Apoorva Khare's career progress after his Ph.D.?",
+      "answer": "After obtaining his Ph.D. in 2006, Khare held postdoctoral positions at the University of California at Riverside and Yale University, followed by a Research Associateship at Stanford University. He then joined the Indian Institute of Science in Bangalore, where he currently serves as an Associate Professor in Mathematics."
+    },
+    {
+      "question": "What notable academic recognitions or talks has Apoorva Khare received?",
+      "answer": "Khare was invited to deliver the 2022 Hansraj Gupta Memorial Award Lecture and gave a plenary talk at the 2023 AMS Joint Mathematics Meetings in Boston. He is also a Fellow of the Indian Academy of Sciences and was listed among 75 scientists under 50 shaping India in a Government of India publication celebrating 75 years of independence."
+    },
+    {
+      "question": "Provide a code snippet that could be used to verify a simple matrix positivity property, a research area of Apoorva Khare.",
+      "answer": "Below is a Python code snippet using NumPy to check if a given matrix is positive definite (a common matrix positivity property):\n\npython\nimport numpy as np\n\ndef is_positive_definite(matrix):\n    \"\"\"Check if a matrix is positive definite.\"\"\"\n    try:\n        np.linalg.cholesky(matrix)\n        return True\n    except np.linalg.LinAlgError:\n        return False\n\n# Example matrix\nA = np.array([[2, -1], [-1, 2]])\nprint(is_positive_definite(A))  # Output: True\n\nThis function attempts to compute the Cholesky decomposition of the matrix; if successful, the matrix is positive definite."
+    },
+    {
+      "question": "What is the significance of being listed among the '75 scientists under 50 shaping today's India' by the Government of India?",
+      "answer": "This recognition highlights Khare's contributions to science and mathematics in India, particularly at a relatively young age. It underscores his impact in advancing research and education, aligning with national priorities for young scientists driving innovation and development in the country."
+    }
+  ]
+}

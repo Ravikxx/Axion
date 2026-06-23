@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Board_of_Lady_Managers_of_the_World's_Columbian_Exposition",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the primary purpose of the Board of Lady Managers of the World's Columbian Exposition?",
+      "answer": "The Board of Lady Managers was created by the U.S. Congress to ensure women were included in the Juries of Award, which evaluated works created wholly or partly by women. It was also tasked with managing the Woman's Building, overseeing women's interests across all Exposition buildings, and serving as the official communication channel for women and women's organizations at the event."
+    },
+    {
+      "question": "How did the Board of Lady Managers influence the allocation of space in the Woman's Building?",
+      "answer": "The Board of Lady Managers succeeded in securing the fullest possible representation for women in the Exposition's department buildings. They also modified their original plans to increase the amount of space allocated to women in the Woman's Building, ensuring greater visibility and participation for female exhibitors."
+    },
+    {
+      "question": "What notable publication was issued by the Board of Lady Managers?",
+      "answer": "The Board of Lady Managers issued a cookbook containing autographed recipes from its members, which served as both a fundraiser and a symbolic representation of the board's work."
+    },
+    {
+      "question": "What role did the Juries of Award play in the World's Columbian Exposition?",
+      "answer": "The Juries of Award were responsible for evaluating and passing judgment on works created wholly or in part by women. The Board of Lady Managers was specifically tasked with ensuring women were represented on these juries to advocate for female exhibitors."
+    },
+    {
+      "question": "Can you write a Python script to calculate the total number of departments the Board of Lady Managers engaged with if each department building had 3 women representatives and there were 10 departments?",
+      "answer": "Certainly! Here's a Python script to compute that:\n\npython\ndef calculate_total_representatives(avg_per_dept, num_depts):\n    return avg_per_dept * num_depts\n\n# Example: 3 women per department in 10 departments\ntotal_representatives = calculate_total_representatives(3, 10)\nprint(f\"Total women representatives: {total_representatives}\")\n\n\nThis script calculates the total number of women representatives across all departments by multiplying the average number of representatives per department by the total number of departments."
+    },
+    {
+      "question": "Why was the Board of Lady Managers given full management and control of the Woman's Building?",
+      "answer": "The Board of Lady Managers was granted full management and control of the Woman's Building by the Exposition's National Commission to ensure that women had a dedicated and prominent space at the event. This autonomy allowed the board to tailor the building's design and management to best serve and showcase women's contributions during the Exposition."
+    },
+    {
+      "question": "What was the significance of the World's Congress of Representative Women organized by the Board of Lady Managers?",
+      "answer": "The World's Congress of Representative Women, held in 1893, was a landmark event that brought together women from diverse backgrounds to discuss issues of global importance. Organized by the Board of Lady Managers, it highlighted the achievements and perspectives of women during the Exposition and fostered international dialogue on women's rights and representation."
+    }
+  ]
+}

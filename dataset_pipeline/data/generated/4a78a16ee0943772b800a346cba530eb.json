@@ -1,0 +1,42 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/1979_WANFL_season",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the total number of seasons played by the WANFL under that name before 1979?",
+      "answer": "The 1979 season was the 95th season of the West Australian National Football League (WANFL) under that moniker, which had existed in various incarnations for 49 seasons, including three wartime seasons."
+    },
+    {
+      "question": "What factors contributed to the high scoring records in the 1979 WANFL season?",
+      "answer": "The unusually high scoring in the 1979 season was primarily due to two factors: the ongoing drying of Perth's climate, which likely increased player endurance and scoring opportunities, and the introduction of the new 'interchange' rule, which allowed for more frequent player rotations and sustained higher scoring throughout games."
+    },
+    {
+      "question": "What was the highest aggregate score in the 1979 WANFL season, and between which teams was it set?",
+      "answer": "The highest aggregate score in the 1979 WANFL season was 60.18 (378 points), set in the third last round between Swan Districts and Subiaco. This record has never been approached since."
+    },
+    {
+      "question": "How did the overall average score per team per game in 1979 compare to subsequent seasons under the WAFL moniker?",
+      "answer": "While the 1979 WANFL season featured a high overall average score of 112.52 points per team per game, this figure was not as high as the averages recorded in the following few years under the 'WAFL' moniker, indicating a trend of even higher scoring in the early WAFL era."
+    },
+    {
+      "question": "What was the all-time record attendance for a West Australian football match set in the 1979 WANFL Grand Final?",
+      "answer": "The 1979 WANFL Grand Final set an all-time record attendance for local West Australian football with 52,781 spectators, narrowly surpassing the previous record of 52,322 set in the 1975 decider."
+    },
+    {
+      "question": "Which WANFL club experienced a significant decline in performance following the 1979 season, and what were the reasons behind this decline?",
+      "answer": "Perth, a powerhouse club in the WANFL since World War II, experienced a long-term decline after 1979. This was due to the loss of several veterans, major coaching issues, and the resignation of coach Percy Johnson, which led to Perth playing in the finals only in 1986, 1991, and 1997, and claiming the wooden spoon eight times between 1980 and 2023."
+    },
+    {
+      "question": "How did the 1979 season impact the future fortunes of West Perth as a WANFL club?",
+      "answer": "The 1979 season marked the beginning of West Perth's decline, as they recorded their worst performance since 1939 with only four wins. This poor run continued until the mid-1990s, when they moved to Arena Joondalup in an effort to revitalize the club."
+    },
+    {
+      "question": "Which clubs began their revival during the 1979 WANFL season, and what was the outcome of this revival?",
+      "answer": "Claremont and Swan Districts began their revivals during the 1979 season after years near the bottom of the ladder. This revival led to Claremont and Swan Districts dominating the competition throughout the 1980s."
+    },
+    {
+      "question": "Write a Python function to calculate the average score per team per game for a given WANFL/WAFL season, given a list of game scores.",
+      "answer": "python\ndef calculate_avg_score_per_game(scores):\n    total_points = sum(score for _, score in scores)\n    num_games = len(scores)\n    avg_score = total_points / num_games\n    return avg_score\n\n# Example usage:\n# scores = [(60, 18), (45, 22), (70, 15)]  # (goals, behinds) for each game\n# average = calculate_avg_score_per_game(scores)\n# print(f\"Average score per game: {average:.2f}\")\n\nThis function takes a list of tuples, where each tuple represents the goals and behinds scored in a game, and returns the average score per game in points."
+    }
+  ]
+}

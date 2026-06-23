@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Erik_Agard",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who is Erik Agard and what notable achievements has he made in the crossword puzzle community?",
+      "answer": "Erik Agard is an American crossword puzzle constructor, editor, and solver born in 1993. He won the 2016 Lollapuzzoola Express Division and the 2018 and 2026 American Crossword Puzzle Tournament (ACPT). He is a frequent contributor to the New York Times crossword puzzle, a crossword constructor for The New Yorker, a former USA Today crossword editor, and a former Jeopardy! contestant. Currently, he serves as a crossword editor at Apple News+."
+    },
+    {
+      "question": "What recognition did Erik Agard receive from The Washington Post in 2013?",
+      "answer": "In 2013, The Washington Post named Erik Agard 'the nation's top teen crossword puzzle solver'."
+    },
+    {
+      "question": "How has Erik Agard contributed to diversity and inclusion in the crossword puzzle industry?",
+      "answer": "Agard has been celebrated for increasing diversity and inclusion in crosswords by editing puzzles at USA Today that were primarily constructed by women and people of color. He also includes references to media and culture that are not typically considered 'standard knowledge' in mainstream outlets. For example, a February 19, 2022 USA Today crossword puzzle featured a clue referencing a meme: 'you're telling me a cis ___ built this chapel?' for the entry TEEN."
+    },
+    {
+      "question": "What notable event occurred during Erik Agard's appearance on Jeopardy!?",
+      "answer": "During his Jeopardy! appearance, Agard used a meme in his answer, which gained widespread attention. He defeated five-time champion Alan Dunn and won a total of $66,802 across four appearances."
+    },
+    {
+      "question": "In what year was Erik Agard featured on Real Sports with Bryant Gumbel, and what was the segment about?",
+      "answer": "Erik Agard was featured on a Real Sports with Bryant Gumbel segment in 2018. The segment focused on crossword puzzles and highlighted Agard's contributions to the field."
+    },
+    {
+      "question": "What is one example of how Erik Agard incorporates modern cultural references into his crossword puzzles?",
+      "answer": "One example is the clue 'you're telling me a cis ___ built this chapel?' used in a USA Today crossword puzzle on February 19, 2022, which referenced a popular meme. The answer to the clue was TEEN."
+    },
+    {
+      "question": "Provide a code snippet to generate a simple crossword puzzle grid in Python.",
+      "answer": "Here’s a basic Python code snippet using the `crossword` library to generate a simple crossword grid:\npython\nfrom crossword import Crossword\n\n# Create a 5x5 crossword grid\ncw = Crossword(5, 5)\n\n# Add words to the grid\ncw.add_word('HELLO', 0, 0, 'right')\ncw.add_word('WORLD', 1, 0, 'down')\n\n# Print the grid\nprint(cw.display())\n\nNote: This is a simplified example. For more advanced features, consider using libraries like `pycrossword` or `qxw`."
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/1895_Atlantic_hurricane_season",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "How many tropical cyclones were officially recorded during the 1895 Atlantic hurricane season?",
+      "answer": "The official Atlantic hurricane database (HURDAT) recorded six tropical cyclones during the 1895 season."
+    },
+    {
+      "question": "What is the estimated undercount bias of tropical cyclones per year for the period between 1886 and 1910?",
+      "answer": "The estimated undercount bias for tropical cyclones per year between 1886 and 1910 is zero to four storms annually."
+    },
+    {
+      "question": "Which meteorologists reassessed the 1895 Atlantic hurricane season in 1996 and what was their conclusion?",
+      "answer": "Meteorologists José Fernández-Partagás and Henry F. Diaz reassessed the 1895 season in 1996 and concluded that no storms were added or removed from the official HURDAT database."
+    },
+    {
+      "question": "What changes did the Atlantic hurricane reanalysis project make to the fifth storm of the 1895 season?",
+      "answer": "The Atlantic hurricane reanalysis project retroactively downgraded the fifth storm of the 1895 season from a major hurricane to a Category 2 storm on the Saffir–Simpson scale."
+    },
+    {
+      "question": "What did Michael Chenoweth's 2014 reanalysis study conclude about the 1895 Atlantic hurricane season?",
+      "answer": "Michael Chenoweth's 2014 study concluded that 10 tropical cyclones formed in the Atlantic in 1895, suggesting the removal of two storms from HURDAT and the addition of six storms."
+    },
+    {
+      "question": "What date was the first tropical cyclone of the 1895 season detected over the Gulf of Mexico?",
+      "answer": "The first tropical cyclone of the 1895 season was detected over the Gulf of Mexico on August 14."
+    },
+    {
+      "question": "Which regions were impacted by the second storm of the 1895 Atlantic hurricane season and what was the estimated damage?",
+      "answer": "The second storm of the 1895 season impacted northeastern Mexico and caused at least $1 million (1895 USD) in damage."
+    },
+    {
+      "question": "How many deaths were attributed to the third tropical cyclone of the 1895 season?",
+      "answer": "The third tropical cyclone of the 1895 season caused 56 deaths in Cuba."
+    },
+    {
+      "question": "When did the fifth storm of the 1895 Atlantic hurricane season likely become extratropical?",
+      "answer": "The fifth storm of the 1895 season likely became extratropical on October 26 to the southwest of the Azores."
+    }
+  ]
+}

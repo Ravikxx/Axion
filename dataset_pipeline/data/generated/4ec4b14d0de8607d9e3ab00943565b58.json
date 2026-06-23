@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/A_nice_meal",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the title and episode number of the seventh episode in the fourth season of Barry?",
+      "answer": "The seventh episode of the fourth season of Barry is titled 'A Nice Meal'. It is the 31st episode overall and the penultimate episode of the series."
+    },
+    {
+      "question": "Who wrote and directed the episode 'A Nice Meal' from season 4 of Barry?",
+      "answer": "The episode 'A Nice Meal' was written by executive producer Liz Sarnoff and directed by series creator Bill Hader, who also stars in the show as Barry Berkman."
+    },
+    {
+      "question": "What is the central conflict involving Barry Berkman in the episode 'A Nice Meal'?",
+      "answer": "In 'A Nice Meal', Barry Berkman, who escaped prison eight years ago, returns to Los Angeles to kill Gene Cousineau and reclaim his legacy. He is subjected to psychological torture by Jim Moss but reveals a critical piece of information about Gene, causing Moss to reconsider his actions."
+    },
+    {
+      "question": "How does the episode 'A Nice Meal' contribute to the character development of Gene Cousineau?",
+      "answer": "In 'A Nice Meal', Gene Cousineau sees a new opportunity to regain his fame after Barry unwittingly reveals a critical detail about him, which shifts the power dynamics and sets the stage for Gene’s future actions in the series finale."
+    },
+    {
+      "question": "What notable actions does NoHo Hank take in the episode 'A Nice Meal'?",
+      "answer": "NoHo Hank attempts to kill Monroe Fuches and his gang in 'A Nice Meal', showcasing his ruthless side as he seeks to eliminate potential threats to his own ambitions."
+    },
+    {
+      "question": "What were the Nielsen ratings for the episode 'A Nice Meal'?",
+      "answer": "According to Nielsen Media Research, 'A Nice Meal' was seen by an estimated 0.237 million household viewers and gained a 0.07 ratings share among adults aged 18–49."
+    },
+    {
+      "question": "Write a Python function that parses a list of Barry episodes and returns the title and season/episode information for the episode 'A Nice Meal'.",
+      "answer": "python\ndef find_barry_episode(episodes):\n    \"\"\"\n    Searches a list of Barry episodes and returns details for 'A Nice Meal'.\n    \n    Args:\n        episodes: List of dictionaries where each dict contains 'title', 'season', and 'episode_number'.\n    \n    Returns:\n        Dictionary with title, season, and episode_number if found, otherwise None.\n    \"\"\"\n    for episode in episodes:\n        if episode.get('title').lower() == 'a nice meal':\n            return {\n                'title': episode['title'],\n                'season': episode['season'],\n                'episode_number': episode['episode_number']\n            }\n    return None\n\n# Example usage:\nepisodes = [\n    {'title': 'The Rock', 'season': 4, 'episode_number': 1},\n    {'title': 'A Nice Meal', 'season': 4, 'episode_number': 7},\n    {'title': 'The Signup', 'season': 4, 'episode_number': 8}\n]\n\nresult = find_barry_episode(episodes)\nprint(result)  # Output: {'title': 'A Nice Meal', 'season': 4, 'episode_number': 7}\n"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Croatian_Wikipedia",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When was the Croatian Wikipedia created?",
+      "answer": "The Croatian Wikipedia was created on 16 February 2003."
+    },
+    {
+      "question": "What are some notable statistics about the Croatian Wikipedia as of July 2024?",
+      "answer": "As of July 2024, the Croatian Wikipedia has 233,687 articles, 7.47 million total edits, 361,083 registered users (135 active editors making at least 5 edits monthly), and 14 administrators."
+    },
+    {
+      "question": "Can you describe the editing activity patterns on the Croatian Wikipedia?",
+      "answer": "Between 2013 and 2021, fewer than two dozen editors made more than 100 edits a month, while around 150 made more than 5 edits a month. By 2024, this number increased to about 135 active editors meeting the monthly edit threshold."
+    },
+    {
+      "question": "What controversies surrounded the Croatian Wikipedia between 2013 and 2021?",
+      "answer": "The Croatian Wikipedia faced criticism for promoting a Croatian nationalist far-right worldview, including anti-LGBT propaganda, historical denialism, and bias against Serbs of Croatia. It also whitewashed crimes committed by WWII-era figures and contemporary politicians using unreliable sources."
+    },
+    {
+      "question": "How did the Croatian government, media, and historians respond to the controversies on the Croatian Wikipedia?",
+      "answer": "The Croatian government, media, and historians received the biases and historical distortions on the Croatian Wikipedia negatively, leading to widespread criticism and scrutiny of its content policies."
+    },
+    {
+      "question": "What action was taken against the administrator responsible for co-opting the Croatian Wikipedia?",
+      "answer": "In 2021, the administrator with the username 'Kubura' was found to have controlled the site through approximately eighty sockpuppet accounts and was subsequently banned or demoted."
+    },
+    {
+      "question": "Can you provide a code snippet that retrieves the current edit statistics of the Croatian Wikipedia using the MediaWiki API?",
+      "answer": "python\nimport requests\n\ndef get_wikipedia_stats(language='hr'):\n    url = f'https://{language}.wikipedia.org/w/api.php'\n    params = {\n        'action': 'query',\n        'meta': 'siteinfo',\n        'format': 'json'\n    }\n    response = requests.get(url, params=params).json()\n    stats = response['query']['statistics']\n    return {\n        'articles': stats['articles'],\n        'edits': stats['edits'],\n        'users': stats['users'],\n        'active_users': stats['activeusers']\n    }\n\nprint(get_wikipedia_stats())\n"
+    }
+  ]
+}

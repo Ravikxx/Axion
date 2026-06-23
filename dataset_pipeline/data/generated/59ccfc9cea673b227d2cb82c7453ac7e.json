@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Continuum_(Ligeti)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who composed 'Continuum for harpsichord' and in what year?",
+      "answer": "'Continuum for harpsichord' was composed by György Ligeti in 1968."
+    },
+    {
+      "question": "What is the main technical challenge Ligeti aimed to address in 'Continuum for harpsichord'?",
+      "answer": "Ligeti sought to create a paradoxically continuous sound using the harpsichord, which can only produce rapid but discrete notes. He aimed for a sound so fast that individual notes blend into a continuous tone, though the harpsichord's mechanism limits this to about 15–16 notes per second."
+    },
+    {
+      "question": "How does Amy Bauer describe the effect of 'Continuum for harpsichord' in her 2004 writing?",
+      "answer": "Amy Bauer describes the piece as creating a trompe-l'œil effect, where extremely rapid activity produces a sense of stasis. She compares this to a schizophrenic experience described by Sass (1992), where inner experiences occur at an accelerated pace, creating an illusion of slow motion."
+    },
+    {
+      "question": "What other instruments or arrangements has 'Continuum for harpsichord' been adapted for?",
+      "answer": "The piece has been arranged for barrel organ and for two player pianos by Ligeti himself."
+    },
+    {
+      "question": "How has 'Continuum for harpsichord' been compared to an astronomical phenomenon?",
+      "answer": "Classical music reviewers have compared the piece to the magnetic fluctuations of comet 67P/Churyumov–Gerasimenko, which were artistically sonified by a German composer to make them audible."
+    },
+    {
+      "question": "What are the two subsequent works Ligeti composed for solo harpsichord after 'Continuum'?",
+      "answer": "The two subsequent works are 'Passacaglia ungherese' (1978) and 'Hungarian Rock (Chaconne)' (1978)."
+    },
+    {
+      "question": "What is the significance of the harpsichord's mechanism in creating the continuum effect in Ligeti's piece?",
+      "answer": "The harpsichord's mechanism limits its speed to about 15–16 notes per second, which is close to the threshold (18 notes per second) where individual notes blend into a continuous sound. This limitation forces Ligeti to use rapid, overlapping notes to create the illusion of a continuous tone."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/AM-Mark",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the AM-Mark and when was it introduced?",
+      "answer": "The AM-Mark, or Allied Military Currency, was a currency issued in Allied-occupied Germany by AMGOT starting in 1944 during Operation Wild Dog. It was introduced as a means to establish a stable monetary system in post-war Germany under Allied control."
+    },
+    {
+      "question": "How were the denominations of AM-Mark notes identified by their printers?",
+      "answer": "The American-printed AM-Mark notes included a stylized 'F' in the left ball of the scroll below the lower right denomination value. This mark appeared on denominations of 1/2, 1, 5, 10, 20, 50, 100, and 1000 marks. The Soviet Union printed identical notes but omitted the 'F' marking."
+    },
+    {
+      "question": "What was the exchange rate between AM-Marks and US dollars, and how did this affect Soviet troops?",
+      "answer": "The US military exchanged AM-Marks at a rate of 10 AM-Marks per dollar, while the Reichsmark depreciated to 200 Reichsmarks per dollar after VE Day. Soviet troops in Berlin, paid in AM-Marks they could not exchange elsewhere, spent them on goods like wristwatches from American troops at inflated prices, leading to a local dollar shortage."
+    },
+    {
+      "question": "Why did the US Army implement currency controls in 1945?",
+      "answer": "The US Army instituted currency controls in August and November 1945 to stabilize the monetary situation after the Reichsmark's depreciation and to prevent the excessive outflow of dollars. The AM-Mark's symbolic role in uniting the German economy under a single currency system was a key factor in this decision."
+    },
+    {
+      "question": "What was the Currency Reform of 1948 and its impact?",
+      "answer": "The Currency Reform of 1948 introduced the Deutsche Mark in the Western Allied zones, replacing the AM-Mark. This reform was highly successful, establishing a stable currency that facilitated economic recovery and integration into the global economy."
+    },
+    {
+      "question": "Write a Python function to validate an AM-Mark note's printer based on its denomination and the presence of the 'F' marking.",
+      "answer": "python\ndef validate_am_mark_printer(denomination: int, has_f_mark: bool) -> str:\n    \"\"\"\n    Validates the printer of an AM-Mark note based on denomination and 'F' marking.\n    \n    Args:\n        denomination: The face value of the note (e.g., 1, 5, 100).\n        has_f_mark: Boolean indicating if the 'F' marking is present.\n    \n    Returns:\n        'American' if the note matches American printing conventions.\n        'Soviet' if the note matches Soviet printing conventions.\n        'Invalid' if the note does not conform to either convention.\n    \"\"\"\n    american_denominations = {0.5, 1, 5, 10, 20, 50, 100, 1000}\n    \n    if denomination not in american_denominations:\n        return 'Invalid'\n    \n    if has_f_mark:\n        return 'American'\n    else:\n        return 'Soviet'\n\n# Example usage:\nprint(validate_am_mark_printer(5, True))  # Output: 'American'\nprint(validate_am_mark_printer(100, False))  # Output: 'Soviet'\n"
+    },
+    {
+      "question": "How did the coexistence of AM-Marks and Reichsmarks impact the post-war German economy?",
+      "answer": "The coexistence of AM-Marks and the depreciated Reichsmark led to economic instability. The AM-Mark's favorable exchange rate (10 per dollar) contrasted sharply with the Reichsmark's collapse (200 per dollar), causing confusion and arbitrage opportunities. This dual-currency system hindered economic recovery until the Currency Reform of 1948 introduced the Deutsche Mark."
+    }
+  ]
+}

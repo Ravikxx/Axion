@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/COVID-19_pandemic_in_Myanmar",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When did COVID-19 first reach Myanmar, and which government body was formed to combat its spread?",
+      "answer": "COVID-19 first reached Myanmar on 23 March 2020. On 31 March 2020, the Committee for Coronavirus Disease 19 (COVID-19) was formed by President Win Myint to combat the spread of the virus. The committee was headed by First Vice President Myint Swe and included members from various union ministries."
+    },
+    {
+      "question": "What factors contributed to Myanmar's vulnerability to COVID-19?",
+      "answer": "Myanmar's vulnerability to COVID-19 was largely due to its weak healthcare infrastructure, which resulted from decades of underinvestment during military rule. Additionally, ongoing internal conflicts further strained the country's ability to respond effectively to the pandemic."
+    },
+    {
+      "question": "How did the 2021 coup d'état impact Myanmar's COVID-19 response and economy?",
+      "answer": "The 2021 coup d'état and subsequent protests, including a civil disobedience movement led by healthcare workers, severely disrupted Myanmar's public health response to COVID-19. This disruption deepened the country's economic recession, which had already contracted by 5% in 2020."
+    },
+    {
+      "question": "What were the consequences of the COVID-19 pandemic on Myanmar's GDP in 2020?",
+      "answer": "Myanmar's GDP shrank by 5% in 2020 as a result of the COVID-19 pandemic, reflecting the severe economic disruption caused by containment measures and global disruptions."
+    },
+    {
+      "question": "Write a Python function to calculate the percentage decline in GDP due to COVID-19 in Myanmar, given the GDP before and after the pandemic.",
+      "answer": "python\ndef calculate_gdp_decline(initial_gdp, final_gdp):\n    \"\"\"\n    Calculate the percentage decline in GDP due to COVID-19.\n    \n    Args:\n        initial_gdp (float): GDP before the pandemic.\n        final_gdp (float): GDP after the pandemic.\n        \n    Returns:\n        float: Percentage decline in GDP.\n    \"\"\"\n    decline = ((initial_gdp - final_gdp) / initial_gdp) * 100\n    return decline\n\n# Example usage:\ninitial_gdp = 100  # Assume 100 units before the pandemic\nfinal_gdp = 95     # GDP fell to 95 units after the pandemic\npercentage_decline = calculate_gdp_decline(initial_gdp, final_gdp)\nprint(f\"Percentage decline in GDP: {percentage_decline}%\")\n\nThis function calculates the percentage decline in GDP by comparing the initial GDP before the pandemic to the final GDP after the pandemic."
+    },
+    {
+      "question": "Why did the UN express concerns about Myanmar's COVID-19 response?",
+      "answer": "The UN raised concerns about Myanmar's COVID-19 response due to the country's weak healthcare infrastructure, which was a result of decades of military rule and poor investment. These vulnerabilities were exacerbated by ongoing internal conflicts, making it difficult for Myanmar to effectively contain and manage the spread of the virus."
+    },
+    {
+      "question": "What is thought to have occurred in Myanmar's COVID-19 testing and vaccination systems in February 2021?",
+      "answer": "In February 2021, Myanmar's COVID-19 testing system and vaccination deployment are thought to have collapsed. This collapse was likely due to the combined effects of the 2021 coup d'état, widespread protests, and disruptions caused by the civil disobedience movement led by healthcare workers."
+    }
+  ]
+}

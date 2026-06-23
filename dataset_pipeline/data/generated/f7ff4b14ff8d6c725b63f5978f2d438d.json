@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Gulyásleves",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What does the term 'Gulyásleves' mean in Hungarian?",
+      "answer": "The term 'Gulyásleves' is a compound word in Hungarian. 'Gulyás' means 'herdsman' or 'cattle herder,' and 'leves' means 'soup.' Together, it translates to 'herdsman's soup' or 'cattle herder's soup.'"
+    },
+    {
+      "question": "How did Gulyásleves originate, and what historical context surrounds its creation?",
+      "answer": "Gulyásleves originated as a dish cooked by cattle herders (gulyás) in the Great Hungarian Plain (Alföld or puszta). These herders, who tended their cattle far from populated areas, needed a meal that could be prepared with portable ingredients in a single cauldron (bogrács) over an open fire. The dish was originally a stew called bográcsgulyás, cooked outdoors, and later evolved into a soup as it became popular in urban areas."
+    },
+    {
+      "question": "What is the difference between 'bográcsgulyás' and 'gulyásleves'?",
+      "answer": "The primary difference between 'bográcsgulyás' and 'gulyásleves' lies in the amount of water used in preparation. 'Bográcsgulyás' is traditionally a thicker stew cooked outdoors in a cauldron, while 'gulyásleves' is a soup-like version with more liquid, commonly served in restaurants. Locals often use 'gulyás' for the stew version and 'gulyásleves' for the soup."
+    },
+    {
+      "question": "What are the core ingredients listed in the official vocational cookbook for Hungarian restaurant trainees preparing Gulyásleves?",
+      "answer": "The official vocational cookbook lists the core ingredients for Gulyásleves as finely diced onions, peppers, tomatoes, meat (typically beef), garlic, salt, caraway seeds, potatoes, and homemade noodles called csipetké."
+    },
+    {
+      "question": "How does the preparation method of Gulyásleves differ from other Hungarian dishes like pörkölt or paprikás?",
+      "answer": "Gulyásleves is prepared with a significant amount of liquid, making it a soup, whereas pörkölt and paprikás are thicker, stew-like dishes with less liquid. Additionally, Gulyásleves includes potatoes or pasta squares, while pörkölt and paprikás typically do not."
+    },
+    {
+      "question": "Provide a Python code snippet to calculate the approximate cooking time for Gulyásleves based on the number of servings.",
+      "answer": "Here’s a simple Python function to estimate the cooking time for Gulyásleves based on the number of servings, assuming standard preparation time per ingredient:\n\npython\ndef calculate_gulyasleves_cooking_time(servings):\n    # Base cooking time per serving (in minutes)\n    base_time_per_serving = 15\n    # Additional time for larger batches (e.g., 30 extra minutes for 10+ servings)\n    additional_time = 0 if servings <= 10 else (servings - 10) * 3\n    total_time = base_time_per_serving * servings + additional_time\n    return total_time\n\n# Example usage:\nservings = 8\nprint(f\"Approximate cooking time for {servings} servings: {calculate_gulyasleves_cooking_time(servings)} minutes\")\n\nThis function assumes 15 minutes of cooking time per serving, with a slight increase for larger batches."
+    },
+    {
+      "question": "What type of cauldron is traditionally used to cook bográcsgulyás, and what is its historical origin?",
+      "answer": "The traditional cauldron used to cook bográcsgulyás is called a 'bogrács,' a copper pot loaned from Ottoman Turkish (bakraç or bakraç), which itself derives from the Old Turkish word for 'copper' (bakır). The term reflects the cauldron's material and its historical connection to Turkish cuisine."
+    }
+  ]
+}

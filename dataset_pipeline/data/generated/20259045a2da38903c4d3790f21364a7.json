@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/googleai/where-were-going-we-dont-need-chatbots-introducing-the-antigravity-ide-2c3k",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What is Antigravity and how does it differ from traditional AI coding assistants?",
+      "answer": "Antigravity is an agent-first Integrated Development Environment (IDE) developed by Google DeepMind. Unlike traditional AI coding assistants that primarily operate as chat interfaces, Antigravity features an autonomous agent architecture capable of navigating terminals, editors, and live browsers. It functions as an active partner in coding tasks rather than just providing code suggestions. This agent-first approach enables Antigravity to handle complex workflows independently, such as performing QA testing or generating documentation, by interacting with systems directly."
+    },
+    {
+      "question": "How does Antigravity's Browser Subagent assist in QA testing and documentation?",
+      "answer": "Antigravity's Browser Subagent, powered by Gemini 2.5 Computer Use, automates QA testing and documentation by executing user-provided instructions. For example, a developer can command the agent to 'Go to this staging site, identify five core user journeys, and make a tutorial for all of them.' The agent explores the DOM, interacts with UI elements, and records its actions. It then generates a structured Walkthrough Artifact that includes verification results, step-by-step instructions, and screenshots. Developers can review and leave feedback on these artifacts, which the agent incorporates in real time through asynchronous feedback."
+    },
+    {
+      "question": "What is the 'Artifacts System' in Antigravity and why is it useful?",
+      "answer": "The Artifacts System in Antigravity produces structured, human-readable documents called Walkthrough Artifacts for tasks like QA documentation. These artifacts include verification results, detailed written steps, and embedded screenshots, making it easier for developers to review and understand automated processes. Instead of receiving raw, unstructured outputs, the Artifacts System organizes information clearly, enabling developers to provide targeted feedback directly on specific parts of the artifact, such as Google Docs-style comments on text or images."
+    },
+    {
+      "question": "How does the Toolkit for Antigravity extension help developers manage multiple AI models?",
+      "answer": "The Toolkit for Antigravity extension provides a sidebar panel with real-time monitoring and management features for multiple AI models. It displays Semi-Arc Gauges that track token consumption hour-by-hour for models like Gemini 3 Pro, Gemini 3 Flash, Opus, Sonnet, and GPT models. The extension also offers one-click cache management to purge conversation caches and ensures privacy by operating locally without telemetry. This helps developers efficiently manage quotas and maintain workflow continuity when switching between different AI models."
+    },
+    {
+      "question": "What are the key features of the Toolkit for Antigravity extension's quota tracking?",
+      "answer": "The Toolkit for Antigravity extension's quota tracking includes hourly consumption statistics for major AI models such as Gemini, Claude 4.5, and OpenAI GPT models. It provides a visual representation via Semi-Arc Gauges, allowing developers to monitor token usage in real time. This feature helps prevent unexpected quota overruns and enables better resource planning across different models, especially when working on large-scale projects involving multiple AI services."
+    },
+    {
+      "question": "How does Antigravity's Manager View shift the developer's role in the coding process?",
+      "answer": "In Antigravity's Manager View, developers transition from actively writing code (Editor View) to overseeing multiple autonomous agents working in parallel. This role shift allows developers to focus on architectural decisions and high-level design rather than low-level implementation details. The Manager View handles terminal commands, dependency installations, and UI verification processes, enabling developers to concentrate on defining what to build rather than how to build it. This is particularly useful for large-scale refactoring or new feature development."
+    },
+    {
+      "question": "Provide a Python code snippet to programmatically generate a structured artifact using Antigravity's API.",
+      "answer": "python\nimport requests\n\ndef generate_artifact(api_key: str, task_description: str, project_path: str):\n    \"\"\"\n    Generates a structured artifact in Antigravity for a given task.\n    \n    Args:\n        api_key: Antigravity API key for authentication\n        task_description: Natural language description of the task\n        project_path: Path to the project directory\n    \"\"\"\n    headers = {\n        \"Authorization\": f\"Bearer {api_key}\",\n        \"Content-Type\": \"application/json\"\n    }\n    payload = {\n        \"task\": task_description,\n        \"project_path\": project_path,\n        \"artifact_type\": \"walkthrough\"\n    }\n    \n    response = requests.post(\n        \"https://api.antigravity.google/v1/artifacts\",\n        headers=headers,\n        json=payload\n    )\n    \n    if response.status_code == 200:\n        return response.json()  # Returns structured artifact with steps and screenshots\n    else:\n        raise Exception(f\"Failed to generate artifact: {response.text}\")\n\n# Example usage:\n# artifact = generate_artifact(\n#     api_key=\"your_api_key_here\",\n#     task_description=\"Create a tutorial for user login flow\",\n#     project_path=\"/path/to/project\"\n# )\n\nThis function sends a task to Antigravity's API to generate a structured artifact, such as a tutorial with screenshots and verification steps."
+    }
+  ]
+}

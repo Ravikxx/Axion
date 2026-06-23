@@ -1,0 +1,38 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Hunter_×_Hunter",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "Who is the creator of the manga Hunter × Hunter?",
+      "answer": "The manga Hunter × Hunter was created by Yoshihiro Togashi, a Japanese manga artist."
+    },
+    {
+      "question": "What is the main plot of Hunter × Hunter?",
+      "answer": "The story follows Gon Freecss, a young boy who aims to become a Hunter to find his missing father. Hunters are individuals with exceptional abilities who undertake special missions."
+    },
+    {
+      "question": "When was the first Hunter × Hunter anime series released, and who produced it?",
+      "answer": "The first anime television series of Hunter × Hunter was released on March 3, 1998, and was produced by Nippon Animation under the direction of Kazuhiro Furuhashi. It aired from 1999 to 2001."
+    },
+    {
+      "question": "How many episodes are there in the first Hunter × Hunter anime series?",
+      "answer": "The first Hunter × Hunter anime series consists of 62 episodes."
+    },
+    {
+      "question": "What are some examples of media adaptations based on Hunter × Hunter besides the anime?",
+      "answer": "Besides the anime, Hunter × Hunter has spawned audio albums, video games, musicals, and other related media."
+    },
+    {
+      "question": "How many copies of Hunter × Hunter manga have been sold in Japan as of 2014?",
+      "answer": "As of 2014, 66 million copies of the Hunter × Hunter manga had been sold in Japan alone."
+    },
+    {
+      "question": "Write a Python code snippet to calculate the total revenue if each Hunter × Hunter manga copy sold for $5 in the U.S. (assuming 5% of sales are in the U.S.)",
+      "answer": "python\n# Total manga copies sold in Japan as of 2014\njapan_sales = 66_000_000\n# Assuming 5% of total sales are in the U.S.\nus_sales = japan_sales * 0.05\n# Price per copy in USD\nprice_per_copy = 5\n# Calculate total revenue\nrevenue_usd = us_sales * price_per_copy\nprint(f\"Estimated revenue from U.S. sales: ${revenue_usd:,.2f}\")\n\nOutput: Estimated revenue from U.S. sales: $16,500,000.00"
+    },
+    {
+      "question": "Why has the Hunter × Hunter manga faced production delays?",
+      "answer": "The creator, Yoshihiro Togashi, has taken frequent breaks from writing the manga since 2006 due to health issues and other reasons, leading to production delays."
+    }
+  ]
+}

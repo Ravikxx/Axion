@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Art_Deco_Mumbai",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is Art Deco Mumbai Trust (ADMT) and what are its primary objectives?",
+      "answer": "Art Deco Mumbai Trust (ADMT) is a public charitable trust established in May 2016 to raise awareness about Mumbai's Art Deco heritage. Its primary objectives include documenting Art Deco buildings, fostering conservation efforts, and integrating Mumbai's Art Deco heritage into mainstream heritage discussions. ADMT aims to educate stakeholders and the public while bridging generational gaps in heritage appreciation."
+    },
+    {
+      "question": "How does ADMT use digital platforms to promote Mumbai's Art Deco heritage?",
+      "answer": "ADMT leverages digital platforms such as Instagram, Facebook, Twitter, and its official website to showcase Mumbai's Art Deco heritage. The website serves as a comprehensive public repository of information on Art Deco buildings in Mumbai. Additionally, ADMT collaborates with Google Arts & Culture to make its collections accessible online, including partnerships for virtual exhibitions."
+    },
+    {
+      "question": "What role did ADMT play in the UNESCO nomination of Mumbai's Victorian Gothic and Art Deco Ensembles?",
+      "answer": "ADMT's trustees led stakeholder representation in the preparation of the UNESCO nomination for 'The Victorian Gothic and Art Deco Ensembles of Mumbai.' The bid was successful, resulting in the inscription of 94 buildings—76 of which are Art Deco—as a World Heritage Site on 30 June 2018. ADMT has since developed tools like hashtags (#WHSOval, #WHSMarineDrive) and a pocket-sized map to aid in the identification and promotion of these heritage sites."
+    },
+    {
+      "question": "Can you describe ADMT's documentation initiative and its scope?",
+      "answer": "Since its inception, ADMT has documented Art Deco heritage across various neighbourhoods in Greater Mumbai, including Churchgate, Marine Drive, Mohammed Ali Road, Shivaji Park, Matunga, Chembur, and Bandra. Their documentation efforts catalog buildings designed by first-generation Indian architects, homegrown contractors, and independent artists, with a focus on socio-cultural and political themes surrounding these structures."
+    },
+    {
+      "question": "What outreach programs does ADMT conduct to engage younger audiences with Art Deco heritage?",
+      "answer": "ADMT collaborates with educational and cultural institutions to organize awareness programs for youth about Mumbai's 20th-century Art Deco heritage. This includes hosting public lectures, workshops, and producing a short film in partnership with Federation of Residents Trusts to educate citizens about the World Heritage Site and its cultural significance."
+    },
+    {
+      "question": "How did ADMT contribute to public awareness through media collaborations?",
+      "answer": "From October 2017 to January 2018, ADMT was commissioned by Mumbai Mirror to author a weekly column titled 'Have a Decco.' The column explored the relationship between Mumbai's neighbourhoods and the Art Deco architectural style, helping to broaden public understanding of the city's architectural heritage."
+    },
+    {
+      "question": "Provide a Python code snippet to fetch and display Art Deco building data from ADMT's website using the `requests` library.",
+      "answer": "python\nimport requests\nfrom bs4 import BeautifulSoup\n\n# Fetch the ADMT website inventory page\nurl = 'https://www.artdecomumbai.org/inventory'\nresponse = requests.get(url)\n\n# Parse the HTML content\nsoup = BeautifulSoup(response.text, 'html.parser')\n\n# Extract building names and locations (example - adjust selectors as needed)\nbuildings = soup.find_all('div', class_='building-entry')\nfor building in buildings:\n    name = building.find('h3').text.strip()\n    location = building.find('p', class_='location').text.strip()\n    print(f\"Building: {name}, Location: {location}\")\n\nNote: The actual selectors (e.g., 'building-entry', 'location') may vary based on the website's current structure. Always check ADMT's website for the latest HTML structure before scraping."
+    }
+  ]
+}

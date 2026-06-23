@@ -1,0 +1,30 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/EMI",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What was the original name of EMI when it was founded in 1931?",
+      "answer": "EMI was originally named 'Electric and Music Industries' when it was founded in 1931."
+    },
+    {
+      "question": "Which record label did The Beatles sign with in 1962?",
+      "answer": "The Beatles signed a contract with EMI's Parlophone Records in 1962."
+    },
+    {
+      "question": "Where did The Beatles make nearly all their recordings?",
+      "answer": "The Beatles made nearly all their recordings at Abbey Road Studios, which was EMI's main recording studio in London."
+    },
+    {
+      "question": "What major acquisition did EMI almost complete in 1998?",
+      "answer": "EMI almost bought Universal Records in 1998."
+    },
+    {
+      "question": "In 2007, which group took over EMI after Warner Music Group's bid was rejected?",
+      "answer": "In 2007, a group called Terra Firma took over EMI after rejecting Warner Music Group's bid."
+    },
+    {
+      "question": "Which record labels were sold by EMI in 2012 and to whom?",
+      "answer": "In 2012, Universal Music Group bought EMI. As part of the European Commission's conditions, Parlophone was sold to Warner Music Group, Mute Records was bought by BMG, and EMI's music publishing business was sold to a group including Sony/ATV Music Publishing."
+    }
+  ]
+}

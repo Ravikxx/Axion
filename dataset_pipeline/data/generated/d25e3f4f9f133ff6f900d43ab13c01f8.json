@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Eric_Bieniemy",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who is Eric M. Bieniemy Jr. and what are some of his notable achievements in football?",
+      "answer": "Eric M. Bieniemy Jr. is an American professional football coach and former running back, currently serving as the offensive coordinator for the Kansas City Chiefs in the NFL. As a player, he was the Colorado Buffaloes' all-time leader in rushing yards (3,940) and touchdowns (42), a unanimous All-American, and finished third in Heisman Trophy voting during the 1990 national championship season. He was drafted by the San Diego Chargers in the second round of the 1991 NFL draft and later played for the Cincinnati Bengals and Philadelphia Eagles."
+    },
+    {
+      "question": "What roles did Eric Bieniemy hold at Colorado after his playing career?",
+      "answer": "After his playing career, Bieniemy returned to Colorado in the early 2000s to complete his degree. He was then hired as the school's running backs coach, a role he held before coaching for the UCLA Bruins and later joining the NFL's Minnesota Vikings as a coach."
+    },
+    {
+      "question": "Which NFL teams has Eric Bieniemy worked for as a coach?",
+      "answer": "Eric Bieniemy has coached for the Minnesota Vikings, Kansas City Chiefs, Washington Commanders, and UCLA Bruins in the NFL. He also served as the Chiefs' offensive coordinator, helping them win Super Bowl LIV and Super Bowl LVII under head coach Andy Reid."
+    },
+    {
+      "question": "How did Eric Bieniemy contribute to the development of Jamaal Charles and Kareem Hunt?",
+      "answer": "As the Kansas City Chiefs' running backs coach starting in 2013, Bieniemy played a key role in developing Jamaal Charles. Later, he contributed to the growth of Kareem Hunt, who led the NFL in rushing yards as a rookie in 2017."
+    },
+    {
+      "question": "What coaching positions has Eric Bieniemy held in the NFL and college football?",
+      "answer": "In the NFL, Bieniemy has served as a running backs coach, assistant head coach, and offensive coordinator for teams like the Chiefs, Vikings, and Commanders. In college football, he coached for Colorado (running backs coach), UCLA (running backs coach and later offensive coordinator in 2024), and briefly returned to Colorado early in his coaching career."
+    },
+    {
+      "question": "Write a Python function to calculate the total rushing yards Eric Bieniemy accumulated during his college career.",
+      "answer": "python\ndef calculate_bieniemy_rushing_yards():\n    # Eric Bieniemy's college rushing yards\n    rushing_yards = 3940\n    return rushing_yards\n\n# Example usage\nprint(calculate_bieniemy_rushing_yards())  # Output: 3940\n"
+    },
+    {
+      "question": "Why was Eric Bieniemy's promotion to offensive coordinator with the Chiefs in 2018 significant?",
+      "answer": "Bieniemy's promotion to offensive coordinator in 2018 was significant because it marked the beginning of a highly successful tenure. Under his leadership, the Chiefs won Super Bowl LIV and Super Bowl LVII, and players like Kareem Hunt became NFL rushing leaders. This promotion reflected his deep involvement in the team's offensive strategy and player development."
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Channel_Islands_(California)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the geographical location of the Channel Islands?",
+      "answer": "The Channel Islands are an eight-island archipelago located in the Pacific Ocean, off the coast of California. They define the Santa Barbara Channel between the islands and the California mainland."
+    },
+    {
+      "question": "How are the Channel Islands divided geologically?",
+      "answer": "The four Northern Channel Islands are part of the Transverse Ranges geologic province, while the four Southern Channel Islands belong to the Peninsular Ranges province."
+    },
+    {
+      "question": "Which islands are part of Channel Islands National Park?",
+      "answer": "Five of the eight Channel Islands are within Channel Islands National Park."
+    },
+    {
+      "question": "What is the significance of the Nature Conservancy in relation to the Channel Islands?",
+      "answer": "The Nature Conservancy played a key role in establishing the Channel Islands National Marine Sanctuary."
+    },
+    {
+      "question": "When did humans first settle on the Northern Channel Islands?",
+      "answer": "Evidence shows a continuous human presence on the Northern Channel Islands dating back between 8,000 and 11,000 years ago."
+    },
+    {
+      "question": "Which Native American groups inhabited the Channel Islands?",
+      "answer": "The primary inhabitants were the Chumash and the Tongva (also known as Gabrieleño) peoples."
+    },
+    {
+      "question": "What military uses do San Clemente Island and San Nicolas Island serve?",
+      "answer": "San Clemente Island and San Nicolas Island are used by the United States Navy as training grounds, weapons test sites, and strategic defensive locations."
+    },
+    {
+      "question": "How many unique plant species are found on the Channel Islands?",
+      "answer": "The Channel Islands harbor 150 unique species of plants."
+    }
+  ]
+}

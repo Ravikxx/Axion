@@ -1,0 +1,42 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Gigantopithecus",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What genus does Gigantopithecus belong to, and during which geological time period did it live?",
+      "answer": "Gigantopithecus belongs to the extinct genus of great apes. It lived in central to southern China from approximately 2 million to 215,000–295,000 years ago during the Early to Middle Pleistocene epoch."
+    },
+    {
+      "question": "How was Gigantopithecus first identified, and by whom?",
+      "answer": "The first remains of Gigantopithecus, two third-molar teeth, were identified in a drugstore by anthropologist Ralph von Koenigswald in 1935 in England, who subsequently described the ape."
+    },
+    {
+      "question": "What types of fossil remains of Gigantopithecus have been discovered so far?",
+      "answer": "Only teeth and four mandibles of Gigantopithecus have been discovered. Other skeletal elements were likely consumed by porcupines before they could fossilize."
+    },
+    {
+      "question": "How is Gigantopithecus classified taxonomically today, and how does it differ from earlier classifications?",
+      "answer": "Gigantopithecus is now classified in the subfamily Ponginae and is closely allied with orangutans. Earlier, it was argued to be a hominin, a member of the human line."
+    },
+    {
+      "question": "What are the estimated body mass and sexual dimorphism trends in Gigantopithecus?",
+      "answer": "Gigantopithecus is estimated to have weighed between 200 to 300 kilograms (440 to 660 pounds) when alive. The species may have exhibited sexual dimorphism, with males being significantly larger than females."
+    },
+    {
+      "question": "What dietary adaptations did Gigantopithecus have based on its dental morphology?",
+      "answer": "Gigantopithecus had thick enamel (up to 6 millimeters in some areas) to resist abrasive foods like stems, roots, and tubers with dirt. Its jaw was adapted for grinding, crushing, and cutting tough, fibrous plants, and it primarily consumed C3 forest plants. Some teeth show traces of fig family fruits, suggesting they were part of its diet."
+    },
+    {
+      "question": "Why do researchers believe Gigantopithecus went extinct?",
+      "answer": "Gigantopithecus likely went extinct around 300,000 years ago due to the retreat of its preferred subtropical to tropical forest habitat caused by climate change. Human activity may have also played a role in its extinction."
+    },
+    {
+      "question": "In what modern cultural context is Gigantopithecus often referenced?",
+      "answer": "Gigantopithecus has gained popularity in cryptozoology circles, where it is often suggested as a possible identity for mythical creatures such as the Tibetan yeti or the American bigfoot."
+    },
+    {
+      "question": "Write a Python code snippet to calculate the estimated weight range of Gigantopithecus in pounds given a base weight range in kilograms.",
+      "answer": "python\n# Estimated weight range of Gigantopithecus in kilograms (kg)\nweight_range_kg = (200, 300)\n\n# Convert kilograms to pounds (1 kg ≈ 2.20462 pounds)\nweight_range_lb = tuple(weight * 2.20462 for weight in weight_range_kg)\n\nprint(f\"Estimated weight range of Gigantopithecus: {weight_range_kg[0]}-{weight_range_kg[1]} kg ({weight_range_lb[0]:.1f}-{weight_range_lb[1]:.1f} lb)\")\n\nThis code converts the estimated weight range of Gigantopithecus from kilograms to pounds and prints the result."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Diabetic_shoe",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What are diabetic shoes and what is their primary purpose?",
+      "answer": "Diabetic shoes, also called extra depth, therapeutic shoes, or sugar shoes, are specially designed shoes or inserts intended to reduce the risk of skin breakdown in diabetics with existing foot disease. Their primary purpose is to relieve pressure and prevent diabetic foot ulcers, which can include complications like strain, calluses, or even amputations."
+    },
+    {
+      "question": "Why might someone with diabetic neuropathy be unaware of their foot risks?",
+      "answer": "People with diabetic neuropathy in their feet may have a false sense of security about their foot health because neuropathy can reduce sensitivity. This means they may not feel pain or pressure, allowing an ulcer to develop within a couple of hours without their awareness."
+    },
+    {
+      "question": "What qualifications are required for diabetic shoes to be prescribed?",
+      "answer": "Diabetic shoes must be prescribed by a physician and fitted by a certified individual, such as an orthotist, podiatrist, therapeutic shoe fitter, or pedorthist. Additionally, they must include a removable orthosis, such as shoe inserts, arch supports, or shoe fillers like lifts, wedges, and heels."
+    },
+    {
+      "question": "What evidence supports the use of diabetic shoes for prevention?",
+      "answer": "The effectiveness of diabetic shoes for prevention is well-established, though evidence for treating existing diabetic foot ulcers is poor. Design features like arch supports, cushioned cut-outs near high-risk areas, and cushioning at the ball of the foot help reduce pressure and prevent injuries."
+    },
+    {
+      "question": "How can pressure distribution within diabetic shoes be optimized during design?",
+      "answer": "Technology for measuring pressure within shoes is recommended during the design of diabetic footwear. This allows designers to identify high-pressure areas and incorporate features like arch supports and cushioned cut-outs to distribute pressure more evenly and reduce the risk of ulcers."
+    },
+    {
+      "question": "Provide a Python code snippet that simulates pressure distribution in a diabetic shoe design.",
+      "answer": "python\nimport numpy as np\nimport matplotlib.pyplot as plt\n\n# Simulate pressure points on a foot sole (e.g., ball, arch, heel)\npressure_points = {\n    'ball_of_foot': 0.8,\n    'arch': 0.3,\n    'heel': 0.6\n}\n\n# Design features to reduce pressure\nreduced_pressure = {k: v * 0.7 for k, v in pressure_points.items()}\n\n# Plot before and after pressure reduction\nplt.figure(figsize=(10, 4))\nplt.subplot(1, 2, 1)\nplt.bar(pressure_points.keys(), pressure_points.values(), color='red')\nplt.title('Original Pressure Distribution')\nplt.ylabel('Pressure')\n\nplt.subplot(1, 2, 2)\nplt.bar(reduced_pressure.keys(), reduced_pressure.values(), color='green')\nplt.title('Pressure After Cushioning')\nplt.show()\n"
+    },
+    {
+      "question": "Are diabetic shoes covered by insurance in the United States?",
+      "answer": "Yes, diabetic shoes can be covered by Medicare in the United States, provided they meet specific medical criteria and are prescribed by a physician."
+    }
+  ]
+}

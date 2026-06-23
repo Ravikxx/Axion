@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Four_Ancient_Books_of_Wales",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What are the Four Ancient Books of Wales and who coined the term?",
+      "answer": "The Four Ancient Books of Wales is a term coined by William Forbes Skene to describe four medieval manuscripts written in Middle Welsh. These manuscripts, dating from the 13th to 15th centuries, include poetry and prose, some of which may trace back to traditions as early as the 6th and 7th centuries."
+    },
+    {
+      "question": "Which four manuscripts are included in the Four Ancient Books of Wales?",
+      "answer": "The four manuscripts are: The Black Book of Carmarthen, The Book of Taliesin, The Book of Aneirin, and The Red Book of Hergest."
+    },
+    {
+      "question": "What types of literary works are primarily contained in these manuscripts?",
+      "answer": "The manuscripts primarily contain poetry and prose, some of which are contemporary and others that may have originated from older traditions."
+    },
+    {
+      "question": "Who were the principal bards attributed with writing the poems in these manuscripts?",
+      "answer": "The principal bards attributed with the poems are Myrddin, Aneirin, Taliessin, and Llywarch Hen."
+    },
+    {
+      "question": "What is significant about the early Welsh references in these manuscripts?",
+      "answer": "These manuscripts contain some of the earliest native Welsh references to King Arthur, making them important for studying Arthurian legend in Welsh literature."
+    },
+    {
+      "question": "What is notable about William Forbes Skene's 1868 edition of these texts?",
+      "answer": "Skene's two-volume compilation, edited and translated in 1868, is considered flawed by modern standards due to numerous transcription errors and inaccurate translations."
+    },
+    {
+      "question": "Who assisted William Forbes Skene in translating the poems for his edition?",
+      "answer": "Skene enlisted Daniel Silvan Evans for most translations and Robert Williams for translating the poems."
+    }
+  ]
+}

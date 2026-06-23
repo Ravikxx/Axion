@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Bear_Foot",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who currently owns the monster truck Bear Foot?",
+      "answer": "Bear Foot is currently owned by James Trantina of Triple B Motorsports."
+    },
+    {
+      "question": "What were the significant years in which Bear Foot won the USHRA Camel Mud and Monsters championships?",
+      "answer": "Bear Foot won the USHRA Camel Mud and Monsters championships in 1990, 1992, and 1993."
+    },
+    {
+      "question": "How did Bear Foot's vehicle make and model change over time, and why?",
+      "answer": "Originally a Chevrolet, Bear Foot became a Dodge in 1992 due to a factory sponsorship that lasted until 1997."
+    },
+    {
+      "question": "What notable media appearances has Bear Foot made?",
+      "answer": "Bear Foot appeared in the music video for ZZ Top's single 'Sleeping Bag' in 1985, on an episode of Knight Rider alongside 'Lil' Bear Foot', and in a 1990 Volvo commercial (later pulled)."
+    },
+    {
+      "question": "Who were the original builders of Bear Foot, and who owned it before James Trantina?",
+      "answer": "Bear Foot was originally built by Jack Wilman and Fred Shafer. Before James Trantina, it was owned by Paul Shafer from some time after 1997 until 2022."
+    },
+    {
+      "question": "What was Bear Foot's primary rival during its active years?",
+      "answer": "Bear Foot's primary rival was Bigfoot, and their meetings were heavily promoted."
+    },
+    {
+      "question": "Write a Python code snippet to calculate the total number of USHRA Camel Mud and Monsters championships won by Bear Foot.",
+      "answer": "python\n# Championships won by Bear Foot\nchampionship_years = [1990, 1992, 1993]\ntotal_championships = len(championship_years)\nprint(f\"Total championships won by Bear Foot: {total_championships}\")\n\nOutput:\nTotal championships won by Bear Foot: 3"
+    }
+  ]
+}

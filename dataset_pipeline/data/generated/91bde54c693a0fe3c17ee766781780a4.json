@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Dive_boat",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is a dive boat and why is it used by scuba divers?",
+      "answer": "A dive boat is a vessel specifically designed or adapted for transporting scuba divers and their equipment to dive sites that are not easily reachable from the shore. It enables divers to access remote or deeper underwater locations efficiently, often with the support of an engine for propulsion. Dive boats may also provide amenities for longer trips, such as shelter and extended diving opportunities over multiple days."
+    },
+    {
+      "question": "What are the typical propulsion methods used by dive boats?",
+      "answer": "Dive boats can be propelled by wind, muscle power (e.g., rowing), or more commonly, internal combustion engines. While smaller or traditional boats may rely on wind or human power, most modern dive boats use engines for reliable and efficient transport to dive sites."
+    },
+    {
+      "question": "What safety procedures should dive boat crews follow to protect divers in the water?",
+      "answer": "Dive boat crews must follow specialized safety protocols, including: avoiding injury to divers during boat maneuvers, monitoring the location of divers at all times, using recall systems in emergencies, and ensuring no divers are left behind after a dive. Crews also practice procedures like live-boating (deploying divers while underway) with caution and maintaining clear communication with divers throughout the dive."
+    },
+    {
+      "question": "How do divers typically enter and exit the water from a dive boat?",
+      "answer": "Divers usually enter the water from a dive boat via convenient access points such as swim ladders, platforms, or giant stride entries, depending on the boat design. Exiting typically involves climbing back onto the boat using the same or designated ladders. Some boats have specific entry/exit procedures to minimize risk, such as designated entry points away from propellers and careful timing to avoid collisions."
+    },
+    {
+      "question": "Can a dive boat be used for multiple consecutive days of diving? Explain.",
+      "answer": "Yes, dive boats can be configured to support multiple consecutive days of diving. These boats may offer sleeping quarters, storage for equipment and supplies, and facilities for meal preparation. They are often used for liveaboard diving trips, where divers stay on the boat and dive at multiple sites over several days without returning to shore."
+    },
+    {
+      "question": "What modifications might a dive boat undergo to better serve its purpose?",
+      "answer": "A dive boat may be extensively modified to suit diving needs, such as installing gear racks, rinse tanks, dedicated storage compartments for tanks and wetsuits, and enhanced safety features like dive ladders or boarding platforms. Some boats are purpose-built with wide swim platforms, low gunwales, or even moon pools for easier diver access. Alternatively, boats with existing suitable features may require minimal adaptation."
+    },
+    {
+      "question": "Write a Python function that simulates checking whether a diver is safely back on a dive boat after a dive, given a list of divers' statuses.",
+      "answer": "python\ndef check_divers_safety(diver_statuses):\n    \"\"\"\n    Check if all divers are safely back on the dive boat.\n    \n    Args:\n        diver_statuses (list of str): Each status is either 'in water', 'exiting', or 'on boat'\n    \n    Returns:\n        bool: True if all divers are on the boat, False otherwise\n    \"\"\"\n    return all(status == 'on boat' for status in diver_statuses)\n\n# Example usage:\nstatuses = ['on boat', 'on boat', 'exiting']\nprint(check_divers_safety(statuses))  # Output: False\nstatuses = ['on boat', 'on boat', 'on boat']\nprint(check_divers_safety(statuses))  # Output: True\n"
+    }
+  ]
+}

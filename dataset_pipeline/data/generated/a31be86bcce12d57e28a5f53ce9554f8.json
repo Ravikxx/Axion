@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Armill",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is an armill or armilla in the context of medieval history?",
+      "answer": "An armill or armilla is a type of medieval bracelet or armlet, typically made of metal and worn in pairs, one on each arm. It was often part of royal regalia or grand liturgical vestments, though it may also have been worn outside ceremonial contexts. Armillae have roots in Ancient Roman military decorations, which in turn evolved from armlets worn by certain \"barbarian\" nations like the ancient Celts and Scots."
+    },
+    {
+      "question": "What are the origins of armillae as described in the text?",
+      "answer": "The origins of armillae trace back to the Ancient Roman *armilla*, a military decoration. These Roman armillae likely developed from the armlets worn by some \"barbarian\" nations, including the ancient Celts and Scots. The medieval armillae, in turn, descended from these Roman forms."
+    },
+    {
+      "question": "Describe the materials and craftsmanship of the armillae found in Andrei Bogolyubsky's tomb.",
+      "answer": "The armillae found in Andrei Bogolyubsky's tomb were high-quality Mosan work, featuring champlevé enamel on gilded copper. One piece depicts the Resurrection of Jesus (held at the Louvre), while the other shows the Crucifixion (kept at the Germanisches Nationalmuseum in Nuremberg). They were likely made for an emperor, possibly Frederick I Barbarossa, given their fine craftsmanship."
+    },
+    {
+      "question": "How were medieval armillae typically attached to the wearer?",
+      "answer": "Medieval armillae were often attached to thongs, bands, or sewn to clothing below. For example, the armilla from Andrei Bogolyubsky's tomb (Louvre's piece) has six holes through which it was presumably secured to such materials. Some may have fitted onto the shoulder or wrapped partially around the limb."
+    },
+    {
+      "question": "What is the significance of the enamelled plates from the Monomachus Crown in Budapest?",
+      "answer": "The enamelled plates from the Monomachus Crown in Budapest, attributed to Byzantine emperor Constantine IX Monomachos (r. 1042–1055), may actually originate from an armilla rather than a crown. These gold plates, decorated with cloisonné enamel, show signs of rushed craftsmanship with simple errors in inscriptions, suggesting they were commissioned in haste for a special occasion."
+    },
+    {
+      "question": "What are the British Crown Jewels' armills, and how do they differ from medieval examples?",
+      "answer": "The British Crown Jewels include armills, with the oldest being those of King Charles II and the newest created for Queen Elizabeth II's 1953 coronation. Unlike medieval armillae, the Elizabeth II Armills are single-piece round bracelets made of 22-carat gold lined with crimson velvet, featuring a concealed hinge and spring catch. They were presented by Commonwealth nations and are simpler in design compared to medieval paired examples."
+    },
+    {
+      "question": "Provide an example of how armills have been used in modern coronations, including a code snippet simulating their use.",
+      "answer": "Armills have been used in modern coronations, such as Queen Elizabeth II's in 1953, where she received a pair of gold armills presented by Commonwealth nations. Similarly, King Charles III was presented with the original Charles II armills during his 2023 coronation. Below is a Python snippet simulating a simplified inventory system for royal regalia, including armills:\n\npython\nclass RoyalRegalia:\n    def __init__(self, name):\n        self.name = name\n        self.items = {\"armills\": [], \"scepters\": [], \"crowns\": []}\n    \n    def add_armill(self, armill):\n        self.items[\"armills\"].append(armill)\n    \n    def display_inventory(self):\n        print(f\"Inventory for {self.name}:\")\n        for item_type, items in self.items.items():\n            print(f\"{item_type}: {len(items)} items\")\n\nregalia = RoyalRegalia(\"Elizabeth II\")\nregalia.add_armill(\"Elizabeth II Armills\")\nregalia.display_inventory()\n# Output: Inventory for Elizabeth II: armills: 1 items, scepters: 0 items, crowns: 0 items\n"
+    }
+  ]
+}

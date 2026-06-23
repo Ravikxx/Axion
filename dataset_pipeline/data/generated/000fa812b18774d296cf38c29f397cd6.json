@@ -1,0 +1,30 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Amrum",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Which German federal state includes the island of Amrum?",
+      "answer": "Amrum is part of the federal state of Schleswig-Holstein in Germany."
+    },
+    {
+      "question": "What natural features characterize the coastline of Amrum?",
+      "answer": "Amrum features an extended sandy beach along its west coast facing the North Sea and mudflats along its east coast bordering the Wadden Sea. Sand dunes are also a prominent part of its landscape."
+    },
+    {
+      "question": "How does Amrum's vegetation relate to its geology and geography?",
+      "answer": "Amrum's sandy geestland core and sand dunes support vegetation primarily consisting of heath and shrubs. The flat, unproductive soil is unsuitable for agriculture, contributing to the dominance of these hardy plant types."
+    },
+    {
+      "question": "What notable human settlement history does Amrum have?",
+      "answer": "Settlements on Amrum date back to the Neolithic period when the island was still part of the mainland. Frisian settlers arrived during the Middle Ages, engaging in salt production and seafaring. Modern inhabitants retain Frisian traditions and some speak Öömrang, a North Frisian dialect."
+    },
+    {
+      "question": "Which marine mammals can be found around Amrum?",
+      "answer": "Amrum serves as a refuge for marine mammals including grey seals and harbour porpoises."
+    },
+    {
+      "question": "Why does tourism dominate Amrum's economy today?",
+      "answer": "Amrum's population relies almost entirely on tourism because its soil is largely unproductive for agriculture, and it serves as a popular seaside resort. Additionally, the island hosts many endangered species, prioritizing conservation over industry."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Agranulocyte",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What are agranulocytes and how do they differ from granulocytes?",
+      "answer": "Agranulocytes, also called nongranulocytes or mononuclear leukocytes, are a type of white blood cell (leukocyte) characterized by the absence of granules in their cytoplasm. This distinguishes them from granulocytes, which contain visible granules. Agranulocytes include lymphocytes and monocytes, while granulocytes include neutrophils, eosinophils, basophils, and mast cells."
+    },
+    {
+      "question": "What are the two types of agranulocytes found in the bloodstream and what percentages of hematologic blood values do they represent?",
+      "answer": "The two types of agranulocytes in the blood circulation are lymphocytes and monocytes. Together, they make up about 35% of the hematologic blood values."
+    },
+    {
+      "question": "List the three types of lymphocytes found in blood and describe their primary functions.",
+      "answer": "The three types of lymphocytes in blood are: 1) B cells, which produce antibodies that bind to pathogens for destruction; 2) T cells, which coordinate the immune response and include CD4+ (helper) T cells and CD8+ (cytotoxic) T cells; and 3) Natural killer (NK) cells, which can kill virus-infected cells in the body. T cells possess a unique 'memory' system to prevent future infections from similar invaders."
+    },
+    {
+      "question": "How do monocytes contribute to the immune response beyond phagocytosis?",
+      "answer": "Monocytes perform phagocytosis like neutrophils but are longer-lived and have an additional role: they present pathogen fragments to T cells. This process enables the immune system to recognize and kill the pathogen again or mount an antibody response. After migrating from the bloodstream into tissue, monocytes are also known as macrophages."
+    },
+    {
+      "question": "Why is the distinction between granulocytes and agranulocytes considered erroneous by hematologists?",
+      "answer": "The distinction is considered erroneous for three main reasons: 1) Monocytes contain fine, weakly stained granules; 2) Monocytes and granulocytes are closely related in development, physiology, and function; and 3) This classification is not used by hematologists, indicating it lacks meaningful biological relevance."
+    },
+    {
+      "question": "What happens to monocytes after they leave the bloodstream, and what is their role in tissue?",
+      "answer": "After migrating from the bloodstream into tissue, monocytes are referred to as macrophages. In this role, they continue to participate in immune defense by presenting pathogen fragments to T cells and performing phagocytosis to eliminate invaders."
+    },
+    {
+      "question": "Write a Python function that categorizes a given leukocyte into granulocyte or agranulocyte based on its name.",
+      "answer": "python\ndef categorize_leukocyte(name: str) -> str:\n    granulocytes = {'neutrophil', 'eosinophil', 'basophil', 'mast cell'}\n    if name.lower() in granulocytes:\n        return 'granulocyte'\n    else:\n        return 'agranulocyte'\n\n# Example usage:\nprint(categorize_leukocyte('neutrophil'))  # Output: 'granulocyte'\nprint(categorize_leukocyte('lymphocyte'))  # Output: 'agranulocyte'\n"
+    }
+  ]
+}

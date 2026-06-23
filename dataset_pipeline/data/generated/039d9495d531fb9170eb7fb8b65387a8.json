@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Arab_nationalism",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is Arab nationalism and what are its core goals?",
+      "answer": "Arab nationalism is a political ideology that advocates for the unity of the Arab people into a single nation. Its core goals include uniting the countries of the Middle East and North Africa into one strong Arab nation, fostering collaboration in military and cultural spheres, and ensuring the use of Arabic as the common language across the region."
+    },
+    {
+      "question": "What historical events influenced the rise of Arab nationalism?",
+      "answer": "Arab nationalism emerged in response to two key historical developments: the decline of the Ottoman Empire and the rise of European colonialism in the Arab world. These events created a sense of shared struggle among Arab populations against foreign domination."
+    },
+    {
+      "question": "How did Arab nationalists view the establishment of Israel and Western influence in the Middle East?",
+      "answer": "Arab nationalists opposed the establishment of Israel, viewing it as a threat to Arab territorial integrity and sovereignty. They also opposed Western cultural and political influences in the region, attributing these influences to the legacy of former colonial powers."
+    },
+    {
+      "question": "What were some major challenges faced by Arab nationalism?",
+      "answer": "Arab nationalism faced significant challenges, including deep divisions among Arab states with differing ambitions. The Six-Day War of 1967 served as a major setback due to unfulfilled agreements between Arab states. These challenges contributed to the rise of state nationalism, where individual Arab nation-states prioritized their own interests over pan-Arab unity."
+    },
+    {
+      "question": "How did the Six-Day War contribute to the decline of Arab nationalism?",
+      "answer": "The Six-Day War of 1967 was a major setback for Arab nationalism because it exposed the failure of Arab states to adhere to their agreements and maintain a united front. This led to a shift toward state nationalism, where individual countries focused on their own sovereignty and development rather than pursuing a unified Arab nation."
+    },
+    {
+      "question": "Write a Python function that categorizes historical events based on their impact on Arab nationalism.",
+      "answer": "python\n\ndef categorize_events_by_impact(events):\n    \"\"\"\n    Categorizes historical events based on their positive or negative impact on Arab nationalism.\n    \n    Args:\n        events (list of dict): A list of dictionaries where each dictionary contains:\n            - 'name': Name of the event\n            - 'impact': 'positive' or 'negative'\n            \n    Returns:\n        dict: A dictionary with keys 'positive_impact' and 'negative_impact'\n              containing lists of event names.\n    \"\"\"\n    categorized = {'positive_impact': [], 'negative_impact': []}\n    \n    for event in events:\n        if event['impact'] == 'positive':\n            categorized['positive_impact'].append(event['name'])\n        elif event['impact'] == 'negative':\n            categorized['negative_impact'].append(event['name'])\n    \n    return categorized\n\n# Example usage:\nevents = [\n    {'name': 'Rise of European colonialism', 'impact': 'positive'},\n    {'name': 'Six-Day War', 'impact': 'negative'},\n    {'name': 'Decline of the Ottoman Empire', 'impact': 'positive'}\n]\n\nprint(categorize_events_by_impact(events))\n"
+    },
+    {
+      "question": "Why did Arab nationalists oppose Western cultural influences in the Middle East?",
+      "answer": "Arab nationalists opposed Western cultural influences because they viewed these influences as remnants of colonialism and foreign domination. They believed that Western political and cultural presence undermined Arab sovereignty and hindered the development of a unified Arab identity."
+    }
+  ]
+}

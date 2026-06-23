@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/aws/software-31-ai-functions-5acn",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What are the key differences between Software 3.0 and Software 3.1 as described in the text?",
+      "answer": "Software 3.0 involves prompting LLMs to generate code or text, which humans then verify and integrate manually. In contrast, Software 3.1 (AI Functions) automates the entire process: the LLM generates and executes code directly, returning native Python objects, while post-conditions handle verification at runtime. Key differences include: 1) AI's role shifts from development-time assistance to runtime execution, 2) output changes from serialized text to live objects, and 3) verification moves from one-time human review to continuous automated post-conditions."
+    },
+    {
+      "question": "How does the `@ai_function` decorator work in the AI Functions framework?",
+      "answer": "The `@ai_function` decorator intercepts function calls, constructs a prompt from the docstring (substituting arguments), sends it to an LLM, executes the generated code in the Python process, and returns the result as a typed object. For example:\npython\nfrom ai_functions import ai_function\n\n@ai_function\ndef translate_text(text: str, lang: str) -> str:\n    \"\"\"Translate the text below to the following language: {lang}.\n    {text}\"\"\"\n\nresult = translate_text(\"Hello world\", lang=\"French\")\n# The decorator handles LLM execution transparently.\n"
+    },
+    {
+      "question": "What are post-conditions in the context of AI Functions, and how do they improve reliability?",
+      "answer": "Post-conditions are Python functions that validate the output of an AI Function at runtime. If validation fails, the error message is fed back to the LLM for automatic retries. This ensures continuous verification, unlike traditional one-time human review. For example:\npython\nfrom ai_functions import PostConditionResult\n\ndef check_length(response):\n    assert len(response) <= 50, f\"Response too long, got {len(response)}\"\n\n@ai_function(post_conditions=[check_length])\ndef summarize(text: str) -> str:\n    \"\"\"Summarize the text in under 50 characters.\"\"\"\n"
+    },
+    {
+      "question": "How does AI Functions handle structured output using Pydantic models?",
+      "answer": "AI Functions can return typed Pydantic models, ensuring schema compliance. The LLM's output is parsed into the model, and the framework automatically retries if validation fails. For example:\npython\nfrom ai_functions import ai_function\nfrom pydantic import BaseModel\n\nclass MeetingSummary(BaseModel):\n    attendees: list[str]\n    key_decisions: list[str]\n    action_items: list[str]\n\n@ai_function\ndef summarize_meeting(transcript: str) -> MeetingSummary:\n    \"\"\"Summarize the meeting transcript.\"\"\"\n\nsummary = summarize_meeting(transcript)  # Returns a typed object.\n# Use autocomplete and validation: summary.key_decisions\n"
+    },
+    {
+      "question": "What is the 'generation–verification loop' mentioned in the text, and how does it apply to AI Functions?",
+      "answer": "The generation–verification loop is a process where an AI model generates output (e.g., code changes), and a human or machine verifies it. In AI Functions, this loop is fully automated: the LLM generates and executes code, post-conditions verify the result at runtime, and failures trigger retries with error feedback. This eliminates manual inspection and integrates verification into the execution flow."
+    },
+    {
+      "question": "How can AI Functions be composed into multi-agent workflows?",
+      "answer": "AI Functions can be composed into multi-agent workflows by chaining calls between functions, where each function's output serves as input for another. For example:\npython\n@ai_function\ndef extract_emails(text: str) -> list[str]:\n    \"\"\"Extract all email addresses from the text.\"\"\"\n\n@ai_function\ndef generate_report(emails: list[str]) -> str:\n    \"\"\"Generate a report listing these emails.\"\"\"\n\nemails = extract_emails(text)\nreport = generate_report(emails)\n\nThis allows complex AI-driven workflows without manual code integration."
+    },
+    {
+      "question": "What are the advantages of using AI Functions over traditional Software 3.0 approaches?",
+      "answer": "AI Functions offer three key advantages over Software 3.0: 1) **Runtime execution**: LLMs generate code that runs directly in the application, returning native objects instead of text. 2) **Continuous verification**: Post-conditions validate output on every call, enabling automatic retries. 3) **Seamless integration**: The generated code becomes part of the application's runtime, with no manual parsing or deployment steps required."
+    }
+  ]
+}

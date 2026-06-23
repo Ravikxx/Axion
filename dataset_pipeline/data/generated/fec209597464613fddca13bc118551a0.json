@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Carlo_Manché",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What were Carlo Manché's primary occupations and roles during his lifetime?",
+      "answer": "Carlo Manché was a Maltese Roman Catholic parish priest. He served as the parish priest of Gżira from 1935 to 1950, where he was actively involved in helping his community, especially during World War II. He was also a multilingual scholar, holding degrees in Theology and Canon Law, and earned a Doctor of Philosophy from the Gregorian University in Rome."
+    },
+    {
+      "question": "How did Carlo Manché contribute to his community during World War II?",
+      "answer": "During World War II, Carlo Manché provided both spiritual and practical support to his parishioners. He helped people fleeing from Gżira to safer villages, assisted the homeless and injured, and secured food for those in need by serving in the 'Victory Kitchens.' He also led efforts to build rock shelters for protection against bombings, participating actively in the construction work himself."
+    },
+    {
+      "question": "What languages was Carlo Manché fluent in, and which languages did he have academic knowledge of?",
+      "answer": "Carlo Manché was fluent in English, Italian, French, and German. He had academic knowledge of Latin, Hebrew, and Biblical Greek."
+    },
+    {
+      "question": "How did Carlo Manché demonstrate his commitment to social reform in Gżira?",
+      "answer": "Carlo Manché worked to transform Gżira from a place known for prostitution to a reputable community. He personally engaged with prostitutes to encourage them to change their ways, despite facing opposition from pimps. He was once severely beaten for his efforts and even had a gun pointed at him, but he refused to report the incidents to the police, prioritizing peace over retaliation."
+    },
+    {
+      "question": "What educational achievements did Carlo Manché accomplish, and how did they contribute to his career?",
+      "answer": "Carlo Manché completed a Bachelor in Theology and Canon Law at the University of Malta in 1928, graduating first in his course. This achievement earned him a scholarship to study at the Gregorian University in Rome, where he earned a Doctor of Philosophy degree. His academic success facilitated his leadership roles and enabled him to engage in scholarly and pastoral work."
+    },
+    {
+      "question": "Provide a code snippet in Python that calculates Carlo Manché's age at the time of his death.",
+      "answer": "python\ndef calculate_age(birth_year, death_year):\n    return death_year - birth_year\n\nbirth_year = 1905\ndeath_year = 1950\nage = calculate_age(birth_year, death_year)\nprint(f\"Carlo Manché was {age} years old at the time of his death.\")\n\nThis code snippet calculates that Carlo Manché was 45 years old at the time of his death."
+    },
+    {
+      "question": "Why is Carlo Manché considered a significant figure in Maltese history, and what legacy did he leave behind?",
+      "answer": "Carlo Manché is remembered for his heroic actions during World War II, his dedication to social reform, and his humble lifestyle. He helped transform Gżira from a troubled area to a reputable community, supported the poor and homeless, and inspired thousands with his selfless service. His legacy includes a bust and a plaque in Gżira, a street renamed in his honor, and a book published in 2022 documenting his life and works. Historians and church leaders have also proposed him as a potential candidate for sainthood due to his heroic virtues."
+    }
+  ]
+}

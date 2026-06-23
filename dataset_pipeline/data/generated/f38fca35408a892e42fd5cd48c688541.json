@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Candy_Harris",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was Alonzo Harris's primary position or role when he briefly played for the Houston Astros in 1967?",
+      "answer": "Alonzo Harris served primarily as a pinch runner during his time with the Houston Astros in 1967. He was used in this role five times and also appeared once as a pinch hitter. Notably, he did not play any defensive positions in the major leagues."
+    },
+    {
+      "question": "How did Alonzo Harris get drafted by the Houston Astros from the Baltimore Orioles in 1966?",
+      "answer": "Alonzo Harris was drafted by the Houston Astros from the Baltimore Orioles in the 1966 first-year draft, which took place on November 28, 1966. Before being drafted, he had been signed by the Orioles as an amateur free agent prior to the 1966 season."
+    },
+    {
+      "question": "What were Alonzo Harris's batting statistics during his minor league season with the Bluefield Orioles in 1966?",
+      "answer": "During his time with the Bluefield Orioles in the Appalachian League, Alonzo Harris played 58 games and led the league with 34 stolen bases. His overall batting performance for the season included a .287 batting average, with 95 hits in 331 at-bats across all minor league teams he played for that year."
+    },
+    {
+      "question": "Why did Alonzo Harris leave the Houston Astros in May 1967, and did he return to play in the major leagues afterward?",
+      "answer": "Alonzo Harris left the Houston Astros in May 1967 to serve in the military. After his military service, he did not return to play in any major league games, marking the end of his brief major league career."
+    },
+    {
+      "question": "How old was Alonzo Harris when he made his major league debut, and what significance did this have in the National League that year?",
+      "answer": "Alonzo Harris was 19 years old when he made his major league debut with the Houston Astros in 1967. At that age, he was the sixth-youngest player to appear in a National League game that season."
+    },
+    {
+      "question": "What was Alonzo Harris's only major league at-bat outcome, and against which pitcher did it occur?",
+      "answer": "In his only major league at-bat, Alonzo Harris struck out against Mel Queen of the Cincinnati Reds. This occurred during his short stint with the Houston Astros in 1967."
+    },
+    {
+      "question": "Can you provide a code snippet to calculate the batting average of Alonzo Harris during his minor league season in 1966, given his hits and at-bats?",
+      "answer": "Certainly! Here is a simple Python code snippet to calculate Alonzo Harris's batting average for the 1966 minor league season:\n\npython\nhits = 95\nat_bats = 331\nbatting_average = hits / at_bats\nprint(f\"Batting Average: {batting_average:.3f}\")  # Output: Batting Average: 0.287\n\nThis code takes the number of hits (95) and at-bats (331) and computes the batting average, which is approximately .287."
+    }
+  ]
+}

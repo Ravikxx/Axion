@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Axial_engine",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is an axial engine and how does it differ from radial and inline engines?",
+      "answer": "An axial engine is a reciprocating engine with pistons arranged around an output shaft, their axes parallel to the shaft, giving it a cylindrical shape. Unlike radial and inline engines, where cylinders are at right angles to the crankshaft, axial engines have parallel cylinders around the shaft. This arrangement makes them compact and allows variation in compression ratio while running."
+    },
+    {
+      "question": "Explain the role of a swashplate in an axial engine with a code snippet simulating its motion.",
+      "answer": "A swashplate in an axial engine translates the linear motion of pistons into rotary motion by rotating as the pistons press on it sequentially. This rotation helps convert reciprocating motion into a continuous rotational output. Below is a Python snippet simulating the swashplate mechanism by modeling the angular displacement of a point on the swashplate over time:\n\npython\nimport numpy as np\nimport matplotlib.pyplot as plt\n\n# Simulate piston pressing on swashplate at progressive points\ntheta = np.linspace(0, 2*np.pi, 100)  # Angle around the swashplate\nr = 1.0  # Radius of piston contact point\nomega = 10.0  # Angular velocity of swashplate rotation\n\n# Position of piston contact point (x, y) as swashplate rotates\nx = r * np.cos(omega * theta)\ny = r * np.sin(omega * theta)\n\nplt.figure(figsize=(6, 6))\nplt.plot(x, y, label='Swashplate rotation trajectory')\nplt.scatter([r], [0], color='red', label='Piston contact point')\nplt.title('Swashplate Motion Simulation')\nplt.xlabel('X-axis')\nplt.ylabel('Y-axis')\nplt.legend()\nplt.grid(True)\nplt.show()\n\nThe plot visualizes the circular path traced by a piston as the swashplate rotates, demonstrating the conversion of linear motion into rotation."
+    },
+    {
+      "question": "How does a Rand cam engine differ from a traditional swashplate axial engine?",
+      "answer": "A Rand cam engine replaces the swashplate or wobble plate with one or more sinusoidal cam surfaces. Instead of using pistons and connecting rods, it uses sliding vanes mounted parallel to a shaft inside a cylindrical barrel. These vanes ride the sinuous cam, with the segments formed by the rotor, stator walls, and vanes acting as combustion chambers. This design eliminates the need for multiple reciprocating pistons, ball joints, and a swashplate, relying instead on the cam surface to transmit force directly into rotational motion."
+    },
+    {
+      "question": "What are the key advantages of an axial engine over traditional engine designs?",
+      "answer": "Axial engines offer several advantages: (1) Compact cylindrical shape due to parallel cylinder arrangement around the crankshaft, (2) Ability to vary compression ratio while running, (3) Reduced piston side-forces in swashplate engines, eliminating wear on piston rings and cylinders, (4) Elimination of the small-end bearing (a common failure point in traditional engines), and (5) Fewer moving parts, which simplifies mechanical complexity and reduces weight."
+    },
+    {
+      "question": "Describe the difference between a wobble plate and a swashplate in an axial engine.",
+      "answer": "Both wobble plates and swashplates translate piston motion into rotary motion, but their mechanisms differ. A wobble plate nutates (tilts back and forth) as pistons press on it sequentially, imparting a lateral moment converted into rotation. In contrast, a swashplate rotates continuously as pistons press down on it, converting linear motion into smooth rotary output. A practical analogy is a compact disc pressed at progressive points around its edge on a ball bearing: the wobble plate's tilt resembles the disc's uneven rotation, while the swashplate's rotation resembles the disc's steady spin."
+    },
+    {
+      "question": "For what applications are axial engines particularly suitable, and why?",
+      "answer": "Axial engines are particularly suitable for lightweight and mechanically simple applications where compactness and power-to-weight ratio are critical. Their small size (approaching a 6-inch cube) and ability to produce around 40 horsepower at 7000 rpm make them ideal for light aerial applications, such as small unmanned aircraft. The reduced number of moving parts and elimination of complex bearings also contribute to their appeal for these applications, despite potential trade-offs in durability."
+    },
+    {
+      "question": "How does the Rand cam engine generate rotational force from combustion?",
+      "answer": "In a Rand cam engine, combustion occurs in chambers formed by rotor, stator walls, and sliding vanes riding a sinusoidal cam surface. The expanding combustion gases directly impart force on the cam surface, creating rotational motion. Timing one or more detonations ensures that the force is applied at the optimal point to maximize rotational output. This design bypasses the need for traditional pistons and connecting rods, relying instead on the cam surface to convert the linear force of combustion into useful rotary motion."
+    }
+  ]
+}

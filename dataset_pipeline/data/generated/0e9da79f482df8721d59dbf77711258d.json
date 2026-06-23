@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Estonian_passport",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is an Estonian passport and what are its primary functions?",
+      "answer": "An Estonian passport is an international travel document issued to citizens of Estonia. Its primary functions include enabling international travel, serving as proof of Estonian citizenship, and providing access to consular assistance from Estonian or other EU member state officials abroad when needed."
+    },
+    {
+      "question": "How can an Estonian citizen receive a passport or identity document while abroad without access to an Estonian embassy?",
+      "answer": "An Estonian citizen abroad can receive a passport or identity document at any EU country's embassy worldwide by paying a fee of 50 Euros."
+    },
+    {
+      "question": "What rights does an Estonian passport holder have within the European Union?",
+      "answer": "An Estonian passport holder, being a citizen of the European Union, enjoys free movement and residence rights in all EU member states, as well as in the European Economic Area countries and Switzerland."
+    },
+    {
+      "question": "When and how is an Estonian certificate of return issued?",
+      "answer": "An Estonian certificate of return is issued to Estonian citizens abroad when their Estonian passport is lost, destroyed, or unusable. It can also be issued to a child under one year born abroad to an Estonian citizen based on a birth certificate. The certificate is valid for up to twelve months and must be returned to the Police and Border Guard Board upon entry into Estonia."
+    },
+    {
+      "question": "Who is eligible to apply for return support in Estonia, and what does it entail?",
+      "answer": "Return support can be applied for by ethnic Estonians and Estonian citizens who have lived outside Estonia for 10 years or more or were born in a foreign country. The support is provided to those in need who wish to settle in Estonia."
+    },
+    {
+      "question": "What should an Estonian citizen do if their passport is lost or stolen while traveling in a non-EU country without an Estonian embassy?",
+      "answer": "If an Estonian passport is lost or stolen abroad, the citizen should contact the nearest EU embassy, as they can issue travel documents there, including a passport."
+    },
+    {
+      "question": "How long is an Estonian certificate of return valid, and what happens to it after entering Estonia?",
+      "answer": "An Estonian certificate of return is valid for up to twelve months. Upon entry into Estonia, it must be returned to the Police and Border Guard Board, which then forwards it to the Ministry of Foreign Affairs."
+    }
+  ]
+}

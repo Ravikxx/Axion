@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Eion",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the strategic importance of Eion during the Peloponnesian War according to Thucydides?",
+      "answer": "Thucydides highlights Eion as a place of considerable strategic importance to the Athenians during the Peloponnesian War due to its location at the mouth of the Strymon River, which provided control over access to the Aegean Sea and facilitated Athenian naval operations."
+    },
+    {
+      "question": "How did Cimon capture Eion in 476 BC, and what was the fate of the Persian commander Boges?",
+      "answer": "Cimon besieged Eion and, after the Persian commander Boges refused an honorable withdrawal, Boges destroyed the city's treasure, killed his family, and committed suicide as supplies ran out. Cimon then redirected the River Strymon to erode the mud-brick fortifications, leading to the city's capture. The inhabitants were enslaved."
+    },
+    {
+      "question": "What role did Eion play in the founding of Amphipolis?",
+      "answer": "Eion served as the initial base of operations for the Athenian settlers, led by Hagnon, who founded Amphipolis in 437 BC. Eion functioned as the harbor for Amphipolis, located three miles up the Strymon River."
+    },
+    {
+      "question": "Write a Python function that checks if a given year falls within the period when Eion served as a Persian garrison city (492–480/479 BC).",
+      "answer": "python\ndef was_persian_garrison_year(year):\n    \"\"\"Check if a given year falls within the Persian garrison period at Eion (492–480/479 BC).\"\"\"\n    return 492 <= year <= 479\n\nThis function returns `True` if the input year is between 492 and 479 BC (inclusive), indicating Eion was under Persian control during that time."
+    },
+    {
+      "question": "Why was the capture of Eion significant for the Delian League?",
+      "answer": "The capture of Eion in 476 BC marked the beginning of the Delian League's military campaign to clear the Aegean Sea of Persian fleets and pirates. This effort aimed to secure Athenian access to the Hellespont, a critical route for trade and military movement."
+    },
+    {
+      "question": "How did Brasidas fail to capture Eion in 424/423 BC despite success elsewhere?",
+      "answer": "Brasidas captured Amphipolis with Thracian allies but was repelled at Eion by Athenian defenders led by Thucydides, who arrived in time to reinforce the city. Thucydides' failure to defend Amphipolis later led to his ostracism by the Athenians."
+    },
+    {
+      "question": "What evidence suggests the ruins found on the left bank of the Strymon belong to the Byzantine period rather than ancient Eion?",
+      "answer": "William Martin Leake's 19th-century findings describe ruins of thick walls made of small stones and mortar with Hellenic-style squared blocks, but these were attributed to the Byzantine town of Komitisse (or Contessa), not ancient Eion. The Hellenic-style blocks may be reused materials from the earlier city."
+    }
+  ]
+}

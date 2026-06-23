@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Anne_Mowbray,_8th_Countess_of_Norfolk",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "Who were Anne de Mowbray's parents?",
+      "answer": "Anne de Mowbray was the daughter of John Mowbray, 4th Duke of Norfolk, and Elizabeth Talbot."
+    },
+    {
+      "question": "Why did King Edward IV arrange the marriage between Anne de Mowbray and his son Richard of York?",
+      "answer": "King Edward IV arranged the marriage to gain control of Anne's fortune, as she had become very wealthy upon her father's death in 1476."
+    },
+    {
+      "question": "What titles did Anne de Mowbray hold at different points in her life?",
+      "answer": "Anne de Mowbray held the titles of Baroness Mowbray, Baroness Segrave, Countess of Norfolk, and Duchess of York."
+    },
+    {
+      "question": "Describe the circumstances surrounding Anne de Mowbray's death and the subsequent discovery of her remains.",
+      "answer": "Anne died at age 8 in 1481 and was buried in Westminster Abbey. Her coffin was lost when the Chapel of St Erasmus was demolished around 1502. It was rediscovered in 1964 during construction work in Stepney, London. Her remains were examined and later reburied in Westminster Abbey."
+    },
+    {
+      "question": "What scientific observations were made when Anne de Mowbray's coffin was opened in 1964?",
+      "answer": "When Anne's coffin was opened, scientists observed that her body was still wrapped in a shroud, and her skull retained red hair."
+    },
+    {
+      "question": "How was a facial reconstruction of Anne de Mowbray created in 2016?",
+      "answer": "A facial reconstruction of Anne de Mowbray was commissioned by John Ashdown-Hill and executed by Amy Thornton of Dundee University. It was completed in 2016, providing a visual representation of her appearance."
+    },
+    {
+      "question": "Write a Python function that calculates the age of a person at the time of their death, given their birth and death years.",
+      "answer": "python\ndef calculate_age_at_death(birth_year, death_year):\n    \"\"\"Calculate the age of a person at the time of their death.\n    \n    Args:\n        birth_year (int): The year the person was born.\n        death_year (int): The year the person died.\n    \n    Returns:\n        int: The age of the person at death.\n    \"\"\"\n    return death_year - birth_year\n\n# Example usage:\nage = calculate_age_at_death(1472, 1481)\nprint(age)  # Output: 9\n\nNote: The function assumes the person has had their birthday in the death year. For Anne de Mowbray, who died in November 1481, her age at death would be 8 years old if her birthday (December 10) had not yet occurred."
+    }
+  ]
+}

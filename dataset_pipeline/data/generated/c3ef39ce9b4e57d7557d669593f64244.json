@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Cuisine_of_Jerusalem",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What are the primary cultural influences on Jerusalem's cuisine?",
+      "answer": "Jerusalem's cuisine is shaped by centuries of trade, conquest, and migration, with major influences from Jewish (especially Sephardic) and Levantine Arab (particularly Palestinian) culinary traditions. These cultures have blended to create a unique fusion of flavors and techniques."
+    },
+    {
+      "question": "Describe the key ingredients commonly used in traditional Jerusalem dishes.",
+      "answer": "Traditional Jerusalem dishes emphasize fresh, seasonal Mediterranean ingredients such as vegetables, fruits, olive oil, and herbs. Meat, legumes, and grains like bulgur or semolina are also staples, often combined with spices and aromatic herbs."
+    },
+    {
+      "question": "What is ka'ak-al-quds, and how is it typically served?",
+      "answer": "Ka'ak-al-quds is a distinctive Jerusalem bread, long and oval-shaped with sesame seed topping. It is commonly served as street food, often accompanied by za'atar, a blend of dried herbs, sesame seeds, and sumac."
+    },
+    {
+      "question": "How would you prepare a basic bourekas, and what variations exist?",
+      "answer": "Bourekas are savory pastries made by folding dough around a filling. For a basic version, mix mashed potatoes or cheese with spices, wrap in thin phyllo dough, fold into triangles, brush with egg wash, and bake at 190°C (375°F) until golden. Variations include spinach-feta, meat, or mushroom fillings."
+    },
+    {
+      "question": "What is Jerusalem mixed grill, and what are its main components?",
+      "answer": "Jerusalem mixed grill is a traditional dish made from chicken hearts, spleens, and liver, mixed with lamb pieces, onions, and spices. The mixture is fried or grilled until tender, often served with flatbread or rice."
+    },
+    {
+      "question": "Write a Python function to calculate the approximate caloric value of a traditional Jerusalem dish like kubbeh, given its ingredients and portions.",
+      "answer": "python\ndef estimate_kubbeh_calories(bulgur_weight_grams, meat_weight_grams, soup_ingredients):\n    # Approximate caloric values per 100g (kcal)\n    cal_per_100g = {\n        'bulgur': 340,\n        'lamb': 250,\n        'chicken': 165,\n        'olive_oil': 884,\n        'onion': 40,\n        'spices': 300  # Generic estimate for spice blends\n    }\n    \n    # Calculate base calories\n    bulgur_cal = (bulgur_weight_grams / 100) * cal_per_100g['bulgur']\n    meat_cal = (meat_weight_grams / 100) * cal_per_100g['lamb']  # Assuming lamb filling\n    \n    # Estimate soup calories (simplified)\n    soup_cal = sum((100 * cal_per_100g.get(ing, 0)) / len(soup_ingredients) for ing in soup_ingredients)\n    \n    total_cal = bulgur_cal + meat_cal + soup_cal\n    return round(total_cal, 1)\n\n# Example usage:\nprint(estimate_kubbeh_calories(150, 100, ['onion', 'olive_oil']))  # ~512.6 kcal\n"
+    },
+    {
+      "question": "Why is street food so prominent in Jerusalem's culinary culture?",
+      "answer": "Jerusalem's street food thrives due to the city's historical role as a crossroads of cultures and markets like Mahane Yehuda and the Old City souk. These markets foster a vibrant street food scene by offering affordable, quick meals that reflect the city's diverse culinary heritage and seasonal ingredients."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Human_virome",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the human virome and what does it consist of?",
+      "answer": "The human virome is the total collection of viruses present in and on the human body. It includes viruses that infect human cells, viruses that infect other microbes (such as bacteriophages), and endogenous viral elements integrated into the human genome. These viruses can either cause disease or remain asymptomatic."
+    },
+    {
+      "question": "How does the human virome differ from the human microbiome in terms of diversity and quantity?",
+      "answer": "While the human microbiome contains roughly 40 trillion bacteria, the number of viral particles in a healthy adult human is not yet fully quantified. However, in nature, virions (viral particles) generally outnumber individual bacteria by a ratio of 10:1. The virome is also far more diverse and less explored than the microbiome, with new viruses discovered frequently."
+    },
+    {
+      "question": "What factors influence an individual's virome composition and susceptibility to viral diseases?",
+      "answer": "An individual's virome is influenced by lifestyle, age, geographic location, and even the season of the year. Susceptibility to viral diseases is affected by pre-existing immunity, viral genetics, and human genetics. These factors collectively determine exposure to viruses and the body's response to them."
+    },
+    {
+      "question": "What are 'obelisks' and 'oblins', and how were they discovered?",
+      "answer": "In January 2024, biologists reported the discovery of 'obelisks', a new class of viroid-like elements, and 'oblins', their related group of proteins, in the human microbiome. These elements were identified through advanced metagenomic analysis of the human microbiome, revealing previously unknown viral-like structures."
+    },
+    {
+      "question": "Why is studying the human virome important for understanding health and disease?",
+      "answer": "Studying the human virome provides insights into how viruses interact with microbes and influence human health. Viruses play roles in disease causation, immune system modulation, and even genetic integration. Understanding the virome can help uncover mechanisms of microbial behavior, disease development, and potential therapeutic targets."
+    },
+    {
+      "question": "How do viruses in the human virome evolve, and what implications does this have for health?",
+      "answer": "Viruses in the human virome evolve rapidly due to their genetic plasticity, leading to constant changes in the virome composition. This rapid evolution can result in new viral strains with varying pathogenic potential, affecting an individual's susceptibility to infections and the effectiveness of pre-existing immunity."
+    },
+    {
+      "question": "Write a Python script to simulate the ratio of viral particles to bacteria in a human sample.",
+      "answer": "python\nimport random\n\n# Simulate a human sample with bacteria and viral particles\nnum_bacteria = 40_000_000_000_000  # Approximate bacteria count in microbiome\nvirus_to_bacteria_ratio = 10  # Given ratio in nature\nnum_viruses = num_bacteria * virus_to_bacteria_ratio\n\nprint(f\"Number of bacteria in a typical human microbiome: {num_bacteria:,}\")\nprint(f\"Estimated number of viral particles (based on 10:1 ratio): {num_viruses:,}\")\nprint(f\"Viruses outnumber bacteria by a factor of: {virus_to_bacteria_ratio}\")\n"
+    }
+  ]
+}

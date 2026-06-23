@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Indian_Empire_Society",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the primary purpose of the Indian Empire Society?",
+      "answer": "The Indian Empire Society was a London-based lobbying organization founded in 1930 to oppose British constitutional reforms in India. Its main goal was to resist rapid Indian self-government, arguing that such changes would endanger British trade, the security of British India, and the well-being of the Indian population under democratic rule."
+    },
+    {
+      "question": "Who were some notable members of the Indian Empire Society?",
+      "answer": "Key members included Sir Michael O'Dwyer (former Lieutenant Governor of the Punjab), Lord Meston, Sir Reginald Craddock, Field Marshal Sir Claud Jacob, Winston Churchill, Lord Sumner, Lord Ampthill, and Sir Charles Oman. The organization also included several former provincial governors and officials from British India."
+    },
+    {
+      "question": "How did the Indian Empire Society justify its opposition to Indian constitutional reforms?",
+      "answer": "The Society argued that rapid self-government would pose grave risks to both British economic interests and the 350 million people of India. In a 1933 joint letter published in *The Times*, retired officials warned that democratic reforms could destabilize British trade and harm the welfare of Indian citizens."
+    },
+    {
+      "question": "What role did Winston Churchill play in the Indian Empire Society?",
+      "answer": "Winston Churchill joined the Society in October 1930 and became an active participant, delivering multiple speeches on its behalf. His involvement reinforced the organization's opposition to Indian self-rule during the 1930s."
+    },
+    {
+      "question": "Where can the historical records of the Indian Empire Society be accessed today?",
+      "answer": "Correspondence and papers of the Society from 1930 to 1948 are preserved in the Bodleian Library's Special Collections and Western Manuscripts section at the University of Oxford."
+    },
+    {
+      "question": "Write a Python script to extract the names of all former governors mentioned in the text.",
+      "answer": "python\ntext = \"\"\"...[the provided text]...\"\"\"\n\n# Split the text into lines\nlines = text.split('\\n')\n\n# Initialize a list to store former governors' names\ngovernors = []\n\n# Iterate through each line to find former governors\nfor line in lines:\n    if 'former governor of' in line:\n        # Extract the name before the title\n        start = line.find('Sir ') if 'Sir ' in line else line.find('Lord ')\n        if start != -1:\n            name_part = line[start:].split('former governor of')[0].strip()\n            governors.append(name_part)\n\nprint(\"Former governors mentioned:\")\nfor name in governors:\n    print(f\"- {name}\")\n\n# Output:\n# Former governors mentioned:\n# - Lord Ampthill\n# - Sir Hugh Barnes\n# - Sir Reginald Craddock\n"
+    },
+    {
+      "question": "What was the significance of the Caxton Hall meeting in July 1930?",
+      "answer": "The July 1930 meeting at Caxton Hall in London marked the formal establishment of the Indian Empire Society. It was the event where Sir Michael O'Dwyer, a former Lieutenant Governor of the Punjab, initiated the organization following prior correspondence between the 4th Marquess of Salisbury and George Clarke, 1st Baron Sydenham of Combe."
+    }
+  ]
+}

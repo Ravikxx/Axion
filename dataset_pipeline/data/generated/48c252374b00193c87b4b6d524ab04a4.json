@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Ghana_Empire",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What was the geographical extent of the Ghana Empire?",
+      "answer": "The Ghana Empire was located in what is now southeastern Mauritania, western Mali, and eastern Senegal."
+    },
+    {
+      "question": "Why was the Ghana Empire so wealthy during its time?",
+      "answer": "The Ghana Empire was wealthy due to its control over gold mine trade routes, which allowed it to tax neighboring nomads, city-states, and chiefdoms trading in gold and salt."
+    },
+    {
+      "question": "What was the capital city of the Ghana Empire, and where was it situated?",
+      "answer": "The capital of the Ghana Empire was Koumbi Saleh, located near modern-day northern Senegal, southern Mauritania, and southwest Mali."
+    },
+    {
+      "question": "How did the division between Muslim and Non-Muslim populations manifest in the Ghana Empire?",
+      "answer": "The division between Muslim and Non-Muslim populations was physical, separated by a 6-mile stretch of informal market villages or street."
+    },
+    {
+      "question": "What led to the eventual collapse of the Ghana Empire?",
+      "answer": "The Ghana Empire collapsed due to competition from North African empires and changes in the Sahel climate, which fractured the empire. It was later occupied by vassal city-states like the Zosso and absorbed into the Mali Empire after the Battle of Kirina in 1235 AD."
+    },
+    {
+      "question": "Who was Dinga Cisse in the context of the Ghana Empire?",
+      "answer": "Dinga Cisse was a notable dynastic figure in the Ghana Empire. Some historians distinguish between the mythological founder of the Ghana Empire (referred to as 'Dinga Cisse Ancient') and later rulers with the same name. The original founder is thought to have traveled from northeast of the Niger River between the 6th and 3rd centuries BCE, though this is debated."
+    },
+    {
+      "question": "Write a Python function that checks if a given year falls within the timeframe of the Ghana Empire's existence.",
+      "answer": "python\ndef is_ghana_empire_year(year):\n    \"\"\"Check if a given year falls within the Ghana Empire's existence (approx. 100 CE - mid-1000 CE).\"\"\"\n    return 100 <= year <= 1050\n\n# Example usage:\nprint(is_ghana_empire_year(800))  # Output: True\nprint(is_ghana_empire_year(1300)) # Output: False\n"
+    }
+  ]
+}

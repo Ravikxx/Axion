@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/eduardoferron/i-feel-lost-on-ai-367c",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What is the author's primary emotional response to AI-powered coding tools like Copilot and Claude Code?",
+      "answer": "The author feels conflicted about AI-coding tools. While they appreciate the productivity boost from tools like Copilot, they also feel a sense of loss, confusion, and even inadequacy when using more autonomous agents like Claude Code. They describe feeling 'dumb' or like they're 'cheating' when relying on AI for coding tasks, despite recognizing the efficiency gains."
+    },
+    {
+      "question": "How has the author's experience with AI coding tools evolved over time?",
+      "answer": "Initially, the author embraced Copilot for its productivity benefits, finding it a useful code-completion tool. However, their experience with more autonomous agents like Claude Code and Amazon's Kiro has been less satisfying. They describe a steep learning curve, frustration with imperfect outputs, and a sense of emotional detachment from the coding process, which they previously found deeply fulfilling."
+    },
+    {
+      "question": "What challenges does the author face when using AI agents like Claude Code for coding tasks?",
+      "answer": "The author highlights several challenges: 1) Imperfect outputs that require multiple iterations, testing, and modifications, 2) A steep learning curve for effective prompting, 3) A lack of autonomy in the agents, which still require significant human oversight, and 4) A sense of emotional disconnect from the coding process, which they previously found deeply engaging."
+    },
+    {
+      "question": "How does the author compare their experience with AI agents to hiring junior programmers?",
+      "answer": "The author compares using AI agents like Claude Code to hiring junior programmers, noting that both require significant oversight and iterative feedback. However, the key difference is speed: instead of waiting a week for a junior programmer's solution, the AI agent delivers results in a couple of hours. Despite this efficiency, the author still feels the same emotional detachment they experienced with junior programmers."
+    },
+    {
+      "question": "What are the author's two main options for improving their workflow with AI coding tools?",
+      "answer": "The author identifies two main paths to improve their workflow: a) Enhance their prompting skills to better guide AI agents like Claude Code, or b) Revert to coding solutions independently for faster and more reliable results. They acknowledge that both options require significant effort and skill refinement."
+    },
+    {
+      "question": "How does the author feel about the phrase 'technology' and its implications for their career?",
+      "answer": "The author feels a sense of nostalgia and perhaps irrelevance when hearing terms like 'technology,' which they associate with a rapidly changing world that leaves them behind. They express a desire to adapt and learn, but also a fear of becoming 'the old guy who wishes time would stop,' clinging to outdated methods."
+    },
+    {
+      "question": "Write a Python function that simulates a simple AI agent's workflow for processing user prompts and delivering code outputs. Include a loop to handle iterative feedback and modifications.",
+      "answer": "Here's a Python function that simulates an AI agent's workflow for processing user prompts and delivering code outputs. The function includes a loop to handle iterative feedback and modifications until the user is satisfied with the result:\n\npython\nimport time\nfrom typing import Callable, Optional\n\nclass SimpleAIAgent:\n    def __init__(self, prompt_handler: Callable[[str], str]):\n        self.prompt_handler = prompt_handler\n\n    def process_prompt(self, user_prompt: str, max_iterations: int = 5) -> str:\n        \"\"\"\n        Simulates an AI agent processing a user prompt with iterative feedback.\n        \n        Args:\n            user_prompt: The initial request from the user.\n            max_iterations: Maximum number of iterations for feedback loops.\n            \n        Returns:\n            The final output after iterative modifications.\n        \"\"\"\n        current_output = self.prompt_handler(user_prompt)\n        \n        for iteration in range(1, max_iterations + 1):\n            print(f\"\\nIteration {iteration}:\")\n            print(f\"Current output:\\n{current_output}\")\n            \n            user_feedback = input(\"Provide feedback (or 'done' to accept): \").strip()\n            \n            if user_feedback.lower() == 'done':\n                break\n                \n            modification_prompt = f\"Modify the previous output based on this feedback: {user_feedback}\"\n            current_output = self.prompt_handler(modification_prompt)\n            \n            # Simulate processing time\n            time.sleep(1)\n        \n        return current_output\n\n# Example usage\ndef mock_prompt_handler(prompt: str) -> str:\n    \"\"\"Mock AI prompt handler that simulates generating or modifying code.\"\"\"\n    if \"sum function\" in prompt.lower():\n        return \"def sum(a, b):\\n    return a + b\"\n    elif \"modify\" in prompt.lower():\n        return \"def sum(a, b, c):\\n    return a + b + c\"\n    else:\n        return \"# Code generated based on prompt: \" + prompt\n\n# Create agent and process a prompt\nagent = SimpleAIAgent(mock_prompt_handler)\ninitial_prompt = \"Create a sum function\"\nfinal_output = agent.process_prompt(initial_prompt)\nprint(\"\\nFinal output:\")\nprint(final_output)\n\n\nThis code simulates the iterative process of working with an AI agent, where the user provides feedback and the agent modifies its output accordingly. The loop continues until the user is satisfied or the maximum number of iterations is reached."
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Aegean_Pass",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the Aegean Pass (Belomorski prohod) and where is it located?",
+      "answer": "The Aegean Pass, also known as Belomorski prohod or Elidzhe, is a mountain pass situated between the central and eastern Rhodope Mountains. It connects Smolyan Province in south-central Bulgaria with the Xanthi regional unit in northeastern Greece. The pass links the upper valleys of the Chepinska reka river to the north and the Kompsatos river to the south."
+    },
+    {
+      "question": "What is the highest elevation of the Aegean Pass and which roads meet at that point?",
+      "answer": "The highest point of the Aegean Pass is 1,010 meters (3,310 feet) above sea level on the Bulgarian-Greek border. At this location, Bulgarian road II-86 intersects with Greek National Road 55."
+    },
+    {
+      "question": "How was the Aegean Pass historically used, and why was it closed in 1944?",
+      "answer": "Before the end of World War II, the Aegean Pass was a key route for commerce. It was closed in 1944 due to Bulgaria and Greece aligning on opposite sides of the Iron Curtain, which severed cross-border trade and movement."
+    },
+    {
+      "question": "What recent developments have occurred regarding the Aegean Pass, and when is it scheduled to reopen for vehicular traffic?",
+      "answer": "In the 2020s, the roads leading to the pass from Rudozem and Dimario were modernized, and a new border checkpoint was established. The pass was initially planned to reopen for vehicular traffic without border controls on January 1, 2025, coinciding with Bulgaria's entry into the Schengen Area. However, due to construction delays on the Greek side, the opening was postponed. Passenger and light commercial traffic (vehicles up to 3.5 tons) were finally permitted on January 20, 2026, after the completion of road works on Greek National Road 55."
+    },
+    {
+      "question": "How might the reopening of the Aegean Pass impact tourism in the region?",
+      "answer": "The reopening of the Aegean Pass is expected to boost tourism by providing faster access between Pamporovo ski resort near Smolyan and the Aegean beaches of Xanthi. This improved connectivity could facilitate travel between Bulgaria's mountainous winter destinations and Greece's coastal areas."
+    },
+    {
+      "question": "Write a Python function that checks if a given date falls on or after the Aegean Pass reopening date for passenger traffic (January 20, 2026).",
+      "answer": "python\ndef is_passenger_traffic_opened(input_date):\n    \"\"\"\n    Checks if the given date is on or after the Aegean Pass reopening date for passenger traffic.\n    \n    Args:\n        input_date (str): Date in 'YYYY-MM-DD' format.\n    \n    Returns:\n        bool: True if input_date >= '2026-01-20', else False.\n    \"\"\"\n    reopening_date = '2026-01-20'\n    return input_date >= reopening_date\n\n# Example usage:\nprint(is_passenger_traffic_opened('2026-01-19'))  # Output: False\nprint(is_passenger_traffic_opened('2026-01-20'))  # Output: True\n"
+    }
+  ]
+}

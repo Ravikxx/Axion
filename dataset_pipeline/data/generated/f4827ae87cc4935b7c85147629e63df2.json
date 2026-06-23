@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Blind_Connie_Williams",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was Blind Connie Williams and what was his primary musical genre?",
+      "answer": "Blind Connie Williams (born around 1915, active until at least 1974) was an American blues guitarist who began his career as a street performer in the early 1930s. His primary musical genre was sanctified gospel songs and pre-war country blues standards, though he also played folk and pop tunes."
+    },
+    {
+      "question": "Where did Blind Connie Williams develop his guitar skills, and what influenced his musical style?",
+      "answer": "Williams developed his guitar skills at the Florida School for the Deaf and Blind in St. Augustine, where he gained a sophisticated understanding of harmony. His style was influenced by Reverend Gary Davis, as evidenced in his 1961 recordings, and was characterized by bass string slapping and bottleneck techniques."
+    },
+    {
+      "question": "How did playing spirituals benefit Blind Connie Williams as a street performer?",
+      "answer": "Williams preferred playing spirituals because they allowed him to avoid police interference. As he explained to Pete Welding in 1961, the police rarely bothered him when he confined his performances to spiritual or sanctified material."
+    },
+    {
+      "question": "What role did the accordion play in Blind Connie Williams' later career, and why did he adopt it?",
+      "answer": "As Williams aged, he began playing the accordion to improve audibility for his performances and to reduce physical strain. By 1961, he had incorporated the accordion into his repertoire, particularly for sanctified songs, as observed by producer Pete Welding."
+    },
+    {
+      "question": "Write a Python function to calculate Blind Connie Williams' approximate age during his 1961 recording session with Pete Welding.",
+      "answer": "python\ndef calculate_age(birth_year, recording_year):\n    return recording_year - birth_year\n\n# Blind Connie Williams was born around 1915 and recorded in 1961\nage_in_1961 = calculate_age(1915, 1961)\nprint(age_in_1961)  # Output: 46\n"
+    },
+    {
+      "question": "Why were Blind Connie Williams' 1961 recordings not released immediately, and when were they eventually released?",
+      "answer": "Williams' 1961 recordings with Pete Welding were not released at the time due to lack of commercial interest. They were first compiled on the album *Blind Connie Williams: Traditional Blues, Spirituals and Folksongs* in 1974, and later repackaged in 1995 as *Philadelphia Street Singer* with additional tracks."
+    },
+    {
+      "question": "How did Blind Connie Williams' early life shape his musical career?",
+      "answer": "Williams' early life as the son of migrant workers and his attendance at the Florida School for the Deaf and Blind fostered his musical talent. His education provided a strong foundation in harmony, while his upbringing and experiences as a migrant likely contributed to his resilience and versatility as a musician."
+    }
+  ]
+}

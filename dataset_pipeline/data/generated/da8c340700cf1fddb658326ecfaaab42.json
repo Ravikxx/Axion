@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/***k_the_Millennium",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who are the artists behind the protest song '***k the Millennium' and what are their alternative names?",
+      "answer": "The protest song '***k the Millennium' was created by Bill Drummond and Jimmy Cauty, known collectively as the Justified Ancients of Mu Mu (JAMs) or the KLF."
+    },
+    {
+      "question": "What musical inspiration did the JAMs draw from Jeremy Deller's 'Acid Brass' project for '***k the Millennium'?",
+      "answer": "The JAMs were inspired musically by Jeremy Deller's 'Acid Brass' project, which featured a traditional brass band playing acid house classics like the KLF's own 'What Time Is Love?'."
+    },
+    {
+      "question": "When and where did the premiere of '***k the Millennium' take place, and what was notable about its runtime?",
+      "answer": "The song premiered at the 2K event '1997 (What The Fuck's Going On?)' held at London's Barbican Arts Centre on 17 September 1997. Its runtime was exactly 23 minutes, matching the duration of the Barbican performance."
+    },
+    {
+      "question": "What was the purpose behind the release of '***k the Millennium' as a single in 1997?",
+      "answer": "The single was released to mark the tenth anniversary of Drummond and Cauty's first collaborations, though it also served to mock the idea of a 'comeback'."
+    },
+    {
+      "question": "What commercial milestone did '***k the Millennium' achieve upon its release?",
+      "answer": "The song reached number 28 on the UK Singles Chart in October 1997. As of March 2020, it remains the only international commercial music release by the duo since their 1992 retirement under The KLF name."
+    },
+    {
+      "question": "Describe the concept of 'The People's Pyramid' proposed by the JAMs. Include its intended features and contrast with the Millennium Dome.",
+      "answer": "The People's Pyramid was planned as a 150-foot-high (46 m) structure built from recycled bricks at no cost to taxpayers, with no entry fee. It was intended for public use, allowing activities like painting or dismantling. This contrasted with the UK government's Millennium Dome, which had begun construction earlier and involved public funding and restricted access."
+    },
+    {
+      "question": "What later event saw the JAMs revive the concept of 'The People's Pyramid'?",
+      "answer": "The JAMs rebooted the idea of The People's Pyramid during their comeback event 'Welcome to the Dark Ages' in 2017."
+    },
+    {
+      "question": "Provide a code snippet to fetch and display the UK Singles Chart position of '***k the Millennium' using a hypothetical API.",
+      "answer": "python\nimport requests\n\n# Hypothetical API endpoint for UK Singles Chart data\ndef get_chart_position(song_title):\n    api_url = f\"https://api.example.com/uk-singles-chart?title={song_title}\"\n    response = requests.get(api_url)\n    if response.status_code == 200:\n        data = response.json()\n        return data.get('position', 'Not found')\n    return None\n\n# Example usage\nposition = get_chart_position(\"***k the Millennium\")\nprint(f\"UK Singles Chart position: {position}\")  # Output: UK Singles Chart position: 28\n"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Elizabeth_Martínez",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "Who was Elizabeth 'Betita' Martínez and what were her main contributions to civil rights?",
+      "answer": "Elizabeth 'Betita' Martínez (1925–2021) was a Chicana civil rights activist, writer, and feminist. She fought for voting rights, reported on labor strikes like the Delano grape strike, founded the bilingual newspaper *El Grito del Norte*, and advocated for land rights under the Treaty of Guadalupe-Hidalgo. Martínez also championed women’s rights, challenged sexism within Latino culture, and reclaimed the term 'Chicana' to resist racist ideologies."
+    },
+    {
+      "question": "What role did Elizabeth Martínez play in the Student Nonviolent Coordinating Committee (SNCC)?",
+      "answer": "In 1960, Martínez joined SNCC, a key civil rights organization. There, she helped design and create educational materials about civil rights, using her platform to amplify the movement’s goals and inspire activism."
+    },
+    {
+      "question": "Why did Elizabeth Martínez leave SNCC to found *El Grito del Norte* in New Mexico?",
+      "answer": "Martínez felt isolated as a non-Black woman in the Civil Rights Movement and chose to focus on helping Mexican-descent communities. She also sought to address land rights issues tied to the Treaty of Guadalupe-Hidalgo and founded *El Grito del Norte* as a bilingual newspaper to advocate for these causes."
+    },
+    {
+      "question": "How did Elizabeth Martínez challenge gender and racial oppression in her activism?",
+      "answer": "Martínez fought against sexism and homophobia in Latino culture, highlighted the suppression of Chicana women by Chicano men in her writings, and advocated for intersectional alliances between Black and Latino communities. She redefined the term 'Chicana' from a derogatory label to a source of empowerment."
+    },
+    {
+      "question": "What was the significance of the Treaty of Guadalupe-Hidalgo in Elizabeth Martínez’s activism?",
+      "answer": "The Treaty of Guadalupe-Hidalgo (1848) ended the Mexican-American War but failed to uphold land rights for Mexican Americans. Martínez worked to address these injustices, using her activism to demand the fulfillment of treaty agreements and protect the rights of Mexican-descent communities."
+    },
+    {
+      "question": "Provide a code snippet that demonstrates how to extract key themes from Elizabeth Martínez’s writings programmatically.",
+      "answer": "python\nimport re\n\ndef extract_themes(text):\n    themes = {\n        'freedom': len(re.findall(r'freedom', text, re.IGNORECASE)),\n        'power': len(re.findall(r'power', text, re.IGNORECASE)),\n        'women_rights': len(re.findall(r'women.*rights|women.*suppressed', text, re.IGNORECASE)),\n        'alliances': len(re.findall(r'alliance|unite.*black.*brown', text, re.IGNORECASE)),\n        'Chicana': len(re.findall(r'Chicana', text, re.IGNORECASE))\n    }\n    return themes\n\n# Example usage:\nwritings = \"Chicana women were suppressed by Chicano men, but we fight for freedom and power.\"\nprint(extract_themes(writings))\n# Output: {'freedom': 1, 'power': 1, 'women_rights': 1, 'alliances': 0, 'Chicana': 1}\n"
+    },
+    {
+      "question": "What strategies did Elizabeth Martínez use to advocate for marginalized communities?",
+      "answer": "Martínez used journalism (*El Grito del Norte*), protest leadership, and coalition-building to advocate for marginalized groups. She addressed systemic failures by raising awareness of sexism, homophobia, and racial injustice, while promoting unity between Black and Latino communities to amplify shared struggles."
+    }
+  ]
+}

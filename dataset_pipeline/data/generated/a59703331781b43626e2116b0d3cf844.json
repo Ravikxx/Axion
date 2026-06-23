@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Abnormal_profit",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is abnormal profit in economics, and how is it defined?",
+      "answer": "Abnormal profit, also called excess profit, supernormal profit, or pure profit, is the profit earned by a firm beyond the normal (market equilibrium) return to capital. It reflects earnings above the opportunity cost of the owner's invested resources, representing returns that exceed the minimum required to keep the business operating."
+    },
+    {
+      "question": "How does normal profit differ from abnormal profit?",
+      "answer": "Normal profit is the minimum return required by a firm's owners to compensate for the opportunity cost of their invested capital and resources. It is the profit level where a firm earns just enough to cover its costs, including the cost of capital. Abnormal profit, in contrast, is any profit earned above this normal level."
+    },
+    {
+      "question": "Why are abnormal profits unsustainable in perfectly competitive markets?",
+      "answer": "In perfectly competitive markets, abnormal profits attract new firms due to low barriers to entry. As new firms enter, supply increases, which drives prices down and eliminates the excess profit. This process continues until profits return to the normal level where only a normal return on capital is earned."
+    },
+    {
+      "question": "What are the three types of abnormal profit mentioned in the text?",
+      "answer": "The three types of abnormal profit are: (1) Monopoly profit, earned by firms with significant market power that can set prices above competitive levels; (2) Resource rent, generated from ownership of scarce resources like land; and (3) Intramarginal rent, which arises when firms produce at lower costs than the industry average."
+    },
+    {
+      "question": "How do monopolies or oligopolies sustain abnormal profits in the long term?",
+      "answer": "Monopolies and oligopolies sustain abnormal profits by creating and maintaining barriers to entry, such as high startup costs, exclusive access to resources, or strategic pricing that deters new competitors. They may also engage in practices like predatory pricing or lobbying to prevent government intervention or antitrust actions."
+    },
+    {
+      "question": "What did Michael Porter and Anita M. McGahan conclude in their 2003 study on abnormal profits?",
+      "answer": "Porter and McGahan found that both industry structure and firm performance are key determinants of whether firms can sustain abnormal profits. Industry structure includes factors like market concentration and barriers to entry, while firm performance involves competitive advantages such as innovation or cost leadership."
+    },
+    {
+      "question": "Provide a Python code snippet to calculate abnormal profit given total revenue and total costs.",
+      "answer": "python\ndef calculate_abnormal_profit(total_revenue, total_costs, normal_profit_rate=0.1):\n    \"\"\"\n    Calculate abnormal profit given total revenue, total costs,\n    and the normal profit rate as a percentage of capital invested.\n    \n    Args:\n        total_revenue (float): Total revenue of the firm.\n        total_costs (float): Total explicit and implicit costs.\n        normal_profit_rate (float): Normal profit rate (e.g., 0.1 for 10%).\n    \n    Returns:\n        float: Abnormal profit.\n    \"\"\"\n    normal_profit = total_costs * normal_profit_rate\n    total_profit = total_revenue - total_costs\n    abnormal_profit = total_profit - normal_profit\n    return max(abnormal_profit, 0)  # Return 0 if no abnormal profit\n\n# Example usage:\nrevenue = 500000\ncosts = 400000\nabnormal = calculate_abnormal_profit(revenue, costs, normal_profit_rate=0.12)\nprint(f\"Abnormal Profit: ${abnormal:,.2f}\")\n"
+    }
+  ]
+}

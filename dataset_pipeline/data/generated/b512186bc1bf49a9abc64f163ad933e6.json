@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Coal_gasification",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is coal gasification and what are the primary components of the resulting syngas?",
+      "answer": "Coal gasification is an industrial process that converts coal into syngas, a mixture primarily composed of carbon monoxide (CO), hydrogen (H2), carbon dioxide (CO2), methane (CH4), and water vapor (H2O). This is achieved by reacting coal with water, air, and/or oxygen under controlled conditions."
+    },
+    {
+      "question": "How was coal gas historically used and what has replaced it?",
+      "answer": "Historically, coal gas (also called 'town gas') was produced via gasification and used for heating and municipal lighting. However, it has largely been replaced by natural gas extracted from oil wells, which is cleaner and more efficient for these applications."
+    },
+    {
+      "question": "What are the main industrial applications of coal gasification today?",
+      "answer": "Modern coal gasification is primarily used for electricity generation (in thermal power stations and molten carbonate fuel cell stations), production of chemical feedstocks, and synthesis of hydrogen, methane, or transportation fuels like gasoline, diesel, and methanol."
+    },
+    {
+      "question": "What is hydrogasification, and how does it differ from conventional coal gasification?",
+      "answer": "Hydrogasification is a variant of coal gasification where hydrogen is used instead of oxygen or air. This process increases the methane content in the syngas, making it more suitable for natural gas applications or fuel production."
+    },
+    {
+      "question": "Provide a Python code snippet to simulate a basic coal gasification reaction, assuming ideal conditions.",
+      "answer": "python\nimport numpy as np\n\ndef coal_gasification(coal_mass, H2O_mass, O2_mass):\n    # Simplified stoichiometry for coal (C) gasification with water (H2O) and oxygen (O2)\n    # Main reactions: C + H2O -> CO + H2; 2C + O2 -> 2CO\n    C = coal_mass * 0.85  # Assuming 85% carbon in coal\n    H2O_moles = H2O_mass / 18.015\n    O2_moles = O2_mass / 32.00\n    \n    # Calculate CO and H2 production from water-gas reaction\n    CO_from_H2O = min(C, H2O_moles)\n    H2_from_H2O = CO_from_H2O  # Stoichiometric ratio 1:1\n    \n    # Calculate CO production from combustion reaction\n    CO_from_O2 = min(C, 2 * O2_moles)\n    \n    # Total syngas composition\n    CO_total = CO_from_H2O + CO_from_O2\n    H2_total = H2_from_H2O\n    \n    return {\"CO\": CO_total * 28.01, \"H2\": H2_total * 2.016, \"CO2\": 0, \"CH4\": 0}  # Simplified output in grams\n\n# Example usage\nresult = coal_gasification(1000, 500, 200)  # 1kg coal, 500g water, 200g oxygen\nprint(result)\n"
+    },
+    {
+      "question": "Why might coal gasification be phased out in the future, and what alternatives exist?",
+      "answer": "Coal gasification may be phased out due to its significant greenhouse gas emissions, which conflict with net-zero targets. Alternatives include renewable energy sources, green hydrogen production, and carbon capture technologies to reduce environmental impact."
+    },
+    {
+      "question": "How can syngas derived from coal be converted into liquid transportation fuels?",
+      "answer": "Syngas can be converted into liquid fuels through additional processing steps. For example, the Fischer-Tropsch process synthesizes hydrocarbons (gasoline, diesel) from CO and H2. Alternatively, methanol can be produced and further refined into gasoline or used directly as a fuel additive."
+    }
+  ]
+}

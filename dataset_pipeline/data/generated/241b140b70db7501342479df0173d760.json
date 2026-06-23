@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Dymitr_Jerzy_Wiśniowiecki",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What were the major military titles and positions held by Prince Dymitr Jerzy Wiśniowiecki?",
+      "answer": "Prince Dymitr Jerzy Wiśniowiecki held several high-ranking military and administrative positions in the Polish-Lithuanian Commonwealth, including: Great Guard of the Crown (from 1658), Field Hetman of the Crown (from 1668), Great Crown Hetman (from 1676), voivode of Belz (1660–1678) and Kraków (1678–1681), and castellan of Kraków (from 1681). He also served as starost of Biala Cerkiew, Krzemieniec, Solec, Kamionka Strumilowa, Braha, and Luboml."
+    },
+    {
+      "question": "Which battles did Prince Dymitr Jerzy Wiśniowiecki participate in during the Khmelnytsky Uprising (1648–1657)?",
+      "answer": "During the Khmelnytsky Uprising, Prince Dymitr Jerzy Wiśniowiecki participated in the battles of Zbarazh (1649), Beresteczko (1651), Żwaniec (1653), and Ochmatów (1655)."
+    },
+    {
+      "question": "How did Prince Dymitr Jerzy Wiśniowiecki's military allegiances shift during the Swedish Deluge (1655–1660)?",
+      "answer": "Initially, during the Swedish Deluge, he commanded Husarian and Pancerni squadrons in the Battle of Wojnicz (2 October 1655) under the Polish side. However, he soon switched sides and served under King Charles X Gustav of Sweden. By February 1656, he returned to the Polish Army and fought in the Battle of Warsaw as a pułkownik (colonel) of the cavalry."
+    },
+    {
+      "question": "What role did Prince Dymitr Jerzy Wiśniowiecki play in the Polish–Cossack–Tatar War (1666–1671)?",
+      "answer": "During the Polish–Cossack–Tatar War, he participated in several key battles, including Bracław, Bar, and Mohyłów."
+    },
+    {
+      "question": "In which battle did Prince Dymitr Jerzy Wiśniowiecki command a regiment of cavalry, and what was the significance of this battle?",
+      "answer": "He commanded a regiment of cavalry in the Battle of Chocim on 11 November 1673. This battle was significant as it was a major engagement during the Polish-Ottoman War, where the Polish forces, led by King Jan Sobieski, achieved a decisive victory over the Ottoman Empire."
+    },
+    {
+      "question": "What was Prince Dymitr Jerzy Wiśniowiecki's involvement in the Royal election of 1674?",
+      "answer": "During the Royal election of 1674, he supported the candidacy of Prince Charles of Lorraine for the Polish throne. This election followed the abdication of King Michał Korybut Wiśniowiecki, who was a distant relative of Dymitr Jerzy."
+    },
+    {
+      "question": "Write a Python function that takes a year and returns Prince Dymitr Jerzy Wiśniowiecki's military titles held in that year.",
+      "answer": "python\ndef get_titles_by_year(year):\n    titles = {\n        1655: [\"Commander of Husarian and Pancerni squadrons\"],\n        1656: [\"Pułkownik of the cavalry\"],\n        1657: [\"Field Hetman of the Crown (from 1668)\"],\n        1658: [\"Great Guard of the Crown\", \"Siege of Toruń participant\"],\n        1660: [\"Voivode of Belz\", \"Battle of Cudnów participant\", \"Battle of Lubar participant\"],\n        1666: [\"Field Hetman of the Crown (from 1668)\"],\n        1668: [\"Field Hetman of the Crown\"],\n        1673: [\"Commander of a cavalry regiment\", \"Great Crown Hetman (from 1676)\"],\n        1674: [\"Great Crown Hetman (from 1676)\"],\n        1676: [\"Great Crown Hetman\"],\n        1678: [\"Voivode of Kraków\"],\n        1681: [\"Castellan of Kraków\"]\n    }\n    return titles.get(year, [\"No recorded titles for this year\"])\n\n# Example usage:\nprint(get_titles_by_year(1673))  # Output: ['Commander of a cavalry regiment', 'Great Crown Hetman (from 1676)']\n"
+    },
+    {
+      "question": "What administrative roles did Prince Dymitr Jerzy Wiśniowiecki hold, and in what sequence?",
+      "answer": "Prince Dymitr Jerzy Wiśniowiecki held the following administrative roles in chronological order: voivode of Belz (1660–1678), voivode of Kraków (1678–1681), and castellan of Kraków (from 1681). Additionally, he served as starost of Biala Cerkiew, Krzemieniec, Solec, Kamionka Strumilowa, Braha, and Luboml."
+    }
+  ]
+}

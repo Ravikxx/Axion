@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Equus_(genus)",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is the genus Equus, and which animals does it include?",
+      "answer": "Equus is a genus of mammals in the family Equidae, which includes horses, asses, and zebras. It is the only surviving genus of horses, with seven living species characterized by adaptations for grassland life."
+    },
+    {
+      "question": "How did the modern one-toed horses evolve from their ancestors?",
+      "answer": "Modern one-toed horses evolved from smaller three-toed ancestors that lived in forests and wooded savannahs. The adaptation to one-toed hooves helped them thrive in grassland environments."
+    },
+    {
+      "question": "What are the key physical characteristics of equines?",
+      "answer": "Equines are odd-toed ungulates with slender legs, long heads, relatively long necks, manes (often erect), and long tails. They are herbivorous grazers with simpler digestive systems than ruminants and can survive on low-quality vegetation."
+    },
+    {
+      "question": "Describe the social structure of wild equine populations.",
+      "answer": "Wild equines may live in a harem system, where one adult male (stallion) lives with several females (mares) and their young (foals). Alternatively, they may follow a territorial system where males control resource-rich areas to attract females. Females primarily care for foals, though males may also play a role."
+    },
+    {
+      "question": "How do equines communicate with each other?",
+      "answer": "Equines communicate both visually and vocally. Visual cues include body language and movements, while vocalizations can range from snorts to whinnies, depending on the species and context."
+    },
+    {
+      "question": "What is the current conservation status of wild equine populations?",
+      "answer": "Human activities have significantly threatened wild equine populations. Of the seven living species, only the plains zebra remains widespread and abundant, while other wild equines are at risk."
+    },
+    {
+      "question": "Where did the genus Equus most likely originate, and how did it spread?",
+      "answer": "The genus Equus most likely originated in North America and rapidly spread to the Old World. This geographic expansion allowed the genus to diversify into the species we recognize today."
+    }
+  ]
+}

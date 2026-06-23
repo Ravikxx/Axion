@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/ujja/ai-confluence-docs-and-readmes-why-ai-written-docs-end-up-unread-31i8",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What are the main issues with AI-generated technical documentation?",
+      "answer": "AI-generated technical documentation often suffers from several key problems: it may produce content that exists but isn't truly consumable, contains excessive verbosity without clarity, lacks human-specific context like tradeoffs or past incidents, and fails to anticipate reader confusion. Unlike human-written docs, AI outputs often don't prioritize what truly matters for understanding and retention."
+    },
+    {
+      "question": "How should AI be used in documentation workflows?",
+      "answer": "AI should be used as a starting point rather than the final author. The recommended approach is to: 1) Generate an initial draft with AI, 2) Have a human review to cut verbosity and unnecessary jargon, 3) Add missing context, opinions, and real-world constraints, 4) Rewrite sections in a conversational, digestible style. This ensures documentation remains clear, memorable, and useful over time."
+    },
+    {
+      "question": "Provide an example contrasting AI-style and human-style documentation.",
+      "answer": "AI style: 'This service abstracts the persistence layer for user-related data.' Human style: 'This service exists so the rest of the app does not need to know how user data is stored. If we ever change the database, this is the only place we should need to update.' The human version is more conversational, immediately useful, and explains the 'why' behind the design."
+    },
+    {
+      "question": "Why do humans often write better documentation than AI?",
+      "answer": "Humans capture critical nuances that AI misses: real tradeoffs ('not ideal but safest option at the time'), contextual warnings ('optimized for speed here'), past incidents ('broken things before'), organizational constraints, and anxiety-reducing guidance ('if confusing, talk to this team'). Humans also know what truly matters to readers, while AI often produces technically correct but practically unhelpful content."
+    },
+    {
+      "question": "Write Python code to generate a basic README structure using AI output as a starting point.",
+      "answer": "python\ndef generate_readme_structure(ai_output: str) -> dict:\n    \"\"\"\n    Processes AI-generated documentation into a human-optimized README structure.\n    \n    Args:\n        ai_output: Raw AI-generated documentation content\n        \n    Returns:\n        Dictionary containing optimized README sections\n    \"\"\"\n    # Step 1: Extract key sections from AI output\n    sections = {\n        'title': 'Project Overview',\n        'description': ai_output.split('This service')[0].strip(),\n        'architecture': '',\n        'usage': '',\n        'caveats': '',\n        'maintenance_notes': ''\n    }\n    \n    # Step 2: Human refine sections\n    if 'abstracts the persistence layer' in ai_output.lower():\n        sections['architecture'] = (\n            'This project uses a layered architecture where user data persistence is isolated. '\n            'The service handles all database operations, allowing other components to remain database-agnostic.'\n        )\n    \n    # Step 3: Add human context\n    sections['caveats'] = (\n        '⚠️ Important: This implementation was optimized for launch speed. '\n        'Future updates should consider adding caching for frequently accessed user data.'\n    )\n    \n    sections['maintenance_notes'] = (\n        'Last updated: [DATE]. For questions about database migrations, contact the Platform team.'\n    )\n    \n    return sections\n\n# Example usage\nsample_ai_output = \"\"\"\nThis service abstracts the persistence layer for user-related data.\nIt provides methods to store, retrieve, and update user information.\nThe implementation uses a SQL database with optimized queries.\n\"\"\"\n\nprint(generate_readme_structure(sample_ai_output))\n"
+    },
+    {
+      "question": "What makes documentation 'survive time' according to the text?",
+      "answer": "Documentation that survives time is characterized by: 1) Clear articulation of core ideas that are easy to consume and retain, 2) Mental models that help readers understand without re-reading, 3) Context about real-world tradeoffs and constraints, 4) Anxiety-reducing guidance for when things go wrong, 5) Prioritization of what truly matters over exhaustive technical details. The key is making information immediately useful and memorable months or years later."
+    },
+    {
+      "question": "How can teams evaluate AI-generated documentation quality?",
+      "answer": "Teams should evaluate AI-generated documentation by testing whether: 1) The document can be understood after weeks/months without prior context, 2) It anticipates and answers common questions before they're asked, 3) It includes human judgment about tradeoffs and safety, 4) It reduces reader anxiety with clear guidance, 5) It focuses on explaining what matters rather than everything that exists. The acid test is whether someone unfamiliar with the system can get value from it without additional explanation."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Fiscal_conservatism",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is fiscal conservatism and what are its core principles?",
+      "answer": "Fiscal conservatism is a political and economic philosophy advocating for fiscal responsibility based on capitalism, individualism, limited government, and laisse-faire economics. Core principles include tax cuts, reduced government spending, free markets, deregulation, privatization, free trade, and minimal government debt."
+    },
+    {
+      "question": "How does fiscal conservatism differ from classical liberalism despite following a similar philosophical outlook?",
+      "answer": "While both fiscal conservatism and classical liberalism share a foundation in capitalism and limited government, fiscal conservatism emphasizes fiscal responsibility (e.g., tax cuts, reduced spending) and minimal government debt. Classical liberalism, in contrast, broadly supports individual freedoms and free markets but may not prioritize fiscal restraint as explicitly."
+    },
+    {
+      "question": "What historical context led to the emergence of fiscal conservatism in the United States?",
+      "answer": "Fiscal conservatism emerged during the 1930s New Deal era as a reaction to modern liberal policies (e.g., expanded welfare state and regulation). Classical liberals, who opposed these changes, rebranded themselves as conservatives to distance themselves from the term 'liberalism,' which had become associated with these policies in the U.S."
+    },
+    {
+      "question": "What role did fiscal conservatism play in the traditional American conservative movement of the 1950s?",
+      "answer": "Fiscal conservatism was one of the three pillars of the traditional American conservative movement in the 1950s, alongside social conservatism and national defense conservatism. This coalition reflected a broader push for limited government, free markets, and individual liberty."
+    },
+    {
+      "question": "How do classical liberals in the U.S. typically align politically, and what policies do they support?",
+      "answer": "Many classical liberals in the U.S. identify as libertarians, combining economically conservative views (e.g., lower taxes, less government spending) with culturally liberal stances (e.g., non-interventionist foreign policy, social freedoms). For example, they might advocate for free market policies while supporting LGBTQ+ rights or drug legalization."
+    },
+    {
+      "question": "Provide a Python code snippet that calculates the percentage of Americans identifying as 'economically conservative' based on the 2020 poll data mentioned.",
+      "answer": "python\n# Poll data from 2020\npoll_data = {\n    \"economically_conservative\": 39,\n    \"other\": 61  # Assuming the remaining 61% are not economically conservative\n}\n\n# Calculate percentage\ntotal_respondents = sum(poll_data.values())\npercentage_conservative = (poll_data[\"economically_conservative\"] / total_respondents) * 100\n\nprint(f\"Percentage of Americans identifying as economically conservative: {percentage_conservative:.1f}%\")\n\nThis code outputs: `Percentage of Americans identifying as economically conservative: 39.0%`."
+    },
+    {
+      "question": "Why might the term 'fiscal conservatism' be less commonly used in countries outside the U.S.?",
+      "answer": "In many countries, the term 'economic liberalism' or simply 'liberalism' is used instead of 'fiscal conservatism' because these societies associate liberalism with free markets, limited government, and fiscal restraint rather than welfare state policies. The U.S. context uniquely ties 'liberalism' to expanded government roles, leading to the adoption of 'fiscal conservatism' as a distinct label."
+    }
+  ]
+}

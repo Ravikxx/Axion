@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Higher_education_in_Japan",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What are the four types of higher education institutions in Japan?",
+      "answer": "The four types of higher education institutions in Japan are universities (大学 daigaku), junior colleges (短期大学 tanki daigaku), colleges of technology (高等専門学校 kōtō senmon gakkō), and special training schools and community colleges (専修学校 senshū gakkō)."
+    },
+    {
+      "question": "Which institutions in Japan are strictly considered postsecondary education providers?",
+      "answer": "Only universities and junior colleges are strictly considered postsecondary education providers in Japan."
+    },
+    {
+      "question": "How does the prestige of public universities compare to private universities in Japan?",
+      "answer": "Public universities in Japan are generally regarded as more prestigious than private universities, especially the National Seven Universities (University of Tokyo, Kyoto University, Tohoku University, Kyushu University, Hokkaido University, Osaka University, and Nagoya University)."
+    },
+    {
+      "question": "What is the primary method of admissions for higher education in Japan, and how does it differ from Western methods?",
+      "answer": "The primary method of admissions for higher education in Japan relies almost entirely on one or two tests, unlike Western methods that often use GPAs, percentages, or other forms of assessment. This single-test approach creates immense pressure on students, as they only have one chance to take the exam each year."
+    },
+    {
+      "question": "Why is there such high academic pressure on Japanese high school students?",
+      "answer": "Japanese high school students face immense academic pressure due to the traditional societal emphasis on scholarship, the reliance on a single critical examination for university admissions, and the significant life-long consequences this exam holds for socioeconomic status, marriage prospects, and career paths."
+    },
+    {
+      "question": "What role does higher education play in the Japanese labor market?",
+      "answer": "Higher education, particularly in science and engineering, is highly valued in the Japanese labor market. An estimated 80.6% of eighteen-year-olds attend some form of higher education institution, with 52.6% going to universities, according to the Ministry of Education, Culture, Sports, Science and Technology (MEXT)."
+    },
+    {
+      "question": "Write a Python function to calculate the percentage distribution of Japanese students attending higher education institutions based on the given data.",
+      "answer": "python\ndef calculate_higher_education_distribution():\n    data = {\n        \"total_higher_education\": 80.6,\n        \"university\": 52.6,\n        \"junior_college\": 4.7,\n        \"college_of_technology\": 0.9,\n        \"other\": 22.4\n    }\n    return data\n\n# Example usage:\nprint(calculate_higher_education_distribution())\n\nThe function returns a dictionary with the percentage distribution of students attending different types of higher education institutions in Japan."
+    }
+  ]
+}

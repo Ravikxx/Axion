@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/devteam/congrats-to-the-worlds-largest-hackathon-writing-challenge-winners-4fa3",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What was the purpose of the World's Largest Hackathon Writing Challenge?",
+      "answer": "The World's Largest Hackathon Writing Challenge was designed to celebrate and showcase the journeys of participants in hackathons, highlighting their building processes, lessons learned, and personal experiences. It encouraged developers to share their stories about creating projects, overcoming challenges, and discovering new skills, with a focus on the human side of innovation."
+    },
+    {
+      "question": "Who won the 'After the Hack' category in the challenge, and what was their contribution?",
+      "answer": "Laurel Beyers won the 'After the Hack' category. Her contribution was a reflection on how building meaningful projects during a period of personal transition reignited her creative confidence, leading her to launch two projects. She emphasized building for oneself first, then discovering broader utility for the projects."
+    },
+    {
+      "question": "How did Yan Leong go from not knowing any code to building an AI-powered app, and what technologies did they use?",
+      "answer": "Yan Leong transitioned from having no coding knowledge to shipping a full-stack AI-powered app by leveraging curiosity and determination. They used OpenAI voice dictation for input, integrated Stripe for payments, and built a complete web application. The journey highlights how hands-on experience at hackathons can rapidly accelerate learning and skill development."
+    },
+    {
+      "question": "What inspired Jake DiBattista to create 'Learn2Play', and what technologies did they incorporate?",
+      "answer": "Jake DiBattista created 'Learn2Play' to solve a personal frustration around running game nights. The project incorporated RAG (Retrieval-Augmented Generation) models for information retrieval, video agents for interactive experiences, and marketplace functionality to facilitate game exchanges. It exemplifies the hackathon ethos of addressing real-world problems through creative solutions."
+    },
+    {
+      "question": "List the prizes awarded to the prompt winners of the challenge.",
+      "answer": "The three prompt winners received a $100 gift card to the Bolt Shop, a custom World's Largest Hackathon (WLH) mug, and an exclusive winner badge. These prizes were designed to recognize and incentivize high-quality submissions and creative storytelling."
+    },
+    {
+      "question": "What types of submissions were highlighted as 'Outstanding Submissions' in the challenge?",
+      "answer": "Seven additional submissions were recognized as 'Outstanding' for their creativity, insight, and compelling storytelling. These included projects like assembling a team for a hackathon, building a productivity app from scratch, and creating an AI-assisted 3D game. Each story demonstrated unique problem-solving approaches and personal growth through the hackathon experience."
+    },
+    {
+      "question": "How can participants stay informed about future Dev challenges after the World's Largest Hackathon Writing Challenge?",
+      "answer": "Participants can stay updated by following the #devchallenge tag on DEV. This tag aggregates new challenges, community events, and opportunities to showcase skills and creativity in future hackathons or writing challenges."
+    }
+  ]
+}

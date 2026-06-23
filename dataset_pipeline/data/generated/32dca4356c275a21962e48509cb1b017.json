@@ -1,0 +1,30 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Creationism",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the definition of creationism according to the provided text?",
+      "answer": "Creationism is the religious belief that the universe, Earth, life, and humans originated through supernatural acts of divine creation. It encompasses various religious views that either accept or reject modern scientific concepts like evolution, with the most common form being special creation."
+    },
+    {
+      "question": "What distinguishes Young Earth creationism from Old Earth creationism?",
+      "answer": "Young Earth creationism posits that the universe and life were created within the last 10,000 years, relying on flood geology and pseudoscientific 'creation science.' Old Earth creationism, emerging from the 18th century, accepts geological time, harmonizing it with Genesis through theories like gap or day-age, while still rejecting evolution."
+    },
+    {
+      "question": "How do mainline Protestants and the Catholic Church reconcile their beliefs with modern science?",
+      "answer": "They do so through forms of theistic evolution, which asserts that God purposefully created life through the laws of nature and accepts evolutionary explanations. Some groups refer to this belief as evolutionary creationism."
+    },
+    {
+      "question": "What is intelligent design, and how does it relate to creationism?",
+      "answer": "Intelligent design is a reformulation of creation science, emerging after political controversy. It is a form of neo-creationism that argues for the existence of a designer behind natural phenomena, often presented as a scientific alternative to evolution."
+    },
+    {
+      "question": "Provide a code snippet that calculates the age of the Earth based on Young Earth creationism's timeline.",
+      "answer": "python\n# Young Earth creationism posits Earth is ~10,000 years old\nyoung_earth_age = 10000\nprint(f\"According to Young Earth creationism, the Earth is approximately {young_earth_age} years old.\")\n"
+    },
+    {
+      "question": "What is the historical origin of the term 'creationist'?",
+      "answer": "The term 'creationist' dates back to Charles Darwin's 1842 sketch draft for 'On the Origin of Species.' Darwin later used the term in letters to colleagues. In 1873, Asa Gray published an article in *The Nation* referencing a 'special creationist,' defining the belief as species being 'supernaturally originated just as they are.'"
+    }
+  ]
+}

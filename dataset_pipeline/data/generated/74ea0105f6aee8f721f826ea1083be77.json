@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Azospirillum_brasilense",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What are the key characteristics of Azospirillum brasilense?",
+      "answer": "Azospirillum brasilense is a Gram-negative, alpha-proteobacterium that is nitrogen-fixing (diazotroph), genetically tractable, and microaerobic, meaning it fixes nitrogen in low oxygen conditions. It was first described in 1978 in Brazil by Johanna Döbereiner's group and is commonly found in the rhizospheres of grasses worldwide."
+    },
+    {
+      "question": "How did Azospirillum brasilense get its name?",
+      "answer": "The species name 'brasilense' was given because it was first described in Brazil in 1978 by Johanna Döbereiner's research group."
+    },
+    {
+      "question": "What are the two most studied strains of Azospirillum brasilense, and where were they isolated?",
+      "answer": "The two most commonly studied strains are Sp7 (ATCC 29145) and Sp245, both isolated from tropical grasses in Seropedica, Brazil."
+    },
+    {
+      "question": "What is the genome size and structure of Azospirillum brasilense Sp245, and why is its high GC content significant?",
+      "answer": "The genome of A. brasilense Sp245 is 7 Mbp in size and spread across 7 chromosomes. The high GC content (70%) makes genetic engineering challenging due to the stability and complexity of its DNA."
+    },
+    {
+      "question": "How can Azospirillum brasilense Sp245 be genetically transformed?",
+      "answer": "Sp245 can be transformed using OriV origin of replication plasmids through conjugation and electroporation methods."
+    },
+    {
+      "question": "What antibiotics is Azospirillum brasilense Sp245 natively resistant to, and what is used as a selectable marker?",
+      "answer": "Sp245 is natively resistant to spectinomycin and ampicillin. Kanamycin resistance is commonly used as a selectable marker for genetic modifications."
+    },
+    {
+      "question": "How does Azospirillum brasilense promote plant growth, and what is the debate surrounding this mechanism?",
+      "answer": "A. brasilense promotes plant growth through mechanisms that are still debated. Potential pathways include direct nitrogen flux from the bacteria to the plant or regulation via hormone production, but the exact mechanism remains unclear."
+    },
+    {
+      "question": "What historical reclassification occurred involving Azospirillum brasilense?",
+      "answer": "A strain originally classified as Roseomonas fauriae was later reclassified as Azospirillum brasilense. This strain was first isolated in 1971 from a hand wound in Hawaii and was named in honor of Yvonne Faur for her contributions to public health bacteriology."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Devnya_(river)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Where does the Devnya River originate, and what is its main stem?",
+      "answer": "The Devnya River originates from several karst springs north and northeast of the town of Suvorovo. Its main stem is the Mezenska Cheshma spring, located at an altitude of 314 meters, approximately 2 kilometers north of Suvorovo."
+    },
+    {
+      "question": "How has the course of the Devnya River changed due to human activity?",
+      "answer": "Originally, the Devnya River flowed into Lake Beloslav. However, after the construction of the Varna-Devnya Industrial Complex, its lower course was diverted to the Provadiya River at an altitude of 13 meters, about 2 kilometers east of the Provadiya's mouth at Lake Beloslav."
+    },
+    {
+      "question": "What is the drainage basin size of the Devnya River, and how does it compare to the Provadiya River?",
+      "answer": "The Devnya River's drainage basin covers 201 square kilometers, which is 9.4% of the Provadiya River's total drainage basin."
+    },
+    {
+      "question": "Describe the seasonal variability of the Devnya River's flow rate.",
+      "answer": "The flow of the Devnya River is almost independent of the seasons due to its outflow being formed by numerous karst springs along its course. Until 1960, the average annual flow was 3 cubic meters per second, but it has since dropped to 0.5 cubic meters per second due to spring capture and water utilization for industrial and urban purposes."
+    },
+    {
+      "question": "Which settlements are located along the course of the Devnya River?",
+      "answer": "The Devnya River flows entirely within Varna Province and passes through three settlements: the town of Suvorovo, the village of Chernevo in Suvorovo Municipality, and the town of Devnya in Devnya Municipality."
+    },
+    {
+      "question": "What is the Reka Devnia Hoard, and why is it significant?",
+      "answer": "The Reka Devnia Hoard is a large treasure of Roman silver coins discovered in 1929 near the Devnya River, close to the ruins of the ancient city of Marcianopolis. It consists of approximately 100,000 coins weighing 350 kilograms, making it the largest such treasure ever found."
+    },
+    {
+      "question": "Write a Python script to calculate the percentage of the Provadiya River's drainage basin covered by the Devnya River's basin.",
+      "answer": "python\n# Drainage basin sizes in square kilometers\ndevnya_basin = 201\nprovadiya_basin = 201 / 0.094  # 9.4% of Provadiya's basin is Devnya's\n\n# Calculate the percentage\npercentage = (devnya_basin / provadiya_basin) * 100\nprint(f\"The Devnya River's basin covers {percentage:.1f}% of the Provadiya River's basin.\")\n\nThe output will be: The Devnya River's basin covers 9.4% of the Provadiya River's basin."
+    }
+  ]
+}

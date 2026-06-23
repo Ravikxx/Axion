@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/ATP_Finals",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the ATP Finals and how does it differ from other ATP Tour events?",
+      "answer": "The ATP Finals is the season-ending championship of the ATP Tour, featuring the top eight singles players and top eight doubles teams based on their season-long results. Unlike other ATP Tour events, it uses a unique round-robin format where players are divided into two groups of four, each playing three matches in the round-robin stage. The top two performers from each group then advance to knockout semifinals and a final to determine the champion(s)."
+    },
+    {
+      "question": "How does qualification work for the eighth spot in the ATP Finals if needed?",
+      "answer": "The eighth spot in the ATP Finals is reserved for a player or doubles team who won a major in the current year but is ranked between ninth and twentieth in the ATP rankings. This rule ensures that recent Grand Slam champions are included in the tournament even if their rankings do not automatically qualify them."
+    },
+    {
+      "question": "What is the prize money for winning the ATP Finals in 2025, and what was the record set by Jannik Sinner?",
+      "answer": "Jannik Sinner earned a record $5,071,000 by winning the 2025 ATP Finals, which is the highest payout for an ATP tournament winner in tennis history."
+    },
+    {
+      "question": "How many ranking points can a champion earn at the ATP Finals in the current format, and under what conditions?",
+      "answer": "In the current format, the ATP Finals champion can earn a maximum of 1,500 ranking points if they win the event after going undefeated in the round-robin stage. This means winning all three round-robin matches, the semifinal, and the final without any losses."
+    },
+    {
+      "question": "Who holds the record for the most singles titles at the ATP Finals and how many have they won?",
+      "answer": "Novak Djokovic holds the record for the most singles titles at the ATP Finals, with a total of seven titles."
+    },
+    {
+      "question": "Write a Python function to determine the top two performers from a group of four tennis players based on their round-robin match results.",
+      "answer": "python\nfrom typing import List, Dict, Tuple\n\ndef get_top_two_performers(results: Dict[Tuple[str, str], str]) -> List[str]:\n    \"\"\"\n    Determine the top two performers from a group of four tennis players based on round-robin match results.\n    \n    Args:\n        results: A dictionary where keys are tuples of player names and values are the winner's name.\n    \n    Returns:\n        A list of the top two performers in order of their performance.\n    \"\"\"\n    # Initialize a dictionary to track wins for each player\n    wins = {p1: 0 for p1, _ in results.keys()}\n    wins.update({p2: 0 for _, p2 in results.keys()})\n    \n    # Count wins for each player\n    for (p1, p2), winner in results.items():\n        if winner == p1:\n            wins[p1] += 1\n        else:\n            wins[p2] += 1\n    \n    # Sort players by number of wins (descending) and then alphabetically if tied\n    sorted_players = sorted(wins.keys(), key=lambda p: (-wins[p], p))\n    \n    # Return the top two performers\n    return sorted_players[:2]\n\n# Example usage:\nresults = {\n    ('PlayerA', 'PlayerB'): 'PlayerA',\n    ('PlayerA', 'PlayerC'): 'PlayerA',\n    ('PlayerA', 'PlayerD'): 'PlayerD',\n    ('PlayerB', 'PlayerC'): 'PlayerC',\n    ('PlayerB', 'PlayerD'): 'PlayerB',\n    ('PlayerC', 'PlayerD'): 'PlayerD'\n}\nprint(get_top_two_performers(results))  # Output might be ['PlayerD', 'PlayerA']\n"
+    },
+    {
+      "question": "When was the ATP Finals first held, and what historical significance does it have in tennis?",
+      "answer": "The ATP Finals was first held in 1970, shortly after the beginning of the Open Era in tennis. The Open Era marked the beginning of professional tennis, where amateur and professional players could compete together. The ATP Finals, as the season-ending championship, became one of the most prestigious events in men's tennis, second only to the four majors."
+    }
+  ]
+}

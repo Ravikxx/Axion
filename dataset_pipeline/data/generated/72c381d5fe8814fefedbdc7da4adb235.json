@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/5G",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is 5G and when was it first launched?",
+      "answer": "5G is the fifth generation network of cellular mobile communications, first launched in March 2019."
+    },
+    {
+      "question": "How do the speeds of lowband, midband, and mmWave 5G compare to each other?",
+      "answer": "Lowband 5G typically offers speeds of around 100 Mbit/s, midband 5G provides speeds between 600 Mbit/s and 1 Gbit/s, and mmWave 5G can reach up to 2 Gbit/s. mmWave is the fastest, followed by midband, and then lowband."
+    },
+    {
+      "question": "What are the range limitations of mmWave 5G compared to lowband and midband 5G?",
+      "answer": "mmWave 5G has a very short range, often unable to penetrate indoor spaces or solid objects. Lowband 5G has the longest range, working even indoors and far from towers, while midband 5G has a shorter range than lowband but can still provide indoor service."
+    },
+    {
+      "question": "How can I check if my phone supports 5G?",
+      "answer": "Most 5G phones have '5G' at the end of their name. Additionally, you can check your phone's specifications or settings menu for 5G compatibility. If you're unsure, consult your phone manufacturer or carrier."
+    },
+    {
+      "question": "What are the main frequency groups used by 5G, and how do they differ?",
+      "answer": "The main frequency groups for 5G are lowband, midband, and mmWave. Lowband uses low frequencies similar to 4G, offering long range but slower speeds (~100 Mbit/s). Midband uses slightly higher frequencies, balancing speed (600 Mbit/s–1 Gbit/s) and range (some indoor coverage). mmWave uses much higher frequencies, providing the fastest speeds (up to 2 Gbit/s) but with very short range and poor indoor penetration."
+    },
+    {
+      "question": "Write a Python function that converts 5G speeds from Mbit/s to Gbit/s.",
+      "answer": "python\ndef convert_5g_speed_to_gbps(speed_mbps):\n    \"\"\"\n    Convert 5G speed from Mbit/s to Gbit/s.\n    \n    Args:\n        speed_mbps (float): Speed in megabits per second (Mbit/s).\n    \n    Returns:\n        float: Speed in gigabits per second (Gbit/s).\n    \"\"\"\n    return speed_mbps / 1000\n\n# Example usage:\nlowband_speed_gbps = convert_5g_speed_to_gbps(100)\nmidband_speed_gbps = convert_5g_speed_to_gbps(800)\nmmwave_speed_gbps = convert_5g_speed_to_gbps(2000)\nprint(f\"Lowband: {lowband_speed_gbps} Gbit/s\")\nprint(f\"Midband: {midband_speed_gbps} Gbit/s\")\nprint(f\"mmWave: {mmwave_speed_gbps} Gbit/s\")\n"
+    },
+    {
+      "question": "Are there proven health risks associated with 5G technology?",
+      "answer": "No, scientific research has found no evidence to support claims that 5G causes cancer or COVID-19. These theories have been thoroughly debunked by health experts and organizations."
+    }
+  ]
+}

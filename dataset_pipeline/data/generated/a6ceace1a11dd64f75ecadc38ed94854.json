@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Castle_of_Santa_Maura",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Where is the Castle of Santa Maura located?",
+      "answer": "The Castle of Santa Maura is located on the northeastern tip of the Greek island of Lefkada."
+    },
+    {
+      "question": "What was the original purpose of the Castle of Santa Maura when it was first built around 1300?",
+      "answer": "The Castle of Santa Maura was originally built as a small fortification to control access to the island of Lefkada."
+    },
+    {
+      "question": "Which empire took possession of the Castle of Santa Maura in 1479 and expanded it?",
+      "answer": "The Ottoman Empire took possession of the Castle of Santa Maura in 1479 and subsequently rebuilt and enlarged it, giving it much of its present shape."
+    },
+    {
+      "question": "How did the Republic of Venice modify the Castle of Santa Maura after capturing it in 1684?",
+      "answer": "After capturing the castle in 1684, the Republic of Venice converted it into a purely military installation. They demolished the walled town and outskirts near the walls to improve defenses and moved the capital of the island to the site of the present-day city of Lefkada."
+    },
+    {
+      "question": "Provide a timeline of the major changes in control over the Castle of Santa Maura from 1797 to 1864.",
+      "answer": "The Castle of Santa Maura changed hands multiple times between 1797 and 1864: it was controlled by France and Russia, then the Septinsular Republic, followed by the French again in 1797–1810, before finally being captured by the British, who held it until the Ionian Islands were ceded to Greece in 1864."
+    },
+    {
+      "question": "What happened to the Castle of Santa Maura during the early 18th century?",
+      "answer": "During the early 18th century, the Castle of Santa Maura was modernized. However, it was briefly abandoned by the Venetians between 1715 and 1716 due to the Republic's strained resources during its last war with the Ottomans."
+    },
+    {
+      "question": "Create a Python dictionary that summarizes the key historical events of the Castle of Santa Maura from its construction to 1864.",
+      "answer": "python\nhistorical_events = {\n    'Construction': 'Built as a small fortification around 1300 to control access to Lefkada.',\n    'Expansion (Ottomans)': 'Expanded and rebuilt by the Ottoman Empire in the late 15th century.',\n    'Venetian Capture': 'Captured by the Republic of Venice in 1684, converted to a military installation.',\n    'Modernization': 'Modernized in the early 18th century; briefly abandoned (1715–1716).',\n    'Multi-National Control': 'Changed hands among France, Russia, Septinsular Republic, and the French again (1797–1810).',\n    'British Control': 'Captured by the British in 1810; held until cession to Greece in 1864.'\n}\n"
+    }
+  ]
+}

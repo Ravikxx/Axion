@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Great_River_Trail",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What are the starting and ending points of the Great River State Trail?",
+      "answer": "The Great River State Trail starts at the intersection with the La Crosse River Trail at a parking lot off County Highway B east of WIS 16 in Medary, Wisconsin (43°51′35″N 91°12′06″W). It ends at the intersection of West Prairie Rd. and Refuge Rd. southeast of Marshland, Wisconsin (44°03′10″N 91°30′56″W)."
+    },
+    {
+      "question": "What types of activities are permitted on the Great River State Trail?",
+      "answer": "The Great River State Trail is designated for foot traffic, bicycles, equestrian use, and light motorized vehicles. It is a multiuse trail open to the public for recreational purposes."
+    },
+    {
+      "question": "How much does it cost to use the Great River State Trail daily?",
+      "answer": "If you do not have a yearly Wisconsin bike trail pass, the cost to use the Great River State Trail is $5.00 per day. A yearly pass costs $25.00."
+    },
+    {
+      "question": "What is the total length of the Great River State Trail, and how does it compare to other trails in the Bike 4 Trails system?",
+      "answer": "The Great River State Trail is 24 miles (39 km) long. In the Bike 4 Trails system, it is the shortest trail, with the others being the 400 State Trail (22 mi), Elroy-Sparta State Trail (32 mi), and La Crosse River Trail (22 mi)."
+    },
+    {
+      "question": "Write a Python function to convert the trail's length from miles to kilometers.",
+      "answer": "python\ndef miles_to_kilometers(miles):\n    \"\"\"Convert miles to kilometers.\n    \n    Args:\n        miles (float): Distance in miles.\n    \n    Returns:\n        float: Distance in kilometers.\n    \"\"\"\n    return miles * 1.60934\n\n# Example usage:\ntrail_length_miles = 24\ntrail_length_km = miles_to_kilometers(trail_length_miles)\nprint(f\"The Great River State Trail is {trail_length_km} kilometers long.\")\n"
+    },
+    {
+      "question": "What natural features and wildlife can visitors see while hiking or biking the Great River State Trail?",
+      "answer": "The trail passes through bottomland hardwood forests and Wisconsin's Driftless areas. Visitors can observe wildlife such as great blue herons, egrets, and white-tailed deer. It also follows the Mississippi Flyway, making it a popular spot for bird watchers. Additionally, the trail provides access to the Nicholls Hopewell Mound, Perrot State Park, and the Trempealeau National Wildlife Refuge."
+    },
+    {
+      "question": "Where is the headquarters of the Great River State Trail located, and what are its operating hours?",
+      "answer": "The trail headquarters is located in Onalaska, Wisconsin. It is open from May 1 through October 31 each year."
+    }
+  ]
+}

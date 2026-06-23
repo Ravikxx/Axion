@@ -1,0 +1,34 @@
+{
+  "source_url": "https://mathworld.wolfram.com/ContingencyTable.html",
+  "category": "mathworld",
+  "pairs": [
+    {
+      "question": "What is a contingency table and what is its primary use in statistics?",
+      "answer": "A contingency table, also known as a two-way frequency table, is a tabular method with at least two rows and two columns used to present categorical data in terms of frequency counts. Its primary use is to display the observed frequency of two variables, arranged in rows and columns. The intersection of a row and column is called a cell. Contingency tables facilitate basic probability calculations and are often augmented with summary rows and columns for easier computation of probabilities and statistical analyses."
+    },
+    {
+      "question": "How can a contingency table help in calculating probabilities?",
+      "answer": "A contingency table simplifies probability calculations by organizing data in a structured format. For example, the probability that a randomly sampled person prefers ice cream in a cup can be found by dividing the count of people in the 'cup' column by the total number of people. Similarly, conditional probabilities, such as the probability that a person prefers ice cream sandwiches given they are male, can be calculated by dividing the count of males who prefer sandwiches by the total number of males. Summary rows and columns further streamline these calculations."
+    },
+    {
+      "question": "What are expected frequencies in a contingency table and how are they computed?",
+      "answer": "Expected frequencies represent the number of observations one would expect in each cell of a contingency table if the two variables were independent. The formula for the expected frequency of a cell at the intersection of a specific row and column is: Expected Frequency = (Row Total * Column Total) / Grand Total. For example, if the row total for males is 50, the column total for 'cone' is 30, and the grand total is 200, the expected frequency for males preferring cones is (50 * 30) / 200 = 7.5."
+    },
+    {
+      "question": "Provide a code snippet to compute expected frequencies for a contingency table.",
+      "answer": "Here is a Python code snippet using NumPy to compute expected frequencies for a contingency table:\npython\nimport numpy as np\n\n# Example contingency table (rows: male, female; columns: cone, sundae, sandwich, other)\ncontingency_table = np.array([[20, 15, 10, 5], [25, 20, 15, 10]])\nrow_totals = contingency_table.sum(axis=1)\ncolumn_totals = contingency_table.sum(axis=0)\ngrand_total = contingency_table.sum()\n\n# Compute expected frequencies\nexpected_frequencies = np.outer(row_totals, column_totals) / grand_total\nprint(\"Expected Frequencies:\")\nprint(expected_frequencies)\n\nThis code calculates the expected frequencies for each cell based on the observed data."
+    },
+    {
+      "question": "What is the purpose of adding a summary row and column to a contingency table?",
+      "answer": "Adding a summary row and column to a contingency table provides marginal totals, which are essential for computing probabilities and expected frequencies. The summary column shows the total count for each row, while the summary row shows the total count for each column. These totals simplify calculations such as row probabilities, column probabilities, and grand totals, making it easier to perform statistical analyses like the chi-squared test."
+    },
+    {
+      "question": "How does a chi-squared test use expected and observed frequencies in a contingency table?",
+      "answer": "A chi-squared test uses expected and observed frequencies to determine if there is a statistically significant association between two categorical variables. For each cell in the contingency table, the test compares the observed frequency with the expected frequency (calculated under the assumption of independence). The chi-squared statistic is computed as the sum of (Observed - Expected)^2 / Expected for all cells. If the statistic exceeds a critical value, the null hypothesis of independence is rejected, suggesting the variables are associated."
+    },
+    {
+      "question": "What is the homogeneity of proportions test, and when is it used?",
+      "answer": "The homogeneity of proportions test is a chi-squared test used to determine whether several proportions are equal when samples are taken from different populations. For example, it can test if the preference for ice cream types (e.g., cone, sundae) is the same across different genders. The test compares observed frequencies to expected frequencies, similar to other chi-squared tests, and requires that each expected frequency be at least 5 for validity. This test is useful in fields like market research and epidemiology."
+    }
+  ]
+}

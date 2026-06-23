@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Brian_Collins_(cricketer)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who is Brian George Collins and what was his primary role in cricket?",
+      "answer": "Brian George Collins is a former English cricketer born on 11 August 1941. His primary role in cricket was as a right-handed batsman who bowled right-arm fast-medium, with bowling being his main playing role."
+    },
+    {
+      "question": "When did Brian Collins make his debut for Hertfordshire, and which team did he face?",
+      "answer": "Brian Collins made his debut for Hertfordshire in the 1966 Minor Counties Championship against Bedfordshire."
+    },
+    {
+      "question": "How many List A appearances did Brian Collins make for Hertfordshire, and what were his bowling statistics?",
+      "answer": "Brian Collins made ten List A appearances for Hertfordshire. He took 16 wickets at an average of 19.06, with best figures of 5/20."
+    },
+    {
+      "question": "Which combined Minor Counties teams did Brian Collins play for, and in which formats?",
+      "answer": "Brian Collins played for Minor Counties South, Minor Counties West, and the Minor Counties cricket team. He played List A cricket for Minor Counties South and Minor Counties West, and a single first-class match for the Minor Counties cricket team."
+    },
+    {
+      "question": "What were Brian Collins' bowling figures in his only first-class match against the touring Indians in 1979?",
+      "answer": "In his only first-class match against the touring Indians in 1979, Collins took the wickets of Anshuman Gaekwad, Chetan Chauhan, and Dilip Vengsarkar. His bowling figures were 3/83 from 28 overs in the first innings and he went wicket-less in the second innings. The match ended in a draw."
+    },
+    {
+      "question": "Write a Python function that calculates a cricketer's bowling average given their total wickets and total runs conceded.",
+      "answer": "Here is a Python function to calculate a bowler's average:\n\npython\ndef calculate_bowling_average(total_wickets, total_runs_conceded):\n    if total_wickets == 0:\n        return float('inf')  # Avoid division by zero\n    return total_runs_conceded / total_wickets\n\n# Example usage:\nwickets = 16\nruns_conceded = 305  # 16 wickets at average 19.06 => 16 * 19.06 ≈ 305\naverage = calculate_bowling_average(wickets, runs_conceded)\nprint(f\"Bowling average: {average:.2f}\")\n\nThis function takes the total number of wickets taken and the total runs conceded as inputs and returns the bowling average."
+    },
+    {
+      "question": "Compare Brian Collins' bowling performances for Hertfordshire and Minor Counties West in terms of average and best figures.",
+      "answer": "Brian Collins had a better bowling average for Hertfordshire (19.06) compared to Minor Counties West (43.00). His best figures for Hertfordshire were 5/20, which is superior to his best figures for Minor Counties West, which were 3/29."
+    }
+  ]
+}

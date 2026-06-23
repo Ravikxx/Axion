@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/samuelfaure/the-ai-programming-sunk-cost-fallacy-loop-and-how-to-break-it-13d6",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What are the real productivity gains of using AI in programming, and how do they relate to cognitive load?",
+      "answer": "The primary productivity gains from using AI in programming come from *cognitive load reduction*. Writing code is mentally demanding because it requires perfect syntax and constant logical reasoning, and the human brain has a limited capacity for sustained cognitive effort. AI reduces this load by handling syntax, boilerplate, or even small logic iterations, allowing developers to focus their mental energy on higher-level design, problem-solving, or other tasks. However, this requires a balance—too much reliance on AI without sufficient initial thinking can lead to inefficiencies or sunk-cost fallacy loops."
+    },
+    {
+      "question": "How can you recognize if you're stuck in a sunk-cost fallacy cycle when working with an AI agent?",
+      "answer": "You’re likely stuck in a sunk-cost fallacy cycle if you find yourself repeatedly refining prompts for an AI agent despite it repeatedly failing to meet your expectations, all while burning excessive tokens and time. Instead of stepping back to reassess the problem, you continue hoping that the next prompt will finally work. This often happens when you overestimate the AI’s ability to handle high-level prompts for a specific task, leading to a downward spiral of wasted effort."
+    },
+    {
+      "question": "What are the three key questions you should ask yourself when an AI agent is lost or unproductive during a task?",
+      "answer": "When an AI agent is lost or unproductive, ask yourself:\n1. **Do I fully understand the specifications or bug I'm trying to solve?** If not, take time to define them clearly without coding.\n2. **Do I have a concrete plan for implementing the changes?** If not, outline a step-by-step approach, ideally using atomic git commits to break the task into smaller, manageable parts.\n3. **What is the right abstraction level for my prompts right now?** If the AI is struggling, lower the abstraction level (e.g., from high-level feature requests to low-level refactoring tasks) and guide it more closely."
+    },
+    {
+      "question": "Provide a Python code snippet demonstrating how to structure a test-driven development (TDD) workflow with an AI agent for a simple function.",
+      "answer": "Here’s an example of a TDD workflow using an AI agent to first write tests before implementing a solution:\n\npython\n# Step 1: Define the failing test (ask the AI to write this first)\nimport unittest\n\ndef test_add_numbers(self):\n    self.assertEqual(add(2, 3), 5)\n    self.assertEqual(add(-1, 1), 0)\n    self.assertEqual(add(0, 0), 0)\n\n# Step 2: Ask the AI to write the failing test (not the implementation)\n# Prompt: \"Write a unit test for a function called `add` that takes two numbers and returns their sum. Ensure the test covers positive, negative, and zero cases.\"\n\n# Step 3: Once the test is written and failing, use the AI to implement the solution\n# Prompt: \"Implement the `add` function to pass the provided test cases.\"\n\ndef add(a, b):\n    return a + b\n\n# Step 4: Verify the test passes and refactor if needed\nif __name__ == '__main__':\n    unittest.main()\n\n\nKey point: The AI should only write the test initially, not the implementation. This ensures the specifications are clear before coding begins."
+    },
+    {
+      "question": "Why is it counterproductive to skip the initial thinking phase when using an AI agent for development?",
+      "answer": "Skipping the initial thinking phase is counterproductive because it often leads to the sunk-cost fallacy cycle. Without a clear understanding of the specifications, a concrete plan, or the necessary information, you rely entirely on the AI to figure things out through trial and error. This wastes tokens, time, and mental energy, as you end up in a loop of refining prompts without making progress. Initial thinking ensures you’re guiding the AI effectively and not wasting resources on avoidable missteps."
+    },
+    {
+      "question": "How can atomic git commits improve productivity when working with AI agents?",
+      "answer": "Atomic git commits break tasks into the smallest possible, logical changes, which makes it easier for AI agents to understand and implement them. For example, if you’re refactoring a method, you might commit:\n1. Renaming a variable.\n2. Extracting a helper function.\n3. Simplifying a conditional.\n\nThis approach benefits AI agents because they work best with small, well-defined tasks. It also benefits you by reducing cognitive load, as each step is simpler to reason about. Additionally, atomic commits make it easier to debug or revert changes if something goes wrong, as the scope of each commit is limited."
+    },
+    {
+      "question": "What should you do if an AI agent is consistently failing to meet your expectations despite multiple attempts?",
+      "answer": "If an AI agent is consistently failing, the best course of action is to **reset both your and the agent’s context**. Close the agent, step away from the task for a while, and return to the whiteboard to reassess. Ask yourself whether you fully understand the problem, have a clear plan, and are prompting at the right abstraction level. Often, the issue stems from insufficient initial thinking or overestimating the AI’s capabilities for the task. Starting fresh ensures you avoid the sunk-cost fallacy and approach the problem with a clearer mind."
+    }
+  ]
+}

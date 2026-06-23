@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Fergana_Valley",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is the geographical location of the Fergana Valley?",
+      "answer": "The Fergana Valley is a fertile region located in Central Asia, primarily within Uzbekistan, but also extending into parts of Kyrgyzstan and Tajikistan. It is situated between the Tien Shan and Pamir-Alay mountain ranges."
+    },
+    {
+      "question": "How did the Fergana Valley contribute to trade during ancient times?",
+      "answer": "The Fergana Valley was a key trade hub along the Silk Road, particularly known for its agricultural products like fruit and cotton. Ancient Chinese sources from the 2nd century BCE even referenced the valley as a source of horses and abundant harvests."
+    },
+    {
+      "question": "What major historical empires or dynasties ruled the Fergana Valley?",
+      "answer": "The Fergana Valley was part of ancient Sogdiana and the Kushan Empire. Later, it was ruled by the Karakhanid and Timurid dynasties. In the 18th century, the Kokand Khanate, with its capital in Kokand, governed the region."
+    },
+    {
+      "question": "How did the Fergana Valley change under Soviet rule?",
+      "answer": "During the Soviet Union, the Fergana Valley was divided among Uzbekistan, Kyrgyzstan, and Tajikistan. The Soviets expanded cotton farming and introduced new industries. The divisions created modern political borders that persist today."
+    },
+    {
+      "question": "Write a Python function to calculate the approximate area of the Fergana Valley given its length and width.",
+      "answer": "python\ndef calculate_valley_area(length_km, width_km):\n    \"\"\"Calculate the approximate area of the Fergana Valley in square kilometers.\n    \n    Args:\n        length_km (float): Length of the valley in kilometers.\n        width_km (float): Width of the valley in kilometers.\n    \n    Returns:\n        float: Area in square kilometers.\n    \"\"\"\n    return length_km * width_km\n\n# Example usage:\narea = calculate_valley_area(300, 170)\nprint(f\"Approximate area of the Fergana Valley: {area} km²\")\n# Output: Approximate area of the Fergana Valley: 51000 km²\n"
+    },
+    {
+      "question": "Why is the Fergana Valley considered one of the most densely populated regions in Central Asia?",
+      "answer": "The Fergana Valley is highly fertile due to its rich soil and access to water from the Naryn River and Kara Darya, which merge into the Syr Darya. This fertile land has supported intensive agriculture and sustained large populations for over 2,000 years, making it one of the most densely populated regions in Central Asia."
+    },
+    {
+      "question": "What rivers water the Fergana Valley and what major river do they form?",
+      "answer": "The Fergana Valley is watered by the Naryn River and the Kara Darya. These two rivers join to form the Syr Darya, which flows through the region and provides essential water resources for agriculture and settlement."
+    }
+  ]
+}

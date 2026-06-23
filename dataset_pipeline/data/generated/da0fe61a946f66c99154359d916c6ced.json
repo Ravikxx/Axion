@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Grand_Canal_(China)",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is the Grand Canal and where does it begin and end?",
+      "answer": "The Grand Canal, also known as the Dayunhe or Jing–Hang Grand Canal, is the longest and oldest canal and artificial river in the world. It starts in Beijing and ends in Hangzhou, spanning six Chinese regions: Beijing, Tianjin, Hebei, Shandong, Jiangsu, and Zhejiang."
+    },
+    {
+      "question": "When were the oldest parts of the Grand Canal constructed, and which dynasties expanded it later?",
+      "answer": "The oldest parts of the Grand Canal were built during the 5th century BC. The Sui dynasty (581–618 AD) added to these sections, while the Yuan (1271–1368) and Ming (1368–1644) dynasties further improved and extended the canal to direct water to Beijing."
+    },
+    {
+      "question": "What is the total length of the Grand Canal, and what is its greatest height?",
+      "answer": "The Grand Canal is 1,776 km (1,104 miles) long, making it the longest artificial river in the world. Its greatest height reaches 42 meters (138 feet) near the Shandong mountains."
+    },
+    {
+      "question": "Who invented the pound lock, and what was its purpose?",
+      "answer": "Song Dynasty (960–1279) engineer Qiao Weiyue invented the pound lock in the 10th century. The pound lock allowed ships to travel through varying elevations by controlling water levels, enabling safer and more efficient navigation along the canal."
+    },
+    {
+      "question": "How was the Grand Canal used as a weapon during wartime?",
+      "answer": "During wars, the Grand Canal's dikes were sometimes breached to flood enemy troops. For example, Yellow River dikes were intentionally broken to hinder enemy movements, though this strategy often caused widespread flooding and economic damage."
+    },
+    {
+      "question": "What role did the Grand Canal play in China's economy?",
+      "answer": "The Grand Canal greatly improved China's economy by facilitating trade and transportation between the north and south. It connected the Yellow River and Yangtze River, enabling the movement of goods, grains, and resources, which boosted regional trade and economic growth."
+    },
+    {
+      "question": "Provide a Python code snippet to calculate the total length of the Grand Canal in miles.",
+      "answer": "python\n# Length of the Grand Canal in kilometers\nlength_km = 1776\n# Convert kilometers to miles (1 km ≈ 0.621371 miles)\nlength_miles = length_km * 0.621371\nprint(f\"The Grand Canal is approximately {length_miles:.0f} miles long.\")\n\nThis code snippet converts the Grand Canal's length from kilometers to miles using a simple conversion factor."
+    }
+  ]
+}

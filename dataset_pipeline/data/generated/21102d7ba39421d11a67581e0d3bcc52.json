@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Autofrettage",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is autofrettage and what is its primary purpose in manufacturing thick-walled pressure vessels?",
+      "answer": "Autofrettage is a work-hardening process where a thick-walled pressure vessel is subjected to high internal pressure, causing the inner layers to yield plastically. This creates residual compressive stresses in the material once the pressure is released, which increases the vessel's pressure-carrying capacity. The primary purpose is to strengthen the material by inducing these compressive stresses, not merely through work hardening."
+    },
+    {
+      "question": "How does the stress distribution differ between the inner and outer layers of a tube during autofrettage?",
+      "answer": "During autofrettage, the stress distribution through the tube walls is non-uniform, with the maximum stress occurring near the bore (inner surface). This stress decreases markedly toward the outer layers. The inner layers are stretched beyond their elastic limit into plastic deformation, while the outer layers remain within their elastic limit due to the lower stress they experience."
+    },
+    {
+      "question": "What is the role of low-temperature treatment (LTT) in the autofrettage process?",
+      "answer": "After plastic deformation of the inner layers, a low-temperature treatment (LTT) is applied to raise the elastic limit of the material to at least the autofrettage pressure used in the first stage. This ensures the material can withstand higher pressures in service without yielding again."
+    },
+    {
+      "question": "Provide a Python code snippet to simulate the stress distribution in a thick-walled tube during autofrettage.",
+      "answer": "python\nimport numpy as np\nimport matplotlib.pyplot as plt\n\n# Parameters\nr_inner = 50  # mm\nr_outer = 100  # mm\npressure_internal = 500  # MPa\npressure_external = 0  # MPa (assumed atmospheric)\nE = 200e3  # Young's modulus in MPa\nnu = 0.3  # Poisson's ratio\n\n# Radial position array\nr = np.linspace(r_inner, r_outer, 100)\n\n# Lamé equations for thick-walled tube stress distribution\nsigma_r = ((pressure_internal * r_inner**2 - pressure_external * r_outer**2) / (r_outer**2 - r_inner**2)) - \\\n           ((r_inner**2 * r_outer**2 * (pressure_external - pressure_internal)) / \\\n            ((r_outer**2 - r_inner**2) * r**2))\n\nsigma_theta = ((pressure_internal * r_inner**2 - pressure_external * r_outer**2) / (r_outer**2 - r_inner**2)) + \\\n              ((r_inner**2 * r_outer**2 * (pressure_external - pressure_internal)) / \\\n               ((r_outer**2 - r_inner**2) * r**2))\n\n# Plot\nplt.figure(figsize=(10, 6))\nplt.plot(r, sigma_r, label='Radial Stress (σ_r)')\nplt.plot(r, sigma_theta, label='Hoop Stress (σ_θ)')\nplt.xlabel('Radial Position (mm)')\nplt.ylabel('Stress (MPa)')\nplt.title('Stress Distribution in a Thick-Walled Tube')\nplt.legend()\nplt.grid(True)\nplt.show()\n"
+    },
+    {
+      "question": "What historical methods preceded modern autofrettage, and who is credited with coining the term 'autofrettage'?",
+      "answer": "The earliest form of autofrettage was mandrelling bronze gun barrels, patented in 1869 by Samuel B. Dean. However, Franz von Uchatius copied the method in the 1870s without a license. The term 'autofrettage' was coined in 1907 by French colonial artillery colonel Louis Frédéric Gustave Jacob, who proposed hydraulic pressurization of steel gun barrels to strengthen them."
+    },
+    {
+      "question": "How does autofrettage contribute to resistance against stress corrosion cracking in materials?",
+      "answer": "Autofrettage induces residual compressive stresses in the material, which counteracts the tensile stresses that would otherwise promote stress corrosion cracking. This occurs when a material is exposed to a corrosive environment under tensile stress, leading to non-mechanically assisted cracking. The compressive stresses reduce the likelihood of such cracking."
+    },
+    {
+      "question": "What are the modern industrial applications of autofrettage beyond gun barrels?",
+      "answer": "Modern applications of autofrettage include high-pressure pump cylinders, fuel injection systems for diesel engines, and the expansion of tubular components in oil and gas wells. It is also used in the manufacturing of composite overwrapped pressure vessels (COPVs), where the liner is plastically deformed inside the composite overwrap to enhance strength and sealing properties."
+    }
+  ]
+}

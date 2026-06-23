@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Homeland_Patriotic_Movement",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the Homeland Patriotic Movement (RPO) and when was it established?",
+      "answer": "The Homeland Patriotic Movement (Polish: Ruch Patriotyczny „Ojczyzna”, RPO) was a right-wing electoral coalition formed for the 1998 Polish local elections. It was created as an alliance of right-wing parties, an environmentalist party, and left-wing trade unions, positioning itself as an alternative to the centre-right Christian-democratic Solidarity Electoral Action."
+    },
+    {
+      "question": "Which parties founded the Homeland Patriotic Movement and why did they leave the Solidarity Electoral Action?",
+      "answer": "The founding parties of the Homeland Patriotic Movement were part of the Solidarity Electoral Action during the 1997 Polish parliamentary election but left due to political and ideological disagreements. The main party in the coalition was the Nonpartisan Bloc for Support of Reforms, later renamed to Bloc for Poland."
+    },
+    {
+      "question": "What were the main political and economic policies of the Homeland Patriotic Movement?",
+      "answer": "The coalition advocated for an anti-establishment stance, positioning itself as the 'true right' against the centre-right Solidarity Electoral Action. Its policies included opposition to EU and NATO membership, protection of Polish agriculture and production from foreign capital, criticism of EU neoliberal economic policies, and a redistributive economic program. It opposed privatization and market deregulation, supported renationalization of the economy, and called for extensive social welfare and subsidies for unprofitable workplaces. It also took a hostile stance toward private industry, arguing against excessive wage gaps and portraying business owners as unaccountable."
+    },
+    {
+      "question": "How successful was the Homeland Patriotic Movement in the 1998 Polish local elections?",
+      "answer": "The coalition ran an aggressive campaign but finished 6th in the 1998 Polish local elections, winning 3.19% of the popular vote. It secured 256 council seats out of 63,767 and 2 out of 855 seats in the voivodeship sejmiks. Despite its limited electoral success, the coalition dissolved shortly after the election."
+    },
+    {
+      "question": "What happened to the Homeland Patriotic Movement after the 1998 elections?",
+      "answer": "The coalition dissolved shortly after the 1998 elections, but its members continued cooperation by founding the Alternative Social Movement for the 2001 Polish parliamentary election."
+    },
+    {
+      "question": "How did the Homeland Patriotic Movement position itself ideologically compared to other Polish right-wing groups?",
+      "answer": "The coalition represented a Catholic-nationalist and traditional-conservative faction of the Polish post-Solidarity movement, opposing the moderate centre-right government. Despite being described as 'radically right-wing', it combined right-wing nationalism with left-wing economic policies, advocating for wealth redistribution and opposing excessive privatization."
+    },
+    {
+      "question": "Write a Python script to analyze the electoral performance of the Homeland Patriotic Movement in 1998.",
+      "answer": "python\n# Electoral performance analysis for the Homeland Patriotic Movement (RPO) in 1998\n# Data extracted from the provided text\nelectoral_data = {\n    'total_council_seats': 63767,\n    'rpo_council_seats': 256,\n    'total_sejmik_seats': 855,\n    'rpo_sejmik_seats': 2,\n    'popular_vote_percentage': 3.19,\n    'election_rank': 6\n}\n\ndef analyze_performance(data):\n    performance_summary = (\n        f\"The Homeland Patriotic Movement secured {data['rpo_council_seats']} out of {data['total_council_seats']} council seats, \"\n        f\"which is {data['rpo_council_seats'] / data['total_council_seats'] * 100:.2f}% of the total. \"\n        f\"In the voivodeship sejmiks, it won {data['rpo_sejmik_seats']} out of {data['total_sejmik_seats']} seats. \"\n        f\"The coalition ranked {data['election_rank']}th with {data['popular_vote_percentage']}% of the popular vote, \"\n        f\"indicating limited electoral success despite its campaign efforts.\"\n    )\n    return performance_summary\n\n# Example usage\nprint(analyze_performance(electoral_data))\n\nThis script calculates and summarizes the electoral performance of the RPO in the 1998 local elections, including seat distribution and vote share."
+    }
+  ]
+}

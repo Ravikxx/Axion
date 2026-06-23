@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Edward_W._B._Newby",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What were the major military roles Edward W. B. Newby held during the Mexican-American War?",
+      "answer": "During the Mexican-American War, Edward W. B. Newby served as the captain of A Company, 1st Regiment of Illinois Volunteers, starting May 22, 1847, and was later promoted to colonel commanding the regiment on June 8, 1847."
+    },
+    {
+      "question": "Describe the military campaigns and responsibilities Edward W. B. Newby had in the American Indian Wars.",
+      "answer": "In the American Indian Wars, Newby served as a captain of Company H in the First Cavalry Regiment starting in 1855, patrolling the plains in Kansas and New Mexico Territory. He maintained order during the conflicts in Kansas Territory in 1856, participated in the 1857 Cheyenne Expedition and the Battle of Solomon Forks, and later led the Kiowa and Comanche Campaign in 1860."
+    },
+    {
+      "question": "When and why was Edward W. B. Newby mustered out of service after the Mexican-American War?",
+      "answer": "Newby was mustered out of service on October 16, 1848, following the end of the Mexican-American War."
+    },
+    {
+      "question": "What were Edward W. B. Newby's promotions and transfers during the American Civil War?",
+      "answer": "At the start of the American Civil War, Newby was transferred to the U.S. Fourth Cavalry Regiment on August 3, 1861. He was later promoted to major of the Third Cavalry Regiment on July 17, 1862, before retiring on September 25, 1863."
+    },
+    {
+      "question": "What territories did Edward W. B. Newby's regiment oversee during the Mexican-American War?",
+      "answer": "Newby's regiment oversaw various territories including Taos, Abiquiu, Mora, Las Vegas, Galisteo, Albuquerque, Cebolleta, Tome, and Socorro to maintain order in the newly acquired lands that became New Mexico Territory."
+    },
+    {
+      "question": "What treaty did Edward W. B. Newby negotiate during his military career?",
+      "answer": "In May 1848, Newby led an expedition against the Navajo and successfully negotiated a treaty with them."
+    },
+    {
+      "question": "Write a Python code snippet to calculate the duration of Edward W. B. Newby's service in the Mexican-American War.",
+      "answer": "To calculate the duration of Newby's service in the Mexican-American War from May 22, 1847, to October 16, 1848:\npython\nfrom datetime import datetime\n\nstart_date = datetime(1847, 5, 22)\nend_date = datetime(1848, 10, 16)\nduration = end_date - start_date\nprint(f\"Duration of service: {duration.days} days\")\n\nThis code calculates and prints the total days served during the Mexican-American War."
+    }
+  ]
+}

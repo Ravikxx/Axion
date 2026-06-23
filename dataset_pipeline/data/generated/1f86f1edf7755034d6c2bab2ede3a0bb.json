@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Bill_Freyse",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was William Henry Freyse and what was he notable for?",
+      "answer": "William Henry Freyse (1898–1969) was an American cartoonist best known for his 30-year tenure drawing the comic strip *Our Boarding House*, which was syndicated by Newspaper Enterprise Association. He took over the strip in 1939 from Bela Zaboly and continued producing it until his death in 1969."
+    },
+    {
+      "question": "What were some of William Henry Freyse's early career roles in cartooning?",
+      "answer": "After graduating from Detroit's Central High School, Freyse started as an editorial cartoonist for the *Detroit Journal*. He later worked as a staff artist for the *Detroit Times*, where he created theatrical caricatures. His commercial artwork included billboards, theatre advertisements, and cartoons for Ford Motors."
+    },
+    {
+      "question": "Which comic strips or works did William Henry Freyse create or contribute to besides *Our Boarding House*?",
+      "answer": "Freyse created the cartoon version of *The Lone Ranger* and co-created *The Green Hornet*. He also drew the daily and Sunday panels of *Our Boarding House* featuring Major Hoople from the 1930s through the 1960s."
+    },
+    {
+      "question": "What notable personal hobby did William Henry Freyse have, and how did it influence his family?",
+      "answer": "Freyse had a passion for elephants, frequently drawing them into his cartoons and collecting elephant-themed items. His hobby influenced his daughter, actress Lynn Borden, who inherited his collection, including a bronze elephant figurine and a pair of seated bronze elephants. Borden later recalled her father instilling in her a deep respect for elephants, calling them 'great, majestic creatures'."
+    },
+    {
+      "question": "How did William Henry Freyse's career span evolve with *Our Boarding House*?",
+      "answer": "Freyse took over *Our Boarding House* from Bela Zaboly in 1939 and drew it until his death in 1969. The strip was written by William M. Braucher for 20 years. After Freyse's passing, the Sunday color strip ended in 1981, and the weekday panel continued until 1984."
+    },
+    {
+      "question": "What was the professional relationship between William Henry Freyse and his daughter, Lynn Borden?",
+      "answer": "Lynn Borden was the daughter of William Henry Freyse and Evelyn S. Freyse. Freyse occasionally drew elephants into his cartoons for her amusement when she was a child. Borden later inherited her father's elephant collection and publicly shared her appreciation for his influence on her view of elephants."
+    },
+    {
+      "question": "Write a Python function that takes a cartoonist's name and returns a list of their notable works, given a structured dataset. Include error handling for missing names.",
+      "answer": "python\ndef get_cartoonist_works(name: str, cartoonists_data: dict) -> list:\n    \"\"\"\n    Returns a list of notable works by a cartoonist given a structured dataset.\n    \n    Args:\n        name: The cartoonist's full name as a string.\n        cartoonists_data: A dictionary where keys are cartoonists' names and values are lists of their works.\n    \n    Returns:\n        List of notable works or an empty list if the name is not found.\n    \"\"\"\n    return cartoonists_data.get(name, [])\n\n# Example usage:\ncartoonists_data = {\n    \"William Henry Freyse\": [\"Our Boarding House\", \"The Lone Ranger\", \"The Green Hornet\"],\n    \"Gene Ahern\": [\"Our Boarding House\", \"Room and Board\"]\n}\n\nprint(get_cartoonist_works(\"William Henry Freyse\", cartoonists_data))\n# Output: ['Our Boarding House', 'The Lone Ranger', 'The Green Hornet']\n"
+    }
+  ]
+}

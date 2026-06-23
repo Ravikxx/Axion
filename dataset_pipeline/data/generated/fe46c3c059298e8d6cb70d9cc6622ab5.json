@@ -1,0 +1,42 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Constraint_satisfaction",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is constraint satisfaction in artificial intelligence and operations research?",
+      "answer": "Constraint satisfaction is the process of finding a solution to a problem by assigning values to variables in a way that satisfies a set of predefined constraints. A solution is valid if it lies within the feasible region, meaning all constraints are met simultaneously."
+    },
+    {
+      "question": "What are the typical methods used to solve constraint satisfaction problems with finite domain constraints?",
+      "answer": "Constraint satisfaction problems with finite domain constraints are typically solved using search algorithms, such as backtracking or local search. Additionally, constraint propagation methods are often employed to simplify the problem and reduce the search space."
+    },
+    {
+      "question": "How do constraint propagation methods differ from search methods in constraint satisfaction?",
+      "answer": "Constraint propagation methods are generally incomplete, meaning they may either solve the problem or prove it unsatisfiable, but not always both. In contrast, search methods systematically explore possible solutions, often using backtracking or local search to find a valid assignment of variables."
+    },
+    {
+      "question": "What algorithms are commonly used for solving constraints on real or rational numbers?",
+      "answer": "Constraints on real or rational numbers are typically solved using variable elimination or the simplex algorithm, which is a method for mathematical optimization."
+    },
+    {
+      "question": "Provide a code snippet demonstrating a simple constraint satisfaction problem in Python using a library like 'python-constraint'.",
+      "answer": "python\nfrom constraint import Problem, AllDifferentConstraint\n\n# Create a problem instance\nproblem = Problem()\n\n# Add variables with finite domains\nproblem.addVariable('A', [1, 2, 3])\nproblem.addVariable('B', [1, 2, 3])\nproblem.addVariable('C', [1, 2, 3])\n\n# Add constraints\nproblem.addConstraint(AllDifferentConstraint())\n\n# Find a solution\nsolutions = problem.getSolutions()\nprint(solutions)  # Output: [{'A': 1, 'B': 2, 'C': 3}, {'A': 1, 'B': 3, 'C': 2}, ...]\n"
+    },
+    {
+      "question": "Who first introduced constraint satisfaction as a general problem in artificial intelligence, and in what decade?",
+      "answer": "Constraint satisfaction as a general problem in artificial intelligence was first introduced in the 1970s, with notable work by researchers like Jean-Louis Laurière in 1978."
+    },
+    {
+      "question": "What historical development in the 19th century is related to constraint satisfaction, and who is credited with it?",
+      "answer": "In the 19th century, Joseph Fourier contributed to the field by working on constraints expressed as multivariate linear equations defining (in)equalities. This laid the groundwork for later developments in linear programming."
+    },
+    {
+      "question": "How did George Dantzig's work contribute to constraint satisfaction and optimization?",
+      "answer": "George Dantzig invented the simplex algorithm in 1946, which allowed determining feasible solutions to problems containing hundreds of variables. This algorithm is a cornerstone of linear programming and a special case of mathematical optimization, significantly advancing the field of constraint satisfaction."
+    },
+    {
+      "question": "What programming languages or libraries support constraint programming, and what are some examples?",
+      "answer": "Constraint programming has been embedded into various programming languages. Prolog was the first language with intrinsic support for constraint programming. Other languages, such as C++ and Java, have constraint-programming libraries like Choco for Java."
+    }
+  ]
+}

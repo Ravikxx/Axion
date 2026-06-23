@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Green_and_golden_bell_frog",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What are the common names for the species Ranoidea aurea?",
+      "answer": "The green and golden bell frog is commonly known as the green bell frog, green and golden swamp frog, and green frog."
+    },
+    {
+      "question": "Where does the green and golden bell frog primarily live, despite its classification and climbing abilities?",
+      "answer": "Despite its classification and climbing abilities, the green and golden bell frog lives on the ground and spends almost all of its time close to ground level."
+    },
+    {
+      "question": "What is the typical size range of the green and golden bell frog?",
+      "answer": "The green and golden bell frog can reach up to 11 cm (4.5 inches) in length, making it one of Australia's largest frog species."
+    },
+    {
+      "question": "What types of prey does the green and golden bell frog consume?",
+      "answer": "The green and golden bell frog is a voracious eater of insects but also consumes larger prey such as worms and mice."
+    },
+    {
+      "question": "How does the activity level of the green and golden bell frog change with seasons?",
+      "answer": "The frog is mainly diurnal, often basking in the sun to warm up, and tends to be less active in winter unless the weather is warmer or wetter. Breeding occurs in the warmer months."
+    },
+    {
+      "question": "What are the maturation timelines for male and female green and golden bell frogs?",
+      "answer": "Male green and golden bell frogs reach maturity after around 9 months, while females take up to two years to mature."
+    },
+    {
+      "question": "What are the major threats to the green and golden bell frog's survival?",
+      "answer": "The primary threats include habitat loss and degradation, pollution, introduced species, parasites such as the chytrid fungus Batrachochytrium dendrobatidis, and pathogens."
+    },
+    {
+      "question": "Provide a Python code snippet to calculate the percentage decline of a frog population over a decade given initial and final counts.",
+      "answer": "python\ndef calculate_population_decline(initial_count, final_count, years=10):\n    decline = initial_count - final_count\n    percentage_decline = (decline / initial_count) * 100\n    annual_rate = (1 - (final_count / initial_count)) ** (1 / years) - 1\n    return percentage_decline, annual_rate * 100\n\n# Example usage:\ninitial = 1000\nfinal = 200\nyears = 10\npercentage_decline, annual_rate = calculate_population_decline(initial, final, years)\nprint(f\"Total decline: {percentage_decline:.2f}%\")\nprint(f\"Annual decline rate: {annual_rate:.2f}%\")\n"
+    }
+  ]
+}

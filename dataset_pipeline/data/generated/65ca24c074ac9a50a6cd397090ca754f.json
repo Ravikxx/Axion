@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/ATT&CK",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the ATT&CK framework and who created it?",
+      "answer": "The Adversarial Tactics, Techniques, and Common Knowledge (ATT&CK) framework is a guideline for classifying and describing cyberattacks and intrusions. It was created by the MITRE Corporation and first released in 2013."
+    },
+    {
+      "question": "How does the ATT&CK framework contribute to cybersecurity standardization?",
+      "answer": "The ATT&CK framework provides a public catalog of known attacker techniques, each assigned a unique ID (e.g., T1566-Phishing). This shared vocabulary allows analysts to communicate threats consistently, as seen in CISA’s recognition of ATT&CK in their 'Best practices for Mitre ATT&CK mapping'."
+    },
+    {
+      "question": "What is the difference between tactics and techniques in ATT&CK?",
+      "answer": "Tactics represent the 'why' behind an attack (e.g., privilege escalation), while techniques are the specific methods adversaries use to achieve those tactics. Tactics provide the strategic goal, and techniques detail the operational steps."
+    },
+    {
+      "question": "How many tactic categories were in ATT&CK version 12 (2022), and how has this changed in version 19 (2026)?",
+      "answer": "In ATT&CK version 12 (2022), there were 14 tactic categories. By version 19 (2026), this expanded to 15 categories after splitting 'Defense Evasion' into 'Stealth' (where defenses appear intact) and 'Defense Impairment' (where defenses are visibly broken)."
+    },
+    {
+      "question": "What is a key advantage of ATT&CK over the Cyber Kill Chain?",
+      "answer": "Unlike the Cyber Kill Chain, which focuses on the sequence of an attack's results (indicators of compromise), ATT&CK identifies the tactics and techniques used during an attack in progress. This proactive approach helps analysts detect and respond to intrusions earlier."
+    },
+    {
+      "question": "Write a Python snippet to retrieve ATT&CK techniques for a given tactic.",
+      "answer": "python\nimport requests\n\ndef get_techniques_for_tactic(tactic_name):\n    # ATT&CK STIX/TAXII endpoint (example URL)\n    url = f\"https://api.example.com/attack/stix/enterprise/latest/tactics/{tactic_name}/techniques/\"\n    response = requests.get(url)\n    if response.status_code == 200:\n        return response.json()\n    else:\n        return None\n\n# Example usage:\ntechniques = get_techniques_for_tactic(\"privilege-escalation\")\nprint(techniques)\n"
+    },
+    {
+      "question": "Why did CISA formally recognize the ATT&CK framework in their best practices?",
+      "answer": "CISA recognized ATT&CK to standardize threat intelligence work across government and industry. By adopting ATT&CK’s shared vocabulary and structured approach, organizations can improve collaboration, reporting, and defense against cyber threats."
+    }
+  ]
+}

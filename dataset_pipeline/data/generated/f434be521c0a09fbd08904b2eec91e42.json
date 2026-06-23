@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Canon_EOS_M6_Mark_II",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the release date of the Canon EOS M6 Mark II?",
+      "answer": "The Canon EOS M6 Mark II was announced on August 28, 2019, and released in September 2019."
+    },
+    {
+      "question": "What lens mount does the Canon EOS M6 Mark II use?",
+      "answer": "The Canon EOS M6 Mark II uses the Canon EF-M lens mount, which is standard for all Canon EOS M series cameras."
+    },
+    {
+      "question": "What is the difference between the Canon EOS M6 and the M6 Mark II?",
+      "answer": "The Canon EOS M6 Mark II is the successor to both the Canon EOS M5 (2016) and the M6 (2017)."
+    },
+    {
+      "question": "How does the Canon EOS M6 Mark II handle video recording in 4K resolution?",
+      "answer": "The Canon EOS M6 Mark II supports 4K video recording up to 29.97 fps. Initially, it could not record 4K at 24 (23.97) fps, but this capability was added via a firmware update. In 4K mode, dual-pixel auto-focus is unavailable."
+    },
+    {
+      "question": "What are the audio recording capabilities of the Canon EOS M6 Mark II?",
+      "answer": "The camera has dual microphones for stereo audio recording and a 3.5 mm microphone connection for external microphones. However, it lacks a headphone port for monitoring audio."
+    },
+    {
+      "question": "How can the Canon EOS M6 Mark II's lack of a built-in viewfinder be addressed?",
+      "answer": "The camera does not include a built-in viewfinder. Users can purchase an additional electronic viewfinder, such as the Canon EVF-DC1 or EVF-DC2, which costs 200 euros or more. These viewfinders are sometimes included in camera bundles with the body and kit lens."
+    },
+    {
+      "question": "Write a Python script to check if a Canon EOS M6 Mark II firmware update is available for download.",
+      "answer": "python\nimport requests\n\ndef check_firmware_update():\n    url = 'https://www.usa.canon.com/support'\n    try:\n        response = requests.get(url)\n        response.raise_for_status()\n        # Simplified logic: Assume the response contains info about firmware updates\n        if 'EOS M6 Mark II' in response.text and '4K 24fps' in response.text:\n            return \"Firmware update for 24fps 4K recording is available.\"\n        else:\n            return \"No firmware update information found or update not yet available.\"\n    except requests.RequestException as e:\n        return f\"Error checking for updates: {e}\"\n\nprint(check_firmware_update())\n"
+    }
+  ]
+}

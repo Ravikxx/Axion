@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Abdur_Rahman_Khan",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was Abdur Rahman Khan Barakzai and what are the key events of his life?",
+      "answer": "Abdur Rahman Khan Barakzai (1840/1844–1 October 1901), known as the Iron Emir, was the Emir of Afghanistan from 11 August 1880 until his death. He was the only son of Mohammad Afzal Khan and grandson of Dost Mohammad Khan, the founder of the Barakzai dynasty. His reign is marked by uniting Afghanistan after years of decentralization and internal conflict, negotiating the Durand Line with British India, and establishing strong central governance through military authority and a system of espionage."
+    },
+    {
+      "question": "Why was Abdur Rahman Khan nicknamed 'The Iron Emir'?",
+      "answer": "Abdur Rahman Khan earned the nickname 'The Iron Emir' due to his military despotism and authoritarian rule. He consolidated power through a well-equipped army and a widespread espionage network, suppressing rebellions led by relatives and enforcing strict control over the populace. His policies were characterized by harsh measures, including judicial executions, forced migrations, and suppression of tribal dissent."
+    },
+    {
+      "question": "What was the significance of the Durand Line agreement during Abdur Rahman Khan's reign?",
+      "answer": "The Durand Line agreement, negotiated with British India during Abdur Rahman Khan's rule, delineated the modern border between Afghanistan and British India (later Pakistan). This agreement helped stabilize Afghanistan's western frontier and reduced conflicts with colonial powers, though it also led to long-term disputes over Pashtun territories."
+    },
+    {
+      "question": "How did Abdur Rahman Khan re-establish the writ of the Afghan government after the Second Anglo-Afghan War?",
+      "answer": "After the Second Anglo-Afghan War (1878–1880), Abdur Rahman Khan reasserted central authority by rebuilding the Afghan state's institutions, expanding the military, and imposing a hierarchical administrative system. He used a combination of military force, espionage, and alliances with local elites to suppress rebellions and enforce loyalty, ensuring the government's dominance over fragmented tribal regions."
+    },
+    {
+      "question": "What were some of the consequences of Abdur Rahman Khan's authoritarian policies?",
+      "answer": "Abdur Rahman Khan's authoritarian rule resulted in significant human costs, including up to 100,000 judicial executions, thousands of deaths from starvation, disease, and massacres by his forces, and forced migrations of tribes. While his policies unified Afghanistan, they were also criticized as a 'reign of terror' by British officials and caused widespread suffering among the population."
+    },
+    {
+      "question": "Write a Python function to calculate the percentage of rebellions Abdur Rahman Khan faced during his reign, given the total number of rebellions and his reign duration.",
+      "answer": "python\ndef calculate_rebellion_percentage(total_rebellions, reign_years):\n    return (total_rebellions / reign_years) * 100\n\n# Example usage:\nrebellions = 40  # Reported rebellions during his reign\nreign = 21      # Years (1880–1901)\npercentage = calculate_rebellion_percentage(rebellions, reign)\nprint(f\"Average rebellions per year: {percentage:.2f}%\")\n\nThis function computes the average annual rebellion rate during Abdur Rahman Khan's reign. For 40 rebellions over 21 years, the result would be approximately 190.48%."
+    },
+    {
+      "question": "How did Abdur Rahman Khan's military leadership contribute to his success in uniting Afghanistan?",
+      "answer": "Abdur Rahman Khan's military leadership was crucial in uniting Afghanistan. He reorganized the army, strengthened it with modern weapons, and used it to suppress rebellions and assert central authority. His strategic use of force, combined with a disciplined bureaucracy and intelligence networks, enabled him to subdue rival tribes and consolidate power, despite facing over 40 rebellions during his reign."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Basshunter_videography",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "How many music videos has Basshunter released in total?",
+      "answer": "Basshunter has released a total of 17 music videos, along with three second versions, five lyric videos, two remix videos, one video megamix, and five promotional video singles."
+    },
+    {
+      "question": "Which music videos were directed by Carl-Johan Westregård and Kim Parrot?",
+      "answer": "The music videos for 'Boten Anna' and 'Vi sitter i Ventrilo och spelar DotA' were directed by Carl-Johan Westregård and Kim Parrot."
+    },
+    {
+      "question": "What notable achievement did the music video for 'Now You're Gone' accomplish in 2008 and 2009?",
+      "answer": "The music video for 'Now You're Gone' became the most-viewed British YouTube video in 2008 and was the third most-viewed YouTube video in 2009 with 65 million views."
+    },
+    {
+      "question": "Provide the list of music videos included on the DVD in the special edition of 'Now You're Gone – The Album' released in New Zealand and Poland.",
+      "answer": "The DVD includes the following music videos: 'Now You're Gone', 'All I Ever Wanted', 'Angel in the Night', 'I Miss You', and five others directed by Alex Herron."
+    },
+    {
+      "question": "Which directors worked on the music videos for Basshunter's fifth album 'Calling Time'?",
+      "answer": "The music videos for 'Saturday' and 'Northern Light' were directed by Alex Herron, while 'Dream on the Dancefloor' and 'Calling Time' were directed by Gareth Evans. Additionally, Farzad Bayat directed the music video for 'Crash & Burn'."
+    },
+    {
+      "question": "Can you write a Python script to extract all music video titles mentioned in the text and count how many times each director is associated with a video?",
+      "answer": "python\nfrom collections import defaultdict\n\n# Music video data\ndata = {\n    'Boten Anna': ['Carl-Johan Westregård', 'Kim Parrot'],\n    'Vi sitter i Ventrilo och spelar DotA': ['Carl-Johan Westregård', 'Kim Parrot'],\n    'Now You\\'re Gone': ['Alex Herron'],\n    'All I Ever Wanted': ['Alex Herron'],\n    'Angel in the Night': ['Alex Herron'],\n    'I Miss You': ['Alex Herron'],\n    'Every Morning': ['Alex Herron'],\n    'I Promised Myself': ['Alex Herron'],\n    'Saturday': ['Alex Herron'],\n    'Northern Light': ['Alex Herron'],\n    'Dream on the Dancefloor': ['Gareth Evans'],\n    'Calling Time': ['Gareth Evans'],\n    'Crash & Burn': ['Farzad Bayat'],\n    'Masterpiece': []  # Lyric video without director info\n}\n\n# Count director associations\ndirector_counts = defaultdict(int)\n\n# Print all music video titles\nprint(\"Music video titles:\")\nfor video in data.keys():\n    print(f\"- {video}\")\n\n# Count director appearances\nfor directors in data.values():\n    for director in directors:\n        director_counts[director] += 1\n\nprint(\"\\nDirector counts:\")\nfor director, count in director_counts.items():\n    print(f\"- {director}: {count}\")\n"
+    },
+    {
+      "question": "What television programs has Basshunter appeared in?",
+      "answer": "Basshunter has appeared in the ninth episode of the 23rd season of Never Mind the Buzzcocks, the seventh season of Celebrity Big Brother, and a Rock and Pop episode of Weakest Link."
+    }
+  ]
+}

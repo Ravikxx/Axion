@@ -1,0 +1,34 @@
+{
+  "source_url": "https://github.com/freeCodeCamp/freeCodeCamp",
+  "category": "github",
+  "pairs": [
+    {
+      "question": "What is freeCodeCamp.org, and what types of free educational resources does it offer?",
+      "answer": "freeCodeCamp.org is a donor-supported 501(c)(3) charity that provides free, self-paced education in math, programming, and computer science. It offers a full-stack web development and machine learning curriculum, thousands of interactive coding challenges, free developer certifications (e.g., Responsive Web Design, JavaScript, Python), and language certifications (e.g., English and Spanish for developers). Additionally, it includes career preparation resources like The Odin Project, Coding Interview Prep, Project Euler, and Rosetta Code."
+    },
+    {
+      "question": "How do you earn a certification on freeCodeCamp.org?",
+      "answer": "To earn a certification on freeCodeCamp.org, you must complete the required modules, interactive lessons, workshops, labs, and quizzes for a specific track (e.g., Responsive Web Design or JavaScript). You then need to complete 5 required projects to qualify for the exam. Passing the exam grants you a certification, which you can showcase on your LinkedIn or resume. Note that certifications can be revoked for violating the Academic Honesty Policy."
+    },
+    {
+      "question": "What are the steps to report a bug in freeCodeCamp.org's platform?",
+      "answer": "To report a bug, first read freeCodeCamp.org's guide on how to report a bug. If you confirm it's a new bug and others are experiencing the same issue, create a new GitHub issue. Include as much detail as possible to help reproduce the bug, such as steps to reproduce, expected behavior, actual behavior, and any relevant screenshots or logs."
+    },
+    {
+      "question": "What should you do if you discover a security vulnerability in freeCodeCamp.org?",
+      "answer": "If you discover a security vulnerability, practice responsible disclosure by following freeCodeCamp.org's security policy. Report the vulnerability privately to their security team using the provided steps to ensure it can be addressed before public disclosure. Avoid exploiting the vulnerability or sharing details publicly until the issue is resolved."
+    },
+    {
+      "question": "How can you contribute to freeCodeCamp.org's open-source community?",
+      "answer": "freeCodeCamp.org welcomes contributions from volunteers. To contribute, follow the steps outlined in their contribution guide. This could include improving the curriculum, fixing bugs, translating content, or helping with community support. Recent contributions are listed on their platform, showcasing ongoing community efforts."
+    },
+    {
+      "question": "Write a Python function to calculate the sum of all numbers in a list that are greater than a given threshold. Use freeCodeCamp's Python certification as a reference for the problem-solving approach.",
+      "answer": "python\ndef sum_above_threshold(numbers, threshold):\n    \"\"\"\n    Calculate the sum of all numbers in a list that are greater than a given threshold.\n    \n    Args:\n        numbers (list): A list of numbers (integers or floats).\n        threshold (int or float): The threshold value.\n    \n    Returns:\n        int or float: The sum of numbers greater than the threshold.\n    \"\"\"\n    return sum(num for num in numbers if num > threshold)\n\n# Example usage:\nnumbers = [10, 20, 30, 40, 5]\nthreshold = 15\nresult = sum_above_threshold(numbers, threshold)\nprint(result)  # Output: 90\n"
+    },
+    {
+      "question": "What are the key components of freeCodeCamp.org's learning platform beyond its curriculum?",
+      "answer": "freeCodeCamp.org's learning platform includes a community forum for programming help, a YouTube channel with free courses (e.g., Python, SQL, Android), a technical publication with tutorials on math and computer science, and a Discord server for real-time discussions with other learners and developers. These resources provide additional support and learning opportunities beyond the core curriculum."
+    }
+  ]
+}

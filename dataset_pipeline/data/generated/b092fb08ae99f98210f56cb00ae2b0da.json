@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Canadian_Motor_Vehicle_Arbitration_Plan",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the Canadian Motor Vehicle Arbitration Plan (CAMVAP) and who does it help?",
+      "answer": "The Canadian Motor Vehicle Arbitration Plan (CAMVAP) is a free dispute resolution program for Canadian consumers facing issues with their vehicle's assembly or a manufacturer's implementation of a new-vehicle warranty. It covers new, used, owned, or leased vehicles from the current model year and up to four additional model years old."
+    },
+    {
+      "question": "What types of vehicles are excluded from CAMVAP coverage?",
+      "answer": "Vehicles purchased or leased from authorized dealers in Canada are generally covered by CAMVAP, except for BMW and MINI vehicles, which do not participate in the program."
+    },
+    {
+      "question": "How long does the CAMVAP arbitration process typically take?",
+      "answer": "The CAMVAP arbitration process normally takes less than 70 days from start to finish."
+    },
+    {
+      "question": "What can CAMVAP arbitrators order a manufacturer to do in a dispute?",
+      "answer": "CAMVAP arbitrators can order the manufacturer to: buy back the vehicle, repair it at the manufacturer's expense, pay for repairs already completed, or cover out-of-pocket expenses such as towing, diagnostic testing, rental cars, and accommodations related to the vehicle's problem. Alternatively, they can clear the manufacturer of liability regarding the consumer's claims."
+    },
+    {
+      "question": "Does CAMVAP require consumers to hire an attorney for their case?",
+      "answer": "No, most consumers are able to handle their own case without the assistance of an attorney. Additionally, manufacturers do not use attorneys; their representatives are typically current or retired district parts and services representatives."
+    },
+    {
+      "question": "What is the role of a vehicle inspection in a CAMVAP arbitration hearing?",
+      "answer": "A vehicle inspection is normally part of a CAMVAP arbitration hearing. If necessary, the arbitrator can order a technical inspection of the vehicle at the program's expense."
+    },
+    {
+      "question": "Write a Python function that checks if a vehicle is eligible for CAMVAP based on its model year and manufacturer.",
+      "answer": "python\ndef is_vehicle_eligible_for_camvap(model_year, manufacturer, vehicle_type='new'):\n    current_year = 2023  # Update as needed\n    if manufacturer.lower() in ['bmw', 'mini']:\n        return False\n    if vehicle_type == 'used':\n        return (current_year - model_year) <= 4\n    return True\n\n# Example usage:\nprint(is_vehicle_eligible_for_camvap(2022, 'Toyota'))  # True\nprint(is_vehicle_eligible_for_camvap(2018, 'BMW'))    # False\n"
+    }
+  ]
+}

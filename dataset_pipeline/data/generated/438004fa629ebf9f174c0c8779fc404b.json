@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Beryce_Nelson",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When and where was Beryce Ann Nelson born?",
+      "answer": "Beryce Ann Nelson was born on 10 January 1947 in Brisbane, Australia."
+    },
+    {
+      "question": "What political roles did Beryce Ann Nelson hold in the Queensland Legislative Assembly?",
+      "answer": "Beryce Ann Nelson served as the Liberal member for Aspley in the Queensland Legislative Assembly from 1980 to 1983. After resigning from the Liberal Party and joining the National Party, she regained her seat in 1986 and held it until losing it later that year. During her tenure, she held junior cabinet positions including Chair of the Brisbane River Management Committee and was promoted to Minister for Family Services in September 1989."
+    },
+    {
+      "question": "Why did Beryce Ann Nelson lose her seat in the Queensland Legislative Assembly in 1983?",
+      "answer": "Beryce Ann Nelson lost her seat in October 1983 following the collapse of the Coalition Government."
+    },
+    {
+      "question": "What were Beryce Ann Nelson's key achievements in public relations after leaving politics?",
+      "answer": "After leaving politics, Beryce Ann Nelson worked as a senior consultant and then State Manager for the Rowland Company in Queensland. In 1994, she founded Jigsaw Public Relations, which operated successfully for ten years until she sold it in 2003."
+    },
+    {
+      "question": "What academic qualifications did Beryce Ann Nelson earn later in her career?",
+      "answer": "In 2005, Beryce Ann Nelson completed a Masters in Management at the University of Southern Queensland. She also returned to academic life part-time, teaching as a lecturer at the Brisbane campus of James Cook University until retiring in 2010."
+    },
+    {
+      "question": "Can you provide a code snippet to calculate the number of years Beryce Ann Nelson served in the Queensland Legislative Assembly?",
+      "answer": "python\nfrom datetime import datetime\n\n# Beryce Ann Nelson's first term: 1980 to 1983\nstart_date_1 = datetime(1980, 1, 1)\nend_date_1 = datetime(1983, 10, 1)\n\n# Second term: 1986 (assuming January 1986 for simplicity)\nstart_date_2 = datetime(1986, 1, 1)\nend_date_2 = datetime(1986, 12, 31)\n\n# Calculate total years\nterm_1_years = end_date_1.year - start_date_1.year\nterm_2_years = end_date_2.year - start_date_2.year\n\n# Adjust for partial years (note: this is a simplified calculation)\ntotal_years = term_1_years + term_2_years\nprint(f\"Beryce Ann Nelson served approximately {total_years} years in the Queensland Legislative Assembly.\")\n\nThe code estimates her total service duration as approximately 4 years, though exact dates would require more precise data."
+    },
+    {
+      "question": "What organizations did Beryce Ann Nelson serve on during her post-political career?",
+      "answer": "During the 1990s and 2000s, Beryce Ann Nelson served on several state and national boards, including Energex Ltd, Musica Viva, the Abused Child Trust (now Act for Kids), and was involved in the cultural heritage project in Toogoolawah."
+    }
+  ]
+}

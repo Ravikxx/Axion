@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/John_Speechly",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was the first Bishop of Travancore and Cochin?",
+      "answer": "John Martindale Speechly was the first Bishop of Travancore and Cochin."
+    },
+    {
+      "question": "What significant ecclesiastical position did John Martindale Speechly hold before becoming Bishop of Travancore and Cochin?",
+      "answer": "Before becoming Bishop of Travancore and Cochin, Speechly served as Principal of the Cambridge Nicholson Institute (diocesan College) in Cottayam (Kottayam) from 1863 to 1869 and again from 1873 to 1876."
+    },
+    {
+      "question": "When and where was John Martindale Speechly consecrated as a bishop?",
+      "answer": "Speechly was consecrated as a bishop on 25 July 1879 at St Paul's Cathedral by Archibald Campbell Tait, the Archbishop of Canterbury."
+    },
+    {
+      "question": "Why was John Martindale Speechly unable to return to India after 1888?",
+      "answer": "Speechly was unable to return to India after 1888 due to unspecified reasons, which led him to resign his See of Travancore and Cochin."
+    },
+    {
+      "question": "What were the roles of John Martindale Speechly after resigning as Bishop of Travancore and Cochin?",
+      "answer": "After resigning, Speechly served as Bishop Commissary Diocese of Truro from 1889 to 1891 and then as Vicar of Faversham from 1892 until his death in 1898."
+    },
+    {
+      "question": "Generate a Python code snippet to calculate the number of years John Martindale Speechly served as Bishop of Travancore and Cochin.",
+      "answer": "python\n# John Martindale Speechly became Bishop of Travancore and Cochin in 1880 and resigned in 1888.\nstart_year = 1880\nend_year = 1888\nyears_served = end_year - start_year\nprint(f\"Speechly served as Bishop of Travancore and Cochin for {years_served} years.\")\n\nOutput: Speechly served as Bishop of Travancore and Cochin for 8 years."
+    },
+    {
+      "question": "List the educational institutions attended by John Martindale Speechly.",
+      "answer": "Speechly was educated at Oundle School and St John's College, Cambridge."
+    }
+  ]
+}

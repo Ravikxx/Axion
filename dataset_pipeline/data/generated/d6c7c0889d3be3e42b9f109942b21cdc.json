@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Hilda_Clark_(soprano)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was Hilda Kathryn Clark and what were her primary occupations?",
+      "answer": "Hilda Kathryn Clark was an American soprano, operetta actress, and model. She began her career as a classical concert soprano in 1890, later becoming a popular operetta performer and Broadway star. She also worked as a church singer and later as a model for Coca-Cola advertisements."
+    },
+    {
+      "question": "What was Hilda Clark's breakthrough role in 1895?",
+      "answer": "In 1895, Hilda Clark achieved her breakthrough when she was cast in the title role of the Broadway production of Willard Spenser's operetta *The Princess Bonnie*."
+    },
+    {
+      "question": "How did Hilda Clark's career evolve after 1895?",
+      "answer": "After her breakthrough in 1895, Clark became a prima donna with the Bostonians, performing in light operas into the early 20th century. She also worked in operettas produced by Klaw and Erlanger, including a return to Broadway in 1897–1898 as Lady Constance Sinclair in *The Highwayman*."
+    },
+    {
+      "question": "What event in 1901 led to Hilda Clark's retirement from the stage?",
+      "answer": "In 1901, Clark suffered a knee injury that forced her to leave the stage. Although she intended to return, her subsequent marriage in 1903 to millionaire Frederick Stanton Flower led to her permanent retirement from performing."
+    },
+    {
+      "question": "What was Hilda Clark's role in Coca-Cola's advertising history?",
+      "answer": "From the late 1890s until 1904, Clark worked as a model for Elmo Massengale's advertising firm. She appeared in print ads, on merchandise, and was credited as Coca-Cola's \"first Coke ambassador in a print ad\" by a company representative in 2015. Her image was featured on Coca-Cola trays, calendars, and in the early 20th-century advertisement *Drink Coca-Cola 5¢*."
+    },
+    {
+      "question": "What is the significance of Hilda Clark's Coca-Cola advertisements today?",
+      "answer": "Items featuring Hilda Clark's image on Coca-Cola products, such as trays and calendars, have become valued collectibles among antique enthusiasts due to their historical and cultural significance."
+    },
+    {
+      "question": "Provide a code snippet to simulate a dataset entry about Hilda Clark's career milestones.",
+      "answer": "python\ncareer_milestones = {\n    \"1890\": \"Began career as a classical concert soprano\",\n    \"1895\": \"Breakthrough role: Title role in *The Princess Bonnie* (Broadway)\",\n    \"1896\": \"Became prima donna with the Bostonians\",\n    \"1897–1898\": \"Played Lady Constance Sinclair in *The Highwayman* (Broadway)\",\n    \"1901\": \"Left stage due to knee injury\",\n    \"1903\": \"Married Frederick Stanton Flower; retired permanently\"\n}\n"
+    }
+  ]
+}

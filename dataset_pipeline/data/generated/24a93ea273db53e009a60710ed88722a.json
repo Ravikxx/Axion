@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Brownsea_Open_Air_Theatre",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the Brownsea Open Air Theatre (BOAT) and where is it based?",
+      "answer": "The Brownsea Open Air Theatre (BOAT) is an open-air Shakespearean theatre company based in Poole, Dorset, England. It was established in 1964 and has been performing large theatrical productions annually since then."
+    },
+    {
+      "question": "How long has BOAT been performing Shakespearean plays on Brownsea Island?",
+      "answer": "BOAT has been performing Shakespearean plays on Brownsea Island for over 60 years, with their first production in 1964."
+    },
+    {
+      "question": "What was unique about BOAT's 50th season in 2013?",
+      "answer": "In 2013, BOAT celebrated their 50th season with two Shakespearean plays: A Midsummer Night's Dream and Pericles, performed back-to-back."
+    },
+    {
+      "question": "How did BOAT adapt to the COVID-19 pandemic in 2020 and 2021?",
+      "answer": "Due to the COVID-19 pandemic, BOAT could not perform live in 2020 or 2021. Instead, they launched 'BOAT at HOME,' which included filmed scenes from Shakespeare's plays and full-length videos of past productions, broadcast on YouTube."
+    },
+    {
+      "question": "What was the purpose of BOAT's partnership with the Extraordinary Theatre Company in 2022?",
+      "answer": "In 2022, BOAT partnered with the Extraordinary Theatre Company to bring a touring production of King Lear to venues in Dorset and Hampshire. The aim was to make Shakespeare accessible to audiences who were new to his works."
+    },
+    {
+      "question": "What changes led BOAT to move from Brownsea Island to Canford School in 2025?",
+      "answer": "In 2024, the National Trust demanded changes that made it uneconomic to continue BOAT's usual format on Brownsea Island. As a result, BOAT decided to relocate to Canford School in 2025, where they plan to continue their residency."
+    },
+    {
+      "question": "Write a Python function that calculates the total funds raised by BOAT for The National Trust over the years.",
+      "answer": "Here’s a Python function that calculates the total funds raised by BOAT for The National Trust based on the provided data:\n\npython\ndef calculate_total_funds(): \n    # Funds raised per year (example values based on the text)\n    funds_per_year = [\n        50000,  # Example value for 2013\n        55000,  # Example value for 2014\n        60000,  # Example value for 2022\n        # Add more years as needed\n    ]\n    total_funds = sum(funds_per_year)\n    return total_funds\n\n# Example usage\nprint(calculate_total_funds())  # Output: Total funds raised so far\n\nNote: The actual values for each year are not provided in the text, so the function uses example values. For a precise calculation, historical fundraising data would be required."
+    },
+    {
+      "question": "What role did BOAT play in the Royal Shakespeare Company's Open Stages project?",
+      "answer": "BOAT participated in the Royal Shakespeare Company's Open Stages project in both 2012 and 2014. In 2012, they performed an excerpt from their 2011 production of Julius Caesar in workshops. In 2014, they performed a combined version of Henry IV, Part 1 and Part 2, including a scene at the Royal Shakespeare Theatre in Stratford Upon Avon."
+    }
+  ]
+}

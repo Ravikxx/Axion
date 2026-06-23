@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Earl_Pitts_(character)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who created the fictional character Earl Pitts and in what year did the character first appear?",
+      "answer": "The fictional character Earl Pitts was created by Gary Burbank, a radio personality from Cincinnati, Ohio. The character first appeared in 1968 shortly after Burbank arrived at 700/WLW in Cincinnati."
+    },
+    {
+      "question": "What are the signature phrases and musical elements associated with Earl Pitts' daily commentaries?",
+      "answer": "Earl Pitts' daily commentaries always begin with a bugle call of 'Assembly' followed by the line, 'Ya' know what makes me sick?' His signature ending lines are 'Wake Up, Uhmerika!' and 'Ah'm Earl Pitts, Uhmerikun. Pitts off!' while 'The Washington Post' march plays in the background."
+    },
+    {
+      "question": "How did the Earl Pitts program transition from radio to television?",
+      "answer": "After Burbank's retirement as a host of WLW, the daily Pitts commentaries expanded into television. Burbank taped several 90-second 'commentaries' as Pitts, which were broadcast on WGN America and possibly other stations owned by Tribune Company. The spots were recorded at a pub in Fort Thomas, Kentucky."
+    },
+    {
+      "question": "What notable achievements or records does the Earl Pitts program hold in broadcasting?",
+      "answer": "Earl Pitts is the second-longest running syndicated comedy program ever, behind Paul Harvey News and Comment. While Harvey's program was not a comedy or syndicated, Pitts' monologues aired five episodes a week, giving it more episodes than weekly comedy shows like Dr. Demento or A Prairie Home Companion."
+    },
+    {
+      "question": "Who were some of the key writers involved in creating the Earl Pitts monologues?",
+      "answer": "The monologues were written by a team that included Rob Ervin, Jim Probasco, Tim Mizak, Kel Crum, J.D. Riggs, and Todd Richmond. Gary Burbank refined the scripts before broadcast."
+    },
+    {
+      "question": "How did fans access Earl Pitts' commentaries online, and what was the role of radio stations in this process?",
+      "answer": "Earl Pitts' website offered items for sale, including purchase rights to previous monologues, but hearing the program online typically required a subscription. However, many stations streamed the program at regular times, and WFLA in Tampa, Florida, offered a daily podcast of the show."
+    },
+    {
+      "question": "Write a Python function that generates a typical Earl Pitts-style rant opening based on the provided text. Include a random cultural topic or anecdote placeholder.",
+      "answer": "python\nimport random\n\ndef generate_pitts_rant_opening():\n    cultural_topics = [\n        \"the government wasting taxpayer money\",\n        \"how kids these days don’t respect their elders\",\n        \"the decline of good ol’ country values\",\n        \"how grocery prices are just highway robbery\"\n    ]\n    anecdotes = [\n        f\"Ah was tryin’ to fix mah lawnmower yesterday, and it just about took mah arm off!\",\n        f\"Pearl told me to clean up the garage, but ah swear Dub Meeker just made it messier.\",\n        f\"Sandra Dee came home with one of them fancy hairdos that looks like a bird’s nest on fire.\"\n    ]\n    return f\"Ya' know what makes me sick? You know what makes me s'angry, ah just want to soak mah butt in a bucket of toxic waste? {random.choice(cultural_topics)} {random.choice(anecdotes)}\"\n\n# Example usage:\nprint(generate_pitts_rant_opening())\n"
+    }
+  ]
+}

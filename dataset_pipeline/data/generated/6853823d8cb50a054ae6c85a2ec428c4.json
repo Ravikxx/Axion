@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Administrative_divisions_of_Oryol_Oblast",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What are the city districts of Oryol under the oblast's jurisdiction?",
+      "answer": "The city districts of Oryol are Severny (Северный), Sovetsky (Советский), Zavodskoy (Заводской), and Zheleznodorozhny (Железнодорожный)."
+    },
+    {
+      "question": "How many selsovets are under the jurisdiction of the Dmitrovsky District?",
+      "answer": "The Dmitrovsky District has 12 selsovets under its jurisdiction."
+    },
+    {
+      "question": "List the urban-type settlements under the Glazunovsky District's jurisdiction.",
+      "answer": "The Glazunovsky District has one urban-type settlement under its jurisdiction: Glazunovka (Глазуновка)."
+    },
+    {
+      "question": "Write a Python function to extract all districts with towns under their jurisdiction from the given text.",
+      "answer": "python\ndef extract_town_districts(text):\n    lines = text.split('\\n')\n    districts = []\n    for line in lines:\n        if 'Towns under the district\\'s jurisdiction:' in line:\n            district = line.split('(')[0].strip()\n            districts.append(district)\n    return districts\n\n# Example usage (assuming 'text' contains the full input):\n# town_districts = extract_town_districts(text)\n# print(town_districts)\n"
+    },
+    {
+      "question": "What is the difference between a selsovet and a town under a district's jurisdiction in this context?",
+      "answer": "In this context, a town under a district's jurisdiction refers to a larger settlement with its own administrative status, while a selsovet is a smaller rural administrative unit, typically comprising several villages or rural localities, governed by a council (selsoviet)."
+    },
+    {
+      "question": "How many urban-type settlements are listed under the Khotynetsky District?",
+      "answer": "The Khotynetsky District has one urban-type settlement listed under its jurisdiction: Khotynets (Хотынец)."
+    },
+    {
+      "question": "Which districts have exactly 16 selsovets under their jurisdiction?",
+      "answer": "The districts with exactly 16 selsovets under their jurisdiction are Livensky (Ливенский) and Orlovsky (Орловский)."
+    }
+  ]
+}

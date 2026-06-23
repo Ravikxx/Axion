@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Alex_Jarratt",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was Sir Alexander Anthony Jarratt and what were his key roles in academia and industry?",
+      "answer": "Sir Alexander Anthony Jarratt (19 January 1924 – 19 December 2019) was a British businessman and senior civil servant. He served as the fifth Chancellor of Birmingham University from 1983 to 2002. In industry, he held senior positions at companies like IPC, Reed International (as chairman and chief executive from 1974 to 1982), and Smiths Industries plc (as chairman from 1985 to 1991)."
+    },
+    {
+      "question": "What was the Jarratt Report and what role did Sir Alex Jarratt play in its creation?",
+      "answer": "The Jarratt Report was an influential report on higher education policy produced by a Committee of Vice-Chancellors and Principals chaired by Sir Alex Jarratt. The report significantly impacted higher education policy in the UK."
+    },
+    {
+      "question": "What were Sir Alex Jarratt's early career and educational background?",
+      "answer": "Sir Alex attended the Royal Liberty School in Essex and served in the Fleet Air Arm during World War II. After the war, he graduated from the University of Birmingham with first-class honors as a Bachelor of Commerce in 1949. That same year, he joined the Civil Service."
+    },
+    {
+      "question": "Which notable honors or awards did Sir Alex Jarratt receive during his career?",
+      "answer": "Sir Alex was knighted in 1979 and appointed a Companion of the Order of the Bath in 1968. He was also a Deputy Lieutenant of Essex."
+    },
+    {
+      "question": "How did Sir Alex Jarratt transition from the Civil Service to industry?",
+      "answer": "After resigning from the Civil Service in 1970, Sir Alex pursued a second career in industry. He held senior positions at companies including IPC, Reed International (where he became chairman and chief executive in 1974), and Midland Bank."
+    },
+    {
+      "question": "Write a Python code snippet to calculate Sir Alex Jarratt's age at the time of his death.",
+      "answer": "def calculate_age(birth_year, death_year):\n    return death_year - birth_year\n\nbirth_year = 1924\ndeath_year = 2019\nage = calculate_age(birth_year, death_year)\nprint(f\"Sir Alex Jarratt was {age} years old at the time of his death.\")\n# Output: Sir Alex Jarratt was 95 years old at the time of his death."
+    },
+    {
+      "question": "What was Sir Alex Jarratt's role at Reed International and when did he hold this position?",
+      "answer": "Sir Alex served as the chairman and chief executive of Reed International from 1974 to 1982. He was also appointed to the board of Reed International Limited in 1970."
+    }
+  ]
+}

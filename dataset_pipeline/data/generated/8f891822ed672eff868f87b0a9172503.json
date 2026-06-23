@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/118th_Maine_Senate",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who served as the President of the 118th Maine Senate?",
+      "answer": "Mark Lawrence (D) of South Berwick served as the President of the 118th Maine Senate from December 1996 to December 1998."
+    },
+    {
+      "question": "How many members were there in the 118th Maine Senate?",
+      "answer": "There were 35 members in the 118th Maine Senate, as indicated by the numbered list provided."
+    },
+    {
+      "question": "Which political party had the majority in the 118th Maine Senate?",
+      "answer": "The Democratic Party (D) had the majority in the 118th Maine Senate, as most of the listed members were Democrats."
+    },
+    {
+      "question": "List all Republican (R) members of the 118th Maine Senate.",
+      "answer": "The Republican (R) members of the 118th Maine Senate were Leo Kieffer, Vinton Cassidy, Stephen Hall, Betty Lou Mitchell, Peter Mills, John Benoit, Mary Small, Phil Harriman, Norman Ferguson, Rick Bennett, Jeffrey Butland, Joel Abromson, Bruce MacKinnon, and James Libby."
+    },
+    {
+      "question": "How many counties were represented in the 118th Maine Senate?",
+      "answer": "The 118th Maine Senate represented 13 counties: Aroostook, Penobscot, Washington, Hancock, Piscataquis, Waldo, Knox, Somerset, Kennebec, Lincoln, Franklin, Sagadahoc, Androscoggin, Cumberland, and York."
+    },
+    {
+      "question": "Write a Python script to count the number of members from each political party in the 118th Maine Senate.",
+      "answer": "python\nmembers = [\n    \"Mark Lawrence (D)\", \"Judy Paradis (D)\", \"Leo Kieffer (R)\", \"Mike Michaud (D)\", \n    \"Vinton Cassidy (R)\", \"Jill Goldthwait (U)\", \"Richard Ruhlin Sr. (D)\", \"Mary Cathcart (D)\",\n    \"Stephen Hall (R)\", \"Robert Murray (D)\", \"Betty Lou Mitchell (R)\", \"Susan Longley (D)\",\n    \"Chellie Pingree (D)\", \"Peter Mills (R)\", \"Richard Carey (D)\", \"Beverly Daggett (D)\",\n    \"Marjoie Kilkelly (D)\", \"John Benoit (R)\", \"Sharon Treat (D)\", \"Mary Small (R)\",\n    \"John Nutting (D)\", \"John Jenkins (D)\", \"John Cleveland (D)\", \"Phil Harriman (R)\",\n    \"Norman Ferguson (R)\", \"Rick Bennett (R)\", \"Jeffrey Butland (R)\", \"Joel Abromson (R)\",\n    \"Anne Rand (D)\", \"William O'Gara (D)\", \"Jane Amero (R)\", \"Peggy Pendleton (D)\",\n    \"Lloyd LaFontain (D)\", \"Bruce MacKinnon (R)\", \"James Libby (R)\"\n]\n\nparty_counts = {}\nfor member in members:\n    party = member.split('(')[1].split(')')[0]\n    party_counts[party] = party_counts.get(party, 0) + 1\n\nprint(party_counts)\n\nThis script will output the count of members for each political party in the 118th Maine Senate."
+    },
+    {
+      "question": "Who were the two members from Auburn in the 118th Maine Senate?",
+      "answer": "The two members from Auburn in the 118th Maine Senate were John Jenkins (D) and John Cleveland (D)."
+    }
+  ]
+}

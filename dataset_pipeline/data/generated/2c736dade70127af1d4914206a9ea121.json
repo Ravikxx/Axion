@@ -1,0 +1,34 @@
+{
+  "source_url": "https://mathworld.wolfram.com/topics/Polynomials.html",
+  "category": "mathworld",
+  "pairs": [
+    {
+      "question": "What is a polynomial and how is it defined mathematically?",
+      "answer": "A polynomial is a mathematical expression consisting of variables (also called indeterminates) and coefficients, involving only the operations of addition, subtraction, multiplication, and non-negative integer exponents of variables. A general univariate polynomial in a single variable x can be written as: P(x) = aₙxⁿ + aₙ₋₁xⁿ⁻¹ + ... + a₁x + a₀, where n is a non-negative integer, aₙ, aₙ₋₁, ..., a₀ are coefficients (usually real or complex numbers), and aₙ ≠ 0. The highest power of x with a non-zero coefficient is called the degree of the polynomial."
+    },
+    {
+      "question": "Explain Abel's Irreducibility Theorem and provide an example where it applies.",
+      "answer": "Abel's Irreducibility Theorem states that if a polynomial with integer coefficients is reducible over the rationals, then it has a factor of degree at most equal to the degree of the polynomial divided by the smallest prime not dividing the degree. In simpler terms, for a polynomial of prime degree p, if it is reducible over ℚ, it must have a linear factor. For example, consider the polynomial x³ - 2, which has degree 3 (a prime number). By Abel's theorem, if it were reducible over ℚ, it would have a linear factor, meaning it would have a rational root. However, by the Rational Root Theorem, the only possible rational roots are ±1, ±2, none of which satisfy the equation, so x³ - 2 is irreducible over ℚ."
+    },
+    {
+      "question": "How does Horner's Rule optimize polynomial evaluation? Provide a code implementation.",
+      "answer": "Horner's Rule is an efficient algorithm for evaluating polynomials that reduces the number of multiplications needed. Instead of computing powers of x separately, it rewrites the polynomial in a nested form. For example, P(x) = aₙxⁿ + aₙ₋₁xⁿ₋₁ + ... + a₀ can be rewritten as P(x) = (...((aₙx + aₙ₋₁)x + aₙ₋₂)x + ... + a₁)x + a₀. This reduces the number of multiplications from O(n²) to O(n). Here is a Python implementation:\n\ndef horner(poly, x):\n    \"\"\"Evaluate polynomial at x using Horner's method.\"\"\"\n    result = 0\n    for coeff in reversed(poly):\n        result = result * x + coeff\n    return result\n\n# Example: Evaluate 2x³ - 6x² + 2x - 1 at x = 3\ncoefficients = [2, -6, 2, -1]\nprint(horner(coefficients, 3))  # Output: 5"
+    },
+    {
+      "question": "What is the Fundamental Theorem of Algebra and what does it guarantee about polynomial roots?",
+      "answer": "The Fundamental Theorem of Algebra states that every non-constant single-variable polynomial with complex coefficients has at least one complex root. This implies that a polynomial of degree n has exactly n roots in the complex plane, counting multiplicities. For example, the quadratic polynomial x² + 1 has no real roots, but it has two complex roots: x = i and x = -i. The theorem guarantees that complex roots exist, though they may not always be real numbers."
+    },
+    {
+      "question": "Describe Buchberger's Algorithm and its role in polynomial algebra.",
+      "answer": "Buchberger's Algorithm is a method for computing a Gröbner basis for a polynomial ideal, which is a generalization of Gaussian elimination for systems of polynomial equations. A Gröbner basis simplifies the ideal membership problem and allows for systematic solutions to polynomial systems. The algorithm works by iteratively reducing S-polynomials (a combination of two polynomials) with respect to a current basis until no further reductions are possible. The reduced set forms a Gröbner basis. Here is a simplified outline:\n1. Start with a generating set F of the ideal.\n2. Compute S-polynomials for pairs in F.\n3. Reduce each S-polynomial with respect to F.\n4. If a non-zero remainder is found, add it to F and repeat.\n5. Stop when all S-polynomials reduce to zero."
+    },
+    {
+      "question": "What is the Rational Zero Theorem and how is it used to find potential rational roots of a polynomial?",
+      "answer": "The Rational Zero Theorem provides a way to find all possible rational roots of a polynomial with integer coefficients. It states that any possible rational root, expressed in lowest terms p/q, must satisfy: p divides the constant term a₀ and q divides the leading coefficient aₙ. For example, for the polynomial P(x) = 2x³ - 5x² + x + 2, the constant term is 2 and the leading coefficient is 2. The possible values for p are ±1, ±2, and for q are ±1, ±2. Thus, the possible rational roots are ±1, ±2, ±1/2. Testing these values reveals that x = 2 is a root."
+    },
+    {
+      "question": "Explain the concept of a Gröbner basis and provide an example of its application.",
+      "answer": "A Gröbner basis for a polynomial ideal I is a finite set of polynomials G such that the leading term of any polynomial in I can be expressed as a linear combination of the leading terms of polynomials in G. Gröbner bases simplify solving polynomial systems by reducing them to a triangular form. For example, consider the ideal generated by the polynomials f₁ = x² - y and f₂ = xy - 1. A Gröbner basis for this ideal (with lexicographic order x > y) is G = {x² - y, xy - 1, y² - 1}. This basis reveals that y² = 1, so y = ±1, and substituting back gives x = ±1. Thus, the solutions are (1, 1) and (-1, -1)."
+    }
+  ]
+}

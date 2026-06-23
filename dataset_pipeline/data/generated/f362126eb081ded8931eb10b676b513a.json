@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/1942_Eleftherias_Square_roundup",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the 1942 Eleftherias Square roundup, and when did it occur?",
+      "answer": "The 1942 Eleftherias Square roundup, also known as Black Sabbath, took place on Saturday, 11 July 1942 (the Jewish sabbath). It involved the forced conscription of 9,000 Jewish men aged 18 to 45 in Eleftherias Square in Salonica, northern Greece. The roundup was organized jointly by the German occupation authorities and the collaborationist Governorate-General of Macedonia, marking the first major antisemitic measure in Salonica following the 1941 Axis occupation of Greece."
+    },
+    {
+      "question": "Who announced the conscription of Jewish men in Salonica in July 1942, and what was the stated purpose?",
+      "answer": "The conscription of all Jewish men between the ages of 18 and 45 was announced on 7 July 1942 by Generalleutnant Kurt von Krenzki, the German commander in Salonica. The Reich Security Main Office (RSHA) stated that this decision was made in agreement with Vasilis Simonides, the governor-general of Macedonia. The edict framed Jews as a racial category, similar to the 1935 Nuremberg laws."
+    },
+    {
+      "question": "How were the Jewish men treated during the Eleftherias Square roundup?",
+      "answer": "During the roundup, which lasted from 8:00 to 14:00, Jewish men were forced to violate the Jewish holy day by performing calisthenics and rolling on the ground. Many were beaten, and those who collapsed were attacked by guard dogs or hosed with water and kicked until they stood up. Anyone shielding themselves from sunlight was also beaten. Several were injured, and a few died. Both German Army, Navy units, and the SS were involved in the abuse."
+    },
+    {
+      "question": "What role did Greek bystanders play during the Eleftherias Square roundup?",
+      "answer": "Greek bystanders were reported to be either indifferent or amused during the Eleftherias Square roundup. Some spectators gathered around the square, with the collaborationist newspaper Nea Evropi reporting that they wished the scenes of abuse would continue indefinitely."
+    },
+    {
+      "question": "How did the International Committee of the Red Cross respond to the Eleftherias Square roundup?",
+      "answer": "René Burkhardt, the International Committee of the Red Cross representative in Salonica, attracted the attention of the Gestapo by requesting a list of those wounded during the roundup. Registration of the wounded was completed the following Monday."
+    },
+    {
+      "question": "What was the aftermath of the Eleftherias Square roundup in Salonica?",
+      "answer": "In the weeks following the roundup, thousands of Salonica Jews were arrested for forced labor projects. Some white-collar workers and Jewish veterans of the Greco-Italian War were exempted from forced labor. The roundup is remembered as the beginning of the destruction of the Jewish community in Salonica."
+    },
+    {
+      "question": "Can you write a Python script to calculate the duration of the Eleftherias Square roundup in hours?",
+      "answer": "python\n# Calculate the duration of the Eleftherias Square roundup in hours\ndef calculate_roundup_duration():\n    start_time = 8.0  # 8:00 AM\n    end_time = 14.0   # 2:00 PM\n    duration_hours = end_time - start_time\n    return duration_hours\n\nroundup_duration = calculate_roundup_duration()\nprint(f\"The Eleftherias Square roundup lasted {roundup_duration} hours.\")\n\nThe script calculates the duration of the roundup as 6 hours (from 8:00 to 14:00)."
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Five-limit_tuning",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is five-limit tuning in music, and how does it differ from 5-odd-limit tuning?",
+      "answer": "Five-limit tuning (or 5-limit tuning) is a system for tuning musical instruments where the frequency of each note is derived by multiplying the frequency of a reference note (base note) by products of integer powers of the primes 2, 3, or 5. Powers of 2 correspond to octaves, powers of 3 to perfect fifths, and powers of 5 to major thirds. Unlike 5-odd-limit tuning, which restricts intervals to odd-numbered harmonics only, 5-limit tuning includes octaves and thus allows for a broader range of intervals. For example, the ratio 15/8 (2⁻³·3¹·5¹) is a valid 5-limit interval but not a 5-odd-limit interval because it includes a power of 2."
+    },
+    {
+      "question": "How does 5-limit tuning relate to just intonation, and why is it considered capable of producing consonant harmonies?",
+      "answer": "5-limit tuning is considered a method for obtaining just intonation because it relies on the three lowest primes (2, 3, and 5), which correspond to intervals (octaves, fifths, and thirds) that appear early in the harmonic series. Consonance in music is often linked to low-numbered harmonics, so stacking these intervals (e.g., perfect fifths and major thirds) produces harmonies that align closely with natural harmonics. For instance, the interval of a major third (5/4) is more consonant in 5-limit tuning than in equal temperament because it matches a natural harmonic."
+    },
+    {
+      "question": "Provide a code snippet that calculates the frequency of a note in 5-limit tuning given a reference frequency and the powers of 2, 3, and 5.",
+      "answer": "Here’s a Python function that calculates the frequency of a note in 5-limit tuning:\n\npython\ndef calculate_5limit_frequency(base_frequency, powers=(0, 0, 0)):\n    \"\"\"\n    Calculate the frequency of a note in 5-limit tuning.\n    \n    Args:\n        base_frequency: Frequency of the reference note (e.g., 256 Hz for C256).\n        powers: A tuple of (power_of_2, power_of_3, power_of_5) representing\n                the exponents for the primes 2, 3, and 5.\n    \n    Returns:\n        The frequency of the note in Hz.\n    \"\"\"\n    power_2, power_3, power_5 = powers\n    return base_frequency * (5 ** power_5) * (3 ** power_3) * (2 ** power_2)\n\n# Example: Calculate the frequency of E above C256 using a major third (5/4).\nbase_freq = 256  # C256 in Hz\nfreq_e = calculate_5limit_frequency(base_freq, powers=(-2, 0, 1))\nprint(f\"Frequency of E: {freq_e} Hz\")  # Output: 320.0 Hz\n\n\nIn this example, the powers (-2, 0, 1) correspond to 2⁻²·3⁰·5¹ = 5/4, which is the ratio for a major third."
+    },
+    {
+      "question": "Explain how the frequency of E above C256 can be calculated using both major thirds and perfect fifths in 5-limit tuning, and provide the resulting frequencies.",
+      "answer": "In 5-limit tuning, the frequency of E above C256 can be calculated using two methods: stacking perfect fifths or major thirds. Using major thirds, you start from C and raise the pitch by a major third (5/4), then adjust for octaves if necessary. Using fifths, you stack four perfect fifths (3⁴) and adjust for octaves (2⁻⁶). The calculations are:\n\n1. Using a major third (5/4):\n   - Formula: f_E = (5/4) * f_C = (5/4) * 256 Hz = 320 Hz.\n   - This corresponds to powers (2⁻²·3⁰·5¹), as 2⁻² removes two octaves (4 = 2²).\n\n2. Using perfect fifths (81/64):\n   - Formula: f_E = (81/64) * f_C = (81/64) * 256 Hz = 324 Hz.\n   - This corresponds to powers (2⁻⁶·3⁴·5⁰), as 2⁻⁶ removes six octaves (64 = 2⁶).\n\nThe two methods yield slightly different frequencies (320 Hz vs. 324 Hz), illustrating the complexity of 5-limit tuning where intervals can be expressed in multiple ways."
+    },
+    {
+      "question": "Why are most practical acoustic instruments restricted to a finite number of pitches in 5-limit tuning, and how does this relate to the concept of an octave-repeating scale?",
+      "answer": "Most practical acoustic instruments restrict the number of pitches in 5-limit tuning due to physical constraints, such as the size of the instrument, the number of keys or strings, and the ear's ability to distinguish fine pitch differences. While 5-limit tuning theoretically allows for an infinite number of intervals (as primes 2, 3, and 5 are incommensurable), practical systems limit the range to a manageable set of pitch classes. Many tunings are designed as octave-repeating scales, meaning the same set of pitch classes repeats in each octave. For example, a 12-tone scale with 5-limit intervals (like the 5-limit just intonation) repeats every octave, simplifying performance and composition while retaining the consonance of low-prime intervals."
+    },
+    {
+      "question": "How can 5-limit tuning be visualized geometrically, and what does a 2-dimensional lattice represent in this context?",
+      "answer": "5-limit tuning can be visualized as a 3-dimensional lattice where each dimension represents a prime (2 for octaves, 3 for fifths, and 5 for thirds). Ignoring the octave dimension (power of 2), the tuning can be reduced to a 2-dimensional lattice of pitch classes. In this lattice, moving in one direction corresponds to multiplying by 3 (a perfect fifth), and moving in the perpendicular direction corresponds to multiplying by 5 (a major third). For example, the pitch classes C, G, D, A, E, B, etc., form a line in the lattice, with each step representing a fifth (3/2). Similarly, another line represents thirds (5/4), such as C, E, G♯, etc. The lattice extends indefinitely, showing the infinite potential of 5-limit tuning while practical systems limit it to a finite subset."
+    }
+  ]
+}

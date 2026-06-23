@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Battle_of_Mouscron",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who led the Republican French Army of the North during the Battle of Mouscron?",
+      "answer": "The Republican French Army of the North was led by Jean-Charles Pichegru during the Battle of Mouscron."
+    },
+    {
+      "question": "What was the outcome of the initial French advance at the Battle of Mouscron?",
+      "answer": "The initial French advance was largely successful. They drove back a weak screen of Hanoverian troops and captured Courtrai. The French also began the siege of Menin."
+    },
+    {
+      "question": "Describe the role of Joseph Souham in the Battle of Mouscron.",
+      "answer": "Joseph Souham commanded a division of the French army and played a crucial role by massing superior forces against the Coalition troops. He counterattacked Clerfayt’s forces on his own initiative, driving them out of the area and isolating the Hanoverian garrison at Menin."
+    },
+    {
+      "question": "What was the strategic importance of the Battle of Mouscron during the War of the First Coalition?",
+      "answer": "The Battle of Mouscron was part of the Flanders Campaign during the War of the First Coalition. It disrupted Coalition operations by forcing the withdrawal of forces, weakened the Coalition's position around Menin, and set the stage for the subsequent Battle of Courtrai on 10 May 1794."
+    },
+    {
+      "question": "Where exactly did the Battle of Mouscron take place, and what are its modern-day locations?",
+      "answer": "The Battle of Mouscron occurred near Mouscron, Belgium, approximately 9 kilometers south of Kortrijk and near Menen, which is about 11 kilometers west of Kortrijk. Modern-day Mouscron and Menen are located in the West Flanders province of Belgium, close to the French border."
+    },
+    {
+      "question": "Why was the Coalition's counterattack at Mouscron initially successful?",
+      "answer": "The Coalition’s counterattack under Clerfayt initially succeeded because most of the Coalition army was preoccupied with the Siege of Landrecies. This left only a weak screen of Hanoverian troops to oppose the French advance, allowing Clerfayt to gain temporary ground at Mouscron before French reinforcements under Souham counterattacked."
+    },
+    {
+      "question": "Write a Python snippet to calculate the distance between Mouscron and Courtrai in kilometers, given that Mouscron is 9 km south of Courtrai.",
+      "answer": "python\ndef calculate_distance():\n    # Distance from Mouscron to Courtrai (in kilometers)\n    distance = 9  # km\n    return distance\n\n# Example usage:\ndistance_km = calculate_distance()\nprint(f\"The distance between Mouscron and Courtrai is {distance_km} kilometers.\")\n"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/waptik/catch-up-on-your-favorite-youtubetiktok-videos-lng",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What problem does this AI agent solve for users in Ghana who follow YouTube channels?",
+      "answer": "The AI agent solves the problem of time-consuming video consumption by providing concise summaries (under 5 minutes) of YouTube videos from Ghanaian channels, allowing users to quickly preview video content without watching full-length videos."
+    },
+    {
+      "question": "How does the n8n workflow process a YouTube video link to generate a summary?",
+      "answer": "When a user provides a YouTube video link, the workflow uses the Bright Data Verified Node to fetch video metadata and transcript. The system then processes this data through Google Gemini 2.5 Flash, which generates a structured summary following predefined formatting guidelines. Finally, the summary is delivered via email."
+    },
+    {
+      "question": "What are the key components of the system instructions for this AI agent?",
+      "answer": "The system instructions define: 1) Role: A summarizer for YouTube & TikTok videos for a daily digest newsletter. 2) Task: Processing video data with specific summarization styles. 3) Tools: Available APIs and nodes for data extraction. 4) Output format: Example structures for input/output data."
+    },
+    {
+      "question": "Why was Google Gemini 2.5 Flash chosen as the model for this workflow?",
+      "answer": "Google Gemini 2.5 Flash was selected for its balance of speed, cost-efficiency, and capability. The workflow is designed to be model-agnostic, allowing potential optimization where a faster model could handle technical parsing while a more powerful model like Gemini 2.5 Pro could handle final content generation."
+    },
+    {
+      "question": "How does the Bright Data Verified Node handle YouTube video data differently from TikTok videos?",
+      "answer": "The Bright Data Verified Node successfully retrieves YouTube video data and transcripts automatically. For TikTok videos, it cannot retrieve transcripts, so the workflow uses an HTTP REQUEST node as an alternative method to obtain the required data."
+    },
+    {
+      "question": "Provide a Python code snippet that demonstrates how to extract video metadata from a YouTube URL using the Bright Data API.",
+      "answer": "python\nimport requests\n\ndef get_youtube_metadata(api_key, video_url):\n    url = f\"https://api.brightdata.com/verified/youtube?video_url={video_url}\"\n    headers = {\"Authorization\": f\"Bearer {api_key}\"}\n    \n    response = requests.get(url, headers=headers)\n    if response.status_code == 200:\n        return response.json()\n    else:\n        raise Exception(f\"API request failed: {response.status_code}\")\n\n# Example usage:\n# metadata = get_youtube_metadata(\"YOUR_API_KEY\", \"https://youtu.be/dQw4w9WgXcQ\")\n"
+    },
+    {
+      "question": "What challenges did the developer face while building this n8n workflow and how were they overcome?",
+      "answer": "As a first-time n8n workflow builder, the developer faced significant challenges but overcame them by leveraging community resources including n8n's documentation, community support forums, and educational YouTube videos such as https://youtu.be/SoDip-tvZ0Y."
+    }
+  ]
+}

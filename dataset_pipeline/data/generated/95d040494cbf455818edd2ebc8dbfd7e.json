@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/El_Perro_del_Mar",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who is the founder of El Perro del Mar and when was the project established?",
+      "answer": "El Perro del Mar was founded in December 2003 by Sarah Assbring, who was born in 1977. She is the sole member of the musical project."
+    },
+    {
+      "question": "How did El Perro del Mar gain international recognition outside of Sweden?",
+      "answer": "El Perro del Mar gained international recognition in 2006 when their self-titled album was picked up by the UK-based label Memphis Industries. The album was also released by The Control Group in the U.S. and Canada, which has since remained their American label home."
+    },
+    {
+      "question": "What was the musical style of El Perro del Mar's early work compared to their recent projects?",
+      "answer": "Sarah Assbring's early music was described as melancholic indie pop. However, in recent years, her work has evolved into a more eclectic and meticulously crafted style, with every visual, sound, costume, and other elements carefully considered for each album."
+    },
+    {
+      "question": "What was the first album released by El Perro del Mar, and when did it come out?",
+      "answer": "The first album released by El Perro del Mar was 'Look! It's El Perro del Mar!', which came out in Spring 2005."
+    },
+    {
+      "question": "Which album did El Perro del Mar release in collaboration with Rasmus Hägg, and how was it received?",
+      "answer": "El Perro del Mar collaborated with Rasmus Hägg on their third album, 'Love Is Not Pop', which was released in 2009. The album was well received, with the single 'Change of Heart' standing out as a unique beat-driven melancholy pop song."
+    },
+    {
+      "question": "What inspired the album 'KoKoro', and who worked with Sarah Assbring on its production?",
+      "answer": "The album 'KoKoro', released in 2016, was influenced by Sarah Assbring listening exclusively to Japanese, Chinese, Thai, and Indian pop music for three years. She co-wrote and co-produced the album with Jacob Haage."
+    },
+    {
+      "question": "Write a Python script to generate a list of El Perro del Mar's albums along with their release years.",
+      "answer": "python\nalbums = [\n    {\"title\": \"Look! It's El Perro del Mar!\", \"year\": 2005},\n    {\"title\": \"You Gotta Give to Get\", \"year\": 2005},\n    {\"title\": \"El Perro del Mar\", \"year\": 2006},\n    {\"title\": \"From the Valley to the Stars\", \"year\": 2008},\n    {\"title\": \"Love Is Not Pop\", \"year\": 2009},\n    {\"title\": \"Pale Fire\", \"year\": 2012},\n    {\"title\": \"KoKoro\", \"year\": 2016},\n    {\"title\": \"Big Anonymous\", \"year\": 2024}\n]\n\nfor album in albums:\n    print(f\"{album['title']} ({album['year']})\")\n"
+    }
+  ]
+}

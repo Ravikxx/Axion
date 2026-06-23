@@ -1,0 +1,38 @@
+{
+  "source_url": "https://dev.to/klaudiagrz/celebrate-june-rituals-with-solstice-bingo-1al6",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What is Solstice Bingo and what does it celebrate?",
+      "answer": "Solstice Bingo is a browser-based bingo game designed to celebrate June rituals from around the world. Players complete activities listed on bingo cards, and as they mark them off, a sky animation shifts from deep night to solstice noon. The game also provides cultural context for each ritual through stories, articles, or videos."
+    },
+    {
+      "question": "How can players save their progress in Solstice Bingo?",
+      "answer": "Solstice Bingo saves player progress in the browser's `localStorage`. This allows users to close the tab and resume their progress later without losing any completed activities."
+    },
+    {
+      "question": "What inspired the creator to build Solstice Bingo?",
+      "answer": "The creator was inspired by small celebrations and rituals, such as seasonal decorations and mindfulness practices. They received a creative kit with a spring bingo, which sparked the idea to create a similar game for June rituals."
+    },
+    {
+      "question": "Which AI tools were used to develop Solstice Bingo, and how?",
+      "answer": "The creator used AI tools like Gemini and Claude as coding partners. They described their vision for the project to the AI, reviewed the generated code, requested adjustments, and iterated through pair programming-like collaboration. For example, they used Gemini for prompt engineering and to generate the article banner."
+    },
+    {
+      "question": "What technical choices were made to keep Solstice Bingo simple and lightweight?",
+      "answer": "The game was built as a single HTML file with no frameworks, bundlers, or heavy dependencies. It uses plain HTML, CSS, and a small amount of JavaScript. This approach minimized complexity and kept the project lightweight."
+    },
+    {
+      "question": "How does the sky animation in Solstice Bingo work?",
+      "answer": "The sky animation transitions from deep night to solstice noon as players complete activities. This is achieved using CSS custom properties and a JavaScript color-interpolation function to smoothly interpolate between colors. Here’s a simplified example of how the color transition might work:\n\njavascript\nfunction interpolateColor(color1, color2, factor) {\n  const r1 = parseInt(color1.substring(1, 3), 16);\n  const g1 = parseInt(color1.substring(3, 5), 16);\n  const b1 = parseInt(color1.substring(5, 7), 16);\n  const r2 = parseInt(color2.substring(1, 3), 16);\n  const g2 = parseInt(color2.substring(3, 5), 16);\n  const b2 = parseInt(color2.substring(5, 7), 16);\n  const r = Math.round(r1 + factor * (r2 - r1));\n  const g = Math.round(g1 + factor * (g2 - g1));\n  const b = Math.round(b1 + factor * (b2 - b1));\n  return `rgb(${r}, ${g}, ${b})`;\n}\n"
+    },
+    {
+      "question": "Can you provide an example of a June ritual featured in Solstice Bingo and explain its significance?",
+      "answer": "One example is celebrating Alan Turing, which is included as a dedicated card in Solstice Bingo. Alan Turing is historically significant for his contributions to computer science and cryptanalysis, particularly during World War II. The inclusion of this ritual highlights the importance of recognizing influential figures in science and technology during June celebrations."
+    },
+    {
+      "question": "How are the bingo cards generated in Solstice Bingo?",
+      "answer": "Each bingo card in Solstice Bingo is randomly drawn from a pool of 33 rituals. This ensures that reshuffling the cards provides a fresh experience every time the game is played, offering variety and new activities to explore."
+    }
+  ]
+}

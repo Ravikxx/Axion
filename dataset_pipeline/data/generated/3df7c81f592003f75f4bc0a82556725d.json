@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Air_Florida_Flight_90",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the flight number and route of Air Florida Flight 90?",
+      "answer": "Air Florida Flight 90 was a scheduled domestic passenger flight operated from Washington National Airport (now Ronald Reagan Washington National Airport) to Fort Lauderdale–Hollywood International Airport, with an intermediate stopover at Tampa International Airport."
+    },
+    {
+      "question": "On what date did Air Florida Flight 90 crash, and where did the crash occur?",
+      "answer": "Air Florida Flight 90 crashed on January 13, 1982, shortly after takeoff from Washington National Airport. The crash occurred when the Boeing 737-200 struck the 14th Street Bridge over the Potomac River, which carries Interstate 395 between Washington, D.C., and Arlington County, Virginia."
+    },
+    {
+      "question": "How many passengers and crew members were on board Air Florida Flight 90, and how many survived?",
+      "answer": "The aircraft was carrying 74 passengers and five crew members. Only five individuals survived: four passengers and one crew member (flight attendant Kelly Duncan)."
+    },
+    {
+      "question": "What was the primary cause of the Air Florida Flight 90 crash according to the NTSB?",
+      "answer": "The National Transportation Safety Board (NTSB) determined that the primary cause of the accident was pilot error. The pilots failed to activate the engines' internal ice protection systems, used reverse thrust in a snowstorm before takeoff, attempted to use the jet exhaust of another plane to melt ice, and did not abort the takeoff despite detecting a power problem and ice buildup on the wings."
+    },
+    {
+      "question": "Provide a code snippet that demonstrates how to check if a string contains a specific substring, using Python.",
+      "answer": "Here is a Python code snippet to check if a string contains a specific substring:\n\npython\ntext = \"This is an example string\"\nsubstring = \"example\"\n\nif substring in text:\n    print(f\"The substring '{substring}' is present in the text.\")\nelse:\n    print(f\"The substring '{substring}' is not present in the text.\")\n\n\nThis snippet uses the `in` keyword to check for the presence of a substring within a given string. The condition will evaluate to `True` if the substring is found, and `False` otherwise."
+    },
+    {
+      "question": "What heroic act did Arland D. Williams Jr. perform during the Air Florida Flight 90 crash, and what happened to him?",
+      "answer": "Arland D. Williams Jr. assisted in the rescue of survivors from the crash by passing a rescue line to them in the icy Potomac River. Despite his efforts, he drowned before he could be rescued himself."
+    },
+    {
+      "question": "How did civilians and professionals contribute to the rescue efforts during the Air Florida Flight 90 crash?",
+      "answer": "Survivors were rescued from the icy river by both civilians and professional responders. Civilians and professionals worked together to pull survivors out of the water, demonstrating coordinated rescue efforts in challenging conditions."
+    }
+  ]
+}

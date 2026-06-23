@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/44th_Reconnaissance_Squadron",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the current operational role of the 44th Reconnaissance Squadron?",
+      "answer": "The 44th Reconnaissance Squadron currently operates unmanned aerial vehicles (UAVs) as part of the United States Air Force's 432nd Wing, Air Combat Command, stationed at Creech Air Force Base, Nevada. It is assigned to the 432nd Operations Group and is reported to operate the Lockheed Martin RQ-170 Sentinel."
+    },
+    {
+      "question": "When and where was the 44th Reconnaissance Squadron first organized?",
+      "answer": "The first predecessor of the 44th Reconnaissance Squadron, the 44th Aero Squadron, was organized in 1917. It was stationed in the United States and served as a training unit until it demobilized in 1919."
+    },
+    {
+      "question": "What historical units were consolidated to form the 44th Observation Squadron in 1924?",
+      "answer": "In 1924, the 44th Aero Squadron was consolidated with the 44th Observation Squadron. The 44th Observation Squadron conducted aerial reconnaissance for the Field Artillery School before the consolidation."
+    },
+    {
+      "question": "How did the 44th Reconnaissance Squadron's mission evolve between 1931 and 1942?",
+      "answer": "Initially activated in the Panama Canal Zone in 1931, the squadron conducted battlefield observation. By 1937, its mission expanded to longer-range reconnaissance, leading to its redesignation as the 44th Reconnaissance Squadron. Following the attack on Pearl Harbor, it defended the eastern Caribbean before being redesignated as the 430th Bombardment Squadron in April 1942."
+    },
+    {
+      "question": "What combat operations was the 44th Reconnaissance Squadron involved in during World War II?",
+      "answer": "During World War II, the squadron, then designated as the 44th Reconnaissance Squadron, supported the defense of the eastern Caribbean after Pearl Harbor. Later, as the 430th Bombardment Squadron, it became a training and test unit in the United States. Finally, as a Boeing B-29 Superfortress unit, it saw combat with the 502d Bombardment Group in the closing months of the war, flying from Northwest Field, Guam."
+    },
+    {
+      "question": "What award did the 44th Reconnaissance Squadron earn during World War II?",
+      "answer": "As a Boeing B-29 Superfortress unit, the squadron earned a Distinguished Unit Citation for its combat operations with the 502d Bombardment Group in the closing months of World War II."
+    },
+    {
+      "question": "Provide a Python code snippet that lists the squadron's designations in chronological order based on the historical text.",
+      "answer": "python\nsquadron_designations = [\n    (\"44th Aero Squadron\", 1917),\n    (\"44th Observation Squadron\", 1924),\n    (\"44th Reconnaissance Squadron\", 1937),\n    (\"430th Bombardment Squadron\", 1942),\n    (\"44th Reconnaissance Squadron\", \"reactivated\"),\n    (\"Boeing B-29 Superfortress unit\", 1944)\n]\n\nfor designation, year in squadron_designations:\n    print(f\"{designation}: {year}\")\n"
+    }
+  ]
+}

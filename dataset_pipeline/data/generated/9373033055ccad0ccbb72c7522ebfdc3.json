@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Dwarf_star",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "Who first introduced the term 'dwarf star' and in what context?",
+      "answer": "The term 'dwarf star' was introduced in 1906 by the Danish astronomer Ejnar Hertzsprung. He noticed that the reddest stars (classified as K and M) could be divided into two groups: one group much brighter than the Sun (giant stars) and another much fainter (dwarf stars)."
+    },
+    {
+      "question": "What is the difference between a main-sequence star and a white dwarf?",
+      "answer": "A main-sequence star is a star in its core hydrogen-burning phase, typically of luminosity class V. A white dwarf, in contrast, is a stellar remnant composed of electron-degenerate matter, representing the final stage for stars not massive enough to become neutron stars or undergo a Type II supernova."
+    },
+    {
+      "question": "Provide examples of red dwarfs and yellow dwarfs.",
+      "answer": "Examples of red dwarfs include Proxima Centauri and Alpha Centauri B. An example of a yellow dwarf is Alpha Centauri A."
+    },
+    {
+      "question": "What defines a brown dwarf, and what is its mass range?",
+      "answer": "A brown dwarf is a substellar object not massive enough to fuse hydrogen into helium but still capable of fusing deuterium. Its mass range is between approximately 13 Jupiter masses and 0.08 solar masses (about 80 Jupiter masses)."
+    },
+    {
+      "question": "Why are black dwarfs not observed in the universe?",
+      "answer": "Black dwarfs are theoretical stellar remnants that have cooled to the point of no longer emitting visible light. Since the cooling process for white dwarfs takes trillions of years, no black dwarfs are known to exist yet, as the universe is not old enough for any to have formed."
+    },
+    {
+      "question": "Write a Python function to classify a star based on its spectral class and luminosity class.",
+      "answer": "python\n\ndef classify_star(spectral_class, luminosity_class):\n    if luminosity_class == 'V':\n        if spectral_class in ['M', 'K']:\n            return 'Red dwarf'\n        elif spectral_class == 'G':\n            return 'Yellow dwarf'\n        elif spectral_class in ['A', 'B']:\n            return 'Blue dwarf'\n    elif luminosity_class == 'D':\n        return 'White dwarf'\n    else:\n        return 'Unknown type'\n\n# Example usage:\nprint(classify_star('M', 'V'))  # Output: Red dwarf\nprint(classify_star('G', 'V'))  # Output: Yellow dwarf\nprint(classify_star('A', 'V'))  # Output: Blue dwarf\nprint(classify_star('M', 'D'))  # Output: White dwarf\n"
+    },
+    {
+      "question": "How does the luminosity of a white dwarf compare to that of a main-sequence star of similar mass?",
+      "answer": "A white dwarf has significantly lower luminosity than a main-sequence star of similar mass. This is because white dwarfs no longer undergo nuclear fusion and instead radiate away their residual heat, making them much fainter."
+    }
+  ]
+}

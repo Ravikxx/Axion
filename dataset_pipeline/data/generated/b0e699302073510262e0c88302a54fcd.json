@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Albion_Reed_Hodgdon",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What were the major academic degrees earned by Albion Reed Hodgdon, and from which institutions?",
+      "answer": "Albion Reed Hodgdon earned a Bachelor of Science in botany from the University of New Hampshire in 1932, a Master of Science in botany from the same institution in 1934, and a Doctor of Philosophy in botany from Harvard University in 1936."
+    },
+    {
+      "question": "What was the title of Albion Reed Hodgdon's doctoral thesis, and who supervised it?",
+      "answer": "Hodgdon's doctoral thesis was titled 'A Monographic Study of the Genus Lechea,' and it was supervised by Merritt Lyndon Fernald at Harvard University."
+    },
+    {
+      "question": "Which regions did Albion Reed Hodgdon collect plants in during his career?",
+      "answer": "Hodgdon collected plants in Virginia, the Florida Keys, Cuba (1936), Kentucky (1937), Mexico, California (1938), Alaska (1952), the Caribbean (1960s), Great Britain (1964), Scotland and Ireland (1966), Europe (1968), Puerto Rico (1973), and the Galápagos Islands."
+    },
+    {
+      "question": "What were some of the key academic positions held by Albion Reed Hodgdon at the University of New Hampshire?",
+      "answer": "Hodgdon joined the University of New Hampshire faculty as an instructor in 1936, became an associate professor in 1941, and a full professor later. He served as the chair of the botany department from 1947 to 1967 and was the curator of the University of New Hampshire Herbarium."
+    },
+    {
+      "question": "How did Albion Reed Hodgdon contribute to the University of New Hampshire Herbarium?",
+      "answer": "Hodgdon expanded the University of New Hampshire Herbarium from 1,500 specimens in 1892 to over 118,000 specimens by the time he retired. The herbarium now bears his name in his honor."
+    },
+    {
+      "question": "What were the roles of Albion Reed Hodgdon in professional botanical organizations?",
+      "answer": "Hodgdon served as the editor-in-chief of the journal *Rhodora* from 1962 to 1974 and as the president of the New England Botanical Club from 1974 to 1976."
+    },
+    {
+      "question": "Write a Python code snippet to calculate the total number of specimens in the University of New Hampshire Herbarium when Hodgdon retired.",
+      "answer": "python\n# Specimen counts when Hodgdon retired\ntotal_specimens = 118000\nvascular_plants = 82000\nmarine_algae = 36000\nother_specimens = total_specimens - vascular_plants - marine_algae\n\nprint(f\"Total specimens: {total_specimens}\")\nprint(f\"Vascular plants: {vascular_plants}\")\nprint(f\"Marine algae: {marine_algae}\")\nprint(f\"Other specimens: {other_specimens}\")\n\nThe output would show the distribution of specimens in the herbarium."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/2016_Minnesota_Lynx_season",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "How many players from the Minnesota Lynx participated in the 2016 Rio Olympics?",
+      "answer": "Five Minnesota Lynx players participated in the 2016 Rio Olympics: Maya Moore, Lindsay Whalen, Sylvia Fowles, Seimone Augustus (for Team USA), and Anna Cruz (for Spain)."
+    },
+    {
+      "question": "What was the Minnesota Lynx's longest winning streak during the 2016 WNBA regular season?",
+      "answer": "The Minnesota Lynx's longest winning streak during the 2016 WNBA regular season was 13 games, from late May through mid-June."
+    },
+    {
+      "question": "How did the Minnesota Lynx perform in the 2016 WNBA Playoffs?",
+      "answer": "The Lynx entered the 2016 WNBA Playoffs as the top seed with a 28-6 record. They defeated Phoenix 3-0 in the semifinals, then faced Los Angeles in the Finals. They lost Games 1 and 3 but won Games 2 and 4 to force a decisive Game 5, which they lost by one point on a last-second shot."
+    },
+    {
+      "question": "Which team ended the Minnesota Lynx's 13-game winning streak in the 2016 season?",
+      "answer": "The Los Angeles Sparks ended the Minnesota Lynx's 13-game winning streak on June 24, 2016, despite the Lynx having beaten Los Angeles just three nights earlier."
+    },
+    {
+      "question": "How many all-stars were on the Minnesota Lynx's 2016 roster, and which players were they?",
+      "answer": "The 2016 Minnesota Lynx roster included seven current or previous all-stars: Maya Moore, Lindsay Whalen, Sylvia Fowles, Seimone Augustus, Rebekkah Brunson, Jia Perkins, and Renee Montgomery. Combined, they had 22 total All-Star game selections."
+    },
+    {
+      "question": "What was the Minnesota Lynx's overall record for the 2016 WNBA season?",
+      "answer": "The Minnesota Lynx finished the 2016 WNBA season with a record of 28 wins and 6 losses."
+    },
+    {
+      "question": "Write a Python list comprehension that filters all players from the 2016 Lynx roster who are Olympic gold medalists (assuming a list of tuples with player names and medal status).",
+      "answer": "python\nolympic_players = [player for player, is_olympic_medalist in lynx_roster\n                   if is_olympic_medalist]\n# Example usage:\nlynx_roster = [\n    ('Maya Moore', True), ('Lindsay Whalen', True), ('Sylvia Fowles', True),\n    ('Seimone Augustus', True), ('Anna Cruz', False), ('Rebekkah Brunson', False)\n]\nolympic_players -> ['Maya Moore', 'Lindsay Whalen', 'Sylvia Fowles', 'Seimone Augustus']\n"
+    }
+  ]
+}

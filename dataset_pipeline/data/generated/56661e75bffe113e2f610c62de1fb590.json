@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/If_There_Is_a_Reason_to_Study",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who directed the documentary film 'If There Is a Reason to Study' and what is its original title?",
+      "answer": "The documentary film 'If There Is a Reason to Study' was directed by Adler Yang. Its original title in Chinese is '學習的理由'."
+    },
+    {
+      "question": "What is the central concept of 'Allocation Dependence' as described in the film?",
+      "answer": "Allocation Dependence refers to the phenomenon where individuals grow dependent on allocated resources or allocation systems, leading them to conform to the system's criteria even at significant personal cost. This can result in alienation, waste of personal qualities, disparity in opportunities, exhaustion from constant adaptation, and fragility when the system fails."
+    },
+    {
+      "question": "How did the production of 'If There Is a Reason to Study' begin, and what was Adler Yang's age at the time?",
+      "answer": "The production of the film began in March 2009 when Adler Yang was 14 years old. At that time, he was an 8th-grade student at Humanity (RenWen) Junior High School."
+    },
+    {
+      "question": "What are some of the locations where the film was theatrically released, and how was it funded?",
+      "answer": "The film was theatrically released in major theaters across Taipei, Taoyuan, Taichung, Kaohsiung, Yilan in Taiwan, and Kowloon in Hong Kong. The production and release were funded through crowdfunding."
+    },
+    {
+      "question": "Describe the academic pressure faced by the students in the film. What exam did they prepare for, and how long did Yang follow their journey?",
+      "answer": "The students in the film, including Yang's friends, faced the high-stakes Basic Competence Test (BCT), a crucial high school entrance exam in Taiwan. Yang documented their experiences starting from their junior high years until their college years, spanning a total of 7 years."
+    },
+    {
+      "question": "Provide an example of how 'Allocation Dependence' might manifest in a real-world scenario. Include a code snippet to simulate a simplified version of this concept.",
+      "answer": "A real-world example of Allocation Dependence could be a student focusing excessively on standardized test scores to gain admission to a prestigious university, neglecting other skills like creativity or critical thinking. Below is a Python snippet simulating the trade-offs in resource allocation under such dependence:\n\npython\nclass Student:\n    def __init__(self, creativity, test_score):\n        self.creativity = creativity\n        self.test_score = test_score\n\n    def optimize_for_allocation(self, target_score=150):\n        # Simulate trade-off: improving test score reduces creativity\n        while self.test_score < target_score and self.creativity > 0:\n            self.test_score += 10\n            self.creativity -= 2\n        return self.creativity, self.test_score\n\n# Example: A student starts with high creativity but low test score\nstudent = Student(creativity=10, test_score=100)\nremaining_creativity, updated_score = student.optimize_for_allocation()\nprint(f\"After optimization: Creativity = {remaining_creativity}, Test Score = {updated_score}\")\n\nThe output might show that the student's test score increased significantly, but their creativity was reduced, illustrating the 'waste' aspect of Allocation Dependence."
+    },
+    {
+      "question": "How many awards and recognitions has the film 'If There Is a Reason to Study' received internationally?",
+      "answer": "The film has received 11 awards and recognitions internationally and has been selected in more than 10 film festivals."
+    }
+  ]
+}

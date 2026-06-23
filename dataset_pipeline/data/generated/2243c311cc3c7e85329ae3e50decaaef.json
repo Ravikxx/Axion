@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Dial_(measurement)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is a dial and what is its primary function in instruments?",
+      "answer": "A dial is a flat, circular or rectangular surface with numbers or markings used to display the setting or output of devices like clocks, watches, gauges, or meters. Its primary function is to visually indicate measurements or settings, such as pressure, voltage, temperature, or speed, often using a pointer against a scale."
+    },
+    {
+      "question": "How do mechanical dials differ from modern electronic displays?",
+      "answer": "Mechanical dials are physical devices with moving parts (e.g., pointers and scales) that directly display measurements. Modern electronic displays simulate analog dials by converting digital data into visual representations, such as a moving pointer or a segmented scale on a screen."
+    },
+    {
+      "question": "Provide examples of instruments that use dials for measurement.",
+      "answer": "Instruments using dials include pressure and vacuum gauges, fluid-level gauges (for fuel or oil), voltmeters and ammeters, thermometers, hygrometers, speedometers, tachometers, and thermostats. These devices rely on dials to show readings like pressure, voltage, temperature, or speed."
+    },
+    {
+      "question": "What are the three common styles of dials mentioned in the text?",
+      "answer": "The three common styles of dials are: (1) Circular dials, which are round with a fixed scale and a moving pointer; (2) Fixed pointer with moving scale, where the pointer is static and the scale moves; and (3) Fixed scale with moving dial, where the scale is stationary and the dial (with the pointer) moves."
+    },
+    {
+      "question": "How do mirror dials improve reading accuracy?",
+      "answer": "Mirror dials reduce parallax error by including a small mirrored strip aligned with the scale. The observer adjusts their position until the pointer obscures its reflection in the mirror. This alignment ensures the reading is taken directly perpendicular to the scale, minimizing distortion."
+    },
+    {
+      "question": "Write a Python function that simulates a simple analog dial using ASCII characters for the pointer and scale.",
+      "answer": "python\nimport math\n\ndef draw_analog_dial(value, min_val=0, max_val=100, radius=10):\n    # Calculate pointer position\n    angle = math.radians(180 - (value / (max_val - min_val)) * 180)\n    x = int(radius * math.cos(angle))\n    y = int(radius * math.sin(angle))\n    \n    # Draw the dial\n    for i in range(-radius, radius + 1):\n        for j in range(-radius, radius + 1):\n            dist = math.sqrt(i**2 + j**2)\n            if dist > radius:\n                print(' ', end='')\n            elif dist < radius - 1:\n                print('.', end='')\n            else:\n                if i == x and j == y:\n                    print('>', end='')  # Pointer\n                else:\n                    print('|', end='')\n        print()\n\n# Example usage: draw_analog_dial(75, 0, 100, 10)\n\nThis function draws a circular dial with a pointer (represented by '>') indicating the given value. The scale is simplified for ASCII rendering, and the pointer's position is calculated based on the input value."
+    },
+    {
+      "question": "What role does a dial play in a thermostat, and how does it differ from a thermometer?",
+      "answer": "In a thermostat, the dial acts as a control knob to set the desired temperature, allowing users to adjust the heating or cooling system. In contrast, a thermometer's dial is a display that shows the current temperature, often using a pointer against a scale. The thermostat dial is an input device, while the thermometer dial is an output indicator."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/rpalo/does-your-site-need-a-ai-page-2hkp",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What is the purpose of adding an /ai page to a website?",
+      "answer": "An /ai page serves to transparently explain how an individual or organization uses AI tools in their work. The goal is to build trust by providing clear, authentic, and accessible information about AI usage—whether AI is used, how it’s utilized, and the rationale behind those choices. This transparency helps visitors understand the context and integrity of the content they consume."
+    },
+    {
+      "question": "What are some examples of AI transparency statements a website might include on an /ai page?",
+      "answer": "Examples range from simple declarations like 'No posts on this site are written with generative AI' to detailed breakdowns that outline specific tools, workflows, or ethical considerations. The key is authenticity and clarity, such as explaining how AI assists with drafting, editing, or research, or noting where AI is intentionally avoided. The tone should be human and direct, avoiding legal jargon."
+    },
+    {
+      "question": "Why might transparency about AI usage help build trust with an audience?",
+      "answer": "Transparency about AI usage fosters trust because it signals honesty and self-awareness. When creators openly share their processes—including where AI fits in—they invite their audience to engage critically. This openness counters skepticism about authenticity, especially in an era where AI-generated content is widespread. It also aligns with broader expectations for ethical communication and accountability in digital spaces."
+    },
+    {
+      "question": "How can a developer add their site’s /ai page to a public database?",
+      "answer": "The public database at [slashai.page](https://slashai.page/) allows website owners to submit their /ai page URL. This helps centralize transparency efforts and makes it easier for visitors to find and reference AI transparency statements across the web. Including a link to your /ai page in the submission ensures visibility."
+    },
+    {
+      "question": "Is it acceptable to use AI tools as long as the usage is disclosed transparently?",
+      "answer": "Yes, using AI tools is not inherently negative, provided the usage is disclosed clearly. The ethical concern isn’t AI itself, but whether its role and limitations are communicated honestly. Transparency allows users to evaluate the content with full context, including potential biases or inaccuracies introduced by AI. The focus should be on responsible, informed use rather than avoidance."
+    },
+    {
+      "question": "Write a simple HTML snippet to link to an /ai page from your site’s navigation.",
+      "answer": "html\n<nav>\n  <ul>\n    <li><a href=\"/\">Home</a></li>\n    <li><a href=\"/ai\">How I Use AI</a></li>\n    <li><a href=\"/about\">About</a></li>\n  </ul>\n</nav>\n"
+    },
+    {
+      "question": "What risks might arise from not being transparent about AI usage on a website?",
+      "answer": "Without transparency, visitors may assume that content is entirely human-generated, leading to distrust if AI is later revealed to have played a role. It can also erode credibility if inconsistencies arise between stated values and actual practices. Additionally, unchecked AI use risks spreading misinformation, reinforcing biases, or producing low-quality content—issues that transparency could help mitigate by inviting scrutiny and feedback."
+    }
+  ]
+}

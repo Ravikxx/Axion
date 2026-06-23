@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Betty_White",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "Who was Betty White and what were her most notable roles in television?",
+      "answer": "Betty Marion White (1922–2021) was an American actress, comedian, presenter, singer, author, and television personality. She is best known for her roles as Sue Ann Nivens in *The Mary Tyler Moore Show*, Rose Nylund in *The Golden Girls*, and Elka Ostrovsky in *Hot in Cleveland*."
+    },
+    {
+      "question": "What records did Betty White hold in the entertainment industry?",
+      "answer": "Betty White held several records, including the first woman to win a Daytime Emmy Award for Outstanding Game Show Host (1983), the longest span between Emmy nominations for performances (61 years, 1951–2012), the oldest nominee at age 91 (2013), and the oldest winner of a competitive Grammy Award (2012)."
+    },
+    {
+      "question": "How did Betty White contribute to game shows as a host?",
+      "answer": "Betty White hosted the NBC game show *Just Men!* and became the first woman to win a Daytime Emmy Award for Outstanding Game Show Host in 1983."
+    },
+    {
+      "question": "What was the premise of *Betty White's Off Their Rockers* and when did it premiere?",
+      "answer": "*Betty White's Off Their Rockers* was a television program that premiered in 2011, where senior citizens played practical jokes on younger generations."
+    },
+    {
+      "question": "Describe the format and significance of Betty White's 90th Birthday Party special.",
+      "answer": "Betty White's 90th Birthday Party was a special NBC broadcast on January 16, 2012, featuring appearances by many of her past collaborators. The show celebrated her 90th birthday and aired the day before her actual birthday."
+    },
+    {
+      "question": "Can you provide a code snippet that calculates the span of years between Betty White's first and last Emmy nominations?",
+      "answer": "python\nfirst_nomination = 1951\nlast_nomination = 2012\nspan_years = last_nomination - first_nomination\nprint(f\"The span between Emmy nominations is {span_years} years.\")\n\nThis code calculates the 61-year span between her first (1951) and last (2012) Emmy nominations."
+    },
+    {
+      "question": "Why was Betty White considered a pioneer for women in television?",
+      "answer": "Betty White broke barriers as the first woman to win a Daytime Emmy for Outstanding Game Show Host (1983) and became the oldest nominee in Emmy history at age 91 (2013). Her longevity and versatility across comedy, hosting, and acting roles made her a trailblazer in the industry."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Euboean_vase_painting",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What were the four phases of Iron Age pottery on the island of Euboea, and when did each phase occur?",
+      "answer": "The four phases of Iron Age pottery on Euboea were: Subgeometric (1125–1050 BC), Protogeometric (1050–900 BC), Subprotogeometric (900–750 BC), and Late Geometric (750–700 BC). These phases mark the evolution of pottery styles on the island during the Iron Age period."
+    },
+    {
+      "question": "Which archaeological sites on Euboea provide evidence of the island's wealth during the Iron Age?",
+      "answer": "The cemeteries of Toumba, Skoubris, and Palia, as well as the settlements at Lefkandi and Xeropolis, demonstrate the wealth of Euboea during the Iron Age. These sites have yielded significant finds of pottery and other artifacts that reflect the island's prosperity at the time."
+    },
+    {
+      "question": "What distinguished Euboean Geometric vases from those of other regions, and who was the Cesnola Painter?",
+      "answer": "Euboean Geometric vases were high-quality products with unique features, such as vessels covered in a thick cream-coloured slip and the use of suspended concentric semicircles. The Cesnola Painter, active around 750 BC, introduced Attic-style figural painting to Euboea and displayed strong Attic influence in his work."
+    },
+    {
+      "question": "How did Euboean vase painting styles evolve to include figural motifs and colors?",
+      "answer": "Around 750 BC, Euboean vase painting began incorporating figural motifs and added colors like red and white, influenced by Attic and East Greek styles. This experimentation led to the popularization of floral and other ornaments, as well as mythological and wild imagery, marking the transition toward the Orientalising style."
+    },
+    {
+      "question": "What are some examples of mythological imagery found on Euboean black-figure vases?",
+      "answer": "Large format amphorae from Euboea often depicted mythological imagery, such as the adventures of Herakles and the Judgement of Paris. Some very large amphorae, possibly funeral vases for children, showed images related to weddings, while others featured wild imagery like the rape of a deer by a satyr or Herakles with centaurs and daimons."
+    },
+    {
+      "question": "How can scholars distinguish Euboean black-figure pottery from Attic products, and where were most Euboean black-figure vases produced?",
+      "answer": "Euboean black-figure pottery is often distinguished by its restricted use of incision and regular use of white paint for floral ornaments. Scholars assume that the bulk of these finds were produced in Eretria, though some vessels like the Dolphin Class, originally thought to be Attic, are now recognized as Euboean."
+    },
+    {
+      "question": "Write a Python function that takes a list of pottery phases and their corresponding date ranges, and returns a dictionary where the keys are the phase names and the values are the start and end years.",
+      "answer": "python\ndef create_phase_dictionary(phases):\n    phase_dict = {}\n    for phase in phases:\n        name, start, end = phase\n        phase_dict[name] = {'start_year': start, 'end_year': end}\n    return phase_dict\n\n# Example usage:\nphases = [\n    ('Subgeometric', 1125, 1050),\n    ('Protogeometric', 1050, 900),\n    ('Subprotogeometric', 900, 750),\n    ('Late Geometric', 750, 700)\n]\nresult = create_phase_dictionary(phases)\nprint(result)\n\nThis function converts a list of pottery phases and their date ranges into a structured dictionary for easy reference."
+    }
+  ]
+}

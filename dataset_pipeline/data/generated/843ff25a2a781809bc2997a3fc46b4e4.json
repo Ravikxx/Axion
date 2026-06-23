@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/East_Humboldt_Range",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the highest peak in the East Humboldt Range and what is its elevation?",
+      "answer": "The highest peak in the East Humboldt Range is Hole in the Mountain Peak, which reaches an elevation of 11,306 feet (3,446 meters)."
+    },
+    {
+      "question": "How was the East Humboldt Range formed geologically?",
+      "answer": "The East Humboldt Range was formed by a tilted fault-block process, which resulted in gradual slopes and valleys on the western side and a steep escarpment on the eastern side."
+    },
+    {
+      "question": "List the glacial tarns found in the East Humboldt Range.",
+      "answer": "The East Humboldt Range includes several glacial tarns, such as Angel Lake, Smith Lake, Greys Lake, Winchell Lake, Lizzie's Basin, Boulder Lakes, and Steele Lake."
+    },
+    {
+      "question": "What legislation established the East Humboldt Wilderness, and how much area does it cover?",
+      "answer": "The Nevada Wilderness Protection Act of 1989 established the East Humboldt Wilderness, which covers over 36,000 acres (150 square kilometers) of the range."
+    },
+    {
+      "question": "Provide a Python code snippet to calculate the total elevation gain from Wells to Hole in the Mountain Peak.",
+      "answer": "Here is a Python code snippet to calculate the total elevation gain from Wells (5,650 feet) to Hole in the Mountain Peak (11,306 feet):\n\npython\ndef calculate_elevation_gain(start_elevation, end_elevation):\n    return end_elevation - start_elevation\n\nstart_elevation = 5650  # Wells elevation in feet\nend_elevation = 11306  # Hole in the Mountain Peak elevation in feet\n\n elevation_gain = calculate_elevation_gain(start_elevation, end_elevation)\nprint(f\"The total elevation gain is {elevation_gain} feet.\")\n\nThe total elevation gain from Wells to Hole in the Mountain Peak is 5,656 feet."
+    },
+    {
+      "question": "How do the northern and southern boundaries of the East Humboldt Range differ geographically?",
+      "answer": "The northern boundary of the East Humboldt Range is near Interstate 80 and the community of Wells, while the southern boundary includes Secret Pass, the larger Ruby Range, and Ruby Valley."
+    },
+    {
+      "question": "What type of evidence indicates glaciation in the East Humboldt Range during recent ice ages?",
+      "answer": "The East Humboldt Range shows extensive evidence of glaciation, including U-shaped canyons, moraines, steeply carved granite mountains, cliffs, and cirques."
+    }
+  ]
+}

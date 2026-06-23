@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Dolph_Ziggler",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the real name of the professional wrestler known as Dolph Ziggler?",
+      "answer": "The professional wrestler known as Dolph Ziggler's real name is Nicholas Theodore Nemeth."
+    },
+    {
+      "question": "How many times did Dolph Ziggler win the Intercontinental Championship during his WWE tenure?",
+      "answer": "Dolph Ziggler won the Intercontinental Championship six times during his WWE tenure."
+    },
+    {
+      "question": "What notable championship did Dolph Ziggler win in his first match in New Japan Pro-Wrestling (NJPW)?",
+      "answer": "Dolph Ziggler won the IWGP Global Heavyweight Championship in his debut match in New Japan Pro-Wrestling (NJPW)."
+    },
+    {
+      "question": "Which wrestling promotions has Nic Nemeth performed in after leaving WWE?",
+      "answer": "After leaving WWE, Nic Nemeth has performed in the independent circuit, New Japan Pro-Wrestling (NJPW), and Total Nonstop Action Wrestling (TNA)."
+    },
+    {
+      "question": "What was one of the key roles Nemeth played in WWE before adopting the Dolph Ziggler persona?",
+      "answer": "Before adopting the Dolph Ziggler persona, Nemeth played the role of the caddie sidekick to Kerwin White on WWE's Raw brand in 2005."
+    },
+    {
+      "question": "Write a Python snippet to calculate the total number of major championships (excluding WWE) Nemeth won after 2023.",
+      "answer": "python\n# Major championships won after 2023 (excluding WWE)\nchampionships = [\n    \"IWGP Global Heavyweight Championship\",\n    \"AAA Mega Championship\",\n    \"TNA World Championship\",\n    \"TNA World Tag Team Championship\"\n]\n\nprint(f\"Total major non-WWE championships won: {len(championships)}\")\n"
+    },
+    {
+      "question": "What is one of the notable accomplishments Nemeth achieved at WrestleMania or a WWE pay-per-view event?",
+      "answer": "One of Nemeth's notable accomplishments is headlining multiple WWE pay-per-view events as Dolph Ziggler."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/maame-codes/the-senior-developer-is-now-the-new-entry-level-49d1",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What are the key differences between entry-level tech jobs in 2022 versus 2026, according to the text?",
+      "answer": "In 2022, entry-level tech roles valued coding skills ('coder' mindset), while in 2026, the focus has shifted to Senior-level filtering and control. Companies now seek candidates who can act like Leads from Day 1, as AI handles 'Junior' tasks like boilerplate code, unit tests, and basic CRUD operations. Entry-level roles now require system forensics, orchestration, and architectural judgment to debug AI-generated code, manage AI agents, and evaluate AI's outputs for security risks."
+    },
+    {
+      "question": "What specific tasks did the interviewer ask the candidate to perform during the interview for the 'Junior Web Developer' role?",
+      "answer": "The interviewer asked the candidate to examine 2,000 lines of AI-generated TypeScript code within a 20-minute timer. The task was to identify why the AI agent claimed a payment gateway refactor was 'Successful' despite logs indicating otherwise. The candidate had to debug a 'perfect' but flawed system, which they failed to do within the time limit."
+    },
+    {
+      "question": "Why does the author argue that the 'Junior' label in tech jobs no longer exists in 2026?",
+      "answer": "The author argues that the 'Junior' label has been deleted because AI now handles routine coding tasks (boilerplate, unit tests, basic CRUD), eliminating the need for traditional ramp-up periods. Companies now expect entry-level hires to perform at a Senior level immediately, requiring skills like debugging AI-generated code, managing AI agents, and making architectural judgments. The industry values control and expertise over potential."
+    },
+    {
+      "question": "What advice does the author give to students preparing for tech careers in 2026?",
+      "answer": "The author advises students to leapfrog the 'Junior' phase entirely. Instead of focusing on traditional coding skills (e.g., LeetCode Easy problems or building basic projects like weather apps), students should learn how to audit AI-generated code for flaws, manage AI agents, and evaluate architectural decisions. The goal is to develop Senior-level skills (system forensics, orchestration, and judgment) before entering the workforce."
+    },
+    {
+      "question": "How does the author describe the contrast between university education and the real world of tech in 2026?",
+      "answer": "The author describes university education as outdated, where students still debate trivial matters like semicolons, while the real world operates at a Senior level. In the real world, Lead Architects manage fleets of AI agents, and the industry no longer tolerates the 'traditional' student roadmap. Students who rely on 'knowing Python and Java' or grinding basic coding challenges are competing with calculators and losing to automation."
+    },
+    {
+      "question": "Provide a Python code snippet that demonstrates how to audit an AI-generated function for logical flaws, as described in the text.",
+      "answer": "python\nimport inspect\n\ndef audit_ai_function(func):\n    \"\"\"\n    Audits an AI-generated function for logical flaws by checking:\n    1. Input validation\n    2. Edge cases\n    3. Logical consistency\n    4. Security risks (e.g., hardcoded secrets)\n    \"\"\"\n    source = inspect.getsource(func)\n    issues = []\n    \n    # Check for hardcoded secrets\n    if 'API_KEY' in source or 'PASSWORD' in source:\n        issues.append(\"Hardcoded secrets detected (security risk)\")\n    \n    # Check for missing input validation\n    if 'if not' not in source and 'validate' not in source.lower():\n        issues.append(\"No input validation (potential runtime errors)\")\n    \n    # Check for edge cases (e.g., empty input)\n    if 'empty' not in source.lower() and 'None' not in source:\n        issues.append(\"No handling for edge cases (e.g., empty input)\")\n    \n    return issues if issues else \"Function appears logically sound.\"\n\n# Example AI-generated function to audit\ndef ai_payment_refactor(transactions):\n    # No input validation, hardcoded secret, and no edge case handling\n    API_KEY = \"secret123\"\n    total = sum(transactions)\n    return f\"Refactored {len(transactions)} transactions. Total: {total}\"\n\n# Audit the function\nprint(audit_ai_function(ai_payment_refactor))\n# Output: ['Hardcoded secrets detected (security risk)', 'No input validation (potential runtime errors)', 'No handling for edge cases (e.g., empty input)']\n"
+    },
+    {
+      "question": "What skills are now required for 'entry-level' tech roles in 2026, and why?",
+      "answer": "Entry-level tech roles in 2026 require three core skills: **System Forensics** (debugging AI-generated code for logical flaws or 'hallucinations'), **Orchestration** (managing AI agents or workflows instead of writing raw code), and **Architectural Judgment** (evaluating whether AI-generated solutions are secure, efficient, or maintainable). These skills are needed because AI now handles routine coding tasks, and companies expect junior hires to add value by controlling, auditing, and optimizing AI-driven systems rather than performing basic coding."
+    }
+  ]
+}

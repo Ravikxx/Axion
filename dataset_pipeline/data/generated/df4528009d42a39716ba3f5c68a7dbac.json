@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/40th_Infantry_Regiment_\"Bologna\"",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When was the 40th Infantry Regiment 'Bologna' first formed and under what circumstances?",
+      "answer": "The 40th Infantry Regiment 'Bologna' traces its origins to 12 June 1859, when a volunteer brigade was formed in Turin during the Second Italian War of Independence. After occupying Bologna, the brigade was renamed Brigade 'Bologna' on 1 October 1859, and its two regiments were officially numbered as the 39th and 40th Infantry Regiments on 1 January 1860."
+    },
+    {
+      "question": "What were the notable military campaigns the 40th Infantry Regiment participated in during the 19th century?",
+      "answer": "The 40th Infantry Regiment participated in several key campaigns, including the Sardinian campaign in central and southern Italy in 1860, the Third Italian War of Independence in 1866, and the capture of Rome in 1870."
+    },
+    {
+      "question": "How did the 40th Infantry Regiment's role evolve during World War II?",
+      "answer": "During World War II, the 40th Infantry Regiment was assigned to the 25th Infantry Division 'Bologna' and fought in the Western Desert campaign. The regiment was destroyed during the Second Battle of El Alamein in 1942."
+    },
+    {
+      "question": "What happened to the 40th Infantry Regiment after World War II, and how did its structure change over time?",
+      "answer": "After World War II, the regiment was reformed in Modena in 1947. It was later assigned to the Infantry Division 'Trieste' in 1950, which became the Infantry Brigade 'Trieste' in 1960. In 1975, the regiment was disbanded, and its flag and traditions were transferred to the 40th Mechanized Infantry Battalion 'Bologna'."
+    },
+    {
+      "question": "What is the significance of the 40th Infantry Regiment 'Bologna's anniversary, and what award was given to the regiment for its actions?",
+      "answer": "The regiment's anniversary is marked on 25 June 1915, commemorating the day it pushed Austro-Hungarian forces out of Castelnuovo del Carso during the First Battle of the Isonzo. For this action, the regiment was awarded a Silver Medal of Military Valor."
+    },
+    {
+      "question": "How did the 40th Infantry Regiment's structure change after 1975?",
+      "answer": "After 1975, the regiment was disbanded, and its flag and traditions were transferred to the 40th Mechanized Infantry Battalion 'Bologna', which was part of the Mechanized Brigade 'Trieste'. In 1989, the battalion was reduced to a reserve unit, and in 1991, it was officially disbanded."
+    },
+    {
+      "question": "Write a Python function to calculate the total number of years the 40th Infantry Regiment 'Bologna' was active in its original form before being disbanded in 1975.",
+      "answer": "python\ndef calculate_regiment_active_years():\n    formation_year = 1859\n    disbandment_year = 1975\n    return disbandment_year - formation_year\n\n# Example usage:\nactive_years = calculate_regiment_active_years()\nprint(f\"The 40th Infantry Regiment 'Bologna' was active for {active_years} years.\")\n\nThis function calculates the total duration the regiment existed in its original form from its formation in 1859 to its disbandment in 1975."
+    }
+  ]
+}

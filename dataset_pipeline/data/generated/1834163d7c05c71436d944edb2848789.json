@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/devteam/join-our-dev-weekend-challenge-1000-in-prizes-across-ten-winners-submissions-due-april-20-at-47i1",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What is the DEV Weekend Challenge Earth Day Edition about?",
+      "answer": "The DEV Weekend Challenge Earth Day Edition is a short, weekend-long event where participants build projects inspired by the planet for Earth Day. The challenge encourages creative interpretations of themes like honoring green spaces, solving carbon emissions, or reimagining humanity's relationship with Earth. Submissions are judged on relevance to the theme, creativity, technical execution, writing quality, and optionally, the use of specific technologies for prize categories."
+    },
+    {
+      "question": "What are the prize categories in the DEV Weekend Challenge Earth Day Edition?",
+      "answer": "The challenge includes six prize categories for participants who incorporate specific technologies into their projects. The categories are: Best use of Backboard, Best use of Auth0 for Agents, Best use of Google Gemini, Best use of Snowflake, Best use of GitHub Copilot, and Best use of Solana. Participants can qualify for multiple categories by using several technologies, but each participant can win only once."
+    },
+    {
+      "question": "How can someone participate in the DEV Weekend Challenge Earth Day Edition?",
+      "answer": "To participate, publish a post on DEV using the provided submission template. The post should include an overview of the project, a demo, the code, and a walkthrough of the technical approach. If pursuing a prize category, highlight how the chosen technology was incorporated. The post must be published by the submission deadline: April 20, 2026, 6:59 AM UTC."
+    },
+    {
+      "question": "What are the judging criteria for the DEV Weekend Challenge Earth Day Edition?",
+      "answer": "Submissions are evaluated based on five criteria: Relevance to Theme (clear connection to Earth Day or planetary themes), Creativity (originality or fresh perspective), Technical Execution (functionality, quality, and ease of use), Writing Quality (clarity and engagement of the submission post), and optionally, Use of Prize Category Technology (meaningful incorporation of the chosen tech for prize categories)."
+    },
+    {
+      "question": "What prizes can winners of the DEV Weekend Challenge Earth Day Edition receive?",
+      "answer": "Ten winners will each receive $100 USD, a DEV++ Membership, and an exclusive DEV badge. All valid participants will also receive a completion badge."
+    },
+    {
+      "question": "Can a participant win multiple prizes in the DEV Weekend Challenge Earth Day Edition?",
+      "answer": "Participants are limited to one win per challenge, even if they qualify for multiple prize categories by using several technologies. However, they can submit their work for multiple categories."
+    },
+    {
+      "question": "Provide a Python code snippet to fetch and display Earth Day challenge details from a hypothetical API.",
+      "answer": "python\nimport requests\n\ndef fetch_challenge_details():\n    api_url = \"https://api.example.com/challenges/weekend-earth-day-2026\"\n    response = requests.get(api_url)\n    if response.status_code == 200:\n        challenge_data = response.json()\n        print(f\"Challenge Title: {challenge_data['title']}\")\n        print(f\"Launch Time: {challenge_data['launch_time']}\")\n        print(f\"Submission Deadline: {challenge_data['submission_due']}\")\n        print(f\"Prizes: {challenge_data['prizes']}\")\n    else:\n        print(\"Failed to fetch challenge details.\")\n\nfetch_challenge_details()\n\nThis code fetches and displays the challenge title, launch time, submission deadline, and prizes from a hypothetical API endpoint."
+    }
+  ]
+}

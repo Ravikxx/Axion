@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/adamthedeveloper/premature-optimization-is-bad-but-your-app-is-just-slow-because-youre-lazy-ldn",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What did Donald Knuth actually mean by 'premature optimization is the root of all evil'?",
+      "answer": "Donald Knuth warned against micro-optimizations—such as hand-tuning sorting algorithms or rewriting functions in assembly—before profiling reveals whether those optimizations are necessary. He emphasized that 97% of the time, such efforts are wasted, but there is a critical 3% where thoughtful optimization is valuable. The quote is often misapplied to justify slow code or design flaws."
+    },
+    {
+      "question": "How does the N+1 query problem impact application performance, and how can it be fixed?",
+      "answer": "The N+1 query problem occurs when a loop executes a separate database query for each item, resulting in N+1 total queries. For example, fetching 200 posts and then querying each author individually would execute 201 queries. This can add significant latency (e.g., 402ms for 200 posts with 2ms round trips). The fix is to use a JOIN to fetch all required data in a single query:\nsql\nSELECT posts.*, users.name, users.avatar\nFROM posts\nJOIN users ON users.id = posts.author_id;\n"
+    },
+    {
+      "question": "What is the difference between premature optimization and basic engineering competence in software development?",
+      "answer": "Premature optimization involves making unnecessary performance tweaks before identifying actual bottlenecks, such as rewriting a function in assembly without profiling. Basic engineering competence means avoiding obviously inefficient choices that are slower by design, like using `SELECT *` when only two columns are needed or querying a database on every loop iteration. One requires speculation; the other requires awareness of tools and best practices."
+    },
+    {
+      "question": "Provide a code example demonstrating how to fix synchronous work that does not need to be synchronous.",
+      "answer": "When tasks are independent, they can be executed concurrently using `Promise.all` in JavaScript to reduce total wait time. For example:\njavascript\n// Before: Sequential awaits (150ms total if each call takes 50ms)\nconst user = await getUser(userId);\nconst settings = await getSettings(userId);\nconst permissions = await getPermissions(userId);\n\n// After: Concurrent execution (50ms total)\nconst [user, settings, permissions] = await Promise.all([\n  getUser(userId),\n  getSettings(userId),\n  getPermissions(userId)\n]);\n"
+    },
+    {
+      "question": "Why is selecting all columns with `SELECT *` considered bad practice even if the application works?",
+      "answer": "Using `SELECT *` fetches unnecessary data, including sensitive or unused columns, which increases network traffic, memory usage, and serialization time. It also risks breaking the application or leaking data if the schema changes. Always select only the columns you need to avoid waste and potential security issues."
+    },
+    {
+      "question": "What is the 'bar' for shipping code according to the text, and how does it relate to Knuth's principle?",
+      "answer": "The bar is not whether the feature works, but whether it ships without obvious waste. Knuth's principle advises measuring before optimizing, but basic competence means avoiding inefficiencies that are slower by design (e.g., 200 queries vs. 1). If you don’t need to measure to know a choice is slower, the slower version is not a principled optimization—it’s just sloppy work."
+    },
+    {
+      "question": "How can modern frameworks or ORMs contribute to performance issues, and what responsibility do developers have?",
+      "answer": "Modern frameworks and ORMs often make it easy to write slow code unintentionally, such as through lazy loading, GraphQL resolvers that each query the database, or React components that fetch independently. Developers must understand what these tools are doing on their behalf and avoid patterns like N+1 queries, even if the tools don’t explicitly prevent them."
+    }
+  ]
+}

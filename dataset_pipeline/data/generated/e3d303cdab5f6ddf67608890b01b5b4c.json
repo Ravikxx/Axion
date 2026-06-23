@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Government_shutdowns_in_the_United_States",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is a government shutdown in the United States, and how is it officially defined?",
+      "answer": "A government shutdown, officially referred to as a 'lapse in appropriations,' occurs when the U.S. federal government fails to pass funding legislation required to finance its operations before the start of the next fiscal year. This results in the curtailment of non-essential agency activities, the furloughing of non-essential workers, and the retention of only essential employees who safeguard human life or property."
+    },
+    {
+      "question": "How many federal government shutdowns have occurred in the United States as of November 2025?",
+      "answer": "As of November 2025, 11 funding gaps have led to federal employees being furloughed, resulting in government shutdowns."
+    },
+    {
+      "question": "What was the longest government shutdown in U.S. history, and how long did it last?",
+      "answer": "The longest government shutdown in U.S. history began on October 1, 2025, during Donald Trump’s second presidency, and lasted for 76 days (the Department of Homeland Security shutdown)."
+    },
+    {
+      "question": "What were the primary causes of the shutdowns during Donald Trump's presidencies?",
+      "answer": "During Donald Trump’s first presidency, the 35-day shutdown (2018–2019) was caused by a dispute over expanding barriers on the U.S.–Mexico border. His second presidency saw two major shutdowns: one starting October 1, 2025 (43 days, unspecified cause) and another beginning February 14, 2026 (76 days, related to the Department of Homeland Security)."
+    },
+    {
+      "question": "How do government shutdowns impact the U.S. economy? Provide a specific example.",
+      "answer": "Government shutdowns disrupt economic activity by closing public institutions, reducing revenue, and stalling major services. During the 2013 shutdown, Standard & Poor’s estimated that it removed $24 billion from the economy and reduced annualized fourth-quarter 2013 GDP growth by at least 0.6 percent."
+    },
+    {
+      "question": "What role did Attorney General Benjamin Civiletti play in U.S. government shutdowns?",
+      "answer": "In 1980, Attorney General Benjamin Civiletti issued a legal opinion mandating that federal agencies cease operations during funding gaps. This opinion established the legal framework for modern government shutdowns, though it was not consistently enforced until after 1990."
+    },
+    {
+      "question": "Write a Python function to check if a given year is associated with a U.S. government shutdown based on the provided historical data.",
+      "answer": "python\ndef was_there_a_shutdown(year: int) -> bool:\n    shutdown_years = {2025, 2026, 2018, 2019, 2013, 1995, 1996}\n    return year in shutdown_years\n\n# Example usage:\nprint(was_there_a_shutdown(2018))  # Output: True\nprint(was_there_a_shutdown(2020))  # Output: False\n\n\nThis function checks if a given year falls within the documented periods of U.S. government shutdowns."
+    }
+  ]
+}

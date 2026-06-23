@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Cronin",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the etymology of the surname Cronin?",
+      "answer": "The surname Cronin is derived from the Irish Ó Cróinín, which originated in County Cork. It comes from the Old Irish word 'crón,' meaning 'saffron-colored.'"
+    },
+    {
+      "question": "Which notable individuals with the surname Cronin have made significant contributions to literature?",
+      "answer": "Notable individuals with the surname Cronin who contributed to literature include A. J. Cronin, a Scottish novelist known for works like 'The Citadel' and 'The Stars Look Down,' and Justin Cronin, an American author famous for 'The Passage' trilogy."
+    },
+    {
+      "question": "Who was the Medal of Honor recipient with the surname Cronin, and during which conflict did they serve?",
+      "answer": "Cornelius Cronin (1838–1912) was a Medal of Honor recipient during the American Civil War. He received the award for his actions in the Battle of Fort Donelson in 1862."
+    },
+    {
+      "question": "Write a Python function to filter and list all Cronin individuals born in the 20th century from the provided list.",
+      "answer": "python\ndef filter_cronins_born_20th_century(cronin_list):\n    return [person for person in cronin_list if 1901 <= person.get('birth_year', 0) <= 2000]\n\n# Example usage (assuming a list of dictionaries with 'name' and 'birth_year' keys):\ncronin_individuals = [\n    {\"name\": \"A. J. Cronin\", \"birth_year\": 1896},\n    {\"name\": \"A. L. Cronin\", \"birth_year\": 1902},\n    {\"name\": \"Anthony Cronin\", \"birth_year\": 1928},\n    {\"name\": \"Brian Cronin\", \"birth_year\": 2008},\n    {\"name\": \"Justin Cronin\", \"birth_year\": 1980}\n]\n\nfiltered = filter_cronins_born_20th_century(cronin_individuals)\nprint(filtered)\n# Output: [\n#     {'name': 'A. L. Cronin', 'birth_year': 1902},\n#     {'name': 'Anthony Cronin', 'birth_year': 1928},\n#     {'name': 'Justin Cronin', 'birth_year': 1980}\n# ]\n"
+    },
+    {
+      "question": "Which Cronin individuals have held political office in Ireland?",
+      "answer": "Several individuals with the surname Cronin have held political office in Ireland, including Breeda Moynihan-Cronin (Irish politician), Seán Cronin (Chief of Staff of the IRA), and Jerry Cronin (Irish politician)."
+    },
+    {
+      "question": "What professions are represented among the notable individuals with the surname Cronin?",
+      "answer": "The notable individuals with the surname Cronin represent a diverse range of professions, including politics (e.g., A. L. Cronin, Dan Cronin), literature (e.g., Justin Cronin, A. J. Cronin), sports (e.g., Brian Cronin, Declan Cronin, Glenn Cronin), music (e.g., Kevin Cronin, Mikal Cronin), academia (e.g., Leroy Cronin), and the arts (e.g., Bernard Cronin, Paul Cronin)."
+    },
+    {
+      "question": "Who is the Archbishop of Hartford with the surname Cronin, and what is their full name?",
+      "answer": "The Archbishop of Hartford with the surname Cronin is Daniel Anthony Cronin, born in 1927."
+    }
+  ]
+}

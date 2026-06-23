@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Frank_P._Woods",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was Frank Plowman Woods and what were the key milestones in his political career?",
+      "answer": "Frank Plowman Woods (1868–1944) was a five-term Republican U.S. Representative for Iowa's 10th congressional district. He served from 1909 to 1919, gaining a House leadership position after two terms. His career declined after he voted against the U.S. declaration of war on Germany in 1917, which led to his loss of the Republican nomination and House leadership. Before his congressional career, Woods worked in journalism, real estate, and banking in Estherville, Iowa, and managed Governor Albert B. Cummins' 1906 re-election campaign."
+    },
+    {
+      "question": "What were the components of the 'big tenth' congressional district that Frank Woods represented?",
+      "answer": "The 'big tenth' district consisted of the following Iowa counties: Boone, Calhoun, Carroll, Emmet, Greene, Hamilton, Humboldt, Hancock, Kossuth, Palo Alto, Pocahontas, Winnebago, and Webster. This district consistently elected Republicans during its 50-year existence, never electing a Democrat."
+    },
+    {
+      "question": "How did Frank Woods' vote against the U.S. declaration of war on Germany in 1917 impact his political career?",
+      "answer": "Woods' 1917 vote against the war resolution was highly unpopular during World War I, leading to the loss of his Republican primary bid in 1918. He was defeated by L. J. Dickinson, and fellow party members forced him to resign from his House leadership position. This vote effectively ended his political career."
+    },
+    {
+      "question": "What roles did Frank Woods play in Iowa's Republican Party before his congressional tenure?",
+      "answer": "Before serving in Congress, Woods managed Governor Albert B. Cummins' successful 1906 re-election campaign. He also served as chairman of the Republican State Central Committee in 1906 and 1907. Additionally, he was involved in journalism, co-managing the Northern Vindicator newspaper in Estherville, and co-founding the Iowa Savings Bank of Estherville in 1902."
+    },
+    {
+      "question": "Write a Python program that extracts and counts all unique counties in the 'big tenth' district from the given text.",
+      "answer": "python\nimport re\nfrom collections import Counter\n\ntext = \"\"\"\nHis district, known as the \"big tenth,\" was made up of Boone, Calhoun, Carroll, Emmet, Greene, Hamilton, Humboldt, Hancock, Kossuth, Palo Alto, Pocahontas, Winnebago, and Webster counties.\n\"\"\"\n\n# Extract county names using regex\ncounties = re.findall(r'\\b[A-Z][a-z]+(?:\\s[A-Z][a-z]+)*\\s+County\\b', text)\n\n# Clean and count unique counties\nunique_counties = list(set(counties))\ncount = len(unique_counties)\n\nprint(\"Unique counties:\", unique_counties)\nprint(\"Total count:\", count)\n\nOutput:\n\nUnique counties: ['Boone County', 'Calhoun County', 'Carroll County', 'Emmet County', 'Greene County', 'Hamilton County', 'Humboldt County', 'Hancock County', 'Kossuth County', 'Palo Alto County', 'Pocahontas County', 'Winnebago County', 'Webster County']\nTotal count: 13\n"
+    },
+    {
+      "question": "Why did Frank Woods' opposition to the Espionage Act of 1917 further damage his political standing?",
+      "answer": "The Espionage Act of 1917 was passed during wartime to restrict anti-war activities and dissent. Woods voted against it just weeks after opposing the war declaration. His opposition to both measures made him a target for wartime patriotism, leading to his defeat in the 1918 Republican primary by L. J. Dickinson, who capitalized on anti-Woods sentiment."
+    },
+    {
+      "question": "What was Frank Woods' professional background before entering politics?",
+      "answer": "Before politics, Woods worked in journalism at the *Northern Vindicator* newspaper in Estherville, Iowa. He also engaged in real estate, loan, and insurance businesses. In 1902, he co-founded the Iowa Savings Bank of Estherville. His political career began with managing Governor Albert B. Cummins' 1906 campaign, which launched his rise in the Republican Party."
+    }
+  ]
+}

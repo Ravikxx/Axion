@@ -1,0 +1,38 @@
+{
+  "source_url": "https://dev.to/mickyarun/ai-agents-are-great-at-80-of-our-code-the-other-20-is-why-we-still-need-seniors-3lh5",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What percentage of code was AI-generated according to the survey mentioned in the text?",
+      "answer": "According to the survey, 54% of all code was AI-generated as of the time the text was written."
+    },
+    {
+      "question": "What is the key difference between the 80% of code where AI agents excel and the remaining 20% where they struggle?",
+      "answer": "AI agents excel at generating predictable, pattern-following, and structurally repetitive code (e.g., API scaffolding, boilerplate, validation schemas), while they struggle with edge cases, negative scenarios, and judgment-based logic (e.g., illegal state transitions, idempotency, or complex validation rules)."
+    },
+    {
+      "question": "Why does the author compare AI agents to junior developers in a payment platform context?",
+      "answer": "The author compares AI agents to junior developers because they are efficient at routine tasks like writing boilerplate code or refactoring, but lack the judgment and experience to handle critical edge cases in payment systems, such as illegal state transitions or duplicate webhook handling. Just like juniors, AI agents focus on completion rather than correctness unless explicitly guided."
+    },
+    {
+      "question": "What are three specific risks of using AI-generated code in a payment platform without proper oversight?",
+      "answer": "1) Silent failures in critical edge cases (e.g., ignoring illegal payment state transitions like `complete` to `pending`). 2) Reusability issues, where AI agents reinvent shared utility functions instead of using existing, tested code. 3) Overlooked negative scenarios (e.g., duplicate webhook handling or idempotency failures) that can lead to financial discrepancies."
+    },
+    {
+      "question": "Provide a Python code snippet that demonstrates a common mistake AI agents might make when handling webhook idempotency in a payment system.",
+      "answer": "python\n# Incorrect: Does not handle duplicate webhook events\nclass WebhookHandler:\n    def handle_payment_webhook(self, webhook_data):\n        payment_id = webhook_data['payment_id']\n        status = webhook_data['status']\n        \n        # Update payment status without checking for duplicates\n        payments[payment_id] = status\n\n# Correct: Ensures idempotency by tracking processed webhooks\nprocessed_webhooks = set()\n\nclass WebhookHandler:\n    def handle_payment_webhook(self, webhook_data):\n        webhook_id = webhook_data['id']\n        if webhook_id in processed_webhooks:\n            return  # Skip duplicate\n        \n        processed_webhooks.add(webhook_id)\n        payment_id = webhook_data['payment_id']\n        status = webhook_data['status']\n        \n        # Proceed with status update\n        payments[payment_id] = status\n"
+    },
+    {
+      "question": "What architectural practices does the author recommend to mitigate AI-generated code risks in a regulated payment platform?",
+      "answer": "The author recommends: 1) Making the architecture machine-readable by extracting design patterns and rules into consumable formats. 2) Investing in testing negative cases (e.g., illegal state transitions, idempotency) to catch AI blind spots. 3) Enforcing senior reviews for all payment-related logic to ensure judgment-based correctness. 4) Using frameworks like Bodhi Orchard to feed AI agents full context (architecture, test plans, utilities) to reduce blind-spot mistakes."
+    },
+    {
+      "question": "Why does the author argue that replacing senior engineers with AI is a dangerous mistake?",
+      "answer": "Replacing seniors with AI leads to speed but introduces silent disasters because AI lacks the operational experience to handle edge cases critical in payment systems. Seniors provide judgment—rooted in years of debugging and understanding system failures—that AI cannot replicate. The right approach is to enable seniors with AI, not replace them."
+    },
+    {
+      "question": "What is the main question the author poses about AI-generated code and bugs in 2026?",
+      "answer": "The author poses: \"What percentage of bugs in 2026 will be AI-generated? And more importantly, who's going to find them?\" They argue that seniors and architects—those with operational experience—will be the ones to identify and fix these AI-generated bugs, as agents and juniors lack the necessary knowledge to spot them."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/ismail9k/once-upon-a-time-writing-code-was-fun-62",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What does the author consider the key difference between writing code manually and using AI tools today?",
+      "answer": "The author highlights that writing code manually involved deep cognitive engagement, constructing mental models, and internalizing the codebase, whereas using AI tools today often means reviewing and refining code without the same level of originative struggle, leading to a sense of detachment from the creation process."
+    },
+    {
+      "question": "How does the author describe the impact of AI on the flow state while coding?",
+      "answer": "The author notes that achieving a flow state was natural when writing complex systems manually, as the struggle of typing and debugging encoded the system into the brain. With AI, the flow state is disrupted because the latency between describing the task and receiving the output breaks the synchronization between brain and hands, leading to acceptance of AI-generated code without deep engagement."
+    },
+    {
+      "question": "Provide a code snippet illustrating the author's description of 'forging' code manually. What aspects of the snippet reflect this philosophy?",
+      "answer": "python\ndef calculate_fibonacci(n):\n    if n <= 0:\n        raise ValueError(\"Input must be a positive integer.\")\n    elif n == 1:\n        return 0\n    elif n == 2:\n        return 1\n    else:\n        a, b = 0, 1\n        for _ in range(2, n):\n            a, b = b, a + b\n        return b\n\n# Edge case simulation\ntry:\n    print(calculate_fibonacci(0))  # Raises ValueError\nexcept ValueError as e:\n    print(f\"Edge case handled: {e}\")\n\nThis snippet reflects manual 'forging' through explicit edge-case handling, step-by-step logic construction, and iterative refinement, embodying the author's emphasis on mental simulation and ownership of the code."
+    },
+    {
+      "question": "What cognitive differences does the author identify between writing, reviewing, and understanding code?",
+      "answer": "The author distinguishes these processes as follows: *Writing code* involves deep internalization, mental modeling, and encoding knowledge through struggle; *Reviewing code* is a passive act of comprehension, often lacking the same depth of ownership; *Understanding code* is an intermediate state where the developer grasps the logic but may not have lived through its creation, leading to slower navigation during debugging."
+    },
+    {
+      "question": "How does the author suggest developers adapt to AI tools without losing the joy of building?",
+      "answer": "The author recommends intentional practices such as occasionally turning off AI tools, manually writing complex components, and embracing purposeful struggle. These actions help preserve the meaning derived from the creative process and prevent the erosion of satisfaction tied to direct creation."
+    },
+    {
+      "question": "What metaphor does the author use to describe the emotional detachment from AI-generated work? Why is this significant?",
+      "answer": "The author uses the metaphor of defeating a final boss in a game and receiving credits without having played the game. This illustrates the disconnect between effortless AI output and the lack of personal accomplishment, as the developer skips the rewarding struggle that once defined their craft."
+    },
+    {
+      "question": "What production issue does the author describe, and how does it relate to their argument about code ownership?",
+      "answer": "The author recounts a production bug where their ability to quickly locate and fix the issue was impaired because they hadn't internalized the codebase in the same way as when they wrote it manually. This highlights the cognitive gap between reviewing and *forging* code, where deep ownership enables faster debugging and intuition."
+    }
+  ]
+}

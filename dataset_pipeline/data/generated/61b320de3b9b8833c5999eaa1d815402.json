@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Bureau_of_Information_and_Propaganda",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the Bureau of Information and Propaganda (BIP) and when was it created?",
+      "answer": "The Bureau of Information and Propaganda (BIP) was a clandestine department established in spring 1940 during the German occupation of Poland. It operated within the Związek Walki Zbrojnej (Union of Armed Struggle) and later the Armia Krajowa (Home Army), functioning as the 6th Department of the Supreme Command."
+    },
+    {
+      "question": "Who were the key leaders of BIP during its existence?",
+      "answer": "Major Tadeusz Kruk-Strzelecki initially commanded BIP, followed by Colonel Jan Rzepecki (pseudonyms 'Wolski' or 'Prezes'). Hipolit Niepokólczycki served as his deputy until late 1940, and Captain Kazimierz Moczarski took the role from 1944 to January 1945."
+    },
+    {
+      "question": "What were the primary tasks of the BIP during World War II?",
+      "answer": "BIP had multiple responsibilities, including informing the Polish community about activities of the Polish Government in London, documenting German occupier activities, conducting psychological warfare against Nazi propaganda, fostering national solidarity for independence, collecting intelligence and reports, and publishing underground newspapers like *Biuletyn Informacyjny*, *Wiadomości Polskie*, and *Insurekcja*."
+    },
+    {
+      "question": "Which underground newspapers were published by BIP?",
+      "answer": "BIP published several underground newspapers, including *Biuletyn Informacyjny* (Information Bulletin), *Wiadomości Polskie* (Polish News), and *Insurekcja* (Insurrection)."
+    },
+    {
+      "question": "What types of secret training were conducted by BIP's departments?",
+      "answer": "BIP's Department A specialized in film-related activities, including photoreportage, directing, and operating megaphones. Other departments may have conducted additional clandestine training, though specifics are not detailed in the source."
+    },
+    {
+      "question": "Can you provide an example of notable individuals who worked for BIP?",
+      "answer": "Notable figures associated with BIP included historians like Aleksander Gieysztor, philologists such as Professor Kazimierz Feliks Kumaniecki, filmmakers Antoni Bohdziewicz and Jerzy Zarzycki (pseudonym 'Pik'), photographers Sylwester Braun and Joachim Joachimczyk, and liaison officers Krystyna Wyczańska and Hanna Bińkowska."
+    },
+    {
+      "question": "Write a Python function that takes a list of BIP leaders and returns their roles in chronological order.",
+      "answer": "python\ndef display_bip_leaders(leaders):\n    \"\"\"\n    Takes a list of BIP leaders as tuples (name, role, start_year, end_year), \n    and returns their roles in chronological order.\n    \n    Example input: [\n        (\"Tadeusz Kruk-Strzelecki\", \"Commander\", 1940, 1940),\n        (\"Jan Rzepecki\", \"Commander\", 1940, 1945),\n        (\"Hipolit Niepokólczycki\", \"Deputy\", 1940, 1940),\n        (\"Kazimierz Moczarski\", \"Deputy\", 1944, 1945)\n    ]\n    \"\"\"\n    sorted_leaders = sorted(leaders, key=lambda x: x[2])\n    roles = []\n    for leader in sorted_leaders:\n        roles.append(f\"{leader[0]} ({leader[1]}, {leader[2]}-{leader[3]})\")\n    return \" → \".join(roles)\n\n# Example usage:\nleaders = [\n    (\"Tadeusz Kruk-Strzelecki\", \"Commander\", 1940, 1940),\n    (\"Jan Rzepecki\", \"Commander\", 1940, 1945),\n    (\"Hipolit Niepokólczycki\", \"Deputy\", 1940, 1940),\n    (\"Kazimierz Moczarski\", \"Deputy\", 1944, 1945)\n]\nprint(display_bip_leaders(leaders))\n# Output: Tadeusz Kruk-Strzelecki (Commander, 1940-1940) → Hipolit Niepokólczycki (Deputy, 1940-1940) → Jan Rzepecki (Commander, 1940-1945) → Kazimierz Moczarski (Deputy, 1944-1945)\n"
+    }
+  ]
+}

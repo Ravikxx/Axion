@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Italian_Somaliland",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was Italian Somaliland and when did it exist?",
+      "answer": "Italian Somaliland was a collection of self-governing protectorates and colonial possessions of the Kingdom of Italy located in present-day Somalia. It existed from the late 19th century until 1941, when it was occupied by British troops during World War II. It was later revived as the UN Trust Territory of Somalia under Italian administration from 1950 to 1960."
+    },
+    {
+      "question": "Which treaties in 1889 led to Italy establishing a protectorate in northern Somalia?",
+      "answer": "Two treaties signed in 1889 enabled Italy to establish a protectorate over northern Somali territories ruled by the Sultanate of Hobyo and the Majeerteen Sultanate."
+    },
+    {
+      "question": "What were some key events of Somali resistance against Italian expansion in Italian Somaliland?",
+      "answer": "Significant resistance included the Bimaal and Wa'dan revolts near Merca, as well as the anti-colonial Dervish movement led by Mohammed Abdullah Hassan, which opposed Italian colonial rule during the late 19th and early 20th centuries."
+    },
+    {
+      "question": "How did Italy expand its control in Italian Somaliland after World War I?",
+      "answer": "As a reward for Italy's participation in World War I on the Entente side, the UK ceded the territory of Oltre Giuba (Trans-Juba) to Italy in 1925. By the end of 1927, Italy annexed the territories of the Hobyo Sultanate and Majeerteen Sultanate after a two-year military campaign."
+    },
+    {
+      "question": "What infrastructure projects were developed in Italian Somaliland during the colonial period?",
+      "answer": "The colonial administration established various infrastructure projects, including railways, dams, farms, and villages. These projects aimed to develop the territory and support Italian settlement, with approximately 50,000 Italians relocating to the colony."
+    },
+    {
+      "question": "Write a Python code snippet that calculates the duration of Italian Somaliland's existence in years.",
+      "answer": "python\n# Duration of Italian Somaliland in years\nstart_year = 1889  # Approximate start year\nend_year = 1960    # Final unification into the Somali Republic\n\nduration = end_year - start_year\nduration  # Output: 71 years\n"
+    },
+    {
+      "question": "Why was Italian Somaliland integrated into Italian East Africa in 1936 and what led to its loss in 1941?",
+      "answer": "Italian Somaliland was integrated into Italian East Africa as the Somalia Governorate in 1936 to consolidate Italian colonial territories in the Horn of Africa. Its loss in 1941 occurred during World War II, when British troops defeated Italian forces in the East African campaign, leading to British military administration of the region."
+    }
+  ]
+}

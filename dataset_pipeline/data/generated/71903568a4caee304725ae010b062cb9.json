@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/tlorent/youll-learn-more-in-3-months-on-the-job-than-2-years-of-tutorials-5g9f",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What is the main difference between learning from tutorials and learning from a real development job?",
+      "answer": "Learning from a real development job is far more effective because it exposes you to practical challenges like fixing production bugs, code reviews, and working with messy legacy code—situations that tutorials cannot simulate. Real-world experience accelerates growth by forcing you to apply knowledge in dynamic, high-pressure environments."
+    },
+    {
+      "question": "What are some red flags to watch out for when choosing your first development job?",
+      "answer": "Red flags include teams with no documentation, where everyone is too busy to help, or where they expect you to 'hit the ground running' without any structured onboarding. These environments often lack support and may set you up for failure."
+    },
+    {
+      "question": "Why do many juniors feel unprepared for their first development job despite completing many courses?",
+      "answer": "Many juniors stay in the 'just one more course' loop, believing additional certifications or projects will make them ready. However, real growth comes from on-the-job experience, where they face challenges like debugging production issues or collaborating with peers—experiences that tutorials cannot replicate."
+    },
+    {
+      "question": "What are some green flags to look for in a team that invests in junior developers?",
+      "answer": "Green flags include structured onboarding, pair programming sessions, regular code reviews, and patient senior developers who actively mentor newcomers. These factors create a supportive learning environment that accelerates skill development."
+    },
+    {
+      "question": "How can a junior developer handle feedback during code reviews without taking it personally?",
+      "answer": "Focus on viewing feedback as a tool for growth rather than a critique of your abilities. Separate your work from your self-worth, ask clarifying questions to understand the feedback better, and use it to improve future implementations. Over time, this mindset shift will help you see feedback as an essential part of becoming a better developer."
+    },
+    {
+      "question": "Write a Python function that simulates a junior developer's first week on the job, where they learn to debug a simple production bug.",
+      "answer": "python\nimport random\n\ndef junior_dev_first_week():\n    # Simulate a bug in production code\n    def buggy_function(value):\n        # Bug: Off-by-one error in range\n        result = []\n        for i in range(value):  # Should be range(1, value + 1)\n            result.append(i * 2)\n        return result\n\n    # Junior dev attempts to debug\n    test_value = 5\n    expected = [2, 4, 6, 8, 10]\n    actual = buggy_function(test_value)\n\n    print(f\"Testing with value {test_value}:\")\n    print(f\"Expected: {expected}\")\n    print(f\"Actual: {actual}\")\n    \n    # Debugging process\n    if actual != expected:\n        print(\"Bug detected! Analyzing...\")\n        print(\"Problem: The loop starts at 0 instead of 1 and misses the last iteration.\")\n        print(\"Fix: Adjust the range to range(1, value + 1).\")\n        \n        # Apply the fix\n        fixed_result = [i * 2 for i in range(1, test_value + 1)]\n        print(f\"Fixed result: {fixed_result}\")\n    else:\n        print(\"No bugs detected (unlikely for a junior's first week!).\")\n\n# Run the simulation\njunior_dev_first_week()\n"
+    },
+    {
+      "question": "Why does the author say that the feeling of not being ready never fully goes away, even for senior developers?",
+      "answer": "The author emphasizes that imposter syndrome is a common experience among developers at all levels because the field constantly evolves with new technologies, frameworks, and best practices. Even seniors face situations where they feel unprepared, but they learn to manage it by embracing continuous learning and experience."
+    }
+  ]
+}

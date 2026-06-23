@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Dagestan",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What are the official names of Dagestan in Russian and English?",
+      "answer": "Dagestan is officially called the 'Republic of Dagestan' in English and 'Республика Дагестан' (Respublika Dagestan) in Russian."
+    },
+    {
+      "question": "Which countries border Dagestan to the south and southwest?",
+      "answer": "Dagestan shares land borders with Azerbaijan to the south and Georgia to the southwest."
+    },
+    {
+      "question": "How many official languages are recognized in Dagestan, and what is the primary language used?",
+      "answer": "Dagestan recognizes 14 official languages. Russian serves as the primary language and the lingua franca across the republic."
+    },
+    {
+      "question": "What is the capital and largest city of Dagestan?",
+      "answer": "The capital and largest city of Dagestan is Makhachkala."
+    },
+    {
+      "question": "How does Dagestan's linguistic diversity compare to other regions in Russia?",
+      "answer": "Dagestan is one of Russia's most linguistically and ethnically diverse regions, with over 30 ethnic groups and 81 nationalities, and 12 ethnic groups each constituting more than 1% of its total population. This makes it one of the most heterogeneous administrative divisions in the world."
+    },
+    {
+      "question": "Which martial arts are notably prominent in Dagestan?",
+      "answer": "Dagestan is renowned for its strong culture of combat sambo, and many of its fighters have later transitioned into mixed martial arts (MMA)."
+    },
+    {
+      "question": "Write a Python function to check if a given city is one of the major cities in Dagestan.",
+      "answer": "python\n\ndef is_major_city_dagestan(city):\n    major_cities = [\n        \"Makhachkala\", \"Derbent\", \"Kizlyar\", \n        \"Izberbash\", \"Kaspiysk\", \"Buynaksk\"\n    ]\n    return city in major_cities\n\n# Example usage:\nprint(is_major_city_dagestan(\"Derbent\"))  # Output: True\nprint(is_major_city_dagestan(\"Novosibirsk\"))  # Output: False\n"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Jabala_Upanishad",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the Jabala Upanishad and which Vedic tradition is it associated with?",
+      "answer": "The Jabala Upanishad (Sanskrit: जाबाल उपनिषद्, IAST: Jābāla Upaniṣad) is a minor Upanishad of Hinduism classified among the 20 Sannyasa Upanishads. It is attached to the Shukla Yajurveda, one of the four Vedas."
+    },
+    {
+      "question": "When was the Jabala Upanishad likely composed, and what historical period does it represent?",
+      "answer": "The Jabala Upanishad was composed before 300 CE and likely dates to around the 3rd century BCE, making it one of the oldest Upanishads focused on renunciation and spiritual pursuit."
+    },
+    {
+      "question": "How does the Jabala Upanishad describe the city of Banaras in spiritual terms?",
+      "answer": "The text refers to Banaras as Avimuktam, describing it as a holy city. It further states that the holiest place to revere lies within—the Atman (soul or self)."
+    },
+    {
+      "question": "According to the Jabala Upanishad, who is eligible to renounce the worldly life, and is there any restriction based on life stages?",
+      "answer": "The Upanishad asserts that anyone can choose to renounce the worldly life for spiritual pursuits, and this decision is entirely up to the individual regardless of their Ashrama (stage of life)."
+    },
+    {
+      "question": "How does the Jabala Upanishad justify suicide as an individual choice, and how does this view differ from earlier Vedic texts?",
+      "answer": "The Jabala Upanishad presents suicide as a valid individual choice in certain circumstances, particularly for those too sick to continue living. This view contrasts with earlier Vedic texts and Principal Upanishads, which oppose such a perspective."
+    },
+    {
+      "question": "What are the ethical and philosophical principles a true renunciate (sannyasi) must follow according to the Jabala Upanishad?",
+      "answer": "A true renunciate, or sannyasi, must live an ethical life by avoiding injury in thought, word, or deed. They should abandon all rituals, remain unattached to anything or anyone, and be devoted to the oneness of Atman (soul) and Brahman (universal consciousness)."
+    },
+    {
+      "question": "Provide a code snippet that represents the concept of renunciation in a symbolic or philosophical programming analogy.",
+      "answer": "Below is a Python function that symbolically represents the act of renunciation by 'detaching' from worldly attachments and focusing on the inner self (Atman):\npython\ndef renounce_worldly_attachments(attachments):\n    # Symbolically detach from all worldly attachments\n    inner_self = set()\n    for attachment in attachments:\n        inner_self.add('Detached from: ' + attachment)\n    return inner_self\n\n# Example usage\nattachments = ['wealth', 'family', 'social_status', 'career']\nrenounced_state = renounce_worldly_attachments(attachments)\nprint(renounced_state)\n# Output: {'Detached from: wealth', 'Detached from: family', 'Detached from: social_status', 'Detached from: career'}\n\nThis code metaphorically illustrates the process of letting go of worldly ties to focus on spiritual growth."
+    }
+  ]
+}

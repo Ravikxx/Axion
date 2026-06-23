@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Il_trovatore",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who composed the opera 'Il trovatore' and who wrote its libretto?",
+      "answer": "Giuseppe Verdi composed the opera 'Il trovatore', and the libretto was largely written by Salvadore Cammarano, with contributions from Leone Emanuele Bardare after Cammarano's death. The libretto is based on the Spanish play 'El trovador' by Antonio García Gutiérrez."
+    },
+    {
+      "question": "What is the plot source of Verdi's opera 'Il trovatore'?",
+      "answer": "The plot of 'Il trovatore' is based on the Spanish play 'El trovador' (1836) by Antonio García Gutiérrez, which is described as a high-flown, sprawling melodrama with fantastical and bizarre incidents."
+    },
+    {
+      "question": "When and where did 'Il trovatore' premiere, and how was its initial reception?",
+      "answer": "'Il trovatore' premiered at the Teatro Apollo in Rome on 19 January 1853. It was an immediate success, beginning its 'victorious march throughout the operatic world' due to Verdi's work over the preceding three years."
+    },
+    {
+      "question": "What were the key stages in the libretto's development for 'Il trovatore'?",
+      "answer": "The libretto was initially prepared by Salvadore Cammarano until his death in mid-1852. Afterward, Leone Emanuele Bardare took over, and Verdi proposed significant revisions, particularly expanding the role of Leonora."
+    },
+    {
+      "question": "How did Verdi's other projects influence the composition of 'Il trovatore'?",
+      "answer": "During the three years he worked on 'Il trovatore', Verdi was also involved in other operatic projects, including premiering 'Rigoletto' in Venice (1851) and receiving commissions from Venice and Paris. This multitasking contributed to the opera's eventual success."
+    },
+    {
+      "question": "What is the current status of 'Il trovatore' in the operatic repertoire?",
+      "answer": "Today, 'Il trovatore' is a staple of the standard operatic repertoire and is performed frequently worldwide."
+    },
+    {
+      "question": "Provide a code snippet to calculate the number of years Verdi spent composing 'Il trovatore' given the premiere date.",
+      "answer": "# Python code to calculate the years Verdi spent composing 'Il trovatore'\nfrom datetime import datetime\n\npremiere_date = datetime(1853, 1, 19)\nstart_date = datetime(1850, 1, 1)  # Verdi approached Cammarano in January 1850\n\nyears_spent = (premiere_date.year - start_date.year) - ((premiere_date.month, premiere_date.day) < (start_date.month, start_date.day))\nprint(f\"Verdi spent approximately {years_spent} years composing 'Il trovatore'.\")"
+    }
+  ]
+}

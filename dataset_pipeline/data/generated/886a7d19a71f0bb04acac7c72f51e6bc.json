@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Adoptionism",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is adoptionism in early Christian theology?",
+      "answer": "Adoptionism is a nontrinitarian doctrine asserting that Jesus was not the eternal Son of God by nature but was adopted as God's Son at a specific point in time, such as his baptism, resurrection, or ascension. This view rejects the virgin birth and posits that Jesus' sonship was not inherent but conferred by God."
+    },
+    {
+      "question": "How does adoptionism differ from dynamic monarchianism?",
+      "answer": "Adoptionism focuses on the relationship between Jesus and the Father, specifically that Jesus was adopted as the Son of God, while dynamic monarchianism concerns the deity of Jesus. Dynamic monarchianism teaches that Jesus was a human empowered by God's divinity through the Holy Spirit but was not a pre-existent divine person. Gaston (2023) clarifies that adoptionism is about relationship, whereas dynamic monarchianism is about Christology."
+    },
+    {
+      "question": "What is dynamic monarchianism, and what are its key beliefs?",
+      "answer": "Dynamic monarchianism is a Christological doctrine holding that there is one God, the Father, and that Jesus was a human born of a virgin, empowered by God's divinity through the Holy Spirit, and later raised to unity with God. It emphasizes the single deity of the Father and Jesus' subordinate role, contrasting with trinitarian views of Jesus as a distinct divine person."
+    },
+    {
+      "question": "Why did adoptionist views decline in prominence in early Christianity?",
+      "answer": "Adoptionist views declined as Church leaders condemned them as heresy in the fourth and fifth centuries. The growing influence of mainstream Christianity and the condemnation of nontrinitarian doctrines led to their marginalization, particularly as trinitarian formulations gained dominance."
+    },
+    {
+      "question": "Provide a code snippet that models the relationship between adoptionism and dynamic monarchianism as described by Gaston (2023).",
+      "answer": "python\nclass Christology:\n    def __init__(self, name, focus, deity_view):\n        self.name = name\n        self.focus = focus  # 'relationship' or 'deity'\n        self.deity_view = deity_view  # 'single deity' or 'distinct divine persons'\n\nadoptionism = Christology(\n    name=\"Adoptionism\",\n    focus=\"relationship\",\n    deity_view=\"adopted sonship\"\n)\n\ndynamic_monarchianism = Christology(\n    name=\"Dynamic Monarchianism\",\n    focus=\"deity\",\n    deity_view=\"single deity (Father)\"\n)\n\n# Gaston's distinction: Adoptionism is about relationship, Dynamic Monarchianism about Christology.\nassert adoptionism.focus == \"relationship\"\nassert dynamic_monarchianism.focus == \"deity\"\n"
+    },
+    {
+      "question": "How are modalistic and dynamic monarchianism related or distinct?",
+      "answer": "Modalistic monarchianism (also called modalism) holds that the Father, Son, and Holy Spirit are different modes or designations of the same person, while dynamic monarchianism asserts that only the Father is God and that Jesus was a human empowered by the Holy Spirit. Both reject the idea of distinct divine persons but differ in their understanding of Jesus' relationship to the Father."
+    },
+    {
+      "question": "What is the historical timeline of adoptionism in early Christianity?",
+      "answer": "Adoptionism was most popular in the first three centuries of Christianity, with some scholars suggesting it was the belief of the earliest followers of Jesus, based on early literature like the epistles of Paul. It sharply declined in prominence during the fourth and fifth centuries as Church leaders condemned it as heresy."
+    }
+  ]
+}

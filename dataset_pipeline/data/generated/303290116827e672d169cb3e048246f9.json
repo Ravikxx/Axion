@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Electoral_district_of_Donald_and_Swan_Hill",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the Electoral district of Donald and Swan Hill, and when was it established and abolished?",
+      "answer": "The Electoral district of Donald and Swan Hill was an electoral district of the Victorian Legislative Assembly. It was created by the Electoral Act Amendment Act 1888 and took effect at the 1889 elections. It was abolished by the Victorian Electoral Districts Boundaries Act 1903."
+    },
+    {
+      "question": "How was the Electoral district of Donald and Swan Hill defined at its creation in 1889?",
+      "answer": "At its creation, the district was defined by a detailed boundary description starting from the western boundary of the colony at the north-west angle of the county of Lowan, and following a series of natural and man-made landmarks, including the three-chain road, Lake Buloke, the Avon River, and the Loddon and Murray Rivers, before returning to the starting point."
+    },
+    {
+      "question": "What legislative acts were responsible for the creation and abolition of the Electoral district of Donald and Swan Hill?",
+      "answer": "The Electoral district of Donald and Swan Hill was created by the Electoral Act Amendment Act 1888 and abolished by the Victorian Electoral Districts Boundaries Act 1903."
+    },
+    {
+      "question": "What role did the Electoral district of Donald and Swan Hill play in the Victorian Legislative Assembly?",
+      "answer": "The Electoral district of Donald and Swan Hill served as a constituency for electing a representative to the Victorian Legislative Assembly, allowing residents within its defined boundaries to vote for their local government representative between 1889 and 1903."
+    },
+    {
+      "question": "Can you write a Python function that parses the boundary description of the Electoral district of Donald and Swan Hill and converts it into a list of geographic coordinates?",
+      "answer": "python\nimport re\n\ndef parse_boundary_description(description):\n    # This function is a conceptual representation and would require a geographic library\n    # to accurately parse and convert the boundary into coordinates.\n    landmarks = re.split(r'(?:;|,|by|to|and|then)', description.lower())\n    coordinates = []\n    \n    # Placeholder for parsing logic\n    for landmark in landmarks:\n        landmark = landmark.strip()\n        if landmark not in ['', 'commencing', 'the']:\n            # In a real implementation, this would map to geographic coordinates\n            coordinates.append(landmark)\n    \n    return coordinates\n\n# Example usage:\nboundary_text = \"...\"  # Insert the full boundary description here\nparsed_landmarks = parse_boundary_description(boundary_text)\nprint(parsed_landmarks)\n\nNote: A full implementation would require integrating with a geographic information system (GIS) to accurately convert the boundary description into coordinates."
+    },
+    {
+      "question": "Why might the Victorian government have decided to abolish the Electoral district of Donald and Swan Hill in 1903?",
+      "answer": "The abolition of the Electoral district of Donald and Swan Hill in 1903 was likely part of a broader redistricting effort by the Victorian government. Such changes are typically made to reflect population shifts, ensure fair representation, or comply with new electoral laws. The Victorian Electoral Districts Boundaries Act 1903 was part of this process, aiming to update electoral boundaries to better match demographic changes and governance needs."
+    },
+    {
+      "question": "What is the significance of the Electoral district of Donald and Swan Hill in Australian electoral history?",
+      "answer": "The Electoral district of Donald and Swan Hill is an example of the historical electoral divisions in Victoria during the late 19th century. Its creation and later abolition reflect the evolution of electoral systems in Australia, including the adjustment of boundaries to accommodate population changes and political reforms. It provides insight into the geographic and demographic considerations of Victorian politics in the late 1800s."
+    }
+  ]
+}

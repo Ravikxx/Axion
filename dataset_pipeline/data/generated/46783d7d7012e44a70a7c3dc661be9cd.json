@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/xulingfeng/my-company-packaged-12-years-of-my-experience-into-an-ai-skill-then-laid-me-off-when-it-crashed-4b3e",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What was the stated purpose of the 'Knowledge Transfer Initiative' as described in the story?",
+      "answer": "The stated purpose was to preserve decades of institutional knowledge for the next generation of engineers by extracting an experienced employee's expertise into an 'AI Skill' system."
+    },
+    {
+      "question": "How did the AI Skill achieve a 96.8% diagnostic accuracy rate during validation?",
+      "answer": "The AI Skill achieved 96.8% accuracy by correctly diagnosing 312 historical failure scenarios, with the remaining 3.2% deviation attributed to suboptimal recommendations due to insufficient context, which was considered correctable with guidance."
+    },
+    {
+      "question": "Why did the author decide to register their own consulting company after being laid off?",
+      "answer": "The author registered Mark Johnson Consulting LLC to transition into independent consulting, leveraging their expertise without relying on AI systems. They researched LLC registration ($70), professional liability insurance (~$1,200/year), and determined a median rate of $215/hour for senior infrastructure consultants."
+    },
+    {
+      "question": "What specific technical detail caused the AI Skill's retry logic to fail in the Kafka consumer rebalance scenario?",
+      "answer": "The 450ms retry interval, originally tuned for RabbitMQ, caused delays that exceeded Kafka's poll timeout (5s). With 60 queued messages, the total processing time (27s) surpassed the timeout, triggering rebalances and a cascade of failures. This is shown in the provided Python code snippet comparing the old and new system behaviors."
+    },
+    {
+      "question": "How did the AI Skill's failure in Act 5 highlight a broader issue with automated knowledge systems?",
+      "answer": "The AI Skill failed because it was 'right about yesterday'—its correct diagnosis for the old RabbitMQ-based system was catastrophically wrong for the new Kafka architecture. This underscores the risk of automated systems lacking adaptive context awareness when underlying infrastructure changes."
+    },
+    {
+      "question": "What was the CTO's reaction when the author's replacement was hired, and why was it significant?",
+      "answer": "The CTO rebuilt the monitoring stack after the author's departure, prioritizing the new Platform Lead's changes over re-validating the AI Skill. This was significant because it demonstrated the company's prioritization of new systems over maintaining legacy expertise, even when the original creator was gone."
+    },
+    {
+      "question": "Write a Python function that simulates the Kafka consumer rebalance issue described in the story. Include parameters for message queue size, retry interval, and poll timeout.",
+      "answer": "python\ndef simulate_kafka_rebalance(messages: int = 60, retry_interval_ms: int = 450, poll_timeout_ms: int = 5000) -> str:\n    total_processing_time = messages * retry_interval_ms\n    if total_processing_time > poll_timeout_ms:\n        return f\"Rebalance triggered: {total_processing_time}ms processing time > {poll_timeout_ms}ms poll timeout\"\n    return \"No rebalance issues detected\"\n\n# Example usage:\nprint(simulate_kafka_rebalance(60, 450, 5000))  # Output: 'Rebalance triggered: 27000ms processing time > 5000ms poll timeout'\n"
+    }
+  ]
+}

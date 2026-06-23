@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Coins_of_the_Ukrainian_hryvnia",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When were the first coins of the Ukrainian hryvnia minted?",
+      "answer": "The first coins of the Ukrainian hryvnia were minted in 1992. However, they were not introduced into circulation until September 1996."
+    },
+    {
+      "question": "What denominations of Ukrainian coins were initially issued in 1996?",
+      "answer": "Initially, coins valued between 1 and 50 kopiyok were issued in 1996. These denominations included 1, 2, 5, 10, 25, and 50 kopiyok."
+    },
+    {
+      "question": "When were 1 hryvnia coins first introduced, and why are they rarely seen in circulation?",
+      "answer": "1 hryvnia coins were first introduced in March 1997. They are rarely seen in circulation because the 1 hryvnia banknote is far more commonly used instead."
+    },
+    {
+      "question": "What types of commemorative coins has Ukraine produced since 2004?",
+      "answer": "Since 2004, Ukraine has produced several commemorative 1 hryvnia coins. New commemorative coins have been minted annually since then, adding to the diversity of the Ukrainian currency system."
+    },
+    {
+      "question": "What denominations of circulating coins exist in Ukraine today?",
+      "answer": "Today, circulating coins in Ukraine include 1 kopiyka (₴0.01), 2, 5 (both demonetised in 2019), 10, 25 (also demonetised), and 50 kopiyok, as well as ₴1, ₴2, ₴5, and ₴10 coins."
+    },
+    {
+      "question": "Which types of non-circulating coins does Ukraine mint?",
+      "answer": "Ukraine mints bullion coins, including gold, silver, and platinum, as well as commemorative coins. All of these are produced by the National Bank of Ukraine."
+    },
+    {
+      "question": "Write a Python script to check if a given Ukrainian coin denomination is currently in circulation.",
+      "answer": "python\ndef is_coin_in_circulation(denomination):\n    # Denominations currently in circulation (as of latest available data)\n    circulating_denominations = [0.01, 0.02, 0.05, 0.10, 0.50, 1, 2, 5, 10]\n    return denomination in circulating_denominations\n\n# Example usage\nprint(is_coin_in_circulation(1))  # Output: True\nprint(is_coin_in_circulation(25)) # Output: False (demonetised)"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Glide_reflection",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is a glide reflection in geometry?",
+      "answer": "A glide reflection, also called a transflection, is a geometric transformation that combines a reflection across a hyperplane (a line in 2D or a plane in 3D) and a translation parallel to that hyperplane. It preserves distances between points, making it an isometry. For example, in the 2D Euclidean plane, a glide reflection consists of reflecting a point over a line (the glide line) and then translating it along a direction parallel to that line."
+    },
+    {
+      "question": "How does a glide reflection differ from a pure reflection in terms of symmetry?",
+      "answer": "A glide reflection symmetry means that applying the transformation twice results in a simple translation, not a reflection. Unlike objects with pure reflection symmetry, objects with glide-reflection symmetry are not symmetric under reflection alone. For instance, a pattern that repeats with glide-reflection symmetry (like a checkerboard with alternating steps) will not look the same when reflected over a single line without the translation component."
+    },
+    {
+      "question": "Provide a code snippet that demonstrates a glide reflection in 2D using a transformation matrix.",
+      "answer": "Here’s a Python function using NumPy to apply a glide reflection to a point (x, y) over the x-axis (glide line) with a translation of (a, 0):\npython\nimport numpy as np\n\ndef glide_reflection(x, y, a):\n    # Reflection over x-axis: (x, y) -> (x, -y)\n    reflected = np.array([x, -y])\n    # Translation parallel to the glide line (x-axis): (x, -y) -> (x + a, -y)\n    glide = reflected + np.array([a, 0])\n    return glide\n\n# Example: Glide reflection of point (2, 3) with glide vector (1, 0)\nresult = glide_reflection(2, 3, 1)\nprint(result)  # Output: [3 -3]\n"
+    },
+    {
+      "question": "What are frieze groups and how do they relate to glide reflections?",
+      "answer": "Frieze groups are symmetry groups of patterns that repeat in one dimension (e.g., decorative borders or strips). Glide reflections are one of the symmetry operations in frieze groups, denoted as p11g. For example, a pattern like ‘ABABAB’ with alternating steps may exhibit glide-reflection symmetry, where reflecting and translating the pattern over the glide line maps it onto itself."
+    },
+    {
+      "question": "Explain the relationship between glide reflections and translational symmetry.",
+      "answer": "Objects with glide-reflection symmetry always have a simple translational symmetry. This is because applying a glide reflection twice results in a pure translation (the reflection cancels out, leaving only the translation). For example, if you reflect a point over a line and translate it parallel to that line, repeating the operation moves the point by twice the glide vector."
+    },
+    {
+      "question": "How can a glide reflection be represented in Schoenflies or Coxeter notation?",
+      "answer": "A glide reflection can be represented in Schoenflies notation as S2∞, where S denotes a rotoreflection and ∞ indicates an infinite-order operation. In Coxeter notation, it is written as [∞+,2+], where ∞+ refers to the infinite-order operation and 2+ refers to the reflection. These notations capture the combination of reflection and translation in a compact form."
+    },
+    {
+      "question": "What happens when a reflection is composed with a translation perpendicular to the hyperplane of reflection?",
+      "answer": "If a reflection is composed with a translation perpendicular to the hyperplane of reflection, the result is another reflection. The composition translates the hyperplane (the line or plane of reflection) to a parallel position. For example, reflecting over the x-axis and then translating along the y-axis results in a reflection over a line parallel to the x-axis."
+    }
+  ]
+}

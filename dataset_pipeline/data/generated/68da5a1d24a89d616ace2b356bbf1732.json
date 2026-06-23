@@ -1,0 +1,34 @@
+{
+  "source_url": "https://mathworld.wolfram.com/GamblersRuin.html",
+  "category": "mathworld",
+  "pairs": [
+    {
+      "question": "What is the Gambler's Ruin problem?",
+      "answer": "The Gambler's Ruin problem is a scenario where two players start with a finite number of pennies and repeatedly bet one penny at a time, with each flip having a 50% chance of winning. The process continues until one player loses all their pennies. The probability of a player going bankrupt is equal to the ratio of their opponent's initial pennies to the total number of pennies."
+    },
+    {
+      "question": "How is the probability of a player going bankrupt calculated in the Gambler's Ruin scenario?",
+      "answer": "The probability that a player goes bankrupt is calculated as the ratio of the opponent's initial pennies to the total number of pennies. For example, if Player A starts with 3 pennies and Player B starts with 7 pennies, the probability that Player A goes bankrupt is 7/(3+7) = 0.7."
+    },
+    {
+      "question": "Why do casinos always come out ahead in the long run according to the Gambler's Ruin principle?",
+      "answer": "Casinos always come out ahead in the long run because they typically have more pennies (or resources) than individual patrons. According to the Gambler's Ruin principle, the player starting with fewer resources has a higher chance of going bankrupt, regardless of the game's odds. This ensures that, over time, the casino's wealth increases while patrons' wealth decreases."
+    },
+    {
+      "question": "What happens to the Gambler's Ruin probabilities if the players start with an equal number of pennies?",
+      "answer": "If both players start with an equal number of pennies, their probabilities of going bankrupt are equal. For example, if each player starts with 5 pennies, the probability that either player goes bankrupt is 5/(5+5) = 0.5."
+    },
+    {
+      "question": "Can you provide a Python code snippet to simulate the Gambler's Ruin problem?",
+      "answer": "python\nimport random\n\ndef gamblers_ruin(player1_pennies, player2_pennies, iterations=10000):\n    player1_wins = 0\n    player2_wins = 0\n    for _ in range(iterations):\n        p1, p2 = player1_pennies, player2_pennies\n        while p1 > 0 and p2 > 0:\n            if random.random() < 0.5:\n                p1 += 1\n                p2 -= 1\n            else:\n                p1 -= 1\n                p2 += 1\n        if p1 == 0:\n            player2_wins += 1\n        else:\n            player1_wins += 1\n    print(f\"Player 1 wins: {player1_wins/iterations:.2%}\")\n    print(f\"Player 2 wins: {player2_wins/iterations:.2%}\")\n\n# Example: Player 1 starts with 5 pennies, Player 2 with 5 pennies\ngamblers_ruin(5, 5)\n"
+    },
+    {
+      "question": "How does the Gambler's Ruin principle relate to the concept of a random walk?",
+      "answer": "The Gambler's Ruin problem can be modeled as a one-dimensional random walk, where the position of the walker represents the difference in pennies between the two players. Each step in the walk corresponds to a penny transfer, and the walk continues until it reaches one of two absorbing barriers (either player losing all their pennies). The probability of absorption at each barrier is determined by the initial positions of the players."
+    },
+    {
+      "question": "What is the connection between the Gambler's Ruin and the Martingale betting strategy?",
+      "answer": "The Martingale betting strategy involves doubling the bet after each loss to recover previous losses and gain a net profit. In the context of the Gambler's Ruin, the Martingale strategy can lead to ruin even with favorable odds because it assumes infinite resources. In reality, players have finite resources, making the Martingale strategy unsustainable and increasing the risk of going bankrupt."
+    }
+  ]
+}

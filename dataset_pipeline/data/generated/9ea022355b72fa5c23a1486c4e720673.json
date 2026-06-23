@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Baillie_baronets_of_Polkemmet_(1823)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When was the Baillie baronetcy of Polkemmet created, and who was the first baronet?",
+      "answer": "The Baillie baronetcy, of Polkemmet in the County of Linlithgow, was created in the Baronetage of the United Kingdom on 14 November 1823. The first baronet was William Baillie, who was the son of William Baillie, Lord Polkemmet, a Lord of Session."
+    },
+    {
+      "question": "What notable political roles did members of the Baillie baronetcy hold?",
+      "answer": "The 2nd Baronet served as a Conservative Member of Parliament for Linlithgowshire. The 6th Baronet was also a Conservative Member of Parliament, representing Linlithgowshire and Tonbridge."
+    },
+    {
+      "question": "What happened to the 3rd and 4th Baronets of the Baillie family?",
+      "answer": "The 3rd Baronet emigrated to Australia, where he served as a justice of the peace for New South Wales and Victoria. He died at age 39 and was succeeded by his younger brother, the 4th Baronet."
+    },
+    {
+      "question": "How is the Baillie family connected to Polkemmet House and Country Park?",
+      "answer": "The family seat was Polkemmet House near Whitburn, West Lothian. The Polkemmet Mausoleum, erected in 1915 by Lady Baillie, memorializes the 4th, 5th, and 6th Baronets and is located within the grounds of the Polkemmet Estate, now part of Polkemmet Country Park."
+    },
+    {
+      "question": "Who currently holds the Baillie baronetcy as of 2026, and when did they succeed to the title?",
+      "answer": "As of 2026, the title is held by the 8th Baronet, who succeeded his father in 2003."
+    },
+    {
+      "question": "What is the significance of the Baillie enclosure at Whitburn South Parish Churchyard?",
+      "answer": "The Baillie family are buried in the Baillie enclosure at Whitburn South Parish Churchyard, serving as the family's burial site."
+    },
+    {
+      "question": "Write a Python function to generate a summary of the Baillie baronetcy's history based on the provided text.",
+      "answer": "python\ndef summarize_baillie_baronetcy():\n    summary = (\n        \"The Baillie baronetcy of Polkemmet was created in 1823 for William Baillie. \"\n        \"The 2nd Baronet was a Conservative MP for Linlithgowshire, and the 3rd Baronet emigrated to Australia. \"\n        \"The 5th Baronet died in WWI, and the 6th Baronet was an MP for Linlithgowshire and Tonbridge. \"\n        \"The family is buried in Whitburn South Parish Churchyard, and the Polkemmet Mausoleum memorializes the 4th, 5th, and 6th Baronets.\"\n    )\n    return summary\n\n# Example usage\nprint(summarize_baillie_baronetcy())\n"
+    }
+  ]
+}

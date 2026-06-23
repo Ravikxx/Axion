@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/grahamthedev/mean-time-to-understanding-the-irreducible-human-element-in-the-age-of-infinite-code--i2o",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What is the main argument presented in the talk about the role of code in the AI era?",
+      "answer": "The talk argues that understanding code has become the new valuable skill in software engineering because the ability to generate code has become commoditized. While code generation is now abundant and cheap, the ability to quickly understand, verify, and reason about code—especially code not written by oneself—has become the critical bottleneck and source of competitive advantage."
+    },
+    {
+      "question": "How does the speaker describe the shift from the traditional value of software engineers to the current era?",
+      "answer": "Traditionally, software engineers were paid for their ability to translate human intent into machine language (e.g., Java, SQL), which was a scarce skill. Today, machines can generate code autonomously, making that translation skill less valuable. The new value lies not in writing code, but in understanding it and ensuring systems remain maintainable and controllable despite the explosion of AI-generated code."
+    },
+    {
+      "question": "What is 'The Efficiency Trap' mentioned in the talk, and why is it a mistake?",
+      "answer": "The Efficiency Trap is the misconception that increased AI-driven developer productivity (e.g., 50% faster output) directly translates to proportional staff reductions (e.g., firing 50% of the team). In reality, a 50% productivity gain typically allows a 33% reduction in team size to maintain output. More critically, the trap ignores the long-term risks of accumulating unmanageable complexity and technical debt, which can cripple a system's maintainability."
+    },
+    {
+      "question": "Explain the concept of 'Mean Time to Understanding' (MTTU) and its significance in modern software engineering.",
+      "answer": "Mean Time to Understanding (MTTU) is the time it takes for a developer—who is not the original author—to confidently determine what a piece of code does and where to look to fix it if it breaks. In the AI era, where code is abundant, MTTU becomes the key constraint and performance metric. Systems and teams should optimize for minimizing MTTU, as doing so improves velocity, reliability, and maintainability. Ignoring MTTU leads to unmanageable complexity and stalled systems."
+    },
+    {
+      "question": "What is 'plausible competence' in the context of AI-generated code, and why is it dangerous?",
+      "answer": "Plausible competence refers to AI-generated code that looks correct at a glance—using proper syntax, libraries, and even passing tests—but may not actually fit the nuanced requirements of the system. It activates fast, intuitive thinking (System 1), leading developers to trust the code without deeper verification. This is dangerous because it can bypass slow, deliberate reasoning (System 2), resulting in unquestioned, potentially flawed solutions being deployed into production."
+    },
+    {
+      "question": "Provide a Python code snippet that demonstrates how to measure MTTU in a development workflow. Assume a function that simulates a developer reading and understanding a piece of code.",
+      "answer": "python\nimport time\nfrom typing import Callable\n\ndef measure_mttu(func: Callable, max_timeout: int = 300) -> float:\n    \"\"\"\n    Measures Mean Time to Understanding (MTTU) for a given function.\n    Simulates a developer reading and understanding code.\n    \n    Args:\n        func: A callable simulating the time taken to understand code.\n        max_timeout: Maximum allowed time in seconds before timeout.\n    \n    Returns:\n        Time taken in seconds to understand the code, capped at max_timeout.\n    \"\"\"\n    start_time = time.time()\n    try:\n        func()  # Simulate understanding process\n    except Exception as e:\n        print(f\"Error during understanding: {e}\")\n    finally:\n        elapsed = time.time() - start_time\n        return min(elapsed, max_timeout)\n\n# Example usage\nif __name__ == \"__main__\":\n    def simulate_code_understanding():\n        # Simulate reading and reasoning about a piece of code\n        time.sleep(2.5)  # Simulate 2.5 seconds of mental processing\n    \n    mttu_seconds = measure_mttu(simulate_code_understanding)\n    print(f\"Mean Time to Understanding (MTTU): {mttu_seconds:.2f} seconds\")\n\nThis snippet provides a simple framework to quantify MTTU in a development workflow, helping teams identify bottlenecks in code comprehension."
+    },
+    {
+      "question": "According to the talk, what is one key risk of optimizing development teams solely for velocity, and how does it relate to AI-generated code?",
+      "answer": "Optimizing teams solely for velocity (e.g., number of features shipped per sprint) leads to the unchecked accumulation of AI-generated code, which appears green on dashboards but hides growing fragility. Each line of code adds potential complexity, making future changes risky and slow. AI exacerbates this by enabling rapid code generation, but without corresponding emphasis on understanding, the system becomes increasingly brittle and difficult to maintain."
+    }
+  ]
+}

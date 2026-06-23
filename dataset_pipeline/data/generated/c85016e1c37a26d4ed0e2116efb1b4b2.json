@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Constitution_of_the_United_Kingdom",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is the Constitution of the United Kingdom, and how does it differ from the constitutions of other countries?",
+      "answer": "The Constitution of the United Kingdom is a set of laws and rules that govern the organization of the country and the rights and freedoms of its people. Unlike many other countries, the UK does not have a single written constitutional document. Instead, it consists of various written statutes (e.g., Magna Carta of 1215, Bill of Rights Act 1689), common law derived from judicial precedents, and treaties. While most parts are written down, the term 'unwritten constitution' is often used because the rules are not consolidated into a single document. Additionally, the UK constitution is not a 'higher' law, meaning the government can amend it by passing a new Act of Parliament."
+    },
+    {
+      "question": "Why is the UK's constitution sometimes referred to as 'unwritten,' and is this terminology accurate?",
+      "answer": "The UK's constitution is sometimes called 'unwritten' because it is not contained in a single document like those of other countries. However, this term is misleading because most of the constitution is written down in statutes, court judgments, and treaties. The term persists due to historical usage, but it is not technically accurate. The UK constitution is better described as an 'uncodified' or 'unconsolidated' constitution, as it lacks a single codified text."
+    },
+    {
+      "question": "What are the main sources of the UK's constitution?",
+      "answer": "The main sources of the UK's constitution include:\n1. **Statutes**: Laws passed by Parliament, such as the Magna Carta (1215) and the Bill of Rights Act (1689).\n2. **Common Law**: Legal principles derived from judicial decisions and precedents over centuries.\n3. **Treaties**: International agreements that form part of UK law.\n4. **Conventions**: Unwritten rules that govern the conduct of political institutions (e.g., the royal assent to bills).\n5. **Authoritative Works**: Texts like Erskine May's *Parliamentary Practice* that describe constitutional practices."
+    },
+    {
+      "question": "How does the UK's constitution differ from the constitution of a country like the United States?",
+      "answer": "The UK's constitution differs from the US constitution in several key ways:\n1. **Form**: The UK constitution is uncodified (scattered across statutes and conventions), while the US has a single written document.\n2. **Flexibility**: The UK constitution can be amended by a simple Act of Parliament, whereas the US requires a formal amendment process.\n3. **Authority**: The UK constitution has no higher legal status than ordinary laws, while the US constitution is the supreme law of the land.\n4. **Judicial Review**: The UK does not have constitutional courts to strike down laws, whereas the US Supreme Court can invalidate unconstitutional legislation."
+    },
+    {
+      "question": "Can the UK government change its constitution? If so, how?",
+      "answer": "Yes, the UK government can change its constitution. Unlike in countries with rigid constitutions, the UK Parliament can amend constitutional laws by passing a new Act. For example, the Fixed-term Parliaments Act (2011) was later repealed (2022) through the Dissolution and Calling of Parliament Act, demonstrating how easily constitutional laws can be altered. This flexibility is a defining feature of the UK's uncodified constitution."
+    },
+    {
+      "question": "What role do judicial precedents play in the UK's constitutional framework?",
+      "answer": "Judicial precedents play a crucial role in the UK's constitutional framework by shaping common law. When judges make rulings in court cases, their decisions often establish legal principles that subsequent courts follow. For example, the principle of parliamentary sovereignty, which states that Parliament is the supreme legal authority, has been reinforced through centuries of judicial decisions. Precedents ensure consistency in constitutional interpretation but can be overridden by Parliament through new legislation."
+    },
+    {
+      "question": "Provide a Python code snippet that simulates the process of amending the UK constitution.",
+      "answer": "python\n# Simulate the process of amending the UK constitution by passing a new Act of Parliament\n\nclass UKConstitution:\n    def __init__(self):\n        self.constitutional_laws = {\n            \"Magna Carta\": 1215,\n            \"Bill of Rights Act\": 1689,\n            \"Human Rights Act\": 1998\n        }\n    \n    def amend_constitution(self, new_law, year):\n        \"\"\"Amends the constitution by adding a new law.\"\"\"\n        self.constitutional_laws[new_law] = year\n        return f\"Amendment successful: {new_law} ({year}) added to the constitution.\"\n\n# Example usage\nuk_constitution = UKConstitution()\nprint(uk_constitution.amend_constitution(\"Fixed-term Parliaments Act\", 2011))\nprint(uk_constitution.amend_constitution(\"Dissolution and Calling of Parliament Act\", 2022))\n\nThis code simulates how Parliament can amend the UK constitution by passing new Acts, reflecting the flexibility of the UK's constitutional framework."
+    }
+  ]
+}

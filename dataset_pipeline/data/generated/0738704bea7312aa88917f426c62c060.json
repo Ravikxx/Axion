@@ -1,0 +1,42 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Avondale_station_(MARTA)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Where is Avondale station located, and which MARTA rail line serves it?",
+      "answer": "Avondale station is located in Decatur, Georgia. It is served by the Blue Line of the Metropolitan Atlanta Rapid Transit Authority (MARTA) rail system."
+    },
+    {
+      "question": "What are the platform arrangements at Avondale station?",
+      "answer": "Avondale station has two at-grade island platforms, one for each direction of travel. The center two tracks between these platforms are typically unused for through service."
+    },
+    {
+      "question": "Why do some trains bound for Avondale require passengers to change trains there?",
+      "answer": "Because the center two tracks at Avondale station are not normally used for through service, trains destined for Avondale often require passengers to transfer at the station to continue their journey."
+    },
+    {
+      "question": "What is the current and future status of Green Line service at Avondale station?",
+      "answer": "Currently, a limited number of Green Line trains originate and terminate at Avondale instead of Edgewood/Candler Park, bypassing East Lake and Decatur. Full-time Green Line service is expected once the Bankhead station platform is expanded to accommodate 8-car trains, enhancing East-West trunk line capacity."
+    },
+    {
+      "question": "When did Avondale station open, and what was its original role in the MARTA system?",
+      "answer": "Avondale station opened on June 30, 1979, and it was the original eastern terminus of the Blue Line."
+    },
+    {
+      "question": "What parking facilities are available at Avondale station?",
+      "answer": "Avondale station offers 823 parking spaces available on East College Avenue."
+    },
+    {
+      "question": "Which communities does Avondale station primarily serve?",
+      "answer": "Avondale station mainly serves Avondale Estates (though technically outside city limits), Decatur Heights, Clarkston, Tucker, and communities including Scottdale, Northlake, and North Decatur."
+    },
+    {
+      "question": "What bus services are available at Avondale station?",
+      "answer": "Avondale station provides bus connections to locations such as Clifton Springs Health Center, GRTA/Panola Park & Ride, DeKalb Lou Walker Senior Center, DeKalb Mall, DeKalb Farmers Market, Avondale Estates, Tucker, Clarkston, Mountain Industrial Business District, DeKalb Veterans Administration Clinic, and the DeKalb County DFACS Center."
+    },
+    {
+      "question": "What is Avondale Yard, and what is its purpose?",
+      "answer": "Avondale Yard is a train yard located east of Avondale station. It is used to service, clean, store, and test the fleet of rolling stock that MARTA operates."
+    }
+  ]
+}

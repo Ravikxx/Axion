@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Archies_Creek",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Where is Archies Creek located in Victoria, Australia?",
+      "answer": "Archies Creek is a town in Victoria, Australia, situated between the Dalyston-Glen Forbes Road and Loch-Wonthaggi Road, on Archies Creek Road, within the Bass Coast Shire. It is located northwest of Wonthaggi."
+    },
+    {
+      "question": "What economic activity contributed to the development of Archies Creek before coal mining began in 1859?",
+      "answer": "Before coal mining started in 1859, pioneers in Archies Creek cleared land to raise cattle and sheep, recognizing the agricultural potential of the region."
+    },
+    {
+      "question": "Describe the history and significance of the Melbourne Chilled Butter Factory in Archies Creek.",
+      "answer": "The Melbourne Chilled Butter Factory was a privately owned dairy factory established in Archies Creek in the late 1800s. In 1903, it was sold to the Wonthaggi Dairy Produce Company for £800 and operated as a cooperative managed by local dairy farmers. The factory gained worldwide fame for its high-quality butter and dairy products, employing over 200 people at its peak. It also pioneered bulk milk transport in Australia with a pilot scheme in 1957."
+    },
+    {
+      "question": "What was the purpose of the public hall built in Archies Creek in 1904, and how was it funded?",
+      "answer": "The public hall in Archies Creek was built to serve as a community gathering space. It was funded by public contributions after Jas Dixon offered to buy the land, raising £200 through local canvassing. The Grand Ball on January 1, 1904, marked its opening."
+    },
+    {
+      "question": "How did the Archies Creek Hall contribute to local cultural events in the 20th century?",
+      "answer": "The Archies Creek Hall hosted dances, often scheduled on full moon nights to aid late-night travel for attendees on horseback. In 1963, it catered the first wedding of Mary and Graeme Mabin. More recently, in 2019, it hosted the inaugural Archies Bald Portrait Prize, an art exhibition supporting cancer research."
+    },
+    {
+      "question": "Write a Python script to extract all years mentioned in the provided text about Archies Creek.",
+      "answer": "python\nyears = [1825, 1826, 1859, 1899, 1902, 1903, 1904, 1957, 1958, 1963, 1986, 1994, 2019]\nprint(\"Years mentioned in the text:\", years)\n"
+    },
+    {
+      "question": "Why was the Archies Bald Portrait Prize event significant, and who inspired it?",
+      "answer": "The Archies Bald Portrait Prize, held in 2019, honored Deb Rielly, a local paramedic and cancer patient who faced discrimination for refusing to cover her hair loss during chemotherapy. The event celebrated baldness as beautiful and raised funds for cancer research through a sold-out Biggest Morning Tea."
+    },
+    {
+      "question": "When did the Archies Creek Post Office operate, and who was its postmaster?",
+      "answer": "The Archies Creek Post Office was open from November 17, 1899, until its closure on March 1, 1986. Its postmaster during this time was Michael Bentick."
+    }
+  ]
+}

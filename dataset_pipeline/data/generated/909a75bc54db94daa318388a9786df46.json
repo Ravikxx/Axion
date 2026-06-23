@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Christian_cross",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is the primary symbol of the Christian religion and where is it typically found?",
+      "answer": "The primary symbol of the Christian religion is the Christian cross, which is typically found on Christian churches."
+    },
+    {
+      "question": "According to Christian belief, what was the purpose of Jesus' death on the cross?",
+      "answer": "Christians believe that Jesus' death on the cross made the sins of all humans who trust in him go away, and that they are forgiven."
+    },
+    {
+      "question": "What is the difference between an empty cross and a crucifix?",
+      "answer": "An empty cross, favored by Protestants and Eastern Orthodox, symbolizes the Resurrection of Jesus. A crucifix, favored by Catholic churches, features the body of Jesus on the cross and symbolizes his sacrifice and suffering."
+    },
+    {
+      "question": "How do Jehovah's Witnesses view the symbol representing Jesus' death?",
+      "answer": "Jehovah's Witnesses believe Jesus died on a simple upright pole called a 'torture stake' and only display it as a picture of an impaled Jesus in their literature."
+    },
+    {
+      "question": "What event do Christians commemorate on Good Friday every year?",
+      "answer": "Christians commemorate the death of Jesus on the cross on Good Friday every year."
+    },
+    {
+      "question": "Explain the significance of the empty cross in Eastern Orthodox tradition.",
+      "answer": "In Eastern Orthodox tradition, the empty cross symbolizes the Resurrection of Jesus and includes a slanted footbar as part of its design."
+    },
+    {
+      "question": "Write a Python function that categorizes a given cross description into one of the Christian groups mentioned (e.g., Catholic, Protestant, Eastern Orthodox, Jehovah's Witnesses).",
+      "answer": "python\ndef categorize_cross(cross_description):\n    cross_description = cross_description.lower()\n    if 'body of jesus' in cross_description or 'crucifix' in cross_description:\n        return 'Catholic'\n    elif 'empty cross' in cross_description and 'slanted footbar' in cross_description:\n        return 'Eastern Orthodox'\n    elif 'empty cross' in cross_description:\n        return 'Protestant'\n    elif 'torture stake' in cross_description or 'impaled jesus' in cross_description:\n        return 'Jehovah\\'s Witnesses'\n    else:\n        return 'Unknown'\n\n# Example usage:\nprint(categorize_cross(\"A cross with the body of Jesus on it\"))  # Output: Catholic\nprint(categorize_cross(\"An empty cross with a slanted footbar\"))  # Output: Eastern Orthodox\n"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/1948_Singaporean_general_election",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When were the first general elections held in Singapore and how many members of the Legislative Council were elected?",
+      "answer": "The first general elections in Singapore were held on 20 March 1948, and six members of the Legislative Council were elected through these elections."
+    },
+    {
+      "question": "What were the key characteristics of the electorate during the 1948 Singapore general elections?",
+      "answer": "The electorate was highly restricted, limited to British subjects who met strict residential and income qualifications, resulting in just over 22,000 registered voters out of a population of approximately 940,000."
+    },
+    {
+      "question": "Which political party won the most seats in the 1948 Singapore general elections and how many seats did it secure?",
+      "answer": "The Progressive Party (PP) won the most seats in the 1948 elections, securing three of the six elected seats in the Legislative Council."
+    },
+    {
+      "question": "What percentage of registered voters participated in the 1948 Singapore general elections, and what factors influenced this turnout?",
+      "answer": "Approximately 63% of registered voters participated in the 1948 elections. The turnout was influenced by the narrow franchise and low levels of political mobilisation among the wider population."
+    },
+    {
+      "question": "How did the 1948 Singapore general elections represent a step toward self-governance, despite their limitations?",
+      "answer": "Though highly limited in scope, the 1948 elections marked a preliminary move toward greater self-governance in Singapore by introducing direct elections for some Legislative Council seats. However, the heavily restricted electorate, dominance of appointed members, and limited powers of elected representatives drew criticism and highlighted the need for further reforms."
+    },
+    {
+      "question": "Write a Python code snippet to calculate the voter turnout percentage from registered voters given the number of voters who participated.",
+      "answer": "python\ndef calculate_voter_turnout(registered_voters, participating_voters):\n    \"\"\"Calculate the voter turnout percentage.\n    \n    Args:\n        registered_voters (int): Total number of registered voters.\n        participating_voters (int): Number of voters who participated.\n    \n    Returns:\n        float: Voter turnout percentage rounded to 2 decimal places.\n    \"\"\"\n    turnout = (participating_voters / registered_voters) * 100\n    return round(turnout, 2)\n\n# Example usage for the 1948 Singapore elections:\nregistered_voters = 22000\nparticipating_voters = 13860  # 63% of 22000\nprint(calculate_voter_turnout(registered_voters, participating_voters))  # Output: 63.0\n"
+    },
+    {
+      "question": "Why did some local political figures and civic groups criticize the 1948 Singapore general elections?",
+      "answer": "Criticism arose due to the heavily restricted electorate, the dominance of appointed members over elected ones, and the limited powers granted to the elected representatives in the Legislative Council. These issues highlighted the colonial administration's reluctance to fully embrace self-governance and led to suppression of dissent under colonial security measures."
+    }
+  ]
+}

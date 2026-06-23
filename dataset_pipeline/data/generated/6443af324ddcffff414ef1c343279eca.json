@@ -1,0 +1,34 @@
+{
+  "source_url": "https://mathworld.wolfram.com/StandardDeviation.html",
+  "category": "mathworld",
+  "pairs": [
+    {
+      "question": "What is the mathematical definition of standard deviation for a probability distribution?",
+      "answer": "The standard deviation of a probability distribution is defined as the square root of the variance. If X is a random variable with mean μ and second moment E[X²], the variance σ² is calculated as σ² = E[X²] - μ². The standard deviation σ is then σ = √(E[X²] - μ²)."
+    },
+    {
+      "question": "How is the sample standard deviation calculated from a set of values?",
+      "answer": "The sample standard deviation is calculated as the square root of the sample variance. For a dataset {x₁, x₂, ..., xₙ}, the sample variance s² is given by s² = (1/(n-1)) * Σ(xᵢ - x̄)², where x̄ is the sample mean. The sample standard deviation s is then s = √s². Here is a Python code snippet to compute it:\npython\nimport numpy as np\n\nvalues = [98.17, 112.3, 102.6, 94.3, 108.1]\nsample_std = np.std(values, ddof=1)  # ddof=1 for sample standard deviation\nprint(sample_std)\n"
+    },
+    {
+      "question": "What is the difference between sample standard deviation and bias-corrected (population) standard deviation?",
+      "answer": "The sample standard deviation uses n-1 in the denominator (Bessel's correction) to correct bias in estimating the population variance, while the bias-corrected (population) standard deviation uses n. The sample standard deviation is s = √(Σ(xᵢ - x̄)² / (n-1)), whereas the population standard deviation is σ = √(Σ(xᵢ - μ)² / n)."
+    },
+    {
+      "question": "How does the standard deviation relate to the mean deviation, and which is more commonly used?",
+      "answer": "The mean deviation is the average of the absolute deviations from the mean, i.e., (1/n) * Σ|xᵢ - μ|, while the standard deviation is the square root of the variance. The standard deviation is more commonly used because it is mathematically tractable, especially in normal distributions, and aligns with maximum likelihood estimation."
+    },
+    {
+      "question": "What is the standard deviation range for a 95% confidence interval under the assumption of normality?",
+      "answer": "For a normally distributed dataset, the 95% confidence interval corresponds to approximately ±1.96 standard deviations from the mean. Thus, the range is [μ - 1.96σ, μ + 1.96σ]. For example, if the mean μ is 100 and the standard deviation σ is 10, the 95% confidence interval is [80.4, 119.6]."
+    },
+    {
+      "question": "How can you compute the standard deviation of the numbers 1, 2, 3, 4, 5 manually?",
+      "answer": "First, compute the mean: μ = (1+2+3+4+5)/5 = 3. Then, compute the squared deviations: (1-3)²=4, (2-3)²=1, (3-3)²=0, (4-3)²=1, (5-3)²=4. The variance is (4+1+0+1+4)/5 = 2, so the population standard deviation is √2 ≈ 1.414. For the sample standard deviation, divide by n-1=4: √(10/4) ≈ 1.581."
+    },
+    {
+      "question": "Why is the standard deviation often used in physical sciences as a root-mean-square (RMS) measure?",
+      "answer": "In physical sciences, the standard deviation is often referred to as the root-mean-square (RMS) deviation because it represents the square root of the mean of the squared deviations from the mean. This aligns with how RMS is defined for any quantity, making it a natural measure of variability or error in measurements."
+    }
+  ]
+}

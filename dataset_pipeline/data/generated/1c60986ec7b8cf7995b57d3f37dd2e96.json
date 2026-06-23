@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Alexei_Navalny_2018_presidential_campaign",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who is Alexei Navalny and what was his political campaign focused on?",
+      "answer": "Alexei Navalny is a Russian opposition figure and anti-corruption activist known for challenging the Russian government. His 2018 presidential campaign primarily focused on domestic issues, particularly combating corruption in Russia and improving the country's economy. This campaign was notable for its early start, as Navalny began campaigning in December 2016, much earlier than typical in modern Russian politics."
+    },
+    {
+      "question": "When did Alexei Navalny announce his intention to run for President of Russia, and what was unprecedented about his campaign?",
+      "answer": "Navalny announced his intention to run for President of Russia on December 13, 2016. What was unprecedented about his campaign was that he began openly campaigning for the presidency far in advance of the official election registration process, unlike most Russian politicians who typically start campaigning only a few months before the election."
+    },
+    {
+      "question": "Why was Alexei Navalny barred from running in the 2018 Russian presidential election despite submitting his candidacy documents?",
+      "answer": "Navalny was barred from running in the 2018 Russian presidential election because the Central Election Commission rejected his candidacy documents on December 25, 2017. This rejection was due to his prior conviction in a fraud case, as Russian election legislation disqualifies individuals with certain criminal convictions from running for office."
+    },
+    {
+      "question": "What legal challenges did Alexei Navalny face during his presidential campaign, and how did he respond?",
+      "answer": "Navalny faced a suspended sentence upheld by a Russian court in February 2017, despite the European Court of Human Rights (ECHR) siding with him. He responded by appealing to the ECHR and continuing his campaign to pressure the government into accepting his candidacy."
+    },
+    {
+      "question": "How did the Central Election Commission of Russia respond to Alexei Navalny's candidacy submission?",
+      "answer": "The Central Election Commission rejected Navalny's candidacy documents on December 25, 2017, citing his prior conviction as the reason for ineligibility under Russian election laws. This decision was issued shortly after Navalny officially submitted his documents for registration."
+    },
+    {
+      "question": "What action did Alexei Navalny take in response to his rejection as a presidential candidate?",
+      "answer": "In response to his rejection, Navalny called on his supporters to boycott the 2018 Russian presidential election on December 25, 2017, as a form of protest against the decision."
+    },
+    {
+      "question": "Write a Python script that checks if a given date falls within the period when Alexei Navalny was campaigning for the 2018 Russian presidential election.",
+      "answer": "python\nfrom datetime import datetime\n\ndef is_during_navalny_campaign(date_str):\n    campaign_start = datetime(2016, 12, 13).date()\n    election_date = datetime(2018, 3, 18).date()  # 2018 Russian presidential election date\n    try:\n        input_date = datetime.strptime(date_str, \"%Y-%m-%d\").date()\n        return campaign_start <= input_date <= election_date\n    except ValueError:\n        return False\n\n# Example usage:\nprint(is_during_navalny_campaign(\"2017-05-01\"))  # True\nprint(is_during_navalny_campaign(\"2016-12-12\"))  # False\n"
+    }
+  ]
+}

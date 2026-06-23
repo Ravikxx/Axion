@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/jasmin/an-llm-api-call-in-4-gifs-33b1",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What are the key differences between input and output token pricing in LLM APIs?",
+      "answer": "Input and output tokens are priced differently in LLM APIs, with output tokens typically costing 3–5 times more than input tokens. The cost is calculated as: `cost = (input_tokens / 1,000,000) × input_price + (output_tokens / 1,000,000) × output_price`. This asymmetry means long prompts are cheap, but long responses are expensive. Additionally, 'thinking' tokens from reasoning models count as output tokens and are billed at the higher rate."
+    },
+    {
+      "question": "How does the `stop_reason` field in an LLM API response help developers?",
+      "answer": "The `stop_reason` field in an LLM API response indicates why the model stopped generating text. Possible values include: `end_turn` (finished naturally), `max_tokens` (hit the token limit and response was truncated), `tool_use` (model wants to call a tool), or `stop_sequence` (matched a stop string). Checking this field is crucial to avoid shipping bugs, as the response may appear correct until it abruptly stops."
+    },
+    {
+      "question": "Write a Node.js code snippet to make a basic API call to an LLM using the `fetch` API, including handling the response.",
+      "answer": "Here’s a minimal Node.js snippet using the `fetch` API to call an LLM. Replace `YOUR_API_KEY` and `YOUR_MODEL` with your actual values:\n\njavascript\nconst apiKey = 'YOUR_API_KEY';\nconst model = 'YOUR_MODEL';\n\nconst response = await fetch('https://api.openai.com/v1/chat/completions', {\n  method: 'POST',\n  headers: {\n    'Content-Type': 'application/json',\n    'Authorization': `Bearer ${apiKey}`\n  },\n  body: JSON.stringify({\n    model,\n    messages: [{ role: 'user', content: 'Hello, how are you?' }],\n    max_tokens: 100,\n    temperature: 0.7\n  })\n});\n\nconst data = await response.json();\nconsole.log('Response:', data.choices[0].message.content);\nconsole.log('Stop reason:', data.choices[0].finish_reason);\nconsole.log('Usage:', data.usage);\n\nNote: This assumes Node.js 18+ with native `fetch` support. For older versions, use a library like `node-fetch`."
+    },
+    {
+      "question": "Why is JSON expensive in terms of token usage when included in LLM prompts?",
+      "answer": "JSON is expensive because every character, including brackets, colons, and commas, is tokenized separately. For example, the JSON `{\"a\":1}` is 7 tokens. If tool schemas or structured data are bloated, they silently consume a large portion of the token budget on every request, increasing both latency and cost."
+    },
+    {
+      "question": "How would you implement a multi-turn chat manually without relying on an SDK's chat history feature?",
+      "answer": "To implement a multi-turn chat manually, maintain a `messages` array that accumulates all user inputs and model responses. On each turn, append the new user message and the previous model response to the array, then send the entire array in the API request. Here’s an example in Node.js:\n\njavascript\nconst messages = [];\n\nasync function chat(prompt) {\n  messages.push({ role: 'user', content: prompt });\n  \n  const response = await fetch('https://api.openai.com/v1/chat/completions', {\n    method: 'POST',\n    headers: { 'Authorization': `Bearer YOUR_API_KEY`, 'Content-Type': 'application/json' },\n    body: JSON.stringify({ model: 'gpt-3.5-turbo', messages, max_tokens: 100 })\n  });\n  \n  const data = await response.json();\n  const reply = data.choices[0].message.content;\n  messages.push({ role: 'assistant', content: reply });\n  return reply;\n}\n\n// Example usage:\nchat('Hello!').then(console.log);\nchat('What did I just ask you?').then(console.log);\n\nThis approach ensures the model has full context of the conversation but increases token usage and costs linearly with each turn."
+    },
+    {
+      "question": "What does the statement 'The API is stateless' mean in the context of LLM APIs?",
+      "answer": "When an LLM API is described as 'stateless,' it means each API call is independent and does not retain memory of previous interactions. If you want a chatbot to 'remember' earlier messages, you must manually maintain a `messages` array (or similar structure) and include the entire conversation history in every subsequent API request. The API itself does not store or recall prior context."
+    },
+    {
+      "question": "How does tokenization work for the word 'Unbelievable' in most LLM tokenizers?",
+      "answer": "The word 'Unbelievable' is tokenized as four separate tokens in most LLM tokenizers, not one. Tokenizers split words into subword units based on common substrings or morphemes rather than whole words. For example, it might break down into tokens like ['Un', 'believ', 'able'] or similar, depending on the specific tokenizer. This is why word count does not equal token count."
+    }
+  ]
+}

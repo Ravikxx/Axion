@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Black_Strobe",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who founded the electroclash group Black Strobe and in what year?",
+      "answer": "Black Strobe was founded in Paris in 1997 by record producer Arnaud Rebotini and DJ Ivan Smagghe."
+    },
+    {
+      "question": "What musical genres influenced Black Strobe's sound beyond their initial house music style?",
+      "answer": "Black Strobe's sound was later influenced by 1970s and 1980s music, particularly industrial post punk and European electronic body music, in addition to their original house genre."
+    },
+    {
+      "question": "How did Black Strobe describe their unique musical style?",
+      "answer": "Black Strobe described their sound as 'frozen balearic gay biker house'."
+    },
+    {
+      "question": "Name three artists that Black Strobe has remixed.",
+      "answer": "Black Strobe has remixed artists such as Röyksopp, Nitzer Ebb, Rammstein, The Rapture, and Tiefschwarz."
+    },
+    {
+      "question": "What significant change occurred in Black Strobe's lineup in 2006?",
+      "answer": "In 2006, Ivan Smagghe left the group as Black Strobe expanded to a four-piece live band, with David 'Siskid' Shaw, Bastien Burger, and Benjamin Beaulieu joining Arnaud Rebotini."
+    },
+    {
+      "question": "Which Black Strobe song was featured in the video game Grand Theft Auto V?",
+      "answer": "The track 'Boogie in Zero Gravity' from Black Strobe's work was featured on the in-game radio station Radio Mirror Park in Grand Theft Auto V."
+    },
+    {
+      "question": "Write a Python function to check if a given Black Strobe song title is featured in multiple media forms based on the provided information.",
+      "answer": "python\ndef is_song_featured_in_multiple_media(song_title):\n    featured_songs = {\n        \"I'm A Man\": [\"RocknRolla (2008 film)\", \"Le Mac (2009 film)\", \"The Walking Dead (Season 2, Episode 2)\", \"Once Upon a Time in Mumbai (2010 Bollywood film)\"],\n        \"Shining Bright Star\": [\"Assassin's Creed: Brotherhood multiplayer launch trailer\"],\n        \"Boogie in Zero Gravity\": [\"Grand Theft Auto V (Radio Mirror Park)\"]\n    }\n    return song_title in featured_songs\n\n\nExample usage:\n\nprint(is_song_featured_in_multiple_media(\"I'm A Man\"))  # Output: True\nprint(is_song_featured_in_multiple_media(\"Unknown Song\"))  # Output: False\n"
+    }
+  ]
+}

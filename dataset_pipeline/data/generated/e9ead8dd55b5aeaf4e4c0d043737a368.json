@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Daybreak_Star_Cultural_Center",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the Daybreak Star Indian Cultural Center and where is it located?",
+      "answer": "The Daybreak Star Indian Cultural Center is a Native American cultural center located in Seattle, Washington, specifically in Discovery Park within the Magnolia neighborhood. It serves as an urban hub for Native Americans in the Seattle area."
+    },
+    {
+      "question": "Who founded the Daybreak Star Indian Cultural Center, and what was the significance of their activism?",
+      "answer": "The Daybreak Star Indian Cultural Center was developed from activism led by Bernie Whitebear and other Native Americans in 1970. They staged a self-styled 'invasion' and occupation to claim surplus military land under 1865 U.S.-Indian treaties, which promised reversion of surplus military lands to their original owners."
+    },
+    {
+      "question": "Describe the architectural style and key features of the Daybreak Star Center building.",
+      "answer": "The Daybreak Star Center building is a modern architectural structure that incorporates elements of traditional Northwest Native architecture. It was designed by Arai Jackson Architects and Planners and completed in 1977."
+    },
+    {
+      "question": "What is the People's Lodge, and what happened to its construction plans?",
+      "answer": "The People's Lodge was a planned complex of three additional buildings to supplement the Daybreak Star Center, envisioned as part of Bernie Whitebear's final dream project. Construction was postponed indefinitely in 2006 due to lack of funds, despite agreements being reached between the tribes, the city, and nearby residents on a reduced size for the project."
+    },
+    {
+      "question": "What are the main functions and activities at the Daybreak Star Center?",
+      "answer": "The Daybreak Star Center functions as a conference center, hosts pow wows, houses a Head Start school program, and features an art gallery. It serves as a major nucleus of Native American cultural activity in the region."
+    },
+    {
+      "question": "What notable artworks are part of the Daybreak Star Center's permanent art collection?",
+      "answer": "The center's permanent art collection includes 'Blue Jay,' a 30-foot-wide and 12-foot-high sculpture by Lawney Reyes, which was previously displayed at the Bank of California building. Also included is a major oil painting by Guy Anderson, depicting a traditional Northwest Native representation of a whale."
+    },
+    {
+      "question": "Write a Python code snippet to calculate the area of the Daybreak Star Center's land in square meters.",
+      "answer": "python\n# Area calculation for the Daybreak Star Center's land in square meters\nland_area_acres = 20\nacres_to_square_meters = 4046.86\nland_area_square_meters = land_area_acres * acres_to_square_meters\nprint(f\"The Daybreak Star Center's land area is {land_area_square_meters} square meters.\")\n\nOutput: The Daybreak Star Center's land area is 80937.2 square meters."
+    },
+    {
+      "question": "Why is Bernie Whitebear memorialized at the Daybreak Star Center?",
+      "answer": "Bernie Whitebear is memorialized by the Bernie Whitebear Memorial Ethnobotanical Garden, located next to the Center building. This memorial honors his significant contributions to the establishment and development of the Daybreak Star Center and his activism for Native American rights."
+    }
+  ]
+}

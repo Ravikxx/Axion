@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Anna_Maria_Truter",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was Anna Maria Truter, Lady Barrow, and what was her primary contribution to the Cape Colony?",
+      "answer": "Anna Maria Truter, Lady Barrow (17 August 1777 – 15 December 1857) was a botanical artist in the Cape Colony. By the time she left in 1803, she had created the first known portfolio of Cape flower studies and landscapes, documenting the region's flora and scenery."
+    },
+    {
+      "question": "What notable work was authored by Sir John Barrow, Anna Maria Truter's husband?",
+      "answer": "Sir John Barrow, Anna Maria Truter's husband, authored 'An Account of Travels into the Interior of Southern Africa, in the Years 1797 and 1798,' published in London in 1801. The work details his expeditions into southern Africa during those years."
+    },
+    {
+      "question": "Who were the parents of Anna Maria Truter, Lady Barrow?",
+      "answer": "Anna Maria Truter was the daughter of Petrus Johannes Truter (17 December 1747 – 31 January 1825) and Johanna Ernestina Blankenberg (born 19 April 1750). Her father was an official in the East India Company, a Member of the Court of Justice, and a Commissioner of Police."
+    },
+    {
+      "question": "How many children did Anna Maria Truter and Sir John Barrow have, and which of their children became a founder of the Royal Geographical Society?",
+      "answer": "Anna Maria Truter and Sir John Barrow had seven children. One of their sons, George Barrow (Sir) (22 October 1806 – 1876), became a founder of the Royal Geographical Society alongside his father. He was also a distinguished author and traveller."
+    },
+    {
+      "question": "What roles did Sir John Barrow's children serve, and which one was an archivist?",
+      "answer": "Sir John Barrow's children had notable roles: George Barrow (Sir) was a founder of the Royal Geographical Society and a traveller; John Barrow, Lt. Col. V.D., F.R.S., F.R.G.S., F.S.A., served as Archivist to the Admiralty; William Barrow became a Commander; Peter Barrow was Consul of Nantes and later Kertch; Johanna Maria married Robert Batty of the Grenadier Guards; and Mary Jane remained unmarried."
+    },
+    {
+      "question": "Provide a code snippet to generate a list of Anna Maria Truter's children with their birth years.",
+      "answer": "python\nchildren = [\n    {\"name\": \"George (died aged 2 months)\", \"birth_year\": None},\n    {\"name\": \"George Barrow (Sir)\", \"birth_year\": 1806},\n    {\"name\": \"John Barrow, Lt. Col.\", \"birth_year\": 1808},\n    {\"name\": \"William Barrow, Commander\", \"birth_year\": 1810},\n    {\"name\": \"Peter Barrow\", \"birth_year\": 1813},\n    {\"name\": \"Johanna Maria\", \"birth_year\": None},\n    {\"name\": \"Mary Jane\", \"birth_year\": None}\n]\n"
+    },
+    {
+      "question": "What was the fate of Johanna Maria Truter's husband, Robert Batty, during his military service?",
+      "answer": "Johanna Maria Truter's husband, Robert Batty, served in the Pyrenees and later at Waterloo, where he was wounded. He later became a Lt. Col. in the Grenadier Guards."
+    }
+  ]
+}

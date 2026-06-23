@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Angie_Thomas",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is Angie Thomas known for in literature?",
+      "answer": "Angie Thomas is best known for her young adult and middle grade novels, particularly her debut book 'The Hate U Give', published in 2017."
+    },
+    {
+      "question": "How many books has Angie Thomas written, and can you list them?",
+      "answer": "Angie Thomas has written five books: 'The Hate U Give' (2017), 'On the Come Up' (2019), 'Concrete Rose' (2021), 'Nic Blake and the Remarkables: The Manifestor Prophecy' (2023), and 'Nic Blake and the Remarkables: The Book of Anansi' (2025)."
+    },
+    {
+      "question": "What major awards or honors has 'The Hate U Give' received?",
+      "answer": "'The Hate U Give' has received 19 awards and honors, including a National Book Award longlist nomination, a Michael L. Printz Award honor, and a Coretta Scott King Award win. It also spent over 80 weeks on the New York Times Bestseller List."
+    },
+    {
+      "question": "How did Angie Thomas's early life influence her writing career?",
+      "answer": "At age six, Thomas witnessed gun violence in Jackson, Mississippi, which inspired her to become a writer. She later wrote 'The Hate U Give' while working as a secretary for a bishop."
+    },
+    {
+      "question": "What genre does Angie Thomas primarily write in?",
+      "answer": "Angie Thomas primarily writes young adult and middle grade fiction."
+    },
+    {
+      "question": "Is 'The Hate U Give' available as a movie adaptation?",
+      "answer": "Yes, 'The Hate U Give' was adapted into a movie."
+    },
+    {
+      "question": "Write a Python snippet to extract and print Angie Thomas's books and their publication years from a given list of dictionaries.",
+      "answer": "python\nbooks = [\n    {'title': 'The Hate U Give', 'year': 2017},\n    {'title': 'On the Come Up', 'year': 2019},\n    {'title': 'Concrete Rose', 'year': 2021},\n    {'title': 'Nic Blake and the Remarkables: The Manifestor Prophecy', 'year': 2023},\n    {'title': 'Nic Blake and the Remarkables: The Book of Anansi', 'year': 2025}\n]\n\nfor book in books:\n    print(f\"{book['title']} ({book['year']})\")\n\nThe output would list each book with its publication year as provided."
+    }
+  ]
+}

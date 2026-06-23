@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/2023_Writers_Guild_of_America_strike",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What were the key issues behind the 2023 WGA strike?",
+      "answer": "The 2023 Writers Guild of America (WGA) strike was primarily over labor disputes with the Alliance of Motion Picture and Television Producers (AMPTP). Key issues included fair compensation, residual payments for streaming content, and protections against the use of artificial intelligence in writing processes."
+    },
+    {
+      "question": "How long did the 2023 WGA strike last, and how does it compare to historical WGA strikes?",
+      "answer": "The 2023 WGA strike lasted 148 days, from May 2 to September 27, 2023. It was the second-longest strike in WGA history, following the 1988 strike, which lasted 153 days. The only longer strike was the 1988 one."
+    },
+    {
+      "question": "What were the economic impacts of the 2023 WGA strike on Southern California?",
+      "answer": "The 2023 WGA strike resulted in the loss of 45,000 jobs and caused an estimated economic loss of $6.5 billion in Southern California. The strike disrupted production, leading to reduced staffing at studios and financial losses in related industries like VFX and prop-making."
+    },
+    {
+      "question": "What is a force majeure clause, and how was it used during the 2023 WGA strike?",
+      "answer": "A force majeure clause is a contract provision that allows parties to terminate or suspend obligations due to unforeseeable events beyond their control. During the 2023 WGA strike, big studios invoked force majeure to end deals with writers, saving millions of dollars by avoiding long-term contracts established during the media streaming boom."
+    },
+    {
+      "question": "What was the outcome of the 2023 WGA strike, and how was it received by members?",
+      "answer": "The strike ended on September 27, 2023, after an agreement was reached. On October 9, the WGA ratified the new contract, which was approved by 99% of its members. The contract addressed key labor issues, including streaming residuals and AI protections."
+    },
+    {
+      "question": "How did the 2023 WGA strike align with other Hollywood labor disputes?",
+      "answer": "The 2023 WGA strike coincided with the 2023 SAG-AFTRA strike, which lasted until November 2023. Together, these strikes were part of a larger wave of Hollywood labor disputes, disrupting American movie and television production and affecting industries like VFX and prop-making."
+    },
+    {
+      "question": "Provide a Python code snippet to calculate the total economic loss caused by the 2023 WGA and SAG-AFTRA strikes combined.",
+      "answer": "python\n# Calculate total economic loss from WGA and SAG-AFTRA strikes in 2023\neconomic_loss_wga = 6.5e9  # $6.5 billion from WGA strike\njobs_lost_sag_aftra = 45_000  # Jobs lost (includes both WGA and SAG-AFTRA)\n# Assuming SAG-AFTRA strike contributed additional economic losses\neconomic_loss_sag_aftra = 3.5e9  # Estimated additional loss from SAG-AFTRA strike\ntotal_economic_loss = economic_loss_wga + economic_loss_sag_aftra\ntotal_jobs_lost = jobs_lost_sag_aftra\n\nprint(f\"Total economic loss: ${total_economic_loss:,.2f}\")\nprint(f\"Total jobs lost: {total_jobs_lost:,}\")\n\nThis code calculates the combined economic impact of the WGA and SAG-AFTRA strikes, estimating a total loss of $10 billion and 45,000 jobs lost."
+    }
+  ]
+}

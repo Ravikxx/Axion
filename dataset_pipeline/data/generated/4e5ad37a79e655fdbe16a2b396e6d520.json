@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Arthur_Dawson_(trade_unionist)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was Arthur Dawson's occupation before he became a trade unionist?",
+      "answer": "Before becoming a trade unionist, Arthur Dawson worked as a dyer. He joined the National Society of Dyers and Finishers early in his career and eventually became the assistant secretary of its Huddersfield branch in 1910."
+    },
+    {
+      "question": "Why was Arthur Dawson imprisoned during World War I?",
+      "answer": "Arthur Dawson was imprisoned during World War I because he refused to serve in the military or undertake equivalent service. As a conscientious objector opposed to the war, he joined the No-Conscription Fellowship and was jailed in Wormwood Scrubs, only being released in the summer of 1919."
+    },
+    {
+      "question": "Which political parties was Arthur Dawson affiliated with, and why did he leave the British Socialist Party?",
+      "answer": "Arthur Dawson joined the British Socialist Party (BSP) and was initially aligned with its anti-war stance. However, most of the BSP's members later joined the Communist Party of Great Britain, while Dawson instead joined the Labour Party. His decision to leave the BSP was likely influenced by his political evolution and opposition to communism."
+    },
+    {
+      "question": "What roles did Arthur Dawson hold within trade unions?",
+      "answer": "Arthur Dawson held several significant roles in trade unions. He was the assistant secretary of the Huddersfield branch of the National Society of Dyers and Finishers in 1910, later becoming a full-time organiser for the Dyers and Finishers in 1920. He served as the Lancashire and Halifax District Secretary of the National Union of Textile Workers (NUTW) and continued in a leadership role when the NUTW became part of the National Union of Dyers, Bleachers and Textile Workers."
+    },
+    {
+      "question": "How did Arthur Dawson contribute to local government?",
+      "answer": "Arthur Dawson contributed to local government by serving on the management committee of the General Federation of Trade Unions from 1935. He was also co-opted to Bury District Council in 1941 and served as Mayor of Bury in 1953/54, despite boycotts by the British Legion and two other ex-servicemen's organisations due to his history as a conscientious objector."
+    },
+    {
+      "question": "What were Arthur Dawson's personal beliefs and interests outside of his political career?",
+      "answer": "Arthur Dawson was a teetotaler throughout his life, abstaining from alcohol. Additionally, he had a strong interest in education and served on the executive committee of the National Council of Labour Colleges, reflecting his commitment to workers' education and empowerment."
+    },
+    {
+      "question": "Write a Python script to calculate the number of years Arthur Dawson served as Mayor of Bury.",
+      "answer": "python\n# Calculate the years Arthur Dawson served as Mayor of Bury\nstart_year = 1953\nend_year = 1954\n\n# Assuming he served from the start of 1953 to the end of 1954\ntotal_years = end_year - start_year + 1\nprint(f'Arthur Dawson served as Mayor of Bury for {total_years} year(s).')\n\nThis script calculates the duration of his mayoral term by subtracting the start year from the end year and adding 1 to include both years."
+    }
+  ]
+}

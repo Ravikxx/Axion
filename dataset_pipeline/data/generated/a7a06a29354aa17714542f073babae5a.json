@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/adiozdaniel/are-we-losing-our-manners-in-software-development-1c55",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What were the hardware constraints of older operating systems like Windows 95, and how do they compare to modern software requirements?",
+      "answer": "Older operating systems like Windows 95 were designed to run on extremely limited hardware. Windows 95 required only about 50 MB of disk space and could operate on systems with 4–8 MB of RAM. In contrast, modern software like a single browser tab can consume over 1 GB of memory just for tasks as simple as editing text. This shift reflects how software development priorities have changed from efficiency to convenience."
+    },
+    {
+      "question": "Why does the author argue that software development has lost its 'discipline' compared to older systems?",
+      "answer": "The author attributes the loss of discipline to the abundance of hardware resources. In the past, scarcity enforced strict practices such as memory cleanup, efficient coding, minimal dependencies, and understanding underlying abstractions. Today, developers often prioritize speed and convenience over resource efficiency, leading to bloated software that disregards hardware constraints."
+    },
+    {
+      "question": "What are the professional and ethical implications of prioritizing development speed over resource efficiency?",
+      "answer": "Prioritizing speed over resource efficiency can lead to several negative outcomes: increased environmental impact due to energy consumption, reduced accessibility for users with older hardware, greater security vulnerabilities from excessive dependencies, and stifled innovation as resources are diverted to maintaining bloated systems. Ethical development requires balancing speed with consideration for hardware, users, and long-term sustainability."
+    },
+    {
+      "question": "How might a developer evaluate whether a dependency is necessary for a project?",
+      "answer": "A developer should ask whether the dependency significantly reduces development time or complexity for a task that would otherwise require substantial effort. For example, using a 50 MB library for a simple 'Hello, World' task is unnecessary. Profiling tools can help identify if a dependency is actually used or if it’s being pulled in unnecessarily. Additionally, understanding the dependency’s core functionality and alternatives can help make an informed decision."
+    },
+    {
+      "question": "Provide a Python code snippet demonstrating how to profile memory usage in a simple script to identify inefficiencies.",
+      "answer": "python\nimport sys\nimport tracemalloc\n\ndef memory_intensive_task():\n    data = [i for i in range(10**6)]  # Allocates a large list\n    return sum(data)\n\nif __name__ == \"__main__\":\n    tracemalloc.start()  # Start memory tracking\n    result = memory_intensive_task()\n    current, peak = tracemalloc.get_traced_memory()\n    print(f\"Result: {result}\")\n    print(f\"Current memory usage: {current / 10**6:.2f} MB\")\n    print(f\"Peak memory usage: {peak / 10**6:.2f} MB\")\n    tracemalloc.stop()\n\nThis script uses the `tracemalloc` module to track memory usage, helping identify inefficiencies in code."
+    },
+    {
+      "question": "What are the environmental impacts of inefficient software, and how can developers reduce them?",
+      "answer": "Inefficient software increases energy consumption, contributing to higher carbon emissions from data centers and end-user devices. Developers can reduce these impacts by optimizing code to use fewer resources, minimizing dependencies, and designing software that runs efficiently on older hardware. This not only reduces environmental harm but also improves accessibility and reduces costs."
+    },
+    {
+      "question": "How can a developer advocate for efficiency within a team that prioritizes speed and features?",
+      "answer": "A developer can advocate for efficiency by demonstrating the long-term benefits of optimized code, such as reduced cloud costs, faster performance, and broader accessibility. Sharing profiling data and case studies can help illustrate the trade-offs between speed and resource usage. Additionally, proposing small-scale efficiency improvements and integrating them into existing workflows can gradually shift team priorities toward more sustainable practices."
+    }
+  ]
+}

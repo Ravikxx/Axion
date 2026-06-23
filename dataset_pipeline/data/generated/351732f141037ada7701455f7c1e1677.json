@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Derivative_(finance)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is a derivative in finance?",
+      "answer": "In finance, a derivative is a contract between a buyer and a seller where the value depends on an underlying asset or event. The four key elements of a derivative are: (1) the underlying asset (or 'underlier') that is bought or sold, (2) a future act (such as a sale or purchase) that must occur, (3) a predetermined price for the transaction, and (4) a future date by which the act must take place."
+    },
+    {
+      "question": "What are the common types of derivatives?",
+      "answer": "Common types of derivatives include forwards, futures, options, swaps, synthetic collateralized debt obligations, and credit default swaps. For example, a futures contract is a standardized agreement to buy or sell an asset at a set price on a future date, while an option gives the holder the right (but not the obligation) to buy or sell an asset."
+    },
+    {
+      "question": "How can derivatives be used in risk management?",
+      "answer": "Derivatives are often used to hedge against price movements, reducing risk exposure. For instance, an airline might use futures contracts to lock in fuel prices, protecting against price spikes. Similarly, agricultural businesses use derivatives to mitigate risks from adverse weather conditions affecting crop yields."
+    },
+    {
+      "question": "What determines the value of a derivative?",
+      "answer": "The value of a derivative depends on the performance of its underlying asset or event. The underlying can be a commodity (e.g., oil or corn), a financial instrument (e.g., a stock or bond), a price index, a currency, or an interest rate. For example, the value of an oil futures contract rises or falls based on the market price of oil."
+    },
+    {
+      "question": "Provide a Python code snippet to simulate a simple futures contract pricing model.",
+      "answer": "python\nimport numpy as np\n\ndef futures_price(spot_price, risk_free_rate, time_to_maturity):\n    '''Calculate the theoretical futures price of an asset.\n    Args:\n        spot_price (float): Current spot price of the underlying asset.\n        risk_free_rate (float): Annual risk-free interest rate (e.g., 0.05 for 5%).\n        time_to_maturity (float): Time to maturity in years.\n    Returns:\n        float: Futures price.\n    '''\n    futures_price = spot_price * np.exp(risk_free_rate * time_to_maturity)\n    return futures_price\n\n# Example usage:\nspot_price = 100  # Current price of the underlying asset\nrisk_free_rate = 0.03  # 3% annual interest rate\ntime_to_maturity = 1  # 1 year to maturity\n\nprint(f\"Theoretical futures price: {futures_price(spot_price, risk_free_rate, time_to_maturity):.2f}\")\n"
+    },
+    {
+      "question": "How do derivatives differ from equity and debt instruments?",
+      "answer": "Derivatives differ from equity and debt in that their value is derived from an underlying asset or event rather than representing ownership (equity) or a loan (debt). Equity instruments (e.g., stocks) represent ownership in a company, while debt instruments (e.g., bonds) represent a loan that must be repaid. Derivatives, on the other hand, derive their value from the performance of another entity or variable."
+    },
+    {
+      "question": "What is the historical significance of derivatives in finance?",
+      "answer": "Derivatives have a long history, with one of the earliest examples attributed to the ancient Greek philosopher Thales, who profited from an olive contract. However, Thales did not define it as a derivative. More recently, 'bucket shops'—speculative derivatives markets—were outlawed in the U.S. in 1936, highlighting the risks associated with unregulated derivatives trading."
+    }
+  ]
+}

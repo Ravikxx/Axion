@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/David_Delany",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When did David Delany make his Twenty20 cricket debut?",
+      "answer": "David Delany made his Twenty20 cricket debut for Munster Reds in the 2017 Inter-Provincial Trophy on 16 June 2017."
+    },
+    {
+      "question": "What is David Delany's fastest recorded bowling speed for Ireland?",
+      "answer": "Delany bowled the fastest recorded ball by a cricketer for Ireland at 92 mph (148 km/h) during the 2019 ICC T20 World Cup Qualifier tournament in the United Arab Emirates."
+    },
+    {
+      "question": "Has David Delany ever played for Ireland in a T20I match?",
+      "answer": "Yes, Delany made his T20I debut for Ireland against Scotland on 17 September 2019."
+    },
+    {
+      "question": "Why was David Delany unable to participate in Ireland's tour to the UAE in January 2021?",
+      "answer": "Delany was ruled out of the tour due to a knee injury in January 2021."
+    },
+    {
+      "question": "What coaching or playing activities has David Delany been involved in since his knee injury?",
+      "answer": "Since his knee injury, Delany has coached at Muir College in South Africa, played in a local cricket league in Australia, and continued his prolific career in Ireland, where he was awarded Cricket Ireland club player of the year."
+    },
+    {
+      "question": "Who is David Delany's oldest brother, and what notable cricket achievement did he have?",
+      "answer": "David Delany's oldest brother is Eoghan. Eoghan was a former youth international and subsequently played for Leinster Lightning in 2015."
+    },
+    {
+      "question": "Provide a code snippet to generate a timeline of David Delany's cricket career milestones in Python.",
+      "answer": "python\ndef generate_delany_timeline():\n    timeline = [\n        {\"date\": \"28 December 1997\", \"event\": \"Born\"},\n        {\"date\": \"16 June 2017\", \"event\": \"Made Twenty20 cricket debut for Munster Reds\"},\n        {\"date\": \"5 September 2017\", \"event\": \"Made first-class debut for Leinster Lightning\"},\n        {\"date\": \"10 September 2017\", \"event\": \"Made List A debut for Leinster Lightning\"},\n        {\"date\": \"August 2018\", \"event\": \"Named in Ireland's squad for limited overs series against Afghanistan (did not play)\"},\n        {\"date\": \"September 2019\", \"event\": \"Named in Ireland's T20I squad for Ireland Tri-Nation Series\"},\n        {\"date\": \"17 September 2019\", \"event\": \"Made T20I debut for Ireland against Scotland\"},\n        {\"date\": \"September 2019\", \"event\": \"Bowled fastest ball for Ireland at 92 mph (148 km/h) during ICC T20 World Cup Qualifier\"},\n        {\"date\": \"December 2020\", \"event\": \"Named in Ireland's ODI squad for UAE tour\"},\n        {\"date\": \"January 2021\", \"event\": \"Ruled out of UAE tour due to knee injury\"}\n    ]\n    return timeline\n\n# Example usage:\nfor event in generate_delany_timeline():\n    print(f\"{event['date']}: {event['event']}\")\n"
+    }
+  ]
+}

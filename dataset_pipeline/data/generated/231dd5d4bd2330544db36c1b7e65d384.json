@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Criticisms_of_anti-scientific_viewpoints",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What are some common criticisms of anti-scientific viewpoints according to the text?",
+      "answer": "Criticisms often focus on the confusion of conceptual metaphors in learning science and the negotiation of scientific truth within culture. Western education prioritizes neutral, systematic reasoning (e.g., physics, mathematics) over other sources of truth like music or religion. Some critiques argue that science is linked to imperialism or colonialism, though these connections are rarely specified. Others view science as a socially constructed ideology that suppresses alternative viewpoints, using terms like 'scientism' pejoratively."
+    },
+    {
+      "question": "How do literary deconstructionists and radical feminists critique science?",
+      "answer": "They argue that science is unhealthy linked to the humanities and suppresses other viewpoints. They often claim science is merely a socially constructed ideology without any privileged status, and that scientists use terms like 'logic,' 'experiment,' and 'objectivity' to bully non-scientists."
+    },
+    {
+      "question": "What is 'science envy' as described by philosopher Susan Haack?",
+      "answer": "'Science envy' refers to the attempt to mimic or associate with science to enhance prestige without engaging with its actual methods or principles. Haack critiques this in two ways: (1) pseudo-rigorous mathematical or logical writing that disguises shallow thinking, and (2) efforts to resolve philosophical problems with quick scientific answers, which either changes the subject or leads to absurdity."
+    },
+    {
+      "question": "Why does the text argue that science cannot answer certain epistemological questions?",
+      "answer": "Science cannot determine whether it is epistemologically special, how a theory's predictive success indicates its truth, or why science should be prioritized over philosophy. These questions require philosophical inquiry because they address the foundations and justification of scientific methods, not empirical investigation."
+    },
+    {
+      "question": "Provide an example of how 'science envy' manifests in philosophical writing, as described by Haack.",
+      "answer": "An example is the use of unnecessary mathematical symbols or logical notation to create an impression of depth and rigor without actually clarifying the argument. Haack refers to this as 'Profspeak,' where complex jargon disguises a lack of critical thought."
+    },
+    {
+      "question": "How does the text explain the cultural skepticism toward Western science?",
+      "answer": "Some societies view Western science as tied to imperialism and colonialism, associating it with oppressive systems. This skepticism stems from the idea that science's mode of thought is characteristic of the West, leading to distrust of its claims to neutrality and universality."
+    },
+    {
+      "question": "Write a Python function that demonstrates pseudo-rigorous 'science envy' in philosophical writing. The function should use unnecessary mathematical notation to obscure a simple concept.",
+      "answer": "python\ndef evaluate_truth(axiom_set, logical_framework):\n    \"\"\"\n    Evaluates the 'truth' of a philosophical axiom set using pseudo-rigorous mathematical notation.\n    \n    Parameters:\n    axiom_set (list): A set of philosophical axioms (e.g., ['A', 'B', 'C']).\n    logical_framework (str): A logical framework (e.g., 'classical', 'intuitionistic').\n    \n    Returns:\n    dict: A 'rigorous' evaluation of the axiom set's truth.\n    \"\"\"\n    # Unnecessary mathematical operations to obscure simplicity\n    truth_score = sum(ord(c) for c in ''.join(axiom_set)) % len(axiom_set)\n    framework_compatibility = len(axiom_set) / (len(logical_framework) + 1e-9)  # Avoid division by zero\n    \n    # Return a 'rigorous' but meaningless result\n    return {\n        'truth_probability': truth_score / 100,\n        'framework_compatibility_score': framework_compatibility,\n        'is_valid': truth_score > 50  # Arbitrary threshold\n    }\n\n# Example usage\nresult = evaluate_truth(['A', 'B', 'C', 'D'], 'classical')\nprint(result)\nThe function uses arbitrary mathematical operations to create an impression of rigor while evaluating a simple set of axioms."
+    }
+  ]
+}

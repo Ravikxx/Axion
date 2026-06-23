@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/1967–68_Oakland_Oaks_season",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the original proposed name for the Oakland Oaks franchise before it became the Oaks?",
+      "answer": "The original proposed name for the franchise was the Oakland Americans."
+    },
+    {
+      "question": "How did the Oakland Oaks perform in their inaugural ABA season in terms of wins and losses?",
+      "answer": "The Oakland Oaks finished dead last in the Western Division with the worst record in the ABA, with a losing record that placed them 3 games behind the next team."
+    },
+    {
+      "question": "Why did Rick Barry attempt to defect to the Oakland Oaks instead of playing for the San Francisco Warriors?",
+      "answer": "Rick Barry attempted to defect to the Oaks because he was angered by the San Francisco Warriors' management failure to pay him certain incentive awards he believed he was due."
+    },
+    {
+      "question": "What was the average points scored and allowed by the Oakland Oaks during the 1967–68 season?",
+      "answer": "The Oakland Oaks averaged 110.8 points scored per game (4th best in the league) and allowed 117.4 points per game (the worst in the league)."
+    },
+    {
+      "question": "Using the Elo rating system, how did the Oakland Oaks' 1967–68 season compare to other professional basketball teams historically?",
+      "answer": "The Oakland Oaks had the second-worst performance of any professional basketball team in a major league, according to the Elo rating system, with only the 1946–47 Pittsburgh Ironmen of the Basketball Association of America having a worse year."
+    },
+    {
+      "question": "Provide a code snippet to calculate the average point differential for the Oakland Oaks during the 1967–68 season.",
+      "answer": "python\npoints_scored = 110.8\npoints_allowed = 117.4\npoint_differential = points_scored - points_allowed\nprint(f\"Average point differential: {point_differential}\")\n"
+    },
+    {
+      "question": "List all the cities and locations where the Oakland Oaks played games during the 1967–68 season besides Oakland, California.",
+      "answer": "The Oakland Oaks played games in Fresno (2 games), Fullerton (1 game), Memphis (2 neutral games), Portland (2 neutral games), Richmond (2 games), San Jose (2 games), and Sacramento (1 game)."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Hudson_Bay_expedition",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who led the French Navy squadron that conducted the Hudson Bay expedition, and what were their orders?",
+      "answer": "The French Navy squadron was led by the Comte de Lapérouse under secret orders from Charles Eugène Gabriel de La Croix, the French Secretary of State of the Navy. The orders directed the expedition to conduct military raids on British Hudson's Bay Company (HBC) outposts and fortifications as part of the broader naval conflicts between France and Great Britain during the American Revolutionary War."
+    },
+    {
+      "question": "What were the two main Hudson's Bay Company trading posts that surrendered to the French during the Hudson Bay expedition?",
+      "answer": "The two main trading posts that surrendered without a fight to the French were Prince of Wales Fort and York Factory."
+    },
+    {
+      "question": "How did the Hudson Bay expedition impact the finances of the Hudson's Bay Company?",
+      "answer": "The Hudson Bay expedition negatively impacted the finances of the Hudson's Bay Company due to the loss of furs and the disruption of their trade operations."
+    },
+    {
+      "question": "What hardships did Lapérouse's crew face during the Hudson Bay expedition?",
+      "answer": "Lapérouse's crew suffered numerous hardships, including scurvy and other diseases, largely because the squadron was minimally provisioned for winter to maintain secrecy."
+    },
+    {
+      "question": "Why might the Hudson Bay expedition have indirectly contributed to the deaths of some Chipewyan fur traders?",
+      "answer": "The raid disrupted the Hudson's Bay Company's operations, which likely reduced the fur trade activity in the region. This economic decline could have led to shortages of essential goods for the Chipewyan fur traders, indirectly contributing to increased mortality rates among them."
+    },
+    {
+      "question": "Provide a Python code snippet to simulate the potential impact of the Hudson Bay expedition on the Hudson's Bay Company's fur trade revenue.",
+      "answer": "python\nimport matplotlib.pyplot as plt\n\n# Simulate pre-expedition and post-expedition fur trade revenue\nyears = [1780, 1781, 1782, 1783, 1784]\nrevenue_pre_expedition = [50000, 52000, 48000]  # Revenue before the 1782 expedition\nrevenue_post_expedition = [30000, 25000]       # Estimated revenue after the expedition\n\nplt.plot(years[:3], revenue_pre_expedition, marker='o', label='Pre-Expedition Revenue')\nplt.plot(years[2:], revenue_post_expedition, marker='o', label='Post-Expedition Revenue')\nplt.title('Impact of Hudson Bay Expedition on HBC Fur Trade Revenue')\nplt.xlabel('Year')\nplt.ylabel('Revenue (in arbitrary units)')\nplt.legend()\nplt.grid(True)\nplt.show()\n"
+    },
+    {
+      "question": "What was the fate of the British prisoners captured during the Hudson Bay expedition?",
+      "answer": "Some British prisoners were placed on a company sloop and allowed to sail back to England. Others were pressed into service aboard the French squadron, meaning they were forced to work for the French navy."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Crime_Control_Act_of_1990",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the primary purpose of the Crime Control Act of 1990?",
+      "answer": "The primary purpose of the Crime Control Act of 1990 was to expand the death penalty for federal crimes, reform habeas corpus, limit plea bargaining, revise the exclusionary rule, and strengthen penalties for firearm-related crimes. It also aimed to address child abuse, sexual abuse penalties, victims' rights, and drug law enforcement."
+    },
+    {
+      "question": "Which U.S. president signed the Crime Control Act of 1990 into law, and on what date?",
+      "answer": "President George H. W. Bush signed the Crime Control Act of 1990 into law on November 29, 1990."
+    },
+    {
+      "question": "List three specific titles enacted under the Crime Control Act of 1990.",
+      "answer": "Three specific titles enacted under the Crime Control Act of 1990 are the Anabolic Steroids Control Act of 1990, the Gun-Free School Zones Act of 1990, and the Victims' Rights and Restitution Act of 1990."
+    },
+    {
+      "question": "What was the Gun-Free School Zones Act of 1990 intended to achieve?",
+      "answer": "The Gun-Free School Zones Act of 1990 was intended to prohibit the possession of firearms in K-12 school zones, aiming to enhance safety in educational environments."
+    },
+    {
+      "question": "How did the Crime Control Act of 1990 impact victims' rights?",
+      "answer": "The Crime Control Act of 1990 included the Victims' Rights and Restitution Act of 1990 and the Criminal Victims Protection Act of 1990, which enhanced protections and restitution rights for victims of crime, ensuring they had clearer legal recourse and support."
+    },
+    {
+      "question": "Which provisions of the Bush administration's proposed crime bill were not fully enacted in the Crime Control Act of 1990?",
+      "answer": "Not all provisions sought by the Bush administration were enacted. Specifically, major reforms to habeas corpus and plea bargaining were not fully implemented in the final bill."
+    },
+    {
+      "question": "Write a Python script to retrieve and display all titles enacted under the Crime Control Act of 1990 from a hypothetical dataset.",
+      "answer": "python\ntitles = [\n    \"Anabolic Steroids Control Act of 1990\",\n    \"Child Protection Restoration and Penalties Enhancement Act of 1990\",\n    \"Comprehensive Thrift and Bank Fraud Prosecution and Taxpayer Recovery Act of 1990\",\n    \"Criminal Victims Protection Act of 1990\",\n    \"Federal Debt Collection Procedures Act of 1990\",\n    \"Financial Institutions Anti-Fraud Enforcement Act of 1990\",\n    \"Gun-Free School Zones Act of 1990\",\n    \"Mandatory Detention for Offenders Convicted of Serious Crimes Act\",\n    \"National Child Search Assistance Act of 1990\",\n    \"National Law Enforcement Cooperation Act of 1990\",\n    \"Victims of Child Abuse Act of 1990\",\n    \"Victims' Rights and Restitution Act of 1990\"\n]\n\nfor title in titles:\n    print(title)\n"
+    }
+  ]
+}

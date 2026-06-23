@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Hunnemannia",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is Hunnemannia and what species does it contain?",
+      "answer": "Hunnemannia is a monotypic genus of flowering plants in the poppy family (Papaveraceae), meaning it contains only one species. That species is Hunnemannia fumariifolia, commonly known as the tulip poppy or Mexican tulip poppy."
+    },
+    {
+      "question": "Where is Hunnemannia fumariifolia naturally found?",
+      "answer": "Hunnemannia fumariifolia is native to the highlands of Mexico, particularly in the Chihuahuan Desert at elevations of 1,500–2,000 meters. It extends southward into central Mexico and thrives in rocky habitats, often growing along roadsides."
+    },
+    {
+      "question": "Describe the physical characteristics of the tulip poppy's leaves and flowers.",
+      "answer": "The leaves of the tulip poppy are finely divided into many gray-green linear lobes, resembling those of the closely related Eschscholzia. The flowers are solitary, cup-shaped blooms with four overlapping yellow petals, 5–7 cm across, which vaguely resemble tulips. The two sepals beneath the petals typically fall away as the flower opens, and the flower features numerous short stamens with orange anthers."
+    },
+    {
+      "question": "How does Hunnemannia fumariifolia reproduce and what are its growing conditions?",
+      "answer": "Hunnemannia fumariifolia is typically cultivated as an annual from seed. In colder climates, it requires the protection of a south-facing wall and full sun exposure to thrive."
+    },
+    {
+      "question": "What does the genus name 'Hunnemannia' honor?",
+      "answer": "The genus Hunnemannia is named in honor of John Hunnemann, an English botanist and plant collector who lived from 1760 to 1839."
+    },
+    {
+      "question": "What is the meaning of the species epithet 'fumariifolia' in Hunnemannia fumariifolia?",
+      "answer": "The species epithet 'fumariifolia' comes from the Latin meaning 'with leaves like Fumaria,' referencing the resemblance of the plant's leaves to those of the fumitory plant (Fumaria)."
+    },
+    {
+      "question": "Can you provide a simple code snippet in Python to simulate the growth stages of Hunnemannia fumariifolia based on its natural conditions?",
+      "answer": "python\n# Simplified growth simulation for Hunnemannia fumariifolia\nimport random\n\ndef simulate_growth(elevation, sunlight, temperature):\n    growth_stages = []\n    if elevation >= 1500 and elevation <= 2000 and sunlight >= 8 and temperature > 10:\n        growth_stages.append('Germination')\n        growth_stages.append('Vegetative growth')\n        growth_stages.append('Flowering')\n        growth_stages.append('Seed formation')\n        growth_stages.append('Dormancy')\n    else:\n        growth_stages.append('No suitable conditions for growth')\n    return growth_stages\n\n# Example usage\nconditions = {'elevation': 1800, 'sunlight': 9, 'temperature': 15}\nprint(simulate_growth(**conditions))\n# Output: ['Germination', 'Vegetative growth', 'Flowering', 'Seed formation', 'Dormancy']\n"
+    }
+  ]
+}

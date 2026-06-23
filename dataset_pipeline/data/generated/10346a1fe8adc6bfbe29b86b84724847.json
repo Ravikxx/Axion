@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/1985_Rajneeshee_assassination_plot",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was the leader of the Rajneeshee conspiracy to assassinate Charles Turner in 1985?",
+      "answer": "Ma Anand Sheela, Rajneesh's personal secretary and second-in-command, assembled the group to plot the assassination of Charles Turner."
+    },
+    {
+      "question": "What were the two main illegal activities investigated by Charles Turner regarding the Rajneeshpuram community?",
+      "answer": "Charles Turner investigated charges of immigration fraud and sham marriages within the Rajneeshpuram community."
+    },
+    {
+      "question": "How many conspirators were involved in the planned assassination of Charles Turner, and what roles did they hold?",
+      "answer": "Ten conspirators were involved, including Ma Anand Sheela (organizer), Sally-Anne Croft (CFO), Susan Hagan (head of security), Catherine Jane Stork (weapons procurement and would-be assassin), and Ann Phyllis McCarthy (fourth-in-command). Others included Alma Potter, Carol Matthews, Phyllis Caldwell, and Richard Kevin Langford."
+    },
+    {
+      "question": "What was the outcome of the assassination plot against Charles Turner?",
+      "answer": "The assassination plot was never carried out and was discovered during the federal investigation into the 1984 Rajneeshee bioterror attack in The Dalles, Oregon."
+    },
+    {
+      "question": "Write a Python code snippet to simulate tracking the extradition timeline of the Rajneeshee conspirators from 1990 to 2006.",
+      "answer": "python\nimport pandas as pd\n\ndata = {\n    'Year': [1990, 1996, 2000, 2004, 2006],\n    'Event': [\n        'Federal grand jury indictments issued',\n        'Sally-Anne Croft sentenced to 5 years probation',\n        'Ma Anand Sheela sentenced to 20 years; extradited from Germany',\n        'Susan Hagan sentenced to 5 years in prison',\n        'Catherine Jane Stork convicted after returning from Germany'\n    ]\n}\n\ndf = pd.DataFrame(data)\nprint(df)\n"
+    },
+    {
+      "question": "Why did Catherine Jane Stork return to the United States in 2006 to face prosecution?",
+      "answer": "Stork agreed to return to the U.S. from Germany to be allowed to visit her terminally ill son in Australia, which led to her conviction in the assassination conspiracy case."
+    },
+    {
+      "question": "What were the legal consequences for Rajneesh concerning the assassination conspiracy?",
+      "answer": "Rajneesh was never prosecuted for the assassination plot but pleaded guilty to immigration fraud and agreed not to reenter the United States without U.S. Attorney General permission."
+    }
+  ]
+}

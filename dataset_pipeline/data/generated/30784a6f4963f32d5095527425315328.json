@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Brilliant_(schooner)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the Brilliant and where is it currently located?",
+      "answer": "The Brilliant is a schooner, a type of sailing vessel with two or more masts, located at Mystic Seaport in Mystic, Connecticut, United States. It serves as an offshore classroom and is part of Mystic Seaport's watercraft collection."
+    },
+    {
+      "question": "When and where was the Brilliant built, and who designed it?",
+      "answer": "The Brilliant was built in 1932 on City Island, Bronx, by the Henry B. Nevins Yard. It was designed by Olin Stephens of the naval architecture firm Sparkman & Stephens for its owner, Walter Barnum."
+    },
+    {
+      "question": "What notable achievement did the Brilliant accomplish on its maiden voyage?",
+      "answer": "On its maiden voyage, the Brilliant crossed the Atlantic Ocean in just over 15 days, 1 hour, and 23 minutes, setting a record for a sailing yacht of its size. It traveled from Nantucket Lightship to Bishop Rock Light, England."
+    },
+    {
+      "question": "How was the Brilliant used by the U.S. Coast Guard during World War II?",
+      "answer": "During World War II, the U.S. Coast Guard acquired the Brilliant and used it to patrol the New England coast for enemy submarines. Two machine guns were mounted on its deck during this period."
+    },
+    {
+      "question": "What modifications did Briggs Cunningham make to the Brilliant, and what innovation did he introduce?",
+      "answer": "After purchasing the Brilliant, Briggs Cunningham attempted to increase its speed by outfitting it with a larger rig, including taller masts and a self-tacking forestaysail, while maintaining the gaff rig. Cunningham also invented the cunningham, a tie-down for the tack of the mainsail that improves sail efficiency. This innovation is now standard on racing boats."
+    },
+    {
+      "question": "Provide a code snippet that simulates the calculation of the Brilliant's average speed during its record-breaking Atlantic crossing.",
+      "answer": "python\n# Distance from Nantucket Lightship to Bishop Rock Light: ~2,900 nautical miles\n# Time taken: 15 days, 1 hour, 23 minutes = (15 * 24) + 1 + (23/60) ≈ 361.38 hours\n\ndistance_nm = 2900  # nautical miles\ntime_hours = 361.38  # hours\n\naverage_speed_knots = distance_nm / time_hours\nprint(f\"Average speed: {average_speed_knots:.2f} knots\")\n\nResult: Average speed: 8.02 knots"
+    },
+    {
+      "question": "Why did Mystic Seaport change the Brilliant's rig after it was donated by Briggs Cunningham?",
+      "answer": "Mystic Seaport changed the Brilliant's rig to a Bermuda/Marconi rigged main, while retaining the larger rig Cunningham installed. This modification was made to make sailing the boat easier under its new role as an offshore classroom."
+    },
+    {
+      "question": "What was the condition set by Briggs Cunningham when he donated the Brilliant to Mystic Seaport?",
+      "answer": "Briggs Cunningham donated the Brilliant to Mystic Seaport with the condition that it be used as an offshore classroom and featured as part of their watercraft collection."
+    }
+  ]
+}

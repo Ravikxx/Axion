@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Hundred_of_Houndsborough",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the primary role of the Hundreds in Anglo-Saxon England?",
+      "answer": "In Anglo-Saxon England, the Hundreds served several key administrative and military functions. Each Hundred had a 'fyrd', which was a local defence force responsible for protecting the community. The Hundred also hosted a court that maintained the frankpledge system, a form of social control where groups of ten households were collectively responsible for maintaining law and order. Additionally, the Hundred was a unit for tax collection, organizing and distributing financial obligations from the local population."
+    },
+    {
+      "question": "How did the Hundred of Houndsborough get its name?",
+      "answer": "The Hundred of Houndsborough derived its name from its meeting-place. This was a common practice for Hundreds, where the name often reflected the location where the court or assembly gathered. The Hundred was also historically known as Houndsborough Barwick and Coker Hundred, indicating its association with the parishes of Barwick and Coker within its jurisdiction."
+    },
+    {
+      "question": "What parishes were included in the Hundred of Houndsborough?",
+      "answer": "The Hundred of Houndsborough consisted of the following ancient parishes: Barwick, Chilton Cantelo, Chinnock (East, Middle, and West), Chiselborough, Closworth, Coker, Hardington Mandeville, Haselbury Plucknett, Norton-under-Hamdon, Odcombe, Pendomer, North Perrott, and Sutton Bingham."
+    },
+    {
+      "question": "What historical records mention the Hundred of Houndsborough, and how did its name change over time?",
+      "answer": "The Hundred of Houndsborough is mentioned in the Domesday Book as Hundesbera and Licget or Liet. Later, it was referred to as Coker Hundred. These name variations reflect changes in administrative organization and terminology over time, particularly during and after the Norman conquest."
+    },
+    {
+      "question": "How did the administrative role of the Hundreds decline over time?",
+      "answer": "The importance of the Hundreds began to decline in the 17th century as new administrative units emerged. By the 19th century, single-purpose subdivisions like poor law unions, sanitary districts, and highway districts took over the roles previously handled by parishes and Hundreds. Although the Hundreds were never formally abolished, their functions ended with the establishment of county courts in 1867 and the introduction of districts by the Local Government Act 1894."
+    },
+    {
+      "question": "Write a Python function to calculate the area of the Hundred of Houndsborough in hectares given its area in acres.",
+      "answer": "python\ndef acres_to_hectares(acres):\n    \"\"\"\n    Convert an area from acres to hectares.\n    \n    Args:\n        acres (float): Area in acres.\n        \n    Returns:\n        float: Area in hectares.\n    \"\"\"\n    HECTARES_PER_ACRE = 0.404686\n    return acres * HECTARES_PER_ACRE\n\n# Example usage:\narea_acres = 18890\narea_hectares = acres_to_hectares(area_acres)\nprint(f\"The Hundred of Houndsborough covered {area_hectares:.2f} hectares.\")\n\nThis function uses the conversion factor of 1 acre = 0.404686 hectares to convert the given area of 18,890 acres to 7,640 hectares."
+    },
+    {
+      "question": "What was the frankpledge system, and how did it relate to the Hundred courts?",
+      "answer": "The frankpledge system was a form of social control in Anglo-Saxon England where groups of ten households were collectively responsible for maintaining law and order. Each group, known as a 'tithing', was bound by mutual responsibility to ensure that all members abided by the law and attended court when summoned. The Hundred court was responsible for overseeing and maintaining this system, ensuring that local communities upheld their obligations under the frankpledge system."
+    }
+  ]
+}

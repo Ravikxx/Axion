@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/COVID-19_pandemic_in_Nebraska",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "When did the first case of COVID-19 occur in Nebraska and what were the circumstances?",
+      "answer": "The first case of COVID-19 in Nebraska was reported on Friday, March 6, 2020. The case involved a thirty-six-year-old woman who had recently returned to the United States after traveling to England."
+    },
+    {
+      "question": "How many COVID-19 vaccine doses had Nebraska administered by May 28, 2021?",
+      "answer": "As of May 28, 2021, Nebraska had administered almost 1.7 million doses of COVID-19 vaccines."
+    },
+    {
+      "question": "What percentage of Nebraska's population had been fully vaccinated by May 28, 2021?",
+      "answer": "By May 28, 2021, well over 867,000 people in Nebraska had been fully vaccinated, which accounted for about 45% of the state's population."
+    },
+    {
+      "question": "How many COVID-19 cases and deaths were reported in Nebraska by July 12, 2021?",
+      "answer": "As of July 12, 2021, Nebraska had reported over 225,000 COVID-19 cases and just over 2,260 deaths due to the virus."
+    },
+    {
+      "question": "What were the dates of the first two COVID-19 deaths in Nebraska, and who were the individuals?",
+      "answer": "The first two COVID-19 deaths in Nebraska were reported within three weeks of the first case. The first death was a man in his fifties from Douglas County, and the second was a woman in her sixties from Hall County."
+    },
+    {
+      "question": "What significant COVID-19 outbreak occurred in Nebraska in mid-April 2020, and where?",
+      "answer": "In mid-April 2020, a significant outbreak of COVID-19 cases emerged in meat packing plants, with a notable cluster of 237 cases linked to a JBS plant in Grand Island by April 21, 2020."
+    },
+    {
+      "question": "How did the number of COVID-19 cases in Nebraska change between March 27 and April 28, 2020?",
+      "answer": "By March 27, 2020, Nebraska had almost seventy-six cases. By April 28, 2020, the number of cases had more than tripled in just eleven days, reaching 3,374 cases."
+    }
+  ]
+}

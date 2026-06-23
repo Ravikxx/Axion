@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/American_Opportunity_Tax_Credit",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the American Opportunity Tax Credit and when was it first introduced?",
+      "answer": "The American Opportunity Tax Credit (AOTC) is a partially refundable tax credit designed to help offset the cost of the first four years of post-secondary education. It was first detailed in Section 1004 of the American Recovery and Reinvestment Act of 2009."
+    },
+    {
+      "question": "How much can a taxpayer claim under the American Opportunity Tax Credit, and what is the maximum refundable portion?",
+      "answer": "The AOTC allows taxpayers to claim up to $2,500 per eligible student. This consists of 100% of the first $2,000 in qualified tuition, fees, and course materials, plus 25% of the next $2,000. Up to 40% of the credit (a maximum of $1,000) is refundable, meaning it can be paid out even if the taxpayer owes no tax."
+    },
+    {
+      "question": "What are the income limits for claiming the American Opportunity Tax Credit?",
+      "answer": "The AOTC phases out for taxpayers with an adjusted gross income (AGI) exceeding $80,000 for single filers or $160,000 for married couples filing jointly. The phase-out occurs gradually over a specified income range."
+    },
+    {
+      "question": "How does the American Opportunity Tax Credit differ from the Hope credit?",
+      "answer": "The AOTC increases the Hope credit by expanding the scope of qualified expenses to include course materials (e.g., books and supplies) and increasing the maximum credit from $1,800 to $2,500. The AOTC also makes 40% of the credit refundable, whereas the Hope credit was non-refundable."
+    },
+    {
+      "question": "What studies were mandated by the American Recovery and Reinvestment Act of 2009 regarding the AOTC?",
+      "answer": "The Act directed the Treasury to conduct several studies, including: coordinating the AOTC with non-tax student financial assistance, maximizing the effectiveness of the AOTC in conjunction with the Federal Pell Grant program, examining ways to expedite the delivery of the credit, and studying the feasibility of requiring community service as a condition for eligibility."
+    },
+    {
+      "question": "For how many years of post-secondary education is the American Opportunity Tax Credit available?",
+      "answer": "The AOTC is available for the first four years of post-secondary education."
+    },
+    {
+      "question": "Write a Python function to calculate the maximum AOTC refundable amount for a taxpayer.",
+      "answer": "python\ndef calculate_aotc_refundable(expenses, agi, is_married_jointly):\n    # Calculate maximum credit based on expenses\n    max_credit = min(2000, expenses) + 0.25 * max(0, expenses - 2000)\n    max_credit = min(2500, max_credit)\n    \n    # Determine phase-out threshold\n    phase_out_threshold = 160000 if is_married_jointly else 80000\n    \n    # Calculate phase-out amount (30% reduction per $1 over threshold)\n    if agi > phase_out_threshold:\n        excess = agi - phase_out_threshold\n        reduction = min(max_credit, excess * 0.05)\n        max_credit -= reduction\n    \n    # Calculate refundable portion (40% of remaining credit, up to $1000)\n    refundable = min(0.4 * max_credit, 1000)\n    return max(0, refundable)\n\n\nExample usage:\npython\nprint(calculate_aotc_refundable(5000, 90000, False))  # Output: 700.0\n"
+    }
+  ]
+}

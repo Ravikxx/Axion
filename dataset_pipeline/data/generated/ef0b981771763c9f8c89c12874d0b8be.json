@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/anchildress1/everything-i-know-about-github-copilot-instructions-from-zero-to-onboarded-for-real-4nb0",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What are GitHub Copilot repo instructions and why are they important for teams working with legacy code?",
+      "answer": "GitHub Copilot repo instructions are configuration files that provide context, style guidelines, and constraints to Copilot when it interacts with your codebase. They are crucial for teams working with legacy applications because they prevent Copilot from replicating poor existing patterns and instead guide it to produce consistent, maintainable code aligned with your team's standards. Unlike simply listing best practices, these instructions should be treated like onboarding documentation for senior developers, explaining architectural decisions, critical system constraints, and 'don't touch' areas."
+    },
+    {
+      "question": "How do you create effective GitHub Copilot repo instructions without overwhelming the file?",
+      "answer": "To create effective instructions without bloating the file: 1) Start with core principles and project-specific constraints, 2) Reference external style guides and linter configurations (e.g., 'Follow rules in eslint.config.js'), 3) Break related instructions into separate files using the `applyTo` front-matter property (e.g., `.github/instructions/database.instructions.md`), and 4) Keep the primary instructions file focused on high-level guidance rather than style nitpicks that should be handled by formatters."
+    },
+    {
+      "question": "What are the two main methods to generate GitHub Copilot repo instructions in VS Code, and which one is recommended?",
+      "answer": "The two main methods are: 1) Using the gear icon in the Copilot chat window to select 'Generate Instructions', and 2) Using the command palette with 'Chat: Generate Workspace Instructions File' (Ctrl+Shift+P/Cmd+Shift+P). The second method is recommended as it's more accessible and provides a cleaner workflow. After generation, always review and trim the generated instructions to remove redundant or low-value content before committing them to your repository."
+    },
+    {
+      "question": "How can you apply different instruction sets to specific parts of your codebase using Copilot?",
+      "answer": "You can apply different instruction sets to specific code areas using the `applyTo` front-matter property in instruction files. For example, to apply database-specific instructions to all files in your DAO layer, create a file like `.github/instructions/database.instructions.md` with content like:\n\nmarkdown\napplyTo: src/main/java/dao/**/*\n\n# Database Instructions\n## Constraints\n- Use connection pooling for all database operations\n- Never use SELECT * in production queries\n- Always close resources in finally blocks\n\n\nCopilot will automatically apply these instructions when working with any file matching the pattern."
+    },
+    {
+      "question": "What is the recommended workflow for maintaining GitHub Copilot instructions as your project evolves?",
+      "answer": "The recommended workflow includes: 1) Start with a 15-minute up-front planning session to identify critical patterns and constraints, 2) Begin with minimal instructions focusing on architecture and 'don't touch' areas, 3) Regularly test and refine instructions based on Copilot's outputs, 4) Update instructions whenever architectural changes occur (app changes = instruction changes), and 5) Consider breaking large instruction sets into modular files using `applyTo` for better maintainability. Treat instruction updates like code reviews—thorough and iterative."
+    },
+    {
+      "question": "Why should style rules (like comma placement) be excluded from GitHub Copilot instructions?",
+      "answer": "Style rules should be excluded because: 1) They're better handled by formatters and linters (which Copilot can reference), 2) They clutter instruction files with examples that add no real value, 3) Copilot's primary value is in architectural guidance and business logic, not style enforcement, and 4) It's more efficient to let tools like Prettier, ESLint, or Black handle style while keeping instructions focused on higher-level concerns. The goal is to have instructions that would make sense to a senior developer joining the team."
+    },
+    {
+      "question": "What are the key differences between Microsoft's repo instruction generation and the Coding Agent approach?",
+      "answer": "Microsoft's approach uses Copilot within VS Code to analyze the repository structure and generate base instructions, while the Coding Agent uses Claude Sonnet 4 to create more comprehensive instructions. Microsoft's method is more integrated with the development environment and provides immediate feedback, while the Coding Agent approach tends to produce more thorough and forward-thinking instructions. The Coding Agent is rated slightly higher (3.5/5 vs 3/5) but requires using a different AI model. Both benefit from manual review to remove generated fluff."
+    }
+  ]
+}

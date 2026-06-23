@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Dylan_McAvoy",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who portrayed the fictional character Dylan McAvoy on The Young and the Restless?",
+      "answer": "Steve Burton portrayed the fictional character Dylan McAvoy on The Young and the Restless."
+    },
+    {
+      "question": "When did Dylan McAvoy first appear on The Young and the Restless?",
+      "answer": "Dylan McAvoy first appeared on January 29, 2013."
+    },
+    {
+      "question": "How did Steve Burton describe the differences between his General Hospital character Jason Morgan and Dylan McAvoy?",
+      "answer": "Steve Burton noted that Dylan McAvoy allowed him to portray a lighter side in addition to more of his own personality, contrasting with Jason Morgan's 'Stone Cold' persona."
+    },
+    {
+      "question": "What major family secret was revealed about Dylan McAvoy in October 2013?",
+      "answer": "It was revealed in October 2013 that Dylan McAvoy is the long-lost son of Nikki Newman, making him and Nicholas Newman half-brothers."
+    },
+    {
+      "question": "Who was revealed to be Dylan McAvoy's biological father in June 2014?",
+      "answer": "In June 2014, it was revealed that Dylan's biological father is Paul Williams, Nikki Newman's childhood friend and the chief of police."
+    },
+    {
+      "question": "Write a Python code snippet to calculate the duration of Steve Burton's time on The Young and the Restless, given his first appearance date (January 29, 2013) and final appearance date (January 27, 2017).",
+      "answer": "python\nfrom datetime import datetime\n\nfirst_appearance = datetime(2013, 1, 29)\nfinal_appearance = datetime(2017, 1, 27)\nduration = final_appearance - first_appearance\nprint(f'Steve Burton appeared on The Young and the Restless for {duration.days} days.')\n"
+    },
+    {
+      "question": "What awards did Steve Burton receive for his portrayal of Dylan McAvoy?",
+      "answer": "Steve Burton received a Daytime Emmy Award nomination for Outstanding Supporting Actor in a Drama Series in 2014 and 2016, winning the award in 2017."
+    },
+    {
+      "question": "Why did Steve Burton leave The Young and the Restless?",
+      "answer": "Steve Burton left The Young and the Restless because he decided not to renew his deal with the show, making his final appearance on January 27, 2017."
+    }
+  ]
+}

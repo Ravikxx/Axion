@@ -1,0 +1,38 @@
+{
+  "source_url": "https://dev.to/googleai/introducing-nano-banana-pro-complete-developer-tutorial-5fc8",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What are the key differences between Nano Banana (Flash) and Nano Banana Pro?",
+      "answer": "Nano Banana Pro introduces advanced features not available in the Flash version: (1) 'Thinking' capabilities that allow the model to reason through complex prompts before generating images, (2) Search grounding for more accurate outputs, (3) High-fidelity 4K image generation, and (4) Enhanced multilingual and creative task performance. While Nano Banana focuses on speed and affordability, Nano Banana Pro prioritizes depth, precision, and higher output quality."
+    },
+    {
+      "question": "How can a developer set up billing for the Nano Banana Pro API?",
+      "answer": "To set up billing for Nano Banana Pro: (1) Log in to Google AI Studio and navigate to the [API key management screen](https://aistudio.google.com/api-keys). (2) Click 'Set up billing' next to your project. (3) Follow the on-screen instructions to enable billing via Google Cloud. Note: Nano Banana Pro has no free tier, so billing is mandatory for API access. The current pricing is $0.134 for 1K/2K images and $0.24 for 4K images (plus token costs)."
+    },
+    {
+      "question": "Provide a Python code snippet to initialize the Nano Banana Pro client and set the model ID.",
+      "answer": "python\nfrom google import genai\nfrom google.genai import types\n\n# Initialize the client with your API key\nclient = genai.Client(api_key=\"YOUR_API_KEY\")\n\n# Set the model ID for Nano Banana Pro\nPRO_MODEL_ID = \"gemini-3-pro-image-preview\"\n\nEnsure you have installed the required SDK (`pip install -U \"google-genai>=1.52.0\"`) and have a valid API key with billing enabled."
+    },
+    {
+      "question": "How can you generate a 4K image using Nano Banana Pro in Python?",
+      "answer": "To generate a 4K image, set the `image_config` with the correct aspect ratio and specify the resolution requirements in the prompt. Here's an example:\npython\nprompt = \"A futuristic cityscape at twilight, ultra-detailed 4K\"\nresponse = client.models.generate_content(\n    model=PRO_MODEL_ID,\n    contents=prompt,\n    config=types.GenerateContentConfig(\n        response_modalities=['Image'],\n        image_config=types.ImageConfig(\n            aspect_ratio=\"16:9\",  # Common 4K aspect ratio\n            # Resolution is handled automatically for 4K if supported\n        )\n    )\n)\nfor part in response.parts:\n    if image := part.as_image():\n        image.save(\"cityscape_4k.png\")\n\nNote: 4K generation costs more ($0.24 per image) and requires billing enabled."
+    },
+    {
+      "question": "What is the 'Thinking' process in Nano Banana Pro, and how can you enable it?",
+      "answer": "The 'Thinking' process allows Nano Banana Pro to reason through complex prompts before generating an image, producing more coherent and creative outputs. It mimics a multi-step thought process, which can be inspected for transparency.\n\nTo enable it, set `include_thoughts=True` in the `thinking_config`:\npython\nresponse = client.models.generate_content(\n    model=PRO_MODEL_ID,\n    contents=prompt,\n    config=types.GenerateContentConfig(\n        response_modalities=['Text', 'Image'],\n        image_config=types.ImageConfig(\n            thinking_config=types.ThinkingConfig(\n                include_thoughts=True\n            )\n        )\n    )\n)\n\n# Access thoughts\nfor part in response.parts:\n    if part.thought:\n        print(f\"Thought: {part.text}\")\n\nThis is useful for debugging or understanding how the model interprets your prompt."
+    },
+    {
+      "question": "What are the supported aspect ratios for image generation in Nano Banana Pro?",
+      "answer": "Nano Banana Pro supports the following aspect ratios for image generation: `1:1`, `2:3`, `3:2`, `3:4`, `4:3`, `4:5`, `5:4`, `9:16`, `16:9`, and `21:9`. You can specify the desired ratio in the `image_config` parameter. For example:\npython\naspect_ratio = \"16:9\"  # Widescreen format\nimage_config=types.ImageConfig(aspect_ratio=aspect_ratio)\n"
+    },
+    {
+      "question": "How can developers save costs when using Nano Banana Pro for batch image generation?",
+      "answer": "Developers can save up to 50% on image generation costs by using the Batch API. The Batch API processes multiple requests in a single call and returns results after up to 24 hours. This is ideal for non-urgent workloads. Example usage:\npython\nbatch_response = client.models.batch_generate_content(\n    model=PRO_MODEL_ID,\n    requests=[\n        {\"contents\": \"A serene mountain landscape\", \"image_config\": {...}},\n        {\"contents\": \"An abstract digital art piece\", \"image_config\": {...}}\n    ]\n)\n\nNote: Batch processing is slower but significantly reduces costs for large-scale projects."
+    },
+    {
+      "question": "What are the prerequisites for using Nano Banana Pro, and how can you verify them?",
+      "answer": "To use Nano Banana Pro, you need: (1) A Google AI Studio API key with billing enabled, (2) The latest version of the Google Gen AI SDK (Python ≥1.52 or JavaScript/TypeScript ≥1.30), and (3) A supported programming environment.\n\nVerify prerequisites with:\nbash\n# Check Python SDK version\npip show google-genai\n\n# Test API key (Python)\nfrom google import genai\nclient = genai.Client(api_key=\"YOUR_API_KEY\")\nprint(client.models.list())  # Should list available models\n\nIf billing is not set up, the SDK will return an error when attempting to generate images."
+    }
+  ]
+}

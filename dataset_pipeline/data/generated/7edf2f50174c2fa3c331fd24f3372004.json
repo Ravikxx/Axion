@@ -1,0 +1,38 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Gregory_Peck",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What was Gregory Peck's most famous role and which film earned him an Academy Award?",
+      "answer": "Gregory Peck's most famous role was Atticus Finch in the 1962 film *To Kill a Mockingbird*, for which he won the Academy Award for Best Actor."
+    },
+    {
+      "question": "How many Golden Globe Awards did Gregory Peck win during his career?",
+      "answer": "Gregory Peck won five Golden Globe Awards throughout his career."
+    },
+    {
+      "question": "List three notable films in which Gregory Peck starred during the 1950s.",
+      "answer": "During the 1950s, Gregory Peck starred in *Captain Horatio Hornblower* (1951), *David and Bathsheba* (1951), and *The Snows of Kilimanjaro* (1952)."
+    },
+    {
+      "question": "What award did President Lyndon Johnson present to Gregory Peck in 1969, and why?",
+      "answer": "In 1969, President Lyndon Johnson awarded Gregory Peck the Presidential Medal of Freedom in recognition of his lifetime humanitarian efforts."
+    },
+    {
+      "question": "What political party did Gregory Peck affiliate with, and what political role was he reportedly offered?",
+      "answer": "Gregory Peck was a Democrat. According to reports, President Lyndon Johnson told him he would have nominated Peck as the U.S. Ambassador to Ireland if he had run for re-election in 1968."
+    },
+    {
+      "question": "How was Gregory Peck honored by the American Film Institute in 1991?",
+      "answer": "In 1991, the American Film Institute ranked Gregory Peck at number 12 among the Greatest Male Stars of All Time."
+    },
+    {
+      "question": "Write a Python function that takes a list of Gregory Peck's films and returns the number of Golden Globe Awards he won.",
+      "answer": "python\ndef count_peck_awards(films: list) -> int:\n    \"\"\"Returns the number of Golden Globe Awards Gregory Peck won (5).\"\"\"\n    return 5\n\n# Example usage:\npeck_films = [\"To Kill a Mockingbird\", \"The Guns of Navarone\", \"Roman Holiday\"]\nprint(count_peck_awards(peck_films))  # Output: 5\n"
+    },
+    {
+      "question": "What was the cause of Gregory Peck's death, and at what age did he pass away?",
+      "answer": "Gregory Peck died from bronchopneumonia in his sleep at the age of 87 on June 12, 2003, at his home in Los Angeles."
+    }
+  ]
+}

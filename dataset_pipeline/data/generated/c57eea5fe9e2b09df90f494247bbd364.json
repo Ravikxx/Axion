@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Chinese_in_Tonga",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What percentage of Tonga's population was of Chinese ethnicity in 2001?",
+      "answer": "In 2001, approximately 3 or 4% of Tonga's total population was of Chinese ethnicity. This included both Tongan citizens of Chinese descent and Chinese nationals who had settled in Tonga."
+    },
+    {
+      "question": "Why were there significant levels of racism and violence against the Chinese community in Tonga during the late 1990s?",
+      "answer": "The racism and violence against the Chinese community in Tonga during the late 1990s were fueled by several factors. The Tongan government's decision to sell passports to Chinese nationals and Hong Kong residents in the 1990s led to a visible Chinese community. Additionally, resentment grew among unemployed indigenous Tongans due to competition with Chinese shopkeepers, which contributed to harassment and assaults. In 1999 alone, there were around 40 reported cases of harassment, including assaults on Chinese businessmen."
+    },
+    {
+      "question": "What was the Tongan government's response to the racial violence against Chinese residents in 2001?",
+      "answer": "In response to the 100 reported cases of racial assault against Chinese residents in 2001, Tongan Prime Minister Prince ʻUlakalala Lavaka Ata announced that 600 Chinese residents would not have their work permits renewed and would be required to leave the country. This decision conflicted with the publicly expressed wish of King Taufaʻahau Tupou IV to attract more Chinese immigrants."
+    },
+    {
+      "question": "How did the Tongan government's passport sales policy contribute to the growth of the Chinese community in Tonga?",
+      "answer": "In the 1990s, the Tongan government controversially sold Tongan passports to Chinese nationals and Hong Kong residents, enabling them to settle in Tonga. This policy led to the appearance of a visible Chinese community in the South Pacific kingdom, as these new passport holders established businesses and integrated into Tongan society."
+    },
+    {
+      "question": "What were the consequences of the 2006 riots in Nukuʻalofa for the Chinese community?",
+      "answer": "The 2006 riots in the Tongan capital, Nukuʻalofa, primarily targeted Chinese-owned businesses. This led to significant property damage and forced several hundred Chinese residents to emigrate from Tonga."
+    },
+    {
+      "question": "Write a Python code snippet to calculate the percentage increase in the Chinese population in Tonga between 1996 and 2001.",
+      "answer": "python\n# Population data\npopulation_1996 = 55  # Chinese ethnicity\npopulation_2001 = 3500  # Assuming 3% to 4% of Tonga's population of ~100,000\n\n# Calculate percentage increase\npercentage_increase = ((population_2001 - population_1996) / population_1996) * 100\nprint(f\"Percentage increase in Chinese population: {percentage_increase:.2f}%\")\n\nThis code calculates the percentage increase in the Chinese population in Tonga between 1996 and 2001 based on the given data."
+    },
+    {
+      "question": "What role did the Crown Prince of Tonga play in addressing racism against the Chinese community in 1999?",
+      "answer": "In 1999, Tonga's then-Crown Prince Tupoutoʻa condemned the racist violence against Chinese-owned shops. He described the attacks as \"racially motivated and cowardly\" and expressed shame and disgust at the actions of young, unemployed Tongans, emphasizing that their behavior shamed the entire Tongan generation."
+    }
+  ]
+}

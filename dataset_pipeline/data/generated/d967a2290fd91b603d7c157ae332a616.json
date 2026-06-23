@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/2013_New_Jersey_gubernatorial_election",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the result of the 2013 New Jersey gubernatorial election?",
+      "answer": "Chris Christie, the incumbent Republican Governor, won re-election in a landslide with over 60% of the vote. He carried 19 of New Jersey's 21 counties, including 6 that he had lost in 2009. The only two counties that voted for Democratic nominee Barbara Buono were Hudson and Essex, both heavily Democratic. This was the first time since 1988 that a Republican candidate won a majority of the vote in a statewide New Jersey election, and Christie became the first Republican gubernatorial candidate to achieve this since 1985."
+    },
+    {
+      "question": "Which demographic groups did Chris Christie win the majority of votes from in the 2013 New Jersey gubernatorial election?",
+      "answer": "Christie won 21% of Black voters, 51% of Latinos, and the majority of votes from other demographic groups, contributing to his landslide victory."
+    },
+    {
+      "question": "What controversy surrounded Chris Christie's 2013 re-election campaign?",
+      "answer": "Christie faced criticism for spending an additional $12–25 million of state money to hold a special election for the United States Senate 20 days before the gubernatorial election on October 16, rather than aligning it with the gubernatorial election on November 5. Democratic nominee Cory Booker was running for the U.S. Senate, and Buono suggested that Booker’s presence on the ballot was intended to attract more Black and minority voters who might also support Buono."
+    },
+    {
+      "question": "How did the 2013 New Jersey gubernatorial election's results compare to previous elections in terms of vote share?",
+      "answer": "Chris Christie was the only gubernatorial candidate since 1989 to win over 60% of the vote. His 60%+ victory made him the first Republican to achieve this since 1985. Before Christie, the last Republican to win over 60% was Thomas Kean in 1985."
+    },
+    {
+      "question": "Which counties in New Jersey voted for Chris Christie in the 2013 gubernatorial election but had not done so since prior years?",
+      "answer": "Cumberland, Camden, and Union counties voted Republican in a gubernatorial election for the first time since 1985. Mercer and Passaic counties voted Republican for the first time since 1993."
+    },
+    {
+      "question": "What is the significance of Barbara Buono's performance in the 2013 New Jersey gubernatorial election?",
+      "answer": "Barbara Buono is the only Democratic nominee for governor since 1985 to never be elected governor and remains the last Democratic nominee to receive under a million votes. Despite Christie’s landslide victory, Democrats retained their majorities in both state legislative chambers."
+    },
+    {
+      "question": "Provide a Python code snippet that calculates the percentage of counties Chris Christie won in the 2013 New Jersey gubernatorial election.",
+      "answer": "python\n# Total number of counties in New Jersey\ntotal_counties = 21\n\n# Number of counties Chris Christie won\nchristie_counties_won = 19\n\n# Calculate the percentage of counties won\npercentage_won = (christie_counties_won / total_counties) * 100\n\nprint(f\"Chris Christie won {percentage_won:.2f}% of the counties in the 2013 New Jersey gubernatorial election.\")\n\nOutput:\n`Chris Christie won 90.48% of the counties in the 2013 New Jersey gubernatorial election.`"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/devteam/join-the-redis-ai-challenge-3000-in-prizes-3oj2",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What are the two main prompts for the Redis AI Challenge 2025?",
+      "answer": "The two main prompts are 'Real-Time AI Innovators' and 'Beyond the Cache'. The 'Real-Time AI Innovators' prompt encourages building AI-powered applications using Redis as a real-time data layer, such as vector search-driven recommendations or semantic caching. The 'Beyond the Cache' prompt focuses on leveraging Redis for capabilities beyond caching, like a primary database, full-text search, real-time streams, or pub/sub."
+    },
+    {
+      "question": "What are the prizes for winning the Redis AI Challenge 2025?",
+      "answer": "Each winner for the two prompts will receive $1,500 USD, a DEV++ Membership, and an exclusive DEV Badge. Additionally, all participants with valid submissions will earn a completion badge on their DEV profile."
+    },
+    {
+      "question": "How can someone participate in the Redis AI Challenge 2025?",
+      "answer": "To participate, choose one of the two prompts and use the corresponding submission template to publish a post on DEV. The submission must use Redis, and all code must be open source. Participants are encouraged to use Redis 8 features and can use the free tier on Redis Cloud to build their project."
+    },
+    {
+      "question": "What are the key dates for the Redis AI Challenge 2025?",
+      "answer": "The challenge begins on July 23, 2025. Submissions are due by 11:59 PM PDT on August 10, 2025. Winners will be announced on August 17, 2025."
+    },
+    {
+      "question": "Provide a Python code snippet demonstrating how to connect to Redis Cloud using the Redis-py client.",
+      "answer": "python\nimport redis\n\n# Connect to Redis Cloud\nr = redis.Redis(\n    host='your-redis-cloud-host',\n    port=12345,  # Default Redis Cloud port\n    password='your-password',\n    ssl=True,\n    ssl_cert_reqs=None\n)\n\n# Test the connection\nr.ping()\nprint('Connected to Redis Cloud!')\n\nReplace `'your-redis-cloud-host'`, `12345`, and `'your-password'` with your actual Redis Cloud credentials."
+    },
+    {
+      "question": "What are some Redis features highlighted in the challenge that go beyond traditional caching?",
+      "answer": "The challenge emphasizes Redis features such as vector search for AI-driven applications, semantic caching to optimize LLM performance, real-time streams for ML workflows, full-text search, pub/sub messaging, and its role as a primary database. Redis 8 introduces these advanced capabilities to support intelligent, real-time applications."
+    },
+    {
+      "question": "Why is Redis 8 specifically mentioned in the challenge guidelines?",
+      "answer": "Redis 8 is highlighted because it introduces new features and enhancements that are particularly relevant to the challenge’s focus on AI and real-time applications. Participants are encouraged to leverage these features to build innovative projects, such as combining multiple Redis capabilities like streams, pub/sub, and vector search for standout submissions."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Bruce_Schultz_(footballer)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What sport did Bruce Schultz primarily play, and for which club?",
+      "answer": "Bruce Schultz primarily played Australian rules football for Norwood in the South Australian National Football League (SANFL). He was also a cricketer who played Sheffield Shield cricket for South Australia and grade cricket for East Torrens."
+    },
+    {
+      "question": "How many goals did Bruce Schultz kick in his career for Norwood, and what was his best match performance?",
+      "answer": "Bruce Schultz kicked a total of 669 goals for Norwood during his career. His best match performance was 19 goals, which included two posters, achieved in his penultimate game."
+    },
+    {
+      "question": "What is Bruce Schultz's career goal average, and how does it compare to other notable forwards?",
+      "answer": "Bruce Schultz averaged 5.4 goals per game in his career. This is higher than prolific forwards like Gary Ablett, Jason Dunstall, and Tony Lockett. Only Peter Hudson (5.64) and John Coleman (5.48) had higher averages."
+    },
+    {
+      "question": "Describe Bruce Schultz's cricket career highlights, including his first-class debut and notable performances.",
+      "answer": "Bruce Schultz made his first-class cricket debut for South Australia in the 1936–37 Sheffield Shield season at the Adelaide Oval against New South Wales. Batting at number seven, he scored 30 runs in the first innings and took 2 wickets (Harold Mudge and Alan McGilvray) for 29 runs. In the second innings, he scored 28 runs and bowled two overs as South Australia won by 109 runs. In his second match against Queensland, he scored 41 and 33 runs, ran out future Test wicket-keeper Don Tallon, and bowled a couple of overs."
+    },
+    {
+      "question": "In which year did Bruce Schultz achieve his career-best goal-kicking season, and what was his tally?",
+      "answer": "Bruce Schultz achieved his career-best goal-kicking season in 1940, when he kicked exactly 100 goals for the year. This performance earned him the league's goal-kicking award."
+    },
+    {
+      "question": "What injury ended Bruce Schultz's Australian rules football career, and when did this occur?",
+      "answer": "Bruce Schultz's football career ended due to a severe knee injury sustained in the round 13 clash of the 1940 season. Moments after kicking the two goals he needed to reach 100 for the year, he was taken off the field, and the injury forced his retirement."
+    },
+    {
+      "question": "Provide a Python code snippet to calculate Bruce Schultz's career goal average and compare it to two other forwards.",
+      "answer": "python\n# Bruce Schultz's career stats\nschultz_avg = 5.4  # goals per game\n\n# Other forwards' career averages (approximate)\nablett_avg = 3.8  # Gary Ablett\ndunstall_avg = 3.7  # Jason Dunstall\n\n# Comparison\ndef compare_averages(player1_avg, player2_avg, player3_avg):\n    averages = [player1_avg, player2_avg, player3_avg]\n    players = ['Bruce Schultz', 'Gary Ablett', 'Jason Dunstall']\n    \n    results = []\n    for i in range(len(averages)):\n        for j in range(i + 1, len(averages)):\n            if averages[i] > averages[j]:\n                results.append(f\"{players[i]} ({averages[i]}) > {players[j]} ({averages[j]})\")\n            else:\n                results.append(f\"{players[j]} ({averages[j]}) > {players[i]} ({averages[i]})\")\n    \n    return results\n\ncomparison_results = compare_averages(schultz_avg, ablett_avg, dunstall_avg)\nfor result in comparison_results:\n    print(result)\n\nOutput:\nBruce Schultz (5.4) > Gary Ablett (3.8)\nBruce Schultz (5.4) > Jason Dunstall (3.7)"
+    }
+  ]
+}

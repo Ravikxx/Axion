@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Dan_Staley",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What are the highest creative awards Dan Staley won in advertising?",
+      "answer": "Dan Staley won the Clio and One Show Gold awards, which are considered the highest creative awards in the advertising industry."
+    },
+    {
+      "question": "For which NBC sitcom did Dan Staley write episodes, and in what capacity did he eventually serve?",
+      "answer": "Dan Staley wrote episodes for NBC's *Cheers* and eventually rose to co-executive producer for the show's final season (1992–93)."
+    },
+    {
+      "question": "List three television series created by Dan Staley in collaboration with Rob Long for Paramount's Network Television division.",
+      "answer": "Dan Staley and Rob Long created the television series *Pig Sty*, *Good Company*, and *George and Leo* for Paramount's Network Television division."
+    },
+    {
+      "question": "What was Dan Staley's first solo writing credit, and when did it air?",
+      "answer": "Dan Staley's first solo writing credit was an episode of the U.K. sitcom *My Family* (BBC), which aired in 2010."
+    },
+    {
+      "question": "Provide an example of a notable episode Dan Staley worked on that addressed LGBTQ+ representation, including the award it received.",
+      "answer": "The *Good Luck Charlie* episode 'Down a Tree' (2015) featured same-sex parents and earned Dan Staley a GLAAD award nomination for Outstanding Individual Episode."
+    },
+    {
+      "question": "What is Dan Staley's educational background?",
+      "answer": "Dan Staley graduated from Yale University in 1985."
+    },
+    {
+      "question": "Write a Python script that retrieves and prints a list of Dan Staley's Emmy nominations.",
+      "answer": "python\nemmy_nominations = [1992, 1993, 2012, 2013, 2014]\nprint(\"Dan Staley's Emmy nominations:\", emmy_nominations)\n"
+    }
+  ]
+}

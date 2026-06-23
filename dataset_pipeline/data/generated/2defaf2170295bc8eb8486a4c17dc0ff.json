@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Game_World_Navigator",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who founded Game World Navigator and when was it established?",
+      "answer": "Game World Navigator (Навигатор игрового мира) was founded in 1997."
+    },
+    {
+      "question": "What were the key features of Game World Navigator's early editorial style?",
+      "answer": "The magazine was known for long-form analysis, detailed reviews, and technical coverage, primarily targeting experienced PC players, especially strategy and online game enthusiasts. Its contributors had technical backgrounds, which shaped an analytical and pragmatic editorial style."
+    },
+    {
+      "question": "How did Game World Navigator evolve in terms of content coverage after its relaunch in 2013?",
+      "answer": "After the 2013 relaunch, the magazine broadened its coverage to include consoles, mobile games, and video formats, expanding beyond its original 'PC only' policy while maintaining an emphasis on in-depth criticism."
+    },
+    {
+      "question": "What made Game World Navigator's hardware coverage notable compared to other gaming magazines?",
+      "answer": "The magazine was distinguished by its unusually detailed benchmarks and extensive PC hardware testing, setting a higher standard for technical analysis in gaming journalism."
+    },
+    {
+      "question": "Provide a code snippet that could generate a list of Game World Navigator's historical milestones programmatically.",
+      "answer": "python\nmilestones = [\n    {\"year\": 1997, \"event\": \"Founded\"},\n    {\"year\": \"Late 1990s\", \"event\": \"First Russian gaming magazine to exceed 200 pages\"},\n    {\"year\": 2000s, \"event\": \"Expansion to consoles, mobile games, and video formats\"},\n    {\"year\": 2013, \"event\": \"Magazine relaunched post-suspension\"},\n    {\"year\": 2020s, \"event\": \"Continues publishing with reduced print frequency\"}\n]\n"
+    },
+    {
+      "question": "What role did Igor Boyko play in the history of Game World Navigator?",
+      "answer": "Igor Boyko served as the editor-in-chief for most of the magazine's history and remained its central editorial figure, significantly influencing its direction and style."
+    },
+    {
+      "question": "Why did Game World Navigator face challenges in the 2000s-2010s, and how did it adapt?",
+      "answer": "The magazine struggled due to economic downturns and the rise of online media, leading to a temporary suspension. It adapted by relaunching in 2013 with broader content coverage, including consoles, mobile games, and video formats."
+    }
+  ]
+}

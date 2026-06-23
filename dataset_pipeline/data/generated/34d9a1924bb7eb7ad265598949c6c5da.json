@@ -1,0 +1,34 @@
+{
+  "source_url": "https://mathworld.wolfram.com/RecurrencePlot.html",
+  "category": "mathworld",
+  "pairs": [
+    {
+      "question": "What is a recurrence plot and how is it mathematically defined?",
+      "answer": "A recurrence plot is a binary visualization tool used to analyze the behavior of dynamical systems. It is defined as a plot of the quantity R_{i,j} = H(ε - ||x_i - x_j||), where H is the Heaviside step function, ε is a threshold distance, and ||x_i - x_j|| denotes a norm (e.g., Euclidean distance) between state vectors x_i and x_j of the system. The result is a binary matrix where a value of 1 (or a dot) indicates that the distance between states is below the threshold, and 0 otherwise."
+    },
+    {
+      "question": "How can a recurrence plot be used to visualize nonstationarity in time series?",
+      "answer": "Recurrence plots can reveal nonstationarity in time series by showing patterns that change over time. Nonstationary time series often exhibit unevenly distributed recurrence points or evolving structures, contrasting with stationary series that may show uniform diagonal lines or stable patterns. For example, a drifting mean or variance in the time series would appear as gradual shifts or clustering in the recurrence structure."
+    },
+    {
+      "question": "What distinguishes a global (unthresholded) recurrence plot from a standard recurrence plot?",
+      "answer": "A global recurrence plot (or unthresholded recurrence plot) does not apply a threshold to the distances between state vectors. Instead, it plots the raw distances R(i,j) = ||x_i - x_j|| for all pairs of states (i,j) in a 2D plane. This provides a continuous representation of recurrence, whereas standard recurrence plots are binary and depend on a chosen threshold ε."
+    },
+    {
+      "question": "Provide a Python code snippet to generate a recurrence plot for a given time series using Euclidean distance.",
+      "answer": "Below is a Python example using NumPy and Matplotlib to create a recurrence plot for a time series. The code computes pairwise Euclidean distances and thresholds them to generate the binary plot:\n\npython\nimport numpy as np\nimport matplotlib.pyplot as plt\n\n# Example time series (e.g., Lorenz attractor x-coordinates)\ntime_series = np.loadtxt('lorenz_x.txt')  # Replace with actual data\nepsilon = 0.5  # Threshold distance\nn = len(time_series)\n\n# Compute pairwise Euclidean distances\nR = np.zeros((n, n))\nfor i in range(n):\n    for j in range(n):\n        R[i, j] = np.linalg.norm(time_series[i] - time_series[j])\n\n# Threshold distances to create recurrence plot\nrecurrence_plot = (R < epsilon).astype(int)\n\n# Plot\nplt.imshow(recurrence_plot, cmap='binary', origin='lower')\nplt.title('Recurrence Plot')\nplt.xlabel('Time Index j')\nplt.ylabel('Time Index i')\nplt.show()\n\nThis snippet assumes the time series is stored in a file; replace with your data source."
+    },
+    {
+      "question": "What are some practical applications of recurrence plots beyond time series analysis?",
+      "answer": "Recurrence plots are useful in various domains beyond time series analysis, including:\n1. **Function visualization**: Global recurrence plots can visualize the structure of mathematical functions (e.g., f(x,y) = x^2 + y^3) by plotting pairwise distances between sampled points.\n2. **Chaos theory**: Identifying periodic, chaotic, or stochastic behavior in dynamical systems (e.g., Lorenz attractor).\n3. **Cross-recurrence analysis**: Comparing two different time series to detect synchrony or coupling.\n4. **Neuroscience**: Analyzing EEG/MEG data for patterns in brain activity.\n5. **Finance**: Detecting regime changes or market states in stock price time series."
+    },
+    {
+      "question": "How would you quantify the structures observed in a recurrence plot?",
+      "answer": "Structures in a recurrence plot can be quantified using metrics from recurrence quantification analysis (RQA), such as:\n- **Recurrence Rate (RR)**: Fraction of recurrence points, RR = (1/N^2) * sum(R_{i,j}).\n- **Determinism (DET)**: Fraction of recurrence points forming diagonal lines of length ≥ l_min.\n- **Laminarity (LAM)**: Fraction of recurrence points in vertical structures (indicates intermittency).\n- **Average Diagonal Line Length (L)**: Mean length of diagonal lines.\n- **Entropy (ENTR)**: Shannon entropy of the distribution of diagonal line lengths.\nThese metrics help distinguish between periodic, chaotic, and random systems."
+    },
+    {
+      "question": "Explain the role of the Heaviside step function in recurrence plots.",
+      "answer": "The Heaviside step function H(ε - ||x_i - x_j||) is used to convert the continuous distance between state vectors into a binary value. It outputs 1 if the distance is less than the threshold ε (indicating recurrence) and 0 otherwise. This binarization simplifies the visualization and analysis of recurrence structures, as the plot only highlights pairs of states that are 'close' in the phase space."
+    }
+  ]
+}

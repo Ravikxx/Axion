@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Building_of_the_Yugoslavian_legation_in_Berlin",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When was the Yugoslavian Legation in Berlin constructed, and who designed it?",
+      "answer": "The Yugoslavian Legation in Berlin was constructed from 1938 to 1940. It was designed by the architect Werner March."
+    },
+    {
+      "question": "What was the historical significance of Villa Kabrun, and who were its notable residents?",
+      "answer": "Villa Kabrun, built in 1865–1867 by the architects Ende & Böckmann, was originally owned by August Kabrun and his wife Flora Luise Henriette Nicolovius. Notable residents included Ulrich Graf Brockdorff-Rantzau, the first Foreign Minister of the Weimar Republic, and Arthur Salomonsohn, a banker who lived there as a child."
+    },
+    {
+      "question": "Why was the Mendelssohn Bartholdy family forced to emigrate, and what happened to their property?",
+      "answer": "The Mendelssohn Bartholdy family, who were Jewish, were persecuted and expropriated by the Reich authorities in 1938. Their property was taken over for the construction of the Yugoslavian Legation, and the family had to emigrate."
+    },
+    {
+      "question": "What was the purpose of the Supreme Restitution Court for Berlin (ORG), and when did it operate?",
+      "answer": "The Supreme Restitution Court for Berlin (ORG) was established in 1953 by the Allied Commandant's Office. It served as the court of last resort for lawsuits regarding the restitution of assets to racially and politically persecuted persons. The ORG operated until the end of the Four Power Status through German reunification in 1990."
+    },
+    {
+      "question": "How did the use of the building change after World War II?",
+      "answer": "After World War II, the building was used by the People's Republic of Yugoslavia as the seat of its military mission. From 1953 to 1990, it housed the Supreme Restitution Court for Berlin (ORG). Since 1999, the German Council on Foreign Relations (DGAP) has been using the building."
+    },
+    {
+      "question": "What role did Werner March play in the history of this building?",
+      "answer": "Werner March designed the Yugoslavian Legation building, constructed in 1938–1940. Later, in 1942, he was involved in converting the building into a guest house of the Großdeutsches Reich during the Nazi era."
+    },
+    {
+      "question": "Write a Python script to extract the timeline of significant events related to this building from the given text.",
+      "answer": "python\nimport re\n\ndef extract_timeline(text):\n    events = []\n    # Define a pattern to match dates and events\n    pattern = r'(\\b(?:19|20)\\d{2}\\b(?:–\\b(?:19|20)\\d{2}\\b)?).*?(?=\\n|$)'\n    matches = re.finditer(pattern, text, re.IGNORECASE)\n    \n    for match in matches:\n        event = match.group(0).strip()\n        events.append(event)\n    \n    return events\n\n# Example usage:\ntext = \"\"\"\nThe Building of the Yugoslavian Legation in Berlin was constructed from 1938 to 1940...\nVilla Kabrun was built in 1865–1867...\nThe Mendelssohn Bartholdy family... was expropriated by the Reich authorities in 1938...\nThe Yugoslavian legation moved into the building in October 1940...\nThe Wehrmacht attack on Yugoslavia in April 1941...\nAfter the end of the Second World War in 1945...\nThe ORG was established in 1953...\nThe ORG existed until... 1990...\nSince 1999...\n\"\"\"\n\ntimeline = extract_timeline(text)\nfor event in timeline:\n    print(event)\n"
+    }
+  ]
+}

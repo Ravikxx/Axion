@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Hurricane_Liza",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the peak intensity of Hurricane Liza in terms of wind speed and pressure?",
+      "answer": "Hurricane Liza peaked as a Category 4 hurricane on the Saffir-Simpson scale on September 30, 1976, with maximum sustained winds of 140 mph (225 km/h) and a minimum barometric pressure of 948 mbar (948 hPa; 28.0 inHg)."
+    },
+    {
+      "question": "How did Hurricane Liza impact Baja California Sur and other regions?",
+      "answer": "Hurricane Liza caused catastrophic damage in Baja California Sur, particularly in La Paz, where 412 people died, 20,000 were left homeless, and nearly one-third of homes were destroyed due to flash flooding after a dam burst. In Sinaloa and Sonora, the storm caused moderate damage, left 30,000 to 54,000 homeless, and resulted in 155 additional casualties. Along the Gulf of California, 108 people were presumed dead after 12 boats were lost. The remnants of the storm later brought moderate rainfall to the United States."
+    },
+    {
+      "question": "What was the timeline of Hurricane Liza's formation and dissipation?",
+      "answer": "Hurricane Liza developed from an area of disturbed weather southwest of the Mexican coast on September 25, 1976. It intensified into a tropical storm the next day and reached hurricane strength on September 28 after forming an eye. The hurricane peaked in intensity on September 30 and weakened as it moved northward into the Gulf of California. It made its second landfall north of Los Mochis, Sinaloa, on October 1 with winds of 115 mph (185 km/h). The storm rapidly weakened and dissipated inland by October 2."
+    },
+    {
+      "question": "Why was Hurricane Liza considered one of the deadliest tropical cyclones in the eastern Pacific?",
+      "answer": "Hurricane Liza is one of the deadliest tropical cyclones on record in the eastern Pacific and one of the few Pacific hurricanes to kill more than 1,000 people, with at least 1,263 fatalities attributed to the storm. The high death toll resulted from severe flooding, particularly after a dam breach in La Paz, which swept away hundreds of residents."
+    },
+    {
+      "question": "What criticisms arose following Hurricane Liza, and what were the total damages?",
+      "answer": "The government faced criticism for the tragedy, as the dam that broke during the storm had been poorly constructed. Overall, Hurricane Liza caused at least $100 million (1976 USD) in damage, making it one of the costliest disasters in the region's history."
+    },
+    {
+      "question": "How did authorities prepare for Hurricane Liza's arrival?",
+      "answer": "Prior to Hurricane Liza's landfall, residents along the Gulf of California coastline were evacuated, though some refused to leave. Radio stations warned nearby ships to remain in port to avoid the storm's impact."
+    },
+    {
+      "question": "Write a Python function to calculate the total number of fatalities caused by Hurricane Liza across all affected regions.",
+      "answer": "python\ndef calculate_fatalities():\n    # Fatalities in Baja California Sur (La Paz)\n    la_paz_fatalities = 412\n    \n    # Additional fatalities in Sinaloa and Sonora\n    other_regions_fatalities = 155\n    \n    # Fatalities from lost boats along the Gulf of California\n    boat_fatalities = 108\n    \n    # Total fatalities\n    total_fatalities = la_paz_fatalities + other_regions_fatalities + boat_fatalities\n    return total_fatalities\n\n# Example usage\ntotal_deaths = calculate_fatalities()\nprint(f\"Total fatalities from Hurricane Liza: {total_deaths}\")\n\nThe function returns `1263`, which matches the reported total fatalities."
+    }
+  ]
+}

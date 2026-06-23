@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Additions_to_Esther",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What are the 'Additions to Esther' and where are they found?",
+      "answer": "The 'Additions to Esther' are six additional passages to the Book of Esther found in the Greek Septuagint but absent in the Hebrew Bible. They appear in Catholic and Orthodox Bibles but are generally excluded from Protestant Bibles."
+    },
+    {
+      "question": "List the six additions to Esther and briefly describe each one.",
+      "answer": "The six additions are: Addition A (Mordecai’s Dream), which details Mordecai’s prophetic dream about dragons and his saving of the king; Addition B (Decree Against the Jews), which describes Haman’s plot to kill the Jews and the king’s decree; Addition C (Prayers of Mordecai and Esther), which includes their prayers for divine intervention; Addition D (Esther Before the King), which depicts Esther’s risky audience with the king; Addition E (Decree in Favor of the Jews), which nullifies the earlier decree and allows Jewish self-defense; and Addition F (Interpretation of Mordecai's Dream), which explains the dream’s meaning and records the events for remembrance."
+    },
+    {
+      "question": "How do the Additions to Esther differ from the Hebrew Book of Esther in terms of divine presence?",
+      "answer": "The Additions to Esther explicitly include prayers and mention divine providence, whereas the Hebrew Book of Esther implies divine intervention indirectly through events and human actions like fasting and Mordecai’s refusal to bow to Haman."
+    },
+    {
+      "question": "Where are the Additions to Esther typically placed in the Vulgate and modern editions?",
+      "answer": "In the Vulgate, the six additions are generally placed at the end of the Book of Esther. In modern editions like the New Vulgate, they are integrated into the Hebrew chapters, marked with numbers followed by letters (e.g., Esther 1:1a–1r). The New Living Translation, Catholic Edition (NLTCE) also integrates them into Hebrew chapters but labels them with letters (e.g., Esther A:1–17)."
+    },
+    {
+      "question": "What is the significance of Mordecai’s dream in Addition A?",
+      "answer": "Mordecai’s dream in Addition A serves as a prophetic warning about the danger to the Jewish people and later becomes a sign of events in Esther’s story. It also highlights Mordecai’s role in saving the king by exposing a plot against him."
+    },
+    {
+      "question": "Write a Python function that categorizes the six additions to Esther by their primary themes.",
+      "answer": "python\ndef categorize_esther_additions():\n    additions = {\n        'Prophecy & Divine Intervention': ['Addition A – Mordecai’s Dream', 'Addition F – Interpretation of Mordecai\\'s Dream'],\n        'Conflict & Decrees': ['Addition B – Decree Against the Jews', 'Addition E – Decree in Favor of the Jews'],\n        'Prayer & Divine Request': ['Addition C – Prayers of Mordecai and Esther'],\n        'Courage & Risk': ['Addition D – Esther Before the King']\n    }\n    return additions\n\n# Example usage:\nprint(categorize_esther_additions())\n"
+    },
+    {
+      "question": "Why are the Additions to Esther not included in Protestant Bibles?",
+      "answer": "The Additions to Esther are not included in Protestant Bibles because they are derived from the Greek Septuagint, which was not used as the base text for the Hebrew Bible. Protestant Bibles follow the Hebrew Masoretic Text, which does not include these additions."
+    }
+  ]
+}

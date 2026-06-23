@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Club_Goa",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was Club Goa, and which Swedish TV channel aired it?",
+      "answer": "Club Goa was a 2005 Swedish reality TV show where 12 famous reality TV stars from shows like Expedition Robinson and Big Brother traveled to Goa, India, to run a restaurant. The show aired on TV3."
+    },
+    {
+      "question": "Who were the hosts of Club Goa?",
+      "answer": "The hosts of Club Goa were Dilip Seta and Rakesh Mathur."
+    },
+    {
+      "question": "What was the prize for the winner of Club Goa?",
+      "answer": "The last participant standing on the beach in Goa won $500,000."
+    },
+    {
+      "question": "What were the responsibilities of the participants in Club Goa beyond bartending?",
+      "answer": "Participants had to take responsibility for the entire bar, the restaurant, marketing, and organizing big events."
+    },
+    {
+      "question": "How did Club Goa leverage the popularity of Swedish reality TV stars?",
+      "answer": "Club Goa featured former contestants from popular Swedish reality shows like Expedition Robinson, Big Brother, and Baren, who were already well-known to the audience. This helped build strong characters and cultural challenges for the show."
+    },
+    {
+      "question": "Write a Python function that extracts all Swedish reality TV shows mentioned in the text.",
+      "answer": "python\ndef extract_swedish_reality_shows(text):\n    shows = [\n        \"Expedition Robinson\",\n        \"Big Brother\",\n        \"Baren\"\n    ]\n    return shows\n\n# Example usage:\ntext = \"...\"\nreality_shows = extract_swedish_reality_shows(text)\nprint(reality_shows)\n"
+    },
+    {
+      "question": "Why might Club Goa not have been a big success on TV3?",
+      "answer": "Club Goa might not have been a big success due to several factors, such as the lack of a compelling narrative beyond the cultural challenges, the unfamiliarity of the bar/restaurant management tasks to reality TV stars, or the harsh contrast between the tropical setting and the participants' eventual return to a freezing Swedish winter."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Andor",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the premise of the television series Andor?",
+      "answer": "Andor is an American Star Wars television series that serves as a prequel to the anthology film Rogue One: A Star Wars Story (2016). It follows Cassian Andor, a thief who becomes a rebel spy, during the five years leading up to the events of Rogue One and the original Star Wars film. The series explores Andor's radicalization against the Galactic Empire and the formation of the Rebel Alliance."
+    },
+    {
+      "question": "Who created the series Andor, and who are the main cast members?",
+      "answer": "Andor was created by Tony Gilroy. The main cast includes Diego Luna as Cassian Andor, Kyle Soller, Adria Arjona, Stellan Skarsgård, Fiona Shaw, Genevieve O'Reilly, Denise Gough, Faye Marsay, Varada Sethu, Elizabeth Dulau, and Benjamin Bratt. Ben Mendelsohn and Alan Tudyk also reprise their roles from Rogue One."
+    },
+    {
+      "question": "How did the production of Andor adapt to the COVID-19 pandemic during filming?",
+      "answer": "The first season of Andor was filmed from November 2020 to September 2021, entirely during the COVID-19 pandemic. Production teams implemented safety protocols to ensure the continuation of filming, such as introducing regular testing, social distancing measures, and enhanced hygiene practices on set."
+    },
+    {
+      "question": "What are the key differences between the first and second seasons of Andor in terms of plot and production?",
+      "answer": "The first season covers one year in Cassian Andor's life as he becomes a revolutionary, while the second season spans the next four years, concluding at the start of Rogue One. The first season's soundtrack was composed by Nicholas Britell, whereas Brandon Roberts took over for most of the second season due to scheduling conflicts. The second season was delayed by the 2023 Hollywood labor disputes."
+    },
+    {
+      "question": "How did the release schedule for Andor's first and second seasons differ?",
+      "answer": "The first season premiered on September 21, 2022, with the first three episodes released simultaneously. The remaining nine episodes were released weekly, concluding on November 23, 2022. The second season premiered on April 22, 2025, with three episodes released per week, ending on May 13, 2025."
+    },
+    {
+      "question": "What accolades and critical reception has Andor received?",
+      "answer": "Andor has received widespread critical acclaim for its writing, performances, cinematography, themes, and mature tone. It was nominated for 22 Primetime Emmy Awards in 2025, winning five, including Outstanding Writing for a Drama Series. The series also won both the 2022 and 2025 Peabody Awards for its portrayal of grassroots rebellion against authoritarianism."
+    },
+    {
+      "question": "Write a Python function to calculate the total number of episodes in both seasons of Andor given their release schedules.",
+      "answer": "python\ndef calculate_total_episodes(first_season_episodes_per_week, first_season_weeks, second_season_episodes_per_week, second_season_weeks):\n    \"\"\"\n    Calculate the total number of episodes in both seasons of Andor.\n    \n    Args:\n        first_season_episodes_per_week (int): Episodes released per week in the first season.\n        first_season_weeks (int): Number of weeks the first season was released over.\n        second_season_episodes_per_week (int): Episodes released per week in the second season.\n        second_season_weeks (int): Number of weeks the second season was released over.\n    \n    Returns:\n        int: Total number of episodes in both seasons.\n    \"\"\"\n    total_episodes = (first_season_episodes_per_week * first_season_weeks) + \\\n                     (second_season_episodes_per_week * second_season_weeks)\n    return total_episodes\n\n# Example usage for Andor's seasons:\ntotal = calculate_total_episodes(3, 1, 3, 6)  # First season: 3 episodes released once, second season: 3 per week for 6 weeks\nprint(total)  # Output: 21\n"
+    }
+  ]
+}

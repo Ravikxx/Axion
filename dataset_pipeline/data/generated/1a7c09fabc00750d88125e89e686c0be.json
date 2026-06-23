@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Ahom_coinage",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who issued the first Ahom coin and in what year did it first appear?",
+      "answer": "The first Ahom coin was issued by Jayadhwaj Singha, who ruled from 1648 CE to 1663 CE. The coinage system began in 1648 CE."
+    },
+    {
+      "question": "What were the common shapes of Ahom coins, and under what circumstances were other shapes used?",
+      "answer": "Ahom coins were primarily struck in an octagonal shape. Square and round coins were also issued but in limited quantities for special occasions and trade."
+    },
+    {
+      "question": "What materials and purity standards were used in Ahom coinage?",
+      "answer": "Ahom coins were issued in gold and silver. The standard of purity was exceptionally high, ranging between 94.1% to 98%. The standard weight of the coins was 11.3 grams, with minor variations."
+    },
+    {
+      "question": "What were the principal denominations of Ahom coins, and what were their approximate values?",
+      "answer": "The principal denominations of Ahom coins were rupee (Rajmohuree), half rupee (Adhali), quarter rupee (Siki), two annas (Admahia), one anna (Charatiya), and half anna (Tiniratiya). These denominations reflect a hierarchical monetary system used in trade and daily transactions."
+    },
+    {
+      "question": "How did the dating system of Ahom coins change under Rudra Singha's rule?",
+      "answer": "Before Rudra Singha (r. 1696–1714 CE), all coins were dated to the accession year of the kings. Under Rudra Singha, the coins began to feature annual dates, marking a shift in the way time was recorded on currency."
+    },
+    {
+      "question": "Provide a Python code snippet that simulates the creation of a list of Ahom coin denominations with their respective weights.",
+      "answer": "python\n# Simulating Ahom coin denominations and weights based on historical data\ncoin_denominations = [\n    {\"name\": \"Rupee (Rajmohuree)\", \"weight_g\": 11.3},\n    {\"name\": \"Half Rupee (Adhali)\", \"weight_g\": 5.65},\n    {\"name\": \"Quarter Rupee (Siki)\", \"weight_g\": 2.825},\n    {\"name\": \"Two Annas (Admahia)\", \"weight_g\": 1.4125},\n    {\"name\": \"One Anna (Charatiya)\", \"weight_g\": 0.70625},\n    {\"name\": \"Half Anna (Tiniratiya)\", \"weight_g\": 0.353125}\n]\n\nfor coin in coin_denominations:\n    print(f\"{coin['name']}: {coin['weight_g']} grams\")\n"
+    },
+    {
+      "question": "What unusual script was used on some Ahom coins, and for what purpose?",
+      "answer": "Chinese script was used on some Ahom coins, specifically to facilitate trade with Tibet. This usage was extremely rare and highlights the diplomatic and economic relationships of the Ahom Kingdom."
+    },
+    {
+      "question": "What was the name of the Ahom mint, and who were the key officials associated with it?",
+      "answer": "The official mint of the Ahom Kingdom was called Rajshal, located near the capital city. The mintmaster was known as Sonardar Barua or Sonari Bordoloi. Die-cutters were employed from the akharkatia khel (calligraphers guild) and khanikar khel (miners' guild)."
+    }
+  ]
+}

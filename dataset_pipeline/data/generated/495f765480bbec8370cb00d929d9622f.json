@@ -1,0 +1,34 @@
+{
+  "source_url": "https://mathworld.wolfram.com/Sampling.html",
+  "category": "mathworld",
+  "pairs": [
+    {
+      "question": "What is sampling in statistics and what is its primary purpose?",
+      "answer": "Sampling in statistics refers to the process of selecting a subset of individuals or observations from a larger population to estimate properties of that population. Its primary purpose is to make inferences about the entire population without having to analyze every single member, which is often impractical or impossible due to time, cost, or resource constraints."
+    },
+    {
+      "question": "Define the terms 'sample' and 'sample size' in the context of statistical sampling.",
+      "answer": "In statistics, a 'sample' is the specific subset of individuals or observations drawn from a larger population for analysis. The 'sample size' is the number of members or data points included in this sample, which directly impacts the accuracy and reliability of the statistical inferences made."
+    },
+    {
+      "question": "How does sampling relate to signal processing, and what is its purpose in this field?",
+      "answer": "In signal processing, sampling involves measuring a continuous signal at discrete time intervals to capture its values for further analysis or reconstruction. The purpose is to convert an analog signal into a digital format that can be processed by computers while preserving enough information to reconstruct the original signal accurately."
+    },
+    {
+      "question": "What is the Nyquist frequency, and why is it important in sampling?",
+      "answer": "The Nyquist frequency is half the sampling rate of a discrete signal processing system and represents the highest frequency that can be accurately reconstructed from the sampled signal. It is crucial because sampling at or above this frequency ensures that the original signal can be perfectly reconstructed without aliasing or loss of information."
+    },
+    {
+      "question": "Provide a Python code snippet to simulate oversampling a sine wave signal.",
+      "answer": "Here’s a Python example using `numpy` and `matplotlib` to oversample a sine wave by a factor of 4:\npython\nimport numpy as np\nimport matplotlib.pyplot as plt\n\n# Original signal parameters\nfs_original = 100  # Original sampling frequency (Hz)\nt = np.arange(0, 1, 1/fs_original)\nsignal = np.sin(2 * np.pi * 5 * t)  # 5 Hz sine wave\n\n# Oversampling by a factor of 4\nfs_oversampled = 4 * fs_original\noversampled_t = np.arange(0, 1, 1/fs_oversampled)\nover_signal = np.sin(2 * np.pi * 5 * oversampled_t)\n\n# Plot\nplt.figure(figsize=(10, 4))\nplt.plot(t, signal, 'o-', label='Original (fs=100 Hz)', markersize=4)\nplt.plot(oversampled_t, over_signal, '.-', label='Oversampled (fs=400 Hz)', alpha=0.7)\nplt.xlabel('Time (s)'); plt.ylabel('Amplitude'); plt.legend(); plt.grid()\nplt.title('Oversampling a Sine Wave')\nplt.show()\n\nThis code demonstrates how oversampling captures more data points, improving signal fidelity."
+    },
+    {
+      "question": "What happens to the signal-to-noise ratio (SNR) in undersampling, and why?",
+      "answer": "In undersampling, the signal-to-noise ratio (SNR) decreases because the sampling rate is below the Nyquist frequency. This leads to aliasing, where high-frequency components of the signal are misrepresented as lower frequencies, distorting the reconstructed signal and reducing the overall SNR."
+    },
+    {
+      "question": "Explain the relationship between sampling theorem and band-limited signals.",
+      "answer": "The sampling theorem states that a band-limited signal (one with no frequency components higher than a maximum frequency, called the bandwidth) can be perfectly reconstructed from its samples if the sampling rate is at least twice the bandwidth (Nyquist rate). This ensures no loss of information during the sampling process."
+    }
+  ]
+}

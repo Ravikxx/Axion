@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Gertrude_Stein",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was Gertrude Stein and what were her primary occupations?",
+      "answer": "Gertrude Stein (1874–1946) was an American novelist, poet, playwright, and art collector. She is best known for her avant-garde literary works and for hosting a influential Parisian salon where modernist literary and artistic figures gathered."
+    },
+    {
+      "question": "Where was Gertrude Stein born and where did she spend her early years?",
+      "answer": "Gertrude Stein was born in Allegheny, Pennsylvania (now part of Pittsburgh) on February 3, 1874. She was raised in Oakland, California."
+    },
+    {
+      "question": "What significant literary work did Gertrude Stein publish in 1933, and how did it impact her career?",
+      "answer": "In 1933, Stein published *The Autobiography of Alice B. Toklas*, a quasi-memoir written in the voice of her partner, Alice B. Toklas. The book became a literary bestseller, catapulting Stein from relative obscurity into mainstream literary fame."
+    },
+    {
+      "question": "Provide two well-known quotes attributed to Gertrude Stein.",
+      "answer": "Two widely recognized quotes by Gertrude Stein are: *'Rose is a rose is a rose is a rose'* and *'there is no there there'*."
+    },
+    {
+      "question": "How did Gertrude Stein's writing style contribute to her literary reputation?",
+      "answer": "Stein's writing style was characterized by repetition, fragmented syntax, and abstract exploration of language, which positioned her as a pioneer of modernist literature. Works like *Tender Buttons* (1914) exemplified her experimental approach to prose and poetry."
+    },
+    {
+      "question": "What controversies surround Gertrude Stein's actions during World War II?",
+      "answer": "During World War II, Stein lived in Nazi-occupied France and allegedly relied on the protection of Bernard Faÿ, a Vichy government official and Nazi collaborator, to maintain her lifestyle and safety as a Jewish art collector. After the war, she expressed admiration for Marshal Pétain, the Vichy leader, which has drawn criticism and scrutiny."
+    },
+    {
+      "question": "Write a Python code snippet to generate a random sentence inspired by Gertrude Stein's repetitive style.",
+      "answer": "python\nimport random\n\nnouns = ['rose', 'dog', 'sky', 'book', 'tree']\nverbs = ['is', 'was', 'seems', 'becomes', 'remains']\nadjectives = ['red', 'blue', 'silent', 'bright', 'fading']\n\nsentence = ' '.join([random.choice(nouns) + ' ' + random.choice(verbs) + ' ' + \n                    random.choice(adjectives) + ' ' + random.choice(nouns) \n                    for _ in range(3)])\nsentence += ' is a ' + random.choice(nouns)\nprint(sentence)\n\nExample output: *dog was silent book becomes bright tree is a rose*"
+    }
+  ]
+}

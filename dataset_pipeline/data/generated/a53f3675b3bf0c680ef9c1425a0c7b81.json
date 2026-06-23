@@ -1,0 +1,34 @@
+{
+  "source_url": "https://mathworld.wolfram.com/EightCurve.html",
+  "category": "mathworld",
+  "pairs": [
+    {
+      "question": "What is the Eight Curve also known as?",
+      "answer": "The Eight Curve is also known as the Gerono lemniscate."
+    },
+    {
+      "question": "Write the parametric equations for the Eight Curve.",
+      "answer": "The Eight Curve can be described by the parametric equations:\n\nx = sin(t)\ny = sin(t) * cos(t)\n"
+    },
+    {
+      "question": "Where does the Eight Curve have vertical and horizontal tangents?",
+      "answer": "The Eight Curve has vertical tangents at points where the derivative dy/dx is undefined (typically where dx/dt = 0) and horizontal tangents where dy/dt = 0. Specifically, vertical tangents occur at t = 0, π, and 2π, while horizontal tangents occur at t = π/2 and 3π/2."
+    },
+    {
+      "question": "How can you transform the standard Eight Curve into a scaled version?",
+      "answer": "To obtain a scaled version of the Eight Curve, set a = 1/2 and relabel the y-axis as the z-axis in the equation. This scales the curve by half and repositions it."
+    },
+    {
+      "question": "What is the formula for the area enclosed by the Eight Curve?",
+      "answer": "The area enclosed by the Eight Curve is given by 2."
+    },
+    {
+      "question": "Explain the relationship between the arc length of the Eight Curve and 1-dimensional random walks.",
+      "answer": "The arc length of the entire Eight Curve is connected to 1-dimensional random walks through a regularized hypergeometric function. The first few terms of this sequence for n = 0, 1, ... are 1, 0, 4, 6, 36, 100, ... (OEIS A092765)."
+    },
+    {
+      "question": "Which special functions are involved in calculating the arc length of the Eight Curve?",
+      "answer": "The arc length of the Eight Curve involves complete elliptic integrals of the first, second, and third kinds, denoted as K(m), E(m), and Π(n, m) respectively, where m is the elliptic modulus."
+    }
+  ]
+}

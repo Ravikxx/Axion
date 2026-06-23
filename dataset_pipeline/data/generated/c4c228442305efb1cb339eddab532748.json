@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Ebbo",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was Ebbo and what were his primary roles during the Carolingian period?",
+      "answer": "Ebbo, also known as Ebo or Epo, was a German archbishop born around 775 who served as the Archbishop of Rheims in two separate terms (816–835 and 840–841). He began as a librarian and councillor to Louis the Pious, son of Charlemagne, and became a key figure in spreading Christianity in northern Europe. He was instrumental in promoting Carolingian art and illumination, founding the Reims school, and his legacy includes the Gospel Book of Ebbo."
+    },
+    {
+      "question": "What significant events led to Ebbo's first deposition as Archbishop of Rheims in 835?",
+      "answer": "Ebbo's first deposition resulted from his involvement in the rebellion against Emperor Louis the Pious in 833. He presided over the Synod of Soissons, which falsely accused Louis of crimes and forced him to publicly confess. After Louis was reinstated in 834, Ebbo was imprisoned, forced to recant his accusations at the Synod of Thionville, and then deposed."
+    },
+    {
+      "question": "How did Ebbo contribute to the Carolingian Renaissance in the field of art?",
+      "answer": "Ebbo played a crucial role in the Carolingian Renaissance by assembling artists at Hautvillers who transformed Carolingian art into a new movement. He founded the Reims school, and his most renowned artistic product is the Gospel Book of Ebbo, an illuminated manuscript that exemplifies this artistic evolution."
+    },
+    {
+      "question": "What was the outcome of the Synod of Thionville (835) for Ebbo?",
+      "answer": "At the Synod of Thionville on 2 February 835, Ebbo was forced to publicly admit that Emperor Louis the Pious had never committed the crimes he had accused him of. This admission led to his immediate deposition as Archbishop of Rheims, and he was imprisoned in the Abbey of Fulda."
+    },
+    {
+      "question": "How did Ebbo's political alliances shift during the conflicts between Louis the Pious and his sons?",
+      "answer": "Ebbo initially remained loyal to Louis the Pious but later joined the 830 rebellion of Louis's sons (Lothair, Louis, and Pepin). He became a loyal follower of Lothair, even after Louis's reinstatement in 834. However, when Lothair fled to Italy, Ebbo, due to illness, could not follow and was later captured. After Louis's death in 840, Ebbo was briefly restored under Lothair but was deposed again when Charles the Bald took control."
+    },
+    {
+      "question": "What is the Gospel Book of Ebbo, and why is it historically significant?",
+      "answer": "The Gospel Book of Ebbo is a renowned illuminated manuscript created during the Carolingian Renaissance, associated with Ebbo's patronage and the Reims school. It is historically significant for its artistic innovation, blending classical and Christian iconography, and exemplifies the transition in Carolingian art towards a more dynamic and expressive style."
+    },
+    {
+      "question": "Write a Python function that calculates the number of years Ebbo served as Archbishop of Rheims across his two terms.",
+      "answer": "python\ndef calculate_ebbo_service_years(start1, end1, start2, end2):\n    term1 = end1 - start1\n    term2 = end2 - start2\n    total_years = term1 + term2\n    return total_years\n\n# Example usage:\nstart1, end1 = 816, 835\nstart2, end2 = 840, 841\ntotal_service = calculate_ebbo_service_years(start1, end1, start2, end2)\nprint(total_service)  # Output: 20\n"
+    }
+  ]
+}

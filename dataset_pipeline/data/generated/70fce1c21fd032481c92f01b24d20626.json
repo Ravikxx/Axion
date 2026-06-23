@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Banknote",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is a banknote and how does it differ from other forms of paper money?",
+      "answer": "A banknote is a type of paper money issued by a bank of issue, payable to the bearer on demand. Unlike other forms of paper money such as government notes, banknotes are strictly defined as being issued by banks. Government notes, for example, are not considered banknotes even if they function as currency."
+    },
+    {
+      "question": "What was the original purpose of commercial banknotes issued by banks?",
+      "answer": "Commercial banknotes were originally issued by banks with the legal requirement to redeem them for legal tender, typically gold or silver coins, when presented to the issuing bank's chief cashier. This ensured that the banknotes could be exchanged for a tangible asset, providing stability and trust in the currency."
+    },
+    {
+      "question": "How have commercial banknotes evolved into national banknotes?",
+      "answer": "Commercial banknotes, which were traded at face value only in the market served by the issuing bank, have largely been replaced by national banknotes issued by central banks or monetary authorities. This shift centralized the issuance and regulation of currency, ensuring broader acceptance and uniformity."
+    },
+    {
+      "question": "Are all national banknotes considered legal tender? Explain.",
+      "answer": "No, not all national banknotes are legal tender. While many are designated as legal tender, meaning courts must recognize them as valid payment for debts, this is not a universal rule. The legal tender status of a banknote depends on the policies of the issuing authority."
+    },
+    {
+      "question": "What does it mean for a currency to be backed by gold or silver, and why is this practice significant?",
+      "answer": "A currency backed by gold or silver means that the issuing bank guarantees to redeem the banknotes for a fixed amount of the precious metal on demand. This practice was significant because it provided confidence in the currency's value, as the notes were directly convertible to a tangible asset. Historically, this system underpinned the stability of central banks."
+    },
+    {
+      "question": "Why are banknotes typically used for higher-value transactions while coins are used for lower-value ones?",
+      "answer": "Banknotes are used for higher-value transactions because they are more practical for large sums—they are lightweight, easy to carry in large quantities, and reduce the bulk associated with coins. Coins, on the other hand, are more durable for everyday small transactions and are practical for lower denominations."
+    },
+    {
+      "question": "Write a Python function that checks if a given currency is a banknote based on its issuer type.",
+      "answer": "python\ndef is_banknote(issuer_type):\n    \"\"\"\n    Determines if a currency is a banknote based on the type of issuer.\n    \n    Args:\n        issuer_type (str): The type of issuer, e.g., 'central bank', 'commercial bank', 'government'.\n    \n    Returns:\n        bool: True if the issuer is a bank (central or commercial), False otherwise.\n    \"\"\"\n    bank_issuers = ['central bank', 'commercial bank']\n    return issuer_type.lower() in bank_issuers\n\n# Example usage:\nprint(is_banknote('central bank'))  # Output: True\nprint(is_banknote('government'))    # Output: False\n"
+    }
+  ]
+}

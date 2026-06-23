@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/James_D._Gordon_III",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who is James D. Gordon III and what are his professional roles?",
+      "answer": "James D. Gordon III is an American legal academic born on February 9, 1954. He has held administrative positions at Brigham Young University (BYU), including serving as the Marion B. and Rulon A. Earl Professor of Law, acting dean of the J. Reuben Clark Law School (2009–2010), and associate academic vice president for faculty at BYU. He was also appointed assistant to the president for planning and assessment at BYU in 2010."
+    },
+    {
+      "question": "What was James D. Gordon III's educational background?",
+      "answer": "Gordon earned a bachelor's degree in political science from Brigham Young University (BYU) and a J.D. degree from the University of California, Berkeley. He also served as a law clerk for Judge Monroe G. McKay of the 10th United States Circuit Court before practicing law in Salt Lake City."
+    },
+    {
+      "question": "What significant administrative role did James D. Gordon III play in the mid-1990s at BYU?",
+      "answer": "During the mid-1990s, Gordon served as the point person for BYU's position regarding the refusal to grant continuing status to professors who publicly criticized the university or its sponsoring institution instead of producing scholarship deemed worthwhile by BYU. One notable case he handled involved Gail T. Houston, who advocated prayer practices inconsistent with LDS Church teachings."
+    },
+    {
+      "question": "What was James D. Gordon III's role in relation to the LDS Church?",
+      "answer": "Gordon has served in various leadership positions in the LDS Church, including as a bishop and counselor in a stake presidency. He also served a mission for the Church of Jesus Christ of Latter-day Saints (LDS Church) in Italy as a young man."
+    },
+    {
+      "question": "Write a Python function that calculates the number of years between James D. Gordon III's birth year and his appointment as assistant to the president for planning and assessment at BYU.",
+      "answer": "python\ndef calculate_years_between_events(birth_year, appointment_year):\n    return appointment_year - birth_year\n\n# Example usage:\nbirth_year = 1954\nappointment_year = 2010\nyears_between = calculate_years_between_events(birth_year, appointment_year)\nprint(f\"Years between birth and appointment: {years_between}\")\n\nThis function takes the birth year and appointment year as inputs and returns the difference in years. For Gordon, the result would be 56 years (2010 - 1954)."
+    },
+    {
+      "question": "How did James D. Gordon III's career progress after earning his J.D. degree?",
+      "answer": "After earning his J.D. degree from the University of California, Berkeley, Gordon served as a law clerk for Judge Monroe G. McKay of the 10th United States Circuit Court. He then practiced law in Salt Lake City before joining the BYU faculty, where he eventually held several administrative roles, including professor of law and acting dean of the J. Reuben Clark Law School."
+    },
+    {
+      "question": "What was the outcome of the Gail T. Houston case at BYU, and what role did James D. Gordon III play?",
+      "answer": "While the text does not specify the exact outcome, it states that Gail T. Houston advocated prayer practices inconsistent with LDS Church teachings, and James D. Gordon III was involved in handling the case as part of his role in assessing professors' adherence to BYU's standards for scholarship and conduct. The case was one of the most drastic that Gordon had to address during his tenure."
+    }
+  ]
+}

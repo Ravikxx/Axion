@@ -1,0 +1,30 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Half_marathon",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the official distance of a half marathon in kilometers and miles?",
+      "answer": "A half marathon is officially 21.0975 kilometers, which is approximately 13 miles and 192.5 yards."
+    },
+    {
+      "question": "How are half marathon events often organized in relation to full marathons?",
+      "answer": "Half marathon events are commonly held concurrently with a marathon or a 5K race, often using the same course with adjustments like a late start, early finish, or shortcuts."
+    },
+    {
+      "question": "What are the men's and women's world records for the half marathon, and who holds them?",
+      "answer": "The men's world record is 57:20, held by Jacob Kiplimo, set in 2026. The women's world record in a mixed-gender race is 1:02:52, held by Letesenbet Gidey, set in 2021. In a female-only race, the women's record is 1:05:16, held by Peres Jepchirchir, set in 2020."
+    },
+    {
+      "question": "Why has participation in half marathons grown significantly since 2003?",
+      "answer": "Participation has grown because the half marathon is a challenging distance that requires less training than a full marathon, making it more accessible to a wider range of runners."
+    },
+    {
+      "question": "What was the status of Jacob Kiplimo's 56:42 time in Barcelona in 2026?",
+      "answer": "Jacob Kiplimo's 56:42 time in Barcelona was not ratified as a world record by World Athletics due to his proximity to the lead car during the race."
+    },
+    {
+      "question": "Write a Python function that converts a half marathon time in minutes and seconds to a total seconds format.",
+      "answer": "python\ndef half_marathon_time_to_seconds(time_str):\n    minutes, seconds = map(int, time_str.split(':'))\n    return minutes * 60 + seconds\n\n# Example usage:\nprint(half_marathon_time_to_seconds('57:20'))  # Output: 3440\n"
+    }
+  ]
+}

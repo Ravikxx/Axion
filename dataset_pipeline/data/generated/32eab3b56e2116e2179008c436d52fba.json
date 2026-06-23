@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Food_energy",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is food energy and how is it typically measured?",
+      "answer": "Food energy is the chemical energy derived from food that animals use to sustain metabolism and muscular activity. It is typically measured in calories or joules, with larger units like kilocalories (kcal or Cal) used in nutritional contexts. For example, 1 kilocalorie (1 Cal) equals 4.184 kilojoules (kJ)."
+    },
+    {
+      "question": "How do animals primarily derive energy from food?",
+      "answer": "Most animals derive most of their energy from aerobic respiration, a process that combines carbohydrates, fats, and proteins with oxygen to release energy. Some organisms use anaerobic respiration instead, which extracts energy without requiring oxygen."
+    },
+    {
+      "question": "What are some dietary components that provide little or no food energy but are still essential?",
+      "answer": "Water, minerals, vitamins, cholesterol, and fiber provide little or no food energy but are necessary for health and survival. For example, fiber aids digestion, while vitamins and minerals support various bodily functions."
+    },
+    {
+      "question": "How is the energy content of food expressed in nutritional contexts?",
+      "answer": "In nutritional contexts, energy content is often expressed in kilocalories (kcal) or Calories (with a capital 'C'), where 1 kcal = 4.184 kJ. For instance, fats provide 37 kJ/g (9 kcal/g), while proteins and most carbohydrates provide about 17 kJ/g (4 kcal/g)."
+    },
+    {
+      "question": "Which macronutrients have the highest energy density per gram, and why?",
+      "answer": "Fats and ethanol have the highest energy density at 37 kJ/g (9 kcal/g) and 29 kJ/g (7 kcal/g), respectively. This is due to their higher proportion of carbon and hydrogen atoms, which release more energy during metabolism compared to carbohydrates and proteins."
+    },
+    {
+      "question": "Calculate the energy content in kilojoules for a meal containing 10 grams of fat, 20 grams of carbohydrates, and 5 grams of protein.",
+      "answer": "Using the energy densities: fats (37 kJ/g), carbohydrates (17 kJ/g), and proteins (17 kJ/g): (10 g × 37 kJ/g) + (20 g × 17 kJ/g) + (5 g × 17 kJ/g) = 370 + 340 + 85 = 795 kJ. Note that this is an approximation, as not all energy may be absorbed during digestion."
+    },
+    {
+      "question": "Why do some carbohydrates contribute less food energy than others?",
+      "answer": "Carbohydrates that are not easily absorbed, such as fiber or lactose in lactose-intolerant individuals, contribute less food energy because they are not fully metabolized by the body. For example, fiber passes through the digestive system largely undigested."
+    }
+  ]
+}

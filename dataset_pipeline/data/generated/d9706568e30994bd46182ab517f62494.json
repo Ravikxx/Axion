@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/List_of_Sonic_the_Hedgehog_video_games",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who publishes the Sonic the Hedgehog video game series?",
+      "answer": "The Sonic the Hedgehog series is published by Sega."
+    },
+    {
+      "question": "Which companies have developed games in the Sonic the Hedgehog series?",
+      "answer": "Entries in the Sonic the Hedgehog series have been developed by Sega, Sonic Team, Traveller's Tales, Dimps, SIMS Co., Ltd., BioWare, Hardlight, Aspect, Sumo Digital, Gameloft, Gamefam Studios, Arzest, and Rovio Entertainment."
+    },
+    {
+      "question": "When did the first Sonic the Hedgehog game release and on which console?",
+      "answer": "The first Sonic the Hedgehog game was released in 1991 on the Mega Drive video game console, known as the Sega Genesis in North America."
+    },
+    {
+      "question": "What was the total number of Sonic the Hedgehog game copies sold worldwide by March 2011?",
+      "answer": "By March 2011, the Sonic the Hedgehog series had collectively sold 89 million copies worldwide."
+    },
+    {
+      "question": "List three genres of games featured in the Sonic the Hedgehog series besides platform games.",
+      "answer": "Besides platform games, the Sonic the Hedgehog series includes racing games, fighting games, action-adventure games, role-playing video games, and sports video games."
+    },
+    {
+      "question": "Who is the titular protagonist of the Sonic the Hedgehog series?",
+      "answer": "The titular protagonist of the Sonic the Hedgehog series is Sonic the Hedgehog, an anthropomorphic blue hedgehog."
+    },
+    {
+      "question": "Write a Python code snippet to simulate a simple game loop for a Sonic-like platformer, including player movement and basic collision detection.",
+      "answer": "python\nclass Player:\n    def __init__(self, x, y):\n        self.x = x\n        self.y = y\n        self.velocity_x = 0\n        self.velocity_y = 0\n        self.is_jumping = False\n\n    def move_left(self):\n        self.velocity_x = -5\n\n    def move_right(self):\n        self.velocity_x = 5\n\n    def jump(self):\n        if not self.is_jumping:\n            self.velocity_y = -12\n            self.is_jumping = True\n\n    def update(self):\n        self.x += self.velocity_x\n        self.velocity_y += 0.8  # Gravity\n        self.y += self.velocity_y\n        if self.y >= 0:  # Ground level\n            self.y = 0\n            self.is_jumping = False\n            self.velocity_y = 0\n\n# Example usage\nplayer = Player(100, 0)\nplayer.move_right()\nfor _ in range(10):\n    player.update()\nprint(f\"Player position after moving right: ({player.x}, {player.y})\")\n\nIn this example, the `Player` class simulates basic movement and gravity for a Sonic-like character. The `update` method handles horizontal and vertical movement, including jumping and landing."
+    }
+  ]
+}

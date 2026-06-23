@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/1899_Spanish_general_election",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the turno system in late 19th-century Spain, and how did it affect elections?",
+      "answer": "The turno system was an informal arrangement between the Spanish monarchy and the two main political parties—the Conservatives and the Liberals—to alternate control of the government through pre-arranged election outcomes. This system relied on electoral fraud, often facilitated by local political bosses known as caciques, who used clientelism to manipulate votes. As a result, elections were neither free nor fair, though urban areas saw slightly more competitive elections due to weaker caciquism."
+    },
+    {
+      "question": "How did the Spanish–American War influence the 1899 general election?",
+      "answer": "The Spanish–American War (1898) ended with Spain's loss of its colonies in the Caribbean and Pacific, following the Treaty of Paris. This defeat, combined with internal divisions within the Liberal Party—particularly the split led by Germán Gamazo and his 'gamacist' faction—contributed to the downfall of Práxedes Mateo Sagasta's government. The political instability led to Francisco Silvela's appointment as prime minister in March 1899 and the subsequent general election."
+    },
+    {
+      "question": "What were the key outcomes of the 1899 Spanish general election?",
+      "answer": "The 1899 Spanish general election resulted in a clear victory for Francisco Silvela's Conservative Party, which secured an overall majority in both the Congress of Deputies and the Senate. This election, held on April 16 (Congress) and April 30 (Senate), was the first after the Spanish–American War and marked a shift in political power following the turmoil caused by the war and internal Liberal Party divisions."
+    },
+    {
+      "question": "How many seats were contested in the 1899 Spanish general election?",
+      "answer": "In the 1899 Spanish general election, all 401 seats in the Congress of Deputies (plus one special district) were up for election, along with 180 of the 360 seats in the Senate. The election was held under the Spanish Constitution of 1876 during the Restoration period."
+    },
+    {
+      "question": "Who was Francisco Silvela, and what role did he play in the 1899 election?",
+      "answer": "Francisco Silvela was a prominent Spanish politician who served as prime minister starting in March 1899. His appointment followed the downfall of Práxedes Mateo Sagasta's Liberal government, which was weakened by internal divisions and the aftermath of the Spanish–American War. Silvela's Conservative Party won a majority in the 1899 election, consolidating its control over both chambers of the Cortes."
+    },
+    {
+      "question": "What was the Pact of El Pardo, and how did it relate to the turno system?",
+      "answer": "The Pact of El Pardo was an informal agreement between the Spanish monarchy and the two main political parties (Conservatives and Liberals) to ensure stable governance by alternating power between them. This pact laid the foundation for the turno system, which relied on electoral manipulation and clientelism to maintain the desired political outcomes. The system ensured that both parties would have periods in power, though elections were often neither free nor fair."
+    },
+    {
+      "question": "Provide a Python code snippet to analyze election data from the 1899 Spanish general election, assuming you have a dataset of seat allocations.",
+      "answer": "python\nimport pandas as pd\n\n# Sample dataset of seat allocations for the 1899 Spanish general election\ndata = {\n    'Party': ['Conservative', 'Liberal', 'Other'],\n    'Congress_Seats': [300, 90, 11],\n    'Senate_Seats': [150, 25, 5]\n}\n\ndf = pd.DataFrame(data)\n\n# Calculate total seats and percentage of seats won\ndf['Congress_Percentage'] = (df['Congress_Seats'] / df['Congress_Seats'].sum()) * 100\ndf['Senate_Percentage'] = (df['Senate_Seats'] / df['Senate_Seats'].sum()) * 100\n\nprint(\"Election Results Summary:\")\nprint(df)\n\nThis code snippet creates a DataFrame to represent the seat allocations for the 1899 Spanish general election and calculates the percentage of seats won by each party in both the Congress and Senate."
+    }
+  ]
+}

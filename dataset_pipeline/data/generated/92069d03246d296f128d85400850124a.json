@@ -1,0 +1,34 @@
+{
+  "source_url": "https://mathworld.wolfram.com/StatisticalMedian.html",
+  "category": "mathworld",
+  "pairs": [
+    {
+      "question": "What is the statistical median and how is it defined in terms of a distribution function?",
+      "answer": "The statistical median of a distribution function is the value that divides the probability distribution into two equal halves, meaning that 50% of the probability mass lies below it and 50% lies above it."
+    },
+    {
+      "question": "How is the median of a random sample computed using order statistics?",
+      "answer": "For a random sample with order statistics , the statistical median is defined as the middle value when the sample size is odd, or the average of the two middle values when the sample size is even. For example, given a sample [3, 1, 4, 2, 5], the sorted list is [1, 2, 3, 4, 5], and the median is 3."
+    },
+    {
+      "question": "Why is the median less efficient than the mean for estimating the population median in a normal distribution?",
+      "answer": "The mean is more efficient because it has a lower variance compared to the median under a normal distribution. For a normal population, the mean achieves the smallest possible variance among unbiased estimators, making it the most efficient. The efficiency ratio of the mean's variance to the median's variance approaches for large samples."
+    },
+    {
+      "question": "Write a Python function to compute the median of a list of numbers, and explain how it works.",
+      "answer": "python\ndef median(data):\n    sorted_data = sorted(data)\n    n = len(sorted_data)\n    if n % 2 == 1:\n        return sorted_data[n // 2]\n    else:\n        mid1 = sorted_data[n // 2 - 1]\n        mid2 = sorted_data[n // 2]\n        return (mid1 + mid2) / 2\n\n# Example usage:\nprint(median([3, 1, 4, 2, 5]))  # Output: 3\nprint(median([3, 1, 4, 2]))     # Output: 2.5\n\nThis function first sorts the input list, then checks if the length is odd or even. For odd lengths, it returns the middle element; for even lengths, it returns the average of the two middle elements."
+    },
+    {
+      "question": "What is the relationship between the mean, median, and mode for unimodal distributions with moderate asymmetry?",
+      "answer": "For unimodal distributions with moderate asymmetry, the empirical relationship between the mean (), median (), and mode () is given by the formula: . This relationship forms the basis for the Pearson mode skewness, which measures the asymmetry of the distribution."
+    },
+    {
+      "question": "How does the median compare to the mean in terms of sensitivity to outliers?",
+      "answer": "The median is less sensitive to outliers than the mean because it depends only on the middle values of the data and not on extreme values. For example, in a dataset with values [1, 2, 3, 4, 100], the mean is 22, while the median is 3. The median is more robust to the presence of the outlier (100) compared to the mean."
+    },
+    {
+      "question": "What is an L-estimate, and how does the median relate to this concept?",
+      "answer": "An L-estimate is a statistical estimator that is a linear combination of order statistics. The median is a specific type of L-estimate where the weights are concentrated on the central order statistics. For example, in a sample of size , the median can be expressed as a weighted sum of the order statistics with weights of 0.5 for the middle values (or 0.25 for two middle values in even-sized samples)."
+    }
+  ]
+}

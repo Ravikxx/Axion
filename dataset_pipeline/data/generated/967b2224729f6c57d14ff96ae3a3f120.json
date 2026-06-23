@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Cirque",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is a cirque and what are its alternative names?",
+      "answer": "A cirque is an amphitheatre-like valley formed by glacial erosion. Its alternative names include 'corrie' (from Scottish Gaelic, meaning a pot or cauldron) and 'cwm' (Welsh for 'valley')."
+    },
+    {
+      "question": "How does a glacial cirque differ from a fluvial cirque in terms of formation?",
+      "answer": "A glacial cirque is formed by glacial erosion, characterized by steep cliff-like slopes and a concave bowl shape due to converging ice flows and erosion forces. A fluvial cirque, or makhtesh, is formed by intermittent river flow cutting through softer layers of limestone and chalk, leaving sheer cliffs. Fluvial cirques typically have erosion-resistant upper structures overlying more easily eroded materials."
+    },
+    {
+      "question": "What is the typical structure of a glacial cirque's sides and floor?",
+      "answer": "A glacial cirque has three or more higher sides formed by steep, cliff-like slopes where ice and glaciated debris converge. The floor is bowl-shaped due to the complex convergence of ice flows and rock burdens, often experiencing greater erosion forces and being overdeepened below the level of the cirque's outlet."
+    },
+    {
+      "question": "Under what conditions does a cirque floor form a tarn (small lake)?",
+      "answer": "If a cirque is subject to seasonal melting, the floor often forms a tarn behind a natural dam, which marks the downstream limit of glacial overdeepening. The dam can be composed of moraine, glacial till, or a lip of bedrock."
+    },
+    {
+      "question": "How does the erosion process contribute to the overdeepening of a cirque floor?",
+      "answer": "The cirque floor experiences greater erosion forces due to the complex convergence of ice flows and their accompanying rock burdens from multiple directions. This results in the floor being overdeepened below the level of the cirque's outlet and the down-slope valley."
+    },
+    {
+      "question": "Provide a Python code snippet to calculate the volume of a glacial cirque given its dimensions.",
+      "answer": "python\nimport math\n\ndef calculate_cirque_volume(depth, radius, bowl_shape_factor=1.33):\n    \"\"\"\n    Calculate the approximate volume of a glacial cirque.\n    Args:\n        depth (float): Maximum depth of the cirque bowl (meters).\n        radius (float): Radius of the cirque at its opening (meters).\n        bowl_shape_factor (float): Shape factor accounting for the bowl-like structure (default ~1.33 for hemispherical).\n    Returns:\n        float: Volume of the cirque in cubic meters.\n    \"\"\"\n    # Volume approximation: V = (2/3) * π * r^2 * d * shape_factor\n    volume = (2 / 3) * math.pi * (radius ** 2) * depth * bowl_shape_factor\n    return volume\n\n# Example usage:\nvolume = calculate_cirque_volume(depth=150, radius=300)\nprint(f\"Approximate cirque volume: {volume:.2f} cubic meters\")\n"
+    },
+    {
+      "question": "Why might a fluvial cirque have a terrain with erosion-resistant upper structures overlying easily eroded materials?",
+      "answer": "Fluvial cirques, or makhtesh, form in karst landscapes where intermittent river flow erodes softer underlying layers (like limestone or chalk) more quickly than the harder upper layers. This differential erosion leaves steep cliffs and an overhanging resistant cap, creating the characteristic terrain."
+    }
+  ]
+}

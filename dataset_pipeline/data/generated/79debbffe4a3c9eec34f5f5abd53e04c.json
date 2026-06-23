@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Fiat_Ducato",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Which companies jointly developed the Fiat Ducato?",
+      "answer": "The Fiat Ducato was jointly developed by FCA Italy and PSA Group (now part of Stellantis)."
+    },
+    {
+      "question": "What are some alternative names for the Fiat Ducato in different markets?",
+      "answer": "The Fiat Ducato has been sold under various names including Citroën C25, Peugeot J5, Alfa Romeo AR6, Talbot Express, Citroën Jumper, Peugeot Boxer, Ram ProMaster, Opel/Vauxhall Movano, and Toyota Proace Max."
+    },
+    {
+      "question": "Where is the Fiat Ducato primarily manufactured?",
+      "answer": "The primary manufacturing location for the Fiat Ducato is the Sevel Sud factory in Atessa, Italy."
+    },
+    {
+      "question": "How many Fiat Ducatos have been produced since 1981?",
+      "answer": "More than 3.5 million Fiat Ducatos have been produced since the vehicle's introduction in 1981."
+    },
+    {
+      "question": "When did the electric version of the Fiat Ducato debut, and when did sales begin?",
+      "answer": "The electric version of the Fiat Ducato was presented in July 2019, with sales commencing in 2020."
+    },
+    {
+      "question": "What company converts the Fiat Ducato into a 4WD version?",
+      "answer": "The French company Dangel converts the Fiat Ducato into a 4WD version using a central viscous coupling."
+    },
+    {
+      "question": "What percentage of motorhomes in Europe use the Fiat Ducato as a base?",
+      "answer": "Approximately two-thirds of motorhomes in Europe use the Fiat Ducato as a base."
+    },
+    {
+      "question": "Write a Python script to fetch the production locations of the Fiat Ducato as a list.",
+      "answer": "python\nproduction_locations = [\n    \"Sevel Sud factory, Atessa, Italy\",\n    \"Iveco factory, Sete Lagoas, Brazil\",\n    \"Karsan factory, Akçalar, Turkey\",\n    \"Fiat Chrysler Automobiles Saltillo Van Assembly Plant, Saltillo, Mexico\",\n    \"Fiat-Sollers factory, Elabuga, Russia\"\n]\nprint(production_locations)\n"
+    }
+  ]
+}

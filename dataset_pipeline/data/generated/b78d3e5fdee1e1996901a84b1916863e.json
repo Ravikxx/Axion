@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Ann_Sothern",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was Ann Sothern's birth name and when was she born?",
+      "answer": "Ann Sothern was born Harriette Arlene Lake on January 22, 1909."
+    },
+    {
+      "question": "In which decades did Ann Sothern's acting career span?",
+      "answer": "Ann Sothern's acting career spanned nearly six decades, from the late 1920s to the late 1980s."
+    },
+    {
+      "question": "What notable character did Ann Sothern originate on stage and in film, and what was the character's profession?",
+      "answer": "Ann Sothern originated the character Maisie Ravier, a brash yet lovable Brooklyn showgirl, on stage and in film."
+    },
+    {
+      "question": "How many Primetime Emmy Award nominations did Ann Sothern receive for her role in 'Private Secretary'?",
+      "answer": "Ann Sothern received three Primetime Emmy Award nominations for her role in 'Private Secretary'."
+    },
+    {
+      "question": "What was the title of Ann Sothern's final film, and who were her co-stars?",
+      "answer": "Ann Sothern's final film was 'The Whales of August', in which she starred alongside Bette Davis and Lillian Gish."
+    },
+    {
+      "question": "What prestigious award nomination did Ann Sothern earn for her role in 'The Whales of August'?",
+      "answer": "Ann Sothern earned an Oscar nomination for Best Supporting Actress for her role in 'The Whales of August'."
+    },
+    {
+      "question": "Write a Python dictionary that includes key details about Ann Sothern's career milestones, such as her birth name, birth date, notable roles, and awards.",
+      "answer": "{\n  'birth_name': 'Harriette Arlene Lake',\n  'birth_date': 'January 22, 1909',\n  'death_date': 'March 15, 2001',\n  'career_start': 'late 1920s',\n  'notable_roles': [\n    {'character': 'Maisie Ravier', 'type': 'showgirl', 'media': 'film and stage'},\n    {'title': 'Private Secretary', 'type': 'sitcom', 'years': '1953–1958', 'awards': '3 Emmy nominations'},\n    {'title': 'The Ann Sothern Show', 'type': 'sitcom', 'years': '1958–1961'},\n    {'character': 'Gladys Crabtree', 'title': 'My Mother the Car', 'type': 'voice role', 'years': '1965–1966'},\n    {'title': 'The Whales of August', 'type': 'film', 'year': 1987, 'awards': 'Oscar nomination (Best Supporting Actress)'}\n  ],\n  'co_stars': ['Bette Davis', 'Lillian Gish', 'Lucille Ball']\n}"
+    }
+  ]
+}

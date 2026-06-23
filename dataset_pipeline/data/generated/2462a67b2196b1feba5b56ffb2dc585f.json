@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Edvard",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What are some notable individuals named Edvard in the fields of music and education?",
+      "answer": "Notable individuals named Edvard include Edvard Askeland, a Norwegian jazz musician born in 1954, and Edvard Befring, a Norwegian educationalist born in 1936."
+    },
+    {
+      "question": "Which Edvard is known for political leadership, and what were their contributions?",
+      "answer": "Edvard Beneš was a Czech politician (1884–1948) who served as the second President of Czechoslovakia. He played a key role in the country's independence and later in its resistance during World War II."
+    },
+    {
+      "question": "Write a Python function to extract all individuals named Edvard from the given text.",
+      "answer": "python\ndef extract_edvards(text):\n    lines = text.strip().split('\\n')\n    edvards = []\n    for line in lines:\n        if line.startswith('Edvard '):\n            name = line.split(' (')[0]\n            edvards.append(name)\n    return edvards\n\n# Example usage:\ntext = \"\"\"Edvard Grieg (1843–1907), Norwegian composer\nEdvard Munch (1863–1944), Norwegian painter\"\"\"\nprint(extract_edvards(text))\n# Output: ['Edvard Grieg', 'Edvard Munch']\n"
+    },
+    {
+      "question": "How did Edvard Eriksen contribute to art, and what is he most famous for?",
+      "answer": "Edvard Eriksen (1876–1959) was a Danish-Icelandic sculptor best known for creating the iconic Little Mermaid statue in Copenhagen, Denmark. The statue, unveiled in 1913, is based on the fairy tale by Hans Christian Andersen."
+    },
+    {
+      "question": "What fields did Edvard Kardelj work in, and what was his political affiliation?",
+      "answer": "Edvard Kardelj (1910–1979) was a Yugoslav politician who played a significant role in the Communist Party of Yugoslavia. He was a close associate of Josip Broz Tito and contributed to the development of socialist policies in Yugoslavia."
+    },
+    {
+      "question": "List the Edvards associated with sports and their respective disciplines.",
+      "answer": "Edvard Larsen was a Norwegian triple jumper (1881–1914); Edvard Natvig was a Norwegian decathlete (1907–1994); Edvard Westerlund was a Finnish Greco-Roman wrestler (1901–1982); Edvard Hultgren was a Swedish boxer (1904–1984); Edvard Huupponen was a Finnish wrestler (1898–1977); Edvard Johanson was a Swedish trade union organizer (1882–1936)."
+    },
+    {
+      "question": "Who is Edvard Moser, and what scientific field is he recognized for?",
+      "answer": "Edvard Moser (born 1962) is a Norwegian psychologist and neuroscientist known for his groundbreaking research on the brain's mechanism for representing space. He, along with his wife May-Britt Moser, received the Nobel Prize in Physiology or Medicine in 2014 for discovering grid cells in the brain."
+    }
+  ]
+}

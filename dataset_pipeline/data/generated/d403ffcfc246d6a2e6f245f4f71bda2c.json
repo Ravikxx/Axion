@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Gangnido",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the Kangnido map and who created it?",
+      "answer": "The Kangnido, or Honil Gangni Yeokdae Gukdo Ji Do, is the oldest extant Korean world map, created in 1402 by Korean scholars Kwon Kun and Yi Hoe during the Joseon dynasty."
+    },
+    {
+      "question": "Why is the Kangnido map historically significant?",
+      "answer": "The Kangnido is historically significant as it is one of the oldest surviving world maps from East Asia and reflects the geographic knowledge of China during the Mongol Empire, incorporating information from Islamic geographers about Western countries."
+    },
+    {
+      "question": "How does the Kangnido map compare to the Chinese Da Ming Hunyi Tu in terms of geography?",
+      "answer": "While both maps share a common source and depict the Old World from Africa and Europe to Japan, the Kangnido is generally less geographically accurate, particularly in its depiction of rivers and small islands, though it shows some improvements in the depictions of Korea, Japan, and Africa."
+    },
+    {
+      "question": "What are the known copies of the Kangnido map and where are they located?",
+      "answer": "There are two known copies of the Kangnido map, both currently located in Japan. These copies were allegedly stolen from Korea during the Japanese occupation (1910–1945)."
+    },
+    {
+      "question": "What historical events led to the Kangnido map being in Japan?",
+      "answer": "The Kangnido map was allegedly stolen from Korea by Japan during the colonial occupation period (1910–1945), resulting in the two known copies being held in Japan today."
+    },
+    {
+      "question": "How did the Kangnido map incorporate Western geographical knowledge?",
+      "answer": "The Kangnido map reflects the geographic knowledge of China during the Mongol Empire, when Western geographical information became available through interactions with Islamic geographers. This allowed the map to depict regions beyond East Asia, including parts of Africa and Europe."
+    },
+    {
+      "question": "Provide a Python code snippet to calculate the age of the Kangnido map as of 2023.",
+      "answer": "python\ncurrent_year = 2023\ncreation_year = 1402\nage = current_year - creation_year\nprint(f\"As of 2023, the Kangnido map is {age} years old.\")\n\nThis code calculates the age of the Kangnido map by subtracting its creation year (1402) from the current year (2023), yielding an age of 621 years."
+    }
+  ]
+}

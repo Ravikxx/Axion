@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Deep_Underground_Support_Center",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the primary purpose of the Deep Underground Support Center (DUSC) proposed by the Strategic Air Command in 1962?",
+      "answer": "The DUSC was proposed as a hardened command post designed to withstand a 100-megaton nuclear weapon with a 0.5 nautical mile circular error probable (CEP). It was intended to accommodate approximately 200 personnel for 30 days to manage data processing, strike assessment, and decision-making for potential nuclear strikes and follow-on actions."
+    },
+    {
+      "question": "Why was the DUSC project ultimately canceled in 1963?",
+      "answer": "The DUSC project was canceled in 1963 because the Strategic Air Command (SAC) opted instead for a long-endurance, all-airborne concept for their control system. This decision was made due to delays in the operational timeline (slipping from 1965 to 1969) and cost overruns, which led to concurrence from the Joint Chiefs of Staff (JCS) and the Office of the Secretary of Defense (OSD)."
+    },
+    {
+      "question": "How deep was the proposed DUSC facility, and what geological or structural requirements were specified?",
+      "answer": "The proposed DUSC facility was to be 3,500 feet (1,100 meters) deep. Additionally, a 1964 geologic assessment by the MITRE Corporation required potential sites to have at least 5,000 feet (1,500 meters) of geological cover to ensure adequate protection."
+    },
+    {
+      "question": "What were the cost estimates for the SAC Control System facility associated with the DUSC, and how did they change?",
+      "answer": "Initial cost estimates for the SAC Control System facility increased to $200 million. This rise in costs, along with operational delays, contributed to the eventual cancellation of the DUSC project."
+    },
+    {
+      "question": "List at least five potential sites identified by the MITRE Corporation for the DUSC in 1964.",
+      "answer": "The MITRE Corporation identified thirteen potential sites in 1964, including Mount Washington in New Hampshire, Whiteface Mountain near Lake Placid in New York, the Santa Catalina Mountains near Tucson in Arizona, Cleveland Mountain near Skykomish in Washington, a mountain along Icicle Creek near Leavenworth in Washington, the Chugach Mountains near Chickaloon in Alaska, and Granite Mountain near Big Delta in Alaska."
+    },
+    {
+      "question": "How did the operational timeline for the DUSC change from its initial proposal to the cancellation?",
+      "answer": "The operational year for the DUSC slipped from an initial target of 1965 to 1969, which contributed to the eventual decision to cancel the project in favor of an all-airborne concept."
+    },
+    {
+      "question": "What role did the Joint Chiefs of Staff (JCS) and the Office of the Secretary of Defense (OSD) play in the cancellation of the DUSC project?",
+      "answer": "The JCS and OSD concurred with the decision to cancel the DUSC project in 1963, endorsing the Strategic Air Command's shift to a long-endurance, all-airborne control system instead."
+    }
+  ]
+}

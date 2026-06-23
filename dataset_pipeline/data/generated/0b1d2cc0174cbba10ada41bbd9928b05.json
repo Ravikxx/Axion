@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Angkor_Wat",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What are the primary religious influences and historical transformations of Angkor Wat?",
+      "answer": "Angkor Wat began as a Hindu temple dedicated to the god Vishnu, commissioned by Khmer king Suryavarman II between 1113 and 1150 CE. Starting in the late 13th century, it gradually transitioned into a Theravada Buddhist temple and has remained an active center of Buddhist worship since. Its architectural design reflects a blend of Hindu and Buddhist cosmological concepts, particularly through its symbolic representation of Mount Meru."
+    },
+    {
+      "question": "Describe the architectural layout and orientation of Angkor Wat.",
+      "answer": "Angkor Wat features a distinctive Khmer architectural style with a temple-mountain and galleried temple design. It is oriented westward, unlike most Angkorian temples which face east. The complex includes a broad moat surrounding it and an outer wall enclosing three progressively elevated galleries leading to a central quincunx of towers. This layout symbolizes Mount Meru, a sacred cosmological peak."
+    },
+    {
+      "question": "How was Angkor Wat restored and who were the major contributors?",
+      "answer": "Angkor Wat was restored in the 20th century under the coordination of the International Coordinating Committee for the Safeguarding and Development of the Historic Site of Angkor (ICC-Angkor), established in 1993 by UNESCO. Major contributors included France (École française d'Extrême-Orient), Japan (JASA), India (Archaeological Survey of India), Germany (GACP), the United States (World Monuments Fund), South Korea, China, and Italy. The restoration helped preserve the temple as a UNESCO World Heritage Site, designated in 1992."
+    },
+    {
+      "question": "What is the symbolic significance of Angkor Wat in Cambodian culture?",
+      "answer": "Angkor Wat is a powerful national symbol of Cambodia, appearing on the Cambodian national flag. Its enduring religious significance, architectural grandeur, and historical continuity as a site of both Hindu and Buddhist worship have cemented its role as a cultural and spiritual icon. The temple’s preservation and status as a UNESCO World Heritage Site further underscore its importance to Cambodian identity and global heritage."
+    },
+    {
+      "question": "How large is the Angkor Wat temple complex and when was it built?",
+      "answer": "The Angkor Wat temple complex spans 162.6 hectares (1.6 km² or 401.8 acres). It was constructed between 1113 and 1150 CE during the reign of Khmer king Suryavarman II. The monumental scale, extensive bas-reliefs, and architectural unity are hallmarks of its design."
+    },
+    {
+      "question": "Write a Python script to calculate the area of Angkor Wat in square miles given its area in hectares.",
+      "answer": "python\n# Area of Angkor Wat in hectares\narea_hectares = 162.6\n\n# Conversion factor: 1 hectare = 0.00386102 square miles\narea_square_miles = area_hectares * 0.00386102\n\nprint(f\"Angkor Wat's area: {area_square_miles:.4f} square miles\")\n\n\nOutput:\nAngkor Wat's area: 0.6279 square miles"
+    },
+    {
+      "question": "Why is Angkor Wat considered the largest religious complex in the world?",
+      "answer": "Angkor Wat is recognized as the largest religious complex globally due to its vast size of 162.6 hectares, its extensive bas-reliefs covering over 1,200 square meters, and its intricate architectural design featuring multiple galleries, towers, and a surrounding moat. Its continuous religious significance and preservation further contribute to this distinction."
+    }
+  ]
+}

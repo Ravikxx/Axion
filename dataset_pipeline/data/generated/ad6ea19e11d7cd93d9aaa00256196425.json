@@ -1,0 +1,42 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Bradshaw_Station",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the primary use of Bradshaw Station (Bradshaw's Run) in its operational history?",
+      "answer": "Bradshaw Station, also known as Bradshaw's Run, was primarily used as a pastoral lease and cattle station in the Northern Territory of Australia."
+    },
+    {
+      "question": "Who acquired the leases to lands along the Victoria River, and in what year were these leases obtained?",
+      "answer": "Joseph Bradshaw acquired the leases to lands along the Victoria River in 1894."
+    },
+    {
+      "question": "How large was the original property acquired by Joseph Bradshaw, and what natural boundaries surrounded it?",
+      "answer": "The original property occupied an area of 4,800 square miles (12,432 km²) and was bounded by the Victoria River to the south, Joseph Bonaparte Gulf to the west, and the Fitzmaurice River to the north."
+    },
+    {
+      "question": "What significant event occurred at Bradshaw Station in 1903, and who was involved?",
+      "answer": "In 1903, the homestead was built using Cypress-pine, and a herd of 40,000 cattle were supported on the property. Ivan Egoriffe, a Russian, was appointed as station manager around this time."
+    },
+    {
+      "question": "Describe the fate of Ivan Egoriffe and Frederick Bradshaw. What led to their deaths?",
+      "answer": "In 1905, Ivan Egoriffe and Frederick Bradshaw were murdered by Aboriginal people in a revenge attack near Port Keats. The attack was a retaliation for Egoriffe's cruel treatment of Aboriginal workers and the hanging of a man accused of killing another worker."
+    },
+    {
+      "question": "Where were the bodies of Egoriffe and Bradshaw buried?",
+      "answer": "The bodies of Egoriffe and Bradshaw were buried on the property atop an escarpment known as The Tombs."
+    },
+    {
+      "question": "What happened to Bradshaw Station after the deaths of Egoriffe and Bradshaw, and who became involved in its management?",
+      "answer": "After the deaths, the property entered a period of decline. Joseph Bradshaw hired another manager named Byres, who replaced the old termite-riddled homestead. Later, Patrick Quilty acquired the station in 1937."
+    },
+    {
+      "question": "What is the Bradshaw Field Training Area, and when was it established?",
+      "answer": "The Bradshaw Field Training Area is a military training area used by the Australian Army and the US Army. It was formed in 1995 when the Department of Defence acquired much of the property, occupying an area of 8,500 square kilometers (3,282 square miles)."
+    },
+    {
+      "question": "Write a Python snippet to calculate the total area of Bradshaw Station after the acquisition of the adjacent lease in 1898.",
+      "answer": "python\n# Original area in square miles and the adjacent lease area\noriginal_area = 4800  # square miles\nadjacent_lease_area = 2000  # square miles\n\n# Total area after acquisition\ntotal_area = original_area + adjacent_lease_area\nprint(f\"Total area of Bradshaw Station after 1898: {total_area} square miles\")\n\nThis code calculates the total area of Bradshaw Station as 6,800 square miles after Frederick Bradshaw's adjacent lease was acquired in 1898."
+    }
+  ]
+}

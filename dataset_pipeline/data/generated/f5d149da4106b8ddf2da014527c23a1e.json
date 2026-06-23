@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Bavarian_ML_2/2",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What were the primary purposes of the Class ML 2/2 locomotives built by Maffei for the Royal Bavarian State Railways?",
+      "answer": "The Class ML 2/2 locomotives were designed for light and compact superheated steam locomotive services on branch lines, known as Lokalbahnen. Their small size and efficiency made them ideal for short-distance or lighter passenger and freight services on less busy railway lines."
+    },
+    {
+      "question": "How did the valve gear of the ML 2/2 locomotives differ from that of the Krauss-built Bavarian PtL 2/2 (Glaskasten) locomotives?",
+      "answer": "The valve gear of the ML 2/2 locomotives was completely different from that of the PtL 2/2. While the PtL 2/2 used a conventional valve gear design, the ML 2/2 featured two external cylinders with opposing pistons positioned between the two axles, linked by an internal coupling rod. This system was described as complicated and maintenance-intensive."
+    },
+    {
+      "question": "Describe the axle arrangement and coupling mechanism of the ML 2/2 locomotives.",
+      "answer": "The ML 2/2 locomotives had an axle arrangement of B, meaning two axles in a rigid frame. The coupling mechanism involved two external cylinders with opposing pistons positioned between the axles, linked via an internal coupling rod. This design allowed the axles to be driven simultaneously while maintaining a compact structure."
+    },
+    {
+      "question": "What was the firing system used in the ML 2/2 locomotives and how did it enable one-man operation?",
+      "answer": "The ML 2/2 locomotives used a semi-automatic gravity firing system. This system allowed the locomotive to be operated by a single person, as it automated the process of feeding coal into the firebox, reducing the need for additional crew members to manage the fire manually."
+    },
+    {
+      "question": "Why were the ML 2/2 locomotives retired by the Deutsche Reichsbahn-Gesellschaft by 1924 despite their initial success?",
+      "answer": "The ML 2/2 locomotives were retired by 1924 due to the complicated and maintenance-intensive nature of their driving gear. Despite proving themselves initially, the cost and effort required to maintain the unusual valve gear system made them less practical for long-term use compared to simpler designs."
+    },
+    {
+      "question": "Provide a code snippet representing a simplified simulation of the ML 2/2's coupling rod mechanism.",
+      "answer": "Here is a Python code snippet demonstrating the basic kinematics of the coupling rod mechanism in the ML 2/2 locomotives:\n\npython\nimport numpy as np\nimport matplotlib.pyplot as plt\n\ndef simulate_rod_motion(axle_distance=2.0, rod_length=1.5, cycles=5):\n    theta = np.linspace(0, 2 * np.pi * cycles, 1000)\n    x_piston = rod_length * np.cos(theta)\n    y_piston = rod_length * np.sin(theta)\n    \n    x_coupling = axle_distance / 2 * np.cos(theta)\n    \n    plt.figure(figsize=(10, 5))\n    plt.plot(x_piston, y_piston, label='Piston Motion')\n    plt.plot(x_coupling, np.zeros_like(x_coupling), 'r--', label='Coupling Rod')\n    plt.title('Simplified Coupling Rod Mechanism of ML 2/2 Locomotive')\n    plt.xlabel('Position (m)')\n    plt.ylabel('Displacement (m)')\n    plt.legend()\n    plt.grid(True)\n    plt.show()\n\nsimulate_rod_motion()\n\nThis code visualizes the motion of the pistons and the coupling rod over several cycles."
+    },
+    {
+      "question": "How many ML 2/2 locomotives were built, and what happened to them after their initial service period?",
+      "answer": "Maffei delivered a total of 24 ML 2/2 locomotives between 1906 and 1908, numbered 4001–4024. Three of these were sold to the United Fireclay Factories in Marktredwitz in 1922, while the remaining 21 were renumbered by the Deutsche Reichsbahn-Gesellschaft in 1923 as 98 361–384. All were retired by 1924 due to maintenance issues."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Battle_of_Mosul",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Which battle in 1107 involved Kilij Arslan I of the Rum Seljuks conquering Mosul?",
+      "answer": "The Battle of Mosul (1107) was the conflict where Kilij Arslan I of the Rum Seljuks conquered Mosul."
+    },
+    {
+      "question": "What were the opposing forces in the Siege of Mosul (1517) and which broader conflict did it belong to?",
+      "answer": "The Siege of Mosul (1517) was fought between the Ottoman Empire and Safavid Persia as part of the Ottoman–Persian Wars."
+    },
+    {
+      "question": "How many distinct battles or sieges involving Mosul occurred in the 18th century?",
+      "answer": "Three distinct battles or sieges occurred: the Siege of Mosul (1743), the Battle of Mosul (1745), and the Battle of Mosul (1745) following the 1743 siege."
+    },
+    {
+      "question": "What was the outcome of the Battle of Mosul (1917) between Russian and Turkish forces?",
+      "answer": "The Battle of Mosul (1917) ended mostly indecisively, with no clear victor between the Russian and Turkish forces."
+    },
+    {
+      "question": "Provide a chronological list of the battles and sieges of Mosul that occurred during the Iraq War.",
+      "answer": "During the Iraq War, the following battles and sieges occurred: Battle of Mosul (2004), Battle of Mosul (2008), Fall of Mosul (2014), Mosul offensive (2015), and Battle of Mosul (2016–17)."
+    },
+    {
+      "question": "What was the primary objective of the 2017 Western Nineveh offensive and when did it take place?",
+      "answer": "The 2017 Western Nineveh offensive aimed to expel the forces of the Islamic State near the Syrian border. It began on 25 April 2017 and ended on 9 June 2017."
+    },
+    {
+      "question": "Write a Python script to extract all battles and sieges of Mosul from the given text.",
+      "answer": "python\nimport re\n\ntext = \"\"\"\nBattle of Mosul may refer to:\n[...]\n\"\"\"\n\n# Pattern to match battle names and years\npattern = r'(Battle|Siege|Mosul offensive) of Mosul \\((\\d{4})\\)|(Fall of Mosul)|(Mosul offensive \\(2015\\))'\nmatches = re.findall(pattern, text)\nbattles = []\n\nfor match in matches:\n    battle = match[0] or match[2] or match[3]\n    year = match[1] if match[1] else (\"2015\" if match[3] else \"2014\")\n    battles.append(f\"{battle} ({year})\")\n\nprint(\"Battles and sieges of Mosul:\")\nfor battle in battles:\n    print(f\"- {battle}\")\n\nThis script extracts and prints all battles and sieges of Mosul mentioned in the provided text."
+    }
+  ]
+}

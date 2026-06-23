@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Denkmäler_deutscher_Tonkunst",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What does the acronym 'DdT' stand for, and which series does it refer to in the context of Denkmäler deutscher Tonkunst?",
+      "answer": "'DdT' stands for 'Denkmäler deutscher Tonkunst'. It refers to the Denkmäler deutscher Tonkunst series, which was issued by a Prussian royal commission of musicians and musicologists between 1892 and 1931 in sixty-five volumes."
+    },
+    {
+      "question": "How many volumes were included in the first series of Denkmäler deutscher Tonkunst, and what was its publication period?",
+      "answer": "The first series of Denkmäler deutscher Tonkunst included sixty-five volumes and was published between 1892 and 1931."
+    },
+    {
+      "question": "What was the subtitle of the second series of Denkmäler deutscher Tonkunst, and how many volumes did it contain?",
+      "answer": "The second series of Denkmäler deutscher Tonkunst was subtitled 'Denkmäler der Tonkunst in Bayern' (Monuments of musical art in Bavaria) and contained thirty-six volumes, published between 1900 and 1931."
+    },
+    {
+      "question": "Which publishers were responsible for issuing the first series of Denkmäler deutscher Tonkunst, and where were they based?",
+      "answer": "The first series of Denkmäler deutscher Tonkunst was issued by the music publishers Breitkopf & Härtel, which were based in Leipzig."
+    },
+    {
+      "question": "Write a Python snippet to extract the publication years of the first and second series of Denkmäler deutscher Tonkunst from the given text.",
+      "answer": "python\ntext = \"\"\"\nThe first series was issued ... between 1892 and 1931, ... the second ... in thirty-six volumes between 1900 and 1931.\n\"\"\"\n\n# Extracting publication years\nfirst_series_years = (1892, 1931)\nsecond_series_years = (1900, 1931)\n\nprint(\"First series publication years:\", first_series_years)\nprint(\"Second series publication years:\", second_series_years)\n"
+    },
+    {
+      "question": "What is the relationship between Denkmäler der Tonkunst in Bayern (DBT) and Denkmäler deutscher Tonkunst (DdT)?",
+      "answer": "Denkmäler der Tonkunst in Bayern (DBT) is the second series of Denkmäler deutscher Tonkunst (DdT). The DBT focused on Bavarian composers and was published in thirty-six volumes between 1900 and 1931. Later, the DBT was revised and expanded, including a new series starting in 1967 under the title 'Denkmäler der Tonkunst in Bayern'."
+    },
+    {
+      "question": "How many volumes of the new series of Denkmäler der Tonkunst in Bayern were published by 2015, and what types of volumes were included?",
+      "answer": "By 2015, twenty-four volumes of musical scores and two special volumes (Sonderbände) of the new series of Denkmäler der Tonkunst in Bayern had been published."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Hidden_Cash",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who founded the Hidden Cash project and when did it begin?",
+      "answer": "Hidden Cash was founded by Jason Buzi and Yan Budman in 2014. The project officially launched on May 22, 2014, with its first money drop in San Francisco, California."
+    },
+    {
+      "question": "What were the typical contents and locations of Hidden Cash's money drops?",
+      "answer": "Hidden Cash typically hid envelopes containing between $50 and $100 in various parks across cities. In Southern California beaches, they concealed money inside Angry Birds toys or Pez dispensers. For their final drops in New York, they used Pez dispensers at Coney Island and Brighton Beach."
+    },
+    {
+      "question": "How did Hidden Cash encourage participation in their events?",
+      "answer": "Hidden Cash encouraged followers to tweet a photo of themselves with the money they found. The organization then retweeted these photos, creating a sense of community and engagement around the money drops."
+    },
+    {
+      "question": "What were some of the issues Hidden Cash encountered during their events?",
+      "answer": "During a July 2014 event at a city park in Whittier, California, property damage worth $5000 occurred. Hidden Cash reimbursed the city for the damages. The group also sponsored free ice cream events and grocery giveaways, showing their commitment to community engagement."
+    },
+    {
+      "question": "Can you provide a Python code snippet that simulates tracking money drops in different cities?",
+      "answer": "python\ncities = [\n    \"San Francisco\", \"Oakland\", \"San Jose\", \"Sacramento\", \"Fresno\",\n    \"Los Angeles\", \"Las Vegas\", \"Chicago\", \"Houston\", \"New York City\",\n    \"Mexico City\", \"London\", \"Madrid\", \"Berlin\"\n]\n\nmoney_drops = {\n    \"San Francisco\": 5000,\n    \"Oakland\": 3000,\n    \"Los Angeles\": 8000,\n    \"Las Vegas\": 2000,\n    \"New York City\": 4000\n}\n\nfor city, amount in money_drops.items():\n    print(f\"Hidden Cash dropped ${amount} in {city}\")\n\nThis code initializes a list of cities and a dictionary of money drop amounts, then iterates through the dictionary to print the total amount dropped in each city."
+    },
+    {
+      "question": "What led to the discontinuation of Hidden Cash's cash drops in 2014?",
+      "answer": "On August 12, 2014, the creators Jason Buzi and Yan Budman announced the immediate discontinuation of the current phase of cash drops. Buzi expressed hope that a next phase of \"fun and giving\" could soon begin, though the project did not resume at that time."
+    },
+    {
+      "question": "How did the Hidden Cash Twitter account evolve after its initial phase ended?",
+      "answer": "By mid-2015, Buzi clarified that Hidden Cash was not active. In April 2020, the account began giving money via guessing contests. However, by 2024, the Hidden Cash Twitter account had been suspended."
+    }
+  ]
+}

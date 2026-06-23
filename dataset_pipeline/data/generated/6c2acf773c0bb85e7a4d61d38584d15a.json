@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Edward_Owen_Greening",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What were the key co-operative ventures that Edward Owen Greening was involved in, and which one was notably successful?",
+      "answer": "Greening was involved in numerous co-operative ventures, including the Agricultural and Horticultural Association (also known as the 'One and All Association'), which provided agricultural tools, seeds, and related items. This was the key exception among his ventures, as most others proved unsuccessful."
+    },
+    {
+      "question": "How did Edward Owen Greening's early career in the wire-drawing industry influence his later activism?",
+      "answer": "Greening began as an apprentice wire-drawer at age thirteen and later became an office worker. His early exposure to the wire-drawing business, combined with his father's emigration, led him to start his own successful wire-drawing business with his brother. This entrepreneurial experience likely influenced his later focus on co-operative business models and his advocacy for workers' rights and representation."
+    },
+    {
+      "question": "What role did Edward Owen Greening play in the founding of the International Co-operative Alliance?",
+      "answer": "Greening was a founder of the International Co-operative Alliance and chaired its first conference. He later served as its secretary from 1895 until 1902, playing a pivotal role in shaping the global co-operative movement."
+    },
+    {
+      "question": "Write a Python function that takes a birth year and death year as inputs and returns the age at death for Edward Owen Greening.",
+      "answer": "python\ndef calculate_age_at_death(birth_year, death_year):\n    return death_year - birth_year\n\n# Example usage:\nage = calculate_age_at_death(1836, 1923)\nprint(age)  # Output: 87\n"
+    },
+    {
+      "question": "What were Edward Owen Greening's political affiliations and activities during his career?",
+      "answer": "Greening was involved in radical causes, including the Anti-Slavery Society and the United Kingdom Alliance. He founded the Manchester and Salford Manhood Suffrage League and stood as a candidate in the 1868 UK general election, backed by a local committee of radical workers. He later opposed the formation of the Co-operative Party in 1917 but reversed his stance later that year, supporting direct representation for the co-operative movement."
+    },
+    {
+      "question": "How did World War I impact Edward Owen Greening's co-operative ventures?",
+      "answer": "The One and All Association, which Greening managed, closed in 1915 due to the effects of World War I. This financial setback left Greening short of money, prompting co-operative societies to organise testimonial funds for him. Despite this, he remained active in the co-operative movement."
+    },
+    {
+      "question": "What educational background did Edward Owen Greening have, and how did it shape his activism?",
+      "answer": "Greening attended a Quaker school on Mount Street in Manchester but left at age thirteen to become an apprentice wire-drawer. His early departure from formal education did not hinder his intellectual growth, as he later took evening classes and became deeply involved in radical and co-operative causes, leveraging his business experience to advocate for workers' rights and co-operative principles."
+    }
+  ]
+}

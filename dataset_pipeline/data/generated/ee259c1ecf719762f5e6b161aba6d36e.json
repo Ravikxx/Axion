@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/British_Drama_League_(New_Zealand_Branch)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the purpose of the British Drama League (New Zealand Branch) when it was established in 1932?",
+      "answer": "The British Drama League (New Zealand Branch) was founded to promote both amateur and professional theatre in New Zealand, following the mission of its parent organization, the British Drama League, which had been established in England in 1919."
+    },
+    {
+      "question": "Who were the primary founders of the British Drama League (New Zealand Branch), and what was notable about their composition?",
+      "answer": "The League was founded by a small group of drama enthusiasts, predominantly women, though men held the more senior positions."
+    },
+    {
+      "question": "How many area headquarters did the British Drama League (New Zealand Branch) establish within its first year, and what was the range of amateur dramatic groups per headquarters?",
+      "answer": "Within a year, the League established ten area headquarters across New Zealand. Each headquarters supported between 7 and 36 amateur dramatic groups."
+    },
+    {
+      "question": "List three specific activities or initiatives the British Drama League (New Zealand Branch) undertook to support theatre in New Zealand.",
+      "answer": "The League organized summer schools on acting and producing, created a lending library for plays, and launched an annual playwriting competition in partnership with the New Zealand Radio Record and the Tui’s Annual."
+    },
+    {
+      "question": "What was the outcome of the inaugural playwriting competition organized by the British Drama League (New Zealand Branch) in September 1932?",
+      "answer": "In the inaugural competition, two plays by Violet Targuse placed first equal out of at least 68 entries, winning the 'Radio Record trophy' for the best one-act play by a previously unpublished New Zealand author."
+    },
+    {
+      "question": "Provide a code snippet that models the distribution of amateur dramatic groups across the ten area headquarters of the British Drama League (New Zealand Branch) in 1933.",
+      "answer": "python\nimport matplotlib.pyplot as plt\n\nhq_groups = [7, 12, 15, 20, 22, 25, 28, 30, 32, 36]\nplt.hist(hq_groups, bins=10, edgecolor='black')\nplt.title('Distribution of Amateur Dramatic Groups per Headquarters (1933)')\nplt.xlabel('Number of Groups')\nplt.ylabel('Frequency')\nplt.show()\n"
+    },
+    {
+      "question": "What major organizational change did the British Drama League (New Zealand Branch) undergo in 1970, and what did it become?",
+      "answer": "In 1970, the League amalgamated with the New Zealand Drama Council to form the New Zealand Theatre Federation, which was later rebranded as Theatre New Zealand."
+    }
+  ]
+}

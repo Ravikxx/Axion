@@ -1,0 +1,30 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Anna_Shcherbakova",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What are Anna Shcherbakova's most significant achievements in figure skating?",
+      "answer": "Anna Shcherbakova is a highly decorated figure skater with several major accomplishments. She is the 2022 Olympic champion in women's singles, the 2021 World champion, the 2022 European champion, and a three-time Russian national champion (2019–2021). Additionally, she is the first female figure skater to land a quad Lutz in senior competition and the first woman to land two quad Lutz jumps in a single program. She also holds records for landing a quad flip in combination with a triple jump and two quad flips in one program. Notably, she remains the only Olympic champion in women's singles to have performed quad jumps."
+    },
+    {
+      "question": "Which quad jumps has Anna Shcherbakova landed in competition, and what makes her achievements notable?",
+      "answer": "Anna Shcherbakova has landed multiple quad jumps in competition, including the quad Lutz and quad flip. She made history as the first female figure skater to land a quad Lutz in senior competition and the first woman to land two quad Lutz jumps in a single program. She also became the first to land a quad flip in combination with a triple jump and the first to land two quad flips in one program. These achievements are notable because quad jumps are extremely difficult for female figure skaters, and her success in landing them sets her apart in the sport."
+    },
+    {
+      "question": "How did Anna Shcherbakova perform at the junior level in figure skating?",
+      "answer": "At the junior level, Anna Shcherbakova achieved significant success. She won the 2018 JGP Slovakia and JGP Canada titles, the 2019 World Junior silver medal, the 2019 European Youth Olympic Winter Festival, and earned a bronze medal at the 2019 Russian Junior National Championships. She also claimed silver at the 2021 Budapest Trophy and the 2020 European Championships during her junior career."
+    },
+    {
+      "question": "What are some of Anna Shcherbakova's key victories in senior competitions?",
+      "answer": "Anna Shcherbakova has numerous victories in senior competitions, including the 2019 Skate America, 2019 Cup of China, 2021 Internationaux de France, 2021 Gran Premio d'Italia, and the 2019 CS Lombardia Trophy. She also won the 2020 European silver medal, the 2019–20 Grand Prix Final silver medal, the 2021 World Championship, the 2022 Olympic gold, and the 2022 European Championship."
+    },
+    {
+      "question": "Explain the significance of Anna Shcherbakova being the first female figure skater to land a quad Lutz in senior competition.",
+      "answer": "Anna Shcherbakova's achievement of landing the first quad Lutz in senior competition by a female figure skater is highly significant because it demonstrated her extraordinary skill and athleticism. Before her, quad jumps were rare in women's figure skating due to their difficulty. Her ability to execute this jump not only set a new standard for technical difficulty but also inspired other skaters to push the boundaries of what is possible in the sport. This milestone contributed to the evolution of women's figure skating by raising the bar for technical performance."
+    },
+    {
+      "question": "Write a Python function that checks if a given figure skater has achieved any quad jumps in their career, using Anna Shcherbakova's achievements as a reference.",
+      "answer": "python\ndef has_quad_jumps(skater_name, quad_lutz=False, quad_flip=False, quad_toe_loop=False):\n    \"\"\"\n    Check if a figure skater has achieved any quad jumps in their career.\n    \n    Parameters:\n    - skater_name (str): Name of the figure skater.\n    - quad_lutz (bool): True if the skater has landed a quad Lutz.\n    - quad_flip (bool): True if the skater has landed a quad flip.\n    - quad_toe_loop (bool): True if the skater has landed a quad toe loop.\n    \n    Returns:\n    - str: A message indicating if the skater has achieved quad jumps.\n    \"\"\"\n    if quad_lutz or quad_flip or quad_toe_loop:\n        return f\"{skater_name} has achieved quad jumps in their career.\"\n    else:\n        return f\"{skater_name} has not achieved any quad jumps in their career.\"\n\n# Example usage for Anna Shcherbakova\nprint(has_quad_jumps(\"Anna Shcherbakova\", quad_lutz=True, quad_flip=True))\n# Output: \"Anna Shcherbakova has achieved quad jumps in their career.\"\n"
+    }
+  ]
+}

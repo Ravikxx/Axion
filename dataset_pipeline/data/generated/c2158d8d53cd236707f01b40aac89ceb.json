@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Blacknose_shark",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the scientific classification of the blacknose shark?",
+      "answer": "The blacknose shark is scientifically classified as *Carcharhinus acronotus* and belongs to the family Carcharhinidae."
+    },
+    {
+      "question": "Where are blacknose sharks commonly found in the wild?",
+      "answer": "Blacknose sharks are commonly found in the tropical and subtropical waters of the western Atlantic Ocean, often inhabiting coastal seagrass, sand, or rubble habitats."
+    },
+    {
+      "question": "How does the habitat preference of adult blacknose sharks differ from that of juveniles?",
+      "answer": "Adult blacknose sharks prefer deeper waters compared to juveniles, which typically inhabit shallower coastal areas."
+    },
+    {
+      "question": "What physical characteristic gives the blacknose shark its common name? What might reduce the visibility of this feature?",
+      "answer": "The blacknose shark gets its name from a distinctive black blotch on the tip of its snout. This blotch may become indistinct or fade in older individuals."
+    },
+    {
+      "question": "Describe the diet and predators of the blacknose shark.",
+      "answer": "Blacknose sharks primarily feed on small bony fishes and cephalopods. In turn, they fall prey to larger sharks."
+    },
+    {
+      "question": "What reproductive strategy do blacknose sharks use, and how does it compare to other shark species?",
+      "answer": "Blacknose sharks use a viviparous reproductive strategy, where developing embryos are sustained by a placental connection. This is similar to other members of their family, Carcharhinidae."
+    },
+    {
+      "question": "Write a Python function that estimates the gestational period of a blacknose shark based on its age class (juvenile or adult). Assume gestation ranges from 8 to 11 months.",
+      "answer": "python\ndef estimate_gestation_period(age_class: str) -> int:\n    \"\"\"\n    Estimates the gestational period of a blacknose shark based on age class.\n    \n    Args:\n        age_class: Either 'juvenile' or 'adult' (both use the same range for this species).\n    \n    Returns:\n        An integer representing the gestational period in months (8, 9, 10, or 11).\n    \"\"\"\n    if age_class.lower() not in ['juvenile', 'adult']:\n        raise ValueError(\"age_class must be 'juvenile' or 'adult'\")\n    import random\n    return random.randint(8, 11)\n\nIn this species, both juveniles and adults have the same gestational range of 8 to 11 months, so the function randomly selects a value within this range regardless of age class."
+    },
+    {
+      "question": "Why are conservation measures being considered for blacknose sharks, and what organization proposed them?",
+      "answer": "Conservation measures are being considered because U.S. populations of blacknose sharks have been identified as being overfished. The U.S. National Oceanic and Atmospheric Administration (NOAA) proposed these new conservation measures in 2009."
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Episcopal_Diocese_of_Los_Angeles",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "How many Episcopalians are part of the Episcopal Diocese of Los Angeles, and what is its average Sunday attendance in 2024?",
+      "answer": "The Episcopal Diocese of Los Angeles has 48,874 Episcopalians across 133 congregations, 36 schools, and six service institutions. In 2024, the diocese reported an average Sunday attendance (ASA) of 7,474 persons."
+    },
+    {
+      "question": "When was the Episcopal Diocese of Los Angeles established, and where was its first convention held?",
+      "answer": "The Episcopal Diocese of Los Angeles was established in 1895 by a vote of the General Convention of the national Episcopal Church. Its first convention took place in 1896."
+    },
+    {
+      "question": "Who is the current bishop of the Episcopal Diocese of Los Angeles, and where is the diocese's administrative hub located?",
+      "answer": "The current bishop of the Episcopal Diocese of Los Angeles is the Rt. Rev. John H. Taylor. The administrative hub of the diocese is St. Paul's Commons, located in the Echo Park district of Los Angeles."
+    },
+    {
+      "question": "What is the role of the Diocesan Council in the Episcopal Diocese of Los Angeles, and how often does it meet?",
+      "answer": "The Diocesan Council oversees the work of the diocese between annual conventions. It typically meets monthly at St. Paul's Commons."
+    },
+    {
+      "question": "Which religious bodies does the Episcopal Diocese of Los Angeles share ministries with, and what types of ministries are involved?",
+      "answer": "The diocese shares an exchange ministry with the Episcopal Diocese of Taiwan and has cordial relations with denominations such as Old Catholics, the Philippine Independent Church, Armenian Apostolic Church, and the Evangelical Lutheran Church in America. It also collaborates on social justice ministries with the Islamic Center of Southern California and multiple Reformed Jewish congregations and organizations."
+    },
+    {
+      "question": "What demographic trends are observed in the Episcopal Diocese of Los Angeles?",
+      "answer": "The diocese is ethnically diverse, with Hispanics being the fastest-growing group, followed by Asian Americans (primarily of Chinese and Taiwanese descent), Filipinos, and Koreans. This reflects broader demographic shifts in the region."
+    },
+    {
+      "question": "Who was elected as the first bishop of Hispanic descent in the Episcopal Diocese of Los Angeles, and when will they assume office?",
+      "answer": "In 2025, Rev. Antonio Gallardo, rector of St. Luke's Episcopal Church in Long Beach, California, was elected as the diocese's first bishop of Hispanic descent. He will succeed Bishop Taylor and assume office in the summer of 2026 upon Bishop Taylor's retirement."
+    },
+    {
+      "question": "Provide a code snippet to calculate the ratio of the Episcopal Diocese of Los Angeles' average Sunday attendance (ASA) to its total number of Episcopalians.",
+      "answer": "python\n# Given data\ntotal_episcopalians = 48874\naverage_sunday_attendance = 7474\n\n# Calculate the ratio\nattendance_ratio = average_sunday_attendance / total_episcopalians\nprint(f\"Attendance ratio: {attendance_ratio:.4f}\")\n\nThis code calculates the ratio of average Sunday attendance to the total number of Episcopalians in the diocese, which is approximately 0.1529."
+    }
+  ]
+}

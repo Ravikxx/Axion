@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Constitution_of_Burkina_Faso",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When was the current Constitution of Burkina Faso first approved and adopted?",
+      "answer": "The current Constitution of Burkina Faso was approved by referendum on 2 June 1991 and formally adopted on 11 June 1991."
+    },
+    {
+      "question": "What significant change did the 2002 amendment to Burkina Faso's Constitution make?",
+      "answer": "The 2002 amendment abolished the upper chamber of the parliament, known as the Chamber of Representatives."
+    },
+    {
+      "question": "What are the key restrictions on presidential terms in Burkina Faso's Constitution?",
+      "answer": "The Constitution limits any individual from serving as president for more than ten years, either consecutively or intermittently. It also provides a method for impeaching a president."
+    },
+    {
+      "question": "What rights were newly recognized in the 2018 constitutional revision of Burkina Faso?",
+      "answer": "The 2018 revision enshrined rights such as access to drinking water, decent housing, and recognition of the right to civil disobedience."
+    },
+    {
+      "question": "What were the immediate consequences of the January 2022 coup d'état in Burkina Faso?",
+      "answer": "Following the coup, the military announced on 24 January 2022 that President Kaboré had been deposed, and declared that the parliament, government, and constitution had been dissolved. The military later restored the constitution on 31 January and appointed Paul-Henri Sandaogo Damiba as interim president."
+    },
+    {
+      "question": "What changes were introduced in the December 2023 constitutional revision of Burkina Faso?",
+      "answer": "The December 2023 revision relegated French from being the primary working language and abolished the High Court of Justice, which previously judged political figures."
+    },
+    {
+      "question": "Write a Python function that checks if a given date falls within the validity period of the current Constitution of Burkina Faso (30 November 2024 onwards).",
+      "answer": "python\ndef is_constitution_valid(date_str):\n    from datetime import datetime\n    \n    # Define the start date of the current constitution\n    start_date = datetime.strptime('2024-11-30', '%Y-%m-%d').date()\n    \n    # Parse the input date\n    try:\n        input_date = datetime.strptime(date_str, '%Y-%m-%d').date()\n    except ValueError:\n        raise ValueError(\"Invalid date format. Please use YYYY-MM-DD.\")\n    \n    # Check if the input date is on or after the start date\n    return input_date >= start_date\n\n# Example usage:\nprint(is_constitution_valid('2024-12-01'))  # True\nprint(is_constitution_valid('2024-11-29'))  # False\n"
+    }
+  ]
+}

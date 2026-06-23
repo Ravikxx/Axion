@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Condemned_2:_Bloodshot",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What are the key differences between Condemned 2 and its predecessor, Condemned: Criminal Origins?",
+      "answer": "Condemned 2 addresses two major criticisms from the first game: it improves the forensic tools mechanic and enhances the melee combat system with combos and chain attacks. It also features darker storytelling, more polished graphics, and expanded gameplay elements like AI and cutscenes. The game’s protagonist, Ethan Thomas, is portrayed as a more troubled and violent character compared to the first title."
+    },
+    {
+      "question": "Who developed Condemned 2: Bloodshot, and which platforms was it released on?",
+      "answer": "Condemned 2: Bloodshot was developed by Monolith Productions and published by Sega. It was released for PlayStation 3 and Xbox 360 in North America and Australia in March 2008, and in Europe the following month."
+    },
+    {
+      "question": "What is the plot of Condemned 2: Bloodshot, and how does it relate to the first game?",
+      "answer": "Set eleven months after the first game, Condemned 2 follows former FBI agent Ethan Thomas, who is now an alcoholic plagued by hallucinations. When his former colleague Rosa asks for help tracking down the missing Malcolm Vanhorn, Thomas discovers that Leland Vanhorn (aka Serial Killer X) may still be alive. He becomes entangled in a conspiracy involving a powerful cult that wants him dead."
+    },
+    {
+      "question": "How did the developers improve the combat system in Condemned 2 compared to the first game?",
+      "answer": "The combat system in Condemned 2 was enhanced with the introduction of combos and chain attacks, allowing players to string together melee attacks for more fluid and strategic combat. Additionally, the game addressed criticisms of the first title by refining the forensic tools and deepening the melee mechanics."
+    },
+    {
+      "question": "What were some of the common criticisms of Condemned 2 according to reviews?",
+      "answer": "Critics noted several shortcomings in Condemned 2, including a weak storyline, an overreliance on firearms, and what was perceived as a pointless online multiplayer mode. Despite these criticisms, the game was praised for its graphics, AI, sound design, and overall improvements over the original."
+    },
+    {
+      "question": "Write a Python function that simulates the scoring system for a combo attack in Condemned 2, where each hit in a combo multiplies the base damage by an increasing factor. The base damage is 10, and the multiplier increases by 0.5 for each subsequent hit in the combo.",
+      "answer": "Here’s a Python function that calculates the damage for a combo attack in Condemned 2:\n\npython\ndef calculate_combo_damage(num_hits):\n    base_damage = 10\n    total_damage = 0\n    multiplier = 1.0\n    \n    for _ in range(num_hits):\n        total_damage += base_damage * multiplier\n        multiplier += 0.5\n    \n    return int(total_damage)\n\n# Example usage:\nprint(calculate_combo_damage(3))  # Output: 35 (10 + 15 + 10)\n\nThe function takes the number of hits in the combo and returns the total damage, where each hit after the first increases the multiplier by 0.5."
+    },
+    {
+      "question": "Why did Monolith Productions focus on improving the forensic tools and melee mechanics in Condemned 2?",
+      "answer": "Monolith Productions identified the forensic tools and melee mechanics as the two most frequently criticized elements in the first game. By improving these aspects, they aimed to address player feedback and enhance the overall gameplay experience while maintaining the core elements of the original Condemned series."
+    }
+  ]
+}

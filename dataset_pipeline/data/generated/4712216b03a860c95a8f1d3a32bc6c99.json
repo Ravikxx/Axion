@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Canadian_Indian_residential_school_system",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What was the Indian residential school system in Canada?",
+      "answer": "The Indian residential school system was a network of boarding schools established by the Canadian government and operated primarily by Christian churches, designed to assimilate First Nations children into white Canadian society by forcing them to abandon their Indigenous cultures, languages, and family ties."
+    },
+    {
+      "question": "When did the residential school system begin and what legislation enabled it?",
+      "answer": "The residential school system began in earnest with the passage of the Indian Act in 1876. A significant expansion occurred in 1896 when an amendment to the Act mandated that all First Nations children attend these schools, often far from their home communities."
+    },
+    {
+      "question": "How many Indigenous children attended residential schools in Canada, and what were the consequences?",
+      "answer": "Over 150,000 First Nations children attended residential schools, with at least 3,200 dying while in the system. Survivors often struggled to reintegrate into their communities or Canadian society, suffering from intergenerational trauma including higher rates of PTSD, addiction, and suicide."
+    },
+    {
+      "question": "Why were residential schools located far from Indigenous communities?",
+      "answer": "Residential schools were typically situated far from children’s home communities to isolate them from their families and cultural influences, thereby accelerating the process of cultural assimilation and discouraging visits home."
+    },
+    {
+      "question": "What abuses did children experience at residential schools?",
+      "answer": "Children were subjected to physical, emotional, and sexual abuse; forced to adopt Christian names; forbidden from speaking their mother tongues; and prevented from visiting or communicating with their families. These conditions created long-lasting psychological harm."
+    },
+    {
+      "question": "What actions did the Canadian government take to acknowledge the harms of residential schools?",
+      "answer": "In 2008, Prime Minister Stephen Harper issued a formal apology to survivors on behalf of the government. The government also established the Truth and Reconciliation Commission (TRC), which gathered survivor testimonies and published a 2015 report concluding that the system amounted to cultural genocide."
+    },
+    {
+      "question": "Write a Python script that loads a CSV of residential school survivor data and calculates the total number of children who attended and the estimated number who died.",
+      "answer": "python\nimport pandas as pd\n\n# Sample data structure (replace with actual CSV path)\ndata = {\n    'Year': [1876, 1896, 1920, 1950],\n    'Children_Attended': [5000, 10000, 20000, 15000],\n    'Estimated_Deaths': [120, 250, 500, 380]\n}\ndf = pd.DataFrame(data)\n\n# Calculate totals\ntotal_attended = df['Children_Attended'].sum()\ntotal_deaths = df['Estimated_Deaths'].sum()\n\nprint(f\"Total children attended: {total_attended:,}\")\nprint(f\"Estimated deaths: {total_deaths:,}\")\n\nThis script sums the number of children who attended and the estimated deaths across all recorded years."
+    }
+  ]
+}

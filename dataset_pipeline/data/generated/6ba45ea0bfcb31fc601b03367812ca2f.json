@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Antaeotricha_balanocentra",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What family does Antaeotricha balanocentra belong to, and where is it primarily found?",
+      "answer": "Antaeotricha balanocentra belongs to the family Depressariidae and is primarily found in Guyana."
+    },
+    {
+      "question": "Describe the differences in wing coloration between male and female Antaeotricha balanocentra moths.",
+      "answer": "Male Antaeotricha balanocentra moths have white forewings, while females have ochreous-whitish forewings. The hindwings in males are ochreous-whitish, whereas in females they are light greyish."
+    },
+    {
+      "question": "What specific wing markings are found near the base of the forewings in Antaeotricha balanocentra?",
+      "answer": "Near the base of the forewings, there is a faint grey oblique interrupted line. Additionally, there is a small dark grey spot on the costa at one-fourth, where a very irregular oblique interrupted faint grey line crosses the wing."
+    },
+    {
+      "question": "How can you distinguish the sexes of Antaeotricha balanocentra based on their hindwings and forewings?",
+      "answer": "The forewings of males are white, while those of females are ochreous-whitish. The hindwings of males are ochreous-whitish, and those of females are light greyish. Additionally, the costal margin in males is expanded with long rough projecting hairscales."
+    },
+    {
+      "question": "What are the key visual features of the forewings of Antaeotricha balanocentra that help in its identification?",
+      "answer": "Key visual features include: a white (males) or ochreous-whitish (females) forewing color, a faint grey oblique interrupted line near the base, a small dark grey spot on the costa at one-fourth, an oval black spot on the upper angle of the cell with a dot beneath, a fascia of dark fuscous streaks from the costa to the dorsum, and a fuscous terminal band mixed with white."
+    },
+    {
+      "question": "Write a Python function to extract and list the key wing coloration differences between male and female Antaeotricha balanocentra.",
+      "answer": "python\ndef extract_wing_coloration():\n    male_forewing = \"white\"\n    female_forewing = \"ochreous-whitish\"\n    male_hindwing = \"ochreous-whitish\"\n    female_hindwing = \"light greyish\"\n    return {\n        \"male_forewing\": male_forewing,\n        \"female_forewing\": female_forewing,\n        \"male_hindwing\": male_hindwing,\n        \"female_hindwing\": female_hindwing\n    }\n\n# Example usage:\nwing_coloration = extract_wing_coloration()\nprint(wing_coloration)  # Output: {'male_forewing': 'white', 'female_forewing': 'ochreous-whitish', 'male_hindwing': 'ochreous-whitish', 'female_hindwing': 'light greyish'}`"
+    },
+    {
+      "question": "Why might the costal margin expansion in male Antaeotricha balanocentra be significant for identification?",
+      "answer": "The costal margin in males is expanded from the base to three-fourths, with long rough projecting hairscales towards the middle. This unique feature, along with the grey suffusion beneath and the ochreous-whitish subcostal hairpencil, helps distinguish males from females and aids in species-specific identification."
+    }
+  ]
+}

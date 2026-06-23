@@ -1,0 +1,34 @@
+{
+  "source_url": "https://mathworld.wolfram.com/Wilf-ZeilbergerPair.html",
+  "category": "mathworld",
+  "pairs": [
+    {
+      "question": "What is a Wilf-Zeilberger pair and what purpose does it serve in combinatorics?",
+      "answer": "A Wilf-Zeilberger (WZ) pair consists of two closed-form functions that formalize a relationship enabling succinct proofs of hypergeometric identities. The pair is used to verify known identities and sometimes discover new ones by providing a 'proof certificate'—a rational function that certifies the identity's validity. If the starting point is an unknown hypergeometric sum, the WZ method cannot directly find a closed form, but Zeilberger's algorithm can attempt to do so."
+    },
+    {
+      "question": "How does Zeilberger's algorithm contribute to the Wilf-Zeilberger method?",
+      "answer": "Zeilberger's algorithm is a key component of the WZ method that computes a rational function (the WZ certificate) to certify combinatorial identities. This function enables the summation relation to telescope, simplifying the right-hand side to zero and proving the identity. The algorithm is particularly effective when working with hypergeometric sums, though it may not always find a closed-form solution for unknown sums."
+    },
+    {
+      "question": "Provide a Python code snippet demonstrating how a Wilf-Zeilberger pair might be verified programmatically.",
+      "answer": "python\nfrom sympy import symbols, binomial, simplify\n\n# Define the binomial coefficient identity as an example: sum_{k=0}^n binomial(n,k)^2 = binomial(2n,n)\nn = symbols('n', integer=True)\nidentity_left = sum(binomial(n, k)**2 for k in range(n+1))\nidentity_right = binomial(2*n, n)\n\n# Simplify and verify\nequality = simplify(identity_left - identity_right)\nassert equality == 0, \"Identity does not hold\"\nprint(\"Identity verified: Sum_{k=0}^n binomial(n,k)^2 = binomial(2n,n)\")\n"
+    },
+    {
+      "question": "Why must a Wilf-Zeilberger pair's right-hand side vanish outside a finite interval for certain hypergeometric identities?",
+      "answer": "For hypergeometric identities of the form where the addend (the term being summed) vanishes outside a finite interval, the summation effectively becomes finite. This property allows the telescoping behavior exploited by the WZ method: summing the derived relation over all integers causes the terms outside the interval to contribute zero, collapsing the sum to a constant. This constant independence then confirms the identity's validity."
+    },
+    {
+      "question": "Explain the normalization condition for a Wilf-Zeilberger pair and its significance.",
+      "answer": "Normalization in the context of a WZ pair refers to scaling one or both functions such that the constant result of the telescoping sum equals 1. This ensures the pair is properly standardized, making it easier to verify and apply across different identities. Without normalization, the constant might be arbitrary, complicating comparisons or extensions of the method to new cases."
+    },
+    {
+      "question": "How was the Wilf-Zeilberger method applied to compute Apéry's constant to high precision?",
+      "answer": "The WZ method, particularly through identities derived by Amdeberhan and Zeilberger (1997), enabled acceleration techniques for hypergeometric series. By transforming slowly convergent series related to the Riemann zeta function at 3 (Apéry's constant), these identities were used in algorithms to compute ζ(3) to millions of decimal places, significantly advancing numerical precision in mathematical constants."
+    },
+    {
+      "question": "What are the key differences between the Wilf-Zeilberger method and Gosper's algorithm in summation?",
+      "answer": "Gosper's algorithm is designed to find closed forms for indefinite hypergeometric sums, focusing on single-term recurrence relations. In contrast, the Wilf-Zeilberger method provides certificates for proving definite hypergeometric identities by generating rational functions that certify the telescoping nature of the sum. While Gosper's algorithm seeks solutions, WZ verifies or certifies existing ones, often working in tandem with Zeilberger's algorithm."
+    }
+  ]
+}

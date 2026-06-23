@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/1981_New_Zealand_general_election",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Which political party won the most seats in the 1981 New Zealand general election?",
+      "answer": "The National Party won the most seats in the 1981 New Zealand general election, securing a third term in office under the leadership of Robert Muldoon."
+    },
+    {
+      "question": "What was the vote share and seat outcome for the Social Credit Party in the 1981 New Zealand general election?",
+      "answer": "The Social Credit Party won over 20% of the vote in the 1981 New Zealand general election, which was their best result ever, but did not gain any new seats in Parliament."
+    },
+    {
+      "question": "Why was Robert Muldoon's continued governance after the 1981 election considered controversial?",
+      "answer": "Robert Muldoon's continued governance was controversial because his National Party lost the popular vote to the opposition Labour Party, yet retained power due to the electoral system favoring rural and right-leaning electorates under first-past-the-post rules. This discrepancy fueled public demand for electoral reform."
+    },
+    {
+      "question": "Name two notable Members of Parliament first elected in the 1981 New Zealand general election and their future roles.",
+      "answer": "Two notable MPs first elected in 1981 were Helen Clark, who later became Prime Minister, and Michael Cullen, who later served as Finance Minister. Other notable figures included Phil Goff (future Labour leader and Auckland mayor) and Peter Tapsell (first Māori Speaker of the House)."
+    },
+    {
+      "question": "What electoral system change in New Zealand followed the 1981 election, and when did it first take effect?",
+      "answer": "The 1981 election catalyzed the shift from first-past-the-post to mixed-member proportional (MMP) representation. The first election using MMP was held in 1996."
+    },
+    {
+      "question": "What was the outcome of Winston Peters' 1981 election campaign, and what historical incident was connected to his loss?",
+      "answer": "Winston Peters lost his seat of Hunua to Labour's Colin Moyle in the 1981 election. His loss was connected to a McCarthyist smear campaign in 1977, during which Muldoon had aggressively accused Moyle of being gay."
+    },
+    {
+      "question": "How did the rural vs. urban electorate distribution influence the 1981 New Zealand election result?",
+      "answer": "The 1981 election saw National benefit from a higher proportion of rural and right-leaning electorates compared to urban and progressive ones. Under the first-past-the-post system, this distribution allowed National to win despite losing the popular vote to Labour."
+    }
+  ]
+}

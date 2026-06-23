@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Hengliang_Subdistrict",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is Hengliang and where is it located?",
+      "answer": "Hengliang is a subdistrict of Luhe District in Nanjing, China. It is situated in the northeast of the city along China National Highway 328 and borders Yangzhou City."
+    },
+    {
+      "question": "What historical significance does Hengliang have?",
+      "answer": "Hengliang is a town with over 1000 years of history and is part of Nanjing's 'three-city, nine towns' development plan, serving as one of the nine key towns for future growth."
+    },
+    {
+      "question": "What natural resources are found in Hengliang?",
+      "answer": "Hengliang is rich in materials like quartz sand, basalt, and colored stones. Notably, it has Yuhua agate stones and high-quality groundwater sources such as those near Lingyan Hill, Fangshan, Hengshan, and Milk Hill."
+    },
+    {
+      "question": "What is the population composition of Hengliang?",
+      "answer": "Hengliang has a permanent population of 40,900 people, with over 4,000 migrants. Most workers have an education level of junior high school or higher."
+    },
+    {
+      "question": "What are some key tourism attractions in Hengliang?",
+      "answer": "Key attractions include Mount Fang, recognized for its well-preserved ancient crater and features like fairy holes and the 'purple Chuk Yuen' and 'Wang Zishi eight wonders.' Nearby, Milk Hill features two prominent peaks. Additionally, the town is known for Mingshan silk in its tourism resources."
+    },
+    {
+      "question": "How has Hengliang's economy developed around its natural resources?",
+      "answer": "Hengliang has a high yield of Nanjing and Luhe river stones. Many villages process, develop, and sell these stones and their crafts, engaging in international trade to generate wealth."
+    },
+    {
+      "question": "Write a Python function to extract the names of all the hills mentioned in the text about Hengliang.",
+      "answer": "python\nimport re\n\ndef extract_hill_names(text):\n    # Define a pattern to match hill names with possible variations in spacing or punctuation\n    pattern = r'\\b(Lingyan|Fang|Heng|Milk)\\s*(Hill|Hills)?\\b'\n    matches = re.findall(pattern, text)\n    # Flatten the matches and clean them up\n    hills = [f\"{name} Hill\" if second is None else f\"{name} {second}\" for name, second in matches]\n    return hills\n\n# Example usage:\ntext = \"\"\"\nLingyan Hill, Fangshan, Hengshan, milk Hill have high quality ground water.\nImmediately to the east of Fangshan stands two prominent peaks called Milk Hill.\n\"\"\"\nprint(extract_hill_names(text))\n# Output: ['Lingyan Hill', 'Fang Hill', 'Heng Hill', 'Milk Hill', 'Milk Hill']\n"
+    }
+  ]
+}

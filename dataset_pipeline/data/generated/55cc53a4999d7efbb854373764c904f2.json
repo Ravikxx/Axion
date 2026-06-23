@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Eugene_Parker",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was Eugene Newman Parker and what is he most known for in the field of physics?",
+      "answer": "Eugene Newman Parker (1927–2022) was an American solar and plasma physicist renowned as the 'father' and 'founder' of heliophysics. He is most known for proposing the existence of the solar wind in 1958 and predicting the Parker spiral shape of the outer Solar System's magnetic field, both of which were initially controversial but later confirmed by the Mariner 2 spacecraft in 1962."
+    },
+    {
+      "question": "What is the Parker spiral and how was its existence confirmed?",
+      "answer": "The Parker spiral describes the shape of the Sun's magnetic field in the outer Solar System, predicted by Eugene Parker in 1958. It resembles an Archimedean spiral due to the Sun's rotation and the outward flow of solar wind. The existence of the Parker spiral was confirmed in 1962 by measurements from NASA's Mariner 2 spacecraft, which validated Parker's theoretical predictions."
+    },
+    {
+      "question": "List three scientific phenomena named after Eugene Parker and briefly describe one of them.",
+      "answer": "Three phenomena named after Eugene Parker are: the Parker instability (a plasma instability in astrophysics), the Parker equation (a transport equation in plasma physics), and the Sweet–Parker model (a model of magnetic reconnection). The Parker instability refers to the growth of magnetic and velocity perturbations in a plasma under the influence of gravity and magnetic fields, leading to the formation of dense regions."
+    },
+    {
+      "question": "What is Eugene Parker's contribution to the coronal heating problem?",
+      "answer": "In 1988, Parker proposed that nanoflares—small-scale magnetic reconnection events—could explain the coronal heating problem, where the Sun's outer atmosphere (corona) is much hotter than its surface. This theory remains one of the leading candidates to explain the phenomenon, as it accounts for the energy required to heat the corona through numerous small-scale events rather than a single large mechanism."
+    },
+    {
+      "question": "Write a Python code snippet to compute the Parker spiral angle at a given distance from the Sun in astronomical units (AU), assuming a constant solar wind speed of 400 km/s and a solar rotation period of 25 days.",
+      "answer": "python\nimport math\n\n# Constants\nsolar_wind_speed_km_s = 400  # km/s\nsolar_rotation_period_days = 25  # days\nastronomical_unit_km = 1.496e8  # km (1 AU)\n\n# Function to compute Parker spiral angle\ndef parker_spiral_angle(distance_au):\n    distance_km = distance_au * astronomical_unit_km\n    # Convert solar rotation period to seconds\n    rotation_period_seconds = solar_rotation_period_days * 24 * 3600\n    # Calculate angular speed in rad/s\n    angular_speed = 2 * math.pi / rotation_period_seconds\n    # Calculate solar wind speed in km/s (constant)\n    v = solar_wind_speed_km_s\n    # Calculate tangent of the spiral angle\n    tan_theta = (distance_km * angular_speed) / v\n    # Calculate the angle in radians and convert to degrees\n    theta_radians = math.atan(tan_theta)\n    theta_degrees = math.degrees(theta_radians)\n    return theta_degrees\n\n# Example usage\ndistance = 1.0  # 1 AU\nangle = parker_spiral_angle(distance)\nprint(f\"Parker spiral angle at {distance} AU: {angle:.2f} degrees\")\n\nThis code calculates the angle of the Parker spiral at a given distance from the Sun using the solar wind speed and the Sun's rotation period."
+    },
+    {
+      "question": "What are some major awards and honors received by Eugene Parker during his lifetime?",
+      "answer": "Eugene Parker received numerous prestigious awards, including the National Medal of Science (1989), the Gold Medal of the Royal Astronomical Society (1992), the Kyoto Prize (2003), and the Crafoord Prize (2020). In recognition of his contributions, NASA renamed the Solar Probe Plus mission to the Parker Solar Probe in 2017, making it the first NASA spacecraft named after a living person."
+    },
+    {
+      "question": "How did Eugene Parker's early career progress, and where did he spend most of his professional life?",
+      "answer": "Parker obtained his PhD from Caltech in 1951 and spent four years at the University of Utah before joining the University of Chicago in 1955. He remained at the University of Chicago for the rest of his career, affiliated with the Enrico Fermi Institute. Parker wrote over 400 scientific papers, most of which were single-authored, and became a leading figure in solar and plasma physics."
+    }
+  ]
+}

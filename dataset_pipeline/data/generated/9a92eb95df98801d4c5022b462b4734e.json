@@ -1,0 +1,38 @@
+{
+  "source_url": "https://dev.to/javz/i-built-an-interview-prep-tool-instead-of-grinding-leetcode-35a0",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What is the main focus of the interview preparation tool described in the text, and why does the author prefer this approach over random problem-solving?",
+      "answer": "The tool focuses on recognizing underlying patterns in data structures and algorithms (DS&A) rather than memorizing individual problems. The author prefers this approach because many interview questions are variations of the same core ideas, and deeply understanding 20 patterns is more effective than superficially solving 200 problems. This structured method helps with retention, recall, and reasoning about implementations during interviews."
+    },
+    {
+      "question": "What are the key features available in the interview preparation tool mentioned in the text?",
+      "answer": "The tool includes several features such as DS&A pattern flashcards, problem-to-pattern quizzes, JavaScript code template fill-ins, complexity quizzes, system design cheatsheets, system design flashcards, tradeoff quizzes, and explain-back scenarios. These features help users practice recognizing patterns, recalling templates, and understanding tradeoffs."
+    },
+    {
+      "question": "How does the interview preparation tool store user data, and is authentication required?",
+      "answer": "The tool uses browser-based local storage to store user data temporarily, and no authentication or login is required. Users can start practicing immediately without signing up, as the project does not collect or persist user data beyond the current session."
+    },
+    {
+      "question": "What technologies are used to build this interview preparation tool?",
+      "answer": "The tool is built using Next.js, TypeScript, React, and Tailwind CSS. It leverages localStorage for data persistence and uses statically typed data files. The project was also developed with AI-assisted tools."
+    },
+    {
+      "question": "Provide a code snippet demonstrating how to retrieve a problem template from local storage in a Next.js application.",
+      "answer": "typescript\n// Example function to retrieve a problem template from local storage\nfunction getProblemTemplate(problemId: string): string | null {\n  if (typeof window !== 'undefined') {\n    const templates = localStorage.getItem('problemTemplates');\n    if (templates) {\n      const parsedTemplates = JSON.parse(templates);\n      return parsedTemplates[problemId] || null;\n    }\n  }\n  return null;\n}\n\n// Usage:\nconst template = getProblemTemplate('two-sum');\nconsole.log(template); // Outputs the template if found\n"
+    },
+    {
+      "question": "How can users deploy or run the interview preparation tool locally?",
+      "answer": "Users can access the tool directly via the deployed website on Vercel without any setup. Alternatively, they can run it locally by cloning the open-source repository from GitHub and following the project's setup instructions. The tool is designed to be easily forked and adapted for personal needs."
+    },
+    {
+      "question": "What are some effective interview preparation strategies suggested by the author, and how do they align with the tool's design?",
+      "answer": "The author suggests focusing on understanding underlying patterns in DS&A, practicing structured retrieval, and being aware of how concepts connect. This aligns with the tool's design, which emphasizes pattern recognition through flashcards, quizzes, and explain-back scenarios to deepen understanding rather than rote memorization."
+    },
+    {
+      "question": "Why does the author consider building internal tools a good use case for AI-assisted development?",
+      "answer": "The author finds internal tools helpful for daily tasks and sees AI as a valuable assistant in rapidly prototyping and iterating on these tools. In this case, AI-assisted development helped build the interview preparation tool efficiently, demonstrating how AI can enhance productivity for personal and professional projects."
+    }
+  ]
+}

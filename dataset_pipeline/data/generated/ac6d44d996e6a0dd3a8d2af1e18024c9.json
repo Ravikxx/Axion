@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/A_Clockwork_Orange",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "Who wrote 'A Clockwork Orange' and in what year was it published?",
+      "answer": "The novella 'A Clockwork Orange' was written by Anthony Burgess and published in 1962."
+    },
+    {
+      "question": "What is the primary theme explored in 'A Clockwork Orange'?",
+      "answer": "The primary theme explored in 'A Clockwork Orange' is mankind's violent nature and the complexities of human free will when choosing between good and evil."
+    },
+    {
+      "question": "How does Anthony Burgess incorporate language into the novel, and what is it called?",
+      "answer": "Burgess experiments with language by writing in a Russian-influenced argot called 'Nadsat,' which is used by the novel’s teenage protagonist and other younger characters in their first-person narrative."
+    },
+    {
+      "question": "What crimes is Alex primarily responsible for in the novella?",
+      "answer": "Alex and his gang are responsible for various crimes, including assaulting men brutally and sexually assaulting women, primarily as part of their violent and rebellious lifestyle."
+    },
+    {
+      "question": "What is the significance of the 1971 adaptation of 'A Clockwork Orange' by Stanley Kubrick?",
+      "answer": "The 1971 film adaptation of 'A Clockwork Orange' by Stanley Kubrick, starring Malcolm McDowell as Alex, is the best-known adaptation of the novel and has significantly contributed to its cultural impact and recognition."
+    },
+    {
+      "question": "Provide an example of a Nadsat term and its meaning as used in the novel.",
+      "answer": "An example of a Nadsat term is 'droogs,' which means 'friends' or 'companions' and is used by Alex to refer to his gang members."
+    },
+    {
+      "question": "What recognition has 'A Clockwork Orange' received in literature?",
+      "answer": "'A Clockwork Orange' was included on Time magazine's list of the 100 best English-language novels written since 1923 in 2005. It was also named by Modern Library and its readers as one of the 100 best English-language novels of the 20th century."
+    }
+  ]
+}

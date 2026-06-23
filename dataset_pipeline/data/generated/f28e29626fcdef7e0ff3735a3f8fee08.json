@@ -1,0 +1,34 @@
+{
+  "source_url": "https://mathworld.wolfram.com/Chi-SquaredTest.html",
+  "category": "mathworld",
+  "pairs": [
+    {
+      "question": "What is the Chi-Squared test used for in statistics?",
+      "answer": "The Chi-Squared test is used to measure the deviation of observed frequencies from expected frequencies in a distribution, helping determine how well a sample matches an expected distribution. It is particularly useful for hypothesis testing, such as testing independence in contingency tables or goodness-of-fit for categorical data."
+    },
+    {
+      "question": "How is the Chi-Squared statistic calculated, and what does it represent?",
+      "answer": "The Chi-Squared statistic is calculated as χ² = Σ[(Oᵢ - Eᵢ)² / Eᵢ], where Oᵢ is the observed frequency for category i, Eᵢ is the expected frequency for category i, and the sum is taken over all categories. This statistic quantifies the discrepancy between observed and expected data, with larger values indicating greater deviation."
+    },
+    {
+      "question": "What is the limiting distribution of the Chi-Squared statistic under the null hypothesis?",
+      "answer": "Under the null hypothesis, the Chi-Squared statistic follows a Chi-Squared distribution with (k - 1) degrees of freedom, where k is the number of categories. This distribution is used to compute the p-value for the test."
+    },
+    {
+      "question": "How can you find the best-fit parameter value when fitting a one-parameter solution using the Chi-Squared test?",
+      "answer": "To find the best-fit parameter value, compute the Chi-Squared statistic at three distinct parameter points. Plot these values against the parameter points and fit a parabola to the points. The minimum of this parabola corresponds to the best-fit parameter value."
+    },
+    {
+      "question": "Provide a Python code snippet to perform a Chi-Squared goodness-of-fit test.",
+      "answer": "python\nimport numpy as np\nfrom scipy.stats import chisquare\n\n# Observed and expected frequencies\nobserved = np.array([10, 20, 30, 40])\nexpected = np.array([15, 20, 25, 40])\n\n# Perform Chi-Squared test\nchi2_stat, p_value = chisquare(observed, expected)\nprint(f\"Chi-Squared Statistic: {chi2_stat}\")\nprint(f\"P-value: {p_value}\")\n"
+    },
+    {
+      "question": "What are the key assumptions of the Chi-Squared test?",
+      "answer": "The Chi-Squared test assumes that the data consists of independent observations, the expected frequencies for each category are sufficiently large (typically ≥5), and the categories are mutually exclusive and collectively exhaustive."
+    },
+    {
+      "question": "How does the Chi-Squared test differ from the z-score when assessing deviations?",
+      "answer": "The Chi-Squared test evaluates deviations across multiple categories simultaneously, making it suitable for categorical data, while the z-score assesses deviations for a single mean or proportion in a normal distribution. The Chi-Squared test is more general but less powerful for specific directional hypotheses."
+    }
+  ]
+}

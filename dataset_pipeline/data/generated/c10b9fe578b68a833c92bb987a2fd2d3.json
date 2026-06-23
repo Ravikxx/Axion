@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Ernst_Morwitz",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What were the major professional roles Ernst Morwitz held during his lifetime?",
+      "answer": "Ernst Morwitz worked as a judge in Fürstenwalde (1910–1930) and Berlin (1930–1935), served as a German teacher for the U.S. Army after emigrating to the U.S. in 1938, and later became a lecturer in German literature at the University of North Carolina, Chapel Hill. He was also naturalized as an American citizen in 1948 and received an honorary judicial position in West Germany in 1952."
+    },
+    {
+      "question": "How did Ernst Morwitz's Jewish ancestry affect his judicial career under the Nazi regime?",
+      "answer": "Due to his Jewish ancestry, Morwitz was forced into compulsory retirement from his judicial position in Berlin in 1935, as part of the Nazi regime's discriminatory policies."
+    },
+    {
+      "question": "What was Ernst Morwitz's connection to Stefan George?",
+      "answer": "Morwitz was a close friend and member of Stefan George's literary circle starting from 1905. He published poetry in George's journal, *Blätter für die Kunst*, and later played a key role in promoting George's work in the Anglosphere through translations after George's death in 1933."
+    },
+    {
+      "question": "What notable event occurred in Ernst Morwitz's life in 1948?",
+      "answer": "In 1948, Ernst Morwitz was naturalized as an American citizen."
+    },
+    {
+      "question": "Why did Ernst Morwitz decide not to return to West Germany in 1952?",
+      "answer": "Despite West Germany restoring him to an honorary judicial position in 1952, Morwitz chose not to return, likely due to his established life in the United States and the lingering effects of his forced emigration under the Nazi regime."
+    },
+    {
+      "question": "Provide a code snippet to calculate Ernst Morwitz's age at the time of his death.",
+      "answer": "python\nfrom datetime import datetime\n\nbirth_date = datetime(1887, 9, 13)\ndeath_date = datetime(1971, 9, 20)\nage_at_death = death_date.year - birth_date.year - ((death_date.month, death_date.day) < (birth_date.month, birth_date.day))\nprint(age_at_death)  # Output: 84\n"
+    },
+    {
+      "question": "What was the title of the journal where Ernst Morwitz published his poetry in Stefan George's circle?",
+      "answer": "Ernst Morwitz published his poetry in *Blätter für die Kunst*, the journal associated with Stefan George's literary circle."
+    }
+  ]
+}

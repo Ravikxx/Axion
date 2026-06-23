@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/File_(command)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the purpose of the `file` command in Unix-like systems?",
+      "answer": "The `file` command in Unix and Unix-like systems is used to report the type of data contained in a file by analyzing its contents rather than relying on file extensions. It employs heuristics, including magic numbers and context-sensitive tests, to make this determination."
+    },
+    {
+      "question": "How does the `file` command handle a zero-length file?",
+      "answer": "The `file` command reports a zero-length file as such, indicating that no data could be analyzed to determine its type."
+    },
+    {
+      "question": "What are the potential limitations of the `file` command's output?",
+      "answer": "The `file` command uses relatively quick heuristics, which can lead to misleading information. For example, a file containing a magic number that doesn't match the rest of its content may be misclassified. Therefore, its output should not be considered completely trustworthy."
+    },
+    {
+      "question": "What types of files must the `file` command be able to recognize according to the Single UNIX Specification (SUS)?",
+      "answer": "According to the SUS, the `file` command must be able to determine the types of directory, FIFO (named pipe), socket, block special file, and character special file."
+    },
+    {
+      "question": "What is the difference between position-sensitive and context-sensitive tests in the `file` command?",
+      "answer": "Position-sensitive tests analyze specific locations within the file, typically by matching against a database of magic numbers. Context-sensitive tests consider the entire file content to make a determination. Position-sensitive tests are typically used first, followed by context-sensitive tests if needed."
+    },
+    {
+      "question": "How are magic numbers used in the `file` command?",
+      "answer": "Magic numbers are unique byte sequences at specific positions in a file that help identify the file type. The `file` command uses a database of magic numbers to compare against file contents during position-sensitive tests. This method is more reliable than relying on file extensions or MIME types."
+    },
+    {
+      "question": "Provide a Python code snippet to use the `file` command programmatically and parse its output.",
+      "answer": "python\nimport subprocess\n\ndef get_file_type(file_path):\n    try:\n        result = subprocess.run(\n            ['file', file_path],\n            capture_output=True,\n            text=True,\n            check=True\n        )\n        return result.stdout.strip()\n    except subprocess.CalledProcessError as e:\n        return f\"Error: {e.stderr.strip()}\"\n\n# Example usage\nprint(get_file_type('/path/to/file.txt'))\n\nThis script runs the `file` command on the specified file and returns its output as a string."
+    }
+  ]
+}

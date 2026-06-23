@@ -1,0 +1,34 @@
+{
+  "source_url": "https://mathworld.wolfram.com/MeanDeviation.html",
+  "category": "mathworld",
+  "pairs": [
+    {
+      "question": "What is the mean deviation and how is it calculated for a set of data?",
+      "answer": "The mean deviation, also known as the mean absolute deviation, is a measure of dispersion in a dataset. It represents the average of the absolute differences between each data point and the mean of the dataset. For a sample of size n with data points x₁, x₂, ..., xₙ and mean μ, the mean deviation is calculated as (1/n) * Σ|xᵢ - μ| where Σ denotes the sum over all data points."
+    },
+    {
+      "question": "How does mean deviation differ from standard deviation in terms of calculation and usage?",
+      "answer": "Mean deviation uses absolute differences from the mean, while standard deviation uses squared differences. Standard deviation is more commonly used because squaring emphasizes larger deviations, simplifies analytical calculations (especially in least squares fitting), and relates to variance. The mean deviation, despite its intuitive interpretation, requires breaking sums into cases (e.g., even/odd) for closed-form solutions, making it less practical for many statistical techniques."
+    },
+    {
+      "question": "Write a Python function to compute the mean deviation of a list of numbers.",
+      "answer": "python\ndef mean_deviation(data):\n    n = len(data)\n    if n == 0:\n        return 0.0\n    mean = sum(data) / n\n    return sum(abs(x - mean) for x in data) / n\n\n# Example usage:\ndata = [4, 5, 6, 8]\nprint(mean_deviation(data))  # Output: 1.25\n"
+    },
+    {
+      "question": "For a discrete uniform distribution with n equally likely outcomes, how is the mean deviation expressed in closed form?",
+      "answer": "For a discrete uniform distribution with n outcomes, the mean deviation is given by:\n- If n is even: (n² - 1)/(4n)\n- If n is odd: (n² - 1)/(4n)\nThis requires separating the sum into cases based on whether n is even or odd due to the absolute value function."
+    },
+    {
+      "question": "Why is mean deviation less commonly used in statistical techniques like least squares fitting?",
+      "answer": "Mean deviation is less commonly used because the absolute value function in its calculation makes analytical derivations and optimizations (e.g., minimizing residuals) mathematically intractable compared to squared differences. Statistical methods like least squares fitting rely on differentiable functions to find optimal solutions efficiently. The mean of squared residuals (variance) is easier to work with analytically and has desirable properties in probability theory."
+    },
+    {
+      "question": "What is the mean deviation of the dataset [0.585, 0.586, 0.597, 0.599, 0.580]?",
+      "answer": "First, calculate the mean: (0.585 + 0.586 + 0.597 + 0.599 + 0.580)/5 = 2.947/5 = 0.5894.\nNext, compute absolute deviations: |0.585-0.5894| = 0.0044, |0.586-0.5894| = 0.0034, |0.597-0.5894| = 0.0076, |0.599-0.5894| = 0.0096, |0.580-0.5894| = 0.0094.\nFinally, average these: (0.0044 + 0.0034 + 0.0076 + 0.0096 + 0.0094)/5 = 0.0344/5 = 0.00688."
+    },
+    {
+      "question": "What is the mean deviation of the dataset {0, 3/8, 6/8, 3/8}?",
+      "answer": "First, calculate the mean: (0 + 3/8 + 6/8 + 3/8)/4 = (12/8)/4 = 0.375.\nNext, compute absolute deviations: |0-0.375| = 0.375, |3/8-0.375| = 0, |6/8-0.375| = 0.375, |3/8-0.375| = 0.\nFinally, average these: (0.375 + 0 + 0.375 + 0)/4 = 0.75/4 = 0.1875."
+    }
+  ]
+}

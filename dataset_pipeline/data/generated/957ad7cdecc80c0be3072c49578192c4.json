@@ -1,0 +1,42 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Chromium(III)_boride",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the chemical formula and common name of the inorganic compound described as chromium(III) boride?",
+      "answer": "The chemical formula is CrB, and its common name is chromium monoboride."
+    },
+    {
+      "question": "How many stable binary borides of chromium exist, and what are their formulas?",
+      "answer": "There are six stable binary borides of chromium, with the formulas Cr2B, Cr5B3, Cr3B4, CrB2, CrB4, and CrB."
+    },
+    {
+      "question": "What are the mechanical and thermal properties of chromium monoboride (CrB)?",
+      "answer": "Chromium monoboride (CrB) is extremely hard (21-23 GPa), has a high bending strength of 690 MPa, conducts heat and electricity similarly to metallic alloys, and has a high melting point of approximately 2100 °C."
+    },
+    {
+      "question": "For what applications is chromium monoboride (CrB) considered a candidate material, and why?",
+      "answer": "CrB is considered a candidate material for wear-resistant coatings and high-temperature diffusion barriers due to its extreme hardness, high strength, thermal and electrical conductivity, and high melting point."
+    },
+    {
+      "question": "How does the magnetic behavior of chromium monoboride (CrB) differ from that of pure chromium?",
+      "answer": "Unlike pure chromium, which is typically ferromagnetic, CrB is paramagnetic with a magnetic susceptibility that is only weakly dependent on temperature."
+    },
+    {
+      "question": "What are some methods used to synthesize chromium monoboride (CrB) as powders?",
+      "answer": "CrB powders can be synthesized using methods such as direct reaction of elemental powders, self-propagating high-temperature synthesis (SHS), borothermic reduction, and molten salt growth."
+    },
+    {
+      "question": "Describe the crystal structure of chromium monoboride (CrB). Include its space group and a characteristic bonding feature.",
+      "answer": "CrB has an orthorhombic crystal structure with space group Cmcm. The structure features slabs of face-sharing BCr6 trigonal prisms in the ac-plane, stacked parallel to the <010> direction. The boron atoms form covalent bonds, creating unidirectional B-B- chains parallel to the <001> direction."
+    },
+    {
+      "question": "Provide a Python code snippet to visualize the orthorhombic crystal structure of CrB using ASE (Atomic Simulation Environment).",
+      "answer": "python\nfrom ase.spacegroup import Spacegroup\nfrom ase.lattice.spacegroup import Spacegroup.from_int_number\nfrom ase.build import bulk\nimport matplotlib.pyplot as plt\n\n# Create CrB bulk structure with orthorhombic Cmcm space group\ncrb = bulk('CrB', crystalstructure='orthorhombic', spacegroup=63, a=5.4, b=3.0, c=3.0)\n\n# Visualize the structure\ncrb.plot()\nplt.title('Orthorhombic Crystal Structure of CrB (Space Group Cmcm)')\nplt.show()\n"
+    },
+    {
+      "question": "Which other transition metal monoborides share the same crystal structure as CrB?",
+      "answer": "The transition metal monoborides VB, NbB, TaB, and NiB have the same orthorhombic crystal structure as CrB."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Column_of_Constantine",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the Column of Constantine and when was it completed?",
+      "answer": "The Column of Constantine is a monumental column in Istanbul commemorating the dedication of Constantinople by Roman emperor Constantine the Great on 11 May 330 AD. It was completed around 328 AD, making it the oldest Constantinian monument surviving in the city."
+    },
+    {
+      "question": "Why is the Column of Constantine also called Çemberlitaş?",
+      "answer": "The column is called Çemberlitaş (meaning 'hooped stone') due to Ottoman repairs around 1515, which added iron reinforcing hoops to its shaft. The name later extended to refer to the surrounding area as well."
+    },
+    {
+      "question": "Where was the Column of Constantine originally located in Constantinople?",
+      "answer": "The column stood in the center of the Forum of Constantine, positioned on the second-highest of the seven hills of Nova Roma. It was midway along the Mese odos, the ancient city's main thoroughfare."
+    },
+    {
+      "question": "What important landmarks were connected by the Mese odos street near the Column of Constantine?",
+      "answer": "The Mese odos, which passed near the Column of Constantine, connected Sultanahmet Square with Beyazıt Square. To the east, it led to landmarks like the Augustaion, the Hippodrome, Hagia Sophia, the Baths of Zeuxippus, and the Chalke Gate of the Great Palace. To the west, it extended through the Forum of Theodosius to the Philadelphion and the walls of Constantinople."
+    },
+    {
+      "question": "How did the Column of Constantine relate to the Byzantine Senate?",
+      "answer": "The emperor Constantine established the original home of the Byzantine Senate within his forum, where the Column of Constantine stood. This placed the column at the political and administrative heart of early Constantinople."
+    },
+    {
+      "question": "Write a Python function that checks if a given year falls within the known construction period of the Column of Constantine.",
+      "answer": "Here’s a Python function that checks whether a given year falls within the construction period of the Column of Constantine (c. 328 AD to 330 AD):\n\npython\ndef is_during_construction(year: int) -> bool:\n    \"\"\"\n    Check if the given year falls during the construction period of the Column of Constantine.\n    Construction period: approximately 328 AD to 330 AD.\n    \"\"\"\n    return 328 <= year <= 330\n\n# Example usage:\nprint(is_during_construction(329))  # Output: True\nprint(is_during_construction(327))  # Output: False\n"
+    },
+    {
+      "question": "Which modern-day transportation line includes a stop at the Çemberlitaş area near the column?",
+      "answer": "The Çemberlitaş area near the Column of Constantine is served by the Çemberlitaş tram stop on the T1 tramline in Istanbul. The column is located right beside this stop."
+    }
+  ]
+}

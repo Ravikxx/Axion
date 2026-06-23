@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/agentic-jj/i-looked-inside-git-and-you-wont-believe-what-i-found-actually-you-willcos-its-fascinating-1dp0",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What is the primary purpose of the .git directory in a Git repository?",
+      "answer": "The .git directory serves as Git's internal database and configuration hub. It stores all version control data including commit history, branch references, file snapshots, and repository settings. This is where Git maintains the entire history of changes and the current state of your project."
+    },
+    {
+      "question": "How does Git represent branches internally within the .git directory?",
+      "answer": "Git represents branches as simple text files located in `.git/refs/heads/` (for local branches) or `.git/refs/remotes/` (for remote branches). Each branch file contains a 40-character commit hash pointing to the latest commit on that branch. For example, the `main` branch's content would be a SHA-1 hash like `f3e4d5c6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2`."
+    },
+    {
+      "question": "What are the four types of Git objects, and what does each one contain?",
+      "answer": "Git uses four fundamental object types:\n1. **Blob objects** store file content without metadata or filenames (pure content like `Hello Git`).\n2. **Tree objects** represent directory structures, containing lists of files (blobs) and subdirectories (trees) with their permissions and hashes.\n3. **Commit objects** contain metadata (author, timestamp, message) and pointers to a tree (directory structure) and parent commit(s).\n4. **Tag objects** provide named references to specific commits, often used for releases.\nThese objects form the complete history when linked together through parent-child relationships."
+    },
+    {
+      "question": "Write a bash command to examine the content of the HEAD file in a Git repository and explain what the output represents.",
+      "answer": "bash\ncat .git/HEAD\n\nThe output represents your current branch or commit reference. If you're on a branch like `main`, the output will be `ref: refs/heads/main`. If you're in a detached HEAD state (checked out a specific commit), it will show the full commit hash like `a3f2d8b9c1e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8`. This file acts as Git's pointer to your current location in the repository's history."
+    },
+    {
+      "question": "How does Git's staging area (index) work at a low level when you run `git add`?",
+      "answer": "When you run `git add`, Git:\n1. Creates a blob object containing the file's content and stores it in `.git/objects/`\n2. Updates the binary index file (`.git/index`) to include a new entry pointing to this blob\n3. Records the file's permissions, blob hash, stage number (0 for normal), and filename\n\nThe staging area isn't virtual - it's a physical binary file that maintains a snapshot of what should be included in the next commit. You can inspect it with `git ls-files --stage` which shows entries like:\n\n100644 a3f2d8b9c1e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8 0\tfile.txt\n"
+    },
+    {
+      "question": "What command would you use to inspect a Git object's type and content, and how would you follow the chain of objects starting from HEAD?",
+      "answer": "To inspect a Git object:\nbash\ngit cat-file -t <object-hash>  # Shows object type (blob, tree, commit, or tag)\ngit cat-file -p <object-hash>  # Pretty-prints the object content\n\n\nTo follow the chain from HEAD:\nbash\n# Get the commit hash from HEAD\nCURRENT_COMMIT=$(git rev-parse HEAD)\n\n# Inspect the commit object\ngit cat-file -p $CURRENT_COMMIT\n\n# Get the tree hash from the commit\nTREE_HASH=$(git cat-file -p $CURRENT_COMMIT | grep '^tree ' | cut -d' ' -f2)\n\n# Inspect the tree object\ngit cat-file -p $TREE_HASH\n\n# List all blobs in the tree\ngit ls-tree -r $TREE_HASH\n\nThis reveals how commits point to trees, which point to blobs, creating Git's complete version history."
+    },
+    {
+      "question": "Why is it significant that Git stores complete snapshots rather than diffs between versions?",
+      "answer": "Storing complete snapshots (as opposed to diffs) has several important implications:\n\n1. **Performance**: Git can reconstruct any version instantly by following pointers rather than calculating diffs backward through history\n2. **Safety**: If a file's history is corrupted, Git can recover from other snapshots\n3. **Atomic operations**: Commits are atomic - either all files are present in a snapshot, or none are\n4. **Parallel development**: Branches can diverge from any point in history without worrying about delta calculations\n5. **Speed**: Operations like `git checkout` or `git reset` become fast copy operations rather than complex diff applications\n\nThis design choice explains why Git operations are generally O(1) in complexity rather than O(n) that would be required for diff-based systems."
+    }
+  ]
+}

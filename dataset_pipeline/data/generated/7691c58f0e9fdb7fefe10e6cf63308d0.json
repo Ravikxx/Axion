@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Dennō_Senshi_Porygon",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the English title of the 38th episode of the first season of the Pokémon anime?",
+      "answer": "The English title of the 38th episode of the first season of the Pokémon anime is 'Electric Soldier Porygon'."
+    },
+    {
+      "question": "When was the episode 'Dennō Senshi Porygon' first broadcast in Japan, and what event is associated with it?",
+      "answer": "The episode 'Dennō Senshi Porygon' was first broadcast in Japan on December 16, 1997. It is associated with the 'Pokémon Shock' incident, where multiple scenes with flashing lights induced photosensitive epileptic seizures in hundreds of children."
+    },
+    {
+      "question": "Who directed the episode 'Dennō Senshi Porygon' and who wrote the episode?",
+      "answer": "The episode 'Dennō Senshi Porygon' was directed by Kiyotaka Itani and written by Junki Takegami."
+    },
+    {
+      "question": "What happened at the end of the episode 'Dennō Senshi Porygon' that led to the 'Pokémon Shock' incident?",
+      "answer": "At the end of the episode, Pikachu stops a wave of missiles with an attack, resulting in an explosion depicted by rapid flashing lights that fill the screen, which induced seizures in viewers."
+    },
+    {
+      "question": "How did the 'Pokémon Shock' incident affect the broadcasting of the Pokémon anime?",
+      "answer": "After the incident, the Pokémon anime went into a four-month hiatus. The episode was pulled from rotation and was never aired in any other country. The incident also complicated plans for an American localization and led to new broadcasting standards in Japan to prevent similar incidents."
+    },
+    {
+      "question": "What was the immediate impact of the 'Pokémon Shock' incident on the affected viewers?",
+      "answer": "Over 600 people, mostly children, were taken to hospitals due to photosensitive epileptic seizures. Many others experienced milder symptoms that did not require hospitalization."
+    },
+    {
+      "question": "Provide a code snippet to simulate the detection of flashing lights in a video frame that could trigger photosensitive seizures. Use Python with OpenCV.",
+      "answer": "Here is a Python code snippet using OpenCV to detect rapid flashing lights in a video frame:\n\npython\nimport cv2\nimport numpy as np\n\ndef detect_flashing_lights(frame_sequence, threshold=10, frame_window=3):\n    # Calculate the difference between consecutive frames\n    diffs = []\n    for i in range(1, len(frame_sequence)):\n        diff = cv2.absdiff(frame_sequence[i], frame_sequence[i-1])\n        diffs.append(np.sum(diff))\n    \n    # Check for rapid changes (flashing lights)\n    flashing_frames = []\n    for i in range(len(diffs) - frame_window):\n        window = diffs[i:i+frame_window]\n        if max(window) - min(window) > threshold:\n            flashing_frames.append(i)\n    \n    return flashing_frames\n\n# Example usage:\n# cap = cv2.VideoCapture('video.mp4')\n# ret, prev_frame = cap.read()\n# frame_sequence = [prev_frame]\n# while ret:\n#     ret, frame = cap.read()\n#     if ret:\n#         frame_sequence.append(frame)\n# cap.release()\n# flashing = detect_flashing_lights(frame_sequence)\n# print(f'Flashing detected at frames: {flashing}')\n"
+    }
+  ]
+}

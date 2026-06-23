@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/1994_Vancouver_Stanley_Cup_riot",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What event triggered the 1994 Vancouver Stanley Cup Riot?",
+      "answer": "The 1994 Vancouver Stanley Cup Riot was triggered by the New York Rangers defeating the Vancouver Canucks in Game 7 of the 1994 Stanley Cup Finals. The riot began shortly after the game ended and the defeat of the home team led to widespread fan outrage and unrest."
+    },
+    {
+      "question": "Where did the 1994 Vancouver Stanley Cup Riot start geographically?",
+      "answer": "The riot started on Robson and Thurlow Streets in Vancouver, British Columbia, Canada."
+    },
+    {
+      "question": "What was the initial cause of the riot, according to witness accounts?",
+      "answer": "The riot reportedly began after a man fell off a streetlight into the crowd, which escalated tensions and led to confrontations with police attempting to escort paramedics."
+    },
+    {
+      "question": "How did the police initially respond to the crowd during the riot?",
+      "answer": "Police on bicycles attempted to escort paramedics into the crowd, but some crowd members tried to take the bikes from the officers. Police then warned the crowd to disperse and retreated before riot police gathered and fired tear gas."
+    },
+    {
+      "question": "What was the role of tear gas in the riot, and how did it affect residents?",
+      "answer": "Riot police fired tear gas to disperse the crowd, which caused people to scatter in different directions. The tear gas drifted into open windows of residents in the West End, forcing St. Paul's Hospital to post guards at the emergency room entrance to prevent tear gas victims from entering. Security guards later placed bowls of water outside to help those affected by the tear gas."
+    },
+    {
+      "question": "What was the extent of property damage caused by the riot?",
+      "answer": "The total damage to Vancouver's downtown core was estimated at CA$1.1 million. This included 50 broken windows at an Eaton's store alone, among other vandalism and looting."
+    },
+    {
+      "question": "How did local businesses and hospitals respond to the riot?",
+      "answer": "Local businesses suffered significant damage, such as shattered windows at the Eaton's store. St. Paul's Hospital responded by stationing guards at the emergency room entrance to keep tear gas victims out, as they claimed they could not treat them. Security guards later provided bowls of water outside to help affected individuals."
+    }
+  ]
+}

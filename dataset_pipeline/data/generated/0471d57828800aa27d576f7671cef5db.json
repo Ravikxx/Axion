@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Dahil_sa_Iyo",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who originally composed the song 'Dahil Sa Iyo' and when was it written?",
+      "answer": "The song 'Dahil Sa Iyo' was originally composed by Mike Velarde Jr.'s father, also named Mike Velarde, in 1936. Mike Velarde Jr. later wrote the song for the 1938 movie 'Bituing Marikit', sung by Rogelio de la Rosa."
+    },
+    {
+      "question": "What genre does 'Dahil Sa Iyo' belong to, and what are some of its notable features?",
+      "answer": "'Dahil Sa Iyo' is one of the most popular examples of the kundiman genre, a classic Filipino love song with original Tagalog lyrics. It has been translated into multiple languages including English, Spanish, Japanese, Chinese, and other local Philippine languages, and remains a staple in Filipino romantic and popular music."
+    },
+    {
+      "question": "How did the English-Tagalog version of 'Dahil Sa Iyo' become popular in the United States?",
+      "answer": "The English-Tagalog version of 'Dahil Sa Iyo' was recorded in 1964 by Cora and Santos Beloy, with lyrics by Tom Spinosa (originally by Dominador Santiago) and released by Tri-World Records. This rendition became a hit in the U.S. and remains popular in Filipino communities across America."
+    },
+    {
+      "question": "Provide a code snippet to analyze the popularity trends of 'Dahil Sa Iyo' in the Philippines using Python.",
+      "answer": "python\nimport matplotlib.pyplot as plt\nimport pandas as pd\n\n# Sample data representing years and popularity metrics (e.g., chart rankings)\ndata = {\n    'Year': [1938, 1961, 1989, 1991, 2000, 2004, 2008],\n    'Popularity': [5, 8, 10, 9, 7, 6, 8]\n}\n\ndf = pd.DataFrame(data)\nplt.plot(df['Year'], df['Popularity'], marker='o')\nplt.title(\"'Dahil Sa Iyo' Popularity Trends in the Philippines\")\nplt.xlabel('Year')\nplt.ylabel('Popularity Score')\nplt.grid(True)\nplt.show()\n"
+    },
+    {
+      "question": "Which famous international artist performed 'Dahil Sa Iyo' in the Philippines, and when did this performance take place?",
+      "answer": "Nat King Cole famously performed 'Dahil Sa Iyo' at the Araneta Coliseum (now SMART Araneta Coliseum) in Quezon City in 1961."
+    },
+    {
+      "question": "What role did Imelda Marcos play in the cultural significance of 'Dahil Sa Iyo'?",
+      "answer": "Imelda Marcos, former First Lady of the Philippines, frequently sang 'Dahil Sa Iyo', including duets with her husband Ferdinand Marcos during public gatherings and her 1992 presidential campaign. She performed it as late as July 2000 for wounded soldiers, and its association with her was notable enough that hotel musicians would play the song upon her arrival at the Peninsula Hotel in Manila as of 2008."
+    },
+    {
+      "question": "How has the title of 'Dahil Sa Iyo' been adapted in English renditions?",
+      "answer": "In English renditions, 'Dahil Sa Iyo' has been titled 'Your Love Is Mine' with lyrics by Sonny Burke, as recorded by Jerry Vale on his 1963 album 'The Language of Love' on Columbia Records. Another English-Tagalog version was recorded in 1964 by Cora and Santos Beloy."
+    }
+  ]
+}

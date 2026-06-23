@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Days_in_the_Sun",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who wrote the song 'Days in the Sun' and for which film was it created?",
+      "answer": "'Days in the Sun' was written by composer Alan Menken and lyricist Tim Rice for the live-action adaptation of Disney's 2017 film Beauty and the Beast."
+    },
+    {
+      "question": "When was the concept for 'Days in the Sun' originally developed, and by whom?",
+      "answer": "The concept for 'Days in the Sun' was developed in 2007 by lyricist Tim Rice and composer Alan Menken during early discussions about a Beauty and the Beast remake."
+    },
+    {
+      "question": "How many versions of 'Days in the Sun' exist, and what is the difference between them?",
+      "answer": "There are two versions of 'Days in the Sun'. The standard version features the Beast's servants and Belle, while an alternative version includes a verse sung by the Beast's mother. The alternative version was included on the Blu-ray release after test audiences confused Harriet Jones with Hattie Morahan, who played the mother and Agathe, respectively."
+    },
+    {
+      "question": "What role does 'Days in the Sun' play in the plot of the 2017 Beauty and the Beast film?",
+      "answer": "'Days in the Sun' is featured in a flashback sequence about the death of the Beast's mother. The lyrics involve the Beast's servants and Belle reminiscing about earlier parts of their lives."
+    },
+    {
+      "question": "How did critics generally respond to 'Days in the Sun'?",
+      "answer": "Critical response to 'Days in the Sun' was mixed. Some critics praised its content, while others questioned whether it was a necessary addition to the film."
+    },
+    {
+      "question": "Which songs from previous versions of Beauty and the Beast was 'Days in the Sun' intended to replace?",
+      "answer": "'Days in the Sun' served as a replacement for the song 'Human Again' from the stage adaptation of the original 1991 animated Disney film."
+    },
+    {
+      "question": "Can you provide a code snippet to analyze the sentiment of critics' reviews about 'Days in the Sun'?",
+      "answer": "python\nimport pandas as pd\nfrom textblob import TextBlob\n\n# Example data: critics' reviews with sentiment scores\nreviews = {\n    \"review\": [\n        \"'Days in the Sun' is a beautiful and emotional addition to the film.\",\n        \"The song feels unnecessary and disrupts the flow of the movie.\",\n        \"Critics are divided on whether 'Days in the Sun' enhances the story.\"\n    ]\n}\n\ndf = pd.DataFrame(reviews)\ndf['sentiment'] = df['review'].apply(lambda x: TextBlob(x).sentiment.polarity)\nprint(df)\n\nThis code uses the TextBlob library to analyze the sentiment of critics' reviews about 'Days in the Sun'."
+    }
+  ]
+}

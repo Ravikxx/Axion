@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Foreign_relations_of_Pakistan",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "Which country has the second largest Muslim population in the world?",
+      "answer": "Indonesia has the largest Muslim population, while Pakistan is the second largest Muslim country by population."
+    },
+    {
+      "question": "What is the only Muslim-majority country known to possess nuclear weapons?",
+      "answer": "Pakistan is the only Muslim-majority country known to have nuclear weapons."
+    },
+    {
+      "question": "Describe Pakistan's foreign relations with India, Afghanistan, and Iran.",
+      "answer": "Pakistan's relations with India are mostly strained due to the disputed territory of Kashmir, which has led to multiple wars. Pakistan has also had difficult relations with Afghanistan and Iran, though its relationship with China has been consistently strong."
+    },
+    {
+      "question": "How did Pakistan's alliance with the United States and China evolve during the Cold War?",
+      "answer": "During the Cold War, Pakistan distrusted the Soviet Union, leading to strong alliances with both the U.S. and China. Pakistan was a member of U.S.-sponsored military alliances like CENTO and SEATO, and its alliance with the U.S. deepened further after the Soviet invasion of Afghanistan."
+    },
+    {
+      "question": "What was the Regional Cooperation for Development (RCD) Pact, and what replaced it?",
+      "answer": "The RCD Pact was signed in 1964 between Pakistan, Turkey, and Iran as a regional alliance aligned with the U.S. against Soviet expansionism. It became defunct after the Iranian Revolution, and was later replaced by the Economic Cooperation Organization (ECO) in 1985, founded through a Pakistani-Turkish initiative."
+    },
+    {
+      "question": "Write a Python code snippet to check if Pakistan is a member of the United Nations.",
+      "answer": "python\n# Define a list of countries that are members of the United Nations\nun_members = [\n    \"Pakistan\", \"Indonesia\", \"India\", \"United States\", \"China\", \n    # ... (other UN member countries)\n]\n\n# Check if Pakistan is a UN member\nis_pakistan_un_member = \"Pakistan\" in un_members\nprint(f\"Is Pakistan a UN member? {is_pakistan_un_member}\")\n\nThis code checks for Pakistan's membership in a predefined list of UN member countries."
+    },
+    {
+      "question": "Why did Pakistan's relations with the U.S. strengthen after the Soviet invasion of Afghanistan?",
+      "answer": "Pakistan's alliance with the U.S. strengthened because both countries opposed Soviet expansionism in the region. The U.S. supported Pakistan as a key ally during the Soviet-Afghan War, providing military and economic aid to counter Soviet influence."
+    }
+  ]
+}

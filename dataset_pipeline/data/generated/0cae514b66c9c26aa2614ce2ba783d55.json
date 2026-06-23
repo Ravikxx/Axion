@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/nickytonline/anyone-can-commit-code-as-you-on-github-heres-how-to-stop-them-2in7",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What is the primary purpose of signing Git commits with GPG?",
+      "answer": "The primary purpose of signing Git commits with GPG is to cryptographically prove that the commit was made by the owner of the private key associated with the commit signature. This prevents impersonation, as anyone can configure Git to use your name and email, but only someone with access to your private key can create a valid GPG signature. Signed commits help establish trust, ensure audit trails, and mitigate supply chain attacks by providing verifiable proof of authorship."
+    },
+    {
+      "question": "How can an attacker impersonate a Git committer, and what prevents this?",
+      "answer": "An attacker can impersonate a Git committer by configuring their Git client to use the victim's name and email address, then pushing commits to a repository. This works because Git only uses the committer's name and email for attribution. What prevents this impersonation is GPG commit signing. When a commit is signed with a GPG key, GitHub can verify the signature against the committer's public key. If the signature is valid and the public key is linked to the GitHub account, the commit is marked as \"Verified\" with a green badge, proving the commit came from the legitimate key holder."
+    },
+    {
+      "question": "What are the key differences between RSA and other key types when generating a GPG key for Git signing?",
+      "answer": "When generating a GPG key for Git signing, RSA is the recommended key type over others like DSA or ECC because RSA supports 4096-bit (or larger) key sizes, which provide strong security for cryptographic signing. RSA 4096-bit keys are widely supported across platforms and tools, including GitHub and Git. Additionally, RSA is considered highly secure and is often preferred for OpenPGP implementations due to its performance and compatibility. Other key types may not offer the same level of security or compatibility."
+    },
+    {
+      "question": "Write a step-by-step guide to configure Git to sign all commits by default using GPG on macOS.",
+      "answer": "To configure Git to sign all commits by default using GPG on macOS, follow these steps:\n\n1. **Install GPG Tools**: Download and install GPG Suite from [gpgtools.org](https://gpgtools.org/). This includes GPG Keychain for key management.\n\n2. **Generate a GPG Key Pair**: Open GPG Keychain and click \"New\" to create a key pair. Use your real name and the email associated with your GitHub account. Set the key type to RSA with at least 4096 bits. Optionally, set an expiration date (e.g., 1 year).\n\n3. **Export Your Public Key**: In GPG Keychain, select your key and export it as a public key (ensure \"Include secret key in exported file\" is unchecked). Open the exported file in a text editor and copy the entire PGP public key block.\n\n4. **Add Public Key to GitHub**: Go to GitHub → Settings → SSH and GPG keys, click \"New GPG key\", paste your public key, and click \"Add GPG key\".\n\n5. **Configure Git to Use GPG**: Open Terminal and run:\n   bash\n   # Get your key ID (e.g., ABC123DEF456)\n   gpg --list-secret-keys --keyid-format=long\n   \n   # Configure Git to use your signing key and enable commit signing by default\n   git config --global user.signingkey ABC123DEF456\n   git config --global commit.gpgsign true\n   git config --global gpg.program /usr/local/bin/gpg\n   \n\n6. **Test Your Setup**: Create a test commit:\n   bash\n   git commit --allow-empty -m \"Testing GPG signing\"\n   git log --show-signature -1\n   \n   You should see \"Good signature\" in the output. Push the commit to GitHub to see the \"Verified\" badge."
+    },
+    {
+      "question": "Why is it important to back up your GPG private key, and what are secure backup methods?",
+      "answer": "Backing up your GPG private key is critical because the private key is required to sign Git commits. If you lose the private key file (e.g., due to a computer crash or reinstall), you cannot sign new commits, even if you remember the passphrase. The passphrase only protects the private key while it is in use, not the key file itself.\n\nSecure backup methods include:\n- Exporting the private key using `gpg --export-secret-keys --armor YOUR_KEY_ID > private-key.asc` and storing it in a password manager (e.g., 1Password or Bitwarden) as a secure note.\n- Backing up the entire `~/.gnupg` directory to encrypted cloud storage.\n- Keeping an encrypted copy on a secure external drive.\n\nAlways ensure backups are encrypted and accessible only to you to prevent unauthorized access to your signing key."
+    },
+    {
+      "question": "How does GitHub determine whether a commit is 'Verified'? What conditions must be met for a commit to receive the 'Verified' badge?",
+      "answer": "GitHub marks a commit as \"Verified\" when:\n\n1. The commit is signed with a GPG key that is linked to the GitHub account of the committer.\n2. The public key associated with the signature is uploaded to the GitHub account under \"SSH and GPG keys\".\n3. The GPG key is valid and not revoked.\n4. The signature is cryptographically valid and matches the public key.\n\nIf any of these conditions are not met, the commit will not receive the \"Verified\" badge and will instead show as \"Unverified\". This badge is a visual indicator that the commit was made by the legitimate owner of the GPG key."
+    },
+    {
+      "question": "What are some real-world scenarios where commit signing is critical for security or compliance?",
+      "answer": "Commit signing is critical in several real-world scenarios:\n\n- **Open Source Contributions**: Core maintainers of popular projects can be impersonated to inject malicious code, which could affect thousands of users. Signed commits help verify that contributions come from trusted maintainers.\n\n- **Work Environments**: In corporate or team settings, attackers with access to a repository could commit malicious code under a teammate's identity, potentially causing bugs or security issues. Signed commits provide non-repudiation.\n\n- **Regulated Industries**: For compliance with standards like SOC 2, ISO 27001, or HIPAA, organizations must maintain audit trails that prove who made changes to code or systems. Signed commits serve as cryptographic proof.\n\n- **Supply Chain Attacks**: Attackers have impersonated developers to inject malicious code into widely-used libraries (e.g., through typosquatting or dependency confusion), affecting downstream projects. Signed commits help identify legitimate contributions and mitigate such attacks."
+    }
+  ]
+}

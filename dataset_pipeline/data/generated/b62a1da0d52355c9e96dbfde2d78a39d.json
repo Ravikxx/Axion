@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Fireboats_in_Singapore",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When did the Singapore Civil Defence Force take over responsibility for fighting maritime fires from the Maritime and Port Authority?",
+      "answer": "The Singapore Civil Defence Force took over responsibility for fighting maritime fires in 2012."
+    },
+    {
+      "question": "What are the names and specifications of the two high-speed fireboats acquired by the SCDF Marine Division in May 2017?",
+      "answer": "The two high-speed fireboats acquired in May 2017 are the Red Swordfish and the Blue Swordfish. Both vessels can project 5,000 litres (1,100 imp gal) per minute and have a maximum speed of 40 knots (74 km/h)."
+    },
+    {
+      "question": "Which fireboat commissioned in 2019 is considered the world's most powerful fireboat, and what is its capacity?",
+      "answer": "The fireboat commissioned in 2019 that is considered the world's most powerful is the Red Sailfish. It can project 240,000 litres (53,000 imp gal) per minute."
+    },
+    {
+      "question": "What unique navigational feature does the Red Sailfish have to maintain its position while using water cannons?",
+      "answer": "The Red Sailfish is equipped with an autopilot designed to keep the vessel on station, compensating for the thrust from its water cannons pushing it off position."
+    },
+    {
+      "question": "What are the key features of the Red Manta fireboat commissioned in 2019?",
+      "answer": "The Red Manta is a catamaran fireboat commissioned in 2019 with the following features: it can hold 300 rescuees, project 45,000 litres (9,900 imp gal) per minute, has 12 decontamination showers, a large boardroom for coordination, and a helicopter landing pad with a winch. Its maximum speed is 35 knots (65 km/h)."
+    },
+    {
+      "question": "How does the Rescue Jet Ski (RJ) assist in shallow water operations?",
+      "answer": "The Rescue Jet Ski (RJ) is designed for swift water rescue in shallow waters. Its shallow draft prevents grounding, and it is equipped with a towing sled to facilitate rescues."
+    },
+    {
+      "question": "Provide a Python code snippet to calculate the maximum water projection capacity of the Red Sailfish in gallons per minute.",
+      "answer": "python\n# Conversion factors\nlitres_to_gallons = 0.219969  # Imperial gallons per litre\n\n# Red Sailfish capacity in litres per minute\nred_sailfish_capacity_litres = 240000\n\n# Convert to imperial gallons per minute\nred_sailfish_capacity_gallons = red_sailfish_capacity_litres * litres_to_gallons\nprint(f\"Red Sailfish capacity: {red_sailfish_capacity_gallons:.2f} imp gal/min\")\n\nOutput: Red Sailfish capacity: 52792.56 imp gal/min"
+    }
+  ]
+}

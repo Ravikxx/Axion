@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/2017_Beach_Soccer_Intercontinental_Cup",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the 2017 Beach Soccer Intercontinental Cup and where was it held?",
+      "answer": "The 2017 Beach Soccer Intercontinental Cup, also known as the Huawei Beach Soccer Intercontinental Cup Dubai 2017, was the seventh edition of an annual international beach soccer tournament for men's national teams. It was held in Dubai, United Arab Emirates, from October 31 to November 4."
+    },
+    {
+      "question": "How does the Beach Soccer Intercontinental Cup compare in prestige to the FIFA Beach Soccer World Cup?",
+      "answer": "The Beach Soccer Intercontinental Cup is the second-biggest tournament in the current international beach soccer calendar, after the FIFA Beach Soccer World Cup."
+    },
+    {
+      "question": "Which teams participated in the 2017 Beach Soccer Intercontinental Cup and how were they selected?",
+      "answer": "Eight nations participated in the 2017 tournament: one team from each of the six continental football confederations (excluding the OFC), the current FIFA Beach Soccer World Cup champions (Brazil), and the host nation (United Arab Emirates)."
+    },
+    {
+      "question": "Describe the format of the 2017 Beach Soccer Intercontinental Cup tournament.",
+      "answer": "The tournament began with a group stage played in a round-robin format. The winners and runners-up from each group advanced to a single-elimination knockout stage, starting with the semi-finals and culminating in the final. A third-place match was contested by the losing semi-finalists, and the third and fourth-placed teams from each group played in consolation matches to determine fifth through eighth place."
+    },
+    {
+      "question": "Why was the 2017 edition of the Beach Soccer Intercontinental Cup significant?",
+      "answer": "The 2017 Beach Soccer Intercontinental Cup was the last event in a deal signed between Beach Soccer Worldwide (BSWW) and the Dubai Sports Council (DSC) in 2012, which agreed to organize the tournament until 2017."
+    },
+    {
+      "question": "Who won the 2017 Beach Soccer Intercontinental Cup and who did they defeat in the final?",
+      "answer": "Brazil won the 2017 Beach Soccer Intercontinental Cup by defeating Portugal in the final, successfully retaining their title and claiming their third Intercontinental Cup crown."
+    },
+    {
+      "question": "Write a Python function that checks if a given team won the Beach Soccer Intercontinental Cup in 2017 by comparing it to the known winner.",
+      "answer": "python\ndef is_2017_intercontinental_cup_winner(team_name):\n    winner = \"Brazil\"\n    return team_name.lower() == winner.lower()\n\n# Example usage:\nteam = \"Brazil\"\nprint(is_2017_intercontinental_cup_winner(team))  # Output: True\n"
+    }
+  ]
+}

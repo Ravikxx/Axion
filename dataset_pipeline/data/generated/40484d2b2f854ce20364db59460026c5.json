@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Biotic_material",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is biotic material and what are its key characteristics?",
+      "answer": "Biotic material, also known as biologically derived material, refers to any substance that originates directly from living organisms. Key characteristics include: (1) Most contain carbon, (2) They are capable of decay or biodegradation, and (3) They can be renewable resources. Examples include wood, cotton, and humus."
+    },
+    {
+      "question": "When did the earliest life forms appear on Earth and what evidence supports this?",
+      "answer": "The earliest life forms on Earth arose at least 3.5 billion years ago. Evidence includes graphite in 3.7 billion-year-old rocks from Greenland and 'remains of biotic life' in 4.1 billion-year-old rocks from Western Australia. Both are considered the oldest physical traces of life on the planet."
+    },
+    {
+      "question": "How does Earth's biodiversity relate to mass extinctions?",
+      "answer": "Earth's biodiversity has expanded continually over geological time, with periodic interruptions caused by mass extinctions. Despite these setbacks, biodiversity has rebounded and diversified. Mass extinctions have historically removed dominant species, allowing new groups to evolve and fill ecological niches."
+    },
+    {
+      "question": "What are some examples of biotic materials used in everyday products?",
+      "answer": "Examples of biotic materials include wood, straw, humus, manure, bark, crude oil, cotton, spider silk, chitin, fibrin, and bone. These materials are valued for being renewable and biodegradable, making them attractive alternatives to synthetic options."
+    },
+    {
+      "question": "Why are biotic materials often preferred over synthetic materials by environmentally conscious consumers?",
+      "answer": "Biotic materials are preferred because they are usually biodegradable, renewable, and their processing generally has minimal environmental impact and is well understood. However, environmental benefits depend on sustainable harvesting and low-impact processing methods."
+    },
+    {
+      "question": "In the context of biofuels, what is biomass and how is it classified?",
+      "answer": "In biofuel production, biotic material is often referred to simply as 'biomass' when the source of the living material is not critical to the end product. Biomass can be broadly categorized into fossil fuels (e.g., coal, petroleum) and biofuels (e.g., ethanol from corn, biodiesel from soy), depending on whether the biological source is recent or ancient."
+    },
+    {
+      "question": "Write a Python function that checks if a given material is biotic based on its composition.",
+      "answer": "python\ndef is_biotic(material, carbon_content_threshold=0.5):\n    biotic_materials = {\n        'wood': 0.5, 'cotton': 0.4, 'humus': 0.6, \n        'crude oil': 0.8, 'chitin': 0.65, 'bone': 0.3\n    }\n    material_lower = material.lower()\n    if material_lower in biotic_materials:\n        return biotic_materials[material_lower] >= carbon_content_threshold\n    return False\n\n# Example usage:\nprint(is_biotic('wood'))  # True\nprint(is_biotic('plastic'))  # False\n\nThis function checks if a material is listed in a predefined set of biotic materials and whether its carbon content meets a threshold."
+    }
+  ]
+}

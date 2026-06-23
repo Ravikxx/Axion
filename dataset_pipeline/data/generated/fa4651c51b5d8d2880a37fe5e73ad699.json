@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/All-comers_track_meet",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is an all comers track meet?",
+      "answer": "An all comers track meet is a small local athletics event open to anyone interested in participating. These meets typically feature a variety of track and field events and are held in most major cities across the United States and Canada. They can range from very small gatherings with a handful of participants to larger events with hundreds of competitors."
+    },
+    {
+      "question": "How are all comers track meets typically organized?",
+      "answer": "All comers track meets can be organized in different ways depending on their size and formality. Larger meets may be seeded, require advance registration, or break participants into age groups. Less formal meets might simply divide runners based on their self-reported race pace or split them into age categories at the start line."
+    },
+    {
+      "question": "What are the typical seasons for all comers track meets?",
+      "answer": "All comers track meets generally follow two main seasons. The winter season runs from December to February and often uses indoor facilities. The summer season typically starts in June and continues through August. Some series have maintained these schedules for over 50 years."
+    },
+    {
+      "question": "What events might be included in an all comers track meet?",
+      "answer": "All comers track meets can include a variety of events, though some may be limited to specific categories. Common events include running races (sprints, distance), jumps (long jump, high jump), and throws (shot put, discus). Some meets may focus exclusively on running, sprints, jumps, or throws."
+    },
+    {
+      "question": "How can one find upcoming all comers track meets in North America?",
+      "answer": "A regularly updated list of all comers track meets in North America is maintained on the North American All Comers Meet Directory website. As of June 2009, this directory listed over fifty active all comers meet series across the continent."
+    },
+    {
+      "question": "Why might an all comers meet have qualifying standards or age restrictions?",
+      "answer": "Some all comers meets impose qualifying standards or age restrictions due to practical limitations such as facility size, available volunteer support, or safety concerns. These requirements help organizers manage participation numbers and ensure a fair and manageable event structure."
+    },
+    {
+      "question": "Write a Python script to scrape and display all comers meet listings from the North American All Comers Meet Directory website.",
+      "answer": "python\nimport requests\nfrom bs4 import BeautifulSoup\n\ndef get_all_comers_meets(url):\n    try:\n        response = requests.get(url)\n        response.raise_for_status()\n        soup = BeautifulSoup(response.text, 'html.parser')\n        \n        # This assumes the meet listings are in <div class=\"meet-listing\">\n        meets = soup.find_all('div', class_='meet-listing')\n        \n        if not meets:\n            return \"No meets found. The website structure may have changed.\"\n        \n        meet_list = []\n        for meet in meets:\n            name = meet.find('h3').get_text(strip=True) if meet.find('h3') else \"Unknown\"\n            location = meet.find('span', class_='location').get_text(strip=True) if meet.find('span', class_='location') else \"Location not listed\"\n            date = meet.find('time').get_text(strip=True) if meet.find('time') else \"Date not listed\"\n            \n            meet_list.append({\n                'name': name,\n                'location': location,\n                'date': date\n            })\n        \n        return meet_list\n    \n    except Exception as e:\n        return f\"Error scraping data: {e}\"\n\n# Example usage (replace with actual URL)\nurl = \"https://www.allcomersdirectory.com/meets\"\nmeets = get_all_comers_meets(url)\nfor meet in meets:\n    print(f\"Meet: {meet['name']}\")\n    print(f\"Location: {meet['location']}\")\n    print(f\"Date: {meet['date']}\")\n    print(\"---\")\n"
+    }
+  ]
+}

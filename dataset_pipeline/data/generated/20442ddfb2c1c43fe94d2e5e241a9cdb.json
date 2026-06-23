@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Countess_Pillar",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the Countess Pillar and where is it located?",
+      "answer": "The Countess Pillar is a 17th-century monument situated two miles east of Penrith on the A66 in Cumbria, England, between Penrith and Appleby."
+    },
+    {
+      "question": "Why was the Countess Pillar built?",
+      "answer": "The Countess Pillar was erected in 1656 by Lady Anne Clifford to mark the exact location where she said farewell to her mother, Margaret Clifford, Countess of Cumberland, after their final meeting at Brougham Castle."
+    },
+    {
+      "question": "Who commissioned the Countess Pillar and what is its historical significance?",
+      "answer": "Lady Anne Clifford (1590–1676) commissioned the Countess Pillar. It commemorates her lifelong legal fight to secure her inheritance rights and honors her mother, Margaret Clifford, who supported her claim to the family estates."
+    },
+    {
+      "question": "What details are inscribed on the Countess Pillar?",
+      "answer": "The inscription on the pillar refers to Anne as the 'Sole Heire' of her father, George Earl of Cumberland, and mentions a bequest made in memory of her mother for the poor of Brougham parish, commemorated annually on April 2nd."
+    },
+    {
+      "question": "How did Lady Anne Clifford's legal battle relate to the Countess Pillar?",
+      "answer": "Anne Clifford spent much of her life in a prolonged legal dispute to reclaim her family's inheritance rights. The pillar symbolizes her eventual success and serves as a memorial to her mother, who was one of her few allies during this struggle."
+    },
+    {
+      "question": "What architectural features does the Countess Pillar have?",
+      "answer": "The pillar has a square top that is brightly painted and features sundials on its sides."
+    },
+    {
+      "question": "Write a Python function that calculates the distance in miles between Penrith and the Countess Pillar based on the given locations.",
+      "answer": "python\ndef calculate_distance_to_countess_pillar():\n    # Given: Countess Pillar is 2 miles east of Penrith on the A66\n    distance_miles = 2\n    return f\"The Countess Pillar is {distance_miles} miles east of Penrith on the A66.\"\n\n# Example usage:\nprint(calculate_distance_to_countess_pillar())\n"
+    }
+  ]
+}

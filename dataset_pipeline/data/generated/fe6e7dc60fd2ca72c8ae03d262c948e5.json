@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Bob_Borkowski",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What were Robert Vilarian Borkowski's primary positions in Major League Baseball?",
+      "answer": "Robert Vilarian Borkowski primarily played as an outfielder in Major League Baseball, appearing in all three outfield positions (left, center, and right field). He also played first base defensively."
+    },
+    {
+      "question": "How did Borkowski transition from pitching to being a full-time outfielder?",
+      "answer": "Borkowski originally signed with the Chicago Cubs as a pitcher in 1946. In his first professional season, he pitched effectively (18–9 record, 3.46 ERA) but also played nearly 100 games in the outfield while hitting .384 in 104 games. Due to his strong hitting performance, the Cubs converted him into a full-time outfielder."
+    },
+    {
+      "question": "What notable achievement did Borkowski accomplish in 1949?",
+      "answer": "In 1949, Borkowski batted .376 with the Nashville Vols in the Double-A Southern Association, winning the batting title for the league."
+    },
+    {
+      "question": "What was Borkowski's career batting average and slugging percentage in his rookie MLB season?",
+      "answer": "In his rookie season (1950) with the Chicago Cubs, Borkowski hit .273 with a slugging percentage of .379 over 85 games."
+    },
+    {
+      "question": "How many games did Borkowski play in total during his MLB career, and what were his key offensive stats?",
+      "answer": "Borkowski played 470 games over six MLB seasons. His key offensive stats include a .251 batting average, 294 hits, 126 runs scored, 16 home runs, and 112 RBIs."
+    },
+    {
+      "question": "Write a Python code snippet to calculate Borkowski's career on-base percentage (OBP) using his career stats (assuming slugging percentage is .379 and ignoring other factors like walks/HBP).",
+      "answer": "python\n# Career stats provided in the text\nhits = 294\ntotal_at_bats = 1170\nsingles = hits - 16  # Assuming all hits except home runs are singles\nobp = (singles + 16) / total_at_bats  # Simplified OBP calculation (ignoring walks/HBP)\nprint(f\"Approximate career OBP: {obp:.3f}\")\n\nThis code calculates a simplified on-base percentage by assuming all non-home run hits are singles. The actual OBP would require additional data on walks, hit-by-pitches, and sacrifice flies."
+    },
+    {
+      "question": "Why might Borkowski's 1951 season with the Cubs be considered a turning point in his career?",
+      "answer": "Borkowski's 1951 season with the Cubs was a turning point because he experienced a significant slump, leading to his trade to the Cincinnati Reds in 1952. This move marked his only full major league season, as he was later traded to the Dodgers in 1955 and struggled in his limited MLB playing time afterward."
+    }
+  ]
+}

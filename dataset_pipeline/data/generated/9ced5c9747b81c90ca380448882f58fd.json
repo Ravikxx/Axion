@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Florida_v._Georgia_(2018)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the Supreme Court case Florida v. Georgia about?",
+      "answer": "Florida v. Georgia was a 2018 U.S. Supreme Court case involving a dispute over water allocation in the ACF River Basin, which flows through North Georgia, Metro Atlanta, and into the Florida panhandle. The case centered on Florida's claim that reduced water flows from Georgia were causing economic harm to Florida's seafood industry, particularly during droughts in 2011 and 2012."
+    },
+    {
+      "question": "What was the outcome of the 2018 Supreme Court ruling in Florida v. Georgia?",
+      "answer": "In the 2018 ruling, the Supreme Court reversed the special master's decision, finding that the special master had not properly considered Florida's arguments. The case was remanded for further review and rehearing."
+    },
+    {
+      "question": "What role did the special master play in Florida v. Georgia?",
+      "answer": "The special master was assigned by the Supreme Court to review Florida's complaint regarding water allocation in the ACF River Basin. The special master initially ruled against Florida, but this decision was later challenged and overruled."
+    },
+    {
+      "question": "How did the Supreme Court's 2021 decision resolve the Florida v. Georgia dispute?",
+      "answer": "In the 2021 decision, the Supreme Court unanimously dismissed the case after replacing the special master, who had ruled against Florida. The Court overruled Florida's exceptions to the special master's report, effectively ending the dispute."
+    },
+    {
+      "question": "What are the geographic and economic stakes in Florida v. Georgia?",
+      "answer": "The ACF River Basin spans from the north Georgia mountains through metro Atlanta to the Florida panhandle. The dispute involved the economic impact of water allocation on Florida's seafood industry, which suffered during droughts due to reduced water flows from the basin."
+    },
+    {
+      "question": "Why did the Supreme Court remand the case in 2018?",
+      "answer": "The Supreme Court remanded the case because it found that the special master had not adequately considered Florida's arguments for increased water allocation. The Court required a rehearing to properly evaluate the evidence and claims."
+    },
+    {
+      "question": "What legal principles were at issue in Florida v. Georgia?",
+      "answer": "The case primarily involved original jurisdiction under Article III of the U.S. Constitution, as well as principles of equitable apportionment of interstate waters. The Court had to determine whether Florida had demonstrated sufficient harm to justify intervention in Georgia's water management."
+    }
+  ]
+}

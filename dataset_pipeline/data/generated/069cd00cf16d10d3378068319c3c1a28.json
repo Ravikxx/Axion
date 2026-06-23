@@ -1,0 +1,38 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Brentwood_Town_Centre_station",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is the official name of the train station in Burnaby, British Columbia colloquially known as Brentwood?",
+      "answer": "The official name of the station is Brentwood Town Centre."
+    },
+    {
+      "question": "When was Brentwood Town Centre station built and when did it open?",
+      "answer": "Brentwood Town Centre station was built in 2002 and opened on August 31 of the same year."
+    },
+    {
+      "question": "Who designed Brentwood Town Centre station and what award did their design receive?",
+      "answer": "Brentwood Town Centre station was designed by Perkins&Will Canada. Their design won the Governor General's Medal in Architecture on May 11, 2002."
+    },
+    {
+      "question": "What is unique about Brentwood Town Centre station's location within the SkyTrain system?",
+      "answer": "Brentwood Town Centre station is the only station in the SkyTrain system to be located on a median in the street."
+    },
+    {
+      "question": "What are the two tracks and platforms of Brentwood Town Centre station used for in the SkyTrain system?",
+      "answer": "The two tracks and side platforms are used for the Millennium Line, with trains heading towards VCC–Clark preceded by Gilmore and ending at Lafarge Lake–Douglas towards Holdom."
+    },
+    {
+      "question": "What major upgrades took place at Brentwood Town Centre station in 2020, and when were they completed?",
+      "answer": "In 2020, TransLink announced a $33-million upgrade program including new elevators, upgraded staircases, and a new south entrance. The new south entrance opened on January 8, 2024, and new elevators were added on March 24, 2025."
+    },
+    {
+      "question": "List the TransLink bus services that connect with Brentwood Town Centre station.",
+      "answer": "The station serves as a connection for the 25, 123, 130, 134, 136, 222, and N9 TransLink bus services."
+    },
+    {
+      "question": "Provide a Python code snippet to calculate the number of years Brentwood Town Centre station has been in operation as of 2025.",
+      "answer": "python\nfrom datetime import datetime\n\n# Station opened on August 31, 2002\nopening_date = datetime(2002, 8, 31)\ncurrent_date = datetime(2025, 1, 1)\n\n# Calculate years in operation\nyears_in_operation = current_date.year - opening_date.year\nif (current_date.month, current_date.day) < (opening_date.month, opening_date.day):\n    years_in_operation -= 1\n\nprint(f\"Brentwood Town Centre station has been in operation for {years_in_operation} years as of 2025.\")\n\nOutput: Brentwood Town Centre station has been in operation for 22 years as of 2025."
+    }
+  ]
+}

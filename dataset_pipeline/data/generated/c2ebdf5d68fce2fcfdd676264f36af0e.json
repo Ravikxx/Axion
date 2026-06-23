@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/1924_Notre_Dame_Fighting_Irish_football_team",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the 1924 Notre Dame Fighting Irish football team's record under Knute Rockne?",
+      "answer": "The 1924 Notre Dame Fighting Irish football team, led by head coach Knute Rockne, compiled a perfect 10–0 record during the season."
+    },
+    {
+      "question": "Who were the members of the 'Four Horsemen' backfield on the 1924 Notre Dame team?",
+      "answer": "The 'Four Horsemen' consisted of quarterback Harry Stuhldreher, halfbacks Don Miller and Jim Crowley, and fullback Elmer Layden."
+    },
+    {
+      "question": "How did the 1924 Notre Dame team perform in the Rose Bowl?",
+      "answer": "The 1924 Notre Dame team defeated Stanford in the 1925 Rose Bowl, marking their only bowl appearance until 1969."
+    },
+    {
+      "question": "Which systems ranked the 1924 Notre Dame team as national champion in later decades?",
+      "answer": "Later systems that retroactively awarded the 1924 Notre Dame team national championship included the Berryman QPRS system, Billingsley Report, Boand System, College Football Researchers Association, Helms Athletic Foundation, Houlgate System, National Championship Foundation, Poling System, and Jeff Sagarin."
+    },
+    {
+      "question": "Which three members of the 'Four Horsemen' were consensus first-team All-Americans in 1924?",
+      "answer": "The three members of the 'Four Horsemen' who were consensus first-team All-Americans in 1924 were Harry Stuhldreher, Jim Crowley, and Elmer Layden."
+    },
+    {
+      "question": "What was Notre Dame's home field during the 1924 season?",
+      "answer": "The 1924 Notre Dame Fighting Irish football team played their home games at Cartier Field."
+    },
+    {
+      "question": "Write a Python snippet to calculate the margin of victory for the 1924 Notre Dame team in their Rose Bowl game.",
+      "answer": "python\n# Margin of victory in the 1925 Rose Bowl\nhome_score = 27  # Noted Notre Dame's score against Stanford\nopponent_score = 10  # Stanford's score\nmargin_of_victory = home_score - opponent_score\nprint(f\"Notre Dame's margin of victory in the 1925 Rose Bowl: {margin_of_victory}\")\n\nThis code calculates the 17-point margin by which Notre Dame defeated Stanford in the Rose Bowl."
+    }
+  ]
+}

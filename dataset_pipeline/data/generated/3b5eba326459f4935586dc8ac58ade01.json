@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Anggun",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is Anggun Cipta Sasmi's full name and pronunciation?",
+      "answer": "Anggun Cipta Sasmi, pronounced as /aŋˈɡun ˈt͡ʃipta ˈsasmi/ in Indonesian."
+    },
+    {
+      "question": "When and where was Anggun born, and what notable achievements did she have in her early career in Indonesia?",
+      "answer": "Anggun was born on 29 April 1974 in Jakarta, Indonesia. She began performing at age seven, recorded a children's album at nine, and released her first rock-influenced album, *Dunia Aku Punya*, in 1986. Her single 'Mimpi' (1989) was later ranked among the 150 Greatest Indonesian Songs of All Time by *Rolling Stone*."
+    },
+    {
+      "question": "How did Anggun transition from her Indonesian career to an international one?",
+      "answer": "In 1994, Anggun left Indonesia to pursue an international career. After struggling in London and Paris for two years, she signed with Sony Music Entertainment under French producer Erick Benzi. This led to her breakthrough international album, *Snow on the Sahara* (1997), which became the best-selling album by an Asian artist outside Asia."
+    },
+    {
+      "question": "What are Anggun's notable contributions to music beyond Indonesia, and which awards has she received?",
+      "answer": "Anggun is the first Indonesian artist to achieve success in European and American record charts and holds the record for the highest album sales by an Asian artist outside Asia. She has released five English-language and six French-language studio albums. Awards include Chevalier des Arts et Lettres from France and the World Music Award for World's Best-Selling Indonesian Artist."
+    },
+    {
+      "question": "Which Eurovision Song Contest did Anggun participate in, and what song did she perform?",
+      "answer": "Anggun represented France in the Eurovision Song Contest 2012 held in Baku, Azerbaijan, performing the song 'Echo (You and I)'."
+    },
+    {
+      "question": "Provide a code snippet to calculate Anggun's age as of 2023 given her birth year.",
+      "answer": "python\nfrom datetime import datetime\n\nbirth_year = 1974\ncurrent_year = 2023\nage = current_year - birth_year\nprint(f\"Anggun's age in 2023: {age} years\")\n# Output: Anggun's age in 2023: 49 years\n"
+    },
+    {
+      "question": "What roles has Anggun taken on outside of music, and which organizations has she been involved with?",
+      "answer": "Beyond music, Anggun has served as a global ambassador for the United Nations, first for the International Year of Microcredit (2005) and later for the Food and Agriculture Organization (FAO) starting in 2009. She has also been a judge on talent shows like *X Factor Indonesia* (2013) and *Asia's Got Talent* (2015), where she became the highest-paid judge in Indonesian television history."
+    }
+  ]
+}

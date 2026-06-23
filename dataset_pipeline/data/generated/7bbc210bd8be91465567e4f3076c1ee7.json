@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Austrovenus_stutchburyi",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What are the common names and Māori names for Austrovenus stutchburyi?",
+      "answer": "Austrovenus stutchburyi is commonly known as the New Zealand cockle or New Zealand little neck clam. In the North Island, its Māori name is 'tuangi,' while in the South Island, it is called 'tuaki'."
+    },
+    {
+      "question": "Where geographically is Austrovenus stutchburyi found, and what is its typical habitat?",
+      "answer": "Austrovenus stutchburyi is found exclusively in New Zealand, including coastal regions, the Chatham Islands, and the subantarctic Auckland Islands. It inhabits the intertidal to low tide zone in muddy and fine sandy sediments."
+    },
+    {
+      "question": "How does Austrovenus stutchburyi feed, and what do they primarily consume?",
+      "answer": "Austrovenus stutchburyi feeds through suspension feeding, filtering food particles such as plankton, organic detritus, and microorganisms from the water column. This method allows them to obtain nutrients while remaining burrowed in sediment."
+    },
+    {
+      "question": "What are the key factors influencing the growth rate of Austrovenus stutchburyi?",
+      "answer": "The growth rate of Austrovenus stutchburyi depends heavily on environmental conditions, including salinity levels, food availability, and water temperature. Favorable conditions promote faster growth, while suboptimal conditions can significantly slow it down."
+    },
+    {
+      "question": "Write a Python function to calculate the maximum potential shell length of Austrovenus stutchburyi based on its documented size range.",
+      "answer": "python\ndef calculate_max_shell_length():\n    \"\"\"\n    Returns the maximum documented shell length of Austrovenus stutchburyi in millimeters.\n    \n    Returns:\n        int: Maximum shell length in millimeters.\n    \"\"\"\n    return 90  # Maximum documented shell length in mm\n\n# Example usage:\nmax_length = calculate_max_shell_length()\nprint(f\"Maximum shell length: {max_length} mm\")\n"
+    },
+    {
+      "question": "What are the primary predators of Austrovenus stutchburyi, and how do they impact the clam?",
+      "answer": "The primary predators of Austrovenus stutchburyi include crabs, wading birds, large carnivorous whelks (such as carnivorous shellfish), and various fish species. These predators can significantly impact the clam population by preying on juveniles and adults, reducing overall numbers."
+    },
+    {
+      "question": "How can Austrovenus stutchburyi be used as a bioindicator, and what are the associated risks?",
+      "answer": "Austrovenus stutchburyi accumulates heavy metals and other contaminants from its environment, making it a useful bioindicator for monitoring water quality and pollution levels. However, the accumulation of these substances can pose risks to human health, particularly if the clams are consumed, as they may cause neurotoxic shellfish poisoning when exposed to red tides or other toxin-producing algae."
+    },
+    {
+      "question": "What conservation measures are in place to protect Austrovenus stutchburyi populations in New Zealand?",
+      "answer": "Conservation efforts for Austrovenus stutchburyi include transplanting individuals from healthy ecosystems to restore depleted populations and implementing Māori resource-management practices such as taiāpure (customary marine reserves), mātaitai reserves, and rāhui (temporary harvesting bans). These measures aim to regulate harvesting and protect critical habitats to ensure sustainable populations."
+    }
+  ]
+}

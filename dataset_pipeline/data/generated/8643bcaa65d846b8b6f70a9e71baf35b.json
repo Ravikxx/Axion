@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/itsugo/i-didnt-stop-building-i-just-left-my-laptop-27da",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What major shifts occurred in the author's professional life since their last blog post?",
+      "answer": "The author transitioned from side projects and tutorials to working with mainframes, communicating with Japanese clients, and taking on a part-time marketing role. They also started office work daily, which included real-time Japanese usage and navigating existing systems with pre-existing constraints."
+    },
+    {
+      "question": "How does the author describe their experience communicating with Japanese clients?",
+      "answer": "The author describes it as a cycle of trying, struggling, catching one word, reconstructing meaning, and surviving, followed by repeating the process. It’s not graceful but becomes effective over time."
+    },
+    {
+      "question": "What mindset shift did the author experience when working with mainframes compared to their previous experience?",
+      "answer": "Previously, their experience involved building things from scratch through tutorials and side projects. Working with mainframes forced them to understand existing systems, uncontrollable constraints, and pre-existing decisions, requiring a different kind of thinking beyond just writing code."
+    },
+    {
+      "question": "Provide a code snippet illustrating a key difference between the author's past and current coding mindset.",
+      "answer": "python\n# Past mindset: Building from scratch\nclass SimpleApp:\n    def __init__(self):\n        self.db = Database()\n        self.ui = UserInterface()\n\n# Current mindset: Understanding existing systems\nclass MainframeIntegration:\n    def __init__(self, legacy_system):\n        self.system = legacy_system  # Existing system with fixed constraints\n        self.adapters = []\n        self.validate_constraints()\n    \n    def validate_constraints(self):\n        if self.system.requires_legacy_format:\n            raise ValueError(\"Cannot modify input format\")\n"
+    },
+    {
+      "question": "Why did the author take on a part-time marketing role, and what did they learn from it?",
+      "answer": "They took the role to understand how to get people to care about what they build. They learned about audience selection, positioning ideas, task delegation, and thinking beyond just building and shipping products."
+    },
+    {
+      "question": "What was the author's experience during their Microsoft Cloud Solutions Architect interview, and what did they gain from it?",
+      "answer": "They didn’t pass the interview but found it valuable for identifying gaps in their skills and clarifying their career path. They also recall making the interviewers laugh, which boosted their confidence in their abilities despite nerves."
+    },
+    {
+      "question": "How does the author describe their current approach to building things, and what do they mean by 'funmaxxing'?",
+      "answer": "They focus on building things that are genuinely useful and meaningful rather than just for the sake of building. 'Funmaxxing' refers to embracing chaotic situations and squeezing as much joy and growth out of them as possible, staying curious and adaptable."
+    }
+  ]
+}

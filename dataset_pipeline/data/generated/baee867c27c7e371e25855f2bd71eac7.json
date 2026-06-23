@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/1946–47_United_States_network_television_schedule",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the first 'network television season' in the United States, and which networks operated during this period?",
+      "answer": "The first 'network television season' in the United States was 1946–47. Only NBC and DuMont operated networks during this time. CBS had one television station (WCBS) but did not broadcast to areas outside New York City."
+    },
+    {
+      "question": "Why were coaxial cable connections significant for early television broadcasting in 1946?",
+      "answer": "Coaxial cable connections allowed stations to share the same program schedules, enabling the first true network television experiences. Before this, broadcasting was limited to single stations or local areas, and only a few East Coast cities were connected initially."
+    },
+    {
+      "question": "What notable series debuted on the 1946–47 television schedule?",
+      "answer": "Notable series included the first network TV soap opera, *Faraway Hill*; the variety series *Hour Glass*; the first network-televised game show, *Cash and Carry*; and the long-running anthology series *Kraft Television Theatre*."
+    },
+    {
+      "question": "Which early television programs from 1946–47 have surviving recordings, and where can they be found?",
+      "answer": "Segments of *Campus Hoopla* (1947) exist in the Hubert Chain Collection, preserved in the Library of Congress. Audio recordings of live TV broadcasts from 1946–47, recorded from WNBT-TV (now WNBC-TV), are also held at the Library of Congress."
+    },
+    {
+      "question": "How did CBS's involvement in early network television differ from NBC and DuMont in 1946–47?",
+      "answer": "CBS only operated one television station, WCBS, and did not broadcast its programs to areas beyond New York City during the 1946–47 season. In contrast, NBC and DuMont had established networks that distributed programming to multiple cities."
+    },
+    {
+      "question": "What was the first network-televised game show, and what was its significance?",
+      "answer": "The first network-televised game show was *Cash and Carry*, which debuted in 1946–47. Prior game shows had been limited to single stations, making *Cash and Carry* a pioneering effort in national television programming."
+    },
+    {
+      "question": "Provide a code snippet to analyze the number of surviving broadcasts from the 1946–47 television season.",
+      "answer": "python\n# Example code to analyze surviving broadcasts (hypothetical, as no full dataset exists)\nsurviving_broadcasts = {\n    \"Campus Hoopla\": {\"segments\": 1, \"repository\": \"Library of Congress\"},\n    \"Kraft Television Theatre\": {\"archive_status\": \"Unknown\"},\n    \"Faraway Hill\": {\"archive_status\": \"Unknown\"}\n}\n\n# Count known surviving broadcasts\nknown_surviving = sum(1 for title, data in surviving_broadcasts.items() if data.get(\"repository\"))\nprint(f\"Known surviving broadcasts from 1946–47: {known_surviving}\")\n"
+    }
+  ]
+}

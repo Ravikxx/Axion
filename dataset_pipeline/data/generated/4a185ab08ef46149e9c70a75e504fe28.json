@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Gabriel_Narutowicz",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What were the key professional roles and achievements of Gabriel Narutowicz before his presidency?",
+      "answer": "Gabriel Narutowicz was a Polish engineer and politician who made significant contributions in engineering and public service. As an engineer, he pioneered electrification and directed the construction of the first European hydroelectric power plants in Monthey, Mühleberg, and Andelsbuch. He also served as a professor of hydroelectric and water engineering at Zurich Polytechnic in 1907 and was tasked with maintaining the Rhine. In politics, he worked on reconstruction projects in Poland after World War I, served as the Minister of Public Works from 1920 to 1922, and briefly as the Minister of Foreign Affairs in 1922."
+    },
+    {
+      "question": "How did Gabriel Narutowicz become the first President of Poland in 1922?",
+      "answer": "Narutowicz became Poland's first president following the 1922 presidential election. He was supported by a centre-left coalition including the Polish People's Party 'Wyzwolenie', the Socialist Party, and the Bloc of National Minorities. After five rounds of voting, he defeated the conservative National Democratic candidate, Maurycy Zamoyski. His election marked the first time Poland had a head of state following its regained sovereignty from partitioning powers."
+    },
+    {
+      "question": "What was Gabriel Narutowicz's educational background?",
+      "answer": "Narutowicz was born into a noble family with strong patriotic values. He studied at the Saint Petersburg Imperial University before relocating to Zurich Polytechnic in Switzerland, where he completed his engineering education. His academic and professional career in engineering was primarily shaped by his studies in Switzerland."
+    },
+    {
+      "question": "Who assassinated Gabriel Narutowicz, and what were the circumstances surrounding his death?",
+      "answer": "Narutowicz was assassinated by Eligiusz Niewiadomski, a mentally disturbed artist, just five days after assuming office. The assassination occurred while Narutowicz was viewing paintings at the Zachęta Art Gallery in Warsaw. His funeral was attended by nearly 500,000 people, reflecting his significant public impact."
+    },
+    {
+      "question": "Write a Python code snippet to calculate the number of days Gabriel Narutowicz served as president.",
+      "answer": "python\nfrom datetime import datetime\n\n# Dates of Narutowicz's presidency\nstart_date = datetime(1922, 12, 11)\nend_date = datetime(1922, 12, 16)\n\n# Calculate the difference in days\ndays_served = (end_date - start_date).days\ndays_served\n\nThe output will be `5`, as Narutowicz served as president for 5 days before his assassination."
+    },
+    {
+      "question": "What political challenges did Gabriel Narutowicz face during his presidency?",
+      "answer": "Narutowicz faced significant political opposition from conservative groups, particularly the National Democrats led by Maurycy Zamoyski. His presidency was marked by a polarizing election process and ideological conflicts between centre-left and conservative factions. These challenges culminated tragically with his assassination just five days after taking office."
+    },
+    {
+      "question": "In what ways did Gabriel Narutowicz contribute to Poland's reconstruction after World War I?",
+      "answer": "Narutowicz played a key role in Poland's post-World War I reconstruction as the Minister of Public Works from 1920 to 1922. He worked on infrastructure projects to rebuild the country, leveraging his engineering expertise to modernize Poland's public works systems. His leadership in this role laid the groundwork for his later election as president."
+    }
+  ]
+}

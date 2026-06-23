@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Domagoj_Duvnjak",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When was Domagoj Duvnjak born?",
+      "answer": "Domagoj Duvnjak was born on 1 June 1988."
+    },
+    {
+      "question": "Which club has Domagoj Duvnjak been playing for since 2014?",
+      "answer": "Domagoj Duvnjak has been playing for German club THW Kiel since 2014 and currently serves as the team's captain."
+    },
+    {
+      "question": "What notable individual award did Domagoj Duvnjak receive in 2013?",
+      "answer": "In 2013, Domagoj Duvnjak was named the IHF World Player of the Year, recognizing him as one of the best handball players of all time."
+    },
+    {
+      "question": "How many Olympic Games has Domagoj Duvnjak competed in, and what was his best result?",
+      "answer": "Domagoj Duvnjak has competed in four Summer Olympics (2008, 2012, 2016, and 2024). His best result was winning a bronze medal in 2012."
+    },
+    {
+      "question": "What transfer fee did Domagoj Duvnjak command when he moved to HSV Hamburg in 2009, and why was this significant?",
+      "answer": "When Domagoj Duvnjak signed with HSV Hamburg in August 2009 for a three-year contract worth €2.25 million (including a transfer fee of €1.1 million), he became the most expensive handball player in history at that time."
+    },
+    {
+      "question": "How many appearances and goals did Domagoj Duvnjak record for the Croatia national team during his career?",
+      "answer": "Domagoj Duvnjak holds records for the most appearances (257 caps) and goals (771 goals) for the Croatia national handball team."
+    },
+    {
+      "question": "Write a Python function to calculate the total number of medals Domagoj Duvnjak won with the Croatia national team, given his Olympic, World Championship, and European Championship achievements.",
+      "answer": "python\n\ndef calculate_total_medals(olympic_medals=1, world_championship_medals=3, european_championship_medals=5):\n    \"\"\"\n    Calculate the total number of medals Domagoj Duvnjak won with the Croatia national team.\n    \n    Parameters:\n    olympic_medals (int): Number of Olympic medals (1 bronze in 2012).\n    world_championship_medals (int): Number of World Championship medals (3).\n    european_championship_medals (int): Number of European Championship medals (5).\n    \n    Returns:\n    int: Total number of medals.\n    \"\"\"\n    return olympic_medals + world_championship_medals + european_championship_medals\n\n# Example usage:\ntotal_medals = calculate_total_medals()\nprint(f\"Total medals won: {total_medals}\")  # Output: Total medals won: 9\n"
+    }
+  ]
+}

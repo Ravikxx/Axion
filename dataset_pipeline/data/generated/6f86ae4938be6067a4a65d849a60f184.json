@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Gyeonggi_Academy_of_Foreign_Languages",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the current name and location of Gyeonggi Academy of Foreign Languages?",
+      "answer": "Gyeonggi Academy of Foreign Languages (GAFL) is a foreign language high school located in Uiwang-si, Gyeonggi-do, South Korea."
+    },
+    {
+      "question": "How many student dormitories does GAFL have, and how are they managed?",
+      "answer": "GAFL has two student dormitories, one for male students and one for female students. Each dormitory has its own dormitory inspectors as staff."
+    },
+    {
+      "question": "What languages can students major in at GAFL?",
+      "answer": "Students at GAFL can major in one of four language combinations: English & Japanese, English & Chinese, Japanese, or Chinese."
+    },
+    {
+      "question": "When was GAFL originally established, and under what name?",
+      "answer": "GAFL was originally established on March 2, 2004, under the name Myongji Foreign Language High School by Myongji Foundation."
+    },
+    {
+      "question": "What significant change occurred in GAFL's curriculum in 2011?",
+      "answer": "In 2011, GAFL's international department changed its curriculum to the International Baccalaureate Diploma Programme, making it the first Korean high school to adopt this program."
+    },
+    {
+      "question": "What is one notable feature of GAFL's tuition fees compared to other schools?",
+      "answer": "GAFL is well known for its high tuition fees, consistently ranking among the top 10 schools in Korea by tuition fee."
+    },
+    {
+      "question": "Write a Python snippet to calculate the years since GAFL adopted the International Baccalaureate Diploma Programme.",
+      "answer": "python\nyear_adopted = 2011\ncurrent_year = 2023  # Adjust as needed\n\nyears_since_adoption = current_year - year_adopted\nprint(f\"GAFL has been offering the IBDP for {years_since_adoption} years.\")\n"
+    }
+  ]
+}

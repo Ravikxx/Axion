@@ -1,0 +1,38 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Afrikaans",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What are the primary countries where Afrikaans is spoken today?",
+      "answer": "Afrikaans is primarily spoken in South Africa and Namibia."
+    },
+    {
+      "question": "How did Afrikaans originate according to historical records?",
+      "answer": "Afrikaans originated as a dialect among Afrikaner Protestant settlers, unfree workers, and slaves brought to the Cape area by the Dutch East India Company between 1652 and 1705."
+    },
+    {
+      "question": "According to J. A. Heese's research, what were the main ancestral origins of early Afrikaans speakers until 1807?",
+      "answer": "Heese's research states that until 1807, 36.8% of the ancestors of Afrikaans-speaking people were Dutch, 35% were German, 14.6% were French, and 7.2% were non-white (of native African and/or Asian origins)."
+    },
+    {
+      "question": "Why is Heese's figure for the non-white component of Afrikaans speakers disputed?",
+      "answer": "Heese's figure for the non-white component is disputed because other researchers question its accuracy, particularly regarding the classification of non-white origins."
+    },
+    {
+      "question": "What were some of the alternative names for Afrikaans before it was recognized as a distinct language?",
+      "answer": "Before being recognized as a distinct language, Afrikaans was known as 'Cape Dutch', 'African Dutch', or 'Kitchen Dutch'."
+    },
+    {
+      "question": "When did Afrikaans begin to be widely recognized as a language separate from Dutch?",
+      "answer": "Afrikaans began to be widely recognized as a separate language in the early 20th century, after previously being considered a dialect of Dutch."
+    },
+    {
+      "question": "What does the name 'Afrikaans' mean, and how is it linguistically related to Dutch?",
+      "answer": "The name 'Afrikaans' is simply the Dutch word for 'African', and Afrikaans is the Southern African form of Dutch."
+    },
+    {
+      "question": "What significant recognition did Afrikaans receive in South Africa in May 2022?",
+      "answer": "In May 2022, Afrikaans was officially recognized as an indigenous language of South Africa."
+    }
+  ]
+}

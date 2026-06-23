@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Cumulativity",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is cumulative reference in linguistic semantics?",
+      "answer": "Cumulative reference is a property of an expression X where, if X applies to both entities a and b, then it also applies to their combination (a ⊕ b). For example, the word 'water' is cumulative because if two separate entities are water, their combination is also water. However, 'a house' is not cumulative because two houses combined do not form 'a house', though 'houses' is cumulative."
+    },
+    {
+      "question": "Provide an example of a word with cumulative reference and explain why it qualifies.",
+      "answer": "The word 'water' has cumulative reference. If two separate entities, such as two glasses of water, are described as 'water', then combining them into a single larger glass still results in 'water'. This satisfies the condition that X(a) ∧ X(b) → X(a ⊕ b)."
+    },
+    {
+      "question": "How does the mass/count distinction in linguistics relate to cumulativity?",
+      "answer": "Cumulativity helps distinguish mass nouns (like 'water') from count nouns (like 'house'). Mass nouns typically have cumulative reference, as their referents combine naturally, while count nouns often do not unless pluralized (e.g., 'houses' vs. 'a house'). This distinction is crucial for understanding grammatical telicity and pluralization patterns."
+    },
+    {
+      "question": "Write the formal definition of a cumulative predicate CUM using set notation.",
+      "answer": "A cumulative predicate CUM is defined as follows:\n\nCUM(X) ⇔ ∃x,y (X(x) ∧ X(y) ∧ x ≠ y) ∧ ∀x,y (X(x) ∧ X(y) → X(x ⊕ₚ y))\n\nWhere:\n- X ⊆ Uₚ is a set of entities,\n- Uₚ is the universe of discourse with a mereological part structure p,\n- ⊕ₚ is the mereological sum operation.\n\nThis means that if X contains at least two distinct entities, then any combination of those entities via ⊕ₚ must also be in X."
+    },
+    {
+      "question": "What is the difference between a cumulative predicate and an n-ary cumulative predicate?",
+      "answer": "A cumulative predicate operates on single entities (unary), while an n-ary cumulative predicate operates on tuples of entities. For example, the predicate 'eat' is cumulative in both forms:\n- Unary: 'John ate an apple and Mary ate a pear' implies 'John and Mary both ate an apple and a pear'.\n- N-ary: The formal definition ensures that if R(x₁,...,xₙ) and R(y₁,...,yₙ) hold, then R(x₁ ⊕ y₁, ..., xₙ ⊕ yₙ) also holds."
+    },
+    {
+      "question": "Explain the mereological sum operation (⊕ₚ) in the context of cumulative reference.",
+      "answer": "The mereological sum operation (⊕ₚ) combines two entities x and y into a single entity x ⊕ₚ y, such that the sum retains the properties of its parts in a cumulative predicate. For example, if x and y are both water, then x ⊕ₚ y is also water. This operation is fundamental to modeling how predicates behave under combination."
+    },
+    {
+      "question": "How does Krifka's generalization of cumulativity to n-ary predicates explain the equivalence between 'John ate an apple and Mary ate a pear' and 'John and Mary both ate both a pear and an apple'?",
+      "answer": "Krifka's generalization shows that the predicate 'eat' is n-ary cumulative. The first sentence asserts that John ate an apple and Mary ate a pear separately. The second sentence asserts that John and Mary collectively ate an apple and a pear. The equivalence arises because 'eat' is cumulative: combining the individuals (John and Mary) and the objects (apple and pear) preserves the truth of the predicate. Formally, if R(x₁,y₁) and R(x₂,y₂) hold, then R(x₁ ⊕ x₂, y₁ ⊕ y₂) also holds."
+    }
+  ]
+}

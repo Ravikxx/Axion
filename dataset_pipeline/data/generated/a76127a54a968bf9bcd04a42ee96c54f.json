@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Abashokobezi_1906–2006",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the Bambatha Rebellion, and why was the album 'Abashokobezi' released?",
+      "answer": "The Bambatha Rebellion was a 1906 uprising against British colonial rule in what is now KwaZulu-Natal, South Africa, led by Chief Bambata of the Zondi tribe. The album 'Abashokobezi' was released in 2006 to commemorate the centennial of this rebellion, celebrating Chief Bambata's fight for freedom and dignity, while also serving as a precursor to planned centenary celebrations."
+    },
+    {
+      "question": "What does the term 'Abashokobezi' mean in the context of the Zulu Civil War?",
+      "answer": "The term 'Abashokobezi' (singular: umshokobezi) originally referred to 'adherents of the Usuthu faction' during the Zulu Civil War (1879–1884). During this conflict, the meaning shifted to 'rebels' as it became associated with resistance against British-appointed chiefs and colonial rule."
+    },
+    {
+      "question": "How did the Bambata music project's style evolve with the release of 'Abashokobezi'?",
+      "answer": "The Bambata music project transitioned into a more band-oriented effort with the release of 'Abashokobezi.' Key figures included Mzala Zuma, Philangezwi Bongani Nkwanyana, and the addition of vocalist Faca Kulu, marking a shift toward a cohesive musical collective."
+    },
+    {
+      "question": "What themes does the album 'Abashokobezi' explore, according to Artslink South Africa?",
+      "answer": "According to Artslink South Africa, 'Abashokobezi' pays tribute to Chief Bambata, a South African freedom fighter, and his resistance against Poll Tax in 1906. The album celebrates his legacy and the broader struggle for dignity and liberation, positioning Bambata as a group using music to articulate historical significance and societal impact."
+    },
+    {
+      "question": "How did a Swedish newspaper describe the musical style of 'Abashokobezi'?",
+      "answer": "The Swedish newspaper Svenska Dagbladet described 'Abashokobezi' as a pop and jazzy Zulu hip-hop album with some traditional instruments. Despite the pretentious title for those unfamiliar with African languages, the reviewer found the album surprisingly enjoyable even without prior knowledge of the story behind it."
+    },
+    {
+      "question": "Provide a code snippet that could be used to analyze the sentiment of reviews about 'Abashokobezi' using Python. Assume the reviews are stored in a list.",
+      "answer": "Here’s a Python snippet using the `TextBlob` library to analyze sentiment polarity (ranging from -1 to 1) of reviews:\n\npython\nfrom textblob import TextBlob\n\nreviews = [\n    \"An incredibly pretentious album to judge by the title and what can be read about it.\",\n    \"Surprisingly good even without story.\"\n]\n\nfor review in reviews:\n    analysis = TextBlob(review)\n    print(f\"Review: '{review}'\")\n    print(f\"Sentiment Polarity: {analysis.sentiment.polarity}\")\n    print(\"---\")\n\nThis code will output the sentiment polarity for each review, where negative values indicate negative sentiment, positive values indicate positive sentiment, and zero indicates neutral sentiment."
+    },
+    {
+      "question": "What historical context led to the division of the Zulu kingdom into 13 chiefdoms?",
+      "answer": "The division of the Zulu kingdom into 13 chiefdoms was a result of the British administration's policy following the Battle of Ulundi in 1879. After defeating the Zulu Kingdom in the Anglo-Zulu War, the British dismantled its centralized structure and appointed chiefs to govern smaller chiefdoms, aiming to weaken Zulu resistance and assert colonial control."
+    }
+  ]
+}

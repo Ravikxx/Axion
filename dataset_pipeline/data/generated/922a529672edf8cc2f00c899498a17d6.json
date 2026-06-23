@@ -1,0 +1,38 @@
+{
+  "source_url": "https://dev.to/francistrdev/the-open-sourcerer-of-forem-beyond-the-ui-4k7p",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What is the main challenge the author faced when starting with open source contributions?",
+      "answer": "The author found setting up the environment the most difficult part of contributing to open source projects, as it often involves reading documentation and resolving errors."
+    },
+    {
+      "question": "What was the specific UI issue the author addressed in their first pull request for Forem?",
+      "answer": "The author fixed an issue where the z-index of multiple reactions UI elements was misplaced, specifically targeting the `crayons-article-actions` class in the `article.scss` file."
+    },
+    {
+      "question": "What was the initial solution proposed by the author for the z-index issue, and why was it not ideal?",
+      "answer": "The author initially increased the z-index to 9999 in their pull request. This was not ideal because it was a brute-force solution that didn't align with Forem's existing z-index structure."
+    },
+    {
+      "question": "How did @ben improve the author's initial z-index fix?",
+      "answer": "@ben refined the solution by setting the z-index to `calc(var(--z-dropdown) - 1)`, ensuring it stays above comments but below dropdowns, modals, and popovers."
+    },
+    {
+      "question": "What code snippet was used in the final solution for the z-index issue?",
+      "answer": "css\nz-index: calc(var(--z-dropdown) - 1);\n"
+    },
+    {
+      "question": "What important lesson did the author learn about making pull requests after their first unmerged attempt?",
+      "answer": "The author realized they should focus on creating pull requests that align with the project's needs rather than what they personally think is needed, emphasizing the importance of understanding project requirements."
+    },
+    {
+      "question": "Why is communication important when contributing to open source projects, according to the author?",
+      "answer": "The author emphasizes that communication is crucial for collaboration, noting that maintaining updated documentation and keeping maintainers informed can prevent misunderstandings and ensure smooth progress on issues."
+    },
+    {
+      "question": "What are the steps suggested by the author to start contributing to Forem?",
+      "answer": "The author suggests setting up your environment by following the official Forem GitHub repository documentation, ensuring the localhost runs correctly, and then looking for issues that align with your skills."
+    }
+  ]
+}

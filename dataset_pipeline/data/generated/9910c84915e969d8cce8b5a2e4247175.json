@@ -1,0 +1,34 @@
+{
+  "source_url": "https://github.com/electron/electron",
+  "category": "github",
+  "pairs": [
+    {
+      "question": "What is Electron and what technologies does it combine to enable cross-platform desktop app development?",
+      "answer": "Electron is a framework that enables the development of cross-platform desktop applications using JavaScript, HTML, and CSS. It combines Node.js for backend functionality and Chromium for rendering web pages, allowing developers to build desktop apps with web technologies."
+    },
+    {
+      "question": "How do you install Electron for development purposes in a Node.js project?",
+      "answer": "To install Electron as a development dependency in your project, run the following command in your terminal:\nsh\nnpm install electron --save-dev\n\nThis installs the Electron binary locally within your project."
+    },
+    {
+      "question": "What platforms does Electron officially support, and which versions are required?",
+      "answer": "Electron officially supports macOS (Ventura and up), Windows (Windows 10 and up), and Linux. Specifically:\n- macOS: 64-bit Intel and Apple Silicon / ARM binaries are provided.\n- Windows: Provides `ia32` (x86), `x64` (amd64), and `arm64` binaries; Windows on ARM support started in Electron 5.0.8.\n- Linux: Prebuilt binaries are built on Ubuntu 22.04 and verified on Ubuntu 18.04+, Fedora 32+, and Debian 10+."
+    },
+    {
+      "question": "Can you programmatically use Electron within a Node.js app, and if so, how?",
+      "answer": "Yes, you can use Electron programmatically within a Node.js app to spawn the Electron binary. Here's an example:\njavascript\nconst electron = require('electron');\nconst proc = require('node:child_process');\n\nconsole.log(electron); // Prints the path to the Electron binary\n\n// Spawn Electron as a child process\nconst child = proc.spawn(electron);\n\nNote that this usage is within a Node.js app (not an Electron app) and is typically used to launch Electron."
+    },
+    {
+      "question": "What is Electron Fiddle and what purpose does it serve for developers?",
+      "answer": "Electron Fiddle is a tool designed to help developers start using Electron more easily. It allows you to build, run, and package small Electron experiments, explore code examples for all of Electron's APIs, and test different versions of Electron. It is particularly useful for learning and testing Electron features in an interactive environment."
+    },
+    {
+      "question": "Which languages are supported for Electron documentation translations, and where can these translations be accessed?",
+      "answer": "Electron documentation is available in multiple languages including Simplified Chinese, French, German, Japanese, Portuguese, Russian, and Spanish. These translations can be accessed via the Electron project on Crowdin, where community members contribute translations."
+    },
+    {
+      "question": "What is the recommended approach for reporting unacceptable behavior in the Electron community?",
+      "answer": "Unacceptable behavior in the Electron community should be reported to coc@electronjs.org. The project adheres to the Contributor Covenant code of conduct, and all participants are expected to uphold these standards."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/nickytonline/what-makes-goose-different-from-other-ai-coding-agents-2edc",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What is Goose and how does it differ from other AI coding tools like Cursor or Copilot?",
+      "answer": "Goose is an AI agent framework designed as a 'build system for agent behavior' rather than just offering IDE integrations or autocomplete. Unlike tools like Cursor (which focuses on autocomplete) or Copilot (which provides inline suggestions), Goose provides structured workflows through features like Recipes, subagents for parallel execution, and explicit MCP server integration. It’s model-agnostic, open-source, and emphasizes reusable workflows and version-controlled configurations."
+    },
+    {
+      "question": "What are Goose Recipes and how do they work with sub-recipes?",
+      "answer": "Goose Recipes are structured workflow definitions that enable reusable AI workflows with parameter passing, sub-recipe composition, and explicit tool configuration. Each Recipe can call sub-recipes (e.g., platform-specific social media generators for Instagram, Twitter, and Facebook), passing shared parameters like `event_name` or `target_audience`. Recipes are defined in YAML and can be pinned to specific MCP servers for reproducibility. For example, a parent Recipe orchestrates sub-recipes to generate a cross-platform social media campaign, ensuring each sub-recipe handles platform-specific logic while sharing inputs."
+    },
+    {
+      "question": "How would you create a Goose Recipe to generate weekly status reports from Linear, GitHub, and Notion?",
+      "answer": "To create a weekly status report Recipe, you’d define a YAML file that orchestrates sub-recipes for each platform. Example structure:\nyaml\nversion: 1.0.0\ntitle: Weekly Status Report Generator\ndescription: Aggregates issues, PRs, and updates from Linear, GitHub, and Notion\ninstructions: |\n  Generate a weekly status report by querying:\n  - Linear for open issues\n  - GitHub for recent PRs\n  - Notion for project updates\nprompt: Generate a formatted weekly status report with links to issues and PRs\nsub_recipes:\n  - name: linear_tasks\n    path: \"./linear-tasks.yaml\"\n  - name: github_prs\n    path: \"./github-prs.yaml\"\n  - name: notion_updates\n    path: \"./notion-updates.yaml\"\n\nEach sub-recipe would query its respective service, and the parent Recipe would compile the results into a unified report. You can then configure this Recipe as a slash command (e.g., `/weekly-status`) for quick execution."
+    },
+    {
+      "question": "What are the key benefits of using Goose Recipes over saved prompts or rules files like `.cursor/rules`?",
+      "answer": "Goose Recipes offer several advantages over saved prompts or rules files:\n1. **Version Control**: Recipes are YAML files stored in Git, enabling diffing, reverting, and collaboration.\n2. **Reusability**: Recipes can compose sub-recipes into complex workflows, reducing copy-paste.\n3. **Explicit Tooling**: Recipes can pin specific MCP servers/tools, ensuring reproducible workflows.\n4. **Parameter Passing**: Structured inputs (e.g., `event_name: string`) ensure consistent data flow between steps.\n5. **Debugging**: Sub-recipes run independently, allowing isolated testing.\n\nRules files (e.g., `.cursor/rules`) only provide project-specific prompting guidelines, while Recipes are executable workflows with defined inputs, outputs, and tooling dependencies."
+    },
+    {
+      "question": "How does Goose support parallel task execution with subagents?",
+      "answer": "Goose supports parallel task execution through subagents, which allow multiple AI agents to work concurrently on different parts of a project. For example, one subagent could handle API integration while another generates UI code. Subagents can be defined in Recipes or manually triggered, and their results are automatically merged. This is particularly useful for complex workflows like generating multi-platform content (e.g., social media campaigns) where tasks are independent but part of a larger goal."
+    },
+    {
+      "question": "What is an MCP server in Goose, and how would you use it in a Recipe?",
+      "answer": "An MCP (Model Context Protocol) server in Goose provides tools or capabilities to AI agents, such as accessing a database, fetching data from an API, or running shell commands. In a Recipe, you can explicitly pin MCP servers to ensure the workflow uses specific tools. For example, a Recipe generating a social media campaign might pin an MCP server for Instagram API access. Example YAML snippet:\nyaml\nmcp_servers:\n  - name: instagram_api\n    path: \"./mcp-instagram-server.js\"\n\nThis guarantees the Recipe runs with the correct tools, regardless of global MCP configurations."
+    },
+    {
+      "question": "How can you convert a project idea into a Goose Recipe workflow?",
+      "answer": "To convert a project idea into a Goose Recipe workflow, follow these steps:\n1. **Define the Workflow**: Break the project into discrete steps (e.g., fetch data, generate content, deploy).\n2. **Create Sub-Recipes**: Write YAML sub-recipes for each step (e.g., `data-fetch.yaml`, `content-generate.yaml`).\n3. **Design the Parent Recipe**: Define inputs (e.g., `event_name`, `target_audience`) and orchestrate sub-recipes.\n4. **Pin MCP Servers**: Specify tools needed (e.g., API clients, file system access).\n5. **Test Locally**: Run the Recipe in Goose’s CLI or GUI to debug.\n6. **Version Control**: Save the Recipe in Git and share it with your team.\n\nFor example, a hand-gesture-controlled app project might use sub-recipes for gesture detection, UI rendering, and deployment, all coordinated by a parent Recipe."
+    }
+  ]
+}

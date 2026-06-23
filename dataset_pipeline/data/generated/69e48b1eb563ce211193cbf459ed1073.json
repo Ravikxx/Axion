@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Carl_K._Benhase",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was Carl Kenneth 'Benny' Benhase and what were his notable roles in football?",
+      "answer": "Carl Kenneth 'Benny' Benhase (September 5, 1929 – February 8, 2018) was an American football player and coach. He served as the head football coach at Hanover College in 1963, compiling a 0–9 record. He played college football at Miami University under Woody Hayes and later became an early pioneer of the no-huddle offense as a high school football coach in Ohio."
+    },
+    {
+      "question": "What were Carl Kenneth 'Benny' Benhase's coaching records at Hanover College and Berne Union High School?",
+      "answer": "At Hanover College in 1963, Benhase compiled a coaching record of 0 wins and 9 losses (0–9). At Berne Union High School in Ohio from 1956 to 1958, he achieved a record of 21 wins, 3 losses, and 3 ties (21–3–3) over three seasons."
+    },
+    {
+      "question": "How did Carl Kenneth 'Benny' Benhase contribute to military football during the Korean War?",
+      "answer": "During his military service in the Korean War, Benhase served as the backfield coach for the All-Army champion football team at Fort Eustis in Newport News, Virginia in 1952."
+    },
+    {
+      "question": "What educational achievements did Carl Kenneth 'Benny' Benhase accomplish?",
+      "answer": "Benhase earned a master's degree in education from the University of Virginia in 1957."
+    },
+    {
+      "question": "Provide a timeline of Carl Kenneth 'Benny' Benhase's coaching positions from 1955 to 1963.",
+      "answer": "In 1955, Benhase served as the first assistant football coach at Marion High School in Virginia, overseeing the backfield and centers. From 1956 to 1958, he was the head football coach at Berne Union High School in Ohio. In 1959, he became the head coach at Circleville High School in Ohio, where he coached for five seasons. In 1963, he served as the head football coach at Hanover College in Indiana."
+    },
+    {
+      "question": "What is the significance of Carl Kenneth 'Benny' Benhase's high school coaching career in Ohio?",
+      "answer": "Benhase was an early pioneer of the no-huddle offense while coaching high school football in Ohio. He achieved notable success at Berne Union High School (1956–1958) with a 21–3–3 record and at Circleville High School (1959–1963) with a 27–10–2 record."
+    },
+    {
+      "question": "Write a Python script to calculate Carl Kenneth 'Benny' Benhase's total coaching wins, losses, and ties across all recorded coaching positions.",
+      "answer": "python\n# Carl Kenneth 'Benny' Benhase's coaching records\ncoach_records = [\n    {'wins': 0, 'losses': 9, 'ties': 0},   # Hanover College (1963)\n    {'wins': 21, 'losses': 3, 'ties': 3}, # Berne Union High School (1956–1958)\n    {'wins': 27, 'losses': 10, 'ties': 2} # Circleville High School (1959–1963)\n]\n\n# Calculate totals\ntotal_wins = sum(record['wins'] for record in coach_records)\ntotal_losses = sum(record['losses'] for record in coach_records)\ntotal_ties = sum(record['ties'] for record in coach_records)\n\nprint(f\"Total coaching record: {total_wins}–{total_losses}–{total_ties}\")\n\nOutput: Total coaching record: 48–22–5"
+    }
+  ]
+}

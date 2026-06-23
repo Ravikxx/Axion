@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/tejas1233/the-context-switching-problem-why-i-built-a-tracker-that-lives-in-my-terminal-4dpe",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What are the main problems the author encountered with traditional productivity apps?",
+      "answer": "The author found traditional productivity apps to be 'Too Slow' due to context-switching and cumbersome task logging, and 'Too Distracting' because of unnecessary notifications, complex UIs, and irrelevant features that turned simple tasks like checking off a goal into a time-consuming activity."
+    },
+    {
+      "question": "How does the Resync CLI ensure that logging tasks is fast and efficient?",
+      "answer": "The Resync CLI is designed as a fast, origin-less client that operates without heavy dependencies, ensuring tasks can be logged instantly without breaking the user's workflow. It includes features like Offline SQLite Mode for local storage with automatic sync to MongoDB, a TUI Mode for terminal-based navigation, and a Background Daemon for automated reminders."
+    },
+    {
+      "question": "Can you provide an example of how the Background Daemon in Resync sends scheduled reminders? Provide the relevant code snippet.",
+      "answer": "The Background Daemon in Resync uses a scheduled job to send reminders at a specified time. Here’s a simplified example using the `node-schedule` library to check and notify pending goals:\n\njavascript\nschedule.scheduleJob('0 9 * * *', async () => {\n  const goals = (await api.getGoals()).data;\n  const pending = goals.filter(g => g.currentProgress.percentage < 100);\n  notify('Resync Reminder', `You have ${pending.length} goal(s) pending today`);\n\n  function notify(title, message) {\n    const os = platform();\n    if (os === 'darwin') exec(`osascript -e 'display notification \"${message}\" with title \"${title}\"'`);\n    else if (os === 'win32') exec(`powershell -Command \"...Windows notification snippet...\"`);\n    else exec(`notify-send \"${title}\" \"${message}\"`);\n  }\n});\n\nThis daemon runs in the background and sends scheduled reminders without requiring the CLI to be open."
+    },
+    {
+      "question": "What are the key features of the Resync Web App (PWA)?",
+      "answer": "The Resync Web App (PWA) is a visual dashboard built with React/Vite that focuses on deep reflection. Key features include a Command Palette (⌘K) for quick navigation with over 18 keyboard shortcuts, a distraction-free Zen Mode with Pomodoro timer, and advanced analysis tools such as activity heatmaps and trend charts for visualizing long-term progress."
+    },
+    {
+      "question": "What tech stack is used to build Resync? Describe the components and their roles.",
+      "answer": "Resync is built on the MERN stack: \n- **MongoDB**: Acts as the database backend for storing user data and goals.\n- **Express.js**: Provides the API layer for the web app and CLI interactions.\n- **Node.js**: Serves as the runtime environment for both the backend and CLI.\n- **React/Vite**: Powers the frontend web app (PWA) with a responsive and interactive UI.\nThe CLI leverages libraries like `commander` for command structure and `inquirer` for interactive prompts, ensuring a smooth user experience in the terminal."
+    },
+    {
+      "question": "What are the current development priorities for Resync?",
+      "answer": "The current development priorities for Resync include enhancing real-time sync for seamless multi-device experiences, implementing data export functionality (CSV, JSON) to give users full control over their data, developing a plugin system for the CLI to allow custom commands and community contributions, and creating deeper insights through enhanced data visualization options in the web app."
+    },
+    {
+      "question": "How can users contribute to or provide feedback on Resync?",
+      "answer": "Users can contribute to Resync by visiting its open-source GitHub repository at https://github.com/TejasS1233/Resync. They can submit feature requests, report bugs, or contribute code. Feedback and suggestions are welcome, as the author is actively looking to improve the tool based on user input."
+    }
+  ]
+}

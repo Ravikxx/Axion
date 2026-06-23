@@ -1,0 +1,34 @@
+{
+  "source_url": "https://mathworld.wolfram.com/BipartiteGraph.html",
+  "category": "mathworld",
+  "pairs": [
+    {
+      "question": "What is a bipartite graph and how is it defined?",
+      "answer": "A bipartite graph, also called a bigraph, is a graph whose vertices can be divided into two disjoint sets such that no two vertices within the same set are adjacent. The two sets form a bipartition, and edges only connect vertices from different sets. This structure ensures the graph is two-colorable, meaning vertices can be colored with two colors such that no two adjacent vertices share the same color."
+    },
+    {
+      "question": "How can you determine if a graph is bipartite using the Wolfram Language?",
+      "answer": "In the Wolfram Language, you can test if a graph is bipartite using the function `BipartiteGraphQ`. For example:\n\nwolfram\nBipartiteGraphQ[Graph[{1 <-> 2, 2 <-> 3, 3 <-> 1}]]\n\n\nThis will return `True` if the graph is bipartite and `False` otherwise. The function checks whether the graph can be colored with two colors such that no two adjacent vertices have the same color."
+    },
+    {
+      "question": "What are Hamiltonian cycles and paths in the context of bipartite graphs?",
+      "answer": "In a bipartite graph with bipartition classes U and V, a Hamiltonian cycle must alternate between U and V, requiring that the sizes of U and V are equal. Similarly, a Hamiltonian path must alternate between the classes, so the sizes of U and V can differ by at most 1. This is because the cycle or path must traverse every vertex exactly once, and the alternation between sets enforces the size constraints."
+    },
+    {
+      "question": "Provide examples of families of bipartite graphs.",
+      "answer": "Families of bipartite graphs include:\n- Acyclic graphs (e.g., trees, forests)\n- Book graphs\n- Crossed prism graphs\n- Crown graphs\n- Cycle graphs (only even-length cycles)\n- Gear graphs\n- Grid graphs\n- Haar graphs\n- Hadamard graphs\n- Hypercube graphs\n- Knight graphs\n- Ladder graphs\n- Mongolian tent graphs\n- Path graphs\n- Sierpiński carpet graphs\n- Stacked book graphs\n- Star graphs"
+    },
+    {
+      "question": "What is König's line coloring theorem, and how does it relate to bipartite graphs?",
+      "answer": "König's line coloring theorem states that every bipartite graph is a class 1 graph. This means the edges of a bipartite graph can be colored with the minimum number of colors (equal to the maximum degree of the graph) such that no two adjacent edges share the same color. This property is significant because it simplifies edge coloring problems for bipartite graphs compared to general graphs."
+    },
+    {
+      "question": "How does the König-Egeváry theorem relate the matching number and vertex cover number in bipartite graphs?",
+      "answer": "The König-Egeváry theorem states that for any bipartite graph, the matching number (size of a maximum independent edge set) is equal to the vertex cover number (size of the smallest vertex cover). This theorem bridges the concepts of matching and covering in bipartite graphs, providing a fundamental result in graph theory that is useful for algorithms and proofs."
+    },
+    {
+      "question": "Write a Python function to check if a graph is bipartite using BFS.",
+      "answer": "Here is a Python function to check if a graph is bipartite using BFS:\n\npython\nfrom collections import deque\n\ndef is_bipartite(graph):\n    color = {}\n    for node in graph:\n        if node not in color:\n            queue = deque([node])\n            color[node] = 0\n            while queue:\n                current = queue.popleft()\n                for neighbor in graph[current]:\n                    if neighbor not in color:\n                        color[neighbor] = color[current] ^ 1\n                        queue.append(neighbor)\n                    elif color[neighbor] == color[current]:\n                        return False\n    return True\n\n# Example usage:\ngraph = {0: [1, 3], 1: [0, 2], 2: [1, 3], 3: [0, 2]}\nprint(is_bipartite(graph))  # Output: True\n\n\nThe function uses BFS to attempt a 2-coloring of the graph. If it encounters a conflict where two adjacent nodes have the same color, it returns `False`. Otherwise, it returns `True`."
+    }
+  ]
+}

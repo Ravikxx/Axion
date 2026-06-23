@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Ablution_in_Christianity",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is ablution in Christianity and what are its purposes?",
+      "answer": "Ablution in Christianity refers to the prescribed washing of part or all of the body, clothing, or ceremonial objects for purification or dedication. Its purposes include ritual cleansing before prayer or worship, preparation for sacred acts like Holy Communion or baptism, and symbolic separation from sin. Examples include washing hands and face before canonical hours, purifying Eucharistic vessels, and footwashing as a rite of humility."
+    },
+    {
+      "question": "How did Pontius Pilate's act of washing his hands symbolize innocence, and was this practice uniquely Jewish?",
+      "answer": "Pontius Pilate declared his innocence in Jesus' blood by washing his hands, a symbolic gesture to distance himself from the crucifixion. While this act is recorded in the Gospel of Matthew, it likely was not borrowed from Jewish custom, as similar practices were common among Greeks and Romans, who used handwashing to symbolically cleanse themselves of responsibility or guilt."
+    },
+    {
+      "question": "What does the term 'pygmē' refer to in the context of the Pharisees' ablutions, and how did Theophylact of Bulgaria interpret it?",
+      "answer": "The term 'pygmē' (πυγμή) in the Greek New Testament refers to the arm from the elbow to the fingertips. Theophylact of Bulgaria interpreted this as the Pharisees washing their arms up to the elbow during ceremonial ablutions, indicating an exaggerated observance of ritual purity."
+    },
+    {
+      "question": "Provide a Python code snippet to simulate the different types of ablutions performed by early Christians before entering a worship space.",
+      "answer": "python\nablutions = {\n    \"handwashing\": \"Washing hands before prayer, Holy Communion, or touching the Bible\",\n    \"facewashing\": \"Washing face before canonical hours or public appearance\",\n    \"footwashing\": \"Ritual washing of feet before worship, imitating Christ's act\",\n    \"full_ablution\": \"Washing hands, head (capitilavium), and feet (pedilavium) before entering the worship space\"\n}\n\nfor ritual, description in ablutions.items():\n    print(f\"{ritual.replace('_', ' ').title()}: {description}\")\n"
+    },
+    {
+      "question": "What role did hygiene play in early Christian communities, and how did the Church address mixed bathing in Roman pools?",
+      "answer": "Early Christianity emphasized hygiene, denouncing mixed bathing in Roman pools and pagan customs like women bathing naked in front of men. The Church promoted gender-separated baths, citing health benefits. The *Didascalia Apostolorum* mandated this separation, and Clement of Alexandria linked it to good health. Public bathing facilities were later built near monasteries and pilgrimage sites, with popes like Gregory the Great advocating bathing as a bodily need."
+    },
+    {
+      "question": "How did the Ethiopian Orthodox Tewahedo Church prescribe handwashing, and what restrictions did it impose during menstruation?",
+      "answer": "The Ethiopian Orthodox Tewahedo Church prescribed handwashing after leaving the latrine, lavatory, or bathhouse, before prayer, or after meals. Women were prohibited from entering the church during menstruation, and men were barred from entering the church the day after intercourse with their wives, reflecting strict purity laws tied to bodily functions and spiritual cleanliness."
+    },
+    {
+      "question": "What was the significance of ablutions in the Old Testament, and how did this influence Christian practices?",
+      "answer": "In the Old Testament, ablution was a prerequisite for approaching God, required before sacrifices, prayer, or entering holy places. This influenced Christian practices by establishing a precedent for ritual cleanliness, such as washing hands before prayer or Holy Communion. Early Christians like Tertullian formalized these practices, including washing hands, head, and feet before worship, symbolizing spiritual purification and surrender to the Lord."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Daniëlle_de_Bruijn",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What medals did the Dutch women's water polo team win between 1997 and 1999 under Daniëlle de Bruijn's participation?",
+      "answer": "Between 1997 and 1999, the Dutch women's water polo team won: a bronze medal at the 1997 Women's European Water Polo Championship in Seville, a silver medal at the 1998 World Aquatics Championships in Perth, a gold medal at the 1999 FINA Women's Water Polo World Cup in Winnipeg, and another silver medal at the 1999 Women's European Water Polo Championship in Prato."
+    },
+    {
+      "question": "How did the Dutch women's water polo team perform at the 2000 Summer Olympics in Sydney?",
+      "answer": "At the 2000 Summer Olympics in Sydney, the Dutch women's water polo team finished in fourth position. This marked the first-ever women's Olympic water polo tournament."
+    },
+    {
+      "question": "What were the results of the Dutch women's water polo team from 2001 to 2003?",
+      "answer": "After their fourth-place finish at the 2000 Olympics, the Dutch team's performance declined: they placed fifth at the 2001 Women's European Water Polo Championship in Budapest, ninth at the 2001 FINA Women's World Water Polo Championship in Fukuoka, and sixth at the 2003 World Aquatics Championships in Barcelona."
+    },
+    {
+      "question": "When did Daniëlle de Bruijn retire from the Dutch national water polo team, and when did she return?",
+      "answer": "Daniëlle de Bruijn retired from the Dutch national team after failing to qualify for the 2004 Summer Olympics in Athens. She returned to the team in 2007 for the World Aquatics Championships in Melbourne."
+    },
+    {
+      "question": "What was the outcome of the Dutch women's water polo team at the 2008 Summer Olympics in Beijing, and what role did Daniëlle de Bruijn play?",
+      "answer": "At the 2008 Summer Olympics in Beijing, the Dutch women's water polo team won the gold medal, defeating the United States 9-8 in the final on 21 August. Daniëlle de Bruijn was the tournament's top goalscorer with 17 goals, including seven goals in the final."
+    },
+    {
+      "question": "What recognition did Daniëlle de Bruijn receive in 2008 related to her water polo career?",
+      "answer": "In 2008, Daniëlle de Bruijn was named 'Swimming World Magazine's 2008 Water Polo Player of the Year' for her outstanding performance."
+    },
+    {
+      "question": "Write a Python function that calculates a player's average goals per game over a tournament, given a list of matches and goals scored in each.",
+      "answer": "python\ndef calculate_average_goals(matches, goals_list):\n    \"\"\"\n    Calculate a player's average goals per game in a tournament.\n    \n    Args:\n        matches (int): Total number of matches played in the tournament.\n        goals_list (list of int): Goals scored in each match.\n    \n    Returns:\n        float: Average goals per game.\n    \n    Example:\n        >>> calculate_average_goals(5, [2, 3, 1, 4, 2])\n        2.4\n    \"\"\"\n    if matches <= 0:\n        return 0.0\n    total_goals = sum(goals_list)\n    return round(total_goals / matches, 2)\n\n# Example usage:\n# goals = [7, 6, 4]  # Goals in the final, semi-final, and group stage\n# avg = calculate_average_goals(3, goals)\n"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Counterpoint",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is counterpoint in music composition?",
+      "answer": "Counterpoint is the art of composing music by combining different melodic parts (voices) in a way that creates harmonious and independent lines. Each voice is equally important, and the combination of these parts produces a cohesive musical texture."
+    },
+    {
+      "question": "How does counterpoint differ from harmony?",
+      "answer": "Harmony involves adding chords (multiple notes played simultaneously) to a melody, which supports the main tune. Counterpoint, however, involves multiple independent melodies interacting with one another, where no single part is subordinate to the others."
+    },
+    {
+      "question": "Provide an example of how imitation is used in counterpoint.",
+      "answer": "Imitation occurs when one melodic part repeats the melody of another part, often at a different pitch or after a delay. For example, if the right hand plays a melody and the left hand starts playing the same melody in the next bar, this is imitation. If this imitation continues throughout the piece, it becomes a canon."
+    },
+    {
+      "question": "What is the difference between a canon and a round?",
+      "answer": "A canon is a contrapuntal composition where the same melody is imitated by multiple voices, often with staggered entries. A round is a type of canon that can be repeated indefinitely, such as the song 'Row, Row, Row Your Boat,' where each voice enters in sequence and continues the melody in a loop."
+    },
+    {
+      "question": "Explain the concept of species counterpoint and provide a Python code snippet to demonstrate note durations.",
+      "answer": "Species counterpoint is a method of teaching counterpoint by gradually increasing complexity. It starts with simple note-against-note writing (first species) and progresses to more complex rhythms (e.g., second species with two notes against one). Below is a Python snippet using the `music21` library to demonstrate note durations in species counterpoint:\n\npython\nfrom music21 import note, stream\n\n# First species (one note against one note)\ns1 = stream.Stream()\ns1.append(note.Note('C4', quarterLength=1.0))\ns1.append(note.Note('D4', quarterLength=1.0))\n\n# Second species (two notes against one)\ns2 = stream.Stream()\ns2.append(note.Note('G4', quarterLength=0.5))\ns2.append(note.Note('G4', quarterLength=0.5))\ns2.append(note.Note('A4', quarterLength=1.0))\n"
+    },
+    {
+      "question": "What is invertible counterpoint and how is it achieved?",
+      "answer": "Invertible counterpoint is a technique where the musical parts can be swapped between voices without disrupting the harmony or independence of the lines. This is achieved by writing the music in a way that the intervals between voices remain musically coherent when inverted, such as placing the top part in the bass clef and vice versa."
+    },
+    {
+      "question": "Who was Giovanni da Palestrina and why is he significant in counterpoint?",
+      "answer": "Giovanni da Palestrina (1525–1594) was a renowned composer of the Renaissance era, celebrated for his mastery of polyphonic music. His works are considered models for counterpoint study, particularly in sacred choral music. Palestrina's compositions demonstrate how complex independent lines can be woven together to create harmonious and balanced textures."
+    }
+  ]
+}

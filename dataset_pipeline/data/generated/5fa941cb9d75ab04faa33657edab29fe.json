@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Esenler_Erokspor",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When was Esenler Erokspor Kulübü founded?",
+      "answer": "Esenler Erokspor Kulübü was founded on 16 November 1999."
+    },
+    {
+      "question": "What league does Esenler Erokspor currently compete in, and what is its tier?",
+      "answer": "Esenler Erokspor currently competes in the TFF First League, which is the second tier of the Turkish football league system."
+    },
+    {
+      "question": "How many seats does Esenler Stadium have, and what is another name for it?",
+      "answer": "Esenler Stadium has an all-seater capacity of 5,291 and is also known as Esenler Erokspor Stadium."
+    },
+    {
+      "question": "What major achievement did Esenler Erokspor accomplish in the 2023–24 season?",
+      "answer": "In the 2023–24 season, Esenler Erokspor earned promotion to the TFF First League as champions of the TFF Second League."
+    },
+    {
+      "question": "Who was the head coach of Esenler Erokspor as of March 2025, and what notable streak did the team achieve under his management in early 2026?",
+      "answer": "The head coach of Esenler Erokspor as of March 2025 was Osman Özköylü. Under his management, the team achieved a five-match winning streak in February 2026, solidifying their second-place standing."
+    },
+    {
+      "question": "List three key players who contributed significantly to Esenler Erokspor's success in the 2024–25 and 2025–26 seasons.",
+      "answer": "Three key players who contributed significantly to Esenler Erokspor's success include Olarenwaju Kayode (top scorer), Hamza Čataković, and Ryan Jack. The squad was further bolstered by the loan signing of Ömer Faruk Beyaz in January 2026."
+    },
+    {
+      "question": "Does Esenler Erokspor have a professional sports division other than football? If so, what is its name?",
+      "answer": "Yes, Esenler Erokspor operates a professional basketball division. It is known as Safiport Erokspor due to sponsorship reasons and competes in the Basketbol Süper Ligi."
+    },
+    {
+      "question": "Write a Python code snippet to calculate the total number of home match capacities for Esenler Erokspor Stadium over a season with 34 home games.",
+      "answer": "python\n# Calculate total home match capacity for Esenler Erokspor Stadium over a season\nstadium_capacity = 5291  # Capacity per match\nhome_games = 34  # Number of home games in a season\ntotal_capacity = stadium_capacity * home_games\nprint(f\"Total home match capacity for a season: {total_capacity}\")\n\nThis code calculates the total seating capacity for all home matches in a season by multiplying the stadium's capacity (5,291) by the number of home games (34)."
+    }
+  ]
+}

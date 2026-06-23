@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/147th_Rifle_Division",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When and where was the 147th Rifle Division originally formed, and what was its initial organizational structure?",
+      "answer": "The 147th Rifle Division was originally formed in August 1939 in the Kharkov Military District of the Soviet Union. It was organized based on the shtat (table of organization and equipment) established the following month, making it a standard infantry division of the Red Army at the time."
+    },
+    {
+      "question": "What significant operations did the 147th Rifle Division participate in during 1940, and what was the outcome?",
+      "answer": "In June-July 1940, the 147th Rifle Division was part of the 9th Army during the operation to occupy the Romanian territories of Bessarabia and northern Bukovina. After the operation, it returned to eastern Ukraine, where it remained at the start of the German invasion in June 1941."
+    },
+    {
+      "question": "Describe the 147th Rifle Division's role and fate during the Battle of Stalingrad in 1942.",
+      "answer": "In July 1942, the newly formed 147th Rifle Division was assigned to the 62nd Army (formerly 7th Reserve Army) and sent to the Caucasus steppe as part of the Soviet effort to defend against Army Group B's advance toward Stalingrad. It took positions on the west bank of the Don River in the 'Great Bend' sector. In mid-August, it was surrounded west of Kalach-na-Donu and suffered heavy losses breaking out, but the division was not disbanded. Instead, a small cadre was sent for rebuilding and later reassigned to the 2nd Shock Army of the Volkhov Front."
+    },
+    {
+      "question": "What was the 147th Rifle Division's involvement in the operation to restore land communications with Leningrad?",
+      "answer": "After being rebuilt, the 147th Rifle Division joined the 2nd Shock Army of the Volkhov Front and participated in the offensive aimed at restoring land communications with Leningrad. During this operation, the division launched an unsuccessful attack on a workers' settlement near Sinyavino, leading to the dismissal of its commander. Following this, the division was again placed in the Reserve of the Supreme High Command before being reassigned south to the 27th Army."
+    },
+    {
+      "question": "Which military fronts and armies was the 147th Rifle Division assigned to throughout World War II, and how did its assignments change over time?",
+      "answer": "The 147th Rifle Division was assigned to multiple fronts and armies during the war. Initially part of the 37th Army in the Southwestern Front, it later joined the 62nd Army (Volkhov Front), 27th Army (Steppe and Voronezh Fronts), 40th and 38th Armies, 60th Army, 1st Guards Army, 13th Army, and finally the 1st Ukrainian Front. Its assignments evolved as the war progressed, reflecting its adaptability and the shifting nature of the conflict."
+    },
+    {
+      "question": "Provide a code snippet in Python that simulates the movement of the 147th Rifle Division across various fronts during the war. The code should list the sequence of fronts and armies it was assigned to, along with the years of these assignments.",
+      "answer": "python\ndivision_history = [\n    {\"year\": 1941, \"front\": \"Southwestern Front\", \"army\": \"37th Army\"},\n    {\"year\": 1942, \"front\": \"Volkhov Front\", \"army\": \"2nd Shock Army\"},\n    {\"year\": 1943, \"front\": \"Voronezh Front\", \"army\": \"27th Army\"},\n    {\"year\": 1943, \"front\": \"Steppe Front\", \"army\": \"27th Army\"},\n    {\"year\": 1943, \"front\": \"Voronezh Front\", \"army\": \"40th Army\"},\n    {\"year\": 1943, \"front\": \"Voronezh Front\", \"army\": \"38th Army\"},\n    {\"year\": 1944, \"front\": \"1st Ukrainian Front\", \"army\": \"1st Guards Army\"},\n    {\"year\": 1944, \"front\": \"1st Ukrainian Front\", \"army\": \"13th Army\"},\n    {\"year\": 1945, \"front\": \"1st Ukrainian Front\", \"army\": \"13th Army\"}\n]\n\nfor entry in division_history:\n    print(f\"{entry['year']}: {entry['front']}, {entry['army']}\")\n"
+    },
+    {
+      "question": "What major battles and operations did the 147th Rifle Division participate in during the final year of World War II, and what were its notable achievements?",
+      "answer": "During the final year of the war, the 147th Rifle Division participated in several key operations. In the winter of 1945, it advanced through southern Poland and lower Silesia, where all four of its regiments were decorated for the fighting at Sprottau. During the Berlin operation, it crossed the Neisse River, broke through German defenses, and assisted in the encirclement of German forces near Halbe, earning the Order of Bogdan Khmelnitsky. The division ended the war advancing on Prague and was later disbanded in Ukraine in July 1946."
+    }
+  ]
+}

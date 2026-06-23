@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/iamovi/i-made-buttons-that-run-away-from-you-prank-projects-5ej0",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What is the 'button-will-react' project about?",
+      "answer": "The 'button-will-react' project is a collection of intentionally untouchable buttons designed to frustrate or amuse users. Each button prank prevents clicking in unique ways, such as moving when hovered, ignoring keyboard input, or requiring impossible interactions. The project is open-source, MIT-licensed, and allows users to add these pranks to their own websites with minimal setup."
+    },
+    {
+      "question": "How do you add a 'button-will-react' prank to an existing HTML button?",
+      "answer": "To add a 'button-will-react' prank to an existing HTML button, include the provided CDN script and add the `button_will_react` class to the button element. Here's the code:\nhtml\n<script src=\"https://cdn.jsdelivr.net/gh/iamovi/button-will-react@cdn/dist/min/v1.0.0/move.min.js\"></script>\n<button class=\"button_will_react\">click me!</button>\n"
+    },
+    {
+      "question": "What are some examples of button pranks included in the 'button-will-react' project?",
+      "answer": "The project includes 10+ different pranks, such as:\n1. **Sign-in button**: Prevents clicking or using the Enter key, triggering an alert if interacted with.\n2. **Propose**: The 'no' button is impossible to click, while the 'yes' button works.\n3. **Valentine**: A playful proposal button that frustrates users.\n4. **Get_partner**: Enter preferences to 'get a partner' (spoiler: it's the creator).\n5. **Love_on_hover**: Hovering the button triggers a 'love' message.\n6. **Boom_btn**: Clicking the button triggers an unexpected outcome (unspecified).\n7. **Cursor_possession**: The cursor avoids the button entirely.\n8. **Starboy69**: An internet meme-themed login button.\n9. **Button_lol**: A variation of the sign-in button with a different approach.\n10. **Love_on_hover_v2**: An upgraded version of the hover-based love button by tahsin zidane."
+    },
+    {
+      "question": "What programming language or framework is used to create the 'button-will-react' button pranks?",
+      "answer": "The 'button-will-react' project primarily uses JavaScript for its button pranks, as demonstrated by the CDN integration. The pranks are designed to work with standard HTML buttons and manipulate their behavior dynamically using JavaScript event listeners and DOM manipulation."
+    },
+    {
+      "question": "How can you contribute to the 'button-will-react' project?",
+      "answer": "Contributions to 'button-will-react' are welcome via GitHub pull requests. The only requirements are that the prank must be harmless and funny; malicious code is not allowed. The project is MIT-licensed, so contributors retain ownership of their code while allowing the project to use and distribute it under the same license. Shoutouts or attributions are appreciated but not required."
+    },
+    {
+      "question": "Why was the 'button-will-react' project created?",
+      "answer": "The project was created as a playful experiment to add humor and chaos to web development. The creator, Ovi Ren, wanted to make something lighthearted that could make people smile or scream in frustration. It started as a personal project two years ago and has since evolved into a collection of pranks shared under an open-source license."
+    },
+    {
+      "question": "What is the MIT license, and how does it apply to the 'button-will-react' project?",
+      "answer": "The MIT license is a permissive open-source software license that allows users to:\n- Use the code for personal or commercial projects.\n- Modify the code freely.\n- Distribute the original or modified code.\n- Use the project without attribution (though it is appreciated).\n\nFor 'button-will-react', this means users can integrate the pranks into any project, even commercially, without needing to credit the original creator. The license ensures that the code remains open and freely usable while protecting contributors from liability."
+    }
+  ]
+}

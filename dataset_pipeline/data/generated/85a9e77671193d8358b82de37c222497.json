@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Jim_Proctor",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was James Arthur Proctor and what were his major contributions to baseball?",
+      "answer": "James Arthur Proctor was an American professional baseball pitcher who played two games for the Detroit Tigers in Major League Baseball during the 1959 season. He was one of the last major-leaguers to play in the Negro leagues and one of the first African-Americans to wear a Detroit Tigers uniform. Proctor began his career in the Milwaukee Braves' organization but was released due to racial segregation. He then joined the Indianapolis Clowns of the Negro American League, where he won 16 games and lost seven before being signed by the Detroit Tigers."
+    },
+    {
+      "question": "What notable achievements did James Arthur Proctor accomplish in the minor leagues?",
+      "answer": "In the minor leagues, Proctor reached double-digit wins in three of the next four seasons after joining the Milwaukee Braves' organization. In 1959, while playing in the Sally League, he posted a 15–5 record, led the league in complete games with 20, finished second in earned run average (2.19), and was named Pitcher of the Year. In 1960, he won 15 games in the Double-A Texas League."
+    },
+    {
+      "question": "How did James Arthur Proctor break into Major League Baseball with the Detroit Tigers?",
+      "answer": "After roster expansion in 1959, the Detroit Tigers called Proctor up from the minors in September. He debuted on September 14, 1959, against the Washington Senators, pitching two innings of relief. His second appearance was on September 26, 1959, where he started against the Chicago White Sox but was tagged with the loss."
+    },
+    {
+      "question": "What were James Arthur Proctor's statistics during his brief MLB career?",
+      "answer": "Proctor appeared in two MLB games for the Detroit Tigers in 1959. He pitched a total of 2 2/3 innings, allowing eight hits, three walks, and five earned runs, resulting in an earned run average (ERA) of 16.88. His final MLB record was 0–1 with no strikeouts recorded."
+    },
+    {
+      "question": "What challenges did James Arthur Proctor face early in his baseball career due to the racial climate of the time?",
+      "answer": "Proctor faced significant racial segregation in the Jim Crow era. After being released by the Milwaukee Braves' organization in 1955, he signed with the Indianapolis Clowns of the Negro American League. Later, when he returned to 'Organized Baseball' in 1956, he still had to navigate a system marked by racial discrimination."
+    },
+    {
+      "question": "Write a Python function to calculate James Arthur Proctor's career minor league win percentage based on his 59–41 record in 190 games pitched.",
+      "answer": "python\ndef calculate_win_percentage(wins, losses):\n    if wins + losses == 0:\n        return 0.0\n    return wins / (wins + losses)\n\n# James Arthur Proctor's minor league record\nwins = 59\nlosses = 41\nwin_percentage = calculate_win_percentage(wins, losses)\nprint(f\"Minor league win percentage: {win_percentage:.3f}\")\n# Output: Minor league win percentage: 0.590\n"
+    },
+    {
+      "question": "How did James Arthur Proctor's MLB career compare to his minor league success?",
+      "answer": "Despite his stellar minor league career with a 59–41 record and 190 games pitched, Proctor's MLB career was brief and less successful. He pitched only 2 2/3 innings across two games in 1959, allowing five earned runs for an ERA of 16.88. His MLB record was 0–1 with no strikeouts."
+    }
+  ]
+}

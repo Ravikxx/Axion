@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Ancient_Apocalypse",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is Ancient Apocalypse and who is its presenter?",
+      "answer": "Ancient Apocalypse is a television series produced by ITN Productions and released on Netflix in November 2022. The series is presented by British writer Graham Hancock, who argues for a pseudoarchaeological theory about an advanced civilization during the last ice age that was allegedly destroyed by meteor impacts around 12,000 years ago."
+    },
+    {
+      "question": "What are the main claims made by Graham Hancock in Ancient Apocalypse?",
+      "answer": "Graham Hancock claims that an advanced civilization existed during the last ice age and was destroyed by meteor impacts around 12,000 years ago. He further argues that survivors of this civilization passed their knowledge to hunter-gatherers worldwide, which in turn gave rise to the earliest known civilizations. He also alleges that mainstream archaeologists are ignoring or covering up evidence supporting these claims."
+    },
+    {
+      "question": "How has the scientific community responded to Ancient Apocalypse?",
+      "answer": "The scientific community, including archaeologists, has criticized Ancient Apocalypse for presenting pseudoscientific claims lacking evidence, cherry-picking data, and failing to acknowledge counter-evidence. Experts have also accused the series of delegitimizing the achievements of Indigenous peoples. Some academics featured in the first season reported that their footage was presented in a misleading way."
+    },
+    {
+      "question": "What criticisms have been leveled against Graham Hancock's theories in the series?",
+      "answer": "Critics argue that Hancock's theories lack empirical support, rely on selective evidence, and resemble conspiracy theories due to his complaints about 'mainstream archaeology' being one-sided. Non-academic reviewers have also found the theories unconvincing."
+    },
+    {
+      "question": "What is the production background of Ancient Apocalypse?",
+      "answer": "The first season of Ancient Apocalypse was produced by ITN Productions and released on Netflix in November 2022. A second season, featuring actor Keanu Reeves alongside Hancock, focuses on the Americas and was released in October 2024."
+    },
+    {
+      "question": "How does Ancient Apocalypse present archaeological evidence according to critics?",
+      "answer": "Critics state that Ancient Apocalypse presents archaeological sites and natural features as evidence for Hancock's theories without sufficient scientific validation. They argue the series cherry-picks data, omits counter-evidence, and frames mainstream archaeology as dismissive or conspiratorial without adequate justification."
+    },
+    {
+      "question": "Write a Python function that evaluates whether a given claim from Ancient Apocalypse is supported by mainstream archaeology based on the criticisms mentioned.",
+      "answer": "python\ndef is_claim_supported(claim):\n    \"\"\"\n    Evaluates whether a given claim from Ancient Apocalypse is supported by mainstream archaeology.\n    Returns a dictionary with a boolean indicating support and a brief explanation.\n    \"\"\"\n    unsupported_claims = [\n        \"advanced civilization existed during the last ice age\",\n        \"meteor impacts destroyed an advanced civilization 12,000 years ago\",\n        \"survivors of the lost civilization passed knowledge to hunter-gatherers worldwide\"\n    ]\n    \n    claim_lower = claim.lower()\n    \n    for unsupported_claim in unsupported_claims:\n        if unsupported_claim in claim_lower:\n            return {\n                \"supported\": False,\n                \"reason\": \"This claim is considered pseudoarchaeological and lacks mainstream archaeological evidence.\"\n            }\n    \n    return {\n        \"supported\": True,\n        \"reason\": \"The claim aligns with well-established archaeological consensus.\"\n    }\n\n# Example usage:\nprint(is_claim_supported(\"Meteor impacts destroyed an advanced civilization 12,000 years ago\"))\n# Output: {'supported': False, 'reason': 'This claim is considered pseudoarchaeological and lacks mainstream archaeological evidence.'}\n"
+    }
+  ]
+}

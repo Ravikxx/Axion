@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Hao_Yan",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who is Hao Yan and what are his primary roles at Arizona State University?",
+      "answer": "Hao Yan is a Chinese-American chemist, biomolecular designer, programmer, and engineer. At Arizona State University (ASU), he serves as a Regents Professor, the Milton D. Glick Distinguished Professor of Chemistry and Biochemistry, and the Director of the Center for Molecular Design and Biomimetics at the Biodesign Institute."
+    },
+    {
+      "question": "What are the key milestones in Hao Yan's academic and professional career?",
+      "answer": "Hao Yan graduated from Shandong University and completed his Ph.D. in DNA nanotechnology at New York University under Nadrian Seeman in 2001. He began his career as an assistant research professor at Duke University before joining Arizona State University as an assistant professor in 2004. He was promoted to full professor with early tenure in 2008, became ASU's Milton D. Glick Distinguished Chair in 2012, and was named Regents Professor in 2025."
+    },
+    {
+      "question": "What is the significance of the Regents Professor title at Arizona State University?",
+      "answer": "The Regents Professor title is the highest faculty honor at Arizona's three public universities. It is awarded to faculty who have made pioneering contributions, achieved sustained distinction, and earned national and international recognition for their work."
+    },
+    {
+      "question": "What are Hao Yan's research themes and objectives?",
+      "answer": "Hao Yan's research focuses on using nature's design principles to advance innovations in biomedicine, energy, and technology through self-assembling molecules and materials. His goals include engineering information-guided self-assembling molecular systems for precise molecular interactions in 3D space and creating man-made molecular machines using molecular design, programming, directed evolution, and systems engineering."
+    },
+    {
+      "question": "What interdisciplinary approaches does Hao Yan's team employ in their research?",
+      "answer": "Yan's team designs bio-inspired molecular building blocks such as DNA, RNA, and proteins, and programs their higher-order assembly into systems capable of performing complex functions. They integrate molecular design, programming, and systems engineering to develop intelligent materials with atomic and molecular-level control."
+    },
+    {
+      "question": "What notable awards and recognitions has Hao Yan received?",
+      "answer": "Hao Yan has received numerous honors, including the 2020 Feynman Prize in Nanotechnology, the Rozenberg Tulip Award in DNA Computing (2013), the Humboldt Research Award (2023), and being ranked as a highly cited researcher by Web of Science (2018–present). He is also a fellow of several prestigious organizations, such as the American Association for the Advancement of Science and the National Academy of Inventors."
+    },
+    {
+      "question": "Provide a Python code snippet that models DNA self-assembly as inspired by Hao Yan's research.",
+      "answer": "python\nimport numpy as np\n\nclass DNAStrand:\n    def __init__(self, sequence):\n        self.sequence = sequence  # e.g., 'ATCGAT'\n        self.complement = self._generate_complement()\n\n    def _generate_complement(self):\n        complement_map = {'A': 'T', 'T': 'A', 'C': 'G', 'G': 'C'}\n        return ''.join([complement_map[base] for base in self.sequence])\n\n    def hybridize(self, other_strand):\n        # Simple hybridization check (Watson-Crick base pairing)\n        if self.complement == other_strand.sequence:\n            return True\n        return False\n\n# Example usage\nstrand1 = DNAStrand('ATCG')\nstrand2 = DNAStrand('CGAT')\nprint(f\"Strands hybridize: {strand1.hybridize(strand2)}\")\n\nThis code models basic DNA strand hybridization, a foundational concept in Yan's work on self-assembling molecular systems."
+    }
+  ]
+}

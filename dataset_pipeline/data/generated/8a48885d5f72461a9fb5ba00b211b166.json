@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/hadil/web-development-is-more-than-frontend-and-backend-heres-what-actually-matters-23kc",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What are the key differences between frontend and backend development in web development?",
+      "answer": "Frontend development focuses on what users see and interact with in the browser, typically using HTML, CSS, and JavaScript to build the user interface and user experience. Backend development, on the other hand, deals with server-side logic, databases, and APIs, handling data processing, storage, and communication between the frontend and backend. While frontend focuses on client-side behavior and aesthetics, backend manages the server, application logic, and database interactions."
+    },
+    {
+      "question": "Why is 'thinking in systems' important for web developers?",
+      "answer": "Thinking in systems is important because web development involves more than just writing code—it's about understanding how all components (frontend, backend, UX, performance, accessibility, etc.) interact and impact the overall user experience. A system-level perspective helps developers identify hidden dependencies, potential bottlenecks, and areas for improvement that might not be visible when focusing solely on individual parts of the application."
+    },
+    {
+      "question": "How can a web developer improve the user experience (UX) even when their code technically works?",
+      "answer": "Improving UX goes beyond making features functional. Developers can enhance UX by implementing meaningful loading states, providing clear and actionable error messages, ensuring keyboard navigation works, maintaining proper color contrast, setting sensible defaults, using clean URLs, designing thoughtful empty states, and optimizing performance (e.g., avoiding unnecessary re-renders or large bundle sizes). These elements are often invisible but significantly impact user satisfaction."
+    },
+    {
+      "question": "Provide an example of how to handle errors more intentionally in a backend API using Node.js.",
+      "answer": "Here’s a more intentional approach to error handling in a Node.js backend API:\n\njs\napp.get('/users', async (req, res) => {\n  try {\n    const users = await db.getUsers();\n    res.json(users);\n  } catch (err) {\n    logger.error(err); // Log the error for debugging\n    res.status(500).json({ message: \"Something went wrong\" });\n  }\n};\n\n\nThis snippet ensures that errors are logged for debugging and a user-friendly response is sent, rather than exposing raw error details to the client."
+    },
+    {
+      "question": "Why do many tutorials fail to prepare developers for real-world web development challenges?",
+      "answer": "Many tutorials focus on the 'happy path'—demonstrating how to build features under ideal conditions. They rarely cover edge cases like API failures, slow networks, accessibility issues, code readability over time, or collaborative challenges such as onboarding new team members. These hidden aspects are where real-world projects often stumble, making them critical for developers to learn beyond basic tutorials."
+    },
+    {
+      "question": "What does it mean for web development to be about 'connecting decisions' rather than 'stacking technologies'?",
+      "answer": "While 'stacking technologies' refers to combining tools and frameworks (e.g., React for frontend, Node.js for backend), 'connecting decisions' emphasizes how these tools and the choices made around them interact to shape the overall system and user experience. It’s about considering the implications of UX decisions, performance trade-offs, accessibility, maintainability, and team workflows, ensuring these elements work harmoniously."
+    },
+    {
+      "question": "How can a developer shift from asking 'Does this work?' to asking 'Is this maintainable and user-friendly?'",
+      "answer": "This shift in mindset involves developing empathy for users and future developers. To achieve it, developers should prioritize writing clean, readable code with clear documentation, implementing thorough testing (including edge cases), designing intuitive UIs with accessibility in mind, using version control effectively, and regularly seeking feedback from users and teammates. Additionally, reflecting on past projects to identify recurring pain points can guide improvements."
+    }
+  ]
+}

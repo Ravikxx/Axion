@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Cherry_Bing",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What genre of music did Cherry Bing primarily perform, and what was their self-coined genre called?",
+      "answer": "Cherry Bing primarily performed ska and rock music. They later coined their own genre as 'Rock with Horns,' which combined elements of rock with brass instrumentation typical of ska."
+    },
+    {
+      "question": "Who were the original members of Cherry Bing, and when was the band formed?",
+      "answer": "Cherry Bing was originally formed in 1999 by Michael Angelakos, Adam Schroeder, Maxwell Scott, Jeff Poleon, and Will Glazier while they attended Amherst + Williamsville Middle School."
+    },
+    {
+      "question": "What were the names of Cherry Bing's two albums, and when were they released?",
+      "answer": "Cherry Bing released their first album, 'The Buffalo Superheroes,' in 2001 at BTF Tapehouse. Their second release was the '60 Hertz Signals EP,' which included tracks like 'Marilynn' and '2 O'Clock and Still Without You,' recorded shortly after."
+    },
+    {
+      "question": "How did Michael Angelakos's role in Cherry Bing influence his later career?",
+      "answer": "Michael Angelakos was the frontman, guitarist, and songwriter for Cherry Bing before leaving in 2002. His early experiences with the band, rooted in Buffalo's ska-punk scene, laid the foundation for his later success as the frontman of Passion Pit, a prominent synthpop band."
+    },
+    {
+      "question": "What significant events occurred in Cherry Bing's timeline in 2003?",
+      "answer": "In 2003, Michael Angelakos parted ways with the band after recording the '60 Hertz Signals EP.' Cherry Bing then added guitarist Jeffery Czum and singer Shaant Hacikyan, who later joined Cute Is What We Aim For. They performed at Amherst High School SpringFest and Kenmore High School SpringFest. Andrew Desabio also officially left the band after a mini-tour."
+    },
+    {
+      "question": "Write a Python function to extract the years Cherry Bing was active and the names of their albums.",
+      "answer": "python\ndef extract_band_info():\n    years_active = \"1999 to 2005\"\n    albums = [\n        \"The Buffalo Superheroes (2001)\",\n        \"60 Hertz Signals EP (2003)\",\n        \"Its Your Day Demo (Year not specified)\",\n        \"In A Language All Our Own EP (Year not specified)\"\n    ]\n    return years_active, albums\n\n# Example usage:\nyears, albums = extract_band_info()\nprint(f\"Years active: {years}\")\nprint(\"Albums:\")\nfor album in albums:\n    print(f\"- {album}\")\n"
+    },
+    {
+      "question": "What led to the breakup of Cherry Bing, and what were the conflicting interests?",
+      "answer": "Cherry Bing broke up due to conflicting interests between members. The core group wanted to continue as a band and had received a record contract offer from Drive-Thru Records. However, Shaant Hacikyan and Jeffery Czum pursued an alternative deal with Fueled by Ramen, leading to the band's disbandment. This conflict was documented in a SPIN magazine article and several YouTube shorts."
+    }
+  ]
+}

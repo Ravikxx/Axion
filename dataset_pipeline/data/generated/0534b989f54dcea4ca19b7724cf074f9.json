@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Arithmetico-geometric_sequence",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is an arithmetico-geometric sequence in mathematics?",
+      "answer": "An arithmetico-geometric sequence is formed by multiplying corresponding elements of an arithmetic progression and a geometric progression. If the arithmetic sequence is {a_n} and the geometric sequence is {b_n}, then the arithmetico-geometric sequence is {a_n * b_n}. For example, the sequence (0, 1/2, 2/4, 3/8, 4/16, 5/32, ...) has an arithmetic numerator (0, 1, 2, 3, 4, 5, ...) and a geometric denominator (1, 2, 4, 8, 16, 32, ...)."
+    },
+    {
+      "question": "How do you compute the nth term of an arithmetico-geometric sequence?",
+      "answer": "The nth term of an arithmetico-geometric sequence is the product of the nth term of an arithmetic sequence and the nth term of a geometric sequence. If the arithmetic sequence follows a_n = a + (n-1)d and the geometric sequence follows b_n = b * r^(n-1), then the nth term of the arithmetico-geometric sequence is (a + (n-1)d) * (b * r^(n-1))."
+    },
+    {
+      "question": "Provide the closed-form formula for the sum of an infinite arithmetico-geometric series.",
+      "answer": "For an infinite arithmetico-geometric series where the general term is k * r^k (with -1 < r < 1), the sum is given by the closed-form formula: sum_{k=1}^∞ k * r^k = r / (1 - r)^2. For example, when r = 1/2, the sum converges to (1/2) / (1 - 1/2)^2 = 2."
+    },
+    {
+      "question": "Write a Python function to compute the sum of the first N terms of an arithmetico-geometric sequence.",
+      "answer": "python\ndef arithmetico_geometric_sum(a, d, b, r, N):\n    \"\"\"\n    Computes the sum of the first N terms of an arithmetico-geometric sequence.\n    \n    Parameters:\n    a (float): First term of the arithmetic sequence.\n    d (float): Common difference of the arithmetic sequence.\n    b (float): First term of the geometric sequence.\n    r (float): Common ratio of the geometric sequence.\n    N (int): Number of terms to sum.\n    \n    Returns:\n    float: Sum of the first N terms.\n    \"\"\"\n    total = 0.0\n    for k in range(1, N + 1):\n        term = (a + (k - 1) * d) * (b * (r ** (k - 1)))\n        total += term\n    return total\n\n# Example usage:\n# Sum of first 5 terms with a=0, d=1, b=1, r=0.5\nprint(arithmetico_geometric_sum(0, 1, 1, 0.5, 5))  # Output: 0.96875\n"
+    },
+    {
+      "question": "How does Gabriel's staircase relate to arithmetico-geometric sequences?",
+      "answer": "Gabriel's staircase is the name given to the sum of the infinite arithmetico-geometric sequence (0/1, 1/2, 2/4, 3/8, 4/16, 5/32, ...). This sequence has an arithmetic numerator (0, 1, 2, 3, 4, 5, ...) and a geometric denominator (1, 2, 4, 8, 16, 32, ...). The sum of this infinite series is 2, which is a well-known result derived from the formula sum_{k=1}^∞ k * r^k = r / (1 - r)^2 with r = 1/2."
+    },
+    {
+      "question": "What is the French definition of an arithmetico-geometric sequence?",
+      "answer": "In French mathematical terminology, an arithmetico-geometric sequence refers to a sequence that satisfies a recurrence relation of the form u_{n+1} = r * u_n + d. This combines the properties of geometric sequences (u_{n+1} = r * u_n) and arithmetic sequences (u_{n+1} = u_n + d). Such sequences are solutions to inhomogeneous first-order linear recurrences with constant coefficients."
+    },
+    {
+      "question": "Derive the sum formula for the infinite arithmetico-geometric series sum_{k=1}^∞ k * r^k.",
+      "answer": "Let S = sum_{k=1}^∞ k * r^k. Multiply both sides by r: rS = sum_{k=1}^∞ k * r^{k+1} = sum_{k=2}^∞ (k-1) * r^k. Subtract rS from S:\nS - rS = sum_{k=1}^∞ k * r^k - sum_{k=2}^∞ (k-1) * r^k\nS(1 - r) = r + sum_{k=2}^∞ (k - (k-1)) * r^k\nS(1 - r) = r + sum_{k=2}^∞ r^k\nS(1 - r) = r + (r^2 / (1 - r))\nS = (r / (1 - r)) + (r^2 / (1 - r)^2)\nS = r(1 - r) / (1 - r)^2 + r^2 / (1 - r)^2\nS = r / (1 - r)^2\nThus, S = r / (1 - r)^2 for -1 < r < 1."
+    }
+  ]
+}

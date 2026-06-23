@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Fort_Denonville",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When was Fort Denonville built and where was it located?",
+      "answer": "Fort Denonville was built in 1688 and was located at the mouth of the Niagara River on Lake Ontario, at the site of what is now Fort Niagara."
+    },
+    {
+      "question": "What fort did Fort Denonville replace, and what happened to the original fort?",
+      "answer": "Fort Denonville replaced Fort Conti, which had been built on the same site in 1679 but burned down later that year."
+    },
+    {
+      "question": "Why was Fort Denonville constructed in 1688?",
+      "answer": "Fort Denonville was constructed in 1688 by Governor Jacques-René de Brisay, Marquis de Denonville, to maintain French presence in the area after a military expedition to the Iroquois. The fort was built near the end of the campaign season."
+    },
+    {
+      "question": "Describe the initial structure and garrison of Fort Denonville.",
+      "answer": "Fort Denonville initially consisted of eight wooden buildings enclosed by a stockade. It was garrisoned by one hundred men under the command of Captain Pierre de Troyes, Chevalier de Troyes."
+    },
+    {
+      "question": "What happened to the garrison of Fort Denonville during the Seneca siege in 1687–1688?",
+      "answer": "During the Seneca siege, the garrison was denied access to forage and fresh air. As a result, eighty-nine men died from scurvy, disease, and starvation. Only twelve survivors remained when a relief force arrived on Good Friday of 1688."
+    },
+    {
+      "question": "What action did the French take regarding Fort Denonville after the siege?",
+      "answer": "After the siege, the French pulled down the stockade and did not re-garrison the fort again until 1726, when they built 'The House of Peace' (the French Castle) and Fort Niagara on the same site."
+    },
+    {
+      "question": "Who led the relief force that arrived at Fort Denonville on Good Friday of 1688, and what significant event occurred upon their arrival?",
+      "answer": "The relief force arrived under unknown leadership, but the Jesuit chaplain, Father Pierre Millet, erected a cross and conducted a mass of thanksgiving for the twelve survivors found at the fort."
+    }
+  ]
+}

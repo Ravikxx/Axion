@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Finlandia",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "Who composed Finlandia and in what year was it written?",
+      "answer": "Finlandia was composed by the Finnish composer Jean Sibelius in 1899."
+    },
+    {
+      "question": "What is the historical context behind the composition of Finlandia?",
+      "answer": "Finlandia was composed during a period when Finland was the 'Grand Duchy of Finland,' ruled by Russia. The music was part of a pageant aimed at inspiring Finnish people to strive for independence and self-rule."
+    },
+    {
+      "question": "How did the music of Finlandia evolve after its initial composition?",
+      "answer": "After its initial composition in 1899, Sibelius made revisions to Finlandia in 1900. Later, he set lyrics to the hymn tune, transforming it into a separate choral piece. The music itself also became known as a hymn, often sung in Christian churches with the lyrics 'Be still, my soul: the Lord is on your side.'"
+    },
+    {
+      "question": "What is the significance of the Finlandia hymn tune in Finnish culture?",
+      "answer": "The Finlandia hymn tune is one of Finland's most recognizable songs and is often considered a second national anthem. It is deeply tied to Finnish identity and national pride, symbolizing freedom and resilience."
+    },
+    {
+      "question": "Which African country used the Finlandia tune as its national anthem, and for how long?",
+      "answer": "The tune of Finlandia was used as the national anthem of the short-lived African country Biafra."
+    },
+    {
+      "question": "Write a Python code snippet that prints the title and composer of Finlandia.",
+      "answer": "python\nprint(\"Title: Finlandia\")\nprint(\"Composer: Jean Sibelius\")\n"
+    },
+    {
+      "question": "Why does the music of Finlandia transition from dramatic to calm towards the end?",
+      "answer": "The transition in Finlandia's music from dramatic to calm reflects the struggle for freedom followed by a sense of hope and peace. This mirrors the Finnish people's journey toward independence and eventual sovereignty, as well as the comforting resolution of the hymn."
+    }
+  ]
+}

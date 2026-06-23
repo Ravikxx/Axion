@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Cassin's_auklet",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the scientific name of Cassin's auklet?",
+      "answer": "The scientific name of Cassin's auklet is *Ptychoramphus aleuticus*."
+    },
+    {
+      "question": "Where does Cassin's auklet typically nest?",
+      "answer": "Cassin's auklet nests in small burrows on offshore islands, with a notable population stronghold on Triangle Island off Vancouver Island's Cape Scott."
+    },
+    {
+      "question": "How can Cassin's auklet be identified at sea?",
+      "answer": "At sea, Cassin's auklet is usually identified by its flight, described as looking like a flying tennis ball."
+    },
+    {
+      "question": "What are the distinguishing physical features of Cassin's auklet?",
+      "answer": "Cassin's auklet is a small (25 cm, 200 g) seabird with dark plumage above, pale plumage below, a small white mark above the eye, an overall dark bill with a pale spot, and blue feet. Unlike many other auks, it lacks dramatic breeding plumage and remains the same year-round."
+    },
+    {
+      "question": "Does Cassin's auklet migrate?",
+      "answer": "Cassin's auklet is not known to be migratory, though northern birds may move farther south during the winter."
+    },
+    {
+      "question": "What are the two recognized subspecies of Cassin's auklet, and where do they range?",
+      "answer": "The two recognized subspecies are *P. a. aleuticus* (Aleutian Islands & south Alaska to northern Baja California, including the Kurile Islands) and *P. a. australis* (southern Baja California)."
+    },
+    {
+      "question": "Write a Python function that checks if a given range falls within the known range of Cassin's auklet.",
+      "answer": "python\ndef is_in_cassins_auklet_range(latitude, longitude):\n    # Cassin's auklet ranges from midway up Baja California to Alaska's Aleutian Islands\n    # Approximate bounding box: latitude 28°N to 55°N, longitude 114°W to 170°W\n    return (28 <= latitude <= 55) and (-170 <= longitude <= -114)\n\nExample usage:\npython\nprint(is_in_cassins_auklet_range(30, -115))  # True (Baja California)\nprint(is_in_cassins_auklet_range(50, -175))  # False (outside range)\n"
+    },
+    {
+      "question": "What extinct relative of Cassin's auklet is known from the Late Pliocene?",
+      "answer": "An extinct relative of Cassin's auklet, *Ptychoramphus tenuis*, is known from the Late Pliocene of the San Diego Formation in California."
+    }
+  ]
+}

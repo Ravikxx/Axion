@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Battle_of_Kokoda",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What were the two main engagements of the Battle of Kokoda in 1942?",
+      "answer": "The Battle of Kokoda consisted of two key engagements: the first occurred on July 28–29, 1942, where an Australian company fought a Japanese landing force near the village of Kokoda. The second engagement took place between August 8–10, 1942, where a weakened Australian battalion attempted to retake Kokoda from the Japanese, resulting in a head-on clash along the track."
+    },
+    {
+      "question": "What was the strategic objective of the Japanese forces in the Kokoda Track campaign?",
+      "answer": "The Japanese aimed to capture Port Moresby by advancing overland via the Kokoda Track. This would have provided them with a key strategic position in Papua New Guinea, allowing them to control access to the southern coast."
+    },
+    {
+      "question": "How did the Australian forces initially respond to the Japanese landing in Papua in mid-July 1942?",
+      "answer": "Upon the Japanese landing around Buna and Gona, Australian forces, supported by the United States, attempted to hold the village of Kokoda with a company-sized element. The Australians engaged in a short firefight but were nearly encircled and subsequently withdrew."
+    },
+    {
+      "question": "What tactical maneuver led to the Australians briefly retaking Kokoda during the second engagement?",
+      "answer": "During the second engagement (August 8–10, 1942), flanking attacks caught the Japanese force by surprise. This allowed the Australians, despite being weakened, to briefly retake Kokoda and nearby Pirivi before being forced to withdraw to Deniki."
+    },
+    {
+      "question": "How did the momentum shift in the Kokoda Track campaign by late September and early October 1942?",
+      "answer": "After the Japanese pushed the Australians back toward Port Moresby, reaching as far as Imita Ridge, the situation reversed. The Australians went on the offensive, forcing the Japanese to withdraw north and consolidate their beachheads on the northern coast."
+    },
+    {
+      "question": "What role did the Battle of Isurava play in the context of the Kokoda Track campaign?",
+      "answer": "The Battle of Isurava followed the second engagement of the Battle of Kokoda. It was a subsequent phase where further fighting occurred near Deniki, marking a critical period as the Australians attempted to regain control before the tide of the campaign turned in their favor."
+    },
+    {
+      "question": "Write a Python function that calculates the duration of the Battle of Kokoda in days, given the start and end dates.",
+      "answer": "python\ndef calculate_battle_duration(start_date, end_date):\n    from datetime import datetime\n    \n    start = datetime.strptime(start_date, '%Y-%m-%d')\n    end = datetime.strptime(end_date, '%Y-%m-%d')\n    duration = (end - start).days + 1  # Include both start and end dates\n    return duration\n\n# Example usage:\nstart_date = '1942-07-28'\nend_date = '1942-08-10'\nprint(calculate_battle_duration(start_date, end_date))  # Output: 14\n\nThis function takes start and end dates as strings in 'YYYY-MM-DD' format and returns the total number of days, inclusive, between them."
+    }
+  ]
+}

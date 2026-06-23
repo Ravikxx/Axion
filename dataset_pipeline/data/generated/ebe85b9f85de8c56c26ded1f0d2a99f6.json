@@ -1,0 +1,38 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/IPhone_12",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "When was the iPhone 12 released?",
+      "answer": "The iPhone 12 was released on October 23, 2020."
+    },
+    {
+      "question": "What are the storage options available for the iPhone 12 and iPhone 12 Mini?",
+      "answer": "Both the iPhone 12 and iPhone 12 Mini come in storage options of 64 GB, 128 GB, and 256 GB."
+    },
+    {
+      "question": "How does the iPhone 12 Mini differ from the iPhone 12 in terms of screen size?",
+      "answer": "The iPhone 12 has a 6.1-inch screen, while the iPhone 12 Mini features a smaller 5.4-inch screen."
+    },
+    {
+      "question": "What is the Apple A14 Bionic used for in the iPhone 12 series?",
+      "answer": "The Apple A14 Bionic is a System-on-Chip (SoC) that powers the iPhone 12 and iPhone 12 Mini, providing the computational and processing capabilities for the devices."
+    },
+    {
+      "question": "What is MagSafe and how does it work on the iPhone 12 family?",
+      "answer": "MagSafe is a magnetic back on the iPhone 12 family that enables magnetic wireless charging and allows accessories like wallets to be attached to the back of the phone. It relies on a ring of magnets to align and secure compatible accessories or chargers."
+    },
+    {
+      "question": "Provide a Python code snippet to check if an iPhone model is part of the iPhone 12 family.",
+      "answer": "Here is a Python function to check if a given iPhone model is part of the iPhone 12 family:\n\npython\ndef is_iphone_12_family(model: str) -> bool:\n    iphone_12_models = {\"iPhone 12\", \"iPhone 12 Mini\", \"iPhone 12 Pro\", \"iPhone 12 Pro Max\"}\n    return model in iphone_12_models\n\n# Example usage:\nprint(is_iphone_12_family(\"iPhone 12\"))  # Output: True\nprint(is_iphone_12_family(\"iPhone 11\"))  # Output: False\n"
+    },
+    {
+      "question": "What connectivity feature was introduced for the first time in the iPhone 12 series?",
+      "answer": "The iPhone 12 series was the first to introduce 5G connectivity in iPhones."
+    },
+    {
+      "question": "Why is the iPhone 12 considered a return to a previous design aesthetic?",
+      "answer": "The iPhone 12 marks a return to flat edges for the iPhone, a design first introduced with the iPhone 4 in 2010 and later discontinued with the iPhone 5S in 2013 (except for the first-generation iPhone SE in 2016)."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Die_Deutschen_Konservativen",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What were the origins of the German Conservatives organization?",
+      "answer": "The German Conservatives developed from a conservative campaign to support Franz Josef Strauß during the 1980 federal election."
+    },
+    {
+      "question": "When was Die Deutschen Konservativen formally established, and who were its key leaders?",
+      "answer": "The organization was formally established around 1986. Its President was Heinrich Lummer, former Berlin Senator for the Interior, and its Chairman was journalist Joachim Siegerist, who later became a Latvian MP."
+    },
+    {
+      "question": "Why was Die Deutschen Konservativen fined in 1987?",
+      "answer": "The organization was fined in 1987 for 'causing offence' to former Chancellor Willy Brandt due to their condemnation of his perceived appeasement policies toward communism."
+    },
+    {
+      "question": "Describe the 1989 anti-communist rally held by Die Deutschen Konservativen in Mölln.",
+      "answer": "On August 12–13, 1989, the German Conservatives organized a large anti-communist rally in Mölln near Lübeck. The event featured torchlit boat processions carrying flags of 'lost provinces' (e.g., Silesia, East Prussia), a barge with visiting dignitaries from Europe, including a UK delegation, and speeches broadcast across the East-West border. Around 20,000 people attended, culminating in a midnight march led by the 'lost provinces' flags to the town center for a closing speech by Heinrich Lummer."
+    },
+    {
+      "question": "What types of events did Die Deutschen Konservativen organize beyond rallies?",
+      "answer": "The organization published regular newsletters and hosted an annual conference in addition to its rallies and demonstrations."
+    },
+    {
+      "question": "How did Die Deutschen Konservativen use media during their 1989 rally?",
+      "answer": "During the 1989 rally, the organization broadcast speeches made by dignitaries, including anti-communist speeches by the UK's Western Goals Institute, using high-level loudspeakers across the East-West border to reach towns on the other side."
+    },
+    {
+      "question": "Write a Python code snippet to generate a list of 'lost provinces' flags mentioned in the 1989 rally.",
+      "answer": "python\nlost_provinces = [\n    \"Silesia\",\n    \"East Prussia\",\n    \"Danzig\",\n    \"Sudetenland\",\n    \"Pomerania\"\n]\n\nprint(\"Flags carried during the 1989 rally:\")\nfor province in lost_provinces:\n    print(f\"- {province}\")\n"
+    }
+  ]
+}

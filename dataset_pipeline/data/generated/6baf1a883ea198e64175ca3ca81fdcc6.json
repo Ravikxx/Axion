@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/trojanmocx/i-built-a-desktop-app-that-commits-to-github-so-i-dont-have-to-lie-about-consistency-3jd5",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What is the primary purpose of the Auto-Commit Desktop App described in the text?",
+      "answer": "The Auto-Commit Desktop App automates Git commits locally to remove the mental overhead of manually committing daily. It schedules and pushes commits directly to a repository, reducing friction by ensuring consistency in version control without relying on discipline alone."
+    },
+    {
+      "question": "Why does the author argue that contribution graphs are not a productivity metric?",
+      "answer": "The author argues that contribution graphs are 'vibe metrics'—they measure arbitrary activity like commit frequency rather than actual productivity or meaningful work. The focus on such metrics can create false pressure and ignore the quality or impact of the work done."
+    },
+    {
+      "question": "According to the text, what are some key technical challenges the author learned while building the app?",
+      "answer": "The author learned how to package a desktop app, handle Git authentication cleanly, and build something that provokes immediate debate. These challenges highlight the practical aspects of software development beyond writing code."
+    },
+    {
+      "question": "How does the Auto-Commit Desktop App differ from using cron jobs for automated commits?",
+      "answer": "Unlike cron jobs, which are often cobbled together hacks requiring browser tabs and manual setup, the Auto-Commit Desktop App provides a dedicated, user-friendly interface. It runs locally, schedules commits, and handles Git operations seamlessly without requiring technical expertise."
+    },
+    {
+      "question": "What is the author's perspective on discipline vs. systems in the context of Git commits?",
+      "answer": "The author argues that consistency is not about discipline but about systems. Automating the commit process removes friction and ensures regular version control, making it easier to maintain consistency without relying solely on personal discipline."
+    },
+    {
+      "question": "Provide a Python code snippet that demonstrates how to schedule a Git commit using the `schedule` library.",
+      "answer": "python\nimport schedule\nimport time\nimport subprocess\n\ndef commit_and_push():\n    # Stage all changes\n    subprocess.run(['git', 'add', '.'])\n    # Commit with a message\n    subprocess.run(['git', 'commit', '-m', 'Automated commit'])\n    # Push to the remote repository\n    subprocess.run(['git', 'push'])\n    print(\"Commit and push completed.\")\n\n# Schedule the commit every day at 9 AM\nschedule.every().day.at(\"09:00\").do(commit_and_push)\n\n# Keep the script running\nwhile True:\n    schedule.run_pending()\n    time.sleep(1)\n"
+    },
+    {
+      "question": "Do tools like the Auto-Commit Desktop App reduce discipline or expose flaws in productivity metrics?",
+      "answer": "Tools like this don't inherently reduce discipline but instead reveal how shallow our productivity metrics are. They automate mundane tasks, allowing focus on meaningful work, while highlighting that metrics like contribution graphs often prioritize activity over actual productivity or creativity."
+    }
+  ]
+}

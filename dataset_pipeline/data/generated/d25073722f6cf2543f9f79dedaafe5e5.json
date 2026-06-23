@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Blacka_Di_Danca",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who is Blacka Di Danca and what are his primary professional roles?",
+      "answer": "Blacka Di Danca is a multifaceted cultural innovator and artist who works professionally as a dancer, choreographer, movement director, and actor. His career also extends to entrepreneurship, including developing music, creating marketing campaigns, and producing apparel through his lifestyle brand Danca, along with Danca Media and Danca Music Group."
+    },
+    {
+      "question": "Where did Blacka Di Danca grow up and how did his upbringing influence his dance career?",
+      "answer": "Blacka Di Danca grew up in Brooklyn, New York, in a Caribbean household. His early exposure to Caribbean dance traditions—such as holding a child’s hands while teaching them to whine at the waist—and the music of Reggae, Calypso, Soca, and Dancehall at family gatherings deeply inspired his love for dance and cultural expression."
+    },
+    {
+      "question": "What pivotal moment in 2002 changed the trajectory of Blacka Di Danca’s dance career?",
+      "answer": "In 2002, Blacka attended his first dancehall party in Brooklyn after the New Kingston group opened a show alongside Frankie Paul. The experience, where he observed synchronized dancers performing, made him realize dancing was his calling. This led him to seek guidance from dancer JC Smoove and begin training in Passa Passa dances."
+    },
+    {
+      "question": "How did Blacka Di Danca’s involvement with New Kingston contribute to his rise in the dance scene?",
+      "answer": "Blacka Di Danca joined the group New Kingston as a dancer, which allowed him to perform regularly at clubs like Temptations on Church Avenue. His rising profile led to New Kingston enlisting him as their official dancer for events, effectively launching his career in the Brooklyn dance scene."
+    },
+    {
+      "question": "What early artistic influences shaped Blacka Di Danca’s creative development?",
+      "answer": "As a child, Blacka participated in African dance classes at P.S. 8 in Brooklyn, which sparked his love for movement. Later, he studied art history at Satellite West Academy, which became a major inspiration for his artistic expression. His passion for visual arts, such as sketching and painting, also played a key role in shaping his creative identity."
+    },
+    {
+      "question": "Describe the key role of JC Smoove in Blacka Di Danca’s dance training and career.",
+      "answer": "JC Smoove served as a mentor and guide for Blacka Di Danca, helping him transition from observing dancehall DVDs to actively training in Passa Passa dances. Smoove’s support was instrumental in Blacka’s early career development, including his first professional booking in 2007."
+    },
+    {
+      "question": "Provide a code snippet that simulates Blacka Di Danca’s dance career timeline in Python using a list of tuples.",
+      "answer": "python\n# Timeline of Blacka Di Danca's dance career milestones\ncareer_timeline = [\n    (2002, \"Attended first dancehall party in Brooklyn, realizing dancing was his calling\"),\n    (2002, \"Started training with JC Smoove in Passa Passa dances\"),\n    (2003, \"Became the official dancer for New Kingston\"),\n    (2005, \"Won first place at Binghamton University Carnival Dance competition\"),\n    (2007, \"Performed first professional booking in Virginia with JC Smoove and Byrd Hype\"),\n    (2008, \"Began touring and teaching workshops internationally\")\n]\n\nfor year, event in career_timeline:\n    print(f\"{year}: {event}\")\n"
+    }
+  ]
+}

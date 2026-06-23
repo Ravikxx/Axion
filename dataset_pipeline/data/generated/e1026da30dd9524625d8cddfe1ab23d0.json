@@ -1,0 +1,38 @@
+{
+  "source_url": "https://dev.to/sylwia-lask/the-email-that-nearly-stopped-me-from-becoming-a-developer-3n77",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What was the speaker's primary concern before giving their talk at the WeCoded Challenge?",
+      "answer": "The speaker was primarily concerned about convincing the audience to trust her, as she wasn't a programming celebrity, hadn't given a public talk in over five years, and didn't fit the stereotypical image of a senior developer or team lead."
+    },
+    {
+      "question": "How did the speaker initially handle the beginning of their talk to ensure a smooth flow?",
+      "answer": "The speaker memorized the beginning of their talk, as it's a classic tip for public speakers that helps the rest of the presentation flow more naturally."
+    },
+    {
+      "question": "What specific details about the speaker's first website can you recall?",
+      "answer": "The speaker's first website was built in the late 90s/early 2000s using HTML 4.01, had no CSS, used framesets for navigation, included a visitor counter and guestbook, and featured falling snow animation. The site was about the Solar System, which at the time still had nine planets."
+    },
+    {
+      "question": "Why did the speaker's father eventually allow more internet time despite initial restrictions?",
+      "answer": "The speaker's father allowed more internet time after seeing how passionate and committed the speaker had become about programming and building websites."
+    },
+    {
+      "question": "What was the content and tone of the email the speaker received after sharing their website link?",
+      "answer": "The email was highly critical, with comments like 'This website is cluttering the internet,' 'You can immediately tell it was made by a twelve-year-old,' and suggesting the speaker should delete the website. The tone was discouraging and harsh."
+    },
+    {
+      "question": "How did receiving that email affect the speaker's programming journey?",
+      "answer": "The email discouraged the speaker so much that they completely stopped learning to program and gave up on their ambitious plans at that time. It created a significant setback in their programming journey."
+    },
+    {
+      "question": "What is the speaker's reflection on constructive criticism based on their personal experience?",
+      "answer": "The speaker reflects that constructive criticism is valuable for growth, but there's a crucial difference between helpful feedback and outright dismissal. They emphasize that every developer starts with imperfect, amateur work, and those who receive harsh criticism that says to 'delete it all' may never pursue their passion further."
+    },
+    {
+      "question": "Write a Python function that simulates a dial-up connection process with modem sounds.",
+      "answer": "python\nimport time\nimport random\n\ndef simulate_dialup_connection(duration_minutes=15):\n    print(\"📞 Dialing... Click!')\n    print(\"🔊 Modem connecting with strange mechanical sounds:\")\n    modem_sounds = ['eeeeee', 'rrrrr', 'shhhhh', 'brrrr', 'zzzzzz']\n    \n    for _ in range(5):\n        print(' '.join(random.choice(modem_sounds) for _ in range(3)))\n        time.sleep(0.5)\n    \n    print(\"\\n⏳ Loading the ancient website...\")\n    for i in range(1, 6):\n        print(f\"Progress: {'#' * i}{' ' * (5-i)} {i*20}%\")\n        time.sleep(0.3)\n    \n    print(\"\\n✅ Connection successful! But remember - you only have 15 minutes total today.\")\n\n# Example usage:\nsimulate_dialup_connection()\n"
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Ijara-Isin",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Where is Ijara-Isin located, and what local government area does it belong to?",
+      "answer": "Ijara-Isin is a town in Isin Local Government Area, Kwara State, Nigeria."
+    },
+    {
+      "question": "What are the historical origins of Ijara-Isin's founders?",
+      "answer": "The founder of Ijara-Isin migrated from Oyo, though some compounds in the town trace their origins to migrants from outside Oyo."
+    },
+    {
+      "question": "List the compounds that make up Ijara-Isin town.",
+      "answer": "Ijara-Isin town comprises the following compounds: Odo-Ijara, Okegunsin, Ile Olusin, Ile-Nla, Ajegunle, Oke-Afin, Ofatedo, and Ile Olowu."
+    },
+    {
+      "question": "What are the traditional leadership positions in Ijara-Isin, and who currently holds them?",
+      "answer": "Ijara-Isin has a Baale (Chief Enoch Bamikole) and a Royal King (Oba Ademola Julius Ajibola, also known as the Olusin of Ijara-Isin)."
+    },
+    {
+      "question": "How was the Ijara-Isin currency created, and what is its purpose?",
+      "answer": "The Ijara-Isin currency is a voucher system designed by Oba Ademola Julius Ajibola to boost the township's local economy. It can only be spent and circulated within Ijara-Isin."
+    },
+    {
+      "question": "What languages and dialects are spoken in Ijara-Isin?",
+      "answer": "The primary language spoken in Ijara-Isin is Yoruba, with the local dialect being Igbomina."
+    },
+    {
+      "question": "Write a Python function to validate if a given input is a valid Ijara-Isin compound name.",
+      "answer": "python\ndef is_valid_ijara_compound(compound_name):\n    valid_compounds = [\n        \"Odo-Ijara\", \"Okegunsin\", \"Ile Olusin\", \"Ile-Nla\",\n        \"Ajegunle\", \"Oke-Afin\", \"Ofatedo\", \"Ile Olowu\"\n    ]\n    return compound_name in valid_compounds\n\n\nExample usage:\npython\nprint(is_valid_ijara_compound(\"Okegunsin\"))  # Output: True\nprint(is_valid_ijara_compound(\"Ibadan\"))    # Output: False\n"
+    },
+    {
+      "question": "Why is Ijara-Isin considered a peaceful and communal town?",
+      "answer": "Ijara-Isin is known for its peaceful nature and strong communal living, with residents actively participating in social activities and collective efforts."
+    }
+  ]
+}

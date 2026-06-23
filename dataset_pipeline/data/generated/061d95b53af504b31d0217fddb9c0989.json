@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/2022_Atlantic_hurricane_season",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What made the 2022 Atlantic hurricane season the fourth-costliest on record despite having a below-average number of major hurricanes?",
+      "answer": "The 2022 Atlantic hurricane season became the fourth-costliest on record primarily because of Hurricane Ian, which caused an estimated $113.1 billion in damage across western Cuba, Southwestern and Central Florida, and the Carolinas. Even though the season had an average number of named storms and fewer major hurricanes than average, the concentrated destruction from Ian significantly increased the total economic impact."
+    },
+    {
+      "question": "When did the 2022 Atlantic hurricane season officially begin and end?",
+      "answer": "The 2022 Atlantic hurricane season officially began on June 1, 2022, and ended on November 30, 2022. These dates are based on historical conventions that mark the period when most tropical or subtropical cyclones typically form in the Atlantic Ocean."
+    },
+    {
+      "question": "What unusual event occurred with Tropical Storm Bonnie during the 2022 Atlantic hurricane season?",
+      "answer": "Tropical Storm Bonnie formed on July 1, 2022, made landfall near the Costa Rica–Nicaragua border, and then crossed over into the Pacific basin intact. This made it the first Atlantic storm since Hurricane Otto in 2016 to successfully transition from the Atlantic to the Pacific."
+    },
+    {
+      "question": "Why was tropical cyclogenesis suppressed across the Atlantic basin in August 2022, and what was the significance of this event?",
+      "answer": "Tropical cyclogenesis was suppressed in August 2022 due to a combination of increased wind shear and the presence of the Saharan Air Layer, which inhibited storm formation. This was significant because it marked the first time since 1997, and the first during a La Niña year, that no tropical cyclones formed in August."
+    },
+    {
+      "question": "How did Hurricane Fiona impact Canada during the 2022 Atlantic hurricane season?",
+      "answer": "As an extratropical cyclone, Hurricane Fiona became the strongest storm in Canadian history, as measured by atmospheric pressure. It caused significant damage in Atlantic Canada, highlighting the far-reaching impacts of tropical systems even after transitioning to extratropical status."
+    },
+    {
+      "question": "Write a Python code snippet to calculate the total estimated damage caused by the 2022 Atlantic hurricane season.",
+      "answer": "python\n# Total estimated damage in billions of USD\ndamages = {\n    'Hurricane Ian': 113.1,\n    'Hurricane Nicole': 1.0,\n    'Other storms': 3.6  # Estimated residual damage from other storms\n}\n\ntotal_damage = sum(damages.values())\nprint(f\"Total estimated damage: ${total_damage:.1f} billion\")\n\nThis code calculates the total estimated damage of $117.7 billion by summing the known damages from Hurricane Ian and Hurricane Nicole, along with an estimated residual amount from other storms in the season."
+    },
+    {
+      "question": "What was the significance of Hurricane Julia in the 2022 Atlantic hurricane season?",
+      "answer": "Hurricane Julia, which formed in early October 2022, became the second storm of the season to cross over into the Pacific basin intact after traversing Nicaragua. This made the 2022 season the first since 1996 to have more than one crossover system, underscoring its unusual and active nature."
+    },
+    {
+      "question": "How did forecasting agencies initially predict the 2022 Atlantic hurricane season, and why was their prediction not fully realized?",
+      "answer": "Most forecasting agencies anticipated a well-above-average 2022 Atlantic hurricane season due to warmer-than-normal sea surface temperatures and a favorable El Niño–Southern Oscillation pattern that initially limited El Niño development. However, the actual season was suppressed by unfavorable wind shear and drier air, particularly in July and August, leading to fewer storms than initially expected."
+    }
+  ]
+}

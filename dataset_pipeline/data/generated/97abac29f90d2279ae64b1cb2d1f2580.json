@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Aberdeenshire",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the current administrative status of Aberdeenshire within Scotland?",
+      "answer": "Aberdeenshire is one of the 32 council areas of Scotland, governed by Aberdeenshire Council. It is distinct from the Aberdeen City council area, despite sharing historical ties."
+    },
+    {
+      "question": "How did Aberdeenshire's economy evolve over the past few decades?",
+      "answer": "Traditionally reliant on primary sectors like agriculture, fishing, and forestry, Aberdeenshire's economy expanded significantly with the growth of the oil and gas industry and associated services over the last 40 years, contributing to rapid population growth of about 50% since 1975."
+    },
+    {
+      "question": "What are the borders of Aberdeenshire?",
+      "answer": "Aberdeenshire borders Angus and Perth and Kinross to the south, Highland and Moray to the west, and Aberdeen City to the east."
+    },
+    {
+      "question": "Why is Aberdeenshire Council unique in terms of its headquarters?",
+      "answer": "Aberdeenshire Council is headquartered at Woodhill House in Aberdeen, which is notable because Aberdeen itself forms a separate council area, making it the only Scottish council with headquarters outside its jurisdiction."
+    },
+    {
+      "question": "What percentage of Scotland's total land area does Aberdeenshire cover?",
+      "answer": "Aberdeenshire represents 8% of Scotland's overall territory, covering an area of 6,313 square kilometers (2,437 square miles)."
+    },
+    {
+      "question": "How do modern and historic boundaries of Aberdeenshire differ?",
+      "answer": "The modern Aberdeenshire Council area includes all of the historic counties of Aberdeenshire and Kincardineshire except the area forming Aberdeen City Council, as well as part of Banffshire. Historic county boundaries remain officially used for specific purposes like land registration and lieutenancy."
+    },
+    {
+      "question": "Provide a code snippet to calculate the percentage of Scotland's land area that Aberdeenshire covers, given Scotland's total land area is approximately 77,933 square kilometers.",
+      "answer": "python\nscotland_total_area_km2 = 77933\naberdeenshire_area_km2 = 6313\npercentage = (aberdeenshire_area_km2 / scotland_total_area_km2) * 100\nprint(f\"Aberdeenshire covers {percentage:.2f}% of Scotland's land area.\")\n# Output: Aberdeenshire covers 8.10% of Scotland's land area.\n"
+    }
+  ]
+}

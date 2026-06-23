@@ -1,0 +1,42 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Gheorghe_Marin_Fontanin",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was Gheorghe Marin Fontanin's full name and why did he add 'Fontanin' to it?",
+      "answer": "Gheorghe Marin Fontanin's full name was Gheorghe Marin Fontanin. He added 'Fontanin' as a latinization of his father's native village, Izvoarele, which means 'the streams' in Romanian."
+    },
+    {
+      "question": "Where and when was Gheorghe Marin Fontanin born, and what were the names of his parents?",
+      "answer": "Gheorghe Marin Fontanin was born in October 1825 in Brașov, Transylvania. His father was Dumitru Marin, a merchant from Izvoarele, Dâmbovița County, Wallachia, and his mother was née Hagi-Panteli, originally from Bucharest."
+    },
+    {
+      "question": "What educational institutions did Gheorghe Marin Fontanin attend, and what degree did he earn?",
+      "answer": "Gheorghe Marin Fontanin studied in Brașov, at a private boarding school in Sibiu, at Cluj, and at the University of Vienna, where he earned a doctorate in philosophy."
+    },
+    {
+      "question": "How was Gheorghe Marin Fontanin involved in the 1848 Romanian Revolution?",
+      "answer": "In 1848, Fontanin was in Bucharest participating in the revolution. After the city was occupied by the Ottomans, he fled to Sibiu for a few months before returning to Bucharest."
+    },
+    {
+      "question": "What political event did Gheorghe Marin Fontanin preside over in 1857, and what was its significance?",
+      "answer": "In 1857, Fontanin presided over the election of Dolj County deputies for the ad-hoc divan, supporting the Union of Wallachia with Moldavia, a key step toward the formation of modern Romania."
+    },
+    {
+      "question": "List the languages Gheorghe Marin Fontanin knew and describe his linguistic contributions.",
+      "answer": "Fontanin was fluent in Romanian, Latin, Hungarian, Old Church Slavonic, Italian, French, German, and English. He translated extensively from Latin, worked on Greek philosophy and literature, and was involved in editing a Latin-Romanian dictionary. He also published poems in the magazine *Vocea română*."
+    },
+    {
+      "question": "Write a Python function that takes a name and returns its latinized form by appending 'in' to the end, similar to Gheorghe Marin Fontanin's addition of 'Fontanin'.",
+      "answer": "python\ndef latinize_name(name: str) -> str:\n    return f\"{name}in\"\n\n# Example usage:\nprint(latinize_name(\"Fontan\"))  # Output: Fontanin\n"
+    },
+    {
+      "question": "What notable positions did Gheorghe Marin Fontanin hold in the Romanian Academy and in Craiova?",
+      "answer": "In 1870, Fontanin was elected a titular member of the Romanian Academy. In Craiova, he founded and served as president of a professor's club and edited its magazine, *Vocea română*, where eleven of his poems appeared."
+    },
+    {
+      "question": "Why is Gheorghe Marin Fontanin described as a 'legendary figure' by his students?",
+      "answer": "Fontanin was described as a legendary figure due to his considerable knowledge, reserved demeanor, and preoccupation with scientific problems, which made him uncommunicative but highly respected among his students."
+    }
+  ]
+}

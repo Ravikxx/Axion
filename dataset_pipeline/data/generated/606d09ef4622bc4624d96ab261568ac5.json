@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/2024_A-League_Men_Grand_Final",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Which teams played in the 2024 A-League Men Grand Final and where was the match held?",
+      "answer": "Central Coast Mariners and Melbourne Victory played in the 2024 A-League Men Grand Final, which was held at Central Coast Stadium in Gosford, Australia."
+    },
+    {
+      "question": "Who won the 2024 A-League Men Grand Final and what was the final score?",
+      "answer": "Central Coast Mariners won the 2024 A-League Men Grand Final with a score of 3–1 in extra time."
+    },
+    {
+      "question": "How many consecutive championships did Central Coast Mariners win with their 2024 Grand Final victory?",
+      "answer": "Central Coast Mariners won their second consecutive championship with their 2024 Grand Final victory."
+    },
+    {
+      "question": "Who was awarded the Joe Marston Medal in the 2024 A-League Men Grand Final?",
+      "answer": "Ryan Edmondson was awarded the Joe Marston Medal for his performance in the 2024 A-League Men Grand Final."
+    },
+    {
+      "question": "What milestone did Central Coast Mariners achieve in the 2023–24 A-League Men season?",
+      "answer": "Central Coast Mariners achieved the first treble by an A-League club in the 2023–24 season."
+    },
+    {
+      "question": "Provide a Python code snippet to calculate the attendance record set at Central Coast Stadium during the 2024 A-League Men Grand Final.",
+      "answer": "python\nspectators = 21379\nprint(f\"The attendance record at Central Coast Stadium during the 2024 A-League Men Grand Final was {spectators:,} spectators.\")\n"
+    },
+    {
+      "question": "Why was the 2024 A-League Men Grand Final significant in terms of Melbourne Victory's history?",
+      "answer": "The 2024 A-League Men Grand Final was significant for Melbourne Victory because it marked their seventh Grand Final appearance, during which their head coach Tony Popovic suffered his fifth defeat in a Grand Final."
+    }
+  ]
+}

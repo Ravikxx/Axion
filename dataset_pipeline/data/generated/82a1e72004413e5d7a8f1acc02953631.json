@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/1960_United_States_presidential_election_in_New_Jersey",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who were the Democratic and Republican nominees in the 1960 U.S. presidential election?",
+      "answer": "The Democratic nominees were Senator John F. Kennedy of Massachusetts (presidential candidate) and Senate Majority Leader Lyndon B. Johnson of Texas (vice-presidential candidate). The Republican nominees were Vice President Richard Nixon of California (presidential candidate) and Ambassador Henry Cabot Lodge Jr. of Massachusetts (vice-presidential candidate)."
+    },
+    {
+      "question": "What was the vote percentage margin by which John F. Kennedy won New Jersey in the 1960 election?",
+      "answer": "John F. Kennedy won New Jersey with 49.96% of the vote, while Richard Nixon received 49.16%. This resulted in a narrow margin of 0.80% in favor of Kennedy."
+    },
+    {
+      "question": "How did John F. Kennedy manage to win New Jersey despite winning only 7 counties compared to Nixon's 14?",
+      "answer": "Kennedy won decisively in several heavily populated counties, including those with large Catholic and urban ethnic immigrant populations, while keeping the results close in the counties he lost. His strong appeal to these demographic groups led to record turnout and large vote margins in key urban areas."
+    },
+    {
+      "question": "What demographic factors contributed to John F. Kennedy's victory in New Jersey in 1960?",
+      "answer": "Kennedy's support base among working-class Catholics and other urban ethnic immigrant groups, particularly Irish immigrants, was a key factor. Additionally, his strong performance with African-American voters, influenced by the Great Migration, helped secure his victory. His historic candidacy as the first Roman Catholic nominee also galvanized these communities to turn out in record numbers."
+    },
+    {
+      "question": "Was New Jersey considered a swing state in 1960, and how did its results compare to the national average?",
+      "answer": "Yes, New Jersey was typically a swing state with a slight Republican lean in that era. In 1960, it voted about 0.18% more Democratic than the national average, making it about as Democratic as the country overall. This was due to the unique circumstances surrounding Kennedy's candidacy and popularity among Northeastern urban populations."
+    },
+    {
+      "question": "Which counties did John F. Kennedy fail to win in New Jersey during the 1960 election that Democratic candidates typically won in later years?",
+      "answer": "In 1960, Kennedy did not carry Burlington, Gloucester, and Atlantic counties. This is notable because later Democratic candidates who won New Jersey (such as John Kerry in 2004) did carry these counties."
+    },
+    {
+      "question": "Write a Python code snippet to calculate the vote margin between Kennedy and Nixon in New Jersey's 1960 election.",
+      "answer": "python\n# Vote percentages for Kennedy and Nixon in New Jersey (1960)\nkenney_votes = 49.96\nnixon_votes = 49.16\n\n# Calculate the margin\nmargin = kenney_votes - nixon_votes\nprint(f\"Kennedy's vote margin over Nixon in New Jersey: {margin:.2f}%\")\n\nOutput:\nKennedy's vote margin over Nixon in New Jersey: 0.80%"
+    }
+  ]
+}

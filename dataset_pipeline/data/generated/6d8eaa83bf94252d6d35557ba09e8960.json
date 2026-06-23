@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/China–India_relations",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What historical trade route connected India and China, and what cultural influence did it facilitate?",
+      "answer": "The ancient Silk Road connected India and China, serving as a major trade route between the two civilizations. This trade network is also credited with facilitating the spread of Buddhism from India to East Asia, significantly influencing cultural and religious developments in both regions."
+    },
+    {
+      "question": "How did the British East India Company contribute to the Opium Wars between China and India?",
+      "answer": "During the 19th century, the British East India Company exported opium, which was grown in India, to China. This trade practice led to widespread addiction in China and triggered the Opium Wars between the Qing Dynasty and British forces."
+    },
+    {
+      "question": "What were the key geopolitical events that shaped Sino-Indian relations after India's independence in 1947?",
+      "answer": "After India's independence in 1947, it initially established relations with the Republic of China (ROC). In 1950, India became one of the first noncommunist countries to recognize the People's Republic of China (PRC) as the legitimate government of Mainland China and Taiwan, marking the beginning of modern Sino-Indian diplomatic relations."
+    },
+    {
+      "question": "What is the Line of Actual Control (LAC), and why is it a significant issue in Sino-Indian relations?",
+      "answer": "The Line of Actual Control (LAC) is the de facto border between China and India, established after the 1962 Sino-Indian War. It remains a central issue in their relationship due to frequent border disputes, including the 1962 war, 1967 clashes, and 2020-2021 skirmishes. The LAC is a point of contention because it divides disputed territories, and both countries have differing perceptions of its alignment."
+    },
+    {
+      "question": "How have China and India addressed border conflicts since the late 1980s?",
+      "answer": "Since the late 1980s, both China and India have worked to rebuild diplomatic and economic ties. A key agreement in 1996 prohibited the use of firearms and explosives near the LAC. Additionally, they established border deconfliction mechanisms, beginning with the 2003 Special Representatives, to manage disputes and prevent escalation."
+    },
+    {
+      "question": "What are the primary concerns of China and India regarding each other's military and economic activities?",
+      "answer": "India's primary concerns include China's close relations with Pakistan and separatist groups in Northeast India. China's concerns revolve around India's military and economic activities in the disputed South China Sea, as well as India's hosting of Tibetan exiles. These issues contribute to ongoing tensions and great power competition in South Asia."
+    },
+    {
+      "question": "Write a Python code snippet to visualize Sino-Indian trade data from 2008 to 2021, assuming the data is stored in a CSV file.",
+      "answer": "python\nimport pandas as pd\nimport matplotlib.pyplot as plt\n\n# Load the trade data from a CSV file\ndata = pd.read_csv('sino_indian_trade.csv')\n\n# Convert the year column to datetime for proper plotting\ndata['Year'] = pd.to_datetime(data['Year'], format='%Y')\n\n# Plot the trade data\nplt.figure(figsize=(10, 6))\nplt.plot(data['Year'], data['Trade_Value'], marker='o', linestyle='-')\nplt.title('Sino-Indian Trade (2008-2021)')\nplt.xlabel('Year')\nplt.ylabel('Trade Value (USD Billion)')\nplt.grid(True)\nplt.show()\n\n*Note: Replace 'sino_indian_trade.csv' with the actual file path and ensure the CSV contains columns for 'Year' and 'Trade_Value'."
+    }
+  ]
+}

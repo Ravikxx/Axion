@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Duke_of_Marmalade",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What notable achievements did Duke of Marmalade accomplish in 2008?",
+      "answer": "In 2008, Duke of Marmalade won five consecutive Group One races, which earned him the title of European Champion Older Horse. These victories included the Prix Ganay, Tattersalls Gold Cup, Prince of Wales's Stakes, King George VI and Queen Elizabeth Stakes, and International Stakes."
+    },
+    {
+      "question": "How did Duke of Marmalade's career progress after his initial wins as a two-year-old?",
+      "answer": "After winning his first two races as a two-year-old in June 2006, Duke of Marmalade did not win another race for nearly twenty-two months, during which he was sometimes used as a pacemaker for other horses in his stable, such as Dylan Thomas. He resumed winning in the spring of his four-year-old season in 2008."
+    },
+    {
+      "question": "Where was Duke of Marmalade relocated to after being sold in 2014?",
+      "answer": "In July 2014, Duke of Marmalade was sold and relocated to Drakenstein Stud in South Africa."
+    },
+    {
+      "question": "What was Duke of Marmalade's breeding impact, and which horses did he sire?",
+      "answer": "Duke of Marmalade sired four European Classic winners in 2015: Nutan, Star of Seville, Simple Verse, and Sound of Freedom."
+    },
+    {
+      "question": "Who were Duke of Marmalade's owners during his racing career?",
+      "answer": "Duke of Marmalade was owned during his racing career by Sue Magnier and Michael Tabor."
+    },
+    {
+      "question": "Explain the term 'shuttling' in the context of Duke of Marmalade's breeding career.",
+      "answer": "Shuttling refers to the practice of moving a stallion between stud farms in different countries, typically to take advantage of opposite breeding seasons in the northern and southern hemispheres. Duke of Marmalade was shuttled between stud farms in Ireland and Australia during his breeding career."
+    },
+    {
+      "question": "Write a Python function to calculate the total number of Group One wins Duke of Marmalade achieved in 2008.",
+      "answer": "python\ndef calculate_group_one_wins():\n    # Duke of Marmalade won 5 consecutive Group One races in 2008\n    return 5\n\n# Example usage\nprint(calculate_group_one_wins())  # Output: 5\n"
+    }
+  ]
+}

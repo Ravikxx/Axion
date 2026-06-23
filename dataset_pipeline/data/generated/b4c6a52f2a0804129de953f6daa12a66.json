@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/1990_ARCO_explosion",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the deadliest industrial disaster in the Greater Houston area prior to the 1990 ACC explosion?",
+      "answer": "The deadliest industrial disaster in the Greater Houston area prior to the 1990 ACC explosion was the Phillips disaster of 1989, a refinery explosion that resulted in 23 deaths and over 100 injuries."
+    },
+    {
+      "question": "How many people were killed and injured in the 1990 ACC Channelview explosion?",
+      "answer": "The 1990 ACC Channelview explosion killed 17 people and injured five others."
+    },
+    {
+      "question": "What was the primary function of the ARCO Chemical (ACC) Channelview plant at the time of the explosion?",
+      "answer": "The primary function of the ARCO Chemical (ACC) Channelview plant was the production of methyl tert-butyl ether (MTBE), a fuel additive."
+    },
+    {
+      "question": "What safety systems were in place at the wastewater storage tank involved in the 1990 explosion, and why did they fail?",
+      "answer": "The wastewater storage tank had an oxygen analyzer to monitor oxygen levels and a nitrogen sweep system to keep the gas inert. The safety systems failed because the oxygen analyzer had malfunctioned, leading to a dangerous oxygen level that went unnoticed by the employees."
+    },
+    {
+      "question": "What caused the explosion at the ACC Channelview plant on July 5, 1990?",
+      "answer": "The explosion was caused by the ignition of gases while employees were restarting a compressor for the wastewater storage tank. The gas ignited due to a dangerous oxygen level in the tank, which resulted from a malfunctioning oxygen analyzer."
+    },
+    {
+      "question": "How much was ARCO Chemical fined by OSHA following the 1990 explosion, and what was the reason for the fine?",
+      "answer": "ARCO Chemical (ACC) was fined approximately $3.48 million by OSHA for over 300 violations of the Occupational Safety and Health Act, which was the largest OSHA fine at the time."
+    },
+    {
+      "question": "What safety improvements did ACC make at its Channelview plant after the 1990 explosion?",
+      "answer": "ACC spent $36 million on repairs and upgrades at the Channelview plant, including $20 million specifically on safety redundancies. Additionally, the company agreed to implement safety changes at its other three plants in the United States."
+    },
+    {
+      "question": "Write a Python code snippet to simulate the calculation of total damages estimated after the 1990 ACC explosion, given the estimated total damages and the amount ACC spent on repairs.",
+      "answer": "python\n# Given data\ntotal_damages_estimated = 100_000_000  # $100 million\ndamages_spent = 36_000_000  # $36 million on repairs and upgrades\n\n# Calculate the difference\nremaining_damages = total_damages_estimated - damages_spent\n\nprint(f\"Estimated total damages: ${total_damages_estimated:,.2f}\")\nprint(f\"Amount spent on repairs: ${damages_spent:,.2f}\")\nprint(f\"Remaining damages not spent: ${remaining_damages:,.2f}\")\n"
+    }
+  ]
+}

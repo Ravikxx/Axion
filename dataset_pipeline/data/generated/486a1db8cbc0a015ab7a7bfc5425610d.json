@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/HTTP_cookie",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is an HTTP cookie and how is it stored?",
+      "answer": "An HTTP cookie is a simple text file created by a website and stored on a user's computer by their web browser. When a user visits a website, the server can send a cookie to the browser, which then stores it locally. The browser sends the cookie back to the server whenever the user revisits the same website, allowing the server to recognize the user and access the stored data."
+    },
+    {
+      "question": "How do cookies help personalize a user's experience on a website?",
+      "answer": "Cookies store information about a user's previous interactions with a website, such as login credentials, shopping cart items, or preferences. When the user returns, the website can retrieve this stored data to customize the experience, like keeping the user logged in or showing relevant content."
+    },
+    {
+      "question": "What are some common uses of cookies in web browsing?",
+      "answer": "Cookies are commonly used for: 1) Shopping carts to remember items added by the user, 2) Automatic login to retain session information, 3) Tracking which advertisements have been shown to avoid repetition, and 4) Personalizing content like language preferences or theme settings."
+    },
+    {
+      "question": "Why are cookies considered a privacy concern?",
+      "answer": "Cookies can track a user's browsing behavior across websites, creating detailed profiles of their activities. This tracking is often done without explicit user consent, leading to concerns about surveillance and the misuse of personal data. Laws like GDPR in Europe have been introduced to regulate cookie usage and protect user privacy."
+    },
+    {
+      "question": "Can cookies be used to execute malicious code or act as viruses?",
+      "answer": "No, cookies are not executable programs. They are simply small text files containing data. They cannot install malware, spyware, or viruses on a user's computer. However, they can be exploited by malicious websites to track users without consent, which is why they are sometimes mistakenly labeled as spyware."
+    },
+    {
+      "question": "How can users control cookie usage in their web browser?",
+      "answer": "Most web browsers allow users to: 1) Block all cookies, 2) Allow cookies only from specific websites, or 3) Prompt for permission before accepting cookies. Users can also clear stored cookies or set expiration times. For example, in JavaScript, you can use the `document.cookie` API to manage cookies:"
+    },
+    {
+      "question": "What happens if a user disables cookies in their browser?",
+      "answer": "Disabling cookies may cause some websites to malfunction. For instance, e-commerce sites might lose shopping cart functionality, and login sessions could expire immediately. Some websites may display warnings or refuse to function properly if cookies are not enabled."
+    }
+  ]
+}

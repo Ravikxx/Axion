@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Fractional_approval_voting",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is fractional approval voting in the context of social choice theory?",
+      "answer": "Fractional approval voting is an electoral system that extends approval voting by allowing each voter to select one or more candidates. Unlike traditional approval voting where one candidate wins (pj = 1) and others lose (pj = 0), fractional approval voting assigns each candidate a fraction pj between 0 and 1, such that the sum of all pj equals 1. This fraction represents the candidate's share of the outcome, which can be interpreted in various ways depending on the application, such as time-sharing, budget distribution, probabilistic selection, or entitlements in fair division."
+    },
+    {
+      "question": "How does fractional approval voting generalize approval voting?",
+      "answer": "Fractional approval voting generalizes approval voting by replacing the binary win/loss outcome with a continuous fractional outcome. In approval voting, the winner is the candidate with the highest approval votes (pj = 1), while all others receive pj = 0. In fractional approval voting, every candidate receives a fraction pj (0 ≤ pj ≤ 1) that sums to 1, allowing for a more nuanced distribution of support across candidates."
+    },
+    {
+      "question": "Provide an example of how fractional approval voting can be used for time-sharing in office.",
+      "answer": "In a time-sharing application of fractional approval voting, each candidate is assigned a fraction pj of the term length based on their fractional approval score. For example, if three candidates A, B, and C receive fractions 0.5, 0.3, and 0.2 respectively, candidate A would serve for half the term, candidate B for 30% of the term, and candidate C for 20%. This ensures all candidates contribute proportionally to their support."
+    },
+    {
+      "question": "What are the key differences between fractional approval voting and traditional approval voting?",
+      "answer": "The key difference is that traditional approval voting assigns the entire outcome (e.g., winning the election) to a single candidate, while fractional approval voting distributes the outcome as fractions among multiple candidates. Traditional approval voting results in binary outcomes (pj = 1 for the winner, pj = 0 for others), whereas fractional approval voting produces continuous outcomes (0 ≤ pj ≤ 1 for all candidates) that sum to 1."
+    },
+    {
+      "question": "How can fractional approval voting results be used in a lottery system for candidate selection?",
+      "answer": "After computing fractional approval voting results (fractions pj for each candidate), these fractions can directly determine the probability of each candidate being selected in a lottery. For example, if candidate A has pj = 0.4, candidate B has pj = 0.35, and candidate C has pj = 0.25, then candidate A has a 40% chance of being selected in the lottery, candidate B has a 35% chance, and candidate C has a 25% chance."
+    },
+    {
+      "question": "Write a Python function to simulate fractional approval voting given a list of voter approval ballots and candidates.",
+      "answer": "python\ndef fractional_approval_voting(ballots, candidates):\n    num_candidates = len(candidates)\n    approval_counts = [0] * num_candidates\n    \n    # Count approvals for each candidate\n    for ballot in ballots:\n        for candidate_idx in ballot:\n            approval_counts[candidate_idx] += 1\n    \n    # Normalize to fractions\n    total_approvals = sum(approval_counts)\n    fractions = [count / total_approvals for count in approval_counts]\n    \n    return fractions\n\n# Example usage:\ncandidates = ['A', 'B', 'C']\nballots = [\n    [0, 1],  # Voter 1 approves A and B\n    [1, 2],  # Voter 2 approves B and C\n    [0],     # Voter 3 approves A\n    [2],     # Voter 4 approves C\n]\nfractions = fractional_approval_voting(ballots, candidates)\nprint(f\"Candidate fractions: {dict(zip(candidates, fractions))}\")\n\n\nThis function takes a list of ballots (where each ballot is a list of indices representing approved candidates) and a list of candidate names. It returns the fractional approval scores for each candidate, normalized to sum to 1."
+    },
+    {
+      "question": "What are some alternative names for fractional approval voting found in the literature?",
+      "answer": "Fractional approval voting appears in the literature under various terms, including lottery, sharing, portioning, mixing, and distribution. These names reflect different interpretations or applications of the fractional outcomes, such as probabilistic selection (lottery), proportional implementation (sharing), or resource allocation (distribution)."
+    }
+  ]
+}

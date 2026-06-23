@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Eightball_(comics)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What comic book series did Daniel Clowes publish after Lloyd Llewellyn and what were its publication years?",
+      "answer": "Daniel Clowes published the comic book series *Eightball*, which ran from 1989 to 2004. The first issue of *Eightball* appeared soon after the end of his previous series, *Lloyd Llewellyn*."
+    },
+    {
+      "question": "Describe the format and content of the early issues of Eightball.",
+      "answer": "Early issues of *Eightball* featured a diverse mix of content, including very short, often crude humor comics (e.g., \"Zubrick and Pogeybait\", \"The Sensual Santa\"), topical rants and satires (e.g., \"Art School Confidential\", \"On Sports\"), longer self-contained reflective stories (e.g., \"Caricature\", \"Immortal Invisible\"), and serialized works. The format was eclectic compared to later issues."
+    },
+    {
+      "question": "What was the first serialized story in Eightball, and how many issues did it cover?",
+      "answer": "The first extended serialized story in *Eightball* was *Like a Velvet Glove Cast in Iron*, which ran in issues #1 through #10."
+    },
+    {
+      "question": "How did the format of Eightball change starting with issue #19?",
+      "answer": "Beginning with issue #19, each issue of *Eightball* was devoted to a single storyline, moving away from the eclectic format of earlier issues. Additionally, issues #19 and onward were published in full color and in a larger magazine-sized format."
+    },
+    {
+      "question": "Name two serialized works that appeared in Eightball issues #19–23 and briefly describe their content.",
+      "answer": "Issues #19–21 serialized the graphic novel *David Boring*. Issues #22 and #23 featured collections of short, fragmentary stories that meshed into unified narratives: *Ice Haven* (issue #22) and *The Death Ray* (issue #23)."
+    },
+    {
+      "question": "What special item was included with Eightball #18, and what was its purpose?",
+      "answer": "Issue #18 of *Eightball* included a bound-in copy of Clowes's pamphlet *Modern Cartoonist*. The pamphlet likely provided insights or commentary related to cartooning or the comic industry."
+    },
+    {
+      "question": "Which of Daniel Clowes's works serialized in Eightball was later adapted into a feature film, and in what year?",
+      "answer": "*Ghost World*, serialized in *Eightball* issues #11–18, was later adapted into a feature film released in 2001."
+    }
+  ]
+}

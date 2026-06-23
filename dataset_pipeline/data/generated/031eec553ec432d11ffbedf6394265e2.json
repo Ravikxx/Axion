@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Dr._Dre",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is Dr. Dre's birth name and birth date?",
+      "answer": "Dr. Dre was born Andre Romell Young on February 18, 1965."
+    },
+    {
+      "question": "What are the names of the two record labels founded by Dr. Dre?",
+      "answer": "Dr. Dre founded Aftermath Entertainment and Beats Electronics."
+    },
+    {
+      "question": "Which gangsta rap group did Dr. Dre form in 1987, and who were its original members?",
+      "answer": "Dr. Dre formed N.W.A in 1987 with Eazy-E, Ice Cube, and Arabian Prince."
+    },
+    {
+      "question": "Describe the characteristics of West Coast G-funk and its influence on hip-hop.",
+      "answer": "West Coast G-funk is a subgenre of hip-hop characterized by a synthesizer foundation and slow, heavy production. It was crafted and popularized by Dr. Dre in the early 1990s, significantly influencing the sound and popularity of West Coast hip-hop."
+    },
+    {
+      "question": "What was Dr. Dre's debut solo album, and which single from it won a Grammy Award?",
+      "answer": "Dr. Dre's debut solo album was 'The Chronic' (1992). Its single 'Let Me Ride' won Best Rap Solo Performance at the 36th Annual Grammy Awards."
+    },
+    {
+      "question": "Provide a code snippet to generate a list of Dr. Dre's Grammy Awards using a simple Python script.",
+      "answer": "python\ndre_grammy_wins = [\n    \"Producer of the Year, Non-Classical\",\n    \"Best Rap Solo Performance (Let Me Ride)\",\n    \"Best Rap Performance by a Duo or Group (California Love, featuring 2Pac & Dr. Dre)\",\n    \"Best Rap Album (2001)\",\n    \"Best Rap Album (The Chronic, as producer)\",\n    \"Best Rap Performance by a Duo or Group (Forgot About Dre, Eminem & Dr. Dre)\",\n    \"Best Rap Album (Recovery, as executive producer for Eminem)\"\n]\nprint(\"Dr. Dre's Grammy Awards:\", dre_grammy_wins)\n"
+    },
+    {
+      "question": "What notable artists did Dr. Dre mentor or sign under Aftermath Entertainment?",
+      "answer": "Dr. Dre mentored or signed Eminem, 50 Cent, the Game, Kendrick Lamar, Anderson .Paak, Silk Sonic, Busta Rhymes, Eve, and Rakim, among others."
+    },
+    {
+      "question": "What public statement did Dr. Dre make regarding his past behavior toward women?",
+      "answer": "After the release of his third album 'Compton' in 2015, Dr. Dre issued a public apology addressing accusations of violence toward women."
+    }
+  ]
+}

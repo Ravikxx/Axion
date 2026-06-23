@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Big_Brother_VIP_–_Fans'_Club",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is Big Brother VIP – Fans' Club and when did it premiere?",
+      "answer": "Big Brother VIP – Fans' Club is a companion spin-off of the Albanian reality series Big Brother VIP, serving as its celebrity edition. It premiered on 17 October 2021 on Top Channel."
+    },
+    {
+      "question": "How many episodes aired in the first season of Big Brother VIP – Fans' Club, and when did it conclude?",
+      "answer": "The first season of Big Brother VIP – Fans' Club aired a total of 19 episodes and concluded on 15 February 2022."
+    },
+    {
+      "question": "Who were the hosts of the first three seasons of Big Brother VIP – Fans' Club?",
+      "answer": "The first season was hosted by Dojna Mema. Megi Pojani took over for the second season, and Enxhi Nasufi presented the third season."
+    },
+    {
+      "question": "What role did Iva Tiço play in the first season of Big Brother VIP – Fans' Club?",
+      "answer": "Iva Tiço served as the Opinionist for the first season of the show."
+    },
+    {
+      "question": "How has the broadcast time of Big Brother VIP – Fans' Club changed since its first season?",
+      "answer": "In the first season, the show aired every Sunday at 12:15 pm. Since the second season, it has been broadcasting every Sunday at 12:45 pm."
+    },
+    {
+      "question": "What is the general format of Big Brother VIP – Fans' Club?",
+      "answer": "The series follows a format featuring debates and conversations about the latest events inside and outside the house with a studio audience and celebrity panel. It also includes the first eliminated housemate, who is usually invited to the studio after leaving."
+    },
+    {
+      "question": "Write a Python function to determine the season number of Big Brother VIP – Fans' Club based on the year and start month.",
+      "answer": "python\ndef get_season_number(year, start_month):\n    if year == 2021 and start_month == 10:\n        return 1\n    elif year == 2023 and start_month == 1:\n        return 2\n    elif year == 2024 and start_month == 1:  # Assuming renewal for 2024\n        return 3\n    else:\n        return None\n\n# Example usage:\nseason = get_season_number(2023, 1)\nprint(season)  # Output: 2\n"
+    }
+  ]
+}

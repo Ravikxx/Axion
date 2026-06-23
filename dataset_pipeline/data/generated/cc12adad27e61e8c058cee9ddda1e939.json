@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Irredentism",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is irredentism and what are its primary motivations?",
+      "answer": "Irredentism is a state's desire to annex the territory of another state. Its primary motivations include: (1) ethnic reasons, where the population of the disputed territory shares ethnic similarities with the parent state; (2) historical reasons, where the territory previously belonged to the parent state; (3) power and wealth considerations, especially if the neighboring territory is resource-rich; and (4) national identities based on ethnicity, culture, and history."
+    },
+    {
+      "question": "How does irredentism differ from revanchism?",
+      "answer": "While both irredentism and revanchism involve the annexation of another state's territory, they differ in their motivations. Irredentism aims to build an ethnically unified nation-state or reclaim historically connected lands, whereas revanchism is driven by a desire for revenge or retaliation after a perceived grievance or defeat."
+    },
+    {
+      "question": "Provide examples of historical irredentist movements or actions.",
+      "answer": "Historical examples of irredentism include: (1) Italy's *Italia Irredenta* movement (post-1878) claiming parts of Switzerland and the Austro-Hungarian Empire; (2) Nazi Germany's annexation of the Sudetenland in 1938; (3) Somalia's invasion of Ethiopia in 1977; (4) Argentina's invasion of the Falkland Islands in 1982; (5) attempts to create a Greater Serbia following Yugoslavia's breakup in the early 1990s; and (6) Russia's annexation of Crimea in 2014."
+    },
+    {
+      "question": "What are the main academic debates surrounding the definition of irredentism?",
+      "answer": "Academic debates about irredentism focus on several key questions: (1) whether ethnic or historical reasons (or both) must be present for a claim to qualify as irredentism; (2) whether non-state actors can engage in irredentism; and (3) whether attempts to absorb an entire neighboring state are included under the definition."
+    },
+    {
+      "question": "How do explanations of irredentism vary based on regime type?",
+      "answer": "Explanations of irredentism often link it to regime type. Democracies are generally considered less likely to engage in irredentism due to institutional constraints and norms against territorial aggression. In contrast, anocracies (states with mixed or unstable regimes) are seen as particularly susceptible to irredentist tendencies, as they may exploit such claims for domestic political gains or to distract from internal issues."
+    },
+    {
+      "question": "Write a Python function that classifies a claim as irredentist based on given criteria. The function should return 'Irredentist' if the claim meets two or more of the following conditions: ethnic similarity, historical connection, pursuit of power/wealth, or national identity. Otherwise, return 'Not Irredentist'.",
+      "answer": "python\ndef is_irredentist(claim):\n    criteria_met = 0\n    \n    # Check ethnic similarity\n    if claim.get('ethnic_similarity', False):\n        criteria_met += 1\n    \n    # Check historical connection\n    if claim.get('historical_connection', False):\n        criteria_met += 1\n    \n    # Check pursuit of power/wealth\n    if claim.get('power_wealth_motivation', False):\n        criteria_met += 1\n    \n    # Check national identity basis\n    if claim.get('national_identity_basis', False):\n        criteria_met += 1\n    \n    return 'Irredentist' if criteria_met >= 2 else 'Not Irredentist'\n\n# Example usage:\nclaim1 = {\n    'ethnic_similarity': True,\n    'historical_connection': True,\n    'power_wealth_motivation': False,\n    'national_identity_basis': True\n}\nprint(is_irredentist(claim1))  # Output: 'Irredentist'\n\nclaim2 = {\n    'ethnic_similarity': False,\n    'historical_connection': True,\n    'power_wealth_motivation': False,\n    'national_identity_basis': False\n}\nprint(is_irredentist(claim2))  # Output: 'Not Irredentist'\n"
+    },
+    {
+      "question": "Why is irredentism often considered controversial under international law?",
+      "answer": "Irredentism is controversial under international law because it violates the principle of territorial integrity, which holds that states should respect the borders of other recognized states. International law prioritizes sovereignty and peaceful dispute resolution, making irredentist actions, which often involve unilateral annexation or invasion, illegal and widely condemned. Despite this, irredentist movements have frequently triggered armed conflicts throughout history."
+    }
+  ]
+}

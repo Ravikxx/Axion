@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Chapada_do_Norte",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the population and area of Chapada do Norte as of 2020?",
+      "answer": "As of 2020, Chapada do Norte had a population of 15,345 people and covered a total area of 828 km² (320 sq mi)."
+    },
+    {
+      "question": "When did Chapada do Norte become a municipality?",
+      "answer": "Chapada do Norte became a municipality in 1963."
+    },
+    {
+      "question": "What are the main economic activities in Chapada do Norte?",
+      "answer": "The economy of Chapada do Norte is primarily based on charcoal production, cattle raising, and subsistence agriculture. Key crops include beans, manioc, sugarcane, and corn."
+    },
+    {
+      "question": "How many tractors were available for rural producers in Chapada do Norte in 2005?",
+      "answer": "In 2005, there were only 4 tractors available for 2,150 rural producers in Chapada do Norte."
+    },
+    {
+      "question": "What is the elevation of the town center of Chapada do Norte?",
+      "answer": "The elevation of the town center of Chapada do Norte is 751 meters."
+    },
+    {
+      "question": "Provide a code snippet to calculate the ratio of inhabitants per automobile in Chapada do Norte in 2006.",
+      "answer": "python\n# Data from the text\npopulation_2006 = 15345  # Approximate population in 2006\nautomobiles_2006 = 185\ninhabitants_per_automobile = population_2006 / automobiles_2006\nprint(f\"Inhabitants per automobile: {inhabitants_per_automobile:.2f}\")\n# Output: Inhabitants per automobile: 82.95\n"
+    },
+    {
+      "question": "List the neighboring municipalities of Chapada do Norte.",
+      "answer": "The neighboring municipalities of Chapada do Norte are: Turmalina, Veredinha, Itamarandiba, Diamantina, Senador Modestino Gonçalves, and Bocaiúva."
+    },
+    {
+      "question": "What is the distance from Chapada do Norte to Belo Horizonte and to its nearest major population center?",
+      "answer": "The distance from Chapada do Norte to Belo Horizonte is 421 km. Its nearest major population center, Itamarandiba, is 46 km away via secondary roads."
+    }
+  ]
+}

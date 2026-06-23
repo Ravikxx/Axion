@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Bas_60",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the primary purpose of the Swedish Air Force's Bas 60 system during the Cold War?",
+      "answer": "The primary purpose of the Bas 60 system was to protect the Swedish Air Force from destruction on the ground by dispersing aircraft and support operations across numerous wartime air bases (krigsflygbaser) in case of war. This strategy aimed to ensure the air force's endurance and operational capability during a conflict, particularly by making it difficult for an opponent to target all aircraft in a single strike."
+    },
+    {
+      "question": "How did the Bas 60 system disperse air force units for defense?",
+      "answer": "The Bas 60 system dispersed air units by assigning one squadron (8-12 aircraft) to each wartime air base. Additionally, the individual functions of an air base were spread over a large area around the base, further complicating potential attacks. This included separating aircraft, maintenance facilities, and support operations into different locations."
+    },
+    {
+      "question": "What was the difference between a regular base (O-bas) and a temporary base (T-bas) in the Bas 60 system?",
+      "answer": "A regular base (O-bas) was equipped with personnel and resources to maintain and repair specific types of aircraft (fighter, attack, or reconnaissance) assigned to it. In contrast, a temporary base (T-bas) only had the capacity to refuel and rearm aircraft, typically for one or more aircraft types. All regular bases could also serve as temporary bases for fighter aircraft."
+    },
+    {
+      "question": "How were road runways and civilian airports used as part of the Bas 60 system?",
+      "answer": "Road runways were built to complement the wartime air bases, serving as backup landing strips. Civilian airports could also be used as alternative backup bases. These measures provided additional dispersal and redundancy to the system, ensuring aircraft could operate from multiple locations if primary bases were compromised."
+    },
+    {
+      "question": "What was the timeline and evolution of the Bas 60 system?",
+      "answer": "The Bas 60 system originated from an air force inquiry in 1954 and was formally implemented in 1958. The original plan called for 70 wartime air bases, but this number was reduced in subsequent revisions, with approximately 40 bases ultimately completed. The system was later further developed into Bas 90 during the 1970s and 1980s."
+    },
+    {
+      "question": "How did the Bas 60 system operate during peacetime versus wartime?",
+      "answer": "During peacetime, air squadrons were stationed at their respective air wings, and deployment to wartime air bases only occurred when the threat level increased. Wartime air bases were manned by a smaller base troop (bastropp) during peacetime, with the full base battalion mobilized only during heightened threats or exercises. This was due to the reliance on conscripted personnel."
+    },
+    {
+      "question": "Write a Python function to simulate the dispersal of aircraft in the Bas 60 system, given a list of aircraft types and the number of available wartime air bases.",
+      "answer": "python\nimport random\n\ndef disperse_aircraft(aircraft_types, num_bases):\n    \"\"\"\n    Simulates the dispersal of aircraft types across wartime air bases in the Bas 60 system.\n    \n    Args:\n        aircraft_types (list): List of aircraft types (e.g., ['JAS 39 Gripen', 'AJ 37 Viggen']).\n        num_bases (int): Number of available wartime air bases.\n        \n    Returns:\n        dict: A dictionary mapping base IDs to assigned aircraft types.\n    \"\"\"\n    if num_bases <= 0:\n        return {}\n    \n    # Assign aircraft types to bases (1-2 types per base)\n    base_assignments = {f\"Base_{i+1}\": [] for i in range(num_bases)}\n    \n    for aircraft in aircraft_types:\n        # Randomly select a base to assign the aircraft\n        base_id = random.choice(list(base_assignments.keys()))\n        base_assignments[base_id].append(aircraft)\n    \n    return base_assignments\n\n# Example usage:\naircraft = ['JAS 39 Gripen', 'AJ 37 Viggen', 'SAAB 105', 'SH 37 Viggen']\nbases = 5\nresult = disperse_aircraft(aircraft, bases)\nprint(result)\n"
+    },
+    {
+      "question": "Why were not all wartime air bases in the Bas 60 system fully manned during peacetime?",
+      "answer": "Wartime air bases in the Bas 60 system were not fully manned during peacetime because the majority of personnel were conscripts, and the system relied on mobilization during heightened threats. Only a smaller base troop (bastropp) was stationed at each wartime base during peacetime, with the full base battalion activated only when necessary, such as during exercises or increased tension."
+    }
+  ]
+}

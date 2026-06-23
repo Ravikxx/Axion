@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/moruno21/99-of-frontend-devs-dont-use-this-1g44",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What are HTML data-* attributes and how are they used in React?",
+      "answer": "HTML's `data-*` attributes allow embedding custom data inside DOM elements for any HTML tag. In React, they are used just like in plain HTML, but with dynamic values via JSX. For example: `<div data-user-id={user.id} data-role={user.role}>{user.name}</div>`. These attributes are accessible in event handlers through the `dataset` property, such as `e.currentTarget.dataset.userId`."
+    },
+    {
+      "question": "Why might closures inside .map() be problematic in React?",
+      "answer": "Closures inside `.map()` create a new function for each item on every render, capturing the current item's data. This can cause issues like unnecessary re-renders when using `React.memo` or `React.useCallback`, and it can hinder optimization in highly interactive lists with hundreds of items. These closures prevent memoization from working effectively."
+    },
+    {
+      "question": "How can data-* attributes improve performance compared to closures in React?",
+      "answer": "Using `data-*` attributes to store item metadata directly in the DOM allows for a single function reference for event handling. This avoids creating new closures for each item and works better with memoization techniques like `React.memo` or `React.useCallback`, leading to fewer re-renders and improved performance, especially in large lists."
+    },
+    {
+      "question": "Provide an example of using data-* attributes with event handlers in React.",
+      "answer": "Here’s an example using `data-*` attributes for event handling:\n\njsx\nfunction ListComponent({ items }) {\n  const handleClick = (e) => {\n    const id = e.currentTarget.dataset.id;\n    console.log(\"Clicked item:\", id);\n  };\n\n  return (\n    <div>\n      {items.map((item) => (\n        <button \n          key={item.id} \n          data-id={item.id} \n          onClick={handleClick}\n        >\n          {item.name}\n        </button>\n      ))}\n    </div>\n  );\n}\n\nThe `data-id` attribute stores the item ID, which is retrieved in the `handleClick` function using `e.currentTarget.dataset.id`."
+    },
+    {
+      "question": "In what scenarios would using data-* attributes be more beneficial than closures?",
+      "answer": "Data-* attributes are more beneficial in scenarios where performance optimization is critical, such as rendering large lists with hundreds or thousands of items, or when using techniques like `React.memo` to prevent unnecessary re-renders. They simplify event handling by avoiding the creation of many closures, making memoization and optimization more effective."
+    },
+    {
+      "question": "Can data-* attributes completely replace closures in React components?",
+      "answer": "No, data-* attributes should not completely replace closures. They serve as a complementary technique for specific scenarios where performance or memoization benefits are desired. Closures remain a fundamental and intuitive part of JavaScript and React, especially for simpler components or when dynamic behavior is needed."
+    },
+    {
+      "question": "What are some potential drawbacks of using data-* attributes in React?",
+      "answer": "Some potential drawbacks include reduced readability for developers accustomed to closures, less intuitive handling of complex or nested data, and the fact that they rely on DOM attributes which may not be as clean for some use cases compared to pure JavaScript closures. Additionally, they might feel outdated or less modern in the context of React development."
+    }
+  ]
+}

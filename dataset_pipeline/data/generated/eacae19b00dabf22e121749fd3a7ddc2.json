@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/code42cate/how-we-built-our-own-dns-server-4d3k",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What was the main motivation for building a custom DNS server instead of using a managed provider?",
+      "answer": "The primary motivations were: 1) Hetzner DNS's record limits (500 originally, later 10k) couldn't scale with the platform's growth, 2) Propagation delays of up to 90 minutes made it unsuitable for a PaaS where users expect immediate access, 3) Other providers either had 'contact sales' pricing models, per-record billing, or were not EU-based. Additionally, the team found building a DNS server an interesting technical challenge that provided greater control."
+    },
+    {
+      "question": "How does the 'hidden primary' pattern work in this DNS architecture?",
+      "answer": "The hidden primary pattern separates the authoritative record storage (the hidden primary) from public-facing DNS servers. The primary never answers public queries; instead, it pushes zone data to secondary nameservers using AXFR (zone transfer) and NOTIFY messages. This allows the primary to run anywhere while using standard protocols, avoiding vendor lock-in and simplifying infrastructure."
+    },
+    {
+      "question": "Why did the team choose Postgres as the event bus instead of a dedicated message queue like Redis or NATS?",
+      "answer": "Postgres was chosen because: 1) It was already the primary database, so using `LISTEN`/`NOTIFY` added no new infrastructure costs, 2) The volume of zone changes (a few per minute at peak) was too low to justify a dedicated queue system like Kafka, which would be overkill for this use case."
+    },
+    {
+      "question": "What is the purpose of hashing records in this DNS system, and how does it work?",
+      "answer": "Hashing records prevents unnecessary zone updates. When a zone change occurs, the system computes a hash of all records. If the hash matches the previous one, the zone remains unchanged, avoiding serial number bumps and NOTIFY messages to secondary servers. Only when the hash differs does the system bump the SOA serial and notify secondaries to pull the updated zone."
+    },
+    {
+      "question": "Provide a code snippet showing how AXFR is implemented in Go using the miekg/dns library.",
+      "answer": "go\npackage main\nimport (\n    \"context\"\n    \"log\"\n    \"net/netip\"\n    \"codeberg.org/miekg/dns\"\n    \"codeberg.org/miekg/dns/rdata\"\n)\n\nfunc main() {\n    soa := &dns.SOA{\n        Hdr: dns.Header{Name: \"example.com.\", TTL: 3600, Class: dns.ClassINET},\n        SOA: rdata.SOA{Ns: \"ns1.example.com.\", Mbox: \"admin.example.com.\", Serial: 1},\n    }\n    records := []dns.RR{\n        soa,\n        &dns.A{\n            Hdr: dns.Header{Name: \"app.example.com.\", TTL: 300, Class: dns.ClassINET},\n            A:   rdata.A{Addr: netip.MustParseAddr(\"1.2.3.4\")},\n        },\n        soa,\n    }\n    mux := dns.NewServeMux()\n    mux.HandleFunc(\"example.com.\", func(_ context.Context, w dns.ResponseWriter, r *dns.Msg) {\n        r.Unpack()\n        w.Hijack()\n        env := make(chan *dns.Envelope, len(records))\n        for _, rr := range records {\n            env <- &dns.Envelope{Answer: []dns.RR{rr}}\n        }\n        close(env)\n        dns.NewClient().TransferOut(w, r, env)\n        w.Close()\n    })\n    srv := dns.NewServer()\n    srv.Addr = \":5553\"\n    srv.Net = \"tcp\"\n    srv.Handler = mux\n    log.Fatal(srv.ListenAndServe())\n}\n"
+    },
+    {
+      "question": "What challenges were encountered during the migration from Hetzner DNS to the custom solution?",
+      "answer": "The main challenge was the cutover window, as DNS nameservers cannot be migrated gradually. The team had to switch NS records at the registrar from Hetzner's nameservers to Hetzner Robot's secondary nameservers. To minimize impact, they used a 5-minute NS delegation TTL and performed the migration during low-activity hours. Another challenge was the discovery that Hetzner's secondary servers required IXFR (incremental zone transfer) support, not just AXFR (full zone transfer), which wasn't initially implemented."
+    },
+    {
+      "question": "How does IXFR differ from AXFR in this DNS architecture, and why was it important?",
+      "answer": "IXFR (Incremental Zone Transfer) allows secondary servers to request only the changes since their last zone copy, reducing bandwidth and load compared to AXFR (full zone dump). Hetzner's secondary servers required IXFR support, so the team had to implement it to ensure compatibility. Without IXFR, the system would rely solely on AXFR, which is less efficient for frequent small updates."
+    }
+  ]
+}

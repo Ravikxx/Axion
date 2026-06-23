@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Ceylon_Tea_Museum",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the historical significance of the Hanthana area in Ceylon's tea industry?",
+      "answer": "Hanthana was one of the first areas in Ceylon to successfully cultivate tea after coffee production failed on the island. The Tea Research Institute of Ceylon established a substation there in 1959 to support mid-country tea plantations, focusing on research like identifying drought-resistant tea clones and studying pests such as the shot-hole borer."
+    },
+    {
+      "question": "When was the Ceylon Tea Museum incorporated and who initiated the move?",
+      "answer": "The Ceylon Tea Museum was incorporated on 9 January 1998 under Section 21 of the Companies Act of 1982. The initiative was led by Clifford Ratwatte, who was the chairman of the Sri Lanka Tea Board at the time."
+    },
+    {
+      "question": "What are some notable exhibits found in the Ceylon Tea Museum?",
+      "answer": "The museum features exhibits on tea pioneers like James Taylor and Thomas Lipton. It also displays vintage tea-processing equipment, including 19th-century colonial generators, rollers, dryers, fermentation tables, sorting machines, and other historical machinery."
+    },
+    {
+      "question": "How is the Ceylon Tea Museum structured across its four floors?",
+      "answer": "The ground floor contains historical tea-processing equipment. The second floor houses the library and museum. The third floor features a shop, and the top floor includes a restaurant and tea rooms."
+    },
+    {
+      "question": "What was the Ceylon Tea Museum before it became a museum?",
+      "answer": "Before becoming a museum, the building was the Hanthana Tea Factory, constructed in 1925. It remained abandoned for over a decade before being refurbished in 2001 by the Sri Lanka Tea Board and the Planters’ Association of Sri Lanka."
+    },
+    {
+      "question": "Write a Python function to calculate the distance in kilometers from Kandy to the Ceylon Tea Museum.",
+      "answer": "python\ndef calculate_distance():\n    # Distance from Kandy to Ceylon Tea Museum is approximately 3 km\n    return 3.0\n\n# Example usage:\ndistance = calculate_distance()\nprint(f\"Distance from Kandy to Ceylon Tea Museum: {distance} km\")\n"
+    },
+    {
+      "question": "Why was the Tea Research Institute's Hanthana substation important for mid-country tea plantations?",
+      "answer": "The Hanthana substation was established to address the specific needs of mid-country tea plantations, particularly in studying tea physiology and entomology. Its research focused on identifying drought-resistant tea clones and managing insect pests like the shot-hole borer, which were critical for improving tea cultivation in the region."
+    }
+  ]
+}

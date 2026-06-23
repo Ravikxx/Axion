@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Absofacto",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who is Jonathan Visger?",
+      "answer": "Jonathan Visger is a musician and the former frontman of the Michigan-based indie rock band Mason Proper. He is also the solo artist behind the musical project Absofacto, under which he has released multiple works since 2009."
+    },
+    {
+      "question": "What was Jonathan Visger's first solo release under the name Absofacto?",
+      "answer": "The first solo release under the moniker Absofacto was the EP *Tagalong*, which was released in 2009."
+    },
+    {
+      "question": "What electronic indie project did Jonathan Visger form with Brian Konicek, and when did they release their first single?",
+      "answer": "Jonathan Visger and Brian Konicek formed the electronic indie project *Hollow & Akimbo*. They released their first single, *Pseudoscience*, in October 2013."
+    },
+    {
+      "question": "How did the song 'Dissolve' by Absofacto gain widespread popularity?",
+      "answer": "The song *Dissolve* gained viral popularity on TikTok in 2019, which led to its chart success and Jonathan Visger signing with Atlantic Records. This renewed interest resulted in the song debuting on the Billboard Alternative Songs chart in June 2019 and reaching number one in January 2020."
+    },
+    {
+      "question": "What major-label debut did Absofacto release with Atlantic Records in 2017?",
+      "answer": "In 2017, Absofacto released the EP *Thousand Peaces* as his major-label debut with Atlantic Records."
+    },
+    {
+      "question": "List the singles released by Hollow & Akimbo in 2013 and 2014.",
+      "answer": "Hollow & Akimbo released the following singles: *Pseudoscience* (October 2013), *Singularity* (January 2014), and their self-titled EP (February 2014)."
+    },
+    {
+      "question": "Write a Python script to fetch and display the Billboard chart positions of 'Dissolve' by Absofacto.",
+      "answer": "python\nimport requests\nfrom bs4 import BeautifulSoup\n\n# URL of the Billboard Alternative Songs chart history for 'Dissolve'\nurl = \"https://www.billboard.com/music/marcus-mumford/songs/chart-history/\"\n\n# Fetch the webpage\nresponse = requests.get(url)\nif response.status_code == 200:\n    soup = BeautifulSoup(response.text, 'html.parser')\n    # Extract chart positions (example assumes parsing logic; actual implementation may vary)\n    chart_positions = []\n    # Here you would parse the HTML to find the chart data for 'Dissolve'\n    # For demonstration, we mock the expected output:\n    chart_positions = [\n        {\"date\": \"2019-06\", \"position\": 20},\n        {\"date\": \"2019-07\", \"position\": 15},\n        # ... continue until it reached number one in January 2020\n        {\"date\": \"2020-01\", \"position\": 1}\n    ]\n    for entry in chart_positions:\n        print(f\"Date: {entry['date']}, Position: {entry['position']}\")\nelse:\n    print(\"Failed to fetch chart data.\")\n"
+    }
+  ]
+}

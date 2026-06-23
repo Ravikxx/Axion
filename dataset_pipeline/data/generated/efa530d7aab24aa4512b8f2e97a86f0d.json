@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Boot_device",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is the primary function of a boot device in a computer system?",
+      "answer": "A boot device is responsible for loading the operating system into the computer's memory during the startup process. This allows the computer to begin normal operation by executing the basic functions defined by the operating system."
+    },
+    {
+      "question": "How does the term 'boot device' relate to the phrase 'pull yourself up by your own bootstraps'?",
+      "answer": "The term 'boot device' derives from the English phrase 'pull yourself up by your own bootstraps,' which metaphorically describes using something simple (like bootstrap straps) to achieve a more complex outcome (like lifting oneself). Similarly, a boot device uses basic instructions to enable a computer to perform more complex operations."
+    },
+    {
+      "question": "What are the common types of physical boot devices used in computers?",
+      "answer": "Common physical boot devices include boot disks (such as floppy disks, flash drives, or CDs), boot drives (hard drives or Solid State Drives), and boot chips (used in network computers or web phones). Some systems may also use boot cards or boot add-in cards for more permanent booting capabilities."
+    },
+    {
+      "question": "How do network computers typically boot their operating systems?",
+      "answer": "Network computers often use boot chips to load the operating system over a network connection. These chips contain the necessary instructions to connect to the network and retrieve the operating system files."
+    },
+    {
+      "question": "What is the difference between a boot device and a data device in a computer?",
+      "answer": "The distinction between a boot device and a data device is made by the operating system, not the computer itself. A boot device contains the necessary files to start the computer, while a data device typically stores user files and applications but does not initiate the boot process."
+    },
+    {
+      "question": "Write a Python function that simulates a simple boot process by checking if a boot device is available.",
+      "answer": "python\ndef check_boot_device(boot_devices):\n    \"\"\"\n    Simulates checking for a boot device in a list of available devices.\n    Returns the first available boot device or None if none are found.\n    \n    Args:\n        boot_devices (list): A list of strings representing available boot devices.\n    \n    Returns:\n        str or None: The first boot device if found, otherwise None.\n    \"\"\"\n    for device in boot_devices:\n        if device.startswith(('hd', 'ssd', 'cd', 'flash', 'floppy')):\n            return device\n    return None\n\n# Example usage:\navailable_devices = ['ssd1', 'usb2', 'data_hd', 'cd_drive']\nboot_device = check_boot_device(available_devices)\nprint(f\"Boot device found: {boot_device}\")  # Output: Boot device found: ssd1\n"
+    },
+    {
+      "question": "Why might a computer use a boot card instead of a boot drive?",
+      "answer": "A computer might use a boot card instead of a boot drive in scenarios where temporary or portable booting is required. Boot cards are often removable and can be used to boot kiosk computers while maintaining privacy and access control. They are also useful in environments where hardware modifications (like adding a permanent boot drive) are not feasible."
+    }
+  ]
+}

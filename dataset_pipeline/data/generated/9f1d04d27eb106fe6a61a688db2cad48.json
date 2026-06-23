@@ -1,0 +1,34 @@
+{
+  "source_url": "https://mathworld.wolfram.com/LeastSquaresFitting.html",
+  "category": "mathworld",
+  "pairs": [
+    {
+      "question": "What is least squares fitting, and why are squared residuals preferred over absolute residuals?",
+      "answer": "Least squares fitting is a mathematical procedure for finding the best-fitting curve to a set of points by minimizing the sum of the squares of the vertical offsets (residuals) from the curve. Squared residuals are used instead of absolute residuals because they allow the residuals to be treated as a continuous and differentiable quantity. This enables analytical solutions and simplifies the minimization process. However, squared residuals give disproportionate influence to outlying points, which can be desirable or undesirable depending on the context."
+    },
+    {
+      "question": "How does vertical least squares fitting differ from perpendicular least squares fitting?",
+      "answer": "Vertical least squares fitting minimizes the sum of the squares of the vertical deviations of data points from a function, while perpendicular least squares fitting minimizes the sum of the squares of the perpendicular (shortest) distances from the points to the function. Vertical fitting is more common because it provides a simpler analytic form for the fitting parameters, allows uncertainties in both axes to be incorporated, and estimates the independent variable for a given dependent variable. The difference between vertical and perpendicular fits is generally small for a reasonable number of noisy data points."
+    },
+    {
+      "question": "Write a Python function to perform linear least squares fitting on a set of (x, y) data points. Use NumPy for the implementation.",
+      "answer": "python\nimport numpy as np\n\ndef linear_least_squares(x, y):\n    \"\"\"\n    Perform linear least squares fitting on given (x, y) data points.\n    Returns the slope (m) and intercept (c) of the best-fit line y = mx + c.\n    \"\"\"\n    A = np.vstack([x, np.ones(len(x))]).T\n    m, c = np.linalg.lstsq(A, y, rcond=None)[0]\n    return m, c\n\n# Example usage:\nx = np.array([1, 2, 3, 4, 5])\ny = np.array([2, 3, 5, 7, 11])\nslope, intercept = linear_least_squares(x, y)\nprint(f\"Best-fit line: y = {slope:.2f}x + {intercept:.2f}\")\n\nThis function uses NumPy's `lstsq` to solve the linear system and return the slope and intercept of the best-fit line."
+    },
+    {
+      "question": "What is the correlation coefficient, and how is it used to evaluate the quality of a least squares fit?",
+      "answer": "The correlation coefficient (often denoted as r) is a measure of the linear relationship between two variables. It ranges from -1 to 1, where 1 indicates a perfect positive linear relationship, -1 indicates a perfect negative linear relationship, and 0 indicates no linear relationship. The correlation coefficient quantifies the proportion of the variance in the dependent variable that is predictable from the independent variable. In least squares fitting, it is calculated as the square root of the coefficient of determination (R²), which is derived from the ratio of the explained variance to the total variance. A higher absolute value of r indicates a better fit."
+    },
+    {
+      "question": "How can nonlinear functions be fitted using linear least squares methods?",
+      "answer": "Nonlinear functions can sometimes be linearized by transforming the data or the function itself. For example, an exponential function y = a * e^(bx) can be linearized by taking the natural logarithm: ln(y) = ln(a) + bx. The transformed data can then be fitted using linear least squares methods to estimate the parameters ln(a) and b. The resulting parameters can be back-transformed to obtain the original parameters a and b. This approach avoids iterative methods but may violate the assumption of normally distributed errors, though it often still yields acceptable results."
+    },
+    {
+      "question": "What are the normal equations in the context of linear least squares fitting?",
+      "answer": "The normal equations are a system of linear equations derived from the least squares minimization problem. For a linear fit y = mx + c, the normal equations are:\n\n1. Σ(y_i) = m * Σ(x_i) + n * c\n2. Σ(x_i * y_i) = m * Σ(x_i²) + c * Σ(x_i)\n\nwhere Σ denotes the sum over all data points, and n is the number of data points. These equations can be written in matrix form as:\n\nA^T A x = A^T b\n\nwhere A is the design matrix, x is the vector of unknown parameters [m, c], and b is the vector of observed y-values. The normal equations provide a straightforward way to compute the best-fit parameters by solving the linear system."
+    },
+    {
+      "question": "How are weights incorporated into least squares fitting to account for uncertainties in data points?",
+      "answer": "In weighted least squares fitting, each data point is assigned a weight inversely proportional to its variance (uncertainty). The objective function to minimize becomes the sum of the weighted squared residuals: Σ w_i * (y_i - f(x_i))², where w_i is the weight for the i-th data point. This approach gives more influence to high-quality (low-uncertainty) points and less to low-quality (high-uncertainty) points. Weights can be derived from error ellipses or other measures of uncertainty and are incorporated into the normal equations by modifying the design matrix and the data vector accordingly."
+    }
+  ]
+}

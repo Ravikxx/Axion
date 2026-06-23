@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Andrew_Scheer",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What are Andrew Scheer's educational qualifications?",
+      "answer": "Andrew Scheer earned a Bachelor of Arts degree in criminology, political science, and history."
+    },
+    {
+      "question": "How many times was Andrew Scheer re-elected as the Member of Parliament for Regina—Qu'Appelle?",
+      "answer": "Andrew Scheer was re-elected four times: in 2004, 2006, 2008, and 2011."
+    },
+    {
+      "question": "What was Andrew Scheer's age when he became the youngest Speaker of the House of Commons in Canadian history?",
+      "answer": "Andrew Scheer was 32 years old when he became the 35th Speaker of the House of Commons in 2011."
+    },
+    {
+      "question": "Describe Andrew Scheer's political platform during his 2017 Conservative Party leadership campaign.",
+      "answer": "Scheer's campaign slogan was 'Real conservative. Real leader,' and he focused on economic development, fiscal restraint, opposing the federal carbon tax, and supporting the construction of multiple pipelines."
+    },
+    {
+      "question": "What notable outcome occurred in the 2019 federal election under Andrew Scheer's leadership?",
+      "answer": "The Conservative Party under Scheer received a plurality of the popular vote and gained 26 seats, but they remained the Official Opposition as the Liberal Party retained the most seats."
+    },
+    {
+      "question": "How did Andrew Scheer's tenure as Conservative Party leader end?",
+      "answer": "After the 2019 federal election, Scheer faced internal criticism for the unsuccessful campaign and announced his resignation as leader in December 2019, with his successor Erin O'Toole taking over in August 2020."
+    },
+    {
+      "question": "Write a Python function to calculate the number of years Andrew Scheer served as Speaker of the House of Commons.",
+      "answer": "python\ndef years_as_speaker(start_year, end_year):\n    return end_year - start_year\n\n# Example usage:\nstart = 2011\nend = 2015\nyears_served = years_as_speaker(start, end)\nprint(years_served)  # Output: 4\n"
+    }
+  ]
+}

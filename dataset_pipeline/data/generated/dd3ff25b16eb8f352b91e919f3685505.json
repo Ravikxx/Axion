@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Extended-hours_trading",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is extended-hours trading and how does it differ from regular trading hours?",
+      "answer": "Extended-hours trading (ETH) refers to stock trading conducted before or after the regular trading hours of a stock exchange. It includes pre-market trading (4:00 a.m. to 9:30 a.m. ET) and after-hours trading (4:00 p.m. to 8:00 p.m. ET). In contrast, regular trading hours (RTH) for major U.S. exchanges like the NYSE and Nasdaq are from 9:30 a.m. to 4:00 p.m. ET."
+    },
+    {
+      "question": "When did regular trading hours for major U.S. stock exchanges begin and what are the current hours?",
+      "answer": "Regular trading hours for major U.S. exchanges such as the New York Stock Exchange and Nasdaq have been from 9:30 a.m. to 4:00 p.m. Eastern Time (ET) since 1985."
+    },
+    {
+      "question": "Who typically participates in pre-market and after-hours trading, and why might liquidity be limited?",
+      "answer": "Pre-market and after-hours trading were historically limited to high-net-worth and institutional investors. However, electronic communication networks (ECNs) now enable individual investors to participate. Liquidity is often limited because market makers and specialists, who provide liquidity during regular hours, generally do not participate in extended-hours trading."
+    },
+    {
+      "question": "How do electronic communication networks (ECNs) facilitate extended-hours trading?",
+      "answer": "ECNs are private trading systems that match buy and sell orders electronically. They process pre-market and after-hours trades, including those on platforms like NYSE Arca, allowing individual investors to trade outside regular market hours by connecting buyers and sellers directly."
+    },
+    {
+      "question": "What regulatory rules apply to FINRA members participating in after-hours trading?",
+      "answer": "FINRA members who voluntarily enter quotations during after-hours sessions must comply with limit order protection and display rules, such as the Manning rule and SEC order handling rules. These rules ensure fair and transparent order execution."
+    },
+    {
+      "question": "Can you provide a Python code snippet to fetch extended-hours trading data using a hypothetical API?",
+      "answer": "python\nimport requests\n\ndef fetch_extended_hours_data(api_url, stock_symbol):\n    \"\"\"\n    Fetches pre-market and after-hours trading data for a given stock symbol.\n    Assumes an API endpoint that returns JSON data.\n    \"\"\"\n    params = {\n        'symbol': stock_symbol,\n        'session': 'extended'\n    }\n    response = requests.get(api_url, params=params)\n    if response.status_code == 200:\n        return response.json()\n    else:\n        raise Exception(f\"Failed to fetch data: {response.status_code}\")\n\n# Example usage:\n# data = fetch_extended_hours_data('https://api.example.com/trades', 'AAPL')\n"
+    },
+    {
+      "question": "Why might an individual investor want to trade during extended hours instead of regular hours?",
+      "answer": "Trading during extended hours allows investors to react to news or earnings announcements released outside regular market hours. This can help mitigate gap risk where prices adjust sharply at the market open. Additionally, ECNs enable individual investors to trade during these periods, though they should be aware of lower liquidity and higher volatility."
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Black_brane",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is a black p-brane in the context of general relativity and string theory?",
+      "answer": "A black p-brane is a solution to the Einstein field equations in general relativity that generalizes a black hole by being extended in p additional spatial dimensions. In string theory, it specifically refers to a configuration of D1-branes surrounded by a horizon. Unlike a black hole, whose singularity is a point, a black brane's singularity is a higher-dimensional object."
+    },
+    {
+      "question": "How does the singularity of a black p-brane differ from that of a black hole?",
+      "answer": "The singularity of a black p-brane is not a point like that of a black hole, but instead a higher-dimensional object. This distinction is often used by physicists to differentiate black branes from black holes."
+    },
+    {
+      "question": "What is a BPS black brane, and how does it relate to BPS black holes?",
+      "answer": "A BPS black brane is analogous to a BPS black hole, sharing electric charges. Some BPS black branes additionally possess magnetic charges. Both types of solutions are extremal configurations preserving supersymmetry."
+    },
+    {
+      "question": "Write the metric for a black p-brane in n-dimensional spacetime and explain its components.",
+      "answer": "The metric for a black p-brane in n-dimensional spacetime is given by:\n\nmath\nds^2 = (\\eta_{ab} + \\frac{r_s^{n-p-3}}{r^{n-p-3}} u_a u_b) d\\sigma^a d\\sigma^b + \\left(1 - \\frac{r_s^{n-p-3}}{r^{n-p-3}}\\right)^{-1} dr^2 + r^2 d\\Omega_{n-p-2}^2\n\n\nHere, η is the (p+1)-Minkowski metric with signature (−, +, +, +, ...), σ are the worldsheet coordinates of the brane, u is its four-velocity, r is the radial coordinate, and Ω is the metric for a (n−p−2)-sphere surrounding the brane."
+    },
+    {
+      "question": "In the metric of a black p-brane, what does the term r_s represent?",
+      "answer": "In the metric of a black p-brane, r_s represents a characteristic length scale, often interpreted as the Schwarzschild radius for the brane. It determines the location of the horizon where the radial component of the metric diverges."
+    },
+    {
+      "question": "How does the dimensionality of the sphere Ω in the black p-brane metric relate to the spacetime dimensions n and the brane dimension p?",
+      "answer": "The sphere Ω in the black p-brane metric has dimensionality (n − p − 2). This reflects the fact that the brane is extended in p spatial dimensions, leaving (n − p − 1) transverse dimensions, one of which is radial (r), resulting in a (n − p − 2)-sphere for the angular part."
+    }
+  ]
+}

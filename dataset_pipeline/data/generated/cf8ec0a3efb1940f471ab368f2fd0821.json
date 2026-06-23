@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Bobby_Jones_(saxophonist)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was Bobby Jones' primary instrument, and how did he initially start playing music?",
+      "answer": "Bobby Jones was primarily a jazz saxophonist. He began playing music as a child, starting with drums, and then switched to clarinet at the age of 8. His father encouraged him to explore jazz, which influenced his musical development."
+    },
+    {
+      "question": "Who were some of the notable musicians Bobby Jones studied or played with early in his career?",
+      "answer": "Early in his career, Bobby Jones studied with Simeon Bellison, Joe Allard, Charlie Parker, and George Russell. He also played with Ray McKinley from 1949 into the mid-1950s and later with Hal McIntyre before rejoining McKinley in the late 1950s."
+    },
+    {
+      "question": "What genres of music did Bobby Jones play as a studio musician after his military service?",
+      "answer": "After his military service, Bobby Jones played country music and rock & roll as a studio musician. During this period, he worked with Boots Randolph and Glenn Miller in 1950."
+    },
+    {
+      "question": "How did Bobby Jones contribute to the jazz community in Louisville after retiring from performing?",
+      "answer": "After retiring from performing, Bobby Jones started a local jazz council in Louisville and taught at Kentucky State College, helping to foster jazz education and community engagement in the area."
+    },
+    {
+      "question": "What significant collaborations did Bobby Jones have in New York City during the 1970s?",
+      "answer": "In New York City, Bobby Jones played with Charles Mingus from 1970 to 1972, including international tours in Europe and Japan. He also recorded sessions under his own name in 1972 and 1974."
+    },
+    {
+      "question": "Why did Bobby Jones stop performing in his later years?",
+      "answer": "Bobby Jones ceased performing due to emphysema, a respiratory condition that affected his ability to play music. He moved to Germany for treatment and spent his remaining years there before passing away in 1980."
+    },
+    {
+      "question": "Write a Python code snippet to calculate the total number of years Bobby Jones was active as a jazz saxophonist, given his birth and death years.",
+      "answer": "python\ndef calculate_active_years(birth_year, death_year, start_age=8):\n    # Start age is when he began playing clarinet\n    start_year = birth_year + start_age\n    return death_year - start_year\n\nbirth_year = 1928\ndeath_year = 1980\nactive_years = calculate_active_years(birth_year, death_year)\nprint(f\"Bobby Jones was active as a jazz saxophonist for approximately {active_years} years.\")\n\nOutput: Bobby Jones was active as a jazz saxophonist for approximately 52 years."
+    }
+  ]
+}

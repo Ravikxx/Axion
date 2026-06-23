@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Color_space",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is a color space, and how does it relate to reproducible color representation?",
+      "answer": "A color space is an organized system for representing colors, enabling reproducible color across different devices or digital formats (analog or digital). It combines a color model with a mapping function to a reference color space (like CIELAB or CIEXYZ), defining a specific 'footprint' or gamut. This ensures consistent color interpretation, such as retaining shadow/highlight detail and saturation when transferring between devices."
+    },
+    {
+      "question": "What is the difference between a color model and a color space? Provide an example.",
+      "answer": "A color model is an abstract mathematical framework for representing colors as number tuples (e.g., RGB triples or CMYK quadruples). A color space, however, adds a mapping function to a reference color space (e.g., CIELAB), creating a defined gamut. For example, Adobe RGB and sRGB are both based on the RGB color model but use different mapping functions, resulting in distinct color spaces with different gamuts."
+    },
+    {
+      "question": "Why is CIELAB or CIEXYZ often used as a reference standard for color spaces?",
+      "answer": "CIELAB and CIEXYZ are reference standards because they are designed to encompass all colors perceivable by the average human eye. These color spaces provide a universal framework for comparing and defining other color spaces, ensuring consistency and accuracy in color representation across devices and applications."
+    },
+    {
+      "question": "Explain the concept of a gamut in the context of color spaces.",
+      "answer": "A gamut is the range of colors that a specific color space can reproduce, defined by the mapping function between a color model and a reference color space (e.g., CIELAB). For instance, Adobe RGB and sRGB both use the RGB color model but have different gamuts due to their distinct mapping functions. A larger gamut can represent a broader spectrum of colors."
+    },
+    {
+      "question": "How can color spaces help determine if a color representation is compromised when transferred to another device?",
+      "answer": "Color spaces allow you to compare the gamuts of the source and destination devices. If the destination device's gamut is smaller, shadow/highlight detail or color saturation may be lost during the transfer. For example, printing an image with a wide gamut (like Adobe RGB) on a printer with a smaller gamut (like sRGB) may result in muted colors or lost detail."
+    },
+    {
+      "question": "Is 'RGB color space' a correct term? Why or why not?",
+      "answer": "No, 'RGB color space' is not strictly correct because RGB is a color model, not a color space. While multiple color spaces (e.g., Adobe RGB, sRGB) are based on the RGB model, each has its own unique gamut due to different mapping functions. The term 'RGB color space' is often used informally but is technically inaccurate."
+    },
+    {
+      "question": "Write a Python function that converts an RGB color tuple to the CIEXYZ color space using the sRGB color space as the reference.",
+      "answer": "python\nimport numpy as np\n\ndef rgb_to_ciexyz(rgb):\n    \"\"\"\n    Convert an RGB tuple (0-255) to CIEXYZ using the sRGB color space.\n    Assumes input is in sRGB and output is in D65 illuminant CIEXYZ.\n    \"\"\"\n    # Normalize RGB to [0, 1]\n    rgb_normalized = np.array(rgb, dtype=np.float32) / 255.0\n    \n    # Apply gamma correction (sRGB to linear RGB)\n    mask = rgb_normalized <= 0.04045\n    rgb_linear = np.where(mask, rgb_normalized / 12.92, ((rgb_normalized + 0.055) / 1.055) ** 2.4)\n    \n    # Convert linear RGB to XYZ using the sRGB transformation matrix\n    rgb_linear = rgb_linear.reshape(3, 1)\n    transform_matrix = np.array([\n        [0.4124564, 0.3575761, 0.1804375],\n        [0.2126729, 0.7151522, 0.0721750],\n        [0.0193339, 0.1191920, 0.9503041]\n    ])\n    xyz = np.dot(transform_matrix, rgb_linear).flatten()\n    \n    return xyz\n\n# Example usage:\nrgb = (255, 0, 0)  # Red\nxyz = rgb_to_ciexyz(rgb)\nprint(f\"RGB {rgb} -> CIEXYZ {xyz}\")\n\nThis function first normalizes the RGB values, applies gamma correction to convert sRGB to linear RGB, and then uses a transformation matrix to convert to CIEXYZ."
+    }
+  ]
+}

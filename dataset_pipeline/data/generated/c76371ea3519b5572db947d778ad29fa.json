@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/French_Indochina",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What were the constituent territories of French Indochina, and what were their respective inclusion periods?",
+      "answer": "French Indochina consisted of Cambodia, Laos (included from 1899), Guangzhouwan (1898–1945), Cochinchina, and the Vietnamese regions of Tonkin and Annam. The union was established in 1887 as a federation of French colonies and was later reorganized in 1949 as a confederation of French associated states until its dissolution in 1954."
+    },
+    {
+      "question": "How did French colonialism impact the health and education systems in Indochina?",
+      "answer": "The French colonial administration made limited and uneven improvements to health and education systems. These changes were primarily designed to benefit French settlers and a small group of native elites, rather than the broader local population. As a result, deep social divides persisted, contributing to resistance and rebellions against colonial rule."
+    },
+    {
+      "question": "What were the key events leading to the First Indochina War?",
+      "answer": "The First Indochina War (1946–1954) was triggered by several key events. After Japan's surrender in World War II, the communist Viet Minh, led by Ho Chi Minh, declared Vietnam's independence. In 1946, agreements like the Franco-Chinese and Ho–Sainteny Accords allowed French forces to regain control north of the 16th parallel. However, tensions rose when the Viet Minh collaborated with the French to eliminate Vietnamese nationalists, leading to open conflict and the eventual war."
+    },
+    {
+      "question": "How did the Battle of Điện Biên Phủ contribute to the end of French Indochina?",
+      "answer": "The Battle of Điện Biên Phủ in 1954 was a decisive defeat for French forces in Indochina. This military loss severely weakened France's ability to retain control over the region, culminating in their withdrawal from Indochina. It directly led to the Geneva Accords on 21 July 1954, which recognized the independence of Vietnam, Laos, and Cambodia, effectively ending French Indochina."
+    },
+    {
+      "question": "What role did Japan play in the administration of French Indochina during World War II?",
+      "answer": "Following the Fall of France in 1940, French Indochina was administered by the Vichy government and occupied by Japan from 1940 until 9 March 1945. On that date, the Japanese army overthrew the colonial regime and established puppet states such as the Empire of Vietnam. This occupation lasted until Japan's surrender in 1945, after which the Viet Minh declared Vietnam's independence."
+    },
+    {
+      "question": "Write a Python snippet to calculate the duration of French Indochina as a political entity.",
+      "answer": "python\n# Calculate the duration of French Indochina from 1887 to 1954\nstart_year = 1887\nend_year = 1954\nduration = end_year - start_year\nprint(f\"French Indochina existed for {duration} years.\")\n\nThis code outputs: 'French Indochina existed for 67 years.'"
+    },
+    {
+      "question": "Why did France create the State of Vietnam in 1949, and what was its significance?",
+      "answer": "France formed the anti-communist State of Vietnam in 1949 as part of its decolonization efforts and to counter the growing influence of the Viet Minh. It was established as an associated state within the French Union, with Cochinchina returning to Vietnam. This move was an attempt to maintain French influence while gradually granting more autonomy to the region."
+    }
+  ]
+}

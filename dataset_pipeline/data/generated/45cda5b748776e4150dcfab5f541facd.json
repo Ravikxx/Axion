@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Elias_Cairel",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was Elias Cairel and what were his primary occupations?",
+      "answer": "Elias Cairel (or Cayrel) was a troubadour of international fame born in Sarlat in the Périgord region. Initially, he worked as a gold- and silversmith and an armourer before transitioning to minstrelsy."
+    },
+    {
+      "question": "What is the significance of Elias Cairel's *vida* in the context of medieval literature?",
+      "answer": "Elias' *vida* (biography) survives in three manuscripts with a fourth variant that refutes the others. This suggests debates or differing interpretations of his life, highlighting the importance of manuscript variants in medieval textual tradition."
+    },
+    {
+      "question": "How did Elias Cairel's travels contribute to his reputation as a troubadour?",
+      "answer": "Elias Cairel traveled extensively, including accompanying the Fourth Crusade, residing at the court of Boniface of Montferrat in the Kingdom of Thessalonica, sojourning at the court of Alfonso IX of León, and spending time in Lombardy. These travels broadened his cultural exposure and likely enhanced his fame as a troubadour."
+    },
+    {
+      "question": "What genres of poetry did Elias Cairel compose, and how many works survive?",
+      "answer": "Elias Cairel composed fourteen surviving lyrics: ten *cansos* (love songs), one *tenso* (a debate poem co-written with Ysabella), one *descort* (a discordant or irregular poem), one *sirventes* (a political or satirical poem), and one Crusade song."
+    },
+    {
+      "question": "Who was Ysabella in relation to Elias Cairel, and what role did she play in his poetry?",
+      "answer": "Ysabella was a trobairitz (female troubadour) with whom Elias composed his only surviving *tenso*. She may have been a high-ranking noblewoman or a local girl from Périgord. Elias also addressed two other poems to her, indicating a significant artistic relationship."
+    },
+    {
+      "question": "What is the meaning of the phrase *ben escrivia motz e sons* attributed to Elias Cairel?",
+      "answer": "The phrase *ben escrivia motz e sons* translates to 'well he wrote words and songs,' suggesting that while Elias Cairel's singing, composition, and speaking were deemed 'bad,' his ability to write lyrics and melodies was highly regarded by his biographer."
+    },
+    {
+      "question": "Write a Python snippet to extract all proper nouns from a given text about Elias Cairel.",
+      "answer": "python\nimport re\n\ndef extract_proper_nouns(text):\n    # Define a pattern to match proper nouns (capitalized words, excluding common titles)\n    pattern = r'\\b([A-Z][a-z]+(?:\\s+[A-Z][a-z]+)*)\\b'\n    proper_nouns = re.findall(pattern, text)\n    return proper_nouns\n\n# Example usage:\ntext = \"Elias Cairel was a troubadour born in Sarlat in the Périgord.\"\nprint(extract_proper_nouns(text))  # Output: ['Elias', 'Cairel', 'Sarlat', 'Périgord']\n"
+    }
+  ]
+}

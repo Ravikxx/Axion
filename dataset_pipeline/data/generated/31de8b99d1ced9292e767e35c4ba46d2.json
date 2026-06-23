@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Cadra_figulilella",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is Cadra figulilella commonly referred to as, and what family does it belong to?",
+      "answer": "Cadra figulilella is commonly known as the raisin moth, and it belongs to the family Pyralidae."
+    },
+    {
+      "question": "Describe the preferred habitat of the raisin moth and explain why it thrives in such conditions.",
+      "answer": "The raisin moth prefers a hot, arid climate with little moisture and abundant harvests, as these conditions provide ample food for its larvae. It is commonly found in regions like California, Florida, the Eastern Mediterranean, Africa, Australia, and South America."
+    },
+    {
+      "question": "How long do adult raisin moths live, and what is their primary focus during this time?",
+      "answer": "Adult raisin moths have a lifespan of 11–16 days, during which they primarily focus on reproduction."
+    },
+    {
+      "question": "What happens to dried fruits after they are infested by raisin moth larvae, and why can't fumigation after harvest prevent this?",
+      "answer": "Once infested by raisin moth larvae, dried fruits are spoiled as the larvae bore into them. Fumigation after harvest cannot save these fruits because the larvae have already penetrated the fruit by then."
+    },
+    {
+      "question": "Explain the mating rituals of the raisin moth, including the specific behaviors involved.",
+      "answer": "The mating process involves pheromone release by both males and females, along with copulatory rituals to prevent interspecies mating. Specific behaviors include a head bump technique with thrusting, as well as a unique abdomen curling method that distinguishes this species from others."
+    },
+    {
+      "question": "Provide a code snippet in Python to simulate the nocturnal activity pattern of the raisin moth, assuming activity starts at 7 PM and ends at 5 AM.",
+      "answer": "python\nfrom datetime import datetime, time\n\ndef is_nocturnal(activity_time):\n    start_time = time(19, 0)  # 7 PM\n    end_time = time(5, 0)    # 5 AM\n    \n    # Handle overnight transition\n    if start_time <= end_time:\n        return start_time <= activity_time <= end_time\n    else:\n        return activity_time >= start_time or activity_time <= end_time\n\n# Example usage\ncurrent_time = datetime.now().time()\nprint(f\"Is moth active at {current_time}? {is_nocturnal(current_time)}\")\n"
+    },
+    {
+      "question": "Why is the study of the raisin moth economically significant?",
+      "answer": "The study of the raisin moth is economically significant because it causes substantial annual agricultural damage worldwide due to its infestation of dried fruits like raisins and dates."
+    },
+    {
+      "question": "What behavioral adaptations help the raisin moth survive cold winter months?",
+      "answer": "During cold winter months, raisin moth larvae migrate from infested fruit to the top 4 inches of topsoil to survive the cold, demonstrating a key behavioral adaptation."
+    }
+  ]
+}

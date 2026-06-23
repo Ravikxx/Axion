@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/AMSAT-OSCAR_7",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is AMSAT-OSCAR 7 (AO-7) and when was it launched?",
+      "answer": "AMSAT-OSCAR 7, or AO-7, is the second Phase 2 amateur radio satellite built by the Radio Amateur Satellite Corporation (AMSAT). It was launched into Low Earth Orbit on November 15, 1974."
+    },
+    {
+      "question": "Why was AO-7 silent for 21 years between 1981 and 2002?",
+      "answer": "AO-7 was silent for 21 years due to a short circuit in its battery, which caused an outage. The satellite became operational again in 2002 when the short circuit resolved into an open circuit, allowing it to function intermittently."
+    },
+    {
+      "question": "What are the two transponder modes of AO-7 and their frequency bands?",
+      "answer": "AO-7 has two amateur radio transponders: Mode A with an uplink on the 2-meter band (145.850–145.950 MHz) and a downlink on the 10-meter band (29.400–29.500 MHz), and Mode B with an uplink on the 70-centimeter band (432.125–432.175 MHz) and a downlink on the 2-meter band (145.925–145.975 MHz)."
+    },
+    {
+      "question": "How does AO-7 power its operations, and why is its power reliability limited?",
+      "answer": "AO-7 relies on solar panels for power, as its battery failed in 1981. The solar panels provide reliable power only when the satellite is in continuous sunlight, which occurs during the northern summer and autumn. During the rest of the year, it experiences eclipses on every orbit, reducing power availability."
+    },
+    {
+      "question": "Which beacons does AO-7 carry, and why was one never activated?",
+      "answer": "AO-7 carries four beacons operating on the 10-meter, 2-meter, 70-centimeter, and 13-centimeter bands. The 13-centimeter beacon was never activated due to changes in international treaties."
+    },
+    {
+      "question": "What notable historical event involved AO-7 in 2002?",
+      "answer": "In 2002, it was discovered that AO-7 had been used surreptitiously by the anticommunist opposition Fighting Solidarity during martial law in Poland for communication purposes."
+    },
+    {
+      "question": "Write a Python script to simulate AO-7's operational modes based on sunlight exposure.",
+      "answer": "python\nimport numpy as np\n\ndef simulate_ao7_operation(day_of_year, is_northern_summer_autumn):\n    \"\"\"\n    Simulate AO-7's operational modes based on sunlight exposure.\n    \n    Args:\n        day_of_year (int): Day of the year (1-365)\n        is_northern_summer_autumn (bool): True if northern summer/autumn (eclipses occur)\n    \n    Returns:\n        str: Operational mode ('A', 'B', or 'None' if no power)\n    \"\"\"\n    # Northern summer/autumn (eclipses; unreliable power)\n    if is_northern_summer_autumn:\n        return 'None' if np.random.rand() < 0.5 else np.random.choice(['A', 'B'])\n    # Rest of the year (continuous sunlight; both modes alternate)\n    else:\n        return np.random.choice(['A', 'B'])\n\n# Example usage\nprint(simulate_ao7_operation(150, True))  # Northern summer/autumn\nprint(simulate_ao7_operation(300, False)) # Northern winter/spring\n"
+    }
+  ]
+}

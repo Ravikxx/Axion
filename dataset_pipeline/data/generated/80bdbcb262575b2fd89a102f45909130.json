@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/junothreadborne/the-vibe-coding-paradox-i31",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What are the key differences between using AI as a co-developer in a personal project like Nudges versus in contract work?",
+      "answer": "In a personal project like Nudges, the developer owns the system architecture, message formats, and telemetry, allowing AI to act as an amplifier of care. The developer can quickly validate AI-generated code against their own standards because they built the system's constraints. In contract work, the developer inherits a fragile system with extensive architectural debt, where AI is used more as a shield against cognitive overload. They prioritize shipping solutions over best practices due to time constraints and the risk of cascading failures."
+    },
+    {
+      "question": "How does AI impact code quality in systems with pre-existing technical debt?",
+      "answer": "AI replicates existing patterns, both good and bad. In systems with technical debt, AI can scale dysfunction by generating clean, semantically correct code that adheres to flawed patterns (e.g., inline functions that should be services, defensive props on components slated for deletion). The danger is that the code 'looks right' without resistance, making it easy to perpetuate bad practices without realizing it. This is especially problematic in legacy systems where refactoring is costly or risky."
+    },
+    {
+      "question": "What is the 'Cognitive Calculus' described in the text, and how does it influence decision-making in contract work?",
+      "answer": "The 'Cognitive Calculus' refers to the tradeoff between doing work the 'right' way (extracting logic, adding tests, documenting) versus the 'good enough' way (making it work, shipping quickly). In contract work, the cost of doing the 'right' way (e.g., 2 hours) often outweighs the immediate need for momentum (e.g., 5 minutes). This leads to frequent decisions to prioritize shipping over quality, especially when the system is already fragile and refactoring is risky."
+    },
+    {
+      "question": "Provide an example of how AI can generate code that 'looks right' but is actually harmful in a legacy system.",
+      "answer": "Consider a legacy React component with 1100 lines of nested ternaries and no test coverage. AI might generate a 'clean' solution with memoized variables and defensive checks, but the component is still overly complex. The AI replicates the existing pattern of putting logic directly in the component instead of extracting it to a service or custom hook. The result is a file that's now 1030 lines instead of 1100, but still a maintenance burden. Example AI-generated code snippet:\n\njavascript\nconst FormWarnings = ({ formState }) => {\n  const isStateA = useMemo(() => formState.includes('A'), [formState]);\n  const isStateB = useMemo(() => formState.includes('B'), [formState]);\n  const shouldWarn = useMemo(() => isStateA && !isStateB, [isStateA, isStateB]);\n\n  if (!shouldWarn) return null;\n  return <Warning message=\"Combination of A and B states detected\" />;\n};\n\n\nWhile this code is technically correct and clean, it doesn't address the root issue: the formState logic should be extracted into a dedicated validation module with tests."
+    },
+    {
+      "question": "What measures can a developer take to ensure AI-generated code aligns with their system's architecture in a personal project?",
+      "answer": "In a personal project where you own the system, you can:\n1. Embed your architectural standards in the design from the beginning (e.g., clear module boundaries, consistent naming conventions).\n2. Review AI-generated changes against your system's constraints and patterns.\n3. Use telemetry and logging to validate that new code behaves as expected.\n4. Refactor or adjust AI-generated code immediately if it doesn't align with your goals.\n5. Document your system's design principles so AI can reference them in future generations.\n\nExample: In Nudges, the developer could enforce that all event handlers follow a specific module structure, making it easy to spot deviations from the architecture."
+    },
+    {
+      "question": "How does the author justify accepting 'good enough' code in contract work despite knowing it perpetuates technical debt?",
+      "answer": "The author justifies it by comparing the cost of caring (e.g., 2 hours to extract and refactor) against the cost of being correct (e.g., shipping a solution in 5 minutes). In contract work, the priority is to deliver working solutions that survive the next merge, not to improve the system. The author notes that the reward for doing the 'right' thing is the same as doing the 'good enough' thing in terms of client satisfaction, but the time investment is significantly higher. This is a pragmatic tradeoff in high-pressure environments."
+    },
+    {
+      "question": "What is the 'Ghost in the Machine' metaphor referring to in the context of AI-assisted development?",
+      "answer": "The 'Ghost in the Machine' refers to the disconnect between the developer's intent and the AI's output. While AI can generate code quickly and 'correctly,' it doesn't inherently understand the system's goals or the developer's long-term vision. The metaphor highlights that even when code writes itself, the developer's fingerprints (and responsibility) are everywhere. In legacy systems, this can lead to unintended consequences where AI-generated patches address symptoms but not root causes, perpetuating issues without the developer realizing it."
+    }
+  ]
+}

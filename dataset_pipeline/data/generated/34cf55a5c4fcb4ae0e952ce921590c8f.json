@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/sylwia-lask/youre-a-real-software-developer-only-if-2mo8",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What is the Polish saying about breaking production and its English translation?",
+      "answer": "The Polish saying is: *\"Kto produkcji nie wy*ebie, ten nie zazna szczęścia w niebie\"*, which loosely translates to: *\"If prod you’ve never slain, dev heaven you won’t gain.\"* It humorously emphasizes the inevitability of production issues in a developer's career."
+    },
+    {
+      "question": "Describe a scenario where a developer fixed a bug accidentally. What is the likely emotional response?",
+      "answer": "A developer might spend months or years dealing with a persistent bug, only to fix it by making an unrelated change. The likely emotional response is relief mixed with confusion, often followed by slowly backing away from the code to avoid touching it again. This is humorously referred to as fixing something \"by accident\" in the developer community."
+    },
+    {
+      "question": "Write a JavaScript code snippet that demonstrates adding excessive logging during debugging.",
+      "answer": "javascript\n// Debugging a mysterious issue by adding excessive logging\nfunction mysteryFunction(input) {\n  console.log(`Input received: ${input}`);\n  const result = input * 2;\n  console.log(`Result after doubling: ${result}`);\n  if (result > 10) {\n    console.log('Result is greater than 10!');\n  }\n  console.log(`Final output: ${result}`);\n  return result;\n}\n\nconsole.log(\"WHAT IS GOING ON\");\nmysteryFunction(5);\n\nThis snippet shows the common debugging practice of adding multiple `console.log` statements to trace execution flow and variable states."
+    },
+    {
+      "question": "What are some common reasons why code that works locally fails in production?",
+      "answer": "Code that works locally can fail in production due to: different environment configurations, missing environment variables, timezone discrepancies, race conditions, or subtle differences in dependencies. This is humorously summarized as code being 'held together by vibes and legacy decisions'."
+    },
+    {
+      "question": "Explain the developer joke about 'It works on my machine.' What does it imply about software development?",
+      "answer": "The phrase *\"It works on my machine.\"* is a humorous acknowledgment that software behaves differently across environments. It implies that developers often face challenges in ensuring their code works consistently, regardless of where it is deployed, highlighting the complexities of software development."
+    },
+    {
+      "question": "How would you categorize a developer who has broken production, fixed a bug accidentally, and blamed the backend and frontend in the same session?",
+      "answer": "A developer who has experienced all these scenarios would likely fall into the category of a seasoned software developer. These experiences are common milestones in a developer's career, as humorously outlined in the provided list."
+    },
+    {
+      "question": "What is the purpose of the developer traits list in the text? How does it resonate with the developer community?",
+      "answer": "The list humorously categorizes common experiences and behaviors in a developer's life, serving as a lighthearted way to reflect on shared struggles and achievements. It resonates with the developer community by validating their experiences and fostering a sense of camaraderie through shared challenges."
+    }
+  ]
+}

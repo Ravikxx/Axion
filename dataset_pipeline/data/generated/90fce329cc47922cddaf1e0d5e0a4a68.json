@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Bell_Covered_Bridge",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who built the Bell Covered Bridge and when was it constructed?",
+      "answer": "The Bell Covered Bridge was built by E.B. Henderson in 1888."
+    },
+    {
+      "question": "What are the dimensions of the Bell Covered Bridge?",
+      "answer": "The Bell Covered Bridge spans 59 feet (18 m) in length, has a deck width of approximately 18 feet (5.5 m), an interior width of 15 feet (4.6 m), and a height of 11 feet (3.4 m), with 9 feet (2.7 m) of interior clearance."
+    },
+    {
+      "question": "What structural issues led to the closure of the Bell Covered Bridge in 1998?",
+      "answer": "In 1998, the bridge was closed due to structural problems, including issues with the abutment stones, requiring replacement. The truss system was also solidified, and damaged or missing components were replaced with identical newly produced parts."
+    },
+    {
+      "question": "How many covered bridges in Washington County are listed on the National Register of Historic Places, including the Bell Covered Bridge?",
+      "answer": "There are seven covered bridges on the National Register in Washington County, including the Bell Covered Bridge, Shinn Bridge, Harra Bridge, Hildreth Bridge, Hune Bridge, Rinard Bridge, and Root Bridge."
+    },
+    {
+      "question": "What type of truss design does the Bell Covered Bridge use, and why is it historically significant?",
+      "answer": "The Bell Covered Bridge uses a multiple king post truss design, which became popular nationwide after its use on the National Road. This design is historically significant because it reflects local engineering practices and is a well-preserved example of 19th-century bridge construction."
+    },
+    {
+      "question": "Write a Python snippet to calculate the interior clearance of the Bell Covered Bridge in meters.",
+      "answer": "python\n# Interior clearance of the Bell Covered Bridge in meters\ninterior_clearance_feet = 9\ninterior_clearance_meters = interior_clearance_feet * 0.3048\nprint(f\"Interior clearance: {interior_clearance_meters:.2f} meters\")\n\nOutput: `Interior clearance: 2.74 meters`"
+    },
+    {
+      "question": "Why was the Bell Covered Bridge permanently closed in 2022?",
+      "answer": "The Bell Covered Bridge was permanently closed on September 12, 2022, due to ongoing maintenance challenges and structural concerns. Washington County officials subsequently built a bypass, which opened on November 14, 2022."
+    }
+  ]
+}

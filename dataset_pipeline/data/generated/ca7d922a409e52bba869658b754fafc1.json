@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Harold_Washington",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "Who was Harold Lee Washington and what were his most significant political roles?",
+      "answer": "Harold Lee Washington was an American lawyer and politician who served as the first African-American Mayor of Chicago from 1983 until his death in 1987. Prior to his mayoralty, he represented Illinois's 1st congressional district in the U.S. House of Representatives and served in both the Illinois State Senate and Illinois House of Representatives."
+    },
+    {
+      "question": "What were the major political challenges Harold Washington faced during his first term as mayor of Chicago?",
+      "answer": "During his first term, Harold Washington led the city through 'council wars,' which were intense political disagreements between city hall and the city council. Despite these challenges, he maintained positive approval among Chicago's residents."
+    },
+    {
+      "question": "What educational institutions did Harold Washington attend?",
+      "answer": "Harold Washington studied at Roosevelt College and later at Northwestern University School of Law."
+    },
+    {
+      "question": "Who was Harold Washington married to, and what was the duration of his marriages?",
+      "answer": "Harold Washington was first married to Nancy Dorothy Finch from 1942 until their divorce in 1950. He was then engaged to Mary Ella Smith until his death in 1987."
+    },
+    {
+      "question": "How did Harold Washington die, and how old was he at the time?",
+      "answer": "Harold Washington died suddenly on November 25, 1987, in Chicago City Hall from a heart attack. He was 65 years old at the time of his death."
+    },
+    {
+      "question": "What recognition has Harold Washington received posthumously?",
+      "answer": "A 1993 survey by the University of Illinois at Chicago ranked Harold Washington as the nineteenth-best American big-city mayor between 1820 and 1993. Additionally, the Harold Washington Library and Harold Washington College are named in his honor."
+    },
+    {
+      "question": "Write a Python function that takes a mayor's name and returns a dictionary containing their birth year, death year (if applicable), and the years they served as mayor.",
+      "answer": "python\ndef get_mayor_info(name):\n    mayors_info = {\n        \"Harold Lee Washington\": {\n            \"birth_year\": 1922,\n            \"death_year\": 1987,\n            \"years_served\": (1983, 1987)\n        }\n    }\n    return mayors_info.get(name, {})\n\nExample usage:\npython\nprint(get_mayor_info(\"Harold Lee Washington\"))\n# Output: {'birth_year': 1922, 'death_year': 1987, 'years_served': (1983, 1987)}\n"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://mathworld.wolfram.com/Sum.html",
+  "category": "mathworld",
+  "pairs": [
+    {
+      "question": "What is a sum in mathematics?",
+      "answer": "A sum is the result of an addition operation. For example, adding the numbers 1, 2, 3, and 4 yields the sum 10. The numbers being added together are called addends or summands."
+    },
+    {
+      "question": "How would you express the sum of numbers from 1 to 4 using summation notation?",
+      "answer": "The sum of numbers from 1 to 4 can be written using the capital sigma notation as Σ (from i=1 to 4) i. This represents 1 + 2 + 3 + 4, which equals 10."
+    },
+    {
+      "question": "What is a geometric series, and how is it defined?",
+      "answer": "A geometric series is a sum of the form Σ (from n=0 to ∞) ar^n, where 'a' is the first term and 'r' is the common ratio between terms. For example, 1 + 2 + 4 + 8 is a finite geometric series with a=1 and r=2."
+    },
+    {
+      "question": "How can you check if a series converges using the Wolfram Language?",
+      "answer": "In the Wolfram Language, you can use the function SumConvergence to determine if a series converges. For example, SumConvergence[1/n^2, n] would return True, indicating that the series Σ (from n=1 to ∞) 1/n^2 converges."
+    },
+    {
+      "question": "What is Faulhaber's formula used for, and can you provide a code snippet to compute the sum of squares from 1 to n?",
+      "answer": "Faulhaber's formula provides a general expression for the sum of the p-th powers of the first n integers, Σ (from k=1 to n) k^p. The sum of squares (p=2) can be computed using the following Mathematica code: Total[Range[n]^2]. For n=3, this would return 1 + 4 + 9 = 14."
+    },
+    {
+      "question": "What is Nicomachus's theorem regarding power sums?",
+      "answer": "Nicomachus's theorem states that the sum of the cubes of the first n natural numbers is equal to the square of the sum of the first n natural numbers: Σ (from k=1 to n) k^3 = (Σ (from k=1 to n) k)^2. For example, when n=3: 1^3 + 2^3 + 3^3 = (1 + 2 + 3)^2, which simplifies to 36 = 36."
+    },
+    {
+      "question": "How can you minimize the sum of the squares of numbers centered around a given mean?",
+      "answer": "To minimize the sum of the squares of numbers about a given mean, you set the mean of the numbers equal to the target value. Mathematically, the sum Σ (x_i - μ)^2 is minimized when μ equals the arithmetic mean of the x_i values. The derivative of the sum with respect to μ is set to zero to derive this condition."
+    }
+  ]
+}

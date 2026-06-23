@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/2π_theorem",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the 2π theorem of Gromov and Thurston, and under what conditions does it apply?",
+      "answer": "The 2π theorem of Gromov and Thurston states that if M is a cusped hyperbolic 3-manifold, then performing a Dehn filling on M with each filling slope greater than 2π results in a 3-manifold with a complete metric of negative sectional curvature. This metric can be chosen to match the original hyperbolic metric outside the horoball neighborhoods of the cusps."
+    },
+    {
+      "question": "How is the length of a slope defined in the context of Dehn filling on a hyperbolic 3-manifold?",
+      "answer": "The length of a slope (unoriented isotopy class of simple closed curves on the boundary of a horoball neighborhood) is defined as the minimal Euclidean length over all curves in the isotopy class. Since the boundary of the horoball neighborhood has a Euclidean metric, this length is well-defined."
+    },
+    {
+      "question": "What is the significance of the horoball packing argument by Thurston in the context of Dehn fillings?",
+      "answer": "Thurston's horoball packing argument shows that there are at most 48 slopes to avoid on each cusp of a hyperbolic 3-manifold to ensure the resulting Dehn-filled manifold remains hyperbolic. For one-cusped manifolds, Colin Adams improved this bound to at most 24 exceptional slopes."
+    },
+    {
+      "question": "How does the 6 theorem improve upon the 2π theorem in the context of Dehn fillings?",
+      "answer": "The 6 theorem, proved independently by Ian Agol and Marc Lackenby, states that Dehn filling along slopes of length greater than 6 results in a hyperbolike 3-manifold, which is irreducible, atoroidal, non-Seifert-fibered, and has an infinite word hyperbolic fundamental group. Under the geometrization conjecture, these manifolds admit a complete hyperbolic metric. Agol further showed that there are at most 12 exceptional slopes in this case."
+    },
+    {
+      "question": "Provide a code snippet that simulates the minimal Euclidean length of a slope on a horospherical boundary in a hyperbolic 3-manifold.",
+      "answer": "Here is a Python function to approximate the minimal Euclidean length of a slope on a horospherical boundary (assuming the boundary is a Euclidean torus):\npython\nimport numpy as np\n\ndef minimal_slope_length(a, b, c, d):\n    \"\"\"\n    Approximates the minimal Euclidean length of a slope (p, q) on a torus.\n    The torus is parameterized by the matrix [[a, b], [c, d]] in SL(2,Z).\n    Returns the minimal length of curves in the isotopy class (p, q).\n    \"\"\"\n    def curve_length(p, q):\n        # Compute the Euclidean length of the curve (p, q) on the torus\n        return np.sqrt((p * a + q * b)**2 + (p * c + q * d)**2)\n    \n    # Search for the minimal length over small integer slopes\n    min_length = float('inf')\n    for p in range(-10, 11):\n        for q in range(-10, 11):\n            if p == 0 and q == 0:\n                continue\n            length = curve_length(p, q)\n            if length < min_length:\n                min_length = length\n    \n    return min_length\n\n# Example usage:\nmatrix = [[1, 1], [0, 1]]  # A sample SL(2,Z) matrix\nprint(minimal_slope_length(*matrix))  # Approximate minimal slope length\n\nThis function approximates the minimal Euclidean length of a slope by searching over small integer slopes (p, q). In practice, the minimal length corresponds to the shortest closed curve in the isotopy class."
+    },
+    {
+      "question": "What is the role of the geometrization conjecture in the context of the 2π theorem and the 6 theorem?",
+      "answer": "The geometrization conjecture (now a theorem, thanks to Perelman's work) states that every compact 3-manifold can be decomposed into pieces that admit geometric structures, including hyperbolic geometry. Under this conjecture, the 2π theorem and the 6 theorem imply that Dehn fillings with slopes greater than 2π or 6, respectively, result in 3-manifolds that admit a complete hyperbolic metric."
+    },
+    {
+      "question": "Explain the construction used in the proof of the 2π theorem to ensure negative sectional curvature after Dehn filling.",
+      "answer": "The proof of the 2π theorem explicitly constructs a negatively curved metric inside each horoball neighborhood that matches the original hyperbolic metric near the horospherical boundary. This construction uses cylindrical coordinates and works when the filling slope is greater than 2π. The key idea is to 'stretch' the metric in a way that preserves negative curvature while ensuring compatibility with the hyperbolic structure outside the horoball neighborhoods."
+    }
+  ]
+}

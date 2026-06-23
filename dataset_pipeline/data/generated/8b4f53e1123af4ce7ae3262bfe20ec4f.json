@@ -1,0 +1,38 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Arthur_Honegger",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "Where and when was Arthur Honegger born?",
+      "answer": "Arthur Honegger was born on March 10, 1892, in Le Havre, France."
+    },
+    {
+      "question": "What is Arthur Honegger’s most famous orchestral work, and what does it imitate?",
+      "answer": "Honegger’s most famous orchestral work is *Pacific 231*, which imitates the sound and movement of a steam locomotive."
+    },
+    {
+      "question": "Which composers influenced Arthur Honegger’s musical style?",
+      "answer": "Honegger’s musical style was influenced by the Romantic composers Richard Wagner, Richard Strauss, and Max Reger, as well as Johann Sebastian Bach."
+    },
+    {
+      "question": "How did Arthur Honegger contribute to the French Resistance during World War II?",
+      "answer": "During World War II, Honegger remained in Paris, where he joined the French Resistance and continued composing serious music, including four symphonies and religious works."
+    },
+    {
+      "question": "Write a Python function that takes a composer’s name as input and returns their birth year if it is known. For Honegger, return 1892.",
+      "answer": "python\ndef get_composer_birth_year(name):\n    composers = {\n        \"Arthur Honegger\": 1892,\n        \"Johann Sebastian Bach\": 1685,\n        \"Richard Wagner\": 1813\n    }\n    return composers.get(name, None)\n\n# Example usage:\nprint(get_composer_birth_year(\"Arthur Honegger\"))  # Output: 1892\n"
+    },
+    {
+      "question": "What was the name of Arthur Honegger’s wife, and what role did she play in his musical career?",
+      "answer": "Honegger’s wife was Andrée Vaurabourg, a pianist who often performed the piano parts in his compositions during their tours together."
+    },
+    {
+      "question": "Why is Honegger’s oratorio *Jeanne d'Arc au bûcher* significant in his body of work?",
+      "answer": "*Jeanne d'Arc au bûcher* (1935) is one of Honegger’s best works and tells the story of Joan of Arc, showcasing his ability to blend dramatic narrative with musical depth."
+    },
+    {
+      "question": "How did Arthur Honegger’s personal life (e.g., family, health) impact his later compositions?",
+      "answer": "After suffering a severe heart attack in 1947, Honegger composed much less. A second heart attack in 1955 led to his death, significantly reducing his output in his final years."
+    }
+  ]
+}

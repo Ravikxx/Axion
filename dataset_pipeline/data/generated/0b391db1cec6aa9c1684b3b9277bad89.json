@@ -1,0 +1,34 @@
+{
+  "source_url": "https://mathworld.wolfram.com/ExactSequence.html",
+  "category": "mathworld",
+  "pairs": [
+    {
+      "question": "What is an exact sequence in mathematics?",
+      "answer": "An exact sequence is a sequence of maps between a sequence of spaces (such as groups, modules, chain complexes, or sheaves) where the image of one map is equal to the kernel of the next map. Formally, for a sequence ... → A → B → C → ..., exactness means im(A) = ker(B), im(B) = ker(C), and so on. This ensures precise relationships between the spaces and maps."
+    },
+    {
+      "question": "What is the difference between a short exact sequence and a long exact sequence?",
+      "answer": "A short exact sequence is a finite exact sequence of five terms, typically written as 0 → A → B → C → 0, where the first and last spaces are zero modules (or groups). A long exact sequence is an infinite exact sequence, often arising in contexts like homology or cohomology theories, where the exactness property holds at each stage."
+    },
+    {
+      "question": "Provide an example of a long exact sequence in group theory.",
+      "answer": "Consider the sequence ... → ℤ → ℤ → ℤ/2ℤ → 0, where each map is multiplication by 2. This sequence is long exact because at each stage, the image of the map equals the kernel of the next. For instance, im(ℤ → ℤ) = 2ℤ = ker(ℤ → ℤ/2ℤ), and im(ℤ → ℤ/2ℤ) = ℤ/2ℤ = ker(ℤ/2ℤ → 0)."
+    },
+    {
+      "question": "How does exactness relate to injective and surjective maps in a sequence?",
+      "answer": "A sequence 0 → A → B is exact if and only if the map A → B is injective (the kernel of B → * is trivial). Similarly, a sequence B → C → 0 is exact if and only if the map B → C is surjective (the image of B → C covers all of C). Exactness at intermediate terms depends on the image-kernel equality."
+    },
+    {
+      "question": "Write a Python function to check if a given sequence of maps is exact.",
+      "answer": "python\nfrom typing import List, Callable\n\ndef is_exact_sequence(maps: List[Callable], spaces: List) -> bool:\n    \"\"\"\n    Check if a sequence of maps is exact.\n    Args:\n        maps: List of callable maps between spaces.\n        spaces: List of spaces [A, B, C, ...].\n    Returns:\n        True if the sequence is exact, False otherwise.\n    \"\"\"\n    for i in range(len(maps) - 1):\n        # Compute image of map[i] and kernel of map[i+1]\n        img = set(maps[i](x) for x in spaces[i])\n        ker = set(x for x in spaces[i+1] if maps[i+1](x) == spaces[i+1][0])\n        if img != ker:\n            return False\n    return True\n\nExample usage:\npython\n# Sequence: 0 → Z → Z → Z/2Z → 0, maps are multiplication by 2\nspaces = [set(range(2)), set(range(4)), set(range(2)), {0}]\nmaps = [lambda x: 2*x, lambda x: x % 2, lambda x: 0]\nprint(is_exact_sequence(maps, spaces))  # Output: True\n"
+    },
+    {
+      "question": "Why does the zero module appear in exact sequences?",
+      "answer": "The zero module (or trivial group) is used to denote trivial or degenerate cases in exact sequences. A sequence starting or ending with 0 indicates that the preceding or succeeding map is injective or surjective, respectively. For example, 0 → A → B is exact iff A → B is injective, and B → C → 0 is exact iff B → C is surjective."
+    },
+    {
+      "question": "What is the significance of exact sequences in homological algebra?",
+      "answer": "Exact sequences are fundamental in homological algebra because they encode relationships between objects (e.g., groups, modules) via their mappings. They appear in contexts like chain complexes, where exactness often implies the vanishing of homology groups, revealing structural properties of the underlying spaces."
+    }
+  ]
+}

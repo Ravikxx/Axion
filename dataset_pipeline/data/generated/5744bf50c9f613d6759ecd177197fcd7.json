@@ -1,0 +1,34 @@
+{
+  "source_url": "https://mathworld.wolfram.com/EulerianCycle.html",
+  "category": "mathworld",
+  "pairs": [
+    {
+      "question": "What is an Eulerian cycle in graph theory?",
+      "answer": "An Eulerian cycle, also known as an Eulerian circuit or Eulerian tour, is a cycle in a graph that starts and ends at the same vertex and traverses every edge exactly once. This means each edge in the graph is used precisely one time in the cycle."
+    },
+    {
+      "question": "How does Fleury's algorithm help in finding an Eulerian cycle?",
+      "answer": "Fleury's algorithm is a method for constructing an Eulerian cycle by iteratively selecting edges that do not disconnect the remaining graph, ensuring the path remains traversable. It is elegant but computationally inefficient for large graphs."
+    },
+    {
+      "question": "What is the condition for a connected graph to have an Eulerian cycle?",
+      "answer": "A connected graph has an Eulerian cycle if and only if every vertex in the graph has an even degree. This ensures that the cycle can enter and exit each vertex the same number of times without retracing any edge."
+    },
+    {
+      "question": "Write a Wolfram Language code snippet to find an Eulerian cycle in a graph.",
+      "answer": "In the Wolfram Language, you can use `FindEulerianCycle[g]` where `g` is a graph object to find an Eulerian cycle. For example:\n\nmathematica\nGraph[{1 -> 2, 2 -> 3, 3 -> 1, 1 -> 4, 4 -> 2}, \n VertexLabels -> \"Name\"]\nFindEulerianCycle[%]\n\n\nThis will return a cycle that traverses each edge exactly once."
+    },
+    {
+      "question": "Which Platonic solid has an Eulerian cycle? Why do other Platonic solids not have one?",
+      "answer": "The octahedron is the only Platonic solid with an Eulerian cycle because all its vertices have an even degree (degree 4). Other Platonic solids, such as the cube or dodecahedron, have vertices with odd degrees, making an Eulerian cycle impossible."
+    },
+    {
+      "question": "What is the BEST theorem, and how is it used in graph theory?",
+      "answer": "The BEST theorem (de Bruijn, van Aardenne-Ehrenfest, Smith, and Tutte) provides a formula to count the number of Eulerian cycles in a directed graph. It is particularly useful for analyzing complex directed graphs where multiple Eulerian cycles may exist."
+    },
+    {
+      "question": "How does an Eulerian cycle differ from a Hamiltonian cycle?",
+      "answer": "An Eulerian cycle traverses every edge exactly once, while a Hamiltonian cycle visits every vertex exactly once. An Eulerian cycle focuses on edges, whereas a Hamiltonian cycle focuses on vertices, making them fundamentally different concepts in graph theory."
+    }
+  ]
+}

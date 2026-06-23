@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Internet_censorship_in_Russia",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the 'single register' in Russia, and which government body administers it?",
+      "answer": "The 'single register' is a centralized internet blacklist maintained by Russia to block URLs, domain names, and IP addresses. It is administered by the Federal Service for Supervision of Communications, Information Technology and Mass Media, also known as Roskomnadzor."
+    },
+    {
+      "question": "What are the primary purposes of the Russian internet censorship system as originally introduced, and how has it expanded over time?",
+      "answer": "Originally introduced to block sites containing materials advocating drug abuse, suicide methods, and child pornography, the system was later expanded to include materials classified as extremist in the Federal List of Extremist Materials. It has since been frequently abused to block criticism of the government or local administrations."
+    },
+    {
+      "question": "What legal mechanism allows Russian authorities to shut down online media outlets?",
+      "answer": "A law prohibiting 'abuse of mass media freedom' enables authorities to shut down online media outlets. This law, signed in March 2019, introduces fines for spreading 'fake news' or showing 'blatant disrespect' toward state authorities."
+    },
+    {
+      "question": "Can you provide a code snippet that demonstrates how to check if a website is blocked in Russia by querying Roskomnadzor's 'single register'?",
+      "answer": "While direct access to Roskomnadzor's 'single register' is restricted, a simulated example using Python to check a domain against a hypothetical API could look like this:\n\npython\nimport requests\n\ndef is_blocked_in_russia(domain):\n    # Hypothetical API endpoint (not real)\n    api_url = \"https://api.roskomnadzor.ru/check_block\"\n    params = {'domain': domain}\n    \n    try:\n        response = requests.get(api_url, params=params)\n        if response.status_code == 200:\n            data = response.json()\n            return data.get('blocked', False)\n        return False\n    except requests.RequestException:\n        return False\n\n# Example usage:\ndomain = \"example.com\"\nprint(f\"Is {domain} blocked in Russia? {is_blocked_in_russia(domain)}\")\n\nNote: This is a conceptual example; actual access would require official authorization."
+    },
+    {
+      "question": "How did the European Court of Human Rights rule in the case involving the blocking of websites critical of the Russian government in 2019?",
+      "answer": "In March 2019, the European Court of Human Rights ruled against Russia in a case involving the blocking of websites critical of the government, including that of Garry Kasparov. The court found that the plaintiffs' freedom of speech had been violated."
+    },
+    {
+      "question": "What significant changes occurred in Russian internet censorship following the 2022 invasion of Ukraine?",
+      "answer": "Following the 2022 invasion of Ukraine, Russia rapidly tightened media controls by blocking Western media, implementing state-level internet filtering, banning businesses from advertising VPN services, and imposing heavy fines and blockages on foreign platforms. This led users to shift to domestic services, creating a localized, state-controlled ecosystem resembling China's Great Firewall."
+    },
+    {
+      "question": "By 2026, what are some specific examples of how Russian internet censorship escalated?",
+      "answer": "By 2026, Russian internet censorship escalated to include widespread mobile internet outages, strict VPN restrictions, blocking and throttling of Telegram and WhatsApp, and a push toward a localized state-controlled whitelist internet model. State-controlled services like Max were favored over foreign platforms to consolidate control over public information."
+    }
+  ]
+}

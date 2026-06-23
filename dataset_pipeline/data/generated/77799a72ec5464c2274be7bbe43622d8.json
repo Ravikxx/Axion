@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Cyperus_pennatiformis",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the scientific name of coastal flatsedge, and what was its former name?",
+      "answer": "The scientific name of coastal flatsedge is Cyperus pennatiformis. Its former name was Mariscus pennatiformis."
+    },
+    {
+      "question": "Which Hawaiian islands currently host populations of Cyperus pennatiformis?",
+      "answer": "Cyperus pennatiformis currently grows on the islands of Maui, Kauai, and Laysan in Hawaii."
+    },
+    {
+      "question": "Describe the physical characteristics of Cyperus pennatiformis, including its height, leaves, and flower cluster.",
+      "answer": "Cyperus pennatiformis grows 40 centimeters to 1.2 meters tall with leathery leaves that are as long as or longer than the stem. The flower cluster at the top of the stem is umbrella-shaped, up to 15 centimeters long and 25 centimeters wide, and contains up to 18 spikes, each composed of several yellowish or grayish spikelets. Each spikelet can have up to 25 flowers."
+    },
+    {
+      "question": "How many subspecies of Cyperus pennatiformis exist, and where are they found?",
+      "answer": "There are two subspecies of Cyperus pennatiformis. Subspecies pennatiformis is found on Maui and Kauai, while subspecies bryanii, also known as Laysan sedge or Bryan's sedge, is found on Laysan."
+    },
+    {
+      "question": "What are the main threats to Cyperus pennatiformis?",
+      "answer": "The main threats to Cyperus pennatiformis include habitat destruction and degradation by invasive species such as feral pigs, goats, and rabbits. Non-native plants like shoebutton (Ardisia elliptica), lantana (Lantana camara), yellow foxtail (Setaria parviflora), and Pride of India (Melia azedarach) also contribute to its decline. On Laysan, introduced rabbits previously decimated populations of this sedge and other plants."
+    },
+    {
+      "question": "Write a Python snippet to check if a given island in Hawaii hosts Cyperus pennatiformis.",
+      "answer": "python\ndef is_host_island(island_name):\n    host_islands = {'Maui', 'Kauai', 'Laysan'}\n    return island_name in host_islands\n\n# Example usage:\nprint(is_host_island('Maui'))  # Output: True\nprint(is_host_island('Oahu'))  # Output: False\n"
+    },
+    {
+      "question": "Why might the Laysan sedge (Cyperus pennatiformis ssp. bryanii) be considered more stable in population than other subspecies?",
+      "answer": "The Laysan sedge (Cyperus pennatiformis ssp. bryanii) appears to be reproducing successfully despite its rarity, with 488 individuals counted in 2008. This reproductive success may contribute to its relatively more stable population compared to other subspecies."
+    }
+  ]
+}

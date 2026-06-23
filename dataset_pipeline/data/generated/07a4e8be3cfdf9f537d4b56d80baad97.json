@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/François_Hussenot",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was François Hussenot and what is he credited with inventing?",
+      "answer": "François Hussenot was a French engineer born on March 22, 1912, who is credited with inventing one of the early forms of the flight data recorder, also known as the 'hussenograph'. His innovative device stored flight data on a photographic film rather than using magnetic tape, which was a significant advancement in aviation safety."
+    },
+    {
+      "question": "What were the key educational institutions François Hussenot attended, and what degrees or licenses did he obtain?",
+      "answer": "François Hussenot attended the École polytechnique from 1930 to 1932. Afterward, he obtained his pilot license at the Ecole Militaire d'Application de l'Aéronautique in Versailles and graduated from the Ecole Supérieure d'Aéronautique (Supaéro) in 1935 with a degree in aeronautical engineering."
+    },
+    {
+      "question": "How did François Hussenot's early flight data recorder work, and what distinguished it from modern recorders?",
+      "answer": "Hussenot's early flight data recorder, called the 'hussenograph', stored flight data on an eight-meter-long by 88 mm wide photographic film. Instead of magnetic tape, the device used a thin spot of light deflected by a mirror to record data on the film as it scrolled. Modern flight data recorders, in contrast, use magnetic or solid-state storage."
+    },
+    {
+      "question": "What significant contributions did François Hussenot make to aviation education in France?",
+      "answer": "In 1946, François Hussenot, along with Maurice Cambois and Charles Cabaret, founded the Ecole du Personnel Navigant (E.P.N.), which later became the EPNER. The EPNER is one of only six test pilot schools in the world, including the Empire Test Pilots' School and the United States Air Force Test Pilot School. Hussenot also served as a professor at SUPAERO starting in 1948."
+    },
+    {
+      "question": "Describe the timeline of François Hussenot's career from 1935 to 1951.",
+      "answer": "In 1935, Hussenot began his career at the Centre d'Essais de Matériels Aériens (CEMA) of Villacoublay. He married Yvonne that same year. In 1936, he worked on testing heavy seaplanes in Saint-Raphaël. In 1941, he moved to the Centre d'Essais en Vol de Marignane, where he developed his early flight data recorder. In 1945, he became the director of the Methods and Try-Outs service at the Brétigny-sur-Orge flight test center. In 1947, he founded SFIM, and in 1948, he became a professor at SUPAERO and received the Chevalier de la Légion d’Honneur. He died in 1951 in a plane crash."
+    },
+    {
+      "question": "What role did Marcel Ramolfo-Garnier play in François Hussenot's professional life?",
+      "answer": "Marcel Ramolfo-Garnier was an associate of François Hussenot who co-founded the Société Française des Instruments de Mesure (SFIM) with Hussenot in 1947. The SFIM was established to market Hussenot's flight data recorder inventions, and Ramolfo-Garnier played a key role in the company's early success."
+    },
+    {
+      "question": "Write a Python code snippet that simulates the basic operation of Hussenot's flight data recorder by modeling the photographic film and light deflection mechanism.",
+      "answer": "python\nimport numpy as np\nimport matplotlib.pyplot as plt\n\nclass HussenotRecorder:\n    def __init__(self, film_length=8.0, film_width=0.088):\n        self.film_length = film_length  # in meters\n        self.film_width = film_width    # in meters\n        self.film = np.zeros((int(film_length * 1000), int(film_width * 1000)))  # Simulate film as a 2D array\n        self.light_position = [0, int(film_width * 1000 // 2)]  # Center of the film initially\n\n    def deflect_light(self, angle_degrees):\n        # Simulate mirror deflection to change light position\n        angle_radians = np.radians(angle_degrees)\n        dy = np.tan(angle_radians) * 1000  # Approximate pixel shift\n        new_y = self.light_position[1] + int(dy)\n        self.light_position[1] = np.clip(new_y, 0, int(self.film_width * 1000) - 1)\n\n    def record_data(self, data_value):\n        # Simulate recording data by marking the film where the light hits\n        self.film[self.light_position[0], self.light_position[1]] = data_value\n        # Move film forward (simulating scrolling)\n        if self.light_position[0] < self.film.shape[0] - 1:\n            self.light_position[0] += 1\n\n    def plot_film(self):\n        plt.imshow(self.film, cmap='gray', aspect='auto')\n        plt.title(\"Simulated Hussenot Flight Data Recorder Film\")\n        plt.xlabel(\"Width (mm)\")\n        plt.ylabel(\"Length (mm)\")\n        plt.show()\n\n# Example usage\nrecorder = HussenotRecorder()\nrecorder.deflect_light(10)  # Deflect light by 10 degrees\nrecorder.record_data(1.0)   # Record data point\nrecorder.deflect_light(-5)  # Deflect light back\nrecorder.record_data(0.5)\nrecorder.plot_film()\n"
+    }
+  ]
+}

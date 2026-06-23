@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Borhat",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Where is Borhat located and what are its neighboring administrative regions?",
+      "answer": "Borhat is a partially urbanised village in the eastern part of Charaideo district, Assam. It is bordered by the river Disang or Delehi to the east (separating it from Namrup town), Sapekhati to the west, Tirap district of Arunachal Pradesh to the south, and the Tingkhong tehsil of Dibrugarh district (including Namrup town) to the north. The nearest towns are Sonari, Duliajan, and Naharkatia."
+    },
+    {
+      "question": "What is the historical significance of Borhat during the Ahom kingdom?",
+      "answer": "During Ahom rule (1228–1826), Borhat was a key location for finding mineral salt, which was highly valuable in Assam due to its distance from the sea. The name 'Borhat' itself originates from 'Bor' (meaning big) and 'hat' (meaning market), referring to a significant marketplace where salt was traded. Borhat was also known as a salt-producing area under the Chutia and later the Ahom rulers, including Suhungmung Dihingia Raja."
+    },
+    {
+      "question": "How did Borhat get its name?",
+      "answer": "The name 'Borhat' is derived from two Assamese words: 'Bor' (big) and 'hat' (market). Historically, it was a large marketplace where mineral salt, a precious commodity during the Ahom era, was sold."
+    },
+    {
+      "question": "What are some modern-day industries or landmarks in Borhat?",
+      "answer": "Modern-day Borhat features several tea gardens, including Borhat Bagicha and Mahalakhi Tea Estate, many of which were established during British colonial times. Other notable landmarks include the Naharpukhuri Pond, Hilghagori Waterfall, Dillihghat, Khutughat, and multiple religious centers such as the Borhat Milan Nagar Namghor (a Hindu temple) and Rangbari Church (a Christian church)."
+    },
+    {
+      "question": "List the educational institutions available in Borhat.",
+      "answer": "Borhat has a robust education system with institutions such as Borhat Jatiya Vidyalaya, Borhat BPBM College, Borhat Junior College, Borhat Higher Secondary School, Borhat New High School, Sankardev Sishu Vidya Niketan, Greenview Academy, Holy Mother English School, Luhalia LP School, and St. John’s School."
+    },
+    {
+      "question": "What are the major banks and financial services available in Borhat?",
+      "answer": "Borhat hosts branches of the State Bank of India (SBI) and the Assam Gramin Vikash Bank (AGVB), providing essential banking services to the local population. These branches are strategically located, with the SBI branch situated in the middle of the region."
+    },
+    {
+      "question": "Write a Python script to extract the names of all villages that make up Borhat from the given text.",
+      "answer": "python\ntext = \"\"\"Borhat itself is a fusion of several small villages eg. Borhat Habi Gaon, Chakalia, Japihojia, Borhat michajan Gaon, Narempothar, Titlagarh, Naharpukhuri, Nalbaria, Changmai, Sutiakari, Borhat Bagan, Halua, Lefera, Bihubor, Lakili Habi, Nagakota, Dangorikumar, Nagahat, Kolakota, Bimlapur, Dofola, Bhuyankhat, Borasali, Sumdar, Nagahilloni, Khoriabheta, and Dabohibil.\"\"\"\n\nvillages = [v.strip() for v in text.split(\"eg. \")[1].split(\",\")]\nvillages = [v.strip(\" and\") for v in villages]\n\nprint(\"Villages in Borhat:\")\nfor village in villages:\n    print(f\"- {village}\")\n\n\nOutput:\n\nVillages in Borhat:\n- Borhat Habi Gaon\n- Chakalia\n- Japihojia\n- Borhat michajan Gaon\n- Narempothar\n- Titlagarh\n- Naharpukhuri\n- Nalbaria\n- Changmai\n- Sutiakari\n- Borhat Bagan\n- Halua\n- Lefera\n- Bihubor\n- Lakili Habi\n- Nagakota\n- Dangorikumar\n- Nagahat\n- Kolakota\n- Bimlapur\n- Dofola\n- Bhuyankhat\n- Borasali\n- Sumdar\n- Nagahilloni\n- Khoriabheta\n- Dabohibil\n"
+    }
+  ]
+}

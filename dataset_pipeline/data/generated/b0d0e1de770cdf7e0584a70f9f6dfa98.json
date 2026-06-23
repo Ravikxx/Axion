@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/1967_Grand_National",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the odds of Foinavon when he won the 1967 Grand National?",
+      "answer": "Foinavon won the 1967 Grand National at odds of 100/1, making it one of the most unexpected victories in the race's history."
+    },
+    {
+      "question": "What happened at the 23rd fence during the 1967 Grand National that led to Foinavon's victory?",
+      "answer": "At the 23rd fence, a loose horse named Popham Down veered into the fence, causing a pile-up that halted the race. Foinavon's jockey, John Buckingham, took advantage of the gap created by the mêlée and jumped the fence cleanly, securing a clear lead."
+    },
+    {
+      "question": "How did the Aintree Racecourse commemorate Foinavon's historic win?",
+      "answer": "In 1984, Aintree Racecourse officially renamed the 23rd fence as the 'Foinavon fence' in honor of his victory. The fence is the smallest on the course, standing at 4 ft 6 in (1.37 m)."
+    },
+    {
+      "question": "What was the immediate reaction of Foinavon's jockey, John Buckingham, after winning the 1967 Grand National?",
+      "answer": "John Buckingham described feeling 'absolutely over the moon' after realizing he had a clear lead with just six fences remaining. He later reflected that he knew he had won it at that point."
+    },
+    {
+      "question": "How did the 2001 Grand National result compare to the 1967 race?",
+      "answer": "In the 2001 Grand National, Red Marauder won after a similar pile-up occurred at the Canal Turn on the first circuit, leaving him and Smarty clear of the remaining horses. This mirrored the chaotic scenario at the 23rd fence in 1967."
+    },
+    {
+      "question": "What is the significance of the 1928 Grand National in relation to the 1967 race?",
+      "answer": "The 1928 Grand National saw Tipperary Tim win at odds of 100-1 without any other horse finishing the race, similar to Foinavon's victory in 1967, as both horses capitalized on chaos to secure unlikely wins."
+    },
+    {
+      "question": "Write a Python function to calculate the payout for a bet on Foinavon in the 1967 Grand National, given the odds and stake.",
+      "answer": "python\ndef calculate_payout(odds, stake):\n    \"\"\"\n    Calculate the payout for a bet on Foinavon in the 1967 Grand National.\n    \n    Args:\n        odds (int): The odds in fractional format (e.g., 100/1 is represented as 100).\n        stake (float): The amount staked on the bet.\n    \n    Returns:\n        float: The total payout including the original stake.\n    \"\"\"\n    return stake * (odds + 1)\n\n# Example usage:\npayout = calculate_payout(100, 10)\nprint(f\"Total payout for a £10 bet at 100/1: £{payout:.2f}\")\n\n\nFor a £10 bet at 100/1 odds, the total payout would be £1,010.00 (including the original £10 stake)."
+    }
+  ]
+}

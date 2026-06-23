@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Frank_MacMillan",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was Frank Roland MacMillan and what were his primary occupations?",
+      "answer": "Frank Roland MacMillan was a prominent businessman and politician in Saskatoon, Saskatchewan, Canada. He started as an employee at John Macdonald & Co., later founded his own menswear business in 1908, and eventually owned the MacMillan Department Store after purchasing Currie Bros. in 1911. In politics, he served as an alderman on Saskatoon city council and later as mayor in 1919 before becoming a Member of Parliament (MP) for Saskatoon from 1930 to 1935."
+    },
+    {
+      "question": "What notable business ventures did Frank Roland MacMillan establish or acquire between 1908 and 1927?",
+      "answer": "In 1908, MacMillan co-founded a menswear business in partnership with C. D. Mitcher. In 1911, he purchased Currie Bros. store, renaming it the MacMillan Department Store. By 1913, he relocated the store to the newly constructed MacMillan Building at 21st Street and Third Avenue. He sold the business to Eaton's in 1927."
+    },
+    {
+      "question": "How did Frank Roland MacMillan contribute to infrastructure development during the Great Depression?",
+      "answer": "As a Member of Parliament, MacMillan served on the House of Commons' Railway Committee. He played a key role in securing federal government funding for bridge construction projects as relief efforts, including the 19th Street and Broadway Bridge in Saskatoon and the C. P. Bridge at Borden."
+    },
+    {
+      "question": "What political roles did Frank Roland MacMillan hold in Saskatoon?",
+      "answer": "MacMillan was elected as an alderman to Saskatoon city council in 1913. He then served as Mayor of Saskatoon in 1919. Later, he became a Member of Parliament (MP) for Saskatoon in the 1930 federal election, representing the Conservative Party."
+    },
+    {
+      "question": "Which federal elections did Frank Roland MacMillan participate in before his 1930 victory?",
+      "answer": "MacMillan ran unsuccessfully for the Saskatoon federal seat in the House of Commons in the 1925 and 1926 federal elections as a Conservative candidate before winning the seat in the 1930 election."
+    },
+    {
+      "question": "What is the significance of the MacMillan Building in Saskatoon?",
+      "answer": "The MacMillan Building, located at 21st Street and Third Avenue in Saskatoon, was constructed in 1913 to house the MacMillan Department Store. It served as a landmark commercial building in the city, reflecting MacMillan's business success and his impact on Saskatoon's early 20th-century development."
+    },
+    {
+      "question": "Write a Python snippet to calculate the number of years Frank Roland MacMillan served as Mayor of Saskatoon.",
+      "answer": "Frank Roland MacMillan served as Mayor of Saskatoon in 1919 only. Here is a Python snippet to compute the duration:\n\npython\nyear_appointed = 1919\ncurrent_year = 1919  # Assuming a single year term\nyears_served = current_year - year_appointed\nyears_served  # Output: 0 (if term was just for the year 1919)\n\n*Note: Historical records indicate he served a one-year term in 1919."
+    }
+  ]
+}

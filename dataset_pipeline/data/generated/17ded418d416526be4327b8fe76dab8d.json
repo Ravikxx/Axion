@@ -1,0 +1,30 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Academy_of_sciences",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is an academy of sciences, and how does it differ from an Academy of Arts?",
+      "answer": "An academy of sciences is a learned society or institution dedicated to advancing sciences, which may or may not receive state funding. Some academies are national or royal, such as the United Kingdom's Royal Society of London for Improving Natural Knowledge. Academies of Arts, on the other hand, focus on arts or a combination of arts and sciences, like the American Academy of Arts and Sciences. Additionally, an Academy of Letters specifically encompasses literature."
+    },
+    {
+      "question": "How do non-English terms like Wissenschaft or vetenskap relate to the concept of 'science'?",
+      "answer": "In many non-English-speaking countries, terms like German *Wissenschaft*, Swedish *vetenskap*, or Hungarian *tudomány* refer to a broad concept of systematized learning. These terms often include both natural sciences and social sciences, as well as fields like literary studies, linguistics, history, or art history. They derive from the Latin *scientia* (meaning 'knowledge') and reflect a broader interpretation of academic disciplines beyond the English term 'science'."
+    },
+    {
+      "question": "What is the purpose of a National Academy of Engineering, and why is it sometimes separate from a National Academy of Sciences?",
+      "answer": "A National Academy of Engineering is organized to advance engineering sciences, which have become increasingly specialized and advanced. It is often separate from the National Academy of Sciences because engineering disciplines require distinct focus and expertise. This separation allows for targeted support, recognition, and development of engineering fields."
+    },
+    {
+      "question": "Provide an example of a global network of academies of science and describe its role.",
+      "answer": "The Interacademy Partnership (IAP) is a global network consisting of over 140 national, regional, and global member academies of science, engineering, and medicine. Its role is to facilitate collaboration among academies, promote scientific excellence, and address global challenges through science diplomacy and shared expertise."
+    },
+    {
+      "question": "What is a national young academy, and how does it engage with young scientists?",
+      "answer": "A national young academy is a group of early-career scientists typically selected for a limited term (4–5 years) to address issues relevant to young researchers, such as science education or dialogue between science and society. Most young academies are affiliated with senior academies or networks like the Global Young Academy, which serves as a facilitator for the growing global network of young academies. As of 2019, there were 41 national young academies worldwide."
+    },
+    {
+      "question": "How do science academies contribute to science diplomacy?",
+      "answer": "Science academies play an important role in science diplomacy by fostering international collaboration, promoting scientific cooperation across borders, and addressing global challenges through shared knowledge and expertise. Organizations like the Interacademy Partnership and the International Science Council facilitate these efforts by bringing together national and regional academies and scientific unions."
+    }
+  ]
+}

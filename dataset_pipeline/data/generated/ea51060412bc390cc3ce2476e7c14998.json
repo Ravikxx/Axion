@@ -1,0 +1,34 @@
+{
+  "source_url": "https://mathworld.wolfram.com/topics/Terminology.html",
+  "category": "mathworld",
+  "pairs": [
+    {
+      "question": "What is the definition of an 'Abelian group' in mathematics?",
+      "answer": "An Abelian group is a set equipped with a binary operation (often called addition or multiplication) that is associative, has an identity element, an inverse for every element, and is commutative. In other words, for all elements a and b in the group, a * b = b * a. Groups that satisfy this commutativity condition are named after the Norwegian mathematician Niels Henrik Abel."
+    },
+    {
+      "question": "How would you write a Python function to determine if a given integer is a 'perfect square'?",
+      "answer": "Here is a Python function to check if a number is a perfect square:\npython\ndef is_perfect_square(n):\n    if n < 0:\n        return False\n    root = int(n ** 0.5)\n    return root * root == n\n\n# Example usage:\nprint(is_perfect_square(16))  # Output: True\nprint(is_perfect_square(14))  # Output: False\n"
+    },
+    {
+      "question": "Explain the difference between 'pure mathematics' and 'applied mathematics'.",
+      "answer": "Pure mathematics is the study of mathematical concepts independently of any application outside mathematics itself. It focuses on abstract structures, proofs, and generalizations. Applied mathematics, on the other hand, involves mathematical methods used to solve practical problems in science, engineering, business, and other fields. While pure mathematics seeks to extend mathematical knowledge for its own sake, applied mathematics uses existing mathematical theories to model and solve real-world phenomena."
+    },
+    {
+      "question": "What is Euler's Theorem in number theory, and how is it related to modular arithmetic?",
+      "answer": "Euler's Theorem states that if two positive integers, a and n, are coprime (i.e., gcd(a, n) = 1), then a raised to the power of Euler's totient function φ(n) is congruent to 1 modulo n. Mathematically, this is expressed as: a^φ(n) ≡ 1 (mod n). This theorem generalizes Fermat's Little Theorem and is fundamental in number theory and cryptography, particularly in the RSA encryption algorithm."
+    },
+    {
+      "question": "Define 'canonical form' in the context of linear algebra.",
+      "answer": "In linear algebra, a canonical form of a matrix is a simplified or standardized representation that captures its essential properties while eliminating unnecessary complexity. Examples include the reduced row echelon form (RREF) or Jordan canonical form. These forms are unique under certain conditions and provide a way to classify matrices up to similarity transformations. The canonical form often makes problems easier to analyze, such as solving systems of linear equations or determining the rank of a matrix."
+    },
+    {
+      "question": "What does it mean for a mathematical statement to be 'well-defined'?",
+      "answer": "A mathematical statement or expression is well-defined if it is unambiguous and consistently produces a single, clear result for any given input. For example, a function f(x) = √x is not well-defined for negative real numbers in the set of real numbers because the square root of a negative number is not a real number. A well-defined concept ensures that no contradictions or ambiguities arise in its application or interpretation."
+    },
+    {
+      "question": "Explain the term 'asymptotic analysis' and provide an example.",
+      "answer": "Asymptotic analysis is a method of describing the behavior of functions as their input size approaches infinity. It focuses on the dominant terms that dictate the growth rate of a function, ignoring lower-order terms and constants. For example, consider the function f(n) = 3n^2 + 5n + 12. As n becomes very large, the term 3n^2 dominates, so we say f(n) grows asymptotically as O(n^2) (read as 'big O of n squared'). Asymptotic analysis is widely used in computer science to analyze the efficiency of algorithms."
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Ariana_Grande",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is Ariana Grande's full name and date of birth?",
+      "answer": "Ariana Grande's full name is Ariana Grande-Butera, and she was born on June 26, 1993."
+    },
+    {
+      "question": "How did Ariana Grande first gain public recognition before her music career?",
+      "answer": "Ariana Grande first gained prominence as a teenager by starring as Cat Valentine in the Nickelodeon television series Victorious (2010–2013) and its spin-off Sam & Cat (2013–2014)."
+    },
+    {
+      "question": "Which of Ariana Grande's albums features the hit singles 'Problem', 'Break Free', and 'Bang Bang'?",
+      "answer": "The hit singles 'Problem', 'Break Free', and 'Bang Bang' are from her second studio album, My Everything (2014)."
+    },
+    {
+      "question": "What significant milestone did Ariana Grande achieve with her album 'Thank U, Next'?",
+      "answer": "With her album 'Thank U, Next' (2019), Ariana Grande garnered two US Billboard Hot 100 number-one singles: the title track 'Thank U, Next' and '7 Rings'. Additionally, she achieved the most number-one debuts in the US with the title track of her 2020 album Positions and collaborations like 'Stuck with U' and 'Rain on Me'."
+    },
+    {
+      "question": "Write a Python code snippet to fetch and display the titles of Ariana Grande's studio albums in chronological order.",
+      "answer": "python\nalbums = [\n    \"Yours Truly (2013)\",\n    \"My Everything (2014)\",\n    \"Dangerous Woman (2016)\",\n    \"Sweetener (2018)\",\n    \"Thank U, Next (2019)\",\n    \"Positions (2020)\",\n    \"Eternal Sunshine (2024)\",\n    \"Petal (2026)\"\n]\n\nfor album in albums:\n    print(album)\n"
+    },
+    {
+      "question": "How many Grammy Awards has Ariana Grande won, and what other major accolades has she received?",
+      "answer": "Ariana Grande has won three Grammy Awards. Other major accolades include a Brit Award, two Billboard Music Awards, three American Music Awards, forty Guinness World Records, and thirteen MTV Video Music Awards."
+    },
+    {
+      "question": "What are some of Ariana Grande's business ventures outside of music and acting?",
+      "answer": "Outside of music and acting, Ariana Grande's business ventures include the cosmetics brand R.E.M. Beauty and a fragrance line, which has earned over $1 billion in global retail sales."
+    },
+    {
+      "question": "Why did Ariana Grande's albums 'Sweetener' and 'Thank U, Next' resonate with fans on a personal level?",
+      "answer": "Personal struggles influenced Ariana Grande's albums 'Sweetener' (2018) and 'Thank U, Next' (2019), both of which delved into the trap genre and explored themes of self-reflection, healing, and growth, resonating with fans facing similar challenges."
+    }
+  ]
+}

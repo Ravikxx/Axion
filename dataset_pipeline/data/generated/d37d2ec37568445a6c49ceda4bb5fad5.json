@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Asteraceae",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the family name of the aster, daisy, composite, and sunflower families?",
+      "answer": "The family name is Asteraceae. Historically, it was also known as Compositae, but Asteraceae is the current accepted name."
+    },
+    {
+      "question": "How many species are there in the Asteraceae family, and how does this compare to Orchidaceae?",
+      "answer": "The Asteraceae family consists of over 32,000 known species in over 1,900 genera, making it one of the largest plant families. The Orchidaceae family rivals it in size, but the exact number of species in each family remains uncertain due to unknown counts of extant species."
+    },
+    {
+      "question": "What are the primary characteristics of Asteraceae species?",
+      "answer": "The primary characteristic of Asteraceae species is their compound flower heads, called capitula. These consist of many tiny individual florets enclosed by a whorl of protective involucral bracts."
+    },
+    {
+      "question": "Provide an example of how to write a Python function that checks if a given plant family is Asteraceae.",
+      "answer": "Here is a Python function to check if a family name matches Asteraceae:\n\npython\ndef is_asteraceae(family_name):\n    return family_name.lower() in ['asteraceae', 'compositae']\n\n# Example usage:\nprint(is_asteraceae('Asteraceae'))  # Output: True\nprint(is_asteraceae('Orchidaceae')) # Output: False\n"
+    },
+    {
+      "question": "Where are Asteraceae species most commonly found geographically?",
+      "answer": "Asteraceae species have a widespread distribution, found on every continent except Antarctica. They are most common in hot desert, cold or hot semi-desert climates, and inhabit a wide variety of habitats from subpolar to tropical regions."
+    },
+    {
+      "question": "What is the estimated age of the Asteraceae crown group and its stem node?",
+      "answer": "The crown group of Asteraceae is estimated to have evolved at least 85.9 million years ago (mya) during the Late Cretaceous (Santonian). The stem node age is estimated to be between 88 and 89 mya during the Late Cretaceous (Coniacian)."
+    },
+    {
+      "question": "What are some economic uses of Asteraceae species?",
+      "answer": "Asteraceae is an economically important family that provides food staples (e.g., lettuce, artichokes), garden plants (e.g., sunflowers, chrysanthemums), and herbal medicines (e.g., echinacea, chamomile). However, some species can become weedy or invasive outside their native ranges."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Dark_Is_the_Night_(Soviet_song)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who wrote the song 'Dark Is the Night' and for what purpose?",
+      "answer": "The song 'Dark Is the Night' (Russian: Тёмная ночь) was written by composer Nikita Bogoslovsky and poet Vladimir Agatov. It was initially produced for the 1943 Soviet war film *Two Soldiers*."
+    },
+    {
+      "question": "Which performer popularized 'Dark Is the Night' and how did they contribute to its fame?",
+      "answer": "Mark Bernes popularized the song through his performance in the 1943 film *Two Soldiers*. In the film, Bernes plays a soldier singing the song at night while recalling his wife and baby, which resonated with audiences and cemented the song's place in Soviet culture."
+    },
+    {
+      "question": "What controversial reception did 'Dark Is the Night' receive from Soviet authorities?",
+      "answer": "The Soviet authorities disapproved of 'Dark Is the Night,' criticizing it for propagating philistinism (a term often used to denote shallow or vulgar tastes). Despite this official disapproval, the song became a cherished symbol of the war years for many Soviet people."
+    },
+    {
+      "question": "How did the song 'Dark Is the Night' differ from typical war songs of its era?",
+      "answer": "Unlike most war songs of its time, which were either marches or patriotic anthems, 'Dark Is the Night' was a gentle, lyrical piece that focused on homesickness and devotion to loved ones. Its personal and emotional tone contrasted sharply with the more militaristic themes of other war songs."
+    },
+    {
+      "question": "Provide a code snippet to transcribe the Russian title of 'Dark Is the Night' into Cyrillic script using Python.",
+      "answer": "python\n# Python code to transcribe the Russian title of 'Dark Is the Night' into Cyrillic\ncyrillic_title = 'Тёмная ночь'\nprint(cyrillic_title)  # Output: Тёмная ночь\n"
+    },
+    {
+      "question": "What notable recording of 'Dark Is the Night' was made in 1946, and who were the performers involved?",
+      "answer": "In 1946, the song was recorded for RCA Victor (catalog number #26-5037) by vocalist Sidor Belarsky, accompanied by the orchestral accordionist John Serry and the Mischa Borr Orchestra."
+    },
+    {
+      "question": "Why did Leonid Utyosov's recording of 'Dark Is the Night' become historically significant?",
+      "answer": "Leonid Utyosov recorded 'Dark Is the Night' without the film crew's permission, making him the first to release the song commercially. However, it was Mark Bernes' performance in *Two Soldiers* that ultimately popularized the song, overshadowing Utyosov's earlier recording."
+    }
+  ]
+}

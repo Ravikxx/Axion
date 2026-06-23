@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Ketanji_Brown_Jackson",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "Who is Ketanji Brown Jackson and what positions has she held in the U.S. legal system?",
+      "answer": "Ketanji Brown Jackson is an American lawyer, politician, and judge who has served as an Associate Justice of the U.S. Supreme Court since June 30, 2022. Prior to this role, she was a Judge on the U.S. Court of Appeals for the District of Columbia Circuit from 2021 to 2022. Before that, she served as a U.S. District Judge for the District of Columbia from 2013 to 2021. She also held the position of Vice Chair of the U.S. Sentencing Commission from 2010 to 2014."
+    },
+    {
+      "question": "Which U.S. Presidents nominated Ketanji Brown Jackson to federal judicial positions?",
+      "answer": "President Barack Obama nominated Ketanji Brown Jackson to serve as a United States District Judge for the District of Columbia in 2013. Later, President Joe Biden nominated her to the U.S. Court of Appeals for the District of Columbia Circuit in March 2021 and to the U.S. Supreme Court in February 2022."
+    },
+    {
+      "question": "What was the confirmation vote for Ketanji Brown Jackson's nomination to the U.S. Supreme Court?",
+      "answer": "Ketanji Brown Jackson’s nomination to the U.S. Supreme Court was confirmed by the U.S. Senate on April 7, 2022, with a vote of 53–47."
+    },
+    {
+      "question": "Why is Ketanji Brown Jackson historically significant in terms of Supreme Court appointments?",
+      "answer": "Ketanji Brown Jackson is historically significant because she became the first Black woman to serve as an Associate Justice of the U.S. Supreme Court."
+    },
+    {
+      "question": "How long did Ketanji Brown Jackson serve as a U.S. District Judge before her appointment to the Court of Appeals?",
+      "answer": "Ketanji Brown Jackson served as a U.S. District Judge for the District of Columbia from 2013 until 2021, which is a total of 8 years."
+    },
+    {
+      "question": "Write a Python script to calculate the total years Ketanji Brown Jackson served in federal judicial roles.",
+      "answer": "python\n# Define the start and end years for each judicial role\ndistrict_judge_years = 2021 - 2013  # 2013 to 2021\ncircuit_judge_years = 2022 - 2021  # 2021 to 2022\nsupreme_court_justice_years = 2024 - 2022  # 2022 to present (assuming current year is 2024)\n\n# Calculate total years\ntotal_years = district_judge_years + circuit_judge_years + supreme_court_justice_years\nprint(f\"Total years served in federal judicial roles: {total_years} years\")\n\nThis script calculates that Ketanji Brown Jackson has served approximately 10 years in federal judicial roles as of 2024."
+    },
+    {
+      "question": "Compare Ketanji Brown Jackson's confirmation votes for her nominations to the Court of Appeals and the Supreme Court.",
+      "answer": "Ketanji Brown Jackson was confirmed to the U.S. Court of Appeals for the District of Columbia Circuit on June 14, 2021, by a Senate vote of 53–44. In contrast, her nomination to the U.S. Supreme Court was confirmed on April 7, 2022, by a narrower vote of 53–47. The Supreme Court confirmation had more opposition votes, reflecting the higher stakes and political polarization surrounding Supreme Court appointments."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Fair_division_among_groups",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is group fair division and how does it differ from individual fair division?",
+      "answer": "Group fair division is a class of fair division problems where resources are allocated among groups of agents rather than individuals. In this context, all members of a group share the same resource allocation, but individual preferences within the group may still vary, leading to potential disagreements about the fairness of the division. This contrasts with individual fair division, where resources are allocated directly to individuals based on their preferences."
+    },
+    {
+      "question": "Can you provide an example of a group fair division problem involving inheritance among siblings?",
+      "answer": "Yes. Consider several siblings who inherited houses from their parents. Each sibling may have a family with members who have differing opinions on which house is preferable. The siblings must divide the houses such that each family (group) receives an allocation that is collectively considered fair, even though individual family members may disagree on the value or desirability of specific houses."
+    },
+    {
+      "question": "How can a single person's conflicting preferences be modeled as a group fair division problem?",
+      "answer": "A single person's conflicting preferences across different moods or frames of mind can be modeled as a group of agents, where each agent represents a set of preferences corresponding to a particular mood or mindset. For example, a person might prefer a quiet room for work in a calm mood but prefer a lively café for relaxation in a different mood. By treating these as separate agents within a group, fair division methods can be applied to allocate resources (e.g., time or space) that accommodate the person's varying preferences."
+    },
+    {
+      "question": "What is the difference between fixed groups and ad-hoc groups in fair division problems?",
+      "answer": "Fixed groups are predefined and remain constant throughout the division process, such as departments in a university allocating meeting rooms or siblings dividing inherited houses. In contrast, ad-hoc groups are formed dynamically based on preferences or other criteria during the division process. For example, in dividing a basketball court's time slots, players are grouped based on their time preferences to form teams that are matched with suitable time slots."
+    },
+    {
+      "question": "Describe a scenario where ad-hoc grouping is used to allocate resources. Include a practical code snippet to illustrate a possible solution.",
+      "answer": "Consider 30 people who want to use a local basketball court, where each game requires 10 players. The time of day must be partitioned into 3 slots, and players must be partitioned into 3 groups of 10, with each group assigned to a time slot based on their preferences. A simple approach is to cluster players based on their preferred time slots using a clustering algorithm like K-means. Here’s a Python snippet using `sklearn` to achieve this:\n\npython\nfrom sklearn.cluster import KMeans\nimport numpy as np\n\n# Sample data: 30 players with preferred time slots (encoded as 0=morning, 1=afternoon, 2=evening)\npreferences = np.random.randint(0, 3, size=30).reshape(-1, 1)\n\n# Cluster players into 3 groups based on their preferred time slots\nkmeans = KMeans(n_clusters=3, random_state=42).fit(preferences)\ngroups = kmeans.labels_\n\n# Assign groups to time slots (group 0 -> morning, group 1 -> afternoon, group 2 -> evening)\ntime_slots = ['Morning', 'Afternoon', 'Evening']\nfor i in range(3):\n    print(f\"Group {i} (Time slot: {time_slots[i]}): {np.where(groups == i)[0]}\")\n\nThis code clusters players into 3 groups and assigns each group to a time slot based on their average preference."
+    },
+    {
+      "question": "Why might group fair division be challenging in international disputes over territory?",
+      "answer": "Group fair division in international disputes, such as dividing a disputed region between two neighboring countries, is challenging because citizens within each country may have differing opinions on which parts of the region are more valuable or important. These internal disagreements can complicate negotiations, as even if a division is agreed upon by the countries' representatives, it may not satisfy all citizens, leading to persistent dissatisfaction or conflict."
+    },
+    {
+      "question": "How can ad-hoc grouping improve fairness in resource allocation when preferences are diverse?",
+      "answer": "Ad-hoc grouping improves fairness by dynamically forming groups based on shared preferences or similarities. This ensures that resources are allocated to groups whose members have comparable priorities, reducing internal disagreements within groups. For example, when allocating meeting rooms to university departments, grouping faculty members with similar preferences for room features (e.g., size, location) can lead to allocations that better satisfy the collective needs of each department."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Enter_Shikari",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When was Enter Shikari formed and who were the original members?",
+      "answer": "Enter Shikari was formed in 1999 in St Albans, England, by bassist Chris Batten, lead vocalist and keyboardist Rou Reynolds, and drummer Rob Rolfe."
+    },
+    {
+      "question": "What is Enter Shikari's record label, and how do they distribute their music?",
+      "answer": "Enter Shikari operates their own record label called Ambush Reality. To facilitate worldwide distribution, they have signed distribution deals with several major labels."
+    },
+    {
+      "question": "List Enter Shikari's studio albums in chronological order along with their release dates.",
+      "answer": "Enter Shikari's studio albums in chronological order are: Take to the Skies (19 March 2007), Common Dreads (15 June 2009), A Flash Flood of Colour (16 January 2012), The Mindsweep (19 January 2015), The Spark (22 September 2017), Nothing Is True & Everything Is Possible (17 April 2020), A Kiss for the Whole World (21 April 2023), and Lose Your Self (10 April 2026)."
+    },
+    {
+      "question": "What was Enter Shikari's first album to reach number one on the UK charts?",
+      "answer": "Enter Shikari's first album to reach number one on the UK charts was A Kiss for the Whole World, released on 21 April 2023."
+    },
+    {
+      "question": "How did Enter Shikari's debut album perform commercially in the UK?",
+      "answer": "Enter Shikari's debut album, Take to the Skies, reached number 4 on the Official UK Album Chart and has since been certified gold in the UK."
+    },
+    {
+      "question": "What musical styles does Enter Shikari blend in their music?",
+      "answer": "Enter Shikari combines influences from rock music genres with those from various electronic music genres, creating an eccentric and distinctive musical style."
+    },
+    {
+      "question": "Write a Python script to generate a list of Enter Shikari's albums with their release years and chart positions.",
+      "answer": "python\nalbums = [\n    {\"title\": \"Take to the Skies\", \"release_year\": 2007, \"chart_position\": \"Number 4\"},\n    {\"title\": \"Common Dreads\", \"release_year\": 2009, \"chart_position\": \"Number 16\"},\n    {\"title\": \"A Flash Flood of Colour\", \"release_year\": 2012, \"chart_position\": \"Number 4\"},\n    {\"title\": \"The Mindsweep\", \"release_year\": 2015, \"chart_position\": \"N/A\"},\n    {\"title\": \"The Spark\", \"release_year\": 2017, \"chart_position\": \"N/A\"},\n    {\"title\": \"Nothing Is True & Everything Is Possible\", \"release_year\": 2020, \"chart_position\": \"N/A\"},\n    {\"title\": \"A Kiss for the Whole World\", \"release_year\": 2023, \"chart_position\": \"Number 1\"},\n    {\"title\": \"Lose Your Self\", \"release_year\": 2026, \"chart_position\": \"N/A\"}\n]\n\nfor album in albums:\n    print(f\"{album['title']} ({album['release_year']}) - Chart Position: {album['chart_position']}\")\n"
+    }
+  ]
+}

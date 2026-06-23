@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Administrative_divisions_of_the_Republic_of_Tatarstan",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What were the original kantons established in the Tatar ASSR in 1920?",
+      "answer": "The original kantons established in the Tatar ASSR in 1920 were Sviyazhsk, Tetyushi, Buinsk, Spassk, Chistopol, Menzelinsk, Bugulma, Arsk, Laishevo, and Mamadysh."
+    },
+    {
+      "question": "How did the administrative divisions of Tatarstan evolve from kantons to districts?",
+      "answer": "The kantons were abolished in the 1930s and replaced with forty-five districts (raions). In 1935, the number increased to sixty districts, then fluctuated over the years, peaking at seventy in 1944-1955, and eventually stabilizing at forty-three districts by 1990."
+    },
+    {
+      "question": "What historical event led to the establishment of the Tatar ASSR?",
+      "answer": "The Tatar ASSR was originally established on May 27, 1920, from parts of Kazan, Ufa, Simbirsk, Samara, and Vyatka Governorates, including Kazansky, Chistopolsky, Mamadyshsky, Sviyazhsky, Tetyushinsky, Laishevsky, and Spassky Uyezds."
+    },
+    {
+      "question": "How did the administrative structure of Tatarstan change in 1922?",
+      "answer": "In 1922, Yelabuga with its surroundings was transferred to the Tatar ASSR from Vyatka Governorate, leading to the establishment of Yelabuga and Agryz kantons. Additionally, Chelny Kanton was separated from Menzelinsk Kanton."
+    },
+    {
+      "question": "What were the oblasts created in the Tatar ASSR in 1952–1953 and why were they abolished?",
+      "answer": "In 1952–1953, the Tatar ASSR was divided into three oblasts: Bugulma, Chistopol, and Kazan Oblast. They were abolished in 1954 due to their small sizes."
+    },
+    {
+      "question": "When did the Tatar ASSR change its status to become the Republic of Tatarstan?",
+      "answer": "The Tatar ASSR was elevated to the status of a republic within the Russian SFSR on August 30, 1990, becoming the Republic of Tatarstan."
+    },
+    {
+      "question": "Write a Python function that calculates the net change in the number of districts in Tatarstan from 1930 to 1990.",
+      "answer": "python\ndef calculate_district_change():\n    # Initial number of districts in 1930: 45\n    # Peak number in 1944-1955: 70\n    # Number in 1990: 43\n    initial = 45\n    peak = 70\n    final = 43\n    \n    net_change_peak = peak - initial  # +25\n    net_change_final = final - peak   # -27\n    net_change_overall = final - initial  # -2\n    \n    return {\n        \"net_change_to_peak\": net_change_peak,\n        \"net_change_to_1990\": net_change_final,\n        \"overall_net_change\": net_change_overall\n    }\n\n# Example usage:\nresult = calculate_district_change()\nprint(result)  # Output: {'net_change_to_peak': 25, 'net_change_to_1990': -27, 'overall_net_change': -2}\n"
+    }
+  ]
+}

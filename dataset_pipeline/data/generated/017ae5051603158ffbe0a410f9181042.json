@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/AB_de_Villiers",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What are some of the key achievements of AB de Villiers in international cricket?",
+      "answer": "AB de Villiers has several notable achievements in international cricket. He was named the ICC Men's ODI Cricketer of the Year in 2010, 2014, and 2015, and was selected as one of the five Wisden Cricketers of the Decade in 2019. In 2024, he was inducted into the ICC Cricket Hall of Fame. He also captained the South African cricket team in Tests, ODIs, and T20Is during the 2010s."
+    },
+    {
+      "question": "How many runs did AB de Villiers score in Test matches and ODIs during his career?",
+      "answer": "AB de Villiers scored 8,765 runs in Test matches and 9,577 runs in One Day Internationals (ODIs) during his international career."
+    },
+    {
+      "question": "What batting average did AB de Villiers maintain in Test matches and ODIs?",
+      "answer": "AB de Villiers maintained a batting average of over 50 in both Test matches and One Day Internationals (ODIs)."
+    },
+    {
+      "question": "Which domestic cricket teams did AB de Villiers play for in South Africa?",
+      "answer": "AB de Villiers started his domestic cricket career playing for Northerns and the Titans from 2003 to 2018."
+    },
+    {
+      "question": "In which IPL team did AB de Villiers play, and for how long?",
+      "answer": "AB de Villiers played for the Royal Challengers Bangalore in the Indian Premier League (IPL) from 2011 until his retirement from all professional cricket in 2021."
+    },
+    {
+      "question": "What is AB de Villiers' birthdate?",
+      "answer": "AB de Villiers was born on 17 February 1984."
+    },
+    {
+      "question": "Can you write a Python code snippet to calculate AB de Villiers' total runs in international cricket?",
+      "answer": "python\n# AB de Villiers' international cricket runs\ntest_runs = 8765\nodi_runs = 9577\nt20i_runs = 1672  # Approximate value as it is not provided in the text\ntotal_runs = test_runs + odi_runs + t20i_runs\nprint(f\"AB de Villiers' total international runs: {total_runs}\")\n"
+    }
+  ]
+}

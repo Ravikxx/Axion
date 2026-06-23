@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Constantin_Cantacuzino_(died_1877)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was Constantin G. Cantacuzino and what were his key roles in Wallachian politics?",
+      "answer": "Constantin G. Cantacuzino, also known as Costache or Costandin Cantacuzino, was a prominent figure in 19th-century Wallachian politics. Born in the 1790s and passing in 1877, he served as the Caimacam (Regent) of Wallachia from September 1848 to June 1849, appointed by the Ottoman Empire. A member of the influential Cantacuzino boyar family, he emerged as a leader of the conservative boyardom during the Regulamentul Organic period. His political career included organizing the first elections for Bucharest's Town Council in 1831, serving as a Bucharest Governor, and holding key ministerial roles such as Postelnic and Logothete under Prince Alexandru II Ghica (1837–1842). He later became Great Vornic and played a significant role in the conservative opposition to agrarian reforms."
+    },
+    {
+      "question": "How did Constantin G. Cantacuzino respond to the 1848 Revolution in Wallachia?",
+      "answer": "Upon returning with the Ottoman Army in September 1848, Constantin G. Cantacuzino actively suppressed the 1848 Revolution in Wallachia. Under the supervision of Fuad Pasha, he exiled the revolutionary leadership, including his immediate predecessors, and oversaw the imprisonment and alleged mistreatment of others—reportedly responsible for the death in custody of writer Ion Catina. He disarmed rebel forces, reinstated the Regulamentul Organic and its symbols of power, and even reintroduced slavery. Notably, his own son, Ion C. Cantacuzino, had been active in the revolutionary movement."
+    },
+    {
+      "question": "What was Constantin G. Cantacuzino's stance on agrarian reform and the Wallachian peasantry?",
+      "answer": "Constantin G. Cantacuzino held an ultra-conservative stance on agrarian reform, strongly opposing liberal ideas such as those proposed by Barbu Dimitrie Știrbei. He favored maintaining indentured servitude for Wallachian farmers, aligning with Ottoman loyalism and the interests of the conservative boyardom. This stance contrasted with the more reformist views of Știrbei and the liberal movement, which sought to improve the conditions of peasant farmers."
+    },
+    {
+      "question": "Describe Constantin G. Cantacuzino's involvement in the princely elections of 1842 and 1859.",
+      "answer": "Cantacuzino was an unsuccessful candidate in the princely election of December 1842, losing favor with the Russian Empire and being deposed ahead of Prince Alexandru II Ghica. Later, during the dynamic political landscape of the 1850s, he actively sought the crown of Wallachia. In 1859, he participated as a minor contender in the princely election, where he served as Vice President of the Ad hoc Divan. In this capacity, he played a role in facilitating the election of Alexandru Ioan Cuza as Domnitor of the United Principalities."
+    },
+    {
+      "question": "What were Constantin G. Cantacuzino's relationships with the Ottoman and Russian Empires?",
+      "answer": "Cantacuzino maintained a complex relationship with both the Ottoman and Russian Empires. Appointed as Caimacam by the Ottomans in 1848, he was a staunch loyalist to Ottoman authority, opposing Russian influence in Wallachia. His earlier fall from favor with the Russian Empire led to his deposition in 1842. During the Crimean War (1853–1856), he briefly re-emerged as president of an Administrative Council created by Russian commander Mikhail Dmitrievich Gorchakov, though he resigned when the Ottomans recognized him as head of a caretaker government with Constantin Năsturel-Herescu after the Russian withdrawal."
+    },
+    {
+      "question": "Provide a Python code snippet to calculate the duration of Cantacuzino's service as Caimacam of Wallachia.",
+      "answer": "python\nfrom datetime import datetime\n\n# Define the start and end dates of Cantacuzino's service as Caimacam\nstart_date = datetime(1848, 9, 1)  # September 1848\nend_date = datetime(1849, 6, 30)    # June 1849\n\n# Calculate the duration in months\nduration_months = (end_date.year - start_date.year) * 12 + (end_date.month - start_date.month)\n\nprint(f\"Constantin G. Cantacuzino served as Caimacam of Wallachia for {duration_months} months.\")\n\nThis code calculates that Cantacuzino served as Caimacam for 10 months (September 1848 to June 1849)."
+    },
+    {
+      "question": "What significant family connections did Constantin G. Cantacuzino have?",
+      "answer": "Constantin G. Cantacuzino was part of the influential Cantacuzino boyar family. He was the father-in-law of General Gheorghe Manu and the grandfather of notable figures such as microbiologist Ioan Cantacuzino and poet Scarlat Cantacuzino. His son, Ion C. Cantacuzino, was active in politics and the 1848 Revolution, while another son, Adolf Cantacuzino, remained involved in the administration of the United Principalities after his father's death."
+    }
+  ]
+}

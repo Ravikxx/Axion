@@ -1,0 +1,34 @@
+{
+  "source_url": "https://mathworld.wolfram.com/TernaryDiagram.html",
+  "category": "mathworld",
+  "pairs": [
+    {
+      "question": "What is a ternary diagram and what are its common applications?",
+      "answer": "A ternary diagram is a triangular plot used to display the proportions of three variables that sum to a constant, represented using barycentric coordinates. It is commonly used in physical sciences, phase equilibria studies, and population genetics to visualize three-component systems. Other names for ternary diagrams include ternary plots, triangle plots, ternary graphs, simplex plots, and de Finetti diagrams (the latter being specific to population genetics)."
+    },
+    {
+      "question": "How do you compute ternary coordinates graphically using the intersection method?",
+      "answer": "To compute ternary coordinates graphically using the intersection method, follow these steps:\n1. Draw segments from each vertex of the triangle to the opposite side, intersecting at the point of interest.\n2. Measure the Euclidean lengths of these segments (e.g., for vertex A, draw segment A-A', where A' is the intersection on side BC).\n3. The ternary coordinates (A, B, C) are calculated as:\n   A = (length of AA') / (total length of AA), \n   B = (length of BB') / (total length of BB), \n   C = (length of CC') / (total length of CC).\nThis method visually derives the weighted percentages of each component."
+    },
+    {
+      "question": "What is the algebraic method to compute ternary coordinates for a point (x, y, z) and how does it relate to the barycentric system?",
+      "answer": "The algebraic method involves stereographic projection of a triple (x, y, z) onto a 2-simplex (equilateral triangle). The Cartesian ternary coordinates for a point (x, y, z) are given by:\n\nA = x / (x + y + z),\nB = y / (x + y + z),\nC = z / (x + y + z).\n\nThis method isometrically rotates the coordinate axes to map the point onto the triangle, where A, B, and C represent the normalized proportions of the three components."
+    },
+    {
+      "question": "How can ternary diagrams represent constant ratios between two variables?",
+      "answer": "Ternary diagrams can represent constant ratios between two variables by using grid lines or segments parallel to one side of the triangle. For example, segments parallel to side BC represent points where the ratio B/C is constant. Similarly, segments including vertices A, B, or C represent data where the ratio of the other two components is fixed (e.g., A/B or A/C). This is useful for analyzing phase equilibria or chemical compositions."
+    },
+    {
+      "question": "Write a Python function to convert Cartesian coordinates (x, y) into ternary coordinates (A, B, C) for an equilateral triangle.",
+      "answer": "python\nimport numpy as np\n\ndef cartesian_to_ternary(x, y):\n    \"\"\"\n    Convert Cartesian coordinates (x, y) to ternary coordinates (A, B, C) for an equilateral triangle.\n    Assumes the triangle has vertices at (0, 0), (1, 0), and (0.5, np.sqrt(3)/2).\n    \"\"\"\n    # Barycentric coordinates (u, v, w) for a point in the triangle\n    u = 1 - x - y / np.sqrt(3)\n    v = 2 * y / np.sqrt(3)\n    w = x\n    \n    # Normalize to ternary coordinates (sum to 1)\n    total = u + v + w\n    A = u / total\n    B = v / total\n    C = w / total\n    \n    return A, B, C\n\n# Example usage:\nx, y = 0.3, 0.4\nA, B, C = cartesian_to_ternary(x, y)\nprint(f\"Ternary coordinates: A={A:.2f}, B={B:.2f}, C={C:.2f}\")\n"
+    },
+    {
+      "question": "What are the differences between equilateral and right triangular ternary diagrams, and when should each be used?",
+      "answer": "Equilateral ternary diagrams are the most common and are used when all three components are equally important, as they provide a balanced visual representation. Right triangular diagrams, however, are used when one component dominates or when plotting data with extreme proportions (e.g., 90% of one component). Right triangles can make it easier to visualize small variations in the dominant component. West (2013) notes that right triangles are sometimes better for certain scenarios."
+    },
+    {
+      "question": "Explain how the barycenter of a ternary diagram is calculated and what it represents.",
+      "answer": "The barycenter (or centroid) of a ternary diagram represents the point where all three components are equal (33.33% each). In barycentric coordinates, it is calculated as the average of the three vertices of the triangle. For an equilateral triangle with vertices A, B, and C, the barycenter (G) is given by:\n\nG = (A + B + C) / 3,\n\nwhere A, B, and C are the coordinates of the vertices. This point serves as a reference for balanced compositions in the system."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Amores_perros",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the significance of the title 'Amores perros' in the context of the film?",
+      "answer": "The title 'Amores perros' is a pun in Spanish where 'perros' means both 'dogs' and slang for 'misery'. It roughly translates to 'bad loves' with canine connotations, reflecting the film's themes of suffering, human relationships, and the presence of dogs across its interconnected stories."
+    },
+    {
+      "question": "How does 'Amores perros' fit into Alejandro González Iñárritu's filmography?",
+      "answer": "'Amores perros' is the first installment in Iñárritu's 'Trilogy of Death', which includes 21 Grams and Babel. It marks his feature directorial debut and established his signature multi-narrative hyperlink cinema style, where multiple stories intersect around a central event."
+    },
+    {
+      "question": "Can you describe the structure of 'Amores perros' and how its stories are connected?",
+      "answer": "The film is structured as a triptych with three distinct stories linked by a car crash in Mexico City. The stories follow: (1) a teenager in the slums who becomes involved in dogfighting, (2) a model who seriously injures her leg, and (3) a mysterious hitman. The connection is reinforced by the recurring presence of dogs and shared characters or themes across narratives."
+    },
+    {
+      "question": "What awards and nominations did 'Amores perros' receive?",
+      "answer": "'Amores perros' was nominated for the Academy Award for Best Foreign Language Film in 2000 and won the Ariel Award for Best Picture from the Mexican Academy of Film. It has also been widely praised by critics and filmmakers, with Denis Villeneuve calling it one of the best films of the 21st century."
+    },
+    {
+      "question": "How has 'Amores perros' been preserved and re-released over time?",
+      "answer": "The film was remastered by The Criterion Collection in December 2020 and screened in 4K at the 78th Cannes Film Festival in May 2024. Streaming service Mubi acquired worldwide rights, re-releasing the remaster in Mexican theaters on October 9, 2025, followed by a streaming release on October 25, 2025."
+    },
+    {
+      "question": "Provide a Python code snippet to calculate the total number of films in Iñárritu's 'Trilogy of Death'.",
+      "answer": "python\n# Films in Iñárritu's 'Trilogy of Death'\ntrilogy = [\"Amores perros\", \"21 Grams\", \"Babel\"]\ntotal_films = len(trilogy)\nprint(total_films)  # Output: 3\n"
+    },
+    {
+      "question": "What role do dogs play in 'Amores perros' beyond being literal animals?",
+      "answer": "Dogs serve as a thematic and structural device in the film. They appear in all three stories, symbolizing suffering, violence, and human connection. The title's pun further ties dogs to the idea of 'bad loves' or miserable relationships, reinforcing the film's exploration of human and animal suffering."
+    }
+  ]
+}

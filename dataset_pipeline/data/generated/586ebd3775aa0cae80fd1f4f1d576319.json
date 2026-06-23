@@ -1,0 +1,38 @@
+{
+  "source_url": "https://dev.to/vaticnz/breaking-news-openai-rebrands-to-opaqueai-4edk",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What major issue did OpenAI face with MCP support upon its launch in September 2025?",
+      "answer": "OpenAI launched MCP support in September 2025, but it faced immediate issues including failing tool calls, malformed `tools/list` payloads, HTTP 424 errors, and violates of its own MCP spec. These problems were publicly reported within hours of the launch, with developers noting that the issues were reproducible and ignored by OpenAI for months."
+    },
+    {
+      "question": "How did developers initially respond to the MCP support issues reported on September 10, 2025?",
+      "answer": "Developers like mucore and jelle1 reported issues such as failing tool calls, malformed `resources/*` payloads, and HTTP 424 errors within hours of the launch. They also noted that Claude handled the same servers flawlessly, highlighting the severity of OpenAI’s problems."
+    },
+    {
+      "question": "What was OpenAI’s response to the MCP support issues reported by developers?",
+      "answer": "OpenAI remained silent for two months, ignoring developer reports, refusing to acknowledge the issues, and not providing any fixes or changelogs. They only addressed the problems after a public outcry, but even then, their responses were inconsistent and often led to further issues."
+    },
+    {
+      "question": "Describe the timeline of events leading to the MCP support collapse in early October 2025.",
+      "answer": "On October 6, users reported that custom MCP connectors stopped listing tools, breaking dev pipelines. On October 7, OpenAI launched the Apps SDK preview with demo apps like Pizza and Solar System, which failed instantly. A fix was deployed but rolled back hours later due to regressions, demonstrating poor testing and deployment practices."
+    },
+    {
+      "question": "What was the role of @alexi-openai in addressing the MCP issues, and what was the outcome?",
+      "answer": "@alexi-openai identified a payload mismatch in the MCP bridge, merged a fix, and deployed it. However, the fix was only temporary and the issue recurred shortly after, leading to a rollback. This illustrated OpenAI’s inability to sustainably resolve the problems despite identifying them."
+    },
+    {
+      "question": "How did OpenAI’s handling of MCP support issues reflect on their communication philosophy?",
+      "answer": "OpenAI’s approach prioritized silence over transparency, ignoring developer concerns for months and leaving the community to debug issues publicly. Their communication philosophy seemed to favor opacity, with no acknowledgment of problems, no changelogs, and even deletion of public bug reports, undermining trust."
+    },
+    {
+      "question": "What alternative did the author pursue after abandoning OpenAI’s MCP support, and what were the results?",
+      "answer": "The author built their own AI stack on a $350 GPU, fine-tuned a crisis detection AI (Guardian) to 90.9% accuracy, and found that local models outperformed OpenAI’s API in instruction following (95% vs 60%). This solution eliminated costs after the initial investment and avoided OpenAI’s instability."
+    },
+    {
+      "question": "Provide a code snippet demonstrating a malformed MCP `tools/list` payload that could cause issues like those reported.",
+      "answer": "\n{\n  \"tools\": [\n    {\n      \"name\": \"get_weather\",\n      \"description\": \"Get current weather\",\n      \"input_schema\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"location\": {\n            \"type\": \"string\",\n            \"description\": \"City name\"\n          }\n        }\n      }\n    }\n  ],\n  \"missing_required_field\": \"This would break MCP client parsing\"\n}\n\nThis payload is invalid because it omits required fields like `strict` or includes unexpected fields, which could cause MCP clients to fail or throw errors."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/2015_Kosovo_protests",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What triggered the anti-government protests in Kosovo in early 2015?",
+      "answer": "The protests were triggered by statements made by Aleksandar Jablanović, a Kosovo Serb politician, Minister of Communities and Returns, and Member of Parliament. He referred to a group as \"savages\" and \"freaks\" after they stoned and blocked buses carrying displaced Serbs to Christmas mass in Gjakova."
+    },
+    {
+      "question": "Who organized the initial protest in Gjakova on 6 January 2015, and why?",
+      "answer": "The initial protest in Gjakova was organized by a group called Thirrjet e nënave (The call of mothers), whose members were mostly mothers of victims from the Kosovo War. They protested to block adherents from entering the Orthodox Church, demanding that Serbia apologize for the victims due to its refusal to do so."
+    },
+    {
+      "question": "How did the public and political figures in Kosovo react to Jablanović's statements?",
+      "answer": "Most Kosovo citizens were overwhelmingly offended by Jablanović's statements. The opposition immediately demanded his resignation, and protests began in Gjakova, later expanding to other cities like Peja, Deçan, and Gjilan."
+    },
+    {
+      "question": "What were the key demands of the national-level protests in Pristina on 24 and 27 January 2015?",
+      "answer": "The key demands of the protests in Pristina were the resignation of Aleksandar Jablanović and the return of Trepča as a public institution of the Republic of Kosovo."
+    },
+    {
+      "question": "How did the protests in Pristina become violent, and what was the international response?",
+      "answer": "The protests in Pristina turned violent due to clashes with the police. The unrest was internationally proclaimed as the worst since 2008."
+    },
+    {
+      "question": "What was the outcome of Prime Minister Isa Mustafa's announcement on 3 February 2015 regarding Jablanović?",
+      "answer": "Prime Minister Isa Mustafa announced that Aleksandar Jablanović would no longer be part of the cabinet, confirming his resignation. This was welcomed by the opposition and citizens but criticized by the Government of Serbia."
+    },
+    {
+      "question": "Write a Python code snippet to calculate the total number of protesters in Gjakova and Pristina during the January 2015 protests.",
+      "answer": "python\n# Protester counts in January 2015\ngjakova_protesters = 10000\npristina_protesters = 50000\n\n# Total number of protesters\ntotal_protesters = gjakova_protesters + pristina_protesters\nprint(f\"Total protesters in January 2015: {total_protesters}\")\n\nOutput: Total protesters in January 2015: 60000"
+    }
+  ]
+}

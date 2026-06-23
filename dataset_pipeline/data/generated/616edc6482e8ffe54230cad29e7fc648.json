@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Chris_Gueffroy",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "Who was the last person killed while attempting to escape across the Berlin Wall?",
+      "answer": "Chris Gueffroy was the last person killed by border troops while trying to escape across the Berlin Wall on the night of February 5–6, 1989."
+    },
+    {
+      "question": "What were the circumstances of Chris Gueffroy's death?",
+      "answer": "Chris Gueffroy and his friend Christian Gaudian attempted to cross the Berlin Wall near the Britz district canal. They were shot by East German border troops despite believing the Schießbefehl (shoot-to-kill order) had been lifted. Gueffroy was hit by ten shots and died in the border strip."
+    },
+    {
+      "question": "What happened to Christian Gaudian after the escape attempt?",
+      "answer": "Christian Gaudian was arrested, injured, and sentenced to three years in prison on May 24, 1989. He was released on bail in September 1989 and transferred to West Berlin on October 17, 1989."
+    },
+    {
+      "question": "What was the legal outcome for the border guards involved in Gueffroy's death?",
+      "answer": "Initially, the four border guards received awards and a cash prize. After reunification, two were released in 1992, and Ingo Heinrich, who fired the fatal shot, was sentenced to three and a half years in jail, later reduced to a two-year suspended sentence in 1994."
+    },
+    {
+      "question": "Why were SED officials Siegfried Lorenz and Hans-Joachim Böhme tried in 2000 and 2004?",
+      "answer": "They were tried for the deaths of Chris Gueffroy and two other young men due to their alleged role in maintaining the shoot-to-kill order. Initially acquitted in 2000 due to lack of evidence, they were found guilty in 2004 and given suspended sentences of 15 months each."
+    },
+    {
+      "question": "Provide a code snippet simulating a basic timeline of Chris Gueffroy's escape attempt and its aftermath.",
+      "answer": "python\n# A simplified timeline of Chris Gueffroy's escape attempt and legal outcomes\ntimeline = {\n    \"Feb 5-6, 1989\": \"Gueffroy and Gaudian attempt escape near Britz district canal\",\n    \"Feb 6, 1989\": \"Gueffroy killed by border troops; Gaudian arrested\",\n    \"May 24, 1989\": \"Gaudian sentenced to 3 years in prison\",\n    \"Sep 1989\": \"Gaudian released on bail\",\n    \"Oct 17, 1989\": \"Gaudian transferred to West Berlin\",\n    \"1992\": \"Two border guards released; Ingo Heinrich sentenced to 3.5 years\",\n    \"1994\": \"Heinrich's sentence reduced to a 2-year suspended term\",\n    \"2000\": \"Lorenz and Böhme acquitted\",\n    \"2004\": \"Lorenz and Böhme found guilty, sentenced to 15 months suspended\",\n    \"Jun 21, 2003\": \"Monument to Gueffroy unveiled on his 35th birthday\"\n}\nfor date, event in timeline.items():\n    print(f\"{date}: {event}\")\n"
+    },
+    {
+      "question": "What is the significance of the monument built for Chris Gueffroy in 2003?",
+      "answer": "The monument, designed by artist Karl Biedermann, was built on June 21, 2003, which would have been Gueffroy's 35th birthday. It commemorates him as the last person killed while trying to escape across the Berlin Wall."
+    }
+  ]
+}

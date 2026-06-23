@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Greg_Gianforte",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who is Gregory Richard Gianforte and what positions has he held?",
+      "answer": "Gregory Richard Gianforte is an American politician, businessman, and software engineer who has served as the 25th governor of Montana since 2021. He previously represented Montana's at-large congressional district in the U.S. House of Representatives from 2017 to 2021 as a member of the Republican Party."
+    },
+    {
+      "question": "What notable company did Gianforte co-found, and what significant event occurred for the company in 2011?",
+      "answer": "Gianforte co-founded RightNow Technologies in 1997 with his wife, Susan. The company went public in 2004 and was acquired by Oracle Corporation for $1.5 billion in 2011."
+    },
+    {
+      "question": "Describe Gianforte's political career timeline from 2016 to 2024.",
+      "answer": "In 2016, Gianforte ran as the Republican nominee for governor of Montana but lost to incumbent Steve Bullock. In 2017, he won a special election for Montana's at-large congressional seat after Ryan Zinke resigned. He was reelected to Congress in 2018. Gianforte was elected governor of Montana in 2020, defeating Mike Cooney, and was reelected in 2024, becoming the first Republican to serve two terms as governor since Marc Racicot in the 1990s."
+    },
+    {
+      "question": "What legal consequences did Gianforte face after the 2017 election incident?",
+      "answer": "In June 2017, Gianforte was convicted of misdemeanor assault in state court for assaulting a reporter from The Guardian the day before his congressional election. He was fined, sentenced to community service, and ordered to complete anger management therapy."
+    },
+    {
+      "question": "How did Gianforte's congressional seat become vacant in 2017?",
+      "answer": "Gianforte's congressional seat became vacant in 2017 when Ryan Zinke resigned to become the U.S. Secretary of the Interior under President Donald Trump."
+    },
+    {
+      "question": "What historical significance does Gianforte hold as Montana's governor?",
+      "answer": "Gianforte is the first Republican to serve as governor of Montana since Judy Martz left office in 2005. He also became the first Republican to be elected governor twice since Marc Racicot in 1996."
+    },
+    {
+      "question": "Write a Python snippet to calculate the total years Gianforte has served in elected office by 2024.",
+      "answer": "python\ndef calculate_gianforte_service_years():\n    # Gianforte served in Congress from 2017 to 2021 (4 years)\n    # Plus governor from 2021 to 2024 (3 years)\n    total_years = (2021 - 2017) + (2024 - 2021)\n    return total_years\n\nprint(calculate_gianforte_service_years())  # Output: 7\n"
+    }
+  ]
+}

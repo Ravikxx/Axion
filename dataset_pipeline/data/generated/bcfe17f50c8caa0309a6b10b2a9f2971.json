@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/C.S._Marítimo",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is Club Sport Marítimo MH M commonly known as, and where is it based?",
+      "answer": "Club Sport Marítimo MH M is commonly known as Marítimo or Marítimo da Madeira. It is based in the city of Funchal, on the island of Madeira, Portugal."
+    },
+    {
+      "question": "When was Club Sport Marítimo founded, and what major football trophy has it won?",
+      "answer": "Club Sport Marítimo was founded in 1910. It has won one major football trophy, the Campeonato de Portugal, in 1926."
+    },
+    {
+      "question": "In which sports does Marítimo have teams competing in national leagues besides football?",
+      "answer": "Besides football, Marítimo has teams competing in national leagues for volleyball, handball, roller hockey, and athletics."
+    },
+    {
+      "question": "What is the significance of Marítimo's promotion to the Primeira Liga in the 2026–27 season?",
+      "answer": "Marítimo will be heading to the Primeira Liga in the 2026–27 season after securing promotion from Liga Portugal 2. This marks their return to the top tier of Portuguese football after an absence, following their inaugural appearance in the national league in 1973."
+    },
+    {
+      "question": "Write a Python script to calculate Marítimo's total seasons played in the highest tier of Portuguese football.",
+      "answer": "python\n# Marítimo's seasons in the highest tier (as of the provided data)\nseasons_in_top_tier = 43\nprint(f\"Marítimo has played {seasons_in_top_tier} seasons in the top tier of Portuguese football.\")\n"
+    },
+    {
+      "question": "How many times has Marítimo reached the final of the Taça de Portugal and the Taça da Liga?",
+      "answer": "Marítimo has reached the final of the Taça de Portugal twice and the Taça da Liga twice."
+    },
+    {
+      "question": "What was Marítimo's best performance in the UEFA Cup/Europa League, and when did it occur?",
+      "answer": "Marítimo's best performance in the UEFA Cup/Europa League was during the 2012–13 season, when they finished third in the group stage."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Bob_Turnbull",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was Robert Hamilton Turnbull's primary position when he first joined Arsenal in 1921?",
+      "answer": "Turnbull initially played as a left back when he joined Arsenal in 1921 as an amateur."
+    },
+    {
+      "question": "How many goals did Robert Hamilton Turnbull score in the 1922–23 season, and what was significant about his performance?",
+      "answer": "Turnbull scored 21 league goals in the 1922–23 season, including two four-goal hauls against Bolton Wanderers and Blackpool. His goals saved Arsenal from relegation, and his total of 22 goals across all competitions set a top-flight record for an Arsenal player at the time."
+    },
+    {
+      "question": "What tactical decision did Arsenal manager Leslie Knighton make in November 1922, and why?",
+      "answer": "Leslie Knighton switched Turnbull from defence to attack due to Arsenal's poor form (bottom of the table) and Henry White's lack of goals. This gamble paid off as Turnbull scored prolifically, helping Arsenal avoid relegation."
+    },
+    {
+      "question": "How did Turnbull's goal-scoring impact his career progression at Arsenal?",
+      "answer": "Turnbull's 28 goals in 66 matches for Arsenal led to him being sold to Charlton Athletic in November 1924 after his form declined and Harry Woods arrived. This marked a turning point in his career."
+    },
+    {
+      "question": "Provide a code snippet in Python that simulates Turnbull's goal-scoring performance by season, assuming his career spans from 1921 to 1928.",
+      "answer": "python\nseasons = {\n    \"1921-22\": {\"appearances\": 5, \"goals\": 0},\n    \"1922-23\": {\"appearances\": 30, \"goals\": 28},\n    \"1923-24\": {\"appearances\": 20, \"goals\": 6},\n    \"1924-25 (Charlton)\": {\"appearances\": 3, \"goals\": 0},\n    \"1925-26 (Chelsea)\": {\"appearances\": 40, \"goals\": 30},\n    \"1926-27 (Chelsea)\": {\"appearances\": 35, \"goals\": 22},\n    \"1927-28 (Chelsea)\": {\"appearances\": 12, \"goals\": 6},\n    \"1928-29 (Clapton Orient)\": {\"appearances\": 10, \"goals\": 5}\n}\n\nfor season, stats in seasons.items():\n    print(f\"{season}: {stats['goals']} goals in {stats['appearances']} appearances\")\n"
+    },
+    {
+      "question": "What was Turnbull's total number of goals for Chelsea, and over how many matches did he score them?",
+      "answer": "Turnbull scored 58 goals in 87 first-team matches for Chelsea during his time at the club."
+    },
+    {
+      "question": "After retiring from playing, what role did Turnbull take up at Crystal Palace?",
+      "answer": "After retiring, Turnbull stayed on at Crystal Palace as a trainer until his death in 1946."
+    }
+  ]
+}

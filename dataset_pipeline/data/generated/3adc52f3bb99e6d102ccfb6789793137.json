@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/portia-ai/build-an-ai-agent-and-win-3p3c",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What is the Portia AI SDK designed for in the context of AI agents?",
+      "answer": "The Portia AI SDK is designed to help AI agents pre-express their planned responses to prompts, share progress during execution, and solicit human input under defined conditions. This enables dynamic planning, reinforcement learning with user feedback, and robust human-agent interaction."
+    },
+    {
+      "question": "How can participants win the £500 bounty in the Portia Hackathon?",
+      "answer": "Participants can win the £500 bounty by submitting a project that meets the judging criteria, including leveraging the latest AI technologies (e.g., MCP, A2A), demonstrating Portia's differentiators (e.g., dynamic planning, human-agent interaction), and submitting a high-quality project with a demo video, README, and code. Submissions must be made via GitHub issue and include a private repo shared with designated Portia team members."
+    },
+    {
+      "question": "What are the key judging criteria for the Portia Hackathon?",
+      "answer": "The key judging criteria include: leveraging emerging AI technologies (e.g., MCP, A2A), demonstrating Portia’s strengths (dynamic planning, reinforcement learning, human-agent interaction), addressing regulated spaces (healthcare, finance, legal), and submitting a high-quality project with a demo video, README, and code."
+    },
+    {
+      "question": "Provide a Python code snippet demonstrating how to start a Portia agent with basic planning and human interaction.",
+      "answer": "python\nfrom portia_sdk import PortiaAgent\n\n# Initialize a Portia agent with planning and human interaction enabled\nagent = PortiaAgent(\n    name=\"planning_agent\",\n    plan_expression=True,  # Enable pre-expressing planned responses\n    progress_sharing=True,  # Enable sharing progress during execution\n    human_input_hooks=[\"clarification\"]  # Enable hooks for human feedback\n)\n\n# Define a task for the agent\nagent.set_task(\"Research the latest trends in AI agents and summarize them.\")\n\n# Execute the task with human interaction enabled\nresult = agent.execute()\nprint(result)\n"
+    },
+    {
+      "question": "What are some examples of human-agent interaction features in Portia?",
+      "answer": "Portia supports human-agent interaction through hooks that handle scenarios like: requesting clarifications, handling profanity or PII leaks, and managing prompt injections. For example, an agent can pause execution and prompt a user for input when it detects a potential PII leak or requires additional context to proceed."
+    },
+    {
+      "question": "How should participants submit their hackathon projects to Portia?",
+      "answer": "Participants should start by commenting on the designated GitHub issue to indicate they are working on the hackathon. They must then submit their project as a comment on the same issue, including a private GitHub repo shared with the Portia team members (emmaportia and Momo), a high-resolution demo video, and a README with key package dependencies, setup steps, running instructions, and an overview of key code components."
+    },
+    {
+      "question": "What are the benefits of using Portia Cloud in AI agent development?",
+      "answer": "Portia Cloud provides over 1000 cloud and MCP tools with built-in authentication, simplifying the integration of external tools and services into AI agents. This reduces setup complexity and accelerates development by offering pre-configured, secure access to a wide range of tools."
+    }
+  ]
+}

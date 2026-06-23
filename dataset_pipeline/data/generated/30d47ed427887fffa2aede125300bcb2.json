@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Inflammasome",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What are inflammasomes and what is their primary biological role?",
+      "answer": "Inflammasomes are cytosolic multiprotein complexes in the innate immune system that activate inflammatory responses and programmed cell death. Their primary role is to sense pathogenic or damage-associated signals, assemble in response, activate caspase-1, and induce the secretion of pro-inflammatory cytokines IL-1β and IL-18, as well as trigger pyroptosis—a lytic, inflammatory form of cell death."
+    },
+    {
+      "question": "Which pattern recognition receptors (PRRs) are involved in inflammasome formation, and how do they initiate the process?",
+      "answer": "Inflammasomes are triggered by germline-encoded PRRs such as NLRs (e.g., NLRP3), AIM2, IFI16, and pyrin. These receptors detect cytosolic PAMPs, DAMPs, or homeostatic disruptions. Upon activation, PRRs interact via their CARD or PYD domains with the adaptor protein ASC (apoptosis-associated speck-like protein containing a CARD), which recruits pro-caspase-1 to form the inflammasome complex."
+    },
+    {
+      "question": "Explain the role of ASC in inflammasome assembly. Include a description of its structural domain.",
+      "answer": "ASC (also known as Pycard) acts as a critical adaptor protein that bridges PRRs and pro-caspase-1 during inflammasome formation. It contains two distinct domains: an N-terminal pyrin domain (PYD) and a C-terminal caspase activation and recruitment domain (CARD). The PYD of ASC functions as a prion-like domain, enabling it to polymerize into self-perpetuating filaments upon activation, which facilitates the clustering of pro-caspase-1 and downstream inflammatory signaling."
+    },
+    {
+      "question": "What is pyroptosis, and how is it induced by inflammasomes?",
+      "answer": "Pyroptosis is a pro-inflammatory form of programmed cell death characterized by cell lysis and release of cytosolic contents. It is induced when inflammasomes activate caspase-1, which cleaves gasdermin D (GSDMD) to release its N-terminal fragment. This fragment oligomerizes to form pores in the plasma membrane, enabling the secretion of mature IL-1β and IL-18 and ultimately leading to cell swelling and lysis."
+    },
+    {
+      "question": "How do non-canonical inflammasomes differ from canonical inflammasomes in their activation mechanism?",
+      "answer": "Non-canonical inflammasomes activate independently of caspase-1. In mice, caspase-11 directly senses cytosolic LPS from bacteria, triggering pyroptosis. In humans, caspase-4 and caspase-5 perform this function. Unlike canonical inflammasomes, non-canonical activation bypasses PRR-ASC-mediated assembly and directly links microbial detection to inflammatory cell death."
+    },
+    {
+      "question": "Provide a Python code snippet that simulates the detection of a bacterial pattern (e.g., LPS) by a PRR and triggers a simplified inflammasome cascade.",
+      "answer": "python\nclass PRR:\n    def __init__(self, pattern_type):\n        self.pattern_type = pattern_type\n    \n    def detect(self, molecule):\n        return molecule == self.pattern_type\n\nclass Caspase1:\n    def activate(self):\n        print(\"Caspase-1 activated\")\n        return True\n\nclass ASC:\n    def recruit_caspase(self):\n        print(\"ASC recruits pro-caspase-1\")\n        return Caspase1()\n\ndef inflammasome_simulation(lps_present):\n    prr = PRR('LPS')\n    if prr.detect('LPS') and lps_present:\n        asc = ASC()\n        caspase1 = asc.recruit_caspase()\n        caspase1.activate()\n        print(\"Inflammasome assembled and inflammatory response initiated.\")\n    else:\n        print(\"No inflammasome activation.\")\n\n# Example usage:\ninflammasome_simulation(lps_present=True)\n"
+    },
+    {
+      "question": "In which cell types are inflammasomes most commonly studied, and what recent evidence challenges this view?",
+      "answer": "Traditionally, inflammasomes have been studied primarily in professional innate immune cells like macrophages. However, recent studies reveal high expression of inflammasome components in epithelial barrier tissues, such as the gut and skin, where they function as an early defense mechanism against pathogens and homeostatic disruptions. This challenges the view that inflammasomes are restricted to immune cells and highlights their broader role in barrier immunity."
+    },
+    {
+      "question": "How can dysregulated inflammasome activation contribute to disease, and name at least three types of diseases associated with this dysregulation?",
+      "answer": "Dysregulated inflammasome activation leads to excessive inflammation, which can damage host tissues and contribute to disease pathology. Conditions linked to such dysregulation include autoimmune disorders (e.g., rheumatoid arthritis, lupus), chronic inflammatory diseases (e.g., Crohn's disease), metabolic disorders (e.g., type 2 diabetes, obesity), neurodegenerative diseases (e.g., Alzheimer's disease), and certain cancers due to chronic inflammatory microenvironments."
+    }
+  ]
+}

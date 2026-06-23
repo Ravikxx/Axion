@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Corneil_Lionel",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who is Corneil Jaycee Lionel?",
+      "answer": "Corneil Jaycee (or Jessie) Lionel is a Saint Lucian track and field athlete born on 28 October 1991. He has competed internationally for Saint Lucia and holds multiple national records in sprinting events, including the men's 200m and indoor 200m."
+    },
+    {
+      "question": "What records does Corneil Jaycee Lionel hold for Saint Lucia?",
+      "answer": "Lionel holds the Saint Lucia national record for the men's 200m (20.63 seconds, set on 18 April 2015) and the indoor 200m (21.19 seconds, set on 6 February 2016). He also set a national record in the 4x400m relay (3:10.45) with teammates Rosen Daniel, Marbeq Edgar, and Talberc Poleon at the 2014 OECS Championships."
+    },
+    {
+      "question": "What achievements did Corneil Jaycee Lionel earn at Iowa Western Junior College?",
+      "answer": "Lionel holds the Iowa Western records in the men's indoor 60m and 200m events during his time at the college."
+    },
+    {
+      "question": "How did Corneil Jaycee Lionel perform at the 2014 Commonwealth Games?",
+      "answer": "At the 2014 Commonwealth Games in Glasgow, Lionel competed in the 100m and 200m but did not advance from the opening round, finishing fourth in both qualifying heats."
+    },
+    {
+      "question": "What notable performance did Corneil Jaycee Lionel achieve at the 2016 Wes Kittley Invitational?",
+      "answer": "Lionel won the 100m event in 10.26 seconds, which was one of the fastest times in Abilene Christian University history and ranked him 10th all-time in Wildcat sprinting history."
+    },
+    {
+      "question": "Who is Corneil Jaycee Lionel's mother, and what is her significance in athletics?",
+      "answer": "Lionel's mother is Cornelia Jean Baptiste, who made history as the first woman to represent Saint Lucia at the IAAF World Championships in Athletics (Helsinki, 1983)."
+    },
+    {
+      "question": "Write a Python function to determine if a given athlete's 200m time is faster than Corneil Jaycee Lionel's national record.",
+      "answer": "python\ndef is_faster_than_lionel(athlete_time):\n    \"\"\"\n    Check if an athlete's 200m time is faster than Lionel's national record (20.63 seconds).\n    \n    Args:\n        athlete_time (float): Athlete's 200m time in seconds.\n    \n    Returns:\n        bool: True if the time is faster, False otherwise.\n    \"\"\"\n    lionel_record = 20.63\n    return athlete_time < lionel_record\n\n# Example usage:\nprint(is_faster_than_lionel(20.50))  # Output: True\nprint(is_faster_than_lionel(20.70))  # Output: False\n"
+    }
+  ]
+}

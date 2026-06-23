@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Claude_Lemieux",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What were the key achievements of Claude Lemieux's ice hockey career?",
+      "answer": "Claude Lemieux had a distinguished 21-season NHL career, winning four Stanley Cup championships (1986 with Montreal Canadiens, 1995 and 2000 with New Jersey Devils, 1996 with Colorado Avalanche) and scoring 80 playoff goals, which ranks ninth in NHL history. He was also awarded the Conn Smythe Trophy in 1995 as the playoff MVP for his performance during the Devils' championship run."
+    },
+    {
+      "question": "Which teams did Claude Lemieux play for during his NHL career?",
+      "answer": "Claude Lemieux played for six NHL teams: Montreal Canadiens (1983–1990), New Jersey Devils (1990–1995 and 1999–2003), Colorado Avalanche (1995–1999), Phoenix Coyotes (2003–2004), Dallas Stars (2004), and San Jose Sharks (2008–2009)."
+    },
+    {
+      "question": "What notable incident involving Kris Draper occurred during Lemieux's time with the Colorado Avalanche?",
+      "answer": "During the 1995–96 playoffs, Lemieux delivered a devastating hit from behind to Detroit Red Wings player Kris Draper, fracturing his orbital bone, cheekbone, and jaw. This act sparked a fierce rivalry between the Avalanche and Red Wings and became one of the most infamous incidents in NHL history."
+    },
+    {
+      "question": "How did Lemieux's career evolve after his initial retirement from the NHL in 2003?",
+      "answer": "After retiring from the NHL in 2003, Lemieux played briefly for EV Zug in Switzerland's Nationalliga A. In 2005, he became president of the ECHL's Phoenix Roadrunners, a role he held for two years. He later returned to the NHL with the San Jose Sharks for the 2008–09 season before retiring again."
+    },
+    {
+      "question": "What is the relationship between Claude Lemieux and Brendan Lemieux in hockey?",
+      "answer": "Brendan Lemieux is the son of Claude Lemieux. Like his father, Brendan is a professional ice hockey player, currently playing for HC Davos in Switzerland's National League."
+    },
+    {
+      "question": "Write a Python function that checks if an NHL player has won a Stanley Cup with at least three different teams.",
+      "answer": "python\ndef has_won_cup_with_three_teams(player_data):\n    \"\"\"\n    Checks if an NHL player has won a Stanley Cup with at least three different teams.\n    \n    Args:\n        player_data (dict): A dictionary containing player information with 'cup_winning_teams' key.\n    \n    Returns:\n        bool: True if the player won with 3+ teams, False otherwise.\n    \"\"\"\n    teams = player_data.get('cup_winning_teams', [])\n    return len(set(teams)) >= 3\n\n# Example usage:\nclaude_lemieux_data = {\n    'name': 'Claude Lemieux',\n    'cup_winning_teams': ['Montreal Canadiens', 'New Jersey Devils', 'Colorado Avalanche']\n}\n\nprint(has_won_cup_with_three_teams(claude_lemieux_data))  # Output: True\n"
+    },
+    {
+      "question": "Why was Claude Lemieux often described as an 'enforcer' during his career?",
+      "answer": "Claude Lemieux was known as an enforcer due to his aggressive playing style, physical play, and role as an agitator. Throughout his career, he was frequently involved in confrontations, delivered heavy hits, and often played a key part in protecting star players. His reputation as a tough player was cemented by incidents like the hit on Kris Draper and his overall playoff performance."
+    }
+  ]
+}

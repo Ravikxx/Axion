@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Church_of_Humanity",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who founded the first English Church of Humanity and in what year?",
+      "answer": "Richard Congreve founded the first English Church of Humanity in 1859, two years after Auguste Comte's death."
+    },
+    {
+      "question": "What was the New York City branch of the Church of Humanity inspired by?",
+      "answer": "The New York City branch of the Church of Humanity originated with English immigrant Henry Edger, who dedicated himself to the positive faith in 1854."
+    },
+    {
+      "question": "How did the American Church of Humanity differ from its English counterpart in terms of leadership and membership?",
+      "answer": "Unlike the English Church of Humanity, led by Richard Congreve, the American version formed in 1869 with David Goodman Croly as a leading member. While the English church had notable members like Ann Margaret Lindholm, the American church included educated individuals unrelated to Croly, such as Croly's son Herbert Croly."
+    },
+    {
+      "question": "What religious elements did the Church of Humanity in the U.S. incorporate into its services?",
+      "answer": "The American Church of Humanity incorporated sermons, sacramental rites, and readings from conventional religious works like the Book of Isaiah into its services, similar to the English version."
+    },
+    {
+      "question": "Why was David Goodman Croly considered somewhat limited in evangelizing for Comtism?",
+      "answer": "David Goodman Croly strongly believed in the religious element of Comte's philosophy (Comtism) but was limited in evangelizing for it, possibly due to the church's small size and niche appeal compared to mainstream religions."
+    },
+    {
+      "question": "What role did Comte's 'Religion of Humanity' play in the formation of the Church of Humanity in England?",
+      "answer": "Auguste Comte's 'Religion of Humanity' served as a direct influence and inspiration for the Church of Humanity in England, which was founded in 1859, two years after Comte's death."
+    },
+    {
+      "question": "Provide a Python code snippet that simulates a simple hierarchy of religious movements inspired by Comte's ideas, including the Church of Humanity branches in England and New York.",
+      "answer": "python\nclass ReligiousMovement:\n    def __init__(self, name, founder, year_founded):\n        self.name = name\n        self.founder = founder\n        self.year_founded = year_founded\n        self.branches = []\n\n    def add_branch(self, branch_name, location):\n        self.branches.append({'name': branch_name, 'location': location})\n\n# Example usage\ncomte_religion = ReligiousMovement(\n    name=\"Religion of Humanity\",\n    founder=\"Auguste Comte\",\n    year_founded=1857\n)\n\nchurch_of_humanity_england = ReligiousMovement(\n    name=\"Church of Humanity\",\n    founder=\"Richard Congreve\",\n    year_founded=1859\n)\nchurch_of_humanity_england.add_branch(\n    branch_name=\"New York City Church of Humanity\",\n    location=\"New York City\"\n)\n\nprint(f\"{church_of_humanity_england.name} was founded in {church_of_humanity_england.year_founded} by {church_of_humanity_england.founder}.\")\nprint(f\"It has a branch in {church_of_humanity_england.branches[0]['location']}.\")\n"
+    }
+  ]
+}

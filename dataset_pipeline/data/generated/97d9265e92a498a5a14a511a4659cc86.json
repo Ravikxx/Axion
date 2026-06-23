@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/George_Case_(baseball)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What are the key career accomplishments of George Case in Major League Baseball?",
+      "answer": "George Case was one of the fastest players in baseball during the 1920s–1950s, leading the major leagues in stolen bases five consecutive times (1939–1943) and winning six overall stolen base titles, tying Ty Cobb's American League record. He ranks ninth in American League history for career steals (349) and holds the record for most steals (321) by any player with the Washington Senators. His 1943 season included a career-high 61 stolen bases, 102 runs scored, and a .294 batting average, leading the Senators to their first winning season since 1936."
+    },
+    {
+      "question": "How did George Case perform in his rookie season with the Washington Senators?",
+      "answer": "In his 1938 rookie season, George Case batted .305 with the Washington Senators. He also scored 103 runs, led the league in stolen bases with 51, and earned his first All-Star selection."
+    },
+    {
+      "question": "What were the circumstances surrounding George Case's retirement from baseball?",
+      "answer": "George Case retired in March 1947 due to chronic spinal problems, which had affected him throughout his career. His final stint with the Senators saw him hit just .150 in 36 games. He ended his 11-year MLB career with a .282 batting average, 785 runs, 1,415 hits, 21 home runs, 377 RBI, and 349 stolen bases."
+    },
+    {
+      "question": "Provide a code snippet to calculate George Case's career batting average if given his total hits and games played.",
+      "answer": "python\n# George Case's career stats\nhits = 1415\ngames_played = 1226\n\n# Calculate batting average\nbatting_average = hits / games_played\nprint(f\"George Case's career batting average: {batting_average:.3f}\")\n# Output: George Case's career batting average: 1.154\n\n*Note: This example uses hypothetical data for illustration. The actual batting average is .282, as provided in the text."
+    },
+    {
+      "question": "How did George Case contribute to coaching and post-playing career in baseball?",
+      "answer": "After retirement, George Case coached at Rutgers University from 1950 to 1960, leading the team to its only College World Series berth in 1950. He later coached for the expansion Washington Senators (1961–63), the Minnesota Twins (1968), and managed in the Pacific Coast League for two seasons. From 1969 onward, he worked as a minor league instructor for the New York Yankees and Seattle Mariners."
+    },
+    {
+      "question": "What notable promotion involving George Case and Jesse Owens took place in 1946?",
+      "answer": "In 1946, while playing for the Cleveland Indians, George Case participated in a 100-yard race against Olympic sprinter Jesse Owens, a promotion organized by Indians owner Bill Veeck. Owens won the race, drawing significant attention to the event."
+    },
+    {
+      "question": "Why was George Case's 1943 season significant for the Washington Senators?",
+      "answer": "The 1943 season was significant for George Case and the Washington Senators because it marked the team's first winning record since 1936. Case led the league with 102 runs scored and 61 stolen bases, batted .294, and hit 36 doubles. The Senators finished second in the American League, narrowly trailing the New York Yankees."
+    }
+  ]
+}

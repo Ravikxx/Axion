@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Amazon_Prime_Video",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is Amazon Prime Video and who owns it?",
+      "answer": "Amazon Prime Video, often abbreviated as Prime Video, is an American subscription-based video on-demand streaming service owned by Amazon. It primarily offers films and television series produced or co-produced by Amazon MGM Studios, as well as licensed content known as Amazon Originals, alongside content from other providers, live events, and video rental or purchasing options."
+    },
+    {
+      "question": "How does Amazon Prime Video's availability differ between the United States, United Kingdom, and Australia?",
+      "answer": "In the United States and United Kingdom, Prime Video can be accessed without requiring a full Prime subscription. However, in Australia, it can only be accessed through a dedicated website."
+    },
+    {
+      "question": "What was Amazon Prime Video originally called and when did it launch?",
+      "answer": "Amazon Prime Video was originally launched as 'Amazon Unbox' in the United States on September 7, 2006. It later evolved into 'Amazon Instant Video on Demand' before being rebranded as Prime Video."
+    },
+    {
+      "question": "How did Prime Video expand internationally after its initial launch?",
+      "answer": "Prime Video launched worldwide (excluding several restricted countries) on December 14, 2016. Initially available in the US, UK, Germany, Austria, and Japan, it expanded to additional territories like Canada, France, India, and Brazil, where it was included with Prime membership. In other regions, it was offered as a standalone service for $/€2.99 per month for the first six months, increasing to $/€5.99 thereafter."
+    },
+    {
+      "question": "What are Amazon Channels (Prime Video Channels) and how do they work?",
+      "answer": "Amazon Channels, also known as Prime Video Channels, is a content add-on service that allows users to subscribe to additional video streaming services from other providers directly within Prime Video. This feature provides access to third-party content without requiring separate subscriptions."
+    },
+    {
+      "question": "Write a Python script to check if a user's country is supported for standalone Prime Video access (excluding restricted countries).",
+      "answer": "python\nsupported_countries = {\n    'United States', 'United Kingdom', 'Germany', 'Canada', 'France', \n    'India', 'Turkey', 'Italy', 'Belgium', 'Brazil', 'Ireland', \n    'Poland', 'Spain', 'Japan', 'Australia'\n}\nrestricted_countries = {'China', 'Crimea', 'Cuba', 'Iran', 'North Korea', 'Sudan', 'Syria'}\n\ndef is_standalone_available(country):\n    if country in restricted_countries:\n        return False\n    return country in supported_countries\n\n# Example usage:\nprint(is_standalone_available('Germany'))  # Output: True\nprint(is_standalone_available('North Korea'))  # Output: False\n"
+    },
+    {
+      "question": "What is Amazon's role in the Motion Picture Association (MPA) and when did it join?",
+      "answer": "Amazon, alongside Amazon MGM Studios, is a member of the Motion Picture Association (MPA), representing one half of Amazon's membership in the organization. Amazon joined the MPA on October 1, 2024."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Combined_gas_law",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is the combined gas law and how does it relate to Charles's, Boyle's, and Gay-Lussac's laws?",
+      "answer": "The combined gas law integrates Charles's, Boyle's, and Gay-Lussac's laws into a single equation that describes the relationship between pressure (P), volume (V), and temperature (T) of an ideal gas. It states that the ratio of the product of pressure and volume to temperature remains constant (PV/T = k). Charles's law (V ∝ T at constant P), Boyle's law (P ∝ 1/V at constant T), and Gay-Lussac's law (P ∝ T at constant V) are all special cases of the combined gas law where one variable is held constant."
+    },
+    {
+      "question": "Write the formula for the combined gas law and explain the meaning of each variable.",
+      "answer": "The formula for the combined gas law is PV/T = k, where P is pressure, V is volume, T is temperature measured in Kelvin, and k is a constant with units of energy divided by temperature. This equation shows that the ratio of pressure times volume to temperature remains constant for a given amount of gas."
+    },
+    {
+      "question": "How would you use the combined gas law to compare two different states of the same gas?",
+      "answer": "To compare two states of the same gas, use the equation (P₁V₁)/T₁ = (P₂V₂)/T₂. This allows you to calculate an unknown variable (e.g., final pressure) when three other variables are known for both initial and final states. For example, if a gas has initial pressure 1 atm, volume 2 L, and temperature 300 K, and then its volume changes to 1 L at 400 K, the final pressure can be calculated as P₂ = (P₁V₁T₂)/(T₁V₂) = (1 * 2 * 400)/(300 * 1) ≈ 2.67 atm."
+    },
+    {
+      "question": "What happens to the volume of a gas if its temperature increases while the pressure is held constant? Which gas law does this describe?",
+      "answer": "If the temperature of a gas increases while the pressure is held constant, the volume of the gas will increase proportionally. This behavior is described by Charles's law, which states that volume and temperature are directly proportional when pressure is constant (V ∝ T). For example, doubling the Kelvin temperature of a gas at constant pressure will double its volume."
+    },
+    {
+      "question": "Derive the combined gas law from Boyle's, Charles's, and Gay-Lussac's laws.",
+      "answer": "The combined gas law can be derived by combining the three individual laws: Boyle's (P₁V₁ = P₂V₂ at constant T), Charles's (V₁/T₁ = V₂/T₂ at constant P), and Gay-Lussac's (P₁/T₁ = P₂/T₂ at constant V). Start with PV = k₁T (from Charles's), then incorporate pressure changes by dividing by P to get V/T = k₂/P. Using Gay-Lussac's, substitute P/T = k₃ to get PV/T = k, where k is a combined constant. This yields the combined gas law PV/T = k."
+    },
+    {
+      "question": "What is the difference between the combined gas law and the ideal gas law?",
+      "answer": "The combined gas law (PV/T = k) relates pressure, volume, and temperature for a fixed amount of gas without considering the number of gas molecules. The ideal gas law (PV = nRT) extends this by incorporating Avogadro's law, where n is the number of moles of gas and R is the universal gas constant. The ideal gas law accounts for the quantity of gas and provides a more comprehensive description of gas behavior."
+    },
+    {
+      "question": "Provide a Python function that calculates the final pressure of a gas given its initial and final states using the combined gas law.",
+      "answer": "python\ndef calculate_final_pressure(P1, V1, T1, V2, T2):\n    \"\"\"\n    Calculate the final pressure of a gas using the combined gas law.\n    \n    Args:\n        P1 (float): Initial pressure (in atm or any unit).\n        V1 (float): Initial volume (in liters or any unit).\n        T1 (float): Initial temperature in Kelvin.\n        V2 (float): Final volume (in liters or same unit as V1).\n        T2 (float): Final temperature in Kelvin.\n    \n    Returns:\n        float: Final pressure.\n    \"\"\"\n    P2 = (P1 * V1 * T2) / (V2 * T1)\n    return P2\n\n# Example usage:\ninitial_pressure = 1.0  # atm\ninitial_volume = 2.0    # L\ninitial_temp = 300.0     # K\nfinal_volume = 1.0      # L\nfinal_temp = 400.0       # K\n\nfinal_pressure = calculate_final_pressure(initial_pressure, initial_volume, initial_temp, final_volume, final_temp)\nprint(f\"Final pressure: {final_pressure:.2f} atm\")\n\nThis function calculates the final pressure by rearranging the combined gas law to solve for P₂: P₂ = (P₁V₁T₂)/(T₁V₂)."
+    }
+  ]
+}

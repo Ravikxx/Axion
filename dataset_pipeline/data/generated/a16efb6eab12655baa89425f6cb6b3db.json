@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Darrin_Fitzgerald",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who is Darrin Fitzgerald and what is he known for in basketball?",
+      "answer": "Darrin Fitzgerald is an American former basketball player renowned for his collegiate career at Butler University from 1983–84 to 1986–87. He is celebrated as one of the most prolific three-point shooters in NCAA history, holding the record for most three-pointers made in a single season (158) and the highest per-game average (5.64) during his senior year. Fitzgerald played as a point guard and shooting guard, led Butler in assists for all four seasons, and set a school record with 54 points in a single game."
+    },
+    {
+      "question": "What records did Darrin Fitzgerald set during his collegiate basketball career?",
+      "answer": "Fitzgerald set multiple NCAA records, including the single-season three-pointers made (158) and the highest per-game average of made threes (5.64). He also held a share of the single-game three-point shots made record for nearly two years, with 12 made in a game against Detroit on February 9, 1987. Additionally, he scored 54 points in a single game, a school record at Butler University."
+    },
+    {
+      "question": "Why wasn't Darrin Fitzgerald drafted into the NBA in 1987?",
+      "answer": "Fitzgerald was not selected in the 1987 NBA draft, partly due to his size (5'9\") and the perception that he was primarily a scorer rather than a playmaker. George Irvine of the Indiana Pacers noted that teams often overlooked small guards, and Fitzgerald's reputation as a scorer may have worked against him in evaluations."
+    },
+    {
+      "question": "How did Darrin Fitzgerald's career progress after his collegiate basketball career?",
+      "answer": "After college, Fitzgerald played for an AAU team in Flint, Michigan, before retiring by age 25. He then worked as a foundry technician at a Daimler-Chrysler plant in Indianapolis, Indiana. His post-basketball life included personal tragedy when his daughter, LaKeisha, was fatally shot during a robbery attempt in 2000."
+    },
+    {
+      "question": "Write a Python code snippet to calculate Darrin Fitzgerald's three-point shooting efficiency during his senior year if he attempted 280 three-point shots.",
+      "answer": "python\ndef calculate_shooting_efficiency(made_threes, attempted_threes):\n    if attempted_threes == 0:\n        return 0.0\n    return made_threes / attempted_threes\n\n# Darrin Fitzgerald's senior year stats\nmade_threes = 158\nattempted_threes = 280\n\n# Calculate efficiency\nefficiency = calculate_shooting_efficiency(made_threes, attempted_threes)\nprint(f\"Three-point shooting efficiency: {efficiency:.3f} or {efficiency * 100:.1f}%\")\n\nThis code calculates Fitzgerald's three-point shooting efficiency as approximately 0.564 or 56.4% if he attempted 280 threes during his senior year."
+    },
+    {
+      "question": "Compare Darrin Fitzgerald's single-season three-point records to those of Stephen Curry.",
+      "answer": "Fitzgerald held the NCAA single-season three-pointers made record (158) during his senior year (1986–87), which was surpassed by Stephen Curry in the 2007–08 season. However, Fitzgerald's per-game average of 5.64 made threes remains a still-standing record, with Curry's closest per-game average being 4.96. Fitzgerald's record was set when the NCAA introduced the three-point line, making it even more remarkable."
+    },
+    {
+      "question": "What personal tragedy did Darrin Fitzgerald experience?",
+      "answer": "On September 23, 2000, Fitzgerald's daughter, LaKeisha, was fatally shot during a robbery attempt. This personal loss significantly impacted his life beyond his basketball career."
+    }
+  ]
+}

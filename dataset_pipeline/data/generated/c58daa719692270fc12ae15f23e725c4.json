@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Deborah_Kerr",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What were the key career milestones of Deborah Kerr's early acting career before her Hollywood transition?",
+      "answer": "Deborah Kerr began her career as a ballerina before transitioning to stage acting, performing in various Shakespeare productions and small plays. Her film debut came in 1941 with *Major Barbara*, followed by leading roles in *Love on the Dole* (1941), *Hatter's Castle* (1942), and *The Day Will Dawn* (1942). In 1943, she gained widespread acclaim for her triple role in *The Life and Death of Colonel Blimp*, which is considered one of the greatest British films of all time."
+    },
+    {
+      "question": "How many Academy Award nominations did Deborah Kerr receive in total, and for which films was she nominated?",
+      "answer": "Deborah Kerr received a total of six Academy Award nominations for Best Actress. She was nominated for *Edward, My Son* (1949), *From Here to Eternity* (1953), *The King and I* (1956), *Heaven Knows, Mr. Allison* (1957), *Separate Tables* (1958), and *The Sundowners* (1960)."
+    },
+    {
+      "question": "What notable awards did Deborah Kerr receive later in her career?",
+      "answer": "In 1994, Deborah Kerr received an Academy Honorary Award, recognizing her as 'an artist of impeccable grace and beauty, a dedicated actress whose motion picture career has always stood for perfection, discipline and elegance.' Prior to this, she had already earned two Golden Globe Awards, six Academy Award nominations, four British Academy Film Award nominations, and an Emmy Award nomination."
+    },
+    {
+      "question": "What was the significance of Deborah Kerr's role in *The King and I* (1956)?",
+      "answer": "Deborah Kerr's role as Anna Leonowens in *The King and I* (1956) marked a significant milestone in her career. The film was a major commercial and critical success, earning her a third consecutive Academy Award nomination for Best Actress. The role also showcased her versatility, moving beyond her earlier typecasting as a 'proper, ladylike' woman."
+    },
+    {
+      "question": "How did Deborah Kerr's career evolve from the 1940s to the 1960s?",
+      "answer": "Deborah Kerr rose to fame in the 1940s with roles in both British and Hollywood films, including *Black Narcissus* (1947) and *King Solomon's Mines* (1950). The 1950s were her most successful decade, with critical and commercial hits like *From Here to Eternity* (1953), *The King and I* (1956), and *Separate Tables* (1958), earning her multiple Oscar nominations. By the 1960s, her career slowed, though she remained prominent with roles in *The Sundowners* (1960) and *The Night of the Iguana* (1964)."
+    },
+    {
+      "question": "Write a Python function that takes a list of Deborah Kerr's films and returns the number of Academy Award nominations she received for each film.",
+      "answer": "python\ndef count_oscar_nominations(films):\n    nominations = {\n        'Edward, My Son': 1,\n        'From Here to Eternity': 1,\n        'The King and I': 1,\n        'Heaven Knows, Mr. Allison': 1,\n        'Separate Tables': 1,\n        'The Sundowners': 1\n    }\n    return {film: nominations.get(film, 0) for film in films}\n\n# Example usage:\nfilms_list = ['The King and I', 'From Here to Eternity', 'Casablanca']\nprint(count_oscar_nominations(films_list))\n# Output: {'The King and I': 1, 'From Here to Eternity': 1, 'Casablanca': 0}"
+    },
+    {
+      "question": "What societal themes did Deborah Kerr's roles often explore during her early career?",
+      "answer": "Deborah Kerr's early roles frequently explored themes of societal expectations and stereotypes, particularly in her portrayals of proper, ladylike women. Films like *The Life and Death of Colonel Blimp* (1943) and *Black Narcissus* (1947) challenged these norms, highlighting her ability to navigate complex female roles while maintaining a sense of grace and elegance."
+    }
+  ]
+}

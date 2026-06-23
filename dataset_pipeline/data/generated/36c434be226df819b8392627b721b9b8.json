@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/2017_British_Grand_Prix",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who won the 2017 British Grand Prix?",
+      "answer": "Lewis Hamilton won the 2017 British Grand Prix, driving for Mercedes."
+    },
+    {
+      "question": "What were the championship standings before the 2017 British Grand Prix?",
+      "answer": "Before the race, Sebastian Vettel (Ferrari) led the Drivers' Championship by 20 points over Lewis Hamilton (Mercedes). In the Constructors' Championship, Mercedes led Ferrari by 33 points."
+    },
+    {
+      "question": "What is a 'grand slam' in Formula 1, and did Lewis Hamilton achieve it at the 2017 British Grand Prix?",
+      "answer": "A 'grand slam' in Formula 1 occurs when a driver starts from pole position, leads every lap of the race, sets the fastest lap, and finishes first. Lewis Hamilton achieved a grand slam at the 2017 British Grand Prix."
+    },
+    {
+      "question": "How many times had Lewis Hamilton won the British Grand Prix before 2017?",
+      "answer": "Before 2017, Lewis Hamilton had won the British Grand Prix four times. His victory in 2017 was his fifth, tying him with Alain Prost and Jim Clark for the most wins in the race."
+    },
+    {
+      "question": "What caused Sebastian Vettel's and Kimi Räikkönen's retirements in the 2017 British Grand Prix?",
+      "answer": "Sebastian Vettel and Kimi Räikkönen suffered tyre failures with two laps remaining in the race. Vettel finished seventh, while Räikkönen lost second place to Valtteri Bottas and finished third."
+    },
+    {
+      "question": "Provide a Python snippet to calculate the change in the Drivers' Championship standings after the 2017 British Grand Prix, given the pre-race points and the race outcome.",
+      "answer": "python\n# Pre-race standings\npre_vettel = 153  # Example points (adjust as needed)\npre_hamilton = 133\n\n# Race outcome: Vettel finishes 7th (0 points), Hamilton wins (25 points)\npost_vettel = pre_vettel  # No points gained\npost_hamilton = pre_hamilton + 25\n\n# Calculate the new gap\ngap_after_race = post_hamilton - post_vettel\nprint(f\"After the race, Hamilton leads Vettel by {gap_after_race} points.\")\n"
+    },
+    {
+      "question": "Why is the Silverstone Circuit significant in the history of the British Grand Prix?",
+      "answer": "The Silverstone Circuit is significant because it hosted the World Championship British Grand Prix for the fifty-first time in 2017, making it the most frequent venue for the race in its World Championship history."
+    }
+  ]
+}

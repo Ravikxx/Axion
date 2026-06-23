@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Co-chaperone",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What are co-chaperones and what role do they play in protein folding?",
+      "answer": "Co-chaperones are proteins that assist chaperones, particularly heat shock proteins like Hsp70 and Hsp90, in protein folding and other cellular functions. They enhance the chaperones' ATPase activity, which is crucial for their ability to bind and release substrate proteins during folding. Co-chaperones catalyze ATP hydrolysis, enabling chaperones to undergo conformational changes that either increase substrate binding affinity or facilitate substrate release after folding."
+    },
+    {
+      "question": "What are the two main structural groups of co-chaperones, and how are they classified?",
+      "answer": "Most co-chaperones are classified into two structural groups based on their domain architecture: J-domain proteins and tetratricopeptide repeat (TPR) proteins. J-domain proteins, such as DnaJ (Hsp40), contain a conserved J-domain that stimulates ATPase activity, while TPR proteins interact with Hsp70 and Hsp90 and may help form multi-chaperone complexes."
+    },
+    {
+      "question": "Explain the role of co-chaperone p23 in the protein folding process.",
+      "answer": "Co-chaperone p23 assists Hsp90 by binding to it and promoting the release of folded substrates. After Hsp90 undergoes ATP hydrolysis (facilitated by other co-chaperones), p23 binds to Hsp90 and induces a conformational change that reduces its substrate affinity, allowing the release of the properly folded protein."
+    },
+    {
+      "question": "How do J-proteins (Hsp40) function in the Hsp70 chaperone cycle? Provide a code-like step-by-step mechanism.",
+      "answer": "J-proteins (Hsp40) function in the Hsp70 chaperone cycle as follows:\n1. Bind to an unfolded polypeptide substrate.\n2. Recruit the Hsp70 chaperone (e.g., DnaK) and present the substrate to it.\n3. Catalyze ATP hydrolysis on Hsp70 using their J-domain, converting ATP to ADP.\n4. This ATP hydrolysis induces a conformational change in Hsp70, increasing its substrate-binding affinity.\n5. Hsp70 binds the unfolded polypeptide with high affinity, initiating folding assistance.\n6. Later, a nucleotide exchange factor (e.g., GrpE) binds to Hsp70, causing ADP release and ATP rebinding, which lowers Hsp70's substrate affinity and releases the folded protein."
+    },
+    {
+      "question": "What is the role of co-chaperones in misfolding diseases like cystic fibrosis and neurodegenerative disorders?",
+      "answer": "Co-chaperones play a critical role in preventing protein misfolding diseases. For example, in cystic fibrosis, the co-chaperone Aha1 interacts with Hsp90 to ensure proper folding of the cystic fibrosis transmembrane conductance regulator (CFTR). In neurodegenerative diseases like Alzheimer’s and Parkinson’s, co-chaperones such as CSPα (DNAJC5), auxilin (DNAJC6), and RME-8 (DNAJC13) prevent protein aggregation by maintaining proper folding and assembly of client proteins. Mutations in these co-chaperones are linked to early-onset neurodegenerative diseases."
+    },
+    {
+      "question": "How do tetratricopeptide repeat (TPR) proteins interact with chaperones, and what is their potential functional significance?",
+      "answer": "TPR proteins contain multiple TPR motifs that mediate protein-protein interactions. They interact with both Hsp70 and Hsp90, often facilitating the formation of multi-chaperone complexes. These complexes may enhance the efficiency of protein folding by coordinating the activities of Hsp70 and Hsp90. However, their exact mechanisms are less well understood compared to J-domain proteins."
+    },
+    {
+      "question": "Write a Python function that simulates the ATP hydrolysis cycle facilitated by a J-protein co-chaperone, assuming the chaperone starts in an ATP-bound state.",
+      "answer": "python\ndef simulate_j_protein_chaperone_cycle(initial_state='ATP_bound'):\n    \"\"\"\n    Simulates the ATP hydrolysis cycle facilitated by a J-protein co-chaperone.\n    Args:\n        initial_state: The initial state of the chaperone, either 'ATP_bound' or 'ADP_bound'.\n    Returns:\n        A dictionary representing the cycle steps and chaperone states.\n    \"\"\"\n    cycle = []\n    \n    if initial_state == 'ATP_bound':\n        # Step 1: J-protein binds unfolded polypeptide\n        cycle.append({'step': 1, 'state': 'ATP_bound', 'action': 'J-protein binds unfolded polypeptide'})\n        \n        # Step 2: J-protein recruits Hsp70 and presents substrate\n        cycle.append({'step': 2, 'state': 'ATP_bound', 'action': 'J-protein recruits Hsp70 (DnaK)'})\n        \n        # Step 3: J-protein catalyzes ATP hydrolysis (ATP -> ADP)\n        cycle.append({'step': 3, 'state': 'ATP->ADP', 'action': 'ATP hydrolysis catalyzed by J-protein'})\n        \n        # Step 4: Hsp70 undergoes conformational change, binds substrate with high affinity\n        cycle.append({'step': 4, 'state': 'ADP_bound', 'action': 'Hsp70 binds unfolded polypeptide with high affinity'})\n        \n        # Step 5: Nucleotide exchange factor (e.g., GrpE) binds, causing ADP release and ATP rebinding\n        cycle.append({'step': 5, 'state': 'ATP_bound', 'action': 'Nucleotide exchange factor (GrpE) binds, releases ADP and rebinds ATP'})\n        \n    elif initial_state == 'ADP_bound':\n        cycle.append({'step': 1, 'state': 'ADP_bound', 'action': 'Hsp70 already in ADP-bound state'})\n    \n    return cycle\n\n# Example usage:\ncycle_steps = simulate_j_protein_chaperone_cycle(initial_state='ATP_bound')\nfor step in cycle_steps:\n    print(f\"Step {step['step']}: {step['action']} (State: {step['state']})\")\n"
+    }
+  ]
+}

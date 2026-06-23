@@ -1,0 +1,34 @@
+{
+  "source_url": "https://mathworld.wolfram.com/AlgebraicPeriod.html",
+  "category": "mathworld",
+  "pairs": [
+    {
+      "question": "What is an algebraic period in mathematics?",
+      "answer": "An algebraic period is a real number that can be expressed as an integral of an algebraic function over an algebraic domain, where both the integrand and the domain are defined by polynomials and rational functions with rational coefficients. Algebraic periods include all algebraic numbers but also encompass certain transcendental numbers, bridging a conceptual gap between these two classes."
+    },
+    {
+      "question": "How are periods related to algebraic and transcendental numbers?",
+      "answer": "Algebraic periods form a superset of algebraic numbers and a subset of transcendental numbers. Every algebraic number is a period, while any number that is not a period is transcendental. This creates a structured hierarchy where periods act as an intermediary class between algebraic and transcendental numbers."
+    },
+    {
+      "question": "What is the Principle 1 proposed by Kontsevich and Zagier regarding periods?",
+      "answer": "Principle 1 states: 'Whenever you meet a new number, and have decided (or convinced yourself) that it is transcendental, try to figure out whether it is a period.' This principle guides mathematicians to classify transcendental numbers by checking if they can be expressed as periods, thereby organizing mathematical constants into a more structured framework."
+    },
+    {
+      "question": "Provide an example of a mathematical constant that is known to be a period.",
+      "answer": "The value ζ(3) (Apery's constant) is known to be a period. It is defined as the sum of the reciprocals of the positive integers cubed: ζ(3) = Σ (1/n³) for n from 1 to infinity. This constant is both a period and a transcendental number."
+    },
+    {
+      "question": "Are the Euler-Mascheroni constant and π known to be periods?",
+      "answer": "No, it is currently unknown whether the Euler-Mascheroni constant (γ) or π are periods, though it is conjectured that they are. This uncertainty highlights the incomplete understanding of the full scope and properties of the set of periods."
+    },
+    {
+      "question": "How do periods form a ring in algebra?",
+      "answer": "Periods form a ring because they are closed under addition and multiplication. If P and Q are periods, then P + Q and P * Q are also periods. This property makes the set of periods a mathematical structure known as a ring, which is a foundational concept in abstract algebra."
+    },
+    {
+      "question": "Write a Python function to check if a given number is an algebraic number.",
+      "answer": "Here is a Python function using the `sympy` library to check if a number is algebraic:\n\npython\nfrom sympy import is_algebraic_number, sqrt\n\ndef is_algebraic(x):\n    try:\n        # Convert input to a symbolic number if it's not already\n        from sympy import sympify\n        x_sym = sympify(x)\n        return is_algebraic_number(x_sym)\n    except:\n        return False\n\n# Example usage:\nprint(is_algebraic(sqrt(2)))  # True\nprint(is_algebraic(3.14))     # False (likely transcendental)\n\nThis function returns `True` if the input number is algebraic and `False` otherwise."
+    }
+  ]
+}

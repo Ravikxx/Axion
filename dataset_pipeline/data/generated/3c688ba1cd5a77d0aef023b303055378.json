@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Bonang",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is a bonang and how is it constructed?",
+      "answer": "A bonang is an Indonesian musical instrument used in Javanese gamelan, consisting of a collection of small gongs (kettles or pots) placed horizontally onto strings in a wooden frame called a rancak. The kettles can be arranged in one or two rows and are made of forged bronze, welded and cold-hammered iron, or a combination of metals. Some economical versions are made from hammered iron or brass plates with raised bosses."
+    },
+    {
+      "question": "How do the different types of bonang differ in pitch and role within the gamelan ensemble?",
+      "answer": "There are three main types of bonang in central Javanese gamelan: the bonang panerus (highest pitch, smallest kettles, plays fastest rhythms), bonang barung (pitched one octave below panerus, a key instrument providing cues to other players), and bonang panembung (lowest pitch, more common in Yogyanese style, plays paraphrases of the balungan)."
+    },
+    {
+      "question": "What are the typical playing techniques for the bonang?",
+      "answer": "The bonang is typically played with padded sticks called tabuh. Players use these sticks to strike the central boss of each kettle to produce specific pitches. The playing technique varies by type: bonang panerus plays faster rhythms, often interlocking with or doubling the speed of bonang barung, while bonang barung may play melodies based on the balungan or more complex patterns like imbal and sekaran."
+    },
+    {
+      "question": "What materials are bonang kettles made from, and how does this affect their sound?",
+      "answer": "Bonang kettles can be made from forged bronze, welded and cold-hammered iron, or a combination of metals. Bronze bonang produce a rich, resonant tone, while iron bonang have a sharper, more metallic sound. The material choice influences the instrument's timbre and durability, with bronze being more common in professional ensembles and iron or brass used in more economical or regional styles."
+    },
+    {
+      "question": "How does the bonang panerus differ from the bonang barung in terms of range and function?",
+      "answer": "The bonang panerus is pitched higher and uses smaller kettles, covering approximately two octaves (sometimes more in slendro), roughly the same range as the saron and peking combined. It plays the fastest rhythms in the bonang family, often interlocking with or doubling the speed of the bonang barung. In contrast, the bonang barung is pitched one octave below the panerus, covering a range similar to the demung and saron, and serves as a key instrument for providing cues to other players."
+    },
+    {
+      "question": "What is the kolenang, and how does it differ from a standard bonang?",
+      "answer": "The kolenang is a specialized bonang with a single row of kettles arranged in a V or U shape, rather than the typical horizontal layout. It serves as a leading melodic instrument in the Sundanese Gamelan degung, offering distinct tonal characteristics and playing styles compared to the central Javanese bonang."
+    },
+    {
+      "question": "Provide a Python code snippet to simulate the tuning of a bonang based on scale type and octave range.",
+      "answer": "python\nimport numpy as np\n\ndef tune_bonang(scale_type='pelog', octave_range=2, base_freq=261.63):\n    \"\"\"\n    Simulate tuning a bonang based on scale type and octave range.\n    \n    Args:\n        scale_type: 'pelog' or 'slendro' scale\n        octave_range: Number of octaves to cover\n        base_freq: Base frequency for the lowest note (Hz)\n    \n    Returns:\n        Dictionary of note frequencies for the bonang.\n    \"\"\"\n    if scale_type == 'pelog':\n        # Simplified pelog scale intervals (approximate)\n        intervals = [1, 1.122, 1.335, 1.498, 1.682, 2.0]\n    elif scale_type == 'slendro':\n        # Slendro scale intervals (approximate)\n        intervals = [1, 1.122, 1.26, 1.498, 1.682, 1.865]\n    else:\n        raise ValueError(\"Scale type must be 'pelog' or 'slendro'\")\n    \n    frequencies = {}\n    for octave in range(octave_range):\n        for i, interval in enumerate(intervals):\n            note_freq = base_freq * (2 ** octave) * interval\n            note_name = f\"Note_{octave}_{i+1}\"\n            frequencies[note_name] = round(note_freq, 2)\n    \n    return frequencies\n\n# Example usage:\nbonang_pelog = tune_bonang(scale_type='pelog', octave_range=2)\nprint(\"Pelog Bonang Frequencies:\", bonang_pelog)\n"
+    },
+    {
+      "question": "What are some regional variations of the bonang found outside central Java?",
+      "answer": "Outside central Java, the bonang has regional variations such as the kolenang in Sundanese Gamelan degung (with a V/U-shaped layout), and economical bonang made of hammered iron or brass plates with raised bosses found in village gamelan, Suriname-style gamelan, and some American gamelan. The bonang also shares similarities with the Balinese reong and the single-row kulintang of the southern Philippines and Borneo, though these instruments have distinct playing techniques and cultural contexts."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Carmen_Moral",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What are Carmen Moral's educational qualifications in music?",
+      "answer": "Carmen Moral holds multiple advanced degrees in music, including master's degrees from the Manhattan School of Music and Columbia University in New York. She also earned a master's degree and a DEA in Musicology from the Sorbonne in Paris."
+    },
+    {
+      "question": "With which renowned conductors did Carmen Moral study conducting?",
+      "answer": "Carmen Moral studied conducting with Ionel Perlea, who was associated with the Metropolitan Opera in New York City, and with Laszlo Halasz, one of the founders of the City Center Opera of New York."
+    },
+    {
+      "question": "What historic achievement is Carmen Moral recognized for in Latin American orchestras?",
+      "answer": "Carmen Moral made history as the first woman to become Music Director and Conductor of a major Latin American orchestra, specifically the National Symphony Orchestra of Peru, her native country."
+    },
+    {
+      "question": "List three orchestras Carmen Moral has served as Music Director for.",
+      "answer": "Carmen Moral has served as Music Director for the Bogotá Philharmonic Orchestra (Colombia), the I. Frauen-Kammerorchester von Österreich (Vienna), and the Symphony Orchestra of Mimar Sinan University (Istanbul). She also held the position twice for the National Symphony Orchestra of Peru."
+    },
+    {
+      "question": "How many orchestras has Carmen Moral worked with as a guest conductor, and can you name a few?",
+      "answer": "Carmen Moral has been invited to conduct as a guest with over 80 orchestras worldwide. Some notable examples include the George Enescu Philharmonic (Bucharest), the Symphony Orchestra of Russia (Moscow), the Tonkünstlerorchester (Vienna), and the Buenos Aires Philharmonic."
+    },
+    {
+      "question": "What awards and honors has Carmen Moral received?",
+      "answer": "Carmen Moral has received numerous awards, including the title 'Conductor Emeritus' of the National Symphony Orchestra of Peru, the 'Gran Oficial' of the Merit Order-City of Bogotá, and the Medal of Honor of Peruvian Culture."
+    },
+    {
+      "question": "Write a Python function that generates a formatted string summarizing Carmen Moral's career highlights in under 200 characters.",
+      "answer": "python\ndef summarize_career(career_highlights):\n    highlight = career_highlights[0]  # Example: \"First woman Music Director of Peru's National Symphony\"\n    return f\"Carmen Moral: {highlight}. 80+ orchestras, global premieres, & 3+ awards.\"\n\n# Example usage:\ncareer_highlights = [\"First woman Music Director of Peru's National Symphony\"]\nprint(summarize_career(career_highlights))\n# Output: Carmen Moral: First woman Music Director of Peru's National Symphony. 80+ orchestras, global premieres, & 3+ awards.\""
+    }
+  ]
+}

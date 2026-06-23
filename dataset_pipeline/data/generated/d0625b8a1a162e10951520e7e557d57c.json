@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Conrad_Dorso_and_John_the_One-Eyed",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who were Conrad Dorso and John the One-Eyed, and what roles did they play in the Papal Inquisition?",
+      "answer": "Conrad Dorso (or Conrad Tors) and John the One-Eyed were lay and secular figures who assisted the Papal Inquisition in Germany from 1231 until their murders in 1233. They were tasked with identifying and prosecuting heretics, often using methods that lacked canonical legitimacy. Their actions were later condemned for violating sacred scripture and procedural justice."
+    },
+    {
+      "question": "What methods did Conrad Dorso and John the One-Eyed use to identify and prosecute heretics?",
+      "answer": "According to the *Chronicon Wormatiense*, they targeted the poor, claiming an ability to recognize heretics—often without evidence. They burned individuals who confessed or were accused, relying on public support and intimidation. Their methods included seizing people arbitrarily and pressuring judges to execute sentences based solely on their assertions, such as declaring, \"these are heretics, we wash our hands of them.\""
+    },
+    {
+      "question": "How did Conrad Dorso and John the One-Eyed gain public and political support for their inquisition methods?",
+      "answer": "They initially gained support from the common populace by targeting marginalized groups and burning alleged heretics, which the public perceived as righteous. Politically, they secured backing from King Henry (VII) of Germany by promising him the spoils of wealthy heretics. However, their support waned after they began accusing noblemen, leading to their eventual downfall."
+    },
+    {
+      "question": "What was the significance of Conrad of Marburg's authority increase in October 1231?",
+      "answer": "In October 1231, Pope Gregory IX granted Conrad of Marburg exclusive authority to both investigate and judge heresy cases, effectively making him the first true inquisitor. This centralized power under a single figure, bypassing traditional legal and ecclesiastical structures. His role was later scrutinized for its harsh methods and lack of adherence to canon law."
+    },
+    {
+      "question": "How did the murder of Conrad of Marburg impact Pope Gregory IX's stance on inquisition procedures?",
+      "answer": "Conrad of Marburg's assassination in 1233 prompted Pope Gregory IX to reconsider his approval of extreme inquisition methods. Initially, he had been preparing to invalidate Marburg's procedures, but upon learning of his murder—delivered by Conrad Dorso—Gregory reversed his stance, likely viewing Marburg as a martyr for the Church's cause."
+    },
+    {
+      "question": "Write a Python function that checks if a given year falls within the active period of Conrad Dorso and John the One-Eyed's inquisition activities.",
+      "answer": "python\ndef is_in_active_period(year):\n    \"\"\"Check if a given year falls within Conrad Dorso and John's active inquisition period (1231–1233).\"\"\"\n    return 1231 <= year <= 1233\n\n# Example usage:\nprint(is_in_active_period(1232))  # Output: True\nprint(is_in_active_period(1234))  # Output: False\n"
+    },
+    {
+      "question": "Why were Conrad Dorso and John the One-Eyed ultimately assassinated?",
+      "answer": "Conrad Dorso was stabbed to death by Junker Heinz von Müllenheim in Strasbourg after accusing him of heresy. John the One-Eyed was lynched at Friedberg. Their assassinations followed their increasingly unpopular and violent methods, which targeted both commoners and nobility, leading to widespread opposition and eventual retribution."
+    },
+    {
+      "question": "What does the *Chronicon* imply about the moral and legal legitimacy of Conrad Dorso and John's inquisition methods?",
+      "answer": "The *Chronicon* portrays their methods as unjust and devoid of canonical or scriptural basis. It highlights their arbitrary seizures, lack of evidence, and disregard for due process, such as burning individuals who recanted or invoked divine aid. The chronicler condemns their actions as 'horrible' and celebrates their deaths as divine deliverance for Germany."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/1892_United_States_presidential_election",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who were the main candidates in the 1892 U.S. presidential election?",
+      "answer": "The main candidates were Grover Cleveland (Democratic), Benjamin Harrison (Republican incumbent), and James B. Weaver (Populist Party). Cleveland won the election, defeating Harrison in a rematch."
+    },
+    {
+      "question": "What unique historical significance did Grover Cleveland's victory in 1892 hold?",
+      "answer": "Grover Cleveland became the first U.S. president to be elected to nonconsecutive terms. Additionally, he was the only candidate to win a rematch of a U.S. presidential election after previously losing."
+    },
+    {
+      "question": "What economic policy was the central issue in the 1892 presidential campaign?",
+      "answer": "The campaign primarily focused on the protectionist 1890 McKinley Tariff. Cleveland advocated for lowering the tariff, while Republicans and Populists supported bimetallism (the use of both gold and silver as currency standards)."
+    },
+    {
+      "question": "How did the Populist Party emerge in the 1892 election?",
+      "answer": "Groups like The Grange and the Knights of Labor formed the Populist Party, nominating former congressman James B. Weaver of Iowa as their presidential candidate. Weaver won 8.6% of the popular vote and carried several Western states."
+    },
+    {
+      "question": "What were the voting rights proposals discussed during the 1892 election?",
+      "answer": "Cleveland opposed the Republicans' 1890 voting rights proposal, while his own platform centered on lowering the tariff and supporting the gold standard. The Populists also advocated for economic reforms, including bimetallism."
+    },
+    {
+      "question": "How did the 1892 election fit into a longer historical trend in U.S. presidential elections?",
+      "answer": "The 1892 election was the third in a streak of four consecutive presidential elections (from 1884 to 1896) where the incumbent party was defeated. The only other such streak occurred from 1840 to 1852."
+    },
+    {
+      "question": "Write a Python script to calculate the percentage of the popular vote won by minor party candidates in the 1892 election.",
+      "answer": "python\nelection_data = {\n    'Grover Cleveland': 46.0,\n    'Benjamin Harrison': 43.0,\n    'James B. Weaver': 8.6,\n    'John Bidwell': 2.2\n}\n\nminor_party_votes = sum(vote for candidate, vote in election_data.items() if candidate not in ['Grover Cleveland', 'Benjamin Harrison'])\nprint(f\"Minor parties won {minor_party_votes}% of the popular vote.\")\n\nOutput: Minor parties won 10.8% of the popular vote."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Eli_Lilly_and_Company",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the market capitalization of Eli Lilly and Company as of November 2025, and why is this significant?",
+      "answer": "As of November 2025, Eli Lilly and Company reached a market capitalization of $1 trillion, making it the first health-care company in the world to achieve this milestone. This is significant because it highlights Lilly's dominance in the pharmaceutical industry and its rapid growth, driven by high-revenue drugs like tirzepatide (Mounjaro and Zepbound) and advancements in biotechnology."
+    },
+    {
+      "question": "List Eli Lilly's top five products by revenue contribution in 2025 and their primary uses.",
+      "answer": "In 2025, Eli Lilly's top five products by revenue contribution were:\n1. **Tirzepatide (Mounjaro and Zepbound)** – 56% of revenues; used for treating type 2 diabetes, weight loss, and obstructive sleep apnea.\n2. **Abemaciclib (Verzenio)** – 9% of revenues; used for treating advanced or metastatic breast cancers.\n3. **Dulaglutide (Trulicity)** – 7% of revenues; used for treating type 2 diabetes.\n4. **Ixekizumab (Taltz)** – 6% of revenues; used for treating autoimmune diseases.\n5. **Empagliflozin (Jardiance)** – 5% of revenues; used for treating type 2 diabetes."
+    },
+    {
+      "question": "What historical contributions has Eli Lilly and Company made to medicine and pharmaceuticals?",
+      "answer": "Eli Lilly and Company has made several groundbreaking contributions to medicine and pharmaceuticals:\n- **First to mass-produce the polio vaccine** (1955, developed by Jonas Salk).\n- **First to mass-produce insulin** and pioneer recombinant DNA-based insulin like Humulin and Humalog.\n- **Introduced the first approved biosimilar insulin product in the US**, Basaglar (insulin glargine).\n- **Brought Prozac (fluoxetine) to market in 1986**, revolutionizing the treatment of major depressive disorder.\n- **Launched Cymbalta (duloxetine) in 2004** for depression and chronic pain.\n- **Developed Zyprexa (olanzapine) in 1996**, an antipsychotic medication.\n- **Introduced exenatide in 2005**, the first GLP-1 receptor agonist for type 2 diabetes."
+    },
+    {
+      "question": "How does the revenue distribution of Eli Lilly and Company vary by geographic region in 2024?",
+      "answer": "In 2024, Eli Lilly's revenue distribution by geographic region was as follows:\n- **United States**: 67%\n- **Europe**: 18%\n- **Japan**: 3%\n- **China**: 3%\n- The remaining revenues (approximately 9%) were generated from other regions."
+    },
+    {
+      "question": "What is tirzepatide, and how does it differ from other diabetes medications developed by Eli Lilly?",
+      "answer": "Tirzepatide, sold under the brand names **Mounjaro** and **Zepbound**, is a dual **GIP and GLP-1 receptor agonist** developed by Eli Lilly. Unlike traditional GLP-1 receptor agonists (e.g., dulaglutide/Trulicity or empagliflozin/Jardiance), tirzepatide targets both **GIP (glucose-dependent insulinotropic polypeptide) and GLP-1 (glucagon-like peptide-1) receptors**, enhancing glucose control and promoting weight loss more effectively.\n\nExample code snippet (pseudo-code) for simulating tirzepatide's mechanism of action:\npython\ndef simulate_tirzepatide_effect(glucose_level, insulin_sensitivity):\n    # Simulate GIP and GLP-1 receptor activation\n    gip_effect = glucose_level * 0.8 * insulin_sensitivity\n    glp1_effect = glucose_level * 0.6 * insulin_sensitivity\n    combined_effect = gip_effect + glp1_effect\n    return combined_effect\n\n# Example usage\ncurrent_glucose = 200  # mg/dL\ninsulin_sensitivity = 1.2\nreduced_glucose = simulate_tirzepatide_effect(current_glucose, insulin_sensitivity)\nprint(f\"Estimated glucose reduction: {reduced_glucose} mg/dL\")\n"
+    },
+    {
+      "question": "Explain the significance of Eli Lilly's charitable foundation, the Lilly Endowment.",
+      "answer": "The Lilly Endowment is a charitable foundation established in 1937 by the Lilly family, the founders of Eli Lilly and Company. It owns **10% of the company** and uses its proceeds to fund philanthropic initiatives, including education, religion, community development, and scientific research. The foundation plays a key role in supporting Lilly's long-term mission beyond commercial activities, ensuring a legacy of societal impact."
+    },
+    {
+      "question": "What are some of Eli Lilly's off-patent drugs, and what impact do they have on the pharmaceutical market?",
+      "answer": "Eli Lilly's off-patent drugs include:\n- **Prozac (fluoxetine)** – A widely prescribed antidepressant originally approved in 1986.\n- **Cymbalta (duloxetine)** – Used for depression and chronic pain management.\n- **Zyprexa (olanzapine)** – An antipsychotic medication.\n\nThese drugs have had a **profound impact** on the pharmaceutical market because, after patent expiration, they became available as **generic drugs**, increasing accessibility and affordability for patients worldwide. Their commercial success also helped establish Lilly as a leader in psychiatric medications."
+    }
+  ]
+}

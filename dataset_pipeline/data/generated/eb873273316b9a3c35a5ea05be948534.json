@@ -1,0 +1,38 @@
+{
+  "source_url": "https://dev.to/varshithvhegde/unit-tests-the-greatest-lie-we-tell-ourselves-2ehd",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What are the key differences between unit tests and integration tests, and when should each be used?",
+      "answer": "Unit tests focus on testing individual functions or methods in isolation, often using mocks to replace dependencies. They verify that code works as intended at a granular level. Integration tests, in contrast, test how multiple components or systems work together. Use unit tests for verifying logic, edge cases, and refactoring safety (60% of your testing effort). Use integration tests to catch environment drift, configuration issues, and system interactions (30% of effort). For example, a unit test might mock a database call to test a user service function, while an integration test would use a real database to verify the service fetches user data correctly."
+    },
+    {
+      "question": "How does environment drift cause production issues despite high test coverage?",
+      "answer": "Environment drift occurs when production differs from the test environment in ways that affect code behavior. For instance, the developer in the story used Python 3.11 locally but 3.9 in production, causing dictionary merging to behave differently. High coverage unit tests pass because they mock dependencies and assume consistent environments. To prevent this, use integration tests with production-like environments, test configuration files, and include environment-specific checks in your CI/CD pipeline. Example: A CI workflow that runs tests against multiple Python versions and database configurations."
+    },
+    {
+      "question": "Write a code snippet demonstrating a good unit test that focuses on behavior rather than implementation.",
+      "answer": "A good unit test tests the contract (what the function does) rather than the implementation (how it does it). Here's an example testing a user service:\npython\ndef test_user_service_returns_user_data():\n    service = UserService()\n    user = service.get_user(user_id=123)\n    \n    # Test behavior: Does the function return the user with correct id and email?\n    assert user.id == 123\n    assert user.email is not None\n    assert isinstance(user.email, str)\n    \n    # Avoid testing implementation details like mock assertions\n    # mock_db.assert_called_once()  # Bad: Tightly couples to implementation\n"
+    },
+    {
+      "question": "What are race conditions in software, and how can they evade unit tests?",
+      "answer": "Race conditions occur when the behavior of software depends on the timing or sequence of uncontrollable events (e.g., async operations). They often evade unit tests because tests run in isolated, controlled environments where timing is predictable. To catch them, use integration tests under load or with controlled delays. For example, testing async database connections:\npython\nimport asyncio\nimport pytest\n\nasync def test_async_db_connection_race_condition():\n    # Simulate concurrent requests\n    tasks = [fetch_user_async(user_id) for user_id in [1, 2, 1]]\n    results = await asyncio.gather(*tasks, return_exceptions=True)\n    \n    # Verify no race condition corrupted data\n    assert not any(isinstance(r, Exception) for r in results)\n"
+    },
+    {
+      "question": "How should a testing strategy balance unit, integration, and end-to-end (E2E) tests?",
+      "answer": "A balanced testing strategy follows the Testing Pyramid: prioritize fast, numerous unit tests (60%), add slower integration tests for system interactions (30%), and include a small number of E2E tests for critical user journeys (10%). For example:\n1. **Unit tests**: Test individual functions with mocked dependencies (e.g., `test_add_item_returns_correct_total()`).\n2. **Integration tests**: Test API endpoints with a real database (e.g., `test_user_creation_stores_data_in_db()`).\n3. **E2E tests**: Test the full user flow (e.g., `test_user_checkout_process_works/`).\nAdd manual testing for exploratory scenarios and use monitoring to catch issues missed by tests."
+    },
+    {
+      "question": "What is 'confidence coverage' and why is it more valuable than 100% code coverage?",
+      "answer": "Confidence coverage measures how thoroughly your tests verify that the system behaves correctly in all important scenarios, rather than just executing every line of code. 100% code coverage can give a false sense of security if tests are shallow or only test happy paths. Confidence coverage focuses on:\n- Testing critical user journeys\n- Covering edge cases and error conditions\n- Including integration and E2E tests\n- Validating graceful degradation\nFor example, 70% coverage with strong integration/E2E tests is better than 100% coverage with only unit tests, as the latter won’t catch production issues like environment drift or race conditions."
+    },
+    {
+      "question": "Write a test that verifies graceful degradation when external services fail.",
+      "answer": "This test ensures your application handles external service failures gracefully by simulating a timeout error and verifying the system degrades appropriately:\npython\nimport pytest\nfrom unittest.mock import patch\nfrom myapp.service import get_user\n\ndef test_graceful_degradation_on_service_timeout():\n    # Simulate a database timeout\n    with patch('db.connect', side_effect=TimeoutError(\"Database unreachable\")):\n        result = get_user(user_id=123)\n        \n        # Verify the system returns a default/user-friendly response\n        assert result is None or isinstance(result, DefaultUser)\n        \n        # Verify the error was logged (pseudo-code)\n        assert \"Database timeout\" in logs.last_entry.message\n"
+    },
+    {
+      "question": "What are the benefits of testing sad paths (error conditions) in software?",
+      "answer": "Testing sad paths (error conditions) ensures your application handles failures gracefully, improving reliability and user experience. Benefits include:\n1. **Resilience**: Catches crashes, hangs, or incorrect error messages (e.g., returning 500 instead of 404).\n2. **User Safety**: Prevents data corruption or security vulnerabilities in edge cases.\n3. **Debugging Clarity**: Forces you to design clear error messages and logs.\n4. **Real-World Coverage**: Production issues often occur in error states (e.g., race conditions, timeouts).\nExample sad path tests:\n- Database down → Show cached data or a friendly error.\n- Invalid input → Return validation errors, not a crash.\n- API rate limiting → Implement retries or fallback behaviors."
+    }
+  ]
+}

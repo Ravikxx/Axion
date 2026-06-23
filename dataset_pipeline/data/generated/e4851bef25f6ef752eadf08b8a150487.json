@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Antioch",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who founded Antioch and why?",
+      "answer": "Antioch was founded by Seleucus I Nicator, a successor of Alexander the Great, to secure his recently conquered territory in northern Syria. He established the city alongside three others in 300 BC, choosing a strategic location on the Orontes River in the fertile Amuq plain to control trade routes and maximize resources."
+    },
+    {
+      "question": "What role did Antioch play during the Hellenistic and Roman periods?",
+      "answer": "Antioch served as the capital of the Hellenistic Seleucid Empire from 240 BC until 63 BC, when the Romans took control. Under Roman rule, it became the capital of Roman Syria and grew to over 500,000 inhabitants, making it the third-largest city in the Roman Empire after Rome and Alexandria."
+    },
+    {
+      "question": "Why is Antioch called the 'cradle of Christianity'?",
+      "answer": "Antioch is called the 'cradle of Christianity' because of its pivotal role in early Christian history. The Christian New Testament states that the term 'Christian' first emerged in Antioch, and the city was a major center of Hellenistic Judaism and early Christian thought during the Second Temple period."
+    },
+    {
+      "question": "What factors led to Antioch's decline?",
+      "answer": "Antioch's decline began in the Middle Ages due to a combination of factors: frequent warfare, devastating earthquakes, and shifting trade routes that reduced its economic importance. These challenges caused the city to lose its former prominence."
+    },
+    {
+      "question": "What religious significance does Antioch hold in modern times?",
+      "answer": "Antioch remains significant in modern religion. It lends its name to the Greek Orthodox Patriarchate of Antioch, an important church in the Levant and eastern Mediterranean. Additionally, the Habib-i Nejjar Mosque in the city is a pilgrimage site for Muslims, who believe it contains the tomb of Habib the Carpenter, mentioned in the Quran's surah Yā-Sīn."
+    },
+    {
+      "question": "How did Antioch's location influence its development?",
+      "answer": "Antioch's location on the Orontes River in the fertile Amuq plain provided abundant resources and a strategic position for trade. Its proximity to key routes allowed it to dominate commerce and become a cultural and political hub in the ancient eastern Mediterranean."
+    },
+    {
+      "question": "Write a Python function to calculate Antioch's population rank during the Roman Empire.",
+      "answer": "python\ndef antioch_population_rank():\n    # Antioch's peak population was over 500,000\n    # Rome and Alexandria were the only cities larger in the Roman Empire\n    antioch_population = 500000\n    rank = 3  # After Rome and Alexandria\n    return {\n        \"city\": \"Antioch\",\n        \"population\": antioch_population,\n        \"rank\": rank\n    }\n\n# Example usage\nprint(antioch_population_rank())\n\nThe function returns Antioch's population and its rank as the third-largest city in the Roman Empire."
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Dilated_cardiomyopathy",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is dilated cardiomyopathy (DCM) and how does it affect the heart's function?",
+      "answer": "Dilated cardiomyopathy (DCM) is a condition where the heart becomes enlarged and weakened, impairing its ability to pump blood effectively. Over time, the heart muscle stretches and thins, reducing its contractility. This leads to symptoms like fatigue, swelling in the legs, shortness of breath, chest pain, and fainting. In severe cases, it can cause complications such as heart failure, valve disease, or irregular heartbeats."
+    },
+    {
+      "question": "What are the primary causes of dilated cardiomyopathy?",
+      "answer": "The primary causes of DCM include genetics, excessive alcohol consumption, cocaine use, exposure to certain toxins, complications from pregnancy, and infections. Other contributing factors may include coronary artery disease and high blood pressure, though they are not the primary causes. In many cases, the exact cause remains unknown."
+    },
+    {
+      "question": "How is dilated cardiomyopathy typically diagnosed?",
+      "answer": "DCM is often diagnosed using imaging and electrical activity tests, such as an electrocardiogram (ECG), chest X-ray, and echocardiogram. An echocardiogram is particularly useful as it provides detailed images of the heart's structure and function, revealing an enlarged left ventricle and impaired pumping ability."
+    },
+    {
+      "question": "What treatment options are available for patients with dilated cardiomyopathy?",
+      "answer": "Treatment for DCM depends on symptoms and severity but may include medications like ACE inhibitors, beta blockers, and diuretics. Lifestyle changes, such as a low-salt diet, can also help manage symptoms. For patients with irregular heartbeats, blood thinners or an implantable cardioverter defibrillator (ICD) may be recommended. In advanced cases, cardiac resynchronization therapy (CRT) or a heart transplant may be considered."
+    },
+    {
+      "question": "Why is the left ventricle more susceptible to dilated cardiomyopathy than the right ventricle?",
+      "answer": "The left ventricle is more vulnerable to DCM because it bears a higher workload. It is responsible for pumping oxygenated blood to the entire body (excluding the lungs), while the right ventricle only pumps blood to the nearby pulmonary arteries. This increased load causes greater stress on the left ventricle's muscle over time, making it more prone to enlargement and weakening."
+    },
+    {
+      "question": "How does the mortality risk associated with dilated cardiomyopathy vary by age?",
+      "answer": "The mortality risk in DCM is significantly higher than in the general population. The youngest adults with DCM face about a 32-fold higher mortality, while the oldest patients experience about a 2-fold increase. This suggests that younger patients are at greater risk of severe outcomes, highlighting the need for early diagnosis and intervention."
+    }
+  ]
+}

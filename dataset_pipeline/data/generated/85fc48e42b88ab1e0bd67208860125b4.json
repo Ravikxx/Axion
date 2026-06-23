@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Durisol",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is a Durisol and how did it get its name?",
+      "answer": "A Durisol is a Reference Soil Group under the World Reference Base for Soil Resources (WRB) characterized by free-draining soils in arid and semi-arid environments where grains are cemented together by secondary silica (SiO2) within the upper meter of soil. The name is derived from the Latin word 'durus,' meaning 'hard,' reflecting the hardened nature of these soils."
+    },
+    {
+      "question": "How do Durisols differ from other soil types in terms of their physical structure?",
+      "answer": "Durisols exhibit a hardened structure in the upper meter due to silica cementation, forming either concretions known as durinodes (duric horizon) or a continuously cemented layer called a duripan (also known as hardpan or petroduric horizon). This distinguishes them from other soils that lack such silica-induced cementation."
+    },
+    {
+      "question": "In which global regions are Durisols most commonly found?",
+      "answer": "Durisols are predominantly found in arid, semi-arid, and Mediterranean regions. Notable areas include Australia, South Africa, Namibia, and the United States (particularly Nevada, California, and Arizona). Minor occurrences have also been reported in Central and South America and Kuwait."
+    },
+    {
+      "question": "What are the typical land use limitations of Durisols and why?",
+      "answer": "Durisols are primarily suitable for extensive grazing due to their hardened silica cementation, which restricts root penetration and water infiltration. Arable cropping is limited to irrigated areas where water can overcome these constraints."
+    },
+    {
+      "question": "How are Durisols classified in the FAO/Unesco Soil Map of the World?",
+      "answer": "In the FAO/Unesco Soil Map of the World, Durisols with a petroduric horizon are indicated as a duripan phase of other soils, such as Xerosols and Yermosols, rather than as a distinct soil group."
+    },
+    {
+      "question": "Write a Python function to check if a given soil profile matches the characteristics of a Durisol.",
+      "answer": "python\ndef is_durisol(soil_profile):\n    \"\"\"\n    Check if a given soil profile matches the characteristics of a Durisol.\n    \n    Args:\n        soil_profile (dict): A dictionary containing soil properties with keys:\n            - 'environment': str (e.g., 'arid', 'semi-arid', 'Mediterranean')\n            - 'cementation': str (e.g., 'silica', 'none')\n            - 'horizon': str (e.g., 'duric', 'petroduric', 'none')\n            - 'texture': list (e.g., ['sandy', 'loamy'])\n    \n    Returns:\n        bool: True if the soil matches Durisol characteristics, False otherwise.\n    \"\"\"\n    required_environment = soil_profile.get('environment') in ['arid', 'semi-arid', 'Mediterranean']\n    has_silica_cementation = soil_profile.get('cementation') == 'silica'\n    has_duric_horizon = soil_profile.get('horizon') in ['duric', 'petroduric']\n    \n    return required_environment and has_silica_cementation and has_duric_horizon\n\n# Example usage:\nsoil_profile = {\n    'environment': 'semi-arid',\n    'cementation': 'silica',\n    'horizon': 'petroduric',\n    'texture': ['sandy', 'loamy']\n}\nprint(is_durisol(soil_profile))  # Output: True\n"
+    },
+    {
+      "question": "What is the typical soil profile of a Durisol and how does it differ from eroded Durisols?",
+      "answer": "Most Durisols exhibit an AC or ABC profile, indicating a developed soil structure with distinct layers. In eroded Durisols, the hardened horizons (such as a petroduric horizon) are exposed due to soil loss, particularly on gently sloping terrain, which further limits their agricultural utility."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Bob_Smart's_Dream",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who wrote the poem 'Bob Smart's Dream' and where was it presented?",
+      "answer": "The poem 'Bob Smart's Dream' was written by Robert W. Service while he lived in Whitehorse, Yukon, Canada. He presented it on March 19, 1906, at a banquet held to honor J.P. Rogers, the superintendent of the White Pass and Yukon Route."
+    },
+    {
+      "question": "What did Bob Smart envision for Whitehorse in his 50-year dream described in the poem?",
+      "answer": "In his dream, Bob Smart envisioned Whitehorse transforming into an industrial city by 1956, featuring manufacturing plants (stamp mills), a smelter on the ridge where the airport is now located, and a hydroelectric dam replacing the Whitehorse Rapids. He also imagined modern infrastructure like steel bridges, cement sidewalks, skyscrapers, and electric trolleys, along with suburban developments and a large department store."
+    },
+    {
+      "question": "What are some inaccuracies in Bob Smart's 1906 vision of Whitehorse as described in 'Bob Smart's Dream'?",
+      "answer": "Several elements in Bob Smart's vision never materialized. No smelter was ever built in the Yukon, and the Whitehorse Rapids were dammed for hydroelectric power rather than industrial use. The Robert Campbell Bridge was originally steel but was replaced with concrete in 1975. Whitehorse never had a public transit system like trolleys before 1976, and its tallest buildings are no taller than four floors. Additionally, no railroad was ever extended past Whitehorse, and train service ceased in 1982."
+    },
+    {
+      "question": "How does the poem 'Bob Smart's Dream' reflect the technological optimism of the early 20th century?",
+      "answer": "The poem reflects early 20th-century technological optimism by imagining rapid advancements in infrastructure and industry within just 50 years. Bob Smart's vision includes industrial plants, hydroelectric power, electric trolleys, steel bridges, skyscrapers, and modern department stores, all of which symbolize the era's belief in progress and modernization. This contrasts with the actual slower development and simpler structures of Whitehorse."
+    },
+    {
+      "question": "What real-world locations or features mentioned in the poem can still be found in Whitehorse today?",
+      "answer": "One real-world feature mentioned in the poem is Ear Lake Park, which was the location of a park in Bob Smart's dream and is still a garden spot in Whitehorse today. The poem also references the Yukon River, which still has a bridge (the Robert Campbell Bridge) crossing it. Additionally, the mural outside the city hall council chamber in Whitehorse includes much of the poem's text, preserving its legacy."
+    },
+    {
+      "question": "Provide a Python code snippet to analyze the factual accuracy of Bob Smart's vision by comparing it to historical records of Whitehorse's development.",
+      "answer": "python\nimport pandas as pd\n\n# Historical records of Whitehorse's development\nhistorical_data = {\n    'Feature': ['Smelter', 'Hydroelectric Dam', 'Public Transit', 'Steel Bridge Replacement', \n                'Railroad Extension', 'Skyscrapers', 'Train Service', 'Taylor and Drury Store'],\n    'Existed by 1956': [False, True, False, False, False, False, False, False]\n}\n\ndf = pd.DataFrame(historical_data)\n\n# Bob Smart's vision vs. reality\nvision_vs_reality = pd.DataFrame({\n    'Feature': ['Smelter', 'Industrial Plants', 'Hydroelectric Dam', 'Public Transit', \n                'Steel Bridge', 'Skyscrapers', 'Suburbs', 'Department Store'],\n    'Smart_vision': [True, True, True, True, True, True, True, True],\n    'Reality_by_1956': [False, True, True, False, False, False, True, False]\n})\n\nprint(vision_vs_reality)\n\nThis code creates a DataFrame comparing Bob Smart's vision with historical records, highlighting discrepancies in features like the smelter, public transit, and skyscrapers."
+    },
+    {
+      "question": "Why did Robert W. Service choose to present 'Bob Smart's Dream' at a banquet for J.P. Rogers?",
+      "answer": "Robert W. Service presented 'Bob Smart's Dream' at a banquet honoring J.P. Rogers, the superintendent of the White Pass and Yukon Route, likely because Rogers was a prominent figure in the region's transportation and industrial development. The poem reflects themes of progress and industrialization, aligning with the White Pass and Yukon Route's role in connecting the Klondike to the rest of the world, making it a fitting occasion for its debut."
+    }
+  ]
+}

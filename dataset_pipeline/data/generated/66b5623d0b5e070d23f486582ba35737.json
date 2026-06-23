@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Issachar_ben_Mordecai_ibn_Susan",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was Issachar ben Mordecai ibn Susan and where did he live?",
+      "answer": "Issachar ben Mordecai ibn Susan was a Jewish mathematician who lived in the Ottoman Empire, primarily in Palestine, during the 16th century (fl. 1539–1572). He moved from Morocco to Jerusalem as a young man, where he studied under Levi ibn Ḥabib before continuing his education in Safed."
+    },
+    {
+      "question": "What major work did Issachar ben Mordecai ibn Susan publish in 1564, and what did it include?",
+      "answer": "In 1564, Issachar ben Mordecai ibn Susan published *Tikkun Yissakar* (Salonica). The book contained detailed calendar tables spanning the years 5299–6000 (1539–2240), a treatise on rituals ('minhagim') tied to calendar variations, and an appendix on the division of weekly Torah portions and hafṭarot according to different congregational customs."
+    },
+    {
+      "question": "How did Issachar ben Mordecai ibn Susan’s poverty influence his life and work?",
+      "answer": "Facing increasing poverty in Safed, Issachar ben Mordecai ibn Susan left the city in 1539 to seek a livelihood elsewhere. This period marked the beginning of his work on the calendar tables, which he later resumed upon returning to Safed with assistance from the dayan Joshua."
+    },
+    {
+      "question": "What are the two editions of Issachar ben Mordecai ibn Susan’s calendar work, and how do they differ?",
+      "answer": "The first edition of his calendar work was published in 1564 as *Tikkun Yissakar* in Salonica. The second edition, titled *Ibbur Shanim*, was published in Venice in 1578. The second edition is less rare than the first, and both editions’ tables begin with the year of their respective publications."
+    },
+    {
+      "question": "What sources did Issachar ben Mordecai ibn Susan cite for his treatise on the division of weekly Torah portions?",
+      "answer": "In his treatise on the division of weekly Torah portions and haftarot, Issachar ben Mordecai ibn Susan cited ancient manuscript commentaries as his sources. He attributed the practice to Ezra, referencing the opinion of a certain scholar to support this claim."
+    },
+    {
+      "question": "What additional content did *Tikkun Yissakar* include beyond calendar tables?",
+      "answer": "Beyond the calendar tables, *Tikkun Yissakar* included two appendices: one on rituals ('minhagim') dependent on calendar variations, and another on the division of weekly Torah portions and haftarot according to different congregational customs. The rituals section drew anonymously given rites from Abudarham, whom the author highly regarded."
+    },
+    {
+      "question": "Write a Python function to convert a Hebrew year to the corresponding Gregorian year, using Issachar ben Mordecai ibn Susan’s calendar tables as a reference.",
+      "answer": "python\ndef hebrew_to_gregorian(hebrew_year):\n    # Approximate conversion based on Issachar ben Mordecai ibn Susan's tables (1539–2240)\n    # Note: This is a simplified linear approximation and does not account for all calendar complexities.\n    if hebrew_year < 5299 or hebrew_year > 6000:\n        raise ValueError(\"Year out of supported range (5299–6000).\")\n    \n    # Linear approximation: Hebrew year 5299 ≈ 1539 CE, 6000 ≈ 2240 CE\n    # Conversion: (hebrew_year - 5299) + 1539\n    gregorian_year = hebrew_year - 5299 + 1539\n    return gregorian_year\n\n# Example usage:\nprint(hebrew_to_gregorian(5299))  # Output: 1539\nprint(hebrew_to_gregorian(6000))  # Output: 2240\n"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/anmolbaranwal/thesys-react-sdk-turn-llm-responses-into-real-time-user-interfaces-30d5",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What is Generative UI and how does it differ from traditional UIs?",
+      "answer": "Generative UI is a dynamic interface system that automatically assembles itself based on real-time user context, unlike traditional static UIs that present the same layout to all users. Traditional UIs rely on hardcoded designs, while Generative UI adapts to factors like user behavior, device type, time of day, and accessibility needs. For example, a ride-sharing app might switch to a voice-first UI with large buttons when it detects the user is driving."
+    },
+    {
+      "question": "What are the three types of prompt-based UI systems mentioned in the text?",
+      "answer": "The text describes three types of prompt-based UI systems: 1) *Prompt to design* (combines LLMs with computer vision models for layout generation in design tools like Figma), 2) *Prompt to UI* (uses LLMs to generate production-grade frontend/backend code), and 3) *Generative UI* (uses a customizable UI library, user context memories, and a real-time engine to dynamically reshape the interface)."
+    },
+    {
+      "question": "How does Thesys handle context in Generative UI applications?",
+      "answer": "Thesys gathers and utilizes user context to dynamically shape the UI by tracking factors like past behavior, preferences (e.g., dark mode), device type, screen size, location, time of day, and accessibility settings. For instance, if the system detects a user is driving, it might switch to a voice-first UI with minimal distractions. This context-driven adaptation is built into the platform's core infrastructure."
+    },
+    {
+      "question": "What is the role of the C1 API in the Thesys ecosystem?",
+      "answer": "The C1 API acts as the LLM backend for Thesys, returning structured UI specifications (JSON/XML) instead of plain text. It is OpenAI-compatible, supporting the same endpoints and parameters, and can be accessed via the base URL `https://api.thesys.dev/v1/embed`. The API supports two primary use cases: replacing existing LLMs for UI-first prompts with minimal latency, or layering on top of an existing LLM pipeline to add richer UI layouts without modifying core logic."
+    },
+    {
+      "question": "Provide a code example demonstrating how to use the C1 API with the Thesys GenUI SDK in a Next.js application.",
+      "answer": "Here's an example of integrating the C1 API and GenUI SDK in a Next.js app. First, configure the client to point to Thesys's endpoint, then fetch a UI spec and render it using the `<C1Component>`:\n\njavascript\nimport { C1Component, ThemeProvider } from \"@thesys/genui-sdk\";\n\nconst App = async () => {\n  // Fetch UI spec from the C1 API\n  const response = await fetch(\"https://api.thesys.dev/v1/embed\", {\n    method: \"POST\",\n    headers: {\"Content-Type\": \"application/json\"},\n    body: JSON.stringify({\n      model: \"c1-nightly\",\n      messages: [{role: \"user\", content: \"Show me a balance chart and a currency selector.\"}],\n    }),\n  });\n  const uiSpec = await response.json();\n\n  return (\n    <ThemeProvider>\n      <C1Component c1Response={uiSpec} />\n    </ThemeProvider>\n  );\n};\n\nexport default App;\n"
+    },
+    {
+      "question": "What are the key components provided by the GenUI React SDK, and how do they work?",
+      "answer": "The GenUI SDK is a React framework that renders UI specifications returned by the C1 API. Its core components include `<C1Component>` for general UI rendering and `<C1Chat>` for chat interfaces. These components automatically map the JSON-based UI spec to visual elements (e.g., cards, charts, forms) from a predefined library, ensuring the interface is both functional and visually consistent. The SDK is built on Crayon's component library and handles real-time updates as the UI spec changes."
+    },
+    {
+      "question": "How can developers use Thesys without replacing their existing LLM pipeline?",
+      "answer": "Developers can integrate Thesys into an existing LLM stack by passing the output of their current LLM to the C1 API as a second step. This process, called \"layering C1 on top,\" generates a visual UI layout (spec) based on the LLM's output, adding richer UI without altering the core logic. This approach is useful for adding generative UI features to established chatbot or agent workflows."
+    }
+  ]
+}

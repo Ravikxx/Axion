@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/orestesgaolin/jnigen-and-swiftgen-in-2026-some-lessons-learned-16ni",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What are the key breaking changes introduced in jni 1.0.0 compared to versions 0.14/0.15?",
+      "answer": "jni 1.0.0 introduced several breaking changes, including renamed APIs (e.g., `toDartString()` became `toString()`), method syntax changes (e.g., setters like `_service.onReplyListener = _listener!` instead of `_service.onReplyListener(_listener!)`), and constructor overrides with altered numbers (e.g., `Intent.new$2` changed to `Intent.new$12`). Additionally, the bindings configuration method shifted from YAML files to Dart scripts, typically placed in the `tool/` directory and executed with commands like `dart run tool/jnigen.dart`."
+    },
+    {
+      "question": "How do you generate Dart bindings for Android using jnigen in jni 1.0.0?",
+      "answer": "To generate Dart bindings with jnigen in jni 1.0.0, first ensure the Android project is built at least once. Then, create a Dart script (e.g., `tool/jnigen.dart`) to define the configuration. Example:\ndart\nimport 'dart:io';\nimport 'package:jnigen/jnigen.dart';\n\nvoid main(List<String> args) {\n  final packageRoot = Platform.script.resolve('../');\n  generateJniBindings(Config(\n    outputConfig: OutputConfig(\n      dartConfig: DartCodeOutputConfig(\n        path: packageRoot.resolve('lib/src/my_plugin.g.dart'),\n        structure: OutputStructure.singleFile,\n      ),\n      androidSdkConfig: AndroidSdkConfig(\n        addGradleDeps: true,\n        androidExample: 'example',\n        sourcePath: [packageRoot.resolve('android/src/main/java/')],\n        classes: ['com.example.MyPlugin'],\n      ),\n    ),\n  ));\n}\n\nRun the script with `dart run tool/jnigen.dart`."
+    },
+    {
+      "question": "How can you handle callbacks from native Kotlin code to Dart using jni 1.0.0?",
+      "answer": "Define a Kotlin interface annotated with `@Keep`, then use jnigen to generate a Dart binding with an `implement()` method. For example:\n\nKotlin:\nkotlin\n@Keep\ninterface BrightnessCallback {\n  @Keep\n  fun onBrightnessChanged(brightness: Int)\n}\n\n\nDart:\ndart\nfinal callback = BrightnessCallback.implement(\n  $BrightnessCallback(\n    onBrightnessChanged: (brightness) { /* Handle callback */ },\n    onBrightnessChanged$async: true,  // Non-blocking listener\n  ),\n);\nnative.startObserving(callback);\n"
+    },
+    {
+      "question": "What is the recommended way to access Android Context and Activity in jni 1.0.0?",
+      "answer": "In jni 1.0.0, access to Android Context and Activity is managed via the `package:jni_flutter`. To get the current Activity, pass the `engineId` from `PlatformDispatcher.instance` and use `androidActivity(engineId)`. Example:\ndart\nfinal engineId = PlatformDispatcher.instance.engineId;\nif (engineId == null) {\n  print('Error: Engine ID is null');\n  return;\n}\n\nfinal activity = androidActivity(engineId);\nif (activity == null) {\n  print('Error: Activity is null');\n  return;\n}\nactivity.as(a.Activity.type).startActivityForResult(intent, 1);\n"
+    },
+    {
+      "question": "How do you cast a `JObject` to a specific type in Dart using jni bindings?",
+      "answer": "Use the `as()` method with the generated type. For example:\ndart\nfinal brightnessMonitor = native.getBrightnessMonitor();\nfinal monitor = brightnessMonitor.as(ScreenBrightnessMonitor.type);\nfinal brightness = monitor.brightness;\n"
+    },
+    {
+      "question": "What are the common issues when regenerating jnigen bindings, and how can they be resolved?",
+      "answer": "A common issue is errors like `Unexpected end of input` during regeneration. The workaround is to rebuild the Android project without cache using:\nbash\ncd android\n./gradlew :your_plugin_name:assembleDebug --no-daemon --console=plain --refresh-dependencies --rerun-tasks\ncd ..\ndart run tool/jnigen.dart\n"
+    },
+    {
+      "question": "How can you manually manage the lifecycle of Java objects in Dart using jni bindings?",
+      "answer": "While most native objects are managed automatically by the garbage collector in both Java and Dart, you can manually release a JNI global reference using the `.release()` method. Example:\ndart\nvoid dispose() {\n  native.stopObserving();\n  callback?.release();\n  native.release();\n}\nRefer to the [lifecycle documentation](https://github.com/dart-lang/native/blob/main/pkgs/jnigen/doc/lifecycle.md) for further details."
+    }
+  ]
+}

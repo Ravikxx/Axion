@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/California_condor",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the scientific name of the California condor?",
+      "answer": "The scientific name of the California condor is Gymnogyps californianus."
+    },
+    {
+      "question": "When did the California condor become extinct in the wild and why?",
+      "answer": "The California condor became extinct in the wild in 1987 due to threats such as agricultural chemicals (DDT), poaching, lead poisoning, and habitat destruction."
+    },
+    {
+      "question": "How does the California condor's wingspan compare to other North American birds?",
+      "answer": "The California condor has a wingspan of 3.0 meters (9.8 feet), which is the widest of any North American bird."
+    },
+    {
+      "question": "What role does the California condor play in traditional myths of Californian Native American groups?",
+      "answer": "The California condor holds significant cultural importance and is featured in several traditional myths and stories of many Californian Native American groups."
+    },
+    {
+      "question": "Write a Python function to calculate the estimated age of a California condor based on its current population growth trend.",
+      "answer": "python\nimport math\n\ndef calculate_condor_age(population_increase_rate, current_population, initial_population=27, years_since_1987=2025-1987):\n    \"\"\"\n    Estimates the age (in years) of a California condor population based on exponential growth.\n    \n    Args:\n        population_increase_rate: Annual growth rate (e.g., 0.05 for 5%)\n        current_population: Measured population in the current year\n        initial_population: Starting population in 1987 (default: 27)\n        years_since_1987: Years elapsed since 1987 (default: 38 for 2025)\n    \n    Returns:\n        Estimated age of the condor population in years.\n    \"\"\"\n    if population_increase_rate <= 0:\n        raise ValueError(\"Growth rate must be positive.\")\n    \n    calculated_population = initial_population * (1 + population_increase_rate) ** years_since_1987\n    return math.log(current_population / initial_population, 1 + population_increase_rate)\n\n# Example usage:\ncurrent_pop = 607\nrate = 0.11  # Approximate growth rate from 27 to 607 over 38 years\nestimated_age = calculate_condor_age(rate, current_pop)\nprint(f\"Estimated age of condor population: {estimated_age:.1f} years\")\n"
+    },
+    {
+      "question": "What are the key threats that contributed to the decline of the California condor population in the 20th century?",
+      "answer": "The key threats that contributed to the decline of the California condor in the 20th century include agricultural chemicals like DDT, poaching, lead poisoning from ingesting ammunition in carcasses, and habitat destruction."
+    },
+    {
+      "question": "How has the conservation status of the California condor changed since its extinction in the wild?",
+      "answer": "The California condor was extinct in the wild in 1987, but due to captive breeding and reintroduction programs, its population has grown. As of December 2025, the wild population totals 607 individuals, though it remains critically endangered and one of the rarest bird species in the world."
+    }
+  ]
+}

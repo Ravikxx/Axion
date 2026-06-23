@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Goldfish",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is the scientific name of the goldfish?",
+      "answer": "The scientific name of the goldfish is Carassius auratus."
+    },
+    {
+      "question": "How long can goldfish live in captivity?",
+      "answer": "Goldfish can live for up to 30 years in captivity."
+    },
+    {
+      "question": "What is the optimal temperature range for goldfish?",
+      "answer": "Goldfish thrive best in temperatures between 65-75°F (18-23°C)."
+    },
+    {
+      "question": "Why do goldfish often die earlier in aquariums than in other captivity settings?",
+      "answer": "Goldfish frequently die earlier in aquariums because the aquarium is often too small, preventing them from swimming enough and causing water to become dirty more quickly."
+    },
+    {
+      "question": "What evidence contradicts the belief that goldfish have short memories?",
+      "answer": "Experiments have shown that goldfish can learn tasks, such as kicking a small ball underwater or swimming through a maze, demonstrating their ability to retain memories."
+    },
+    {
+      "question": "Can you provide a code snippet to simulate a simple goldfish behavior, such as swimming in a tank?",
+      "answer": "Here is a Python code snippet using a simple loop to simulate a goldfish swimming in a tank:\npython\nimport random\nimport time\n\ndef simulate_goldfish_swimming(tank_size=10, duration=20):\n    position = 0\n    for _ in range(duration):\n        position = (position + random.randint(1, 3)) % tank_size\n        print(f\"Goldfish is at position {position}\")\n        time.sleep(1)\n\nsimulate_goldfish_swimming()\n"
+    },
+    {
+      "question": "How do wild goldfish differ genetically from Crucian or Prussian Carp?",
+      "answer": "Recent genetic testing has confirmed that wild goldfish are a distinct species of East Asian Carp (Carassius auratus), characterized by a more pointy snout, unlike Crucian or Prussian Carp."
+    }
+  ]
+}

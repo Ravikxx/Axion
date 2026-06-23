@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Giselle",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "Who composed the music for the ballet 'Giselle; or, The Wilis'?",
+      "answer": "Adolphe Adam composed the music for the ballet 'Giselle; or, The Wilis'."
+    },
+    {
+      "question": "What is the plot of the ballet 'Giselle; or, The Wilis'?",
+      "answer": "The ballet follows Giselle, a peasant girl who falls in love with Albrecht, a nobleman disguised as a peasant. When she discovers he is betrothed to Princess Bathilde, her heart breaks, and she dies of madness. As a spirit, Giselle protects Albrecht from the Wilis—ghostly spirits of jilted women who force men to dance to their deaths."
+    },
+    {
+      "question": "Which literary works influenced the storyline of 'Giselle; or, The Wilis'?",
+      "answer": "Jules-Henri Vernoy de Saint-Georges and Théophile Gautier based the ballet's story on a prose passage from Heinrich Heine's 'De l'Allemagne' and Victor Hugo's poem 'Fantômes'."
+    },
+    {
+      "question": "How did the first production of 'Giselle; or, The Wilis' impact ballet history?",
+      "answer": "The ballet premiered on June 28, 1841, at the Théâtre de l'Académie Royale de Musique in Paris and was a huge success. It was quickly staged by other companies across Europe, Russia, and the United States. Carlotta Grisi's performance earned her the title 'another Taglioni,' solidifying her as a leading ballerina of the era. Historian Grace Robert described it as 'the archetype of the ballets of the romantic age'."
+    },
+    {
+      "question": "What are the Wilis in the ballet 'Giselle; or, The Wilis'?",
+      "answer": "The Wilis are ghostly spirits of dead girls who were jilted by their lovers before death. They force men to dance until they die as a form of vengeance. In the ballet, Giselle protects Albrecht from this fate after her death."
+    },
+    {
+      "question": "Write a Python function that checks if a given year is the premiere year of 'Giselle; or, The Wilis'.",
+      "answer": "python\ndef is_premiere_year(year):\n    \"\"\"Check if the given year is the premiere year of 'Giselle; or, The Wilis'.\"\"\"\n    return year == 1841\n\n# Example usage:\nprint(is_premiere_year(1841))  # Output: True\nprint(is_premiere_year(1842))  # Output: False\n"
+    },
+    {
+      "question": "Why does Giselle die in the ballet 'Giselle; or, The Wilis'?",
+      "answer": "Giselle dies from a broken heart after discovering that Albrecht, the man she loves, is secretly a nobleman engaged to marry Princess Bathilde. The emotional shock drives her to madness and death."
+    }
+  ]
+}

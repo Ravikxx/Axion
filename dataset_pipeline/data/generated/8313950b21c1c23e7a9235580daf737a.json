@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/2024–2026_South_Korean_medical_crisis",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the 2024–2026 South Korean medical crisis, and what triggered it?",
+      "answer": "The 2024–2026 South Korean medical crisis is an ongoing healthcare crisis caused by new government policies that significantly increased medical student admission quotas. This led to mass resignations among residents and interns, resulting in the implementation of triage, delays in non-essential medical procedures, and months-long wait times for some patients. Protests and student boycotts have also occurred in response to the policy."
+    },
+    {
+      "question": "Why does the South Korean government believe increasing medical student admission quotas is necessary?",
+      "answer": "The South Korean government argues that increasing medical student quotas is necessary due to the country's rapidly aging population. They project that the growing proportion of elderly people will place an increasing burden on the healthcare system over time. Additionally, they highlight shortages of doctors in rural areas and key medical fields such as pediatrics as reasons for the quota increase."
+    },
+    {
+      "question": "What is the position of the Korean Medical Association (KMA) regarding the government's policy on medical quotas?",
+      "answer": "The Korean Medical Association (KMA) opposes the government's policy, arguing that governmental mismanagement is the primary cause of the doctor shortage rather than a lack of doctors. They believe that reform, rather than increasing the number of medical students, is needed to address the issue. The KMA also contends that the healthcare system suffers from insufficient government financial support and that increasing student quotas could lower medical care standards due to compromised admission criteria."
+    },
+    {
+      "question": "What actions have medical professionals taken in response to the government's policy, and how has the government responded?",
+      "answer": "Medical professionals, including residents and interns, have resigned en masse, leading to triage implementation and delays in non-essential medical procedures. Protests and student boycotts have also occurred. In response, the South Korean government has labeled these collective actions as 'illegal collective actions'."
+    },
+    {
+      "question": "What are the potential consequences of increasing medical student quotas according to the KMA?",
+      "answer": "According to the KMA, increasing medical student quotas could lead to a decrease in the quality of medical care due to lowered admission standards. They argue that the healthcare system already struggles with insufficient government financial support, and merely increasing the number of doctors without addressing systemic issues will not resolve the shortage effectively."
+    },
+    {
+      "question": "How might the South Korean healthcare system address the projected burden of an aging population?",
+      "answer": "To address the projected burden of an aging population, the South Korean government proposes increasing medical student quotas to expand the healthcare workforce. However, critics like the KMA suggest that systemic reforms, improved financial support, and targeted solutions for rural areas and key medical specialties would be more effective than simply increasing the number of doctors."
+    },
+    {
+      "question": "Write a Python function that simulates the potential impact of increasing medical student quotas on the healthcare workforce over a 10-year period.",
+      "answer": "python\nimport numpy as np\nimport matplotlib.pyplot as plt\n\ndef simulate_medical_workforce_impact(initial_doctors, quota_increase_rate, retirement_rate, years=10):\n    \"\"\"\n    Simulates the impact of increasing medical student quotas on the healthcare workforce.\n    \n    Parameters:\n    - initial_doctors: Initial number of practicing doctors.\n    - quota_increase_rate: Annual percentage increase in medical student quotas.\n    - retirement_rate: Annual percentage of doctors retiring.\n    - years: Number of years to simulate (default: 10).\n    \n    Returns:\n    - List of doctor counts over the simulation period.\n    \"\"\"\n    doctor_counts = [initial_doctors]\n    current_doctors = initial_doctors\n    \n    for _ in range(years):\n        # New doctors enter the workforce based on quota increase\n        new_doctors = current_doctors * quota_increase_rate / 100\n        # Doctors retire\n        retired_doctors = current_doctors * retirement_rate / 100\n        # Update current doctor count\n        current_doctors = current_doctors + new_doctors - retired_doctors\n        doctor_counts.append(current_doctors)\n    \n    return doctor_counts\n\n# Example usage\ninitial_doctors = 100000\nquota_increase_rate = 5  # 5% increase per year\nretirement_rate = 2      # 2% retirement rate per year\n\nworkforce = simulate_medical_workforce_impact(initial_doctors, quota_increase_rate, retirement_rate)\n\n# Plotting the results\nplt.plot(range(11), workforce, marker='o')\nplt.title('Projected Impact of Medical Student Quota Increase on Workforce')\nplt.xlabel('Years')\nplt.ylabel('Number of Doctors')\nplt.grid(True)\nplt.show()\n\nThis function simulates the workforce impact over 10 years, accounting for new doctors entering the system and retirements. Adjust the `quota_increase_rate` and `retirement_rate` parameters to explore different scenarios."
+    }
+  ]
+}

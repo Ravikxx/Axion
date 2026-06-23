@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/1929_in_tennis",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What types of tennis tournaments existed in 1929 according to their organizational structure?",
+      "answer": "In 1929, tennis tournaments were classified into several types: amateur tournaments (international, invitational, national, exhibition, and team events like city/country leagues), regional professional tournaments (mostly British, German, French, and American Pro events), and occasional professional vs. amateur challenges in team competition formats."
+    },
+    {
+      "question": "How did amateur tennis rules differ from professional tennis rules in 1929?",
+      "answer": "Amateur rules prohibited tennis players from benefiting financially from playing, while professional players were typically coaches who earned a living through the sport. Professionals were allowed to monetize their participation in tournaments, unlike amateurs."
+    },
+    {
+      "question": "Who were the dominant male tennis players in 1929 and what tournaments did they win?",
+      "answer": "The Four Musketeers dominated the rankings and tournaments worldwide in 1929, though specific names aren't mentioned in the text. Additionally, Colin Gregory, a British player, won the Australian Championships that year."
+    },
+    {
+      "question": "What were the most prestigious women's tennis tournaments in Europe during 1929 and who won them?",
+      "answer": "The two most prestigious women's tournaments in Europe in 1929 were the French Championships and Wimbledon. Helen Wills Moody won both tournaments. Elizabeth Ryan, despite being punished by the U.S. Lawn Tennis Association for focusing on European events, was also one of the most successful women's players in European international championships."
+    },
+    {
+      "question": "What were the key team tennis competitions in 1929 and which teams won them?",
+      "answer": "The key team tennis competitions in 1929 were the Wightman Cup (women's teams), the Davis Cup (men's international teams), and the Mitre Cup (South American men's teams). The 1929 Wightman Cup was won by the United States against Great Britain. The Davis Cup was won by France, who defeated the United States in the challenge round, marking France's third consecutive title."
+    },
+    {
+      "question": "How was the 1929 Davis Cup organized and who were the participating teams?",
+      "answer": "The 1929 Davis Cup was split into American and European zones. The America Zone had five participating nations, while the Europe Zone included 24 teams (including South Africa and Chile). The United States defeated Cuba in the America Zone but lost to France in the challenge round, held at Stade Roland Garros in Paris on July 26–28."
+    },
+    {
+      "question": "Write a Python function that takes a list of tournament years and returns a dictionary categorizing each year into amateur or professional dominant based on historical data.",
+      "answer": "python\nfrom typing import List, Dict\n\ndef categorize_tournament_years(years: List[int]) -> Dict[int, str]:\n    \"\"\"\n    Categorizes each year in the input list as 'amateur dominant' or 'professional dominant'.\n    \n    Args:\n        years: List of years to categorize.\n        \n    Returns:\n        Dictionary mapping each year to its dominant tournament type.\n    \"\"\"\n    # Historical context: Professional tournaments became more prominent post-1968 (Open Era).\n    # Before 1968, amateur tournaments dominated.\n    result = {}\n    for year in years:\n        if year < 1968:\n            result[year] = \"amateur dominant\"\n        else:\n            result[year] = \"professional dominant\"\n    return result\n\n# Example usage:\nyears = [1929, 1960, 1970, 2000]\nprint(categorize_tournament_years(years))\n# Output: {1929: 'amateur dominant', 1960: 'amateur dominant', 1970: 'professional dominant', 2000: 'professional dominant'}\n"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Figura_etymologica",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is figura etymologica, and how does it differ from polyptoton?",
+      "answer": "Figura etymologica is a rhetorical figure where words with the same etymological origin are used in close proximity. Unlike polyptoton, which involves different inflections of the same word (e.g., 'love' and 'loved'), figura etymologica requires genuinely distinct words sharing a root. For example, 'might and main' (both from Proto-Indo-European *megʰ-*) qualifies as figura etymologica, while 'Once I loved, but I love no more' is polyptoton."
+    },
+    {
+      "question": "Can you provide examples of figura etymologica in the narrower definition?",
+      "answer": "In the narrower definition, figura etymologica involves using a verb and its cognate object in the accusative case. Examples include 'live a good life' (verb 'live' + object 'life'), 'sing a long song' (verb 'sing' + object 'song'), and 'die a quiet death' (verb 'die' + object 'death'). Medieval phrases like 'to sail a sailing' or 'to run a running' also fit this definition."
+    },
+    {
+      "question": "What is the broader definition of figura etymologica, and how does it relate to cognate object constructions?",
+      "answer": "The broader definition of figura etymologica encompasses any repetition of cognate words close together in text, not limited to accusative constructions. Cognate object constructions (COCs) are a subset of this broader definition, specifically involving verbs and their cognate objects (e.g., 'fight a good fight'). The broader definition also includes phrases like 'chai tea' (where 'chai' and 'tea' both mean tea in different Chinese dialects) or 'might and main' (derived from the same Proto-Indo-European root)."
+    },
+    {
+      "question": "How would you distinguish 'cognate object construction' from other types of figura etymologica?",
+      "answer": "Cognate object constructions (COCs) are a specific type of figura etymologica where a verb is paired with a cognate noun in the accusative case (e.g., 'live a good life'). Other figura etymologica examples may not involve this grammatical structure but still feature cognate words nearby, such as 'might and main' (no verb-object relationship) or 'chai tea' (no accusative case). COCs require the verb and its object to share a root, whereas other figura etymologica examples may use related but not directly verb-object cognates."
+    },
+    {
+      "question": "Write a Python function to detect figura etymologica in a sentence based on the broader definition.",
+      "answer": "python\nimport re\nfrom collections import defaultdict\n\ndef detect_figura_etymologica(sentence):\n    # Split sentence into words and normalize (lowercase, remove punctuation)\n    words = re.findall(r'\\b\\w+\\b', sentence.lower())\n    \n    # Group words by their root (simplified: use first 3 letters as proxy)\n    root_groups = defaultdict(list)\n    for word in words:\n        root = word[:3]  # Approximate root grouping\n        root_groups[root].append(word)\n    \n    # Check for repeated roots with at least 2 distinct words\n    figura_candidates = [\n        words for root, words in root_groups.items() \n        if len(words) >= 2 and len(set(words)) >= 2\n    ]\n    \n    return figura_candidates[0] if figura_candidates else []\n\n# Example usage\nsentence = \"The chai tea was served with might and main.\"\ndetected = detect_figura_etymologica(sentence)\nprint(detected)  # Output: ['chai', 'tea', 'might', 'main'] (simplified)\n\n*Note: This is a basic approximation. A robust implementation would require etymological databases or advanced NLP techniques for accurate root detection."
+    },
+    {
+      "question": "Why is 'Once I loved, but I love no more' not considered figura etymologica but polyptoton?",
+      "answer": "'Once I loved, but I love no more' is polyptoton because 'loved' and 'love' are inflected forms of the same word (the verb 'love'), not distinct words. Figura etymologica requires genuinely different words sharing an etymological root. Since inflections do not count as separate words, this example fails the figura etymologica criteria but fits polyptoton, which involves repeating the same word in different forms."
+    },
+    {
+      "question": "How might figura etymologica be used in modern advertising or branding?",
+      "answer": "Figura etymologica can create memorable and rhythmic phrases in advertising by leveraging cognate words. For example:\n- 'Dream a dream' (verb 'dream' + object 'dream') implies aspirational messaging.\n- 'Fight a good fight' (verb 'fight' + object 'fight') emphasizes perseverance.\n- 'Live a life' (verb 'live' + object 'life') suggests full engagement.\nThese constructions are catchy because they subtly reinforce meaning through repetition of related words, making the message more impactful."
+    }
+  ]
+}

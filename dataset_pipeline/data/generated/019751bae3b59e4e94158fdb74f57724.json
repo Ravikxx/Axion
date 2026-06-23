@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Davidson_College_Arboretum",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When was Davidson College Arboretum officially designated as a national arboretum?",
+      "answer": "Davidson College Arboretum was officially designated as a national arboretum in 1986."
+    },
+    {
+      "question": "What was the original proposal for the Davidson College campus in 1869?",
+      "answer": "In 1869, the faculty proposed to the Board of Trustees that the campus \"represent in time the forest growth of the State, and if possible, the general botany of the region.\""
+    },
+    {
+      "question": "How did the Douglass estate contribute to the establishment of the arboretum?",
+      "answer": "The Douglass estate provided funding that was used to take aerial photos and draw up topographical maps, which were instrumental in the arboretum's development. The estate's contribution was initiated by a check sent by Henry Cathey, director of the National Arboretum, along with a letter to President Emeritus Samuel R. Spencer Jr. in 1982."
+    },
+    {
+      "question": "What types of flora are featured in the Davidson College Arboretum?",
+      "answer": "The arboretum features exotic and indigenous flora of North Carolina's Piedmont region, including over 3,000 labeled woody trees and shrubs."
+    },
+    {
+      "question": "Can the public visit the Davidson College Arboretum today?",
+      "answer": "Yes, the Davidson College Arboretum is open to the public."
+    },
+    {
+      "question": "Write a Python function to check if the Davidson College Arboretum is open today given a date range.",
+      "answer": "python\nfrom datetime import datetime\n\ndef is_arboretum_open(current_date=None):\n    \"\"\"\n    Checks if the Davidson College Arboretum is open today.\n    Assumes the arboretum is open every day (public access).\n    \n    Args:\n        current_date (datetime.date, optional): Date to check. Defaults to today.\n    \n    Returns:\n        bool: True if open, False otherwise.\n    \"\"\"\n    if current_date is None:\n        current_date = datetime.now().date()\n    return True\n\n# Example usage:\nprint(is_arboretum_open(datetime(2023, 10, 15).date()))  # Output: True\n"
+    },
+    {
+      "question": "What is the size of Davidson College's campus and where is it located?",
+      "answer": "Davidson College's campus spans 600 acres and is located in Davidson, North Carolina."
+    }
+  ]
+}

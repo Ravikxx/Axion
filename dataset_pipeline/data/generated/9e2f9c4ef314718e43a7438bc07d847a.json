@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Ellen_Driscoll",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What artistic mediums does Ellen Driscoll work with?",
+      "answer": "Ellen Driscoll's practice encompasses sculpture, drawing, installation, and public art. Her work often integrates materials ranging from ghostly white plastic to mosaic, walnut, sumi inks, and various technological tools, both rudimentary and digital."
+    },
+    {
+      "question": "How does Ellen Driscoll explore social and geopolitical issues in her artwork?",
+      "answer": "Driscoll's work explores social and geopolitical issues such as power, agency, transition, and ecological imbalance by presenting the familiar from unexpected perspectives. She uses visual strategies like light and shadow, silhouette, scale shifts, metaphor, and synecdoche to connect personal acts to global consequences, bridging different eras and cultures."
+    },
+    {
+      "question": "What themes are commonly mined in Ellen Driscoll's later projects?",
+      "answer": "Driscoll's later projects frequently mine historical, environmental, and cultural themes. Her work fluidly maps place and time while examining the lives and stories of marginalized individuals whose voices have been suppressed or overlooked."
+    },
+    {
+      "question": "Can you provide an example of a visual strategy Ellen Driscoll uses to bridge different cultures or eras in her work?",
+      "answer": "One example is her use of *synecdoche*, a figure of speech where a part represents the whole. In her installations, she might use a single symbolic object or material to evoke broader historical, cultural, or environmental narratives, thereby connecting disparate time periods or societies."
+    },
+    {
+      "question": "What notable fellowships has Ellen Driscoll received?",
+      "answer": "Driscoll has been awarded fellowships from the Guggenheim Foundation, Harvard Radcliffe Institute, Anonymous Was a Woman, and the National Endowment for the Arts, among others. These fellowships recognize her contributions to contemporary art and interdisciplinary research."
+    },
+    {
+      "question": "Write a Python code snippet to scrape a list of Ellen Driscoll's public exhibitions from a hypothetical API endpoint.",
+      "answer": "python\nimport requests\n\ndef get_driscoll_exhibitions(api_url):\n    try:\n        response = requests.get(api_url)\n        response.raise_for_status()\n        data = response.json()\n        exhibitions = data.get('exhibitions', [])\n        driscoll_exhibitions = [exhibit for exhibit in exhibitions if exhibit.get('artist') == 'Ellen Driscoll']\n        return driscoll_exhibitions\n    except requests.exceptions.RequestException as e:\n        print(f\"Error fetching data: {e}\")\n        return []\n\n# Example usage:\n# exhibitions = get_driscoll_exhibitions('https://api.example.com/art-exhibitions')\n# print(exhibitions)\n"
+    },
+    {
+      "question": "How do critics describe Ellen Driscoll's approach to narrative in her installations?",
+      "answer": "Critics like Patricia C. Phillips describe Driscoll's installations as being informed by 'an abiding fascination with the lives and stories of people whose voices and visions have been suspended, thwarted, undermined, or regulated.' Her work often elevates marginalized narratives, using research and inventive material combinations to create layered storytelling."
+    }
+  ]
+}

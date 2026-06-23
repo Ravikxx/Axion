@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Guy_Moon",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "Who was Guy Vernon Moon and what notable contributions did he make to television music?",
+      "answer": "Guy Vernon Moon (1962–2026) was an American musician and composer best known for creating music for animated television shows. He composed soundtracks for *The Fairly OddParents*, including songs like 'If Every Day Could Be Christmas,' 'What Girls Love,' 'It's Great to be a Guy,' 'Real and Scary,' and 'Wish Come True.' He also made music for *Danny Phantom*, including its theme song and the song 'You Will Remember' (co-written with Butch Hartman). Additionally, he contributed to *School’s Out: The Musical* and *Big Time Rush*, and composed the unused song 'If I Lived in TV' for *The Fairly OddParents* episode *Channel Chasers*."
+    },
+    {
+      "question": "What awards were Guy Vernon Moon and his collaborators nominated for, and for which songs?",
+      "answer": "Guy Vernon Moon, Butch Hartman, and Steve Marmel were nominated for awards for five songs: 'If Every Day Could Be Christmas' from *The Fairly OddParents* Christmas episode, 'What Girls Love' and 'It's Great to be a Guy' from the Valentine's Day episode, 'Real and Scary' from the Halloween episode, and 'Wish Come True' from *Abra-Catastrophe!*"
+    },
+    {
+      "question": "Provide a code snippet that simulates a simple music playback system for one of Guy Vernon Moon's compositions.",
+      "answer": "Below is a Python snippet using the `playsound` library to simulate playing 'If Every Day Could Be Christmas' from *The Fairly OddParents*. Note: Replace 'song.mp3' with an actual audio file path.\n\npython\nfrom playsound import playsound\nimport time\n\n# Simulate playing a song\ndef play_music(song_path):\n    try:\n        playsound(song_path)\n        print(\"Now playing: 'If Every Day Could Be Christmas'\")\n    except Exception as e:\n        print(f\"Error playing music: {e}\")\n\n# Example usage\nplay_music('song.mp3')\n\nThis snippet requires installing the `playsound` library (`pip install playsound`)."
+    },
+    {
+      "question": "How did Guy Vernon Moon pass away?",
+      "answer": "Guy Vernon Moon died on January 8, 2026, at the age of 63, after being struck by a car while riding a scooter in Los Angeles, California. He suffered traumatic injuries and passed away at the scene."
+    },
+    {
+      "question": "List all the shows for which Guy Vernon Moon composed music, excluding songs.",
+      "answer": "Guy Vernon Moon composed music for the following animated shows: *The Fairly OddParents*, *Danny Phantom*, *School’s Out: The Musical*, and *Big Time Rush*."
+    },
+    {
+      "question": "What was the collaboration between Guy Vernon Moon and Butch Hartman on *Danny Phantom*?",
+      "answer": "Guy Vernon Moon and Butch Hartman co-wrote the song 'You Will Remember' for the animated series *Danny Phantom*. Moon also composed the theme song for the show."
+    },
+    {
+      "question": "Why was the song 'If I Lived in TV' notable in Guy Vernon Moon's career?",
+      "answer": "The song 'If I Lived in TV' was notable because it was composed by Guy Vernon Moon for *The Fairly OddParents* episode *Channel Chasers*, but it was ultimately cut from the episode and never aired. This makes it one of the few officially produced but unreleased tracks in his career."
+    }
+  ]
+}

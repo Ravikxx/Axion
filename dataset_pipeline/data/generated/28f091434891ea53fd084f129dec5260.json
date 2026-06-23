@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/1998–99_Seattle_SuperSonics_season",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When did the 1998–99 Seattle SuperSonics regular season begin and how many games did they play?",
+      "answer": "The 1998–99 Seattle SuperSonics regular season began on February 5, 1999, and was shortened from 82 games to 50 games due to a league lockout."
+    },
+    {
+      "question": "Who was hired as the head coach of the Seattle SuperSonics before the 1998–99 season?",
+      "answer": "Paul Westphal was hired as the new head coach of the Seattle SuperSonics before the 1998–99 season."
+    },
+    {
+      "question": "How many games did the Seattle SuperSonics win in a row to start the 1998–99 season under Paul Westphal?",
+      "answer": "The Seattle SuperSonics won their first six games of the 1998–99 regular season under Paul Westphal."
+    },
+    {
+      "question": "Which key players missed significant portions of the 1998–99 season due to injuries?",
+      "answer": "Vin Baker missed 34 games due to thumb and knee injuries, while Billy Owens and Don MacLean also missed large parts of the season due to injuries."
+    },
+    {
+      "question": "How did Gary Payton perform statistically during the 1998–99 season, and what awards did he receive?",
+      "answer": "Gary Payton averaged 21.7 points, 8.7 assists, and 2.2 steals per game during the 1998–99 season. He was named to the All-NBA Second Team and the NBA All-Defensive First Team."
+    },
+    {
+      "question": "What was the Seattle SuperSonics' final record in the 1998–99 season, and did they make the playoffs?",
+      "answer": "The Seattle SuperSonics finished with a 25–25 record in the 1998–99 season, placing fifth in the Pacific Division. They missed the playoffs for the first time since the 1989–90 season after losing a tie-breaker to the Minnesota Timberwolves."
+    },
+    {
+      "question": "Write a Python snippet to calculate the SuperSonics' winning percentage for the 1998–99 season.",
+      "answer": "python\nwins = 25\nlosses = 25\nwinning_percentage = wins / (wins + losses)\nprint(f\"Winning percentage: {winning_percentage:.3f}\")\n\nThis code calculates the winning percentage as 0.500 for the SuperSonics' 25–25 record."
+    },
+    {
+      "question": "Which players had notable three-point shooting performances for the SuperSonics in the 1998–99 season?",
+      "answer": "Dale Ellis led the team with 94 three-point field goals off the bench, while Gary Payton contributed 83 three-point field goals during the season."
+    }
+  ]
+}

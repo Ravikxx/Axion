@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Anton_Klodič_Sabladoski",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was Anton Klodič Ritter von Sabladoski and what were his main professional roles?",
+      "answer": "Anton Klodič Ritter von Sabladoski (1836–1914) was a Slovenian philologist, poet, and pedagogue. He served as the main school inspector for the County of Gorizia and Gradisca from 1869 to 1902, where he played a key role in establishing a Slovene-language school system. He also taught at gymnasiums in Graz, Split, Trieste, and Gorizia after completing his studies in classical philology at the University of Vienna."
+    },
+    {
+      "question": "What was Anton Klodič Ritter von Sabladoski's educational background?",
+      "answer": "Anton Klodič Ritter von Sabladoski studied classical philology at the University of Vienna. Before that, he was educated under his maternal uncle, a priest, and attended the Catholic seminary in Gorizia, though he left before becoming a priest."
+    },
+    {
+      "question": "How did Anton Klodič Ritter von Sabladoski contribute to Slovene language education?",
+      "answer": "As the school inspector for the Austrian Littoral starting in 1869, Klodič vigorously promoted the study of both vernacular Slovene and classical languages. He established a Slovene-language school system in the County of Gorizia and Gradisca, significantly advancing educational opportunities in the region."
+    },
+    {
+      "question": "What notable achievements or titles did Anton Klodič Ritter von Sabladoski receive during his lifetime?",
+      "answer": "In 1880, Klodič was awarded the Order of the Iron Crown of the 3rd class and was ennobled with the hereditary title 'Ritter von Sabladoski' (knight). He also posthumously published the works of his brother-in-law, the Slovene poet Josip Pagliaruzzi."
+    },
+    {
+      "question": "Can you provide a Python code snippet that generates a timeline of Anton Klodič Ritter von Sabladoski's life events?",
+      "answer": "python\nfrom datetime import datetime\n\ndef generate_timeline():\n    timeline = {\n        '1836-11-10': 'Born in Hlodič, Austrian-administered Kingdom of Lombardy–Venetia',\n        '1850s': 'Educated under maternal uncle Jožef Sabladoski, attended Catholic seminary in Gorizia',\n        '1860s': 'Studied classical philology at the University of Vienna, taught at gymnasiums in Graz, Split, Trieste, and Gorizia',\n        '1865': 'Married noblewoman Matilda Pagliaruzzi, daughter of the mayor of Kobarid',\n        '1869': 'Appointed school inspector for the Austrian Littoral, promoted Slovene and classical language education',\n        '1880': 'Granted the Order of the Iron Crown of the 3rd class and ennobled as Ritter von Sabladoski',\n        '1885': 'Posthumously published works of his brother-in-law, poet Josip Pagliaruzzi',\n        '1914-02-15': 'Died in Trieste'\n    }\n    return timeline\n\n# Example usage:\ntimeline = generate_timeline()\nfor date, event in timeline.items():\n    print(f\"{date}: {event}\")\n"
+    },
+    {
+      "question": "What were Anton Klodič Ritter von Sabladoski's family connections to notable figures?",
+      "answer": "Klodič was married to Matilda Pagliaruzzi, daughter of Izidor Pagliaruzzi, the mayor of Kobarid. He also posthumously published the works of his brother-in-law, the Slovene poet Josip Pagliaruzzi. His children included Paolo Klodič, a renowned marine painter and later director of the port of Trieste, and Maks Klodič-Sabladoski, a civil engineer who designed parts of the Bohinj Railway. He was also the great-grandfather of Slovene entrepreneur Vanja Lokar and economist Aleš Lokar."
+    },
+    {
+      "question": "In what linguistic contexts did Anton Klodič Ritter von Sabladoski write his literary works?",
+      "answer": "Klodič wrote his poems and short stories in both standard Slovene and his native Natisone dialect, reflecting his deep connection to Slovene linguistic heritage while also engaging with broader literary norms."
+    }
+  ]
+}

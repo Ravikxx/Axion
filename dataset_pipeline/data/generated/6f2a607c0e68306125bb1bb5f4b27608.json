@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Arch_Rivals",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What year was Arch Rivals released and by which company?",
+      "answer": "Arch Rivals was released in 1989 by Midway Games, an American arcade game manufacturer."
+    },
+    {
+      "question": "How does Arch Rivals differ from standard basketball games in terms of gameplay mechanics?",
+      "answer": "Unlike standard basketball games, Arch Rivals allows players to punch opponents without penalties and steal the ball from them. The only referee calls are for shot clock violations. Additionally, hazards like candy wrappers and soda cans can be thrown on the court, causing players to fall and lose possession if stepped on."
+    },
+    {
+      "question": "What are some of the platforms that received home versions of Arch Rivals?",
+      "answer": "Home versions of Arch Rivals were released for the Sega Genesis, Sega Game Gear, and Nintendo Entertainment System (NES)."
+    },
+    {
+      "question": "How did arcade operators customize Arch Rivals for their locations?",
+      "answer": "Arcade operators could change the names of the fictional teams in Arch Rivals to reflect real teams, tailoring the game to their local audience."
+    },
+    {
+      "question": "What does the phrase 'A Basket Brawl' imply about the gameplay style of Arch Rivals?",
+      "answer": "The phrase 'A Basket Brawl' suggests that Arch Rivals emphasizes aggressive and chaotic gameplay, blending basketball with fighting elements like punching opponents, which is not typical in standard basketball games."
+    },
+    {
+      "question": "Can you write a simple Python function that simulates a basic basketball game scenario in Arch Rivals, where a player can punch an opponent and steal the ball?",
+      "answer": "python\nimport random\n\ndef arch_rivals_gameplay_simulation():\n    # Simulate a player attempting to steal the ball by punching\n    player_action = random.choice(['pass', 'shoot', 'punch'])\n    \n    if player_action == 'punch':\n        steal_success = random.random() < 0.7  # 70% chance to steal\n        if steal_success:\n            return 'Opponent was punched and the ball was stolen!'\n        else:\n            return 'Punch failed, opponent retains possession.'\n    elif player_action == 'pass':\n        return 'Teammate received the pass.'\n    elif player_action == 'shoot':\n        shot_success = random.random() < 0.5  # 50% chance to score\n        if shot_success:\n            return 'Shot made! 2 points scored.'\n        else:\n            return 'Shot missed, possession lost.'\n\n# Example usage\nprint(arch_rivals_gameplay_simulation())\n"
+    },
+    {
+      "question": "What role does the referee play in Arch Rivals compared to traditional basketball games?",
+      "answer": "In Arch Rivals, the referee only enforces shot clock violations, unlike traditional basketball games where referees call multiple types of fouls, violations, and other penalties. The game lacks standard basketball foul calls, allowing more aggressive interactions like punching."
+    }
+  ]
+}

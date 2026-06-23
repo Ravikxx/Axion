@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Capital_punishment_for_juveniles_in_the_United_States",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When did the U.S. Supreme Court rule that capital punishment for juveniles was unconstitutional?",
+      "answer": "The U.S. Supreme Court ruled capital punishment for juveniles unconstitutional on March 1, 2005, in the case *Roper v. Simmons*."
+    },
+    {
+      "question": "How many people were on death row in the U.S. for crimes committed as juveniles before the 2005 ruling?",
+      "answer": "Prior to the 2005 *Roper v. Simmons* ruling, there were 71 people on death row in the United States for crimes committed as juveniles."
+    },
+    {
+      "question": "Who was the last juvenile offender executed in the United States, and when did it occur?",
+      "answer": "The last juvenile offender executed in the United States was Scott Hain, who was executed at age 32 in Oklahoma in 2003."
+    },
+    {
+      "question": "What was the first recorded instance of capital punishment for juveniles in the United States?",
+      "answer": "The death penalty for juveniles in the United States was first applied in 1642."
+    },
+    {
+      "question": "How many juvenile executions occurred before the 1972 *Furman v. Georgia* ruling?",
+      "answer": "Approximately 343 executions of juveniles occurred in the United States before the 1972 *Furman v. Georgia* ruling, which instituted a nationwide death penalty moratorium."
+    },
+    {
+      "question": "What was the legal significance of the 1976 *Gregg v. Georgia* ruling in relation to juvenile executions?",
+      "answer": "The 1976 *Gregg v. Georgia* ruling overturned the nationwide moratorium on the death penalty imposed by *Furman v. Georgia* and upheld its constitutionality. In the years following *Gregg*, there were 22 executions of juvenile offenders before the practice was outlawed in 2005."
+    },
+    {
+      "question": "How did state laws vary regarding the minimum age for juvenile death penalty eligibility before 2005?",
+      "answer": "Before the 2005 *Roper v. Simmons* ruling, state laws varied widely: 19 states did not permit the execution of juveniles, while the remaining retentionist states allowed juveniles as young as 16 or 17 at the time of their crime to be executed. However, due to lengthy appeals processes, none of the executed juveniles were still juveniles by the time of their executions."
+    }
+  ]
+}

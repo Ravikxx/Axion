@@ -1,0 +1,38 @@
+{
+  "source_url": "https://dev.to/sylwia-lask/7-lies-developers-keep-telling-themselves-and-somehow-still-believe-46nh",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What is the main theme of the article about developer habits?",
+      "answer": "The article humorously lists common lies or excuses developers tell themselves, such as 'This will only take a moment' or 'I'll refactor this later,' highlighting the universal struggles in software development."
+    },
+    {
+      "question": "Why does the author suggest creating a refactor task even if it's at the bottom of the backlog?",
+      "answer": "Creating a refactor task increases the chances it will eventually be addressed, as simply planning it makes it more likely to happen compared to unrecorded intentions."
+    },
+    {
+      "question": "What is the pro tip for handling refactoring tasks according to the article?",
+      "answer": "The pro tip is to create a dedicated refactor task and place it in the backlog, even if it's at the bottom. This dramatically increases the likelihood of the refactor being completed."
+    },
+    {
+      "question": "How does the author recommend estimating tasks to improve planning accuracy?",
+      "answer": "The author recommends always estimating with a buffer. This allows for unexpected interruptions like calls with other teams or hotfixes, making it easier to adapt rather than missing delivery goals."
+    },
+    {
+      "question": "What code snippet could demonstrate refactoring a messy function?",
+      "answer": "Here’s a simple example of refactoring a messy function:\npython\ndef calculate_discount(price, is_member, has_coupon):\n    # Original messy logic\n    if price > 100:\n        if is_member:\n            if has_coupon:\n                return price * 0.7\n            else:\n                return price * 0.8\n        else:\n            return price * 0.9\n    else:\n        if is_member:\n            return price * 0.95\n        else:\n            return price\n\n# Refactored version\nDISCOUNT_MEMBER = 0.8\nDISCOUNT_NON_MEMBER = 0.9\nDISCOUNT_COUPON = 0.7\n\nDISCOUNT_THRESHOLD = 100\n\nDISCOUNT_LOW_MEMBER = 0.95\n\ndef calculate_discount(price, is_member, has_coupon):\n    base_discount = DISCOUNT_LOW_MEMBER if price <= DISCOUNT_THRESHOLD and is_member else (\n        DISCOUNT_COUPON if has_coupon else DISCOUNT_MEMBER if is_member else DISCOUNT_NON_MEMBER\n    )\n    return price * base_discount\n"
+    },
+    {
+      "question": "What is the risk of saying 'I’ll write the tests later' in software development?",
+      "answer": "Saying 'I’ll write the tests later' often leads to untested or poorly tested code because the 'later' rarely happens. Instead, writing tests immediately or creating a task ensures they are not forgotten."
+    },
+    {
+      "question": "Why is assuming 'It’s just an edge case, no one will ever do that' risky in development?",
+      "answer": "This assumption is risky because users often find ways to trigger edge cases. Ignoring them can lead to unexpected bugs affecting real users, so it’s better to handle or at least document them."
+    },
+    {
+      "question": "What is the most common assumption developers make about cross-environment testing, and why is it problematic?",
+      "answer": "The common assumption is 'If it works on my machine, it’ll work everywhere.' This is problematic because different environments, dependencies, or configurations can cause issues that aren’t apparent locally, leading to failures in production or testing environments."
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Gleanings_from_the_Writings_of_Baháʼu'lláh",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is 'Gleanings from the Writings of Baháʼu'lláh' and who compiled it?",
+      "answer": "'Gleanings from the Writings of Baháʼu'lláh' is a compilation of selected tablets and extracts from the writings of Baháʼu'lláh, the founder of the Baháʼí Faith. It was compiled and translated by Shoghi Effendi, the Guardian of the Baháʼí Faith from 1921 to 1957, and first published in 1935."
+    },
+    {
+      "question": "What are the five main sections of 'Gleanings from the Writings of Baháʼu'lláh'?",
+      "answer": "The book is divided into five main parts: 1) The 'Day of God' (sections 1-18), 2) The Manifestation of God (sections 19-69), 3) The soul and its immortality (sections 70-99), 4) The World Order and the Most Great Peace (sections 100-121), and 5) The duties of the individual and the spiritual meaning of life (sections 122-166)."
+    },
+    {
+      "question": "Which major works of Baháʼu'lláh are included in 'Gleanings from the Writings'?",
+      "answer": "Major works included are the 'Epistle to the Son of the Wolf,' 'The Hidden Words,' 'The Kitáb-i-Aqdas,' and 'The Kitáb-i-Íqán.' Additional works are partially represented and later published in full in compilations like 'The Summons of the Lord of Hosts' and 'Tablets of Baháʼu'lláh Revealed After the Kitáb-i-Aqdas.'"
+    },
+    {
+      "question": "Why is 'Gleanings from the Writings of Baháʼu'lláh' significant for new readers of the Baháʼí Faith?",
+      "answer": "It is often one of the first works of Baháʼu'lláh that many people read due to its broad selection of passages covering essential themes like the nature of God, the soul, and the spiritual duties of individuals. Its accessible introduction makes it a foundational text for newcomers."
+    },
+    {
+      "question": "How was the original source attribution handled in 'Gleanings from the Writings of Baháʼu'lláh'?",
+      "answer": "The original publication did not include a list of which passages were derived from which specific works of Baháʼu'lláh. However, this attribution has been reconstructed and is available online for reference."
+    },
+    {
+      "question": "Write a Python code snippet to extract section titles and their ranges from the five parts of 'Gleanings from the Writings of Baháʼu'lláh'.",
+      "answer": "python\nsections = [\n    {\"title\": \"The 'Day of God'\", \"range\": \"sections 1-18\"},\n    {\"title\": \"The Manifestation of God\", \"range\": \"sections 19-69\"},\n    {\"title\": \"The soul and its immortality\", \"range\": \"sections 70-99\"},\n    {\"title\": \"The World Order and the Most Great Peace\", \"range\": \"sections 100-121\"},\n    {\"title\": \"The duties of the individual and the spiritual meaning of life\", \"range\": \"sections 122-166\"}\n]\n\nfor section in sections:\n    print(f\"{section['title']} ({section['range']})\")\n"
+    },
+    {
+      "question": "What did Rúḥíyyih Rabbání say about 'Gleanings from the Writings'?",
+      "answer": "Rúḥíyyih Rabbání, the widow of Shoghi Effendi, referred to it as 'a magnificent gift' to Western Baháʼís, highlighting its value in introducing the teachings of Baháʼu'lláh."
+    },
+    {
+      "question": "How has the accessibility of 'Gleanings from the Writings of Baháʼu'lláh' contributed to its translation and influence?",
+      "answer": "Because of its accessible selection of Baháʼu'lláh’s writings, 'Gleanings' has been translated into many languages and serves as an entry point for readers worldwide, broadening its influence in spreading the Baháʼí Faith."
+    }
+  ]
+}

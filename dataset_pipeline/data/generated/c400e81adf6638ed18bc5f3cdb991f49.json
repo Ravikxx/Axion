@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/French_frigate_Atalante_(1802)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What class of frigate was Atalante, and when was she launched?",
+      "answer": "Atalante was a 40-gun frigate belonging to the Virginie-class. She was launched in 1802."
+    },
+    {
+      "question": "Who commanded the French squadron that included Atalante, and what was their mission?",
+      "answer": "The French squadron was led by Counter-admiral Charles-Alexandre Léon Durand Linois, whose mission was to attack British commercial targets."
+    },
+    {
+      "question": "Describe the composition of Linois' squadron, including Atalante's role.",
+      "answer": "Linois' squadron consisted of the 74-gun ship of the line Marengo, the frigates Atalante, Belle Poule, and Sémillante, along with troopships and supply vessels. Atalante served as a frigate in this squadron."
+    },
+    {
+      "question": "What significant event occurred during Atalante's mission in December 1803?",
+      "answer": "In December 1803, Atalante participated in an attack on British Bencoolen, resulting in the destruction of an East India Company trading post and the capture of five ships."
+    },
+    {
+      "question": "What was the outcome of the Battle of Pulo Aura, and why did the French retreat?",
+      "answer": "During the Battle of Pulo Aura on 15 February 1804, the French squadron encountered the East India Company's China Fleet. Aggressive maneuvers by the merchantmen convinced Linois that he had encountered Royal Navy warships, leading the French to retreat to Batavia."
+    },
+    {
+      "question": "What two British merchant ships were captured by Linois' squadron on 18 August 1804, and what were their characteristics?",
+      "answer": "On 18 August 1804, near Desnoeufs Island, Linois' squadron captured the British merchantmen Charlotte and Upton Castle. Charlotte was copper-sheathed, 650 tons, with 16 guns, carrying rice. Upton Castle was copper-sheathed, 627 tons, with 14 guns, carrying wheat and other products from Bengal."
+    },
+    {
+      "question": "Provide a Python code snippet to calculate the total tonnage of the captured ships Charlotte and Upton Castle.",
+      "answer": "python\n# Tonnage of captured ships\ncharlotte_tonnage = 650  # tons\nupton_castle_tonnage = 627  # tons\n\n# Total tonnage\ntotal_tonnage = charlotte_tonnage + upton_castle_tonnage\nprint(f\"Total tonnage of captured ships: {total_tonnage} tons\")\n"
+    },
+    {
+      "question": "What is one account of Atalante's fate after November 1805, and what does British Commodore Sir Home Popham's report suggest?",
+      "answer": "One account states that Atalante was found irreparable and written off as a total loss after running aground in November 1805. However, Sir Home Popham reported that Atalante and the Batavian ship Bato were destroyed by being run ashore during the attack on the Cape on January 10, 1806."
+    }
+  ]
+}

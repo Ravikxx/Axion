@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Edmonton_Oilers",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "When did the Edmonton Oilers join the NHL?",
+      "answer": "The Edmonton Oilers joined the National Hockey League (NHL) in 1979."
+    },
+    {
+      "question": "Why is the Edmonton Oilers team named the 'Oilers'?",
+      "answer": "The team is named the 'Oilers' because Edmonton, Alberta, is the center of Canada's petroleum industry."
+    },
+    {
+      "question": "How many Stanley Cups have the Edmonton Oilers won, and in which years?",
+      "answer": "The Edmonton Oilers have won the Stanley Cup five times, in the years 1984, 1985, 1987, 1988, and 1990."
+    },
+    {
+      "question": "What is the significance of Wayne Gretzky's 1982-83 season records for the Edmonton Oilers?",
+      "answer": "In the 1982-83 season, Wayne Gretzky set multiple NHL records while playing for the Oilers, including most goals in a season (92), most assists in a season (163), and most points in a season (215). These records remain unmatched in NHL history."
+    },
+    {
+      "question": "Which Oilers players have won the Conn Smythe Trophy as playoff MVP?",
+      "answer": "Wayne Gretzky won the Conn Smythe Trophy as playoff MVP twice (1985 and 1988). Other Oilers winners include Mark Messier in 1984, Bill Ranford in 1990."
+    },
+    {
+      "question": "Write a Python function that checks if a player is a multiple-time Hart Trophy winner for the Edmonton Oilers.",
+      "answer": "python\ndef is_multiple_hart_winner(player_name):\n    hart_winners = {\n        \"Wayne Gretzky\": 8,\n        \"Mark Messier\": 1,\n        \"Connor McDavid\": 3,\n    }\n    return hart_winners.get(player_name, 0) > 1\n\n# Example usage:\nprint(is_multiple_hart_winner(\"Wayne Gretzky\"))  # Output: True\nprint(is_multiple_hart_winner(\"Connor McDavid\")) # Output: True\nprint(is_multiple_hart_winner(\"Paul Coffey\"))    # Output: False\n"
+    },
+    {
+      "question": "Which Oilers player led the NHL in goals in 1986, and which trophy did they win?",
+      "answer": "Jari Kurri led the NHL in goals in 1986. While the text does not specify the trophy name at the time, Kurri would have likely earned the goal-scoring title (now known as the Maurice 'Rocket' Richard Trophy)."
+    }
+  ]
+}

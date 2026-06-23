@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Jorunn_Hageler",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was Jorunn Synnøve Hageler and what political party did she represent?",
+      "answer": "Jorunn Synnøve Hageler (née Innvik) was a Norwegian politician born on 8 October 1946 and passed away on 31 January 2023. She represented the Socialist Left Party throughout her political career."
+    },
+    {
+      "question": "What educational background did Jorunn Synnøve Hageler have before becoming a teacher?",
+      "answer": "Hageler attended school in Glomfjord from 1953 to 1962, then completed upper secondary education at Eidsvoll in 1965. She studied at Hamar Teacher College from 1966 to 1968, and later took courses in Norwegian and Religious History in Oslo from 1969 to 1970."
+    },
+    {
+      "question": "What were some of Jorunn Synnøve Hageler's early political roles and responsibilities?",
+      "answer": "Hageler was elected to the municipal council of Steinkjer Municipality in 1979 and re-elected in 1983, serving until 1987. During this period, she also worked as a deputy on the Nord-Trøndelag county council's Committee for Culture from 1980 to 1983."
+    },
+    {
+      "question": "How did Jorunn Synnøve Hageler contribute to local and national Socialist Left Party organizations?",
+      "answer": "She led the Gro Group and Kristofer Book Café during the 1980s, served on the party’s board in Steinkjer, chaired the local chapter from 1988 to 1991, and became county leader from 1991 to 1993. She also sat on the national board of the Socialist Left Party."
+    },
+    {
+      "question": "What parliamentary committees did Jorunn Synnøve Hageler serve on during her time in the Norwegian Parliament?",
+      "answer": "Hageler was elected to the Norwegian Parliament in 1993, representing Nord-Trøndelag. She served on the Standing Committee for Family Affairs, Cultural Affairs and Administration, as well as the Committee for Elections. She also participated in delegations to the United Nations General Assembly and was a deputy for delegations to the Nordic Council."
+    },
+    {
+      "question": "Write a Python code snippet to calculate Jorunn Synnøve Hageler's age at the time of her death.",
+      "answer": "python\ndef calculate_age(birth_year, death_year):\n    return death_year - birth_year\n\nage_at_death = calculate_age(1946, 2023)\nprint(f\"Jorunn Synnøve Hageler was {age_at_death} years old when she passed away.\")\n\nThis code calculates the difference between her birth year (1946) and death year (2023), yielding an age of 76 at the time of her death."
+    },
+    {
+      "question": "Why was Jorunn Synnøve Hageler not re-elected in the 1997 Norwegian parliamentary election, and what did she do afterward?",
+      "answer": "Hageler was not re-elected in 1997, ending her parliamentary term. From 1998 to 2000, she pursued part-time studies in information technology at Lillehammer University College. She then served on the Committee for Cinema Policy from 1999 to 2000 before transitioning to international work."
+    }
+  ]
+}

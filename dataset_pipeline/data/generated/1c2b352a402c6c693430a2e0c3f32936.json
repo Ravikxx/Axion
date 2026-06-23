@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Charles_Flynn_(trade_unionist)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was Charles Richard Flynn and what were his main professions?",
+      "answer": "Charles Richard Flynn was a British trade unionist and politician. He dedicated his career to labor organization and public service, serving as a trade union leader and local government official."
+    },
+    {
+      "question": "What were Charles Richard Flynn's early political affiliations and roles?",
+      "answer": "Flynn joined the Independent Labour Party (ILP) in the late 19th century. By 1899, he became the secretary of its Northern area and the secretary of the North East Socialist Federation. In 1904, he represented the Tyneside ILP at the Amsterdam Socialist Congress."
+    },
+    {
+      "question": "How did Charles Richard Flynn contribute to labor reforms during his career?",
+      "answer": "Flynn played a key role in securing a maximum 44-hour working week for co-operative staff in Northern England. He also supported the 1926 UK general strike and helped organize it on Tyneside."
+    },
+    {
+      "question": "What were Charles Richard Flynn's electoral experiences?",
+      "answer": "Flynn ran unsuccessfully for the Labour Party in Hexham during the 1924 UK general election and in Sheffield Hallam during the 1928 by-election. He was adopted as the Prospective Parliamentary Candidate for Rossendale in 1933 but withdrew before a general election."
+    },
+    {
+      "question": "What were Charles Richard Flynn's roles in local government?",
+      "answer": "Flynn was elected to Gateshead Town Council in 1932, representing the North West ward. He later became an alderman in 1945 and served as Mayor of Gateshead in 1949/50."
+    },
+    {
+      "question": "What awards did Charles Richard Flynn receive?",
+      "answer": "In 1948, Flynn was made an Officer of the Order of the British Empire (OBE) for his contributions to public service and labor rights."
+    },
+    {
+      "question": "Write a Python script to calculate Charles Richard Flynn's age at the time of his death.",
+      "answer": "python\nfrom datetime import datetime\n\n# Flynn's birth and death dates\nbirth_date = datetime(1882, 9, 6)\ndeath_date = datetime(1957, 5, 8)\n\n# Calculate age at death\nage_at_death = death_date.year - birth_date.year\nif (death_date.month, death_date.day) < (birth_date.month, birth_date.day):\n    age_at_death -= 1\n\nprint(f\"Charles Richard Flynn was {age_at_death} years old at the time of his death.\")\n\nOutput: Charles Richard Flynn was 74 years old at the time of his death."
+    }
+  ]
+}

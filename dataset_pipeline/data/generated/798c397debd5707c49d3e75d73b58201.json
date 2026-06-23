@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Dimension_theorem_for_vector_spaces",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What does the dimension theorem for vector spaces state?",
+      "answer": "The dimension theorem for vector spaces states that all bases of a vector space have the same number of elements. This number defines the dimension of the vector space and can be either finite or infinite (in which case it is a cardinal number)."
+    },
+    {
+      "question": "Explain the distinction between finitely and infinitely generated vector spaces in the context of the dimension theorem.",
+      "answer": "In finitely generated vector spaces, all bases are finite and have the same number of elements, making the dimension well-defined and finite. For infinitely generated vector spaces, bases may have infinite cardinalities, and the dimension is defined by the cardinality of any basis. The dimension theorem applies in both cases, but the proof of existence and uniqueness of bases differs."
+    },
+    {
+      "question": "Why does the dimension theorem require Zorn's lemma for its proof in the general case?",
+      "answer": "The proof of the existence of a basis for any vector space in the general case requires Zorn's lemma because it involves constructing a basis for potentially infinite-dimensional spaces. Zorn's lemma (equivalent to the axiom of choice) ensures that such a basis exists by providing a maximal linearly independent set, which is a basis when it is also a generating set."
+    },
+    {
+      "question": "What is the difference between the axioms needed to prove the existence of a basis versus the uniqueness of its cardinality?",
+      "answer": "The existence of a basis for any vector space generally requires Zorn's lemma (or the axiom of choice), which is a strong assumption. However, the uniqueness of the cardinality of the basis only requires the ultrafilter lemma, which is strictly weaker than the axiom of choice. The proof of uniqueness may also assume trichotomy (comparability of cardinal numbers), another equivalent statement to the axiom of choice."
+    },
+    {
+      "question": "How can the dimension theorem be extended to modules over rings?",
+      "answer": "The dimension theorem can be generalized to arbitrary R-modules for rings R that have the invariant basis number property. This property ensures that any two bases of a free module have the same cardinality, analogous to the case of vector spaces. However, unlike vector spaces, modules over general rings may not always have bases, and the theorem applies only to free modules."
+    },
+    {
+      "question": "Write a Python function to determine if a given set of vectors is a basis for a vector space. Assume the vectors are given as rows of a matrix.",
+      "answer": "python\nimport numpy as np\n\ndef is_basis(matrix, tolerance=1e-8):\n    \"\"\"\n    Check if the rows of the given matrix form a basis for a vector space.\n    \n    Args:\n        matrix: A 2D numpy array where each row represents a vector.\n        tolerance: A small value to account for floating-point precision.\n    \n    Returns:\n        bool: True if the rows form a basis, False otherwise.\n    \"\"\"\n    if matrix.size == 0:\n        return False  # Empty set cannot be a basis\n    \n    # Check linear independence using rank\n    rank = np.linalg.matrix_rank(matrix, tol=tolerance)\n    \n    # Check if the number of independent vectors equals the number of vectors\n    return rank == matrix.shape[0] and rank == matrix.shape[1]\n\n\nExample usage:\npython\n# Example: Check if [(1, 0, 0), (0, 1, 0), (0, 0, 1)] is a basis for R^3\nbasis = np.array([[1, 0, 0], [0, 1, 0], [0, 0, 1]])\nprint(is_basis(basis))  # Output: True\n\n# Example: Check if [(1, 1, 0), (1, 0, 1), (2, 1, 1)] is a basis for R^3\nnon_basis = np.array([[1, 1, 0], [1, 0, 1], [2, 1, 1]])\nprint(is_basis(non_basis))  # Output: False (linearly dependent)\n"
+    },
+    {
+      "question": "Explain why the proof of the dimension theorem for finitely generated vector spaces does not require the axiom of choice.",
+      "answer": "In finitely generated vector spaces, the proof of the dimension theorem relies on elementary algebraic arguments, such as the replacement theorem and the fact that any linearly independent set can be extended to a basis. These arguments do not depend on the axiom of choice or its weaker variants because the finiteness of the generating set ensures that all steps in the proof can be carried out constructively without invoking choice principles."
+    }
+  ]
+}

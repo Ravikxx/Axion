@@ -1,0 +1,34 @@
+{
+  "source_url": "https://github.com/huggingface/transformers",
+  "category": "github",
+  "pairs": [
+    {
+      "question": "What is the Hugging Face Transformers library and what tasks does it support?",
+      "answer": "The Hugging Face Transformers library is a model-definition framework designed for state-of-the-art machine learning models across text, vision, audio, video, and multimodal applications. It supports both inference and training, providing a unified way to define models that are compatible with various training frameworks (e.g., Axolotl, Unsloth), inference engines (e.g., vLLM, SGLang), and modeling libraries (e.g., llama.cpp, mlx)."
+    },
+    {
+      "question": "How do you install the Hugging Face Transformers library for use with PyTorch?",
+      "answer": "To install the Transformers library for PyTorch, use the following command in a Python 3.10+ environment:\npython\npip install \"transformers[torch]\"\n\nFor faster installation, you can use `uv`:\npython\nuv pip install \"transformers[torch]\"\n"
+    },
+    {
+      "question": "What is the purpose of the Pipeline API in the Transformers library?",
+      "answer": "The Pipeline API in the Transformers library provides a high-level interface for inference tasks. It handles preprocessing input data and returns appropriate outputs for text, audio, vision, and multimodal tasks. For example, you can instantiate a pipeline for text generation and use it directly with minimal code:\npython\nfrom transformers import pipeline\npipeline = pipeline(task=\"text-generation\", model=\"Qwen/Qwen2.5-1.5B\")\npipeline(\"the secret to baking a really good cake is \")\n"
+    },
+    {
+      "question": "How do you perform a chat interaction using the Transformers library?",
+      "answer": "To perform a chat interaction, construct a chat history with roles and content, then pass it to the pipeline. Here’s an example:\npython\nimport torch\nfrom transformers import pipeline\n\nchat = [\n  {\"role\": \"system\", \"content\": \"You are a sassy, wise-cracking robot as imagined by Hollywood circa 1986.\"},\n  {\"role\": \"user\", \"content\": \"Hey, can you tell me any fun things to do in New York?\"}\n]\n\npipeline = pipeline(task=\"conversational\", model=\"Qwen/Qwen2.5-0.5B-Instruct\")\noutput = pipeline(chat)\nprint(output)\n\nAlternatively, you can chat directly from the command line if `transformers serve` is running:\nshell\ntransformers chat Qwen/Qwen2.5-0.5B-Instruct\n"
+    },
+    {
+      "question": "What are the system requirements for running the Transformers library?",
+      "answer": "The Transformers library requires Python 3.10 or higher and PyTorch 2.4 or higher. It is recommended to use a virtual environment (e.g., `venv` or `uv`) to manage dependencies and avoid conflicts."
+    },
+    {
+      "question": "How can you install the Transformers library from source for development or testing the latest changes?",
+      "answer": "To install the Transformers library from source, clone the repository and install it in editable mode:\nshell\ngit clone https://github.com/huggingface/transformers.git\ncd transformers\npip install '.[torch]'\n\nFor `uv`, use:\nshell\nuv pip install '.[torch]'\n\nNote that the latest version may not be stable."
+    },
+    {
+      "question": "What is the role of the Hugging Face Hub in the Transformers ecosystem?",
+      "answer": "The Hugging Face Hub hosts over 1 million model checkpoints compatible with the Transformers library. Users can explore and download pre-trained models from the Hub to leverage in their applications. The Hub serves as a central repository for sharing and discovering state-of-the-art models across various tasks."
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/COVID-19_pandemic_in_Ontario",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the first confirmed case of COVID-19 in Canada, and where did it occur?",
+      "answer": "The first confirmed case of COVID-19 in Canada was announced on January 25, 2020, involving a traveller who had recently returned to Toronto from travel in China, including Wuhan."
+    },
+    {
+      "question": "How did the number of COVID-19 cases in Ontario compare to other Canadian provinces in terms of per capita ranking despite having the largest total number of cases?",
+      "answer": "Ontario had the largest number of confirmed COVID-19 cases among Canada's provinces and territories, but due to having the largest population, only ranked sixth adjusted per capita."
+    },
+    {
+      "question": "When did Ontario surpass one million lab-confirmed COVID-19 cases?",
+      "answer": "Ontario surpassed one million lab-confirmed COVID-19 cases on January 24, 2022."
+    },
+    {
+      "question": "What were some key issues identified in for-profit long-term care homes by the Canadian Armed Forces during the COVID-19 pandemic?",
+      "answer": "The military report detailed 'a number of medical, professional and technical issues' including neglect, lack of equipment, and allegations of elder abuse in for-profit long-term care homes."
+    },
+    {
+      "question": "What was Ontario's three-stage plan introduced in May 2020, and what was its purpose?",
+      "answer": "The three-stage plan was instituted to lift economic restrictions following a decline in COVID-19 cases from late spring to early summer 2020. The state of emergency was lifted on July 24, 2020, as part of this phased reopening strategy."
+    },
+    {
+      "question": "How did Ontario's response framework for COVID-19 restrictions evolve in late 2020?",
+      "answer": "In early November 2020, Ontario created a new five-tiered colour-coded 'response framework' to reintroduce targeted restrictions as cases rose during the second wave."
+    },
+    {
+      "question": "Write a Python code snippet to calculate the number of days between Ontario's first confirmed COVID-19 case and when it surpassed one million cases.",
+      "answer": "python\nfrom datetime import datetime\n\n# Dates of key events\nfirst_case_date = datetime(2020, 1, 25)\nmillion_cases_date = datetime(2022, 1, 24)\n\n# Calculate the difference in days\ndays_between = (million_cases_date - first_case_date).days\nprint(f\"The number of days between Ontario's first confirmed COVID-19 case and surpassing one million cases is: {days_between} days\")\n\nOutput: The number of days between Ontario's first confirmed COVID-19 case and surpassing one million cases is: 730 days."
+    },
+    {
+      "question": "What were the primary criticisms of Ontario's early COVID-19 vaccine rollout, and how were they addressed?",
+      "answer": "Early vaccination efforts were criticized for a lack of equitability, clarity, and a significant shortage of vaccine supply in late January and early February 2021. These issues were significantly improved by volunteer groups like Vaccine Hunters Canada, which helped streamline the immunization process."
+    },
+    {
+      "question": "Why did Ontario implement a proof of vaccination mandate in September 2021, and what was its effective date?",
+      "answer": "Ontario implemented a proof of vaccination mandate on September 1, 2021, effective September 22, 2021, to address stagnating vaccination rates and curb the spread of COVID-19, which was largely affecting unvaccinated individuals during the fourth wave."
+    },
+    {
+      "question": "What steps did Ontario take to reopen the economy in 2021, and what were the conditions for each step?",
+      "answer": "On May 20, 2021, the provincial government released a three-step roadmap to reopen the economy based on vaccination rate goals. The steps likely involved gradual easing of restrictions as vaccination thresholds were met, though specific thresholds are not detailed in the provided text."
+    }
+  ]
+}

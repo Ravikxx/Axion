@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/James_Whale",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "Who was James Whale and what is he best known for?",
+      "answer": "James Whale was an English movie director, theatre director, and actor, best known for his horror films such as *Frankenstein* (1931), *The Old Dark House* (1932), *The Invisible Man* (1933), and *Bride of Frankenstein* (1935). He also directed the musical *Show Boat* (1936)."
+    },
+    {
+      "question": "What notable career shift occurred in James Whale's life after World War I?",
+      "answer": "After World War I, during which he was captured by the Germans and developed an interest in theatre, Whale transitioned from military service to become an actor, set designer, and director. This shift led him to move to the United States to direct a Broadway play, and later to Hollywood to direct movies."
+    },
+    {
+      "question": "How did James Whale's artistic background influence his filmmaking style?",
+      "answer": "Whale's early discovery of his artistic talent and study of art, combined with his exposure to German Expressionism during his time in Hollywood, influenced his distinctive visual style in films like *Frankenstein* and *Bride of Frankenstein*, which featured dramatic lighting and stylized sets."
+    },
+    {
+      "question": "What major studio did James Whale work with during his peak years as a director?",
+      "answer": "During his peak years as a director, James Whale worked with Universal Studios, creating a dozen films for them between 1930 and 1936."
+    },
+    {
+      "question": "What were the circumstances surrounding James Whale's death?",
+      "answer": "After suffering strokes in 1956 that left him in pain, James Whale died by suicide on 29 May 1957. He drowned himself in his backyard swimming pool, ending a life that had been comfortable in his retirement years."
+    },
+    {
+      "question": "Write a Python code snippet to calculate the total number of movies James Whale directed.",
+      "answer": "python\n# James Whale directed 12 movies for Universal Studios between 1930 and 1936\nmovies_directed = 12\nprint(f\"James Whale directed a total of {movies_directed} movies.\")\n"
+    },
+    {
+      "question": "What role did James Whale play in the theatre before transitioning to Hollywood?",
+      "answer": "Before moving to Hollywood, James Whale worked as an actor, set designer, and director in the theatre. His Broadway directing work helped pave the way for his subsequent career in film."
+    }
+  ]
+}

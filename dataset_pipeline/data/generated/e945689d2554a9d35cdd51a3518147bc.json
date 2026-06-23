@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Avenue_Q",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is Avenue Q and who are its creators?",
+      "answer": "Avenue Q is a musical comedy featuring puppets and human actors. It was created by Robert Lopez and Jeff Marx, who composed the music and lyrics, and Jeff Whitty, who wrote the book. The musical is known for its adult-oriented themes, presented in a format parodying Sesame Street."
+    },
+    {
+      "question": "What awards did Avenue Q win at the 2004 Tony Awards?",
+      "answer": "At the 2004 Tony Awards, Avenue Q won three categories: Best Musical, Best Book, and Best Score."
+    },
+    {
+      "question": "How did Avenue Q transition from off-Broadway to Broadway?",
+      "answer": "Avenue Q premiered off-Broadway in 2003 at the Vineyard Theatre. Later that same year, in July, it moved to the John Golden Theatre on Broadway, where it ran until 2009, accumulating over 2,500 performances."
+    },
+    {
+      "question": "What are some of the themes explored in Avenue Q?",
+      "answer": "Avenue Q is praised for addressing mature themes such as racism, homosexuality, and internet pornography, presented in a comedic and satirical manner."
+    },
+    {
+      "question": "Can you provide a code snippet for a simple animation that mimics the puppet interaction style in Avenue Q?",
+      "answer": "Here’s a Python example using Pygame to simulate a basic puppet interaction with a human character:\npython\nimport pygame\n\npygame.init()\nscreen = pygame.display.set_mode((800, 600))\nclock = pygame.time.Clock()\n\n# Define puppet and human sprites (simplified as rectangles)\npuppet = pygame.Rect(300, 250, 50, 100)\nhuman = pygame.Rect(400, 350, 50, 100)\n\nrunning = True\nwhile running:\n    for event in pygame.event.get():\n        if event.type == pygame.QUIT:\n            running = False\n\n    # Simple movement logic (puppet follows human)\n    keys = pygame.key.get_pressed()\n    if keys[pygame.K_LEFT]:\n        human.x -= 5\n    if keys[pygame.K_RIGHT]:\n        human.x += 5\n\n    # Puppet mimics human position (basic interaction)\n    puppet.y = human.y - 100\n\n    screen.fill((255, 255, 255))\n    pygame.draw.rect(screen, (0, 0, 255), puppet)  # Puppet\n    pygame.draw.rect(screen, (255, 0, 0), human)   # Human\n\n    pygame.display.flip()\n    clock.tick(60)\n\npygame.quit()\n"
+    },
+    {
+      "question": "How many performances did Avenue Q have during its Broadway and off-Broadway runs combined?",
+      "answer": "Combining its Broadway run (2,500+ performances) and off-Broadway run at New World Stages (until 2019), Avenue Q had a total of 6,569 performances."
+    },
+    {
+      "question": "What are the main differences between the principal cast of Avenue Q and traditional puppet shows?",
+      "answer": "Unlike traditional puppet shows where puppeteers are often concealed, Avenue Q features unconcealed puppeteers who visibly operate the puppet characters (e.g., Princeton, Kate, Nicky) while interacting with costumed human actors on stage."
+    }
+  ]
+}

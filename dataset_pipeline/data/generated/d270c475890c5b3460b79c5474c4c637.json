@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Duncan_Renaldo_filmography",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was Duncan Renaldo best known for during the 1950s in the United States?",
+      "answer": "Duncan Renaldo was best known for his lead role in the children's television series *The Cisco Kid*, which aired from 1950 to 1956 and featured 156 episodes."
+    },
+    {
+      "question": "How did Duncan Renaldo's professional relationship with Leo Carrillo begin?",
+      "answer": "Duncan Renaldo and Leo Carrillo first worked together in the 1935 film *Moonlight Murder*, long before their collaboration on *The Cisco Kid* series."
+    },
+    {
+      "question": "What notable roles did Duncan Renaldo play in Republic Pictures films?",
+      "answer": "Renaldo appeared in 20 films for Republic Pictures, often alongside stars like John Wayne, Gene Autry, Roy Rogers, and Bob Steele. He also took over the role of Rico in the *Three Mesquiteers* series after Ray Corrigan left, portraying the character in seven films starting in 1939."
+    },
+    {
+      "question": "What was the legal consequence of Duncan Renaldo falsifying passport documents?",
+      "answer": "Renaldo served a two-year sentence at McNeil Island Federal Prison for falsifying passport documents by claiming he was born in New Jersey. He was later granted a pardon by President Franklin D. Roosevelt in 1936."
+    },
+    {
+      "question": "Can you provide an example of code that could be used to calculate the total number of films Duncan Renaldo appeared in?",
+      "answer": "Here’s a Python snippet to compute the total films mentioned in the text:\npython\ntotal_films = 67  # Silent era to later films\nprint(f\"Total feature-length films: {total_films}\")\n\nNote: This excludes his television work, which adds 156 episodes to his career."
+    },
+    {
+      "question": "How did Duncan Renaldo's career resume after his prison sentence?",
+      "answer": "After receiving a pardon from President Franklin D. Roosevelt in 1936, Renaldo resumed his film career. He was later granted full American citizenship by Judge James O'Connor in 1941."
+    },
+    {
+      "question": "What honor did Duncan Renaldo receive for his contributions to the entertainment industry?",
+      "answer": "In 1960, Renaldo was awarded a star on the Hollywood Walk of Fame at 1680 Vine Street for his contributions to the entertainment industry."
+    }
+  ]
+}

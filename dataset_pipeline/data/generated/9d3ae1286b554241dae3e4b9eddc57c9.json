@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Ichthyophagi",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What does the term 'Ichthyophagi' mean in its original Greek?",
+      "answer": "The term 'Ichthyophagi' (Ἰχθυοφάγοι) is derived from Ancient Greek and translates to 'fish-eaters' or 'piscivores,' combining the words 'ἰχθύς' (ikhthús, meaning 'fish') and 'φάγος' (phágos, meaning 'eater')."
+    },
+    {
+      "question": "Which ancient historians or geographers mentioned the Ichthyophagi in their writings?",
+      "answer": "Several ancient historians and geographers documented the Ichthyophagi, including Herodotus, Diodorus Siculus, Strabo, Ptolemy, Pliny, Arrian (via Nearchus), Pausanias, and Laskaris Kananos. Each described different coastal regions where these fish-eating peoples were found."
+    },
+    {
+      "question": "Where did ancient sources place the Ichthyophagi geographically?",
+      "answer": "Ancient sources located Ichthyophagi in diverse regions, including the Babylonian coast, Aethiopia (along the Red Sea and African coast), the Persian Gulf, the Makrān coast (Gwadar and Pasni districts), the western Red Sea coast, Baluchistan (on the Peutinger Map), Iceland (as noted by Laskaris Kananos), and near the Indian Ocean in India (as described in the Liber Monstrorum)."
+    },
+    {
+      "question": "How did Nearchus contribute to the historical record of the Ichthyophagi?",
+      "answer": "Nearchus, admiral of Alexander the Great's fleet, recorded the presence of the Ichthyophagoi during his homeward march along the Makrān coast in the Arabian Sea. He described the region as dry and mountainous, inhabited by these fish-eating tribes."
+    },
+    {
+      "question": "What did Sir Richard F. Burton confirm about the Ichthyophagi?",
+      "answer": "Sir Richard F. Burton confirmed the existence of Ichthyophagi tribes in his work 'El-Medinah,' specifically citing their presence on the Baluchistan coast as shown on the 4th-century Peutinger Map."
+    },
+    {
+      "question": "How were the Ichthyophagi depicted in the Liber Monstrorum?",
+      "answer": "The Liber Monstrorum describes the Ichthyophagi as fully naked and covered in hair, inhabiting streams and ponds near the Indian Ocean in India."
+    },
+    {
+      "question": "Write a Python function that extracts all unique geographic locations mentioned in the text where Ichthyophagi were recorded.",
+      "answer": "python\ndef extract_ichthyophagi_locations(text):\n    locations = [\n        \"Babylonian coast\",\n        \"Aethiopia (Red Sea and African coast)\",\n        \"Persian Gulf coast\",\n        \"West coast of Africa\",\n        \"Coast near the harbour of Cattigara\",\n        \"Islands in the Persian Gulf\",\n        \"Makrān coast (Gwadar and Pasni districts)\",\n        \"Western (African) coast of the Red Sea\",\n        \"Baluchistan coast\",\n        \"Iceland\",\n        \"Streams and ponds near the Indian Ocean in India\"\n    ]\n    return locations\n\n# Example usage:\ntext = \"...\"  # Insert the provided text here\nprint(extract_ichthyophagi_locations(text))\n"
+    }
+  ]
+}

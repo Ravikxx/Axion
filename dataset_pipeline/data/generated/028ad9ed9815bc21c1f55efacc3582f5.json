@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/HMAS_Pirie_(J189)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What class of ship was HMAS Pirie, and how many were constructed during World War II?",
+      "answer": "HMAS Pirie was a Bathurst-class corvette, and 60 were constructed during World War II."
+    },
+    {
+      "question": "What notable incident involving HMAS Pirie occurred in April 1943?",
+      "answer": "In April 1943, HMAS Pirie was damaged off Oro Bay by Japanese aircraft during an escort mission in the South West Pacific Area."
+    },
+    {
+      "question": "Describe the mutiny that occurred on HMAS Pirie in 1943. What were the contributing factors?",
+      "answer": "After returning to service following repairs, junior sailors on HMAS Pirie staged a strike-like mutiny. Contributing factors included tensions between the commanding officer and crew, exacerbated by lack of leave, mail, and pay during the repair period."
+    },
+    {
+      "question": "How did HMAS Pirie contribute to the British Pacific Fleet during World War II?",
+      "answer": "HMAS Pirie was attached to the British Pacific Fleet in 1944, where it continued convoy escort and minesweeping duties. It was also the third Royal Australian Navy ship to enter Japanese waters and was present at Japan's surrender."
+    },
+    {
+      "question": "What happened to HMAS Pirie after World War II?",
+      "answer": "After the war, HMAS Pirie returned to Australia, was decommissioned, and sold to Turkey. Renamed TCG Amasra, it served with the Turkish Navy until 26 March 1984."
+    },
+    {
+      "question": "Why was the commanding officer of HMAS Pirie replaced in 1943?",
+      "answer": "The commanding officer was replaced at the end of 1943 due to poor handling of a mutiny by the crew during the repair period, which highlighted leadership issues on the ship."
+    },
+    {
+      "question": "Write a Python code snippet to calculate the number of years TCG Amasra served in the Turkish Navy.",
+      "answer": "python\n# TCG Amasra (formerly HMAS Pirie) served from its commissioning in 1945 to decommissioning in 1984\ndecommission_year = 1984\ncommission_year = 1945\nyears_of_service = decommission_year - commission_year\nprint(f\"TCG Amasra served for {years_of_service} years in the Turkish Navy.\")\n\nThe code calculates that TCG Amasra served for 39 years in the Turkish Navy."
+    }
+  ]
+}

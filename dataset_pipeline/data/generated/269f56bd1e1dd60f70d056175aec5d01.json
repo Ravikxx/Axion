@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/American_Museum_of_Asmat_Art",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the American Museum of Asmat Art and where is it located?",
+      "answer": "The American Museum of Asmat Art is a gallery dedicated to the art and culture of the Asmat people of southwestern Papua, Indonesia. It is located at the University of St. Thomas in St. Paul, Minnesota, and houses over 2,200 objects, making it one of the largest collections of its kind in the United States."
+    },
+    {
+      "question": "Why is Asmat art highly sought after by Western museums despite the challenges of collecting it?",
+      "answer": "Asmat art gained significant attention in Western art-collecting circles due to its exceptionally expressive style, which caused a sensation in the post-WWII era. This led to large-scale collecting expeditions to the remote Asmat region, despite the logistical difficulties involved in accessing the area."
+    },
+    {
+      "question": "Who founded the American Museum of Asmat Art and what was their background?",
+      "answer": "The museum was founded by Bishop Alphonse Sowada, a Minnesota native who worked with the Asmat people in Agats, Indonesia, for decades starting in 1958. Sowada held a master's degree in cultural anthropology from Catholic University of America and authored books on Asmat art and culture."
+    },
+    {
+      "question": "What notable contributions did Bishop Alphonse Sowada make to supporting Asmat culture beyond collecting artifacts?",
+      "answer": "Bishop Alphonse Sowada played a key role in founding the Asmat Museum of Culture and Progress in Agats in 1973, which was designed to serve local people rather than tourists. He also established an annual woodcarving competition and auction in Agats in 1981 to honor outstanding carvers, held every October."
+    },
+    {
+      "question": "How did the American Museum of Asmat Art come to be housed at the University of St. Thomas?",
+      "answer": "After Bishop Alphonse Sowada retired and returned to the United States, he temporarily housed the collection in Hastings, Nebraska, and Shoreview, Minnesota. In 2007, he donated the collection to the University of St. Thomas, where it was opened as a permanent museum in 2012."
+    },
+    {
+      "question": "What types of artifacts can visitors expect to see at the American Museum of Asmat Art?",
+      "answer": "Visitors can view a permanent display featuring Asmat works such as ancestor poles (bis) and canoes, as well as rotating exhibitions that highlight various aspects of Asmat art and culture. Much of the collection is also accessible through the museum's online database."
+    },
+    {
+      "question": "Write a Python function that checks if the American Museum of Asmat Art's collection size is among the largest in the U.S. based on a given threshold.",
+      "answer": "python\ndef is_largest_collection(collection_size, threshold=2200):\n    \"\"\"\n    Checks if the collection size is among the largest in the U.S.\n    \n    Args:\n        collection_size (int): Number of objects in the collection.\n        threshold (int): Minimum threshold to be considered \"largest\" (default: 2200).\n    \n    Returns:\n        bool: True if the collection size meets or exceeds the threshold, False otherwise.\n    \"\"\"\n    return collection_size >= threshold\n\n# Example usage:\ncollection_size = 2200\nprint(is_largest_collection(collection_size))  # Output: True\n"
+    }
+  ]
+}

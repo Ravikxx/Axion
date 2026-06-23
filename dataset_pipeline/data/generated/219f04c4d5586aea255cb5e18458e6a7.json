@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Bev_Koester",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What were the key career roles of Charles Beverley 'Bev' Koester?",
+      "answer": "Charles Beverley 'Bev' Koester had a diverse career as a Canadian naval officer, civil servant, and Clerk of the House of Commons of Canada. He served in the Royal Canadian Navy during World War II, retiring as a lieutenant commander in 1960. He later worked as an officer in the Legislative Assembly of Saskatchewan, taught history at the University of Regina, and held positions as Clerk Assistant and Clerk in the Canadian House of Commons from 1975 to 1987."
+    },
+    {
+      "question": "What notable contributions did Bev Koester make to Canadian parliamentary procedure?",
+      "answer": "Bev Koester authored several books, including *Footprints in Time – Saskatchewan* (1965) and *The Measure of the Man* (1976), and edited *Bourinot's Rules of Order*, a key handbook on Canadian parliamentary procedure. As Clerk of the House of Commons, he introduced television cameras into the House, modernizing its transparency."
+    },
+    {
+      "question": "How did Bev Koester's military service influence his later career?",
+      "answer": "Bev Koester's military service during World War II, particularly his involvement in the liberation of Oslo and Copenhagen in 1945, likely shaped his disciplined approach to public service. His naval background and education at the Royal Canadian Naval College provided a foundation for his later roles in government and academia."
+    },
+    {
+      "question": "What was Bev Koester's educational background?",
+      "answer": "Bev Koester graduated from the Royal Canadian Naval College at Royal Roads in 1944. He later attended the University of Saskatchewan and the University of Alberta, where he studied history. He also taught history at the University of Regina and became head of its history department."
+    },
+    {
+      "question": "Why is Bev Koester recognized as a pioneer in his field?",
+      "answer": "Bev Koester is recognized as a pioneer because he was the first Clerk of the Canadian House of Commons to be a career civil servant. Additionally, he broke barriers by becoming the first clerk from a Commonwealth country to serve as a temporary senior Clerk of the British House of Commons."
+    },
+    {
+      "question": "What awards or honors did Bev Koester receive?",
+      "answer": "In 1989, Bev Koester was made an Officer of the Order of Canada in recognition of his contributions to public service and parliamentary procedure."
+    },
+    {
+      "question": "Write a Python code snippet to calculate Bev Koester's age at the time of his death.",
+      "answer": "python\ndef calculate_age(birth_year, death_year, birth_month, death_month):\n    age = death_year - birth_year\n    if (death_month, birth_month) < (death_month, birth_month):\n        age -= 1\n    return age\n\n# Bev Koester's birth and death details\nbirth_year, birth_month = 1926, 1\nage_at_death = calculate_age(birth_year, 1998, birth_month, 2)\nprint(f\"Bev Koester was {age_at_death} years old at the time of his death.\")\n\nThis code calculates that Bev Koester was 72 years old when he died on February 1, 1998."
+    }
+  ]
+}

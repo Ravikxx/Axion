@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Azara_Egbelu",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Where is Azaraegbelu located?",
+      "answer": "Azaraegbelu is a village in southeastern Nigeria, situated near the city of Owerri."
+    },
+    {
+      "question": "What is the historical significance of Azaraegbelu in relation to Catholicism in Eastern Nigeria?",
+      "answer": "Azaraegbelu is one of the birthplaces of Catholicism in Eastern Nigeria. The Catholic Church in Azaraegbelu was built simultaneously with a centrally located church in Emekuku, and it was constructed by Irish missionaries."
+    },
+    {
+      "question": "How many kindreds make up Azaraegbelu, and what are their names?",
+      "answer": "Azaraegbelu is made up of four kindreds: Umuokoro (Okoro Mama Ukwu), Onum (Onuma Egbula Ezelukwu), Umuezehu (Ezuhu Oma Onum), and Ama-Achara."
+    },
+    {
+      "question": "What notable educational institutions were or are located in Azaraegbelu?",
+      "answer": "The Teachers Training College (TTC), now a Catholic secondary school, was previously located in Azaraegbelu. Additionally, there is a Marist Brothers-run primary school at the Catholic Church in the village."
+    },
+    {
+      "question": "What is the name of the main market in Azaraegbelu, and when does it host a special event?",
+      "answer": "The main market in Azaraegbelu is called Orie-Nwinyi. It hosts a special event called Orienwainyi Market Day during the Christmas period."
+    },
+    {
+      "question": "What cultural event attracts masquerades to Azaraegbelu?",
+      "answer": "The Orienwainyi Market Day during the Christmas period attracts masquerades from many communities to Azaraegbelu for a show."
+    },
+    {
+      "question": "Write a Python function that takes a village name as input and returns whether it is in southeastern Nigeria based on a predefined list of such villages.",
+      "answer": "python\n\ndef is_southeastern_village(village_name):\n    southeastern_villages = {\n        \"Azaraegbelu\", \"Owerri\", \"Emekuku\", \"Ikeduru\", \"Aboh-Mbaise\", \"Emii\"\n    }\n    return village_name in southeastern_villages\n\n# Example usage:\nprint(is_southeastern_village(\"Azaraegbelu\"))  # Output: True\nprint(is_southeastern_village(\"Lagos\"))  # Output: False\n"
+    }
+  ]
+}

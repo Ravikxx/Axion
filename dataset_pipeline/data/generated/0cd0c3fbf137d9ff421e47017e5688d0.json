@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Battle_of_Hannut",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the primary strategic objective of the Germans during the Battle of Hannut?",
+      "answer": "The primary strategic objective of the Germans was to tie down the strongest elements of the French First Army and prevent it from reinforcing the main German attack through the Ardennes. This was part of the German operational plan Fall Gelb (Case Yellow), designed to encircle and destroy Allied forces by advancing to the English Channel."
+    },
+    {
+      "question": "How did the Battle of Hannut contribute to Germany's overall plan in Fall Gelb?",
+      "answer": "The Battle of Hannut tied down substantial Allied forces, particularly the French First Army, preventing them from participating in the Battle of Sedan or reinforcing the Ardennes front. This delay allowed the Germans to execute their planned thrust through the Ardennes while the Allies were distracted, enabling the encirclement strategy."
+    },
+    {
+      "question": "What was the significance of the Battle of Hannut in terms of armored warfare?",
+      "answer": "The Battle of Hannut was the largest clash of tanks in armored warfare history at the time, marking a significant engagement between German and French armored divisions. It demonstrated the effectiveness of coordinated armored tactics and set a precedent for large-scale tank battles in future conflicts."
+    },
+    {
+      "question": "Describe the French strategy during the Battle of Hannut and its outcome.",
+      "answer": "The French strategy was to conduct a delaying action by sending two armored divisions to Hannut to slow the German advance, allowing the rest of the First Army to prepare defenses at Gembloux. The outcome saw the French successfully delay the Germans but fail to neutralize their forces completely. This delay allowed the First Army to retreat and regroup, contributing to the eventual Evacuation of Dunkirk."
+    },
+    {
+      "question": "What happened at the Battle of Gembloux, and how did it relate to the Battle of Hannut?",
+      "answer": "The Battle of Gembloux (14–15 May 1940) followed the Battle of Hannut and saw the French First Army again score tactical successes against the Germans. Although the French forces were seriously damaged, they were able to retreat to Lille, where they delayed the Germans during the Siege of Lille. This retreat was crucial for the re-embarkation of Allied troops at Dunkirk."
+    },
+    {
+      "question": "How did the delay of the German breakout through the Ardennes (scheduled for 15 May) play into their deception strategy?",
+      "answer": "The delay of the German breakout through the Ardennes was a deliberate deception tactic. By attacking the Netherlands and Belgium first, the Germans lured the Allies into advancing into Belgium according to the Dyle Plan, exposing their flank. This allowed the Germans to execute their main thrust through the Ardennes while the Allies were tied down in eastern Belgium, setting the stage for the encirclement."
+    },
+    {
+      "question": "Write a Python script to calculate the percentage of German armor lost during the Battle of Gembloux, given that the Germans lost over a third of their armor in combat.",
+      "answer": "python\ndef calculate_armor_loss(total_armor):\n    # Calculate the percentage of armor lost (over a third, or >33.3%)\n    armor_lost_percentage = (total_armor * 0.33) / total_armor * 100\n    return f\"The Germans lost approximately {armor_lost_percentage:.1f}% of their armor during the Battle of Gembloux.\"\n\n# Example usage:\ntotal_german_armor = 100  # Assuming 100 units of armor for simplicity\nprint(calculate_armor_loss(total_german_armor))\n\nThis script calculates the percentage of German armor lost during the Battle of Gembloux, assuming a loss of over a third of their total armor."
+    }
+  ]
+}

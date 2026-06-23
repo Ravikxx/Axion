@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/2005_German_federal_election",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What were the main political parties involved in Germany's 2005 federal election?",
+      "answer": "The main political parties involved in Germany's 2005 federal election were the Social Democratic Party of Germany (SPD), Alliance 90/The Greens, the Christian Democratic Union (CDU), the Christian Social Union in Bavaria (CSU), and the Free Democratic Party (FDP). The election also saw the emergence of a new party, the Left Party, led by Gregor Gysi and Oskar Lafontaine, which won 8.7% of the vote."
+    },
+    {
+      "question": "Why was there a snap federal election in Germany in 2005?",
+      "answer": "The snap federal election was called after the government's defeat in the North Rhine-Westphalia state election, which caused the governing coalition to intentionally lose a motion of confidence, thereby triggering an early federal election. The original election was planned for autumn 2006, but the snap election was held on 18 September 2005."
+    },
+    {
+      "question": "What were the election results for the CDU/CSU and SPD in the 2005 German federal election?",
+      "answer": "In the 2005 German federal election, the CDU/CSU won 35% of the vote, while the SPD won 34%. This was a significant loss for the CDU/CSU compared to their 2002 result, and the SPD's performance was slightly better than expected, given expectations of a major defeat."
+    },
+    {
+      "question": "What was the role of the Left Party in the 2005 German federal election, and why was it a 'major stumbling block'?",
+      "answer": "The Left Party won 8.7% of the vote and 54 seats in the Bundestag, making it the third-largest party. It was a 'major stumbling block' because neither the SPD–Green coalition nor the CDU/CSU–FDP coalition had a majority of seats, and both the CDU/CSU and SPD rejected cooperation with the Left Party. This complicated the formation of a government."
+    },
+    {
+      "question": "How did Angela Merkel become Chancellor after the 2005 election despite the CDU/CSU not winning a majority?",
+      "answer": "After the election, negotiations began for a grand coalition between the CDU/CSU and SPD, as neither conventional arrangement could achieve a majority. On 10 October 2005, both parties announced successful negotiations, and Angela Merkel was elected Chancellor on 22 November 2005 with 397 votes in favor."
+    },
+    {
+      "question": "What percentage of the vote did the FDP and Greens receive in the 2005 German federal election, and how did this compare to their previous results?",
+      "answer": "The FDP received just under 10% of the vote, its best result since 1990, while the Greens suffered small losses. This marked a significant improvement for the FDP compared to earlier elections, while the Greens' performance was slightly weaker than in previous years."
+    },
+    {
+      "question": "Write a Python function that calculates the percentage of seats a party would win in the Bundestag given its vote share and the total number of seats.",
+      "answer": "python\ndef calculate_seats(vote_share_percent, total_seats):\n    \"\"\"\n    Calculate the number of seats a party would win in the Bundestag.\n    \n    Args:\n        vote_share_percent (float): The percentage of votes the party received.\n        total_seats (int): The total number of seats in the Bundestag.\n    \n    Returns:\n        int: The number of seats the party would win.\n    \"\"\"\n    if vote_share_percent < 0 or vote_share_percent > 100:\n        raise ValueError(\"Vote share must be between 0 and 100.\")\n    if total_seats <= 0:\n        raise ValueError(\"Total seats must be a positive integer.\")\n    \n    seats = (vote_share_percent / 100) * total_seats\n    return round(seats)\n\n# Example usage:\nCDU_CS_votes = 35.0\ntotal_seats = 614  # Approximate number of seats in the 16th Bundestag\nCDU_CS_seats = calculate_seats(CDU_CS_votes, total_seats)\nprint(f\"CDU/CSU would win approximately {CDU_CS_seats} seats with {CDU_CS_votes}% of the vote.\")\n"
+    }
+  ]
+}

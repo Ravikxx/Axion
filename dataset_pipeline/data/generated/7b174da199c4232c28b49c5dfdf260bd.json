@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Anier_García",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When and where was Anier Octavio García Ortiz born?",
+      "answer": "Anier Octavio García Ortiz was born on March 9, 1976, in Santiago de Cuba."
+    },
+    {
+      "question": "What major hurdling event did Anier García win at the 2000 Summer Olympics?",
+      "answer": "Anier García won the gold medal in the men's 110 metres hurdles at the 2000 Summer Olympics in Sydney."
+    },
+    {
+      "question": "Describe García's performance at the 1997 World Indoor Championships in Paris.",
+      "answer": "In 1997, Anier García won the gold medal in the 60 metres hurdles at the World Indoor Championships held in Paris."
+    },
+    {
+      "question": "How did García perform at the 2004 Summer Olympics?",
+      "answer": "At the 2004 Summer Olympics in Athens, Anier García won the bronze medal in the 110 metres hurdles."
+    },
+    {
+      "question": "What notable injury impacted García's participation in the 2003 World Championships?",
+      "answer": "García did not compete at the 2003 World Championships due to a thigh injury."
+    },
+    {
+      "question": "Provide a code snippet that calculates the time difference between García's gold medal win in Sydney and his bronze medal win in Athens.",
+      "answer": "python\n# Time difference between García's gold (2000) and bronze (2004) medals in seconds\nolympic_gold_time = 13.00  # Example time for 2000 gold medal\nolympic_bronze_time = 13.20  # Example time for 2004 bronze medal\ntime_difference = olympic_bronze_time - olympic_gold_time\nprint(f\"Time difference: {time_difference} seconds\")\n"
+    },
+    {
+      "question": "What was García's final position at the 1999 Pan American Games and the 1999 World Championships?",
+      "answer": "García won the gold medal at the 1999 Pan American Games but finished second behind Colin Jackson at the 1999 World Championships."
+    }
+  ]
+}

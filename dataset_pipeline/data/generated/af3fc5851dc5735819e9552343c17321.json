@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Blood_Road",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the historical significance of the Blood Road in Norway?",
+      "answer": "The Blood Road (Norwegian: Blodveien) is a route northeast of Rognan in Saltdal Municipality, Nordland county, Norway, constructed by prisoners during World War II. It gained its name from a blood-painted cross on a rock cutting, created by a prisoner's brother after the prisoner was shot by guards in June 1943. The road was part of Norwegian National Road 50 between Rognan and Langset."
+    },
+    {
+      "question": "How did the conditions at the Botn prisoner-of-war camp change over time?",
+      "answer": "Initially, under SS leadership starting in 1942, the Botn camp had extremely harsh conditions: small rations, long working hours, poor winter clothing, primitive barracks, and cruel treatment, including mass executions. Conditions improved after the Wehrmacht took over in October 1943 and further after the Red Cross conducted inspections following their discovery of the camps."
+    },
+    {
+      "question": "What nationalities were represented among the prisoners at the Botn camp, and what is known about their ages?",
+      "answer": "The Botn camp held prisoners from Yugoslavia, the Soviet Union, and Poland. Notably, the youngest prisoners were as young as 12 years old. Among the estimated 900 prisoners who arrived at the camp, about half died due to executions, punishment, malnutrition, and exhaustion."
+    },
+    {
+      "question": "Why were the trials after World War II significant for the Botn camp?",
+      "answer": "Postwar trials revealed that the Botn camp and similar facilities were referred to as extermination camps due to their high mortality rates and cruel conditions. The trials also highlighted that Norwegian youths as young as 16, serving as guards in the Hirdvaktbataljon, had treated prisoners harshly. Several Norwegian guards were imprisoned, and German SS officers received death sentences by firing squad."
+    },
+    {
+      "question": "How many prisoner-of-war camps existed in Saltdal during World War II, and how did conditions in these camps compare?",
+      "answer": "There were up to 18 prisoner-of-war camps in Saltdal, stretching from Saltfjellet to Saltdal Fjord. While conditions varied, the treatment in these camps was generally better than in the original five camps, including Botn. However, all camps had high mortality rates, and the postwar trials classified several as extermination camps."
+    },
+    {
+      "question": "Write a Python function to calculate the estimated mortality rate at the Botn camp based on historical data.",
+      "answer": "python\ndef calculate_mortality_rate(arrivals, deaths):\n    \"\"\"Calculate the mortality rate at the Botn camp based on historical data.\n    \n    Args:\n        arrivals (int): Total number of prisoners who arrived at the camp.\n        deaths (int): Number of prisoners who died in the camp.\n    \n    Returns:\n        float: Mortality rate as a percentage.\n    \"\"\"\n    if arrivals <= 0:\n        raise ValueError(\"Number of arrivals must be greater than zero.\")\n    mortality_rate = (deaths / arrivals) * 100\n    return mortality_rate\n\n# Example usage:\narrivals = 900\nestimated_deaths = 450  # Approximately half died\nprint(f\"Estimated mortality rate: {calculate_mortality_rate(arrivals, estimated_deaths):.2f}%\")\n"
+    },
+    {
+      "question": "What role did the Red Cross play in improving conditions at the Botn camp?",
+      "answer": "The Red Cross became involved after learning of the camp's existence and conducted several inspections. Their involvement led to gradual improvements in conditions at the Botn camp, particularly after the Wehrmacht took over management in October 1943. Inspections by the Red Cross helped expose the harsh realities and pressured authorities to improve prisoner welfare."
+    }
+  ]
+}

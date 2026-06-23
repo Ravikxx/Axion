@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Craven_Dam",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Where is Craven Dam located in Saskatchewan?",
+      "answer": "Craven Dam is located in the Canadian province of Saskatchewan, in the Rural Municipality (RM) of Longlaketon No. 219. It sits at the confluence of the Qu'Appelle River and Last Mountain Creek, immediately east of the village of Craven, at LSD SW 24-20-21 W2. The dam can be accessed on the north side via Highway 99."
+    },
+    {
+      "question": "What is the primary purpose of Craven Dam, and how does it differ from typical dams?",
+      "answer": "Craven Dam's primary purpose is to regulate water flow along the Qu'Appelle River rather than create a reservoir. Unlike many dams that impound water, Craven Dam does not form a large reservoir under normal conditions. However, when its gates are closed, water can backflood into Last Mountain Lake, temporarily converting it into a reservoir."
+    },
+    {
+      "question": "How is the Craven Dam fishway structured, and what is its function?",
+      "answer": "The Craven Dam fishway is 29.5 meters long, 3.6 meters wide, and includes seven vertical baffles designed to reduce flow velocities and create refuges for migrating fish. It has a gated bay at the upstream end measuring 1.5 by 1.5 meters. The fishway allows fish to bypass the dam, facilitating their movement between the upper and lower watersheds. Researchers can drop a steel fish trap into the bays to capture fish for study."
+    },
+    {
+      "question": "Provide the dimensions of Craven Dam and its gates.",
+      "answer": "Craven Dam is 28.4 meters long and 4.9 meters high. It consists of four gates, each 4.5 meters wide and 2.15 meters high."
+    },
+    {
+      "question": "What are the five sub-basins of the Qu'Appelle River upstream from Craven Dam?",
+      "answer": "The five sub-basins of the Qu'Appelle River upstream from Craven Dam are: Lanigan-Manitou, Wascana Creek, Last Mountain Lake, Upper Qu'Appelle, and Moose Jaw River. The total drainage basin upstream of the dam covers 23,443 km²."
+    },
+    {
+      "question": "How was Craven Dam modified during its 2002–2003 reconstruction, and what improvements were made?",
+      "answer": "During the 2002–2003 reconstruction led by Agriculture and Agri-Food Canada, the original dam built in 1943 was rebuilt. The new dam included a 29.5-meter fishway with vertical baffles to reduce flow velocities and create fish refuges. The fishway also features bays for researchers to deploy fish traps and PIT tagging equipment to monitor fish movements."
+    },
+    {
+      "question": "What species of fish are monitored using the Craven Dam fishway, and how are they tracked?",
+      "answer": "Fish species monitored at Craven Dam include bigmouth buffalo, common carp, lake whitefish, northern pike, quillback, walleye, white sucker, and yellow perch. Researchers track these fish using Passive Integrated Transponder (PIT) tags implanted in their abdominal cavities to assess their movements through the fishway."
+    }
+  ]
+}

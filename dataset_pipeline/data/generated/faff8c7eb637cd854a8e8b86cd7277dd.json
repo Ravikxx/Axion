@@ -1,0 +1,34 @@
+{
+  "source_url": "https://mathworld.wolfram.com/KacFormula.html",
+  "category": "mathworld",
+  "pairs": [
+    {
+      "question": "What is the Kac formula and what does it calculate?",
+      "answer": "The Kac formula calculates the expected number of real zeros of a random polynomial of degree n, where the coefficients are independent and normally distributed. Specifically, it provides the average count of real roots for such a polynomial, derived from statistical properties of its coefficients."
+    },
+    {
+      "question": "How is the expected number of real zeros for a random polynomial of degree 3 calculated using the Kac formula?",
+      "answer": "For a random polynomial of degree 3 with normally distributed coefficients, the expected number of real zeros is approximately 1.29702. This value is derived from the integral form of the Kac formula, which evaluates the average root count over all possible coefficient configurations."
+    },
+    {
+      "question": "What are the two forms of the Kac formula mentioned in the text, and who contributed to their development?",
+      "answer": "The two forms of the Kac formula are attributed to Kac (1943) for the initial term and Kostlan (1993), along with Edelman and Kostlan (1995), for the alternative formulation. The initial form was first derived by Kac, while the second form was later developed by Kostlan and collaborators."
+    },
+    {
+      "question": "Write a Python function to compute the expected number of real zeros for a random polynomial of degree n using the Kac formula.",
+      "answer": "python\nimport numpy as np\nfrom scipy.integrate import quad\n\ndef expected_real_zeros(n):\n    \"\"\"\n    Compute the expected number of real zeros of a random polynomial of degree n.\n    Coefficients are assumed to be independent and normally distributed.\n    \n    Parameters:\n    n (int): Degree of the polynomial.\n    \n    Returns:\n    float: Expected number of real zeros.\n    \"\"\"\n    if n == 0:\n        return 0.0\n    \n    def integrand(theta):\n        return np.sqrt(1 - np.cos(theta)**2) * (n + np.cos(n * theta) - np.sin(n * theta) * np.tan(theta))\n    \n    # Compute the integral from 0 to pi\n    integral, _ = quad(integrand, 0, np.pi)\n    expected_zeros = integral / np.pi\n    \n    return expected_zeros\n\n# Example usage:\nprint(expected_real_zeros(3))  # Output: ~1.29702\n"
+    },
+    {
+      "question": "What is the significance of the sequence A093601 in the context of the Kac formula?",
+      "answer": "Sequence A093601 in the OEIS represents the first few values of the expected number of real zeros for random polynomials with normally distributed coefficients. For example, the sequence starts with 1 (for degree 0), 1.27324 (degree 1), and 1.29702 (degree 2), providing numerical benchmarks for the Kac formula's predictions."
+    },
+    {
+      "question": "How do the plots mentioned in the text illustrate the Kac formula?",
+      "answer": "The left plot shows the integrand of the Kac formula, which represents the contribution of each angle to the expected number of real zeros. The right plot displays numerical values of the expected zeros (red curve) alongside the sequence A093601 (top curve), allowing for visual comparison between theoretical predictions and computed values for small degrees."
+    },
+    {
+      "question": "Explain the conceptual difference between the Kac formula and Wallis's constant as mentioned in the 'More things to try' section.",
+      "answer": "Wallis's constant relates to the product of fractions (2n)/(2n-1) * (2n)/(2n+1) as n approaches infinity, whereas the Kac formula addresses the average number of real roots in random polynomials. While Wallis's constant is a limit of infinite products, the Kac formula involves integration over a probability distribution of polynomial coefficients to compute an expected value."
+    }
+  ]
+}

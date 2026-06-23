@@ -1,0 +1,34 @@
+{
+  "source_url": "https://mathworld.wolfram.com/GausssCyclotomicFormula.html",
+  "category": "mathworld",
+  "pairs": [
+    {
+      "question": "What is Gauss's Cyclotomic Formula and how is it defined for a prime number p?",
+      "answer": "Gauss's Cyclotomic Formula provides the coefficients of cyclotomic polynomials φₙ(x) for a prime number p, expressed as homogeneous polynomials with integer coefficients. Specifically, for a prime p, the nth cyclotomic polynomial φₙ(x) can be written in terms of binomial coefficients and powers of x, where the coefficients depend on the divisors of n."
+    },
+    {
+      "question": "How did Kraitchik generalize Gauss's Cyclotomic Formula?",
+      "answer": "Kraitchik generalized Gauss's formula to odd squarefree integers, extending its applicability beyond prime numbers. This generalization maintains the structure of homogeneous polynomials with integer coefficients but applies to a broader class of integers."
+    },
+    {
+      "question": "Write the simplified form of Gauss's Cyclotomic Formula for a general integer n.",
+      "answer": "For a general integer n with integer coefficients, Gauss's Cyclotomic Formula can be written as:\nφₙ(x) = ∏_{d|n} (xᵈ - 1)^{μ(n/d)}\nwhere μ is the Möbius function, and the product is over all divisors d of n."
+    },
+    {
+      "question": "Under what conditions is the cyclotomic polynomial φₙ(x) symmetric or antisymmetric?",
+      "answer": "The cyclotomic polynomial φₙ(x) is symmetric if n is even, meaning φₙ(x) = x^{deg(φₙ)} φₙ(1/x). Otherwise, if n is of the form 4k + 2 for some integer k, it is antisymmetric, meaning φₙ(x) = -x^{deg(φₙ)} φₙ(1/x). In most other cases, it is neither symmetric nor antisymmetric."
+    },
+    {
+      "question": "Provide a code snippet to compute the first few cyclotomic polynomials using Gauss's formula.",
+      "answer": "Here is a Python snippet to compute the first few cyclotomic polynomials φₙ(x) using Gauss's formula:\npython\nfrom sympy import cyclotomic_poly\n\n# Compute the first 5 cyclotomic polynomials\nfor n in range(1, 6):\n    phi_n = cyclotomic_poly(n, 'x')\n    print(f\"φ_{n}(x) = {phi_n}\")\n\nThis uses the `sympy` library's `cyclotomic_poly` function to generate φₙ(x)."
+    },
+    {
+      "question": "What is the degree of the nth cyclotomic polynomial φₙ(x)?",
+      "answer": "The degree of the nth cyclotomic polynomial φₙ(x) is given by Euler's totient function φ(n), where φ(n) counts the number of integers up to n that are coprime with n. For example, φ₅(x) has degree φ(5) = 4."
+    },
+    {
+      "question": "Explain the Aurifeuillian Factorization and its relation to Gauss's Cyclotomic Formula.",
+      "answer": "Aurifeuillian Factorization is a technique to factorize certain cyclotomic polynomials into products of polynomials with integer coefficients, often used in number theory. While Gauss's Cyclotomic Formula provides the coefficients of φₙ(x), Aurifeuillian Factorization reveals deeper structural properties, allowing factorizations like φ₁₀(x) = (x⁴ - x³ + x² - x + 1)(x⁴ + x³ + x² + x + 1)."
+    }
+  ]
+}

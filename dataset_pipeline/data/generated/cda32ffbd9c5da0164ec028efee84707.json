@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Dutch_folk_dance",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What are some traditional Dutch folk dances?",
+      "answer": "Traditional Dutch folk dances include clog dancing (though typically performed in shoes), Driekusman, Hoksebarger, Veleta, Kruispolka, and Spaanse Wals. Some of these, like Veleta, were popular during the 1950s–1970s at weddings and dances."
+    },
+    {
+      "question": "Why are clogs not commonly used in Dutch folk dancing?",
+      "answer": "Clogs limit the range of dance moves, so Dutch folk dance is typically performed in shoes. Historically, clogs were reserved for work, while shoes were part of church-going attire. Only during harvest feasts did farmers dance in clogs."
+    },
+    {
+      "question": "How do modern Dutch folk dances differ from traditional ones?",
+      "answer": "Modern Dutch folk dances often involve new dance moves or patterns that borrow from traditional dances. These contemporary versions may blend original elements with new choreographies for stage performances."
+    },
+    {
+      "question": "What are the two main types of Dutch folk dance groups today?",
+      "answer": "The first type focuses on preserving traditional local dances, often with elderly dancers (50+). The second type performs Dutch folklore on stage with new choreographies, featuring younger dancers (8–50) and participating in festivals."
+    },
+    {
+      "question": "How are Dutch folk dances like Veleta connected to other countries?",
+      "answer": "Dances like Veleta share origins with German dances and are sometimes danced in countries like Poland and Lithuania, though the actual dances may differ. The melodies are often the same."
+    },
+    {
+      "question": "What role do Dutch folk dances play in modern society?",
+      "answer": "Dutch folk dances are no longer widely practiced but are occasionally featured at old-fashioned farmer weddings or used as exercise in old people homes. Some groups still perform them, either preserving tradition or adapting them for modern stage shows."
+    },
+    {
+      "question": "Write a Python function to extract traditional Dutch folk dance names from a given text.",
+      "answer": "python\ndef extract_dutch_folk_dances(text):\n    dances = [\n        \"clog dancing\", \"Driekusman\", \"Hoksebarger\", \n        \"Veleta\", \"Kruispolka\", \"Spaanse Wals\"\n    ]\n    found_dances = [dance for dance in dances if dance.lower() in text.lower()]\n    return found_dances\n\n# Example usage:\ntext = \"Traditional Dutch dances include Veleta and Hoksebarger.\"\nprint(extract_dutch_folk_dances(text))  # Output: ['Veleta', 'Hoksebarger']\n"
+    }
+  ]
+}

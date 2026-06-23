@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/itslokeshx/i-built-a-portfolio-like-a-system-not-a-resume-1kh9",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What is Lokesh's approach to learning and why does he prefer it?",
+      "answer": "Lokesh prefers learning by building, testing, breaking, and refining real systems rather than memorizing theory or following tutorials blindly. This hands-on approach helps him understand the practical aspects of development and accelerates his growth as a developer."
+    },
+    {
+      "question": "Why did Lokesh treat his portfolio as a 'living system' instead of a traditional résumé-style website?",
+      "answer": "Lokesh treated his portfolio as a 'living system' to better represent his workflow, decisions, and personal growth as a developer. Unlike a static résumé, this approach reflects his evolving process and intentions behind building software."
+    },
+    {
+      "question": "What tools did Lokesh use for designing and developing his portfolio?",
+      "answer": "For design, Lokesh used Google Stitch AI to explore layout, hierarchy, and interaction tone. For development, he used Google Antigravity as an AI-assisted environment, which helped with architecture, component structuring, and refactoring."
+    },
+    {
+      "question": "What is the tech stack used in Lokesh's portfolio?",
+      "answer": "Lokesh's portfolio is built using React and Next.js for the frontend framework. It incorporates Framer Motion for subtle interaction feedback, Docker for containerization, and is deployed on Google Cloud Run for scalability and cost efficiency."
+    },
+    {
+      "question": "Can you provide a code snippet for deploying a React/Next.js application on Google Cloud Run using Docker?",
+      "answer": "dockerfile\n# Dockerfile for React/Next.js app\nFROM node:18-alpine AS builder\nWORKDIR /app\nCOPY package*.json ./\nRUN npm ci\nCOPY . .\nRUN npm run build\n\nFROM node:18-alpine AS runner\nWORKDIR /app\nENV NODE_ENV production\nCOPY --from=builder /app/package.json ./package.json\nCOPY --from=builder /app/next.config.js ./next.config.js\nCOPY --from=builder /app/public ./public\nCOPY --from=builder /app/.next ./.next\nRUN npm ci --only=production\nEXPOSE 3000\nCMD [\"npm\", \"start\"]\n"
+    },
+    {
+      "question": "What are the key benefits of deploying on Google Cloud Run as mentioned by Lokesh?",
+      "answer": "The key benefits of deploying on Google Cloud Run include containerized builds, scale-to-zero when idle (cost savings), free-tier safe configuration, and a production-ready setup. This aligns with Lokesh's philosophy of using fewer tools well while maintaining performance, simplicity, and cost control."
+    },
+    {
+      "question": "What principles does Lokesh follow in building software, as reflected in his portfolio?",
+      "answer": "Lokesh builds software with the principles of being thoughtful, iterative, and intentional. His portfolio demonstrates a focus on clarity over decoration, honest representation of his current level, and a commitment to growth and responsible use of AI tools."
+    }
+  ]
+}

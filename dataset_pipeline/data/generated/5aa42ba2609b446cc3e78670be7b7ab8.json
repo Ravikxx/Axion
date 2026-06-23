@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/2022_Philippine_presidential_election_in_Sarangani",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who won the 2022 Philippine presidential election in Sarangani?",
+      "answer": "Emmanuel 'Manny' Pacquiao of the Progressive Movement for the Devolution of Initiatives (MP3) won the 2022 Philippine presidential election in Sarangani with 163,494 votes (62.01%)."
+    },
+    {
+      "question": "What was the vote difference between the winning presidential candidate and the runner-up in Sarangani?",
+      "answer": "Manny Pacquiao defeated Ferdinand Marcos by a margin of 84,132 votes (62.01% vs. 30.13%)."
+    },
+    {
+      "question": "Which political party did Sara Duterte represent in the 2022 vice presidential election in Sarangani?",
+      "answer": "Sara Duterte represented Lakas–CMD (UniTeam) in the 2022 vice presidential election."
+    },
+    {
+      "question": "How many vice presidential candidates ran in Sarangani during the 2022 election?",
+      "answer": "There were 7 vice presidential candidates who ran in Sarangani during the 2022 election."
+    },
+    {
+      "question": "What was the vote count and percentage for Sara Duterte in Sarangani's vice presidential race?",
+      "answer": "Sara Duterte received 187,202 votes, which accounted for 77.22% of the total votes cast in Sarangani's vice presidential race."
+    },
+    {
+      "question": "Why is Sarangani significant in the context of the 2022 Philippine elections?",
+      "answer": "Sarangani is the only province where Manny Pacquiao won the presidential race, and it is one of the two provinces in Mindanao where Ferdinand Marcos did not win."
+    },
+    {
+      "question": "Write a Python snippet to calculate the vote percentage for a candidate given their vote count and total votes.",
+      "answer": "python\ndef calculate_percentage(votes, total_votes):\n    return (votes / total_votes) * 100\n\n# Example usage:\nmarcos_votes = 79362\ntotal_votes = 263660  # Approximate total votes in Sarangani\npercentage = calculate_percentage(marcos_votes, total_votes)\nprint(f\"Marcos's vote percentage: {percentage:.2f}%\")\n"
+    }
+  ]
+}

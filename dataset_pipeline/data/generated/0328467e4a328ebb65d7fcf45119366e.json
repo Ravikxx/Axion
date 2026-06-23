@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Buffalo_Bills",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What division and conference do the Buffalo Bills play in?",
+      "answer": "The Buffalo Bills are members of the Eastern Division of the American Football Conference (AFC) in the National Football League (NFL)."
+    },
+    {
+      "question": "How many AFL titles did the Buffalo Bills win before the NFL merger?",
+      "answer": "The Buffalo Bills won two American Football League titles in 1964 and 1965."
+    },
+    {
+      "question": "What is the origin of the Buffalo Bills' team name?",
+      "answer": "The Buffalo Bills' team name is based on the famous 'wild west show' star known as Buffalo Bill. The team's symbol is the American bison, commonly referred to as the 'buffalo' in North America."
+    },
+    {
+      "question": "Who was the longtime owner of the Buffalo Bills before Terry Pegula?",
+      "answer": "Ralph Wilson was the longtime owner of the Buffalo Bills, having established the team in 1959."
+    },
+    {
+      "question": "What other sports team do Terry Pegula and his wife Kim own besides the Buffalo Bills?",
+      "answer": "Terry Pegula and his wife Kim also own the Buffalo Sabres of the NHL."
+    },
+    {
+      "question": "Did the Buffalo Bills win any Super Bowls during their four consecutive AFC Championships?",
+      "answer": "No, the Buffalo Bills did not win any of the four Super Bowls following their four consecutive AFC Championships from 1990 to 1993."
+    },
+    {
+      "question": "Provide a Python code snippet that generates a list of the years the Buffalo Bills won AFL titles.",
+      "answer": "python\nafl_titles = [1964, 1965]\nprint(\"Years Buffalo Bills won AFL titles:\", afl_titles)\n"
+    }
+  ]
+}

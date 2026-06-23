@@ -1,0 +1,38 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Billy_the_Kid",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "Who was Henry McCarty better known as?",
+      "answer": "Henry McCarty was better known as Billy the Kid, an American gunman who participated in the Lincoln County War."
+    },
+    {
+      "question": "How many men did Billy the Kid reportedly kill according to legends?",
+      "answer": "According to legends, Billy the Kid reportedly killed 21 men, though historical records confirm he murdered at least four."
+    },
+    {
+      "question": "What was Billy the Kid's first arrest for?",
+      "answer": "Billy the Kid's first arrest was for stealing food in late 1875."
+    },
+    {
+      "question": "What alias did Henry McCarty use before adopting 'William H. Bonney'?",
+      "answer": "Before using 'William H. Bonney', Henry McCarty did not use a specific alias; his name at birth was Henry McCarty."
+    },
+    {
+      "question": "What event marked Billy the Kid's transition to becoming a wanted man?",
+      "answer": "Billy the Kid became a wanted man after murdering a blacksmith during an argument in August 1877."
+    },
+    {
+      "question": "Who were the Regulators, and what role did Billy the Kid play in their activities?",
+      "answer": "The Regulators were a group of cattle rustlers and outlaws. Billy the Kid joined them and participated in the Lincoln County War, during which the Regulators killed three men in April 1878."
+    },
+    {
+      "question": "Provide a Python code snippet that prints the birth year and death year of Billy the Kid.",
+      "answer": "python\nbirth_year = 1859\ndeath_year = 1881\nprint(f\"Billy the Kid was born in {birth_year} and died in {death_year}.\")\n"
+    },
+    {
+      "question": "Did Billy the Kid have any children? If so, how many?",
+      "answer": "Yes, Billy the Kid had 5 children with his wife Barbara the Blonde, whom he married on April 5th."
+    }
+  ]
+}

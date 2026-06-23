@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Child_Act_2001",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What are the key Malaysian laws consolidated by the Child Act 2001?",
+      "answer": "The Child Act 2001 consolidated the Juvenile Courts Act 1947 [Act 90], the Women and Girls Protection Act 1973 [Act 106], and the Child Protection Act 1991 [Act 468]."
+    },
+    {
+      "question": "Why was the Child Act 2001 enacted in Malaysia?",
+      "answer": "The Child Act 2001 was enacted partially to fulfill Malaysia's obligations under the United Nations Convention on the Rights of the Child."
+    },
+    {
+      "question": "What are the punishments available under Section 97 of the Child Act 2001 for child offenders convicted of capital offenses?",
+      "answer": "Under Section 97(1), capital punishment may not be applied to children. Sections 97(2), 97(3), and 97(4) provide for alternative punishments such as detention at the pleasure of the Yang di-Pertuan Agong for offenses that would result in the death penalty if committed by adults."
+    },
+    {
+      "question": "What legal issue arose from Section 97(2) of the Child Act 2001, and how was it resolved?",
+      "answer": "Section 97(2) was overturned by the Court of Appeal in July 2007 because it violated the Constitution of Malaysia's doctrine of separation of powers, resulting in no punishment being rendered. This issue highlighted the Act's ambiguity in criminal procedures."
+    },
+    {
+      "question": "How does the remand period for a child offender compare to that of an adult offender under Malaysian law?",
+      "answer": "Initially, Section 84(2) of the Child Act did not prescribe a maximum length for remand orders for child offenders, unlike Section 117 of the Criminal Procedure Code, which sets a 14-day maximum for adults. However, a 2003 case clarified that the Criminal Procedure Code would govern the remand period for children."
+    },
+    {
+      "question": "What rights does a child accused have regarding evidence under the Child Act 2001?",
+      "answer": "Under Section 90(9) of the Child Act 2001, a child accused may give sworn or unsworn evidence but does not have the explicit right to remain silent, unlike adult accused who have the option to remain silent, give sworn evidence, or provide unsworn evidence."
+    },
+    {
+      "question": "Provide a Python function that checks if a given section of the Child Act 2001 is related to punishments for child offenders.",
+      "answer": "python\ndef is_punishment_section(section_number):\n    # Sections related to punishments under Child Act 2001\n    punishment_sections = {\n        '97(1)', '97(2)', '97(3)', '97(4)',  # Capital punishment alternatives\n        '84(2)',  # Remand orders (initially)\n    }\n    return section_number in punishment_sections\n\n# Example usage:\nprint(is_punishment_section('97(1)'))  # Output: True\nprint(is_punishment_section('90(9)'))  # Output: False\n"
+    }
+  ]
+}

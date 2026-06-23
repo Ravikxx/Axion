@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Economy_of_Denmark",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the economic model followed by Denmark, and what are its key characteristics?",
+      "answer": "Denmark follows the Nordic model, which is characterized by a high tax level, a strong welfare state with government-provided services (such as healthcare, child care, and education), and income transfers to groups like retirees, disabled people, the unemployed, and students. The model balances economic efficiency with social safety nets."
+    },
+    {
+      "question": "How does Denmark's per capita income compare globally in nominal and purchasing power parity (PPP) terms?",
+      "answer": "In 2023, Denmark's nominal gross national income per capita was $68,827, the ninth-highest in the world. Correcting for purchasing power, per capita income was Int$57,781, ranking tenth globally."
+    },
+    {
+      "question": "What is Denmark's exchange rate policy, and how does it maintain its independence?",
+      "answer": "Denmark adheres to a fixed exchange-rate system, pegging the Danish Krone to the euro, while maintaining an independent currency. This is unique among OECD countries. The central bank's priority is exchange rate stability, not domestic stabilization policies like inflation targeting."
+    },
+    {
+      "question": "How does Denmark's labor force participation and unemployment rate compare to other OECD countries?",
+      "answer": "In 2017, Denmark had a labor force participation rate of 78.8% for 15-to-64-year-olds, the sixth-highest among OECD countries. Its unemployment rate was 4.8%, which is lower than the European average of 6.7%."
+    },
+    {
+      "question": "What is 'flexicurity,' and how has it influenced Denmark's labor market?",
+      "answer": "Flexicurity is a concept combining flexible labor markets with strong social security systems. In Denmark, it has historically balanced labor market flexibility (e.g., low barriers to hiring/firing) with high union membership and active labor market policies, contributing to low unemployment and high participation rates."
+    },
+    {
+      "question": "Write a Python snippet to calculate Denmark's GDP rank difference between nominal GDP and PPP-adjusted GDP.",
+      "answer": "python\n# Given data\ngdp_rank_nominal = 38\ngdp_rank_ppp = 52\n\n# Calculate the difference\ndifference = gdp_rank_nominal - gdp_rank_ppp\nprint(f\"Denmark's GDP rank difference (Nominal - PPP): {difference}\")\n\nThis code calculates that Denmark's rank drops by 14 places when adjusting for purchasing power parity (from 38th to 52nd)."
+    },
+    {
+      "question": "Why did Denmark reject adopting the euro in 2000, despite being eligible?",
+      "answer": "In a 2000 referendum, Danish voters rejected joining the EU's Economic and Monetary Union (EMU) to retain the Danish Krone as an independent currency pegged to the euro. This decision allowed Denmark to maintain control over its monetary policy and exchange rate stability rather than switching to the euro."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Ashok_Rajpath",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was Ashoka, and why is a road in Patna named after him?",
+      "answer": "Ashoka, also known as Ashok the Great or Emperor Ashoka, was an Indian emperor of the Maurya Dynasty who ruled most of the Indian subcontinent from approximately 269 BCE to 232 BCE. The road in Patna, Ashok Rajpath, is named after him as a tribute to his historical significance and legacy in Indian history."
+    },
+    {
+      "question": "Describe the route of Ashok Rajpath in Patna, including its starting and ending points.",
+      "answer": "Ashok Rajpath starts roughly from Golghar, a historic granary in Patna, runs parallel to the river Ganges, and terminates at Didarganj. It connects Patna with Patna city (Patna Sahib) and is a busy road due to the presence of markets on one side and educational institutions like Patna University on the other."
+    },
+    {
+      "question": "What are the key features of the double-decker flyover being constructed on Ashok Rajpath?",
+      "answer": "The 2.2 km-long double-decker flyover on Ashok Rajpath starts from Kargil Chowk near Gandhi Maidan and ends at Patna Science College. It will have four lanes across two tiers (tier 1 and tier 2), with grade level remaining unchanged. The project, costing Rs 422 crore, is being executed by Delhi-based Gawar Construction Limited over three years. The flyover will have three exits for PMCH via multi-level parking and will connect to the Loknayak Ganga Path (Ganga Expressway) via Krishna Ghat."
+    },
+    {
+      "question": "List five historical or educational institutions located along Ashok Rajpath.",
+      "answer": "Five notable institutions along Ashok Rajpath include Patna University, Patna Science College, Patna College, Patna Medical College and Hospital (PMCH), and National Institute of Technology (NIT), Patna."
+    },
+    {
+      "question": "How will the double-decker flyover improve traffic flow on Ashok Rajpath?",
+      "answer": "The double-decker flyover will create three levels of traffic flow: grade level (existing road), tier 1, and tier 2. This multi-tier system will significantly reduce congestion by separating different types of traffic, allowing vehicles to move more efficiently. The grade level will remain unchanged, while the upper tiers (tier 1 and tier 2) will handle additional traffic, improving overall mobility."
+    },
+    {
+      "question": "Write a Python script to calculate the total estimated cost of the flyover project per year.",
+      "answer": "python\ntotal_cost = 422  # in crores (Rs 422 crore)\nyears = 3\ntotal_cost_per_year = total_cost / years\nprint(f\"Total estimated cost per year: Rs {total_cost_per_year:.2f} crore\")\n"
+    },
+    {
+      "question": "What religious or cultural landmarks are located near Ashok Rajpath?",
+      "answer": "Near Ashok Rajpath, there are several religious and cultural landmarks, including Christ Church, Takht Shri Harmandir Saheb, Pathar Ki Masjid, St. Joseph's Convent High School, and the historic Golghar. These landmarks reflect the cultural and religious diversity of the area."
+    }
+  ]
+}

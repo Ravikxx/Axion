@@ -1,0 +1,34 @@
+{
+  "source_url": "https://mathworld.wolfram.com/letters/K.html",
+  "category": "mathworld",
+  "pairs": [
+    {
+      "question": "What is the definition of a k-ary divisor in mathematics?",
+      "answer": "A k-ary divisor of a positive integer n is a tuple (d₁, d₂, ..., dₖ) of positive integers such that d₁ × d₂ × ... × dₖ = n and d₁ ≤ d₂ ≤ ... ≤ dₖ. For example, the 2-ary divisors of 12 are (1,12), (2,6), and (3,4)."
+    },
+    {
+      "question": "How does the K-Means Clustering Algorithm work, and what is a common stopping criterion?",
+      "answer": "The K-Means algorithm partitions n observations into k clusters by minimizing the within-cluster sum of squares. It iteratively assigns each point to the nearest cluster centroid and updates the centroids until convergence. A common stopping criterion is when the change in the sum of squared distances between iterations falls below a predefined threshold."
+    },
+    {
+      "question": "What is Kaprekar's Routine, and provide a Python implementation to compute Kaprekar's Constant from a 4-digit number.",
+      "answer": "Kaprekar's Routine is a process where a 4-digit number is transformed by sorting its digits in descending and ascending order, subtracting the smaller from the larger, and repeating until a fixed number (Kaprekar's Constant, 6174) is reached. Below is a Python implementation:\n\npython\ndef kaprekar_routine(n):\n    while n != 6174:\n        digits = f\"{n:04d}\"\n        asc = int(''.join(sorted(digits)))\n        desc = int(''.join(sorted(digits, reverse=True)))\n        n = desc - asc\n        print(f\"{desc} - {asc} = {n}\")\n    return n\n\nkaprekar_routine(3524)\n"
+    },
+    {
+      "question": "Explain the concept of a k-regular graph and provide an example.",
+      "answer": "A k-regular graph is a graph where each vertex has degree k, meaning every vertex is connected to exactly k other vertices. For example, the 3-regular graph (also called a cubic graph) with 4 vertices is a complete graph K₄, where each vertex is connected to the other three."
+    },
+    {
+      "question": "What is the Kelvin Problem in geometry?",
+      "answer": "The Kelvin Problem asks for the optimal partitioning of 3D space into cells of equal volume with the least total surface area. The solution, proposed by Lord Kelvin in 1887, is a tetrakaidecahedron (a 14-faced polyhedron), though it was later found to be suboptimal. The Weaire-Phelan structure (1993) provides a better solution using two types of cells."
+    },
+    {
+      "question": "Describe the Kaplan-Yorke Dimension and its significance in dynamical systems.",
+      "answer": "The Kaplan-Yorke Dimension (or Lyapunov dimension) is a measure of the dimensionality of the attractor in a chaotic dynamical system. It is defined as D_L = j + (λ₁ + λ₂ + ... + λ_j) / |λ_{j+1}|, where λ_i are Lyapunov exponents sorted in descending order, and j is the largest integer such that the sum of the first j exponents is non-negative. It provides an estimate of the fractal dimension of the attractor."
+    },
+    {
+      "question": "What is the Knapsack Problem, and how is it typically solved?",
+      "answer": "The Knapsack Problem is an optimization problem where given a set of items with specific weights and values, the goal is to select a subset of items that maximizes the total value without exceeding a given weight capacity. It is typically solved using dynamic programming (for the 0/1 Knapsack Problem) or greedy algorithms (for the fractional Knapsack Problem). Below is a dynamic programming solution for the 0/1 Knapsack Problem:\n\npython\ndef knapsack(W, wt, val, n):\n    dp = [[0] * (W + 1) for _ in range(n + 1)]\n    for i in range(n + 1):\n        for w in range(W + 1):\n            if i == 0 or w == 0:\n                dp[i][w] = 0\n            elif wt[i-1] <= w:\n                dp[i][w] = max(val[i-1] + dp[i-1][w-wt[i-1]], dp[i-1][w])\n            else:\n                dp[i][w] = dp[i-1][w]\n    return dp[n][W]\n\nval = [60, 100, 120]\nwt = [10, 20, 30]\nW = 50\nn = len(val)\nprint(knapsack(W, wt, val, n))  # Output: 220\n"
+    }
+  ]
+}

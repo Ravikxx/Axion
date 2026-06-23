@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Eco-anxiety",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is eco-anxiety, and how does it differ from a medical diagnosis?",
+      "answer": "Eco-anxiety, also called ecological or climate anxiety, is a rational emotional response to climate change and environmental issues. Unlike a medical diagnosis, it is not classified as a mental health disorder but can become severe enough to impact well-being if left unaddressed. It arises from awareness of ecological threats and the perceived lack of solutions."
+    },
+    {
+      "question": "What role do researchers play in contributing to eco-anxiety, according to the text?",
+      "answer": "Researchers can inadvertently contribute to eco-anxiety by framing climate change narratives in ways that emphasize helplessness or lack of solutions. Their approach to presenting evidence—without highlighting potential actions or systemic changes—may foster feelings of powerlessness in individuals."
+    },
+    {
+      "question": "How did public awareness of eco-anxiety change after 2017?",
+      "answer": "Eco-anxiety gained significant public attention after 2017, particularly following Greta Thunberg's prominent discussions about her own eco-anxiety starting in late 2018. This surge in visibility helped normalize the conversation around climate-related emotional distress."
+    },
+    {
+      "question": "What emotions does the American Psychological Association (APA) associate with long-term climate change impacts?",
+      "answer": "The APA report links long-term climate change to emotions such as fear, anger, powerlessness, and exhaustion. These emotional responses are most pronounced among young people, likening eco-anxiety to the generational anxiety over nuclear war experienced by baby boomers."
+    },
+    {
+      "question": "Is eco-anxiety always maladaptive, or can it have positive effects?",
+      "answer": "Eco-anxiety is not inherently maladaptive; it can serve as a motivator for constructive behaviors like seeking information or taking collective action. When processed adaptively, it may enhance resilience, agency, and reflective functioning. However, unaddressed severe eco-anxiety can become paralyzing."
+    },
+    {
+      "question": "Provide a Python code snippet to simulate tracking eco-anxiety levels over time based on user-reported scores.",
+      "answer": "Here’s a simple Python example using a dictionary to track monthly eco-anxiety scores for users:\n\npython\nclass EcoAnxietyTracker:\n    def __init__(self):\n        self.users = {}\n\n    def add_user(self, user_id):\n        self.users[user_id] = []\n\n    def record_score(self, user_id, score):\n        if user_id in self.users:\n            self.users[user_id].append(score)\n        else:\n            raise ValueError(\"User not found.\")\n\n    def get_avg_score(self, user_id):\n        if user_id in self.users and self.users[user_id]:\n            return sum(self.users[user_id]) / len(self.users[user_id])\n        return None\n\n# Example usage\ntracker = EcoAnxietyTracker()\ntracker.add_user(\"user123\")\ntracker.record_score(\"user123\", 7)\ntracker.record_score(\"user123\", 5)\nprint(tracker.get_avg_score(\"user123\"))  # Output: 6.0\n"
+    },
+    {
+      "question": "What strategies does the text suggest for managing eco-anxiety?",
+      "answer": "The text encourages individuals to engage in collective processing of climate-related emotions, such as joining support groups or community initiatives. This approach aims to foster resilience, agency, and shared action, which can mitigate the negative impacts of eco-anxiety on mental health."
+    }
+  ]
+}

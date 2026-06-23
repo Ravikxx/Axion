@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Eustress",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What does the term 'eustress' mean and how is it defined?",
+      "answer": "Eustress refers to 'beneficial stress,' which can be psychological, physical (e.g., exercise), or biochemical/radiological (hormesis). It is defined as the positive cognitive response to a stressor that promotes feelings of fulfillment, meaning, hope, vigor, or well-being."
+    },
+    {
+      "question": "Who coined the term 'eustress' and when?",
+      "answer": "The term 'eustress' was introduced by endocrinologist Hans Selye in 1976. He combined the Greek prefix *eu-* (meaning 'good') with the word 'stress' to create the literal meaning 'good stress'."
+    },
+    {
+      "question": "How does eustress differ from distress?",
+      "answer": "Eustress and distress differ in perception and outcome. Eustress is the positive response to a stressor (e.g., a challenge that feels meaningful or controllable), while distress is the negative response (e.g., a perceived threat). The same stressor can induce eustress or distress depending on context, such as one's sense of control, desirability, location, or timing."
+    },
+    {
+      "question": "What are some potential indicators of experiencing eustress?",
+      "answer": "Potential indicators of eustress include responding to a stressor with a sense of meaning, hope, vigor, or fulfillment. It has also been positively correlated with life satisfaction and overall well-being."
+    },
+    {
+      "question": "Provide a Python code snippet to classify a stressor as eustress or distress based on user input.",
+      "answer": "python\ndef classify_stressor(stressor_type, perception, control, desirability):\n    '''\n    Classify a stressor as eustress or distress based on key factors.\n    Args:\n        stressor_type (str): Type of stressor (e.g., 'exercise', 'work deadline')\n        perception (str): User's perception ('challenge' or 'threat')\n        control (bool): Does the user feel in control?\n        desirability (str): Is the stressor desired? ('yes', 'no', or 'neutral')\n    Returns:\n        str: 'Eustress' or 'Distress'\n    '''\n    if perception == 'challenge' and control and desirability == 'yes':\n        return 'Eustress'\n    else:\n        return 'Distress'\n\n# Example usage:\nprint(classify_stressor('marathon training', 'challenge', True, 'yes'))  # Output: Eustress\nprint(classify_stressor('unexpected layoff', 'threat', False, 'no'))    # Output: Distress\n"
+    },
+    {
+      "question": "What is the etymology of the word 'eustress'?",
+      "answer": "The word 'eustress' derives from the Greek prefix *eu-* (meaning 'good') combined with the English word 'stress.' The Oxford English Dictionary traces its early psychological usage to 1968, though Hans Selye introduced the term in its modern form in 1976."
+    },
+    {
+      "question": "How might eustress contribute to well-being according to research?",
+      "answer": "Research suggests that eustress is positively correlated with life satisfaction and overall well-being. By fostering feelings of meaning, hope, or vigor in response to challenges, eustress can enhance psychological resilience and long-term health outcomes."
+    }
+  ]
+}

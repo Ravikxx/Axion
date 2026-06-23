@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Gastón_Rodríguez_(swimmer)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When was Gastón Rodríguez born and what swimming events did he specialize in?",
+      "answer": "Gastón Rodríguez was born on March 10, 1984, and specialized in butterfly events."
+    },
+    {
+      "question": "What are Gastón Rodríguez's current short-course Argentine records and their times?",
+      "answer": "Gastón Rodríguez holds short-course Argentine records in the 200 m butterfly (1:57.34) and 200 m individual medley (2:01.03)."
+    },
+    {
+      "question": "How did Gastón Rodríguez qualify for the 2004 Summer Olympics in Athens?",
+      "answer": "He qualified by posting a FINA B-standard entry time of 2:03.77 in the Latin Cup in Serravalle, San Marino."
+    },
+    {
+      "question": "What was Gastón Rodríguez's performance in the 200 m butterfly at the 2004 Summer Olympics?",
+      "answer": "He placed twenty-ninth overall in the preliminaries and did not advance to the semifinals."
+    },
+    {
+      "question": "What notable achievements did Gastón Rodríguez accomplish in 2005?",
+      "answer": "In 2005, he lowered his national record to 2:02.26 at the Argentina Long Course Championships and won 48 National Titles in his career."
+    },
+    {
+      "question": "Why was Gastón Rodríguez suspended in 2012, and for how long?",
+      "answer": "He was suspended for 15 months by the Argentina Aquatics Confederation for failing a doping test from the previous year's national championships."
+    },
+    {
+      "question": "Write a Python function to check if a given swimming time is faster than Gastón Rodríguez's short-course Argentine record in the 200 m butterfly.",
+      "answer": "python\ndef is_faster_than_record(time_seconds):\n    record_time = 1 * 60 + 57.34  # Convert 1:57.34 to seconds\n    return time_seconds < record_time\n\n# Example usage:\nprint(is_faster_than_record(117.0))  # True\nprint(is_faster_than_record(118.0))  # False\n"
+    }
+  ]
+}

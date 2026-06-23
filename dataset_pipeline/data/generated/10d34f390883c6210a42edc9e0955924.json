@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Big_Truck_(horse)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was Big Truck's sire and how far back does his lineage trace to the famous Northern Dancer?",
+      "answer": "Big Truck was sired by Hook and Ladder. His lineage traces back to Northern Dancer through his great-grandmother, as Hook and Ladder was a son of Northern Dancer."
+    },
+    {
+      "question": "Who trained Big Truck during his early racing career and what notable comment did he make about the horse?",
+      "answer": "Big Truck was trained by Barclay Tagg until the fall of 2009. Tagg once remarked that Big Truck might be his best two-year-old in the barn, describing him as 'as smooth as glass'."
+    },
+    {
+      "question": "In which race did Big Truck make his debut and what was the margin of victory?",
+      "answer": "Big Truck broke his maiden on August 23, 2007, at Saratoga Race Course, winning by about 6.5 lengths over the runner-up Post Exchange."
+    },
+    {
+      "question": "What was Big Truck's performance in the Bertram F. Bongard Stakes, and who did he defeat?",
+      "answer": "In the Bertram F. Bongard Stakes on September 23, 2007, Big Truck defeated a field of five horses, including Todd Pletcher-trained colt Spanky Fischbein, winning by about 2.5 lengths."
+    },
+    {
+      "question": "How did Big Truck perform in the Sleepy Hollow Stakes, and what was unusual about the outcome?",
+      "answer": "In the Sleepy Hollow Stakes on October 20, 2007, Big Truck, sent off as a heavy favorite, was upset by Giant's Moon and barely edged out for second by a nose by Costal Drive."
+    },
+    {
+      "question": "What incident occurred during the Remsen Stakes, and what was the final result?",
+      "answer": "During the Remsen Stakes on November 24, 2007, Big Truck was cut off by Court Vision and Trust N Dustan in the stretch. Jockey Alan Garcia filed a foul claim after the race, but no changes were made. Big Truck finished fourth."
+    },
+    {
+      "question": "Provide a Python code snippet to check if a given horse is descended from Northern Dancer using a hypothetical pedigree dictionary.",
+      "answer": "python\ndef is_descended_from_northern_dancer(pedigree, horse_name):\n    northern_dancer_ancestors = {'Northern Dancer'}\n    if horse_name in pedigree:\n        for ancestor in pedigree[horse_name]:\n            if ancestor in northern_dancer_ancestors or is_descended_from_northern_dancer(pedigree, ancestor):\n                return True\n    return False\n\n# Example usage:\npedigree = {\n    'Big Truck': ['Hook and Ladder', 'Just A Ginny'],\n    'Hook and Ladder': ['Northern Dancer', 'Another Mare']\n}\nprint(is_descended_from_northern_dancer(pedigree, 'Big Truck'))  # Output: True\n"
+    }
+  ]
+}

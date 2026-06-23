@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Arcadia_Group",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is Arcadia Group plc and what are some of its key retail brands?",
+      "answer": "Arcadia Group plc is a British multinational retail company based in London, UK. It owns several major high street clothing retailers, including Burton, Dorothy Perkins, Evans, Miss Selfridge, Topman, Topshop, Wallis, and the out-of-town chain Outfit, which sells products from other group brands."
+    },
+    {
+      "question": "How is Arcadia Group structured in terms of ownership?",
+      "answer": "Arcadia Group is majority-owned by Taveta Investments, which is controlled by Tina Green, the wife of Sir Philip Green. Sir Philip Green serves as the chairman of Arcadia Group."
+    },
+    {
+      "question": "What was the financial controversy involving Arcadia Group's pension fund in 2019?",
+      "answer": "In April 2019, it was reported that Arcadia Group, under Philip Green's family control, had accumulated a £300 million deficit in its pension fund. This occurred while the Green family had previously extracted £1.2 billion in dividends from Arcadia in 2005."
+    },
+    {
+      "question": "Who is Frank Field and what is his criticism regarding Philip Green's management of Arcadia Group?",
+      "answer": "Frank Field is a British Member of Parliament who previously investigated the BHS pension deficit. He has publicly criticized Philip Green for paying large dividends to his family and associates, such as Richard Caring, when the company performed well, while shifting financial burdens onto employees during difficult periods."
+    },
+    {
+      "question": "How many physical retail outlets does Arcadia Group operate in the UK?",
+      "answer": "Arcadia Group operates over 2,500 retail outlets across the UK."
+    },
+    {
+      "question": "What types of retail channels does Arcadia Group use besides standalone stores?",
+      "answer": "In addition to standalone outlets, Arcadia Group has concessions in major UK department stores such as Debenhams and Selfridges. It also operates several hundred franchises internationally."
+    },
+    {
+      "question": "Provide a Python code snippet to extract and display the names of Arcadia Group's subsidiaries from a given list of stores.",
+      "answer": "python\narcadia_brands = [\n    \"Burton\", \"Dorothy Perkins\", \"Evans\", \"Miss Selfridge\", \n    \"Topman\", \"Topshop\", \"Wallis\", \"Outfit\"\n]\n\nfor brand in arcadia_brands:\n    print(brand)\n\nThis code will output each of Arcadia Group's subsidiary retail brands."
+    }
+  ]
+}

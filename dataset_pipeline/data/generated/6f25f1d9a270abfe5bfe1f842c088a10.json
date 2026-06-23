@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/History_of_the_United_States",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What were the major reasons the American colonies declared independence from Great Britain?",
+      "answer": "The American colonies declared independence from Great Britain primarily due to taxation without representation, lack of political autonomy, and restrictions on colonial self-governance. The British imposed taxes like the Stamp Act and Townshend Acts without allowing colonists to vote in British Parliament, leading to widespread resentment. This culminated in protests such as the Boston Tea Party (1773) and ultimately the American Revolutionary War (1775–1783)."
+    },
+    {
+      "question": "Can you explain the significance of the Declaration of Independence in the context of the American Revolution?",
+      "answer": "The Declaration of Independence, adopted on July 4, 1776, was a formal statement of the 13 American colonies' intent to separate from British rule. Drafted primarily by Thomas Jefferson, it articulated the principles of natural rights ('life, liberty, and the pursuit of happiness') and the right of people to alter or abolish oppressive governments. It marked the colonies' transition from rebellion to nationhood and inspired later movements for independence and democracy worldwide."
+    },
+    {
+      "question": "What were the key outcomes of the American Civil War (1861–1865)?",
+      "answer": "The American Civil War resulted in the preservation of the United States as a single nation, the abolition of slavery (via the 13th Amendment), and significant loss of life (~620,000–750,000). The Confederate States' attempt to secede failed, and the Reconstruction era followed, aimed at reintegrating the South and establishing civil rights for formerly enslaved people. Economically, the war accelerated industrialization in the North."
+    },
+    {
+      "question": "Describe the economic trend known as the Gilded Age and its impact on the United States.",
+      "answer": "The Gilded Age (roughly 1870–1900) was a period of rapid economic growth characterized by industrialization, urbanization, and wealth accumulation among a small elite. While it saw the rise of powerful industrialists like Andrew Carnegie and John D. Rockefeller, it also featured extreme income inequality, labor exploitation, and political corruption. This era laid the foundation for the U.S. to become a global economic power but also sowed seeds for later reforms like the Progressive Era."
+    },
+    {
+      "question": "How did the Cold War influence U.S. foreign policy in the mid-to-late 20th century?",
+      "answer": "The Cold War (1947–1991) shaped U.S. foreign policy through a policy of containment to counter Soviet expansion, leading to interventions in conflicts like the Korean War (1950–1953) and Vietnam War (1955–1975). It also drove the arms race, space exploration (e.g., Apollo missions), and alliances like NATO. The U.S. supported anti-communist regimes globally, often through covert operations or economic aid, while engaging in proxy wars to influence global power dynamics."
+    },
+    {
+      "question": "Write a Python function that calculates the duration of a U.S. presidential term in years, given a start and end year.",
+      "answer": "python\ndef presidential_term_duration(start_year, end_year):\n    \"\"\"Calculate the duration of a U.S. presidential term in years.\n    \n    Args:\n        start_year (int): Year the term began (e.g., 2017 for Trump's first term).\n        end_year (int): Year the term ended (e.g., 2021 for Trump's first term).\n    \n    Returns:\n        int: Duration in years.\n    \"\"\"\n    return end_year - start_year\n\n# Example usage:\nprint(presidential_term_duration(2017, 2021))  # Output: 4\n"
+    },
+    {
+      "question": "What were the primary causes of the Great Depression, and how did it end?",
+      "answer": "The Great Depression (1929–1939) was caused by a combination of factors: the stock market crash of 1929 (Black Tuesday), bank failures, reduced consumer spending, agricultural overproduction, and the Dust Bowl. The economic collapse led to massive unemployment (peaking at ~25%) and poverty. It ended due to World War II (1939–1945), which stimulated industrial production, created jobs, and restored economic growth through wartime demand and government spending."
+    }
+  ]
+}

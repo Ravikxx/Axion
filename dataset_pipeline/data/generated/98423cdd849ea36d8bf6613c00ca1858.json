@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Games_100",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is The Games 100 and which magazine publishes it?",
+      "answer": "The Games 100 is an annual feature published by Games magazine, a U.S. publication focused on games and puzzles. It originated as an alphabetical list of the 100 games preferred by the magazine's editors, first appearing in the November/December 1980 issue."
+    },
+    {
+      "question": "How did The Games 100 Contest work and what was the grand prize?",
+      "answer": "The Games 100 Contest, introduced in 1981, involved identifying pieces from games listed in The Games 100. The grand prize was more than half of the games included on that year's list."
+    },
+    {
+      "question": "How often and when are the Games 100 lists published?",
+      "answer": "The Games 100 lists are published annually, typically in the November or December issue of Games magazine. From 1980 to 1994, the list for a given year was published at the end of that year. Starting in 1995, the list for the prior year is released at the end of each year (e.g., the 1995 list would have repeated the 1994 games, so no list was published in 1995)."
+    },
+    {
+      "question": "What categories are recognized in The Games 100 and who has determined the winner in the historical category?",
+      "answer": "The Games 100 includes several categories for which 'best' games are determined. The winner of the historical category for approximately the last ten years has been decided by Walt O'Hara, who organizes the Historicon miniatures convention."
+    },
+    {
+      "question": "Why was there no Games 100 list published in 1990?",
+      "answer": "There was no Games 100 list published in 1990 because Games magazine was out of print when the list would have been released."
+    },
+    {
+      "question": "How has The Games 100 evolved since its inception?",
+      "answer": "The Games 100 began as a simple alphabetical list in 1980. It later introduced a contest in 1981 and expanded to include categories like 'The Traditional Games 100' and 'The Electronic Games 100' under the 'Buyers Guide to Games' title. The publication schedule also adjusted in 1995 to avoid repeating the previous year's list."
+    },
+    {
+      "question": "Write a Python function to check if a given year had a Games 100 list published.",
+      "answer": "python\ndef had_games_100_list(year):\n    if year == 1990 or year == 1995:\n        return False\n    return 1980 <= year <= 2023  # Assuming current year is 2023 for the check\n\n# Example usage:\nprint(had_games_100_list(1985))  # Output: True\nprint(had_games_100_list(1990))  # Output: False\nThe function returns `True` if the year had a Games 100 list published and `False` otherwise."
+    }
+  ]
+}

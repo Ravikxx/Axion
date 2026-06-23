@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Correctional_Services_Corporation",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who founded Correctional Services Corporation (CSC) and when?",
+      "answer": "Correctional Services Corporation (CSC) was founded by James F. Slattery in 1987."
+    },
+    {
+      "question": "What was the original name of Correctional Services Corporation before it became CSC?",
+      "answer": "The original name of Correctional Services Corporation was Esmor Correctional Corporation."
+    },
+    {
+      "question": "What types of facilities did Correctional Services Corporation specialize in privatizing?",
+      "answer": "CSC specialized in the privatization of correctional facilities for federal, state, and local agencies housing adults, juveniles, and Department of Homeland Security prisoners."
+    },
+    {
+      "question": "How did James F. Slattery explain the relationship between crime rates and the company's profits?",
+      "answer": "James F. Slattery stated that increases in parole rates combined with economic slowdowns traditionally lead to an increased need for correctional services, implying that higher crime rates could drive the company's profits. He specifically mentioned this pattern as likely to repeat in 2002 and beyond."
+    },
+    {
+      "question": "What legal penalty did Correctional Services Corp. face for purchasing votes in the New York State legislature?",
+      "answer": "The New York State Lobbying Commission fined Correctional Services Corp. $300,000 for purchasing votes in the state legislature."
+    },
+    {
+      "question": "What major acquisition occurred involving CSC in 2005, and what happened to the youth services portion afterward?",
+      "answer": "In 2005, CSC was sold to GEO Group for $62.1 million. GEO Group then divested the youth portion of the enterprise, Youth Services International (YSI), back to its principals."
+    },
+    {
+      "question": "According to a 2013 HuffPost investigation, what types of abuses were reported in facilities run by Youth Services International (YSI)?",
+      "answer": "The 2013 HuffPost investigation reported that inmates in YSI-run facilities frequently faced beatings, neglect, sexual abuse, and unsanitary food over the past two decades."
+    },
+    {
+      "question": "What actions did the State of Florida take against YSI due to audits and reports of abuse?",
+      "answer": "Due to audit findings of overcharges and reports of continuing abuse, the State of Florida cancelled its existing contracts with YSI, the remaining functional operation of CSC. The corporation was also required to reimburse the state $2,000,000 for overcharges."
+    }
+  ]
+}

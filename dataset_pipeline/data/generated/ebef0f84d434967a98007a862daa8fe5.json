@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Bias_of_an_estimator",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the definition of bias in statistics and how does it differ from consistency?",
+      "answer": "In statistics, the bias of an estimator is the difference between the estimator's expected value and the true value of the parameter it is estimating. An estimator is unbiased if this difference is zero. Consistency, on the other hand, means that the estimator converges in probability to the true parameter value as the sample size increases, regardless of whether it is biased or unbiased."
+    },
+    {
+      "question": "Why might a biased estimator be preferred over an unbiased one in practice?",
+      "answer": "A biased estimator may be preferred in practice for several reasons: (1) An unbiased estimator may not exist without additional assumptions about the population. (2) The unbiased estimator might be computationally difficult to derive, as in the case of unbiased estimation of standard deviation. (3) A biased estimator may achieve a lower value of a loss function, such as mean squared error, particularly in shrinkage estimators. (4) Median-unbiased estimators can sometimes be more robust or useful than mean-unbiased estimators."
+    },
+    {
+      "question": "Can you provide an example of a biased estimator and explain why it is biased?",
+      "answer": "The sample variance is a biased estimator for the population variance. This is because the formula for sample variance, which divides by (n-1) instead of n, introduces a bias that underestimates the true population variance. Specifically, while the sample variance is an unbiased estimator for the population variance, the sample standard deviation (which is the square root of the sample variance) is a biased estimator for the population standard deviation due to the non-linear transformation involved."
+    },
+    {
+      "question": "What is median-unbiasedness and how does it differ from mean-unbiasedness?",
+      "answer": "Median-unbiasedness is a property of an estimator where the median of the estimator's sampling distribution equals the true parameter value, whereas mean-unbiasedness requires the expected value (mean) of the estimator's sampling distribution to equal the true parameter value. Median-unbiasedness is preserved under non-linear transformations, unlike mean-unbiasedness."
+    },
+    {
+      "question": "Is there always an unbiased estimator for every parameter in statistics? Provide an example.",
+      "answer": "No, there is not always an unbiased estimator for every parameter. For example, there is no unbiased estimator for the reciprocal of the parameter of a binomial random variable. This is a known result in statistical theory."
+    },
+    {
+      "question": "How does the bias of an estimator affect its mean squared error (MSE)?",
+      "answer": "The mean squared error (MSE) of an estimator can be decomposed into two components: the variance of the estimator and the square of its bias. Specifically, MSE = Var(θ̂) + [Bias(θ̂, θ)]², where θ̂ is the estimator and θ is the true parameter. This shows that while reducing variance is desirable, some bias can be introduced to reduce the overall MSE, especially in cases where the unbiased estimator has high variance."
+    },
+    {
+      "question": "Write a Python function to calculate the bias of an estimator given its expected value and the true parameter value.",
+      "answer": "python\ndef calculate_bias(expected_value, true_value):\n    \"\"\"\n    Calculate the bias of an estimator.\n    \n    Parameters:\n    expected_value (float): The expected value of the estimator.\n    true_value (float): The true value of the parameter being estimated.\n    \n    Returns:\n    float: The bias of the estimator.\n    \"\"\"\n    return expected_value - true_value\n\n# Example usage:\nbias = calculate_bias(expected_value=5.2, true_value=5.0)\nprint(f\"Bias: {bias}\")  # Output: Bias: 0.2\n"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Alexander_Slafkovský",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "How many Olympic Games did Alexander Slafkovský compete in during his career?",
+      "answer": "Alexander Slafkovský never competed at the Olympic Games. Despite being a top C1 paddler, he was denied qualification multiple times due to strong domestic competition (e.g., Michal Martikán and Matej Beňuš) and an injury that disrupted his 2007 season."
+    },
+    {
+      "question": "What are the key achievements of Alexander Slafkovský at the ICF Canoe Slalom World Championships?",
+      "answer": "Alexander Slafkovský won a total of 15 medals at the ICF Canoe Slalom World Championships, including 10 golds (all in the C1 team event between 2003 and 2019), 5 silvers (3 in C1 and 2 in C1 team events between 2013 and 2022), and 1 bronze (in the C1 team event in 2021)."
+    },
+    {
+      "question": "In which years did Alexander Slafkovský win the overall World Cup title in the C1 class?",
+      "answer": "Alexander Slafkovský won the overall World Cup title in the C1 class in the years 2012, 2016, and 2018."
+    },
+    {
+      "question": "What notable event occurred in the C1 team category at the 2023 European Games in Kraków involving Alexander Slafkovský?",
+      "answer": "At the 2023 European Games in Kraków, Alexander Slafkovský won a silver medal in the C1 team event."
+    },
+    {
+      "question": "Why did Alexander Slafkovský miss the opportunity to compete in the 2008 Olympic Games?",
+      "answer": "Slafkovský missed the opportunity to compete in the 2008 Olympic Games because he sustained an injury while skiing, which prevented him from competing for most of the 2007 season and disqualifying him from the selection process."
+    },
+    {
+      "question": "Who were the primary competitors that prevented Alexander Slafkovský from qualifying for the Olympic Games?",
+      "answer": "The primary competitors who prevented Slafkovský from qualifying for the Olympic Games were Michal Martikán (in 2004 and 2012) and Matej Beňuš (in 2016, 2020, and 2024)."
+    },
+    {
+      "question": "Write a Python function that calculates the total number of medals Alexander Slafkovský won at the ICF Canoe Slalom World Championships and the European Championships.",
+      "answer": "python\ndef calculate_total_medals():\n    # World Championships medals\n    world_golds = 10\n    world_silvers = 5\n    world_bronzes = 1\n    \n    # European Championships medals\n    european_golds = 12\n    european_silvers = 7\n    european_bronzes = 3\n    \n    total_golds = world_golds + european_golds\n    total_silvers = world_silvers + european_silvers\n    total_bronzes = world_bronzes + european_bronzes\n    total_medals = total_golds + total_silvers + total_bronzes\n    \n    return {\n        \"total_golds\": total_golds,\n        \"total_silvers\": total_silvers,\n        \"total_bronzes\": total_bronzes,\n        \"total_medals\": total_medals\n    }\n\n# Example usage:\nprint(calculate_total_medals())\n\nThe function returns a dictionary with the total number of gold, silver, and bronze medals, as well as the overall total: {'total_golds': 22, 'total_silvers': 12, 'total_bronzes': 4, 'total_medals': 38}."
+    }
+  ]
+}

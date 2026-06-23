@@ -1,0 +1,34 @@
+{
+  "source_url": "https://mathworld.wolfram.com/BinomialSums.html",
+  "category": "mathworld",
+  "pairs": [
+    {
+      "question": "What does the binomial theorem state about powers of binomial coefficients?",
+      "answer": "The binomial theorem states that the sum of powers of binomial coefficients, ∑(k=0 to n) C(n,k)^r, can be expressed in terms of generalized hypergeometric functions. For specific cases like r=1, the sum equals 2^n, and for r=2, it equals the central binomial coefficient C(2n,n)."
+    },
+    {
+      "question": "What is Zeilberger's algorithm used for in the context of binomial sums?",
+      "answer": "Zeilberger's algorithm is used to efficiently generate recurrence equations that provide solutions to sums of powers of binomial coefficients. It helps find closed-form solutions or minimal recurrence relations for such sums."
+    },
+    {
+      "question": "Provide a code snippet demonstrating how to compute the sum of squares of binomial coefficients for a given n using Python.",
+      "answer": "python\nimport math\n\ndef sum_of_binomial_squares(n):\n    return sum(math.comb(n, k)**2 for k in range(n + 1))\n\n# Example usage:\nn = 5\nresult = sum_of_binomial_squares(n)\nprint(f\"Sum of squares of binomial coefficients for n={n}: {result}\")\n"
+    },
+    {
+      "question": "What are Franel numbers and who first studied them?",
+      "answer": "Franel numbers are sequences derived from sums of powers of binomial coefficients, specifically ∑(k=0 to n) C(n,k)^r for r=3. They were first studied by Franel (1894, 1895), who obtained recurrences for these sums. These numbers are sometimes named after him."
+    },
+    {
+      "question": "How are alternating sums of powers of binomial coefficients related to Legendre polynomials?",
+      "answer": "Alternating sums of powers of binomial coefficients, such as ∑(k=0 to n) (-1)^k * C(n,k)^r, are related to Legendre polynomials. The odd terms of such sums can be expressed using de Bruijn's formula involving gamma functions and Legendre polynomials."
+    },
+    {
+      "question": "What is the closed-form expression for the infinite sum of inverse binomial coefficients ∑(k=0 to ∞) 1/C(n,k)?",
+      "answer": "The infinite sum of inverse binomial coefficients ∑(k=0 to ∞) 1/C(n,k) has the analytic form (2/(n+1)) * 2F1(1, n+1; n+2; 1/2), where 2F1 is a hypergeometric function."
+    },
+    {
+      "question": "Explain Borwein et al.'s conjecture regarding sums of the form ∑(k=0 to n) C(n,k)^r / (k+a)^s.",
+      "answer": "Borwein et al. conjectured closed-form solutions for sums of the form ∑(k=0 to n) C(n,k)^r / (k+a)^s in terms of multidimensional polylogarithms. These conjectures extend known identities and provide a framework for evaluating complex binomial sums."
+    }
+  ]
+}

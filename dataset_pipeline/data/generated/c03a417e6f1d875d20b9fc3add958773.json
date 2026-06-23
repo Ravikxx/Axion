@@ -1,0 +1,30 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Dan_Brown",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is Dan Brown's best-known book?",
+      "answer": "Dan Brown's best-known book is 'The Da Vinci Code'."
+    },
+    {
+      "question": "How did Dan Brown's wife contribute to his books?",
+      "answer": "Dan Brown's wife, Blythe, is an artist and sometimes helps him with his books."
+    },
+    {
+      "question": "What is the title of the Dan Brown book that was originally named 'The Solomon Key'?",
+      "answer": "The book that was originally named 'The Solomon Key' was later changed to 'The Lost Symbol'."
+    },
+    {
+      "question": "What kind of puzzles were hidden in the art of the 'The Da Vinci Code' book cover?",
+      "answer": "The puzzles hidden in the art of 'The Da Vinci Code' book cover gave hints about what would be in his next book. Two of the puzzles were about a famous sculpture called Kryptos, located at the CIA Headquarters in Washington D.C."
+    },
+    {
+      "question": "List all the books written by Dan Brown along with their publication years.",
+      "answer": "Dan Brown's books are: 'Digital Fortress' (1997), 'Angels and Demons' (2000), 'Deception Point' (2001), 'The Da Vinci Code' (2003), 'The Lost Symbol' (2009), 'Inferno' (2013), and 'Origin' (2017)."
+    },
+    {
+      "question": "Which Hollywood director adapted one of Dan Brown's books into a movie, and who starred in it?",
+      "answer": "Hollywood director Ron Howard adapted one of Dan Brown's books into a movie, starring Tom Hanks. The movie was released in theaters in May 2006."
+    }
+  ]
+}

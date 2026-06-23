@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Demographics_of_Saudi_Arabia",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the current population of Saudi Arabia as of 2024, and what percentage of inhabitants are immigrants?",
+      "answer": "As of 2024, Saudi Arabia has a reported population of 35,300,280. According to the latest data, 41.6% of the inhabitants are immigrants."
+    },
+    {
+      "question": "How has Saudi Arabia's population distribution changed from the 1960s to the present?",
+      "answer": "Until the 1960s, most of Saudi Arabia's population was nomadic or semi-nomadic. Due to rapid economic and urban growth, over 95% of the population is now settled, with 80% living in ten major urban centers including Riyadh, Jeddah, and Mecca."
+    },
+    {
+      "question": "What are the key demographic characteristics of Saudi Arabia's population?",
+      "answer": "Saudi Arabia's population is marked by rapid growth, a significant gender imbalance with far more men than women, and a large youth cohort. Additionally, the population density in some cities and oases exceeds 1,000 people per square kilometer."
+    },
+    {
+      "question": "Why does Saudi Arabia host such a diverse expatriate population, and which countries do most non-citizens originate from?",
+      "answer": "Saudi Arabia's expatriate population is diverse due to its economic opportunities and cultural significance. Most non-citizens originate from the Indian Subcontinent (India, Pakistan, Bangladesh) and nearby Arab countries (Egypt, Syria, Yemen). Historically, there were also significant communities from South Korea, though most have since returned home."
+    },
+    {
+      "question": "What is the religious and cultural significance of Mecca in Saudi Arabia?",
+      "answer": "Mecca is home to one of the pillars of Islam, the Hajj, which is a mandatory pilgrimage for Muslims who are physically and financially able to undertake it at least once in their lifetime. Due to its religious importance, non-Muslims are prohibited from entering the city."
+    },
+    {
+      "question": "How has Saudi Arabia's urbanization impacted its population distribution?",
+      "answer": "Saudi Arabia's urbanization has led to over 95% of the population being settled, with 80% concentrated in ten major urban centers such as Riyadh, Jeddah, and Dammam. This shift from nomadic lifestyles has been driven by rapid economic and urban growth."
+    },
+    {
+      "question": "Write a Python code snippet to calculate the projected population of Saudi Arabia in 5 years, given its current growth rate.",
+      "answer": "python\n# Current population and growth rate\ncurrent_population = 35_300_280\ngrowth_rate = 0.0162  # 1.62% per year\nyears = 5\n\n# Projected population in 5 years\nprojected_population = current_population * (1 + growth_rate) ** years\nprint(f\"Projected population in 5 years: {projected_population:,.0f}\")\n\nThis code calculates the future population using the compound growth formula, where the current population is multiplied by (1 + growth rate) raised to the power of the number of years."
+    }
+  ]
+}

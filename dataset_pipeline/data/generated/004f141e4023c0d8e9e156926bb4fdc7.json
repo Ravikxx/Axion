@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Adolphe_Carnot",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was Marie Adolphe Carnot and what were his primary professions?",
+      "answer": "Marie Adolphe Carnot (1839–1920) was a French chemist, mining engineer, and politician. He worked extensively in academia, industry, and public service, including roles as a professor, mining engineer, Chief Engineer of Mines, and Inspector General of Mines."
+    },
+    {
+      "question": "What notable educational institutions did Marie Adolphe Carnot attend or teach at?",
+      "answer": "Carnot studied at the École Polytechnique and the École des Mines. He later taught preparatory courses and general chemistry at the École des Mines in Paris (1868–1877) and analytical chemistry there (1877–1901). He also served as director of the École des Mines from 1901 to 1907."
+    },
+    {
+      "question": "How did Marie Adolphe Carnot contribute to the field of chemistry?",
+      "answer": "Carnot made significant contributions to chemistry, including publishing a treatise on the chemical analysis of minerals (*Traité d'analyse des substances minérales*, 1898). His work also included research and teaching in analytical chemistry, and he is commemorated in the naming of the uranium ore carnotite."
+    },
+    {
+      "question": "What political roles did Marie Adolphe Carnot hold?",
+      "answer": "Beyond his scientific career, Carnot pursued politics and held administrative positions. He was appointed Chief Engineer of Mines in 1881 and Inspector General of Mines in 1894. While the text does not specify elected office, his family included prominent politicians, including his brother, Sadi Carnot, who served as President of the French Republic."
+    },
+    {
+      "question": "Which honors and awards did Marie Adolphe Carnot receive?",
+      "answer": "Carnot was honored with membership in the Académie d'Agriculture (1884) and the Académie des sciences (1895). He was also made a Commander of the Légion d'honneur in 1903."
+    },
+    {
+      "question": "Write a Python function that calculates the age of Marie Adolphe Carnot at death, given his birth and death years.",
+      "answer": "python\ndef calculate_age_at_death(birth_year, death_year):\n    return death_year - birth_year\n\n# Example usage:\nage = calculate_age_at_death(1839, 1920)\nprint(age)  # Output: 81\n\nThis function computes the difference between the death year and birth year to determine age at death."
+    },
+    {
+      "question": "Why is the uranium ore carnotite named after Marie Adolphe Carnot?",
+      "answer": "The uranium ore carnotite was named in honor of Marie Adolphe Carnot due to his contributions to the field of mineral chemistry and his research in analytical chemistry, which included the study of mineral substances."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/devteam/join-the-xano-ai-powered-backend-challenge-3000-in-prizes-3c11",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What are the two main challenge prompts participants can choose from in the Xano AI-Powered Backend Challenge?",
+      "answer": "Participants can choose between two main challenge prompts: (1) Full-Stack, AI-First Application, which involves building a full-stack application using AI to generate a backend in Xano and connecting a frontend, and (2) Production-Ready Public API, which involves creating a well-documented and secure public API providing useful data services for third-party applications."
+    },
+    {
+      "question": "How can participants unlock a free month of Xano's Starter plan for the challenge?",
+      "answer": "Participants can unlock a free month of Xano's Starter plan by creating a Xano account and using the promo code `M_Xano_PER_100_2511_1_DEVCHALLENGE-XANO1` during subscription setup. Ensure the subscription type is set to monthly to apply the promo."
+    },
+    {
+      "question": "What are the judging criteria for the Xano AI-Powered Backend Challenge?",
+      "answer": "The judging criteria include: (1) Use of underlying technology, (2) Usability and User Experience, (3) Accessibility, and (4) Creativity. One winner per prompt will be selected based on these criteria."
+    },
+    {
+      "question": "Provide a Python code snippet to fetch data from a public API built using Xano.",
+      "answer": "Here’s an example using the `requests` library to fetch data from a hypothetical Xano-built public API for Star Wars characters:\n\npython\nimport requests\n\n# Replace with your Xano API endpoint\nAPI_URL = \"https://your-xano-instance.xano.io/api:YOUR_ENDPOINT/characters\"\n\n# Make a GET request to fetch data\nresponse = requests.get(API_URL)\n\n# Check if the request was successful\nif response.status_code == 200:\n    characters = response.json()\n    for character in characters:\n        print(f\"Name: {character['name']}, Height: {character['height']}\")\nelse:\n    print(f\"Failed to fetch data: {response.status_code}\")\n"
+    },
+    {
+      "question": "What steps should you follow to set up the XanoScript extension in VS Code for AI-assisted backend development?",
+      "answer": "To set up the XanoScript extension in VS Code:\n1. Install the [XanoScript extension](https://marketplace.visualstudio.com/items?itemName=xano.xanoscript) from the VS Code marketplace.\n2. Open VS Code and navigate to the Extensions view (Ctrl+Shift+X).\n3. Search for \"XanoScript\" and click Install.\n4. After installation, open the command palette (Ctrl+Shift+P) and type \"XanoScript: Connect to Xano.\"\n5. Paste your Xano access token when prompted. You can generate this token in your Xano instance settings under \"Access Tokens.\""
+    },
+    {
+      "question": "How can you ensure your Xano-generated backend is production-ready?",
+      "answer": "To make an AI-generated backend production-ready in Xano:\n1. **Review and Refactor**: Examine the generated code for scalability issues, security vulnerabilities, or maintainability concerns.\n2. **Add Documentation**: Ensure all endpoints, data models, and functions are well-documented for future reference.\n3. **Implement Security**: Add authentication (e.g., API keys, OAuth), input validation, and rate limiting to protect your API.\n4. **Optimize Performance**: Use indexing for database queries, implement caching where necessary, and minimize unnecessary computations.\n5. **Test Thoroughly**: Validate functionality with unit tests, integration tests, and end-to-end tests.\n6. **Deploy**: Use Xano’s deployment features to deploy your backend to a production environment with proper monitoring and logging."
+    },
+    {
+      "question": "What are some examples of datasets or services that participants can use for the Production-Ready Public API challenge?",
+      "answer": "Participants can use creative datasets or services such as:\n- Star Wars character information\n- Local building permit laws\n- Sports statistics (e.g., NBA, NFL, or soccer data)\n- Weather data from public APIs like OpenWeatherMap\n- Movie or TV show databases\n- Financial market data\n- Public transportation schedules\n- Any other publicly available dataset that provides value to third-party applications."
+    }
+  ]
+}

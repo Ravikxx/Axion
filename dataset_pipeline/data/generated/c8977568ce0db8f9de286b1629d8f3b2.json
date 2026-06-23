@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/CFHS",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What are the possible meanings of the acronym CFHS?",
+      "answer": "CFHS can refer to multiple entities, including high schools such as Camden Fairview High School, Cape Fear High School, and Cedar Falls High School, as well as organizations like the Canadian Federation of Humane Societies and Conservatives for Higher Standards. It can also be an abbreviation for 'coffeehouse' in informal contexts."
+    },
+    {
+      "question": "List five high schools that use the acronym CFHS.",
+      "answer": "Five high schools with the acronym CFHS are Camden Fairview High School (Ouachita County, Arkansas), Cape Fear High School (Fayetteville, North Carolina), Cedar Falls High School (Cedar Falls, Iowa), Carolina Forest High School (Horry County, South Carolina), and Chagrin Falls High School (Chagrin Falls, Ohio)."
+    },
+    {
+      "question": "Which U.S. state has the most high schools listed under the CFHS acronym?",
+      "answer": "Ohio has the most high schools listed under CFHS, with two: Chagrin Falls High School and Cuyahoga Falls High School."
+    },
+    {
+      "question": "What is the Canadian Federation of Humane Societies, and how does it relate to CFHS?",
+      "answer": "The Canadian Federation of Humane Societies (CFHS) is a national organization in Canada that advocates for animal welfare and rights. It is one of the non-school entities that share the CFHS acronym."
+    },
+    {
+      "question": "Can CFHS stand for something other than a high school or organization? Provide an example.",
+      "answer": "Yes, in informal or casual contexts, CFHS can be an abbreviation for 'coffeehouse.' For example, someone might write 'CFHS' as a shorthand in a text message or social media post."
+    },
+    {
+      "question": "Write a Python script to count how many high schools in the provided list are located in states starting with the letter 'C'.",
+      "answer": "python\nschools = [\n    \"Camden Fairview High School — a high school in Ouachita County, Arkansas\",\n    \"Cape Fear High School — a high school in Fayetteville, North Carolina\",\n    \"Carolina Forest High School — a high school in Horry County, South Carolina\",\n    \"Catalina Foothills High School — a high school in Tucson, Arizona\",\n    \"Cedar Falls High School — a high school in Cedar Falls, Iowa\",\n    \"Central Falls High School — a high school in Central Falls, Rhode Island\",\n    \"Chagrin Falls High School — a high school in Chagrin Falls, Ohio\",\n    \"Chippewa Falls High School — a high school in Chippewa Falls, Wisconsin\",\n    \"Colonial Forge High School — a high school in Stafford, Virginia\",\n    \"Copley Fairlawn High School\",\n    \"Columbia Falls High School — a high school in Columbia Falls, Montana\",\n    \"Cuyahoga Falls High School — a high school in Cuyahoga Falls, Ohio\",\n    \"Cypress Falls High School — a high school near Houston, Texas\",\n    \"Chenango Forks High School — a high school in Binghamton, New York\",\n    \"Clear Fork High School — a high school in between Bellville and Butler, Ohio\",\n    \"Clear Falls High School — a high school near Houston, Texas\"\n]\n\ncount = 0\nfor school in schools:\n    if '— a high school in' in school:\n        state = school.split('in ')[-1].split(',')[-1].strip()\n        if state.startswith('C'):\n            count += 1\n\nprint(f\"Number of high schools in states starting with 'C': {count}\")\n\nThis script filters the list of high schools to count those located in states whose names start with the letter 'C' (e.g., California, Colorado, Connecticut)."
+    },
+    {
+      "question": "Why might the acronym CFHS be ambiguous, and how can one determine its meaning in a given context?",
+      "answer": "The acronym CFHS is ambiguous because it can refer to multiple high schools, organizations, or even informal terms like 'coffeehouse.' To determine its meaning in a specific context, one should examine the surrounding text for clues. For example, if the text mentions locations like 'Arkansas' or 'Ohio,' it likely refers to a high school. If it discusses animal welfare, it may refer to the Canadian Federation of Humane Societies. Contextual keywords help resolve the ambiguity."
+    }
+  ]
+}

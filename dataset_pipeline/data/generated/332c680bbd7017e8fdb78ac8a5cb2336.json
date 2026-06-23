@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Federico_Zeri",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was Federico Zeri and what was his primary field of expertise?",
+      "answer": "Federico Zeri (1921–1998) was an Italian art historian renowned for his specialization in Italian Renaissance painting. He was also a journalist, television personality, and academic figure in Italy."
+    },
+    {
+      "question": "What were some of the key institutions Federico Zeri was associated with during his career?",
+      "answer": "Zeri worked with institutions such as the Ministry of Public Education in Italy, served as director of the Galleria Spada in Rome, was a founding member of the Getty Villa's board of trustees, and edited catalogues for major museums like The Metropolitan Museum of Art, the Accademia Carrara, and the Walters Art Museum."
+    },
+    {
+      "question": "How did Federico Zeri contribute to the field of art history beyond scholarship?",
+      "answer": "Zeri contributed through curatorial work, editing catalogues for major art collections, teaching art history at the University of Rome, and delivering lectures at Harvard and Columbia University. He also publicly denounced art forgeries and misattributions, challenging accepted attributions in cases like the Getty kouros and frescoes in the Basilica of San Francesco d'Assisi."
+    },
+    {
+      "question": "What was Federico Zeri's stance on attributing artworks, and why was it controversial?",
+      "answer": "Zeri argued that artworks could be attributed to artists based on connoisseurship and careful examination alone, without relying on external evidence like documents or dates. This view was controversial because many in the field relied on such evidence for attributions, leading to debates about the reliability of stylistic analysis."
+    },
+    {
+      "question": "Can you provide an example of a notable controversy involving Federico Zeri?",
+      "answer": "In 1984, Zeri publicly criticized the attribution of four sculptures to Amedeo Modigliani after they fooled experts in Livorno. He identified their amateurish style as inconsistent with Modigliani's work, challenging the expertise of both local officials and renowned specialists."
+    },
+    {
+      "question": "What legacy did Federico Zeri leave behind, and how is it preserved today?",
+      "answer": "Zeri bequeathed his estate to the University of Bologna, including his library, papers, 400 ancient inscriptions, and a vast collection of photographs documenting artworks. The Federico Zeri Foundation manages these collections, which are partially digitized and include works by Zeri and acquisitions from other collectors like Evelyn Sandberg-Vavalà."
+    },
+    {
+      "question": "Write a Python function that generates a summary of Federico Zeri's career based on the provided text.",
+      "answer": "python\ndef generate_zeri_summary():\n    summary = (\n        \"Federico Zeri (1921–1998) was an Italian art historian specializing in Italian Renaissance painting. \"\n        \"He worked as a journalist for La Stampa, served as director of Galleria Spada, and was a founding member \"\n        \"of the Getty Villa's board of trustees. Zeri taught at the University of Rome and held visiting positions \"\n        \"at Harvard and Columbia. Known for denouncing art forgeries, he controversially attributed artworks \"\n        \"based on connoisseurship alone. His legacy includes his estate bequeathed to the University of Bologna, \"\n        \"containing his library, papers, inscriptions, and a vast photographic collection.\"\n    )\n    return summary\n"
+    }
+  ]
+}

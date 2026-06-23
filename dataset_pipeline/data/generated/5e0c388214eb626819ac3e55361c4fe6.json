@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Babi_Yar",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is Babi Yar and where is it located?",
+      "answer": "Babi Yar, also spelled Babyn Yar, is a ravine in Kyiv, the capital of Ukraine. It is historically significant as the site of multiple massacres carried out by Nazi Germany during World War II, particularly during the German occupation of Kyiv."
+    },
+    {
+      "question": "How many Jews were murdered during the first and most documented massacre at Babi Yar?",
+      "answer": "Approximately 33,771 Jews were murdered during the first and best-documented massacre at Babi Yar, which took place on September 29–30, 1941."
+    },
+    {
+      "question": "Who were the key Nazi officials involved in planning the Babi Yar massacre?",
+      "answer": "The key Nazi officials involved in planning the Babi Yar massacre were Generalmajor Kurt Eberhard (German military governor), SS-Obergruppenführer Friedrich Jeckeln (Police Commander for Army Group South), and Otto Rasch (Commander of Einsatzgruppe C)."
+    },
+    {
+      "question": "Which Nazi units and collaborators carried out the shootings at Babi Yar?",
+      "answer": "The shootings at Babi Yar were carried out by Sonderkommando 4a (a sub-unit of Einsatzgruppe C), the 45th Battalion of the German Order Police, with support from the SD (Sicherheitsdienst), Order Police battalions, and the Ukrainian Auxiliary Police. The Wehrmacht also provided backing."
+    },
+    {
+      "question": "What was the role of the 303rd Battalion of the German Order Police during the Babi Yar massacre?",
+      "answer": "The 303rd Battalion of the German Order Police was responsible for guarding the outer perimeter of the execution site during the Babi Yar massacre to prevent escape and maintain control over the area."
+    },
+    {
+      "question": "How does the Babi Yar massacre compare to other large-scale Nazi massacres in terms of the number of victims?",
+      "answer": "The Babi Yar massacre was the largest single massacre by the Nazi regime during the campaign against the Soviet Union, with around 33,771 Jewish victims. It is surpassed only by the Odessa massacre in October 1941 (over 50,000 Jews) and Aktion Erntefest in November 1943 in occupied Poland (42,000–43,000 victims)."
+    },
+    {
+      "question": "Provide a Python code snippet to calculate the total estimated number of victims at Babi Yar based on historical records.",
+      "answer": "python\ntotal_victims_lower = 100000\ntotal_victims_upper = 150000\n\n# Estimated total range of victims at Babi Yar\nestimated_total = f\"Between {total_victims_lower:,} and {total_victims_upper:,} people\"\nprint(estimated_total)  # Output: Between 100,000 and 150,000 people\n\nThis code calculates and prints the estimated total number of victims at Babi Yar based on historical records."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/2019_Gauteng_provincial_election",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When was the 2019 Gauteng provincial election held, and which election did it coincide with?",
+      "answer": "The 2019 Gauteng provincial election was held on 8 May 2019, coinciding with the 2019 South African general election."
+    },
+    {
+      "question": "Who was the premier candidate for the Democratic Alliance (DA) in the 2019 Gauteng provincial election, and what was his prior role?",
+      "answer": "The DA's premier candidate was Solly Msimanga, who was the Mayor of Tshwane, a position he had been elected to following the 2016 South African municipal elections."
+    },
+    {
+      "question": "What was the expected outcome for the African National Congress (ANC) in the 2019 Gauteng provincial election, and did it materialize?",
+      "answer": "The ANC was widely expected to lose its majority in the Gauteng Provincial Legislature in the 2019 election. However, the ANC retained its majority, albeit with a reduced seat total of 37 out of 73 seats, which was just enough to secure a majority."
+    },
+    {
+      "question": "Which parties gained seats in the 2019 Gauteng provincial election, and how many seats did each party win?",
+      "answer": "In the 2019 Gauteng provincial election, the Economic Freedom Fighters (EFF) gained three seats, bringing their total to 11; the Freedom Front Plus (FF+) gained two seats, totaling 3; the Inkatha Freedom Party (IFP) retained its sole seat; and the African Christian Democratic Party (ACDP) returned to the legislature by winning one seat."
+    },
+    {
+      "question": "What was the total number of seats in the Gauteng Provincial Legislature, and how many seats did the ANC win in 2019?",
+      "answer": "The Gauteng Provincial Legislature consists of 73 seats. In the 2019 election, the ANC won 37 seats, which was a majority but a reduction from its previous total."
+    },
+    {
+      "question": "Why was the 2019 Gauteng provincial election considered particularly competitive?",
+      "answer": "The election was considered highly competitive because political analysts widely expected the ruling African National Congress (ANC) to lose its majority in Gauteng, the country's most populous province. Additionally, the Economic Freedom Fighters (EFF) were anticipated to grow significantly, potentially holding the balance of power if the ANC lost its majority."
+    },
+    {
+      "question": "Write a Python function to calculate the percentage of seats each party won in the 2019 Gauteng provincial election.",
+      "answer": "python\n\ndef calculate_seat_percentages(election_results):\n    total_seats = 73\n    percentages = {party: round((seats / total_seats) * 100, 2) \n                   for party, seats in election_results.items()}\n    return percentages\n\n# Example usage:\nresults = {\n    \"ANC\": 37,\n    \"DA\": 20,\n    \"EFF\": 11,\n    \"FF+\": 3,\n    \"IFP\": 1,\n    \"ACDP\": 1\n}\n\npercentages = calculate_seat_percentages(results)\nprint(percentages)\n# Output: {'ANC': 50.68, 'DA': 27.4, 'EFF': 15.07, 'FF+': 4.11, 'IFP': 1.37, 'ACDP': 1.37}\n"
+    }
+  ]
+}

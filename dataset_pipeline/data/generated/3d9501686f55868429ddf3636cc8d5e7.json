@@ -1,0 +1,30 @@
+{
+  "source_url": "https://github.com/react/react",
+  "category": "github",
+  "pairs": [
+    {
+      "question": "What are the three core principles of React as a JavaScript library for building user interfaces?",
+      "answer": "React is built on three core principles: 1) **Declarative**: React allows you to design simple views for each state in your application, and it automatically updates and renders the correct components when data changes, making the code more predictable and easier to debug. 2) **Component-Based**: React encourages building encapsulated components that manage their own state, which can be composed to create complex UIs. Since component logic is written in JavaScript, you can easily pass rich data through your app without cluttering the DOM. 3) **Learn Once, Write Anywhere**: React does not impose assumptions about your tech stack, allowing you to develop new features without rewriting existing code. It supports server-side rendering with Node and mobile app development through React Native."
+    },
+    {
+      "question": "How can you add React to an existing project without rewriting the entire application?",
+      "answer": "React is designed for gradual adoption, meaning you can use as little or as much React as needed. To add React to an existing project, follow the **'Add React to an Existing Project'** guide on the official React documentation. This approach allows you to incrementally integrate React components into your existing codebase without requiring a full rewrite. You can start by embedding React components in specific parts of your application, such as interactive widgets or isolated UI sections, and gradually expand its usage as you become more comfortable with the library."
+    },
+    {
+      "question": "What is JSX, and why is it commonly used with React?",
+      "answer": "JSX is an HTML-like syntax extension for JavaScript that is often used with React. It allows you to write markup directly in your JavaScript code, making the code more readable and intuitive. While JSX is not required to use React, it simplifies the process of describing the UI by making it resemble HTML. For example, the JSX code `<div>Hello {name}</div>` is more intuitive than manually creating and appending DOM elements using JavaScript. React transpiles JSX into regular JavaScript calls during the build process, ensuring optimal performance and compatibility."
+    },
+    {
+      "question": "How do you render a React component to the DOM using React 18's `createRoot` API?",
+      "answer": "To render a React component to the DOM using React 18's `createRoot` API, follow these steps:\n\n1. Import the `createRoot` function from the `react-dom/client` package.\n2. Create a root using `createRoot` and pass the DOM container element where the React component will be rendered.\n3. Call the `render` method on the root and pass your React component to it.\n\nHere's an example:\n\njsx\nimport { createRoot } from 'react-dom/client';\n\nfunction HelloMessage({ name }) {\n  return <div>Hello {name}</div>;\n}\n\nconst root = createRoot(document.getElementById('container'));\nroot.render(<HelloMessage name=\"Taylor\" />);\n\n\nThis code will render the text \"Hello Taylor\" into the element with the ID `container` on the page. The `createRoot` API is part of React 18's new rendering engine, which provides improved performance and features like concurrent rendering."
+    },
+    {
+      "question": "What are the key sections of the React documentation, and how can they help developers?",
+      "answer": "The React documentation is organized into several key sections to assist developers at all levels:\n\n- **Quick Start**: Provides a brief introduction to React, ideal for beginners to get up and running quickly.\n- **Tutorial**: Offers a step-by-step guide to building a complete React application, helping developers understand the core concepts.\n- **Thinking in React**: Introduces a methodology for breaking down UI design into components, making it easier to manage state and logic.\n- **Installation**: Guides developers through the process of setting up React in their projects, including adding it to existing applications.\n- **Describing the UI**: Explains how to use JSX and components to define the structure and appearance of the user interface.\n- **Adding Interactivity**: Covers handling user input and events, enabling dynamic behavior in React applications.\n- **Managing State**: Teaches developers how to manage and update application state effectively.\n- **Advanced Guides**: Provides in-depth articles on advanced topics like performance optimization, context API, and hooks.\n- **API Reference**: Documents the React API, including hooks, components, and other utilities.\n- **Where to Get Support**: Lists resources for finding help, such as forums, chat communities, and official support channels.\n- **Contributing Guide**: Explains how developers can contribute to the React project, including reporting issues and submitting pull requests.\n\nEach section is designed to cater to different learning stages and use cases, ensuring developers have the resources they need to build robust applications with React."
+    },
+    {
+      "question": "What are 'Good First Issues' in the context of contributing to React, and why are they important?",
+      "answer": "'Good First Issues' are beginner-friendly bugs or improvements listed in the React repository on GitHub. These issues are specifically curated to help new contributors get familiar with the project's development process, codebase, and contribution workflow. They typically involve smaller, well-defined tasks that have a limited scope, making them ideal for first-time contributors to gain confidence and experience. Working on these issues allows developers to understand the project's structure, practice debugging, and learn how to submit meaningful pull requests. Contributing to 'Good First Issues' is an excellent way to become an active member of the React community and make a tangible impact on the library's development."
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Canadian_Council",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the Canadian Airports Council?",
+      "answer": "The Canadian Airports Council is the trade association representing Canada's airports, serving as a collective voice for the country's airport industry."
+    },
+    {
+      "question": "What role does the Canadian Aviation Regulation Advisory Council play in aviation regulations?",
+      "answer": "The Canadian Aviation Regulation Advisory Council is a public consultative body involved in creating the Canadian Aviation Regulations (CARs). It provides input from industry stakeholders to help shape aviation policy and regulatory frameworks in Canada."
+    },
+    {
+      "question": "Which organizations are involved in the Canadian Council for Geographic Education?",
+      "answer": "The Canadian Council for Geographic Education is an initiative jointly led by The Royal Canadian Geographical Society and the National Geographic Society, focused on promoting geographic education in Canada."
+    },
+    {
+      "question": "What is the mission of the Canadian Council of Churches?",
+      "answer": "The Canadian Council of Churches is an ecumenical Christian forum that brings together churches in Canada to promote collaboration, dialogue, and shared initiatives within the Christian community."
+    },
+    {
+      "question": "How does the Canadian Council of Professional Engineers operate at a national level?",
+      "answer": "The Canadian Council of Professional Engineers serves as the national organization for 12 provincial and territorial associations, acting as a unified body to advance the engineering profession across Canada."
+    },
+    {
+      "question": "Write a Python script to check if a given organization is listed as a Canadian Council.",
+      "answer": "python\ndef is_canadian_council(organization_name):\n    canadian_councils = [\n        \"Canadian Airports Council\",\n        \"Canadian Aviation Regulation Advisory Council\",\n        \"Canadian Broadcast Standards Council\",\n        \"Canadian Council for Geographic Education\",\n        \"Canadian Council for Tobacco Control\",\n        \"Canadian Council of Churches\",\n        \"Canadian Council of Natural Mothers\",\n        \"Canadian Council of Professional Engineers\",\n        \"Canadian Judicial Council\",\n        \"Canadian Meat Council\",\n        \"Canadian Translators, Terminologists and Interpreters Council\",\n        \"Canadian Unitarian Council\",\n        \"Canadian Unity Council\",\n        \"Chinese Canadian National Council\"\n    ]\n    return organization_name in canadian_councils\n\n# Example usage:\nprint(is_canadian_council(\"Canadian Council of Churches\"))  # True\nprint(is_canadian_council(\"Canadian Space Agency\"))       # False\n"
+    },
+    {
+      "question": "What distinguishes the Canadian Council of Natural Mothers from other Canadian Councils?",
+      "answer": "The Canadian Council of Natural Mothers is a lobby group specifically focused on advocating for the rights of women who have placed children for adoption, addressing legal, social, and policy issues related to adoption practices in Canada."
+    },
+    {
+      "question": "Why might the Chinese Canadian National Council be considered a unique Canadian Council?",
+      "answer": "The Chinese Canadian National Council is unique among Canadian Councils because its primary purpose is to monitor and combat racial discrimination against Chinese individuals in Canada, promoting equity and addressing issues of systemic bias."
+    }
+  ]
+}

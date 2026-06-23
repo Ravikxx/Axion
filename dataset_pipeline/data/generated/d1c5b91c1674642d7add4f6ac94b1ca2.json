@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Downhill_mountain_biking",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is Downhill Mountain Biking (DH) and what type of terrain does it involve?",
+      "answer": "Downhill Mountain Biking (DH) is a mountain biking style practiced on steep, rough terrain that includes features like jumps (up to 12 meters or 39 feet), drops (over 3 meters or 10 feet), rock gardens, and other obstacles. The courses are designed to challenge riders with technical descents and rapid changes in elevation."
+    },
+    {
+      "question": "Why is a motorized vehicle or lift typically used to reach the top of a downhill trail?",
+      "answer": "A motorized vehicle or lift is commonly used because downhill mountain bikes are heavy and have gearing optimized for descent, making serious climbing difficult or impossible. This allows riders to conserve energy for the challenging descent rather than expending it on ascent."
+    },
+    {
+      "question": "What physical and skill requirements are necessary for downhill mountain biking?",
+      "answer": "Riders need a combination of total body strength, aerobic and anaerobic fitness, and the willingness to accept a high risk of serious injury. They must also possess technical skills to navigate steep, rough terrain, jumps, and drops safely and efficiently."
+    },
+    {
+      "question": "How are downhill mountain bike suspension systems designed to handle rough terrain?",
+      "answer": "Downhill mountain bikes feature front and rear suspension with over 8 inches (20 cm) of travel. This allows the bike to glide quickly over rocks, tree roots, and other obstacles, absorbing impacts and maintaining traction and control during high-speed descents."
+    },
+    {
+      "question": "How is a downhill mountain bike race course marked and what happens if a rider leaves the course?",
+      "answer": "A downhill race course is marked by a strip of tape on each side. If a rider crosses or breaks the tape, they must return to the course at the point of exit unless they do not gain a time advantage, in which case they can continue their run. The goal is to remain between the tapes while navigating the course as quickly as possible."
+    },
+    {
+      "question": "How are riders timed in downhill mountain bike races, and what are typical race durations and winning margins?",
+      "answer": "Riders are timed using equipment similar to that used in downhill skiing. Courses typically take two to five minutes to complete, and winning margins are often less than a second. Riders start at intervals, often seeded from slowest to fastest."
+    },
+    {
+      "question": "Write a Python function that calculates the time advantage a rider gains by illegally cutting a corner in a downhill race. Assume the rider cuts a 5-meter section of the course and the race is timed in milliseconds.",
+      "answer": "python\nimport math\n\ndef calculate_time_advantage(total_course_length, cut_length, rider_speed_kmh):\n    \"\"\"\n    Calculate the time advantage gained by cutting a section of the course.\n    \n    Args:\n        total_course_length (float): Total length of the course in meters.\n        cut_length (float): Length of the section cut by leaving the course in meters.\n        rider_speed_kmh (float): Rider's speed in kilometers per hour.\n    \n    Returns:\n        float: Time advantage in milliseconds.\n    \"\"\"\n    # Convert speed from km/h to m/ms\n    speed_mps = rider_speed_kmh * (1000 / 3600)\n    speed_mps_per_ms = speed_mps / 1000\n    \n    # Time saved by cutting the corner (avoiding the detour)\n    time_saved_seconds = cut_length / speed_mps\n    time_saved_ms = time_saved_seconds * 1000\n    \n    return time_saved_ms\n\n# Example usage:\nadvantage = calculate_time_advantage(2000, 5, 45)\nprint(f\"Time advantage: {advantage:.2f} ms\")\n"
+    }
+  ]
+}

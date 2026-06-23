@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Bigpoint_GmbH",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "When was Bigpoint GmbH founded, and who was its founder?",
+      "answer": "Bigpoint GmbH was founded in December 2002 by Heiko Hubertz."
+    },
+    {
+      "question": "What distinguishes Bigpoint's browser-based MMORPG games from others?",
+      "answer": "Bigpoint's browser-based MMORPG games are unique because they do not require any downloads to play."
+    },
+    {
+      "question": "How did the ownership structure of Bigpoint change in June 2008?",
+      "answer": "In June 2008, NBCU's and GE's joint venture Peacock Equity Fund, along with UK PE Firm GMT Communications Partners, purchased a 70% controlling share of Bigpoint for $110 million (€70 million). This allowed the initial venture capital investors—Aurelia Private Equity, European Founders Fund, and United Internet Beteiligungen—to exit, while Heiko Hubertz retained a 30% stake by reinvesting his share of the sale."
+    },
+    {
+      "question": "What notable business awards has Bigpoint won, and in what years?",
+      "answer": "Bigpoint has won the Red Herring Award in 2007, placing it among the top 100 most innovative businesses, and the Ruban d'Honneur at the European Business Awards in 2009."
+    },
+    {
+      "question": "How many games are in Bigpoint's portfolio, and what are the two largest games by registered users?",
+      "answer": "Bigpoint has a portfolio of more than 40 games translated into 20 languages. The two largest games are SeaFight, with approximately 15.7 million registered users, and Dark Orbit, with approximately 14.2 million registered users."
+    },
+    {
+      "question": "What is the daily user registration rate for Bigpoint's games?",
+      "answer": "Bigpoint claims to receive more than 200,000 new user registrations each day."
+    },
+    {
+      "question": "Provide a Python code snippet to calculate the total number of registered users across all of Bigpoint's games, given the user counts for SeaFight and Dark Orbit.",
+      "answer": "python\n# Registered users (in millions)\nsea_fight_users = 15.7\ndark_orbit_users = 14.2\n\n# Calculate total registered users\ntotal_users = sea_fight_users + dark_orbit_users\ntotal_users_million = total_users  # in millions\n\nprint(f\"Total registered users (SeaFight + Dark Orbit): {total_users_million} million\")\n\nThis code calculates the combined registered users for SeaFight and Dark Orbit, which totals 29.9 million."
+    }
+  ]
+}

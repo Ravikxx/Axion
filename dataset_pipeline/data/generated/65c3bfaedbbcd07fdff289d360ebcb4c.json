@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Hostile_attribution_bias",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is hostile attribution bias and how does it manifest in social situations?",
+      "answer": "Hostile attribution bias is the tendency to interpret others' ambiguous or benign behaviors as having hostile intent. For example, if someone sees two people laughing, they might automatically assume the laughter is directed at them, even without clear evidence. This bias leads individuals to perceive hostility where none may exist."
+    },
+    {
+      "question": "Who first coined the term 'hostile attribution bias' and when?",
+      "answer": "The term 'hostile attribution bias' was first coined in 1980 by researchers Nasby, Hayden, and DePaulo, who observed that certain children consistently attributed hostile intent to ambiguous social situations more than others."
+    },
+    {
+      "question": "How is hostile attribution bias related to aggression in children?",
+      "answer": "Hostile attribution bias is strongly linked to aggression in children. Those who consistently interpret ambiguous situations as hostile are more likely to engage in aggressive behaviors, such as hitting, fighting, verbal aggression, or relational aggression (e.g., spreading rumors). This bias can act as a pathway through which other risk factors, like peer rejection or harsh parenting, contribute to aggression."
+    },
+    {
+      "question": "What role does hostile attribution bias play in the development of aggressive behavior?",
+      "answer": "Hostile attribution bias is considered a key pathway through which risk factors like peer rejection or harsh parenting lead to aggression. For instance, children exposed to teasing or abuse may develop this bias, causing them to react aggressively in social settings. This makes it a critical target for intervention strategies aimed at reducing aggression."
+    },
+    {
+      "question": "Is hostile attribution bias always problematic? Explain your answer.",
+      "answer": "Occasional hostile attribution bias is considered normative, especially in younger children, as their cognitive and social development may not yet allow for nuanced interpretations of social cues. However, consistently high levels of this bias across development are concerning, as they are strongly associated with aggressive behavior."
+    },
+    {
+      "question": "How does hostile attribution bias fit into broader theories of social information processing?",
+      "answer": "Hostile attribution bias is conceptualized as a bias within social information processing, similar to other attribution biases. It influences how individuals perceive, interpret, and select responses to social situations, shaping their behavioral reactions based on their attributions of intent."
+    },
+    {
+      "question": "What interventions could target hostile attribution bias to reduce aggression?",
+      "answer": "Interventions targeting hostile attribution bias often focus on cognitive restructuring techniques to help individuals reinterpret ambiguous social cues more accurately. For example, programs might teach children to pause and consider alternative explanations before assuming hostility, reducing the likelihood of aggressive reactions. These interventions can be integrated into school-based anti-bullying programs or family therapy for high-risk children."
+    }
+  ]
+}

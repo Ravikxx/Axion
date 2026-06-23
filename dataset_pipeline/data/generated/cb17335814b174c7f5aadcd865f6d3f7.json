@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Democratic_centralism",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is democratic centralism and which organizations typically adopt it?",
+      "answer": "Democratic centralism is a Leninist principle that combines structured participation and consultation within a unified organizational system. It is adopted by communist states and their ruling parties, as well as non-ruling communist parties, 'transmission belt' organizations, and even some non-communist organizations. The system emphasizes that once decisions are debated and adopted, they must be implemented uniformly across the organization."
+    },
+    {
+      "question": "How does democratic centralism structure its hierarchy of decision-making?",
+      "answer": "Democratic centralism uses a pyramid-like structure where a supreme organ sits at the apex, and lower-level organs form the base. Decisions flow downward, with higher-level organs binding subordinate units. The system relies on collective leadership, cadre systems, and regulated consultation to formulate policy, while enforcement mechanisms ensure compliance and discipline."
+    },
+    {
+      "question": "What is the difference between vertical and horizontal accountability in democratic centralism?",
+      "answer": "Vertical accountability refers to lower-level organs being accountable to their electors and reporting to higher-level bodies, which can supervise and enforce binding decisions. Horizontal accountability means organs are accountable to the leading organ at their own level, ensuring alignment with peer-level leadership."
+    },
+    {
+      "question": "How is democratic centralism applied in economic management within communist states?",
+      "answer": "In economic management, democratic centralism is used to implement central decisions like five-year plans through administrative and enterprise hierarchies. Higher organs formulate priorities, while lower levels contribute information and proposals within controlled channels. The system ensures centralized planning while allowing limited local input."
+    },
+    {
+      "question": "What role does the cadre system play in democratic centralism?",
+      "answer": "The cadre system is a key component of democratic centralism, involving the recruitment, training, and deployment of loyal officials (cadres) to implement policies and maintain discipline. Cadres are typically appointed by higher-level organs, ensuring alignment with central directives and party goals."
+    },
+    {
+      "question": "Can you provide a simple Python representation of how democratic centralism's decision-making hierarchy might be modeled?",
+      "answer": "python\nclass DemocraticCentralismSystem:\n    def __init__(self):\n        self.hierarchy = {}  # Maps levels to their organs\n        self.decision_flow = []  # Tracks decisions as they propagate\n\n    def add_organ(self, level, organ_name):\n        if level not in self.hierarchy:\n            self.hierarchy[level] = []\n        self.hierarchy[level].append(organ_name)\n\n    def make_decision(self, organ, decision):\n        self.decision_flow.append(f\"Decision '{decision}' made by {organ}\")\n        for higher_level in range(max(self.hierarchy.keys()), 0, -1):\n            if organ in self.hierarchy.get(higher_level, []):\n                for lower_organ in self.hierarchy.get(higher_level - 1, []):\n                    self.decision_flow.append(f\"Decision enforced on {lower_organ}\")\n\n# Example usage\nsystem = DemocraticCentralismSystem()\nsystem.add_organ(1, \"Central Committee\")\nsystem.add_organ(2, \"Regional Branch\")\nsystem.add_organ(3, \"Local Cell\")\nsystem.make_decision(\"Central Committee\", \"Five-Year Plan Approved\")\n"
+    },
+    {
+      "question": "Why has the balance between democracy and centralism been a subject of debate in democratic centralism?",
+      "answer": "The balance between democracy (participation, consultation) and centralism (unity, enforcement) has varied historically. Critics argue that excessive centralism stifles debate, while others claim too much democracy undermines organizational discipline. The tension reflects ongoing struggles to reconcile collective decision-making with efficient implementation."
+    }
+  ]
+}

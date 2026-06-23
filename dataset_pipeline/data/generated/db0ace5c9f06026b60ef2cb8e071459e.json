@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/54th_Annual_Grammy_Awards",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When and where were the 54th Annual Grammy Awards held?",
+      "answer": "The 54th Annual Grammy Awards took place on February 12, 2012, at the Staples Center in Los Angeles."
+    },
+    {
+      "question": "Who hosted the 54th Annual Grammy Awards, and how many years had it been since the event had an official host?",
+      "answer": "LL Cool J hosted the 54th Annual Grammy Awards, and it was the first time in seven years that the event had an official host."
+    },
+    {
+      "question": "How many Grammy nominations did Kanye West receive, and which album was criticized for not being nominated for Album of the Year despite its acclaim?",
+      "answer": "Kanye West received seven Grammy nominations. His critically acclaimed album 'My Beautiful Dark Twisted Fantasy' was criticized for missing out on an Album of the Year nomination."
+    },
+    {
+      "question": "What awards did Adele win at the 54th Annual Grammy Awards, and which record did she tie?",
+      "answer": "Adele won all six of her nominations at the 54th Annual Grammy Awards. She tied the record for most wins by a female artist in one night, previously held by Beyoncé."
+    },
+    {
+      "question": "What are the four general field Grammy categories, and which artist became only the second in history to win all four in their career?",
+      "answer": "The four general field Grammy categories are Album of the Year, Best New Artist, Record of the Year, and Song of the Year. Adele became the second artist in history, following Christopher Cross in 1981, to win all four."
+    },
+    {
+      "question": "What was significant about the 2012 Grammy Pre-Telecast Ceremony, and who co-hosted it?",
+      "answer": "The 2012 Grammy Pre-Telecast Ceremony was streamed live internationally for the first time. It was co-hosted by Dave Koz and MC Lyte."
+    },
+    {
+      "question": "Write a Python function to check if an artist's Grammy wins meet or exceed the record for most wins by a female artist in one night, and explain its logic.",
+      "answer": "python\ndef is_record_breaking_win(wins):\n    \"\"\"\n    Check if an artist's Grammy wins meet or exceed the record for most wins by a female artist in one night.\n    \n    Args:\n        wins (int): Number of Grammy wins by the artist.\n    \n    Returns:\n        bool: True if the wins meet or exceed the record (6), False otherwise.\n    \"\"\"\n    return wins >= 6\n\n# Example usage:\nprint(is_record_breaking_win(6))  # Output: True\nprint(is_record_breaking_win(3))  # Output: False\n\n\nThe function `is_record_breaking_win` takes the number of Grammy wins as input and returns `True` if the artist meets or exceeds the record of 6 wins by a female artist in one night (set by Adele in 2012), otherwise it returns `False`."
+    },
+    {
+      "question": "What tribute performances were planned for Whitney Houston and Etta James at the 54th Annual Grammy Awards, and when did these announcements occur?",
+      "answer": "A tribute performance for Etta James was planned with Alicia Keys and Bonnie Raitt, announced on February 7, 2012. Following Whitney Houston's death on February 11, 2012, Jennifer Hudson performed Houston's 'I Will Always Love You' as a tribute during the awards show."
+    }
+  ]
+}

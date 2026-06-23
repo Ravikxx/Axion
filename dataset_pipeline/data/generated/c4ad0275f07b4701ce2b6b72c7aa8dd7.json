@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/BBC_Lab_UK",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the purpose of BBC Lab UK?",
+      "answer": "BBC Lab UK was designed to enable leading academics to conduct scientific research by leveraging the BBC's large audience through mass public participation. Its goal was to explore scientific hypotheses using very large datasets collected via online experiments and surveys, with results published in academic journals and shared publicly on the BBC website and television."
+    },
+    {
+      "question": "Who commissioned BBC Lab UK and when?",
+      "answer": "BBC Lab UK was commissioned in 2008 by BBC Commissioner Lisa Sargood."
+    },
+    {
+      "question": "How were participants involved in the experiments on BBC Lab UK?",
+      "answer": "Participants took part by completing online tests and surveys. After submitting their data, each experiment provided immediate feedback to the participant. The collected data was then securely handed over to the scientist who designed the experiment for analysis by their research team."
+    },
+    {
+      "question": "What role did Richard Cable play in BBC Lab UK?",
+      "answer": "Richard Cable was the BBC executive producer who conceived BBC Lab UK. He also served as the editor from 2008 to 2011."
+    },
+    {
+      "question": "Can you provide a code snippet that demonstrates how to structure a simple feedback mechanism for an online experiment participant?",
+      "answer": "Here’s a Python example using Flask to provide immediate feedback to participants after they submit experiment data:\npython\nfrom flask import Flask, request, jsonify\n\napp = Flask(__name__)\n\n@app.route('/submit_data', methods=['POST'])\ndef submit_data():\n    participant_data = request.json\n    # Process participant data (e.g., store in database)\n    feedback = {\n        \"participant_id\": participant_data.get(\"id\"),\n        \"feedback\": \"Thank you! Your data has been received and will be analyzed by our research team.\"\n    }\n    return jsonify(feedback)\n\nif __name__ == '__main__':\n    app.run()\n\nThis snippet shows how to handle participant submissions and return immediate feedback after data collection."
+    },
+    {
+      "question": "When did BBC Lab UK stop collecting data and why?",
+      "answer": "BBC Lab UK stopped collecting data in May 2013 when it was migrated to the BBC's Knowledge & Learning product. The website was formally archived in March 2016."
+    },
+    {
+      "question": "What types of projects did BBC Lab UK support?",
+      "answer": "BBC Lab UK supported a variety of scientific projects inspired by citizen science initiatives like Galaxy Zoo, the BBC Climate Change Experiment, and BugGuide. These projects aimed to explore hypotheses using large datasets gathered through public participation in online experiments."
+    }
+  ]
+}

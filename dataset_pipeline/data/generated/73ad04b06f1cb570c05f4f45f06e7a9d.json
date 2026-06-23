@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/ashiqsultan/co-researcher-accelerating-healthcare-research-with-multi-agent-ai-hjo",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What problem does the Co-Research app solve and who is its primary audience?",
+      "answer": "The Co-Research app is designed to help scientists in healthcare and medicine accelerate their drug discovery workflows. It achieves this by automating tasks such as pulling clinical trial data, reviewing literature, and analyzing safety concerns using AI agents and real-time web search tools."
+    },
+    {
+      "question": "How does the Co-Research app use n8n AI Agent nodes and BrightData tools?",
+      "answer": "The app utilizes multiple n8n AI Agent nodes, each configured with BrightData tools to retrieve real-time data from the internet. The agents specialize in different tasks (e.g., clinical trial data, literature review, safety analysis), and a final agent aggregates their outputs into a summarized report with insights."
+    },
+    {
+      "question": "Can you provide a code snippet showing how to integrate BrightData with n8n in a reusable workflow?",
+      "answer": "Below is a simplified n8n workflow JSON snippet demonstrating how to create a reusable sub-workflow for BrightData-based web searches. This sub-workflow can be plugged into any main workflow requiring search functionality:\n\n{\n  \"name\": \"BrightData Web Search Sub-Workflow\",\n  \"nodes\": [\n    {\n      \"parameters\": {\n        \"url\": \"={{$json.searchQuery}}\",\n        \"options\": {\n          \"useGoogleAI\": true,\n          \"snapshot\": true\n        }\n      },\n      \"name\": \"BrightData Search Node\",\n      \"type\": \"n8n-nodes-base.brightData\",\n      \"typeVersion\": 1,\n      \"position\": [250, 300]\n    },\n    {\n      \"parameters\": {\n        \"functionCode\": \"return items[0].json.results\"\n      },\n      \"name\": \"Process Search Results\",\n      \"type\": \"n8n-nodes-base.function\",\n      \"position\": [450, 300]\n    }\n  ],\n  \"connections\": {\n    \"BrightData Search Node\": {\n      \"main\": [[{\"node\": \"Process Search Results\", \"type\": \"main\", \"index\": 0}]]\n    }\n  }\n}\n"
+    },
+    {
+      "question": "What are the key components of the Co-Research app's technical stack?",
+      "answer": "The Co-Research app's technical stack consists of:\n- **Next.js**: For building the web application interface.\n- **n8n**: Used for orchestrating AI agents and automating research workflows.\n- **BrightData**: Provides web search capabilities and data extraction tools.\n- **AirTable**: Serves as the data storage solution for research records.\n- **Gemini Flash**: The LLM model used for processing and generating insights."
+    },
+    {
+      "question": "How did the creator overcome challenges with BrightData's snapshot storage during development?",
+      "answer": "Initially, the creator tried using BrightData directly as a tool within an AI agent node, but the results were stored in a snapshot, making it difficult to orchestrate the workflow. To solve this, they designed a separate reusable sub-workflow for web searches, which could be called as a tool by other agents. This approach simplified integration and improved the overall workflow orchestration."
+    },
+    {
+      "question": "What inspired the Co-Research app and what core ideas were adapted from the original concept?",
+      "answer": "The Co-Research app was inspired by James Zou's talk on 'Virtual Lab of AI Scientists.' The creator adapted core ideas from the talk, focusing on automating scientific research workflows using AI agents, but simplified the implementation for a hackathon project instead of building a fully comprehensive version."
+    },
+    {
+      "question": "How can a new user deploy and test the Co-Research app locally?",
+      "answer": "To deploy and test the Co-Research app locally:\n1. Clone the GitHub repository: `git clone https://github.com/ashiqsultan/co-researcher.git`\n2. Install dependencies for the Next.js app: `npm install`\n3. Set up environment variables for AirTable, BrightData API keys, and n8n credentials.\n4. Start the Next.js development server: `npm run dev`\n5. Import the provided n8n workflow JSON files into your n8n instance and configure the AI agents.\n6. Access the app at `http://localhost:3000` and test the workflows by triggering searches or data retrieval tasks."
+    }
+  ]
+}

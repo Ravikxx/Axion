@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Earth's_spin",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is the Earth's axis and where are the North and South Poles located?",
+      "answer": "Earth's axis is an imaginary line that runs through the center of the Earth from the North Pole to the South Pole. The North Pole, also called the Geographic North Pole, is where the axis touches the top of the Earth, while the South Pole is where the axis touches the bottom side of the Earth in Antarctica."
+    },
+    {
+      "question": "In which direction does Earth spin, and what is the difference between solar and sidereal days?",
+      "answer": "Earth spins to the east, meaning it turns counterclockwise when viewed from the North Pole looking toward Polaris. A solar day, based on the Sun's position, lasts about 24 hours, while a sidereal day, measured relative to distant stars, is about 23 hours, 56 minutes, and 4 seconds long."
+    },
+    {
+      "question": "Why is Earth's spin slowing down over time, and how do scientists account for this change?",
+      "answer": "Earth's spin is slowing down due to the gravitational pull of the Moon, which creates tidal forces that transfer Earth's rotational energy to the Moon. This lengthens the day by about 1.7 milliseconds every 100 years. Scientists use leap seconds to adjust timekeeping to account for these gradual changes."
+    },
+    {
+      "question": "What caused Earth to spin faster in 2020, and what was the fastest recorded spin?",
+      "answer": "Earth's spin sped up in 2020 due to changes in the movement of its liquid core, oceans, atmosphere, and shifts in mass distribution caused by melting polar ice. On June 29, 2022, Earth completed a rotation 1.59 milliseconds faster than 24 hours, marking the fastest recorded spin."
+    },
+    {
+      "question": "How does the conservation of angular momentum explain Earth's faster spin when ice melts?",
+      "answer": "The conservation of angular momentum states that when mass moves closer to the axis of rotation, the spinning speed increases. As polar ice melts, the weight shifts from the poles toward the equator, redistributing mass closer to Earth's center and causing it to spin faster."
+    },
+    {
+      "question": "What is the difference between the Geographic North Pole and the north magnetic pole?",
+      "answer": "The Geographic North Pole is the northernmost point on Earth where the axis of rotation meets the surface, while the north magnetic pole is the location where Earth's magnetic field points vertically downward and is not fixed to the geographic axis."
+    },
+    {
+      "question": "Write a Python code snippet to calculate the difference in length between a sidereal day and a solar day in seconds.",
+      "answer": "python\n# Convert sidereal day (23 hours, 56 minutes, 4 seconds) and solar day (24 hours) to seconds\nsidereal_day_seconds = (23 * 3600) + (56 * 60) + 4\nsolar_day_seconds = 24 * 3600\ndifference = solar_day_seconds - sidereal_day_seconds\nprint(f\"Difference between solar and sidereal day: {difference} seconds\")\n# Output: Difference between solar and sidereal day: 236 seconds\n"
+    }
+  ]
+}

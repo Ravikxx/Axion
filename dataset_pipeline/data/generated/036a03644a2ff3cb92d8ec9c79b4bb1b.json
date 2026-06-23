@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/2025_Northern_Ireland_riots",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What event triggered the riots in Northern Ireland starting on 9 June 2025?",
+      "answer": "The riots were triggered by the charging of two Romanian Roma teenagers with attempted rape after allegedly sexually assaulting a teenage girl in Ballymena, County Antrim."
+    },
+    {
+      "question": "How many police officers were injured during the riots in Northern Ireland?",
+      "answer": "A total of 107 police officers were injured during the two weeks of riots."
+    },
+    {
+      "question": "What types of projectiles did police use during the riots?",
+      "answer": "Police used 32 attenuating energy projectiles (AEPs) across five nights of disorder."
+    },
+    {
+      "question": "Can you describe the progression of rioting over the first four nights?",
+      "answer": "On the first night, disorder was confined to Ballymena with two police cars and properties damaged, 15 officers injured, and one rioter arrested. The second night saw 17 more officers injured and five arrests, with additional property damage and disorder spreading to Belfast, Carrickfergus, and Newtownabbey. The third night included widespread disorder, with nine officers injured and seven arrests in Ballymena, and a leisure centre in Larne set ablaze. The fourth night saw reduced violence in Ballymena but increased disorder in Portadown, where 22 officers were injured and two people arrested."
+    },
+    {
+      "question": "What was the total number of arrests and remands during the riots?",
+      "answer": "A total of 56 people were arrested, with 27 remanded into custody."
+    },
+    {
+      "question": "How did the authorities respond to the property damage during the riots?",
+      "answer": "The authorities responded by deploying police forces to contain the disorder, using attenuating energy projectiles (AEPs), and making arrests to restore order. For example, on the third night, a leisure centre in Larne was set ablaze, prompting an immediate response from law enforcement."
+    },
+    {
+      "question": "Write a Python script to calculate the average number of police officers injured per night during the riots.",
+      "answer": "python\n# Total police officers injured and total nights of disorder\ninjured_officers = 107\ntotal_nights = 14  # Two weeks\n\n# Calculate average\naverage_injured_per_night = injured_officers / total_nights\nprint(f\"Average police officers injured per night: {average_injured_per_night:.2f}\")\n\nThis script calculates the average number of police officers injured per night over the two-week period of riots."
+    }
+  ]
+}

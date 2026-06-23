@@ -1,0 +1,30 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Academy_Award_for_Best_Film_Editing",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the Academy Award for Best Film Editing, and which organization presents it?",
+      "answer": "The Academy Award for Best Film Editing is an annual award presented by the Academy of Motion Picture Arts and Sciences (AMPAS). It recognizes outstanding achievements in editing a feature film."
+    },
+    {
+      "question": "How are nominations for the Best Film Editing Academy Award determined?",
+      "answer": "Nominations for the Best Film Editing Academy Award are decided by a ballot of the voting members of the Editing Branch of the Academy. In 2012, there were 220 members in this branch. Voters can select up to five eligible films in order of preference, and the top five films by vote totals become nominees."
+    },
+    {
+      "question": "What is the relationship between the Best Picture and Best Film Editing Academy Awards?",
+      "answer": "The Best Picture and Best Film Editing awards are closely correlated. For 33 consecutive years (1981 to 2013), every Best Picture winner was also nominated for Best Film Editing. However, only 38 of the 98 Best Picture winners have also won the Film Editing Oscar."
+    },
+    {
+      "question": "Which editors are eligible to be named on the Best Film Editing Academy Award, and why?",
+      "answer": "Only the principal or 'above the line' editor(s) listed in the film's credits are eligible for the Best Film Editing Academy Award. This excludes additional editors, supervising editors, and other roles, as they are not currently considered eligible under the Academy's rules."
+    },
+    {
+      "question": "How does the Academy Award for Best Film Editing differ from the BAFTA Award for Best Editing in terms of the nomination and selection process?",
+      "answer": "The Academy Award for Best Film Editing uses a two-step process: nominations are determined by a specialized Editing Branch ballot, followed by a general Academy membership vote to select the winner. In contrast, the BAFTA Award for Best Editing has nominations determined by a general Academy ballot, with the winner chosen by members of the editing chapter."
+    },
+    {
+      "question": "Can you provide a Python code snippet to simulate the nomination process for the Best Film Editing Academy Award based on the described voting system?",
+      "answer": "Here's a Python code snippet to simulate the nomination process:\n\npython\nfrom collections import defaultdict\n\n# Sample data: films and their received votes\nvotes = {\n    'Film A': [5, 3, 2],\n    'Film B': [4, 4, 3],\n    'Film C': [3, 5, 4],\n    'Film D': [2, 2, 5]\n}\n\n# Calculate total votes for each film\ntotal_votes = {film: sum(rankings) for film, rankings in votes.items()}\n\n# Determine the top 5 films (or fewer if less than 5 are eligible)\ntop_films = sorted(total_votes.items(), key=lambda x: x[1], reverse=True)[:5]\n\nprint(\"Nominees:\")\nfor film, votes in top_films:\n    print(f\"- {film}: {votes} total votes\")\n\nThis code simulates the voting process where each voter ranks up to five films, and the total votes determine the nominees."
+    }
+  ]
+}

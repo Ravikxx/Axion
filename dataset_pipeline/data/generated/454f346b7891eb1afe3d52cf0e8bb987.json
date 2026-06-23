@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Bodo–Kachari_peoples",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What are the Bodo–Kacharis, and where are they predominantly located?",
+      "answer": "The Bodo–Kacharis, also known as Kacharis or Bodos, are a collection of ethnic groups primarily residing in the Northeast Indian states of Assam, Tripura, Meghalaya, and West Bengal. They are speakers of Bodo–Garo languages or Assamese, with some Tibeto-Burman speakers like the Mising and Karbi people living nearby but not considered part of this group."
+    },
+    {
+      "question": "How did the Tibeto-Burman speakers reach the Brahmaputra Valley?",
+      "answer": "Tibeto-Burman speakers are believed to have migrated to the Brahmaputra Valley via Tibet, settling in the foothills of the eastern Himalayas. This region includes parts of Assam, Tripura, North Bengal in West Bengal, and regions of present-day Bangladesh."
+    },
+    {
+      "question": "What evidence supports the claim that Bodo–Kacharis were early settlers of the Brahmaputra Valley?",
+      "answer": "The belief stems from the fact that many rivers in the Brahmaputra Valley, such as Dibang, Dihang, Dikhou, Dihing, Doiyang, and Doigrung, bear Tibeto-Burman names of Kachari origin. In these names, 'Di/Doi-' means 'water' in Boro-Garo languages, and the suffix '-ong' means 'water' in Austroasiatic languages."
+    },
+    {
+      "question": "What role did the Bodo–Kacharis play in early silk production in Assam?",
+      "answer": "The Bodo–Kacharis were the first people to rear silkworms and produce silk material in Assam. They were also associated with the 'ashu' rice culture before the introduction of 'sali' (transplanted rice) from the Gangetic plains."
+    },
+    {
+      "question": "How do the descent systems differ among the Bodo–Kachari ethnic groups?",
+      "answer": "The descent systems vary among these groups: Bodo, Deori, Tripuri, and Reang follow patrilineal descent; Garo, Rabha, and Koch follow matrilineal descent; Dimasa follows bilateral descent; and Tiwa follows ambilineal descent."
+    },
+    {
+      "question": "Which Bodo–Kachari groups identify as Hindus under Ekasarana Dharma?",
+      "answer": "Some Bodo–Kachari groups, such as the Moran and Saraniya, consider themselves Hindus under the Ekasarana Dharma tradition."
+    },
+    {
+      "question": "Can you write a Python function to check if a given river name in the Brahmaputra Valley follows the Kachari naming pattern (starts with 'Di'/'Doi' and ends with 'ong')?",
+      "answer": "python\nimport re\n\ndef is_kachari_river_name(name: str) -> bool:\n    \"\"\"Check if a river name follows the Kachari naming pattern.\n    \n    Args:\n        name: The river name to check.\n    \n    Returns:\n        True if the name starts with 'Di'/'Doi' and ends with 'ong', False otherwise.\n    \"\"\"\n    pattern = re.compile(r'^(Di|Doi).*ong$', re.IGNORECASE)\n    return bool(pattern.match(name))\n\n# Example usage:\nprint(is_kachari_river_name('Dihang'))  # True\nprint(is_kachari_river_name('Teesta'))  # False\n"
+    }
+  ]
+}

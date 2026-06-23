@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/CMLL_World_Heavyweight_Championship",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the CMLL World Heavyweight Championship and which promotion oversees it?",
+      "answer": "The CMLL World Heavyweight Championship is a men's professional wrestling world heavyweight championship created and promoted by Consejo Mundial de Lucha Libre (CMLL), a Mexican lucha libre promotion."
+    },
+    {
+      "question": "Why was the CMLL World Heavyweight Championship introduced in 1991?",
+      "answer": "The championship was introduced in 1991 to signal CMLL's independence from the National Wrestling Alliance (NWA). After leaving the NWA in the late 1980s, CMLL continued promoting NWA championships but sought to establish its own titles, starting with the Heavyweight Championship as the first CMLL World Championship."
+    },
+    {
+      "question": "Who was the inaugural CMLL World Heavyweight Champion and when did they win the title?",
+      "answer": "The inaugural CMLL World Heavyweight Champion was Konnan el Bárbaro, who won the title on June 9, 1991."
+    },
+    {
+      "question": "How many wrestlers have held the CMLL World Heavyweight Championship and how many reigns have there been?",
+      "answer": "Nineteen different wrestlers have held the CMLL World Heavyweight Championship, with a total of 24 separate championship reigns."
+    },
+    {
+      "question": "What is the traditional meaning of the 'world heavyweight' designation in lucha libre, and how does it differ from global promotions?",
+      "answer": "In lucha libre, the 'world heavyweight' designation traditionally indicates a high-ranking championship rather than an actual weight division, reflecting the sport's emphasis on multiple weight classes. In contrast, many global wrestling promotions use the 'world heavyweight' label to denote their top championship without a strict weight limit."
+    },
+    {
+      "question": "Who is the current CMLL World Heavyweight Champion, and when did they win the title?",
+      "answer": "The current CMLL World Heavyweight Champion is Hechicero, who is in his second reign after defeating Claudio Castagnoli on March 20, 2026."
+    },
+    {
+      "question": "Provide a Python code snippet to generate a list of all CMLL World Heavyweight Champions from a dataset containing their names and reign start dates.",
+      "answer": "python\n# Assuming a dataset where each entry is a dictionary with 'champion' and 'start_date' keys\nchampions = [\n    {'champion': 'Konnan el Bárbaro', 'start_date': 'June 9, 1991'},\n    {'champion': 'El Texano Jr.', 'start_date': 'June 20, 1992'},\n    # ... (additional entries)\n]\n\n# Extract unique champions while preserving order of first appearance\nunique_champions = []\nseen = set()\nfor entry in champions:\n    if entry['champion'] not in seen:\n        seen.add(entry['champion'])\n        unique_champions.append(entry['champion'])\n\nprint(\"All unique CMLL World Heavyweight Champions:\")\nfor champ in unique_champions:\n    print(f\"- {champ}\")\n"
+    }
+  ]
+}

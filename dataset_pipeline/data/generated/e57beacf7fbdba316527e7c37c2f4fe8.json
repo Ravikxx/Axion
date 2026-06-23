@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/itsugo/one-month-at-a-startup-what-stayed-with-me-after-i-left-42an",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What were the main challenges the author faced in their first job at the startup?",
+      "answer": "The author faced several challenges, including low pay, a long commute, an unstable work environment with frequent bugs, shifting requirements, lack of clear ownership, and unhelpful feedback like being mocked for suggesting technical improvements or being told to 'write a better prompt' instead of addressing systemic issues. Additionally, they experienced delayed payments, high stress, and a lack of trust despite being held responsible for outcomes."
+    },
+    {
+      "question": "How did the author's physical and mental health reflect their work environment?",
+      "answer": "The author's deteriorating health signaled the toxicity of their work environment. They experienced constant dread before work, nausea during their commute, mouth ulcers, poor sleep, and anxiety spikes that didn’t match the actual problems. These symptoms indicated they were no longer learning or growing but were instead stuck in survival mode, which ultimately led them to recognize the need to leave."
+    },
+    {
+      "question": "What is the difference between pressure and growth in a work environment, according to the author?",
+      "answer": "According to the author, pressure without structure isn’t growth. Speed without clarity doesn’t lead to learning, and low compensation combined with high chaos and no ownership creates a negative return on effort. Growth requires clear systems, ownership, boundaries, and respect, whereas pressure alone leads to burnout and self-doubt."
+    },
+    {
+      "question": "How did the author's experience at the startup influence their approach to future work environments?",
+      "answer": "The author learned the importance of systems, ownership, boundaries, and basic respect in any workplace. They recognized the fragility of environments lacking structure and the rapid burnout that occurs when everything depends on one person’s control. This experience reinforced the value of good systems in expanding confidence rather than eroding it."
+    },
+    {
+      "question": "What soft skills did the author develop during their time at the startup, and how were these useful?",
+      "answer": "The author developed skills such as communicating in high-pressure environments, detaching emotionally when things weren’t in their control, and extracting learning even from less-than-ideal environments. These skills helped them navigate subsequent challenges and make informed decisions about future work environments."
+    },
+    {
+      "question": "Write a Python function that calculates the 'return on effort' for a job based on the author's criteria: low compensation, high chaos, and no ownership. The function should return a score between 0 and 1, where 0 indicates a poor return on effort and 1 indicates a high return.",
+      "answer": "python\ndef calculate_return_on_effort(compensation, chaos, ownership):\n    \"\"\"\n    Calculate the return on effort based on compensation, chaos, and ownership.\n    \n    Args:\n        compensation (int): 0 (low) to 1 (high)\n        chaos (int): 0 (high chaos) to 1 (low chaos)\n        ownership (int): 0 (no ownership) to 1 (full ownership)\n    \n    Returns:\n        float: Return on effort score between 0 and 1\n    \"\"\"\n    # Weight compensation higher since it directly affects effort-to-reward ratio\n    return (compensation * 0.4) + (chaos * 0.3) + (ownership * 0.3)\n\n# Example usage:\n# Low compensation (0), high chaos (0), no ownership (0) -> 0.0 (poor return)\nprint(calculate_return_on_effort(0, 0, 0))  # Output: 0.0\n\n# High compensation (1), low chaos (1), full ownership (1) -> 1.0 (high return)\nprint(calculate_return_on_effort(1, 1, 1))  # Output: 1.0\n"
+    },
+    {
+      "question": "What role did parallel career paths play in the author's decision to leave the startup?",
+      "answer": "Parallel career paths gave the author real choice and options, allowing them to step away without panic, burning bridges, or tying their self-worth to a single environment. This clarity made it possible to leave the startup on their own terms, based on a rational assessment of their situation rather than desperation."
+    }
+  ]
+}

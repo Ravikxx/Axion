@@ -1,0 +1,42 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/GI_Monocerotis",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When was GI Monocerotis first discovered and by whom?",
+      "answer": "GI Monocerotis was first discovered by Max Wolf on a photographic plate taken at the Heidelberg Observatory on 4 February 1918."
+    },
+    {
+      "question": "What was the peak brightness magnitude of GI Monocerotis and when did it occur?",
+      "answer": "The peak brightness of GI Monocerotis occurred around 1 January 1918, with a photographic magnitude of 5.4, making it visible to the naked eye at that time."
+    },
+    {
+      "question": "How much did the brightness of GI Monocerotis drop in the first 23 days after its peak, and why is it classified as a 'fast nova'?",
+      "answer": "GI Monocerotis dropped by 3 magnitudes in about 23 days after its peak brightness, which classifies it as a 'fast nova' due to its rapid decline in luminosity."
+    },
+    {
+      "question": "What is the typical magnitude range of GI Monocerotis before and after the nova eruption?",
+      "answer": "Before the nova eruption, GI Monocerotis had a magnitude of 15.1. After the eruption, its magnitude varied: it was 5.4 at peak brightness, dropped to 8.5 at discovery, and by November 1920, it was fainter than 15th magnitude."
+    },
+    {
+      "question": "What are the characteristics of the binary system of GI Monocerotis?",
+      "answer": "GI Monocerotis is a binary star system consisting of a donor star orbiting a white dwarf. The donor star transfers matter to the white dwarf, forming an accretion disk. Observations indicate an orbital period of 4.33 hours and a possible white dwarf rotation period of 48.6 minutes."
+    },
+    {
+      "question": "Provide a code snippet to calculate the orbital velocity of the donor star in the GI Monocerotis system, assuming a circular orbit and a white dwarf mass of 1 solar mass.",
+      "answer": "python\nimport numpy as np\n\n# Constants\nG = 6.67430e-11  # Gravitational constant (m^3 kg^-1 s^-2)\nM_wd = 1.989e30  # Mass of white dwarf (kg)\nP = 4.33 * 3600  # Orbital period in seconds (4.33 hours)\n\n# Calculate orbital radius (assuming circular orbit)\na = (G * M_wd * (P / (2 * np.pi))**2)**(1/3)\n\n# Calculate orbital velocity\nv = 2 * np.pi * a / P\nprint(f\"Orbital velocity of donor star: {v:.2e} m/s\")\n"
+    },
+    {
+      "question": "What type of cataclysmic variable is GI Monocerotis classified as, and what does this classification imply about its accretion process?",
+      "answer": "GI Monocerotis is classified as a non-magnetic cataclysmic variable star. This classification implies that the material lost from the donor star forms an accretion disk around the white dwarf, rather than flowing directly to the white dwarf's surface."
+    },
+    {
+      "question": "How much material does the donor star in the GI Monocerotis system transfer to the accretion disk annually?",
+      "answer": "The donor star in the GI Monocerotis system transfers approximately 3×10−9 solar masses (M☉) of material to the accretion disk each year."
+    },
+    {
+      "question": "What observational evidence supports the presence of a non-magnetic accretion disk in GI Monocerotis?",
+      "answer": "X-ray observations by Worpel et al. indicate that GI Monocerotis is a non-magnetic cataclysmic variable star, supporting the presence of a non-magnetic accretion disk where material from the donor star accumulates before gradually spiraling onto the white dwarf."
+    }
+  ]
+}

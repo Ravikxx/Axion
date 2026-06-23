@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Clone",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is a clone in biology?",
+      "answer": "In biology, a clone is any cell or individual that is genetically identical to another. This can occur naturally, such as in human identical twins or the offspring of asexual reproduction, or it can be artificially produced through cloning techniques."
+    },
+    {
+      "question": "How was Dolly the sheep significant in the history of cloning?",
+      "answer": "Dolly the sheep was the first mammal to be cloned from an adult somatic cell using nuclear transfer. Her successful cloning in 1996 demonstrated that it was possible to create genetically identical mammals, paving the way for further advancements in cloning technology."
+    },
+    {
+      "question": "What are some examples of natural cloning in animals?",
+      "answer": "Natural cloning occurs in several ways in animals. Human identical twins are natural clones, as they originate from a single fertilized egg that splits. The nine-banded armadillo typically gives birth to identical quadruplets, which are clones of each other. Additionally, many organisms reproduce asexually, producing genetically identical offspring."
+    },
+    {
+      "question": "How does cloning in cell biology differ from cloning whole organisms?",
+      "answer": "In cell biology, cloning often refers to the process of creating genetically identical copies of DNA sequences or entire cells. Unlike whole-organism cloning, which aims to produce an identical individual, cellular cloning focuses on replicating specific genetic material. For example, stem cells can divide to produce daughter cells that are clones in the sense of being derived from the same parent cell, though they may differentiate into different tissue types over time."
+    },
+    {
+      "question": "What is the difference between natural and artificial cloning?",
+      "answer": "Natural cloning occurs without human intervention, such as in identical twins or asexual reproduction. Artificial cloning, on the other hand, is a deliberate process carried out in laboratories or through biotechnological methods to produce genetically identical copies of cells, tissues, or entire organisms."
+    },
+    {
+      "question": "Write a Python code snippet to simulate the creation of a simple genetic clone using a DNA sequence.",
+      "answer": "python\n# Simulating genetic cloning by creating a copy of a DNA sequence\ndef clone_dna(sequence):\n    # Create a deep copy of the DNA sequence to ensure no shared references\n    cloned_sequence = sequence[:]\n    return cloned_sequence\n\n# Example usage\noriginal_dna = \"ATCGATCG\"\ncloned_dna = clone_dna(original_dna)\nprint(\"Original DNA:\", original_dna)\nprint(\"Cloned DNA:\", cloned_dna)\n\nThis code demonstrates how to create a genetic clone by copying a DNA sequence while preserving the original."
+    },
+    {
+      "question": "Why are clones produced from differentiated cells not considered genetically identical to their parent cells?",
+      "answer": "Clones produced from differentiated cells, such as mature tissue cells derived from stem cells, are not genetically identical to their parent cells because gene expression changes during development. Even though these cells are derived from the same parent cell, the activation or deactivation of specific genes leads to differences in structure and function, making them clones only in the sense of lineage, not genetic identity."
+    }
+  ]
+}

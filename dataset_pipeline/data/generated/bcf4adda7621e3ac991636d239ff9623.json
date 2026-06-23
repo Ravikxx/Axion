@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Cape_Preston",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Where is Cape Preston located geographically?",
+      "answer": "Cape Preston is a rocky headland situated in the Pilbara region of Western Australia. It is located 67 kilometers (42 miles) west-southwest of Karratha and lies on the tribal land of the Nhuwala people."
+    },
+    {
+      "question": "What is Cape Preston used for in weather reporting?",
+      "answer": "Cape Preston serves as a standard reference point for coastal weather reports by the Bureau of Meteorology. It is located between Wallal and North West Cape in Western Australia."
+    },
+    {
+      "question": "What notable marine biodiversity can be found around Cape Preston?",
+      "answer": "The area around Cape Preston is noted for its rich marine biodiversity, including numerous species of crustaceans, corals, molluscs, fish, and echinoderms. Habitats such as mangroves, sandy beaches, algal meadows, coral reefs, rocky reefs, and soft sediment communities are present."
+    },
+    {
+      "question": "What historical maritime incident occurred off Cape Preston in 1889?",
+      "answer": "In 1889, a pearl lugger named either the Waratah or Paratch, belonging to James Clarke from Fremantle, was witnessed sinking off Cape Preston by the crew of the lugger Mikado. All hands on board were later confirmed lost."
+    },
+    {
+      "question": "What natural disaster impacted Cape Preston in 1989, and what were the consequences?",
+      "answer": "On April 23, 1989, Category 4 Tropical Cyclone Orson struck Cape Preston, resulting in the deaths of four Indonesian fishermen."
+    },
+    {
+      "question": "What industrial development occurred at Cape Preston in the 21st century?",
+      "answer": "In the mid-late 1960s, Cape Preston was considered as a potential location for an iron ore outport. This plan was realized in 2012, and iron ore exports began in 2013."
+    },
+    {
+      "question": "Write a Python function to calculate the distance between Cape Preston and Karratha using their coordinates. Assume Cape Preston is at (-20.67, 116.72) and Karratha at (-20.72, 116.86).",
+      "answer": "python\nimport math\n\ndef calculate_distance(lat1, lon1, lat2, lon2):\n    # Approximate radius of Earth in kilometers\n    R = 6371.0\n    \n    # Convert latitude and longitude from degrees to radians\n    lat1, lon1, lat2, lon2 = map(math.radians, [lat1, lon1, lat2, lon2])\n    \n    # Differences in coordinates\n    dlat = lat2 - lat1\n    dlon = lon2 - lon1\n    \n    # Haversine formula\n    a = math.sin(dlat / 2)**2 + math.cos(lat1) * math.cos(lat2) * math.sin(dlon / 2)**2\n    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))\n    \n    distance = R * c\n    return distance\n\n# Coordinates for Cape Preston and Karratha\ncape_preston = (-20.67, 116.72)\nkarratha = (-20.72, 116.86)\n\n# Calculate distance\ndistance_km = calculate_distance(*cape_preston, *karratha)\nprint(f\"Distance between Cape Preston and Karratha: {distance_km:.2f} km\")\n\nThe approximate distance between Cape Preston and Karratha is 9.36 kilometers."
+    }
+  ]
+}

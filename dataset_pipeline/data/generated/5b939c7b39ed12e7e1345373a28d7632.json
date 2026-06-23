@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/3B",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What does '3B' stand for in the context of baseball?",
+      "answer": "In baseball, '3B' stands for 'third baseman', the defensive player positioned near third base."
+    },
+    {
+      "question": "What was the purpose of AT&T's 3B computer series during the 1980s?",
+      "answer": "The 3B Computers were a range of computers produced by AT&T during the 1980s, designed for various computing and business applications."
+    },
+    {
+      "question": "Which Japanese entertainment company has a department named '3B Junior'?",
+      "answer": "Stardust Promotion, a Japanese entertainment company, has a department named '3B Junior'."
+    },
+    {
+      "question": "Name three classical composers referred to as the 'Three Bs'.",
+      "answer": "The 'Three Bs' typically refers to Ludwig van Beethoven, Johannes Brahms, and Johann Sebastian Bach, three influential classical composers."
+    },
+    {
+      "question": "What is the meaning of '03B' in the context of tropical cyclones in the Indian Ocean?",
+      "answer": "'03B' is a designation for tropical cyclonic storms in the Indian Ocean basin, used in chronological numbering systems for storm tracking. For example, 'Cyclone 03B (2023)' refers to a tropical cyclone that occurred in the Indian Ocean in 2023."
+    },
+    {
+      "question": "Write a Python function that checks if a given string 's' matches the pattern '3B' or '03B'.",
+      "answer": "python\ndef matches_3b_pattern(s):\n    return s in ['3B', '03B']\n\n# Example usage:\nprint(matches_3b_pattern('3B'))    # Output: True\nprint(matches_3b_pattern('03B'))   # Output: True\nprint(matches_3b_pattern('3b'))    # Output: False\n"
+    },
+    {
+      "question": "What is the softest grade of pencil lead designated as '3B'?",
+      "answer": "The '3B' grade is a very soft pencil lead, often used for sketching where a dark, bold line is desired. Pencil grades range from hard (e.g., 9H) to soft (e.g., 9B), with '3B' falling towards the softer end."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Complementary_DNA",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is complementary DNA (cDNA) and how is it produced?",
+      "answer": "Complementary DNA (cDNA) is a DNA molecule synthesized from an RNA template, typically using the enzyme reverse transcriptase. This process reverses the natural transcription of DNA to RNA, creating a DNA copy of the RNA sequence. cDNA can be produced in both single-stranded and double-stranded forms and may occur naturally or be engineered for specific applications."
+    },
+    {
+      "question": "How is engineered cDNA used in molecular biology?",
+      "answer": "Engineered cDNA is commonly used for heterologous expression of proteins in cells that do not normally produce them, such as bacterial or yeast systems. It is also employed in techniques like qPCR and RNA-seq to sequence or quantify mRNA molecules. Additionally, cDNA can be inserted into recipient cells as part of recombinant DNA for protein production or transcriptomic analysis."
+    },
+    {
+      "question": "What are some examples of natural cDNA and its biological role?",
+      "answer": "Natural cDNA is produced by retroviruses, such as HIV-1, HIV-2, and simian immunodeficiency virus (SIV). These viruses reverse transcribe their RNA genome into cDNA, which is then integrated into the host's genome as a provirus, enabling viral replication and persistence."
+    },
+    {
+      "question": "How does cDNA differ from mRNA in terms of nucleotide bases?",
+      "answer": "cDNA is composed of deoxyribonucleotides (G, C, A, T), whereas mRNA contains ribonucleotides (G, C, A, U). The 'T' in cDNA replaces the 'U' found in RNA, reflecting the DNA's double-stranded structure compared to RNA's single-stranded form."
+    },
+    {
+      "question": "Provide a code snippet demonstrating how to reverse transcribe RNA to cDNA using Python and Biopython.",
+      "answer": "python\nfrom Bio.Seq import Seq\nfrom Bio.SeqRecord import SeqRecord\n\n# Example RNA sequence (Uracil replaced with Thymine for cDNA)\nrnaseq = Seq(\"GCAUUGCA\")\n\n# Reverse transcription to cDNA (replace U with T)\ncDNA_seq = rnaseq.back_transcribe()\n\n# Create a SeqRecord for the cDNA\ncDNA_record = SeqRecord(cDNA_seq, id=\"example_cDNA\", description=\"cDNA from RNA\")\n\nprint(cDNA_record.format(\"fasta\"))\n"
+    },
+    {
+      "question": "What was the outcome of the Association for Molecular Pathology v. Myriad Genetics, Inc. case regarding cDNA patentability?",
+      "answer": "In 2013, the US Supreme Court ruled that exons-only cDNA is patent-eligible because it is not naturally occurring, while isolated sequences of naturally occurring DNA containing introns are not patentable. This decision clarified the boundaries of patentability for genetic material."
+    },
+    {
+      "question": "Why is cDNA often used in transcriptomic profiling techniques like RNA-seq?",
+      "answer": "cDNA is used in RNA-seq and similar techniques because it allows researchers to convert unstable mRNA into stable DNA, which can be more easily amplified, sequenced, and quantified. This enables accurate measurement of gene expression levels in bulk tissue, single cells, or single nuclei."
+    }
+  ]
+}

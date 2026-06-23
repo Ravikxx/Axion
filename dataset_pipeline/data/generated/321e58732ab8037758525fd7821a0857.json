@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/1958–59_Michigan_Wolverines_men's_basketball_team",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was the head coach of the 1958–59 Michigan Wolverines men's basketball team?",
+      "answer": "The head coach of the 1958–59 Michigan Wolverines men's basketball team was William Perigo."
+    },
+    {
+      "question": "What were the names of the team co-captains for the 1958–59 season?",
+      "answer": "The team co-captains for the 1958–59 season were M.C. Burton, Jr. and George Lee."
+    },
+    {
+      "question": "What significant rebounding records did M.C. Burton, Jr. set during the 1958–59 season that still stand?",
+      "answer": "M.C. Burton, Jr. set two significant rebounding records that still stand: a single-season rebounds per game average of 17.23 and a single-season record for 20-rebound games with seven."
+    },
+    {
+      "question": "How many ranked opponents did the 1958–59 Michigan Wolverines men's basketball team defeat during the season?",
+      "answer": "The 1958–59 Michigan Wolverines men's basketball team defeated two of the four ranked opponents they faced during the season."
+    },
+    {
+      "question": "What notable statistical achievements did M.C. Burton, Jr. accomplish in the 1958–59 season?",
+      "answer": "In the 1958–59 season, M.C. Burton, Jr. won the Big Ten Conference statistical championships for both scoring, averaging 22.6 points per game, and rebounding, with 249 rebounds in 14 conference games for a 17.8 rebound average. He was the first player to lead the conference in both scoring and rebounding. Burton also earned team MVP honors."
+    },
+    {
+      "question": "Which two ranked opponents did the 1958–59 Michigan Wolverines defeat, and on what dates?",
+      "answer": "The 1958–59 Michigan Wolverines defeated #18 Purdue on January 3, 1959, at West Lafayette, and #18 Illinois on February 2, 1959, in Champaign."
+    },
+    {
+      "question": "Provide a code snippet in Python that calculates the average rebounds per game for M.C. Burton, Jr. during the 1958–59 season, given his total rebounds and games played.",
+      "answer": "python\ntotal_rebounds = 249  # Total rebounds in 14 conference games\ngames_played = 14      # Number of games played\n\naverage_rebounds_per_game = total_rebounds / games_played\nprint(f\"M.C. Burton, Jr.'s average rebounds per game: {average_rebounds_per_game}\")\n"
+    }
+  ]
+}

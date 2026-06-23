@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Emmanuel_Rukundo",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What crimes was Emmanuel Rukundo convicted of by the International Criminal Tribunal for Rwanda (ICTR)?",
+      "answer": "Emmanuel Rukundo was convicted of one count of genocide and multiple counts of murder as a crime against humanity by the ICTR. His crimes included ordering Hutu soldiers to abduct and murder Tutsi refugees, personally abducing and killing Madame Rudahunga, severely beating her children and other Tutsi civilians, and sexually assaulting a young Tutsi woman."
+    },
+    {
+      "question": "What was Emmanuel Rukundo's role in the Rwandan military and church before the 1994 Genocide?",
+      "answer": "Before the 1994 Genocide, Emmanuel Rukundo was ordained as a Roman Catholic priest in 1991. In 1993, he became a chaplain in the Rwandan military and was also the head of the St. Leon Minor Seminary in Gitarama, Rwanda."
+    },
+    {
+      "question": "How did Emmanuel Rukundo's trial and sentencing unfold at the ICTR?",
+      "answer": "Rukundo's trial began on 15 November 2006 and concluded in February 2008. In February 2009, he was found guilty and sentenced to 25 years imprisonment, which was later reduced to 23 years in October 2010."
+    },
+    {
+      "question": "What legal process did Emmanuel Rukundo undergo to avoid extradition from Switzerland?",
+      "answer": "After being arrested in Switzerland in July 2001, Rukundo fought his extradition in the Federal Supreme Court of Switzerland. However, his case was dismissed, and he was sent to Arusha, Tanzania, on 20 September 2001 to stand trial before the ICTR."
+    },
+    {
+      "question": "How much of his sentence did Emmanuel Rukundo serve before being released early?",
+      "answer": "Emmanuel Rukundo served 16 years of his 23-year sentence before being released in December 2016. He was granted early release due to rehabilitation."
+    },
+    {
+      "question": "Write a Python function that calculates the total years Emmanuel Rukundo spent in prison before his early release.",
+      "answer": "python\ndef calculate_prison_years():\n    full_sentence = 23  # years\n    years_served = 16  # years\n    return years_served\n\n# Example usage:\nprint(calculate_prison_years())  # Output: 16\n"
+    },
+    {
+      "question": "What were the specific actions Emmanuel Rukundo took against Tutsi civilians during the 1994 Rwandan Genocide?",
+      "answer": "During the 1994 Genocide, Rukundo ordered Hutu soldiers to abduct and murder Tutsi refugees seeking shelter at St. Leon Minor Seminary. He was personally involved in abducting and killing Madame Rudahunga, severely beating her children and two other Tutsi civilians, and sexually assaulting a young Tutsi woman."
+    }
+  ]
+}

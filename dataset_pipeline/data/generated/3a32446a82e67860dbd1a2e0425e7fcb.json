@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Delroy_Taylor",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What were Delroy Bertram Taylor's primary roles in cricket?",
+      "answer": "Delroy Bertram Taylor was a right-handed batsman and a right-arm medium pace bowler."
+    },
+    {
+      "question": "How many first-class appearances did Delroy Bertram Taylor make for Jamaica?",
+      "answer": "Delroy Bertram Taylor made a single first-class appearance for Jamaica in 1996."
+    },
+    {
+      "question": "What were Delroy Bertram Taylor's batting and bowling figures in his first-class debut for Jamaica?",
+      "answer": "In his first-class debut for Jamaica, Taylor scored 60 runs (first innings) and 20 runs (second innings), while taking the wicket of Michael Atherton for 65 runs in 10 overs and Warren Hegg for 35 runs in 7 overs."
+    },
+    {
+      "question": "What notable dismissals did Delroy Bertram Taylor achieve in his first-class debut for Jamaica?",
+      "answer": "Taylor dismissed England cricketer Michael Atherton in Lancashire's first innings and Warren Hegg in their second innings."
+    },
+    {
+      "question": "Did Delroy Bertram Taylor play any first-class cricket after his debut for Jamaica? If so, where?",
+      "answer": "Yes, Taylor played two more first-class matches: one for Durham UCCE against Nottinghamshire in 2003 and another for British Universities against the touring Zimbabweans in the same season."
+    },
+    {
+      "question": "What were Delroy Bertram Taylor's batting performances in his first-class matches for Durham UCCE and British Universities?",
+      "answer": "For Durham UCCE, Taylor scored 82 runs (first innings) and 1 run (second innings). For British Universities, he scored 16 runs (first innings) and 27 runs (second innings)."
+    },
+    {
+      "question": "Write a Python function that takes a player's name and their cricket statistics (runs and wickets) and returns a formatted string summarizing their performance.",
+      "answer": "python\ndef summarize_cricket_performance(name, runs, wickets):\n    if not runs and not wickets:\n        return f\"No cricket performance data available for {name}.\"\n    \n    performance_summary = []\n    \n    if runs:\n        if isinstance(runs, dict):\n            innings_summary = []\n            for innings, score in runs.items():\n                innings_summary.append(f\"{innings}: {score} runs\")\n            performance_summary.append(\"Batting: \" + \", \".join(innings_summary))\n        else:\n            performance_summary.append(f\"Runs: {runs}\")\n    \n    if wickets:\n        if isinstance(wickets, dict):\n            innings_summary = []\n            for innings, wicket_info in wickets.items():\n                wicket_info_str = \", \".join(f\"{key}: {value}\" for key, value in wicket_info.items())\n                innings_summary.append(f\"{innings}: {wicket_info_str}\")\n            performance_summary.append(\"Bowling: \" + \", \".join(innings_summary))\n        else:\n            performance_summary.append(f\"Wickets: {wickets}\")\n    \n    return f\"{name}'s cricket performance: \" + \"; \".join(performance_summary) + \".\"\n\n# Example usage:\nname = \"Delroy Bertram Taylor\"\nruns = {\"First innings\": 60, \"Second innings\": 20}\nwickets = {\n    \"First innings\": {\"wicket\": \"Michael Atherton\", \"runs conceded\": 65, \"overs\": 10},\n    \"Second innings\": {\"wicket\": \"Warren Hegg\", \"runs conceded\": 35, \"overs\": 7}\n}\nprint(summarize_cricket_performance(name, runs, wickets))\n\nOutput: Delroy Bertram Taylor's cricket performance: Batting: First innings: 60 runs, Second innings: 20 runs; Bowling: First innings: wicket: Michael Atherton, runs conceded: 65, overs: 10, Second innings: wicket: Warren Hegg, runs conceded: 35, overs: 7."
+    }
+  ]
+}

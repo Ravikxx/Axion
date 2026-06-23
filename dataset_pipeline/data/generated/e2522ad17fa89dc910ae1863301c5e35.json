@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Don't_ask,_don't_tell",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the official U.S. military policy regarding homosexual service members from 1994 to 2011, and when was it instituted?",
+      "answer": "The policy was called \"Don't Ask, Don't Tell\" (DADT), which prohibited military personnel from discriminating against or harassing closeted homosexual or bisexual service members while barring openly gay, lesbian, or bisexual persons from military service. It was instituted on December 21, 1993, under Department of Defense Directive 1304.26, and took effect on February 28, 1994."
+    },
+    {
+      "question": "What legal document mandated the 'Don't Ask, Don't Tell' policy, and what did it state about openly homosexual individuals?",
+      "answer": "The policy was mandated by Public Law 103–160 (Title 10 of the United States Code §654), signed on November 30, 1993. It barred openly gay, lesbian, or bisexual persons from military service, stating their presence \"would create an unacceptable risk to the high standards of morale, good order and discipline, and unit cohesion.\""
+    },
+    {
+      "question": "How did the 'don't ask' portion of DADT restrict military superiors, and what were the consequences of violations?",
+      "answer": "The 'don't ask' section prohibited superiors from initiating investigations into a service member's sexual orientation without witnessing disallowed behaviors. Unauthorized investigations and harassment led to an expansion of the policy to include 'don't pursue, don't harass' to prevent such violations."
+    },
+    {
+      "question": "What steps were taken to repeal 'Don't Ask, Don't Tell,' and when did it officially end?",
+      "answer": "Legislation to repeal DADT was enacted in December 2010, requiring certification by the president, secretary of defense, and chairman of the Joint Chiefs of Staff that repeal would not harm military readiness. After this certification and a 60-day waiting period, DADT officially ended on September 20, 2011."
+    },
+    {
+      "question": "How did the Defense of Marriage Act (DOMA) affect same-sex military couples even after DADT was repealed?",
+      "answer": "DOMA defined marriage as one man and one woman, preventing federal recognition of same-sex marriages. This barred partners from accessing military benefits like base access, health care, and pay allowances. The Supreme Court's 2013 decision in United States v. Windsor and the 2022 Respect for Marriage Act later addressed these restrictions."
+    },
+    {
+      "question": "Write a Python function that checks if a given year falls within the period when 'Don't Ask, Don't Tell' was active.",
+      "answer": "python\ndef is_dadt_active(year):\n    return 1994 <= year <= 2011\n\n# Example usage:\nprint(is_dadt_active(2000))  # Output: True\nprint(is_dadt_active(1990))  # Output: False\n"
+    },
+    {
+      "question": "What were the key differences between the original DADT policy and its expanded version, and why were these changes made?",
+      "answer": "The original DADT policy included 'don't ask' and 'don't tell,' prohibiting investigations into sexual orientation without evidence and barring open service. The expanded version added 'don't pursue' and 'don't harass' due to unauthorized investigations and harassment of suspected servicemen and women, which violated the policy's intent."
+    }
+  ]
+}

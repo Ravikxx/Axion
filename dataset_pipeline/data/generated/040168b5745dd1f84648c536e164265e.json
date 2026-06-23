@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Howie_Camnitz",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What were the major league teams Samuel Howard Camnitz played for during his baseball career?",
+      "answer": "Samuel Howard Camnitz played for the Pittsburgh Pirates and Philadelphia Phillies in the National League, as well as the Pittsburgh Rebels in the Federal League."
+    },
+    {
+      "question": "How did Samuel Howard Camnitz earn the nickname 'Rosebud'?",
+      "answer": "Camnitz earned the nickname 'Rosebud' due to his bright red hair, often being referred to as 'the Kentucky Rosebud' during his playing career."
+    },
+    {
+      "question": "What was Samuel Howard Camnitz's career pitching record and earned run average?",
+      "answer": "Camnitz had a career record of 133 wins and 106 losses with an earned run average (ERA) of 2.75 across 11 seasons."
+    },
+    {
+      "question": "Describe one of Samuel Howard Camnitz's notable pitching achievements in the 1909 season.",
+      "answer": "In the 1909 season, Camnitz won 25 games, led the Pittsburgh Pirates to the World Series, and tied Christy Mathewson for the National League lead in winning percentage at .806."
+    },
+    {
+      "question": "What was Samuel Howard Camnitz's best pitch, and how did he develop it?",
+      "answer": "Camnitz's best pitch was a curveball, which he initially developed and disguised while playing in the minor leagues before being called up to the Pittsburgh Pirates in 1906."
+    },
+    {
+      "question": "Write a Python code snippet to calculate Samuel Howard Camnitz's career winning percentage.",
+      "answer": "python\nwins = 133\nlosses = 106\nwinning_percentage = wins / (wins + losses)\nprint(f\"Career winning percentage: {winning_percentage:.3f}\")\n# Output: Career winning percentage: 0.557\n"
+    },
+    {
+      "question": "Why did Samuel Howard Camnitz leave the Pittsburgh Pirates in 1913?",
+      "answer": "Camnitz was sent to the Philadelphia Phillies in midseason 1913 after posting a poor 6–17 record, which led to his eventual departure from the team."
+    },
+    {
+      "question": "What was Samuel Howard Camnitz's career high in innings pitched in a single season?",
+      "answer": "Camnitz's career high in innings pitched in a single season was 283 innings, achieved in 1909."
+    }
+  ]
+}

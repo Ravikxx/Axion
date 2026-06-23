@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Dottie_Rambo",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What were some of Dottie Rambo's most notable songs?",
+      "answer": "Dottie Rambo wrote over 2,500 songs, with several becoming widely recognized, including 'The Holy Hills of Heaven Call Me', 'He Looked Beyond My Fault and Saw My Need', 'We Shall Behold Him', and 'I Go To the Rock'."
+    },
+    {
+      "question": "Which famous artists have recorded songs written by Dottie Rambo?",
+      "answer": "Many well-known artists have recorded Dottie Rambo's compositions, including Whitney Houston, Elvis Presley, Dolly Parton, Vince Gill, Rhonda Vincent, Little Richard, and George Jones, among others."
+    },
+    {
+      "question": "How did Dottie Rambo contribute to Christian television?",
+      "answer": "Dottie Rambo was a prominent figure in Christian television, appearing on networks like CBN, TBN, and PTL. She hosted 'The Dottie Rambo Magazine' on TBN, a top-rated show for six years featuring music, cooking segments, and celebrity guests."
+    },
+    {
+      "question": "What awards and honors did Dottie Rambo receive during her lifetime?",
+      "answer": "Rambo received numerous accolades, including inductions into the Gospel Music Hall of Fame (1991), Southern Gospel Music Hall of Fame (1997), and the Kentucky Music Hall of Fame (2006). She was also named 'Songwriter of the Century' by the Christian Country Music Association and inducted into the Nashville Songwriter Association's Hall of Fame (2007). In 2000, she earned the ASCAP Lifetime Achievement Award."
+    },
+    {
+      "question": "What happened to Dottie Rambo in 2008?",
+      "answer": "On May 11, 2008, while traveling to a Mother's Day concert in Texas, Dottie Rambo was killed instantly in a tour bus crash in Mt. Vernon, Missouri. Six other passengers, including her manager Larry Ferguson and his family, survived with injuries."
+    },
+    {
+      "question": "How is Dottie Rambo being honored posthumously?",
+      "answer": "A tribute album featuring artists from various genres singing her compositions was released in 2021. The project is co-produced by her longtime manager, Larry Ferguson."
+    },
+    {
+      "question": "Write a Python function to generate a list of Dottie Rambo's songs formatted as a dictionary with titles as keys and release years as values. Assume the release years are unknown and use placeholder years.",
+      "answer": "python\ndef generate_dottie_rambo_songs():\n    songs = {\n        \"The Holy Hills of Heaven Call Me\": 1975,\n        \"He Looked Beyond My Fault and Saw My Need\": 1976,\n        \"We Shall Behold Him\": 1980,\n        \"I Go To the Rock\": 1983,\n        \"I'm Not Ashamed\": 1978\n    }\n    return songs\n\n# Example usage:\nsongs_dict = generate_dottie_rambo_songs()\nprint(songs_dict)\n"
+    }
+  ]
+}

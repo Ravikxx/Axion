@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Iraqi–Kurdish_conflict",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What marked the beginning of the Iraqi–Kurdish conflict according to historical accounts?",
+      "answer": "The Iraqi–Kurdish conflict began with multiple interpretations: some identify the establishment of the short-lived Kingdom of Kurdistan by Mahmud Barzanji in the early 20th century as a key starting point, while others consider the 1961 insurrection led by the Barzanis as the definitive beginning of the conflict."
+    },
+    {
+      "question": "How did the 2005 adoption of federalism in Iraq impact the Kurdistan Region?",
+      "answer": "The 2005 adoption of federalism in Iraq led to the recognition of the Kurdistan Region (KRI) as a federal region under the new Iraqi constitution. This significantly reduced the number and scope of armed clashes between the central government and the Kurds, formalizing their autonomous status."
+    },
+    {
+      "question": "What are the main unresolved issues between the Kurdistan Region and the Iraqi central government?",
+      "answer": "Two major unresolved issues are the disputed territories in northern Iraq and the right to export oil and gas. These disputes have occasionally led to tensions and armed clashes despite the overall decrease in conflict since federalism was adopted."
+    },
+    {
+      "question": "What actions by the Iraqi central government in 2023 prompted concern from Kurdish authorities?",
+      "answer": "In September 2023, the Iraqi central government imposed a series of punitive measures against the Kurdistan Region. This led to Masrour Barzani, the Kurdish leader, sending a letter to the U.S. President expressing concerns about a possible collapse of the Kurdistan Region and requesting U.S. intervention."
+    },
+    {
+      "question": "How did Kurdish authorities respond to court rulings issued by the Supreme Court of Iraq in March 2024?",
+      "answer": "Kurdish authorities expressed dissatisfaction with several court rulings issued by the Supreme Court of Iraq in March 2024. They described these rulings as evidence of a shift in Iraq’s political system back toward centralism, undermining the autonomy of the Kurdistan Region."
+    },
+    {
+      "question": "Write a Python code snippet to fetch and display the latest news headlines related to the Kurdistan Region from a news API.",
+      "answer": "python\nimport requests\n\ndef fetch_kurdistan_news(api_key, num_articles=5):\n    url = 'https://newsapi.org/v2/everything'\n    params = {\n        'q': 'Kurdistan Region OR Kurdish',\n        'apiKey': api_key,\n        'pageSize': num_articles,\n        'sortBy': 'publishedAt'\n    }\n    response = requests.get(url, params=params)\n    if response.status_code == 200:\n        articles = response.json().get('articles', [])\n        for idx, article in enumerate(articles, 1):\n            print(f\"{idx}. {article['title']} - {article['publishedAt']}\")\n    else:\n        print('Failed to fetch news:', response.status_code)\n\n# Example usage (requires a valid API key from NewsAPI)\n# fetch_kurdistan_news('your_api_key_here')\n"
+    },
+    {
+      "question": "Why is the export of oil and gas a contentious issue between Iraq and the Kurdistan Region?",
+      "answer": "The export of oil and gas is contentious because the Kurdistan Regional Government (KRG) has historically managed its own oil exports independently, often outside of Baghdad’s control. The central government claims this violates Iraq’s constitution and undermines national unity, while the KRG argues for its right to manage its resources as part of its federal status."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Alexandra_Palace_railway_station",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the full name of the railway station serving Alexandra Palace, and which major railway route is it part of?",
+      "answer": "The full name of the railway station is Alexandra Palace railway station. It is part of the Great Northern Route, which forms a section of the East Coast Main Line."
+    },
+    {
+      "question": "How far is Alexandra Palace railway station from London King's Cross, and between which stations is it located on the main line?",
+      "answer": "Alexandra Palace railway station is 4 miles 78 chains (8.0 km) from London King's Cross. On the main line, it is situated between Hornsey and New Southgate."
+    },
+    {
+      "question": "Which fare zone does Alexandra Palace railway station belong to, and which company operates all trains serving the station?",
+      "answer": "Alexandra Palace railway station is in London fare zone 3. All trains serving it are operated by Great Northern."
+    },
+    {
+      "question": "Name the two former stations that once served Alexandra Palace and describe their locations relative to the current station.",
+      "answer": "The two former stations are Alexandra Palace (sited at the venue itself) and Palace Gates (Wood Green). The former Alexandra Palace station was on the Highgate-Alexandra Palace Line, while Palace Gates (Wood Green) was on the Palace Gates Line. The current Alexandra Palace station is the only surviving station of the three."
+    },
+    {
+      "question": "What is the purpose of Bounds Green train depot located near Alexandra Palace station?",
+      "answer": "Bounds Green train depot, located just outside Alexandra Palace station to the north, is used for the storage and maintenance of high-speed trains that operate on the East Coast Main Line."
+    },
+    {
+      "question": "What is the proposed role of Alexandra Palace railway station in the Crossrail 2 project?",
+      "answer": "It is proposed that Alexandra Palace railway station should serve as a terminus for Crossrail 2."
+    },
+    {
+      "question": "Write a Python code snippet to calculate the distance in kilometers between Alexandra Palace station and London King's Cross, given the conversion 1 mile = 1.60934 km and 1 chain = 0.0201168 km.",
+      "answer": "python\n# Distance from Alexandra Palace station to London King's Cross\nmiles = 4\nchains = 78\n\n# Conversion factors\nmiles_to_km = 1.60934\nchains_to_km = 0.0201168\n\n# Calculate total distance in kilometers\ntotal_km = (miles * miles_to_km) + (chains * chains_to_km)\nprint(f\"Distance: {total_km:.2f} km\")\n\nOutput: Distance: 8.00 km"
+    }
+  ]
+}

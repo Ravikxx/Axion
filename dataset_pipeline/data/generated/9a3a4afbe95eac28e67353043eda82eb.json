@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Dagupan",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the official name of Dagupan in Filipino?",
+      "answer": "The official name of Dagupan in Filipino is 'Lungsod ng Dagupan'."
+    },
+    {
+      "question": "Where is Dagupan located geographically within the Philippines?",
+      "answer": "Dagupan is located on Lingayen Gulf in the northwest-central part of Luzon, within the fertile Agno River Valley and part of the Central Luzon plain."
+    },
+    {
+      "question": "What is Dagupan's role as a regional center according to NEDA-Regional Development Council?",
+      "answer": "Dagupan is officially recognized by the NEDA-Regional Development Council as a regional center for commercial, financial, medical services, education, media, and communication in North-Central Luzon."
+    },
+    {
+      "question": "How does Dagupan contribute to the milkfish (bangus) industry in the Philippines?",
+      "answer": "Dagupan is the bangus capital of the Philippines and contributes significantly to milkfish production. From 2001 to 2003, it produced 35,560.1 metric tons, accounting for 16.8% of Pangasinan's total production, with 78.5% grown in fish pens/cages."
+    },
+    {
+      "question": "Is Dagupan politically independent from the provincial government of Pangasinan? If so, how is it represented?",
+      "answer": "Yes, Dagupan is administratively and politically independent from the provincial government of Pangasinan. It is represented in the legislative body by the province's legislative district."
+    },
+    {
+      "question": "What towns and cities are proposed to be included in Metro Dagupan?",
+      "answer": "The proposed Metro Dagupan includes Dagupan itself, as well as the towns of Binmaley, Calasiao, Lingayen, Manaoag, Mangaldan, Mapandan, San Fabian, San Jacinto, and Santa Barbara."
+    },
+    {
+      "question": "Provide a Python code snippet to calculate the total milkfish production percentage of Dagupan from 2001 to 2003 if the provincial production was 211,667 metric tons.",
+      "answer": "python\ntotal_provincial_production = 211667  # metric tons\nlocal_production = 35560.1  # metric tons (Dagupan's production from 2001-2003)\npercentage = (local_production / total_provincial_production) * 100\nprint(f\"Dagupan's contribution: {percentage:.2f}%\")\n\nThis code calculates Dagupan's milkfish production percentage relative to the provincial total."
+    }
+  ]
+}

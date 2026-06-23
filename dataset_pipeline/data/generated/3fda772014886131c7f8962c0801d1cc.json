@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Electrical_impedance_tomography",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is Electrical Impedance Tomography (EIT) and how does it differ from computed tomography (CT)?",
+      "answer": "Electrical Impedance Tomography (EIT) is a noninvasive medical imaging technique that infers the electrical conductivity, permittivity, and impedance of body tissues from surface electrode measurements to create a tomographic image. Unlike computed tomography (CT), which uses X-rays for linear projection imaging, EIT applies small alternating currents and records resulting potentials from electrodes. This allows it to capture dynamic physiological changes, such as lung ventilation, but produces images that are more challenging to reconstruct due to the three-dimensional current paths and nonlinear inverse problem constraints."
+    },
+    {
+      "question": "Why does lung tissue exhibit high contrast in EIT imaging compared to other soft tissues?",
+      "answer": "Lung tissue has approximately five-fold lower conductivity than most other soft tissues in the human thorax, resulting in high absolute contrast in EIT images. This low conductivity arises from the air-filled spaces in the lungs, which limit the movement of free ions essential for current conduction. Additionally, lung conductivity changes during the breath cycle, further enhancing contrast and making EIT particularly useful for visualizing lung ventilation dynamics."
+    },
+    {
+      "question": "What is the difference between time difference EIT (td-EIT) and absolute EIT (a-EIT)?",
+      "answer": "Time difference EIT (td-EIT) measures changes in conductivity between two physiological states (e.g., inspiration and expiration) and reconstructs images based on these differences, while absolute EIT (a-EIT) attempts to reconstruct the absolute conductivity distribution directly. td-EIT has a major advantage: artifacts caused by interindividual anatomy, poor electrode contact, or impedance transfer are minimized because they cancel out during image subtraction. This makes td-EIT more practical for bedside applications, such as monitoring mechanically ventilated patients."
+    },
+    {
+      "question": "Explain why the EIT inverse problem is considered severely ill-posed and nonlinear.",
+      "answer": "The EIT inverse problem is nonlinear because the relationship between measured surface potentials and the internal conductivity distribution is not directly proportional or linear. It is ill-posed because multiple conductivity distributions can produce the same surface measurements, leading to non-unique solutions. Mathematically, this is expressed by the fact that small changes in surface data can cause large changes in the reconstructed image. The problem was first formulated by Alberto Calderón and is known as Calderón's inverse problem. Solving it requires sophisticated numerical algorithms and regularization techniques to stabilize solutions."
+    },
+    {
+      "question": "How do multifrequency EIT (MF-EIT) or electrical impedance spectroscopy (EIS) improve the detection of pathological tissues?",
+      "answer": "Multifrequency EIT (MF-EIT), also called electrical impedance spectroscopy (EIS), applies alternating currents at multiple frequencies to exploit differences in tissue conductance patterns across the frequency spectrum. Since pathological tissues (e.g., tumors or inflamed areas) often exhibit distinct impedance responses at specific frequencies due to changes in cellular structure or fluid content, MF-EIT can better differentiate between normal and abnormal tissues. This method is particularly useful for detecting or localizing cancer in organs such as the breast, skin, or cervix."
+    },
+    {
+      "question": "Provide a Python code snippet to simulate a simple EIT forward problem using the finite element method (FEM).",
+      "answer": "python\nimport numpy as np\nfrom scipy.sparse.linalg import spsolve\nimport matplotlib.pyplot as plt\n\n# Simplified EIT forward problem simulation using FEM\n# Define a 2D domain and conductivity distribution\ndef simulate_eit_forward(conductivity, num_electrodes=16):\n    # Place electrodes around the boundary\n    angles = np.linspace(0, 2*np.pi, num_electrodes, endpoint=False)\n    electrode_positions = np.column_stack([np.cos(angles), np.sin(angles)])\n    \n    # Apply current pattern (e.g., adjacent current injection)\n    current_pattern = np.zeros(num_electrodes)\n    current_pattern[0] = 1\n    current_pattern[1] = -1\n    \n    # Simplified conductivity distribution (e.g., circular anomaly)\n    x, y = np.meshgrid(np.linspace(-1, 1, 50), np.linspace(-1, 1, 50))\n    r = np.sqrt(x**2 + y**2)\n    conductivity_field = np.ones_like(r) * 1.0\n    conductivity_field[r < 0.3] = 0.1  # Low-conductivity anomaly\n    \n    # In practice, use FEM solver (e.g., with FEniCS or PyEIT) to compute potentials\n    # Here, we return a mock potential vector for illustration\n    potentials = np.sin(angles) * 0.5 + np.random.normal(0, 0.05, num_electrodes)\n    return electrode_positions, potentials, conductivity_field\n\n# Example usage\nelectrode_positions, potentials, conductivity_field = simulate_eit_forward(conductivity=1.0)\nplt.figure(figsize=(8, 4))\nplt.subplot(1, 2, 1)\nplt.scatter(electrode_positions[:, 0], electrode_positions[:, 1], c='red', s=50)\nplt.title('Electrode Positions')\nplt.subplot(1, 2, 2)\nplt.imshow(conductivity_field, cmap='jet', extent=[-1, 1, -1, 1])\nplt.colorbar(label='Conductivity')\nplt.title('Conductivity Distribution')\nplt.show()\n"
+    },
+    {
+      "question": "What are some clinical applications of EIT beyond lung imaging?",
+      "answer": "Beyond lung imaging, EIT has been explored for several clinical applications, including detection and localization of cancer in the skin, breast, or cervix; localization of epileptic foci in the brain; imaging of brain activity and stroke; and diagnosis of impaired gastric emptying. These applications often rely on multifrequency EIT (MF-EIT) or time-difference approaches to identify pathological tissues based on their unique impedance characteristics or dynamic changes during physiological processes."
+    },
+    {
+      "question": "Why is electrode placement critical in EIT, and how does poor skin contact affect the results?",
+      "answer": "Electrode placement is critical in EIT because the technique relies on surface measurements of current and potential to infer internal conductivity. Proper placement ensures adequate current injection and potential recording, directly impacting image quality. Poor skin contact increases contact impedance, which distorts current flow and measured potentials, leading to artifacts and reduced signal-to-noise ratio. In absolute EIT (a-EIT), this can cause significant inaccuracies, while in time difference EIT (td-EIT), artifacts often cancel out during subtraction, mitigating some effects of poor contact."
+    }
+  ]
+}

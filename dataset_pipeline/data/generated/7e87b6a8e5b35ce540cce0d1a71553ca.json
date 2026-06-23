@@ -1,0 +1,34 @@
+{
+  "source_url": "https://mathworld.wolfram.com/topics/FieldTheory.html",
+  "category": "mathworld",
+  "pairs": [
+    {
+      "question": "What is a field in abstract algebra, and what are the fundamental axioms that define it?",
+      "answer": "A field is a set equipped with two operations, addition (+) and multiplication (·), satisfying the following axioms for all elements a, b, c in the field: 1) Addition is associative and commutative, with an additive identity (0) and additive inverses. 2) Multiplication is associative and commutative, with a multiplicative identity (1 ≠ 0) and multiplicative inverses for non-zero elements. 3) Multiplication distributes over addition. Fields may have finite or infinite order, and their characteristic is the smallest positive integer n such that n·1 = 0 (or 0 if no such n exists). Examples include the rational numbers (ℚ), real numbers (ℝ), and finite fields like GF(p)."
+    },
+    {
+      "question": "Explain the concept of a Galois extension field and its connection to the Fundamental Theorem of Galois Theory.",
+      "answer": "A Galois extension field is a finite, normal, and separable algebraic extension L/K of a field K. Normality means every irreducible polynomial over K with a root in L splits completely in L; separability requires that all algebraic elements over K have minimal polynomials without repeated roots in L. The Fundamental Theorem of Galois Theory establishes a one-to-one correspondence between the intermediate fields of L/K and the subgroups of the Galois group Gal(L/K): each intermediate field corresponds to the stabilizer subgroup of its elements, and vice versa, preserving inclusion relations. For example, if L = ℚ(√2)/ℚ is a Galois extension with Galois group {id, σ} (where σ(√2) = -√2), the intermediate field ℚ corresponds to the trivial subgroup {id}, while L itself corresponds to the full group."
+    },
+    {
+      "question": "How do you determine the minimal polynomial of an algebraic number over a field, and provide an example?",
+      "answer": "An algebraic number α over a field K has a minimal polynomial, which is the unique monic polynomial of least degree in K[x] having α as a root. To find it: 1) Express powers of α in terms of a K-basis (if α is algebraic over a finite extension). 2) Solve the linear dependence relations to isolate the minimal polynomial. For example, let α = √2 + √3 over ℚ. Compute α² = 5 + 2√6, then (α² - 5)² = 24 → α⁴ - 10α² + 1 = 0. Thus, the minimal polynomial is x⁴ - 10x² + 1, which is irreducible over ℚ by Eisenstein’s criterion after substituting x = y + 1."
+    },
+    {
+      "question": "What is the Artin symbol, and how is it used in class field theory?",
+      "answer": "The Artin symbol (or Artin reciprocity map) is a fundamental concept in class field theory that associates to an idele (or ideal) a element of the Galois group of an abelian extension. For a global field K and an abelian extension L/K with Galois group G, the Artin map Art: I_K → G maps an idele (a_v) to the product of local Artin symbols Art_v(a_v) for each place v of K. The map factors through the idele class group C_K, and its kernel is the norm group N_{L/K}(C_L), leading to the Artin reciprocity law: Art(N_{L/K}(x)) = 1 for x ∈ C_L. This provides a deep connection between arithmetic of K and Galois theory of L."
+    },
+    {
+      "question": "Write Python code to check if a given polynomial is irreducible over ℚ using Eisenstein’s criterion.",
+      "answer": "Here’s a function to test Eisenstein’s criterion for irreducibility over ℚ:\n\npython\nfrom sympy import Poly\nfrom sympy.abc import x\n\ndef is_eisenstein_irreducible(poly_str, prime):\n    \"\"\"\n    Check if poly_str (as a polynomial in x) is irreducible over ℚ\n    using Eisenstein's criterion with the given prime.\n    \"\"\"\n    poly = Poly(poly_str, x)\n    if not poly.is_monic:\n        return False  # Eisenstein requires monic polynomials\n    \n    coeffs = poly.all_coeffs()\n    # Check if the prime divides all non-leading coefficients\n    for coeff in coeffs[1:]:\n        if coeff % prime != 0:\n            return False\n    # Check if the prime^2 does not divide the constant term\n    if coeffs[-1] % (prime**2) == 0:\n        return False\n    return True\n\n# Example usage:\nprint(is_eisenstein_irreducible(\"x**4 + 4*x**3 + 6*x**2 + 4*x + 2\", 2))  # True (x^4+4x^3+6x^2+4x+2 is irreducible)\n\n\nNote: This checks a sufficient (but not necessary) condition for irreducibility. For a complete test, use algorithms like Berlekamp’s or Cantor-Zassenhaus."
+    },
+    {
+      "question": "What distinguishes a finite field from other types of fields, and how is its order determined?",
+      "answer": "A finite field (or Galois field) is a field with a finite number of elements. Its order must be a prime power, q = p^n, where p is prime and n ≥ 1. For each such q, there exists a unique (up to isomorphism) finite field GF(q). The additive group of GF(q) is isomorphic to (ℤ/pℤ)^n, while the multiplicative group GF(q)* is cyclic of order q-1. Finite fields are constructed as quotient rings ℤ/pℤ[x]/(f(x)), where f(x) is an irreducible polynomial of degree n over ℤ/pℤ. For example, GF(4) can be represented as ℤ/2ℤ[x]/(x² + x + 1), with elements {0, 1, x, x+1}."
+    },
+    {
+      "question": "Explain the Chebotarev Density Theorem and its significance in number theory.",
+      "answer": "The Chebotarev Density Theorem states that for a Galois extension L/K of number fields with Galois group G, the density of primes p of K that split completely in L is equal to 1/|G|, where |G| is the order of G. More generally, for any conjugacy class C ⊆ G, the density of primes whose Frobenius automorphism corresponds to C (under the Artin map) is |C|/|G|. This theorem generalizes Dirichlet’s theorem on primes in arithmetic progressions and provides quantitative information about the distribution of prime ideals in abelian and non-abelian extensions. It is foundational for results like the proof of the Kronecker-Weber theorem and the Langlands program."
+    }
+  ]
+}

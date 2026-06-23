@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Dog_Whisperer_with_Cesar_Millan",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the original broadcast network and premiere date of 'Dog Whisperer with Cesar Millan'?",
+      "answer": "The original broadcast network was the National Geographic Channel, and the series premiered on September 13, 2004."
+    },
+    {
+      "question": "How did Cesar Millan's approach to dog training incorporate the idea of 'pack leader'?",
+      "answer": "Millan's approach was based on the theory that dogs are pack animals, and he suggested that owners should become their pet's 'pack leader.' He emphasized behavior modification techniques and a philosophy that exercise, discipline, and affection should be applied in that specific order to achieve a healthy and balanced dog."
+    },
+    {
+      "question": "What changes were made to the series format in 2005?",
+      "answer": "In 2005, the series was expanded from half-hour episodes to one-hour episodes and moved to prime time on the National Geographic Channel."
+    },
+    {
+      "question": "Who were some notable guests that appeared on 'Dog Whisperer with Cesar Millan'?",
+      "answer": "Several entertainment-industry professionals appeared on the program, including Virginia Madsen and Jada Pinkett Smith."
+    },
+    {
+      "question": "What was 'Dog Whisperer: Family Edition' and where did it air?",
+      "answer": "'Dog Whisperer: Family Edition' was a family-oriented revival/spinoff of the original show. It aired on The CW Saturday mornings as part of Litton's One Magnificent Morning block from October 4, 2014, to May 2017."
+    },
+    {
+      "question": "What happened to the international distribution of 'Dog Whisperer with Cesar Millan' after Rive Gauche Television's bankruptcy?",
+      "answer": "Following Rive Gauche Television's bankruptcy filing on December 19, 2022, Dog Whisperer Productions began managing the library directly. The company now partners with Cineverse for digital and streaming distribution across the U.S., Canada, and select global territories."
+    },
+    {
+      "question": "Write a Python snippet to calculate the total number of seasons and episodes for the original 'Dog Whisperer with Cesar Millan' series.",
+      "answer": "python\nseasons = 9\nepisodes_per_season = [39, 43, 42, 42, 42, 42, 42, 42, 42]  # Approximate episode counts per season\ntotal_episodes = sum(episodes_per_season)\n\nprint(f\"Total seasons: {seasons}\")\nprint(f\"Total episodes: {total_episodes}\")\n\nThis code calculates the total number of seasons (9) and the approximate total number of episodes (376) based on available data."
+    }
+  ]
+}

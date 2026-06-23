@@ -1,0 +1,30 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Donkey_basketball",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is donkey basketball and how does it differ from standard basketball?",
+      "answer": "Donkey basketball is a variation of standard basketball where players ride donkeys on a regular basketball court. Unlike traditional basketball, the donkeys are involved in gameplay, and the event is often staged as a one-time fundraising activity, typically in public schools. The sport has been practiced in the United States since the 1930s."
+    },
+    {
+      "question": "Why has donkey basketball faced criticism from animal rights activists?",
+      "answer": "Animal rights activists criticize donkey basketball for alleged cruelty toward animals. Issues include inexperienced participants mishandling donkeys through actions like beating or kicking, and some donkey owners intentionally starving donkeys before games to prevent them from urinating or defecating on the court. Critics argue these practices are harmful and unethical."
+    },
+    {
+      "question": "How do promoters of donkey basketball defend the sport?",
+      "answer": "Promoters of donkey basketball claim that the events are supervised and that the animals are treated humanely. They argue that the conditions and care provided to the donkeys meet ethical standards, despite the criticisms from animal rights groups."
+    },
+    {
+      "question": "What is donkey baseball, and how was it played?",
+      "answer": "Donkey baseball was a related game popular in the 1930s where players, except the batter, pitcher, and catcher, straddled donkeys. The batter would mount a donkey when running bases. Fielders could dismount to pick up a ball but had to hold the reins and remount before throwing; failing to remount resulted in the opposing team being awarded the base. The game was created by Ray L. Doan in 1934 and featured in a 1935 short film."
+    },
+    {
+      "question": "What measures have critics proposed to address concerns about animal welfare in donkey basketball?",
+      "answer": "Critics of donkey basketball have called for stricter regulations, better training for participants handling the animals, and independent oversight to ensure humane treatment. Some advocate for banning such events entirely due to concerns about animal suffering and exploitation."
+    },
+    {
+      "question": "Can you provide a Python code snippet that simulates a simplified donkey basketball scoreboard?",
+      "answer": "Here’s a Python snippet to simulate a basic donkey basketball scoreboard:\n\npython\nclass DonkeyBasketballScoreboard:\n    def __init__(self, team1_name, team2_name):\n        self.team1_name = team1_name\n        self.team2_name = team2_name\n        self.team1_score = 0\n        self.team2_score = 0\n        self.period = 1\n\n    def score(self, team, points):\n        if team == self.team1_name:\n            self.team1_score += points\n        elif team == self.team2_name:\n            self.team2_score += points\n        else:\n            raise ValueError(\"Invalid team name\")\n\n    def next_period(self):\n        self.period += 1\n\n    def display(self):\n        print(f\"Period {self.period}\")\n        print(f\"{self.team1_name}: {self.team1_score}  |  {self.team2_name}: {self.team2_score}\")\n\n# Example usage:\ngame = DonkeyBasketballScoreboard(\"Donkey Riders\", \"Mule Mounts\")\ngame.score(\"Donkey Riders\", 2)\ngame.score(\"Mule Mounts\", 3)\ngame.next_period()\ngame.score(\"Donkey Riders\", 1)\ngame.display()\n\nThis code creates a scoreboard that tracks points for two teams and allows advancing to the next period."
+    }
+  ]
+}

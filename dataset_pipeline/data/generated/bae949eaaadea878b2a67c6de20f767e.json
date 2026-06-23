@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/2023_United_States_debt-ceiling_crisis",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is the debt ceiling, and why is it significant?",
+      "answer": "The debt ceiling is the maximum amount of money that the U.S. government is authorized to borrow to meet its existing obligations, such as Social Security, military salaries, and interest on debt. It is significant because hitting the debt ceiling can lead to a government default if the ceiling is not raised, which could disrupt financial markets, increase borrowing costs, and potentially cause an economic crisis. The debt ceiling must be periodically raised or suspended by Congress to avoid such outcomes."
+    },
+    {
+      "question": "What are 'extraordinary measures' in the context of the U.S. debt ceiling crisis?",
+      "answer": "'Extraordinary measures' refer to specific accounting and financial strategies used by the U.S. Treasury to temporarily delay certain government payments or investments to free up cash and avoid breaching the debt ceiling. These measures include suspending contributions to government pension funds, redeeming existing debt instruments early, or temporarily underfunding certain programs. They are temporary solutions and do not increase the debt ceiling but provide short-term breathing room until Congress acts. In the 2023 crisis, Janet Yellen used these measures until June 5, 2023."
+    },
+    {
+      "question": "What were the key differences between Republican and Democratic positions on raising the 2023 debt ceiling?",
+      "answer": "In the 2023 debt ceiling debate, Republicans insisted that any increase in the debt ceiling should be tied to spending cuts or a requirement that government spending not exceed 2022 levels. They argued for fiscal responsibility and believed the debt crisis was driven by unsustainable spending. Democrats, on the other hand, advocated for a 'clean bill' to raise the debt ceiling without conditions, similar to the three times it was done during Donald Trump’s presidency. They viewed the debt ceiling as a necessity to pay for already approved spending and opposed attaching policy changes to the debt limit."
+    },
+    {
+      "question": "How would a U.S. government default on its debt affect the economy?",
+      "answer": "A U.S. government default on its debt would have severe and widespread economic consequences. It could trigger a loss of investor confidence, causing U.S. Treasury bond prices to drop and interest rates to rise sharply. This would increase borrowing costs for the government, businesses, and consumers. Financial markets could experience volatility, stock prices might plummet, and the U.S. dollar could weaken globally. Additionally, the government would be unable to fully pay obligations such as Social Security, military salaries, or contractor payments, leading to delayed or reduced payments. Economists warn that such a scenario could push the U.S. economy into a recession or even a depression, with job losses and decreased economic activity."
+    },
+    {
+      "question": "What legal argument did Laurence Tribe make regarding the 14th Amendment and the debt ceiling?",
+      "answer": "Laurence Tribe, a constitutional scholar, argued that the 14th Amendment's clause stating that 'the validity of the public debt of the United States... shall not be questioned' means that the government has a constitutional obligation to pay its debts even after hitting the debt ceiling. He contended that defaulting on the debt would be unconstitutional. This argument suggests that the President might have the authority to bypass Congress and continue borrowing to meet debt obligations, even if the debt ceiling has not been raised. However, the legal interpretation remains contested, and the issue has never been tested in court."
+    },
+    {
+      "question": "Provide a Python code snippet that simulates checking the U.S. debt ceiling status over time.",
+      "answer": "python\nimport pandas as pd\nfrom datetime import datetime\n\n# Sample data: dates and debt ceiling status\ndata = {\n    'date': [\n        '2021-12-17', '2022-03-15', '2022-06-06',\n        '2023-01-19', '2023-05-01', '2023-05-27',\n        '2023-06-05', '2023-06-03'\n    ],\n    'event': [\n        'Debt ceiling suspended', 'Debt ceiling reinstated',\n        'Debt ceiling suspended again', 'Debt ceiling hit',\n        'Yellen warns measures may expire by June 1',\n        'Biden-McCarthy debt ceiling deal agreed',\n        'Yellen updates deadline to June 5',\n        'Fiscal Responsibility Act signed into law'\n    ]\n}\n\ndf = pd.DataFrame(data)\ndf['date'] = pd.to_datetime(df['date'])\ndf = df.sort_values('date')\n\n# Display timeline\nfor _, row in df.iterrows():\n    print(f\"{row['date'].strftime('%Y-%m-%d')}: {row['event']}\")\n\nThis code creates a timeline of key events related to the U.S. debt ceiling from December 2021 through June 2023, showing how the status evolved during the crisis."
+    },
+    {
+      "question": "What was the Fiscal Responsibility Act of 2023, and how did it resolve the debt ceiling crisis?",
+      "answer": "The Fiscal Responsibility Act of 2023 was a bipartisan bill passed by Congress and signed into law by President Biden on June 3, 2023. It raised the debt ceiling and implemented spending caps and restrictions to reduce future deficits. Key provisions included limiting non-defense discretionary spending growth, suspending the debt ceiling until January 1, 2025, and clawing back unspent COVID-19 relief funds. The bill passed the House on May 31, the Senate on June 1, and was enacted just days before the projected default date of June 5. It effectively ended the 2023 debt ceiling crisis by providing a temporary solution and setting parameters for future fiscal responsibility."
+    }
+  ]
+}

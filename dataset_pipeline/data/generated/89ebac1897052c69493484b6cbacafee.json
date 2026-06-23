@@ -1,0 +1,38 @@
+{
+  "source_url": "https://dev.to/jarvisscript/what-are-your-goals-for-the-week-55nm",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What were the user's goals for the week related to job search?",
+      "answer": "The user's goals for job search included networking and applying for jobs."
+    },
+    {
+      "question": "What project-related tasks did the user plan for the week?",
+      "answer": "The user planned to work on content for a side project, including building a storefront and creating CSS art, as well as working on their own project."
+    },
+    {
+      "question": "What content and project calendar update was planned for April?",
+      "answer": "The user planned to update the content and project calendar for April."
+    },
+    {
+      "question": "Which events did the user attend or plan to attend last week?",
+      "answer": "The user attended the Dallas Software Developers virtual event (partially), Thursday Virtual Coffee, and planned to attend a Friday Lunch and Learn."
+    },
+    {
+      "question": "What was the outcome of the user's blogging goal last week?",
+      "answer": "The user did not achieve their blogging goal last week, as indicated by the :x: emoji."
+    },
+    {
+      "question": "How did the user's goal setting thread on Virtual Coffee Slack perform last week?",
+      "answer": "The user ran a goal setting thread on Virtual Coffee Slack, which was mentioned by @francistrdev in their post about checking in on people."
+    },
+    {
+      "question": "What is the purpose of the provided HTML snippet with the comment '-$JarvisScript git commit -m \"edition 172\"'?",
+      "answer": "The HTML snippet appears to be a humorous or stylized representation of a git commit message, possibly inspired by the user's 'JarvisScript' project or a playful take on version control. The comment suggests it is edition 172 of a series."
+    },
+    {
+      "question": "What was the issue with the Cypress-related event the user planned to attend?",
+      "answer": "The user planned to attend a session titled 'Solving Cross-Team Accessibility Challenges with Cypress' but could not participate because the platform they streamed on would not load."
+    }
+  ]
+}

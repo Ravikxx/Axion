@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/All-College_Basketball_Classic",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the original purpose of the All-College Basketball Classic?",
+      "answer": "The original purpose of the All-College Basketball Classic was to increase interest in high school basketball in Oklahoma, which aimed to improve the quality of college teams in the state."
+    },
+    {
+      "question": "Who founded the All-College Basketball Classic, and when did it begin?",
+      "answer": "The All-College Basketball Classic was conceived by Henry P. Iba, the coach at Oklahoma A&M (now Oklahoma State), and Bus Ham, sports editor of The Oklahoman. The first tournament took place in 1935."
+    },
+    {
+      "question": "How did the format of the All-College Basketball Classic change in 2000?",
+      "answer": "In 2000, the tournament format was replaced by non-conference games featuring the Oklahoma Sooners and Oklahoma State Cowboys. Before this, it had been a traditional tournament with a title game."
+    },
+    {
+      "question": "What was the final venue for the All-College Basketball Classic, and when were the last events held there?",
+      "answer": "The final events of the All-College Basketball Classic were held at the Chesapeake Energy Arena (now Paycom Center) in Oklahoma City. The last traditionally-formatted tournament was played in 2000, and the event continued in various formats until 2016."
+    },
+    {
+      "question": "Provide a Python code snippet to calculate the number of years the All-College Basketball Classic was held.",
+      "answer": "python\nstart_year = 1935\nend_year = 2016\nduration = end_year - start_year + 1\nprint(f'The All-College Basketball Classic was held for {duration} years.')\n"
+    },
+    {
+      "question": "Why did the Oklahoma City All Sports Association take over the tournament in 1957?",
+      "answer": "The Oklahoma City All Sports Association took over the tournament in 1957 because the publisher of The Oklahoman, which had originally sponsored the event, announced its intention to end its sponsorship."
+    },
+    {
+      "question": "How many teams participated in the first All-College Basketball Classic, and which teams were involved?",
+      "answer": "The first All-College Basketball Classic in 1935 included 16 teams from Oklahoma, Texas, and Kansas. The title game was played between Oklahoma A&M and Tulsa, with Oklahoma A&M winning 40–17."
+    }
+  ]
+}

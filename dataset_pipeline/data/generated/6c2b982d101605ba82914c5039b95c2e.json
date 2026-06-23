@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Equatorial_ring",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the primary purpose of an equatorial ring in the Hellenistic world?",
+      "answer": "An equatorial ring was an astronomical instrument used primarily to determine the exact moment of the spring and autumn equinoxes for calendar purposes."
+    },
+    {
+      "question": "How does an equatorial ring determine the equinoxes when placed at the Earth's equator?",
+      "answer": "At the Earth's equator, the equatorial ring is placed vertically in the east-west plane. During the equinoxes, the Sun rises precisely in the east, passes through the zenith, and sets precisely in the west. The entire bottom half of the ring remains in shadow, as the Sun's path aligns perfectly with the ring. On other days, the Sun passes north or south of the ring, illuminating the bottom half."
+    },
+    {
+      "question": "Why did the shadow on the equatorial ring need to be centered to determine the equinox?",
+      "answer": "The shadow needed to be centered because the Sun is not a point source of light, causing the shadow width to be slightly less than the ring's width. Centering the shadow reduced measurement errors and allowed the equinox to be fixed within an hour or so."
+    },
+    {
+      "question": "What adjustments are needed for an equatorial ring to work at latitudes away from the equator?",
+      "answer": "For latitudes away from the equator, the equatorial ring must be placed at the correct angle relative to the equatorial plane. At the Earth's poles, the ring would be placed horizontally."
+    },
+    {
+      "question": "What was the typical size range of an equatorial ring?",
+      "answer": "Equatorial rings were typically about one to two cubits in diameter, which translates to roughly 45 cm to 90 cm."
+    },
+    {
+      "question": "Provide a Python code snippet to calculate the angle at which an equatorial ring should be placed at a given latitude.",
+      "answer": "python\ndef calculate_ring_angle(latitude):\n    \"\"\"\n    Calculate the angle at which an equatorial ring should be placed at a given latitude.\n    The angle is the complement of the latitude (90 - latitude) for the northern hemisphere.\n    \"\"\"\n    if latitude < 0:\n        raise ValueError(\"Latitude must be between -90 and 90 degrees.\")\n    angle = 90 - abs(latitude)\n    return angle\n\n# Example usage:\nlatitude = 45  # Degrees (e.g., Alexandria)\nangle = calculate_ring_angle(latitude)\nprint(f\"The equatorial ring should be placed at an angle of {angle} degrees.\")\n"
+    },
+    {
+      "question": "What were the main disadvantages of using an equatorial ring for measuring equinoxes?",
+      "answer": "The primary disadvantages were the need for precise alignment, which could lead to false measurements if misaligned. Ptolemy noted an instance where a misaligned ring caused the equinox to appear twice in one day. Additionally, atmospheric refraction near the horizon could distort readings."
+    }
+  ]
+}

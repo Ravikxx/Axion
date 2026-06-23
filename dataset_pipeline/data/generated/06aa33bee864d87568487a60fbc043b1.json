@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Corn_(pathology)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is a corn (clavus) and how does it form?",
+      "answer": "A corn, or clavus, is a painful, cone-shaped callus of dead skin that grows inward due to chronic pressure or acute injury. It forms at pressure points near bones or on weight-bearing areas, often on the feet or hands. The inward growth is caused by persistent rubbing or trauma, which creates a hardened, tapering root that pushes deeper into the skin. This inward growth can make corns particularly painful when pressure is applied."
+    },
+    {
+      "question": "Why are corns more painful than regular calluses?",
+      "answer": "Corns are more painful than regular calluses because they have a hard, inward-directed 'root' that presses into the sensitive layers of skin and underlying tissues. When pressure is applied, this root pushes deeper, irritating nerves and causing sharp pain. Regular calluses, in contrast, are typically flat and outward-growing, so they do not penetrate as deeply or cause such concentrated pain."
+    },
+    {
+      "question": "What are the two main types of corns, and how do they differ in location?",
+      "answer": "The two main types of corns are pressure corns and injury-induced corns. Pressure corns typically occur on thin, hairless skin surfaces such as the tops of toes or fingers due to chronic rubbing against bones or footwear. Injury-induced corns can form on thicker skin areas like the palms (palmar corns) or soles of the feet (plantar corns) following acute trauma, such as a thorn puncture, which concentrates callus formation at the injury site."
+    },
+    {
+      "question": "How does the process of corn formation differ between chronic pressure and acute injury?",
+      "answer": "Under chronic pressure, the skin rubs against an underlying bone in an elliptical motion, forming a corn at the pressure point that gradually widens and deepens. In the case of an acute injury like a thorn puncture, the body’s natural callus-forming response becomes concentrated at the healing injury site, creating an internal callus that protrudes inward. Once formed, the corn itself becomes a new pressure point, perpetuating the cycle."
+    },
+    {
+      "question": "What is the Latin origin of the term 'clavus' and what does it mean?",
+      "answer": "The term 'clavus' comes from Latin and means 'nail.' This name reflects the corn’s cone-shaped, nail-like structure, with a hard tapering root that penetrates inward into the skin, mimicking the shape of a nail driven into wood."
+    },
+    {
+      "question": "How can you distinguish a plantar corn from a plantar wart based on cause and treatment?",
+      "answer": "A plantar corn and a plantar wart may look similar on the surface, but their causes and treatments differ significantly. A plantar corn results from chronic pressure or trauma, forming an inward-growing callus. In contrast, a plantar wart is caused by the human papillomavirus (HPV) and grows outward. Corns are treated by reducing pressure and removing the hardened skin, while warts may require antiviral treatments or specialized removal methods like cryotherapy."
+    },
+    {
+      "question": "Write a Python function to simulate the formation of a pressure corn given a pressure point and rubbing motion.",
+      "answer": "python\nimport numpy as np\n\ndef simulate_corn_formation(pressure_point, rubbing_motion_cycles=100, initial_radius=0.5):\n    \"\"\"\n    Simulates the formation of a pressure corn based on chronic pressure and rubbing.\n    \n    Args:\n        pressure_point: A tuple (x, y) representing the location of the bone.\n        rubbing_motion_cycles: Number of rubbing cycles to simulate.\n        initial_radius: Starting radius of the corn (in arbitrary units).\n    \n    Returns:\n        A dictionary with the corn's center, current radius, and depth.\n    \"\"\"\n    center = np.array(pressure_point, dtype=float)\n    radius = initial_radius\n    depth = 0.0\n    \n    for _ in range(rubbing_motion_cycles):\n        # Simulate elliptical rubbing motion\n        rubbing_force = np.random.normal(0, 0.1, size=2)\n        new_center = center + rubbing_force\n        \n        # Corn grows wider and deeper with each cycle\n        radius += 0.01\n        depth += 0.005\n        \n        # Update center due to rubbing\n        center = new_center\n    \n    return {\n        'center': tuple(center.round(2)),\n        'radius': round(radius, 2),\n        'depth': round(depth, 2)\n    }\n\n# Example usage:\nresult = simulate_corn_formation(pressure_point=(5, 5))\nprint(f\"Corn formed at {result['center']} with radius {result['radius']} and depth {result['depth']}\")\n"
+    }
+  ]
+}

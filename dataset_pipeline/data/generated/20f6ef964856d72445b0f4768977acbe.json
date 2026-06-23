@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Alexander_Dolsky",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who is Alexander Dolsky and what are the notable aspects of his career?",
+      "answer": "Alexander Alexandrovich Dolsky is a Soviet and Russian poet, writer, artist, and most notably a bard. Born on June 7, 1938, in Sverdlovsk, he graduated from the Ural Polytechnical Institute and a music school with a major in guitar. He moved to Saint Petersburg in 1975, where he worked in the City Building Institute and performed as an actor in the Leningrad Miniature Theater starting in 1979. He began writing songs in high school and composed music for poetry by French, English, American, and Russian poets. He also acted in several films."
+    },
+    {
+      "question": "What albums or records did Alexander Dolsky release under the Melodiya label?",
+      "answer": "Alexander Dolsky released the following albums under the Melodiya label: «Музыка над моей головой» (Music over my head), «Старинные часы» (Antique clock, 1979), «Звезда на ладони» (Star in the palm of the hand, 1980), «Государство синих глаз» (Nation of blue eyes, 1981), «Ленинградские акварели» (Leningrad aquarelles, 1983), «Теплые звезды» (Warm stars, 1985), «Прощай, ХХ век» (Good bye, ХХ century, 1987), «Оглянись не во гневе» (Do not look back in anger, 1988), «Пейзаж в раме» (Landscape in the frame, 1987), «На круги своя», and «Тайная вечеря» (Last supper, 1991)."
+    },
+    {
+      "question": "How many compact disks were published by Alexander Dolsky since 1996, and what are some of their titles?",
+      "answer": "Since 1996, 10 compact disks were published by Alexander Dolsky, containing a mix of old and new songs. Some of the titles include «Старинные часы» (Antique clock), «Государство синих глаз» (Nation of blue eyes), «Ленинградские акварели» (Leningrad aquarelles), «Теплые звезды» (Warm stars), «Прощай, ХХ век» (Good bye, ХХ century), «Оглянись не во гневе» (Do not look back in anger), «Пейзаж в раме» (Landscape in the frame), «Музыка над моей головой» (Music over my head), and «На круги своя»."
+    },
+    {
+      "question": "What educational background does Alexander Dolsky have?",
+      "answer": "Alexander Dolsky graduated from the Ural Polytechnical Institute in 1963. In the same year, he also graduated from a music school, where he majored in guitar."
+    },
+    {
+      "question": "Provide an example of a code snippet that could be used to generate a list of Alexander Dolsky's albums programmatically.",
+      "answer": "Here is a Python code snippet to generate a list of Alexander Dolsky's Melodiya albums:\n\npython\nmelodiya_albums = [\n    \"Музыка над моей головой\",\n    \"Старинные часы (1979)\",\n    \"Звезда на ладони (1980)\",\n    \"Государство синих глаз (1981)\",\n    \"Ленинградские акварели (1983)\",\n    \"Теплые звезды (1985)\",\n    \"Прощай, ХХ век (1987)\",\n    \"Оглянись не во гневе (1988)\",\n    \"Пейзаж в раме (1987)\",\n    \"На круги своя\",\n    \"Тайная вечеря (1991)\"\n]\n\nprint(\"Alexander Dolsky's Melodiya Albums:\")\nfor album in melodiya_albums:\n    print(f\"- {album}\")\n"
+    },
+    {
+      "question": "What is Alexander Dolsky's connection to Saint Petersburg, and what professional roles did he hold there?",
+      "answer": "Alexander Dolsky moved to Saint Petersburg in 1975, where he worked professionally in two roles: first in the City Building Institute, and later as an actor in the Leningrad Miniature Theater starting in 1979."
+    },
+    {
+      "question": "Compare the formats of albums released by Alexander Dolsky under Melodiya and as compact disks.",
+      "answer": "Alexander Dolsky released 11 albums under the Melodiya label between 1979 and 1991, primarily as vinyl records. Additionally, he released 7 compact disks between 1995 and 1997, and then 10 more compact disks since 1996 that included a mix of old and new songs. The compact disk format allowed for a more modern and portable way to distribute his music compared to the earlier vinyl records."
+    }
+  ]
+}

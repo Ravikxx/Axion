@@ -1,0 +1,38 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Hogan's_Alley,_Vancouver",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What was Hogan's Alley and where was it located?",
+      "answer": "Hogan's Alley was the name for Park Lane, a street in Vancouver's Strathcona area that ran from around Main Street to Jackson Avenue. It was historically significant as the heart of Vancouver's black community and later became a vibrant multicultural neighborhood."
+    },
+    {
+      "question": "Why did the African Methodist Episcopal (AME) Church purchase the Norwegian Lutheran church at 823 Jackson Avenue in 1919?",
+      "answer": "The AME Church purchased the building through community fundraising to create the Fountain Chapel, a place for residents to gather for social events and religious activities. Nora Hendrix, grandmother of Jimi Hendrix, was instrumental in fundraising for the chapel."
+    },
+    {
+      "question": "How did Hogan's Alley get its name?",
+      "answer": "Hogan's Alley was named in reference to the comic strip character 'The Yellow Kid,' which was popular in the New York World newspaper. The name reflects the area's cultural connection to humor and urban life."
+    },
+    {
+      "question": "What role did Vie's Chicken and Steakhouse play in Hogan's Alley's history?",
+      "answer": "Vie's Chicken and Steakhouse was a popular eatery where Nora Hendrix worked and fed railway workers. It also operated as a speakeasy at night and became a cultural hub frequented by famous musicians like Louis Armstrong, Sammy Davis Jr., Ella Fitzgerald, and a young Jimi Hendrix."
+    },
+    {
+      "question": "What led to the decline and eventual destruction of Hogan's Alley?",
+      "answer": "In the 1920s, city officials labeled Strathcona a 'blighted slum' and pushed for redevelopment, claiming it would prevent plummeting property values. The construction of the Georgia and Dunsmuir Viaducts in the 1960s further devastated the area, displacing residents and businesses despite protests."
+    },
+    {
+      "question": "Write a Python snippet to calculate the approximate population density of Hogan's Alley in 1916, given that 300 people lived in the area.",
+      "answer": "python\n# Area of Hogan's Alley (approximate)\nlength_meters = 1500  # Roughly from Main Street to Jackson Avenue\nwidth_meters = 20     # Average alley width in urban settings\narea_sq_meters = length_meters * width_meters\n\n# Population density calculation\npopulation = 300\ndensity = population / area_sq_meters\nprint(f\"Approximate population density: {density:.4f} people/m²\")\n"
+    },
+    {
+      "question": "What was the significance of Nora Hendrix in Hogan's Alley's history?",
+      "answer": "Nora Hendrix was a key community figure who arrived in Vancouver in 1911 from Tennessee. She worked at Vie's Chicken and Steakhouse, helped fundraise for the Fountain Chapel, and was the grandmother of Jimi Hendrix, who frequently visited her in Vancouver. The city later honored her with the supportive housing project 'Nora Hendrix Place'."
+    },
+    {
+      "question": "Why did Governor James Douglas write to San Francisco's Zion Church in 1858?",
+      "answer": "Governor James Douglas wrote to Zion Church in San Francisco to encourage its Black congregation to relocate to British Columbia, as they faced hostility and racism in California. Around 1,000 people accepted his invitation and settled in areas like Victoria and Salt Spring Island."
+    }
+  ]
+}

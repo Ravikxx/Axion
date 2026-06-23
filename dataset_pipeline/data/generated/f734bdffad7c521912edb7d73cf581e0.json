@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Gustav_Holst",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "Where and when was Gustav Holst born?",
+      "answer": "Gustav Holst was born on 21 September 1874 in Cheltenham, Gloucestershire, England."
+    },
+    {
+      "question": "What health issues did Gustav Holst face throughout his life?",
+      "answer": "Gustav Holst suffered from chronic asthma as a child, which often confined him to bed even after minor physical exertion like climbing stairs. Additionally, he developed neuritis, a condition that frequently prevented him from holding a regular pen due to pain."
+    },
+    {
+      "question": "What were some of Gustav Holst's non-musical interests and studies?",
+      "answer": "Holst was deeply interested in Hindu philosophy, reading Hindu epics and learning Sanskrit. He also studied astronomy and astrology, and practiced casting horoscopes. His broad reading habits extended to literature and other subjects beyond music."
+    },
+    {
+      "question": "How did Gustav Holst contribute to education in music?",
+      "answer": "Holst taught music at St Paul’s Girls’ School in London and later served as the music director at Morley College, also in London. His teaching roles were significant parts of his career after his performing days."
+    },
+    {
+      "question": "What is the compositional structure of Holst's 'The Planets,' and how was it musically conceived?",
+      "answer": "The Planets is a seven-movement orchestral suite composed by Holst in 1918, each movement representing a different planet (excluding Earth and Pluto). While often mistakenly thought to depict planets or Roman gods, the music was actually inspired by astrological symbolism rather than direct planetary descriptions or mythology."
+    },
+    {
+      "question": "Why is Pluto not included in 'The Planets' suite?",
+      "answer": "Pluto had not yet been discovered when Holst composed The Planets in 1918, so it was not included in the suite. The work was completed before Pluto's identification in 1930."
+    },
+    {
+      "question": "What instruments did Gustav Holst play professionally before focusing on composition and teaching?",
+      "answer": "Before becoming a composer and educator, Gustav Holst played the trombone professionally, performing with several orchestras and an opera company."
+    }
+  ]
+}

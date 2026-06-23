@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Executive_Suite_(video_game)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who developed the game 'Executive Suite' and what was the name of their publishing label?",
+      "answer": "The game was developed by Armonk Corporation, a small software development company based in Newport Beach, California. It was published under their 'Gray Flannel Fun' label."
+    },
+    {
+      "question": "What is the primary objective of the game 'Executive Suite'?",
+      "answer": "The primary objective of 'Executive Suite' is to rise to the position of President at the fictional corporation MMC (Mighty Microcomputer Corporation) before reaching the mandatory retirement age of seventy-five."
+    },
+    {
+      "question": "How does the game 'Executive Suite' differ from most other business simulation games?",
+      "answer": "Unlike most business simulations, 'Executive Suite' does not involve making economic decisions or managing stores of resources. Instead, players focus on managing their character's career through on-the-job and managerial decisions, navigating office politics, and avoiding blame for poor outcomes."
+    },
+    {
+      "question": "What happens if a player fails to perform well in 'Executive Suite'?",
+      "answer": "If a player fails to perform well, the game may result in them getting fired from the company rather than receiving a career advancement option."
+    },
+    {
+      "question": "What economic conditions can players encounter during the game 'Executive Suite'?",
+      "answer": "During the game, the economy can shift from a boom into a recession and even into a depression, adding variability and challenge to the player's career management tasks."
+    },
+    {
+      "question": "Provide an example of how a player might navigate office politics in 'Executive Suite'.",
+      "answer": "In 'Executive Suite', a player might navigate office politics by carefully choosing responses to situations that either gain support from colleagues or avoid assigning blame. For example, if a project fails, the player might select an option that deflects responsibility while praising the team's effort, ensuring their own career advancement isn't compromised."
+    },
+    {
+      "question": "What is the significance of the 'Executive suite' in the game?",
+      "answer": "The 'Executive suite' is the title and coveted position that players aim to achieve in the game. It represents the highest level of career success within the fictional corporation MMC, and players must demonstrate strong decision-making and political acumen to reach this goal."
+    }
+  ]
+}

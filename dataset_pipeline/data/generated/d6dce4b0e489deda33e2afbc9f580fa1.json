@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/hadil/youre-a-real-typescript-developer-only-if-1d9o",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What are some common challenges developers face when converting a JavaScript project to TypeScript?",
+      "answer": "Developers often underestimate the effort required for conversion, expecting it to take only an hour, but it can take days or longer. Common challenges include fixing numerous type errors (often creating a cascade of new ones), adding `any` to bypass errors temporarily, and struggling with TypeScript's strictness when it doesn't align with the developer's expectations of the code's intent."
+    },
+    {
+      "question": "How does TypeScript's strict mode impact a project, and what might developers discover after enabling it?",
+      "answer": "Enabling strict mode in TypeScript can reveal hidden issues in the codebase that were previously ignored, such as `null` or `undefined` values, implicit `any` types, and other potential bugs. Developers often discover things they wish they hadn’t, as strict mode enforces stricter type-checking rules that expose weaknesses in the code."
+    },
+    {
+      "question": "Provide an example of how TypeScript's type system can prevent errors during refactoring.",
+      "answer": "When renaming a property in a TypeScript file, the IDE will automatically update all references to that property across the project, preventing breaking changes. For example, renaming a property `userName` to `username` in one file will update all occurrences in other files, ensuring consistency and saving the developer from manually fixing each instance."
+    },
+    {
+      "question": "What does the `@ts-ignore` comment do in TypeScript, and why should developers use it sparingly?",
+      "answer": "The `@ts-ignore` comment suppresses TypeScript errors for the next line of code. While it can be useful for quick fixes or temporary workarounds, overusing it defeats the purpose of TypeScript's type-checking capabilities. Developers should use it sparingly to avoid introducing type-unsafe code into the project."
+    },
+    {
+      "question": "How can TypeScript's generic types be both a blessing and a curse for developers?",
+      "answer": "Generic types in TypeScript allow developers to write reusable, type-safe components and functions that work with different data types. However, they can become overly complex or difficult to understand, especially when revisited later. Developers may struggle to decipher types they wrote months ago, leading to frustration or even abandoning the code altogether."
+    },
+    {
+      "question": "Write a TypeScript code snippet that defines a type for an object with two properties, `name` and `age`.",
+      "answer": "typescript\ntype Person = {\n  name: string;\n  age: number;\n};\n\nconst person: Person = {\n  name: \"Alice\",\n  age: 30,\n};\n"
+    },
+    {
+      "question": "Why might a developer feel conflicted about TypeScript, and how does it ultimately benefit their workflow?",
+      "answer": "Developers often complain about TypeScript due to its strictness, the time spent fixing type errors, and the learning curve involved. However, TypeScript ultimately benefits workflows by catching errors early, providing better tooling support (like autocomplete), and preventing future bugs that could arise from type mismatches, saving time and frustration in the long run."
+    }
+  ]
+}

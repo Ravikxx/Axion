@@ -1,0 +1,38 @@
+{
+  "source_url": "https://dev.to/itsugo/i-thought-coding-was-the-job-4bo7",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What were the most challenging non-technical aspects of the freelance project described?",
+      "answer": "The non-technical challenges included figuring out the client's actual needs, discussing timelines, dealing with uncertainty, deciding pricing, handling revisions and feature changes mid-project, managing scope creep, navigating awkward conversations, and waiting for client replies. These aspects often felt more overwhelming than the coding itself initially."
+    },
+    {
+      "question": "How did the author's experience with their first freelance client change their perspective on freelancing?",
+      "answer": "The author initially thought coding was the hardest part of freelancing, but they soon realized that managing expectations, communication, trust, and uncertainty was equally (if not more) important. This shifted their view from seeing freelancing as just 'building software' to managing a complex system of human interactions."
+    },
+    {
+      "question": "What lesson did the author learn after their second freelance project fell through?",
+      "answer": "The author learned the importance of making agreements beforehand with clients. A friend's advice—'You don’t get lucky twice with clients. Make agreements beforehand.'—became clear after the second project ended abruptly due to internal misalignment on the client's side."
+    },
+    {
+      "question": "How did the author's experience in corporate work mirror their freelance challenges?",
+      "answer": "In corporate work, the author encountered similar non-technical challenges: hierarchy, communication styles, meetings, visibility, understanding team dynamics, and knowing when to speak or remain silent. The technical coding aspects were only one layer of the job, with social and communication systems playing a major role."
+    },
+    {
+      "question": "Provide a code snippet demonstrating how to handle client communication delays in a React Native project.",
+      "answer": "Here’s a simple example using React Native’s `fetch` with a timeout to handle unresponsive clients:\n\njavascript\nconst fetchClientDataWithTimeout = async (url, timeout = 10000) => {\n  const controller = new AbortController();\n  const timeoutId = setTimeout(() => controller.abort(), timeout);\n\n  try {\n    const response = await fetch(url, { signal: controller.signal });\n    clearTimeout(timeoutId);\n    return await response.json();\n  } catch (error) {\n    if (error.name === 'AbortError') {\n      console.log('Client reply timed out');\n      return null;\n    }\n    throw error;\n  }\n};\n\n// Usage:\nfetchClientDataWithTimeout('https://client-api.com/data')\n  .then(data => console.log(data))\n  .catch(err => console.error('Error:', err));\n\nThis snippet includes a 10-second timeout to prevent indefinite waiting for client responses."
+    },
+    {
+      "question": "Why does the author compare careers to an iceberg?",
+      "answer": "The author uses the iceberg analogy to illustrate that most professions appear simple from the outside because we only see the visible output (e.g., a deployed app, a polished presentation). However, beneath the surface lies a vast, unseen portion comprising uncertainty, communication, failed attempts, invisible coordination, emotional pressure, relationships, trust, and adaptation."
+    },
+    {
+      "question": "How did learning Japanese professionally change the author's perspective on language learning?",
+      "answer": "Initially, the author saw language learning as just vocabulary + grammar = communication. However, workplace conversations revealed that effective communication involves timing, confidence, hierarchy, context, listening, reading atmosphere, and adapting to people—making the visible part (vocabulary) only a small fraction of the actual skill required."
+    },
+    {
+      "question": "What is the core realization the author had about careers and professional fields?",
+      "answer": "The author realized that careers are not primarily about technical skills but about managing people and systems—technical systems, social systems, communication systems, and even emotional systems. The visible output (e.g., coding, writing, marketing) is often just the tip of the iceberg."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Epicureanism",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is Epicureanism and when did it originate?",
+      "answer": "Epicureanism is a philosophy founded by Epicurus around 307 BC. It teaches that the greatest good is to seek certain pleasures while avoiding fear and pain, and it views the absence of pain as the highest form of pleasure."
+    },
+    {
+      "question": "How did Epicurus view the gods?",
+      "answer": "Epicurus believed the gods were passive and did not intervene in the world. He rejected superstition and considered the gods irrelevant to human affairs."
+    },
+    {
+      "question": "What is the relationship between Epicureanism and hedonism?",
+      "answer": "Epicureanism is a form of hedonism that defines pleasure as the absence of pain rather than indulgence in bodily desires. It advocates simple pleasures and abstaining from excess to achieve lasting tranquility."
+    },
+    {
+      "question": "Why did Epicurus advocate abstaining from bodily desires like sex and rich food?",
+      "answer": "Epicurus warned that indulging in rich food could lead to future dissatisfaction due to cost or inability to maintain such luxuries. Similarly, he believed sex could increase lust and dissatisfaction with partners. He promoted moderation to avoid these negative consequences."
+    },
+    {
+      "question": "How did Epicureanism differ from Platonism and Stoicism?",
+      "answer": "Epicureanism originated as a challenge to Platonism and later became the main opponent of Stoicism. Unlike Stoicism, which emphasizes duty and control, Epicureanism focuses on pleasure and tranquility. It also rejected politics, unlike both traditions."
+    },
+    {
+      "question": "Who was Lucretius, and what role did he play in Epicureanism?",
+      "answer": "Lucretius was a Roman poet and the best-known proponent of Epicureanism in the Roman era. His epic poem *On the Nature of Things* presents the core arguments of Epicurean philosophy in one work."
+    },
+    {
+      "question": "Can you provide a Python code snippet to simulate Epicurus' principle of avoiding excess in consumption?",
+      "answer": "Certainly! Below is a simple Python function that calculates the long-term satisfaction of a consumption choice based on Epicurus' principle of moderation:\n\npython\ndef calculate_satisfaction(current_wealth, cost, short_term_pleasure=1.0):\n    if cost > current_wealth:\n        return 0.0  # Cannot afford, leading to dissatisfaction\n    return short_term_pleasure * (1 - (cost / current_wealth))\n\n# Example: Spending 50 units of wealth on a luxury\ncurrent_wealth = 100\ncost = 50\nsatisfaction = calculate_satisfaction(current_wealth, cost)\nprint(f\"Satisfaction score: {satisfaction:.2f}\")  # Output: 0.50\n\nThe function shows that higher costs relative to wealth reduce long-term satisfaction, aligning with Epicurus' view on moderation."
+    }
+  ]
+}

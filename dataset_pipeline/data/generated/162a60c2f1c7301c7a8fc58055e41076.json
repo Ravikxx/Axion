@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/trojanmocx/i-stopped-chasing-features-and-started-designing-systems-3m9a",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What is the primary reason most software projects fail according to the text?",
+      "answer": "Most software projects fail not because the code itself is poorly written, but due to the lack of a robust structural foundation that holds the system together, especially under real-world conditions with users and evolving requirements."
+    },
+    {
+      "question": "How did the author's approach to coding change after encountering project failures?",
+      "answer": "The author shifted focus from speed of development ('how fast I could build something') to the long-term survivability of the project ('how long it would survive once real users and real problems showed up'). They began prioritizing system structure, scalability, and resilience over rapid feature delivery."
+    },
+    {
+      "question": "What key architectural principles does the author emphasize when designing modern systems, particularly those involving AI?",
+      "answer": "The author emphasizes separation of logic and interface, scalability during requirement changes, handling failures gracefully, and considering factors like context, latency, state management, fallbacks, and decision-making under imperfect conditions. Systems must be resilient when a single component fails."
+    },
+    {
+      "question": "Provide a code snippet illustrating separation of concerns in a Python Flask application with an AI service.",
+      "answer": "python\n# app.py - Main application (interface layer)\nfrom flask import Flask, request, jsonify\nfrom ai_service import AIService\n\napp = Flask(__name__)\nai_service = AIService()\n\n@app.route('/predict', methods=['POST'])\ndef predict():\n    try:\n        input_data = request.json.get('data')\n        if not input_data:\n            return jsonify({'error': 'No input data provided'}), 400\n        \n        result = ai_service.process(input_data)\n        return jsonify({'prediction': result})\n    except Exception as e:\n        return jsonify({'error': 'Prediction failed', 'details': str(e)}), 500\n\nif __name__ == '__main__':\n    app.run()\n\n# ai_service.py - Business logic layer (separate from interface)\nclass AIService:\n    def __init__(self):\n        self.model = load_model()  # Load AI model\n\n    def process(self, input_data):\n        try:\n            cleaned_data = preprocess(input_data)\n            prediction = self.model.predict(cleaned_data)\n            return postprocess(prediction)\n        except Exception as e:\n            handle_fallback(e)  # Graceful degradation\n"
+    },
+    {
+      "question": "Why does the author consider AI systems particularly challenging to design for long-term stability?",
+      "answer": "AI systems are challenging because they operate under imperfect conditions involving context, latency, state management, potential failures, and the need to make decisions with incomplete information. A single point of failure can break the entire user experience, so the architecture must account for resilience at every layer, including fallbacks and graceful degradation."
+    },
+    {
+      "question": "What type of projects has the author recently focused on, and why are they significant?",
+      "answer": "The author has focused on projects combining real-time inputs (vision, voice, gestures) with clean backend architecture and responsive interfaces. These projects are significant because they aim to be functional systems—not temporary demos—but robust solutions designed to continue operating reliably under real-world conditions."
+    },
+    {
+      "question": "How does the author balance speed and intention in their current development process?",
+      "answer": "The author still moves quickly but now does so with intention. This means prioritizing thoughtful architectural decisions, long-term stability, and systems thinking over rushing to deliver features. Speed is maintained through efficient workflows, but direction is guided by purposeful, future-proof design choices."
+    }
+  ]
+}

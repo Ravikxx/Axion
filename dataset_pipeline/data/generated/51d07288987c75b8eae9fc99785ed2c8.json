@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Education_for_Citizenship_(Spain)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the subject 'Education for Citizenship and Human Rights' (EpC) in Spain?",
+      "answer": "Education for Citizenship and Human Rights (EpC) is a mandatory school subject in Spain for the last cycle of primary education and all secondary education. It was introduced by the government of José Luis Rodríguez Zapatero to promote civic and human values, following a recommendation from the Council of Europe. The subject focuses on fundamental human rights and democratic principles."
+    },
+    {
+      "question": "Why was the subject EpC introduced in Spain?",
+      "answer": "EpC was introduced to fulfill a recommendation from the Council of Europe, which emphasized the necessity of education for citizenship. The goal was to promote civic values and human rights among students in Spain, ensuring they grow up understanding democratic principles and social responsibilities."
+    },
+    {
+      "question": "Who opposed the introduction of EpC in Spain, and why?",
+      "answer": "Several conservative groups, including the Catholic Church, the People's Party, and some progressive pedagogical movements, opposed EpC. The Catholic Church labeled it as 'totalitarian,' while the People's Party raised concerns about its content. Some progressive educators questioned whether it adequately addressed human rights education beyond basics."
+    },
+    {
+      "question": "What is conscientious objection in the context of EpC, and how many students requested it?",
+      "answer": "Conscientious objection refers to parents or students refusing to participate in EpC due to moral or religious beliefs. By September 2007, only 80 students had requested this exemption, despite high publicity surrounding the issue."
+    },
+    {
+      "question": "What was the legal outcome for EpC attendance in Spain?",
+      "answer": "The Spanish Supreme Court ruled in January 2009 that attendance of EpC would be mandatory for all students. This decision ensured that the subject remained a required part of the curriculum despite opposition."
+    },
+    {
+      "question": "How did CEAPA (Spanish Confederation of Student's Parents) view EpC?",
+      "answer": "CEAPA supported EpC, as they believed the government's proposed curriculum did not exceed the scope of educating students about basic human rights. They saw the subject as a positive step in promoting civic awareness."
+    },
+    {
+      "question": "Write a Python function to analyze public sentiment about EpC based on historical data. Assume the input is a list of tuples containing (year, number_of_protests, number_of_support_petitions).",
+      "answer": "python\nimport matplotlib.pyplot as plt\n\ndef analyze_epc_sentiment(data):\n    '''\n    Analyzes public sentiment about EpC based on historical data.\n    Input: List of tuples (year, number_of_protests, number_of_support_petitions)\n    Output: A line plot showing trends in opposition vs. support over time.\n    '''\n    years = [item[0] for item in data]\n    protests = [item[1] for item in data]\n    petitions = [item[2] for item in data]\n\n    plt.figure(figsize=(10, 6))\n    plt.plot(years, protests, label='Protests Against EpC', marker='o', color='red')\n    plt.plot(years, petitions, label='Support Petitions for EpC', marker='o', color='green')\n    plt.title('Public Sentiment Towards Education for Citizenship and Human Rights (EpC)')\n    plt.xlabel('Year')\n    plt.ylabel('Count')\n    plt.legend()\n    plt.grid(True)\n    plt.show()\n\n# Example usage:\ndata = [\n    (2006, 50, 20),\n    (2007, 75, 30),\n    (2008, 40, 60),\n    (2009, 20, 80)\n]\nanalyze_epc_sentiment(data)\n"
+    }
+  ]
+}

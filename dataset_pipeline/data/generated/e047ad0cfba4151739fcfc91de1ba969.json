@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/2012–13_Georgetown_Hoyas_men's_basketball_team",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who coached the 2012–13 Georgetown Hoyas men's basketball team?",
+      "answer": "The 2012–13 Georgetown Hoyas men's basketball team was coached by John Thompson III."
+    },
+    {
+      "question": "What was the outcome of the 2012–13 Georgetown Hoyas' game against Syracuse on March 9, 2013?",
+      "answer": "On March 9, 2013, the Georgetown Hoyas won against Syracuse with a score of 61–39."
+    },
+    {
+      "question": "Why was Greg Whittington suspended from the Georgetown Hoyas team prior to the January 12 game at St. John's?",
+      "answer": "Greg Whittington was suspended indefinitely due to academic issues."
+    },
+    {
+      "question": "How did the 2012–13 Georgetown Hoyas perform in the NCAA tournament, and what was their final ranking?",
+      "answer": "The Georgetown Hoyas lost to Florida Gulf Coast University in the second round of the NCAA tournament with a score of 78–68. They were ranked No. 8 in the final Associated Press Poll and No. 17 in the postseason Coaches' Poll."
+    },
+    {
+      "question": "What led to the formation of the new Big East Conference in 2013?",
+      "answer": "Georgetown and six other Big East members (DePaul, Marquette, Providence, Seton Hall, St. John's, and Villanova) left the original Big East Conference due to concerns about the conference's focus on college football and unstable membership. They formed a new Big East Conference with Butler, Creighton, and Xavier for the 2013–14 season."
+    },
+    {
+      "question": "What was the attendance record set during the final regular-season meeting between Georgetown and Syracuse in 2013?",
+      "answer": "The final regular-season meeting between Georgetown and Syracuse on March 9, 2013, set an attendance record of 20,972 at the Verizon Center."
+    },
+    {
+      "question": "Provide a Python code snippet to calculate the total number of seasons Georgetown spent in the original Big East Conference.",
+      "answer": "python\n# Georgetown was a member of the original Big East Conference from the 1979–80 season to the 2012–13 season.\nstart_season = 1979\ntotal_seasons = 2012 - start_season + 1  # Inclusive of both start and end seasons\nprint(total_seasons)  # Output: 34\n"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Clara_Bow_filmography",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was Clara Bow's breakthrough role and what nickname did the public give her as a result?",
+      "answer": "Clara Bow's breakthrough role was her 1927 starring performance in *It*, a film about an attractive and charismatic young woman. The public subsequently labeled her the 'It girl' due to her iconic portrayal."
+    },
+    {
+      "question": "How did Clara Bow's career begin after winning the 'Fame and Fortune Contest' in 1921?",
+      "answer": "Clara Bow won the 1921 'Fame and Fortune Contest' advertised in *Motion Picture Magazine* at age 16. As the winner, she was cast in a small role in the silent-era film *Beyond the Rainbow*, though her part was later edited out. This experience inspired her to pursue acting, leading her to relocate to Los Angeles and sign with producer B.P. Schulberg in 1923."
+    },
+    {
+      "question": "What challenges did Clara Bow face with the transition to sound films, and how did she initially react to it?",
+      "answer": "Clara Bow struggled with the transition to sound films because she never lost her Brooklyn accent and speech patterns, believing the new technology would end her career. Despite this, she starred in the first sound version of *The Wild Party*, where her performance received praise from both audiences and the media."
+    },
+    {
+      "question": "Write a Python snippet to calculate the average number of fan letters Clara Bow received monthly during her peak fame.",
+      "answer": "To calculate the average number of fan letters Clara Bow received monthly, you can use the following Python snippet:\n\npython\n# Given data\nmonthly_fan_letters = 30000\n\n# Average calculation\naverage_letters = monthly_fan_letters\nprint(f\"Clara Bow received an average of {average_letters:,} fan letters per month.\")\n\n\nThis outputs: *Clara Bow received an average of 30,000 fan letters per month.*"
+    },
+    {
+      "question": "What notable achievement did Clara Bow contribute to in the film industry in 1929?",
+      "answer": "Clara Bow co-starred in *Wings* (1927), which won the first Academy Award for Best Picture in 1929. The film was initially released as a silent movie to accommodate theaters not yet equipped for sound, later followed by a 'talkie' version."
+    },
+    {
+      "question": "Describe Clara Bow's personal life after her acting career decline.",
+      "answer": "After her acting career declined, Clara Bow married fellow actor Rex Bell in 1931. They moved to their Walking Box Ranch, which spanned the Mojave Desert between Nevada and California. They split their time between the ranch and Los Angeles, briefly operating the 'It Cafe' on Hollywood and Vine. Bow was later confined to her Culver City residence due to declining health during her husband’s political tenure in Nevada, where he served as lieutenant governor (1955–1962). Her husband died in 1962, and she passed away in 1965."
+    },
+    {
+      "question": "Why did Paramount Pictures release some Clara Bow films in both silent and 'talkie' formats?",
+      "answer": "Paramount Pictures released some Clara Bow films like *The Wild Party* and *The Saturday Night Kid* in both silent and 'talkie' formats to accommodate theaters that were not yet equipped for sound technology. This allowed them to maximize the film's distribution and audience reach during the transition period."
+    }
+  ]
+}

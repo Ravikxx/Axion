@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/chiragagg5k/from-student-to-full-time-platform-engineer-at-appwrite-49ci",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What programming language did the author have to learn for their internship at Appwrite, and how did they approach learning it?",
+      "answer": "The author had to learn PHP, a language they had never used before, during their internship at Appwrite. They approached learning by studying Appwrite's codebase, running it locally, and understanding its architecture. In the process, they even wrote an article titled 'Architecture Patterns for Beginners: MVC, MVP, and MVVM' to deepen their understanding."
+    },
+    {
+      "question": "What was the author's experience with the job search process before joining Appwrite?",
+      "answer": "Before joining Appwrite, the author was struggling to find their next internship. They applied to many job openings on platforms like LinkedIn, Upwork, and AngelList, but received no responses. They continued working on open-source projects and personal projects but felt unproductive compared to traditional employment."
+    },
+    {
+      "question": "How did the interview process at Appwrite differ from the author's previous experiences?",
+      "answer": "The interview process at Appwrite differed in that the first round was a direct meeting without a coding assignment, which was unusual for the author. Additionally, one of the interview questions highlighted the author's lack of PHP experience, despite the company's backend being written in PHP."
+    },
+    {
+      "question": "What were some of the key contributions the author made during their 6-month internship at Appwrite?",
+      "answer": "During their internship, the author made over 200 merged pull requests across various repositories, including the main codebase, website, SDKs, and MCP. Some notable contributions include adding uptime monitoring for the Appwrite Assistant, implementing a monthly limit for free phone OTPs, fixing OAuth adapters, working on the DevKeys feature, and leading the Synapse project."
+    },
+    {
+      "question": "How did the author's remote work experience at Appwrite differ from traditional office-based internships?",
+      "answer": "Working at Appwrite was a fully remote experience, with the author being treated as a full team member from day one, despite being an intern. They had the freedom to work on any issue, contribute to production code, and directly message any team member for help. The open-source nature of Appwrite also allowed them to contribute from the start."
+    },
+    {
+      "question": "What was the author's initial response to the question about their lack of PHP experience during the interview?",
+      "answer": "The author's initial response was, 'I will figure it out, trust me, bro.' Although they later admitted it was not the best answer, they followed through by intensely studying PHP and Appwrite's codebase before the next interview, which helped them secure the offer."
+    },
+    {
+      "question": "Provide a code snippet example illustrating how the author might have contributed to the DevKeys feature in Appwrite's latest release.",
+      "answer": "While the exact code snippet isn't provided in the text, here's a hypothetical example of how the author might have contributed to the DevKeys feature in PHP:\n\nphp\n// Example: Adding a DevKey validation function in Appwrite's backend\nfunction validateDevKey(string $devKey): bool {\n    if (empty($devKey) || strlen($devKey) < 32) {\n        return false;\n    }\n    \n    // Check if the key matches the expected format (e.g., alphanumeric)\n    if (!preg_match('/^[a-zA-Z0-9]+$/', $devKey)) {\n        return false;\n    }\n    \n    return true;\n}\n\n// Usage in a controller\nif (!validateDevKey($request->getParam('devKey'))) {\n    throw new Exception('Invalid DevKey provided.');\n}\n\n\nThis snippet shows a validation function that ensures DevKeys meet specific criteria before being accepted by the application."
+    }
+  ]
+}

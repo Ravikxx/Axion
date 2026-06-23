@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Bernard_Sta_Maria",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was Bernard Sta Maria and what were his key roles in Malaysian society?",
+      "answer": "Bernard Sta Maria (1944 – 30 July 1987) was a Malaysian politician, community leader, and author. He served as a member of the Legislative Assembly, specifically as a member of the Democratic Action Party. He was elected to the Malacca State Legislative Assembly three times (1969, 1974, 1978) for the Bandar Hilir constituency, making him the youngest assemblyman at age 25 during his first election."
+    },
+    {
+      "question": "What notable organizations did Bernard Sta Maria establish in Malacca?",
+      "answer": "Bernard Sta Maria founded two key organizations: the Malacca Portuguese Cultural Society in 1967, which promoted Portuguese cultural heritage in Malacca, and the Educacao Tutorial Services in 1979, likely aimed at educational support."
+    },
+    {
+      "question": "Describe Bernard Sta Maria's contributions to literature.",
+      "answer": "Bernard Sta Maria authored two books: 'The Golden Son Of The Kadazan' (1976), a biography of Kadazan leader Peter Mojuntin, and 'My People My Country' (1981). His literary work focused on Malaysian cultural and community leadership."
+    },
+    {
+      "question": "How did Bernard Sta Maria represent Malacca internationally?",
+      "answer": "He represented Malacca at the Commonwealth Parliamentary Conference in Suva, Fiji, in 1981. Additionally, he attended the signing of the twin city agreement between Lisbon and Malacca in 1984, and delivered a speech at the Portuguese community conference in Macau in 1986, titled 'The Scope and Dimension of Portuguese Consciousness In The Far East.'"
+    },
+    {
+      "question": "What were Bernard Sta Maria's political achievements in terms of re-election?",
+      "answer": "He was re-elected twice to the Malacca State Legislative Assembly: first in 1974 and again in 1978, serving three consecutive terms for the Bandar Hilir constituency."
+    },
+    {
+      "question": "Write a Python snippet to calculate Bernard Sta Maria's age at the time of his death.",
+      "answer": "python\ndef calculate_age(birth_year, death_year):\n    return death_year - birth_year\n\nage_at_death = calculate_age(1944, 1987)\nprint(age_at_death)  # Output: 43\n"
+    },
+    {
+      "question": "Why is Bernard Sta Maria's age at first election significant?",
+      "answer": "He was 25 years old when first elected in May 1969, making him the youngest State assemblyman in Malacca at that time, highlighting his early political involvement and potential."
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Alfred_Smith_(cricketer,_born_1812)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was Alfred Smith and what was his cricketing career notable for?",
+      "answer": "Alfred Smith (9 July 1812 – 14 January 1892) was an English cricketer known for being a gentleman cricketer who made 14 first-class cricket appearances for Sussex between 1841 and 1852."
+    },
+    {
+      "question": "When and where was Alfred Smith born?",
+      "answer": "Alfred Smith was born on 9 July 1812 in Henfield, Sussex, England."
+    },
+    {
+      "question": "What were Alfred Smith's earliest recorded cricket matches before his first-class debut?",
+      "answer": "Before his first-class debut, Alfred Smith played for West Sussex and the Gentlemen of Sussex in 1839, participating in matches against East Sussex, the Players of Sussex, and Gentlemen teams from Surrey and Hampshire."
+    },
+    {
+      "question": "Describe Alfred Smith's first-class cricket debut for Sussex.",
+      "answer": "Alfred Smith made his first-class debut for Sussex on 14 June 1841 against the Marylebone Cricket Club (MCC) at Lord's. He batted in the lower order and was dismissed for scores of 4 and 1."
+    },
+    {
+      "question": "How many years did Alfred Smith wait between his first two first-class matches?",
+      "answer": "Alfred Smith waited one year between his first two first-class matches. His debut was on 14 June 1841, and his next match was on 29 August 1842."
+    },
+    {
+      "question": "What notable dismissal did William Hillyer record against Alfred Smith in a first-class match?",
+      "answer": "William Hillyer dismissed Alfred Smith for a score of 10 runs on 29 August 1842, during a first-class match where Smith played for Sussex against an England XI."
+    },
+    {
+      "question": "List the teams Alfred Smith played for in first-class cricket during his career.",
+      "answer": "Alfred Smith played first-class cricket for Sussex, Hampshire, Petworth Cricket Club, and participated in Gentlemen v Players matches. He also faced teams like the Marylebone Cricket Club (MCC), England XI, All England XI, and Kent."
+    },
+    {
+      "question": "Provide a sample Python code snippet to calculate Alfred Smith's career batting average, given his scores.",
+      "answer": "python\ndef calculate_batting_average(scores):\n    total_runs = sum(scores)\n    dismissals = len([score for score in scores if score > 0])\n    if dismissals == 0:\n        return 0.0\n    return total_runs / dismissals\n\nsmith_scores = [4, 1, 10, 0, 25, 12]  # Example scores\naverage = calculate_batting_average(smith_scores)\nprint(f\"Alfred Smith's career batting average: {average:.2f}\")\n\nThis code calculates the batting average by dividing total runs by the number of dismissals."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Bird",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What are the defining characteristics of birds?",
+      "answer": "Birds are warm-blooded vertebrate animals belonging to the class Aves, distinguished by feathers, toothless beaked jaws, hard-shelled eggs, a high metabolic rate, a four-chambered heart, and a strong yet lightweight skeleton. They possess wings (modified forelimbs) adapted for flight, though some species have lost this ability through evolution."
+    },
+    {
+      "question": "How do birds reproduce, and what are their typical breeding behaviors?",
+      "answer": "Birds reproduce sexually, with females laying fertilized eggs in nests that are incubated by the parents. Most bird species exhibit social monogamy for at least one breeding season, though some are polygynous (one male, multiple females) or polyandrous (one female, multiple males). Parental care extends after hatching, with many species caring for their young until they fledge."
+    },
+    {
+      "question": "What is the evolutionary relationship between birds and dinosaurs?",
+      "answer": "Birds evolved from theropod dinosaurs, making them the only living descendants of dinosaurs. Their closest living relatives are crocodilians, and they belong to the clade Archosauria. Modern cladistics classifies birds as reptiles due to their evolutionary lineage, despite their unique morphology."
+    },
+    {
+      "question": "Provide a Python code snippet to calculate the average size range of birds in centimeters.",
+      "answer": "python\n# Average size range of birds in centimeters (min and max)\nbird_sizes_cm = {\n    \"smallest\": 5.5,  # bee hummingbird\n    \"largest\": 280.0  # common ostrich\n}\naverage_range = (bird_sizes_cm[\"smallest\"] + bird_sizes_cm[\"largest\"]) / 2\nprint(f\"Average size range of birds: {bird_sizes_cm['smallest']}–{bird_sizes_cm['largest']} cm\")\nprint(f\"Midpoint: {average_range:.1f} cm\")\n"
+    },
+    {
+      "question": "How are birds adapted for flight in their respiratory and digestive systems?",
+      "answer": "Birds have highly efficient respiratory systems with air sacs that allow unidirectional airflow, maximizing oxygen uptake during flight. Their digestive systems are streamlined; many birds store food in a crop and grind it in a gizzard, reducing the need for heavy chewing structures. These adaptations minimize weight while optimizing energy use for flight."
+    },
+    {
+      "question": "What are some economic and cultural roles of birds?",
+      "answer": "Birds serve multiple economic roles: they are sources of food (meat, eggs), raw materials (feathers, guano for fertilizer), and pets (songbirds, parrots). Culturally, they appear in art, literature, and traditions, and birdwatching is a major part of ecotourism. However, human activity has driven about 120–130 species to extinction since the 17th century."
+    },
+    {
+      "question": "Why are some bird species flightless, and which groups are known for this trait?",
+      "answer": "Flightlessness in birds often evolves when wings are no longer advantageous, such as on predator-free islands or in stable environments. Known flightless groups include ratites (e.g., ostriches, emus), penguins (adapted for swimming), and extinct species like the moa and elephant birds. These adaptations prioritize other survival strategies over flight."
+    }
+  ]
+}

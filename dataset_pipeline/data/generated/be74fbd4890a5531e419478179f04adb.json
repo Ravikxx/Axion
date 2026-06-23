@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Ascot_tie",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What are the defining characteristics of an ascot tie?",
+      "answer": "An ascot tie is a formal neckwear with wide pointed wings at the end, wrapped around the neck and draped down the chest to cover the front placket and button line of a dress shirt. It is folded over and typically fastened with a pin, clip, or ring to secure the folds beneath the knot. Ascots are usually made of patterned silk and are worn with formal attire like morning dress for daytime weddings."
+    },
+    {
+      "question": "How does an ascot tie differ from a modern cravat?",
+      "answer": "An ascot tie is tied in a distinctive knot and is worn around a buttoned winged shirt collar, while a modern cravat forms a solid band across the neck and is worn untied underneath an unbuttoned, open shirt collar. Additionally, they are worn for different occasions, with ascots being more formal."
+    },
+    {
+      "question": "What materials are ascot ties traditionally made from, and why?",
+      "answer": "Ascots are traditionally made of patterned silk, a choice influenced by historical limitations in pigment and dye manufacturing, which restricted cravats to certain colors. Silk was also a durable and elegant material suitable for formal wear."
+    },
+    {
+      "question": "Can ascot ties be found in any color today? Why or why not?",
+      "answer": "Yes, today's ascot ties can be found in nearly any color. This is due to advancements in dye manufacturing, which now allows for a wide range of pigments. However, ascots are usually in neutral tones to match with dress shirts, suit jackets, or dinner jackets."
+    },
+    {
+      "question": "How should an ascot tie be worn with morning dress for a daytime wedding?",
+      "answer": "An ascot tie should be worn with a cutaway morning coat and striped grey formal trousers. It is tied in a distinctive knot around the neck and draped down the chest to cover the front placket and button line of the dress shirt."
+    },
+    {
+      "question": "What is the purpose of an ascot tie pin?",
+      "answer": "An ascot tie pin is used to fasten the folds of the ascot tie beneath the knot, securing the tie in place. It adds a decorative element while ensuring the tie remains neatly positioned."
+    },
+    {
+      "question": "Write a Python function to generate a list of possible ascot tie colors based on a given shirt color.",
+      "answer": "python\ndef generate_ascot_colors(shirt_color):\n    neutral_tones = ['white', 'black', 'grey', 'beige', 'navy', 'charcoal']\n    bold_tones = ['burgundy', 'emerald', 'royal_blue', 'deep_green', 'wine']\n    \n    shirt_color = shirt_color.lower()\n    \n    if shirt_color in ['white', 'black', 'grey', 'beige', 'navy', 'charcoal']:\n        return neutral_tones\n    else:\n        return neutral_tones + bold_tones\n\n# Example usage:\nprint(generate_ascot_colors('white'))  # Output: ['white', 'black', 'grey', 'beige', 'navy', 'charcoal']\nprint(generate_ascot_colors('pink'))   # Output: ['white', 'black', 'grey', 'beige', 'navy', 'charcoal', 'burgundy', 'emerald', 'royal_blue', 'deep_green', 'wine']\n"
+    }
+  ]
+}

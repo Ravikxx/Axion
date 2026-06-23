@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/canro91/the-most-painful-career-lesson-my-best-job-taught-me-ca2",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What were the key factors that made the author's first toxic job intolerable?",
+      "answer": "The toxic job was characterized by inexperienced management, competing deadlines, and constant scope creep. The author coped by socializing with coworkers, working out, and engaging in hobbies, but ultimately learned that the pain of staying outweighed the benefits."
+    },
+    {
+      "question": "How did the author's second job lead to burnout despite initially seeming ideal?",
+      "answer": "The second job appeared ideal—remote work, learning opportunities, and good pay—but became unsustainable due to stagnation (no new roles, repetitive tasks), lack of growth, and ignored health signals. The author delayed leaving, prioritizing pay over well-being, until physical symptoms (digestive issues, rushing to the bathroom) forced them to confront the reality."
+    },
+    {
+      "question": "What is the central lesson the author learned about leaving a toxic job?",
+      "answer": "The author's core lesson is: *When the pain is real, so is the urge to leave.* Ignoring discomfort or rationalizing staying (e.g., 'The pay is good') can prolong suffering and lead to burnout. The exit door becomes clear when the cost of staying exceeds the cost of leaving."
+    },
+    {
+      "question": "Why did the author consider their second job 'more painful' than the first toxic job?",
+      "answer": "The second job was subtly toxic—it lacked overt drama but caused slow, insidious damage. Unlike the first job, where the exit was obvious, the second job made leaving feel unnecessary due to stability ('I don't work overtime') and uncertainty in the job market. This delayed action until health crises made escape unavoidable."
+    },
+    {
+      "question": "What was the author's biggest career mistake, and how did it contribute to burnout?",
+      "answer": "The author's biggest mistake was *not having a career plan or intention*. Without clarity on goals (money, challenges, growth), they stayed in stagnant roles out of habit, like 'a frog in a pot' slowly heating to a boil. A plan could have prompted earlier exits, saving the author from burnout, illness, and financial/emotional costs."
+    },
+    {
+      "question": "Write a Python function to simulate the 'frog in a pot' metaphor for career stagnation. The function should take a list of 'stress levels' (integers) and return the quarter (as a string) when the stress crosses a threshold (e.g., 7).",
+      "answer": "python\ndef detect_career_crisis(stress_levels, threshold=7):\n    \"\"\"\n    Simulates the 'frog in a pot' metaphor for career stress.\n    Returns the quarter when stress first crosses the threshold.\n    \n    Args:\n        stress_levels (list[int]): Monthly stress levels recorded.\n        threshold (int): Stress level to trigger a 'crisis' alert.\n    \n    Returns:\n        str: Quarter (e.g., 'Q2') when stress exceeded threshold, or 'No crisis' if never met.\n    \"\"\"\n    quarters = ['Q1', 'Q2', 'Q3', 'Q4']\n    for i, stress in enumerate(stress_levels):\n        if stress > threshold:\n            quarter_index = (i // 3) % 4  # 3 months per quarter\n            return quarters[quarter_index]\n    return 'No crisis'\n\n# Example usage:\nstress_data = [3, 4, 5, 6, 8, 9, 10]\nprint(detect_career_crisis(stress_data))  # Output: 'Q2'\n"
+    },
+    {
+      "question": "What practical steps can a coder take to avoid the 'frog in a pot' scenario in their career?",
+      "answer": "To avoid stagnation, coders should:\n1. **Set intentions**: Define goals (e.g., 'I want to lead a team in 2 years') to guide job choices.\n2. **Audit roles quarterly**: Track skills growth, stress levels, and stagnation signs.\n3. **Negotiate or pivot**: If a role offers no growth, request new challenges or start applying elsewhere—don’t wait for a crisis.\n4. **Prioritize health**: Schedule breaks, meals, and downtime to catch stress early.\n5. **Build an exit plan**: Update a CV/resume annually and network proactively, even in stable jobs."
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Gene_Kiniski",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What were Gene Kiniski's primary professions before and after his wrestling career?",
+      "answer": "Before his wrestling career, Gene Kiniski was a professional football player, specifically with the Edmonton Eskimos in the Canadian Football League (CFL). After retiring from football, he became a professional wrestler and later transitioned into acting."
+    },
+    {
+      "question": "Which notable professional wrestlers were associated with the Edmonton Eskimos when Gene Kiniski played for the team?",
+      "answer": "When Gene Kiniski played for the Edmonton Eskimos, his teammates included future professional wrestlers Wilbur Snyder and Joe Blanchard. Additionally, Al Oeming and Stu Hart were present at the Eskimos' training camp during Kiniski's tryout."
+    },
+    {
+      "question": "What significant event occurred during Gene Kiniski's time in the WWWF in 1964 involving Bruno Sammartino?",
+      "answer": "In 1964, Gene Kiniski had a match against Bruno Sammartino at Madison Square Garden on November 16. Kiniski believed he had won the championship by pinning Sammartino in the second fall and took the title, but the match was later ruled a draw. They had a rematch on December 14 where the outcome was resolved."
+    },
+    {
+      "question": "How did Gene Kiniski's wrestling career progress in terms of championships?",
+      "answer": "Gene Kiniski became one of the first World Champions in professional wrestling with a background in football, following in the footsteps of Bronko Nagurski. He won multiple championships during his time in various NWA-owned territories, establishing himself as a prominent figure in professional wrestling."
+    },
+    {
+      "question": "What was the cause of Gene Kiniski's death and when did it occur?",
+      "answer": "Gene Kiniski died on April 14, 2010, in Blaine, Washington. According to an announcement by Jim Ross on April 4, 2010, Kiniski had been battling cancer that had spread to his brain, and it was speculated that he had limited time left."
+    },
+    {
+      "question": "Write a Python function that takes a wrestler's name and returns whether they were a football player before becoming a wrestler, using the provided text as reference.",
+      "answer": "python\ndef was_former_footballer(wrestler_name):\n    # Reference data from the provided text\n    wrestler_background = {\n        'Gene Kiniski': True,\n        'Bronko Nagurski': True,\n        'Wilbur Snyder': False,\n        'Joe Blanchard': False,\n        'Al Oeming': False,\n        'Stu Hart': False,\n        'Bruno Sammartino': False\n    }\n    return wrestler_background.get(wrestler_name, False)\n\n# Example usage:\nprint(was_former_footballer('Gene Kiniski'))  # Output: True\nprint(was_former_footballer('Bruno Sammartino'))  # Output: False\n"
+    }
+  ]
+}

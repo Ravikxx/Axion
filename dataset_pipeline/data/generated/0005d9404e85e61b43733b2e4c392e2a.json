@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Computable_general_equilibrium",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is a computable general equilibrium (CGE) model and what are its key characteristics?",
+      "answer": "A computable general equilibrium (CGE) model is an economic modeling framework that uses real economic data to simulate how an economy responds to policy changes, technological shifts, or other external factors. Key characteristics include: (1) A system of equations representing economic variables (e.g., prices, production, consumption), (2) A detailed database aligned with these equations, (3) Neoclassical assumptions such as cost-minimizing producers, average-cost pricing, and utility-maximizing households. CGE models are also called applied general equilibrium (AGE) models."
+    },
+    {
+      "question": "How do CGE models differ from input-output models in analyzing economic changes?",
+      "answer": "Unlike input-output models—which focus on fixed technical relationships (e.g., quantifying inputs like wheat, labor, or capital needed to produce bread)—CGE models incorporate price changes and market responses. For example, a CGE model can analyze how a wage increase alters labor demand in bread production by adjusting relative factor prices, whereas an input-output model would assume fixed input ratios regardless of price shifts."
+    },
+    {
+      "question": "What are some common applications of CGE models in economic analysis?",
+      "answer": "CGE models are widely used to evaluate the impacts of: (1) Trade policies (e.g., tariffs, free trade agreements), (2) Environmental policies (e.g., carbon taxes, emission regulations to reduce greenhouse gases), (3) Tax reforms, and (4) Technological advancements. Their ability to capture economy-wide interactions makes them particularly useful for assessing indirect or spillover effects of policy changes."
+    },
+    {
+      "question": "Explain the neoclassical assumptions typically embedded in CGE models.",
+      "answer": "CGE models often rely on neoclassical economic assumptions, including: (1) Producers minimize costs given input prices, (2) Pricing follows average cost principles (e.g., zero-profit conditions in competitive markets), and (3) Households optimize utility subject to budget constraints. These assumptions ensure the model reflects rational behavior and market-clearing equilibrium conditions."
+    },
+    {
+      "question": "Provide a Python code snippet to simulate a simple CGE model using a hypothetical dataset.",
+      "answer": "python\nimport numpy as np\nimport pandas as pd\nfrom scipy.optimize import minimize\n\n# Hypothetical CGE model: Solve for equilibrium prices given demand/supply equations\ndef cge_model(initial_prices, supply_elasticity=0.8, demand_elasticity=-0.5):\n    prices = initial_prices.copy()\n    tolerance = 1e-6\n    max_iter = 1000\n    \n    for _ in range(max_iter):\n        # Supply and demand functions (simplified)\n        supply = 100 * (prices ** supply_elasticity)\n        demand = 200 * (prices ** demand_elasticity)\n        \n        # Market clearing condition (excess demand = 0)\n        excess_demand = supply - demand\n        if abs(excess_demand) < tolerance:\n            break\n        \n        # Update prices (e.g., proportional to excess demand)\n        prices *= (1 + 0.01 * excess_demand)\n    \n    return prices\n\n# Example usage\ninitial_prices = np.array([1.0, 1.0])  # Initial guess for two goods\nresult = cge_model(initial_prices)\nprint(f\"Equilibrium prices: {result}\")\n"
+    },
+    {
+      "question": "Why are CGE models valuable for analyzing trade policy changes?",
+      "answer": "CGE models are valuable for trade policy analysis because they capture economy-wide effects, including: (1) Direct impacts (e.g., tariff revenues, import/export volumes), (2) Indirect effects (e.g., changes in input costs for downstream industries), and (3) Distributional outcomes (e.g., regional or sectoral employment shifts). By modeling price adjustments and substitution effects, they reveal how policy changes reverberate across interconnected markets."
+    },
+    {
+      "question": "How might a CGE model assess the economic impact of a carbon tax?",
+      "answer": "A CGE model could evaluate a carbon tax by: (1) Introducing a tax on carbon-intensive goods, (2) Modeling producer responses (e.g., shifting to cleaner inputs to minimize costs), (3) Simulating household adjustments (e.g., reduced energy demand due to higher prices), and (4) Measuring macroeconomic outcomes like GDP, employment, or sectoral output. The model would capture how higher energy costs propagate through the economy, affecting production chains and consumer behavior."
+    }
+  ]
+}

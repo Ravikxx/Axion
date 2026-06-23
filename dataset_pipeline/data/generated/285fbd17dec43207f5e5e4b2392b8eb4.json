@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/French_conquest_of_Algeria",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What were the key events leading to the French invasion of Algeria in 1830?",
+      "answer": "The French invasion of Algeria in 1830 was triggered by an escalating dispute between Hussein Dey, the ruler of the Regency of Algiers, and the French consul in 1827. This dispute culminated in a French naval blockade, followed by a full-scale invasion of Algiers in June 1830. The French seized coastal communities and later expanded their control inland."
+    },
+    {
+      "question": "Who were the main Algerian resistance leaders during the conquest, and where did their efforts focus?",
+      "answer": "The Algerian resistance was primarily led by Ahmed Bey in Constantine (eastern Algeria), who aimed to restore the Regency of Algiers, and Emir Abdelkader in the west and center, who led nationalist forces. Ahmed Bey's efforts centered on eastern Algeria, while Abdelkader's guerrilla warfare extended across western and central regions."
+    },
+    {
+      "question": "What role did treaties play in the French conquest of Algeria?",
+      "answer": "Treaties with nationalist forces under Emir Abdelkader allowed France to focus military efforts on eliminating the remnants of the Deylik, culminating in the 1837 siege of Constantine. However, Abdelkader continued resistance in the west until his eventual defeat in 1847."
+    },
+    {
+      "question": "How did France secure its colonial borders in Algeria by the early 20th century?",
+      "answer": "France secured its colonial borders in Algeria by 1903, incorporating the Saharan south after decades of resistance and military campaigns. This followed the formal annexation of Algeria and the suppression of remaining insurgent forces."
+    },
+    {
+      "question": "What was the significance of the Franco-Moroccan War in the context of Algeria's conquest?",
+      "answer": "The Franco-Moroccan War (1844) led to Morocco's defeat and subsequent diplomatic pressure from France. This forced Morocco to attack Emir Abdelkader's forces, driving him out of Morocco and enabling France to capture him in 1847, effectively ending major resistance."
+    },
+    {
+      "question": "Why do some governments and scholars consider France's conquest of Algeria a genocide?",
+      "answer": "Critics argue that France's colonial policies, including widespread violence, forced displacement, and systematic suppression of Algerian populations, constituted genocidal acts. These policies resulted in significant civilian casualties and long-term socio-political disruption. However, the classification remains debated among historians."
+    },
+    {
+      "question": "Provide a Python code snippet to calculate the duration of the French conquest of Algeria in years.",
+      "answer": "python\n# Define the start and end years of the French conquest of Algeria\nstart_year = 1830\nend_year = 1847\n\n# Calculate the duration in years\nduration = end_year - start_year\nduration\n\nOutput: `17` (years). Note: This does not account for the full colonial consolidation, which extended until 1903."
+    }
+  ]
+}

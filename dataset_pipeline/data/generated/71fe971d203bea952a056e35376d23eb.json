@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/maame-codes/how-my-illegal-visit-to-tech-show-london-turned-into-a-summer-internship-win-336o",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What was the main focus of the Tech Show London event the author attended?",
+      "answer": "The Tech Show London event focused on DevOps, Cloud, and Infrastructure, covering themes like the Cloud-Native Shift, the Human Side of DevOps, and the 'Headache' Economy where companies offer solutions for specific developer challenges."
+    },
+    {
+      "question": "What are the key differences between traditional cloud usage and the Cloud-Native approach?",
+      "answer": "Traditional cloud usage primarily involves using the cloud for storage, whereas the Cloud-Native approach focuses on architecting systems specifically for the cloud to enable rapid scaling. This includes designing applications and infrastructure to leverage cloud-native technologies like containers, microservices, and dynamic orchestration."
+    },
+    {
+      "question": "According to the speaker at the event, why is DevOps more than just a toolkit?",
+      "answer": "DevOps is more than just a toolkit because it emphasizes culture and team communication. Even with a perfect Docker or Kubernetes setup, broken team communication can lead to failure. DevOps requires collaboration, shared responsibility, and a mindset that prioritizes continuous improvement and learning."
+    },
+    {
+      "question": "What happened when the author needed to use the restroom at Tech Show London?",
+      "answer": "The author was mistaken for a student by a security guard, who then realized it was the wrong day for students. The author was politely escorted out of the event, but not before already gaining valuable insights, a CPD certificate, and an invitation to a DevOps Meetup."
+    },
+    {
+      "question": "How did the author secure a summer internship without sending a CV or using GitHub?",
+      "answer": "The author attended a smaller, more intimate DevOps Meetup where they stood up and asked publicly if anyone was looking for an intern eager to learn DevOps. This led to direct conversations with hiring managers and companies, resulting in two summer internship offers and a startup connection, all stemming from in-person networking over pizza."
+    },
+    {
+      "question": "Provide a code snippet showing a basic Cloud-Native application setup using Docker and Kubernetes.",
+      "answer": "yaml\n# deployment.yaml\napiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: cloud-native-app\nspec:\n  replicas: 3\n  selector:\n    matchLabels:\n      app: cloud-native-app\n  template:\n    metadata:\n      labels:\n        app: cloud-native-app\n    spec:\n      containers:\n      - name: app\n        image: nginx:latest\n        ports:\n        - containerPort: 80\n\n---\n# service.yaml\napiVersion: v1\nkind: Service\nmetadata:\n  name: cloud-native-service\nspec:\n  type: LoadBalancer\n  ports:\n  - port: 80\n  selector:\n    app: cloud-native-app\n\nThis code sets up a scalable, cloud-native application using Kubernetes, ensuring high availability and load balancing."
+    },
+    {
+      "question": "What advice did a 30-year veteran platform engineer give about early DevOps practices?",
+      "answer": "The platform engineer mentioned that in the early days of DevOps, developers had to write code on physical pieces of paper due to limited digital tools. This highlights how far the industry has progressed in terms of automation, version control, and cloud-based development environments."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Australian_workplace_agreement",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was an Australian workplace agreement (AWA) and when did it exist?",
+      "answer": "An Australian workplace agreement (AWA) was a formal individual agreement negotiated between an employer and employee in Australia, existing from 1996 to 2009. It was a written contract outlining employment terms and conditions, registered by the Employment Advocate or Workplace Authority, and operated exclusively at the federal level."
+    },
+    {
+      "question": "What were the key features of an AWA under the Workplace Relations Act 1996?",
+      "answer": "An AWA could override state or territory employment laws except for occupational health and safety, workers' compensation, or training arrangements. It only needed to meet the minimal Australian Fair Pay and Conditions Standard, could exclude awards, and did not require dispute resolution procedures. AWAs were valid for up to five years and prohibited industrial action related to the agreement's terms."
+    },
+    {
+      "question": "How did AWAs change after the introduction of WorkChoices?",
+      "answer": "After WorkChoices in 2006, AWAs became more restrictive. A sample of 250 AWAs lodged in April 2006 showed that 100% removed at least one protected award condition, 64% eliminated annual leave loadings, 63% stripped penalty rates, and 16% removed all award conditions except the government’s five minimum standards."
+    },
+    {
+      "question": "What was the role of the Employment Advocate or Workplace Authority in AWAs?",
+      "answer": "The Employment Advocate or Workplace Authority was responsible for registering, approving, and promoting AWAs. They ensured agreements met minimal standards but did not enforce dispute resolution procedures or review the fairness of the terms beyond legal compliance."
+    },
+    {
+      "question": "Why were AWAs controversial in Australian industrial relations?",
+      "answer": "AWAs were controversial because they allowed employers to impose 'take it or leave it' agreements, often stripping workers of protections like penalty rates, annual leave loadings, and public holidays. Studies showed most AWAs reduced award conditions to the bare legal minimum, sparking criticism over worker exploitation and inequality in bargaining power."
+    },
+    {
+      "question": "Provide a Python code snippet that checks if a given AWA removal percentage meets the 2006 WorkChoices sample criteria.",
+      "answer": "python\ndef checks_awa_removal_percent(removal_percent):\n    # Criteria from 2006 WorkChoices sample\n    criteria = {\n        'protected_award_condition': 100,\n        'annual_leave_loadings': 64,\n        'penalty_rates': 63,\n        'shift_loadings': 52,\n        'public_holidays': 40,\n        'all_award_conditions': 16\n    }\n    return any(removal_percent >= threshold for threshold in criteria.values())\n\n# Example usage:\nprint(checks_awa_removal_percent(60))  # Returns True (exceeds shift loadings threshold)\n"
+    },
+    {
+      "question": "What replaced AWAs after the Fair Work Act 2009?",
+      "answer": "The Fair Work Act 2009 banned the creation of new AWAs. In their place, the Act introduced modern awards and enterprise bargaining agreements (EBAs), which require consultation with employees, include dispute resolution procedures, and must meet higher fairness standards than AWAs did."
+    }
+  ]
+}

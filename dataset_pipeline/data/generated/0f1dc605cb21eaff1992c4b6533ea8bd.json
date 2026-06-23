@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Denmark",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What are the neighboring countries and bodies of water that border Denmark?",
+      "answer": "Denmark borders Germany to the south, Norway and Sweden to the north and northwest (connected by the Øresund Bridge), and Canada to the northeast. It also borders the Arctic Ocean to the north-northwest, the Atlantic Ocean to the northeast, the North Sea to the west, and the Baltic Sea to the east."
+    },
+    {
+      "question": "How is Denmark officially named, and what is its political system?",
+      "answer": "Denmark is officially named the Kingdom of Denmark. It is a constitutional monarchy with a parliamentary democracy, where the head of state is King Frederik X, and the head of government is the elected Prime Minister, currently Mette Frederiksen since 2019."
+    },
+    {
+      "question": "What is the origin of the name 'Denmark'?",
+      "answer": "The origin of the name Denmark is uncertain. In Old Norse, it was called *Danmǫrk*, which refers to the Danish March, or the marches of the Danes."
+    },
+    {
+      "question": "Why is Denmark often ranked as one of the happiest countries in the world?",
+      "answer": "Denmark is frequently ranked as 'the happiest place in the world' due to its strong welfare state, high standards of health, education, and social support systems."
+    },
+    {
+      "question": "What is the capital city of Denmark, and on which island is it located?",
+      "answer": "The capital city of Denmark is Copenhagen, which is located on the island of Zealand."
+    },
+    {
+      "question": "Provide a Python dictionary representing key facts about Denmark, including its capital, political system, and year of current Prime Minister's appointment.",
+      "answer": "python\ndenmark_facts = {\n    \"official_name\": \"Kingdom of Denmark\",\n    \"capital\": \"Copenhagen\",\n    \"island\": \"Zealand\",\n    \"political_system\": \"Constitutional monarchy with parliamentary democracy\",\n    \"head_of_state\": \"King Frederik X\",\n    \"head_of_government\": \"Mette Frederiksen\",\n    \"prime_minister_since\": 2019\n}\n"
+    },
+    {
+      "question": "How does Denmark's geographical location compare to other Scandinavian countries?",
+      "answer": "Denmark is the southernmost of the Scandinavian countries. It lies northeast of North America, south of Norway, and southwest of Sweden, with which it is connected by the Øresund Bridge."
+    }
+  ]
+}

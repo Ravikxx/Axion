@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Döbereiner's_lamp",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "Who invented Döbereiner's lamp and in what year?",
+      "answer": "Döbereiner's lamp was invented by the German chemist Johann Wolfgang Döbereiner in 1823."
+    },
+    {
+      "question": "How does a Döbereiner's lamp work to produce a flame?",
+      "answer": "A Döbereiner's lamp produces a flame through a chemical reaction involving zinc, sulfuric acid, hydrogen, and oxygen. When the zinc in the open bottle reacts with sulfuric acid (triggered by opening a valve with a lever), it produces hydrogen gas. The hydrogen gas then passes over a platinum catalyst, where it reacts exothermically with oxygen from the air, forming water vapor and producing a flame. The reaction can be stopped by releasing the lever, which closes the bottle and halts the hydrogen flow."
+    },
+    {
+      "question": "What are the key components of a Döbereiner's lamp?",
+      "answer": "The key components of a Döbereiner's lamp include:\n1. A glass cylinder containing sulfuric acid.\n2. An open bottle containing zinc.\n3. A valve at the top of the bottle.\n4. A lever to open or close the valve.\n5. A platinum catalyst near the valve where hydrogen gas bypasses."
+    },
+    {
+      "question": "Write the chemical equation for the reaction between zinc and sulfuric acid in a Döbereiner's lamp.",
+      "answer": "The chemical equation for the reaction between zinc and sulfuric acid is:\nZn + H₂SO₄ → Zn²⁺ + SO₄²⁻ + H₂↑"
+    },
+    {
+      "question": "Why is platinum used in Döbereiner's lamp? What role does it play in the lamp's function?",
+      "answer": "Platinum is used in Döbereiner's lamp as a catalyst. It facilitates the reaction between hydrogen gas and oxygen from the air without being consumed. This catalytic effect allows the exothermic reaction (2 H₂ + O₂ → 2 H₂O) to occur at a lower ignition temperature, enabling the lamp to produce a flame."
+    },
+    {
+      "question": "How can the flame of a Döbereiner's lamp be extinguished?",
+      "answer": "The flame of a Döbereiner's lamp can be extinguished by releasing the lever, which closes the valve. This action stops the flow of hydrogen gas out of the bottle, causing the sulfuric acid to be pushed back into the glass cylinder and halting the chemical reaction."
+    },
+    {
+      "question": "Where can original Döbereiner's lamps be seen today?",
+      "answer": "Original Döbereiner's lamps can be seen at the Heidelberg Castle and the Deutsches Museum (German Museum)."
+    }
+  ]
+}

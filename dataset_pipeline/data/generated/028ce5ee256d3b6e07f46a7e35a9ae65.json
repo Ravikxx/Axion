@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Intention",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is an intention in philosophy of mind?",
+      "answer": "An intention is a mental state where a person commits themselves to a specific course of action. For example, planning to visit the zoo tomorrow is an intention. Intentions consist of an action plan (the content) and a commitment (the attitude toward that plan). Unlike other mental states like admiration, intentions involve a practical commitment to realizing the plan."
+    },
+    {
+      "question": "Explain the belief-desire theory of intentions and its criticisms.",
+      "answer": "The belief-desire theory states that having an intention is equivalent to having a desire to perform an action combined with a belief that one will perform it. For instance, intending to go for a walk might involve desiring to walk and believing you’ll do it. Critics argue this theory fails because desires and beliefs don’t inherently commit one to action; neither guarantees practical commitment, as seen in counterexamples where people know what’s best but don’t act accordingly."
+    },
+    {
+      "question": "What is the difference between prospective and immediate intentions? Provide examples.",
+      "answer": "Prospective intentions are future-oriented plans. They include proximal intentions (short-term, e.g., 'I’ll call a friend in five minutes') and distal intentions (long-term, e.g., 'I’ll save money for a house in five years'). Immediate intentions, or intentions-in-action, guide ongoing actions, like deciding to turn the steering wheel while driving. Prospective intentions are plans, while immediate intentions are active during execution."
+    },
+    {
+      "question": "How does the self-referentiality theory explain intentions, and what are its challenges?",
+      "answer": "The self-referentiality theory suggests intentions not only represent the intended action but also represent themselves as the cause of that action. For example, when intending to write a letter, the intention includes the idea that this very intention will lead to writing it. Critics argue this claim is problematic because it’s unclear how such self-referential content operates within the mental state itself."
+    },
+    {
+      "question": "Write a Python function to model a simple belief-desire intention system. Include a check for practical commitment.",
+      "answer": "python\ndef has_intention(desire, belief, commitment_threshold=0.7):\n    \"\"\"\n    Determine if an agent has an intention based on desire, belief, and commitment.\n    Args:\n        desire: Strength of desire (0-1)\n        belief: Belief in performing the action (0-1)\n        commitment_threshold: Minimum combined strength to form an intention\n    Returns:\n        bool: True if intention is formed, False otherwise\n    \"\"\"\n    combined_strength = desire * belief\n    return combined_strength >= commitment_threshold\n\n# Example usage:\ndesire_to_study = 0.9\nbelief_will_study = 0.8\nprint(has_intention(desire_to_study, belief_will_study))  # Output: True\n\n# Counterexample where belief is low\ndesire_to_exercise = 0.8\nbelief_will_exercise = 0.3\nprint(has_intention(desire_to_exercise, belief_will_exercise))  # Output: False\n"
+    },
+    {
+      "question": "What is akrasia, and how does the evaluation theory struggle to explain it?",
+      "answer": "Akrasia refers to acting against one’s better judgment, or knowing what’s best but doing otherwise. For example, a person might intend to eat healthily but end up eating junk food. The evaluation theory explains intentions as unconditional evaluations of actions as 'good all things considered,' but akrasia poses a challenge because it contradicts this—intending what one sees as best but acting against it suggests intentions aren’t solely based on evaluations."
+    },
+    {
+      "question": "How are intentions rationally evaluable, and what distinguishes conscious from unconscious intentions?",
+      "answer": "Intentions are rationally evaluable because they can be classified as rational or irrational based on the reasons supporting them. Conscious intentions are those where the agent is aware of their goals, such as deciding to save money. Unconscious intentions, by contrast, influence actions without the agent’s awareness, like habitually braking at a stop sign without consciously thinking about it. The distinction matters for understanding how behavior is guided and explained."
+    },
+    {
+      "question": "What role do shared intentions play in social interactions, and how might gestures contribute?",
+      "answer": "Shared intentions enable coordinated group action, such as two people planning a trip together. Gestures, pointing, and eye movement help communicate these intentions by directing attention and signaling goals. For example, pointing at a map while saying 'we should go here' clarifies the shared plan. These nonverbal cues are critical in early childhood development for learning to interpret and form intentions with others."
+    }
+  ]
+}

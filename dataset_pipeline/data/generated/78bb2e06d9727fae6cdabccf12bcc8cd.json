@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Gérard_Bourgeois",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was Gérard Bourgeois and what was his contribution to early cinema?",
+      "answer": "Gérard Bourgeois (1874–1944) was a prominent French film director during the silent film era. He directed 142 films between 1908 and 1925, working with Pathé and later founding his own production company, Les Films MB (Bourgeois-Mathey). His notable works include historical films like 'Christophe Colomb' (1916), comedic mysteries featuring 'Nick Winter', and adaptations such as 'Hamlet' (1910) and 'Faust' (1922). Bourgeois also served as an artistic director for Lux-Films and Pathé, and contributed to filmmaking literature with Pathé Frères in 1911."
+    },
+    {
+      "question": "What was Gérard Bourgeois' role at Pathé, and when did he join the company?",
+      "answer": "Gérard Bourgeois joined Pathé in 1911 as an artistic director. Prior to this, he had spent ten years in theater. At Pathé, he initially focused on historical films like 'Cadoudal' before shifting to realistic films, including the acclaimed 'Victimes de l'alcoolisme' (1911)."
+    },
+    {
+      "question": "Can you describe the significance of the 1911 film 'Victimes de l'alcoolisme' ('In the Grip of Alcohol') in Gérard Bourgeois' career?",
+      "answer": "The 1911 film 'Victimes de l'alcoolisme' (US title: 'In the Grip of Alcohol') was a landmark realistic film in Bourgeois' early career. It was proclaimed by *Moving Picture World* as 'The greatest moral dilemma ever made by any film manufacturer,' highlighting its impact and the serious themes it addressed. The film showcased Bourgeois' shift toward socially conscious storytelling and established his reputation as a director capable of tackling complex narratives."
+    },
+    {
+      "question": "What notable series did Gérard Bourgeois direct in the early 1910s, and who starred in it?",
+      "answer": "Gérard Bourgeois directed several popular 'Nick Winter' comedy mysteries in the early 1910s, starring Georges Vinter. One of the most notable entries in the series was 'Nick Winter et le vol de la Joconde' (1911), also known as 'Nick Winter and the Theft of the Mona Lisa,' which centered on a plot to steal the Mona Lisa."
+    },
+    {
+      "question": "Write a Python function that generates a summary of Gérard Bourgeois' filmography based on the provided text.",
+      "answer": "python\ndef generate_bourgeois_filmography_summary():\n    filmography = {\n        'total_films': 142,\n        'period': '1908–1925',\n        'notable_works': [\n            {'title': 'Hamlet', 'year': 1910},\n            {'title': 'Victimes de l\\'alcoolisme', 'year': 1911, 'note': 'Landmark realistic film'},\n            {'title': 'Nick Winter et le vol de la Joconde', 'year': 1911},\n            {'title': 'Christophe Colomb', 'year': 1916, 'note': 'Biography of Christopher Columbus'},\n            {'title': 'L\\'Aventurier', 'year': 1915},\n            {'title': 'Un drame sous Napoléon', 'year': 1921},\n            {'title': 'Faust', 'year': 1922},\n            {'title': 'L\\'Homme sans nerfs', 'year': 1924}\n        ],\n        'production_companies': ['Pathé', 'Les Films MB (Bourgeois-Mathey)'],\n        'directing_style': 'Shifted from historical to realistic films with moral themes'\n    }\n    return filmography\n\n# Example usage:\nprint(generate_bourgeois_filmography_summary())\n"
+    },
+    {
+      "question": "What did Gérard Bourgeois do during World War I, and why was he evacuated?",
+      "answer": "At the start of World War I, Gérard Bourgeois volunteered as a foreign soldier in the French army alongside his son. He was evacuated from the front eight days after arriving due to illness."
+    },
+    {
+      "question": "How many films did Gérard Bourgeois direct, and what was the time span of his directorial career?",
+      "answer": "Gérard Bourgeois directed a total of 142 films between 1908 and 1925, spanning 17 years. His career began in the early silent film era and concluded in the mid-1920s."
+    }
+  ]
+}

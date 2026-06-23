@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Assaulting,_resisting,_or_impeding_certain_United_States_Government_officers_or_employees",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What are the different levels of offense for assaulting or resisting a U.S. government officer under 18 U.S.C. § 111?",
+      "answer": "Under 18 U.S.C. § 111, the offense levels are as follows: simple assault is a class A misdemeanor, assault involving physical contact is a class D felony, and assault involving the use of a deadly weapon or infliction of bodily injury is a class C felony. Threatening government officials, particularly law enforcement officers, can also fall under this statute."
+    },
+    {
+      "question": "What is the base offense level for assaulting a U.S. government officer under 18 U.S.C. § 111, and does the 'official victim enhancement' apply?",
+      "answer": "The base offense level for assaulting a U.S. government officer under 18 U.S.C. § 111 is 10. The 'official victim enhancement' does not apply because the base offense level already accounts for the fact that the victim was a governmental officer performing official duties."
+    },
+    {
+      "question": "What enhancements to the penalty apply under 18 U.S.C. § 111 if the offense involved physical contact?",
+      "answer": "If the offense involved physical contact, enhancements to the penalty apply under 18 U.S.C. § 111. Additional enhancements also apply if a dangerous weapon (including a firearm) was possessed and its use was threatened, or if the victim sustained bodily injury."
+    },
+    {
+      "question": "How do the sentencing guidelines differentiate between simple assault and aggravated assault under 18 U.S.C. § 111?",
+      "answer": "Simple assault is treated as a class A misdemeanor under 18 U.S.C. § 111, while aggravated assault is subject to harsher penalties under separate guidelines. Aggravated assault involves: (A) a dangerous weapon used with intent to cause bodily injury, (B) serious bodily injury, or (C) an intent to commit another felony."
+    },
+    {
+      "question": "Provide a Python code snippet that checks whether a given assault scenario under 18 U.S.C. § 111 qualifies as a felony based on the provided criteria.",
+      "answer": "python\ndef is_felony(assault_type, has_weapon=False, bodily_injury=False):\n    if assault_type == \"simple assault\":\n        return False\n    elif assault_type == \"physical contact\":\n        return True  # Class D felony\n    elif has_weapon or bodily_injury:\n        return True  # Class C felony\n    return False\n\n# Example usage:\nprint(is_felony(\"simple assault\"))  # False\nprint(is_felony(\"physical contact\"))  # True\nprint(is_felony(\"simple assault\", has_weapon=True))  # True\n"
+    },
+    {
+      "question": "What has been argued as the fundamental aim of 18 U.S.C. § 111, and how have courts interpreted this?",
+      "answer": "It has been argued that the fundamental aim of 18 U.S.C. § 111 is to protect 'government and its functions' rather than individual officers. However, courts have found that sparse legislative history makes it equally plausible that the statute was designed to protect individual officers."
+    },
+    {
+      "question": "Under what circumstances does a threat of force satisfy the statute 18 U.S.C. § 111?",
+      "answer": "A threat of force satisfies the statute 18 U.S.C. § 111 when it involves threatening a U.S. government officer, particularly a law enforcement officer, even if no physical contact or injury occurs."
+    }
+  ]
+}

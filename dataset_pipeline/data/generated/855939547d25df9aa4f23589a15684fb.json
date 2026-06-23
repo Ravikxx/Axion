@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/bobbyiliev/hacktoberfest-repositories-to-contribute-to-in-2025-440l",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What is Hacktoberfest and why is it a good opportunity for developers?",
+      "answer": "Hacktoberfest is an annual event that encourages open source contributions during October. It's an excellent opportunity for developers of all skill levels to make their first open source contribution, contribute to their favorite projects, or practice coding by solving meaningful issues in beginner-friendly repositories."
+    },
+    {
+      "question": "Name three Python projects from the list that are suitable for beginners and explain what each does.",
+      "answer": "1. **CV Improver API**: A Django-based API designed to enhance and improve CVs/resumes. It provides useful functionality for processing document inputs to make them more effective. 2. **Terminal Catacomb Crawler**: A fun terminal-based game written in Python where players navigate through procedurally generated catacombs. 3. **Tix CLI**: A Python-based command line to-do application that helps users manage tasks directly from the terminal. Each project offers practical coding experience while building useful tools."
+    },
+    {
+      "question": "How can someone contribute to the Wave Laravel SaaS starter kit project?",
+      "answer": "Contributors can help improve the Wave project by fixing documentation errors, adding translations to support more languages, resolving existing issues in the GitHub repository, or developing plugins to extend functionality. Wave is ideal for anyone learning or working with Laravel to build scalable SaaS applications."
+    },
+    {
+      "question": "What is Diffium and why might it be useful for developers working with AI coding tools?",
+      "answer": "Diffium is a Go-based CLI tool that simplifies and enhances the readability of git diff outputs. It's particularly useful for developers who work with AI coding assistants, as it presents complex changes in a clearer, more understandable format, making code reviews and AI collaboration more effective."
+    },
+    {
+      "question": "Provide a code snippet that demonstrates how to install a Python package using pip and explain what the command does.",
+      "answer": "To install a Python package using pip, you can use the following command in your terminal:\nbash\npip install package-name\n\nThis command downloads the specified package from the Python Package Index (PyPI) and installs it into your Python environment. For example, to install the `requests` library, you would run:\nbash\npip install requests\n\nThis allows you to use the library's functionality in your Python projects by importing it with `import requests`."
+    },
+    {
+      "question": "What are five beginner-friendly repositories mentioned in the text that focus on learning development tools?",
+      "answer": "The five beginner-friendly repositories are: 1. Introduction to Git and GitHub - an ebook covering version control basics, 2. Introduction to Bash Scripting - a guide to writing shell scripts, 3. Introduction to Docker - an educational resource about containerization, 4. Introduction to SQL - a primer on database query language, and 5. 101 Linux Commands - a collection of essential Linux terminal commands. All are designed to help newcomers build foundational knowledge in development tools."
+    },
+    {
+      "question": "Why should maintainers add clear contribution guidelines to their GitHub repositories during Hacktoberfest?",
+      "answer": "Clear contribution guidelines help attract and onboard contributors by providing explicit instructions on how to submit changes, what types of contributions are welcome, and how to set up the development environment. This reduces barriers to entry for new contributors and ensures that submitted pull requests meet project standards, making the contribution process smoother for both maintainers and contributors."
+    }
+  ]
+}

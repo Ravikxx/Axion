@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Dr._Strangelove",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "Who directed and produced the 1964 film 'Dr. Strangelove'?",
+      "answer": "The film 'Dr. Strangelove or: How I Learned to Stop Worrying and Love the Bomb' was directed and produced by Stanley Kubrick."
+    },
+    {
+      "question": "What are the three main roles played by Peter Sellers in 'Dr. Strangelove'?",
+      "answer": "Peter Sellers played three main roles in the film: Dr. Strangelove (the President's Scientific Adviser), President Merkin Muffley, and Group Captain Lionel Mandrake of the RAF."
+    },
+    {
+      "question": "What is the significance of the 'Cobalt-Thorium G' in the ending of 'Dr. Strangelove'?",
+      "answer": "The 'Cobalt-Thorium G' is a Soviet deterrence weapon known as the 'doomsday machine' that triggers global annihilation in the film's climax, announced only after its activation."
+    },
+    {
+      "question": "How did Peter Sellers contribute to the tone and success of 'Dr. Strangelove'?",
+      "answer": "Peter Sellers' brilliant comedic acting, particularly in the role of Dr. Strangelove—a satirical parody of a former Nazi scientist—was pivotal to the film's tragicomic tone and success. His ability to mimic German-accented American scientists like Edward Teller added depth to the satire."
+    },
+    {
+      "question": "What is the connection between 'Dr. Strangelove' and the novel 'Red Alert' by Peter George?",
+      "answer": "The film is loosely inspired by Peter George's 1958 thriller novel 'Red Alert', though the character Dr. Strangelove was created by Stanley Kubrick and Peter Sellers' improvisation during production, diverging significantly from the book."
+    },
+    {
+      "question": "Write a Python function to simulate the 'doomsday machine' activation logic described in 'Dr. Strangelove', assuming it triggers if any nuclear attack occurs.",
+      "answer": "python\ndef activate_doomsday_machine(is_nuclear_attack: bool) -> str:\n    \"\"\"\n    Simulates the activation logic of the Soviet 'doomsday machine' from 'Dr. Strangelove'.\n    The machine triggers global annihilation automatically if any nuclear strike is detected.\n    \n    Args:\n        is_nuclear_attack: Boolean indicating if a nuclear attack has occurred.\n    \n    Returns:\n        A string describing whether the world survives or is destroyed.\n    \"\"\"\n    if is_nuclear_attack:\n        return \"The world is annihilated by the Cobalt-Thorium G doomsday machine.\"\n    else:\n        return \"The world survives—no nuclear attack detected.\"\n\n# Example usage:\nprint(activate_doomsday_machine(True))  # Output: The world is annihilated by the Cobalt-Thorium G doomsday machine."
+    },
+    {
+      "question": "Why was the film 'Dr. Strangelove' selected for the U.S. National Film Registry in 1989?",
+      "answer": "The film was selected for the National Film Registry in 1989 by the U.S. Library of Congress due to its cultural, historical, and aesthetic significance, ensuring its preservation from deterioration."
+    }
+  ]
+}

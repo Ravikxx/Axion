@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Archibald_T._Kidd",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What were the key educational achievements of Archibald Thomas Kidd?",
+      "answer": "Archibald Thomas Kidd earned first-class honours and the Bronze Medal of the City and Guilds from the Liverpool School of Technology, where he studied metal plate working. He later studied at the University of Liverpool on a scholarship, as well as at Ruskin College and the American School of Correspondence."
+    },
+    {
+      "question": "How did Archibald Thomas Kidd progress through the ranks of the Liverpool Society of Tin Plate Workers?",
+      "answer": "Kidd joined the Liverpool Society of Tin Plate Workers in 1893 and was elected to its committee in 1894. He became the assistant secretary of the General Union of Braziers and Sheet Metal Workers in 1906, its general secretary in 1913, and later served as the assistant general secretary of the National Union of Sheet Metal Workers and Braziers in 1923."
+    },
+    {
+      "question": "What role did Archibald Thomas Kidd play in the transformation of the Federation of Engineering and Shipbuilding Trades (FEST)?",
+      "answer": "Kidd was concerned that the FEST did not facilitate effective action, so he proposed and successfully led its transformation into the Confederation of Shipbuilding and Engineering Unions."
+    },
+    {
+      "question": "Besides his union work, what other labor-related activities was Archibald Thomas Kidd involved in?",
+      "answer": "Kidd served on the executive of the National Council of Labour Colleges, where he taught social history to workers in his spare time. He was also a prominent figure in the Labour Party, particularly in Clapham."
+    },
+    {
+      "question": "Write a Python function that calculates the number of years Archibald Thomas Kidd served as the general secretary of the National Union of Sheet Metal Workers and Braziers.",
+      "answer": "python\ndef years_as_general_secretary():\n    start_year = 1913\n    end_year = 1941\n    return end_year - start_year\n\n# Example usage:\nyears_served = years_as_general_secretary()\nprint(f\"Kidd served as general secretary for {years_served} years.\")\n\nThe function returns 28, as Kidd served as general secretary from 1913 to 1941."
+    },
+    {
+      "question": "What was the significance of the merger in 1920 for Archibald Thomas Kidd's career?",
+      "answer": "In 1920, Kidd played a leading role in merging the General Union of Braziers and Sheet Metal Workers with other unions to form the National Union of Sheet Metal Workers and Braziers. He became the secretary of its number 2 district shortly after, which marked a significant advancement in his union leadership career."
+    },
+    {
+      "question": "How long did Archibald Thomas Kidd live, and what did he do in retirement?",
+      "answer": "Kidd lived to the age of 99. In retirement, he wrote 'The History of the Tin Plate Workers, Sheet Metal Workers and Braziers Societies', documenting the history of the unions he was involved with."
+    }
+  ]
+}

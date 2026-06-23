@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Economic_liberalism",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is economic liberalism and what are its core principles?",
+      "answer": "Economic liberalism is a political and economic ideology that advocates for a market economy based on individualism and private ownership of the means of production. Its core principles include free trade, deregulation, low taxes, reduced government spending, privatization, balanced budgets, and opposition to monopolies, cartels, and rent-seeking behavior. It emphasizes minimal government intervention except in cases of protecting property rights, opening new markets, or resolving market failures."
+    },
+    {
+      "question": "Who is considered a primary initial writer of economic liberalism, and what historical context shaped its development?",
+      "answer": "Adam Smith is considered one of the primary initial writers on economic liberalism, with his ideas representing the economic expression of 19th-century liberalism. Economic liberalism arose as a response to feudalism and mercantilism, gaining prominence until the Great Depression and the subsequent rise of Keynesianism in the 20th century."
+    },
+    {
+      "question": "How does economic liberalism differ from protectionism and planned economies?",
+      "answer": "Economic liberalism supports free trade and an open economy, contrasting sharply with protectionism, which favors trade barriers and government intervention to shield domestic industries. Unlike planned economies, which rely on centralized government control of production and distribution, economic liberalism advocates for market-driven allocation of resources and private ownership."
+    },
+    {
+      "question": "What are some common policy positions associated with economic liberalism?",
+      "answer": "Economic liberals typically support policies such as free trade agreements, deregulation of industries, tax cuts, privatization of state-owned enterprises, labor market flexibility (e.g., fewer restrictions on hiring/firing), and balanced budgets achieved through reduced government spending and minimized public debt. They also oppose strong trade unions and state-granted privileges that distort competition."
+    },
+    {
+      "question": "Provide a Python code snippet that simulates a simple market response to a tax cut under economic liberalism principles.",
+      "answer": "python\nimport numpy as np\nimport matplotlib.pyplot as plt\n\n# Simulate market response to a tax cut\ninitial_tax_rate = 0.30  # 30%\ntax_cut = 0.10  # 10% reduction\nnew_tax_rate = initial_tax_rate - tax_cut\n\n# Simulate consumer spending and business investment (simplified model)\nconsumers = np.random.normal(5000, 1000, 100)  # Disposable income\ninvestment = np.random.normal(2000, 500, 100)  # Business investment\n\n# Apply tax cut effect (higher disposable income and investment)\nconsumers_after = consumers * (1 - new_tax_rate)\ninvestment_after = investment * (1 - new_tax_rate)\n\n# Plot results\nplt.figure(figsize=(10, 5))\nplt.plot(consumers, label='Consumer Spending (Before Tax Cut)', alpha=0.7)\nplt.plot(consumers_after, label='Consumer Spending (After Tax Cut)', alpha=0.7)\nplt.plot(investment, label='Business Investment (Before Tax Cut)', alpha=0.7)\nplt.plot(investment_after, label='Business Investment (After Tax Cut)', alpha=0.7)\nplt.title('Market Response to Tax Cut Under Economic Liberalism')\nplt.xlabel('Simulated Agents')\nplt.ylabel('Spending/Investment ($)')\nplt.legend()\nplt.grid(True)\nplt.show()\n"
+    },
+    {
+      "question": "Why do economic liberals oppose monopolies and cartels, and what alternative do they propose?",
+      "answer": "Economic liberals oppose monopolies and cartels because they distort free competition, reduce consumer choice, and lead to inefficiencies by allowing a single entity or colluding firms to control prices and supply. As an alternative, they propose deregulation, antitrust laws, and policies that encourage market entry for new competitors to ensure fair competition and protect consumer welfare."
+    },
+    {
+      "question": "How does economic liberalism reconcile its support for minimal government intervention with its endorsement of certain government roles?",
+      "answer": "Economic liberalism emphasizes minimal government intervention in most market activities but supports targeted government intervention in specific cases. These exceptions include protecting property rights, opening new markets (e.g., infrastructure development), funding market growth (e.g., education or R&D subsidies), and addressing market failures (e.g., pollution, monopolies). The philosophy prioritizes government roles that enable rather than replace market mechanisms."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/George_Alfred_Henry_Wille",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What were the primary professions of George Alfred Henry Wille?",
+      "answer": "George Alfred Henry Wille was a Ceylonese proctor, notary public, journalist, and politician. A proctor is a legal professional who handles court-related matters, while a notary public authenticates legal documents."
+    },
+    {
+      "question": "How many children did George Alfred Henry Wille have, and what were their names?",
+      "answer": "George Alfred Henry Wille had six children: Frances Elaine (1898–1935), Evill Merle (b. 1899), Irene Gladys (b. 1900), George Vernon Frank (b. 1902), George Eustace Neil (b. 1906), and George Alfred Herbert (b. 1910)."
+    },
+    {
+      "question": "What significant political role did George Alfred Henry Wille play in the Ceylon National Congress?",
+      "answer": "George Alfred Henry Wille was the only Burgher community leader who actively participated in the Ceylon National Congress. He resigned from the Congress following the retirement of Allen Drieberg to take Drieberg's position on the Legislative Council of Ceylon."
+    },
+    {
+      "question": "Why was George Alfred Henry Wille unable to serve as a member of the 1st State Council of Ceylon in 1931?",
+      "answer": "Wille was nominated as the Burgher member of the 1st State Council of Ceylon in 1931 but was prevented from taking office due to professional problems at his legal firm, De Vos and Gratiaen."
+    },
+    {
+      "question": "Write a Python function that calculates the number of years George Alfred Henry Wille served in the Legislative Council and State Council combined.",
+      "answer": "python\ndef calculate_political_service_years():\n    legislative_council_start = 1924\n    legislative_council_end = 1931\n    state_council_start = 1936\n    state_council_end = 1947\n    \n    legislative_years = legislative_council_end - legislative_council_start\n    state_years = state_council_end - state_council_start\n    \n    return legislative_years + state_years\n\n# Example usage:\nprint(calculate_political_service_years())  # Output: 18\n"
+    },
+    {
+      "question": "What was George Alfred Henry Wille's connection to the Donoughmore Commission?",
+      "answer": "George Alfred Henry Wille was selected as an undisputed representative of the Burgher community to the Burgher deputation to the Donoughmore Commission. The Donoughmore Commission was a British royal commission that reviewed constitutional reforms in Ceylon."
+    },
+    {
+      "question": "Describe the timeline of George Alfred Henry Wille's political career in Ceylon.",
+      "answer": "George Alfred Henry Wille's political career in Ceylon included serving on the Legislative Council from 27 September 1924 to 1931 and being nominated as the Burgher member of the 1st State Council in 1931 (though he did not take office). He was later appointed to the 2nd State Council on 12 March 1936 and served until its dissolution on 4 July 1947."
+    }
+  ]
+}

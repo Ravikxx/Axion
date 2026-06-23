@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Applause_(Lady_Gaga_song)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who wrote and produced the song 'Applause' by Lady Gaga?",
+      "answer": "'Applause' was written and produced by Lady Gaga herself, in collaboration with DJ White Shadow, Dino Zisis, and Nick Monson. Additional songwriters included Martin Bresso, Nicolas Mercier, Julien Arias, and William Grigahcine."
+    },
+    {
+      "question": "What inspired the lyrics of 'Applause' by Lady Gaga?",
+      "answer": "The lyrics of 'Applause' were inspired by the cheering of Gaga's fans, which motivated her during a difficult period while she was touring with the Born This Way Ball despite being in pain. The song also pays homage to the art of performance."
+    },
+    {
+      "question": "What genre does the song 'Applause' by Lady Gaga belong to, and what are its musical characteristics?",
+      "answer": "'Applause' is an electropop, dance-pop, and Eurodance song. It features synthesizers and high-energy (hi-NRG) beats, with a catchy chorus that draws comparisons to Gaga's debut album, The Fame (2008)."
+    },
+    {
+      "question": "Which countries did the song 'Applause' by Lady Gaga top the charts in?",
+      "answer": "'Applause' topped the charts in Greece, Hungary, Lebanon, and Spain. It also reached the top 10 in numerous other countries around the world."
+    },
+    {
+      "question": "How was the music video for 'Applause' by Lady Gaga received by critics?",
+      "answer": "The music video for 'Applause' received positive reviews from critics. It was seen as a profile of Gaga herself and was noted for its references to German Expressionist cinema and Andy Warhol's style."
+    },
+    {
+      "question": "Write a Python function that checks if a given list of countries includes any of the top charting countries for 'Applause' by Lady Gaga.",
+      "answer": "python\ndef check_applause_countries(countries):\n    top_applause_countries = {'Greece', 'Hungary', 'Lebanon', 'Spain'}\n    return any(country in top_applause_countries for country in countries)\n\n# Example usage:\nprint(check_applause_countries(['USA', 'Canada', 'Greece']))  # Output: True\nprint(check_applause_countries(['France', 'UK', 'Australia']))  # Output: False\n"
+    },
+    {
+      "question": "What notable performances did Lady Gaga give to promote the song 'Applause'?",
+      "answer": "Lady Gaga promoted 'Applause' with several high-profile performances, including opening the 2013 MTV Video Music Awards with a medley representing her career through multiple wardrobe changes. She also performed the song live on Good Morning America, Saturday Night Live, and during many of her subsequent tours and residencies."
+    }
+  ]
+}

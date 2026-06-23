@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/francistrdev/an-app-where-you-can-train-your-own-hand-pose-model-for-your-project-58ib",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What is the main purpose of the HandTracker tool?",
+      "answer": "HandTracker is a free web-based tool designed to allow users to train their own hand gesture recognition models using ml5.js's Hand Pose feature. It enables users to define custom gestures, collect training data, train the model, and download the trained model files for use in their own projects without requiring sign-ups or payments."
+    },
+    {
+      "question": "How do you define a new gesture class in HandTracker?",
+      "answer": "To define a new gesture class in HandTracker, navigate to the 'Define Classes' section in the settings. Here, you can add as many classes as needed, where each class corresponds to a specific hand gesture you want the model to recognize. For example, you might create a class named 'Hello' for the ASL gesture or 'InfiniteVoid' for Gojo's signature gesture."
+    },
+    {
+      "question": "What files are included when you download the trained model from HandTracker?",
+      "answer": "When you download the trained model from HandTracker, the zip folder contains the following files: `model.json`, `model.weights.bin`, and `model_meta.json`. These files are necessary to load and use the trained model in your projects."
+    },
+    {
+      "question": "What libraries or tools does HandTracker use for its functionality?",
+      "answer": "HandTracker is built using Vanilla HTML, CSS, and JavaScript. It leverages the ml5.js library for machine learning tasks, specifically the Hand Pose feature for gesture recognition, and the p5.js library for additional functionality like camera integration and real-time visualization."
+    },
+    {
+      "question": "Can you explain the training process in HandTracker step-by-step?",
+      "answer": "The training process in HandTracker involves the following steps:\n\n1. **Define Classes**: Add and name the gesture classes you want to train the model on.\n2. **Collect Data**: Adjust the number of data samples to capture for each class (recommended to keep the same amount for all classes).\n3. **Set Training Parameters**: Modify the training parameters based on your dataset size.\n4. **Begin Training**: Click 'Begin Training' and ensure your hand is visible in the camera feed. The system will pause if the hand is not visible.\n5. **Review and Download**: Once training is complete, you can test the model and download it as a zip file containing the trained model files."
+    },
+    {
+      "question": "Why might someone prefer HandTracker over pre-trained models or paid APIs for gesture recognition?",
+      "answer": "HandTracker offers several advantages over pre-trained models or paid APIs:\n\n- **Customization**: Users can define and train models for specific gestures relevant to their needs, whereas pre-trained models may not be as accurate for niche gestures.\n- **Privacy and Accessibility**: Users can train and use models locally without needing to sign up or use an API key, making it ideal for projects like Chrome Extensions where hiding API keys is necessary.\n- **Cost-Free**: It is completely free to use without any limitations, unlike some platforms that restrict free usage or require payment for advanced features.\n- **Full Control**: Users can download the trained model and integrate it directly into their projects, giving them full control over deployment and usage."
+    },
+    {
+      "question": "Provide a sample code snippet to load and use a trained model from HandTracker in a project.",
+      "answer": "javascript\n// Load the model files\nlet handposeModel;\nlet modelLoaded = false;\n\nasync function loadModel() {\n  handposeModel = await tf.loadLayersModel('path/to/model.json');\n  modelLoaded = true;\n}\n\n// Example usage for gesture classification\nasync function classifyHandPose(poses) {\n  if (!modelLoaded) await loadModel();\n  \n  const inputTensor = tf.tensor2d(poses, [1, poses.length]);\n  const prediction = handposeModel.predict(inputTensor);\n  const predictedClass = prediction.argMax(1).dataSync()[0];\n  \n  return predictedClass;\n}\n\n// Initialize and run\nasync function setup() {\n  await loadModel();\n  // Use classifyHandPose() with real-time hand pose data\n}\n\n\nThis snippet demonstrates how to load the model and use it to classify hand poses. Replace `'path/to/model.json'` with the actual path to your model files."
+    }
+  ]
+}

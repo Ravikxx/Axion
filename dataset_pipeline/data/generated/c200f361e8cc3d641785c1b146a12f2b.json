@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Danaë_(Titian_paintings)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "How many versions of the composition 'Danaë' did Titian and his workshop create, and during what approximate time period?",
+      "answer": "Titian and his workshop created at least six versions of the 'Danaë' composition between approximately 1544 and the 1560s."
+    },
+    {
+      "question": "What mythological event is depicted in Titian's 'Danaë' paintings?",
+      "answer": "The paintings depict the myth of Danaë, a princess who was isolated in a bronze tower due to a prophecy that her firstborn would kill her father. Zeus (Jupiter in Roman mythology) descended to seduce her in the form of a shower of gold, resulting in her pregnancy with the hero Perseus."
+    },
+    {
+      "question": "What are the major surviving versions of Titian's 'Danaë', and where are they currently located?",
+      "answer": "The major surviving versions of Titian's 'Danaë' are located in Naples, London, Madrid, Vienna, Chicago, and St. Petersburg."
+    },
+    {
+      "question": "How do the six versions of 'Danaë' vary despite sharing the same composition?",
+      "answer": "While the main figure (Danaë) and her bed with hangings remain consistent, other elements vary significantly. For example, the Naples version is the only one with a figure of Cupid, and the small dog present in the Prado and Chicago versions is absent elsewhere. The poses of secondary figures also differ, though some closely follow others, such as the Hermitage version mimicking the Prado's."
+    },
+    {
+      "question": "Which artists were influenced by Titian's 'Danaë' compositions?",
+      "answer": "Artists influenced by Titian's 'Danaë' include Rembrandt, Anthony van Dyck, and Gustav Klimt, all of whom created their own versions of the scene."
+    },
+    {
+      "question": "What was Michelangelo's reaction to Titian's 'Danaë' painting, according to Giorgio Vasari?",
+      "answer": "According to Giorgio Vasari, Michelangelo praised Titian's use of color when viewing the original 'Danaë' in progress at Titian's studio. However, Vasari also notes that Michelangelo later privately criticized Titian's draftsmanship."
+    },
+    {
+      "question": "Provide a Python code snippet to calculate the time span between the earliest and latest known 'Danaë' versions by Titian.",
+      "answer": "python\ndef calculate_danae_timespan():\n    earliest_year = 1544\n    latest_year = 1560\n    return latest_year - earliest_year\n\nprint(calculate_danae_timespan())  # Output: 16\n\nThe time span between the earliest (1544) and latest (1560) known 'Danaë' versions is 16 years."
+    }
+  ]
+}

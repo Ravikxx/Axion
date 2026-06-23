@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Come_on_Over_Baby_(All_I_Want_Is_You)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who originally wrote the song 'Come on Over Baby (All I Want Is You)'?",
+      "answer": "'Come on Over Baby (All I Want Is You)' was written by Johan Åberg and Paul Rein."
+    },
+    {
+      "question": "What was significant about Christina Aguilera's creative control over 'Come on Over Baby (All I Want Is You)' compared to her previous work?",
+      "answer": "It was the first song over which Aguilera was given significant creative control, marking a shift in her involvement in her music."
+    },
+    {
+      "question": "How did the re-recorded version of 'Come on Over Baby (All I Want Is You)' differ from the original album version in terms of production?",
+      "answer": "The album version was produced by Aaron Zigman, Johan Åberg, and Paul Rein, while the re-recorded version was produced by Ron Fair and Celebrity Status."
+    },
+    {
+      "question": "What commercial and charting achievements did 'Come on Over Baby (All I Want Is You)' accomplish in the United States?",
+      "answer": "The song became Aguilera's third number-one hit on the Billboard Hot 100."
+    },
+    {
+      "question": "Which countries did 'Come on Over Baby (All I Want Is You)' reach the top ten in?",
+      "answer": "Australia, Canada, Ireland, Singapore, and the United Kingdom."
+    },
+    {
+      "question": "Can you provide a code snippet that simulates fetching the Billboard Hot 100 chart position for 'Come on Over Baby (All I Want Is You)' in 2000?",
+      "answer": "python\n# Simulating a function to fetch chart position\nimport random\ndef get_billboard_position(song_name, year):\n    # Mock data: Christina Aguilera's number-one hits in 2000\n    mock_chart = {\n        \"What a Girl Wants\": 1,\n        \"Come on Over Baby (All I Want Is You)\": 1,\n        \"Lady Marmalade\": 1\n    }\n    return mock_chart.get(song_name, None)\n\nposition = get_billboard_position(\"Come on Over Baby (All I Want Is You)\", 2000)\nprint(f\"Billboard Hot 100 position: {position}\")\n# Output: Billboard Hot 100 position: 1\n"
+    },
+    {
+      "question": "What was the Spanish-language version of 'Come on Over Baby (All I Want Is You)' called, and when was it released?",
+      "answer": "The Spanish-language version was titled 'Ven Conmigo (Solamente Tú)' and was released to Latin radio stations in the United States on August 8, 2000."
+    },
+    {
+      "question": "In which countries did the Spanish version 'Ven Conmigo (Solamente Tú)' achieve top ten or better ranking?",
+      "answer": "Spain (top ten), El Salvador (top five), Paraguay (top five), and Honduras (top five)."
+    }
+  ]
+}

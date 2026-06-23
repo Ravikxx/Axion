@@ -1,0 +1,34 @@
+{
+  "source_url": "https://github.com/pallets/flask",
+  "category": "github",
+  "pairs": [
+    {
+      "question": "What is Flask and what are its primary use cases?",
+      "answer": "Flask is a lightweight WSGI web application framework for Python. It is designed to be simple and easy to use for building both small and large web applications. Flask provides the basic tools needed to get started with web development, such as routing, request handling, and templating, while allowing developers to choose additional libraries and extensions to fit their needs. Its modular design makes it highly flexible and scalable."
+    },
+    {
+      "question": "How does Flask compare to other Python web frameworks like Django?",
+      "answer": "Flask is a microframework, meaning it provides the minimal essentials for web development without enforcing a specific project structure or dependencies. In contrast, Django is a full-stack framework that includes built-in features like an ORM, admin panel, and authentication system. Flask is more lightweight and gives developers greater freedom to choose their own tools, while Django offers more out-of-the-box functionality at the cost of flexibility."
+    },
+    {
+      "question": "Can you provide a basic example of a Flask application?",
+      "answer": "Certainly! Here is a minimal Flask application example:\n\npython\nfrom flask import Flask\n\napp = Flask(__name__)\n\n@app.route(\"/\")\ndef hello():\n    return \"Hello, World!\"\n\nif __name__ == \"__main__\":\n    app.run()\n\nThis code creates a web server that responds with \"Hello, World!\" when you visit the root URL (e.g., http://127.0.0.1:5000/)."
+    },
+    {
+      "question": "What are Flask extensions and how do they enhance Flask applications?",
+      "answer": "Flask extensions are community-developed packages that add additional functionality to Flask applications. They allow developers to easily integrate features like database support (e.g., Flask-SQLAlchemy), user authentication (e.g., Flask-Login), form handling (e.g., Flask-WTF), and API building (e.g., Flask-RESTful) without having to implement them from scratch. Extensions follow Flask's modular philosophy, enabling developers to use only what they need."
+    },
+    {
+      "question": "What is WSGI and how does Flask relate to it?",
+      "answer": "WSGI (Web Server Gateway Interface) is a standard interface between Python web applications and web servers. Flask is built on WSGI, which allows it to be compatible with any WSGI-compliant server. This means Flask applications can run on a variety of servers, such as Gunicorn, uWSGI, or mod_wsgi, making deployment flexible and scalable."
+    },
+    {
+      "question": "How can one contribute to the Flask project?",
+      "answer": "Contributions to Flask can take many forms: reporting issues, suggesting new features, improving documentation, submitting pull requests, or answering questions in the community forums. The Flask team encourages participation and provides detailed guidelines for contributing on their official contributing page: https://palletsprojects.com/contributing/. This includes setting up a development environment, testing changes, and following the project's code style and conventions."
+    },
+    {
+      "question": "Why might a developer choose to use Flask over a full-stack framework for a web project?",
+      "answer": "A developer might choose Flask for its simplicity, flexibility, and minimalist approach. Flask is ideal for projects where the developer wants full control over the components used, such as selecting a specific database ORM, templating engine, or authentication method. It is also well-suited for small to medium-sized applications, microservices, or when the developer prefers to build the application incrementally without being constrained by a framework's built-in features."
+    }
+  ]
+}

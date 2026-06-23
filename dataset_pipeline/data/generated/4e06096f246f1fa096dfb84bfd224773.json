@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/29th_Canadian_Ministry",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When was the Twenty-Ninth Canadian Ministry first sworn in?",
+      "answer": "The Twenty-Ninth Canadian Ministry was first sworn in during a ceremony at Rideau Hall on November 4, 2015."
+    },
+    {
+      "question": "What made the original composition of the Twenty-Ninth Canadian Ministry historically significant?",
+      "answer": "When first sworn in, the ministry had an equal number of men and women (15 each, excluding Trudeau), making it the first gender-balanced cabinet in Canadian history."
+    },
+    {
+      "question": "How many cabinet shuffles did Justin Trudeau carry out during his time as Prime Minister?",
+      "answer": "Justin Trudeau carried out four major cabinet shuffles: in 2018, 2021, 2023, and 2024."
+    },
+    {
+      "question": "What event triggered the October 2021 cabinet shuffle in Canada?",
+      "answer": "The October 2021 cabinet shuffle occurred one month after the 2021 Canadian federal election, which gave the governing Liberal Party a second minority mandate."
+    },
+    {
+      "question": "What major political event occurred in December 2024 involving the Twenty-Ninth Canadian Ministry?",
+      "answer": "In December 2024, major resignations by cabinet leaders led to a political crisis, with calls from Liberal Party members and opposition parties for Trudeau's resignation and a new election."
+    },
+    {
+      "question": "Who succeeded Justin Trudeau as Prime Minister of Canada, and on what date?",
+      "answer": "Mark Carney succeeded Justin Trudeau as Prime Minister on March 14, 2025."
+    },
+    {
+      "question": "Provide a Python code snippet to calculate the gender balance of the Twenty-Ninth Canadian Ministry at its dissolution. Assume the data is stored in a dictionary with keys 'total_members', 'women', and 'men'.",
+      "answer": "python\ndef calculate_gender_balance(ministry_data):\n    total = ministry_data['total_members']\n    women = ministry_data['women']\n    men = ministry_data['men']\n    balance_percentage = (women / total) * 100\n    return {\n        'total_members': total,\n        'women': women,\n        'men': men,\n        'women_percentage': balance_percentage\n    }\n\n# Example usage:\nministry_data = {'total_members': 35, 'women': 17, 'men': 18}\nprint(calculate_gender_balance(ministry_data))\n# Output: {'total_members': 35, 'women': 17, 'men': 18, 'women_percentage': 48.57142857142857}\n"
+    }
+  ]
+}

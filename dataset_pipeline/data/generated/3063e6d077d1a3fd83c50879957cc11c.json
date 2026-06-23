@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Greg_LeMond_anti-doping_stance_and_controversies",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What were the doping practices like during Greg LeMond's career in professional cycling?",
+      "answer": "During Greg LeMond's career, performance-enhancing drugs were starting to impact the sport, but the legal boundaries were unclear and the topic was not openly discussed. Practices like blood doping were rumored to occur, such as USA Cycling's blood doping at the 1984 Los Angeles Olympics and Francesco Moser's use before breaking the hour record in 1984. LeMond, however, strongly opposed doping due to the health risks it posed."
+    },
+    {
+      "question": "Why did Greg LeMond oppose performance-enhancing drugs in cycling?",
+      "answer": "Greg LeMond opposed performance-enhancing drugs primarily because of the health risks they posed. He believed the dangers of such practices outweighed any potential benefits and maintained this stance throughout his career, unlike many of his contemporaries."
+    },
+    {
+      "question": "How did Greg LeMond publicly challenge doping in professional cycling?",
+      "answer": "LeMond became a vocal critic of doping, questioning its prevalence and the complicity of officials. In 2001, he openly doubted Lance Armstrong’s Tour de France victories, highlighting suspicious relationships between riders and doctors like Michele Ferrari. By 2006, he accused the Union Cycliste Internationale (UCI) of corruption, claiming doping couldn’t occur without their involvement. In 2012, he publicly named UCI leaders Pat McQuaid and Hein Verbruggen as central to the problem."
+    },
+    {
+      "question": "What did Greg LeMond say about the responsibility of officials in cycling’s doping scandal?",
+      "answer": "LeMond argued that while cyclists bore the consequences of doping, officials and facilitators—such as doctors, managers, and regulators—often evaded accountability. In a 2012 open letter, he stated, 'The doctors, the management, the officials, they're the ones that have corrupted riders. The riders are the only ones that pay the price,' emphasizing the systemic nature of corruption in the sport."
+    },
+    {
+      "question": "How did Greg LeMond’s stance on doping affect his relationships with other cyclists and officials?",
+      "answer": "LeMond’s opposition to doping and his public criticism brought him into conflict with prominent figures in cycling. He clashed with UCI leaders Pat McQuaid and Hein Verbruggen, criticized Lance Armstrong, Floyd Landis, and Alberto Contador, and even faced backlash from organizations like Trek Bicycle Corporation. Despite this, he remained committed to reforming the sport."
+    },
+    {
+      "question": "What role did Greg LeMond play in advocating for change in professional cycling?",
+      "answer": "LeMond took an active role in advocating for reform by publicly exposing doping corruption and calling for accountability. In the interests of change, he even offered to serve as president of the UCI to replace Pat McQuaid, demonstrating his dedication to improving the integrity of professional cycling."
+    },
+    {
+      "question": "Write a Python function that returns a list of Greg LeMond’s key criticisms of the UCI based on the provided text.",
+      "answer": "Here is a Python function that extracts and returns LeMond’s key criticisms of the UCI based on the provided context:\n\npython\ndef get_lemond_uci_criticisms():\n    criticisms = [\n        \"The UCI’s complicity in doping allowed widespread corruption in professional cycling.\",\n        \"UCI leaders like Pat McQuaid and Hein Verbruggen were central to the doping problem.\",\n        \"The UCI treated professional cyclists as 'lab rats' while facilitators escaped responsibility.\",\n        \"Doping could not have occurred at its scale without the UCI’s involvement.\"\n    ]\n    return criticisms\n\n# Example usage:\nprint(get_lemond_uci_criticisms())\n\nThis function returns a list summarizing LeMond’s documented criticisms of the UCI as described in the text."
+    }
+  ]
+}

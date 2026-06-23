@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Austrian_Figure_Skating_Championships",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When were the first official Austrian Figure Skating Championships held for men and women?",
+      "answer": "The first official Austrian Figure Skating Championships for men were held in 1898 in Vienna, and for women in 1913 in Prague."
+    },
+    {
+      "question": "Why were the Austrian Figure Skating Championships interrupted in their early years?",
+      "answer": "The championships were periodically interrupted early on, particularly during World War I and World War II."
+    },
+    {
+      "question": "How did the annexation of Austria by Germany in 1938 affect the Austrian Figure Skating Championships?",
+      "answer": "After Germany annexed Austria in 1938, Austrian citizens became de facto German citizens, but regional championships continued to be held in Austria and are considered Austria's national championships."
+    },
+    {
+      "question": "Which disciplines are awarded medals at the Austrian Figure Skating Championships?",
+      "answer": "Medals are awarded in men's singles, women's singles, pair skating, and ice dance at both senior and junior levels."
+    },
+    {
+      "question": "Who holds the record for the most Austrian Championship titles in men's singles and women's singles?",
+      "answer": "Viktor Pfeifer holds the record in men's singles with nine titles, while Regine Heitzer holds the record in women's singles with seven titles."
+    },
+    {
+      "question": "How many Austrian Figure Skating Championship titles does Miriam Ziegler and Severin Kiefer have combined?",
+      "answer": "Miriam Ziegler and Severin Kiefer hold the record in pair skating with eight titles combined, though Kiefer won an additional three championships with another partner."
+    },
+    {
+      "question": "Write a Python snippet to find the skater with the most Austrian Figure Skating Championship titles in a given discipline.",
+      "answer": "python\nchampionship_records = {\n    'men_singles': {'Viktor Pfeifer': 9},\n    'women_singles': {'Regine Heitzer': 7},\n    'pair_skating': {'Miriam Ziegler': 8, 'Severin Kiefer': 11},\n    'ice_dance': {'Dmitri Matsjuk': 8}\n}\n\ndef find_champion(discipline):\n    if discipline in championship_records:\n        champions = championship_records[discipline]\n        return max(champions.items(), key=lambda x: x[1])\n    return None\n\n# Example usage:\nchampion = find_champion('pair_skating')\nprint(f\"{champion[0]} has the most titles with {champion[1]} championships.\")\n"
+    }
+  ]
+}

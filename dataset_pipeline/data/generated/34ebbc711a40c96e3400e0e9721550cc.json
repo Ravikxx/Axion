@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/1991_NCAA_Division_I_men's_basketball_tournament",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Which teams played in the championship game of the 1991 NCAA Division I men's basketball tournament?",
+      "answer": "The championship game featured Duke and Kansas. Duke won the game 72–65 to claim the national title."
+    },
+    {
+      "question": "Who coached Duke to the 1991 NCAA Division I men's basketball tournament championship?",
+      "answer": "Mike Krzyzewski coached Duke to the 1991 NCAA Division I men's basketball tournament championship."
+    },
+    {
+      "question": "What was significant about the 1991 NCAA tournament's adoption of the 10ths-second timer?",
+      "answer": "The 1991 NCAA tournament was the first to adopt the NBA's 10ths-second timer during the final minute of each period in all arenas. This change aimed to improve the accuracy of game timing by displaying tenths of a second on the clock."
+    },
+    {
+      "question": "How many games were played in total during the 1991 NCAA Division I men's basketball tournament?",
+      "answer": "A total of 63 games were played during the 1991 NCAA Division I men's basketball tournament."
+    },
+    {
+      "question": "What notable upset occurred in the 1991 NCAA tournament involving a #15 seed?",
+      "answer": "The 1991 tournament marked the first time since the field expanded to 64 teams in 1985 that a #15 seed upset a #2 seed, achieved by Richmond against Syracuse in the East region."
+    },
+    {
+      "question": "Who was named the Most Outstanding Player of the 1991 NCAA Division I men's basketball tournament?",
+      "answer": "Christian Laettner of Duke was named the tournament's Most Outstanding Player."
+    },
+    {
+      "question": "Can you write a Python code snippet that simulates the single-elimination structure of the 1991 NCAA tournament and shows the path to the championship for Duke?",
+      "answer": "python\n# Simplified single-elimination tournament simulation\nteams = ['Duke', 'UNLV', 'Kansas', 'North Carolina', '...']  # Other teams omitted for brevity\n\n# Simulate the path to the championship for Duke\nduke_path = {\n    'Sweet Sixteen': 'Duke',  # Assuming they reached this round\n    'Elite Eight': 'Duke',    # Assuming they won the Sweet Sixteen\n    'Final Four': 'Duke',     # Assuming they won the Elite Eight\n    'Semifinal': 'Duke',      # They defeated UNLV in the semifinal\n    'Championship': 'Duke'    # They won the championship\n}\n\nprint(\"Duke's path to the 1991 championship:\")\nfor round, team in duke_path.items():\n    print(f\"{round}: {team}\")\n"
+    }
+  ]
+}

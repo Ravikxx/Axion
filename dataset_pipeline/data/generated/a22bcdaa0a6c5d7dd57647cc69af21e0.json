@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Iran–Contra_affair",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What was the Iran-Contra affair and when did it occur?",
+      "answer": "The Iran-Contra affair was a political scandal from August 1985 to March 1987 under President Ronald Reagan's administration. It involved the U.S. government selling weapons to Iran in exchange for the release of hostages held by Hezbollah and diverting the proceeds to fund the Nicaraguan Contras, despite a congressional ban on such funding."
+    },
+    {
+      "question": "Why was the Iran-Contra affair illegal?",
+      "answer": "The Iran-Contra affair was illegal because the U.S. Congress had explicitly banned providing financial or military aid to the Nicaraguan Contras before the scandal took place. The secret diversion of funds from arms sales to Iran to the Contras violated this ban, as well as other laws governing covert operations and transparency in government."
+    },
+    {
+      "question": "What was the role of Oliver North in the Iran-Contra affair?",
+      "answer": "Oliver North, a National Security Council staff member, played a central role in orchestrating the illegal arms sales to Iran and the diversion of funds to the Contras. He took responsibility for the scheme, which led to his trial, though he was ultimately found not guilty by the court."
+    },
+    {
+      "question": "How did President Ronald Reagan respond to the Iran-Contra affair?",
+      "answer": "On March 4, 1987, President Reagan publicly apologized to the American people, acknowledging his administration's involvement in the scandal. He also established the Tower Commission on November 25, 1986, to investigate the matter, which later concluded there was no evidence Reagan directly authorized the scheme."
+    },
+    {
+      "question": "What was the purpose of the Tower Commission and who were its members?",
+      "answer": "The Tower Commission was formed by President Reagan to investigate the Iran-Contra affair. Its members included former Senator John Tower, former Secretary of State Edmund Muskie, and former National Security Adviser Brent Scowcroft. The commission found no evidence that Reagan was directly involved in the scandal."
+    },
+    {
+      "question": "Did President Reagan know about the Iran-Contra affair before it was exposed?",
+      "answer": "While Reagan was a supporter of the Contra cause, the evidence remains unclear regarding whether he had direct knowledge of the illegal arms sales and fund diversion before the scandal became public. The Tower Commission did not find evidence linking him to the scheme's planning."
+    },
+    {
+      "question": "What happened to those involved in the Iran-Contra affair after it was exposed?",
+      "answer": "After the scandal was exposed, Oliver North was tried but found not guilty. Later, President George H. W. Bush pardoned anyone who had been convicted or charged in connection with the affair, effectively ending further legal consequences for participants."
+    }
+  ]
+}

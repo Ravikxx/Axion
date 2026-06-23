@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Emperor_Alexander_(ship)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Which ships named Emperor Alexander were involved in transporting convicts to Tasmania?",
+      "answer": "The ship named Emperor Alexander that transported convicts to Tasmania was the Emperor Alexander (1813 Chepstow ship). She carried convicts to Tasmania during her service period."
+    },
+    {
+      "question": "What was the original name of the Emperor Alexander (1813 ship) before it was renamed?",
+      "answer": "The Emperor Alexander (1813 ship) was originally launched in 1811 as the Fortune before being taken in prize and renamed Emperor Alexander in 1813."
+    },
+    {
+      "question": "How many voyages to India and the East Indies did the Emperor Alexander (1813 Chepstow ship) make under the British East India Company's license?",
+      "answer": "The Emperor Alexander (1813 Chepstow ship) made two voyages to India and the East Indies under a license from the British East India Company."
+    },
+    {
+      "question": "What was the fate of the Emperor Alexander (1812 Sunderland ship)?",
+      "answer": "The Emperor Alexander (1812 Sunderland ship) was wrecked in October 1821."
+    },
+    {
+      "question": "Write a Python snippet to extract the launch years of all Emperor Alexander ships listed in the text.",
+      "answer": "python\nships = [\n    {'name': 'Emperor Alexander (1812 ship)', 'launch_year': 1808},\n    {'name': 'Emperor Alexander (1812 Sunderland ship)', 'launch_year': None},\n    {'name': 'Emperor Alexander (1813 ship)', 'launch_year': 1811},\n    {'name': 'Emperor Alexander (1813 Chepstow ship)', 'launch_year': 1813},\n    {'name': 'Emperor Alexander (1813 Scarborough ship)', 'launch_year': None},\n    {'name': 'Emperor Alexander (1814 Sunderland ship)', 'launch_year': None}\n]\n\nlaunch_years = [ship['launch_year'] for ship in ships if ship['launch_year']]\nprint(launch_years)  # Output: [1808, 1811, 1813]\n"
+    },
+    {
+      "question": "Which Emperor Alexander ship was condemned in 1835, and what was the reason for its condemnation?",
+      "answer": "The Emperor Alexander (1813 Chepstow ship) was condemned in 1835 following damage at sea on her way to the Cape of Good Hope and India."
+    },
+    {
+      "question": "List the trade routes or destinations for the Emperor Alexander (1813 Chepstow ship) during its service.",
+      "answer": "The Emperor Alexander (1813 Chepstow ship) traded to India, the East Indies, the West Indies, South America, North America, the Baltic, Quebec (carrying immigrants), Tasmania (transporting convicts), and the Cape of Good Hope."
+    }
+  ]
+}

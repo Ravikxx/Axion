@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Early_Norwegian_black_metal_scene",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the name of the record shop that served as a central meeting place for the early Norwegian black metal scene?",
+      "answer": "The central meeting place for the early Norwegian black metal scene was the record shop Helvete, which translates to 'Hell' in English. It was located in Oslo and became a hub for members of 'The Black Circle' or 'Black Metal Inner Circle.'"
+    },
+    {
+      "question": "Who were 'The Black Circle' or 'Black Metal Inner Circle'?",
+      "answer": "'The Black Circle' or 'Black Metal Inner Circle' was a group of core members from the early Norwegian black metal scene. They were known for their anti-Christian and misanthropic views, adopting pseudonyms, wearing 'corpse paint,' and presenting themselves as a militant Satanic cult."
+    },
+    {
+      "question": "What were some of the criminal activities associated with members of the early Norwegian black metal scene in the 1990s?",
+      "answer": "In August 1993 and May 1994, several members were arrested and convicted for crimes including arson, murder (notably Varg Vikernes' murder of Euronymous), assault, and possession of explosives. Their actions led to media portrayals of them as 'Satanic terrorists.'"
+    },
+    {
+      "question": "How did the early Norwegian black metal scene maintain its underground status?",
+      "answer": "The scene maintained its underground status by prioritizing musical integrity and exclusivity. Members created boundaries, only accepting those they deemed 'true' or committed. They also avoided commercial success, ensuring the genre remained obscure and underground."
+    },
+    {
+      "question": "What was the significance of pseudonyms and 'corpse paint' in the early Norwegian black metal scene?",
+      "answer": "Pseudonyms allowed members to adopt new identities and distance themselves from their real lives, while 'corpse paint'—a style of black-and-white face paint—became a visual trademark of the scene, symbolizing its dark and rebellious ethos."
+    },
+    {
+      "question": "Write a Python function that checks if a given name is a common pseudonym from the early Norwegian black metal scene.",
+      "answer": "python\nimport re\n\ndef is_black_metal_pseudonym(name: str) -> bool:\n    \"\"\"\n    Check if a given name matches common pseudonyms from the early Norwegian black metal scene.\n    \n    Args:\n        name (str): The name to check.\n    \n    Returns:\n        bool: True if the name is a known pseudonym, False otherwise.\n    \"\"\"\n    common_pseudonyms = [\n        r'\\bEuronymous\\b',\n        r'\\bVarg Vikernes\\b',\n        r'\\bFenriz\\b',\n        r'\\bDead\\b',\n        r'\\bIhsahn\\b',\n        r'\\bSamoth\\b',\n        r'\\bShagrath\\b'\n    ]\n    \n    return any(re.search(p, name, re.IGNORECASE) for p in common_pseudonyms)\n\n# Example usage:\nprint(is_black_metal_pseudonym(\"Varg Vikernes\"))  # Output: True\nprint(is_black_metal_pseudonym(\"John Doe\"))      # Output: False\n"
+    },
+    {
+      "question": "Why did some Norwegian media refer to members of the early black metal scene as 'Satanic terrorists'?",
+      "answer": "Norwegian media labeled them 'Satanic terrorists' due to their anti-Christian rhetoric, Satanic imagery, and involvement in violent crimes like arson and murder. Their cult-like behavior and media stunts, such as burning churches, fueled this perception."
+    }
+  ]
+}

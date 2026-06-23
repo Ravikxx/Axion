@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/auyeungdavid_2847435260/will-reasoning-become-the-new-turing-test-lets-play-a-sherlock-holmes-game-37cm",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What is the primary limitation of the original Turing Test in assessing machine intelligence?",
+      "answer": "The original Turing Test primarily measures a machine's ability to mimic human conversation through surface behavior rather than true understanding. It focuses on fluency and cleverness without requiring comprehension, mental depth, or coherent reasoning."
+    },
+    {
+      "question": "How did the Tang Dynasty murder mystery illustrate a potential 'new Turing Test' based on reasoning?",
+      "answer": "The murder mystery demonstrated a shift from imitation to inference by requiring the AI to explain its reasoning, revise conclusions with new evidence, and carefully weigh competing hypotheses. Unlike the traditional Turing Test, this approach assesses coherent thought and logical deduction rather than just conversational mimicry."
+    },
+    {
+      "question": "Describe the key evidence and reasoning steps that led the AI to conclude Sun Cheng was the killer in the Tang Dynasty murder mystery.",
+      "answer": "The AI identified Sun Cheng as the killer by analyzing the physical scene, motives, and inconsistencies. Key clues included: 1) A 'dull sound' suggesting a blunt weapon like a wooden pestle, 2) The 'female' footprints being oversized and unnatural, likely a disguise to implicate Lady Lin, 3) The locked room being staged using a string latch trick after drugging the victim with ginseng tea. The AI systematically eliminated suspects, concluding Sun Cheng used the pestle to strike Xu Ren, staged the scene, and faked the footprints."
+    },
+    {
+      "question": "Write a Python function that simulates the locked-room scenario by checking if a given suspect's weapon could have caused the 'dull thud' sound mentioned in the mystery. Assume a 'dull sound' corresponds to blunt objects (e.g., wooden pestle, iron baton) and excludes sharp objects (e.g., fruit knife).",
+      "answer": "python\ndef is_blunt_weapon(weapon):\n    blunt_weapons = {\"wooden pestle\", \"iron baton\", \"wooden club\"}\n    sharp_weapons = {\"fruit knife\", \"dagger\", \"sword\"}\n    return weapon.lower() in blunt_weapons\n\ndef analyze_sound_evidence(weapon):\n    if is_blunt_weapon(weapon):\n        return \"The weapon matches the 'dull thud' sound described at the crime scene.\"\n    else:\n        return \"The weapon does not match the 'dull thud' sound; it may be too quiet or sharp to produce the described noise.\"\n\n# Example usage:\nprint(analyze_sound_evidence(\"wooden pestle\"))  # Output: Matches the 'dull thud'\nprint(analyze_sound_evidence(\"fruit knife\"))    # Output: Does not match\n"
+    },
+    {
+      "question": "Why were the oversized women's footprints considered a red herring in the Tang Dynasty murder mystery?",
+      "answer": "The oversized women's footprints were a red herring because they were likely faked to mislead investigators into suspecting Lady Lin. The size and unnatural appearance of the footprints suggested they were deliberately staged to create a false narrative, masking the true involvement of Sun Cheng, who used them as part of his alibi-disguising strategy."
+    },
+    {
+      "question": "Compare and contrast the traditional Turing Test with the proposed 'Sherlock Holmes' approach to evaluating intelligence in AI.",
+      "answer": "The traditional Turing Test evaluates intelligence by assessing a machine's ability to imitate human conversation convincingly, focusing on linguistic fluency and surface behavior. In contrast, the 'Sherlock Holmes' approach evaluates intelligence based on reasoning capabilities, such as explaining deductions, revising conclusions with new evidence, and weighing competing hypotheses. While the Turing Test checks for mimicry, the new approach prioritizes coherence, logical consistency, and transparent reasoning."
+    },
+    {
+      "question": "What does the author mean by 'reasoning isn't just a mechanical chain of logic; it's a narrative of understanding'? Provide an example from the Tang Dynasty murder mystery to support your answer.",
+      "answer": "The author suggests that effective reasoning involves constructing a coherent and understandable story from evidence, rather than just following a rigid step-by-step logical process. In the Tang Dynasty mystery, the AI did not just list facts; it pieced together a narrative: Sun Cheng drugged Xu Ren, struck him with a wooden pestle (explaining the 'dull thud'), staged the locked room using a string latch, and faked oversized footprints to frame Lady Lin. This narrative connected disparate clues into a meaningful explanation, illustrating how reasoning transcends mechanical logic."
+    }
+  ]
+}

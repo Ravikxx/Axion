@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Editorial",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is an editorial in the context of a newspaper or magazine?",
+      "answer": "An editorial is an article written by the senior editors of a newspaper or magazine that reflects the publication's official opinion on a particular issue. It is typically unsigned and published on the editorial page, though it may occasionally appear on the front page for highly significant topics."
+    },
+    {
+      "question": "Why do some newspapers choose not to include the author's name on editorials?",
+      "answer": "Newspapers often omit the author's name on editorials to encourage readers to focus on the issue being discussed rather than the individual writer. This practice, as noted by Tom Clark of The Guardian, helps foster broader public discourse about the topic itself."
+    },
+    {
+      "question": "What is the difference between an editorial page and an op-ed page in a newspaper?",
+      "answer": "The editorial page features unsigned opinion pieces written by the newspaper's senior editors, reflecting the publication's stance. The op-ed page (short for 'opposite the editorial') contains opinion pieces by external contributors who are not employed by the newspaper."
+    },
+    {
+      "question": "How does the format of an editorial vary across different countries?",
+      "answer": "In English-language press, editorials are rarely placed on the front page and are usually confined to the editorial page, except for highly important topics. In contrast, some European countries like Spain, Italy, and France more commonly feature editorials on the front page."
+    },
+    {
+      "question": "What is a photo-editorial in fashion publishing?",
+      "answer": "A photo-editorial in fashion publishing refers to a full-page spread of photographs centered around a specific theme, designer, model, or topic. These can include accompanying text or stand alone as a photo-essay without additional narrative."
+    },
+    {
+      "question": "Provide an example of how a newspaper's editorial stance can evolve over time.",
+      "answer": "The Press, a New Zealand newspaper, published a list of editorials in 2018 highlighting changes in their stance on past issues. For example, they once claimed women would 'much prefer staying at home and attending to their household duties' rather than voting, but later supported women's suffrage."
+    },
+    {
+      "question": "Who is ultimately responsible for the content of an editorial?",
+      "answer": "While the senior editors write the editorial, the head of the newspaper, known as the editor, maintains oversight and retains responsibility for its content and position. Even if the editor does not write the piece themselves, their authority ensures alignment with the publication's stance."
+    }
+  ]
+}

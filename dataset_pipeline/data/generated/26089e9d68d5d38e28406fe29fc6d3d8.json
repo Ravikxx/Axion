@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/eevajonnapanula/about-invisibility-propaganda-and-assumptions-of-incompetence-4ce0",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What is International Women's Day, and why does the author feel conflicted about it?",
+      "answer": "International Women's Day is an annual event celebrated on March 8th to advocate for women's rights and gender equality. The author feels conflicted because it is often accompanied by discussions about International Men's Day and criticisms that equality has gone too far, which the author perceives as dismissive of ongoing gender equality struggles."
+    },
+    {
+      "question": "Who was Minna Canth, and why is her day significant in Finland?",
+      "answer": "Minna Canth was a Finnish writer, businesswoman, and social influencer known for advocating women's rights. In Finland, March 19th is celebrated as Minna Canth's Day and the Day of Equality, recognizing her contributions to gender equality and social justice."
+    },
+    {
+      "question": "How did the author describe their experience with pronoun editing in their CV, and what lesson do they draw from it?",
+      "answer": "The author wrote their bio using 'they' pronouns, but the freelancer agency editing their CV changed it to 'she' without consent, making the author feel invisible. The lesson drawn is to respect the pronouns someone uses for themselves, as they may have chosen them deliberately."
+    },
+    {
+      "question": "What was the feedback received after the author's talk on creative coding with Kotlin at Droidcon London?",
+      "answer": "The feedback included one anonymous numeric rating and another written comment labeling the talk as 'LGBT and non-binary propaganda' and claiming no content about creative coding was found. The author highlights the need for moderation in anonymous feedback channels."
+    },
+    {
+      "question": "Write a Python function that validates whether a given string contains a valid pronoun (he, she, they, or it) without case sensitivity.",
+      "answer": "python\nimport re\n\ndef is_valid_pronoun(pronoun_str):\n    \"\"\"Check if the given string is a valid pronoun (case-insensitive).\"\"\"\n    valid_pronouns = ['he', 'she', 'they', 'it']\n    return bool(re.fullmatch(r'\\b(' + '|'.join(valid_pronouns) + r')\\b', pronoun_str, flags=re.IGNORECASE))\n\n# Example usage:\nprint(is_valid_pronoun(\"She\"))  # True\nprint(is_valid_pronoun(\"THEY\")) # True\nprint(is_valid_pronoun(\"him\"))  # False\n"
+    },
+    {
+      "question": "What was the main argument against hiring people from underrepresented genders in tech, as described in the author's post?",
+      "answer": "The argument was that hiring less competent people from underrepresented genders to meet diversity quotas lowers hiring standards. The author countered that this assumption implies other genders are inherently incompetent, and true meritocracy should hire the most competent people regardless of gender."
+    },
+    {
+      "question": "Why does the author emphasize the importance of visibility for non-binary and other underrepresented individuals in tech?",
+      "answer": "The author emphasizes visibility because increased representation challenges biases and helps combat systemic discrimination, especially amid growing anti-gender movements. However, they also acknowledge the risks and stress that come with being visible, stressing the need for self-care."
+    }
+  ]
+}

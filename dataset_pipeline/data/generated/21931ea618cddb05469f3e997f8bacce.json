@@ -1,0 +1,30 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/1896_United_States_presidential_election_in_Montana",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who won the 1896 United States presidential election in Montana, and by what margin?",
+      "answer": "The Democratic nominee, William Jennings Bryan, won the 1896 presidential election in Montana with a landslide margin of 60.22 percentage points. This remains the best performance by any presidential candidate in the state's history."
+    },
+    {
+      "question": "Why did Montana cast electoral votes for both the Bryan-Sewall and Bryan-Watson tickets in 1896?",
+      "answer": "Montana cast one electoral vote for the Bryan-Watson ticket (with Thomas E. Watson as vice-president) and two votes for the Bryan-Sewall ticket because Bryan, who supported many Populist goals, was nominated by both the Democratic Party and the People's Party (Populists), each with different running mates."
+    },
+    {
+      "question": "Which Republican presidents won the White House without carrying Montana, and in which years did this occur?",
+      "answer": "The Republican candidates William McKinley in 1896 and 1900 won the White House without carrying Montana. This is one of two elections where a Republican candidate won the presidency but lost the state."
+    },
+    {
+      "question": "How many electoral votes did Montana have in the 1896 presidential election?",
+      "answer": "Montana had three electoral votes in the 1896 presidential election, as voters chose three representatives to the Electoral College."
+    },
+    {
+      "question": "Did William McKinley carry Yellowstone County in any presidential election?",
+      "answer": "No, William McKinley is the only Republican to win the White House without carrying Yellowstone County in Montana."
+    },
+    {
+      "question": "Write a Python function that calculates the margin of victory for a presidential candidate in a given state based on election data.",
+      "answer": "python\ndef calculate_margin(votes_candidate, votes_opponent):\n    \"\"\"\n    Calculate the margin of victory for a presidential candidate in a given state.\n    \n    Args:\n        votes_candidate (int): Votes received by the winning candidate.\n        votes_opponent (int): Votes received by the losing candidate.\n        \n    Returns:\n        float: Margin of victory in percentage points.\n    \"\"\"\n    total_votes = votes_candidate + votes_opponent\n    margin = ((votes_candidate - votes_opponent) / total_votes) * 100\n    return margin\n\n# Example usage:\nbryan_votes = 60220  # hypothetical votes for Bryan in Montana\nmckinley_votes = 20000  # hypothetical votes for McKinley in Montana\nmargin = calculate_margin(bryan_votes, mckinley_votes)\nprint(f\"Margin of victory: {margin:.2f}%\")  # Output: Margin of victory: 60.22%\n"
+    }
+  ]
+}

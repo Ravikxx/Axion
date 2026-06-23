@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Felt_Hatters'_and_Trimmers'_Unions_of_Great_Britain",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What were the two primary trade unions representing workers in the hat-making industry in Great Britain?",
+      "answer": "The two primary trade unions were the Amalgamated Society of Journeymen Felt Hatters and Allied Workers (ASJFH) and the Amalgamated Felt Hat Trimmers, Woolformers and Allied Workers Union (AFHTW&AWF)."
+    },
+    {
+      "question": "When was the Amalgamated Society of Journeymen Felt Hatters and Allied Workers founded, and what was its initial purpose?",
+      "answer": "The Amalgamated Society of Journeymen Felt Hatters and Allied Workers (ASJFH) was founded in 1872. Its initial purpose was to represent men working in the hat-making industry by uniting various local unions."
+    },
+    {
+      "question": "Why did the ASJFH create a separate union for women, and what was it called?",
+      "answer": "The ASJFH created a separate union for women after losing a dispute against employing women in the industry. The new union was called the Amalgamated Felt Hat Trimmers, Woolformers and Allied Workers Union (AFHTW&AWF), founded in 1888."
+    },
+    {
+      "question": "What role did the unions play in regulating apprenticeships in the hat-making industry after 1907?",
+      "answer": "After the 1907 strike, the unions gained the authority to regulate apprenticeships by restricting their numbers to a maximum of one-fifth the number of journeymen in any workplace."
+    },
+    {
+      "question": "Provide an example of a campaign led by the women's union that went beyond workplace issues.",
+      "answer": "The women's union campaigned for women's suffrage and co-sponsored the 1906 United Manifesto alongside organizations like the Women's Social and Political Union."
+    },
+    {
+      "question": "How did the unions use union labels, and when did they start producing them?",
+      "answer": "The unions produced union labels for members to place inside hats they had made. They began producing these labels in 1893."
+    },
+    {
+      "question": "What happened to the membership of the unions by 1980, and how did it compare to World War II?",
+      "answer": "By 1980, the men's union had 526 members and the women's union had 627 members, a significant decline from their peak during World War II, where the men's union had 8,747 members and the women's union had 2,833 members."
+    },
+    {
+      "question": "What type of code snippet could represent the structure of a union membership database for the ASJFH and AFHTW&AWF?",
+      "answer": "Below is a Python code snippet representing a simplified union membership database structure for the ASJFH and AFHTW&AWF:\n\npython\nclass Union:\n    def __init__(self, name, founding_year):\n        self.name = name\n        self.founding_year = founding_year\n        self.members = []\n\nclass Member:\n    def __init__(self, name, gender, union):\n        self.name = name\n        self.gender = gender\n        self.union = union\n\n# Example usage\nasjfh = Union(\"Amalgamated Society of Journeymen Felt Hatters and Allied Workers\", 1872)\nafhtw = Union(\"Amalgamated Felt Hat Trimmers, Woolformers and Allied Workers Union\", 1888)\n\n# Adding members\nmember1 = Member(\"John Smith\", \"Male\", asjfh)\nmember2 = Member(\"Emily Davis\", \"Female\", afhtw)\n\nasjfh.members.append(member1)\nafhtw.members.append(member2)\n"
+    }
+  ]
+}

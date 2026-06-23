@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Benjamin_Wallfisch",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When was Benjamin Wallfisch born, and what are his primary professions?",
+      "answer": "Benjamin Mark Lasker Wallfisch was born on 7 August 1979. He is an English composer, conductor, and music producer."
+    },
+    {
+      "question": "List at least five notable films for which Benjamin Wallfisch composed the score.",
+      "answer": "Benjamin Wallfisch has contributed to scores for Blade Runner 2049 (2017), Shazam! (2019), It (2017), It Chapter Two (2019), The Invisible Man (2020), Hidden Figures (2016), A Cure for Wellness (2016), Mortal Kombat (2021), The Flash (2023), Twisters (2024), Alien: Romulus (2024), Kraven the Hunter (2024), and The Conjuring: Last Rites (2025)."
+    },
+    {
+      "question": "What awards or nominations has Benjamin Wallfisch received for his film scores?",
+      "answer": "Wallfisch has received a joint nomination with Pharrell Williams and Hans Zimmer for Best Original Score at the 74th Golden Globe Awards for Hidden Figures. He was also nominated for the BAFTA Award for Best Film Music and the Grammy Award for Best Score Soundtrack for Visual Media for Blade Runner 2049. Additionally, in 2020, he was nominated for Film Composer of the Year for the second consecutive year at the World Soundtrack Awards."
+    },
+    {
+      "question": "How much worldwide box office revenue have Benjamin Wallfisch's films generated in total?",
+      "answer": "Wallfisch's film scores have contributed to a combined worldwide box office revenue of over $2.5 billion."
+    },
+    {
+      "question": "In what year was Benjamin Wallfisch featured in Variety's Billion Dollar Composer series?",
+      "answer": "Wallfisch was included in Variety's Billion Dollar Composer series in 2019."
+    },
+    {
+      "question": "Provide an example of Python code to fetch and display information about Benjamin Wallfisch's filmography using a hypothetical API.",
+      "answer": "python\nimport requests\n\ndef fetch_filmography(composer_name):\n    # Hypothetical API endpoint (replace with real data source)\n    api_url = f\"https://api.example.com/composers/{composer_name}/filmography\"\n    response = requests.get(api_url)\n    if response.status_code == 200:\n        filmography = response.json().get('filmography', [])\n        for film in filmography:\n            print(f\"- {film['title']} ({film['year']})\")\n    else:\n        print(\"Failed to fetch data.\")\n\n# Example usage\nfetch_filmography(\"Benjamin Wallfisch\")\n"
+    },
+    {
+      "question": "What is a key achievement of Benjamin Wallfisch in terms of box office success?",
+      "answer": "A key achievement of Wallfisch is that his film scores have contributed to a combined worldwide box office revenue of over $2.5 billion, leading to his inclusion in Variety's Billion Dollar Composer series in 2019."
+    }
+  ]
+}

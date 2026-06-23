@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/nfrankel/thoughts-on-object-creation-1cgi",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What are creational design patterns, and who first described them?",
+      "answer": "Creational design patterns were first described in the book 'Design Patterns: Elements of Reusable Object-Oriented Software' by the Gang of Four (GoF), which includes Erich Gamma, Richard Helm, Ralph Johnson, and John Vlissides. These patterns provide solutions for creating objects in a manner suitable to the situation, focusing on flexibility and reuse."
+    },
+    {
+      "question": "What is the intent of the Builder pattern according to the GoF?",
+      "answer": "The intent of the Builder pattern is to separate the construction of a complex object from its representation so that the same construction process can create different representations."
+    },
+    {
+      "question": "Provide a Java code example demonstrating the Builder pattern for a License class.",
+      "answer": "Here is a Java implementation of the Builder pattern for a License class:\n\njava\npublic class License {\n    private final String id;\n    private final String licenseeName;\n    private final String licenseId;\n    private final String environment;\n    private final LocalDateTime generatedAt;\n\n    private License(String id, String licenseeName, String licenseId, String environment, LocalDateTime generatedAt) {\n        this.id = id;\n        this.licenseeName = licenseeName;\n        this.licenseId = licenseId;\n        this.environment = environment;\n        this.generatedAt = generatedAt;\n    }\n\n    public static LicenseBuilder builder() {\n        return new LicenseBuilder();\n    }\n\n    public static class LicenseBuilder {\n        private String id;\n        private String licenseeName;\n        private String licenseId;\n        private String environment;\n        private LocalDateTime generatedAt;\n\n        private LicenseBuilder() {}\n\n        public LicenseBuilder withId(String id) {\n            this.id = id;\n            return this;\n        }\n\n        public LicenseBuilder withLicenseeName(String licenseeName) {\n            this.licenseeName = licenseeName;\n            return this;\n        }\n\n        public LicenseBuilder withLicenseId(String licenseId) {\n            this.licenseId = licenseId;\n            return this;\n        }\n\n        public LicenseBuilder withEnvironment(String environment) {\n            this.environment = environment;\n            return this;\n        }\n\n        public LicenseBuilder withGeneratedAt(LocalDateTime generatedAt) {\n            this.generatedAt = generatedAt;\n            return this;\n        }\n\n        public License build() {\n            return new License(id, licenseeName, licenseId, environment, generatedAt);\n        }\n    }\n}\n\n// Usage example:\nval license = License.builder()\n    .withId(\"My license\")\n    .withLicenseeName(\"Customer\")\n    .withLicenseId(\"XXX-123\")\n    .withEnvironment(\"User-acceptance tests\")\n    .withGeneratedAt(LocalDateTime.now())\n    .build();\n"
+    },
+    {
+      "question": "What are the key advantages and disadvantages of using type wrappers in Java?",
+      "answer": "The key advantages of using type wrappers in Java are:\n- Improves code clarity by enforcing type safety and reducing parameter confusion.\n- Makes the code more maintainable and less prone to errors, especially with many parameters of the same type.\n\nThe key disadvantages are:\n- Increases verbosity due to additional wrapper classes.\n- Can be memory-intensive, as wrappers typically consume more memory than primitive types. For a single type, the increase can be around 5 times larger depending on the JDK implementation."
+    },
+    {
+      "question": "Why should constructors avoid throwing exceptions, and what is a better alternative?",
+      "answer": "Constructors should avoid throwing exceptions because:\n- Resource leaks can occur if resources like files or sockets are allocated and not properly released when an exception is thrown.\n- It complicates inheritance, as subclasses must handle exceptions thrown in parent class constructors.\n- It can lead to partially constructed objects, which may cause issues in dependent code.\n\nA better alternative is to perform validation before object creation or use a static factory method that handles exceptions gracefully. For example, validate inputs outside the constructor or use a builder that performs validation during the build process."
+    },
+    {
+      "question": "How does Kotlin's inline value classes address the memory overhead of type wrappers?",
+      "answer": "Kotlin's inline value classes address the memory overhead of type wrappers by ensuring that the wrapper type is represented as the underlying type at runtime, eliminating the memory overhead. This is achieved through compile-time checks while the bytecode points directly to the wrapped type. However, inline value classes are limited to having a single property initialized in the primary constructor."
+    },
+    {
+      "question": "What is a Faceted Builder, and how does it enhance the Builder pattern?",
+      "answer": "A Faceted Builder is an extension of the Builder pattern that allows for the creation of complex objects by breaking down the construction process into smaller, manageable facets or sub-builders. Each facet handles a specific part of the object's construction, making the code more modular and easier to maintain. This approach is particularly useful when an object requires multiple steps or configurations."
+    }
+  ]
+}

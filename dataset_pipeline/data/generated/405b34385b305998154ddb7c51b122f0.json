@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/1888_United_States_House_of_Representatives_elections",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What were the dates of the 1888 United States House of Representatives elections and how many seats were initially contested?",
+      "answer": "The 1888 United States House of Representatives elections were mostly held on November 6, 1888, with three states voting earlier between June and September. Initially, elections were held for 325 seats representing 38 states in the 51st United States Congress."
+    },
+    {
+      "question": "Why did Benjamin Harrison's Republican Party gain a majority in the House despite Grover Cleveland winning more votes?",
+      "answer": "Harrison's Republican Party secured a House majority due to widespread vote suppression and electoral fraud targeting black Republicans in the Southern United States, which disproportionately affected Democratic votes. Additionally, contested election losses led to Republicans unseating initially reported Democratic winners in uncontested races."
+    },
+    {
+      "question": "What role did tariffs play in the 1888 House elections and which political groups supported each stance?",
+      "answer": "Tariffs were a pivotal issue: Democrats, supported by farmers and laborers, advocated for lower tariffs to promote free trade, while Republicans, backed by industry and big business, favored higher tariffs to protect American manufacturing. Industrial regions' voters largely aligned with the Republican position, contributing to their slim House majority."
+    },
+    {
+      "question": "Who won the Second District of Louisiana in the 1888 elections, and what historical significance did this victory hold?",
+      "answer": "Hamilton D. Coleman won the Second District of Louisiana in 1888. This victory marked the last time a Republican won any House seat in Louisiana until 1972, as the disenfranchisement of almost all Black voters in the 1890s stripped the state of Republican support until after the Dixiecrat bolt."
+    },
+    {
+      "question": "How did the addition of new states after the 1888 elections impact the size of the U.S. House of Representatives?",
+      "answer": "Six new states later joined the union, increasing the House from 325 seats to 332 seats. These new seats reflected the growing representation of the expanded United States in Congress."
+    },
+    {
+      "question": "What was the partisan outcome of the 1888 House elections, and which party controlled the chamber?",
+      "answer": "The Republican Party gained a majority in the House, taking control of the chamber from the Democratic Party in the 51st United States Congress."
+    },
+    {
+      "question": "Provide a Python code snippet to analyze the vote distribution between Grover Cleveland and Benjamin Harrison based on the 1888 election data described.",
+      "answer": "python\n# Hypothetical vote distribution analysis for the 1888 election\n# Note: Actual vote counts are not provided in the text, so this is a mock-up for illustration.\n\nimport matplotlib.pyplot as plt\n\n# Mock data: Cleveland received more votes overall, but Republicans won the House\nvote_counts = {\n    'Grover Cleveland (Democratic)': 5500000,  # Example total votes\n    'Benjamin Harrison (Republican)': 5200000   # Example total votes\n}\n\n# Plotting the vote distribution\nplt.bar(vote_counts.keys(), vote_counts.values(), color=['blue', 'red'])\nplt.title('1888 Presidential Election Vote Distribution')\nplt.ylabel('Total Votes')\nplt.xlabel('Candidate')\nplt.show()\n\n# Explanation: This code snippet plots a bar chart comparing the total votes received by\n# Grover Cleveland and Benjamin Harrison. Despite Cleveland winning more votes,\n# Republicans secured a House majority due to factors like electoral fraud and contested seats."
+    }
+  ]
+}

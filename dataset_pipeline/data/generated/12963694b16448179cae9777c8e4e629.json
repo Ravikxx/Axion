@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/George_Reade_(British_Army_officer)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was George Reade and what roles did he hold in the British military and politics?",
+      "answer": "George Reade (1687–1756) was a British Army officer and Whig politician. He served as a lieutenant and later captain-lieutenant in the 1st Regiment of Foot Guards, where he reached the rank of captain in the Army by 1709. Politically, he was a Member of Parliament for Tewkesbury from 1722 to 1734, consistently supporting the Government. His military promotions included colonel of the 29th Regiment of Foot (1733), major-general (1743), and lieutenant-general (1747)."
+    },
+    {
+      "question": "What were the key military appointments held by George Reade throughout his career?",
+      "answer": "George Reade held several key military appointments, including: lieutenant in the 1st Regiment of Foot Guards (1703), captain-lieutenant (with rank of lieutenant-colonel) in 1708, captain in 1709, second major (with rank of colonel) of the 1st Foot Guards (1729), colonel of the 29th Regiment of Foot (1733), colonel of the 9th Regiment of Foot (1739), and colonel of the 9th Regiment of Dragoons (1749 until his death in 1756)."
+    },
+    {
+      "question": "How did George Reade's political career progress in the House of Commons?",
+      "answer": "George Reade's political career began with an unsuccessful bid for the seat of Tewkesbury in 1721. He was later elected as MP for Tewkesbury in 1722 and re-elected without opposition in 1727. He did not stand for re-election in 1734. Throughout his tenure, he consistently supported the Government."
+    },
+    {
+      "question": "What was the relationship between George Reade's military and political careers?",
+      "answer": "George Reade's military and political careers intersected through his consistent government support and royal appointments. His military promotions (e.g., colonel of the 29th Regiment of Foot in 1733) coincided with his service as an MP, suggesting a mutually reinforcing career path. King George II's appointments (e.g., second major of the 1st Foot Guards in 1729) highlight the close ties between military service and political favor during his era."
+    },
+    {
+      "question": "What personal details are known about George Reade's family and marital life?",
+      "answer": "George Reade was the fourth son of Sir Edward Reade, 2nd Baronet, and Elizabeth Harby. In 1744, he married Jane Now(es), daughter of Charles Now(es), a barrister from Wood Ditton, Cambridgeshire. He died without issue (no children) on 28 March 1756."
+    },
+    {
+      "question": "How did George Reade's military ranks compare to his formal titles in the Army?",
+      "answer": "George Reade's military ranks in the Army often included formal titles in the Foot Guards. For example, his promotion to captain-lieutenant in 1708 carried the rank of lieutenant-colonel in the Army, while his appointment as second major of the 1st Foot Guards in 1729 came with the rank of colonel in the Army. This dual-track system allowed officers to serve in both ceremonial and command roles."
+    },
+    {
+      "question": "Write a Python function to calculate the duration of George Reade's military career in years.",
+      "answer": "python\ndef calculate_military_career_duration():\n    start_year = 1703  # Entered Army as lieutenant\n    end_year = 1756   # Died in 1756 (last known colonelcy in 9th Regiment of Dragoons)\n    return end_year - start_year\n\n# Example usage:\nprint(calculate_military_career_duration())  # Output: 53\n\nGeorge Reade's military career spanned approximately 53 years, from his enlistment as a lieutenant in 1703 to his death in 1756."
+    }
+  ]
+}

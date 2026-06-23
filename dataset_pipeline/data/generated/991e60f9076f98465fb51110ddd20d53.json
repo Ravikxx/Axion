@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/cristea_theodora/frontend-to-backend-from-vite-to-express-2c83",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What is the primary difference between frontend and backend routing?",
+      "answer": "The primary difference lies in automation and manual control. Frontend routing (e.g., with React Router or Vite) is typically automatic and handled by the development server, which serves static files like CSS or images without requiring explicit code. In contrast, backend routing (e.g., with Express.js) requires manual definition of routes for every request, including static files, which the server won't serve unless explicitly instructed using middleware like `express.static()`."
+    },
+    {
+      "question": "Why does Express.js return a 404 error for static files like `/main.css` by default?",
+      "answer": "Express.js is designed to be minimal and explicit. Without explicit instructions, it treats every request as a potential API route or rendering logic. Since it doesn't automatically recognize static files, it returns a 404 error if no matching route or file handler (like `express.static()`) is defined."
+    },
+    {
+      "question": "What command is used to compile a React application for production, and what does it do?",
+      "answer": "The command `npm run build` is used to compile a React application for production. It minifies and optimizes all source files (e.g., `.jsx`, `.css`) into smaller, concatenated bundles, and places them into a physical `dist` or `build` folder. This folder contains the optimized static frontend files ready for deployment."
+    },
+    {
+      "question": "How do you configure Express.js to serve static files from a React application's `dist` folder?",
+      "answer": "You use the `express.static()` middleware to instruct Express.js to serve files from the `dist` folder. Here's an example:\njavascript\nconst path = require('path');\napp.use(express.static(path.join(__dirname, 'client/dist')));\n\nThis ensures that any request not matching an API route will look for the requested file in the `dist` folder and serve it if found."
+    },
+    {
+      "question": "What is the purpose of the `npm run dev` command in both frontend and backend projects?",
+      "answer": "The `npm run dev` command serves different purposes in frontend and backend projects:\n- In frontend projects: It runs the Vite development server, which serves files directly from memory with Hot Module Reloading (HMR) for rapid coding and debugging.\n- In backend projects: It often uses tools like `nodemon` to automatically restart the server when changes are made, optimizing for development workflows."
+    },
+    {
+      "question": "Why is it unsafe to run a server in development mode in a production environment?",
+      "answer": "Running a server in development mode in production is unsafe because development mode exposes detailed error messages, stack traces, and potentially sensitive information to users. Development tools like `nodemon` and unoptimized file serving can also introduce performance bottlenecks, security vulnerabilities, and instability, making the application unsuitable for public use."
+    },
+    {
+      "question": "How does the transition from development to production affect file handling in a React-Express application?",
+      "answer": "In development, files are served directly from memory with minimal optimization (e.g., via Vite). In production, the React application is compiled into optimized static files stored in a `dist` folder. The Express server then uses `express.static()` to serve these files, ensuring they are minified, cached, and delivered efficiently to users."
+    }
+  ]
+}

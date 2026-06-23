@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Ed_Miliband",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who is Edward Miliband and what are his current political roles?",
+      "answer": "Edward Samuel Miliband is a British politician born on 24 December 1969. As of July 2024, he serves as the Secretary of State for Energy Security and Net Zero. Since 2005, he has been the Member of Parliament (MP) for Doncaster North. Previously, he held leadership roles as Leader of the Labour Party and Leader of the Opposition from 2010 to 2015, and served in the Cabinet under Prime Minister Gordon Brown from 2007 to 2010."
+    },
+    {
+      "question": "What were Edward Miliband's key political positions before becoming Labour Party leader?",
+      "answer": "Before becoming Labour Party leader, Miliband served as Minister for the Third Sector under Prime Minister Tony Blair (May 2006), Minister for the Cabinet Office and Chancellor of the Duchy of Lancaster under Prime Minister Gordon Brown (2007), and Secretary of State for Energy and Climate Change from 2008 to 2010. He was first elected to the House of Commons in 2005."
+    },
+    {
+      "question": "How did Edward Miliband's tenure as Labour Party leader influence the party's direction?",
+      "answer": "Miliband's tenure as Labour leader (2010–2015) was marked by a leftward shift in party policies under the 'One Nation Labour' branding. He opposed the Conservative-Liberal Democrat coalition's public sector cuts and abolished the electoral college system for electing the leader and deputy leader, replacing it with a 'one member, one vote' system in 2014."
+    },
+    {
+      "question": "What is the significance of the 'one member, one vote' system Edward Miliband introduced?",
+      "answer": "The 'one member, one vote' system replaced the electoral college for electing Labour Party leaders in 2014. This change democratized the leadership election process by ensuring each party member had an equal vote, rather than weighting votes by different factions or groups."
+    },
+    {
+      "question": "What was Edward Miliband's role in the Labour Party's Shadow Cabinet after the 2015 election defeat?",
+      "answer": "After Labour's defeat in the 2015 general election, Miliband returned to the backbenches. In 2020, Keir Starmer appointed him Shadow Secretary of State for Business, Energy and Industrial Strategy, and later promoted him to Shadow Secretary of State for Climate Change and Net Zero in 2021."
+    },
+    {
+      "question": "Write a Python function to calculate the number of years Edward Miliband has served as an MP.",
+      "answer": "python\ndef miliband_mp_years(birth_year, first_election_year, current_year):\n    \"\"\"\n    Calculate the number of years Edward Miliband has served as an MP.\n    \n    Args:\n        birth_year (int): Year Miliband was born (1969).\n        first_election_year (int): Year first elected to Parliament (2005).\n        current_year (int): Current year (e.g., 2024).\n    \n    Returns:\n        int: Years served as MP.\n    \"\"\"\n    return current_year - first_election_year\n\n# Example usage:\nmp_years = miliband_mp_years(birth_year=1969, first_election_year=2005, current_year=2024)\nprint(f\"Years as MP: {mp_years}\")  # Output: Years as MP: 19\n"
+    },
+    {
+      "question": "What challenges did Edward Miliband face during his tenure as Labour leader?",
+      "answer": "Miliband faced significant challenges, including leading Labour to defeat in the 2015 general election, navigating austerity measures imposed by the Conservative-Liberal Democrat coalition, and managing internal party tensions while shifting the party's policies leftward under the 'One Nation Labour' banner."
+    }
+  ]
+}

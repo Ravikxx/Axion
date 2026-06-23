@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/1962_Commonwealth_Paraplegic_Games",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who organized the First Commonwealth Paraplegic Games and why were they conceived?",
+      "answer": "The First Commonwealth Paraplegic Games were conceived by George Bedbrook after Perth secured the hosting rights for the 1962 British Empire and Commonwealth Games. Bedbrook organized these games to raise awareness and support for paraplegic athletes in Australia, particularly Western Australia, and to challenge societal perceptions of disability."
+    },
+    {
+      "question": "What was the slogan promoted by Hugh Leslie during the games, and what was its purpose?",
+      "answer": "Hugh Leslie, the chairman of the Organising Committee and a WWII veteran who had lost a leg, promoted the slogan 'I can, I will.' Its purpose was to shift public perceptions about disabilities by emphasizing the capabilities and determination of disabled individuals, and to eliminate the derogatory term 'cripple' from common usage."
+    },
+    {
+      "question": "How did the Commonwealth Paraplegic Games impact public perceptions of disabilities in Australia?",
+      "answer": "The games significantly raised the profile of paraplegic athletes, particularly in Western Australia, by showcasing their abilities and achievements. Through speeches like Hugh Leslie's and the slogan 'I can, I will,' the event aimed to change public attitudes by highlighting the power of inclusive language and demonstrating that disabled individuals were not defined by their disabilities."
+    },
+    {
+      "question": "What role did Royal Perth Hospital play in the First Commonwealth Paraplegic Games?",
+      "answer": "Royal Perth Hospital, a leading spinal rehabilitation centre in Australia, provided great support for the First Commonwealth Paraplegic Games. Its involvement underscored the medical and rehabilitative context of the event, which was focused on spinal cord and polio-related disabilities."
+    },
+    {
+      "question": "Compare the standards of the First Commonwealth Paraplegic Games with the Stoke Mandeville Games.",
+      "answer": "The standards of the First Commonwealth Paraplegic Games were lower than those of the Stoke Mandeville Games, which were established as a pioneering event for disabled athletes. However, the Commonwealth Games still featured outstanding individual performances, and several world records were broken, demonstrating the high level of competition and skill among the athletes."
+    },
+    {
+      "question": "Write a Python function that checks if a given year is between the dates of the First Commonwealth Paraplegic Games.",
+      "answer": "python\ndef is_between_1962_games(year: int) -> bool:\n    \"\"\"Check if a given year falls between the First Commonwealth Paraplegic Games (1962).\"\"\"\n    return 1962 <= year <= 1962\n\n# Example usage:\nprint(is_between_1962_games(1962))  # Output: True\nprint(is_between_1962_games(1961))  # Output: False\n"
+    },
+    {
+      "question": "What historical significance did George Bedbrook and the Stoke Mandeville Games have in the context of the Commonwealth Paraplegic Games?",
+      "answer": "George Bedbrook, the founder of the Stoke Mandeville Games, was a leading figure in the organization of the First Commonwealth Paraplegic Games. The Stoke Mandeville Games were instrumental in pioneering competitive sports for disabled athletes, setting a precedent for events like the Commonwealth Paraplegic Games. Bedbrook's involvement ensured continuity and credibility in the effort to promote sports for paraplegic individuals, while also raising their profile in Australia."
+    }
+  ]
+}

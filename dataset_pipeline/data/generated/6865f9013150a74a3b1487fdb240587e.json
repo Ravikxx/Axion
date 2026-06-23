@@ -1,0 +1,38 @@
+{
+  "source_url": "https://dev.to/stablenaira/prompt-engineering-wont-fix-your-architecture-23h",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What is the core argument against using prompt engineering as a solution for architectural issues in software systems?",
+      "answer": "The core argument is that prompt engineering is not a substitute for proper system architecture. While prompt engineering can temporarily mask symptoms of poor design, it does not address underlying issues like missing domain boundaries, inconsistent data models, or scattered business logic. These problems persist and can lead to unreliable behavior, especially as the system scales."
+    },
+    {
+      "question": "How does an LLM perceive a software system compared to a human developer?",
+      "answer": "An LLM does not perceive a software system as a whole. Instead, it sees only the data explicitly passed to it—such as JSON payloads, context within token limits, or hastily written schemas. It lacks an understanding of the system’s architecture, dependencies, or the broader context that a human developer would rely on."
+    },
+    {
+      "question": "What are some examples of structural problems that prompt engineering is often used to temporarily cover up?",
+      "answer": "Prompt engineering is frequently used to obscure issues like missing domain boundaries (e.g., asking the model to infer intent), inconsistent data models (e.g., asking it to judge missing fields), lack of a single source of truth (e.g., resolving conflicting values), and scattered business logic (e.g., embedding lengthy policy descriptions in prompts)."
+    },
+    {
+      "question": "Why are AI agents compared to distributed systems in the text? Provide a code-based analogy to illustrate this comparison.",
+      "answer": "AI agents are compared to distributed systems because they exhibit similar challenges: state management, latency, failure modes, and side effects. For example, consider an AI agent handling a payment process. If it retries a failed transaction without proper state tracking, it might accidentally charge a user twice—a classic distributed systems problem where idempotency and state consistency are critical.\n\npython\n# Simplified example of an AI agent retrying a payment with potential side effects\nimport uuid\nfrom datetime import datetime\n\nclass PaymentAgent:\n    def __init__(self):\n        self.transaction_log = {}\n\n    def process_payment(self, user_id, amount):\n        transaction_id = str(uuid.uuid4())\n        if transaction_id in self.transaction_log:\n            return \"Duplicate transaction detected!\"\n        \n        # Simulate external payment API call\n        payment_success = self._call_payment_api(user_id, amount)\n        \n        if payment_success:\n            self.transaction_log[transaction_id] = {\n                \"user_id\": user_id,\n                \"amount\": amount,\n                \"timestamp\": datetime.now(),\n                \"status\": \"completed\"\n            }\n            return \"Payment successful\"\n        else:\n            return \"Payment failed\"\n\n    def _call_payment_api(self, user_id, amount):\n        # Simulate API call\n        return True  # Assume success for this example\n"
+    },
+    {
+      "question": "What role do guardrails play in AI systems according to the text, and why might they not be sufficient for fixing architectural issues?",
+      "answer": "Guardrails act as additional constraints or safety measures in AI systems, such as prompts that ask the model to verify actions or escalate uncertain decisions. However, they are not sufficient for fixing architectural issues because they do not address the root causes, such as missing domain boundaries or inconsistent data models. Instead, guardrails often add more complexity without solving the underlying problem."
+    },
+    {
+      "question": "Explain the metaphor of 'seatbelts' used in the text. How does it relate to AI systems and architecture?",
+      "answer": "The metaphor of 'seatbelts' suggests that guardrails in AI systems are like seatbelts in a car—they provide a layer of safety but do not fix fundamental issues with the vehicle. For example, seatbelts cannot fix a car with a missing steering wheel or an engine held together by duct tape. Similarly, guardrails in AI systems cannot compensate for poor architecture; they only mitigate some risks temporarily."
+    },
+    {
+      "question": "What is the 'unpopular truth' about AI and architecture, and how does it explain the gap between AI demos and AI products?",
+      "answer": "The 'unpopular truth' is that AI amplifies existing architecture—good architecture makes AI systems boring, predictable, and reliable, while bad architecture makes AI systems appear magical during demos but fragile in production. This explains why AI demos often look impressive but AI products feel unreliable: the underlying architecture was not designed to support the AI's capabilities."
+    },
+    {
+      "question": "According to the text, why do developers and organizations continue to prioritize prompt engineering over architectural improvements?",
+      "answer": "Developers and organizations prioritize prompt engineering because it is fast, visible, and easily shared (e.g., through tweets or demos). In contrast, architectural improvements are slow, invisible, and only noticed when the system fails. This creates an incentive to optimize for short-term fixes rather than long-term stability."
+    }
+  ]
+}

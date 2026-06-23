@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Dwayne_Polee",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who is Dwayne L. Polee Sr. and what roles has he held in basketball?",
+      "answer": "Dwayne L. Polee Sr. is an American former professional basketball player and coach. As of 2012, he has served as the Director of Player Development at the University of San Francisco. Previously, he held the position of Director of Basketball Operations at the University of Southern California from 2007 to 2010. After retiring from playing, he was an assistant coach at Los Angeles Southwest College during the 2000–01 season."
+    },
+    {
+      "question": "What notable achievement did Dwayne L. Polee Sr. accomplish in high school basketball?",
+      "answer": "In 1981, Dwayne L. Polee Sr. was named the Los Angeles City Section Player of the Year while playing for Manual Arts High School. He set a record by scoring 43 points in the City championship game against Crenshaw High School, leading his team to an 82–69 victory in front of 14,123 spectators—the largest crowd in city history at the time."
+    },
+    {
+      "question": "Which NBA team drafted Dwayne L. Polee Sr. and for how long did he play in the NBA?",
+      "answer": "Dwayne L. Polee Sr. was drafted in the third round of the 1986 NBA draft by the Los Angeles Clippers. He played in one game with the team during the 1986–87 season."
+    },
+    {
+      "question": "Where did Dwayne L. Polee Sr. play basketball professionally outside of the NBA?",
+      "answer": "After his brief NBA stint, Polee played professional basketball in Mexico for Limoneros de Colima from 1989 to 1991."
+    },
+    {
+      "question": "What is the connection between Dwayne L. Polee Sr. and Dwayne Polee Jr. in basketball?",
+      "answer": "Dwayne L. Polee Sr. and his son, Dwayne Polee Jr., are one of only two father–son duos to both win the Los Angeles City Section Player of the Year award. Dwayne Jr. earned the honor in 2010 while playing for Westchester High School, and he later played college basketball for San Diego State."
+    },
+    {
+      "question": "Write a Python function that takes a player's name and returns their basketball career highlights based on the provided text.",
+      "answer": "python\ndef get_player_highlights(player_name):\n    player_data = {\n        \"Dwayne L. Polee Sr.\": [\n            \"1981 Los Angeles City Section Player of the Year\",\n            \"Scored 43 points in the 1981 City championship game (82-69 win over Crenshaw High School)\",\n            \"Drafted by the Los Angeles Clippers in the 1986 NBA draft\",\n            \"Played 1 game in the NBA during the 1986–87 season\",\n            \"Played professionally in Mexico with Limoneros de Colima (1989–1991)\",\n            \"Director of Player Development at the University of San Francisco (since 2012)\"\n        ],\n        \"Dwayne Polee Jr.\": [\n            \"2010 Los Angeles City Section Player of the Year\",\n            \"Played college basketball for San Diego State\"\n        ]\n    }\n    return player_data.get(player_name, \"Player not found in records.\")\n\n# Example usage:\nprint(get_player_highlights(\"Dwayne L. Polee Sr.\"))\n"
+    },
+    {
+      "question": "How long did Dwayne L. Polee Sr. attend the University of Nevada, Las Vegas before transferring?",
+      "answer": "Dwayne L. Polee Sr. attended the University of Nevada, Las Vegas before transferring to Pepperdine University in 1982, so he spent less than a year at UNLV."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Downing_(surname)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was the American landscape designer and horticulturalist known for his contributions to 19th-century gardening?",
+      "answer": "Andrew Jackson Downing (1815–1852) was an American landscape designer, horticulturalist, and writer renowned for his influential works on landscape architecture and gardening. He authored 'A Treatise on the Theory and Practice of Landscape Gardening,' which became a foundational text in the field."
+    },
+    {
+      "question": "List three notable individuals with the surname Downing who were involved in sports.",
+      "answer": "Three notable individuals with the surname Downing involved in sports are Burton Downing (1885–1929), an American racing cyclist; Dean Downing (born 1975), an English bicycle racer; and Jim Downing (born 1942), an American racing driver and owner."
+    },
+    {
+      "question": "What were the primary fields of work for Antoinette Downing and Cecilia Downing MBE?",
+      "answer": "Antoinette Downing (1904–2001) was an American historian specializing in architecture and preservation. Cecilia Downing MBE (1858–1952) was an Australian temperance and women's rights activist who campaigned for social reforms."
+    },
+    {
+      "question": "Write a Python code snippet to extract all individuals with the surname 'Downing' from the given list of names.",
+      "answer": "python\nnames = [\n    \"Antoinette Downing (1904–2001)\", \"Andrew Jackson Downing (1815–1852)\",\n    \"Arthur Matthew Weld Downing (1850–1917)\", \"Ben Downing (writer) (born 1967)\",\n    \"Benjamin W. Downing (1835–1894)\", \"Brian Downing (born 1950)\",\n    \"Burton Downing (1885–1929)\", \"Calybute Downing (1605–1643)\",\n    \"Caroline Lowder Downing (1855–1942)\", \"Cecilia Downing MBE (1858–1952)\"\n]\n\n# Extract individuals with the surname 'Downing'\ndowning_individuals = [name for name in names if \"Downing\" in name]\nprint(downing_individuals)\n"
+    },
+    {
+      "question": "Which Downing family member served as a deputy director of the CIA?",
+      "answer": "Jack G. Downing (1940–2021) served as the deputy director of the Central Intelligence Agency (CIA)."
+    },
+    {
+      "question": "How many individuals with the surname Downing were involved in politics, and can you name three?",
+      "answer": "Several individuals with the surname Downing were involved in politics. Three notable examples are Charles Downing (died 1845), an American politician; Charles W. Downing Jr. (1825–1862), a Florida politician; and Coe S. Downing (1791–1847), a New York politician."
+    },
+    {
+      "question": "What were the professions of George Downing, the 1st Baronet, and Sir George Downing's contributions to society?",
+      "answer": "George Downing, 1st Baronet (1625–1684), was an Anglo-Irish soldier and statesman. He served as a diplomat and played a key role in securing England's financial stability during the reign of Charles II. The Downing family name also became associated with Downing Street in London, where the British Prime Minister's residence is located."
+    }
+  ]
+}

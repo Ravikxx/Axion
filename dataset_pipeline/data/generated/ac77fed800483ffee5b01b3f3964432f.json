@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Fugees",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What are the names of the three members of the Fugees and what musical styles did they blend in their music?",
+      "answer": "The Fugees consisted of Wyclef Jean, Pras Michel, and Lauryn Hill. They blended hip-hop, reggae, R&B, and funk in their music, creating a distinctive fusion that stood out from the gangsta rap-dominated era of the 1990s."
+    },
+    {
+      "question": "How did the Fugees' debut album *Blunted on Reality* initially perform, and which singles helped it gain traction?",
+      "answer": "The Fugees' debut album *Blunted on Reality* (1994) had modest initial sales but gained traction through local shows and remixes of their singles 'Nappy Heads' and 'Vocab' by Salaam Remi. 'Nappy Heads' eventually reached the Billboard Hot 100, helping the album gain recognition."
+    },
+    {
+      "question": "What were the three hit singles from the Fugees' second album *The Score* (1996), and which song became a global chart-topper?",
+      "answer": "The Fugees' second album *The Score* (1996) included the hit singles 'Fu-Gee-La', 'Ready or Not', and a reimagined cover of 'Killing Me Softly'. The latter topped the charts in over 20 countries, including the U.S. and the UK."
+    },
+    {
+      "question": "Write a Python snippet to fetch the Billboard Hot 100 chart positions for the Fugees' singles 'Nappy Heads' and 'Fu-Gee-La'.",
+      "answer": "python\nimport billboard\n\n# Fetch chart positions for the Fugees' singles\nchart = billboard.ChartData('hot-100')\n\n# Find 'Nappy Heads' (1994)\nfor i, entry in enumerate(chart):\n    if 'Nappy Heads' in entry.title:\n        nappy_heads_position = entry.rank\n        break\n\n# Find 'Fu-Gee-La' (1996)\nchart = billboard.ChartData('hot-100')\nfor i, entry in enumerate(chart):\n    if 'Fu-Gee-La' in entry.title:\n        fu_gee_la_position = entry.rank\n        break\n\nprint(f\"'Nappy Heads' peaked at position: {nappy_heads_position}\")\nprint(f\"'Fu-Gee-La' peaked at position: {fu_gee_la_position}\")\n"
+    },
+    {
+      "question": "What major awards and recognitions have the Fugees received throughout their career?",
+      "answer": "The Fugees have won two Grammy Awards, a Brit Award for International Group, and received the Medal of Honor from Haitian President René Préval. Additionally, their album *The Score* is featured on Rolling Stone's 500 Greatest Albums list, and 'Ready or Not' is included in the Rock and Roll Hall of Fame's Songs That Shaped Rock and Roll."
+    },
+    {
+      "question": "Why did the Fugees choose their name, and what cultural or personal significance did it hold?",
+      "answer": "The Fugees derived their name from 'refugees', reflecting the immigrant backgrounds of Wyclef Jean and Pras Michel, as well as Lauryn Hill's roots. The name also resonated with themes of resilience and shared struggles, aligning with the group's socially conscious lyrics."
+    },
+    {
+      "question": "How did internal tensions within the Fugees lead to their separation, and what did they pursue afterward?",
+      "answer": "After achieving commercial success and releasing solo projects, such as Wyclef Jean's *The Carnival* (1997), internal tensions arose within the group. They separated in 1997 to pursue solo careers but have reunited periodically for tours and live performances, including their appearance in Dave Chappelle's Block Party (2005)."
+    }
+  ]
+}

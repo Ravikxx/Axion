@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Carlisle",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the origin of the name 'Carlisle'?",
+      "answer": "The name 'Carlisle' derives from the Cumbric term 'Caer Luel', where 'Caer' means 'fortress' or 'city' and 'Luel' likely refers to the nearby River Lyne."
+    },
+    {
+      "question": "How did Carlisle gain city status?",
+      "answer": "Carlisle became a city after Carlisle Cathedral was established in 1133, following the creation of the Diocese of Carlisle. As the seat of a diocese, the settlement automatically gained city status."
+    },
+    {
+      "question": "What role did Carlisle play during the Industrial Revolution?",
+      "answer": "During the Industrial Revolution, Carlisle experienced socioeconomic transformation due to the introduction of textile manufacturing. This led to its development into a densely populated mill town and an important railway hub."
+    },
+    {
+      "question": "What historical significance does Carlisle Castle have?",
+      "answer": "Carlisle Castle was a key military stronghold in the Middle Ages and served as a prison for Mary, Queen of Scots in 1568. Today, it houses the Duke of Lancaster's Regiment and the Border Regiment Museum."
+    },
+    {
+      "question": "How far is Carlisle from the Anglo-Scottish border?",
+      "answer": "Carlisle is located approximately 8 miles (13 kilometers) south of the current Anglo-Scottish border."
+    },
+    {
+      "question": "What was Carlisle originally called as a Roman settlement?",
+      "answer": "Carlisle was originally founded as a Roman settlement called Luguvalium."
+    },
+    {
+      "question": "Which railway companies shared Carlisle railway station in the 19th century?",
+      "answer": "In the 19th century, Carlisle railway station was shared by seven railway companies, reflecting the city's strategic importance as a railway hub."
+    }
+  ]
+}

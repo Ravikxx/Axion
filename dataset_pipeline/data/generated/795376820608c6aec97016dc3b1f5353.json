@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Conditions_of_Learning",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What are the five major categories of learning identified by Robert M. Gagné in his Conditions of Learning theory?",
+      "answer": "Gagné identifies five major categories of learning: verbal information, intellectual skills, cognitive strategies, motor skills, and attitudes."
+    },
+    {
+      "question": "How does Gagné's theory classify learning tasks for intellectual skills?",
+      "answer": "Gagné organizes learning tasks for intellectual skills into a hierarchy based on complexity: stimulus recognition, response generation, procedure following, use of terminology, discrimination, concept formation, rule application, and problem solving."
+    },
+    {
+      "question": "What is the significance of the learning hierarchy in Gagné's theory?",
+      "answer": "The primary significance of the learning hierarchy is to identify prerequisites for each level of learning. These prerequisites are determined through task analysis and help facilitate learning by ensuring that foundational skills are mastered before progressing to more complex tasks."
+    },
+    {
+      "question": "List the nine instructional events proposed by Gagné's theory and match each to its corresponding cognitive process.",
+      "answer": "The nine instructional events and their corresponding cognitive processes are:\n1. Gaining attention (reception)\n2. Informing learners of the objective (expectancy)\n3. Stimulating recall of prior learning (retrieval)\n4. Presenting the stimulus (selective perception)\n5. Providing learning guidance (semantic encoding)\n6. Eliciting performance (responding)\n7. Providing feedback (reinforcement)\n8. Assessing performance (retrieval)\n9. Enhancing retention and transfer (generalization)"
+    },
+    {
+      "question": "How can Gagné's theory be applied to the design of instruction?",
+      "answer": "Gagné's theory can be applied by using the nine instructional events to design lessons that satisfy the necessary conditions for learning. This includes identifying learning objectives, sequencing tasks based on prerequisite skills, and selecting appropriate media to support instruction. For example, a lesson on problem-solving might start with gaining attention (e.g., a thought-provoking question), then provide guidance (e.g., step-by-step instructions), and finally assess performance through a practical exercise."
+    },
+    {
+      "question": "What role does task analysis play in Gagné's Conditions of Learning theory?",
+      "answer": "Task analysis is crucial in Gagné's theory as it helps identify the prerequisites for each learning task within the hierarchy. By breaking down a complex task into simpler components, instructional designers can ensure that learners have the necessary foundational skills before moving on to more advanced topics."
+    },
+    {
+      "question": "Provide a Python code snippet demonstrating how to structure a simple learning hierarchy for a task like 'calculating the area of a rectangle'.",
+      "answer": "python\n# Define the learning hierarchy for calculating the area of a rectangle\nlearning_hierarchy = {\n    'stimulus_recognition': 'Identify the length and width of a rectangle from a diagram or description.',\n    'response_generation': 'Recall the formula for area: Area = length × width.',\n    'procedure_following': 'Apply the formula to given values (e.g., length=5, width=3).',\n    'use_of_terminology': 'Understand and use terms like 'length', 'width', and 'area'.',\n    'discrimination': 'Differentiate between area and perimeter in problem statements.',\n    'concept_formation': 'Explain why multiplying length by width gives the area of a rectangle.',\n    'rule_application': 'Solve word problems requiring area calculation (e.g., 'Find the area of a garden that is 10m long and 4m wide').',\n    'problem_solving': 'Design a garden layout with a given area constraint using the formula.'\n}\n\n# Example of a simple task analysis function\ndef task_analysis(task):\n    prerequisites = {\n        'concept_formation': ['stimulus_recognition', 'response_generation'],\n        'rule_application': ['procedure_following', 'use_of_terminology'],\n        'problem_solving': ['discrimination', 'concept_formation', 'rule_application']\n    }\n    return prerequisites.get(task, [])\n\n# Print prerequisites for 'problem_solving'\nprint(task_analysis('problem_solving'))  # Output: ['discrimination', 'concept_formation', 'rule_application']\n"
+    }
+  ]
+}

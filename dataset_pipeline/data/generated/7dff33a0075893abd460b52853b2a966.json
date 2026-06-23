@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/cristea_theodora/from-localstorage-to-database-understanding-the-mongodb-structure-1a21",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What is the difference between SQL and NoSQL databases?",
+      "answer": "SQL databases are relational databases that store data in structured tables with a rigid schema, ensuring consistency and strict relationships between data. NoSQL databases, on the other hand, are document-oriented or otherwise structured and offer flexibility with dynamic schemas, allowing for nested objects, lists, and varying structures within the same collection. SQL is ideal for tasks requiring strict consistency, while NoSQL excels in scalability and speed for modern applications like social networks or gaming."
+    },
+    {
+      "question": "Why is NoSQL referred to as 'Not Only SQL' instead of 'No SQL'?",
+      "answer": "NoSQL stands for 'Not Only SQL' because it doesn’t completely replace SQL. Instead, it serves as a complementary tool. SQL databases are excellent for specific tasks requiring strict relationships and consistency, while NoSQL databases provide speed and flexibility for modern applications. By using NoSQL, developers can choose the right tool for the right job without abandoning SQL entirely."
+    },
+    {
+      "question": "What is a document in MongoDB, and how does it differ from a row in a SQL table?",
+      "answer": "A document in MongoDB is the basic unit of data, stored in a binary JSON format called BSON. It can contain nested objects, arrays, and complex data types like dates. Unlike a SQL row, which must adhere to a rigid schema with predefined columns, documents in MongoDB can have varying structures within the same collection. This dynamic schema allows for more natural data modeling."
+    },
+    {
+      "question": "How does MongoDB handle the unique identification of documents?",
+      "answer": "Every document in MongoDB must have a unique `_id` field, which acts as the primary key. If not specified during insertion, MongoDB automatically generates an `ObjectId` for the `_id` field. This `ObjectId` is unique, includes a timestamp, and provides information about when the document was created. For example:\njavascript\ndb.collection.insertOne({\n  name: \"Alice\",\n  age: 25\n});\n// MongoDB automatically assigns an _id like ObjectId(\"61a5c6f0e8f0b7c4d5a9b8c7\")\n"
+    },
+    {
+      "question": "What are the basic CRUD operations in MongoDB, and how are they implemented?",
+      "answer": "CRUD operations in MongoDB include Create, Read, Update, and Delete. Here’s how they are implemented:\n1. **Create**: Use `insertOne()` or `insertMany()` to add documents to a collection.\njavascript\ndb.teachers.insertOne({\n  title: \"Mr.\",\n  last_name: \"Jack\",\n  subject: \"Geography\"\n});\n\n2. **Read**: Use `find()` or `findOne()` to retrieve documents. `findOne()` returns the first matching document.\njavascript\ndb.students.findOne({ first_name: \"Lea\" });\n\n3. **Update**: Use `updateOne()` or `updateMany()` to modify documents.\njavascript\ndb.students.updateOne(\n  { first_name: \"Bob\" },\n  { $set: { grade: 11 } }\n);\n\n4. **Delete**: Use `deleteOne()` or `deleteMany()` to remove documents.\njavascript\ndb.students.deleteOne({ last_name: \"Johnson\" });\n"
+    },
+    {
+      "question": "How does MongoDB's dynamic schema benefit developers?",
+      "answer": "MongoDB’s dynamic schema allows developers to model data naturally without rigid structures. Documents in the same collection can have different fields, making it easier to adapt to evolving data requirements. For example, one user document might include a `phone` field while another doesn’t, or new fields can be added without altering a schema. This flexibility is ideal for rapidly evolving applications."
+    },
+    {
+      "question": "What are the advantages of using BSON over plain JSON in MongoDB?",
+      "answer": "BSON (Binary JSON) is a binary-encoded format used by MongoDB for storing documents. It offers several advantages over plain JSON:\n1. **Speed**: BSON is more efficient for parsing and encoding due to its binary format.\n2. **Data Types**: BSON supports additional data types like dates, binary data, and regular expressions, which JSON does not natively support.\n3. **Storage Efficiency**: BSON is more compact than JSON for certain data types, reducing storage and memory usage.\n\nFor example, a date in BSON is stored as a binary value, making it faster to query and manipulate compared to a string in JSON."
+    }
+  ]
+}

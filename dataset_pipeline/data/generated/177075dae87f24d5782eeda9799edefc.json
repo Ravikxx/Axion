@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Arkadiy",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the meaning and origin of the name Arkadiy?",
+      "answer": "The name Arkadiy (Аркадий) is a Russian form of the Greek name Arkadios (Αρκαδιος), which itself derives from Arkas, a figure in Greek mythology associated with the region of Arcadia. The name means 'from Arcadia' or 'bear-like,' reflecting both geographical and symbolic roots."
+    },
+    {
+      "question": "Who is Arkadiy Abramovich and what is he known for?",
+      "answer": "Arkadiy Abramovich is the son of Roman Abramovich, a Russian billionaire and the former owner of Chelsea F.C. Born in 1993, Arkadiy Abramovich is known as the heir to his father’s substantial wealth and business empire, which includes diverse assets across sports, energy, and real estate."
+    },
+    {
+      "question": "List at least three notable individuals named Arkadiy who have contributed to sports.",
+      "answer": "Three notable individuals named Arkadiy in sports are: Arkadiy Chernyshev (1914–1992), a Soviet ice hockey and soccer player; Arkadiy Alov (1914–1982), a Soviet football player, coach, and referee; and Arkadiy Vasilyev (born 1987), a Russian decathlete who competes in track and field."
+    },
+    {
+      "question": "How would you write a Python function to extract all names starting with 'Arkadiy' from this dataset?",
+      "answer": "python\ndef extract_arkadiy_names(data):\n    return [entry for entry in data if entry.startswith('Arkadiy')]\n\n# Example usage:\ndata = [\n    \"Arkadiy Abramovich (born 1993)...\",\n    \"Arkadiy Akopyan (born 1984)...\",\n    \"Arkadiy Alov (1914–1982)...\",\n    # ... other entries\n]\narkadiy_names = extract_arkadiy_names(data)\nprint(arkadiy_names)\n"
+    },
+    {
+      "question": "What professions are represented among individuals named Arkadiy in the provided list?",
+      "answer": "The professions of individuals named Arkadiy in the list include: billionaire heir, professional footballer, football player/coach/referee, journalist (print and television), writer/literary critic, football player, swimmer, football manager/player, politician, football coach/player, football player, retired footballer, physicist, nobleman/diplomat, singer, poet, ice dancer, aircraft engine designer, football player, professor/economic security expert, football midfielder, association football player, investigative journalist/writer/filmmaker, decathlete."
+    },
+    {
+      "question": "Is Arkadiy Migdal known for contributions to physics? If so, in what field?",
+      "answer": "Yes, Arkadiy Migdal (1911–1991) was a Soviet physicist renowned for his work in theoretical physics. He was a member of the USSR Academy of Sciences and made significant contributions to quantum electrodynamics, nuclear physics, and the theory of superfluidity."
+    },
+    {
+      "question": "What is the nationality of Arkadiy Holovchenko and what sport did he compete in?",
+      "answer": "Arkadiy Holovchenko is Ukrainian and competed in swimming. Born in 1936, he is a former swimmer who represented Ukraine in the sport during his active career."
+    }
+  ]
+}

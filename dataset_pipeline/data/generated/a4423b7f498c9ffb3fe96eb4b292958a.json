@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Group_Embedded_Figures_Test",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the purpose of the Group Embedded Figures Test (GEFT)?",
+      "answer": "The Group Embedded Figures Test (GEFT) is a psychological assessment designed to measure cognitive style by placing individuals on a spectrum between field dependence and field independence. It assesses analytical ability by having respondents identify simple forms within complex figures."
+    },
+    {
+      "question": "Who developed the original Embedded Figures Test (EFT), and what was its purpose?",
+      "answer": "The Embedded Figures Test (EFT) was developed by Herman A. Witkin to assess cognitive style and analytical ability by measuring field dependence and field independence using figures suggested by Kurt Gottschaldt."
+    },
+    {
+      "question": "How does the GEFT assess field dependence and field independence?",
+      "answer": "The GEFT assesses field dependence and field independence by having respondents identify and trace a simple form within a complex figure. This process measures how well individuals can perceptually separate an element from its surrounding context."
+    },
+    {
+      "question": "What are the administration methods for the GEFT?",
+      "answer": "The GEFT can be administered in two ways: (1) paper-and-pencil, where respondents trace the simple form with a pencil, or (2) online, where respondents use a mouse cursor to click and drag to trace the form."
+    },
+    {
+      "question": "What is the time limit for the GEFT, and who is it designed for?",
+      "answer": "The GEFT is a timed test with a 20-minute duration. It is designed for individuals aged 10 and older, including older children, adolescents, and adults."
+    },
+    {
+      "question": "How was the GEFT validated, and what tests were used for comparison?",
+      "answer": "The GEFT was validated against the Embedded Figures Test (EFT) and the Rod-and-Frame Test (RFT) administered with the portable apparatus (PRFT). These comparisons helped establish its reliability and validity."
+    },
+    {
+      "question": "When was the online version of the GEFT developed, and how does its reliability compare to the paper-and-pencil version?",
+      "answer": "The online version of the GEFT was developed in 2014 by Jack Demick. A reliability and validity study found a strong correlation (r=.78) between the online and paper-and-pencil versions, matching the test-retest reliability of the paper-and-pencil GEFT."
+    },
+    {
+      "question": "Provide a Python code snippet to simulate a simple GEFT item using Pygame.",
+      "answer": "python\nimport pygame\nimport sys\n\n# Initialize Pygame\npygame.init()\n\n# Screen dimensions\nWIDTH, HEIGHT = 800, 600\nscreen = pygame.display.set_mode((WIDTH, HEIGHT))\npygame.display.set_caption(\"GEFT Simulation\")\n\n# Colors\nWHITE = (255, 255, 255)\nBLACK = (0, 0, 0)\nRED = (255, 0, 0)\n\n# Simple form (target) to find\nsimple_form = pygame.Rect(300, 200, 50, 50)\n\n# Complex figure (background)\ncomplex_figure = pygame.Rect(200, 100, 400, 400)\n\n# Mouse position\nmouse_pos = None\n\ndef draw_scene():\n    screen.fill(WHITE)\n    pygame.draw.rect(screen, BLACK, complex_figure, 2)\n    pygame.draw.rect(screen, RED, simple_form)\n    if mouse_pos:\n        pygame.draw.circle(screen, BLACK, mouse_pos, 5)\n    pygame.display.flip()\n\nrunning = True\nwhile running:\n    for event in pygame.event.get():\n        if event.type == pygame.QUIT:\n            running = False\n        elif event.type == pygame.MOUSEMOTION:\n            mouse_pos = event.pos\n        elif event.type == pygame.MOUSEBUTTONDOWN:\n            if simple_form.collidepoint(event.pos):\n                print(\"Simple form found!\")\n\n    draw_scene()\n\npygame.quit()\nsys.exit()\n"
+    }
+  ]
+}

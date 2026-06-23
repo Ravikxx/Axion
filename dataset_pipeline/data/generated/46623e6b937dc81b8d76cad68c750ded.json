@@ -1,0 +1,30 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Chinese-foreign_marriages_in_mainland_China",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the historical trend of Chinese-foreign marriages in mainland China from 1949 to the early 1990s?",
+      "answer": "From the founding of the People’s Republic of China (PRC) in 1949 until the early 1990s, Chinese-foreign marriages were considered unusual and outside societal norms. This period saw very low registration rates for such marriages, reflecting cultural and social attitudes of the time."
+    },
+    {
+      "question": "How did the number of registered Chinese-foreign marriages in mainland China change between 1979 and 2010?",
+      "answer": "According to data from the PRC’s Ministry of Civil Affairs, the number of registered Chinese-foreign marriages in mainland China increased nearly tenfold from 1979 to 2010. In 1979, the figures were relatively low, but by 2010, the count had risen significantly, indicating a growing trend in cross-border marriages."
+    },
+    {
+      "question": "What was the most common type of Chinese-foreign marriage in mainland China until the late 2000s, and how did it change over time?",
+      "answer": "Until the late 2000s, the most common type of Chinese-foreign marriage in mainland China was between a mainland Chinese woman and a man from Hong Kong, Macao, or Taiwan. This trend involved over 8,000 women in 1979, peaking at nearly 68,000 in 2001, and then declining to below 40,000 by 2010."
+    },
+    {
+      "question": "How does the proportion of Chinese men marrying foreign brides in mainland China compare to Chinese women marrying foreign grooms?",
+      "answer": "The proportion of Chinese men registering marriages with foreign brides in mainland China has been consistently low. For example, only 250 men did so in 1979, peaking at around 20,000 in 2005, and declining to less than 12,000 by 2010. In contrast, the number of Chinese women marrying foreign grooms from Hong Kong, Macao, or Taiwan was significantly higher, especially during the late 1990s and early 2000s."
+    },
+    {
+      "question": "Why might Chinese-foreign marriages remain relatively rare compared to domestic marriages in mainland China?",
+      "answer": "Several factors contribute to the relatively low number of Chinese-foreign marriages compared to domestic marriages. These include cultural and social norms, legal and bureaucratic hurdles, economic disparities, and the preference for intra-national marriages over international ones. Additionally, historical policies and societal attitudes may have influenced these trends."
+    },
+    {
+      "question": "Write a Python script to visualize the trend of Chinese-foreign marriages from 1979 to 2010 using the provided data.",
+      "answer": "python\nimport matplotlib.pyplot as plt\n\n# Data for women marrying men from Hong Kong, Macao, or Taiwan\nyears_women = [1979, 1985, 1990, 1995, 2001, 2005, 2010]\nmarriages_women = [8000, 12000, 25000, 50000, 68000, 55000, 38000]\n\n# Data for men marrying foreign brides\nyears_men = [1979, 1985, 1990, 1995, 2001, 2005, 2010]\nmarriages_men = [250, 500, 2000, 8000, 15000, 20000, 12000]\n\nplt.figure(figsize=(10, 6))\nplt.plot(years_women, marriages_women, label='Women marrying HK/Macao/Taiwan men', marker='o')\nplt.plot(years_men, marriages_men, label='Men marrying foreign brides', marker='o')\nplt.xlabel('Year')\nplt.ylabel('Number of Marriages')\nplt.title('Trend of Chinese-Foreign Marriages in Mainland China (1979-2010)')\nplt.legend()\nplt.grid(True)\nplt.show()\n"
+    }
+  ]
+}

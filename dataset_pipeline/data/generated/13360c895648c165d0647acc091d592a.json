@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Division",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is the mathematical definition of division and how does it relate to multiplication?",
+      "answer": "In mathematics, division is a binary operation that serves as the inverse of multiplication. For two numbers, the division of a by b (written as a ÷ b or a/b) answers the question: 'How many times does b fit into a?' or 'What number multiplied by b equals a?'. Mathematically, if a ÷ b = c, then a = b × c. For example, 12 ÷ 3 = 4 because 3 × 4 = 12. Division is undefined when b = 0."
+    },
+    {
+      "question": "How is division implemented in digital electronics?",
+      "answer": "In digital electronics, division can be implemented using digital circuits that approximate or compute the quotient of two binary numbers. For example, an n-bit divider circuit typically uses a combination of adders, subtractors, and shift registers to iteratively subtract the divisor from the dividend and shift bits to compute the result. Below is a simplified Python-like pseudocode for a basic division algorithm using repeated subtraction:\n\npython\ndef divide(dividend, divisor):\n    if divisor == 0:\n        raise ValueError(\"Division by zero is undefined\")\n    quotient = 0\n    while dividend >= divisor:\n        dividend -= divisor\n        quotient += 1\n    return quotient, dividend  # (quotient, remainder)\n\n\nModern processors use more efficient algorithms like non-restoring division or the SRT algorithm for faster computation."
+    },
+    {
+      "question": "What are the main classifications of administrative divisions in a country?",
+      "answer": "Administrative divisions are subnational regions created for governance purposes. The main classifications include:\n1. **Political**: Provinces, states, counties, municipalities, or districts.\n2. **Functional**: Divisions based on specific roles (e.g., postal codes, census tracts).\n3. **Geographical**: Divisions like regions, valleys, or zones.\n4. **Hierarchical**: Multi-level systems (e.g., country → province → district → village).\n\nFor example, the United States has states, counties, and townships, while France has regions, departments, and communes. The exact structure depends on the country's constitution and legal framework."
+    },
+    {
+      "question": "Explain the concept of 'Continental Divide' with an example.",
+      "answer": "A Continental Divide is a geographical boundary that separates a continent's river systems, directing water flow to different oceans or seas. For example, the **Continental Divide of the Americas** (also called the Great Divide) runs along the Rocky Mountains. Precipitation east of the divide flows toward the Atlantic Ocean or Gulf of Mexico, while water west of the divide flows toward the Pacific Ocean. This divide influences climate, biodiversity, and human settlement patterns."
+    },
+    {
+      "question": "How does cell division differ from other types of division mentioned in the text?",
+      "answer": "Cell division is a biological process where a single cell (the parent cell) divides into two or more daughter cells, enabling growth, repair, and reproduction. Unlike mathematical or organizational divisions, cell division involves:\n\n1. **Mitosis**: Produces two genetically identical diploid cells for growth/repair.\n2. **Meiosis**: Produces four haploid gametes (sperm/egg) for sexual reproduction.\n\nIn contrast, other divisions (e.g., mathematical or military) are abstract or organizational constructs without biological mechanisms. Cell division is fundamental to life, while other divisions are human-defined systems."
+    },
+    {
+      "question": "What is a 'Division (vote)' and how is it recorded in legislatures?",
+      "answer": "A Division (vote) is a method used in legislatures to record individual votes explicitly, often to ensure transparency. Instead of a voice vote or unanimous consent, members physically divide into groups (e.g., 'yeas' and 'nays') and are counted by clerks or electronic systems. For example, in the U.S. House of Representatives, a division vote requires members to stand and be counted by the Sergeant-at-Arms. This method is used when the outcome is uncertain or when a recorded vote is requested."
+    },
+    {
+      "question": "Provide an example of a 'Division (business)' and explain its purpose.",
+      "answer": "A Division (business) is a semi-autonomous unit within a larger company, often organized by product line, geography, or function. For example, **General Motors (GM)** has divisions like Chevrolet (automobiles), Cadillac (luxury vehicles), and GM Financial (financial services).\n\n**Purpose**:\n- **Specialization**: Focus on specific markets or products.\n- **Accountability**: Clear profit/loss tracking per division.\n- **Flexibility**: Adapt quickly to local conditions.\n- **Strategic Growth**: Acquire or divest divisions independently.\n\nDivisions operate under the parent company's umbrella but manage their own operations, budgets, and strategies."
+    }
+  ]
+}

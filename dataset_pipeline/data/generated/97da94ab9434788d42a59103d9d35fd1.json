@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Basilar-type_migraine",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is basilar-type migraine and where does its headache typically originate?",
+      "answer": "Basilar-type migraine is a subtype of migraine with aura characterized by a headache that usually starts in the occipital region, located in the lower back part of the brain. The term 'basilar' refers to the base of the skull or the bottom of a body part, derived from Middle French."
+    },
+    {
+      "question": "What are the primary brain regions affected in basilar-type migraine?",
+      "answer": "Symptoms of basilar-type migraine are believed to originate in the brainstem, occipital cortex, and cerebellum. The pain may affect both hemispheres of the brain simultaneously."
+    },
+    {
+      "question": "How common is basilar-type migraine among different age groups?",
+      "answer": "Basilar-type migraine is most commonly observed in young people, particularly those aged 10–19 years. It is less frequently reported in other age groups."
+    },
+    {
+      "question": "What is the origin of the term 'basilar' in basilar-type migraine?",
+      "answer": "The term 'basilar' comes from the Middle French word 'basilaire,' meaning 'of or related to the base.' In medical contexts, it typically refers to the base or bottom of a body part, such as the skull."
+    },
+    {
+      "question": "Why is it called 'basilar-type' migraine if it may not involve the basilar artery?",
+      "answer": "It was initially described in brain regions supplied by the basilar artery, such as parts of the brainstem and posterior fossa. However, later observations showed it can affect other brain areas, and the basilar artery may not be the root cause, as no definitive proof exists linking it to problems in the basilar artery."
+    },
+    {
+      "question": "How does basilar-type migraine differ from other types of migraines with aura?",
+      "answer": "Most individuals with basilar-type migraine also experience migraines with aura without basilar symptoms. The distinguishing feature is the involvement of specific brain regions (brainstem, occipital cortex, cerebellum) and the potential for bilateral brain pain, which is less common in typical migraines with aura."
+    },
+    {
+      "question": "Write a Python function to simulate the frequency distribution of basilar-type migraine across age groups based on the given information.",
+      "answer": "python\nimport matplotlib.pyplot as plt\n\ndef plot_migraine_frequency():\n    age_groups = ['0-9', '10-19', '20-29', '30-39', '40+']\n    frequencies = [0, 85, 10, 3, 2]  # Approximate distribution based on given data\n    \n    plt.bar(age_groups, frequencies, color='skyblue')\n    plt.xlabel('Age Groups')\n    plt.ylabel('Frequency (%)')\n    plt.title('Estimated Frequency of Basilar-Type Migraine by Age Group')\n    plt.show()\n\nplot_migraine_frequency()\n\nThis function creates a bar chart illustrating the higher prevalence of basilar-type migraine in the 10–19 age group compared to others."
+    }
+  ]
+}

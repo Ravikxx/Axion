@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Absolute_monarchy_in_France",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What historical factors contributed to the rise of absolute monarchy in France during the 16th century?",
+      "answer": "Absolute monarchy in France emerged in the 16th century as a centralized political system designed to consolidate royal authority over feudal and provincial powers. Key figures like Henry IV laid early groundwork, while Cardinals Richelieu and Mazarin institutionalized the system. Louis XIV later perfected it by centralizing authority at Versailles and reinforcing the divine right of kings, which claimed monarchs derived their power directly from God."
+    },
+    {
+      "question": "How did Louis XIV use the Palace of Versailles to strengthen absolute monarchy?",
+      "answer": "Louis XIV domesticated the high nobility by requiring them to reside at the Palace of Versailles, effectively turning them into courtiers dependent on royal favor rather than feudal lords. This centralized power by keeping potential rivals close, allowing him to assert executive, legislative, and judicial authority under his singular control. The opulent setting also symbolized the grandeur of the monarchy, reinforcing its sacral and unassailable image."
+    },
+    {
+      "question": "What was the doctrine of the divine right of kings, and how did Louis XIV apply it?",
+      "answer": "The doctrine of the divine right of kings argued that monarchs derived their authority directly from God, making their rule absolute and unchallengeable by any earthly power. Louis XIV explicitly embraced this ideology, declaring 'L'État, c'est moi' ('I am the state') to assert that his will equaled the state's identity. This justification allowed him to bypass traditional checks like aristocratic assemblies or parliaments, consolidating power under the crown."
+    },
+    {
+      "question": "How did the Enlightenment challenge the legitimacy of absolute monarchy in France?",
+      "answer": "The Enlightenment, with its emphasis on reason, empiricism, and individual rights, undermined the traditional sacral justifications for monarchy. Thinkers like Voltaire and Rousseau questioned the divine right of kings, arguing that authority should derive from the people or rational governance, not divine mandate. This intellectual shift created a growing disconnect between the monarchy's legitimacy and the evolving public consciousness."
+    },
+    {
+      "question": "What were the key obstacles to fiscal reform under Louis XVI?",
+      "answer": "Louis XVI faced resistance to fiscal reforms from entrenched aristocratic interests and the complex, overlapping jurisdictions of the Ancien Régime. The nobility and clergy, exempt from many taxes, blocked efforts like the 1787 Assembly of Notables, which sought to introduce reforms. Additionally, regional parlements and local privileges created bureaucratic hurdles, making it nearly impossible to implement meaningful changes without dismantling the existing power structures."
+    },
+    {
+      "question": "Compare French absolutism under Louis XIV with enlightened absolutism under Frederick the Great. Provide a code-like structured comparison.",
+      "answer": "\nComparison of Absolutism Models:\n\n| Aspect               | Louis XIV (France)                          | Frederick the Great (Prussia)              |\n|----------------------|--------------------------------------------|--------------------------------------------|\n| Justification        | Divine right of kings                      | Rationalism, 'first servant of the state' |\n| Social Hierarchy     | Rigid, sacral (nobility tied to court)     | Meritocratic elements (reforms for efficiency) |\n| Economic Policy      | Mercantilism ( Colbert's policies)         | State-directed industrialization           |\n| Military Focus       | Expansionist wars (e.g., War of Spanish Succession) | Professionalized army, but defensive stance |\n| Intellectual Climate | Rejected Enlightenment ideals              | Embraced Enlightenment reforms (e.g., religious tolerance) |\n\nFrench absolutism prioritized tradition and divine legitimacy, while enlightened absolutism justified power through rational governance and societal benefit."
+    },
+    {
+      "question": "What long-term consequences did the rigid social hierarchy of French absolutism have on the French Revolution?",
+      "answer": "The rigid social hierarchy under French absolutism—where the nobility and clergy held disproportionate privileges while the Third Estate bore the burden of taxes—fueled widespread resentment. This inequality was a core grievance during the French Revolution, as Enlightenment ideals and fiscal crises collided with the monarchy's inability to reform. The Ancien Régime's collapse in 1789 can be traced back to these structural contradictions."
+    }
+  ]
+}

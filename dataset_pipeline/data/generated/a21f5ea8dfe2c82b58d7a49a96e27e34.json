@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Kagi_Shrine",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the original name of the location where Kagi Shrine was built in Japanese Taiwan?",
+      "answer": "The shrine was originally built in a place called Soa-a-teng (山仔頂; Pe̍h-ōe-jī: Soaⁿ-á-téng), which is known today as Chiayi Park in Chiayi City, Taiwan."
+    },
+    {
+      "question": "How many times was the orientation of Kagi Shrine changed, and in which years did these changes occur?",
+      "answer": "Kagi Shrine was altered twice in terms of orientation. It was initially built facing south in 1915, then changed to face west in 1942."
+    },
+    {
+      "question": "What deities were enshrined at Kagi Shrine?",
+      "answer": "The deities enshrined at Kagi Shrine were Prince Yoshihisa, Ōkunitama no Mikoto (大国魂命), Ōnamuchi no Mikoto, Sukunahikona no Mikoto (少彦名命), and Amaterasu."
+    },
+    {
+      "question": "What happened to the honden (main hall) of Kagi Shrine after World War II?",
+      "answer": "After World War II, the honden (main hall) was repurposed as a martyrs' shrine by the Republic of China government. However, it was destroyed in a fire on 24 April 1994."
+    },
+    {
+      "question": "Describe the architectural style of the main office and purification hall of Kagi Shrine, and when were they opened to the public?",
+      "answer": "The main office (社務所) and purification hall (斎館) were built in the classical Japanese Shoin-zukuri architectural style. They were repaired and opened to the public as the Chiayi City Historical Relics Museum on 5 January 2001."
+    },
+    {
+      "question": "What is the Chinese name of the Chiayi Tower, and what is its significance?",
+      "answer": "The Chiayi Tower is called Sun-Shooting Tower in Chinese. It was built in 1998 to replace the main hall and is inspired by an indigenous mythological tale about the creator of the world. The tower houses an observation deck."
+    },
+    {
+      "question": "Provide a code snippet to calculate the number of years between the shrine's elevation to the rank of small shrine and its destruction by fire.",
+      "answer": "python\nelevation_year = 1944\ndestruction_year = 1994\nyears_between = destruction_year - elevation_year\nprint(years_between)  # Output: 50\n"
+    }
+  ]
+}

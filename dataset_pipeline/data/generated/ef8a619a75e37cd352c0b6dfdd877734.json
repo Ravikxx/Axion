@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Honda_RA302",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the Honda RA302, and why was it significant in Formula One history?",
+      "answer": "The Honda RA302 was an air-cooled Formula One racing car produced by Honda Racing France in 1968. It was significant because it was the first Formula One car to feature a magnesium body, which contributed to its poor safety record. The RA302 was involved in a fatal crash during its sole race at the 1968 French Grand Prix, highlighting the dangers of magnesium in racing car construction and leading Honda to withdraw from Grand Prix racing until 2006."
+    },
+    {
+      "question": "Who designed the Honda RA302, and what was its primary engineering feature?",
+      "answer": "The Honda RA302 was designed under the direction of Soichiro Honda, who specifically ordered the development of an air-cooled Formula One engine. Its primary engineering feature was its magnesium-skinned body, which was intended to reduce weight but ultimately compromised safety due to the metal's flammability."
+    },
+    {
+      "question": "Why did John Surtees refuse to drive the RA302, and what was the outcome of his decision?",
+      "answer": "John Surtees refused to drive the RA302 because he deemed it unsafe, calling it a 'potential deathtrap.' His refusal led to Jo Schlesser being chosen as the driver. Schlesser crashed the car during the 1968 French Grand Prix, resulting in a fatal accident that confirmed Surtees' concerns."
+    },
+    {
+      "question": "Describe the circumstances of Jo Schlesser's fatal crash in the RA302 during the 1968 French Grand Prix.",
+      "answer": "During the 1968 French Grand Prix at Rouen-Les-Essarts, Jo Schlesser crashed the RA302 on lap three at the Virage des Six Frères corner. The magnesium body and 58 laps worth of fuel ignited instantly upon impact, killing Schlesser and destroying the original RA302."
+    },
+    {
+      "question": "What modifications were made to the second RA302, and why was it ultimately not raced by John Surtees?",
+      "answer": "The second RA302 was built with slight modifications from the original, but John Surtees again refused to drive it due to safety concerns. As a result, Honda decided to withdraw from Grand Prix racing entirely after this incident."
+    },
+    {
+      "question": "How did the Honda RA302 influence Honda's participation in Formula One racing?",
+      "answer": "The fatal crash of the RA302 and the subsequent withdrawal of Honda from Grand Prix racing as a constructor were directly influenced by the car's poor safety record and magnesium body. Honda did not return as a Formula One constructor until 2006 with the RA106."
+    },
+    {
+      "question": "Where is the second RA302 chassis, originally intended for the 1968 Italian Grand Prix, currently located?",
+      "answer": "The second RA302 chassis, which was intended for John Surtees to drive at the 1968 Italian Grand Prix, is currently on display at the Honda Collection Hall as of 2012."
+    }
+  ]
+}

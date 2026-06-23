@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Ilustrowany_Kuryer_Codzienny_(publisher)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the full name and abbreviation of the publishing house founded by Marian Dąbrowski in 1910?",
+      "answer": "The publishing house was called Ilustrowany Kuryer Codzienny, abbreviated as IKC or Ikac."
+    },
+    {
+      "question": "What were the key innovations introduced by Ilustrowany Kuryer Codzienny (IKC) that influenced Polish press development?",
+      "answer": "IKC introduced several innovations, including a modern rail-based distribution system for rapid nationwide delivery, a rotary printing press visible from the street, a photo agency 'Światowid' supplying images to foreign press, and early use of fultography for transmitting photographs by radio."
+    },
+    {
+      "question": "How did Marian Dąbrowski's management style contribute to IKC's success?",
+      "answer": "Dąbrowski demonstrated exceptional management acumen by employing a diverse editorial team with varied political backgrounds, implementing an incentive-based payment system for journalists, and establishing an extensive network of branches and correspondents both domestically and abroad."
+    },
+    {
+      "question": "Provide a code snippet simulating the rail-based distribution speed of IKC's newspaper compared to traditional methods.",
+      "answer": "python\n# Simulating distribution speed comparison\ntraditional_speed = 0.5  # days per 100km (horse carriage)\nikc_speed = 1.0  # days per 100km (rail-based)\ndistance = 300  # km from Kraków to Warsaw\n\ntraditional_time = distance * traditional_speed\nikc_time = distance / ikc_speed\n\nprint(f\"Traditional delivery time: {traditional_time} days\")\nprint(f\"IKC rail-based delivery time: {ikc_time} days\")\n# Output: Traditional delivery time: 150 days, IKC rail-based delivery time: 300 days\n"
+    },
+    {
+      "question": "List three magazines published by IKC besides its flagship daily newspaper.",
+      "answer": "IKC published several magazines including 'Światowid' (a high-class monthly), 'Na szerokim świecie' (for rural readers), and 'Raz, dwa, trzy' (a sports weekly)."
+    },
+    {
+      "question": "What was the significance of the rotary printing press purchased by IKC from Turkey?",
+      "answer": "The rotary printing press was a technical innovation in Kraków that allowed for faster printing. It was positioned visible through a street-facing window, serving both as an attraction for passersby and effective advertisement for the newspaper's modernity."
+    },
+    {
+      "question": "How did IKC's photo agency 'Światowid' impact Polish journalism?",
+      "answer": "Światowid became the most important supplier of Polish photos to the foreign press, establishing IKC as a pioneer in photojournalism and enabling international exposure of Polish events and culture."
+    }
+  ]
+}

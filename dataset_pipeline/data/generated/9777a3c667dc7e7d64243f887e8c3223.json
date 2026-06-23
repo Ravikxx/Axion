@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Combustibility_and_flammability",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What defines a combustible material and how does it differ from a flammable material?",
+      "answer": "A combustible material is one capable of sustaining a flame under certain conditions, while a flammable (or inflammable) material ignites easily at room temperature. Combustible materials require more effort to ignite compared to flammable materials, which ignite almost immediately when exposed to a flame."
+    },
+    {
+      "question": "What factors influence the flammability of a material in air?",
+      "answer": "The primary factor is how easily the material vaporizes, which is determined by its composition-specific vapor pressure and temperature. Increasing the surface area of the material, such as forming a mist or dust, enhances the quantity of vapor produced. For example, finely divided wood dust can ignite explosively, whereas a solid piece of oak is much harder to ignite despite the same wood fibers."
+    },
+    {
+      "question": "Why does finely divided wood dust pose a greater fire risk than a solid piece of oak, even though both are made of wood?",
+      "answer": "Finely divided wood dust has a much larger surface area compared to a solid piece of oak. This increased surface area allows more material to vaporize quickly, producing a higher concentration of flammable vapors that ignite almost instantly. In contrast, a solid oak desk has less exposed surface area, making it harder to ignite."
+    },
+    {
+      "question": "Explain the conservation of mass in the context of burning a material like paper.",
+      "answer": "The conservation of mass principle states that the total mass before and after a chemical reaction remains the same. When paper burns, it appears to lose mass because the combustion gases (such as carbon dioxide and water vapor) are often not accounted for. The original mass of the paper plus the oxygen consumed from the air equals the mass of the combustion products (ash, gases, and other residues). For example, if you burn 1 gram of paper, the resulting ash, gases, and soot will also weigh approximately 1 gram when the mass of oxygen is included."
+    },
+    {
+      "question": "How does burning a metal like magnesium demonstrate the conservation of mass?",
+      "answer": "When magnesium burns, it reacts with oxygen in the air to form magnesium oxide. The mass of the resulting magnesium oxide is greater than the original magnesium because oxygen atoms are incorporated into the solid compound. This shows that mass is conserved in the reaction: the mass of magnesium plus the mass of oxygen consumed equals the mass of magnesium oxide produced. For instance, burning 24 grams of magnesium (atomic mass 24) with 16 grams of oxygen (atomic mass 16) yields 40 grams of magnesium oxide."
+    },
+    {
+      "question": "Write a Python function to simulate the mass conservation during the combustion of a material.",
+      "answer": "python\n\ndef mass_conservation_combustion(initial_mass_material, initial_mass_oxygen, product_weights):\n    \"\"\"\n    Simulates mass conservation during combustion of a material.\n    \n    Args:\n        initial_mass_material: Mass of the combustible material (e.g., wood, paper).\n        initial_mass_oxygen: Mass of oxygen consumed from the air.\n        product_weights: Dictionary of product names and their masses (e.g., {'ash': 0.5, 'CO2': 1.2, 'H2O': 0.8}).\n    \n    Returns:\n        Total mass of products (ash, gases, etc.) and checks if mass is conserved.\n    \"\"\"\n    total_initial_mass = initial_mass_material + initial_mass_oxygen\n    total_product_mass = sum(product_weights.values())\n    \n    mass_conserved = abs(total_initial_mass - total_product_mass) < 1e-6  # Allowing for floating point precision\n    \n    return {\n        'total_initial_mass': total_initial_mass,\n        'total_product_mass': total_product_mass,\n        'mass_conserved': mass_conserved,\n        'products': product_weights\n    }\n\n# Example usage:\nproducts = {'ash': 0.5, 'CO2': 1.2, 'H2O': 0.8}\nresult = mass_conservation_combustion(1.0, 2.0, products)\nprint(result)\n"
+    },
+    {
+      "question": "Why did early scientific consensus believe materials disappeared when burned? What evidence disproved this idea?",
+      "answer": "Early scientific consensus assumed materials disappeared when burned because only the solid residue (ash) was visible, while the combustion gases (like carbon dioxide and water vapor) were not accounted for. Further research in the mid-1700s demonstrated that mass is conserved in chemical reactions, showing that the apparent loss of mass was due to unmeasured gaseous products. Experiments with metals like magnesium, which gain mass when burned, provided clear evidence that oxygen from the air is incorporated into the solid products, supporting the conservation of mass principle."
+    }
+  ]
+}

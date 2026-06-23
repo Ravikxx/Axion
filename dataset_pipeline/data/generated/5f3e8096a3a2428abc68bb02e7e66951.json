@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Acalymma_vittatum",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the scientific name and family of the striped cucumber beetle?",
+      "answer": "The striped cucumber beetle's scientific name is *Acalymma vittatum*, and it belongs to the family Chrysomelidae."
+    },
+    {
+      "question": "Why are striped cucumber beetles attracted to cucurbit plants like cucumbers?",
+      "answer": "Striped cucumber beetles are attracted to cucurbit plants because they are drawn to cucurbitacin, a chemical produced by these plants. Interestingly, while cucurbitacin acts as a defense mechanism against many herbivores, striped cucumber beetles have evolved resistance to it, making these plants a preferred food source."
+    },
+    {
+      "question": "What is the distribution range of the striped cucumber beetle?",
+      "answer": "The striped cucumber beetle is distributed from eastern North America to the Rocky Mountains. Its range extends as far south as Mexico and as far north as southern Canada."
+    },
+    {
+      "question": "How does the striped cucumber beetle differ from *Acalymma trivittatum* in western North America?",
+      "answer": "In western North America, beyond the Rocky Mountains, the striped cucumber beetle is replaced by *Acalymma trivittatum*, which has a duller coloration with grayish or pale white elytra instead of the yellow with black stripes seen in *A. vittatum*."
+    },
+    {
+      "question": "What role do male striped cucumber beetles play in attracting others to feeding sites?",
+      "answer": "Male striped cucumber beetles release pheromones that cause other striped cucumber beetles to aggregate at the feeding site. This aggregation behavior provides mating opportunities for the males with the females that arrive."
+    },
+    {
+      "question": "Provide an example of coevolution involving the striped cucumber beetle.",
+      "answer": "An example of coevolution involving the striped cucumber beetle is its resistance to cucurbitacin, a chemical defense produced by cucurbit plants. While cucurbitacin deters most herbivores, the beetle has evolved to be attracted to it, showing an adaptive response to the plant's defense mechanism."
+    },
+    {
+      "question": "What are two methods used to manage striped cucumber beetle populations in early spring?",
+      "answer": "Two methods used to manage striped cucumber beetle populations in early spring include the use of biological control agents (e.g., natural predators or parasites) and strategies involving bait crops (e.g., planting attractive crops to lure beetles away from main crops)."
+    }
+  ]
+}

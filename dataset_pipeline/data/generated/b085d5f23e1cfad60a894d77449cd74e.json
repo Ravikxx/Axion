@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Abbas_Maleki",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What academic degrees has Abbas Maleki earned, and from which institutions?",
+      "answer": "Abbas Maleki holds a Ph.D. in Strategic Management from the High University of Strategic Sciences, an MSc in Industrial Engineering and Management, and a BSc in Mechanical Engineering, both from Sharif University of Technology."
+    },
+    {
+      "question": "What significant political roles did Abbas Maleki play in Iran between 1980 and 1997?",
+      "answer": "Between 1980 and 1997, Abbas Maleki served as the Deputy Foreign Minister of Iran. Additionally, from 1987 to 1992, he was a member of the negotiating team for ending the Iran-Iraq War."
+    },
+    {
+      "question": "Which prestigious fellowships and affiliations has Abbas Maleki held outside Iran?",
+      "answer": "Abbas Maleki was the Robert E. Wilhelm Fellow at the Centre for International Studies, MIT (2011-2012), and the Senior Associate at the Belfer Center for Science and International Affairs, Harvard Kennedy School of Government (2007-2017). He was also a member of the Network of Global Agenda Councils of the World Economic Forum (Davos) for 2011-2012."
+    },
+    {
+      "question": "What book did Abbas Maleki co-edit, and who was his co-editor?",
+      "answer": "Abbas Maleki co-edited the book titled 'US-Iran Misperception: A Dialogue' with John Tirman during his fellowship period at MIT."
+    },
+    {
+      "question": "In which research institute at Sharif University of Technology does Abbas Maleki work, and what is his academic position there?",
+      "answer": "Abbas Maleki is an associate professor of energy policy in the Department of Energy Engineering and the Research Institute for Science, Technology, and Industry Policy (RISTIP) at Sharif University of Technology in Tehran."
+    },
+    {
+      "question": "What are some of the key research topics Abbas Maleki has published on?",
+      "answer": "Abbas Maleki has published extensively on topics such as energy policy, energy security, public policy, foreign policy of Iran, the Islamic Revolution of Iran, Central Asia, Transcaucasia, and Caspian Studies."
+    },
+    {
+      "question": "How would you design a Python script to extract and summarize key academic and professional milestones from a biography like Abbas Maleki's?",
+      "answer": "Here is a Python script using regular expressions to extract and summarize key milestones from a biography text:\n\npython\nimport re\n\ndef extract_milestones(biography_text):\n    milestones = {\n        \"Education\": [],\n        \"Political Roles\": [],\n        \"Fellowships\": [],\n        \"Publications\": []\n    }\n    \n    # Education patterns\n    education_patterns = {\n        \"Ph.D.\": r\"Ph\\.D\\. in (.*?) from (.*?)\",\n        \"MSc\": r\"MSc in (.*?) from (.*?)\",\n        \"BSc\": r\"BSc in (.*?) from (.*?)\"\n    }\n    \n    for degree, pattern in education_patterns.items():\n        matches = re.findall(pattern, biography_text)\n        for match in matches:\n            milestones[\"Education\"].append(f\"{degree}: {match[0]} from {match[1]}\")\n    \n    # Political roles pattern\n    political_roles = re.findall(r\"(?:Deputy Foreign Minister|member of the negotiating team).*?(?:from (.*?) to (.*?))\", biography_text)\n    for role in political_roles:\n        milestones[\"Political Roles\"].append(f\"{role[0]} to {role[1]}\")\n    \n    # Fellowships pattern\n    fellowships = re.findall(r\"(.*?) Fellow at (.*?)\", biography_text)\n    for fellowship in fellowships:\n        milestones[\"Fellowships\"].append(f\"{fellowship[0]} Fellow at {fellowship[1]}\")\n    \n    return milestones\n\n# Example usage:\nbiography = \"... Abbas Maleki's biography text ...\"\nprint(extract_milestones(biography))\n\nThis script categorizes extracted information into education, political roles, fellowships, and publications, which can be further refined based on specific patterns in the input text."
+    }
+  ]
+}

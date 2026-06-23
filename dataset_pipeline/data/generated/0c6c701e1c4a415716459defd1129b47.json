@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Eurovision_Young_Musicians_2014",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who won the Eurovision Young Musicians 2014 competition?",
+      "answer": "The winner of the Eurovision Young Musicians 2014 was violinist Ziyu He representing Austria."
+    },
+    {
+      "question": "Which orchestra accompanied the performers in the Eurovision Young Musicians 2014 final?",
+      "answer": "The WDR Symphony Orchestra, conducted by Kristiina Poska, accompanied all competing performers in the final."
+    },
+    {
+      "question": "How many countries participated in the Eurovision Young Musicians 2014, and which countries made their debut?",
+      "answer": "Fourteen countries participated in the 2014 contest. Malta and Moldova made their debut at this edition of the competition."
+    },
+    {
+      "question": "What were the names and rankings of the top three finalists in the Eurovision Young Musicians 2014?",
+      "answer": "The top three finalists were: 1st place - Ziyu He (Austria, violin), 2nd place - Urban Stanič (Slovenia, piano), and 3rd place - Gergely Devich (Hungary, cello)."
+    },
+    {
+      "question": "Describe the format and key dates of the Eurovision Young Musicians 2014 competition.",
+      "answer": "The Eurovision Young Musicians 2014 consisted of a two-part preliminary round held on 26 and 27 May at Funkhaus Wallrafplatz in Cologne, Germany. The final took place on 31 May 2014 outside the Cologne Cathedral. All participating musicians automatically qualified for the final after the preliminary rounds."
+    },
+    {
+      "question": "How many times has Germany hosted the Eurovision Young Musicians competition, including 2014?",
+      "answer": "Including the 2014 edition, Germany has hosted the Eurovision Young Musicians competition twice: once in 2002 and again in 2014."
+    },
+    {
+      "question": "Write a Python snippet to list all countries that participated in Eurovision Young Musicians 2014, excluding those that did not.",
+      "answer": "Here is a Python snippet to list the participating countries in 2014:\n\nparticipants_2014 = [\n    \"Austria\", \"Slovenia\", \"Hungary\", \"Germany\", \"Switzerland\", \n    \"Netherlands\", \"Poland\", \"Czech Republic\", \"Portugal\", \"Italy\", \n    \"Croatia\", \"Malta\", \"Moldova\", \"Spain\"\n]\n\nprint(participants_2014)"
+    }
+  ]
+}

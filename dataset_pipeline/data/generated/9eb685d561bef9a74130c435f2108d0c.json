@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/ISOTX",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who founded ISOTX and in what year?",
+      "answer": "ISOTX was founded by Vincent van Geel and Byron Rupp in 2005."
+    },
+    {
+      "question": "What was ISOTX's first commercial game, and how was it received?",
+      "answer": "ISOTX's first commercial game was Iron Grip: Warlord, released in 2008. It received mixed reviews, with IGN rating it 4.5/10 and smaller websites giving more positive feedback. The gameplay mixed first-person shooter elements with tower defense mechanics."
+    },
+    {
+      "question": "What is the Iron Grip Universe, and which ISOTX game introduced it?",
+      "answer": "The Iron Grip Universe is a dieselpunk alternative reality setting where nearly all ISOTX games take place. It was introduced with Iron Grip: The Oppression, a mod for Half-Life 2 released after their first mod, the MidEast Crisis mod for C&C Generals."
+    },
+    {
+      "question": "Describe the key features of Iron Grip: Marauders that were introduced in the 'Boss Smash Patch' released in May 2011.",
+      "answer": "The 'Boss Smash Patch' for Iron Grip: Marauders included several key features such as a day and night cycle, additional units, avatar customization, and randomly attacking bosses. Other notable additions were a base building system (later removed), a smuggling system, and an automated assault system where players could send units on a 10-minute battle."
+    },
+    {
+      "question": "How did ISOTX integrate with QINQO in April 2012, and in which regions did this partnership allow in-game currency purchases?",
+      "answer": "In April 2012, ISOTX partnered with QINQO to allow players in Belgium and the Netherlands to purchase in-game currency using prepaid QINQO cards. This integration enabled more accessible payment options for players in those regions."
+    },
+    {
+      "question": "What is March of War, and what unique gameplay model does it use?",
+      "answer": "March of War is a free-to-play strategic, turn-based episodic multiplayer online game released by ISOTX in 2013. It features a TV series-inspired model where a new episode is released every month, introducing new features and content. The game is set in a dieselpunk-influenced 1940 world with six warring factions, over 80 units, 60 maps, and four gameplay modes."
+    },
+    {
+      "question": "Provide a Python code snippet to simulate a simple turn-based battle in March of War, assuming a player controls a faction and selects units to attack.",
+      "answer": "python\nimport random\n\nclass Unit:\n    def __init__(self, name, attack, defense):\n        self.name = name\n        self.attack = attack\n        self.defense = defense\n\nclass Faction:\n    def __init__(self, name):\n        self.name = name\n        self.units = []\n\n    def add_unit(self, unit):\n        self.units.append(unit)\n\n    def attack(self, target_faction, attacker_index, defender_index):\n        attacker = self.units[attacker_index]\n        defender = target_faction.units[defender_index]\n        damage = max(0, attacker.attack - defender.defense)\n        defender.defense -= damage\n        print(f\"{self.name}'s {attacker.name} attacks {target_faction.name}'s {defender.name} for {damage} damage!\")\n\n# Example usage\nplayer_faction = Faction(\"Allies\")\nplayer_faction.add_unit(Unit(\"Tank\", 20, 15))\nplayer_faction.add_unit(Unit(\"Soldier\", 10, 5))\n\nenemy_faction = Faction(\"Axis\")\nenemy_faction.add_unit(Unit(\"Artillery\", 18, 12))\nenemy_faction.add_unit(Unit(\"Scout\", 8, 3))\n\n# Simulate a turn-based attack\nplayer_faction.attack(enemy_faction, 0, 0)  # Tank attacks Artillery\n"
+    }
+  ]
+}

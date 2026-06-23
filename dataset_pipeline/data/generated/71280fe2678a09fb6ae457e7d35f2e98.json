@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Algebraic_structure",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is an algebraic structure in mathematics?",
+      "answer": "An algebraic structure is a set combined with one, two, or more binary operations defined on that set. These operations take elements from the set as inputs and return an element from the same set as output."
+    },
+    {
+      "question": "What are the basic algebraic structures with exactly one binary operation, and how do they relate to each other?",
+      "answer": "The basic structures with one operation are: (1) Magma — a set with any binary operation; (2) Semigroup — a magma where the operation is associative; (3) Monoid — a semigroup with an identity element; (4) Group — a monoid where every element has an inverse; (5) Commutative group — a group where the operation is commutative. Each builds upon the previous by adding more constraints like associativity, identity, inverses, and commutativity."
+    },
+    {
+      "question": "Provide an example of a structure that is a monoid but not a group.",
+      "answer": "The set of whole numbers (natural numbers including zero) with addition is a monoid because addition is associative, has an identity element (0), and maps the set to itself. However, it is not a group because not every element (e.g., 1) has an additive inverse within the set (there is no negative number in whole numbers)."
+    },
+    {
+      "question": "What defines a ring in algebra?",
+      "answer": "A ring is an algebraic structure with two binary operations, typically called addition and multiplication, satisfying these conditions: (1) The set with addition forms a commutative group; (2) The set with multiplication forms a semigroup (often a monoid in some definitions); (3) Multiplication distributes over addition. Addition must be commutative and associative, and both operations must be closed on the set."
+    },
+    {
+      "question": "What is the difference between a commutative ring and a field?",
+      "answer": "A commutative ring is a ring where the multiplication operation is commutative (i.e., a×b = b×a for all elements a, b). A field is a commutative ring where the set with multiplication forms a group — meaning every non-zero element has a multiplicative inverse. Therefore, every field is a commutative ring, but not every commutative ring is a field (e.g., the integers form a commutative ring but not a field)."
+    },
+    {
+      "question": "Write a Python code snippet to check if a given set with an operation satisfies the closure property for a binary operation.",
+      "answer": "python\ndef is_closed(set_elements, operation, op_name):\n    for a in set_elements:\n        for b in set_elements:\n            result = operation(a, b)\n            if result not in set_elements:\n                print(f'Not closed under {op_name}: {a} {op_name} {b} = {result} not in set')\n                return False\n    print(f'Set is closed under {op_name}')\n    return True\n\n# Example: Check closure of {0, 1, 2} under addition modulo 3\nmod3_set = {0, 1, 2}\nadd_mod3 = lambda a, b: (a + b) % 3\nis_closed(mod3_set, add_mod3, 'addition mod 3')\n"
+    },
+    {
+      "question": "Why are the rational numbers, real numbers, and complex numbers with standard addition and multiplication considered fields?",
+      "answer": "These number systems are fields because: (1) Addition and multiplication are commutative and associative; (2) Both operations are closed within the set; (3) Addition forms an abelian group (with zero as identity and additive inverses); (4) Multiplication forms an abelian group on the non-zero elements (with one as identity and multiplicative inverses); (5) Multiplication distributes over addition. These properties satisfy the definition of a field."
+    }
+  ]
+}

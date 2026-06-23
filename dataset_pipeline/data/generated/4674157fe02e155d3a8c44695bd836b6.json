@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Harold_Stapleton",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When was Harold Vincent Stapleton born and when did he die?",
+      "answer": "Harold Vincent Stapleton was born on 7 January 1915 and died on 24 September 2015."
+    },
+    {
+      "question": "How many first-class matches did Harold Vincent Stapleton play in his cricket career?",
+      "answer": "Harold Vincent Stapleton played a single first-class match for New South Wales in 1941."
+    },
+    {
+      "question": "What were Harold Vincent Stapleton's cricket statistics for first-class matches?",
+      "answer": "Stapleton scored 2,242 runs at an average of 32.49 and took 93 wickets at an average of 17.56 in his cricket career."
+    },
+    {
+      "question": "During which period did Harold Vincent Stapleton serve in the Australian Imperial Force?",
+      "answer": "Harold Vincent Stapleton served in the Australian Imperial Force from April 1941 to January 1946."
+    },
+    {
+      "question": "What roles did Harold Vincent Stapleton fulfill in cricket and military service?",
+      "answer": "In cricket, Stapleton was a batsman and bowler, while in the military, he served as a corporal in the Australian Army."
+    },
+    {
+      "question": "Which teams did Harold Vincent Stapleton represent in minor cricket matches during the 1930s?",
+      "answer": "During the 1930s, Stapleton played minor matches for Lismore, Northern New South Wales, and the New South Wales colts and second XI teams."
+    },
+    {
+      "question": "Provide a code snippet to calculate Harold Vincent Stapleton's cricket career batting average based on his total runs and innings.",
+      "answer": "Here’s a Python snippet to compute his batting average:\npython\nruns = 2242\ninnings = 2242 // 32.49  # Approximate innings based on average\nbatting_average = runs / innings\nprint(f\"Batting average: {batting_average:.2f}\")\n\nThe result would be approximately 32.49, matching the provided statistic."
+    }
+  ]
+}

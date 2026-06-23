@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Basilikos_logos",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is a basilikos logos in Byzantine rhetoric?",
+      "answer": "A basilikos logos, or 'imperial word,' is an encomium (formal praise) delivered to a Byzantine emperor on significant occasions, such as Epiphany. It typically praises the emperor's lineage, physical appearance, education, virtues, achievements in peace and war, generosity, and adherence to the four cardinal virtues."
+    },
+    {
+      "question": "Who established the conventions of the basilikos logos genre, and what were its key parameters?",
+      "answer": "The parameters of the basilikos logos genre were first outlined in a treatise attributed to Menander Rhetor in the late 3rd century. The encomiast was expected to praise the emperor’s origins, physical beauty, upbringing, habits, accomplishments in peace and war, philanthropy, good fortune, and the four cardinal virtues (wisdom, justice, courage, temperance)."
+    },
+    {
+      "question": "How did Christian basilikoi logoi differ from earlier versions?",
+      "answer": "Christian basilikoi logoi omitted references to 'tyche' (good fortune) and instead emphasized piety as a central virtue. This shift reflected the growing influence of Christianity in Byzantine culture and rhetoric."
+    },
+    {
+      "question": "Provide an example of how a basilikos logos could function as a 'mirror of princes.'",
+      "answer": "A basilikos logos could subtly advise the emperor by highlighting ideals of rulership. For example, Agapetos’ speech praising Justinian I in the 6th century and Basil I’s speech for his son Leo VI in the 9th century served as 'mirrors of princes,' guiding the emperor toward virtuous governance."
+    },
+    {
+      "question": "What was the presbeutikos, and how did its meaning evolve?",
+      "answer": "The presbeutikos was originally a speech of supplication delivered by a city to an emperor, considered a subgenre of the basilikos logos. Over time, the term shifted in meaning to refer to an ambassador’s report, reflecting changes in diplomatic communication."
+    },
+    {
+      "question": "Write a Python function that generates a simplified basilikos logos structure based on Menander Rhetor’s parameters.",
+      "answer": "python\ndef generate_basilikos_logos(emperor_name, virtues, achievements):\n    \"\"\"\n    Generates a simplified basilikos logos structure.\n    \n    Args:\n        emperor_name (str): Name of the emperor.\n        virtues (list): List of virtues to praise (e.g., ['wisdom', 'justice']).\n        achievements (list): List of achievements in peace and war.\n    \n    Returns:\n        str: A basilikos logos praising the emperor.\n    \"\"\"\n    logos = f\"Imperial Word to {emperor_name}\\n\\n\"\n    logos += f\"We gather to extol the virtues of {emperor_name}, whose noble lineage shines as a beacon of divine favor.\\n\\n\"\n    logos += f\"His form is radiant, a testament to the harmony of body and soul.\\n\\n\"\n    logos += f\"His upbringing, steeped in wisdom, has cultivated excellence in all endeavors.\\n\\n\"\n    logos += \"Among his virtues, we acclaim:\\n\"\n    for virtue in virtues:\n        logos += f\"- {virtue.capitalize()}\\n\"\n    \n    logos += \"\\nHis reign has brought forth:\\n\"\n    for achievement in achievements:\n        logos += f\"- {achievement}\\n\"\n    \n    logos += \"\\nThus, we stand as witnesses to his piety and magnanimity, ever deserving of our loyalty.\"\n    return logos\n\n# Example usage:\nvirtues = ['wisdom', 'justice', 'courage', 'temperance']\nachievements = ['restored peace to the provinces', 'secured victories in battle']\nprint(generate_basilikos_logos('Justinian I', virtues, achievements))\n"
+    },
+    {
+      "question": "Which unconventional basilikos logos criticized an emperor’s policies, and who wrote it?",
+      "answer": "John the Oxite wrote and presumably delivered an unconventional basilikos logos in the 11th century, highly critical of the policies of Emperor Alexios I Komnenos. This departure from traditional encomium reflects a rare instance of dissent in the genre."
+    },
+    {
+      "question": "How did Eusebius of Caesaria’s panegyric for Constantine the Great influence the basilikos logos tradition?",
+      "answer": "Eusebius of Caesaria’s panegyric for Constantine the Great introduced a new convention by depicting the ideal emperor rather than focusing on the actual ruler. This shift set a precedent for future basilikoi logoi to emphasize moral and virtuous ideals over literal descriptions."
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Gynophillic_attraction_in_straight_women",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is gynophilic attraction in straight women and how is it typically detected?",
+      "answer": "Gynophilic attraction in straight women refers to subtle or implicit same-sex attraction observed in individuals who identify as heterosexual. It is typically detected using instruments like the Sexuality Implicit Association Test (SP-IAT), which measures unconscious preferences rather than self-reported behavior or identity. For example, a 2025 global study used the SP-IAT to reveal that 67.8% of self-identified heterosexual women showed implicit preferences for women, despite only 19.6% identifying as non-heterosexual."
+    },
+    {
+      "question": "What did the 2025 global study on implicit sexual preferences in women find?",
+      "answer": "The 2025 global study found that 67.8% of self-identified heterosexual women exhibited implicit gynephilic (same-sex) preferences on the SP-IAT, while only 19.6% identified as non-heterosexual. These findings were consistent across different continents, highlighting a discrepancy between explicit sexual identity and unconscious preferences."
+    },
+    {
+      "question": "How do arousal patterns differ between straight women and straight men according to research?",
+      "answer": "Research by Canadian sexologist Meredith Chivers and others indicates that straight women show more flexible arousal patterns compared to straight men. For instance, in a University of Essex study, only 28% of women were primarily aroused by their preferred sex, with many responding to both male and female sexual stimuli. This contrasts with the more fixed arousal patterns typically observed in straight men."
+    },
+    {
+      "question": "What are some psychological theories that explain the variability in women's sexuality?",
+      "answer": "Sigmund Freud proposed in his 1931 essay 'Female sexuality' that women's sexuality is more changeable and complex than men's. He argued that girls start with a more bisexual or less fixed sexual development, with early attachment to the mother shaping psychosexual development. Freud also suggested that the path to 'normal femininity' involves a shift from clitoral to vaginal sexuality and from desiring the mother to desiring the father. These ideas highlight the fluidity and complexity of female sexual development."
+    },
+    {
+      "question": "What percentage of self-identified straight women admit to some same-sex attraction or fantasy, and how does this relate to their identity?",
+      "answer": "A substantial share of heterosexual women admit to experiencing some same-sex attraction or fantasy, even if they continue to identify as straight. This aligns with research showing that many straight women exhibit implicit gynephilic preferences without engaging in same-sex sexual behavior. The discrepancy between identity, behavior, and unconscious preferences underscores the complexity of women's sexuality."
+    },
+    {
+      "question": "Provide a Python code snippet to simulate an SP-IAT test for detecting implicit preferences.",
+      "answer": "Below is a simplified Python code snippet using the `implicit` library to simulate an SP-IAT test for detecting implicit preferences. Note that this is a conceptual example and not a real implementation:\n\npython\nfrom implicit.association import ImplicitAssociationTest\n\n# Define stimuli (e.g., male and female names)\nstimuli = {\n    'female': ['Emily', 'Sarah', 'Lisa'],\n    'male': ['John', 'Michael', 'David'],\n}\n\n# Initialize the IAT test\niat = ImplicitAssociationTest(\n    category_labels=['Female', 'Male'],\n    stimuli=stimuli,\n    n_trials=100\n)\n\n# Run the test and get the D-score (measure of implicit preference)\nd_score = iat.run()\n\nprint(f\"Implicit preference D-score: {d_score:.2f}\")\nif d_score > 0:\n    print(\"Implicit preference for females.\")\nelif d_score < 0:\n    print(\"Implicit preference for males.\")\nelse:\n    print(\"No significant implicit preference.\")\n\nThis code would measure implicit preferences by timing responses to stimuli associated with 'female' or 'male' categories. A positive D-score indicates a preference for females, while a negative score indicates a preference for males."
+    }
+  ]
+}

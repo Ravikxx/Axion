@@ -1,0 +1,38 @@
+{
+  "source_url": "https://dev.to/saminarp/from-devto-posts-to-running-a-startup-2np0",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What significant milestone did the author's development studio achieve in 2023?",
+      "answer": "In 2023, the author's development studio, Foam On Latte Inc., hit a $56,000 monthly revenue milestone with just a three-person team."
+    },
+    {
+      "question": "How did the author's approach to GitHub change from 2022 to 2023?",
+      "answer": "In 2022, the author was learning basic GitHub operations like squashing and merging, while by 2023 they were managing client projects serving thousands of users globally."
+    },
+    {
+      "question": "What was the author's initial strategy for attracting clients, and why did it change?",
+      "answer": "Initially, the author's studio underpriced its services to attract clients due to lack of portfolio and revenue. They later shifted to competing on value, charging higher rates after landing a significant client with $17,000 in contracts."
+    },
+    {
+      "question": "What were some challenges the author faced during the early stages of running Foam On Latte Inc.?",
+      "answer": "Early challenges included underpricing services, client acquisition relying on luck, burnout from overwork, mental health struggles during downtime, and self-doubt about their suitability as founders."
+    },
+    {
+      "question": "How did the author's team overcome periods of no projects and financial uncertainty?",
+      "answer": "They persevered by taking on smaller projects that underpaid them, eventually landing three back-to-back high-value clients in HealthTech, FinTech, and EdTech, which led to their $56,000 month milestone."
+    },
+    {
+      "question": "What is the author's team size and how does it contribute to their success?",
+      "answer": "The team consists of three people. Their small size and youthful energy allow them to work efficiently, say yes to big projects, and deliver exceptional results. They leverage tools like Discord for collaboration and AI tools to speed up development."
+    },
+    {
+      "question": "Provide a code snippet demonstrating a basic GitHub pull request workflow using the Git CLI.",
+      "answer": "bash\n# Clone a repository\ngit clone https://github.com/user/repo.git\ncd repo\n\n# Create a new branch for your changes\ngit checkout -b feature-branch\n\n# Make your changes to the code\n# ... edit files ...\n\n# Stage and commit your changes\ngit add .\ngit commit -m \"Add new feature\"\n\n# Push your branch to GitHub\ngit push origin feature-branch\n\n# Create a pull request via GitHub CLI (requires gh installed)\ngh pr create --title \"Add new feature\" --body \"Description of the changes\"\n"
+    },
+    {
+      "question": "What lessons did the author learn about starting a business, and what are their future goals?",
+      "answer": "The author learned that the biggest barriers to success are often mental, requiring belief and hard work. Future goals include increasing monthly revenue through a mix of client work and their own SaaS products, while continuing to scale Foam On Latte Inc."
+    }
+  ]
+}

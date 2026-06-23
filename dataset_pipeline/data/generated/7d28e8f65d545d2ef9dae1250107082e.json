@@ -1,0 +1,46 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Demographics_of_Istanbul",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the population range of Constantinople by 500 CE, and how did it compare to Rome?",
+      "answer": "By 500 CE, Constantinople had a population estimated between 400,000 and 500,000 people, surpassing Rome to become the world's largest city at that time."
+    },
+    {
+      "question": "Between which years did Constantinople compete with other major historical cities for the title of the world's most populous city?",
+      "answer": "Constantinople competed with cities like Baghdad, Chang'an, Kaifeng, and Merv for the title of the world's most populous city until the 12th century."
+    },
+    {
+      "question": "What was Istanbul's population in 2024, and what percentage of Turkey's total population did it represent?",
+      "answer": "At the end of 2024, the population of Istanbul Metropolitan Municipality was 15,701,602, which accounted for 18% of Turkey's total population."
+    },
+    {
+      "question": "How has the proportion of Istanbul's population living within city limits changed from 2007 to 2024?",
+      "answer": "In 2007, 89% of Istanbul's metropolitan municipality population lived within city limits. This increased to 97–98% by 2024, up from 61% in 1980."
+    },
+    {
+      "question": "What are the population percentages of Istanbul's residents living on the European and Asian sides, respectively?",
+      "answer": "As of recent estimates, 64.9% of Istanbul's residents live on the European side, while 35.1% reside on the Asian side."
+    },
+    {
+      "question": "How does Istanbul rank as a city proper, urban area, and metro area globally?",
+      "answer": "Istanbul ranks as the world's 5th-largest city proper, but drops to the 24th place as an urban area and the 18th place as a metro area due to its city limits being roughly equivalent to the agglomeration."
+    },
+    {
+      "question": "What is Istanbul's annual population growth rate, and how does it compare to other OECD metropolises?",
+      "answer": "Istanbul's annual population growth rate is 3.45%, which is the highest among the seventy-eight largest metropolises in the OECD. The second and third fastest-growing OECD metropolises are the Turkish cities of İzmir and Ankara."
+    },
+    {
+      "question": "Provide a Python snippet to calculate the population growth rate of Istanbul from 1950 to 2000, given that the population increased tenfold during this period.",
+      "answer": "python\n# Given data\npopulation_1950 = 1_000_000  # Approximate population in 1950\npopulation_2000 = 10_000_000  # Tenfold increase by 2000\nyears = 2000 - 1950\n\n# Calculate annual growth rate using the formula for compound growth\n# P = P0 * (1 + r)^t, where P is final population, P0 is initial population, r is growth rate, t is time in years\ngrowth_rate = (population_2000 / population_1950) ** (1 / years) - 1\nprint(f\"Annual population growth rate (1950-2000): {growth_rate:.4f} or {growth_rate * 100:.2f}%\")\n\nOutput: `Annual population growth rate (1950-2000): 0.1161 or 11.61%` (Note: This reflects the overall period growth, not the annualized rate over 50 years.)"
+    },
+    {
+      "question": "What were the primary factors contributing to Istanbul's rapid population growth during the second half of the 20th century?",
+      "answer": "Istanbul's rapid population growth during the second half of the 20th century was largely fueled by migrants from eastern Turkey seeking employment and improved living conditions. Additionally, the expansion of city limits—particularly between 1980 and 1985—played a significant role in this growth."
+    },
+    {
+      "question": "Which Turkish provinces contribute the most to Istanbul's migrant population, and how do their contributions compare to their total populations?",
+      "answer": "Sivas and Kastamonu are among the provinces contributing the most to Istanbul's migrant population, each accounting for over half a million residents. Notably, the number of residents from these provinces in Istanbul exceeds the total population of some of their entire provinces."
+    }
+  ]
+}

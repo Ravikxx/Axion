@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Cloutier_(surname)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the origin of the surname Cloutier?",
+      "answer": "The surname Cloutier is a French occupational name derived from the word 'clou,' which means 'nail' in Latin (from the Latin word 'clavus'). It originally referred to a person who made or used nails, such as a nailer or blacksmith."
+    },
+    {
+      "question": "Who was Zacharie Cloutier and what is his significance in Quebec history?",
+      "answer": "Zacharie Cloutier was a French carpenter who emigrated from Perche, France, to New France in 1634. He is historically significant as one of the founders of Beauport, Quebec, and a patriarch of one of the foremost families in Quebec."
+    },
+    {
+      "question": "Name three notable individuals with the surname Cloutier and their professions.",
+      "answer": "1. Véronique Cloutier, a Canadian TV and radio personality; 2. T.J. Cloutier, an American professional poker player; 3. Sheila Watt-Cloutier, a Canadian Inuit activist."
+    },
+    {
+      "question": "How would you write a Python function to count the number of people with the surname Cloutier in a given list of names?",
+      "answer": "python\ndef count_cloutiers(names):\n    return sum(1 for name in names if name.lower().endswith('cloutier'))\n\n# Example usage:\nnames = ['John Doe', 'Jean Cloutier', 'Alice Smith', 'Véronique Cloutier']\nprint(count_cloutiers(names))  # Output: 2\n"
+    },
+    {
+      "question": "What are the meanings of 'Cloutier' in French and English?",
+      "answer": "In French, 'Cloutier' means 'nailer' or someone who works with nails. In English, the surname retains the same occupational meaning but is pronounced similarly to the French word."
+    },
+    {
+      "question": "Why is the surname Cloutier particularly common in Quebec?",
+      "answer": "The surname Cloutier is common in Quebec because Zacharie Cloutier, who settled in New France in 1634, founded one of the largest and most influential families in Quebec. Many of his descendants remained in the region, contributing to the surname's prevalence."
+    },
+    {
+      "question": "What professions or fields are represented by individuals with the surname Cloutier?",
+      "answer": "Individuals with the surname Cloutier have worked in diverse fields, including politics, sports (ice hockey, soccer, badminton), entertainment (acting, music, painting), science, military, activism, and poker."
+    }
+  ]
+}

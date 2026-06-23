@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Charlie_Comyn-Platt",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When and where was Charlie Comyn-Platt born?",
+      "answer": "Charlie Comyn-Platt was born on 2 October 1985 in England."
+    },
+    {
+      "question": "Which schools did Charlie Comyn-Platt attend, and who were his notable footballing peers there?",
+      "answer": "Comyn-Platt attended Parrs Wood High School in East Didsbury, where his footballing peers included Danny Webber, Carlos Roca, and Lewis Montrose."
+    },
+    {
+      "question": "What positions did Charlie Comyn-Platt play in his professional football career?",
+      "answer": "Charlie Comyn-Platt played as a defender and midfielder during his professional football career."
+    },
+    {
+      "question": "Write a Python function that extracts all the years mentioned in the text about Charlie Comyn-Platt's career and returns them as a sorted list.",
+      "answer": "python\ndef extract_years(text):\n    import re\n    years = re.findall(r'\\b(19\\d{2}|20\\d{2})\\b', text)\n    return sorted(set(years))\n\n# Example usage:\ntext = \"\"\"...\"\"\"\nprint(extract_years(text))  # Output: ['2003', '2004', '2005', '2006', '2007', '2009', '2011', '2015', '2023']\n"
+    },
+    {
+      "question": "How many times did Charlie Comyn-Platt appear for Bolton Wanderers, and in which competitions were these appearances made?",
+      "answer": "Comyn-Platt appeared four times for Bolton Wanderers. He made his debut in a League Cup win over Walsall (3–1) on 24 September 2003, started twice in the FA Cup against Tranmere Rovers, and was in the squad for multiple Premier League games and the 2004 League Cup Final."
+    },
+    {
+      "question": "Why was Charlie Comyn-Platt released by Bolton Wanderers at the end of the 2003–04 season, and which club did he join next?",
+      "answer": "Comyn-Platt was released by Bolton Wanderers at the end of the 2003–04 season. Following his release, he signed for Swindon Town along with fellow Bolton youngster Ricky Shakes, under manager Andy King."
+    },
+    {
+      "question": "Compare Charlie Comyn-Platt's career trajectory under Dennis Wise and Paul Sturrock at Swindon Town.",
+      "answer": "Under Dennis Wise, Comyn-Platt was a consistent first-team member for Swindon Town in the 2006–07 season. However, under Paul Sturrock, he found himself out of favor, leading to fewer appearances and eventual departure from the club."
+    }
+  ]
+}

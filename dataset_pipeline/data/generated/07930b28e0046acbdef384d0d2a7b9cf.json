@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/If_You_Saw_Thro'_My_Eyes",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who released the album 'If You Saw Thro' My Eyes' and in what year?",
+      "answer": "The album 'If You Saw Thro' My Eyes' was released by Ian Matthews in 1971."
+    },
+    {
+      "question": "Which record label first released 'If You Saw Thro' My Eyes', and what is its relationship to Philips/Phonogram?",
+      "answer": "'If You Saw Thro' My Eyes' was first released on Vertigo, a subsidiary label of Philips/Phonogram."
+    },
+    {
+      "question": "Name two guest musicians featured on the album 'If You Saw Thro' My Eyes'.",
+      "answer": "Two guest musicians featured on the album were Sandy Denny (vocals and keyboards) and Richard Thompson (accordion and guitar), both former bandmates of Ian Matthews from Fairport Convention."
+    },
+    {
+      "question": "What was the catalogue number for the original vinyl release of 'If You Saw Thro' My Eyes'?",
+      "answer": "The original vinyl release of 'If You Saw Thro' My Eyes' had the catalogue number VEL-1002."
+    },
+    {
+      "question": "When was the single 'Hearts' released, and what was the album's worldwide release date?",
+      "answer": "The single 'Hearts' was released on April 23, 1971, and the album itself was released worldwide on May 1, 1971."
+    },
+    {
+      "question": "Provide a code snippet that lists the years 'If You Saw Thro' My Eyes' was reissued on CD.",
+      "answer": "python\nreissue_years = [1993, 2003, 2012]\nfor year in reissue_years:\n    print(f\"Reissued in: {year}\")\n"
+    },
+    {
+      "question": "Where was the live version of 'If You Saw Thro' My Eyes' recorded, and on which label was it released?",
+      "answer": "The live version was recorded at Cambrinus Cafe in Horst, The Netherlands, and was released on the Blue Rose record label as part of the compilation 'Sparkler: The Best of the Texas Recordings 1989-2004'."
+    }
+  ]
+}

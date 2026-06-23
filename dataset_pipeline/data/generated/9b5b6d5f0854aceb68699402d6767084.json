@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Carey_mask",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is a Carey mask and what is its purpose in astronomy?",
+      "answer": "A Carey mask is a focusing aid for astronomical telescopes, designed by George F. Carey. It is a thin card or sheet placed over the front aperture of the telescope. The mask features four series of slits that create a diffraction pattern in the image plane, helping the observer achieve precise focus by visualizing the symmetry of the pattern."
+    },
+    {
+      "question": "How does the Carey mask help in achieving perfect focus with a telescope?",
+      "answer": "The Carey mask produces diffraction patterns in the form of 'X' shapes. When the telescope is perfectly focused, the two 'X's overlap symmetrically. Any focus error causes the 'X's to offset, making it easy to detect by eye. The operator can then adjust the focus knob in the direction indicated by the spacing of the spikes until the 'X's align perfectly."
+    },
+    {
+      "question": "What are the differences between the left and right slit patterns on a Carey mask?",
+      "answer": "The left set of slits is angled at 12 degrees to each other, forming an 'X' with wider arms, while the right set is angled at 10 degrees, creating an 'X' with narrower arms. This difference helps the observer distinguish between the two patterns and determine the direction of focus adjustment needed."
+    },
+    {
+      "question": "How should the focus knob be adjusted based on the Carey mask's diffraction pattern?",
+      "answer": "If the left-hand spikes appear further apart than the right-hand spikes, rotate the focus knob slightly anti-clockwise. If the right-hand spikes are further apart, rotate the knob clockwise. Always place the mask in the same orientation to maintain consistent focus adjustment directions."
+    },
+    {
+      "question": "Why might a negative image be useful when using a Carey mask?",
+      "answer": "A negative image can enhance the visibility of the diffraction spikes produced by the Carey mask. By inverting the colors, the contrast between the spikes and the background increases, making it easier to assess focus accuracy, especially in low-light conditions or with faint objects."
+    },
+    {
+      "question": "What happens if the Carey mask is rotated 180 degrees on the telescope aperture?",
+      "answer": "Rotating the Carey mask 180 degrees reverses the orientation of the diffraction patterns. This would also reverse the direction in which the focus knob needs to be turned to correct focus errors. For example, an anti-clockwise rotation would now require a clockwise adjustment, and vice versa."
+    },
+    {
+      "question": "Write a Python function to simulate the diffraction pattern of a Carey mask with given slit angles.",
+      "answer": "python\nimport numpy as np\nimport matplotlib.pyplot as plt\n\ndef simulate_carey_mask(left_angle=12, right_angle=10, width=1000):\n    # Create a grid\n    x = np.linspace(-1, 1, width)\n    y = np.linspace(-1, 1, width)\n    X, Y = np.meshgrid(x, y)\n    \n    # Left slits (X pattern with 12-degree angle)\n    left_slope1 = np.tan(np.radians(left_angle / 2))\n    left_slope2 = -left_slope1\n    left_mask = ((np.abs(Y) <= np.abs(X) * left_slope1) | \n                 (np.abs(Y) <= np.abs(X) * left_slope2))\n    \n    # Right slits (X pattern with 10-degree angle)\n    right_slope1 = np.tan(np.radians(right_angle / 2))\n    right_slope2 = -right_slope1\n    right_mask = ((np.abs(Y) <= np.abs(X) * right_slope1) | \n                  (np.abs(Y) <= np.abs(X) * right_slope2))\n    \n    # Combine masks\n    mask = left_mask | right_mask\n    \n    # Display\n    plt.imshow(mask, cmap='gray', extent=[-1, 1, -1, 1])\n    plt.title('Carey Mask Diffraction Pattern')\n    plt.xlabel('X-axis')\n    plt.ylabel('Y-axis')\n    plt.show()\n\n# Example usage:\nsimulate_carey_mask(left_angle=12, right_angle=10)\n"
+    }
+  ]
+}

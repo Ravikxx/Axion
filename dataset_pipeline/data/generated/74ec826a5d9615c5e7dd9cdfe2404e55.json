@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Coit_Tower",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the height of Coit Tower and where is it located?",
+      "answer": "Coit Tower is 210 feet (64 meters) tall and is located in the Telegraph Hill neighborhood of San Francisco, California, within Pioneer Park."
+    },
+    {
+      "question": "What was the purpose of Lillie Hitchcock Coit's bequest for Coit Tower?",
+      "answer": "Lillie Hitchcock Coit's bequest aimed to beautify the city of San Francisco. The tower was constructed as part of her will's second bequest, while a separate memorial to volunteer firefighters was created in Washington Square."
+    },
+    {
+      "question": "Who designed Coit Tower, and what architectural style does it represent?",
+      "answer": "Coit Tower was designed by architects Arthur Brown Jr. and Henry Temple Howard. The tower is built in the Art Deco architectural style."
+    },
+    {
+      "question": "What artistic features are present inside Coit Tower?",
+      "answer": "The interior of Coit Tower features fresco murals in the American Social Realism style, created by 22 onsite artists and their assistants. Three artists used oil on canvas offsite, and one artist preferred egg tempera over fresco."
+    },
+    {
+      "question": "Is Coit Tower dedicated to San Francisco's volunteer firefighters? Explain.",
+      "answer": "No, Coit Tower is not dedicated to volunteer firefighters. While Lillie Hitchcock Coit's will included a bequest to memorialize firefighters (resulting in a statue in Washington Square), the tower itself was built to beautify the city as part of her second bequest."
+    },
+    {
+      "question": "What is the significance of the phoenix relief above Coit Tower's main entrance?",
+      "answer": "The phoenix relief above the main entrance was commissioned by architect Arthur Brown Jr. and created by sculptor Robert Boardman Howard. It symbolizes renewal and resilience, though its placement was coincidental to any resemblance to a fire hose nozzle."
+    },
+    {
+      "question": "Write a Python function to calculate the height of Coit Tower in meters and feet.",
+      "answer": "python\ndef coit_tower_height():\n    height_meters = 64\n    height_feet = 210\n    return {\"meters\": height_meters, \"feet\": height_feet}\n\n# Example usage:\nprint(coit_tower_height())  # Output: {'meters': 64, 'feet': 210}\n"
+    }
+  ]
+}

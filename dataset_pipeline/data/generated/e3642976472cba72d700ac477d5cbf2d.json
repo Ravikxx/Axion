@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/1996_Florida_Citrus_Bowl",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Which two college football teams played in the 1996 Florida Citrus Bowl?",
+      "answer": "The Ohio State Buckeyes from the Big Ten and the Tennessee Volunteers from the SEC played in the 1996 Florida Citrus Bowl."
+    },
+    {
+      "question": "Who were the key players for Ohio State and Tennessee in the 1996 Florida Citrus Bowl?",
+      "answer": "Ohio State was led by their senior running back and Heisman Trophy winner Eddie George, while Tennessee was led by their sophomore quarterback Peyton Manning."
+    },
+    {
+      "question": "What was the outcome of the Ohio State game against Michigan in 1995?",
+      "answer": "The Michigan Wolverines won the game 31–23, upsetting Ohio State and sending the Northwestern Wildcats to the Rose Bowl."
+    },
+    {
+      "question": "How did Tennessee perform in their game against Florida in 1995?",
+      "answer": "Tennessee held a 30–21 halftime lead but was outscored 41–7 in the second half, losing the game 62–37."
+    },
+    {
+      "question": "What was Tennessee's overall season record in 1995?",
+      "answer": "Tennessee won 8 of their remaining regular season games after the loss to Florida, finishing the season with an overall record of 11–1 and ranked third."
+    },
+    {
+      "question": "Explain the tiebreaker situation between Ohio State and Northwestern in 1995.",
+      "answer": "Both Ohio State and Northwestern finished the Big Ten conference season with identical records. Ohio State held the tiebreaker, likely due to head-to-head dominance or other conference tiebreaker rules, which secured their Rose Bowl berth."
+    },
+    {
+      "question": "Write a Python code snippet to determine the winner of a game given the final scores of Ohio State and Tennessee.",
+      "answer": "python\ndef determine_winner(ohio_state_score, tennessee_score):\n    if ohio_state_score > tennessee_score:\n        return \"Ohio State Buckeyes\"\n    elif tennessee_score > ohio_state_score:\n        return \"Tennessee Volunteers\"\n    else:\n        return \"Tie\"\n\n# Example usage:\nprint(determine_winner(20, 19))  # Output: Ohio State Buckeyes\n"
+    }
+  ]
+}

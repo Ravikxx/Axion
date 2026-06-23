@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Dubai_South",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was Dubai South originally called and when did its construction begin?",
+      "answer": "Dubai South was originally called Dubai World Central, and its construction began in 2006."
+    },
+    {
+      "question": "What is the primary purpose of Dubai South?",
+      "answer": "Dubai South was planned as an economic zone to support multiple activities including logistics, aviation, commercial, exhibition, humanitarian, residential, and other related businesses, all centered around Al Maktoum International Airport."
+    },
+    {
+      "question": "What is the planned annual cargo capacity of Al Maktoum International Airport in Dubai South?",
+      "answer": "Al Maktoum International Airport, the centerpiece of Dubai South, was planned to have an annual cargo capacity of 12 million tonnes."
+    },
+    {
+      "question": "How does the planned annual passenger capacity of Al Maktoum International Airport compare to Dubai South's other economic activities?",
+      "answer": "Al Maktoum International Airport was planned to have an annual passenger capacity of 160 million, making it a key driver for aviation-related activities within Dubai South's diverse economic zone."
+    },
+    {
+      "question": "List the sub-development projects planned for Dubai South.",
+      "answer": "Dubai South was planned to comprise the following sub-development projects: Dubai World Central Residential City, Dubai World Central Logistics City, Dubai World Central Enterprise Park, Dubai World Central Commercial City, Dubai World Central Aviation City, Dubai World Central Industry City, Dubai World Central - Al Maktoum International Airport, Dubai World Central Staff Village, and Dubai World Central Golf City."
+    },
+    {
+      "question": "What is the purpose of Dubai World Central Residential City within Dubai South?",
+      "answer": "Dubai World Central Residential City was aimed at providing housing solutions for workers and residents within the economic zone of Dubai South."
+    },
+    {
+      "question": "Provide a Python code snippet to calculate the total area of Dubai South if the area is two times the size of Hong Kong Island (assuming Hong Kong Island's area is approximately 1,106 square kilometers).",
+      "answer": "python\n# Calculate the area of Dubai South\nhong_kong_island_area_sqkm = 1106  # in square kilometers\ndubai_south_area_sqkm = 2 * hong_kong_island_area_sqkm\nprint(f\"The planned area of Dubai South is {dubai_south_area_sqkm} square kilometers.\")\n\nOutput: The planned area of Dubai South is 2212 square kilometers."
+    },
+    {
+      "question": "Why is Dubai World Central Aviation City significant for Dubai's global status?",
+      "answer": "Dubai World Central Aviation City was designed to reinforce Dubai's status in the global aviation industry by serving as a dedicated hub around Al Maktoum International Airport, which was planned to be the world's largest airport with significant cargo and passenger capacities."
+    }
+  ]
+}

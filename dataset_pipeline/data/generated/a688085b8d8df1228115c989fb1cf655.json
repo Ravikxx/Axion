@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Ira_Sukrungruang",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When and where was Ira Sukrungruang born?",
+      "answer": "Ira Sukrungruang was born on June 23, 1976, in Oak Lawn, Illinois."
+    },
+    {
+      "question": "What are some notable achievements or awards received by Ira Sukrungruang?",
+      "answer": "Ira Sukrungruang has received several notable awards, including the Anita Claire Scharf Award for *In Thailand It Is Night*, the American Book Award for *Southside Buddhist*, and the Chicago Writers Association Book of the Year in Nonfiction for *This Jade World*."
+    },
+    {
+      "question": "What academic degrees does Ira Sukrungruang hold and from which institutions?",
+      "answer": "Ira Sukrungruang earned a Bachelor of Arts from Southern Illinois University Carbondale in 1998 and a Master of Fine Arts from Ohio State University in 2002."
+    },
+    {
+      "question": "How did Ira Sukrungruang’s mother contribute to their family’s background?",
+      "answer": "Sukrungruang’s mother was a champion bowler in Thailand before immigrating to America in 1968 to work as a nurse. She later returned to Chiang Mai, Thailand, after 36 years in the U.S."
+    },
+    {
+      "question": "What literary organizations has Ira Sukrungruang been involved with, and what are their purposes?",
+      "answer": "Ira Sukrungruang is the president of *Sweet: A Literary Confection*, a non-profit literary organization founded in 2008 to assist marginalized people. He also serves on the board of the Association of Writers and Writing Programs (AWP) and *Machete*, an Ohio State University imprint focused on marginalized writers."
+    },
+    {
+      "question": "What personal challenges has Ira Sukrungruang faced in his life?",
+      "answer": "Sukrungruang faced a significant personal crisis when his ex-wife, writer Katie Riegel, sent him a divorce note on their 12th anniversary, leading him to experience severe depression and even consider suicide."
+    },
+    {
+      "question": "Write a Python function that checks if a given year falls within Ira Sukrungruang’s lifespan and returns a boolean value.",
+      "answer": "python\ndef is_in_sukrungruang_lifespan(year):\n    birth_year = 1976\n    current_year = 2023  # Assuming current year for the check\n    return birth_year <= year <= current_year\n\n# Example usage:\nprint(is_in_sukrungruang_lifespan(1980))  # Output: True\nprint(is_in_sukrungruang_lifespan(1970))  # Output: False\n"
+    }
+  ]
+}

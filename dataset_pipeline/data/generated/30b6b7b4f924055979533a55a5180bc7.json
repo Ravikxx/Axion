@@ -1,0 +1,34 @@
+{
+  "source_url": "https://mathworld.wolfram.com/NonlinearLeastSquaresFitting.html",
+  "category": "mathworld",
+  "pairs": [
+    {
+      "question": "What is the purpose of nonlinear least squares fitting?",
+      "answer": "Nonlinear least squares fitting is a method used to find the best-fit parameters of a known analytic function to a set of tabulated data points. The goal is to minimize the sum of the squared residuals (differences between observed and predicted values) by iteratively adjusting the parameters until convergence."
+    },
+    {
+      "question": "How does the Gauss-Newton algorithm relate to nonlinear least squares fitting?",
+      "answer": "The Gauss-Newton algorithm is an iterative method for solving nonlinear least squares problems. It linearizes the problem around the current parameter estimate, solves the resulting linear least squares problem to obtain an update, and then updates the parameters. This process repeats until the residuals are sufficiently small."
+    },
+    {
+      "question": "Write a Python function to perform one iteration of the Gauss-Newton algorithm for fitting a Gaussian function to data.",
+      "answer": "python\nimport numpy as np\n\ndef gaussian(x, amplitude, center, width):\n    return amplitude * np.exp(-((x - center) ** 2) / (2 * width ** 2))\n\ndef gaussian_jacobian(x, amplitude, center, width):\n    d_amplitude = np.exp(-((x - center) ** 2) / (2 * width ** 2))\n    d_center = amplitude * np.exp(-((x - center) ** 2) / (2 * width ** 2)) * ((x - center) / width ** 2)\n    d_width = amplitude * np.exp(-((x - center) ** 2) / (2 * width ** 2)) * ((x - center) ** 2 / width ** 3)\n    return np.column_stack((d_amplitude, d_center, d_width))\n\ndef gauss_newton_iteration(x_data, y_data, params):\n    amplitude, center, width = params\n    model = gaussian(x_data, amplitude, center, width)\n    residuals = y_data - model\n    jacobian = gaussian_jacobian(x_data, amplitude, center, width)\n    update = np.linalg.lstsq(jacobian, residuals, rcond=None)[0]\n    return params + update\n"
+    },
+    {
+      "question": "Why is the initial guess important in nonlinear least squares fitting?",
+      "answer": "The initial guess significantly affects the convergence of the algorithm. A poor initial guess can lead to slow convergence, divergence, or convergence to a local minimum that is not the global optimum. Good initial guesses are typically close to the expected best-fit values and can be obtained from prior knowledge or simpler approximations."
+    },
+    {
+      "question": "What is the residual sum of squares (RSS) in the context of nonlinear least squares fitting?",
+      "answer": "The residual sum of squares (RSS) is the sum of the squared differences between the observed data points and the values predicted by the fitted model after the final iteration. It quantifies the total deviation of the observed data from the model and is minimized during the fitting process. Mathematically, RSS = Σ(y_i - f(x_i; θ))²."
+    },
+    {
+      "question": "How can nonlinear least squares be applied to overdetermined systems with constraints, such as fitting Euler angles to a noisy rotation matrix?",
+      "answer": "To fit Euler angles to a noisy rotation matrix, define a set of functions relating the matrix elements to the angles. For example, express each matrix element as a function of the three Euler angles (α, β, γ). Then, use the Gauss-Newton algorithm to iteratively adjust the angles to minimize the sum of squared deviations between the observed and predicted matrix elements. This involves computing the Jacobian of the matrix elements with respect to the angles."
+    },
+    {
+      "question": "What are the potential limitations of nonlinear least squares fitting?",
+      "answer": "Nonlinear least squares fitting has several limitations: (1) It requires a good initial guess to ensure convergence. (2) It may converge to a local minimum rather than the global minimum. (3) Convergence can be slow or fail for highly nonlinear functions. (4) The computational cost increases with the number of parameters. (5) It assumes the errors are normally distributed and independent, which may not hold in practice."
+    }
+  ]
+}

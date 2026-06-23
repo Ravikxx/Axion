@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Cultural_reproduction",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is cultural reproduction according to Pierre Bourdieu?",
+      "answer": "Cultural reproduction is a concept developed by French sociologist Pierre Bourdieu, referring to the mechanisms through which existing cultural forms, values, practices, and norms are transmitted from one generation to the next. This process sustains cultural continuity over time by normalizing behaviors, language, and mannerisms, often without explicit questioning."
+    },
+    {
+      "question": "How does cultural reproduction relate to social reproduction?",
+      "answer": "Cultural reproduction often leads to social reproduction, which is the process of transferring aspects of society—such as class—from one generation to another. For example, social classes may act to maintain existing social structures to preserve their advantages, thereby reinforcing inequalities across generations."
+    },
+    {
+      "question": "What role does schooling play in cultural reproduction?",
+      "answer": "Schooling is one of the main mechanisms of cultural reproduction in modern societies. While formal instruction is part of this process, schooling also reinforces cultural norms and values through informal socialization. Schools often transmit dominant cultural practices and expectations, which can perpetuate existing social hierarchies."
+    },
+    {
+      "question": "Provide an example of how cultural norms are transmitted informally outside the home.",
+      "answer": "Cultural norms are often transmitted informally through social interactions in public spaces, workplaces, or peer groups. For instance, a child may learn acceptable behaviors, speech patterns, or fashion trends by observing and imitating peers, media figures, or community members, even without direct instruction."
+    },
+    {
+      "question": "How does Bourdieu's concept of habitus connect to cultural reproduction?",
+      "answer": "Bourdieu's concept of habitus refers to the internalized dispositions, behaviors, and perceptions that individuals acquire through socialization. These unconscious frameworks shape how people perceive, judge, and act within their social world, thereby facilitating the transmission of cultural norms and values across generations."
+    },
+    {
+      "question": "Write a Python function that simulates a simple cultural reproduction scenario where a child adopts a parent's cultural trait (e.g., language preference).",
+      "answer": "python\nimport random\n\ndef simulate_cultural_reproduction(parent_trait_probability=0.7, child_trait_probability=None):\n    \"\"\"\n    Simulates cultural reproduction where a child may adopt a parent's cultural trait.\n    :param parent_trait_probability: Probability the parent passes down the trait (0-1).\n    :param child_trait_probability: Optional override for child's trait adoption.\n    :return: Boolean indicating if the child adopted the trait.\n    \"\"\"\n    if child_trait_probability is None:\n        child_trait_probability = parent_trait_probability * 0.8  # Reduced likelihood due to external influences\n    return random.random() < child_trait_probability\n\n# Example usage:\nparent_passes_trait = simulate_cultural_reproduction()\nprint(f\"Child adopts parent's trait: {parent_passes_trait}\")\n"
+    },
+    {
+      "question": "Why might cultural reproduction contribute to social inequality?",
+      "answer": "Cultural reproduction can contribute to social inequality by reinforcing existing power structures and class distinctions. For instance, if dominant cultural norms (e.g., language, etiquette, or education) are favored in institutions like schools or workplaces, individuals from less privileged backgrounds may face barriers to advancement. This perpetuates disparities across generations."
+    }
+  ]
+}

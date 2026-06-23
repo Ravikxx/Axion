@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Danny_Boy_et_ses_Pénitents",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was the lead singer of the French band Danny Boy et ses Pénitents, and what was their real name?",
+      "answer": "The lead singer of Danny Boy et ses Pénitents was Danny Boy, whose real name was Claude Piron. He was born on 25 January 1936 in Saint-Pierre-de-Cormeilles, Eure."
+    },
+    {
+      "question": "When did Danny Boy et ses Pénitents form, and who were the four musicians in the band?",
+      "answer": "Danny Boy et ses Pénitents formed around 1960 after Danny Boy (Claude Piron) adopted his pseudonym. The four musicians accompanying him were Bruno (guitar), Ralai (guitar), Marc (bass guitar), and Jose (drums)."
+    },
+    {
+      "question": "What were some of the notable hits released by Danny Boy et ses Pénitents in the 1960s?",
+      "answer": "Some notable hits by Danny Boy et ses Pénitents include 'Un collier de tes bras,' 'Un coup au cœur,' 'C'est encore une souris,' 'Je ne veux plus être un dragueur,' 'C'est tout comme,' 'Danny Boy,' and 'Croque la pomme.'"
+    },
+    {
+      "question": "In what year did Danny Boy et ses Pénitents tour with circus Pinder, and how long did the tour last?",
+      "answer": "Danny Boy et ses Pénitents toured with circus Pinder in 1962, and the tour lasted for eight months."
+    },
+    {
+      "question": "What film did Danny Boy (Claude Piron) appear in, and what was its significance?",
+      "answer": "Danny Boy appeared in the 1964 French-Italian film 'La Difficulté d'être infidèle' (The difficulty of being unfaithful), directed by Bernard Toublanc-Michel. The film was nominated for the 'Golden Bear' at the 14th Berlin International Film Festival."
+    },
+    {
+      "question": "Provide a code snippet in Python that simulates a simple music player for Danny Boy et ses Pénitents' songs.",
+      "answer": "python\nclass MusicPlayer:\n    def __init__(self):\n        self.songs = [\n            \"Un collier de tes bras\", \"Un coup au cœur\",\n            \"C'est encore une souris\", \"Je ne veux plus être un dragueur\",\n            \"C'est tout comme\", \"Danny Boy\", \"Croque la pomme\"\n        ]\n        self.current_song = None\n\n    def play_song(self, song_name):\n        if song_name in self.songs:\n            self.current_song = song_name\n            print(f\"Now playing: {song_name}\")\n        else:\n            print(\"Song not found.\")\n\n    def list_songs(self):\n        print(\"Danny Boy et ses Pénitents' songs:\")\n        for i, song in enumerate(self.songs, 1):\n            print(f\"{i}. {song}\")\n\n# Example usage\nplayer = MusicPlayer()\nplayer.list_songs()\nplayer.play_song(\"Danny Boy\")\n"
+    },
+    {
+      "question": "How did Danny Boy's early musical career begin, and what was his first successful solo record?",
+      "answer": "Danny Boy (Claude Piron) began his solo career in 1958 with a successful cover of The Kalin Twins' song 'When,' which he renamed 'Viens.' This marked the start of his career before he formed Danny Boy et ses Pénitents in 1960."
+    }
+  ]
+}

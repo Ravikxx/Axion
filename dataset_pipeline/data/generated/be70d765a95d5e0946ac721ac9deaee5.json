@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Anuloma",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What does the term 'Anuloma' mean in the context of the Manusmriti?",
+      "answer": "Anuloma is a Sanskrit term used in the Manusmriti to describe a hypergamous union where a man of higher birth marries a woman of lower birth, relative to their respective caste positions. These unions are metaphorically described as 'going with the grain,' indicating their alignment with the social hierarchy."
+    },
+    {
+      "question": "According to the Manusmriti, what causes the evolution of different castes among mankind?",
+      "answer": "Manu explains that the evolution of different castes occurs due to unions between individuals of unequal birth, specifically when a person of higher birth marries someone of lower birth. This creates distinct caste divisions through the mixing of social ranks."
+    },
+    {
+      "question": "How does the Manusmriti view marriages within the same caste?",
+      "answer": "The Manusmriti considers marriages within the same caste as excellent, as they maintain the purity and hierarchy of social ranks. These unions are idealized as they do not disrupt the established caste order."
+    },
+    {
+      "question": "What is the opposite of an Anuloma marriage, and how is it described in the text?",
+      "answer": "The opposite of an Anuloma marriage is called a Pratiloma marriage, where a woman of higher birth unites with a man of lower birth. These unions are described as 'going against the hair or grain,' and they were historically condemned in the Manusmriti."
+    },
+    {
+      "question": "Why were Pratiloma marriages condemned according to the Manusmriti?",
+      "answer": "Pratiloma marriages were condemned because they were seen as disruptive to the social hierarchy. Manu believed they led to the degeneration of the parties involved and disrupted the established caste order, hence they were considered morally and socially wrong."
+    },
+    {
+      "question": "Have later commentators accepted Pratiloma marriages despite Manu's condemnation?",
+      "answer": "Yes, later commentators have come to accept Pratiloma marriages, unlike Manu's strict condemnation. This shift indicates a more flexible interpretation of social unions over time."
+    },
+    {
+      "question": "Provide a Python code snippet that categorizes a marriage as Anuloma, Pratiloma, or same-caste based on birth ranks. Assume the ranks are represented as integers where higher values indicate higher birth rank.",
+      "answer": "python\ndef categorize_marriage(man_rank: int, woman_rank: int) -> str:\n    if man_rank == woman_rank:\n        return \"Same-caste marriage\"\n    elif man_rank > woman_rank:\n        return \"Anuloma marriage (going with the grain)\"\n    else:\n        return \"Pratiloma marriage (going against the grain)\"\n\n# Example usage:\nprint(categorize_marriage(5, 3))  # Output: 'Anuloma marriage (going with the grain)'\nprint(categorize_marriage(2, 4))  # Output: 'Pratiloma marriage (going against the grain)'\nprint(categorize_marriage(3, 3))  # Output: 'Same-caste marriage' \n"
+    }
+  ]
+}

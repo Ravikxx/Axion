@@ -1,0 +1,38 @@
+{
+  "source_url": "https://dev.to/debs_obrien/how-i-use-ai-agents-mcp-to-fully-automate-my-websites-content-3ekj",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What were the manual steps involved in adding a new podcast episode to the author's website before automation?",
+      "answer": "Before automation, adding a new podcast episode involved the following manual steps: 1) Duplicating an existing podcast's markdown file in VSCode, 2) Renaming the file with new podcast information, 3) Copying and pasting details from the hosting site into the markdown file, 4) Downloading the podcast image, 5) Uploading the image to Cloudinary, 6) Retrieving the image URL from Cloudinary and pasting it into the markdown file."
+    },
+    {
+      "question": "How did the author initially automate parts of the podcast episode addition process using VSCode and Copilot?",
+      "answer": "The author created reusable prompts in VSCode containing instructions for Copilot. By pressing a button to run the prompt in a new chat, Copilot would use the installed Playwright MCP to navigate to the podcast URL, extract the relevant metadata, and generate the markdown file. This saved time and allowed for bulk processing of multiple episodes."
+    },
+    {
+      "question": "What specific limitations remained after using Copilot and Playwright MCP for automation?",
+      "answer": "The main remaining limitation was handling podcast images. While metadata automation worked well, downloading and uploading images to Cloudinary remained a tedious manual step that sometimes discouraged the author from adding new episodes."
+    },
+    {
+      "question": "How did the author solve the image handling problem using Goose and Cloudinary MCP?",
+      "answer": "The author configured Goose with a recipe that: 1) Used Playwright MCP to scrape the podcast page for both metadata and image URL, 2) Downloaded the image locally, 3) Used Cloudinary MCP to upload the image directly to their Cloudinary account using their API key, automatically placing it in the correct folder. This eliminated the manual image upload step entirely."
+    },
+    {
+      "question": "What additional verification steps did the author include in their automation workflow?",
+      "answer": "After Goose completed the podcast episode setup, the author asked it to: 1) Start the Nuxt dev server to verify the changes, 2) Use Playwright MCP to navigate to the podcasts page and visually confirm the new episode appeared correctly, 3) Take a screenshot of the page for final visual inspection."
+    },
+    {
+      "question": "How did the author extend the automation to include deployment using GitHub MCP?",
+      "answer": "The author configured Goose to automatically create a pull request using the GitHub MCP. This PR included all the changes (new podcast markdown file, updated image URLs in Cloudinary) which the author could review before merging to deploy the new episode to their live site."
+    },
+    {
+      "question": "Provide a sample Goose recipe for automating podcast episode additions that includes all the described automation steps.",
+      "answer": "Here's a simplified Goose recipe you could use:\n\n{\n  \"name\": \"add-podcast-episode\",\n  \"description\": \"Automates adding a new podcast episode to Nuxt content site\",\n  \"parameters\": {\n    \"type\": \"object\",\n    \"properties\": {\n      \"podcastUrl\": {\n        \"type\": \"string\",\n        \"description\": \"URL of the podcast episode page\"\n      }\n    },\n    \"required\": [\"podcastUrl\"]\n  },\n  \"steps\": [\n    {\n      \"name\": \"Extract podcast data\",\n      \"action\": \"playwright.mcp\",\n      \"args\": {\n        \"action\": \"navigate\",\n        \"url\": \"{{podcastUrl}}\"\n      }\n    },\n    {\n      \"name\": \"Create markdown file\",\n      \"action\": \"fs.writeFile\",\n      \"args\": {\n        \"path\": \"content/podcasts/{{podcastTitle}}.md\",\n        \"content\": \"---\\ntitle: {{podcastTitle}}\\ndate: {{podcastDate}}\\nhost: {{podcastHost}}\\npodcastUrl: {{podcastUrl}}\\nimage: {{imageUrl}}\\n---\"\n      }\n    },\n    {\n      \"name\": \"Upload image to Cloudinary\",\n      \"action\": \"cloudinary.mcp.upload\",\n      \"args\": {\n        \"path\": \"local/podcast-{{podcastTitle}}.jpg\",\n        \"folder\": \"podcasts\"\n      }\n    },\n    {\n      \"name\": \"Verify in dev server\",\n      \"action\": \"playwright.mcp\",\n      \"args\": {\n        \"action\": \"navigate\",\n        \"url\": \"http://localhost:3000/podcasts\"\n      }\n    },\n    {\n      \"name\": \"Create PR\",\n      \"action\": \"github.mcp.createPr\",\n      \"args\": {\n        \"title\": \"Add {{podcastTitle}} episode\",\n        \"branch\": \"add/{{podcastTitle}}\"\n      }\n    }\n  ]\n}\n"
+    },
+    {
+      "question": "What are the key benefits the author mentions having achieved through this automation process?",
+      "answer": "The author highlights several key benefits: 1) Time savings - can now add episodes in minutes instead of hours, 2) Consistency - automated process ensures all metadata is correctly formatted, 3) Accessibility - even non-technical users (like their mother) can now add episodes, 4) Cloudinary integration - maintains image optimization benefits without manual uploads, 5) Scalability - recipes can be shared with team members or modified for other content types."
+    }
+  ]
+}

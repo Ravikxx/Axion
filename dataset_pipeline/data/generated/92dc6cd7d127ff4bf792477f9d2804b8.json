@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Cedar_Hill_Collegiate_High_School",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is Cedar Hill Collegiate High School (CHCHS) and what unique opportunity does it offer?",
+      "answer": "Cedar Hill Collegiate High School (CHCHS) is an early college high school that allows students to complete high school while simultaneously earning an associate degree, totaling 60 college credits. It is part of the Cedar Hill Independent School District and operates as a district charter school, offering enrollment to students from Cedar Hill and surrounding cities like DeSoto, Lancaster, and Mansfield."
+    },
+    {
+      "question": "When did Cedar Hill Collegiate High School open and when did its first class graduate?",
+      "answer": "Cedar Hill Collegiate High School opened in 2008 and graduated its first class of seniors in 2012. The school has maintained strong academic performance, with an 'A' rating from the Texas Education Agency (TEA) in the 2018–2019 school year."
+    },
+    {
+      "question": "What are the admission requirements for Cedar Hill Collegiate High School?",
+      "answer": "Admission typically involves completing an application form and participating in an interview with the principal and teachers. However, interviews were not mandatory for the 2016–2017 enrollment year. Students must attend a summer bridge program upon acceptance. The school caps enrollment at 100 students per grade level, and once a student drops out of the program, they cannot re-enter."
+    },
+    {
+      "question": "How does Cedar Hill Collegiate High School's performance compare to other high schools in the nation?",
+      "answer": "Cedar Hill Collegiate High School has been ranked as the 10th best early college high school and the 131st best high school in the nation. It earned a bronze medal from the U.S. News and World Ranking in both 2014 and 2015. Additionally, it has achieved at least 99% passing rates on each section of the STAAR test, according to the TEA."
+    },
+    {
+      "question": "Who is the current Chancellor of Cedar Hill Collegiate High School, and what grade levels does the school serve?",
+      "answer": "The current Chancellor of Cedar Hill Collegiate High School is Mr. Heath Koenig. The school serves students in grades 9 through 12, and as of recent years, it also offers a middle school program for grades 6, 7, and 8. The middle school was recognized for Seven Distinctions throughout the State of Texas in the 2017–2018 school year."
+    },
+    {
+      "question": "What is the STAAR test performance of Cedar Hill Collegiate High School students?",
+      "answer": "According to the Texas Education Agency (TEA), Cedar Hill Collegiate High School has maintained a passing rate of at least 99% on each section of the STAAR test, demonstrating strong academic achievement among its students."
+    },
+    {
+      "question": "Can you provide a Python code snippet to calculate the acceptance rate of Cedar Hill Collegiate High School if the number of applicants and accepted students is known?",
+      "answer": "Certainly! Here's a Python function to calculate the acceptance rate:\npython\ndef calculate_acceptance_rate(total_applicants, accepted_students):\n    if total_applicants <= 0:\n        return 0.0\n    return (accepted_students / total_applicants) * 100\n\n# Example usage:\ntotal_applicants = 500\naccepted_students = 100\nacceptance_rate = calculate_acceptance_rate(total_applicants, accepted_students)\nprint(f\"Acceptance Rate: {acceptance_rate:.2f}%\")\n\nThis function takes the total number of applicants and the number of accepted students as inputs and returns the acceptance rate as a percentage."
+    }
+  ]
+}

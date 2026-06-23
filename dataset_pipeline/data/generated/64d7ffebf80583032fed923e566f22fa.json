@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/ATP_synthase_subunit_C",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the primary role of subunit C in ATP synthases?",
+      "answer": "Subunit C, also known as subunit 9 or proteolipid, is the main transmembrane subunit of the Fo/Vo complex in V-type, A-type, and F-type ATP synthases. It forms an oligomeric c ring that constitutes the rotor of the Fo/Vo/Ao complex, enabling proton translocation across the membrane."
+    },
+    {
+      "question": "How do F-ATPases and V-ATPases differ structurally?",
+      "answer": "F-ATPases (F1Fo ATPases) and V-ATPases (V1Vo ATPases) each consist of two linked complexes: the catalytic core (F1 or V1) and the membrane-spanning pore (Fo or Vo). Both contain rotary motors for proton translocation and ATP synthesis/hydrolysis, but their specific subunit compositions and functions vary."
+    },
+    {
+      "question": "Explain the mechanism by which F-ATPases synthesize ATP.",
+      "answer": "In F-ATPases, the flux of protons through the ATPase channel drives the rotation of the c subunit ring in the Fo complex. This rotation is transmitted to the gamma subunit rotor of the F1 complex via a permanent bond between the gamma/epsilon subunits of F1 and the c ring. The stepwise movement is driven by the sequential protonation and deprotonation of Asp61 on subunit C, coupling proton flux to ATP synthesis."
+    },
+    {
+      "question": "What is the significance of the buried glutamic acid residue in V-ATPases?",
+      "answer": "In V-ATPases, the c, c′, and c′′ proteolipid subunits form part of the proton-conducting pore, each containing a buried glutamic acid residue. This residue is essential for proton transport, as it facilitates the movement of protons across the membrane during ATP synthesis or hydrolysis."
+    },
+    {
+      "question": "Can ATPases operate in reverse? If so, how?",
+      "answer": "Yes, some ATPases can work in reverse. While most ATPases harness the energy from a proton gradient to synthesize ATP, reverse ATPases use the energy from ATP hydrolysis to create a proton gradient. This bidirectional functionality allows ATPases to adapt to cellular energy demands."
+    },
+    {
+      "question": "What recent finding highlights the importance of subunit C in mitochondrial function?",
+      "answer": "A recent study indicated that the c-subunit is a critical component of the mitochondrial permeability transition pore, suggesting its role in regulating mitochondrial membrane dynamics and potentially cell death pathways."
+    },
+    {
+      "question": "Write a Python function to simulate the protonation/deprotonation cycle of Asp61 in subunit C.",
+      "answer": "python\nimport numpy as np\n\ndef simulate_protonation_cycle(pH, proton_affinity=6.5):\n    \"\"\"\n    Simulates the protonation/deprotonation cycle of Asp61 in subunit C.\n    Args:\n        pH: Environmental pH\n        proton_affinity: pKa of Asp61 (default: 6.5)\n    Returns:\n        bool: True if protonated, False if deprotonated\n    \"\"\"\n    protonated = np.random.rand() < (1 / (1 + 10 ** (pH - proton_affinity)))\n    return protonated\n\n# Example usage:\naspartate_protonated = simulate_protonation_cycle(pH=7.0)\nprint(f\"Asp61 is {'protonated' if aspartate_protonated else 'deprotonated'}\")\n"
+    }
+  ]
+}

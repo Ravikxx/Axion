@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Double_mass_analysis",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the primary purpose of double mass analysis in hydrology?",
+      "answer": "Double mass analysis is a graphical method used to evaluate the consistency of hydrological data by detecting breaks in the relationship between two cumulative variables. It helps identify changes in data collection procedures, local conditions, or other factors that may require corrections before further analysis."
+    },
+    {
+      "question": "How is a double mass plot constructed?",
+      "answer": "A double mass plot is created by plotting the running totals (cumulative values) of one variable on the x-axis against the running totals of a second variable on the y-axis. Points are connected with a line to form a double mass curve. If no changes occur, the curve should be linear; deviations indicate inconsistencies."
+    },
+    {
+      "question": "What does a break in the slope of a double mass curve indicate?",
+      "answer": "A break in the slope of a double mass curve suggests a change in the relationship between the two variables, often due to alterations in data collection methods, instrumentation, gauge location, or environmental conditions affecting one station or variable but not the other."
+    },
+    {
+      "question": "Write a Python code snippet to perform a basic double mass analysis using cumulative sums.",
+      "answer": "python\nimport numpy as np\nimport matplotlib.pyplot as plt\n\n# Example data: cumulative precipitation at two stations\nstation1 = np.array([10, 25, 45, 70, 100])  # Station A cumulative values\nstation2 = np.array([12, 30, 50, 80, 110])  # Station B cumulative values\n\n# Plot double mass curve\nplt.figure(figsize=(8, 5))\nplt.plot(station1, station2, marker='o', linestyle='-')\nplt.xlabel('Cumulative Station A (mm)')\nplt.ylabel('Cumulative Station B (mm)')\nplt.title('Double Mass Curve')\nplt.grid(True)\nplt.show()\n"
+    },
+    {
+      "question": "Why is double mass analysis considered robust for consistency checks?",
+      "answer": "Double mass analysis is robust because it relies on cumulative sums, which smooth out short-term fluctuations and emphasize long-term trends. A linear relationship between two consistent datasets makes it easier to detect deviations caused by external changes, making it less sensitive to minor errors or noise."
+    },
+    {
+      "question": "What assumptions underlie the double mass analysis technique?",
+      "answer": "Double mass analysis assumes that all recorded data points belong to the same parent population (i.e., are consistent). It also assumes that external changes affecting one variable or station will manifest as breaks in the slope of the cumulative curve, detectable through graphical analysis."
+    },
+    {
+      "question": "How can double mass analysis help correct hydrological records?",
+      "answer": "If a break in the double mass curve is identified, corrections can be applied to the affected segment of the record to account for changes in data collection methods, instrumentation, or environmental conditions. This ensures the data reflects a consistent relationship before further analysis."
+    }
+  ]
+}

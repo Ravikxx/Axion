@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Fiveband_barb",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What are the distinguishing physical features of the fiveband barb compared to the tiger barb?",
+      "answer": "The fiveband barb (Desmopuntius pentazona) has five black vertical bands on an orange or gold body, while the tiger barb (Puntigrus tetrazona) has four black vertical bands. Additionally, the fiveband barb has a black spot at the rear base of the dorsal fin, which the tiger barb lacks."
+    },
+    {
+      "question": "What are the ideal water conditions for keeping fiveband barbs in captivity?",
+      "answer": "Fiveband barbs thrive in tropical waters with a pH of 5–6, water hardness of 5–12.0 dGH, and a temperature range of 74–84 °F (23–29 °C). These conditions mimic their native blackwater streams and peat swamps in Southeast Asia."
+    },
+    {
+      "question": "How do fiveband barbs reproduce, and what steps should be taken to ensure egg survival?",
+      "answer": "Fiveband barbs are egg-scatterers that spawn among coarse gravel beds in open water. After spawning, they often consume any eggs they find, so it is necessary to separate the fish from the eggs to prevent this. The eggs hatch in approximately one day."
+    },
+    {
+      "question": "What is the maximum size that a fiveband barb can reach?",
+      "answer": "The fiveband barb can grow to a maximum length of 8.8 centimetres (3.5 inches) total length (TL)."
+    },
+    {
+      "question": "How can you differentiate the fiveband barb (Desmopuntius pentazona) from the closely related species Desmopuntius hexazona?",
+      "answer": "The fiveband barb has a black spot at the rear base of the dorsal fin, whereas Desmopuntius hexazona lacks this spot. Additionally, the fiveband barb typically has five black vertical bands, while D. hexazona may have variations but commonly lacks the spot entirely."
+    },
+    {
+      "question": "Write a Python function to convert a temperature range in Fahrenheit to Celsius for aquarium conditions.",
+      "answer": "python\ndef fahrenheit_to_celsius(fahrenheit_range):\n    \"\"\"Convert a temperature range from Fahrenheit to Celsius.\"\"\"\n    celsius_range = [(f - 32) * 5/9 for f in fahrenheit_range]\n    return celsius_range\n\n# Example usage:\ntemp_fahrenheit = [74, 84]\ntemp_celsius = fahrenheit_to_celsius(temp_fahrenheit)\nprint(f\"Temperature range in Celsius: {temp_celsius}\")  # Output: [23.333..., 28.888...]\n"
+    },
+    {
+      "question": "Why are fiveband barbs commonly confused in the aquarium trade, and what can be done to avoid misidentification?",
+      "answer": "Fiveband barbs are often confused with the more widespread Desmopuntius hexazona due to their similar appearance and overlapping native ranges. To avoid misidentification, look for the distinct black spot at the rear base of the dorsal fin in fiveband barbs, which is absent in D. hexazona. Observing the number of black vertical bands can also help differentiate the species."
+    }
+  ]
+}

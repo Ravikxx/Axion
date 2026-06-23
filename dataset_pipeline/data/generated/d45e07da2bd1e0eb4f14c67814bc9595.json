@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Dynamic_and_formal_equivalence",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is the difference between dynamic and formal equivalence in translation?",
+      "answer": "Dynamic equivalence (also called functional equivalence) focuses on conveying the meaning and intended impact of the original text in a natural and readable way in the target language. Formal equivalence, on the other hand, prioritizes a word-for-word or literal translation to maintain the source text's structure, grammar, and form, even if it sacrifices readability in the target language."
+    },
+    {
+      "question": "Why might a translator choose dynamic equivalence over formal equivalence?",
+      "answer": "A translator might choose dynamic equivalence to produce a translation that sounds natural and is easier to read in the target language. This approach is particularly useful for literary works, marketing materials, or any text where the emotional tone and flow are as important as the literal meaning."
+    },
+    {
+      "question": "What are the potential drawbacks of using formal equivalence in translation?",
+      "answer": "The main drawback of formal equivalence is that the translated text may sound unnatural or difficult to read, as it closely follows the structure and grammar of the source language. Additionally, some expressions or grammatical structures in the source language may not exist in the target language, making the translation awkward or unclear."
+    },
+    {
+      "question": "Can you provide an example comparing dynamic and formal equivalence?",
+      "answer": "Example source sentence (English): 'It is raining cats and dogs.'\n\n- Formal equivalence: 'It is raining cats and dogs.' (literal word-for-word translation, retains the idiom but may confuse non-native speakers).\n- Dynamic equivalence: 'It is raining heavily.' (translates the meaning in a natural way for the target language without the idiom)."
+    },
+    {
+      "question": "How does a translator handle untranslatable expressions using formal equivalence?",
+      "answer": "With formal equivalence, if an expression in the source language has no equivalent in the target language, the translator retains the expression in the source language but replaces the letters with those from the target language. For example, if translating the French phrase 'savoir-faire' into English, it might be written as 'savoir-faire' (retaining the French spelling but understood by English speakers)."
+    },
+    {
+      "question": "Which translation approach is better for technical documents, dynamic or formal equivalence? Why?",
+      "answer": "Formal equivalence is generally better for technical documents because the primary goal is to convey precise information accurately. A word-for-word translation ensures that technical terms and instructions are not altered, reducing the risk of misinterpretation or errors."
+    },
+    {
+      "question": "Write a Python function that demonstrates the difference between dynamic and formal equivalence for a simple phrase.",
+      "answer": "python\ndef translate_phrase(source_phrase, target_language, equivalence_type='dynamic'):\n    translations = {\n        'It is raining cats and dogs': {\n            'dynamic': 'It is raining heavily.',\n            'formal': 'It is raining cats and dogs.'\n        },\n        'C est la fin du monde': {\n            'dynamic': 'It s the end of the world.',\n            'formal': 'C est la fin du monde.'\n        }\n    }\n    \n    return translations.get(source_phrase, {}).get(equivalence_type, 'Translation not available')\n\n# Example usage\nprint(translate_phrase('It is raining cats and dogs', 'French', 'dynamic'))  # Output: 'It is raining heavily.'\nprint(translate_phrase('C est la fin du monde', 'English', 'formal'))  # Output: 'C est la fin du monde.'\n"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Diaguely_Dabo",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What position does Diaguely Dabo play in football?",
+      "answer": "Diaguely Dabo plays as a defensive midfielder."
+    },
+    {
+      "question": "Which clubs did Diaguely Dabo join after progressing from Lorient's academy?",
+      "answer": "After progressing from Lorient's academy, Dabo joined Cannes in 2012, Sénart-Moissy for the 2012–13 season, Beauvais in 2014, and Dieppe in 2015."
+    },
+    {
+      "question": "How did Diaguely Dabo's career progress between 2016 and 2021?",
+      "answer": "Dabo moved to Épinal in 2016, then played for Laval in 2017–18, Avranches in 2018–19, Stevenage in 2019–20, and Kilmarnock in 2020–21."
+    },
+    {
+      "question": "What is one notable achievement of Diaguely Dabo's career in terms of clubs played?",
+      "answer": "One notable achievement is that Dabo played in multiple professional leagues across France, England, and Scotland, including the English Football League and the Scottish Premiership."
+    },
+    {
+      "question": "Write a Python code snippet to extract all club names mentioned in Dabo's career from the given text.",
+      "answer": "python\ntext = \"Diaguely Dabo ... (list the full text here)\"\nclubs = [\n    \"Lorient\", \"Cannes\", \"Sénart-Moissy\", \"Beauvais\", \"Dieppe\", \n    \"Épinal\", \"Laval\", \"Avranches\", \"Stevenage\", \"Kilmarnock\", \n    \"Angoulême\", \"Olympique Alès\", \"Thonon Evian Grand Genève\"\n]\nprint(clubs)\n"
+    },
+    {
+      "question": "Why might a footballer move between clubs at lower divisions before reaching higher leagues?",
+      "answer": "Moving between clubs at lower divisions allows players to gain experience, prove their skills, and attract attention from higher-level teams. It is a common career path for developing players to build consistency before securing contracts in more competitive leagues."
+    },
+    {
+      "question": "How many different countries did Diaguely Dabo play in during his career?",
+      "answer": "Diaguely Dabo played in three different countries: France, England, and Scotland."
+    }
+  ]
+}

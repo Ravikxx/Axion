@@ -1,0 +1,34 @@
+{
+  "source_url": "https://mathworld.wolfram.com/IntensityFunction.html",
+  "category": "mathworld",
+  "pairs": [
+    {
+      "question": "What are the two distinct notions of an intensity function in point process theory?",
+      "answer": "In point process theory, there are two primary definitions of an intensity function. The first defines it as a quantity denoted by λ, which may be finite or infinite, and is associated with the probability measure μ of the process. The second defines it as a density function λ(t) of the intensity measure μ relative to the Lebesgue measure, such that μ(A) = ∫ₐ λ(t) dt for any Borel set A."
+    },
+    {
+      "question": "How can the intensity function λ be rewritten when it is finite, and what does this imply about its behavior?",
+      "answer": "When the intensity function λ is finite, it can be rewritten using little-o notation as λ(t) = o(1/t) as t → ∞. This implies that λ(t) decays faster than 1/t, which is a useful asymptotic characterization in the analysis of point processes."
+    },
+    {
+      "question": "What is the role of the intensity measure in point processes, and how does it relate to the intensity function?",
+      "answer": "The intensity measure μ of a point process quantifies the expected number of points in a given Borel set. If λ(t) is the intensity function, then μ(A) = ∫ₐ λ(t) dt for any Borel set A. This relationship shows that the intensity function serves as a density for the intensity measure with respect to the Lebesgue measure."
+    },
+    {
+      "question": "Can a point process have an infinite intensity function? Explain with an example.",
+      "answer": "Yes, a point process can have an infinite intensity function. For instance, a homogeneous Poisson process with a constant rate λ(t) = λ > 0 has a finite intensity function, but a process with λ(t) = 1/√t for t > 0 exhibits an infinite intensity over the entire real line, as ∫₀^∞ (1/√t) dt diverges."
+    },
+    {
+      "question": "Provide a mathematical definition of the intensity function as a density of the intensity measure. Include the integral relationship between the two.",
+      "answer": "The intensity function λ(t) is defined as the density of the intensity measure μ relative to the Lebesgue measure, such that for any Borel set A, μ(A) = ∫ₐ λ(t) dt. This means λ(t) = dμ/dt, where the derivative is taken in the sense of Radon-Nikodym."
+    },
+    {
+      "question": "What is the difference between the conditional intensity function and the intensity function in point processes?",
+      "answer": "The conditional intensity function λ(t | Hₜ) generalizes the intensity function by incorporating the history Hₜ of the point process up to time t. While the intensity function λ(t) depends only on time, the conditional intensity function accounts for past events, making it useful for modeling self-exciting or self-inhibiting processes."
+    },
+    {
+      "question": "Write a Python function to compute the expected number of points in an interval [a, b] for a Poisson process with a given intensity function λ(t).",
+      "answer": "python\nimport numpy as np\nfrom scipy.integrate import quad\n\ndef expected_points(λ_func, a, b):\n    \"\"\"\n    Compute the expected number of points in [a, b] for a Poisson process with intensity λ(t).\n    \n    Parameters:\n    λ_func (callable): Intensity function λ(t).\n    a (float): Start of the interval.\n    b (float): End of the interval.\n    \n    Returns:\n    float: Expected number of points in [a, b].\n    \"\"\"\n    integral, _ = quad(λ_func, a, b)\n    return integral\n\n# Example: Homogeneous Poisson process with λ(t) = 2\nλ_homogeneous = lambda t: 2\nexpected = expected_points(λ_homogeneous, 0, 5)\nprint(f\"Expected points in [0, 5]: {expected}\")\n\nThis function uses numerical integration (via `scipy.integrate.quad`) to compute the expected number of points in an interval for a given intensity function."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/EWMA_chart",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is an EWMA chart in statistical quality control and how does it differ from other control charts?",
+      "answer": "An EWMA (Exponentially Weighted Moving Average) chart is a control chart used in statistical quality control to monitor process output over time. Unlike other control charts that treat rational subgroups individually, the EWMA chart tracks the exponentially-weighted moving average of all prior sample means. It assigns geometrically decreasing weights to historical data, prioritizing recent samples while giving minimal influence to distant ones. This makes it particularly sensitive to small shifts in the process mean."
+    },
+    {
+      "question": "What are the two key parameters required to set up an EWMA chart, and what are typical recommended values for them?",
+      "answer": "The two key parameters for setting up an EWMA chart are λ (lambda) and L. λ is the weight given to the most recent rational subgroup mean, with recommended values typically between 0.05 and 0.3. L is the multiple of the rational subgroup standard deviation that establishes the control limits; it is usually set at 3, though smaller values may be used when λ is very small."
+    },
+    {
+      "question": "Write out the formula for calculating the EWMA statistic z_i and explain what each term represents.",
+      "answer": "The EWMA statistic z_i is calculated using the formula: z_i = λ * x̄_i + (1 - λ) * z_{i-1}, where λ is the smoothing factor (0 < λ ≤ 1), x̄_i is the mean of the current rational subgroup, and z_{i-1} is the EWMA value from the previous subgroup. This formula combines the current observation with the historical average, weighted by λ, to produce a smoothed estimate of the process mean."
+    },
+    {
+      "question": "How do the control limits of an EWMA chart change over successive rational subgroups, and what is their final form as i approaches infinity?",
+      "answer": "The control limits for an EWMA chart start narrow and widen progressively with each rational subgroup, approaching the asymptotic limits: ± L * (σ / √n) * √(λ / (2 - λ)), where L is the control limit multiplier, σ is the estimated process standard deviation, n is the subgroup size, and λ is the smoothing factor. The formula for the limits at step i is: T ± L * (S / √n) * √[λ / (2 - λ) * (1 - (1 - λ)^(2i))]."
+    },
+    {
+      "question": "What is the Exponentially Weighted Moving Variance (EWMVar), and how is it used in statistical quality control?",
+      "answer": "EWMVar (Exponentially Weighted Moving Variance) is a variant of the EWMA chart designed to monitor process variability. It computes a time-weighted estimate of the process variance, providing a significance score or control limits that automatically adjust to the observed data. This allows for better detection of changes in process dispersion over time."
+    },
+    {
+      "question": "Explain why an EWMA chart is robust to non-normal data distributions. What adaptation is used for Poisson-distributed data?",
+      "answer": "An EWMA chart is relatively robust to non-normal data distributions because the exponentially weighted averaging process smooths out deviations and reduces the impact of outliers. For data better modeled by the Poisson distribution, a specialized version of the EWMA chart is used, which adjusts the control limits and statistics to account for the discrete, count-based nature of Poisson processes."
+    },
+    {
+      "question": "What is the recommended practice when using an EWMA chart alongside a Shewhart-style chart to monitor process mean shifts?",
+      "answer": "To detect both small and large shifts in the process mean, it is recommended to superimpose an EWMA chart on top of a suitable Shewhart-style chart (such as the x̄ and R or x̄ and s charts) with widened control limits. The EWMA excels at detecting small shifts, while Shewhart charts are better suited for identifying large shifts. Combining both provides comprehensive process monitoring."
+    }
+  ]
+}

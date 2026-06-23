@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Angers",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the pronunciation of 'Angers' in French, and how do the UK and US pronunciations differ?",
+      "answer": "In French, 'Angers' is pronounced as [ɑ̃ʒe]. In the UK, it is commonly pronounced similarly to the French, while in the US, it is typically pronounced as 'AN-jers'."
+    },
+    {
+      "question": "How many communes make up the Angers Loire Métropole, and what is the total area and population of this metropolitan area?",
+      "answer": "The Angers Loire Métropole consists of 29 communes, covering a total area of 667 square kilometers (258 sq mi) and has a population of 308,800 inhabitants as of 2022."
+    },
+    {
+      "question": "What historical significance did Angers hold during the French Revolution?",
+      "answer": "Before the French Revolution, Angers served as the capital of the province of Anjou. The city was an important stronghold and the cradle of the Plantagenet dynasty, playing a key historical role in France."
+    },
+    {
+      "question": "Explain the geographical location of Angers in relation to major French cities and rivers.",
+      "answer": "Angers is located in western France, approximately 300 km (190 mi) southwest of Paris. It lies at the confluence of the Mayenne, Sarthe, and Loir rivers, which merge just north of the city to form the Maine River. This river then flows into the Loire several kilometers south. Angers is also situated near the Val de Loire, a World Heritage Site, and the Loire-Anjou-Touraine regional natural park."
+    },
+    {
+      "question": "What are the key economic and cultural features of modern-day Angers?",
+      "answer": "Modern Angers is a major economic hub in western France, with a strong focus on the plant sector, including Végépolys, Europe's leading horticultural competitiveness cluster. The city is also home to the headquarters of the Community Plant Variety Office. Culturally, Angers boasts a rich life with universities and museums, including the medieval Apocalypse Tapestry housed in the Plantagenet château."
+    },
+    {
+      "question": "Write a Python function that calculates the total population of Angers' metropolitan area by summing the populations of its 29 communes.",
+      "answer": "python\ndef calculate_metro_population(commune_populations):\n    return sum(commune_populations)\n\n# Example usage:\ncommune_populations = [15000] * 28 + [38800]  # Hypothetical population distribution\nprint(calculate_metro_population(commune_populations))  # Output: 308800\n"
+    },
+    {
+      "question": "Why is Angers considered a significant location in the context of European history?",
+      "answer": "Angers is historically significant as the cradle of the Plantagenet dynasty and as one of Europe's intellectual centers during the reign of René of Anjou. Its strategic location as a stronghold in northwestern France and its role in the cultural and political landscape of medieval Europe contribute to its importance."
+    }
+  ]
+}

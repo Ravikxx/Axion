@@ -1,0 +1,38 @@
+{
+  "source_url": "https://dev.to/debuggingwithsim/the-truth-about-building-in-public-what-no-one-tells-you-2o2p",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What does 'building in public' mean, and how is it different from traditional product launches?",
+      "answer": "'Building in public' is a storytelling strategy where you share your product journey—wins, mistakes, experiments, and progress—as they happen, rather than waiting until a polished version is ready. Unlike traditional launches that focus on the final product, building in public emphasizes transparency and authenticity by documenting the process. This includes sharing revenue dashboards, feature releases, weekly learnings, and even failures. The key difference is that it’s not about hype or shortcuts but about creating trust and community through honesty."
+    },
+    {
+      "question": "Why did building in public become popular around 2020–2021?",
+      "answer": "Building in public gained traction around 2020–2021 because indie hackers and solo founders like Pieter Levels and Arvid Kahl began sharing raw progress, which felt refreshing compared to polished PR. This approach created accountability, formed communities around products before launch, and provided a sense of authenticity that resonated with audiences tired of traditional marketing tactics. It also gave solo builders a way to connect with others who were on similar journeys."
+    },
+    {
+      "question": "How can building in public create invisible pressure, and what are the risks of this pressure?",
+      "answer": "Building in public can create invisible pressure because your journey stops being just yours—you’re constantly documenting progress, which can make you feel like you’re performing rather than just building. The risks include feeling like you’ve failed on days with no 'tweet-worthy' progress, making decisions based on what will make a good update rather than what’s truly important, and prioritizing metrics over meaningful work. This pressure can lead to burnout or a loss of authenticity if not managed carefully."
+    },
+    {
+      "question": "What is the difference between sharing for connection and sharing for impressing others in building in public?",
+      "answer": "Sharing for connection means sharing your real struggles, learnings, and thought processes to inspire and support others, while sharing for impressing others often involves crafting updates that look like progress but aren’t meaningful. For example, spending 40 minutes on a tweet about a 10-minute coding task to make it seem like a bigger achievement. Sharing for connection builds trust and community, while sharing for impressing others can drain your energy and authenticity."
+    },
+    {
+      "question": "Can you provide a code snippet example of how to document progress publicly in a structured way?",
+      "answer": "Here’s a Python snippet using a simple JSON file to log daily progress, which can be shared publicly:\n\npython\nimport json\nfrom datetime import datetime\n\n# Initialize or load existing progress log\ntry:\n    with open('progress_log.json', 'r') as f:\n        progress_log = json.load(f)\nexcept FileNotFoundError:\n    progress_log = []\n\n# Add today's progress\ntoday = datetime.now().strftime('%Y-%m-%d')\nprogress_update = {\n    \"date\": today,\n    \"tasks_completed\": [\"Fixed login bug\", \"Added user profile page\"],\n    \"lessons_learned\": \"Authentication libraries can be tricky; always double-check configs.\",\n    \"failures\": [\"Spent 2 hours debugging a CSS issue that was browser-specific.\"],\n    \"next_steps\": [\"Implement password reset feature\", \"Write blog post about the journey\"]\n}\n\nprogress_log.append(progress_update)\n\n# Save the updated log\nwith open('progress_log.json', 'w') as f:\n    json.dump(progress_log, f, indent=2)\n\nprint(f\"Progress logged for {today}!\")\n\n\nThis snippet helps maintain a structured, shareable record of progress without overwhelming detail."
+    },
+    {
+      "question": "How can building in public help attract collaborators, mentors, or friends?",
+      "answer": "Building in public can attract collaborators, mentors, or friends by creating a space for people to resonate with your story and struggles. For example, sharing a genuine post about a challenge you faced might lead someone to DM you with a similar experience, offering support or collaboration. This approach builds trust and authenticity, which are more likely to foster meaningful connections than polished success stories."
+    },
+    {
+      "question": "What are the key benefits of building in public when done with intention?",
+      "answer": "When approached intentionally, building in public offers several key benefits: attracting people who resonate with your story, receiving feedback before launching, building trust instead of hype, and finding collaborators or mentors. It also allows you to find inspiration in shared struggles, as others may relate to your challenges and feel less alone. The focus shifts from metrics to meaningful connections and growth."
+    },
+    {
+      "question": "Why is it important to remember to 'build for yourself, share for others'?",
+      "answer": "It’s important to 'build for yourself, share for others' because the primary goal should be creating something meaningful to you, not chasing audience approval. Sharing your journey can inspire others, but if you let the audience dictate your pace or decisions, you risk losing authenticity and burning out. Building for yourself ensures you stay true to your vision, while sharing for others allows you to contribute to a community without sacrificing your well-being."
+    }
+  ]
+}

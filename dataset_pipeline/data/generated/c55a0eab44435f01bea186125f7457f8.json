@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Greater_Netherlands",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the Greater Netherlands irredentist concept and which regions does it include?",
+      "answer": "The Greater Netherlands is an irredentist concept aiming to unite the Netherlands, Flanders (Belgium), and Brussels under a single state. It may also include additional regions such as the French Westhoek, Suriname, Dutch-speaking areas of Germany and France, and even parts of South Africa with Dutch or Afrikaans speakers. A related but broader proposal, the Pan-Netherlands concept, extends this idea to include Wallonia and potentially Luxembourg."
+    },
+    {
+      "question": "Who originally developed the Greater Netherlands concept and what was their primary argument?",
+      "answer": "The Greater Netherlands concept was originally developed by historian Pieter Geyl. He argued that the Dutch and Flemish people, as part of the same 'Dutch tribe,' were only divided due to the Eighty Years' War against Spain in the 16th century. Geyl's argument was based on historical and cultural unity rather than ethnic nationalism."
+    },
+    {
+      "question": "How did fascist movements reinterpret the Greater Netherlands concept in the 1930s and 1940s?",
+      "answer": "During the 1930s and 1940s, fascist movements like Verdinaso and the Nazi Party appropriated the Greater Netherlands concept, shifting its focus toward ethnic nationalism. Unlike Geyl's cultural and historical perspective, these groups emphasized racial and ethnic homogeneity as the foundation for a unified Dutch-speaking state."
+    },
+    {
+      "question": "What is the Benelux ideal, and how does the Greater Netherlands concept relate to it?",
+      "answer": "The Benelux ideal refers to the political and economic cooperation among Belgium, the Netherlands, and Luxembourg. The Greater Netherlands concept seeks to elevate this ideal into a more centralized political union, potentially merging the Netherlands and Flanders under a single state while retaining or expanding its scope."
+    },
+    {
+      "question": "How does public opinion in Flanders differ from that in the Netherlands regarding the Greater Netherlands concept?",
+      "answer": "Public support for a union between Flanders and the Netherlands is relatively low in Flanders, where many view Flemish independence as a preferable alternative to remaining part of Belgium. In contrast, the Netherlands shows slightly more openness to the idea, though overall enthusiasm for the Greater Netherlands remains limited in both regions."
+    },
+    {
+      "question": "Provide a Python code snippet that demonstrates how to check if a given region is part of the Greater Netherlands proposed regions.",
+      "answer": "python\ndef is_part_of_greater_netherlands(region):\n    greater_netherlands_regions = {\n        \"Netherlands\", \"Flanders\", \"Brussels\", \"French Westhoek\",\n        \"Suriname\", \"Dutch-speaking Germany\", \"Dutch-speaking France\",\n        \"South Africa (Dutch/Afrikaans-speaking)\"\n    }\n    return region in greater_netherlands_regions\n\n# Example usage:\nprint(is_part_of_greater_netherlands(\"Flanders\"))  # True\nprint(is_part_of_greater_netherlands(\"Wallonia\"))  # False\n"
+    },
+    {
+      "question": "What are the key differences between Pieter Geyl's interpretation of the Greater Netherlands and fascist interpretations?",
+      "answer": "Pieter Geyl's interpretation emphasized cultural and historical unity, arguing that the Dutch and Flemish were one people divided by historical circumstances. In contrast, fascist interpretations focused on ethnic nationalism, prioritizing racial and ethnic homogeneity over cultural or historical ties as the basis for unification."
+    }
+  ]
+}

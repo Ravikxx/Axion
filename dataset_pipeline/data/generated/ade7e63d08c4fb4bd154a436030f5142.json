@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Ethan_Hardy",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who plays the character Ethan Hardy in the BBC medical drama 'Casualty'?",
+      "answer": "The actor who portrays Ethan Hardy in 'Casualty' is George Rainsford."
+    },
+    {
+      "question": "What position does Ethan Hardy hold in the medical profession on 'Casualty'?",
+      "answer": "Ethan Hardy is a Specialist Registrar in Emergency Medicine."
+    },
+    {
+      "question": "Describe Ethan Hardy's personality traits as depicted in 'Casualty'.",
+      "answer": "Ethan Hardy is characterized as a shy, socially awkward individual with a serious and attentive attitude."
+    },
+    {
+      "question": "What significant family revelation does Ethan Hardy discover about himself in 2015?",
+      "answer": "In 2015, Ethan learns that he is adopted. He later meets his biological mother, Emilie Groome, who has Huntington's disease, and discovers he inherited the disease."
+    },
+    {
+      "question": "Provide a Python code snippet to simulate Ethan Hardy's moral dilemma when he allows Scott Ellisson to die under the hospital's care.",
+      "answer": "python\ndef ethan_moral_dilemma(decision):\n    # Simulate the moral dilemma faced by Ethan Hardy\n    if decision == 'allow_scott_to_die':\n        print(\"Ethan compromises his morals by allowing Scott to die under hospital care.\")\n        return 'unethical_outcome'\n    elif decision == 'save_scott':\n        print(\"Ethan prioritizes ethics and saves Scott.\")\n        return 'ethical_outcome'\n    else:\n        print(\"Invalid decision.\")\n        return None\n\n# Example usage\nresult = ethan_moral_dilemma('allow_scott_to_die')\nprint(result)  # Output: 'unethical_outcome'"
+    },
+    {
+      "question": "How did Ethan Hardy's character evolve in response to the death of his colleague in the explosion storyline?",
+      "answer": "Following the explosion that killed a colleague, Ethan Hardy developed survivor's guilt and stress, leading to further unethical behavior as his character became disillusioned with his actions and the NHS system."
+    },
+    {
+      "question": "What notable award did George Rainsford win for his portrayal of Ethan Hardy?",
+      "answer": "George Rainsford won the 'Best Drama Star' award at the 2017 Inside Soap Awards for his portrayal of Ethan Hardy."
+    },
+    {
+      "question": "What was the final episode in which Ethan Hardy appeared on 'Casualty'?",
+      "answer": "Ethan Hardy departed from 'Casualty' in the episode titled 'Fight or Flight', which aired on 4 February 2023."
+    }
+  ]
+}

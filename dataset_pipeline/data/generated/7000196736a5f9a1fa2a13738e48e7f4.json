@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Consulate",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is the primary difference between a consulate and an embassy?",
+      "answer": "The primary difference is their scale and role. An embassy is a country's main diplomatic office in another country, typically located in the capital city, and is led by an ambassador. A consulate is a smaller diplomatic office, usually located in other major towns or cities, and handles specific functions like visas, passports, and trade licenses. If a country lacks an embassy in another country, a consulate may be located in the capital city."
+    },
+    {
+      "question": "What are the typical responsibilities of a consulate?",
+      "answer": "Consulates usually handle issues such as issuing passports for their citizens, processing visas for foreigners visiting their home country, and managing import/export licenses. They do not perform all the functions of an embassy, which has a broader diplomatic role."
+    },
+    {
+      "question": "What is a Consulate General, and how does it differ from a regular consulate?",
+      "answer": "A Consulate General is a larger and more significant type of consulate. While it performs similar functions to a regular consulate, such as issuing visas and passports, it may have additional responsibilities or resources due to its larger size and importance. This is more common in larger or more influential countries."
+    },
+    {
+      "question": "Who works in a consulate, and what are their roles?",
+      "answer": "People working in consulates are called consular officers. The person in charge is known as a consul or, in the case of a Consulate General, a consul general. An honorary consul is a part-time worker, often in port towns, who expedites document issuance for trade. Honorary consuls may be citizens of the country they represent, have familial ties, or be married to someone from there."
+    },
+    {
+      "question": "What is the significance of an honorary consulate?",
+      "answer": "An honorary consulate is an office run by an honorary consul, who works part-time and is not a full-time government employee. It is often located in port towns to facilitate faster document processing for trade purposes. Honorary consuls may be citizens of the host country, have ancestral ties to it, or be married to someone from there."
+    },
+    {
+      "question": "What level of diplomatic immunity do consular officers have?",
+      "answer": "Consular officers have limited diplomatic immunity. Unlike full diplomatic staff at embassies, their immunity is restricted and does not cover all actions. This means they may be subject to certain legal proceedings in the host country under specific conditions."
+    },
+    {
+      "question": "Can a consulate be located in the capital city of another country? If so, under what circumstances?",
+      "answer": "Yes, a consulate can be located in the capital city of another country, but only if the first country does not have an embassy in that country. In such cases, the consulate may serve as the primary diplomatic office for that country in the host nation."
+    }
+  ]
+}

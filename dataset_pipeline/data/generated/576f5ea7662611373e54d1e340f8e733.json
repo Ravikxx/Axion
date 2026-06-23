@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Dysstroma_citrata",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the scientific name of the dark marbled carpet moth?",
+      "answer": "The scientific name of the dark marbled carpet moth is Dysstroma citrata."
+    },
+    {
+      "question": "Who first described Dysstroma citrata, and in what year?",
+      "answer": "Dysstroma citrata was first described by Carl Linnaeus in 1761."
+    },
+    {
+      "question": "What are the typical characteristics of the wingspan and forewing coloration in Dysstroma citrata?",
+      "answer": "Dysstroma citrata has a wingspan of 25–32 mm. The ground color of the forewings can vary widely, showing whitish, grey, black, or brown tints, and the coloration is highly variable with some strongly darkened forms."
+    },
+    {
+      "question": "How can you distinguish the protruding post medial line on the front wings of Dysstroma citrata from similar species like Dysstroma truncata?",
+      "answer": "The protruding post medial line on the front wings of Dysstroma citrata usually reaches the post discal wavy line or interrupts it, which is a characteristic feature. This line is not typically described as reaching or interrupting in Dysstroma truncata, making it a distinguishing trait."
+    },
+    {
+      "question": "Describe the physical appearance of the adult larvae and pupa of Dysstroma citrata.",
+      "answer": "The adult larvae are light green with two white dorsal lines and have an approximately cylindrical shape with a blunt anus flap. The pupa is green with whitish wing sheaths and a brown, blunt rounded cremaster."
+    },
+    {
+      "question": "During which months are adult Dysstroma citrata moths typically active?",
+      "answer": "Adult Dysstroma citrata moths are typically active from July to August."
+    },
+    {
+      "question": "What type of habitats does Dysstroma citrata prefer, and what is its geographic distribution?",
+      "answer": "Dysstroma citrata prefers mountainous areas, wetlands, mountain forests, and bushy slopes. It is found across the Holarctic ecozone, including Europe, temperate Asia (through northwest China and Mongolia to the Russian Far East and Japan), Scandinavia up to Lapland, Iceland, the Faroe Islands, and North America (from Alaska and Newfoundland to New England and California). It is absent in Portugal, the Mediterranean islands, and Greece, but reported in India. It has been found at heights up to 2,400 meters in the Alps."
+    },
+    {
+      "question": "What are the primary food sources for the larvae of Dysstroma citrata? Provide a code snippet to list these plants programmatically.",
+      "answer": "The larvae of Dysstroma citrata feed on various shrubs and herbaceous plants, including Vaccinium species (e.g., V. myrtillus and V. uliginosum), Aster tripolium, Alnus, and Salix. Here is a Python code snippet to list these plants:\npython\nlarval_food_plants = [\n    \"Vaccinium myrtillus\",\n    \"Vaccinium uliginosum\",\n    \"Aster tripolium\",\n    \"Alnus\",\n    \"Salix\"\n]\nprint(larval_food_plants)\n"
+    }
+  ]
+}

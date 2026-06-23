@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Fatty_acid_desaturase",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What are fatty acid desaturases and what reactions do they catalyze?",
+      "answer": "Fatty acid desaturases are enzymes that convert saturated fatty acids into unsaturated or polyunsaturated fatty acids by introducing double bonds (desaturation) into the fatty acid chain. For example, they convert stearic acid (a saturated C18 fatty acid) into oleic acid (a monounsaturated C18 fatty acid), and further convert oleic acid into linoleic acid (a polyunsaturated C18 fatty acid)."
+    },
+    {
+      "question": "How does Δ9-desaturase function in fatty acid metabolism?",
+      "answer": "Δ9-desaturase introduces a double bond between the ninth and tenth carbon atoms from the carboxyl end of a fatty acid. For instance, it converts stearic acid (C18:0) into oleic acid (C18:1Δ9) by creating a double bond at the Δ9 position."
+    },
+    {
+      "question": "What is the difference between delta and omega nomenclature in fatty acid desaturation?",
+      "answer": "Delta (Δ) nomenclature indicates the position of the double bond relative to the carboxyl end of the fatty acid chain. For example, Δ9-desaturase places a double bond between carbons 9 and 10 from the carboxyl end. Omega (ω) nomenclature indicates the position from the methyl end. For instance, ω3-desaturase introduces a double bond between carbons 3 and 4 from the methyl end, creating an omega-3 fatty acid."
+    },
+    {
+      "question": "Provide an example of Δ6 desaturation in fatty acid biosynthesis.",
+      "answer": "Δ6 desaturation introduces a double bond between carbons 6 and 7 in linoleic acid (LA, C18:2-n6) and α-linolenic acid (ALA, C18:3-n3). For linoleic acid, this produces γ-linolenic acid (GLA, C18:3-n6), and for α-linolenic acid, it produces stearidonic acid (SDA, C18:4-n3)."
+    },
+    {
+      "question": "How do elongases and desaturases work together in the biosynthesis of essential fatty acids?",
+      "answer": "In fatty acid biosynthesis, elongases and desaturases alternate to build larger unsaturated molecules. Elongases extend the fatty acid chain by adding two carbon atoms (a -CH2-CH2- group), while desaturases introduce double bonds. For example, Δ6-desaturase may act first on linoleic acid, followed by an elongase to extend the chain, and further desaturation steps."
+    },
+    {
+      "question": "Write a Python function that calculates the position of a double bond introduced by a Δn-desaturase.",
+      "answer": "Here’s a function that takes the length of a fatty acid chain and the desaturase type (Δn) to determine the carbon position of the double bond from the carboxyl end:\n\npython\ndef bond_position(chain_length, desaturase_type):\n    \"\"\"\n    Calculate the position of a double bond introduced by a Δn-desaturase.\n    \n    Parameters:\n    - chain_length: Total number of carbons in the fatty acid (e.g., 18 for C18).\n    - desaturase_type: Desaturase type (e.g., 9 for Δ9-desaturase).\n    \n    Returns:\n    - Position of the double bond (1-based index from the carboxyl end).\n    \"\"\"\n    if not (1 <= desaturase_type < chain_length):\n        raise ValueError(\"Desaturase type must be within the fatty acid chain length.\")\n    bond_position = desaturase_type\n    return bond_position\n\n# Example usage:\nprint(bond_position(18, 9))  # Output: 9 (Δ9-desaturase introduces a bond at carbon 9 from the carboxyl end)\n"
+    },
+    {
+      "question": "What are the precursors and products of the desaturation of oleic acid by Δ12-desaturase?",
+      "answer": "Oleic acid (C18:1Δ9) is the precursor for Δ12-desaturase, which introduces a double bond at the Δ12 position, converting oleic acid into linoleic acid (C18:2Δ9,12). Linoleic acid is a polyunsaturated fatty acid and a precursor to other essential fatty acids like alpha-linolenic acid."
+    }
+  ]
+}

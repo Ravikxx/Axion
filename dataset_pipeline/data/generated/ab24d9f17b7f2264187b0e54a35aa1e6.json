@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Kushaura",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the difference between kushaura and kutsinhira in Shona music?",
+      "answer": "In Shona music, the kushaura is the leading part, often played a beat ahead, while the kutsinhira is a complementary part usually played a beat behind. Both parts are cyclical, typically repeating a sequence of four cycles in a 12/8 meter, but their relative timing and interplay create polyrhythms. The kushaura often leads variations, while the kutsinhira follows with complementary patterns."
+    },
+    {
+      "question": "How do kushaura and kutsinhira create a polyrhythm in Shona music?",
+      "answer": "The kushaura and kutsinhira parts often sound like 4/4 and 3/4 rhythms to Western ears, respectively, but they are conceptualized within a 12/8 meter. Their combination results in a polyrhythm where they sync every 12 eighth notes. For example, one part may emphasize beats 1, 4, 7, and 10 while the other emphasizes beats 1, 5, and 9."
+    },
+    {
+      "question": "What are the typical hand assignments for kushaura and kutsinhira parts on the mbira dzavadzimu?",
+      "answer": "Both parts usually feature high lines played by the right hand on the mbira's right manual. The kushaura's right-hand notes alternate in opposition to the kutsinhira's, creating an interlocked pattern. The left hand typically plays lower lines, often with octaves or fifths, and avoids thirds or chords entirely played by one hand."
+    },
+    {
+      "question": "Can you provide an example of how the cycle divisions in Shona music can vary?",
+      "answer": "Yes, the same notes can be grouped differently depending on where the cycle begins. For instance, the sequence 'CCEEAA CCFFAA DDFFAA CCEEGG' (Nhemamusasa) can be rephrased as 'FFAADD FFAACC EEGGCC EEAACC' by shifting the cycle division. This flexibility allows for different rhythmic interpretations."
+    },
+    {
+      "question": "How do kushaura and kutsinhira parts interact during a performance?",
+      "answer": "The kushaura player typically leads by introducing variations in both right and left hand parts. The kutsinhira player follows with complementary patterns that align with the kushaura's lead. This interplay creates dynamic, interlocking rhythms where each part's variations influence the other."
+    },
+    {
+      "question": "What are the common right-hand patterns in kushaura and kutsinhira parts?",
+      "answer": "Right-hand parts often feature repeating notes, descending lines, and specific chords. Examples include 'GGGGFEDD GGFEDDBB DDCCBBAA' (descending) or 'FFEEDDCCBAGG EEDDCCBBAAGG' (repeating and descending). The most common chord is an octave played with the thumb and index finger."
+    },
+    {
+      "question": "Write a Python function to approximate the rhythmic structure of a kushaura or kutsinhira part in 12/8 meter.",
+      "answer": "python\nfrom fractions import Fraction\n\ndef approximate_rhythm(notes: list, cycle_length: int = 12, subdivisions: int = 8) -> list:\n    \"\"\"\n    Approximates a rhythm in 12/8 meter by mapping notes to subdivisions.\n    \n    Args:\n        notes: List of note symbols (e.g., ['C', 'C', 'E', 'E']).\n        cycle_length: Total subdivisions in a cycle (default: 12).\n        subdivisions: Eighth notes per bar (default: 8 for 12/8 meter).\n        \n    Returns:\n        List of tuples (note, subdivision_position) where position is a Fraction.\n    \"\"\"\n    cycle_positions = []\n    for i, note in enumerate(notes):\n        position = Fraction(i, subdivisions) * cycle_length\n        cycle_positions.append((note, position))\n    return cycle_positions\n\n# Example usage:\nkushaura_example = ['C', 'C', 'E', 'E', 'A', 'A', 'C', 'C', 'F', 'F', 'A', 'A']\nrhythm = approximate_rhythm(kushaura_example)\nfor note, pos in rhythm:\n    print(f\"{note} at position {pos}\")\n\nThis function maps a sequence of notes to their rhythmic positions within a 12/8 cycle."
+    }
+  ]
+}

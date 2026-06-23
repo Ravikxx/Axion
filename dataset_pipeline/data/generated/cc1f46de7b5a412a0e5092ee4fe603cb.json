@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Australia_Day",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is Australia Day and when is it observed?",
+      "answer": "Australia Day is the official national day of Australia, observed annually on 26 January. It commemorates the 1788 landing of the First Fleet at Sydney Cove and the raising of the Union Flag by Arthur Phillip."
+    },
+    {
+      "question": "What events typically take place on Australia Day?",
+      "answer": "On Australia Day, events include the presentation of community awards, citizenship ceremonies, Australia of the Year Awards, the announcement of the Australia Day Honours list, and addresses from the governor-general and prime minister. Community festivals, concerts, and celebrations are also held nationwide."
+    },
+    {
+      "question": "How did Australia Day become a national holiday?",
+      "answer": "Australia Day was established as a national holiday through a series of historical developments. States initially celebrated different founding days, but moves for a unified national holiday gained momentum after Federation in 1901. The name Australia Day and the date of 26 January were officially selected in 1935, and the holiday was standardized across all states by 1994."
+    },
+    {
+      "question": "What is the significance of 26 January in relation to Indigenous Australians?",
+      "answer": "For some Indigenous Australians, 26 January is observed as Invasion Day, Survival Day, or a Day of Mourning, as it marks the beginning of British colonization and the forced displacement of Aboriginal peoples from their lands."
+    },
+    {
+      "question": "What are the arguments for and against changing the date of Australia Day?",
+      "answer": "Arguments for changing the date include recognizing it as a day of mourning and invasion for Indigenous Australians, while arguments for retaining 26 January include maintaining tradition and the majority public support for the current date. Polls, such as a 2026 Roy Morgan poll, show 60.5% support for keeping 26 January as Australia Day."
+    },
+    {
+      "question": "How does the Australia Day Council contribute to the day's observance?",
+      "answer": "The Australia Day Council, an independent government-owned company, promotes the day by organizing events that recognize the contributions of Australians, encourage reflection on the nation's history, and foster reconciliation with Indigenous Australians. They also coordinate national celebrations and ceremonies."
+    },
+    {
+      "question": "Write a Python function that checks if a given date is Australia Day.",
+      "answer": "python\nfrom datetime import date\n\ndef is_australia_day(input_date: date) -> bool:\n    \"\"\"Check if the input date is Australia Day (26 January).\"\"\"\n    return input_date.month == 1 and input_date.day == 26\n\n# Example usage:\nprint(is_australia_day(date(2023, 1, 26)))  # Output: True\nprint(is_australia_day(date(2023, 1, 25)))  # Output: False\n"
+    }
+  ]
+}

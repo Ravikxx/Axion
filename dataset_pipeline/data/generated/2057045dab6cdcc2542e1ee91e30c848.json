@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Galician_language",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is Galician and where is it primarily spoken?",
+      "answer": "Galician, or Galego in its native form, is a Western Ibero-Romance language primarily spoken by around 2.4 million people, mainly in Galicia, an autonomous community in northwestern Spain where it shares official status with Spanish. It is also spoken in border zones of Asturias and Castile and León, by Galician migrant communities in other parts of Spain and Latin America (e.g., Argentina, Uruguay), as well as in Puerto Rico, the United States, Switzerland, and other European regions."
+    },
+    {
+      "question": "How did Galician evolve historically from Latin?",
+      "answer": "Galician evolved locally from Vulgar Latin and is a descendant of what scholars call Galician-Portuguese. The earliest fully Galician document dates to 1230, though Romance linguistic traits appear in Latin charters from the High Middle Ages, especially in personal and place names. By the late 13th century, Galician-Portuguese was recognized as a cultural language, referenced in the 1290 work 'Regles de Trobar' by Jofre de Foixà."
+    },
+    {
+      "question": "What are the key dialectal differences between Galician and Portuguese?",
+      "answer": "Historically, Galician-Portuguese split into northern and southern dialects by the 13th century, but remained culturally unified until the mid-14th century, producing the medieval Galician-Portuguese lyric. Modern divergence stems largely from innovations in Portuguese, leading to the distinct languages of Galician and Portuguese today."
+    },
+    {
+      "question": "What are the main linguistic influences on the Galician lexicon?",
+      "answer": "The Galician lexicon is predominantly of Latin origin. It also includes a moderate number of words from Germanic and Celtic languages, as well as loanwords from Andalusian Arabic, primarily via Spanish. This reflects historical contacts and cultural exchanges over centuries."
+    },
+    {
+      "question": "How is Galician regulated and what are the main debates around its status?",
+      "answer": "Galician is officially regulated in Galicia by the Royal Galician Academy. However, non-institutional groups like the Galician Language Association argue that Galician and Portuguese are variants of the same language. Meanwhile, the Galician Academy of the Portuguese Language advocates for considering Galician a form of Portuguese to promote wider international use and normalization."
+    },
+    {
+      "question": "Write a Python function to check if a given word could be of Latin origin based on its ending.",
+      "answer": "python\nimport re\n\ndef is_likely_latin(word: str) -> bool:\n    \"\"\"\n    Heuristically checks if a word might be of Latin origin based on common Latin suffixes.\n    Does not guarantee Latin origin but filters common Romance patterns.\n    \"\"\"\n    word_lower = word.lower()\n    latin_suffixes = ['-ar', '-er', '-ir', '-al', '-el', '-il', '-or', '-um', '-us', '-nt', '-ble', '-ive']\n    return any(word_lower.endswith(suffix) for suffix in latin_suffixes)\n\n# Example usage:\nprint(is_likely_latin('amar'))  # True (from Latin 'amare')\nprint(is_likely_latin('casa'))  # True (from Latin 'casa')\nprint(is_likely_latin('gato'))  # False (though likely Latin, no common suffix pattern matched)\n"
+    },
+    {
+      "question": "Why do some organizations consider Galician and Portuguese to be the same language?",
+      "answer": "Some organizations, such as the Galician Language Association, view Galician and Portuguese as two forms of the same historical language, Galician-Portuguese, which diverged but retain strong mutual intelligibility and shared linguistic roots. This perspective emphasizes cultural and linguistic continuity over political or modern distinctions."
+    }
+  ]
+}

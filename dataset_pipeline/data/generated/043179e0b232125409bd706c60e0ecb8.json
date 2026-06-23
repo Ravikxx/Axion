@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/2019_Tour_de_Pologne",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who won the 2019 Tour de Pologne and what team did they represent?",
+      "answer": "Pavel Sivakov won the 2019 Tour de Pologne. He represented Team Ineos."
+    },
+    {
+      "question": "What were the start and end dates of the 2019 Tour de Pologne?",
+      "answer": "The 2019 Tour de Pologne started on 3 August in Kraków and ended on 9 August in Bukowina Tatrzańska."
+    },
+    {
+      "question": "How did Pavel Sivakov secure the leader's jersey in the 2019 Tour de Pologne?",
+      "answer": "Pavel Sivakov took the leader's jersey after the last stage, following a second-place finish on the first mountain stage and the previous leader Jonas Vingegaard suffering larger losses."
+    },
+    {
+      "question": "Which rider won the points classification in the 2019 Tour de Pologne and how did they achieve this?",
+      "answer": "Marc Sarreau won the points classification. He secured three finishes in the top ten and remained in the race until the end, while other sprinters withdrew."
+    },
+    {
+      "question": "What happened to Bjorg Lambrecht during the 2019 Tour de Pologne and how did the race organizers respond?",
+      "answer": "Bjorg Lambrecht of Lotto–Soudal died after crashing during the third stage. The fourth stage was shortened and run as a cycling procession in his honor."
+    },
+    {
+      "question": "Which team won the teams classification in the 2019 Tour de Pologne and why was this significant?",
+      "answer": "Team Ineos won the teams classification. This was significant as it highlighted their dominance in the race, with Pavel Sivakov also winning the overall classification."
+    },
+    {
+      "question": "Write a Python code snippet to count the number of stages in the 2019 Tour de Pologne based on the given information.",
+      "answer": "python\nnumber_of_stages = 7\ndate_range = \"3 August to 9 August\"\nprint(f\"The 2019 Tour de Pologne consisted of {number_of_stages} stages, held from {date_range}.\")\n"
+    }
+  ]
+}

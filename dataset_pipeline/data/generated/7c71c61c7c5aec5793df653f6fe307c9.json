@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/2010_Canadian_Soccer_League_season",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Which team won the inaugural CSL Championship during the 2010 Canadian Soccer League season?",
+      "answer": "Brantford Galaxy SC won their first championship in their inaugural season, defeating Hamilton Croatia 3–0 in the CSL Championship Final."
+    },
+    {
+      "question": "What structural change did the CSL administration implement for the 2010 season?",
+      "answer": "The CSL combined the International & National divisions to form the CSL First Division with a single table structure for the 2010 season."
+    },
+    {
+      "question": "How did the 2010 season support Canadian soccer development beyond the field?",
+      "answer": "The CSL was granted full membership in the Canadian Soccer Association, allowing collaboration on developing players, referees, coaches, and administrators. Additionally, Domenic Di Gironimo was appointed as Commissioner to oversee expansion to a fully national league."
+    },
+    {
+      "question": "Which new territories did the CSL expand into during the 2010 season?",
+      "answer": "The league expanded into Brant County, Hamilton, and Halton Region territories in Ontario."
+    },
+    {
+      "question": "What was the significance of the Montreal Impact's affiliation change in 2010?",
+      "answer": "The Montreal Impact ended their affiliation with Trois-Rivières Attak and instead entered the Montreal Impact Academy as their academy team, becoming the second professional academy club to join the CSL."
+    },
+    {
+      "question": "How many reserve teams participated in the CSL Reserve Division during the 2010 season, and where were they based?",
+      "answer": "There were 11 reserve teams in the CSL Reserve Division during 2010, with expansion beyond the Greater Toronto Area for the first time. Ottawa FC was also an entry-level club in the division."
+    },
+    {
+      "question": "Provide a code snippet to extract all teams mentioned in the 2010 CSL season from the given text.",
+      "answer": "python\nteams_2010 = [\n    \"Brantford Galaxy SC\", \"Hamilton Croatia\", \"York Region Shooters\", \n    \"Serbian White Eagles Res.\", \"Montreal Impact\", \"Trois-Rivières Attak\",\n    \"Montreal Impact Academy\", \"Ottawa FC\"\n]\n"
+    }
+  ]
+}

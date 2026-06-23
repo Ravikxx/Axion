@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Downtown_Athens_Historic_District",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What year was the Downtown Athens Historic District listed on the National Register of Historic Places?",
+      "answer": "The Downtown Athens Historic District was listed on the National Register of Historic Places in 1978."
+    },
+    {
+      "question": "What architectural styles are represented within the original listing area of the Downtown Athens Historic District?",
+      "answer": "The original listing area of the Downtown Athens Historic District includes Early Commercial, Renaissance, and Greek Revival architecture."
+    },
+    {
+      "question": "List three prominent buildings or structures in the Downtown Athens Historic District and their approximate dates.",
+      "answer": "Three prominent buildings in the Downtown Athens Historic District are the Clarke County Courthouse (c. 1914), the Franklin House (c. 1845), and the Whitmire Furniture Company (1896)."
+    },
+    {
+      "question": "What boundary changes occurred in the Downtown Athens Historic District after its initial listing in 1978?",
+      "answer": "The boundaries of the Downtown Athens Historic District were revised twice: once in 1984 to add buildings on the west side of Lumpkin Street, and again in 2006 to expand the area by roughly 24 acres, adding 25 contributing buildings and one other structure."
+    },
+    {
+      "question": "What are the historic functions served by the Downtown Athens Historic District as listed in the 2006 documentation?",
+      "answer": "The 2006 documentation lists historic functions for the Downtown Athens Historic District as domestic, commerce/trade, government, religion, recreation and culture, industry/processing/extraction, and health care."
+    },
+    {
+      "question": "Write a Python snippet to calculate the total area of the Downtown Athens Historic District in acres, combining the original 40-acre area with the 2006 revision.",
+      "answer": "python\noriginal_area = 40  # acres\nrevised_area = 24  # acres added in 2006\n\n# Calculate total area\ntotal_area = original_area + revised_area\nprint(f\"Total area of the Downtown Athens Historic District: {total_area} acres\")\n\nThis code sums the original 40-acre area with the 24-acre addition from 2006, resulting in a total of 64 acres."
+    },
+    {
+      "question": "What subfunctions are associated with the Reynolds Square area in the Downtown Athens Historic District according to the 2006 documentation?",
+      "answer": "The subfunctions associated with the Downtown Athens Historic District in the 2006 documentation include single dwelling, business, city hall, religious structure, theater, communications facility, and clinic."
+    }
+  ]
+}

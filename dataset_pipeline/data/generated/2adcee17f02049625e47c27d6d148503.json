@@ -1,0 +1,34 @@
+{
+  "source_url": "https://mathworld.wolfram.com/PowerSum.html",
+  "category": "mathworld",
+  "pairs": [
+    {
+      "question": "What are the two common types of power sums discussed in the text? Provide an example of each.",
+      "answer": "The two common types of power sums are: 1) The sum of th powers of a set of variables, e.g., Σx_i^k, and 2) The special case where the variables are the first n positive integers, e.g., Σi^k from i=1 to n. The latter is used in Faulhaber's formula to compute sums of powers of integers."
+    },
+    {
+      "question": "How are power sums related to symmetric polynomials? Provide the relevant formulas.",
+      "answer": "Power sums are related to symmetric polynomials via the Newton-Girard formulas. These formulas express the k-th elementary symmetric polynomial in terms of power sums. For example, the first Newton-Girard identity states that for any positive integer k, e_k = (1/k) * Σ_{i=1}^k (-1)^{i-1} p_i e_{k-i}, where p_i is the i-th power sum and e_k is the k-th elementary symmetric polynomial."
+    },
+    {
+      "question": "Write a Python function to compute the sum of the first n positive integers raised to the k-th power using Faulhaber's formula.",
+      "answer": "python\nimport math\nfrom functools import lru_cache\n\n@lru_cache(maxsize=None)\ndef bernoulli_number(n):\n    if n == 0:\n        return 1\n    elif n == 1:\n        return 1/2\n    elif n % 2 != 0:\n        return 0\n    else:\n        B = [0] * (n + 1)\n        for m in range(n + 1):\n            B[m] = 0\n            for j in range(m + 1):\n                B[m] += math.comb(m + 1, j) * B[j] / (m + 2 - j)\n        return B[n]\n\ndef faulhaber_sum(n, k):\n    if k == 0:\n        return n\n    total = 0\n    for i in range(k + 1):\n        term = math.comb(k + 1, i) * bernoulli_number(i) * (n + 1) ** (k + 1 - i)\n        total += term\n    return total // (k + 1)\n\n# Example usage:\nn = 10\nk = 3\nprint(faulhaber_sum(n, k))  # Output: 3025 (sum of cubes from 1 to 10)\n"
+    },
+    {
+      "question": "What is the closed-form expression for the sum of the first n positive integers raised to the power of 2? Provide the derivation.",
+      "answer": "The sum of the first n positive integers squared is given by the formula: Σ_{i=1}^n i^2 = n(n + 1)(2n + 1)/6. This can be derived using the method of mathematical induction or by recognizing the pattern from known power sums and symmetric polynomials. For example, using the identity involving Bernoulli numbers in Faulhaber's formula, the coefficient of n^3 is 1/3, leading to the quadratic term n(n+1)(2n+1)/6."
+    },
+    {
+      "question": "How does Nicomachus's theorem relate to power sums? Provide a graphical interpretation.",
+      "answer": "Nicomachus's theorem states that the sum of the first n odd integers is equal to n^2, i.e., Σ_{k=1}^n (2k-1) = n^2. This can be illustrated graphically by arranging squares of side length n and decomposing them into nested odd-numbered sequences. For example, a 3x3 square can be divided into 1 + 3 + 5 = 9 unit squares, demonstrating the theorem visually."
+    },
+    {
+      "question": "What is the relationship between power sums and the Riemann zeta function? Provide the analytic solution for the sum of reciprocal powers.",
+      "answer": "The Riemann zeta function ζ(s) is defined as ζ(s) = Σ_{n=1}^∞ 1/n^s for Re(s) > 1. For power sums of reciprocals, the finite sum Σ_{n=1}^N 1/n^s is related to the Hurwitz zeta function ζ(s, a) = Σ_{n=0}^∞ 1/(n+a)^s, where a=1. For example, the sum of reciprocal squares is ζ(2) = π²/6, an analytic solution derived from the zeta function."
+    },
+    {
+      "question": "How can power sums be computed using the Euler-Maclaurin integration formula? Provide the formula and an example.",
+      "answer": "The Euler-Maclaurin formula approximates sums by integrals and correction terms involving Bernoulli numbers. For the sum Σ_{k=1}^n k^m, the formula is: Σ_{k=1}^n k^m ≈ ∫_0^n x^m dx + (B_1/2)(n^m + 0^m) + Σ_{k=1}^∞ (B_{2k}/(2k)!) (m^{2k-1}(n) - m^{2k-1}(0)), where B_k are Bernoulli numbers. For example, for m=1 and n=10, the sum is approximately (10^2)/2 + (1/2)(10 + 0) = 55, which matches the exact value Σ_{k=1}^{10} k = 55."
+    }
+  ]
+}

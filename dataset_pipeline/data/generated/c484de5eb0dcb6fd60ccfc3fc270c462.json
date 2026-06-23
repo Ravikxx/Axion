@@ -1,0 +1,38 @@
+{
+  "source_url": "https://mathworld.wolfram.com/PursuitCurve.html",
+  "category": "mathworld",
+  "pairs": [
+    {
+      "question": "What is a pursuit curve in mathematics?",
+      "answer": "A pursuit curve is the path followed by a pursuer that is always directed toward a moving target at a constant speed. Mathematically, the tangent vector at any point on the pursuer's path is parallel to the line connecting the pursuer to the target. The concept was first studied by Pierre Bouguer in 1732 and later by George Boole."
+    },
+    {
+      "question": "What are the key differential equations describing a pursuit curve where the target moves along a straight line?",
+      "answer": "For a pursuer moving toward a target along a straight line, the equations of motion are derived from the condition that the pursuer's velocity vector is always aligned with the line connecting it to the target. The resulting differential equation is:\n\n\ndy/dx = (y - y_t) / (x - x_t)\n\nwhere (x, y) is the pursuer's position and (x_t, y_t) is the target's position. This leads to a second-order ODE that can be solved analytically."
+    },
+    {
+      "question": "How do you derive the pursuit curve equations for a target moving along a circle?",
+      "answer": "For a target moving along a circle of radius R at constant speed, the pursuit curve equations are derived using polar coordinates. The pursuer's position (r, θ) satisfies:\n\n\ndr/dt = v * cos(θ - φ) - u\n\nwhere v is the target's speed, u is the pursuer's speed, and φ is the target's angular position. The solution involves integrating these equations, often resulting in expressions involving trigonometric functions or special functions like the Lambert W-function."
+    },
+    {
+      "question": "What are the initial conditions for solving the pursuit curve problem?",
+      "answer": "The initial conditions for a pursuit curve problem where the pursuer starts at position (x₀, y₀) and the target starts at (xₜ₀, yₜ₀) are typically:\n\n\nx(0) = x₀, y(0) = y₀\ndx/dt(0) = v₀, dy/dt(0) = 0\n\nwhere v₀ is the initial speed of the pursuer. These conditions are used to determine the arbitrary constants in the general solution."
+    },
+    {
+      "question": "How does the 'mice problem' relate to pursuit curves?",
+      "answer": "The 'mice problem' is a pursuit curve scenario where multiple agents (e.g., mice or dogs) start at the corners of a regular polygon and each chases the next agent in the polygon. The pursuit paths form logarithmic spirals, and the problem is a classic example of symmetric pursuit curves. The solution depends on the number of agents and their initial positions."
+    },
+    {
+      "question": "What is the closed-form solution for the pursuit curve when the target moves along a straight line?",
+      "answer": "For a pursuer starting at (0, 0) chasing a target moving along the line y = a at speed v, the pursuit curve is given by:\n\n\ny = (a/2) * (1 - e^(-2x/a))\n\nThis solution is derived by solving the differential equation dy/dx = (y - a)/x and applying the initial condition y(0) = 0."
+    },
+    {
+      "question": "How can the Lambert W-function be used to express the solution for a pursuit curve?",
+      "answer": "In certain pursuit curve problems, the solution can be expressed in terms of the Lambert W-function, which solves equations of the form w * e^w = z. For example, the solution for the pursuer's x-coordinate as a function of time might be:\n\n\nx(t) = -W(-k * e^(-k * t)) / k\n\nwhere W is the Lambert W-function and k is a constant derived from the problem's parameters."
+    },
+    {
+      "question": "What is the point of closest approach in a pursuit curve?",
+      "answer": "The point of closest approach in a pursuit curve occurs when the pursuer's velocity vector is perpendicular to the line connecting it to the target. This can be found by setting the derivative of the distance between the pursuer and target to zero and solving for the pursuer's position. The point corresponds to the minimum distance between the two curves."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Arachne",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "Who was Arachne in Greek mythology and what was her relationship to Athena?",
+      "answer": "Arachne was a skilled mortal weaver in Greek mythology, daughter of Idmon of Colophon. She claimed her weaving skills surpassed those of Athena, the Greek goddess of wisdom and craftsmanship, including weaving, leading to a fateful contest between them."
+    },
+    {
+      "question": "What led to Arachne's transformation into a spider, and who performed the transformation?",
+      "answer": "Athena transformed Arachne into a spider after Arachne lost a weaving contest to her. Athena destroyed Arachne's flawless tapestry depicting Zeus's infidelities with mortal women, then struck Arachne in anger. Seeing Arachne's remorse, Athena took pity and turned Arachne into a spider before she could die by hanging."
+    },
+    {
+      "question": "Explain the concept of hubris as it relates to Arachne's story in Greek mythology.",
+      "answer": "Hubris (ὕβρις) refers to excessive pride or arrogance, particularly when mortals compare themselves to gods. In Arachne's story, her boast that her weaving skill was greater than Athena's exemplifies hubris. This pride led to her punishment, illustrating the Greek belief that challenging divine authority invites retribution."
+    },
+    {
+      "question": "What are the linguistic connections between the name 'Arachne' and modern terms like 'arachnophobia'?",
+      "answer": "The name 'Arachne' derives from the Greek word 'arachne' (αραχνη), meaning 'spider.' This root gives rise to multiple modern terms: 'Arachnida' (the biological class including spiders), 'arachnid' (a member of that class), and 'arachnophobia' (the fear of spiders)."
+    },
+    {
+      "question": "Write a Python function that simulates the weaving contest between Arachne and Athena, returning their respective tapestries as strings.",
+      "answer": "def weaving_contest():\n    # Athena's tapestry: her victory over Poseidon\n    athena_tapestry = \"Athena weaves her triumph over Poseidon, god of the sea, in a scene of divine power.\"\n    \n    # Arachne's tapestry: Zeus's infidelities with Leda, Europa, and Danae\n    arachne_tapestry = \"Arachne depicts Zeus's unfaithfulness, weaving scenes of his dalliances with Leda, Europa, and Danae.\"\n    \n    return {\n        \"Athena's tapestry\": athena_tapestry,\n        \"Arachne's tapestry\": arachne_tapestry\n    }\n\n# Example usage:\nprint(weaving_contest())"
+    },
+    {
+      "question": "Why did Athena punish Arachne despite acknowledging her weaving skill?",
+      "answer": "Athena punished Arachne not for her technical skill, which was flawless, but for the subject matter of her tapestry. Arachne wove scenes depicting Zeus's infidelities with mortal women, which Athena deemed disrespectful. The punishment reflected the Greek moral that even excellence in craft could not excuse irreverence toward the gods."
+    },
+    {
+      "question": "In which ancient text is the story of Arachne told, and who was the author?",
+      "answer": "The story of Arachne is told in *Metamorphoses*, a Latin epic poem by the Roman poet Ovid. Specifically, it appears in Book 6, lines 5–54 and 129–145, where Ovid recounts Arachne's challenge to Athena and her transformation into a spider."
+    }
+  ]
+}

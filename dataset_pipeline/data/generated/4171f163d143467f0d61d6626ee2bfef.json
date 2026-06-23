@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Coat_of_arms_of_Denmark",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What are the main elements of the royal coat of arms of Denmark?",
+      "answer": "The royal coat of arms of Denmark includes a golden shield with four quadrants. The top-left quadrant features three crowned blue lions with nine red hearts, representing Denmark. The top-right quadrant has a ram, symbolizing the Faroe Islands. The bottom-left quadrant depicts a polar bear, representing Greenland. The bottom-right quadrant shows two lions, representing Southern Jutland. At the center is a smaller shield for the House of Oldenburg."
+    },
+    {
+      "question": "When was the current royal coat of arms of Denmark last redesigned?",
+      "answer": "The royal coat of arms of Denmark was last redesigned in 2024, when King Frederik X ascended to the throne."
+    },
+    {
+      "question": "What is the difference between the royal coat of arms and the state coat of arms of Denmark?",
+      "answer": "The royal coat of arms is reserved for the king and the royal family, while the state coat of arms is used by the government. This distinction was formalized in 1959 under King Frederik IX."
+    },
+    {
+      "question": "Write a Python function that returns the current royal coat of arms description of Denmark.",
+      "answer": "python\ndef get_danish_royal_coat_of_arms():\n    return {\n        \"shield\": \"Golden shield\",\n        \"quadrants\": {\n            \"top_left\": \"Three crowned blue lions with nine red hearts (Denmark)\",\n            \"top_right\": \"Ram (Faroe Islands)\",\n            \"bottom_left\": \"Polar bear (Greenland)\",\n            \"bottom_right\": \"Two lions (Southern Jutland)\"\n        },\n        \"center\": \"Shield of the House of Oldenburg\"\n    }\n\n# Example usage:\nprint(get_danish_royal_coat_of_arms())\n"
+    },
+    {
+      "question": "Why does the royal coat of arms of Denmark include a polar bear?",
+      "answer": "The polar bear in the bottom-left quadrant of the royal coat of arms represents Greenland, which is an autonomous territory within the Kingdom of Denmark."
+    },
+    {
+      "question": "How many crowned lions are featured in the coat of arms of Denmark?",
+      "answer": "The coat of arms of Denmark features three crowned blue lions with nine red hearts."
+    },
+    {
+      "question": "What historical event led to the separation of the royal and state coat of arms in Denmark?",
+      "answer": "In 1959, the greater coat of arms was divided into the royal coat of arms (for the king and royal family) and the state coat of arms (for the government), formalizing their distinct uses."
+    }
+  ]
+}

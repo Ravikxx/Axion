@@ -1,0 +1,46 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/ABC_(band)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When and where was the band ABC formed?",
+      "answer": "ABC were formed in Sheffield, South Yorkshire, England in 1980."
+    },
+    {
+      "question": "Who was the frontman of ABC throughout their entire career?",
+      "answer": "Martin Fry was the lead vocalist and only constant member of ABC from their formation in 1980 until his passing in 2024."
+    },
+    {
+      "question": "What musical genres did ABC blend in their early 1980s music?",
+      "answer": "ABC blended synth-pop with disco and rock influences, aligning with the new pop movement of the early 1980s."
+    },
+    {
+      "question": "Which ABC album reached number one on the UK Albums Chart, and when was it released?",
+      "answer": "The Lexicon of Love, released in 1982, was ABC's debut album and reached number one on the UK Albums Chart."
+    },
+    {
+      "question": "List three hit singles from ABC's debut album The Lexicon of Love.",
+      "answer": "The hit singles from The Lexicon of Love included 'Tears Are Not Enough', 'Poison Arrow', and 'All of My Heart'."
+    },
+    {
+      "question": "How many UK and US top 40 hit singles did ABC achieve between 1981 and 1990?",
+      "answer": "ABC achieved ten UK and five US top 40 hit singles during that period."
+    },
+    {
+      "question": "Write a Python snippet to check if a given year falls within ABC's period of mainstream success (1981 to 1990).",
+      "answer": "python\ndef was_abc_mainstream_success(year):\n    return 1981 <= year <= 1990\n\n# Example usage:\nprint(was_abc_mainstream_success(1985))  # Output: True\nprint(was_abc_mainstream_success(1995))  # Output: False\n"
+    },
+    {
+      "question": "What was ABC's involvement in the Second British Invasion?",
+      "answer": "ABC's early-1980s success in the United States contributed to their inclusion in the Second British Invasion, a period when British artists gained significant popularity in the US."
+    },
+    {
+      "question": "Name two albums released by ABC after The Lexicon of Love and their respective hit singles.",
+      "answer": "Beauty Stab (1983) featured the hit single 'That Was Then but This Is Now'. How to Be a ... Zillionaire! (1985) included the hits '(How to Be A) Millionaire' and 'Be Near Me'. Alphabet City (1987) featured 'When Smokey Sings' and 'The Night You Murdered Love'."
+    },
+    {
+      "question": "How did ABC remain active after their commercial success declined in the 1990s?",
+      "answer": "After the 1980s, ABC continued to perform live, released reissues of their music, and occasionally released new material, such as The Lexicon of Love II in 2016."
+    }
+  ]
+}

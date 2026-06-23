@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/the_nortern_dev/my-2026-tech-stack-is-boring-as-hell-and-that-is-the-point-20c1",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What does the author mean by 'Resume Driven Development' and what are its consequences?",
+      "answer": "Resume Driven Development (RDD) is a term used to describe the practice of choosing complex or trendy technologies primarily to enhance one's resume or perceived expertise, rather than to solve a problem efficiently. The author admits to being a RDD practitioner, where they prioritized flashy tech stacks (like Kubernetes, multiple cloud providers, and cutting-edge frameworks) over practicality. The consequences included excessive cloud bills, convoluted architectures, and difficulty locating critical components like user passwords. Essentially, RDD led to building 'monuments to ego' instead of functional software."
+    },
+    {
+      "question": "Why does the author advocate for a 'Boring Stack' in 2026, and what specific tools does it include?",
+      "answer": "The author advocates for a 'Boring Stack' to escape the exhaustion of the hype cycle, where constant innovation leads to unmanageable complexity. Their Boring Stack includes: (1) A single VPS for compute, avoiding serverless costs and cold starts; (2) SQLite or Postgres for the database, favoring relational data and SQL; (3) A standard REST API backend, avoiding complexity like GraphQL; (4) React for the frontend without unnecessary libraries. This stack prioritizes simplicity, reliability, and maintainability over trendy but risky technologies."
+    },
+    {
+      "question": "How does the author argue against microservices for small teams or applications?",
+      "answer": "The author argues that microservices do not remove complexity—they merely shift it from the code to the network. For small teams (like the author's, with a single developer), debugging network errors (e.g., latency, timeouts, or misconfigured services) is far more challenging than debugging a monolithic codebase. Additionally, microservices require orchestration tools (like Kubernetes) and distributed tracing, which add overhead. The author notes that even large companies like Netflix or Uber use microservices because they have thousands of engineers to manage the complexity—something a small team cannot replicate."
+    },
+    {
+      "question": "What are the costs and benefits of using SQLite over NoSQL databases like MongoDB?",
+      "answer": "SQLite and NoSQL databases (e.g., MongoDB) serve different purposes, and the author prefers SQLite for its simplicity and reliability. SQLite is a file-based database embedded in the application, requiring no separate server process, which reduces operational overhead. It is battle-tested, with billions of devices using it reliably. In contrast, NoSQL databases like MongoDB often require joining data in the application layer, which can complicate code. SQLite eliminates the need for complex setups (e.g., sharding or replication) and is less prone to breaking due to updates. However, SQLite may not scale as well for high-write or distributed workloads, but the author argues this is irrelevant for most applications."
+    },
+    {
+      "question": "Write a Python Flask code snippet for a simple REST API using the 'Boring Stack' approach the author describes.",
+      "answer": "python\nfrom flask import Flask, jsonify, request\nimport sqlite3\n\napp = Flask(__name__)\n\n# Initialize SQLite database\nconn = sqlite3.connect('app.db', check_same_thread=False)\ncursor = conn.cursor()\ncursor.execute('''CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, name TEXT, email TEXT)''')\nconn.commit()\n\n@app.route('/users', methods=['GET'])\ndef get_users():\n    cursor.execute('SELECT * FROM users')\n    users = cursor.fetchall()\n    return jsonify([{'id': user[0], 'name': user[1], 'email': user[2]} for user in users])\n\n@app.route('/users', methods=['POST'])\ndef add_user():\n    data = request.get_json()\n    cursor.execute('INSERT INTO users (name, email) VALUES (?, ?)', (data['name'], data['email']))\n    conn.commit()\n    return jsonify({'message': 'User added successfully'}), 201\n\nif __name__ == '__main__':\n    app.run(host='0.0.0.0', port=5000)\n\nThis snippet demonstrates a minimal REST API using Flask and SQLite. It includes endpoints to retrieve and add users, with no external dependencies beyond Flask and SQLite. The database is file-based, avoiding the need for a separate server process."
+    },
+    {
+      "question": "How does the author address the scalability concerns of a monolithic architecture like the one they propose?",
+      "answer": "The author acknowledges that a monolithic architecture may not scale to handle millions of concurrent users (e.g., for services like Facebook or Twitter). However, they argue that for the vast majority of applications—especially those built by small teams—scalability is not a bottleneck. They cite examples like Stack Overflow and Shopify, which run on monoliths despite serving millions of users daily. The author emphasizes that premature optimization for scalability often leads to unnecessary complexity. Instead, they advocate for building a simple, functional system first and scaling only when absolutely necessary."
+    },
+    {
+      "question": "What is the author's perspective on user expectations versus technology choices, and why does this matter?",
+      "answer": "The author believes that users care solely about whether the software works—not the underlying technology stack. They argue that users are indifferent to whether the backend is written in Rust or Python, or whether the architecture is event-driven. What matters is that features work reliably and buttons respond when clicked. By choosing 'boring' technology, the author can focus more on building features that customers need, rather than spending time configuring tools or debugging infrastructure. This perspective underscores the importance of prioritizing user needs over developer preferences or industry trends."
+    }
+  ]
+}

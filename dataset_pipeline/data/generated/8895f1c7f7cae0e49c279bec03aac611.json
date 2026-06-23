@@ -1,0 +1,34 @@
+{
+  "source_url": "https://mathworld.wolfram.com/BrocardPoints.html",
+  "category": "mathworld",
+  "pairs": [
+    {
+      "question": "What are the Brocard points in a triangle?",
+      "answer": "Brocard points are two special interior points in a triangle where the angles formed with each vertex are equal. The first Brocard point (Ω) satisfies ∠ΩAB = ∠ΩBC = ∠ΩCA = ω, while the second Brocard point (Ω') satisfies ∠Ω'AC = ∠Ω'CB = ∠Ω'BA = ω, where ω is the Brocard angle. These points are isogonal conjugates but are not triangle centers."
+    },
+    {
+      "question": "How can the first Brocard point be constructed using circles in a triangle?",
+      "answer": "To construct the first Brocard point (Ω), draw three circles: (1) the circle through A tangent to BC, (2) the circle through B tangent to AC, and (3) the circle through C tangent to AB. These three circles intersect at Ω. Similarly, the second Brocard point (Ω') is found by drawing circles through each vertex tangent to the opposite side in the opposite orientation and finding their intersection."
+    },
+    {
+      "question": "What is the Brocard angle and how is it related to the circumradius of a triangle?",
+      "answer": "The Brocard angle (ω) is the unique angle common to the Brocard points, satisfying cot(ω) = cot(A) + cot(B) + cot(C). It is also related to the circumradius (R) and circumcenter (O) by the equation: cot(ω) = (a² + b² + c²)/(4Δ), where Δ is the triangle's area. Additionally, the identity ω = arccot(R√(a²b² + b²c² + c²a²)/(2abc)) holds."
+    },
+    {
+      "question": "Write a Python function to compute the Brocard angle given a triangle's side lengths.",
+      "answer": "python\nimport math\n\ndef brocard_angle(a, b, c):\n    # Calculate semi-perimeter\n    s = (a + b + c) / 2\n    # Calculate area using Heron's formula\n    area = math.sqrt(s * (s - a) * (s - b) * (s - c))\n    # Calculate Brocard angle in radians\n    cot_omega = (a**2 + b**2 + c**2) / (4 * area)\n    omega = math.atan(1 / cot_omega)\n    return math.degrees(omega)\n\n# Example usage:\nprint(brocard_angle(3, 4, 5))  # Output: Brocard angle for a 3-4-5 triangle\n"
+    },
+    {
+      "question": "What are the properties of the pedal triangles formed by the Brocard points?",
+      "answer": "The pedal triangles of the Brocard points (formed by projecting the point onto the triangle's sides) are congruent to each other and similar to the original triangle. This property is unique to Brocard points and does not hold for arbitrary interior points."
+    },
+    {
+      "question": "How do the Brocard line and Brocard points relate to triangle centers like the centroid and symmedian point?",
+      "answer": "The Brocard points lie on the Brocard line, which passes through the circumcenter (O), the symmedian point (K), and the centroid (G). Specifically, the Brocard points are harmonic conjugates with respect to O and K, and the Brocard midpoint (the midpoint of ΩΩ') is the symmedian point."
+    },
+    {
+      "question": "What is the third Brocard point and how does it differ from the first two?",
+      "answer": "The third Brocard point (X76) is defined via the triangle center function and is a Kimberling center. Unlike the first two Brocard points, it is collinear with the Spieker center and the isotomic conjugate of the incenter. It is related to the triangle's Brocard configuration but is not an interior point like Ω and Ω'."
+    }
+  ]
+}

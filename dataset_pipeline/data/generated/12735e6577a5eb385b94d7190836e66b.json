@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Bobby_Robson",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What were the key positions and clubs Sir Bobby Robson played for during his football career?",
+      "answer": "Sir Bobby Robson played as an inside forward for nearly 20 years, representing three clubs: Fulham, West Bromwich Albion, and briefly the Vancouver Royals. He also made 20 appearances for the England national team, scoring four goals."
+    },
+    {
+      "question": "Which major trophies did Sir Bobby Robson win as a football manager?",
+      "answer": "Robson won league championships in the Netherlands (with PSV) and Portugal (with Porto), domestic trophies in England (with Ipswich Town) and Spain (with Barcelona), and the UEFA Cup with Ipswich Town in 1981."
+    },
+    {
+      "question": "What was Sir Bobby Robson's managerial role with the England national team, and what was their best World Cup performance under his leadership?",
+      "answer": "Robson managed the England national team and led them to the semi-finals of the 1990 FIFA World Cup, which remained England’s best World Cup performance until they reached the semi-finals again in 2018."
+    },
+    {
+      "question": "Describe Sir Bobby Robson's international managerial career outside of England.",
+      "answer": "Robson had several managerial roles abroad, including one year at Barcelona (1996–97), as well as stints at PSV in the Netherlands, Sporting CP in Portugal, and Porto, where he won league titles."
+    },
+    {
+      "question": "What notable honors and recognitions did Sir Bobby Robson receive during his lifetime?",
+      "answer": "Robson was knighted as a Knight Bachelor in 2002, inducted into the English Football Hall of Fame in 2003, and served as the honorary president of Ipswich Town."
+    },
+    {
+      "question": "How did Sir Bobby Robson contribute to cancer research after his diagnosis?",
+      "answer": "In March 2008, Robson established the Sir Bobby Robson Foundation, a cancer research charity that had raised over £12 million by March 2018, dedicated to funding cancer treatment and research."
+    },
+    {
+      "question": "Write a Python function to calculate the number of years between Sir Bobby Robson's birth and death.",
+      "answer": "python\ndef calculate_lifespan(birth_year, death_year):\n    return death_year - birth_year\n\n# Example usage:\nbirth_year = 1933\ndeath_year = 2009\nlifespan_years = calculate_lifespan(birth_year, death_year)\nprint(f\"Sir Bobby Robson lived for {lifespan_years} years.\")\n\nThis function takes the birth and death years as inputs and returns the difference, which for Robson would be 76 years."
+    }
+  ]
+}

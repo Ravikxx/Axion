@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Ebenezer_Fletcher",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was Ebenezer Fletcher and what role did he play during the American Revolutionary War?",
+      "answer": "Ebenezer Fletcher was an American Revolutionary War fifer who served in the 2nd New Hampshire Regiment under Col. Nathan Hale. At age 16, he was wounded and captured during the Battle of Hubbardtown (Vermont) while retreating from the Siege of Fort Ticonderoga. After escaping British captivity, he was compelled to fulfill a three-year enlistment in the Continental Army."
+    },
+    {
+      "question": "What happened to Ebenezer Fletcher after he was captured by the British at the Battle of Hubbardtown?",
+      "answer": "After being captured, Fletcher was forced to serve a three-year enlistment in the Continental Army as part of his contractual obligations. He later escaped from his British captors and returned to his hometown of New Ipswich, New Hampshire."
+    },
+    {
+      "question": "Describe Ebenezer Fletcher's life after the Revolutionary War.",
+      "answer": "After the war, Fletcher returned to New Ipswich, New Hampshire, where he married twice, owned and managed textile mills, and raised a family. His home, which still stands in Smithville, remains part of his legacy."
+    },
+    {
+      "question": "How is Ebenezer Fletcher's narrative significant in Revolutionary War history?",
+      "answer": "Fletcher's narrative, *A Narrative of the Captivity and Sufferings of Mr. Ebenezer Fletcher*, is considered emblematic of the experiences of a young, reluctant common soldier during the Revolutionary War. It was first published in 1798 and has been republished multiple times, including editions commemorating the American bicentennial."
+    },
+    {
+      "question": "What is the connection between Ebenezer Fletcher and Peter Felt?",
+      "answer": "Ebenezer Fletcher's daughter Polly married Peter Felt, who was the third great-grandson of George Felt, a first-generation colonist."
+    },
+    {
+      "question": "Write a Python function that checks if a given year is within Ebenezer Fletcher's lifespan (1761–1831).",
+      "answer": "python\ndef is_fletcher_lifespan(year):\n    return 1761 <= year <= 1831\n\n# Example usage:\nprint(is_fletcher_lifespan(1775))  # True\nprint(is_fletcher_lifespan(1850))  # False\n"
+    },
+    {
+      "question": "Why is Ebenezer Fletcher's narrative described as 'emblematic' of common Revolutionary War soldiers?",
+      "answer": "Fletcher's narrative is seen as emblematic because it captures the perspective of a young, ordinary soldier who was reluctant to serve but endured hardship, capture, and eventual escape, reflecting the broader experiences of many common soldiers during the war."
+    }
+  ]
+}

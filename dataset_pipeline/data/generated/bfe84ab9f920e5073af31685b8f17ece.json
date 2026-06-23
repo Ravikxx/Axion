@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/HMS_Kruger",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the original name and purpose of HMS Kruger before it was renamed and repurposed?",
+      "answer": "The ship was originally named President Kruger, a screw steamer with a steel hull built for oil cargo transport. It had limited passenger facilities and was owned by the Caucasus and Mercury Partnership, with Baku as its home port."
+    },
+    {
+      "question": "Who seized HMS Kruger and when did this occur?",
+      "answer": "HMS Kruger was seized by David Norris on 14 August 1918, along with other boats in the Caspian basin."
+    },
+    {
+      "question": "What were the initial armaments of HMS Kruger, and how were they deployed?",
+      "answer": "The initial armament consisted of four field guns, likely 102 mm 60 caliber Pattern 1911 models, mounted on the forward cargo hatch and attached to bales of cotton."
+    },
+    {
+      "question": "Describe the role of HMS Kruger during the Battle of Alexandrovsky Fort.",
+      "answer": "HMS Kruger, commanded by a Russian captain, participated in the victorious Battle of Alexandrovsky Fort on 21 May 1919 against Russian Bolshevik forces."
+    },
+    {
+      "question": "How did HMS Kruger change hands after the defeat of the White Russians?",
+      "answer": "After the White Russians' defeat and the Sovietization of Azerbaijan, HMS Kruger was seized by the Bolsheviks when they captured the White naval base at Bandar e Anzali. It was later renamed Fedya Gubanov on 10 June 1920 by Nariman Narimanov, after a Bolshevik sailor."
+    },
+    {
+      "question": "What was the maximum capacity of HMS Kruger, and how was it achieved?",
+      "answer": "Under normal conditions, HMS Kruger could accommodate about 300 men. However, it could carry up to 800 men by utilizing all available deck space."
+    },
+    {
+      "question": "Write a Python code snippet to calculate the percentage increase in HMS Kruger's capacity from its normal load to its maximum load.",
+      "answer": "python\nnormal_capacity = 300\nmax_capacity = 800\npercentage_increase = ((max_capacity - normal_capacity) / normal_capacity) * 100\nprint(f\"Percentage increase in capacity: {percentage_increase:.2f}%\")\n"
+    }
+  ]
+}

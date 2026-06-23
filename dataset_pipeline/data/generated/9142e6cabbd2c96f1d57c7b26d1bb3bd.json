@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Global_Warming_Tour",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "How many concert performances did the Global Warming Tour by Aerosmith include?",
+      "answer": "The Global Warming Tour by Aerosmith included 82 concert performances across North America, Oceania, Asia, Latin America, and Europe."
+    },
+    {
+      "question": "What was the purpose of Aerosmith's private event for Walmart shareholders?",
+      "answer": "The private event for Walmart shareholders was held prior to the first leg of the Global Warming Tour, likely as part of promotional activities or a special performance for major investors."
+    },
+    {
+      "question": "Which new songs did Aerosmith perform during the Global Warming Tour to promote their album 'Music from Another Dimension!'?",
+      "answer": "Aerosmith performed four new songs from 'Music from Another Dimension!' during the tour: 'Oh Yeah', 'Legendary Child', 'Lover Alot', and one additional unreleased track. Three of these songs ('Oh Yeah', 'Legendary Child', and 'Lover Alot') were regularly featured in their setlist."
+    },
+    {
+      "question": "What were the dates and locations of the third leg of the Global Warming Tour?",
+      "answer": "The third leg of the Global Warming Tour ran from late April to mid May 2013. It included shows in Australia, New Zealand, the Philippines, and the 'Boston Strong' charity concert in Boston on May 30, 2013."
+    },
+    {
+      "question": "Why were Aerosmith's first shows in China and Taiwan cancelled?",
+      "answer": "Aerosmith's first shows in China and Taiwan were cancelled due to poor ticket sales, despite being planned for the tour."
+    },
+    {
+      "question": "Which bands opened for Aerosmith during different legs of the Global Warming Tour?",
+      "answer": "Cheap Trick opened most dates on the first two legs, except for a few festivals. The Dead Daisies opened the Australia/New Zealand leg, while Whitesnake joined Aerosmith for legs in Argentina and Brazil."
+    },
+    {
+      "question": "Write a Python function to calculate the total number of concerts performed by Aerosmith during the Global Warming Tour, given a list of legs with their respective performance counts.",
+      "answer": "python\ndef calculate_total_concerts(legs):\n    total = 0\n    for leg in legs:\n        total += leg['performances']\n    return total\n\n# Example usage:\nlegs = [\n    {'leg': 'First Leg', 'performances': 23},\n    {'leg': 'Second Leg', 'performances': 14},\n    {'leg': 'Third Leg', 'performances': 5},  # Approximate based on tour details\n    {'leg': 'Europe Leg (2014)', 'performances': 17}\n]\nprint(calculate_total_concerts(legs))  # Output: 59\n"
+    },
+    {
+      "question": "What were the reasons for Aerosmith cancelling concerts in Jakarta (2013), Istanbul (2014), and Kyiv (2014)?",
+      "answer": "The concert in Jakarta was cancelled due to safety concerns. The Istanbul show was cancelled after Turkey declared a three-day mourning for victims of the Soma mine disaster. The Kyiv concert was cancelled because of civil unrest in Ukraine."
+    }
+  ]
+}

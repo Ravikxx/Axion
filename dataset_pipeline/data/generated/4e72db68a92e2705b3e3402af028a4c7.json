@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Coat_of_arms_of_Vermont",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What are the official armorial bearings of the U.S. state of Vermont called?",
+      "answer": "The official armorial bearings of Vermont are referred to as the coat of arms of Vermont."
+    },
+    {
+      "question": "Who designed the Great Seal of Vermont, and what is its relationship to the state's coat of arms?",
+      "answer": "The Great Seal of Vermont was designed by Ira Allen. The coat of arms of Vermont is a more colorful and naturalistic representation of many of the same elements found in the Great Seal, which is reproduced in a single color and reserved for embossing state documents."
+    },
+    {
+      "question": "When was the coat of arms of Vermont first used, and where can an example be found?",
+      "answer": "The coat of arms of Vermont was first used in 1807 on $5 banknotes of the Vermont State Bank. An example of one of these notes is kept in the special collections of the Vermont History Center in Barre, Vermont."
+    },
+    {
+      "question": "Can you provide the blazon description of the Vermont coat of arms as formalized by the 1840 state statute?",
+      "answer": "According to the 1840 statute, the blazon description of the Vermont coat of arms is: 'Green, a landscape occupying half of the shield; on the right and left, in the background, high mountains, blue; the sky yellow. From near the base, and reaching nearly to the top of the shield, arises a pine-tree of the natural color, and between three erect sheaves, yellow, placed bendwise on the dexter side, and a red cow standing on the sinister side of the field. The Crest: A buck's head, of the natural color, cut off and placed on a scroll, blue and yellow. The Motto and Badge: On a scroll beneath the shield, the motto: Vermont: Freedom and Unity. The Vermonter's Badge: two pine branches of natural color, crossed between the shield and scroll.'"
+    },
+    {
+      "question": "What is the 'Vermonter's Badge', and when was it historically worn?",
+      "answer": "The 'Vermonter's Badge' is described as two pine branches of natural color, crossed between the shield and scroll in the coat of arms. Historically, it was worn as an expression of Vermont identity during the Vermont Republic period and again by Vermont's military regiments during the American Civil War."
+    },
+    {
+      "question": "How does the current depiction of the Vermont coat of arms on the state flag differ from the official blazon?",
+      "answer": "The current depiction of the Vermont coat of arms on the state flag is incorrect according to the official blazon. In proper heraldic blazon, the initial tincture mentioned (green) should describe the background or 'field' of the shield, which should be completely hidden by the elements on it (e.g., mountains, pine tree). The shield should therefore appear with a green background entirely obscured by the blue landscape and other features, rather than the green landscape shown on the flag."
+    },
+    {
+      "question": "Write a Python function to validate the color scheme of the Vermont coat of arms based on the blazon description.",
+      "answer": "python\ndef validate_vermont_coat_of_arms_colors():\n    # Blazon description specifies the following colors:\n    # Shield field: Green (background)\n    # Mountains: Blue (background)\n    # Sky: Yellow (background)\n    # Pine tree: Natural color (green)\n    # Sheaves: Yellow\n    # Cow: Red\n    # Crest (buck's head): Natural color\n    # Crest scroll: Blue and Yellow\n    # Motto scroll: Blue and Yellow\n    # Pine branches (badge): Natural color\n    \n    color_definition = {\n        'shield_field': 'green',\n        'mountains': 'blue',\n        'sky': 'yellow',\n        'pine_tree': 'natural green',\n        'sheaves': 'yellow',\n        'cow': 'red',\n        'buck_head': 'natural brown',\n        'crest_scroll': ['blue', 'yellow'],\n        'motto_scroll': ['blue', 'yellow'],\n        'pine_branches': 'natural green'\n    }\n    return color_definition\n\n# Example usage\nprint(validate_vermont_coat_of_arms_colors())\n\nThis function returns a dictionary mapping each element of the coat of arms to its specified color(s) based on the 1840 blazon."
+    }
+  ]
+}

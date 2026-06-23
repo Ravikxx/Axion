@@ -1,0 +1,34 @@
+{
+  "source_url": "https://mathworld.wolfram.com/Quaternion.html",
+  "category": "mathworld",
+  "pairs": [
+    {
+      "question": "What are quaternions and who invented them?",
+      "answer": "Quaternions are members of a noncommutative division algebra first invented by Irish mathematician William Rowan Hamilton in 1843. The idea for quaternions famously occurred to Hamilton while walking along the Royal Canal in Dublin, leading him to carve the fundamental formula of quaternion algebra, i = j = k = ijk, into the stone of Brougham Bridge."
+    },
+    {
+      "question": "How are quaternions represented in the Wolfram Language?",
+      "answer": "In the Wolfram Language, quaternions are implemented as `Quaternion[w, x, y, z]` in the `Quaternions` package, where w, x, y, and z must be explicit real numbers. For example, a quaternion with real part 1 and vector parts 2i + 3j + 4k is written as `Quaternion[1, 2, 3, 4]`. Multiplication of quaternions requires using `NonCommutativeMultiply` (e.g., `a ** b`) rather than standard multiplication (`a * b`)."
+    },
+    {
+      "question": "What is the multiplication table for the quaternion group?",
+      "answer": "The quaternion group consists of eight elements: {1, -1, i, -i, j, -j, k, -k}, with the following multiplication table (where rows represent left multiplication and columns represent right multiplication):\n\n|   | 1 | -1 | i | -i | j | -j | k | -k |\n|---|---|----|---|----|---|----|---|----|\n|1 | 1 | -1 | i | -i | j | -j | k | -k |\n|-1|-1| 1 | -i| i | -j| j | -k| k |\ni | i | -i |-1 | 1 | k | -k |-j | j |\n|-i|-i| i | 1 |-1 | -k| k | j |-j |\nj | j | -j | -k| k |-1 | 1 | i |-i |\n|-j|-j| j | k |-k | 1 |-1 |-i | i |\nk | k | -k | j |-j | -i| i |-1 | 1 |\n|-k|-k| k | -j| j | i |-i | 1 |-1 |"
+    },
+    {
+      "question": "How can a quaternion be written in vector form, and what is the simplified multiplication rule?",
+      "answer": "A quaternion can be written in vector form as q = (s, v), where s is the scalar (real) part and v = (x, y, z) is the vector part. In this notation, quaternion multiplication has a simplified form:\n\nq₁ * q₂ = (s₁s₂ - v₁·v₂, s₁v₂ + s₂v₁ + v₁ × v₂)\n\nwhere · denotes the dot product and × denotes the cross product. This formulation is particularly useful for understanding rotations in 3D space."
+    },
+    {
+      "question": "How do you compute the inverse of a quaternion?",
+      "answer": "The inverse of a quaternion q = w + xi + yj + zk is given by q⁻¹ = (w - xi - yj - zk) / ||q||², where ||q|| is the norm of the quaternion. In code (Wolfram Language), this can be computed as:\n\n\nInverse[Quaternion[w, x, y, z]]\n\n\nFor example, the inverse of `Quaternion[1, 2, 3, 4]` is `Quaternion[1, -2, -3, -4] / 30`, since the norm squared is 1² + 2² + 3² + 4² = 30."
+    },
+    {
+      "question": "How are quaternions used to represent rotations in 3D space? Give the formula for rotating a point using a quaternion.",
+      "answer": "Quaternions are used to represent rotations in 3D space because they avoid gimbal lock and are computationally efficient. A rotation by an angle θ about a unit vector u = (uₓ, uᵧ, u_z) is represented by the quaternion:\n\nq = cos(θ/2) + sin(θ/2) * (uₓi + uᵧj + u_z k)\n\nTo rotate a point p = (x, y, z), convert it to a pure quaternion p_quat = 0 + xi + yj + zk, then compute the rotated point as:\n\np_rot = q * p_quat * q⁻¹\n\nIn the Wolfram Language, this can be implemented as:\n\n\nRotatePoint[point_, quat_] := quat ** point ** Inverse[quat] // Re // N\n\n\nThis method is widely used in computer graphics and robotics."
+    },
+    {
+      "question": "What is the relationship between quaternions and complex matrices? Provide an example of a quaternion represented as a complex matrix.",
+      "answer": "Quaternions can be represented using 2x2 complex matrices. For a quaternion q = a + bi + cj + dk, the corresponding matrix is:\n\nq_matrix = {{a + b*I, c + d*I}, {-c + d*I, a - b*I}}\n\nFor example, the quaternion q = 1 + 2i + 3j + 4k is represented as:\n\n\n{{1 + 2*I, 3 + 4*I}, {-3 + 4*I, 1 - 2*I}}\n\n\nThis representation is closely related to the Pauli matrices and is useful in quantum mechanics and theoretical physics."
+    }
+  ]
+}

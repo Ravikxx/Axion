@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/cseeman/what-just-happened-to-rubygems-31n9",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What happened to the RubyGems GitHub repositories and gem ownership on September 9, 2025?",
+      "answer": "Ruby Central took over control of the RubyGems GitHub repositories and gem ownership without prior consent from the long-time maintainers. This included adding new owners and changing permissions, which later prompted some reversions but left the ownership structure altered."
+    },
+    {
+      "question": "Why did Ruby Central assert control over RubyGems and Bundler repositories?",
+      "answer": "Ruby Central asserted control due to financial pressure from Shopify, which threatened to withdraw funding unless Ruby Central took over the repositories. The decision was made by the Ruby Central board despite warnings about potential consequences."
+    },
+    {
+      "question": "What is the distinction between RubyGems as an open-source project and the RubyGems service?",
+      "answer": "RubyGems as an open-source project is community-owned code developed over decades by unpaid maintainers. The RubyGems service, however, is the website and servers operated by Ruby Central, which is a separate responsibility."
+    },
+    {
+      "question": "How did André Arko respond to the governance concerns around Bundler?",
+      "answer": "André Arko registered the Bundler trademark to prevent unilateral claims and announced plans to transfer governance to a democratic, community-led organization. The code remains MIT-licensed, emphasizing governance over access."
+    },
+    {
+      "question": "What steps can the Ruby community take to protect community-built projects from corporate influence?",
+      "answer": "The community can implement explicit agreements, transparent governance structures, and formalize maintainer rights to prevent unilateral control. Funding maintainers directly and ensuring democratic oversight can help safeguard ownership."
+    },
+    {
+      "question": "Provide a Python code snippet that checks if a given gem name is registered under RubyGems.org.",
+      "answer": "python\nimport requests\n\ndef is_gem_registered(gem_name):\n    url = f'https://rubygems.org/api/v1/gems/{gem_name}.json'\n    response = requests.get(url)\n    return response.status_code == 200\n\n# Example usage:\nprint(is_gem_registered('rails'))  # True if registered, False otherwise\n"
+    },
+    {
+      "question": "What are the key recommendations from Adarsh, a former Ruby Central director, regarding RubyGems governance?",
+      "answer": "Adarsh emphasizes the need for clarity between operating infrastructure and stewarding community code. He advocates for explicit agreements, transparent governance, and rebuilding trust with maintainers rather than asserting ownership through access changes."
+    }
+  ]
+}

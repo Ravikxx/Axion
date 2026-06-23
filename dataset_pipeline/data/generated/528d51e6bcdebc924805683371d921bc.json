@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Denise_Narcisse-Mair",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What were the primary professional roles of Denise Lorraine Narcisse-Mair?",
+      "answer": "Denise Lorraine Narcisse-Mair was a Canadian musicologist, music educator, choral conductor, and composer. She specialized in teaching music, conducting choirs, and composing musical works throughout her career."
+    },
+    {
+      "question": "Where did Denise Narcisse-Mair receive her early musical training?",
+      "answer": "Narcisse-Mair spent her first 13 years in Kingston, Jamaica, where she learned music, languages, and faith under the influence of her mother (a pianist) and her aunt (a composer and choral conductor at a convent)."
+    },
+    {
+      "question": "What academic degrees did Denise Narcisse-Mair earn, and from which institutions?",
+      "answer": "She earned a licentiate and graduated from the Royal Academy of Music (1960–1961), a bachelor's in musicology from King's College London (1971), and a master's in education from the Ontario Institute for Studies in Education."
+    },
+    {
+      "question": "How did Denise Narcisse-Mair contribute to choral music in Canada?",
+      "answer": "She conducted the Queen's Choral Ensemble at Queen's University (1972–1980), served as the first female conductor of the Hart House Chorus (1974) and the Bach-Elgar Choir (1980–1981), and adjudicated Kiwanis Music Festivals."
+    },
+    {
+      "question": "Write a Python code snippet to extract Denise Narcisse-Mair's birth year and death year from the given text.",
+      "answer": "python\ntext = \"Denise Lorraine Narcisse-Mair (19 January 1940 – 8 June 2010) was a Canadian musicologist...\"\n\n# Extract birth and death years using string manipulation\nbirth_year = int(text.split('(')[1].split()[2])\ndeath_year = int(text.split('–')[1].split()[0])\n\nprint(f\"Birth Year: {birth_year}, Death Year: {death_year}\")\n\nThis code extracts the years 1940 and 2010 from the provided text."
+    },
+    {
+      "question": "Why was Denise Narcisse-Mair's appointment as the first female conductor of the Hart House Chorus significant?",
+      "answer": "Her appointment in 1974 was notable because the Hart House Chorus had only begun accepting women singers two years prior (in 1972), making her the first woman to lead the choir in its history."
+    },
+    {
+      "question": "What teaching positions did Denise Narcisse-Mair hold in Canada?",
+      "answer": "She taught at Queen's University (1972–1980), the Royal Conservatory of Music, McMaster University, secondary and grammar schools in London and Kent (1961–1968), and served as a lecturer at the Institute of Education (1970–1971)."
+    }
+  ]
+}

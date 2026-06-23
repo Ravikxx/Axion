@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/FlexiScale",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is FlexiScale and who developed it?",
+      "answer": "FlexiScale was a utility computing platform developed by XCalibre Communications, launched in the summer of 2007 and later acquired by Flexiant. It was Europe's first and the world's second cloud computing platform, designed for rapid server deployment with support for both Windows and Linux."
+    },
+    {
+      "question": "When was FlexiScale first released, and how did it compare to Amazon's EC2?",
+      "answer": "FlexiScale was launched shortly after Amazon's EC2 service in 2007. It was Europe's first and the world's second cloud computing platform, positioning it as a key competitor to Amazon's early cloud offerings."
+    },
+    {
+      "question": "What hypervisor did FlexiScale use for virtualization?",
+      "answer": "FlexiScale used the open source Xen hypervisor to manage virtual machines and provide cloud computing services."
+    },
+    {
+      "question": "What storage system did FlexiScale use before June 2010, and what changes were made in FlexiScale 2.0?",
+      "answer": "Before June 2010, FlexiScale's backend storage consisted of a dual-head NetApp storage array with disk shelves connected to both heads. In June 2010, FlexiScale 2.0 replaced this with an 'Amber Road' based storage solution from Sun Microsystems."
+    },
+    {
+      "question": "What was the cause of the FlexiScale storage system downtime in August 2008?",
+      "answer": "The downtime in August 2008 was caused by an engineer mistake, resulting in more than two days of service disruption. This raised questions about the redundancy level of the storage system at the time."
+    },
+    {
+      "question": "What were the major revisions of the FlexiScale platform based on publicly available information?",
+      "answer": "The first version of FlexiScale was based on Virtual Iron VM management software. The second revision (FlexiScale v1.5) used an in-house developed VM control system called Extility. The most recent release (FlexiScale v2.0) featured an extensively revised user interface."
+    },
+    {
+      "question": "How did FlexiScale v1.5 differ from the original FlexiScale platform?",
+      "answer": "FlexiScale v1.5 differed from the original platform by using an in-house developed VM control system, now known as Extility, instead of the Virtual Iron VM management software used in the first version."
+    },
+    {
+      "question": "Provide a Python code snippet to simulate starting a server on FlexiScale.",
+      "answer": "python\n# Simulated FlexiScale API call to start a server\ndef start_flexiscale_server(server_id):\n    \"\"\"\n    Simulates starting a server on FlexiScale platform.\n    Args:\n        server_id (str): The unique identifier of the server to start.\n    Returns:\n        dict: A response indicating the server status.\n    \"\"\"\n    # In a real implementation, this would call FlexiScale's API\n    return {\n        \"status\": \"success\",\n        \"action\": \"start\",\n        \"server_id\": server_id,\n        \"message\": \"Server started successfully.\"\n    }\n\n# Example usage\nresponse = start_flexiscale_server(\"server-12345\")\nprint(response)\n\nThis snippet simulates the process of starting a server on FlexiScale using a hypothetical API."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Armistice_of_March_30,_1798",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the main purpose of the March 30, 1798 armistice between Toussaint Louverture and the British?",
+      "answer": "The armistice allowed Toussaint Louverture to negotiate the terms for the British army's retreat from Saint Domingue, including their departure from the stronghold Môle-Saint-Nicolas, which was scheduled for August 31, 1798."
+    },
+    {
+      "question": "How did the armistice of March 30, 1798 influence the relationship between Toussaint Louverture and the British?",
+      "answer": "The armistice led to direct negotiations between Louverture and British General Thomas Maitland, including discussions on trade and cooperation, such as Louverture encouraging Maitland to engage in commerce rather than military action."
+    },
+    {
+      "question": "What was the role of André Rigaud in Saint Domingue following the 1798 armistice?",
+      "answer": "After the armistice, André Rigaud, a former French general, gathered an army of mulattoes and allied with French planters to challenge Toussaint Louverture's control, leading to the War of Knives from June 1799 to July 1800."
+    },
+    {
+      "question": "Write a Python code snippet to calculate the duration (in days) of the War of Knives between Toussaint Louverture and André Rigaud.",
+      "answer": "python\nfrom datetime import datetime\n\nstart_date = datetime(1799, 6, 1)\nend_date = datetime(1800, 7, 1)\nduration_days = (end_date - start_date).days\nprint(f\"The War of Knives lasted {duration_days} days.\")\n# Output: The War of Knives lasted 457 days."
+    },
+    {
+      "question": "What diplomatic and commercial developments occurred between the U.S. and Toussaint Louverture's government after the 1798 armistice?",
+      "answer": "By mid-1798, the U.S. Secretary of State Timothy Pickering indicated the U.S. would accept commercial relations if Louverture won. In November 1798, Louverture sent Joseph Bunuel to Philadelphia to negotiate trade, and on June 13, 1799, the tripartite commercial convention of 1799 was signed, establishing trade relations between the U.S., Britain, and Haiti."
+    },
+    {
+      "question": "How did the 1798 armistice contribute to the growth of piracy in the Caribbean during the quasi-war?",
+      "answer": "After the armistice, many refugees from Saint Domingue fled to Cuba and became privateers, attacking American ships trading with Saint Domingue. French corsairs also targeted these ships, boosting commercial traffic in Cuba, as shown by increased port values in Santiago de Cuba between 1797 and 1801."
+    },
+    {
+      "question": "What were the long-term political consequences of the March 30, 1798 armistice for Saint Domingue?",
+      "answer": "The armistice did not end internal conflicts but led to Louverture consolidating power. By 1800, he defeated André Rigaud in the War of Knives, took control of the colony, and in December 1800 conquered the Spanish-ruled Captaincy General of Santo Domingo, abolishing slavery across the island."
+    }
+  ]
+}

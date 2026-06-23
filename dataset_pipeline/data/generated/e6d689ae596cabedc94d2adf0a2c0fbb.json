@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/G._V._Raja",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was G. V. Raja and what were his primary roles in Kerala?",
+      "answer": "Lieutenant Colonel P. R. Godavarma Raja, popularly known as G. V. Raja, was an Indian sports and tourism promoter, administrator, pilot, sportsman, and Sanskrit scholar. He played a pivotal role in inspiring youth towards sports, founding the Kerala Sports Council in 1953, and serving as its president until his death. He also contributed significantly to the establishment of the Thiruvananthapuram Tennis Club, Flying Club, and the development of Thiruvananthapuram International Airport. Additionally, he served as the prince consort of Travancore through his marriage to Karthika Thirunal Lakshmi Bayi."
+    },
+    {
+      "question": "What organizations did G. V. Raja help establish in Kerala?",
+      "answer": "G. V. Raja was instrumental in founding several key organizations in Kerala, including the Kerala Sports Council (1953), Kerala Cricket Association, and the Tourism Promotion Council of Kerala. He also played a major role in establishing the Thiruvananthapuram Tennis Club (now Thiruvananthapuram Tennis Club), the Flying Club, and in developing Kovalam as an international tourist destination."
+    },
+    {
+      "question": "How did G. V. Raja contribute to the development of Kovalam as a tourist spot?",
+      "answer": "G. V. Raja is recognized as the main architect in developing Kovalam into an international tourist destination. His leadership and vision were crucial in transforming Kovalam into a globally renowned tourist spot, which significantly boosted Kerala's tourism industry."
+    },
+    {
+      "question": "What significant aviation-related roles did G. V. Raja hold?",
+      "answer": "G. V. Raja was a pilot and served as the president of the Flying Club in Thiruvananthapuram. Tragically, he died in an air crash near Kullu Valley on 30 April 1971 while piloting, marking a significant loss in the field of aviation and sports administration."
+    },
+    {
+      "question": "Why is G. V. Raja referred to as the 'Father of Sports and Tourism in Kerala'?",
+      "answer": "G. V. Raja earned the title 'Father of Sports and Tourism in Kerala' due to his foundational contributions in both domains. He established the Kerala Sports Council, Kerala Cricket Association, and the Tourism Promotion Council, while also developing key sports infrastructure and tourist attractions like Kovalam. His lifelong dedication to promoting sports and tourism across Kerala solidified this recognition."
+    },
+    {
+      "question": "What is the significance of G. V. Raja's birth anniversary in Kerala?",
+      "answer": "G. V. Raja's birth anniversary, observed on 13 October, is celebrated as 'Kerala Sports Day' in his honor. This day acknowledges his immense contributions to sports development in Kerala and serves as an annual reminder of his legacy in inspiring youth participation in sports."
+    },
+    {
+      "question": "Write a Python script to calculate the age of G. V. Raja at the time of his death.",
+      "answer": "python\nfrom datetime import datetime\n\n# Define birth and death dates\nbirth_date = datetime(1908, 10, 13)\ndeath_date = datetime(1971, 4, 30)\n\n# Calculate age at death\nage_at_death = death_date.year - birth_date.year\nif (death_date.month, death_date.day) < (birth_date.month, birth_date.day):\n    age_at_death -= 1\n\nprint(f\"G. V. Raja was {age_at_death} years old at the time of his death.\")\n\nThis script calculates that G. V. Raja was 62 years old when he died on 30 April 1971."
+    }
+  ]
+}

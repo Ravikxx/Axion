@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Afro-pessimism_(United_States)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is Afro-pessimism and how is it defined in critical theory?",
+      "answer": "Afro-pessimism is a critical framework that examines the persistent effects of racism, colonialism, and historical processes like the transatlantic slave trade on both structural conditions and the lived experiences of Black people. According to scholars like Patrice Douglass, Selamawit D. Terrefe, and Frank B. Wilderson III, it is a lens that reveals how civil society depends on anti-Black violence, positioning Black people as internal enemies. This violence is distinct from other regimes of oppression, as it frames Blackness not as an identity but as a condition of ontological death and fungibility, where Black bodies and energies are instrumentalized for broader political agendas."
+    },
+    {
+      "question": "Who coined the term Afro-pessimism, and what is its intellectual lineage?",
+      "answer": "The term Afro-pessimism was popularized by Frank B. Wilderson III, though its foundational ideas trace back to Black women's traditions of analysis and survival, as noted by Jared Sexton. Sexton highlights that Afro-pessimism's roots lie in the analytical and interpretive work of Black women, which challenges humanist approaches that frame Black subjectivity solely through political discrimination or social exclusion. Wilderson's framework builds on Saidiya Hartman's concept of Blackness as a condition of 'accumulation and fungibility,' or ontological death, rather than a cultural identity."
+    },
+    {
+      "question": "How does Afro-pessimism differ from other critical theories addressing oppression, such as Marxism or postcolonialism?",
+      "answer": "Afro-pessimism argues that anti-Black violence is qualitatively different from other regimes of oppression. While Marxism focuses on the subaltern proletariat, postcolonialism on colonial subjects, and intersectional feminisms on non-Black marginalized groups, Afro-pessimism contends that Black people are constitutively excluded from the category of the rights-bearing human in modernity. This exclusion is not merely social or political but ontological, meaning Blackness is treated as a site of fungibility and accumulation, stripped of subjectivity. Wilderson emphasizes that Black flesh and energies are instrumentalized for agendas that do not center Black emancipation."
+    },
+    {
+      "question": "What does it mean to describe Blackness as a condition of 'ontological death' in Afro-pessimist theory?",
+      "answer": "In Afro-pessimist thought, 'ontological death' refers to the denial of Black people's full humanity within modern civil society. Rather than being seen as subjects with agency or rights, Blackness is treated as a condition where Black individuals are reduced to fungible objects or tools for others' political or social projects. This aligns with Saidiya Hartman's concept of Blackness as 'accumulation and fungibility,' where Black bodies and lives are perpetually subjected to violence, erasure, or exploitation. It is not about physical death but the erasure of Black subjectivity as a viable, autonomous existence."
+    },
+    {
+      "question": "Can you provide a code snippet that simulates the concept of 'accumulation and fungibility' in Afro-pessimism? Assume Blackness is represented as a data point with mutable properties.",
+      "answer": "Below is a Python snippet that models how Afro-pessimism might conceptualize Blackness as a condition of accumulation and fungibility, where Black data points are treated as interchangeable resources for broader systems:\n\npython\nclass Blackness:\n    def __init__(self, identity, fungibility_score=0.0):\n        self.identity = identity  # e.g., 'Black'\n        self.fungibility_score = fungibility_score  # 0.0 (non-fungible) to 1.0 (fully fungible)\n        self.subjectivity = False  # Default to ontological death\n\n    def instrumentalize(self, agenda):\n        \"\"\"Simulate how Blackness is used as a tool for other political agendas.\"\"\"\n        if self.fungibility_score >= 0.7:\n            return f\"Blackness (identity: {self.identity}) instrumentalized for {agenda} agenda.\"\n        else:\n            return f\"Blackness (identity: {self.identity}) resists {agenda} agenda due to low fungibility.\"\n\n# Example: Blackness in a worker's rights agenda\nblack_subject = Blackness(identity=\"Black\")\nblack_subject.fungibility_score = 0.8\nprint(black_subject.instrumentalize(\"worker's rights\"))\n# Output: Blackness (identity: Black) instrumentalized for worker's rights agenda.\n\n# Example: Blackness resisting assimilation\nblack_subject.subjectivity = True\nblack_subject.fungibility_score = 0.3\nprint(black_subject.instrumentalize(\"assimilationist project\"))\n# Output: Blackness (identity: Black) resists assimilationist project due to low fungibility.\n\n\nThis code illustrates how Afro-pessimism frames Blackness as a resource that can be co-opted (high fungibility) or resist co-optation (low fungibility, emerging subjectivity)."
+    },
+    {
+      "question": "How does Jared Sexton link Afro-pessimism to Black women's traditions of analysis?",
+      "answer": "Jared Sexton locates Afro-pessimism’s foundational ideas in the 'motive force' of Black women’s traditions of analysis, interpretation, invention, and survival. Unlike humanist scholars who frame Black subjectivity through political discrimination or social exclusion, Sexton argues that Afro-pessimist thought emerges from the intellectual and creative labor of Black women, which critiques modern humanism’s exclusion of Blackness from the category of the self-possessing subject. This tradition challenges dominant narratives by centering Black women’s epistemologies as a site of resistance to civil society’s anti-Black violence."
+    },
+    {
+      "question": "What is the relationship between Afro-pessimism and humanism in the context of Black subjectivity?",
+      "answer": "Afro-pessimism fundamentally rejects the humanist assumption that all humans are equally capable of achieving subjectivity, rights, or self-possession within modern civil society. While humanism posits that oppression can be overcome through systemic reform or recognition, Afro-pessimists argue that Black people are constitutively excluded from the category of the 'human' in modernity. Wilderson and others contend that anti-Black violence is not a deviation from humanist principles but a foundational condition of civil society itself. Thus, Afro-pessimism critiques humanism’s inability to account for this persistent exclusion."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Ducoin_v_Viamonte",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the legal dispute in Ducoin v. Viamonte about?",
+      "answer": "The legal dispute centered on whether dentists in Florida had the right to announce credentials from non-American Dental Association (ADA)-recognized organizations without restrictions. The Florida Board of Dentistry had imposed a disclaimer requirement on such announcements, which the dentists argued violated their free speech rights."
+    },
+    {
+      "question": "Which organizations' credentials were involved in the Ducoin v. Viamonte case?",
+      "answer": "The credentials involved were from the American Academy of Implant Dentistry (AAID), the American Board of Oral Implantology (ABOI), the Academy of General Dentistry (AGD), and the American Academy of Cosmetic Dentistry (AACD). These organizations were not recognized as specialty accrediting bodies by the ADA or the Florida Board of Dentistry."
+    },
+    {
+      "question": "What was the Florida Board of Dentistry's requirement for advertising credentials from non-ADA-recognized organizations?",
+      "answer": "The Board required that any announcement of credentials from non-ADA-recognized organizations include the following disclaimer: '(Name of announced area of dental practice) is not recognized as a specialty area by the American Dental Association or the Florida Board of Dentistry. (Name of referenced organization) is not recognized as a bona fide specialty accrediting organization by the American Dental Association or the Florida Board of Dentistry.'"
+    },
+    {
+      "question": "What were the two main legal rationales for the Florida Circuit Court's decision in Ducoin v. Viamonte?",
+      "answer": "The court ruled that the disclaimer requirement was an unreasonable restriction of free speech, and that it improperly conferred the force of law on the opinions of the ADA, a trade association, by requiring dentists to acknowledge its authority over non-recognized credentials."
+    },
+    {
+      "question": "How did Judge Frank Sheffield describe the credentials from organizations like AAID and AABOI in his opinion?",
+      "answer": "Judge Sheffield stated that organizations such as the AGD, AACD, AAID, and ABOI are reputable and convey valid, meaningful credentials, even though they are not recognized by the ADA or as specialty areas."
+    },
+    {
+      "question": "What impact did Ducoin v. Viamonte have on dentists nationwide?",
+      "answer": "The decision established legal precedent that dentists have the right to announce credentials from non-ADA-recognized organizations without interference from boards of dentistry, and it is regarded as settled law across the United States."
+    },
+    {
+      "question": "Write a Python function to validate whether a given dental credential is recognized by the ADA based on the Ducoin v. Viamonte decision.",
+      "answer": "python\nimport json\n\n# List of ADA-recognized dental specialties\nADA_RECOGNIZED_SPECIALTIES = {\n    \"Oral and Maxillofacial Surgery\",\n    \"Orthodontics and Dentofacial Orthopedics\",\n    \"Endodontics\",\n    \"Periodontics\",\n    \"Prosthodontics\",\n    \"Pediatric Dentistry\",\n    \"Oral and Maxillofacial Pathology\",\n    \"Oral and Maxillofacial Radiology\",\n    \"Dental Public Health\"\n}\n\n# Function to check if a credential is ADA-recognized\ndef is_ada_recognized(credential_name):\n    \"\"\"\n    Determines whether a dental credential is recognized by the ADA.\n    \n    Args:\n        credential_name (str): The name of the credential or specialty.\n    \n    Returns:\n        bool: True if recognized as a specialty by the ADA, False otherwise.\n    \"\"\"\n    return credential_name in ADA_RECOGNIZED_SPECIALTIES\n\n# Example usage\nif __name__ == \"__main__\":\n    print(is_ada_recognized(\"Orthodontics and Dentofacial Orthopedics\"))  # True\n    print(is_ada_recognized(\"Implant Dentistry\"))  # False\n"
+    }
+  ]
+}

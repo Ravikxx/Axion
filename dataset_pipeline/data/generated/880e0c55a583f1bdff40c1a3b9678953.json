@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/2010_Pichilemu_earthquakes",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What was the magnitude of the earthquake that occurred on March 11, 2010, near Pichilemu, Chile?",
+      "answer": "The earthquake that occurred on March 11, 2010, near Pichilemu, Chile, had a magnitude of 6.9."
+    },
+    {
+      "question": "Where was the epicenter of the March 11, 2010, earthquake located?",
+      "answer": "The epicenter of the March 11, 2010, earthquake was located 40 kilometers southwest of Pichilemu, in the O'Higgins Region of Chile."
+    },
+    {
+      "question": "How did the United States Geological Survey (USGS) initially classify the March 11, 2010, earthquake?",
+      "answer": "The USGS initially classified the March 11, 2010, earthquake as a separate event, distinct from the aftershocks of the February 27 earthquake, though it was influenced by the regional stress caused by the earlier quake."
+    },
+    {
+      "question": "What type of faulting caused the March 11, 2010, earthquake?",
+      "answer": "The March 11, 2010, earthquake was caused by normal faulting inside one of the tectonic plates (either the Nazca or South American Plate), rather than a thrust fault rupture between them."
+    },
+    {
+      "question": "How many aftershocks occurred within 6 hours of the March 11, 2010, earthquake, and what were their magnitudes?",
+      "answer": "Within 6 hours of the March 11, 2010, earthquake, there were 10 aftershocks. Two of these were of magnitude 6 or greater, and 7 were between magnitude 5 and 6."
+    },
+    {
+      "question": "Did the March 11, 2010, earthquake interrupt the inauguration of President Sebastián Piñera?",
+      "answer": "No, the earthquake did not interrupt the inauguration of President Sebastián Piñera, even though it occurred shortly before the ceremony at the Chilean congress in Valparaíso."
+    },
+    {
+      "question": "What were some of the reported damages from the March 11, 2010, earthquake?",
+      "answer": "Reported damages included the collapse of a pedestrian crossing over Chile Highway 5 north of Rancagua and significant destruction in Pichilemu, particularly the Ross Park, most of the Agustín Ross Cultural Centre, and many houses in Espinillo and Rodeillo."
+    }
+  ]
+}

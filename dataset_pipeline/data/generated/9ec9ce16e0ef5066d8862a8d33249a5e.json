@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/zenstack/how-to-save-bloated-mcp-with-code-mode-33e3",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What is the Model Context Protocol (MCP) and how does it differ from Agent Skills?",
+      "answer": "The Model Context Protocol (MCP) is a framework designed to provide secure connectivity between AI models and external software or data sources. It enables agents to interact with tools and data in a standardized way. Agent Skills, on the other hand, are procedural knowledge modules that define how tools exposed via MCP should be used effectively. While MCP focuses on secure access and integration, Agent Skills emphasize the procedural logic required to utilize those tools. As described by Anthropic, MCP and skills are complementary: MCP handles connectivity, while skills provide the knowledge for using those tools."
+    },
+    {
+      "question": "Why might developers prefer Agent Skills over MCP for coding agents?",
+      "answer": "Developers may prefer Agent Skills because they are more token-efficient for coding agents compared to MCP. Skills typically expose CLI-based workflows, which avoid loading large tool schemas and verbose accessibility trees into the model context. This reduces the number of input tokens required, making agent interactions more efficient. For example, the official Playwright GitHub recommends CLI-based Skills over MCP for this reason."
+    },
+    {
+      "question": "What is the 'context bloating' issue in MCP and how does it impact usability?",
+      "answer": "The 'context bloating' issue in MCP refers to the excessive token usage caused by loading large tool schemas, even when only a single tool is needed. This happens because MCP servers often expose comprehensive JSON schemas that include the entire application's schema, including nested relations. For instance, a ZenStack MCP server might generate a schema with a 400K token context window for a single tool, making it infeasible for practical use. This issue is one of the primary reasons developers are switching to Agent Skills."
+    },
+    {
+      "question": "How can an MCP server be designed to avoid context bloating while still providing access to a database?",
+      "answer": "To avoid context bloating, an MCP server can adopt a design similar to Cloudflare's 'Code Mode' approach. Instead of exposing every operation as a separate tool, the server can expose only a few generic tools like `search` and `execute`. For example, a Cloudflare MCP server exposes only two tools: `search` to query the API and `execute` to run arbitrary code. This reduces the token footprint to around 1K tokens, regardless of the number of API endpoints. ZenStack also addresses this by providing three tools: `schema` (to send the entire schema), `execute` (to run fixed function calls like `findMany`), and `check` (to validate parameters before execution)."
+    },
+    {
+      "question": "Provide an example of a ZenStack MCP server tool that queries a database using nested relations.",
+      "answer": "Here is an example of a ZenStack MCP server tool that queries a database with nested relations:\ntsx\nconst users = await db.user.findMany({\n  select: {\n    id: true,\n    name: true,\n    posts: {\n      // Relation-level filter\n      where: {\n        tags: { some: { name: \"typescript\" } },\n      },\n      select: {\n        id: true,\n        title: true,\n        tags: {\n          // Deep filter\n          where: { name: \"typescript\" },\n          select: { name: true },\n        },\n        comments: {\n          where: {\n            body: { contains: \"great\" },\n          },\n          // Switch to include here — we want all Comment columns\n          include: {\n            author: {\n              select: { id: true, name: true },\n            },\n          },\n        },\n      },\n    },\n  },\n});\n\nThis query demonstrates how ZenStack's ORM allows traversing nested relations, but it also highlights the 'context bloating' issue due to the large schema generated."
+    },
+    {
+      "question": "What is OAuth support in MCP servers and why is it important for enterprise adoption?",
+      "answer": "OAuth support in MCP servers allows for secure authentication and authorization when accessing external tools or data. It is critical for enterprise adoption because it enables organizations to manage access control by revoking tokens without exposing underlying keys or secrets. For example, if an engineer leaves a team, revoking their OAuth token ensures they lose access to the MCP server without needing to change other credentials. This is exemplified in the article [Turning Your Database into an MCP Server with Auth](https://dev.to/zenstack/turning-your-database-into-an-mcp-server-with-auth-32mp), which demonstrates how to create an HTTP MCP server with OAuth support."
+    },
+    {
+      "question": "How does ZenStack's solution for MCP servers address the context bloating issue?",
+      "answer": "ZenStack's solution addresses context bloating by providing three tools: `schema`, `execute`, and `check`. The `schema` tool sends the entire application schema to the LLM, giving it a complete picture while keeping the footprint manageable. The `execute` tool runs fixed function calls like `findMany`, `createMany`, or `updateMany`, avoiding arbitrary code execution. The `check` tool validates parameters before execution, though it may not always be necessary as LLMs can infer correctness from error messages. This approach reduces the token overhead while maintaining functionality."
+    }
+  ]
+}

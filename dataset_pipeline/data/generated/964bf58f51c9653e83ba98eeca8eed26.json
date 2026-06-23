@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Beslan_school_siege",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the Beslan school siege and when did it occur?",
+      "answer": "The Beslan school siege was a terrorist attack that took place from 1 September 2004 to 3 September 2004 in Beslan, North Ossetia, Russian Federation. It lasted three days and involved the kidnapping of over 1,100 people, including 777 children, resulting in 334 deaths (186 of them children) and 31 attackers killed."
+    },
+    {
+      "question": "Who were the attackers in the Beslan school siege and what were their demands?",
+      "answer": "The attackers were members of the Riyad-us Saliheen group, sent by Chechen warlord Shamil Basayev. Their demands included the withdrawal of Russian forces from Chechnya and international recognition of Chechnya's independence."
+    },
+    {
+      "question": "How did the Beslan school siege end?",
+      "answer": "The siege ended on the third day when Russian security forces stormed the school building where the hostages were held. This intervention resulted in the deaths of the attackers, many hostages, and ended the crisis."
+    },
+    {
+      "question": "What were the political consequences of the Beslan school siege in Russia?",
+      "answer": "The event led to major federal government reforms in Russia that consolidated power in the Kremlin and expanded the powers of the President. These changes were implemented in response to criticisms of the government's handling of the crisis."
+    },
+    {
+      "question": "Why is the Beslan school siege considered significant in history?",
+      "answer": "It is considered the deadliest school shooting in history due to the high number of casualties, including 334 deaths, with a majority being children. The event also had lasting impacts on Russian security policies and political structures."
+    },
+    {
+      "question": "What criticisms have been raised about the Russian government's response to the Beslan siege?",
+      "answer": "Criticisms include allegations of disinformation and censorship in media coverage, concerns about journalistic freedom, questions regarding the effectiveness of negotiations with terrorists, disputes over responsibility for the outcome, and accusations of using excessive force during the rescue operation."
+    },
+    {
+      "question": "Write a Python code snippet to calculate the total percentage of children among the victims in the Beslan school siege.",
+      "answer": "python\n# Total victims: 334\n# Children among victims: 186\ntotal_victims = 334\nchildren_victims = 186\npercentage_children = (children_victims / total_victims) * 100\nprint(f\"Percentage of children among victims: {percentage_children:.2f}%\")\n\nThis code calculates that approximately 55.69% of the victims were children."
+    }
+  ]
+}

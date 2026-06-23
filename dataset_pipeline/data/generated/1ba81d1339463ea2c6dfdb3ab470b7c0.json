@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/2AM_(band)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the origin of the South Korean boy band 2AM?",
+      "answer": "2AM was formed by JYP Entertainment through the Mnet reality show Hot Blooded Men, which created the eleven-member boy band One Day. The original lineup included Jo Kwon, Lee Chang-min, Lim Seul-ong, and Jeong Jin-woon."
+    },
+    {
+      "question": "How were 2AM and 2PM related in terms of management and music style?",
+      "answer": "2AM and 2PM were formed from the same show, Hot Blooded Men, but had different music styles: 2AM primarily performed ballad songs, while 2PM focused on dance-focused music. From 2008 to 2014, they were co-managed by JYP Entertainment and Big Hit Entertainment (now Big Hit Music) after Changmin from Big Hit joined 2AM."
+    },
+    {
+      "question": "What was 2AM's debut single and when did they officially debut?",
+      "answer": "2AM officially debuted on July 11, 2008, on KBS' Music Bank with their debut single 'This Song'."
+    },
+    {
+      "question": "Can you provide an example of a 2AM song that topped the Gaon Digital Chart?",
+      "answer": "Yes, several 2AM singles topped the Gaon Digital Chart, including 'Can't Let You Go Even If I Die', 'You Wouldn't Answer My Calls', and 'I Wonder If You Hurt Like Me'."
+    },
+    {
+      "question": "How did 2AM's hiatus affect their group activities and when did they reunite?",
+      "answer": "After leaving JYP and Big Hit, 2AM went on hiatus as members joined different companies and pursued solo careers. Their hiatus extended due to mandatory military service. They reunited in 2021 after seven years with their fourth extended play, 'Ballad 21 F/W'."
+    },
+    {
+      "question": "What was 2AM's first number one album on the Gaon Album Chart?",
+      "answer": "Their album 'I Was Wrong', released in 2010, marked their first number one album on the Gaon Album Chart."
+    },
+    {
+      "question": "Write a Python function to check if a 2AM song is in the top 10 of the Gaon Digital Chart based on a given list of songs.",
+      "answer": "python\n\ndef is_top_10_gaon(song_list, query_song):\n    top_10_songs = [\n        'Can\\'t Let You Go Even If I Die',\n        'You Wouldn\\'t Answer My Calls',\n        'I Wonder If You Hurt Like Me',\n        # Add other known top 10 songs here\n    ]\n    return query_song in top_10_songs\n\n# Example usage:\nsongs = ['This Song', 'Can\\'t Let You Go Even If I Die']\nprint(is_top_10_gaon(songs, 'Can\\'t Let You Go Even If I Die'))  # Output: True\nprint(is_top_10_gaon(songs, 'This Song'))  # Output: False\n"
+    }
+  ]
+}

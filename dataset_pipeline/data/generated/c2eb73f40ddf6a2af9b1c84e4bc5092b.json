@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Bellary_Fort",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Where is Bellary Fort located and what are its two main parts?",
+      "answer": "Bellary Fort, also known as 'Bellary Kote', is situated in Bellary, a historic city in the Bellary district of Karnataka, India. It was constructed on a hill called 'Ballari Gudda' or Fort Hill and consists of two main parts: the Upper Fort and the Lower Fort."
+    },
+    {
+      "question": "Who built the Upper Fort of Bellary and who was its official resident?",
+      "answer": "The Upper Fort of Bellary was built by Hanumappa Nayaka, a feudatory of the Vijayanagara Empire. It served as the official residence of the Hande family."
+    },
+    {
+      "question": "When and by whom was the Lower Fort of Bellary constructed?",
+      "answer": "The Lower Fort of Bellary was built by Hyder Ali in the latter part of the 18th century."
+    },
+    {
+      "question": "What was the strategic mistake made during the construction of Bellary Fort and what was its consequence?",
+      "answer": "The strategic mistake was that the forts were built at a lower elevation compared to an opposite hill called 'Kumbara Gudda', which put them at a military disadvantage. As a result, Hyder Ali was displeased and allegedly ordered the hanging of the French engineer responsible for the construction at the fort's east gate."
+    },
+    {
+      "question": "What is notable about the French engineer's grave at Bellary Fort?",
+      "answer": "The French engineer's grave, dated 1769 and marked as 'unknown French Engineer', is located at the east gate of Bellary Fort. It has been preserved due to the efforts of local Muslims, who also claim it was the tomb of a Muslim saint."
+    },
+    {
+      "question": "Describe the architectural features and historical significance of Bellary Fort.",
+      "answer": "Bellary Fort features fine ramparts and houses several historical and religious monuments. The Upper Fort contains a citadel with ancient tanks, while the Lower Fort on the east side housed an arsenal."
+    },
+    {
+      "question": "Provide a code snippet to simulate the elevation comparison between Ballari Gudda and Kumbara Gudda using Python.",
+      "answer": "python\n# Elevation comparison between Ballari Gudda and Kumbara Gudda\nballari_gudda_elevation = 600  # in meters (example value)\nkumbara_gudda_elevation = 700  # in meters (example value)\n\nif ballari_gudda_elevation < kumbara_gudda_elevation:\n    print(\"The forts were at a lower elevation compared to Kumbara Gudda, causing a strategic disadvantage.\")\nelse:\n    print(\"The forts were at a higher or equal elevation, avoiding the strategic disadvantage.\")\n"
+    }
+  ]
+}

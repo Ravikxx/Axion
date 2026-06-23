@@ -1,0 +1,34 @@
+{
+  "source_url": "https://github.com/shareAI-lab/learn-claude-code",
+  "category": "github",
+  "pairs": [
+    {
+      "question": "What is the core difference between an 'agent' and a 'harness' in the context of AI systems?",
+      "answer": "An 'agent' refers to the trained model that possesses agency—the capacity to perceive, reason, and act—through learned behavior from training data. A 'harness,' on the other hand, is the infrastructure or codebase that provides the operational environment, tools, permissions, and context for the agent to interact with the real world. The agent supplies the intelligence, while the harness supplies the vehicle for action."
+    },
+    {
+      "question": "Provide three historical milestones that demonstrate the evolution of AI agency through training rather than external orchestration.",
+      "answer": "1. **DeepMind DQN (2013-2015):** A single neural network learned to play Atari games directly from raw pixels and scores, surpassing human experts in some cases without game-specific rules. 2. **OpenAI Five (2019):** Five neural networks trained via self-play for 45,000 years of Dota 2 gameplay, defeating world champions without scripted strategies. 3. **DeepMind AlphaStar (2019):** Mastered StarCraft II, a real-time strategy game with incomplete information, reaching Grandmaster rank on the European server."
+    },
+    {
+      "question": "Why is it incorrect to assume that building an AI 'agent' involves only orchestrating prompt chains or workflow builders?",
+      "answer": "Agency is learned during model training, not coded through procedural logic. Stringing together LLM API calls, if-else branches, or node graphs does not create intelligence; it only builds brittle, over-engineered workflows. True agents require a trained model that perceives, reasons, and acts, combined with a harness that provides tools and environments, not just glue code."
+    },
+    {
+      "question": "What are the key components of an AI harness, and how do they support the agent?",
+      "answer": "A harness consists of: 1) **Tools** (e.g., file I/O, shell execution, APIs) for the agent to interact with the environment; 2) **Knowledge** (e.g., documentation, API specs) to provide domain context; 3) **Observation** (e.g., error logs, sensor data) to give feedback; 4) **Action Interfaces** (e.g., CLI commands, UI interactions) to execute decisions; 5) **Permissions** (e.g., sandboxing, approval workflows) to enforce boundaries. The harness ensures the agent operates within a defined, safe, and functional space."
+    },
+    {
+      "question": "Write a Python code snippet for a simple AI harness tool that executes a shell command safely with input validation.",
+      "answer": "python\nimport subprocess\nimport shlex\n\ndef execute_shell_command(command: str, timeout: int = 30) -> tuple[bool, str]:\n    \"\"\"\n    Safely execute a shell command with input validation and timeout.\n    Returns (success: bool, output: str).\n    \"\"\"\n    try:\n        # Validate command is a single executable and arguments\n        if not command.strip():\n            return False, \"Error: Empty command\"\n        \n        # Split command into parts and validate no shell metacharacters\n        parts = shlex.split(command)\n        if any(c in command for c in [';', '&', '|', '>', '<', '$', '`']):\n            return False, \"Error: Command contains forbidden metacharacters\"\n        \n        # Execute with timeout and capture output\n        result = subprocess.run(\n            parts,\n            stdout=subprocess.PIPE,\n            stderr=subprocess.PIPE,\n            timeout=timeout,\n            shell=False,\n            check=False  # Don't raise exception on non-zero exit\n        )\n        \n        output = result.stdout.decode('utf-8')\n        error = result.stderr.decode('utf-8')\n        \n        if result.returncode != 0:\n            return False, f\"Command failed (exit {result.returncode}): {error}\"\n        return True, output\n        \n    except subprocess.TimeoutExpired:\n        return False, f\"Command timed out after {timeout} seconds\"\n    except Exception as e:\n        return False, f\"Execution error: {str(e)}\"\n\n\nExample usage: `success, output = execute_shell_command('ls -l /tmp')`"
+    },
+    {
+      "question": "How does a harness engineer ensure that an AI agent operates within defined boundaries and permissions?",
+      "answer": "A harness engineer enforces boundaries through: 1) **Sandboxing** (isolating file access, network calls, or system resources); 2) **Approval Workflows** (requiring human review for destructive actions like file deletion); 3) **Trust Boundaries** (limiting the agent's access to sensitive systems or data); 4) **Context Compaction** (preventing the agent from accessing unrelated or sensitive information); 5) **Permission Layers** (e.g., read-only vs. write access). These controls ensure the agent acts within its designated operational envelope."
+    },
+    {
+      "question": "What is trajectory data, and why is it important for training AI agents?",
+      "answer": "Trajectory data consists of sequences of perception (environment input), reasoning (model decisions), and action (executable steps) collected during an agent's interaction with a harness. It is critical because it provides the raw material for fine-tuning and improving the model. Real-world trajectories reflect how the agent navigates actual environments, revealing strengths, weaknesses, and areas for enhancement. This data bridges the gap between training and deployment."
+    }
+  ]
+}

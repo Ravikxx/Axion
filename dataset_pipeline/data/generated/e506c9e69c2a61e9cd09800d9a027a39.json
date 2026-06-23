@@ -1,0 +1,34 @@
+{
+  "source_url": "https://mathworld.wolfram.com/QuadraticCurveDiscriminant.html",
+  "category": "mathworld",
+  "pairs": [
+    {
+      "question": "What is the discriminant of a general quadratic curve and why is it important?",
+      "answer": "The discriminant of a general quadratic curve, given by the expression Δ = B² - 4AC, is an invariant quantity under rotation transformations. It is important because it provides a shortcut to determine the shape of the curve (ellipse, hyperbola, parabola, or degenerate cases) without needing to analyze the entire equation after rotation."
+    },
+    {
+      "question": "How can you determine the type of conic section represented by a general quadratic equation using the discriminant?",
+      "answer": "For a general quadratic equation Ax² + Bxy + Cy² + Dx + Ey + F = 0, the discriminant Δ = B² - 4AC determines the shape as follows:\n1. If Δ < 0, the equation represents an ellipse (or degenerate cases like a circle, point, or no graph).\n2. If Δ > 0, the equation represents a hyperbola (or degenerate cases like intersecting lines).\n3. If Δ = 0, the equation represents a parabola (or degenerate cases like parallel lines or no graph)."
+    },
+    {
+      "question": "Write a Python function that computes the discriminant of a quadratic curve given its coefficients A, B, and C.",
+      "answer": "python\ndef compute_discriminant(A, B, C):\n    \"\"\"Compute the discriminant of a quadratic curve Ax² + Bxy + Cy² + ... = 0.\n    \n    Args:\n        A (float): Coefficient of x².\n        B (float): Coefficient of xy.\n        C (float): Coefficient of y².\n    \n    Returns:\n        float: The discriminant Δ = B² - 4AC.\n    \"\"\"\n    return B**2 - 4 * A * C\n"
+    },
+    {
+      "question": "Explain how completing the square is used to analyze the shape of a quadratic curve.",
+      "answer": "Completing the square simplifies a quadratic curve equation into a more recognizable form. For example, after a rotation transformation, the equation can be rewritten as A'x'² + C'y'² + D'x' + E'y' + F' = 0. Completing the square for x' and y' isolates the squared terms, making it easier to identify the shape (e.g., ellipse, hyperbola, or parabola) based on the signs of A' and C'."
+    },
+    {
+      "question": "What are the degenerate cases of a quadratic curve, and how do they relate to the discriminant?",
+      "answer": "Degenerate cases of quadratic curves are special cases where the curve does not form the standard conic section. They include:\n1. For Δ < 0: A circle (A = C, B = 0), a single point (e.g., x² + y² = 0), or no graph (e.g., x² + y² = -1).\n2. For Δ > 0: Two intersecting lines (e.g., xy = 0).\n3. For Δ = 0: Two parallel lines (e.g., x² = 1), a single line (e.g., x² = 0), or no graph (e.g., x² = -1)."
+    },
+    {
+      "question": "How does the discriminant change under a rotation of the coordinate system?",
+      "answer": "The discriminant Δ = B² - 4AC is invariant under rotation. This means that for any angle θ, the discriminant calculated from the coefficients of the rotated quadratic equation will be the same as the original discriminant. This invariance allows us to determine the shape of the curve regardless of the coordinate system."
+    },
+    {
+      "question": "Given the quadratic equation 2x² + 4xy + 5y² - 6x + 8y - 3 = 0, determine its shape using the discriminant.",
+      "answer": "First, identify the coefficients: A = 2, B = 4, C = 5. Compute the discriminant: Δ = B² - 4AC = 4² - 4 * 2 * 5 = 16 - 40 = -24. Since Δ < 0 and A and C have the same sign, the equation represents an ellipse."
+    }
+  ]
+}

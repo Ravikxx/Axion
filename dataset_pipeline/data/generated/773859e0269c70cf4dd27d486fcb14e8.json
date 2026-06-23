@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/anmolbaranwal/chat-to-build-and-schedule-your-own-personal-hacker-news-email-digest-42a4",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What problem does HN Digest solve and why did the creator build it?",
+      "answer": "HN Digest solves the problem of missing personalized Hacker News (HN) posts in generic newsletters. Users often struggle to keep up with HN's fast-paced front page or find existing newsletters too generic. The creator built HN Digest to allow users to generate their own personalized email digests from live HN data, schedule deliveries (daily, weekly, or monthly), and customize content via a chat interface—all for free without requiring passwords."
+    },
+    {
+      "question": "How does HN Digest allow users to customize their newsletters?",
+      "answer": "HN Digest offers 10 section types with per-section filters for customization, including keyword search, timeframe (24h to 30d), minimum upvotes, and story count. Users can describe their desired content in the chat editor (e.g., \"security news from the last 48 hours plus recent Show HN\"), and the system automatically applies the correct sections and filters. Users can also manage sections via chat commands like showing available sections, deleting, reordering, or changing themes."
+    },
+    {
+      "question": "What programming languages and frameworks power HN Digest? Provide a code snippet showing how sections are added to the newsletter.",
+      "answer": "HN Digest uses Next.js (with React Email and CopilotKit), TypeScript, and Neon Postgres for the database. The frontend uses CopilotKit's `useFrontendTool` hook to handle section additions safely. Here’s a code snippet showing how a section is added:\ntsx\nuseFrontendTool({\n  name: \"add_section\",\n  parameters: z.object({\n    type: z.enum([\"hn-stories\", \"topic\", \"recent-gems\", \"high-signal\"]),\n    count: z.number().min(1).max(30).optional(),\n    query: z.string().optional(),\n    hours: z.number().optional(),\n    minPoints: z.number().optional()\n  }),\n  handler: async ({ type, count, query, hours, minPoints }) => {\n    const section = {\n      id: `${type}-${Date.now()}`,\n      type,\n      props: { count, query, hours, minPoints }\n    };\n    setConfig(prev => ({ ...prev, sections: [...prev.sections, section] }));\n    return `Added ${type} section`;\n  }\n});\n"
+    },
+    {
+      "question": "How does HN Digest handle sensitive data like the Resend API key during activation?",
+      "answer": "During activation, the Resend API key is encrypted using AES-256-GCM before being stored in the database. The encryption process generates a random initialization vector (IV) and an authentication tag, combining them with the ciphertext. The key is decrypted only in memory at send time, never logged or exposed to the browser. Here’s the encryption function:\nts\nfunction encrypt(text: string): string {\n  const iv = crypto.randomBytes(16);\n  const cipher = crypto.createCipheriv(\"aes-256-gcm\", getKey(), iv);\n  let enc = cipher.update(text, \"utf8\", \"hex\") + cipher.final(\"hex\");\n  return `${iv.toString(\"hex\")}:${cipher.getAuthTag().toString(\"hex\")}:${enc}`;\n}\n"
+    },
+    {
+      "question": "What role does QStash play in HN Digest's architecture and how does it handle user-specific scheduling?",
+      "answer": "QStash handles user-specific scheduling for email deliveries. Unlike Vercel Hobby cron (which runs a single daily job), QStash allows each user to create personalized schedules (e.g., daily at 9 AM in their timezone). When a user activates their newsletter, the system generates a cron expression based on their chosen frequency, time, and timezone. For example, \"Asia/Tokyo 8 AM\" converts to \"23:00 UTC\" for scheduling. QStash triggers the `/api/send` endpoint with a secret header for validation, ensuring only authorized requests are processed."
+    },
+    {
+      "question": "How does HN Digest ensure the live preview of the newsletter matches the final sent email?",
+      "answer": "The live preview is rendered server-side using React Email, so the preview HTML is identical to the final email. Every change in the editor triggers a request to `/api/preview`, which returns the rendered HTML. The editor caches previews by config hash to avoid re-fetching identical configurations. Here’s the caching logic:\ntsx\nconst cacheKey = `${PREVIEW_CACHE_VERSION}:${JSON.stringify(config)}`;\nconst cached = previewCacheRef.current.get(cacheKey);\nif (cached) { setPreviewHtml(cached); return; }\nconst { html } = await (await fetch(\"/api/preview\", {\n  method: \"POST\",\n  headers: { \"Content-Type\": \"application/json\" },\n  body: JSON.stringify({ config })\n})).json();\npreviewCacheRef.current.set(cacheKey, html);\nsetPreviewHtml(html);\n"
+    },
+    {
+      "question": "What security measures does HN Digest implement to protect user data and prevent unauthorized access?",
+      "answer": "HN Digest implements multiple security measures: 1) Resend API keys are AES-256-GCM encrypted at rest and decrypted only in memory during sending. 2) User sessions use signed JWTs with 30-minute expiry. 3) The `/api/send` endpoint validates a `CRON_SECRET` header to ensure only QStash can trigger it. 4) Magic links for dashboard access are signed JWTs. 5) All sensitive data (e.g., Resend keys) is inaccessible from the browser; the chat LLM only interacts with frontend tool handlers that enforce guardrails."
+    }
+  ]
+}

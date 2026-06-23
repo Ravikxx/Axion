@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Convention_of_El_Arish",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the purpose of the Convention of El Arish?",
+      "answer": "The Convention of El Arish, signed on 24 January 1800, was intended to end the French invasion of Egypt and Syria by arranging for the repatriation of French troops to France and the return of all occupied territory to the Ottoman Empire."
+    },
+    {
+      "question": "Why were British commanders initially instructed to prevent a separate treaty between the Ottomans and France?",
+      "answer": "In December 1799, the British government issued orders to its commanders prohibiting them from allowing a separate treaty between the Ottomans and France that would involve the return of French troops to Europe. This was likely to avoid giving France a strategic advantage or consolidating its influence in the region."
+    },
+    {
+      "question": "What delayed the British commanders' knowledge of the British government's instructions regarding the Convention of El Arish?",
+      "answer": "The British government's instructions did not reach Sidney Smith, the British naval commander in Egypt, until after the Convention of El Arish had already been signed. This delay prevented Smith and Lord Keith from enforcing the policy in time."
+    },
+    {
+      "question": "How did Jean-Baptiste Kléber respond to the British government's belated instructions regarding the Convention of El Arish?",
+      "answer": "Upon learning of the British instructions, Kléber was outraged and ordered his troops to attack the Ottomans. This led to the Battle of Heliopolis on 20 March 1800, which the French forces won."
+    },
+    {
+      "question": "What were the consequences of the Battle of Heliopolis for the Convention of El Arish?",
+      "answer": "The Battle of Heliopolis undermined the Convention of El Arish by reigniting hostilities between France and the Ottomans. Although the British government later agreed to honor the convention, the conflict continued until the French surrender at Alexandria in August 1801."
+    },
+    {
+      "question": "How were the French troops eventually repatriated after the Convention of El Arish failed?",
+      "answer": "After the French surrender at Alexandria in August 1801, the French troops were returned to France aboard British ships, in accordance with the original terms of the Convention of El Arish."
+    },
+    {
+      "question": "Write a Python code snippet that calculates the duration between the signing of the Convention of El Arish and the surrender of French forces at Alexandria.",
+      "answer": "python\nfrom datetime import datetime\n\n# Define the dates\nconvention_date = datetime(1800, 1, 24)\nsurrender_date = datetime(1801, 8, 1)\n\n# Calculate the duration\nduration = surrender_date - convention_date\n\n# Output the duration in days\nprint(f\"The duration between the Convention of El Arish and the surrender of French forces is {duration.days} days.\")\n\nThis code calculates the time difference between the two events, resulting in a duration of 555 days."
+    }
+  ]
+}

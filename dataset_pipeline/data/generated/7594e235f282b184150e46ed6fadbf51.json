@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Cocoa_(API)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is Cocoa and which macOS frameworks does it include?",
+      "answer": "Cocoa is Apple's native object-oriented application programming interface (API) for macOS. It includes the Foundation Kit, Application Kit, and Core Data frameworks, which provide essential functionality for building macOS applications."
+    },
+    {
+      "question": "What tools are typically used to develop Cocoa applications?",
+      "answer": "Cocoa applications are typically developed using Apple's Xcode (formerly Project Builder) and Interface Builder (now integrated into Xcode). These tools support Objective-C and Swift as the primary programming languages for Cocoa development."
+    },
+    {
+      "question": "Can Cocoa applications be developed using a text editor and command-line tools?",
+      "answer": "Yes, Cocoa applications can be developed using a simple text editor and built manually with GCC or Clang from the command line or a makefile. This approach requires direct interaction with the Objective-C runtime and C standard library."
+    },
+    {
+      "question": "What are the key user interface features provided by the Cocoa programming environment?",
+      "answer": "The Cocoa programming environment provides common UI elements such as buttons, scroll bars, and other graphical controls. It automates many aspects of application development to ensure compliance with Apple's human interface guidelines, resulting in a familiar look and feel for end users."
+    },
+    {
+      "question": "How does Cocoa differ for iOS, iPadOS, tvOS, and watchOS compared to macOS?",
+      "answer": "For iOS, iPadOS, tvOS, and watchOS, Apple provides APIs similar to Cocoa's Application Kit, named UIKit and WatchKit respectively. These frameworks include gesture recognition, animation, and platform-specific UI elements tailored to the unique requirements of each operating system."
+    },
+    {
+      "question": "Provide a simple Objective-C code snippet demonstrating the creation of a basic Cocoa application window.",
+      "answer": "objectivec\n#import <Cocoa/Cocoa.h>\n\n@interface AppDelegate : NSObject <NSApplicationDelegate>\n@property (nonatomic, strong) NSWindow *window;\n@end\n\n@implementation AppDelegate\n- (void)applicationDidFinishLaunching:(NSNotification *)notification {\n    self.window = [[NSWindow alloc] initWithContentRect:NSMakeRect(0, 0, 800, 600)\n                                              styleMask:NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskResizable\n                                                backing:NSBackingStoreBuffered\n                                                  defer:NO];\n    [self.window setTitle:@\"Cocoa App\"];\n    [self.window makeKeyAndOrderFront:nil];\n}\n@end\n\nint main(int argc, const char * argv[]) {\n    NSApplication *app = [NSApplication sharedApplication];\n    AppDelegate *delegate = [[AppDelegate alloc] init];\n    [app setDelegate:delegate];\n    [app run];\n    return 0;\n}\n"
+    },
+    {
+      "question": "Why do Cocoa applications generally have a consistent user interface across macOS?",
+      "answer": "Cocoa applications typically have a consistent and familiar look and feel because the Cocoa programming environment provides a standardized set of UI elements and automates adherence to Apple's human interface guidelines. This consistency improves user experience by making applications intuitive and predictable."
+    }
+  ]
+}

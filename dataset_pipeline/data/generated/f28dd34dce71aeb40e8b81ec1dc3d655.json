@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Catherine_Fournier_(Canadian_politician)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When was Catherine Fournier first elected as mayor of Longueuil?",
+      "answer": "Catherine Fournier was first elected as mayor of Longueuil on November 7, 2021."
+    },
+    {
+      "question": "What political parties has Catherine Fournier been affiliated with during her career?",
+      "answer": "Catherine Fournier has been affiliated with the Parti Québécois, Bloc Québécois, and served as an independent MNA (Member of the National Assembly) after leaving the Parti Québécois in 2019."
+    },
+    {
+      "question": "How old was Catherine Fournier when she was first elected to the National Assembly of Quebec, and which electoral district did she represent?",
+      "answer": "Catherine Fournier was 24 years old when she was first elected to the National Assembly of Quebec in a by-election on December 5, 2016. She represented the electoral district of Marie-Victorin."
+    },
+    {
+      "question": "Why did Catherine Fournier leave the Parti Québécois in 2019?",
+      "answer": "Catherine Fournier left the Parti Québécois on March 11, 2019, because she believed the party had lost its way ideologically. She continued to identify as a committed sovereigntist despite leaving the party."
+    },
+    {
+      "question": "What were Catherine Fournier's roles in the Bloc Québécois before joining the Parti Québécois?",
+      "answer": "Before joining the Parti Québécois, Catherine Fournier ran as a Bloc Québécois candidate in the 2015 federal election in the riding of Montarville, finishing second. After her defeat, she served as the party's vice-president before leaving the position to join the Parti Québécois as a political attaché for leader Pierre Karl Péladeau."
+    },
+    {
+      "question": "What is Catherine Fournier's position on Quebec sovereignty?",
+      "answer": "Catherine Fournier identifies as a committed sovereigntist, meaning she supports the idea of Quebec becoming an independent nation."
+    },
+    {
+      "question": "Generate a Python code snippet to calculate Catherine Fournier's age in 2025 based on her birth year.",
+      "answer": "python\nfrom datetime import datetime\n\n# Catherine Fournier's birth year\nbirth_year = 1992\n\n# Current year in 2025\ncurrent_year = 2025\n\n# Calculate age\nage = current_year - birth_year\nprint(f\"Catherine Fournier's age in 2025 is {age} years.\")\n\nOutput: Catherine Fournier's age in 2025 is 33 years."
+    }
+  ]
+}

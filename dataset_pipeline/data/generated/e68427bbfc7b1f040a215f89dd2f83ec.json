@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/39th_Parliament_of_British_Columbia",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the duration of the 39th Parliament of British Columbia, and who were the key political figures involved?",
+      "answer": "The 39th Parliament of British Columbia sat from 2009 to 2013. It comprised the Legislative Assembly of British Columbia, elected on May 12, 2009, and the Crown represented by Lieutenant Governors Steven Point (until 2012) and Judith Guichon (from 2012). The BC Liberal Party, led by Premier Gordon Campbell, formed a majority government, while the BC New Democratic Party served as the official opposition."
+    },
+    {
+      "question": "How did the BC Liberal Party's economic policies during the 39th Parliament lead to changes in leadership?",
+      "answer": "The BC Liberal Party's record-high deficits and proposal to replace the PST-GST system with the Harmonized Sales Tax (HST) led to public backlash. The unpopularity of the HST move contributed to Premier Gordon Campbell's resignation in 2011. Christy Clark succeeded him as Premier after winning the leadership election."
+    },
+    {
+      "question": "What was the outcome of the 2011 referendum on the Harmonized Sales Tax (HST) in British Columbia?",
+      "answer": "The 2011 summer referendum on the HST was a direct result of a province-wide petition against the tax. The referendum led to the HST being scrapped, which was a significant policy reversal for the government."
+    },
+    {
+      "question": "Provide an example of a legislative act passed during the 39th Parliament and its purpose.",
+      "answer": "One major act was the Clean Energy Act, which established provincial objectives for electricity generation and consumption. The Ambulance Services Collective Agreement Act ended a seven-month strike by BC Ambulance Service workers by forcing them back to work."
+    },
+    {
+      "question": "How many MLAs left or were removed from their caucuses during the 39th Parliament, and what were the reasons?",
+      "answer": "Seven MLAs spent time as independents. Reasons included protest (e.g., Blair Lekstrom leaving the BC Liberals over HST), investigations (e.g., Pat Pimm's domestic dispute), party expulsions (e.g., Bill Bennett and Bob Simpson for criticizing leaders), and floor-crossing (e.g., John van Dongen to the BC Conservatives)."
+    },
+    {
+      "question": "What were the outcomes of the police investigations into MLAs during the 39th Parliament?",
+      "answer": "Three MLAs faced police investigations: Kash Heed for election irregularities, Jane Thornthwaite for drunk driving, and Pat Pimm for a domestic dispute. Additionally, two BC Liberal MLAs resigned, triggering by-elections."
+    },
+    {
+      "question": "List two new provincial parks created during the 39th Parliament and their locations.",
+      "answer": "The Skaha Bluffs Provincial Park was established, and six new parks were created in the Lillooet region during the 39th Parliament."
+    },
+    {
+      "question": "Write a Python snippet to calculate the duration of the 39th Parliament in years.",
+      "answer": "python\nfrom datetime import datetime\n\nstart_date = datetime(2009, 1, 1)\nend_date = datetime(2013, 12, 31)\nduration = end_date.year - start_date.year - ((end_date.month, end_date.day) < (start_date.month, start_date.day))\nprint(f\"Duration of the 39th Parliament: {duration} years\")\n"
+    }
+  ]
+}

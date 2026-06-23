@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Clemon_Johnson",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When and where was Clemon Johnson born?",
+      "answer": "Clemon James Johnson Jr. was born on September 12, 1956."
+    },
+    {
+      "question": "How many NBA games did Clemon Johnson play during his career?",
+      "answer": "Clemon Johnson played 761 games in the NBA over 10 seasons."
+    },
+    {
+      "question": "What degrees did Clemon Johnson earn while playing college basketball at Florida A&M University?",
+      "answer": "Clemon Johnson earned a bachelor's degree in economics and a master's degree in sports management from Florida A&M University."
+    },
+    {
+      "question": "Describe the trade that sent Clemon Johnson to the Philadelphia 76ers in 1983.",
+      "answer": "On February 15, 1983, the Indiana Pacers traded Clemon Johnson along with a 1984 third-round selection (48th overall–Georgia forward James Banks) to the Philadelphia 76ers in exchange for Russ Schoene, a 1983 first-rounder (23rd overall–Mitchell Wiggins), and a 1984 second-rounder (29th overall–Stuart Gray). Johnson later described the trade as 'like going from the outhouse to the White House.'"
+    },
+    {
+      "question": "What notable achievement did Clemon Johnson experience with the Philadelphia 76ers in the season he joined the team?",
+      "answer": "Clemon Johnson was a reserve player for the Philadelphia 76ers when they won the NBA Championship in the 1982–83 season."
+    },
+    {
+      "question": "What did Clemon Johnson do after retiring from the NBA in 1988?",
+      "answer": "After retiring from the NBA in 1988, Clemon Johnson extended his basketball career by playing professionally in Italy."
+    },
+    {
+      "question": "Write a Python function that calculates Clemon Johnson's total NBA seasons given his years of play (1978–1988).",
+      "answer": "python\ndef calculate_nba_seasons(start_year, end_year):\n    return end_year - start_year\n\n# Example usage for Clemon Johnson's career (1978–1988)\ntotal_seasons = calculate_nba_seasons(1978, 1988)\nprint(total_seasons)  # Output: 10\n"
+    },
+    {
+      "question": "Why was Clemon Johnson fired from Florida A&M in 2011?",
+      "answer": "Clemon Johnson was fired from Florida A&M in 2011 after coaching the team for three seasons and compiling a 32–64 record."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/pauljlucas/why-learn-c-book-announcement-4a01",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What are the key reasons the author advocates for learning C despite its age?",
+      "answer": "The author presents five main reasons to learn C: 1) Understanding how modern language features (like data structures and algorithms) are implemented under the hood, 2) Needing C for writing extensions in systems and scripting languages (e.g., Python's C API), 3) Many foundational software packages (Linux, Git, OpenSSL, etc.) are written in C, 4) Embedded systems are primarily developed in C, and 5) C has significantly influenced modern programming languages."
+    },
+    {
+      "question": "How does C++ differ from C in terms of learning value despite sharing some syntax?",
+      "answer": "C++ differs from C in that it is a higher-level language with modern features and a standard library containing data structures and algorithms. Learning C provides deeper insights into how these features are implemented from scratch, whereas C++ abstracts many of those implementation details away, making it less suitable for understanding low-level mechanics."
+    },
+    {
+      "question": "What are the three main parts of the book 'Why Learn C'?",
+      "answer": "The book is divided into three parts: 1) **Learning C** which covers the C23 standard, C's history, philosophy, and best practices, 2) **Selected Topics** which explains advanced or obscure aspects of C not well-covered elsewhere, and 3) **Extended Examples** which provides full source code examples of how features in other languages might be implemented, including trade-off discussions."
+    },
+    {
+      "question": "Why is the book 'Why Learn C' more comprehensive than 'The C Programming Language' (K&R)?",
+      "answer": "The book is more comprehensive because it covers all C standards from C89 to C23, includes 100+ inline notes with historical context and personal insights, and provides extended examples with full source code. K&R, by contrast, is based on C89 and lacks coverage of newer standards and modern explanations."
+    },
+    {
+      "question": "Write a C program that prints 'hello, world' and explain why this tradition exists.",
+      "answer": "c\n#include <stdio.h>\n\nint main(void) {\n    printf(\"hello, world\\n\");\n    return 0;\n}\n\n\nThe tradition of printing 'hello, world' in programming examples stems from its use as the simplest possible program to demonstrate a language's basic syntax and structure. It was popularized by Brian Kernighan and Dennis Ritchie in 'The C Programming Language' (1978) and has since become a universal first program for beginners across languages."
+    },
+    {
+      "question": "What is the significance of the default output filename 'a.out' in C compilation?",
+      "answer": "The default output filename 'a.out' (short for 'assembler output') originates from early Unix systems where the assembler produced an output file named 'a.out' by default. When compiling C programs with `cc` (the original C compiler), if no output filename is specified, the linker produces an executable named 'a.out'. Modern compilers retain this convention for backward compatibility."
+    },
+    {
+      "question": "How does the book incorporate historical context into learning C?",
+      "answer": "The book includes over 100 inline notes that provide historical context, such as why certain C features exist (e.g., `_Bool` spelling), why C has unconventional declaration syntax, and why the first program in most languages is 'hello, world'. These notes are interspersed throughout the text to give readers deeper insight into C's evolution and design philosophy."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/2004_Gator_Bowl",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What teams played in the 2004 Gator Bowl, and what was the final score?",
+      "answer": "The Maryland Terrapins and the West Virginia Mountaineers played in the 2004 Gator Bowl. Maryland won the game with a final score of 41–7."
+    },
+    {
+      "question": "Who was the head coach of Maryland during the 2004 Gator Bowl, and what milestone did he achieve after the game?",
+      "answer": "Ralph Friedgen was Maryland's head coach during the 2004 Gator Bowl. After the game, he became the first Atlantic Coast Conference coach to win at least ten games in his first three seasons."
+    },
+    {
+      "question": "What was Maryland's regular season record leading up to the 2004 Gator Bowl?",
+      "answer": "Maryland finished the 2003 regular season with a 9–3 record, which earned them a bid to the Gator Bowl."
+    },
+    {
+      "question": "How did West Virginia perform in the regular season before the 2004 Gator Bowl?",
+      "answer": "West Virginia finished the regular season with an 8–4 record and were co-champions of the Big East conference. They also entered the game on a seven-game winning streak."
+    },
+    {
+      "question": "What notable trend was observed in Maryland's wins over West Virginia in the years leading up to the 2004 Gator Bowl?",
+      "answer": "Maryland had won the previous four meetings against West Virginia in three years, with an average score of 35–13, including a 34–7 victory in the regular season just before the 2004 Gator Bowl."
+    },
+    {
+      "question": "Describe the scoring progression of the 2004 Gator Bowl game.",
+      "answer": "Maryland took a quick lead and maintained it throughout the game. By the early third quarter, they led 31–0. West Virginia scored their only points later in the third quarter, but Maryland ultimately won 41–7."
+    },
+    {
+      "question": "Write a Python function to calculate the average score difference between Maryland and West Virginia in their four wins over the three-year period mentioned in the text.",
+      "answer": "python\ndef calculate_avg_score_difference():\n    # Scores from the four wins: 35-13, 35-13, 34-7, 41-7\n    score_differences = [35-13, 35-13, 34-7, 41-7]\n    average_difference = sum(score_differences) / len(score_differences)\n    return average_difference\n\nprint(calculate_avg_score_difference())  # Output: 25.0\n\nThe average score difference between Maryland and West Virginia in their four wins is 25 points."
+    }
+  ]
+}

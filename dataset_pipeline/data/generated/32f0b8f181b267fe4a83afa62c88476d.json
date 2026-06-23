@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/2009_swine_flu_pandemic_in_Africa",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When was the first case of the 2009 flu pandemic reported in Africa, and which country was it?",
+      "answer": "The first case of the 2009 flu pandemic in Africa was reported in Egypt on June 2, 2009."
+    },
+    {
+      "question": "How many countries in Africa had reported cases of the 2009 flu pandemic by December 1, 2009, and how many deaths had occurred?",
+      "answer": "By December 1, 2009, 30 countries in Africa had reported cases of the 2009 flu pandemic, with a total of 108 deaths reported across 7 countries."
+    },
+    {
+      "question": "Why is it difficult to diagnose swine flu (H1N1) based solely on symptoms?",
+      "answer": "Diagnosing swine flu solely based on symptoms is challenging because its symptoms, such as fever, cough, sore throat, runny nose, body aches, headache, chills, and fatigue, are similar to those of regular flu and many other conditions. Additionally, symptoms like diarrhea and vomiting are not exclusive to swine flu."
+    },
+    {
+      "question": "What is the reliability of rapid flu tests for diagnosing H1N1 swine flu, and what factors affect their accuracy?",
+      "answer": "Rapid flu tests for diagnosing H1N1 swine flu are not entirely reliable. Their accuracy depends on the quality of the manufacturer's test, the sample collection method, and the viral load (how much of the virus a person is emitting) at the time of testing. A negative result does not definitively rule out the flu."
+    },
+    {
+      "question": "What are the neurological symptoms associated with pandemic swine flu in children, and what condition might they be linked to?",
+      "answer": "Pandemic swine flu can cause rare but severe neurological symptoms in children, including seizures or changes in mental status such as confusion or sudden cognitive or behavioral changes. These symptoms may be linked to Reye's syndrome, a condition that typically occurs in children with a viral illness who have taken aspirin."
+    },
+    {
+      "question": "Why should aspirin be avoided in children with viral illnesses, and what condition is it associated with in this context?",
+      "answer": "Aspirin should be avoided in children with viral illnesses because it is associated with Reye's syndrome, a rare but severe condition that can cause neurological symptoms such as seizures or changes in mental status. Reye's syndrome is often fatal and has been linked to cases involving children who took aspirin during a viral illness."
+    },
+    {
+      "question": "How does the impact of the 2009 flu pandemic compare between Africa and other continents?",
+      "answer": "Africa was the least affected continent during the 2009 flu pandemic, with fewer reported cases and deaths compared to other continents."
+    }
+  ]
+}

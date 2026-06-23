@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Grozny_oil_field",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the primary use of oil collected from natural seeps in the North Caucasus before industrial oil extraction began?",
+      "answer": "Before industrial oil extraction, local residents collected oil from natural seeps for household needs, medical purposes, and military uses. They lubricated the axes of supplies with oil, treated people and animals, and burned it in lamps."
+    },
+    {
+      "question": "How was oil extracted from wells in the Grozny oil field during the early 19th century?",
+      "answer": "In the early 19th century, oil was extracted from wells no deeper than two arshins (about 1.42 meters) using artisanal methods. Workers would simply scoop the oil out of the wells using buckets."
+    },
+    {
+      "question": "Who managed the Grozny oil sources in the early 19th century, and how were they utilized?",
+      "answer": "From 1811, the Mozdok Regiment managed the Grozny oil sources, and from 1838, they became the property of the Caucasian line troops. The army then rented these oil wells to merchant farmers, wealthy Cossacks, and other entrepreneurs, who extracted oil for profit."
+    },
+    {
+      "question": "What was the annual oil production in Grozny in 1885, and how does it compare to the total production from 1833 to 1860?",
+      "answer": "In 1885, Grozny's oil production peaked at 77,000 poods (approximately 1,255 tons). This was significantly higher than the total production of about 140 thousand pounds (approximately 64 tons) from 1833 to 1860, reflecting a rapid increase in extraction during that period."
+    },
+    {
+      "question": "Which famous scientist studied Grozny oil, and what role did their research play in the region's development?",
+      "answer": "The renowned Russian chemist Dmitri Mendeleev studied Grozny oil. His research contributed to the scientific understanding of the oil, which helped advance the industrial development of the Grozny oil region."
+    },
+    {
+      "question": "What was the oil production volume in Grozny in 1892, and how did it rank nationally?",
+      "answer": "In 1892, Grozny produced 450,000 barrels of oil. This placed the Grozny oil region in second place in terms of productivity in Russia at that time."
+    },
+    {
+      "question": "Provide a code snippet to convert poods to kilograms and calculate the total oil production in Grozny from 1833 to 1860 in metric tons.",
+      "answer": "Here’s a Python code snippet to perform the conversion and calculation:\n\npython\n# Conversion factor: 1 pood = 16.3 kg\nproduction_1833_1860_poods = 140000\nproduction_1833_1860_kg = production_1833_1860_poods * 16.3\nproduction_1833_1860_tonnes = production_1833_1860_kg / 1000\nprint(f\"Total production from 1833 to 1860: {production_1833_1860_tonnes:.2f} tonnes\")\n\nThe output will show the total production as 2,282 tonnes."
+    }
+  ]
+}

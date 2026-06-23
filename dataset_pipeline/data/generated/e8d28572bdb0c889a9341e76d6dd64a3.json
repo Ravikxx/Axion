@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/David_Moyes",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What are the major managerial achievements of David Moyes during his tenure at Everton?",
+      "answer": "David Moyes achieved several notable accomplishments during his 11-year tenure as Everton manager (2002–2013). His most significant achievements include: leading the club to a fourth-place finish in the 2004–05 Premier League season, their highest position since 1988; qualifying for the UEFA Champions League in the 2005–06 season for the first time since 1970–71; and securing a runners-up finish in the 2008–09 FA Cup, Everton's best performance in the competition since their 1995 victory."
+    },
+    {
+      "question": "How did David Moyes' playing career progress after leaving Celtic?",
+      "answer": "After leaving Celtic, Moyes played as a centre-back for several English clubs, including Cambridge United, Bristol City, Shrewsbury Town, and Dunfermline Athletic. He ended his playing career with Preston North End, where he transitioned into coaching and eventually became the club's manager in 1998."
+    },
+    {
+      "question": "What was David Moyes' first managerial position, and what did he achieve there?",
+      "answer": "David Moyes' first managerial position was at Preston North End in 1998. Under his leadership, Preston won the Division Two title in the 1999–2000 season and reached the Division One play-off final the following season, showcasing his early managerial success."
+    },
+    {
+      "question": "Compare David Moyes' tenure at Manchester United to his time at West Ham United. How did his results differ?",
+      "answer": "Moyes' tenure at Manchester United (2013–2014) was short and unsuccessful, as he was dismissed after the club finished 7th in the league and failed to qualify for European competition. In contrast, his second stint at West Ham United (2019–2024) was more successful, leading the club to two consecutive top-seven finishes in the Premier League and winning the 2022–23 UEFA Europa Conference League, their first major trophy in 43 years."
+    },
+    {
+      "question": "Write a Python function that calculates the total number of league appearances David Moyes made as a player.",
+      "answer": "python\n# David Moyes made 540 league appearances as a player.\n\ndef calculate_moyes_appearances():\n    return 540\n\n# Example usage:\ntotal_appearances = calculate_moyes_appearances()\nprint(f\"David Moyes made {total_appearances} league appearances as a player.\")\n"
+    },
+    {
+      "question": "Why was David Moyes' second stint at West Ham considered more successful than his first?",
+      "answer": "Moyes' second stint at West Ham (2019–2024) was considered more successful because it resulted in two consecutive top-seven finishes in the Premier League, whereas his first stint (2017–2018) saw the club finish 13th and his contract was not renewed. Additionally, his second tenure included winning the 2022–23 UEFA Europa Conference League, a major trophy for the club."
+    },
+    {
+      "question": "What was David Moyes' managerial record in the Premier League during his time at Everton?",
+      "answer": "Under Moyes, Everton consistently finished between fifth and eighth in the Premier League from 2002 to 2013. His highest league position was fourth in the 2004–05 season, and his longest-serving managerial tenure at the time was 11 years and 3 months, making him one of the longest-serving managers in the league."
+    }
+  ]
+}

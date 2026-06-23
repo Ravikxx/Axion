@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Bamboozle!",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the original medium for the Bamboozle! quiz game?",
+      "answer": "Bamboozle! was originally a quiz game featured on Channel 4 Teletext in the United Kingdom, specifically under the 'Fun & Games' category."
+    },
+    {
+      "question": "Why did Bamboozle! stop being a real-time game synchronized with TV broadcasts?",
+      "answer": "In 1993, the new broadcast teletext franchise holders (Teletext UK) opted for X.25 packet switching, which made it impossible to adequately synchronize the broadcast of teletext content with a TV programme, leading the game to revert to its 1994 format."
+    },
+    {
+      "question": "What was the theme of the last edition of Bamboozle! on Teletext, and when did it appear?",
+      "answer": "The last edition of Bamboozle! on Teletext was themed around 'Ends and Lasts' and appeared on Monday, 14 December 2009."
+    },
+    {
+      "question": "Where was Bamboozle! re-released after Teletext's discontinuation, and in what year?",
+      "answer": "Bamboozle! was re-released on the iPhone by Teletext Ltd. on 9 August 2010, featuring all the retro graphics."
+    },
+    {
+      "question": "How did Teletext Holidays adapt Bamboozle! in 2019?",
+      "answer": "Teletext Holidays launched a version of the Bamboozle quiz on their 404 error page on 11 July 2019."
+    },
+    {
+      "question": "What was the format of Bamboozle! inspired by, and which TV show used a similar format?",
+      "answer": "Bamboozle! used a multiple-choice format, similar to the TV show 'Who Wants to Be a Millionaire?'."
+    },
+    {
+      "question": "What message did the Boozler 'family' convey on their final appearance?",
+      "answer": "The Boozler 'family' appeared one last time on Tuesday, 15 December 2009, to say farewell to the Teletext audience."
+    }
+  ]
+}

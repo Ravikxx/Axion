@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Denver,_Johannesburg",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Where is Denver located in relation to Johannesburg's City Hall?",
+      "answer": "Denver is an industrial suburb in eastern Johannesburg, located around 6 km east of City Hall."
+    },
+    {
+      "question": "What are the borders of Denver in Johannesburg?",
+      "answer": "Denver borders Benrose to the west, Jeppestown and Malvern to the north, Cleveland to the east, and the François Oberholzer Freeway to the south. A small portion of the northwest is zoned for residential use."
+    },
+    {
+      "question": "What was the original purpose of the land that became Denver?",
+      "answer": "The land was originally part of the Doornfontein farm. In 1903, it was leased by owner F.J. Bezuidenhout to J.H. Strutton to grow crops and garden."
+    },
+    {
+      "question": "How did Denver get its name?",
+      "answer": "Denver was named after Denver, the capital of Colorado, likely due to the influence of American mining machinery firms that built offices there before and after the Second Boer War."
+    },
+    {
+      "question": "What historical event involving Dr. Fritz Krause occurred in Denver on 31 May 1900?",
+      "answer": "On 31 May 1900, Dr. Fritz Krause, the appointed mayor of Johannesburg, rode out to Denver to meet Frederick Roberts, 1st Earl Roberts, to arrange the surrender of the main city into which they subsequently rode."
+    },
+    {
+      "question": "What was the significance of Denver's white population in the early 20th century?",
+      "answer": "From 1910 to 1933, Denver's large white population was significant enough to have its own constituency in the Parliament of South Africa located in the neighborhood."
+    },
+    {
+      "question": "What is the current zoning and land use distribution in Denver?",
+      "answer": "Denver consists primarily of industrial land and squatter camps, with only a small portion in the northwest zoned for residential use. Industrial activity dominates the western and northern areas, particularly along Hoofrif Road."
+    }
+  ]
+}

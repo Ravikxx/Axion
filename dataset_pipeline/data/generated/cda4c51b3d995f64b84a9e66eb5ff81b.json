@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Creep_and_shrinkage_of_concrete",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What are the primary differences between creep in concrete and creep in metals or polymers?",
+      "answer": "Creep in concrete originates from calcium silicate hydrates (C-S-H) in hardened Portland cement paste and differs from metals and polymers in three key ways: (1) It occurs at all stress levels, unlike metals which typically require sustained high stress. (2) Within the service stress range, concrete creep is linearly dependent on stress if pore water content remains constant, whereas metals and polymers may exhibit nonlinear creep behavior. (3) Concrete creep involves multi-months aging due to chemical hardening (hydration) and multi-year aging from long-term relaxation of micro-stresses in its nano-porous C-S-H microstructure."
+    },
+    {
+      "question": "Explain the concept of autogeneous shrinkage in concrete and how it compares to drying shrinkage.",
+      "answer": "Autogeneous shrinkage occurs in sealed concrete specimens (no moisture loss) due to chemical processes in Portland cement hydration, primarily self-desiccation. It results from water consumed in hydration reactions, causing internal drying. Autogeneous shrinkage is typically about 5% of drying shrinkage in normal concretes (which self-desiccate to ~97% pore humidity) but can equal drying shrinkage in modern high-strength concretes with very low water-cement ratios (self-desiccation to as low as 75% humidity). Unlike drying shrinkage, autogeneous shrinkage is not caused by external moisture loss or environmental humidity changes."
+    },
+    {
+      "question": "How is the compliance function $J(t,t')$ defined and used to separate shrinkage from creep in concrete?",
+      "answer": "The compliance function $J(t,t')$ is defined as the stress-produced strain (total strain minus shrinkage) at time $t$ caused by a unit sustained uniaxial stress $\\sigma = 1$ applied at age $t'$. It is measured as the strain difference between loaded and load-free specimens. By subtracting shrinkage (measured in load-free specimens) from the total strain in loaded specimens, $J(t,t')$ isolates the creep component, allowing engineers to analyze creep independently of shrinkage effects."
+    },
+    {
+      "question": "What is the Pickett effect, and under what conditions does it occur?",
+      "answer": "The Pickett effect, also called drying creep, refers to the phenomenon where the creep of concrete during drying exceeds the sum of drying shrinkage (at no load) and creep of a loaded sealed specimen. It represents a hygro-mechanical coupling between strain and pore humidity changes. The Pickett effect occurs when the rate of creep increases with the rate of change of pore humidity (relative vapor pressure), particularly in small specimen thicknesses where the effect is most pronounced."
+    },
+    {
+      "question": "Describe the physical mechanism of creep in concrete at the microstructural level.",
+      "answer": "Creep in concrete originates in calcium silicate hydrates (C-S-H) and is driven by slip mechanisms caused by bond ruptures within the material. These ruptured bonds are restored at adjacent sites, allowing gradual deformation under sustained stress. The C-S-H gel is strongly hydrophilic, has a colloidal microstructure with particles of colloidal dimensions, and is weakly bound by van der Waals forces. The paste has a porosity of 0.4 to 0.55 and an enormous specific surface area (~500 m²/cm³), making it highly susceptible to creep due to its disordered, nano-porous structure."
+    },
+    {
+      "question": "Write a Python function to calculate the logarithmic evolution of multi-year creep in concrete over time. Assume the initial elastic strain is $\\epsilon_0$ and the creep factor after time $t$ is given by $3 \\log_{10}(1 + t/365)$, where $t$ is in days.",
+      "answer": "python\nimport math\n\ndef calculate_creep_strain(initial_elastic_strain: float, time_days: float) -> float:\n    \"\"\"\n    Calculate the multi-year creep strain in concrete.\n    \n    Parameters:\n    - initial_elastic_strain: The initial elastic strain (immediate response to stress).\n    - time_days: Time elapsed in days.\n    \n    Returns:\n    - Total creep strain (logarithmic evolution) multiplied by the initial elastic strain.\n    \"\"\"\n    creep_factor = 3 * math.log10(1 + time_days / 365)\n    return initial_elastic_strain * creep_factor\n\n# Example usage:\ninitial_strain = 0.001  # Initial elastic strain\ncreep_after_10_years = calculate_creep_strain(initial_strain, 10 * 365)  # ~10 years in days\nprint(f\"Creep strain after 10 years: {creep_after_10_years:.6f}\")\n"
+    },
+    {
+      "question": "Why does fully dried concrete not exhibit creep, and what are the practical challenges associated with fully drying concrete?",
+      "answer": "Fully dried concrete does not creep because the absence of pore water eliminates the primary mechanism driving creep in C-S-H. However, achieving full drying without severe cracking is practically impossible due to the material's hydrophilic nature and the significant volume changes associated with moisture loss. Drying induces shrinkage, which can lead to microcracking as the concrete attempts to contract against internal restraints. Thus, maintaining some level of pore water is necessary to prevent damage while still allowing creep to occur at manageable levels."
+    }
+  ]
+}

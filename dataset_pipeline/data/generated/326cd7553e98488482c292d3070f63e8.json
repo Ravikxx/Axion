@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Funk_Upon_a_Rhyme",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who produced Kokane's album 'Funk Upon a Rhyme' and who served as the executive producer?",
+      "answer": "The album 'Funk Upon a Rhyme' was produced by Cold 187um, with executive production handled by Eazy-E."
+    },
+    {
+      "question": "What are the names of the two singles released from 'Funk Upon a Rhyme'?",
+      "answer": "The two singles released from 'Funk Upon a Rhyme' are 'Slow Burnin' 22.5° Fahrenheit' and 'Bakin' Soda Free'."
+    },
+    {
+      "question": "What notable diss track appears as the final song on 'Funk Upon a Rhyme', and who is it directed at?",
+      "answer": "The final song on 'Funk Upon a Rhyme' is a diss track titled 'Don't Bite the Phunk', which is directed at Dr. Dre, Snoop Doggy Dogg, Tha Dogg Pound, and Death Row."
+    },
+    {
+      "question": "How did Kokane's debut album differ from 'Funk Upon a Rhyme' in terms of artist name and release count?",
+      "answer": "Kokane's debut album, 'Addictive Hip Hop Muzick', was released under the name 'Who Am I?', making 'Funk Upon a Rhyme' his first full-length album as 'Kokane' and his second release overall."
+    },
+    {
+      "question": "What were the peak chart positions of 'Funk Upon a Rhyme' in the United States?",
+      "answer": "In the United States, 'Funk Upon a Rhyme' peaked at number 56 on the Top R&B/Hip-Hop Albums chart and at number 19 on the Heatseekers Albums chart."
+    },
+    {
+      "question": "Which studios were used for recording 'Funk Upon a Rhyme', and where were they located?",
+      "answer": "Recording sessions for 'Funk Upon a Rhyme' took place at the Edge Studio and Echo Sound, both located in Los Angeles, California."
+    },
+    {
+      "question": "Provide a code snippet in Python that checks if 'Funk Upon a Rhyme' is available in a hypothetical music library dataset. Assume the dataset is a list of dictionaries with album details.",
+      "answer": "Here’s a Python snippet to check availability:\npython\ndef is_album_available(music_library, album_name):\n    return any(album['name'] == album_name for album in music_library)\n\n# Example usage:\nmusic_library = [\n    {'name': 'Funk Upon a Rhyme', 'artist': 'Kokane', 'year': 1994},\n    {'name': 'The Chronic', 'artist': 'Dr. Dre', 'year': 1992}\n]\n\nprint(is_album_available(music_library, 'Funk Upon a Rhyme'))  # Output: True\n"
+    }
+  ]
+}

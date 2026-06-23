@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Alethea",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the etymological origin of the name Alethea?",
+      "answer": "The name Alethea is derived from the Ancient Greek feminine noun ἀλήθεια (alḗtheia), which means 'truth'."
+    },
+    {
+      "question": "How was the name Alethea used in early modern England?",
+      "answer": "In early modern England, the name Alethea was used as a virtue name by English Puritans and was also adopted by aristocratic families, though not exclusively by Puritans."
+    },
+    {
+      "question": "What are some spelling variants of the name Alethea?",
+      "answer": "Spelling variants of Alethea include Aletheia, Alethia, and Aletha. Older variants include Alethaire and Allethaire, and some etymologists speculate that Alafair is another American variant."
+    },
+    {
+      "question": "What event in 1973 contributed to the temporary surge in popularity of the name Alethea in the United States?",
+      "answer": "A March 1973 guest appearance by 10-year-old child actress Jodie Foster in an episode of the American television series *Kung Fu* contributed to the temporary surge in popularity of the name Alethea. Foster played a character named Alethea Patricia Ingram, whose name symbolized 'truth'."
+    },
+    {
+      "question": "How did the name Alethea's popularity change after the 1973 television episode featuring Jodie Foster?",
+      "answer": "The name Alethea saw a significant increase in usage in 1973, the year the episode aired. For example, there were 66 American girls named Alethea in 1972, which rose to 322 in 1973. However, its usage declined sharply in 1974, with 201 girls named Alethea that year."
+    },
+    {
+      "question": "Provide a code snippet that calculates the percentage increase in the number of girls named Alethea from 1972 to 1973.",
+      "answer": "python\n# Number of girls named Alethea in 1972 and 1973\nyear_1972 = 66\nyear_1973 = 322\n\n# Calculate percentage increase\npercentage_increase = ((year_1973 - year_1972) / year_1972) * 100\nprint(f\"Percentage increase from 1972 to 1973: {percentage_increase:.2f}%\")\n# Output: Percentage increase from 1972 to 1973: 387.88%\n"
+    },
+    {
+      "question": "Why might the character name Alethea in the *Kung Fu* episode symbolically represent the themes of the show?",
+      "answer": "The character's full name, Alethea Patricia Ingram, means 'truth' in Greek, while her nickname, Lethe, refers to 'forgetfulness' in Greek mythology. This contrast highlights themes of truth and memory, which are central to the show's narrative."
+    },
+    {
+      "question": "Is the name Alethea still popular today in the United States?",
+      "answer": "No, the name Alethea has not been among the top 1,000 most popular names for American girls since 1974, though it remains in occasional use."
+    }
+  ]
+}

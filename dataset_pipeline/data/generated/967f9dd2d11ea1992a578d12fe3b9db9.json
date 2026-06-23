@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Donal_C._Fox",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What political party did Donal C. Fox belong to, and which county did he represent in the New Jersey State Senate?",
+      "answer": "Donal C. Fox was a member of the Democratic Party and represented Essex County, New Jersey in the New Jersey State Senate."
+    },
+    {
+      "question": "How many terms did Donal C. Fox serve in the New Jersey State Senate, and in what years did he serve?",
+      "answer": "Donal C. Fox served two terms in the New Jersey State Senate, from 1956 to 1964."
+    },
+    {
+      "question": "What were some of the notable positions Donal C. Fox held outside of the State Senate?",
+      "answer": "Outside of the State Senate, Donal C. Fox served as the Deputy Attorney General of New Jersey, the First Assistant Essex County Prosecutor, the Chairman of the South Orange Planning Board, and the President of the Essex County Bar Association. He also later became a Commissioner of the Waterfront Commission of New York Harbor."
+    },
+    {
+      "question": "Who were the opponents Donal C. Fox defeated in his two successful State Senate campaigns, and what were the vote margins?",
+      "answer": "In his first campaign, Fox defeated Republican incumbent Mark Anton by 7,809 votes (51%-48%). In his second campaign, he defeated Republican Alfred Clapp by 14,582 votes (51%-45%)."
+    },
+    {
+      "question": "What event led to Donal C. Fox not seeking a third term in the New Jersey State Senate?",
+      "answer": "Fox did not seek re-election to a third term after losing the support of the Essex County Democratic organization."
+    },
+    {
+      "question": "How did Donal C. Fox's legal education and career background influence his political roles?",
+      "answer": "Fox graduated from the University of Pennsylvania and Fordham Law School, and practiced law in Newark, New Jersey. His legal background likely contributed to his appointments as Deputy Attorney General, First Assistant Essex County Prosecutor, and President of the Essex County Bar Association, as well as his role as a Commissioner of the Waterfront Commission of New York Harbor."
+    },
+    {
+      "question": "Create a Python dictionary representing Donal C. Fox's political career highlights with keys for positions and values for years served.",
+      "answer": "python\nfox_career = {\n    \"Deputy Attorney General of New Jersey\": \"Year(s) not specified\",\n    \"First Assistant Essex County Prosecutor\": \"Year(s) not specified\",\n    \"Chairman of the South Orange Planning Board\": \"Year(s) not specified\",\n    \"President of the Essex County Bar Association\": \"Year(s) not specified\",\n    \"New Jersey State Senator (Essex County)\": \"1956-1964\",\n    \"Commissioner of the Waterfront Commission of New York Harbor\": \"1964 onwards\"\n}\n"
+    }
+  ]
+}

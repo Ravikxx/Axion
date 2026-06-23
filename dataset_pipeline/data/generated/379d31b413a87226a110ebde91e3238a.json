@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Cairbre_Cinnchait",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was Cairbre Cinnchait in Irish legend?",
+      "answer": "Cairbre Cinnchait, also known as Caitchenn (meaning \"cat-head\" or \"hard head\"), was a High King of Ireland according to medieval Irish legend and historical tradition. He is described as a figure whose reign was marked by significant upheaval and whose origins are uncertain in the sources."
+    },
+    {
+      "question": "What are the key differences between the accounts of Cairbre Cinnchait in the Lebor Gabála Érenn and the Annals of the Four Masters?",
+      "answer": "The Lebor Gabála Érenn states that Cairbre succeeded Conchobar Abradruad after Crimthann Nia Náir killed him, while the Annals of the Four Masters claim Cairbre succeeded Crimthann after he 'killed all the nobility.' The Lebor Gabála is uncertain about Cairbre's ancestry, while the Annals describe him as the leader of an uprising by the aithech-tuatha (subject peoples). The Annals also mention three pregnant noblewomen who escaped Cairbre's massacre, while the Lebor Gabála does not."
+    },
+    {
+      "question": "What was the impact of Cairbre Cinnchait's reign according to the Annals of the Four Masters?",
+      "answer": "According to the Annals of the Four Masters, Cairbre's reign was marked by severe hardship: crops failed, cows did not produce milk, and there were no fish in the rivers. His rule lasted five years, and he died after this period, being succeeded by Feradach Finnfechtnach, who was likely less than five years old."
+    },
+    {
+      "question": "How does Geoffrey Keating's account of Cairbre Cinnchait differ from the Lebor Gabála Érenn and the Annals of the Four Masters?",
+      "answer": "Geoffrey Keating agrees that Crimthann succeeded Conchobar but states that Feradach Finnfechtnach, Fíatach Finn, and Fíachu Finnolach followed Crimthann. In Keating's version, Cairbre overthrew Fíachu, not Crimthann. The pregnant noblewomen who escape are also different: Eithne (Fiacha's wife), Beartha, and Aine. Keating also provides alternative origins for Cairbre, suggesting he was either a descendant of a Scandinavian prince or of the Fir Bolg, and that he died of plague."
+    },
+    {
+      "question": "What are the possible ancestries of Cairbre Cinnchait according to the Lebor Gabála Érenn?",
+      "answer": "The Lebor Gabála Érenn lists several possible ancestries for Cairbre Cinnchait: the Luaigne of Tara, the Tuatha Dé Danann, the Catraige of Connacht, the Corcortri (descendants of the former High King Cimbáeth), or a descendant of Ír, son of Míl Espáine. His father's name is given as Duthach."
+    },
+    {
+      "question": "What synchronisation with historical figures is mentioned for Cairbre Cinnchait's reign?",
+      "answer": "Cairbre's reign is synchronised with that of the Roman emperor Domitian, who ruled from AD 81 to 96, according to the Lebor Gabála Érenn. However, the Annals of the Four Masters date his reign to AD 9–14, and Geoffrey Keating dates it to AD 55–60, showing significant discrepancies across sources."
+    },
+    {
+      "question": "Write a Python function to calculate the possible reign years of Cairbre Cinnchait based on the different sources provided.",
+      "answer": "python\ndef calculate_cairbre_reign_years():\n    # Based on Lebor Gabála Érenn: AD 81–96 (Domitian's reign)\n    reign_legor_gabala = (81, 96)\n    \n    # Based on Annals of the Four Masters: AD 9–14\n    reign_annals = (9, 14)\n    \n    # Based on Geoffrey Keating: AD 55–60\n    reign_keating = (55, 60)\n    \n    return {\n        \"Lebor Gabála Érenn\": reign_legor_gabala,\n        \"Annals of the Four Masters\": reign_annals,\n        \"Geoffrey Keating\": reign_keating\n    }\n\n# Example usage:\nreign_years = calculate_cairbre_reign_years()\nprint(reign_years)\n\nThis function returns a dictionary with the possible reign years of Cairbre Cinnchait according to the three sources."
+    }
+  ]
+}

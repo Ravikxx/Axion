@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/alvaromontoro/sharing-codepen-20-demos-on-dev-273",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "How do you share a CodePen 2.0 demo on DEV without encountering an error?",
+      "answer": "To share a CodePen 2.0 demo on DEV, use the classic CodePen URL format instead of the new editor URL. First, find the `data-slug-hash` and `data-user` values from the CodePen share modal under the 'Embed' section. Then construct the URL as `https://codepen.io/[USER]/pen/[SLUG_HASH]` and embed it using the DEV embed tag: `{% codepen https://codepen.io/[USER]/pen/[SLUG_HASH] %}`."
+    },
+    {
+      "question": "What are the steps to find the correct hash for embedding a CodePen demo on DEV?",
+      "answer": "To find the correct hash for embedding a CodePen demo on DEV, follow these steps: 1) Click the **Share** icon in the top-right corner of the CodePen demo. 2) Select **Embed**. 3) Ensure **HTML (recommended)** is chosen in the modal. 4) Locate the `data-slug-hash` and `data-user` attributes in the provided code. 5) Copy these values for use in the embed URL."
+    },
+    {
+      "question": "Why does the standard CodePen 2.0 embed code fail on DEV, and how can it be fixed?",
+      "answer": "The standard CodePen 2.0 embed code fails on DEV because the URL format has changed, and DEV's parser does not yet recognize the new structure. This issue can be resolved by using the classic URL format derived from the `data-slug-hash` and `data-user` attributes, which DEV supports. Construct the URL as `https://codepen.io/[USER]/pen/[SLUG_HASH]` and embed it using `{% codepen https://codepen.io/[USER]/pen/[SLUG_HASH] %}`."
+    },
+    {
+      "question": "Write a Python function to extract the `data-slug-hash` and `data-user` values from a CodePen embed HTML snippet.",
+      "answer": "Here is a Python function using regular expressions to extract the `data-slug-hash` and `data-user` values from a CodePen embed HTML snippet:\n\npython\nimport re\n\ndef extract_codepen_embed_data(embed_html):\n    slug_hash_match = re.search(r'data-slug-hash=\"([^\"]+)\"', embed_html)\n    user_match = re.search(r'data-user=\"([^\"]+)\"', embed_html)\n    \n    if slug_hash_match and user_match:\n        slug_hash = slug_hash_match.group(1)\n        user = user_match.group(1)\n        return user, slug_hash\n    else:\n        return None, None\n\n# Example usage:\nembed_html = '<iframe data-slug-hash=\"MYjBBrm\" data-user=\"alvaromontoro\" src=\"...\" ></iframe>'\nuser, slug_hash = extract_codepen_embed_data(embed_html)\nprint(user, slug_hash)  # Output: alvaromontoro MYjBBrm\n"
+    },
+    {
+      "question": "What is the difference between the new CodePen 2.0 editor URL and the classic URL format?",
+      "answer": "The new CodePen 2.0 editor URL uses a more complex structure with additional path segments like `/editor/` and alphanumeric identifiers, e.g., `https://codepen.io/editor/alvaromontoro/pen/019d657e-d7bc-746a-9bc3-4df2244c97cc/24ac30a5aad27b2b927702d3557c6e70`. The classic URL format is simpler, directly linking to the pen with the user and slug hash, e.g., `https://codepen.io/alvaromontoro/pen/MYjBBrm`. DEV currently supports the classic format for embedding."
+    },
+    {
+      "question": "How can you verify if a CodePen embed will work on DEV before publishing?",
+      "answer": "To verify if a CodePen embed will work on DEV before publishing, construct the embed URL using the `data-slug-hash` and `data-user` values, then test the DEV embed tag `{% codepen https://codepen.io/[USER]/pen/[SLUG_HASH] %}` in a draft article. If the preview displays correctly without errors, the embed will work when published. Alternatively, use the classic URL format directly in a CodePen embed tool to confirm functionality."
+    },
+    {
+      "question": "What is the expected behavior of the `{% codepen %}` tag on DEV when embedding a valid CodePen URL?",
+      "answer": "When embedding a valid CodePen URL using the `{% codepen %}` tag on DEV, the behavior is to display a preview of the CodePen demo within the article. The preview typically shows the rendered output of the demo but not the underlying code. This allows readers to interact with the demo without leaving the DEV platform."
+    }
+  ]
+}

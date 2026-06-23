@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/pierreb/notifuse-modern-free-alternative-to-mailchimpresend-41le",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What is Notifuse and what problem does it solve in the emailing/newsletter space?",
+      "answer": "Notifuse is an open-source alternative to Mailchimp and Resend designed to send newsletters and transactional emails via API. It solves the problem of outdated open-source email platforms by offering a modern, AI-accelerated solution with a state-of-the-art drag-and-drop email editor built on MJML for client compatibility and Liquid engine for customization. It also integrates with multiple ESPs (Amazon SES, SparkPost, Mailgun, etc.) to ensure deliverability."
+    },
+    {
+      "question": "What are the key features of Notifuse that differentiate it from other open-source email platforms?",
+      "answer": "Notifuse stands out with its modern drag-and-drop email builder using MJML+Liquid engine for cross-client compatibility, A/B testing for newsletters, open/click tracking, S3 file manager, and a notification center. It also provides ESP integrations for guaranteed deliverability and supports transactional and broadcast email sending with minimal code."
+    },
+    {
+      "question": "How can a developer integrate Notifuse into their project to send transactional emails?",
+      "answer": "A developer can integrate Notifuse by updating transactional email templates via its UI and sending emails with a simple API call. For example, using the Notifuse Golang or React SDK, you can send an email like this:\n\ngo\nimport \"github.com/notifuse/notifuse/client\"\n\n// Initialize the client\nclient := client.New(\"YOUR_API_KEY\")\n\n// Send a transactional email\nresponse, err := client.SendTransactionalEmail({\n    To: \"user@example.com\",\n    Subject: \"Welcome to Notifuse\",\n    TemplateID: \"welcome_template\",\n})\n"
+    },
+    {
+      "question": "Why did the original Notifuse SaaS struggle to gain traction in 2016 despite being a viable product?",
+      "answer": "The original Notifuse SaaS struggled to gain traction because developers typically avoid paying for technical tools and prefer open-source alternatives. This mindset made it difficult for a closed-source SaaS to compete, even if it offered superior features."
+    },
+    {
+      "question": "How does Notifuse ensure email deliverability across different email clients like Outlook and iOS?",
+      "answer": "Notifuse ensures email deliverability by using the MJML specification in its drag-and-drop email builder, which generates emails that render consistently across all major email clients. MJML is designed specifically for creating responsive emails that look the same in Outlook, iOS, and other clients."
+    },
+    {
+      "question": "What are the technical stack components used in Notifuse?",
+      "answer": "Notifuse is built using a modern technical stack: the backend is written in Golang for performance and efficiency, the frontend is built with React for a dynamic and responsive user interface, and it uses Postgres as its database. For file storage, it integrates with S3 for scalable and reliable file management."
+    },
+    {
+      "question": "How can I deploy Notifuse for my own use?",
+      "answer": "Notifuse can be deployed using Docker, following the official installation guide available at [docs.notifuse.com/installation](https://docs.notifuse.com/installation). This allows you to self-host the platform on your own infrastructure, ensuring your data stays private and under your control."
+    }
+  ]
+}

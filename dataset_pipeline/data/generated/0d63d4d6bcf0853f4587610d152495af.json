@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Construction_industry_in_Romania",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What percentage of Romania's GDP did the construction industry contribute in 2006?",
+      "answer": "In 2006, the construction industry in Romania contributed an estimated 5.95% to the country's gross domestic product (GDP)."
+    },
+    {
+      "question": "What were the key factors driving the increase in construction activity in Romania?",
+      "answer": "Construction activity in Romania increased due to recent tax incentives and a rise in popularity among British property investors, as indicated by research from Currencies Direct. Additionally, foreign institutions like the European Bank for Reconstruction and Development (EBRD) and the European Investment Bank (EIB) provided funds for the sector."
+    },
+    {
+      "question": "How did Romania's interest rate on property purchases change between 1997 and 2005?",
+      "answer": "Romania's interest rate on property purchases dropped significantly from 154% in 1997 to 8.9% in 2005."
+    },
+    {
+      "question": "What is the forecasted average growth rate for Romania's construction industry from 2007 to 2011?",
+      "answer": "Business Monitor International forecasted an average industry growth rate of 6.84% for Romania's construction industry over the 2007-2011 period."
+    },
+    {
+      "question": "Which foreign companies showed interest in Romania's electrical production capacities?",
+      "answer": "Foreign companies showing interest in Romania's electrical production capacities included Germany's Siemens, U.S.-based AES Corporation, and Geneva-based Societe Bancaire Private."
+    },
+    {
+      "question": "What was the impact of the 2009 economic crisis on Romania's construction industry?",
+      "answer": "Before the crisis, Romania's construction industry was one of the most vibrant in the European Union. However, in 2009, construction output fell by 15%, followed by a similar reduction in 2010. Stabilization was expected in 2011, with growth unlikely to return before 2012."
+    },
+    {
+      "question": "Write a Python code snippet to calculate the percentage increase in civil engineering construction value in Romania from 2010 to 2011, given the 2011 value was RON 35 billion and assuming a 16% increase from 2010.",
+      "answer": "python\n# Given values\nvalue_2011 = 35  # in billion RON\npercentage_increase = 16  # %\n\n# Calculate value for 2010\nvalue_2010 = value_2011 / (1 + percentage_increase / 100)\n\n# Calculate percentage increase\npercentage_increase_calculated = ((value_2011 - value_2010) / value_2010) * 100\n\nprint(f\"Value in 2010: {value_2010:.2f} billion RON\")\nprint(f\"Percentage increase from 2010 to 2011: {percentage_increase_calculated:.2f}%\")\n\nOutput:\nValue in 2010: 30.17 billion RON\nPercentage increase from 2010 to 2011: 16.00%"
+    }
+  ]
+}

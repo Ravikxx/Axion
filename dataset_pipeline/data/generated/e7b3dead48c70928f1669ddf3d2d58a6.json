@@ -1,0 +1,34 @@
+{
+  "source_url": "https://mathworld.wolfram.com/Product.html",
+  "category": "mathworld",
+  "pairs": [
+    {
+      "question": "What is a product in mathematics?",
+      "answer": "In mathematics, a product is the result obtained from multiplying one or more numbers or other mathematical objects. For example, in the expression 'a × b = c', 'c' is the product of 'a' and 'b'. Products can apply to various mathematical structures beyond numbers, such as sets (Cartesian product), groups (direct product), or topological spaces (product topology)."
+    },
+    {
+      "question": "How is the product of two sets defined?",
+      "answer": "The product of two sets, called the Cartesian product, is the set of all ordered pairs where the first element belongs to the first set and the second element belongs to the second set. For example, if A = {1, 2} and B = {x, y}, then A × B = {(1, x), (1, y), (2, x), (2, y)}."
+    },
+    {
+      "question": "What is the product symbol in mathematics?",
+      "answer": "The product symbol is a Greek capital letter Pi (∏). It is used to denote the product of a sequence of factors. For example, ∏(i=1 to n) of i = 1 × 2 × 3 × ... × n."
+    },
+    {
+      "question": "Provide a code snippet to compute the product of a list of numbers in Python.",
+      "answer": "python\ndef compute_product(numbers):\n    product = 1\n    for num in numbers:\n        product *= num\n    return product\n\n# Example usage:\nnumbers = [2, 3, 4]\nprint(compute_product(numbers))  # Output: 24\n"
+    },
+    {
+      "question": "What is the Cauchy product of two series?",
+      "answer": "The Cauchy product of two infinite series, Σaₙ and Σbₙ, is defined as the series Σcₙ where each term cₙ is the sum of the products aᵢ × bⱼ for all i + j = n. For example, if aₙ = 1 for all n and bₙ = 1 for all n, the Cauchy product is Σ(n+1) for n from 0 to ∞."
+    },
+    {
+      "question": "Explain the dot product of two vectors with an example.",
+      "answer": "The dot product (or scalar product) of two vectors a = [a₁, a₂, ..., aₙ] and b = [b₁, b₂, ..., bₙ] is defined as the sum of the products of their corresponding components: a · b = a₁b₁ + a₂b₂ + ... + aₙbₙ. For example, the dot product of [1, 2] and [3, 4] is (1×3) + (2×4) = 3 + 8 = 11."
+    },
+    {
+      "question": "What is the product topology in topology?",
+      "answer": "The product topology on a product of topological spaces is the coarsest topology for which all the projection maps are continuous. It is formed by taking as a basis all sets of the form U₁ × U₂ × ... × Uₙ where each Uᵢ is open in the i-th space. This ensures that the product space inherits desirable topological properties from its factors."
+    }
+  ]
+}

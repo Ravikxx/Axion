@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Coeliac_disease",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is coeliac disease and what causes it?",
+      "answer": "Coeliac disease is a chronic autoimmune condition primarily affecting the small intestine, triggered by an abnormal immune response to gluten—a protein found in wheat, barley, and rye. In genetically predisposed individuals, gluten consumption leads to inflammation and damage in the intestinal lining, impairing nutrient absorption."
+    },
+    {
+      "question": "How does the presentation of coeliac disease differ between children and adults?",
+      "answer": "In children, the classic form of coeliac disease is more common, presenting with symptoms like weight loss, diarrhea, and stunted growth due to malabsorption. Adults often experience non-classic symptoms, such as vague abdominal discomfort and complications outside the gut (e.g., bone disease or anemia), which may delay diagnosis."
+    },
+    {
+      "question": "What methods are used to diagnose coeliac disease?",
+      "answer": "Diagnosis involves a combination of symptom assessment, blood tests (e.g., serological markers like tTG-IgA), and a biopsy of the small intestine to confirm intestinal damage. If gluten has already been eliminated from the diet, a gluten challenge may be required before testing to ensure accurate results."
+    },
+    {
+      "question": "Why is coeliac disease sometimes difficult to diagnose?",
+      "answer": "Diagnosis is often delayed due to a lack of awareness, non-specific symptoms that overlap with other disorders, and the need to reintroduce gluten for testing in some cases. Additionally, many patients self-restrict gluten without consulting a doctor, complicating the diagnostic process."
+    },
+    {
+      "question": "What is the only proven treatment for coeliac disease, and how effective is it?",
+      "answer": "The only effective treatment is a strict lifelong gluten-free diet (GFD). Symptoms typically improve within days, and the diet prevents complications, promotes healing of the intestine, and normalizes growth in children. Adherence to a GFD significantly enhances quality of life."
+    },
+    {
+      "question": "How common is coeliac disease, and is it increasing in prevalence?",
+      "answer": "Coeliac disease affects approximately 1 in 200 to 1 in 50 people worldwide. Recent increases in diagnoses are attributed to greater awareness and improved blood-test accessibility, though the condition remains underdiagnosed, with many cases undetected."
+    },
+    {
+      "question": "Write a Python function that checks if a food item is gluten-free based on common gluten-containing ingredients.",
+      "answer": "python\n\ndef is_gluten_free(ingredients):\n    \"\"\"Check if a list of ingredients is gluten-free.\n    \n    Args:\n        ingredients (list): List of strings representing food ingredients.\n    \n    Returns:\n        bool: True if all ingredients are gluten-free, False otherwise.\n    \"\"\"\n    gluten_ingredients = {'wheat', 'rye', 'barley', 'gluten', 'malt', 'brewer\\'s yeast'}\n    return not any(ing.lower() in gluten_ingredients for ing in ingredients)\n\n# Example usage:\nprint(is_gluten_free(['rice', 'corn', 'salt']))  # True\nprint(is_gluten_free(['wheat flour', 'sugar']))  # False\n"
+    }
+  ]
+}

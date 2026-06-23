@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Blue_Line_(CTA)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "How long is the Chicago Blue Line, and how many stations does it serve?",
+      "answer": "The Blue Line is 26.93 miles (43.34 km) long and serves a total of 33 stations, including 11 on the Forest Park branch, 9 in the Milwaukee–Dearborn subway, and 13 on the O'Hare branch."
+    },
+    {
+      "question": "Which Chicago 'L' lines operate 24-hour service, and what makes this unique globally?",
+      "answer": "The Blue Line, Red Line, and future Orange Line (starting in 2026) provide 24-hour service every day. This makes Chicago one of only three cities in the world—alongside New York City and Copenhagen—to offer local nonstop rail service throughout their city limits 24/7."
+    },
+    {
+      "question": "Why does the Blue Line have stations with identical names, and where are they located?",
+      "answer": "The Blue Line is the only Chicago 'L' line with stations sharing the exact same name. It has two stations named Harlem Avenue (one on the Kennedy Expressway and one on the Eisenhower Expressway in Forest Park) and two stations named Western Avenue (one between downtown and O'Hare, and one immediately west of downtown)."
+    },
+    {
+      "question": "Before adopting color-coded names, what were the historical names of the Blue Line?",
+      "answer": "Before the color-coded naming system was introduced in 1993, the Blue Line was called the West-Northwest Route or the O'Hare-Congress-Douglas route, referring to its three branches."
+    },
+    {
+      "question": "How many suburbs does the Blue Line serve, and which ones are they?",
+      "answer": "The Blue Line runs in three suburbs: Rosemont, Oak Park, and Forest Park."
+    },
+    {
+      "question": "Write a Python script to fetch the daily boarding statistics for the Blue Line in 2023.",
+      "answer": "python\nimport requests\n\n# Mock API endpoint for demonstration (replace with actual source)\nurl = \"https://api.transitchicago.com/boardings/blue-line/2023\"\nresponse = requests.get(url)\n\nif response.status_code == 200:\n    data = response.json()\n    daily_boardings = data.get(\"weekday_boardings_2023\", 0)\n    print(f\"Blue Line weekday boardings in 2023: {daily_boardings}\")\nelse:\n    print(\"Failed to fetch data.\")\n"
+    },
+    {
+      "question": "What is the significance of the Blue Line's Douglas branch, and what happened to it in 2008?",
+      "answer": "The Douglas branch of the Blue Line was renamed to the Pink Line in 1993. In April 2008, service on the Douglas segment was replaced entirely by the Pink Line, which now operates independently."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Aztec_creator_gods",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What are the names and roles of the four Tezcatlipocas in Aztec mythology?",
+      "answer": "The four Tezcatlipocas are Quetzalcoatl (the White Tezcatlipoca), Huitzilopochtli (the Blue Tezcatlipoca), Xipe-Totec (the Red Tezcatlipoca), and Tezcatlipoca himself (the Black Tezcatlipoca). Each represents a cardinal direction and a unique aspect of creation and destruction. Quetzalcoatl is associated with wind and wisdom, Huitzilopochtli with war and the sun, Xipe-Totec with agriculture and rebirth, and Tezcatlipoca with destiny and sorcery."
+    },
+    {
+      "question": "How did the Fifth Sun, Tōnatiuh, come into existence in Aztec mythology?",
+      "answer": "The Fifth Sun, Tōnatiuh, was created when a lowly god named Nanahuatzin sacrificed himself in fire. By transforming into the sun, he ushered in the present era, known as the Fifth Sun. This act marked the end of the previous cosmic cycles and the beginning of the current one."
+    },
+    {
+      "question": "What are the four cosmic epochs or 'suns' in Aztec mythology, and how are they associated with destruction?",
+      "answer": "The four cosmic epochs, or 'suns,' are the Sun of Earth, the Sun of Air, the Sun of Fire, and the Sun of Water. Each era ended in a catastrophic destruction: the first by jaguars, the second by winds, the third by fire, and the fourth by a great flood. The present era, the Fifth Sun, is predicted to end in a cataclysmic earthquake."
+    },
+    {
+      "question": "Provide a Python code snippet to calculate the number of Tezcatlipocas and their associated cardinal directions.",
+      "answer": "python\ndef count_tezcatlipocas():\n    # The four Tezcatlipocas represent the four cardinal directions\n    tezcatlipocas = [\"North (Black Tezcatlipoca)\", \"South (Blue Tezcatlipoca)\", \n                     \"East (Red Tezcatlipoca)\", \"West (White Tezcatlipoca)\"]\n    return len(tezcatlipocas)\n\nprint(f\"Number of Tezcatlipocas: {count_tezcatlipocas()}\")\n\nThis code defines a function that returns the count of Tezcatlipocas, each associated with a cardinal direction."
+    },
+    {
+      "question": "Which gods are responsible for controlling the waters in Aztec mythology, and who are their counterparts in other domains?",
+      "answer": "The waters are controlled by the couple-gods Tlaloc (rain god) and Chalchiuhtlicue (goddess of rivers and seas). Other domains are governed by: Tlaltecuhtli and Tlalcihuatl (Earth), Mictlantecuhtli and Mictecacihuatl (underworld Mictlan), and Xantico and Xiuhtecuhtli (fire). Each pair represents a fundamental aspect of the Aztec cosmos."
+    },
+    {
+      "question": "Explain the significance of Teotihuacan in Aztec mythology.",
+      "answer": "Teotihuacan is the ancient and sacred pre-Aztec city where pivotal mythological events unfolded. It is where the gods gathered to create the Fifth Sun, Tōnatiuh, through Nanahuatzin's self-sacrifice. The city's pyramids, like the Pyramid of the Sun, symbolize the cosmic order and the birth of the current era."
+    },
+    {
+      "question": "Why did Tōnatiuh refuse to move until the gods made sacrifices to him?",
+      "answer": "After becoming the Fifth Sun, Tōnatiuh refused to move in the sky until the gods offered him their hearts as sacrifices. This act was necessary to maintain the cosmic order and ensure the sun's movement, which sustains life on Earth. Quetzalcoatl performed the sacrifice by cutting out the hearts of the gods and offering them to Tōnatiuh and the moon Meztli."
+    }
+  ]
+}

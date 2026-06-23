@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Ashraf_Ghani",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was Mohammad Ashraf Ghani Ahmadzai?",
+      "answer": "Mohammad Ashraf Ghani Ahmadzai was an Afghan politician and economist who served as the 8th and last president of Afghanistan from 2014 until 2021. Born on 19 May 1949 in Logar, Afghanistan, he held a PhD in cultural anthropology from Columbia University and taught at institutions like Johns Hopkins University. He worked at the World Bank in the 1990s and returned to Afghanistan in 2001 after the Taliban's collapse."
+    },
+    {
+      "question": "What were Mohammad Ashraf Ghani's key political roles before becoming president?",
+      "answer": "Before becoming president, Ghani served as Afghanistan's finance minister under Hamid Karzai's cabinet (2002–2004), resigned to become the dean of Kabul University (2004–2008), and ran unsuccessfully in the 2009 presidential election, finishing fourth."
+    },
+    {
+      "question": "How did Mohammad Ashraf Ghani become president in 2014 despite a disputed election?",
+      "answer": "Ghani won the 2014 Afghan presidential election amid significant disputes. The U.S. mediated negotiations between Ghani and his rival Abdullah Abdullah, leading to a power-sharing agreement where Ghani became president and Abdullah became chief executive, with responsibilities split evenly."
+    },
+    {
+      "question": "What were Mohammad Ashraf Ghani's main goals as president of Afghanistan?",
+      "answer": "As president, Ghani aimed to transform Afghanistan into a technocratic state with a young, well-educated cabinet. His goals included fighting corruption, reducing the influence of ex-warlords, improving relations with Pakistan, making peace with the Taliban, and positioning Afghanistan as a trade hub between Central and South Asia."
+    },
+    {
+      "question": "Write a Python code snippet to calculate the number of years Mohammad Ashraf Ghani served as Afghanistan's president.",
+      "answer": "python\ndef calculate_presidency_years(start_year, end_year):\n    return end_year - start_year\n\n# Ghani served from 2014 to 2021\nyears_served = calculate_presidency_years(2014, 2021)\nprint(f\"Mohammad Ashraf Ghani served as president for {years_served} years.\")\n"
+    },
+    {
+      "question": "Why was Mohammad Ashraf Ghani criticized for his handling of the Taliban in 2021?",
+      "answer": "Ghani faced criticism for his perceived softness on the Taliban, particularly during the militant group's 2021 offensive. His administration was accused of failing to effectively counter the Taliban's rise, and his eventual departure from Afghanistan during the Taliban takeover was condemned as abandoning the country."
+    },
+    {
+      "question": "What was the outcome of the 2019 Afghan presidential election for Mohammad Ashraf Ghani?",
+      "answer": "Ghani was re-elected as president in 2020 after a delayed result from the 2019 presidential elections. His re-election followed prolonged negotiations and controversies over the election process."
+    }
+  ]
+}

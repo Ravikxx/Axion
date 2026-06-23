@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/2004–05_Los_Angeles_Lakers_season",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "How many games did the 2004–05 Los Angeles Lakers win, and did they make the playoffs?",
+      "answer": "The 2004–05 Los Angeles Lakers won 34 games and missed the playoffs for the first time in 11 years."
+    },
+    {
+      "question": "Who were the key players lost by the Lakers before the 2004–05 season, and why were they significant?",
+      "answer": "The Lakers lost center Shaquille O'Neal, traded to the Miami Heat, and point guard Derek Fisher, who signed with the Golden State Warriors. Both were instrumental in the Lakers' three previous championships."
+    },
+    {
+      "question": "What notable roster movement occurred with Caron Butler during the 2004–05 season?",
+      "answer": "Caron Butler was traded to the Washington Wizards during the season."
+    },
+    {
+      "question": "Who replaced Phil Jackson as the Lakers' head coach for the 2004–05 season, and why did he leave?",
+      "answer": "Rudy Tomjanovich replaced Phil Jackson. He resigned in February 2005 due to a long-standing battle with bladder cancer."
+    },
+    {
+      "question": "What change was made to the Lakers' uniforms in the 2004–05 season, and how long were they used?",
+      "answer": "The Lakers added a secondary logo to their shorts. The updated uniforms remained in use until 2018."
+    },
+    {
+      "question": "How did the Lakers' defensive performance rank in the 2004–05 NBA season?",
+      "answer": "The Lakers had the worst team defensive rating in the NBA during the 2004–05 season."
+    },
+    {
+      "question": "Write a Python function to determine if a team missed the playoffs after appearing in the NBA Finals the previous season. Use the 2004–05 Lakers as an example.",
+      "answer": "python\ndef missed_playoffs_after_finals(team_name, finals_year, missed_year):\n    return f\"{team_name} is the first team since the 1998–99 Chicago Bulls and last until the 2014–15 Miami Heat to miss the playoffs after making a Finals appearance the previous season (e.g., {team_name} in {finals_year} to {missed_year}).\"\n\n# Example for the 2004–05 Lakers\nprint(missed_playoffs_after_finals(\"Los Angeles Lakers\", 2004, 2005))\n"
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "source_url": "https://dev.to/pascal_cescato_692b7a8a20/stop-ignoring-rfc-2324-its-the-most-important-protocol-youve-never-implemented-53pe",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What is RFC 2324 and why is it significant in the history of internet protocols?",
+      "answer": "RFC 2324, published on April 1st, 1998, defines the Hyper Text Coffee Pot Control Protocol (HTCPCP/1.0). It is significant because it extends HTTP with new methods, headers, and URI schemes, and introduced the iconic 418 I'm a teapot error code. Despite being an April Fools' joke, it was written seriously enough to implement, and was adopted by projects like Emacs."
+    },
+    {
+      "question": "What are the HTTP methods defined in RFC 2324 for HTCPCP/1.0, and what does each do?",
+      "answer": "RFC 2324 extends HTTP with four methods: 1) BREW (or POST) to trigger coffee infusion; 2) GET to retrieve a coffee pot's current state; 3) PROPFIND to list available additions; and 4) WHEN to stop pouring milk. The WHEN method is notable for modeling human interaction ('tell me when') as an HTTP request."
+    },
+    {
+      "question": "How does the Accept-Additions header work in HTCPCP/1.0, and what are its supported values?",
+      "answer": "The Accept-Additions header specifies additions like milk, syrups, or spirits allowed in a coffee brew. Supported values include milk types (e.g., Whole-milk, Non-Dairy), syrups (e.g., Vanilla, Chocolate), and spirits (e.g., Whisky, Rum). Notably, the RFC intentionally excludes decaffeinated options, stating 'What's the point?'."
+    },
+    {
+      "question": "What are the error codes introduced by RFC 2324, and why is the 418 I'm a teapot error significant?",
+      "answer": "RFC 2324 introduced two error codes: 406 Not Acceptable (server cannot brew the requested coffee) and 418 I'm a teapot (server is a teapot, not a coffee pot). The 418 error became iconic; in 2017, a proposal to remove it from the IANA registry sparked widespread protest, leading to its retention in many programming languages and frameworks."
+    },
+    {
+      "question": "Why does a raw asyncio TCP server (server.py) need to be used instead of FastAPI/uvicorn for implementing HTCPCP/1.0?",
+      "answer": "FastAPI/uvicorn rejects custom HTTP methods like BREW, WHEN, and PROPFIND at the socket level because they are not registered IANA methods. A raw asyncio TCP server with a minimal HTTP/1.1 parser is required to accept these methods. FastAPI can still be used for testing via TestClient, which bypasses the HTTP transport layer."
+    },
+    {
+      "question": "Provide a Python code snippet for validating and parsing the Accept-Additions header in HTCPCP/1.0.",
+      "answer": "python\nfrom fastapi import HTTPException\n\nSUPPORTED_ADDITIONS = {\n    \"milk-type\": [\"Cream\", \"Half-and-half\", \"Whole-milk\", \"Part-Skim\", \"Skim\", \"Non-Dairy\"],\n    \"syrup-type\": [\"Vanilla\", \"Almond\", \"Raspberry\", \"Chocolate\"],\n    \"sweetener-type\": [\"Sugar\", \"Honey\"],\n    \"spice-type\": [\"Cinnamon\", \"Cardamom\"],\n    \"alcohol-type\": [\"Whisky\", \"Rum\", \"Kahlua\", \"Aquavit\"],\n}\n\ndef parse_accept_additions(header: str | None) -> dict[str, str]:\n    if not header:\n        return {}\n    additions = {}\n    for part in header.split(\";\"):\n        part = part.strip()\n        if \"=\" in part:\n            key, value = part.split(\"=\", 1)\n            additions[key.strip()] = value.strip()\n    return additions\n\ndef validate_additions(additions: dict) -> None:\n    if \"decaf\" in additions:\n        raise HTTPException(\n            status_code=406,\n            detail={\n                \"error\": \"Not Acceptable\",\n                \"message\": \"Decaffeinated coffee? What's the point?\",\n                \"rfc\": \"RFC 2324 §2.1.1\"\n            }\n        )\n    unsupported = [\n        f\"{k}={v}\"\n        for k, v in additions.items()\n        if k in SUPPORTED_ADDITIONS and v not in SUPPORTED_ADDITIONS[k]\n    ]\n    if unsupported:\n        raise HTTPException(\n            status_code=406,\n            detail={\"error\": \"Not Acceptable\", \"unsupported_additions\": unsupported}\n        )\n"
+    },
+    {
+      "question": "What is the purpose of the pot registry in an HTCPCP/1.0 server implementation, and how is it structured?",
+      "answer": "The pot registry stores the state of all coffee/tea pots in the system. It is structured as a dictionary mapping URIs (e.g., coffee://pot-1) to CoffeePot objects, which track properties like pot type (coffee/teapot), capacity, current level, status (idle/brewing/etc.), varieties, and brew history. This central registry enables the server to manage multiple pots and their states efficiently."
+    },
+    {
+      "question": "How would you implement a BREW request handler in HTCPCP/1.0 using FastAPI, and what checks should it perform?",
+      "answer": "python\nfrom fastapi import FastAPI, Request, HTTPException\nfrom fastapi.responses import JSONResponse\n\napp = FastAPI()\n\n@app.api_route(\"/coffee/{pot_id}\", methods=[\"BREW\", \"POST\"])\nasync def brew(pot_id: str, request: Request):\n    pot = get_pot(pot_id)  # Retrieve pot from registry\n    \n    # Return 418 if pot is a teapot\n    if pot.pot_type == PotType.TEAPOT:\n        return JSONResponse(\n            status_code=418,\n            content={\n                \"status\": 418,\n                \"error\": \"I'm a teapot\",\n                \"body\": \"The requested entity body is short and stout.\",\n                \"hint\": \"Tip me over and pour me out.\",\n                \"pot_id\": pot_id,\n                \"rfc\": \"RFC 2324 §2.3.2\",\n                \"suggestion\": \"Use coffee://pot-1/brew instead\"\n            }\n        )\n    \n    # Check if pot is empty\n    if pot.level == 0:\n        raise HTTPException(status_code=503, detail=\"Pot is empty. Refill required.\")\n    \n    # Parse and validate additions\n    additions_header = request.headers.get(\"accept-additions\")\n    additions = parse_accept_additions(additions_header)\n    validate_additions(additions)\n    \n    # Start brewing (logic continues...)\n"
+    }
+  ]
+}

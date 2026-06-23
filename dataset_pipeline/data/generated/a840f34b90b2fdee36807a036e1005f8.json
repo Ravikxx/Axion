@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Enchrysa",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What genus and family do Enchrysa moths belong to?",
+      "answer": "Enchrysa moths belong to the genus *Enchrysa* and the family Gelechiidae."
+    },
+    {
+      "question": "In which geographic regions has Enchrysa dissectella been recorded in North America?",
+      "answer": "Enchrysa dissectella has been recorded in Maine, Minnesota, New Hampshire, Ohio, and Ontario."
+    },
+    {
+      "question": "What is the wingspan range for male and female Enchrysa dissectella moths?",
+      "answer": "Male Enchrysa dissectella moths have a wingspan of 10–10.5 mm, while females have a wingspan of 12–12.5 mm."
+    },
+    {
+      "question": "Describe the coloration pattern of the forewings in Enchrysa dissectella.",
+      "answer": "The forewings of Enchrysa dissectella have a black or very dark brown basal half, heavily overlaid with iridescent green scales. The outer half along the costa is dull ochreous and inwardly margined by a pale yellow line. A dark costal streak and a tiny dark-brown or black dot near the end of the cell are also present. The division between the dark basal half and the ochreous outer half is slightly oblique."
+    },
+    {
+      "question": "How can you distinguish between the basal and outer halves of an Enchrysa dissectella forewing based on coloration?",
+      "answer": "The basal half of the forewing is predominantly black or very dark brown with iridescent green scales, while the outer half is dull ochreous with a pale yellow marginal line. The division between these regions is marked by the absence of iridescent scales in the basal half at the margin."
+    },
+    {
+      "question": "Write a Python function to calculate the average wingspan of Enchrysa dissectella moths given the sex.",
+      "answer": "python\ndef average_wingspan(sex: str) -> float:\n    \"\"\"Calculate the average wingspan of Enchrysa dissectella based on sex.\n    \n    Args:\n        sex: 'male' or 'female'\n    \n    Returns:\n        Average wingspan in millimeters\n    \n    Raises:\n        ValueError: If sex is not 'male' or 'female'\n    \"\"\"\n    wingspans = {\n        'male': (10.0 + 10.5) / 2,\n        'female': (12.0 + 12.5) / 2\n    }\n    if sex not in wingspans:\n        raise ValueError(\"Sex must be 'male' or 'female'\")\n    return wingspans[sex]\n\n# Example usage:\nprint(average_wingspan('male'))   # Output: 10.25\nprint(average_wingspan('female')) # Output: 12.25\n"
+    },
+    {
+      "question": "Why does the basal half of the Enchrysa dissectella forewing appear black or very dark brown despite the presence of iridescent green scales?",
+      "answer": "The basal half appears black or very dark brown due to the absence of iridescent scales at the margin where it meets the outer half. This creates a stark contrast against the iridescent green scales present elsewhere in the basal region."
+    }
+  ]
+}

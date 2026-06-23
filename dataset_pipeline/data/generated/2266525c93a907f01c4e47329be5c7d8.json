@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Blue_whale",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the maximum confirmed size of a blue whale in terms of length and weight?",
+      "answer": "A blue whale can reach a maximum confirmed length of 29.9–30.5 meters (98–100 feet) and weigh up to 190–200 metric tons (190–200 long tons; 210–220 short tons), making it the largest animal known to have ever existed."
+    },
+    {
+      "question": "How many subspecies of blue whales are currently recognized, and which regions do they inhabit?",
+      "answer": "Four subspecies of blue whales are currently recognized: B. m. musculus in the North Atlantic and North Pacific, B. m. intermedia in the Southern Ocean, B. m. brevicauda (the pygmy blue whale) in the Indian Ocean and South Pacific Ocean, and B. m. indica in the Northern Indian Ocean. Additionally, there is a population off Chile that may represent a fifth subspecies."
+    },
+    {
+      "question": "Describe the migration patterns of blue whales.",
+      "answer": "Blue whale populations generally migrate between their summer feeding areas near the poles and their winter breeding grounds near the tropics. However, there is also evidence of year-round residency, as well as partial or age- and sex-based migration patterns."
+    },
+    {
+      "question": "What do blue whales primarily eat, and how do they consume their food?",
+      "answer": "Blue whales are filter feeders with a diet consisting almost exclusively of krill. They consume these small crustaceans by taking in large volumes of water and filtering out the krill using their baleen plates."
+    },
+    {
+      "question": "What frequency range do blue whale vocalizations typically fall into, and what factors influence their vocalizations?",
+      "answer": "Blue whale vocalizations have a fundamental frequency ranging from 8 to 25 Hz. Their vocalizations may vary based on region, season, behavior, and time of day."
+    },
+    {
+      "question": "How did human activities impact the blue whale population historically, and what is their current conservation status?",
+      "answer": "Blue whales were heavily hunted by whalers until the International Whaling Commission banned all blue whale hunting in 1966, nearly driving them to extinction. As of 2018, the International Union for Conservation of Nature (IUCN) lists blue whales as endangered due to ongoing threats such as ship strikes, pollution, ocean noise, and climate change."
+    },
+    {
+      "question": "Write a Python function that checks if a given whale species is a blue whale based on its scientific name.",
+      "answer": "python\ndef is_blue_whale(scientific_name: str) -> bool:\n    blue_whale_subspecies = {\n        'Balaenoptera musculus',\n        'Balaenoptera musculus musculus',\n        'Balaenoptera musculus intermedia',\n        'Balaenoptera musculus brevicauda',\n        'Balaenoptera musculus indica'\n    }\n    return scientific_name.lower() in blue_whale_subspecies\n\n# Example usage:\nprint(is_blue_whale('Balaenoptera musculus'))  # Output: True\nprint(is_blue_whale('Balaenoptera acutorostrata'))  # Output: False\n"
+    }
+  ]
+}

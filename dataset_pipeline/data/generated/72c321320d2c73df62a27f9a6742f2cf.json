@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Calder_Cup",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the Calder Cup and which league awards it?",
+      "answer": "The Calder Cup is the annual playoff championship trophy awarded by the American Hockey League (AHL) to its playoff champions."
+    },
+    {
+      "question": "When was the Calder Cup first presented and to which team?",
+      "answer": "The Calder Cup was first presented in 1937 to the Syracuse Stars."
+    },
+    {
+      "question": "Describe the physical design of the Calder Cup, including materials and structure.",
+      "answer": "The Calder Cup is made of sterling silver mounted on a base of Brazilian mahogany. It features a two-tiered square base with commemorative plaques for the AHL's 20 most recent champions—12 on the bottom tier and 8 on the top tier. The oldest plaque is retired and moved to the Hockey Hall of Fame in Toronto when a new one is added."
+    },
+    {
+      "question": "Which team has won the Calder Cup the most times, and how many victories do they have?",
+      "answer": "The Hershey Bears have won the Calder Cup more times than any other team, with a total of thirteen victories in franchise history."
+    },
+    {
+      "question": "How many times has a team won back-to-back Calder Cups? How many of those teams won three in a row?",
+      "answer": "Eight AHL teams have won back-to-back Calder Cups. The Springfield Indians (now Springfield Kings) are the only team to win three consecutive championships, achieving this feat from 1960 to 1962."
+    },
+    {
+      "question": "Provide an example of a year when an AHL team won the Calder Cup while its NHL affiliate won the Stanley Cup. Include the teams involved.",
+      "answer": "In 1976 and 1977, the Montreal Canadiens (NHL) and their AHL affiliate, the Nova Scotia Voyageurs, both won their respective league championships. Similarly, in 1995, the New Jersey Devils (NHL) and the Albany River Rats (AHL) both won their league titles."
+    },
+    {
+      "question": "Why was the Calder Cup not awarded in 2020 and 2021?",
+      "answer": "The Calder Cup was not awarded in 2020 and 2021 because the AHL did not hold playoffs due to the impacts of the COVID-19 pandemic."
+    }
+  ]
+}

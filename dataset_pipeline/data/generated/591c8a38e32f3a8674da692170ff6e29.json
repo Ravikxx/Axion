@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Computer_data_storage",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is the primary purpose of computer data storage components?",
+      "answer": "The primary purpose of computer data storage components is to store data so that the central processing unit (CPU) can fetch and modify it as needed for processing tasks."
+    },
+    {
+      "question": "How does the memory hierarchy in most computers balance speed and capacity?",
+      "answer": "The memory hierarchy balances speed and capacity by placing faster but smaller memory (e.g., registers, cache) closer to the CPU for quick access, while larger but slower memory (e.g., hard drives, tape drives) is used for bulk storage. As you move farther from the CPU, access speed decreases but capacity increases."
+    },
+    {
+      "question": "What are the differences between primary, secondary, and tertiary storage?",
+      "answer": "Primary storage includes memory directly accessible by the CPU, such as registers, cache, and main memory, offering fast access but limited capacity. Secondary storage, like hard drives or non-volatile RAM, is not directly accessible by the CPU and requires data transfer to primary storage. Tertiary storage, used for archival or backup (e.g., tape drives, CD-ROM), is the slowest and often requires copying to secondary storage before use."
+    },
+    {
+      "question": "Provide an example of a secondary storage device and explain how it interacts with primary storage.",
+      "answer": "A hard drive is an example of secondary storage. When the CPU needs data stored on a hard drive, it first transfers the data to primary storage (e.g., RAM) because the CPU can only directly access primary storage. This transfer process is managed by the operating system."
+    },
+    {
+      "question": "Why do some storage media require electrical power to retain data? What is this type of memory called?",
+      "answer": "Storage media that require electrical power to retain data are called volatile memory. Examples include cache and main memory (RAM). These types of memory lose their data when power is cut off, unlike non-volatile storage like hard drives or flash drives."
+    },
+    {
+      "question": "Write a Python snippet to simulate transferring data from secondary storage to primary storage.",
+      "answer": "python\n# Simulate transferring data from secondary storage (e.g., hard drive) to primary storage (e.g., RAM)\ndef transfer_to_primary(data, primary_storage):\n    primary_storage.extend(data)  # Add data to primary storage (RAM)\n    print(f\"Data transferred to primary storage. Current RAM: {primary_storage}\")\n\n# Example usage\nsecondary_storage = ['file1.txt', 'file2.txt', 'file3.txt']\nprimary_storage = ['os_kernel']\ntransfer_to_primary(secondary_storage[:2], primary_storage)  # Transfer first two files\n\nThe snippet demonstrates how data might be moved from secondary storage (simulated as a list) to primary storage (RAM) for CPU access."
+    },
+    {
+      "question": "What are registers and cache, and why are they important in the context of primary storage?",
+      "answer": "Registers and cache are small, ultra-fast memory components located very close to the CPU in the memory hierarchy. Registers are the smallest and fastest, used for immediate CPU operations, while cache (typically L1, L2, L3) stores frequently accessed data to reduce latency. Their proximity to the CPU allows for rapid data retrieval, significantly improving computational speed."
+    }
+  ]
+}

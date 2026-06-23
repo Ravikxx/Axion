@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/All_Japan_High_School_Soccer_Tournament",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the alternative name for the All Japan High School Soccer Tournament and why is it called that?",
+      "answer": "The tournament is commonly known as 'Winter Kokuritsu' (冬の国立 Fuyu no Kokuritsu), which translates to 'Winter National Stadium.' It is called this because the main tournament is held during the winter school vacation period and culminates at the National Capital Region side, specifically at the National Stadium in Tokyo."
+    },
+    {
+      "question": "How many teams participate in the final tournament stage of the All Japan High School Soccer Tournament, and when does it take place?",
+      "answer": "The final tournament stage of the All Japan High School Soccer Tournament includes 48 teams and is held from late December to early January during the winter school vacation period."
+    },
+    {
+      "question": "What are the organizing bodies behind the All Japan High School Soccer Tournament?",
+      "answer": "The tournament is organized by the Japan Football Association, All Japan High School Athletic Federation, and Nippon Television."
+    },
+    {
+      "question": "How does the tournament format work, and what is the significance of the U-18 league division rankings in the prefectural preliminary rounds?",
+      "answer": "The tournament follows an all-knockout stage format, meaning teams are eliminated after a single loss. In the prefectural preliminary rounds, teams ranked highest according to the U-18 league division earn byes from the early stages, allowing them to skip initial matches and enter the tournament at a later stage."
+    },
+    {
+      "question": "What historical changes has the All Japan High School Soccer Tournament undergone in terms of its name and participant eligibility?",
+      "answer": "From 1917 to 1924, the tournament was called the 'Japan Football Championship' and allowed school teachers, graduates, and alumni to participate. From 1925 to 1947, it was renamed the 'All Japan Junior High School Soccer Tournament' and restricted to junior high schools. Since 1948, it has been exclusively for high schools and is open to schools across the entire country."
+    },
+    {
+      "question": "Why is the All Japan High School Soccer Tournament particularly significant for third graders?",
+      "answer": "For third graders (final-year high school students), the tournament is the last opportunity to compete in an official football competition with their school peers, as they graduate shortly after. This makes each match highly motivating, as it could be their final appearance wearing their high school team shirt."
+    },
+    {
+      "question": "Write a Python function that simulates the knockout stage of the All Japan High School Soccer Tournament. Assume 48 teams and provide a simple elimination mechanism.",
+      "answer": "python\nimport random\n\ndef simulate_knockout_stage(teams):\n    current_round = teams.copy()\n    while len(current_round) > 1:\n        next_round = []\n        random.shuffle(current_round)  # Simulate match order\n        for i in range(0, len(current_round), 2):\n            if i + 1 < len(current_round):\n                winner = random.choice([current_round[i], current_round[i+1]])\n                next_round.append(winner)\n        current_round = next_round\n    return current_round[0]  # Champion\n\n# Example usage:\nteams = [f\"Team {i+1}\" for i in range(48)]\nchampion = simulate_knockout_stage(teams)\nprint(f\"The champion is: {champion}\")\n\nThis function takes a list of 48 teams and simulates the knockout stage by randomly selecting winners in each round until only one team (the champion) remains."
+    }
+  ]
+}

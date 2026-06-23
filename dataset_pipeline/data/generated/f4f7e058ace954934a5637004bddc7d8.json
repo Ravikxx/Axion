@@ -1,0 +1,30 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Jeanne_Dost",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What were Jeanne Dost's primary contributions to women's rights and education in Oregon during the 1970s?",
+      "answer": "Jeanne Dost played a pivotal role in advancing women's rights and education in Oregon by co-founding OSU's Women's Center and Women's Studies Department in 1971, serving as its director, and establishing the Women Studies program at Oregon State University. She also influenced state politics as the first president of the Oregon Women's Political Caucus in 1972 and served on the Steering Committee of the National Women's Political Caucus."
+    },
+    {
+      "question": "What academic and professional roles did Jeanne Dost hold at Oregon State University?",
+      "answer": "Jeanne Dost was a member of the Oregon State University faculty from 1965 to 1991. During this time, she served as an Assistant Professor of Economics from 1967 to 1971 and later became the Director of the Women's Studies department. She was also instrumental in founding the Women's Center and Women's Studies program at the university."
+    },
+    {
+      "question": "How did Jeanne Dost break barriers as a woman in economics and academia?",
+      "answer": "Jeanne Dost broke barriers in academia and economics by becoming the first woman appointed to the editorial board of the journal *Regional Science* in 1967 and being the only woman among nine economists invited to facilitate a National Conference on Mobility that same year. She was also the only female NSF Fellow in Urban Economics at Stanford University from 1970 to 1971."
+    },
+    {
+      "question": "What leadership roles did Jeanne Dost hold in political organizations?",
+      "answer": "Jeanne Dost served as the first president of the Oregon Women's Political Caucus from 1972 to 1974. Additionally, she was on the Steering Committee of the National Women's Political Caucus from 1971 to 1973, contributing to women's political advocacy at both the state and national levels."
+    },
+    {
+      "question": "Can you provide a code snippet demonstrating how to extract information about Jeanne Dost's educational background programmatically?",
+      "answer": "Here’s a Python snippet using a dictionary to extract Jeanne Dost's educational background:\n\npython\ndost_education = {\n    \"BA\": \"Washington State University\",\n    \"MA\": \"Radcliffe College\",\n    \"PhD\": \"Harvard University\"\n}\n\nfor degree, institution in dost_education.items():\n    print(f\"{degree}: {institution}\")\n\nThis will output:\n\nBA: Washington State University\nMA: Radcliffe College\nPhD: Harvard University\n"
+    },
+    {
+      "question": "Why might Jeanne Dost's appointment to the editorial board of *Regional Science* in 1967 be considered significant?",
+      "answer": "Jeanne Dost's appointment to the editorial board of *Regional Science* in 1967 is significant because it marked her as the first woman to hold such a position in a prestigious scholarly journal, breaking gender barriers in a male-dominated field. This achievement highlighted her expertise and paved the way for greater female representation in academic leadership."
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "source_url": "https://dev.to/polliog/your-site-works-in-chrome-congrats-youve-alienated-15-of-users-4hoc",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What percentage of users could potentially have a broken experience if a website is only tested in Chrome?",
+      "answer": "If a website is only tested in Chrome, approximately 35% of users could have a broken experience, which is about 1.5 billion people."
+    },
+    {
+      "question": "Why does the dominance of Chrome not equate to it being the standard for web development?",
+      "answer": "Chrome's dominance does not make it the standard because the real standard is defined by the W3C specification and WHATWG living standards. Chrome is dominant due to Google's large engineering team, aggressive feature shipping, and strong developer relations, but popularity does not imply correctness."
+    },
+    {
+      "question": "What was the issue with vendor prefixes like `-webkit-` and why was it problematic for Firefox?",
+      "answer": "Vendor prefixes like `-webkit-` were used because WebKit (Safari/Chrome) shipped features before they were standardized. Many developers tested only in Chrome/Safari, causing sites to break in Firefox. Mozilla even had to add `-webkit-` prefix support in Firefox to prevent sites from breaking."
+    },
+    {
+      "question": "Provide an example of a real bug that only occurred in Firefox and required a specific CSS fix.",
+      "answer": "A real bug in Firefox required using `flex: 1 1 0%;` instead of `flex: 1 1 0;` for flexbox items. While Chrome accepts `0` without a unit, Firefox strictly follows the spec and requires `0%`. This ensures cross-browser consistency and correctness."
+    },
+    {
+      "question": "How does Firefox's handling of the `fetch()` API with the `keepalive` option differ from Chrome's?",
+      "answer": "Firefox had a bug where the `keepalive` option in `fetch()` did not work with certain HTTP methods. For example, `keepalive: true` worked in Chrome but failed in Firefox for non-POST/GET methods, requiring additional debugging and fixes."
+    },
+    {
+      "question": "What are the advantages of using Firefox Developer Edition for web development?",
+      "answer": "Firefox Developer Edition offers a faster release cycle, built-in developer tools, and container tabs for isolating different contexts. It is designed specifically for developers and helps catch spec violations and bugs that might be missed when testing only in Chrome."
+    },
+    {
+      "question": "Write a code snippet demonstrating feature detection for the `structuredClone()` API to ensure cross-browser compatibility.",
+      "answer": "javascript\nif ('structuredClone' in window) {\n  const cloned = structuredClone(originalObject);\n} else {\n  const cloned = JSON.parse(JSON.stringify(originalObject));\n}\nThis code checks if the `structuredClone` API is available and uses it if supported, otherwise falls back to the `JSON.parse(JSON.stringify())` method."
+    },
+    {
+      "question": "Why is ignoring Safari during testing particularly problematic for developers using Windows or Linux?",
+      "answer": "Safari is only available on macOS/iOS, so developers using Windows or Linux cannot test Safari locally without additional resources like purchasing a Mac, using BrowserStack, or GitHub Codespaces. This limits their ability to ensure cross-browser compatibility, especially since Safari has a 20% market share, primarily on iOS devices."
+    },
+    {
+      "question": "What are some of the advanced CSS debugging features available in Firefox that are not present in Chrome?",
+      "answer": "Firefox offers advanced CSS debugging features such as a detailed CSS Grid inspector that shows grid line numbers, highlights grid areas, displays gap sizes, and visualizes grid template areas. It also provides better debugging for container queries, which were first implemented in Firefox before Chrome added support."
+    }
+  ]
+}

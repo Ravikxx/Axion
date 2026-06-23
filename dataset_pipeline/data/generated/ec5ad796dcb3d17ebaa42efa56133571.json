@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Deadhead",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is a Deadhead?",
+      "answer": "A Deadhead is a fan of the American rock band the Grateful Dead. The term refers to individuals who actively follow the band, attend live performances, and often immerse themselves in the subculture associated with the band."
+    },
+    {
+      "question": "How did the Deadhead subculture originate?",
+      "answer": "The Deadhead subculture originated in the 1970s when fans began traveling to see the Grateful Dead perform at as many shows or festivals as possible. This collective interest led to the development of a tight-knit community around the band."
+    },
+    {
+      "question": "What factors made Grateful Dead concerts unique?",
+      "answer": "Grateful Dead concerts were known for being unique events due to the band's extensive improvisation, eclectic song choices, and other variable factors. Each performance was considered distinct, contributing to the band's reputation for memorable live shows."
+    },
+    {
+      "question": "How did the Grateful Dead influence fan culture and historical material?",
+      "answer": "The Grateful Dead's permissive attitude toward taping performances led to a wealth of historical material, including recordings shared widely within the Deadhead community. This practice fostered a culture of preserving and sharing live music, shaping modern fan engagement."
+    },
+    {
+      "question": "Where can one find extensive Deadhead-related historical material collected by the band?",
+      "answer": "Much of the Deadhead-related historical material collected by the band over the years is housed in the Grateful Dead Archive at the University of California, Santa Cruz."
+    },
+    {
+      "question": "What role did Nicholas Meriwether play in the Grateful Dead Archive?",
+      "answer": "Nicholas Meriwether served as the founding curator of the Grateful Dead Archive at the University of California, Santa Cruz. He has also written extensively about Deadhead culture and its societal impact, emphasizing the archive's significance in understanding the 1960s counterculture and modern rock theater."
+    },
+    {
+      "question": "Write a Python snippet to calculate the total number of live shows performed by the Grateful Dead during their career.",
+      "answer": "python\n# Total number of live shows performed by the Grateful Dead\ntotal_shows = 2200\nprint(f\"The Grateful Dead performed {total_shows} live shows over their career.\")\n"
+    }
+  ]
+}

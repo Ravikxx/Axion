@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Bibliography_of_Augustine_of_Hippo",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the bibliography of Augustine of Hippo?",
+      "answer": "The bibliography of Augustine of Hippo is a list of works authored by the fourth-century Christian bishop and theologian Augustine of Hippo. It includes over one hundred separate titles spanning apologetic works, texts on Christian doctrine, exegetical writings, sermons, and letters."
+    },
+    {
+      "question": "Which notable works did Augustine write to address theological challenges?",
+      "answer": "Augustine wrote several notable works to address theological challenges, including apologetic texts against the Arians, Donatists, Manichaeans, and Pelagians. His 'De Doctrina Christiana' (On Christian Doctrine) is a key text on Christian doctrine, while his 'Confessions' provides a personal account of his earlier life."
+    },
+    {
+      "question": "What are Augustine's most famous works, and why are they significant?",
+      "answer": "Augustine's most famous works include 'Confessions', a personal account of his life, and 'De civitate dei' (The City of God), a 22-book response to the sack of Rome in 410, written to restore Christian confidence. His 'On the Trinity' is also significant for developing the 'psychological analogy' of the Trinity."
+    },
+    {
+      "question": "How did Augustine's 'Retractationes' contribute to his legacy?",
+      "answer": "Towards the end of his life (c. 426–427), Augustine revisited his previous works in chronological order in 'Retractationes'. The title, often translated as 'Retractions', can be misleading, as it was intended to mean 're-treatments' rather than retractions. The work reflects Augustine's reflections on what he would have said differently in his earlier writings."
+    },
+    {
+      "question": "What is the 'psychological analogy' of the Trinity as developed by Augustine?",
+      "answer": "In 'On the Trinity', Augustine developed the 'psychological analogy' of the Trinity, which compares the three persons of the Trinity to the human mind's faculties of memory, understanding, and will. This analogy helps explain the unity and distinction within the Trinity."
+    },
+    {
+      "question": "Write a Python function that generates a list of Augustine's major works categorized by type.",
+      "answer": "python\ndef get_augustine_works():\n    works = {\n        'Apologetic': ['Against the Arians', 'Against the Donatists', 'Against the Manichaeans', 'Against the Pelagians'],\n        'Doctrinal': ['De Doctrina Christiana (On Christian Doctrine)'],\n        'Exegetical': ['Commentary on Book of Genesis', 'Commentary on the Psalms', 'Commentary on Paul\\'s Letter to the Romans'],\n        'Personal': ['Confessions'],\n        'Theological': ['De civitate dei (The City of God)', 'On the Trinity', 'On Free Choice Of The Will'],\n        'Later': ['Retractationes']\n    }\n    return works\n\n# Example usage:\naugustine_works = get_augustine_works()\nprint(augustine_works)\n"
+    },
+    {
+      "question": "Why did Augustine write 'De civitate dei' (The City of God)?",
+      "answer": "Augustine wrote 'De civitate dei' (The City of God) in response to the sack of Rome by the Visigoths in 410. The work was intended to restore the confidence of his fellow Christians, who were deeply shaken by the event, by presenting a theological and philosophical defense of Christianity."
+    }
+  ]
+}

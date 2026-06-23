@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/dannwaneri/mcp-just-landed-on-your-phone-what-google-ai-edge-gallery-actually-does-1567",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What is Google AI Edge Gallery and what are its key features?",
+      "answer": "Google AI Edge Gallery is an open-source Android app from Google Research that enables large language models to run entirely on-device without requiring an internet connection for inference. Key features include local data processing, agent runtime with toggleable skills, calendar integration, scheduled reminders, and experimental MCP (Model Context Protocol) connections. The app supports multi-modal inputs like text, images, and audio, and includes a built-in model inference runtime called LiteRT-LM."
+    },
+    {
+      "question": "How does the agent runtime in Google AI Edge Gallery work and what are its capabilities?",
+      "answer": "The agent runtime in Google AI Edge Gallery supports 12 skills split into built-in and community tiers. Built-in skills include `calculate-hash`, `create-calendar-event`, and `interactive-map`, while community skills range from `read-calendar-events` to `kitchen-adventure`. Skills can be toggled individually, and the runtime allows for granular permissions (e.g., read vs. write calendar access). The runtime also supports MCP server connections for additional tool integration, with plans for OAuth authentication in the future. Only Gemma 4 models (e.g., Gemma-4-E2B-it) are supported for agent skills."
+    },
+    {
+      "question": "What is LiteRT-LM and how does it relate to TensorFlow Lite?",
+      "answer": "LiteRT-LM is Google's upgraded mobile inference runtime for running large language models on-device. Previously based on TensorFlow Lite, LiteRT-LM now includes significant enhancements to support models like Gemma 4 with larger context windows (e.g., 32K tokens) and multi-modal inputs. It serves as the backbone for running all models in the AI Edge Gallery, including those from third parties like DeepSeek and Qwen."
+    },
+    {
+      "question": "Provide a code snippet to set up an MCP server connection in Google AI Edge Gallery.",
+      "answer": "plaintext\n1. Open Google AI Edge Gallery on your Android device.\n2. Tap the MCP counter in the toolbar.\n3. Select '+ Add MCP server'.\n4. Enter the MCP server URL (e.g., http://localhost:8080).\n5. Choose authentication method: 'None', 'Request header', or 'OAuth (WIP)'.\n6. The app will fetch the tool manifest and load tool definitions into the system prompt.\n"
+    },
+    {
+      "question": "What are the key differences between the Gemma 4 and previous Gemma models in Google AI Edge Gallery?",
+      "answer": "Gemma 4 models (e.g., Gemma-4-E2B-it) introduce a 32K context window, significantly larger than previous models like Gemma 3n (4096 tokens). Gemma 4 also supports multi-modal inputs (text, images, and audio) in a single model, enabling more complex agentic tasks. Additionally, Gemma 4 is optimized for LiteRT-LM and is the only model family supported for agent skills in the AI Edge Gallery."
+    },
+    {
+      "question": "How can developers add custom skills to Google AI Edge Gallery?",
+      "answer": "Developers can add custom skills to Google AI Edge Gallery in four ways: 1) Featured list (curated community contributions), 2) Load from URL (any web-hosted skill directory), 3) Import local skill (from the device directly, no server needed), or 4) Browse GitHub Discussions for community-contributed skills. Local import allows developers to build and test skills entirely on-device without hosting."
+    },
+    {
+      "question": "What are the hardware requirements and setup steps to use Google AI Edge Gallery?",
+      "answer": "Google AI Edge Gallery requires capable Android hardware, such as a Pixel device. To set it up: 1) Install the app from the Play Store, 2) Download a Gemma 4 model (e.g., Gemma-4-E2B-it, 2.6 GB), 3) Open Agent Skills and toggle skills or add MCP servers, and 4) Start chatting with the model. The source code is available at [github.com/google-ai-edge/gallery](https://github.com/google-ai-edge/gallery)."
+    }
+  ]
+}

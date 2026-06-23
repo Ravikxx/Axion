@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/CITES",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is the full name of CITES, and when was it created?",
+      "answer": "CITES stands for the Convention on International Trade in Endangered Species of Wild Fauna and Flora, also known as the Washington Convention. It was created in 1963 following a decision at a meeting of the International Union for Conservation of Nature (IUCN)."
+    },
+    {
+      "question": "What is the primary goal of CITES?",
+      "answer": "The primary goal of CITES is to ensure that international trade of animals and plants does not threaten their survival. It accomplishes this by regulating and, in some cases, banning trade in endangered species."
+    },
+    {
+      "question": "How does CITES regulate trade in endangered species?",
+      "answer": "CITES prohibits the buying and selling of certain highly endangered animals outright, while requiring permits for trading other species. These regulations are applied through three appendices that categorize species based on their conservation status and the level of trade restrictions needed."
+    },
+    {
+      "question": "When did CITES become legally effective, and which countries were involved initially?",
+      "answer": "CITES became legally effective on 1 July 1975, but only for the countries that had ratified it by that date. The convention was open for signing starting 3 March 1973, and it took effect in each country only after that country formally agreed to it."
+    },
+    {
+      "question": "How many countries have ratified CITES as of 2025?",
+      "answer": "As of 2025, 185 countries have ratified the CITES Convention."
+    },
+    {
+      "question": "What is the scope of species protected by CITES, and how are they categorized?",
+      "answer": "CITES protects over 38,000 species of animals and plants. These species are categorized into three appendices based on their conservation status and the level of trade regulation required: Appendix I includes species threatened with extinction (trade generally prohibited), Appendix II includes species not necessarily threatened but requiring regulated trade, and Appendix III includes species protected by at least one country requesting assistance in regulating trade."
+    },
+    {
+      "question": "Who is the current Secretary-General of CITES as of April 2022?",
+      "answer": "As of April 2022, the Secretary-General of CITES is Ivonne Higuero."
+    }
+  ]
+}

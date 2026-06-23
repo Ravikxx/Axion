@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Danny_Wring",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When and where was Daniel Wring born?",
+      "answer": "Daniel Wring was born on 26 October 1986 in England."
+    },
+    {
+      "question": "Which football club did Daniel Wring start his professional career with?",
+      "answer": "Daniel Wring began his professional career as a trainee with Bristol City."
+    },
+    {
+      "question": "What was Daniel Wring's first league appearance for Bristol City?",
+      "answer": "His first league appearance for Bristol City was on 7 May 2005, when he came on as a late substitute for Joe Anyinsah in a 3–2 away win against Sheffield Wednesday."
+    },
+    {
+      "question": "How many professional appearances did Daniel Wring make for Bristol City before being released?",
+      "answer": "Daniel Wring made only one first-team appearance for Bristol City before being released at the end of the 2006–07 season."
+    },
+    {
+      "question": "Write a Python function that checks if Daniel Wring played for a specific football club based on the given text.",
+      "answer": "python\ndef did_wring_play_for_club(club_name):\n    clubs = [\n        \"Bristol City\", \"Torquay United\", \"Team Bath\", \"Newport County\",\n        \"Mangotsfield United\", \"Clevedon Town\", \"Chippenham Town F.C.\",\n        \"Bath City\", \"Bideford\", \"Weston-super-Mare\"\n    ]\n    return club_name in clubs\n\n# Example usage:\nprint(did_wring_play_for_club(\"Weston-super-Mare\"))  # Output: True\nprint(did_wring_play_for_club(\"Liverpool\"))         # Output: False\n"
+    },
+    {
+      "question": "What was Daniel Wring's role on the football field?",
+      "answer": "Daniel Wring played as a midfielder throughout his professional football career."
+    },
+    {
+      "question": "How many times did Daniel Wring play for Torquay United, and in what capacity?",
+      "answer": "Daniel Wring played six times for Torquay United, all of which were as a substitute."
+    }
+  ]
+}

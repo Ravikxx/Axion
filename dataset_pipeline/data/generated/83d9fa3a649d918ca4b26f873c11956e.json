@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Charles_\"Bud\"_Dant",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the original title of the song 'Stardust' when it was first conceived in 1927?",
+      "answer": "The original title of the song was 'Star Dust' when it was first conceived in 1927."
+    },
+    {
+      "question": "How did Hoagy Carmichael and Charles 'Bud' Dant first meet?",
+      "answer": "Hoagy Carmichael and Charles 'Bud' Dant first met in 1927 at the Book Nook restaurant on Indiana University's campus, where Carmichael played the first bars of 'Star Dust' and asked Dant to write an arrangement."
+    },
+    {
+      "question": "What role did Charles 'Bud' Dant play at NBC in the 1930s and 1940s?",
+      "answer": "Charles 'Bud' Dant served as the musical director for NBC, orchestrating and conducting music for radio shows in Hollywood. He worked with notable figures like Jack Benny, Bing Crosby, and Bob Hope."
+    },
+    {
+      "question": "Provide an example of a successful album Charles 'Bud' Dant produced in the 1960s, including its catalog number.",
+      "answer": "In 1968, Charles 'Bud' Dant produced the album 'The Unicorn' (single #32254) with The Irish Rovers, which earned him several gold records."
+    },
+    {
+      "question": "Which famous clarinet player did Charles 'Bud' Dant discover and collaborate with at The Lawrence Welk Show?",
+      "answer": "Charles 'Bud' Dant discovered and recorded 42 hit albums with the talented clarinet player Pete Fountain."
+    },
+    {
+      "question": "What was Charles 'Bud' Dant's involvement in the music industry during his time in Hawaii?",
+      "answer": "After moving to Hawaii, Dant succeeded Webley Edwards as the producer of the long-running Hawaiian music radio show 'Hawaii Calls.' He also produced albums for local artists like Alfred Apaka and Melveen Leed, and composed music for Alex Anderson."
+    },
+    {
+      "question": "Write a Python function to extract the birth and death years of Charles 'Bud' Dant from the given text.",
+      "answer": "python\ndef extract_dant_years(text):\n    birth_year = None\n    death_year = None\n    \n    for line in text.split('\\n'):\n        if 'born' in line and 'June 21, 1907' in line:\n            birth_year = 1907\n        if 'died at age 92' in line:\n            death_year = 1999\n    \n    return birth_year, death_year\n\n# Example usage:\ntext = \"...\"  # Insert the full text here\nbirth, death = extract_dant_years(text)\nprint(f\"Birth Year: {birth}, Death Year: {death}\")\n"
+    }
+  ]
+}

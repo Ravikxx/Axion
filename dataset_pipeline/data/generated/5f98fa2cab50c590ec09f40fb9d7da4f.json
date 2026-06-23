@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Alexandru_Cernat",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What were the key military ranks held by Alexandru Cernat during his early career in the Moldavian Army?",
+      "answer": "Alexandru Cernat advanced through the following military ranks in the Moldavian Army: cadet (1851), second lieutenant (1852), lieutenant (1855), and captain (1857)."
+    },
+    {
+      "question": "How did Alexandru Cernat contribute to the Romanian War of Independence in 1877?",
+      "answer": "As commander of operations, Cernat ensured efficient mobilization of the Romanian Army, improved equipment quality (including portable weapons, cannons, and ammunition), accelerated reserve training, and organized troops to defend southern Romania from Ottoman incursions. He personally led successful battles at Griviţa No. 1 and No. 2 Redoubts, and supported the encirclement strategy at Plevna, forcing Osman Nuri Pasha’s capitulation."
+    },
+    {
+      "question": "What awards did Alexandru Cernat receive for his military service?",
+      "answer": "Cernat received several notable awards, including the Military Virtue Medal 1st class (1877), the Order of St. George 4th class (1877) from Tsar Alexander II, the Order of the Star of Romania Grand Officer class, and the Order of Saint Anna, 2nd class."
+    },
+    {
+      "question": "What political roles did Alexandru Cernat hold within the National Liberal Party?",
+      "answer": "Cernat worked for the National Liberal Party and served as a Member of Parliament (MP) from 1864 to 1888, a senator during the same period, and as deputy-president of the Senate in multiple sessions."
+    },
+    {
+      "question": "Write a Python function that calculates the duration of Alexandru Cernat's military service in years.",
+      "answer": "python\ndef calculate_military_service_duration():\n    start_year = 1851\n    end_year = 1891\n    return end_year - start_year\n\n# Example usage:\nmilitary_service_years = calculate_military_service_duration()\nprint(military_service_years)  # Output: 40\n"
+    },
+    {
+      "question": "What were Alexandru Cernat's primary responsibilities as Chief of the Romanian General Staff (1881–1882)?",
+      "answer": "As Chief of the Romanian General Staff, Cernat was responsible for overseeing strategic military planning, coordinating army operations, and ensuring the readiness and efficiency of the Romanian Army during his tenure."
+    },
+    {
+      "question": "Where is Alexandru Cernat buried, and what notable feature marks his grave?",
+      "answer": "Alexandru Cernat is buried at Bellu Cemetery in Bucharest, and his headstone was designed by the sculptor Ioan Georgescu."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Chrysler_Atlantic",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What company fabricated the Chrysler Atlantic concept car?",
+      "answer": "The Chrysler Atlantic was fabricated by Gaffoglio Family Metalcrafters, a company based in California."
+    },
+    {
+      "question": "Who were the key designers involved in creating the Chrysler Atlantic concept car?",
+      "answer": "The Chrysler Atlantic was designed by Bob Hubbach and was inspired by the Bugatti Atlantique. The project also involved Chrysler's president Bob Lutz, who sketched the initial idea on a napkin in early 1993, and chief designer Tom Gale."
+    },
+    {
+      "question": "What were the retro inspirations for the styling of the Chrysler Atlantic?",
+      "answer": "The styling of the Chrysler Atlantic was inspired by opulent vehicles from the 1930s, particularly the Bugatti Type 57S Atlantique (or Atlantic) and the Talbot-Lago T150 SS Coupe. Key retro details included the shape of the side windows and the curved boot, similar to the Talbot-Lago."
+    },
+    {
+      "question": "How was the straight-8 engine in the Chrysler Atlantic constructed, and why is this unusual?",
+      "answer": "The Atlantic's straight-8 engine was constructed by combining two 4-cylinder Dodge Neon engines in an 'S' configuration, resulting in a 4.0 L engine. This approach is unusual because modern cars rarely use straight-8 engines."
+    },
+    {
+      "question": "What is the horsepower and transmission setup of the Chrysler Atlantic concept car?",
+      "answer": "The Chrysler Atlantic has approximately 360 horsepower (268.5 kW) and uses Chrysler's 42LE transaxle transmission, which was lifted from the Chrysler LHS and mounted to the rear subframe."
+    },
+    {
+      "question": "Provide a code snippet to calculate the wheelbase of the Chrysler Atlantic in millimeters.",
+      "answer": "python\n# Wheelbase of the Chrysler Atlantic in inches\nwheelbase_inches = 128\n# Conversion factor from inches to millimeters\ninches_to_mm = 25.4\n# Calculate wheelbase in millimeters\nwheelbase_mm = wheelbase_inches * inches_to_mm\nprint(f\"Wheelbase of the Chrysler Atlantic: {wheelbase_mm} mm\")\n"
+    },
+    {
+      "question": "Why has the Chrysler Atlantic concept car remained popular over the years?",
+      "answer": "The Chrysler Atlantic's popularity stems from its striking retro design and opulent styling, which have made it a recurring presence at public appearances. Additionally, its iconic look has been leveraged in advertising and labeling for various automotive car care products, accessories, and electronics."
+    }
+  ]
+}

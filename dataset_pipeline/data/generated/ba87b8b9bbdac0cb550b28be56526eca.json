@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/.376_Steyr",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the .376 Steyr cartridge and who developed it?",
+      "answer": "The .376 Steyr (9.5x59mmRB) is a rebated rim rifle cartridge developed jointly by Hornady and Steyr. It was introduced in 1999 for use in the Steyr Scout rifle and is based on the 9.3×64mm Brenneke case, necked up to accommodate a 0.375-inch (9.5 mm) bullet and shortened by about 4 mm."
+    },
+    {
+      "question": "How does the .376 Steyr differ from the 9.3×64mm Brenneke case?",
+      "answer": "The .376 Steyr is derived from the 9.3×64mm Brenneke case but is necked up to accept a larger 0.375-inch (9.5 mm) bullet. Additionally, it is shortened by approximately 4 mm to fit a standard-length rifle action."
+    },
+    {
+      "question": "Why was the .376 Steyr cartridge developed?",
+      "answer": "The .376 Steyr was developed to meet minimum caliber requirements for hunting dangerous game in certain regions, such as Africa, where a minimum of .366 inch (9.3 mm) or .375 inch (9.5 mm) is mandated. It was also intended as an evolution of Jeff Cooper's 'Super Scout' and 'Dragoon Scout' rifle concepts for medium and large game hunting."
+    },
+    {
+      "question": "What are the recoil characteristics of the .376 Steyr cartridge compared to other cartridges?",
+      "answer": "The .376 Steyr is noted for having higher felt recoil, making it the largest practical cartridge suitable for use in compact, lightweight rifles like the Steyr Scout. This higher recoil is a trade-off for its power and versatility in hunting scenarios."
+    },
+    {
+      "question": "What rifle platforms are chambered for the .376 Steyr?",
+      "answer": "The .376 Steyr was primarily designed for the Steyr Scout rifle but is also used in the Steyr Mannlicher 'Pro Hunter,' a conventional-style rifle chambered for this cartridge."
+    },
+    {
+      "question": "How did Jeff Cooper influence the naming and concept of the .376 Steyr?",
+      "answer": "Jeff Cooper initially tested a Scout rifle chambered in .350 Remington Magnum, later switching to a version he called the 'Lion Scout' after hunting a lion. When Steyr discussed naming the new cartridge '.375 Steyr,' Cooper suggested '.376 Steyr' to avoid confusion with the .375 H&H Magnum. Cooper also referred to his Scout Rifle in this caliber as the 'Dragoon' or 'Dragoon Scout,' though this designation is not used in production rifles."
+    },
+    {
+      "question": "Write a Python snippet to calculate the bullet diameter of a .376 Steyr cartridge in millimeters.",
+      "answer": "python\n# Bullet diameter calculation for .376 Steyr cartridge\nbullet_diameter_inches = 0.375  # 0.375 inches\nbullet_diameter_mm = bullet_diameter_inches * 25.4  # Convert inches to millimeters\nbullet_diameter_mm  # Output: 9.525 mm\n"
+    },
+    {
+      "question": "What are the design goals behind Jeff Cooper's 'Super Scout' and 'Dragoon Scout' rifle concepts?",
+      "answer": "Jeff Cooper's 'Super Scout' and 'Dragoon Scout' concepts were extensions of his original scout rifle idea, focusing on a medium-caliber rifle capable of handling large and dangerous game. The design aimed for a compact, lightweight, and versatile firearm suitable for hunting in challenging conditions, with a balance between power and maneuverability."
+    }
+  ]
+}

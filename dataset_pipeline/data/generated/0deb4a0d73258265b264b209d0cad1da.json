@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/1948_Republican_Party_vice_presidential_candidate_selection",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who secured the Republican presidential nomination in 1948 and on what ballot?",
+      "answer": "New York Governor Thomas Dewey secured the Republican presidential nomination on the third ballot of the 1948 Republican National Convention."
+    },
+    {
+      "question": "What were the names of two potential running mates considered by Thomas Dewey before choosing Earl Warren?",
+      "answer": "House Majority Leader Charles A. Halleck and former Minnesota Governor Harold Stassen were both considered by Thomas Dewey before he chose Earl Warren."
+    },
+    {
+      "question": "Why did Dewey ultimately decide to ask Earl Warren to be his running mate?",
+      "answer": "Dewey chose Earl Warren because the Dewey-Warren ticket was well-received by the press, combining the youthful, popular governors of two of the three most populous states in the nation."
+    },
+    {
+      "question": "What political office did Earl Warren hold after serving as Thomas Dewey's running mate?",
+      "answer": "After serving as Thomas Dewey's running mate, Earl Warren was appointed Chief Justice of the United States by President Dwight D. Eisenhower in 1953."
+    },
+    {
+      "question": "What allegation did Charles A. Halleck make regarding his exclusion from the vice-presidential nomination?",
+      "answer": "Charles A. Halleck alleged that he had been promised the vice presidency in exchange for supporting Dewey, but his isolationist views led Dewey and others to pass him over."
+    },
+    {
+      "question": "How did Harold Stassen's role change during the selection process for the Republican vice-presidential nominee in 1948?",
+      "answer": "Harold Stassen was initially considered as a potential running mate but was ultimately offered the nomination if Earl Warren declined. However, Dewey convinced Warren to accept, so Stassen was not nominated."
+    },
+    {
+      "question": "Provide a Python code snippet that calculates the number of years between Earl Warren's appointment as Chief Justice and the 1948 election.",
+      "answer": "python\n# Year of Earl Warren's appointment as Chief Justice\nyear_appointed = 1953\n\n# Year of the 1948 election\nyear_election = 1948\n\n# Calculate the number of years between the two events\nyears_between = year_appointed - year_election\nprint(years_between)  # Output: 5\n"
+    }
+  ]
+}

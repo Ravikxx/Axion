@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/2022_Campeonato_Cearense",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the official name of the 2022 Campeonato Cearense and why?",
+      "answer": "The official name was 'Cearense 1XBET 2022' due to sponsorship reasons with 1XBET."
+    },
+    {
+      "question": "What were the start and end dates of the 2022 Campeonato Cearense?",
+      "answer": "The competition began on 8 January 2022 and ended on 23 April 2022."
+    },
+    {
+      "question": "Why was Crato suspended from the 2022 Campeonato Cearense, and what was the outcome?",
+      "answer": "Crato was suspended due to evidence of match fixing found by Sportradar. As a result, their final match (Crato v Ferroviário) was awarded a 3–0 win to Ferroviário, and later all matches involving Crato were annulled and replaced by 3–0 wins."
+    },
+    {
+      "question": "What was the reason behind the initial suspension of the Campeonato Cearense from 6 to 11 March 2022?",
+      "answer": "The suspension occurred due to a match fixing investigation involving Icasa fielding an ineligible player (Leandro Mendes) in their match against Iguatu on 19 February 2022. The suspension was requested to allow the TJDF-CE to review the case and determine its impact on the tournament standings."
+    },
+    {
+      "question": "How did the Superior Tribunal de Justiça Desportiva (STJD) ultimately resolve the Campeonato Cearense title dispute?",
+      "answer": "On 23 June 2022, the STJD overruled the decisions of the TJDF-CE, confirming the match results and awarding the title to Fortaleza, who won the finals 4–0 on aggregate against Caucaia."
+    },
+    {
+      "question": "What sanctions were imposed on Icasa in the 2022 Campeonato Cearense, and why?",
+      "answer": "Icasa were deducted four points and fined R$3,000 for fielding an ineligible player (Leandro Mendes) in their match against Iguatu on 19 February 2022. This punishment led to their relegation from the league."
+    },
+    {
+      "question": "Write a Python script to calculate the total number of matches a team would have played in the Campeonato Cearense if no suspensions or annulments occurred.",
+      "answer": "python\n# Assuming a standard double round-robin tournament with 8 teams\ndef calculate_matches(teams=8):\n    return teams * (teams - 1)  # Each team plays every other team twice\n\nmatches = calculate_matches()\nprint(f\"Total matches in a standard 8-team double round-robin: {matches}\")\n\nOutput: Total matches in a standard 8-team double round-robin: 56"
+    }
+  ]
+}

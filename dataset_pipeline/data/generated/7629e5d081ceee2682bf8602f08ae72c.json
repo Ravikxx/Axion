@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Cane_handle_camera",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who patented the Ben Akiba Cane Handle Camera and where?",
+      "answer": "The Ben Akiba Cane Handle Camera was patented by Emil Kronke from Dresden, Germany. The patents were filed in England on 13 August 1902, in Germany in 1903, and in the USA on 3 May 1904."
+    },
+    {
+      "question": "What company manufactured the Ben Akiba Cane Handle Camera?",
+      "answer": "The Ben Akiba Cane Handle Camera was manufactured by A. Lehmann in Berlin, Germany."
+    },
+    {
+      "question": "How many exposures could the Ben Akiba Cane Handle Camera take on a single roll of film?",
+      "answer": "The Ben Akiba Cane Handle Camera could take 20 exposures measuring 13x25mm on a single roll of film."
+    },
+    {
+      "question": "What were the dimensions of the film used in the Ben Akiba Cane Handle Camera?",
+      "answer": "The film used in the Ben Akiba Cane Handle Camera was 18mm wide and 70 cm long."
+    },
+    {
+      "question": "How was the shutter of the Ben Akiba Cane Handle Camera operated?",
+      "answer": "The shutter of the Ben Akiba Cane Handle Camera was operated by pulling a knob located below the handle."
+    },
+    {
+      "question": "What type of lens did the Ben Akiba Cane Handle Camera use, and what were its specifications?",
+      "answer": "The Ben Akiba Cane Handle Camera used a 35mm f/9 meniscus lens."
+    },
+    {
+      "question": "Write a Python script to calculate the total area of film a Ben Akiba Cane Handle Camera could hold if the film was laid out flat.",
+      "answer": "To calculate the total area of film, we multiply the width (18mm) by the length (70 cm, converted to 700mm).\n\npython\n# Film dimensions in millimeters\nfilm_width_mm = 18\nfilm_length_mm = 700\n\n# Calculate total film area in square millimeters\ntotal_area_mm2 = film_width_mm * film_length_mm\n\nprint(f\"Total film area: {total_area_mm2} mm²\")\n# Output: Total film area: 12600 mm²\n"
+    }
+  ]
+}

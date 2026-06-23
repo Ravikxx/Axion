@@ -1,0 +1,30 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Aburrá_Valley",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the Aburrá Valley and where is it located?",
+      "answer": "The Aburrá Valley is a natural river basin of the Medellín River and one of the most populous valleys in Colombia's Andean Region, with nearly 4 million inhabitants in its largest urban area, the Metropolitan Area of the Aburrá Valley. It is situated on the Central Range of the Andes, between the Magdalena and Cauca river valleys, oriented from south to north."
+    },
+    {
+      "question": "How did the Aburrá Valley get its name?",
+      "answer": "The name 'Aburrá' originates from an ancient language spoken by the indigenous 'Aburreans' (or 'Aburraes') who inhabited the region before the Spanish colonization in the 16th century."
+    },
+    {
+      "question": "What are the highest and lowest elevations in the Aburrá Valley?",
+      "answer": "The highest elevation in the surrounding mountains reaches up to 3,100 meters (10,200 feet) above sea level at Padre Amaya Peak, while the lowest elevation in the valley is 1,300 meters (4,300 feet) above sea level."
+    },
+    {
+      "question": "How long and wide is the Aburrá Valley?",
+      "answer": "The valley stretches 60 kilometers (37 miles) from its northern to southern limits. Its width varies, with the widest part measuring 8–10 kilometers (5.0–6.2 miles) near the municipality of Medellín, and the narrowest part measuring 3 kilometers (1.9 miles) near Copacababana."
+    },
+    {
+      "question": "Which major city is located within the Aburrá Valley?",
+      "answer": "The city of Medellín is located within the Aburrá Valley and serves as the core of the Metropolitan Area of the Aburrá Valley."
+    },
+    {
+      "question": "Can you write a Python code snippet to calculate the approximate area of the Aburrá Valley's widest section? Assume the valley is roughly rectangular in shape.",
+      "answer": "Assuming the widest section is 10 km long and 8 km wide, the area can be calculated as follows:\n\npython\nlength = 10  # km\nwidth = 8    # km\narea = length * width\nprint(f\"Approximate area of the widest section: {area} square kilometers\")\n\nThis would output: 'Approximate area of the widest section: 80 square kilometers'."
+    }
+  ]
+}

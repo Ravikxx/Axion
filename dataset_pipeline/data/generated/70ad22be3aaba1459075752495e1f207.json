@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Hubert_Pair",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was Hubert B. Pair and what were his notable professional roles?",
+      "answer": "Hubert B. Pair (1904–1988) was a prominent African American jurist who served as a judge on the District of Columbia Court of Appeals, the highest court for the District of Columbia. He began his legal career as the first black lawyer hired by the corporation counsel's office in 1942, where he worked for 28 years, rising to chief of the appellate staff and acting corporation counsel. In 1970, President Nixon nominated him to the D.C. Court of Appeals, making him one of seven black judicial nominees at the time—a historic group. He served on the court from 1971 to 1974 and later assumed senior status."
+    },
+    {
+      "question": "What educational background did Hubert B. Pair have, and how did he balance work and studies?",
+      "answer": "Hubert B. Pair graduated from Howard University and earned his law degree from Terrell Law School, both historically black institutions in segregated Washington, D.C. To support himself while studying at night, he worked as a messenger and skilled laborer at the Bureau of Customs. He also taught night classes at Terrell Law School until the institution closed in 1951."
+    },
+    {
+      "question": "How did Hubert B. Pair break barriers in the corporation counsel's office?",
+      "answer": "In 1942, Hubert B. Pair became the first black lawyer ever hired by the corporation counsel's office in Washington, D.C. His groundbreaking appointment opened doors for future African American attorneys in the legal system. During his 28-year tenure, he advanced to leadership roles, including chief of the appellate staff and acting corporation counsel, earning respect from colleagues like future federal judge Oliver Gasch."
+    },
+    {
+      "question": "What role did Hubert B. Pair play in the Supreme Court, and what was the outcome?",
+      "answer": "Hubert B. Pair argued a case on behalf of the District of Columbia before the U.S. Supreme Court during his time at the corporation counsel's office. However, the Court did not issue a decision; instead, it dismissed the writ as improvidently granted, meaning the case was not appropriate for the Court to hear at that time."
+    },
+    {
+      "question": "How did Hubert B. Pair contribute to diversity in judicial nominations under President Nixon?",
+      "answer": "In 1970, President Nixon nominated Hubert B. Pair to the D.C. Court of Appeals as part of a historic group of six other black judicial nominees. According to *Jet* magazine, this was the largest number of African Americans ever nominated to the federal bench at one time. Pair’s confirmation in 1971 marked a significant milestone in diversifying the judiciary."
+    },
+    {
+      "question": "What were Hubert B. Pair’s community and religious affiliations?",
+      "answer": "Hubert B. Pair was actively involved in his community and religious life. He was a member of the National Association for the Advancement of Colored People (NAACP), the Pigskin Club (a social organization for African American men), and the Metropolitan Baptist Church of Washington, where he served as a trustee and taught a men’s Bible class."
+    },
+    {
+      "question": "Write a Python function to calculate the duration of Hubert B. Pair’s career on the D.C. Court of Appeals, given his start year (1971) and mandatory retirement year (1974).",
+      "answer": "python\ndef calculate_career_duration(start_year, retirement_year):\n    \"\"\"\n    Calculate the duration of Hubert B. Pair's career on the D.C. Court of Appeals.\n    \n    Args:\n        start_year (int): Year Pair started serving on the court (1971)\n        retirement_year (int): Year Pair reached mandatory retirement (1974)\n    \n    Returns:\n        int: Number of years served\n    \"\"\"\n    return retirement_year - start_year\n\n# Example usage:\nduration = calculate_career_duration(1971, 1974)\nprint(f\"Hubert B. Pair served for {duration} years on the D.C. Court of Appeals.\")\n\nThis function calculates the difference between the start and retirement years to determine the duration of Pair's service."
+    }
+  ]
+}

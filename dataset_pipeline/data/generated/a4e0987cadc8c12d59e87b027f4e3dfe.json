@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Davido",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is Davido's real name and when was he born?",
+      "answer": "Davido's real name is David Adedeji Adeleke. He was born on November 21, 1992."
+    },
+    {
+      "question": "How did Davido initially enter the music industry?",
+      "answer": "Davido made his music debut as a member of the group KB International."
+    },
+    {
+      "question": "What was Davido's first major breakthrough single and from which album did it come?",
+      "answer": "Davido's first major breakthrough single was 'Dami Duro,' which came from his debut studio album 'Omo Baba Olowo' released in 2012."
+    },
+    {
+      "question": "List Davido's studio albums in chronological order along with their release years.",
+      "answer": "Davido's studio albums in chronological order are: 'Omo Baba Olowo' (2012), 'A Good Time' (2019), 'A Better Time' (2020), 'Timeless' (2023), and '5ive' (2025)."
+    },
+    {
+      "question": "What record labels has Davido been associated with throughout his career?",
+      "answer": "Davido has been associated with Sony Music, RCA Records, and he founded his own record label Davido Music Worldwide."
+    },
+    {
+      "question": "Write a Python code snippet to fetch and display Davido's top 5 most-streamed songs based on a hypothetical API response.",
+      "answer": "python\nimport requests\n\n# Hypothetical API endpoint for Davido's top songs\ndef fetch_top_songs(api_url):\n    try:\n        response = requests.get(api_url)\n        response.raise_for_status()\n        songs = response.json()\n        top_5_songs = songs['top_songs'][:5]\n        for idx, song in enumerate(top_5_songs, 1):\n            print(f\"{idx}. {song['title']} - {song['streams']} streams\")\n    except requests.exceptions.RequestException as e:\n        print(f\"Error fetching data: {e}\")\n\n# Example usage (mock URL)\nfetch_top_songs(\"https://api.example.com/davido/top-songs\")\n"
+    },
+    {
+      "question": "How did Davido's contract renegotiation with Sony in 2017 impact his career?",
+      "answer": "In 2017, Davido renegotiated his contract with Sony due to creative control issues. This led to the release of five singles including 'If' and 'Fall,' with 'Fall' becoming the longest-charting Nigerian pop song in Billboard history."
+    },
+    {
+      "question": "What are some of the notable achievements or recognitions Davido has received?",
+      "answer": "Notable achievements include winning the Next Rated award at The Headies in 2012, being listed among the 100 most-influential Africans by New African magazine in 2019, appearing on Time 100's Next List in 2021, and being a cultural ambassador for Nigeria."
+    }
+  ]
+}

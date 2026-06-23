@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Effects_of_climate_change",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What are the primary impacts of climate change on Earth's natural environment?",
+      "answer": "Climate change causes several key impacts on the natural environment, including intense forest fires, thawing permafrost, desertification, and shifts in precipitation patterns. These changes disrupt ecosystems, threaten biodiversity, and can lead to irreversible damage once critical tipping points are crossed. For example, excess heat in regions like the Arctic and mountains exceeds animals' capacity to adapt, forcing species migration or extinction."
+    },
+    {
+      "question": "Why has the Arctic warmed faster than other regions due to climate change?",
+      "answer": "The Arctic has warmed faster than most other regions due to climate change feedback loops. These include the loss of reflective sea ice (reducing albedo), increased absorption of heat by newly exposed dark ocean surfaces, and the release of stored greenhouse gases from thawing permafrost. This phenomenon, known as Arctic amplification, accelerates warming in the region."
+    },
+    {
+      "question": "How does ocean warming affect marine ecosystems?",
+      "answer": "Ocean warming triggers multiple cascading effects on marine ecosystems, including marine heatwaves, ocean stratification (reducing nutrient mixing), deoxygenation (lowering oxygen levels), and changes to ocean currents. Additionally, as the ocean absorbs atmospheric carbon dioxide, it acidifies, which harms calcifying organisms like coral reefs and shellfish. These changes threaten biodiversity and disrupt food webs."
+    },
+    {
+      "question": "What are the long-term consequences of sea level rise?",
+      "answer": "Sea level rise poses long-term risks such as permanent flooding of coastal wetlands, islands, and low-lying cities, leading to habitat loss and human displacement. It also exacerbates coastal erosion, saltwater intrusion into freshwater systems, and storm surge impacts during extreme weather events. Even if surface temperatures stabilize, the delayed effects of ocean warming and ice sheet melt will continue driving sea level rise for centuries."
+    },
+    {
+      "question": "How does a 2°C (3.6°F) increase in global temperature affect biodiversity?",
+      "answer": "At 2°C of warming, approximately 10% of terrestrial species are projected to become critically endangered, with ecosystems in mountains, coral reefs, and the Arctic being most vulnerable. Species unable to migrate or adapt face higher extinction risks due to habitat loss, heat stress, and ecosystem disruptions."
+    },
+    {
+      "question": "Provide a Python code snippet to visualize global temperature anomalies over time using a dataset of your choice.",
+      "answer": "python\nimport matplotlib.pyplot as plt\nimport pandas as pd\n\n# Sample dataset (replace with actual data, e.g., from NASA or NOAA)\ndata = {\n    'Year': [1900, 1920, 1940, 1960, 1980, 2000, 2020],\n    'Temperature_Anomaly_C': [-0.3, -0.2, 0.1, 0.0, 0.3, 0.7, 1.1]\n}\n\ndf = pd.DataFrame(data)\nplt.figure(figsize=(10, 5))\nplt.plot(df['Year'], df['Temperature_Anomaly_C'], marker='o', linestyle='-')\nplt.title('Global Temperature Anomalies (1900–2020)')\nplt.xlabel('Year')\nplt.ylabel('Temperature Anomaly (°C)')\nplt.grid(True)\nplt.show()\n\nThis code uses a hypothetical dataset to plot temperature anomalies over time. Replace the data with real-world sources like the NASA GISS Surface Temperature Analysis (GISTEMP) dataset for accurate visualizations."
+    },
+    {
+      "question": "Which groups of people are most vulnerable to climate change impacts, and why?",
+      "answer": "Vulnerable groups include the poor, children, indigenous peoples, and residents of island nations or coastal cities. These groups face heightened risks due to limited resources for adaptation, reliance on climate-sensitive livelihoods (e.g., agriculture), and geographic exposure to hazards like flooding or extreme heat. Industrialized countries, despite contributing most to historical emissions, have more adaptive capacity due to financial and technological resources."
+    },
+    {
+      "question": "Explain the concept of climate tipping points and their significance.",
+      "answer": "Climate tipping points are critical thresholds beyond which small changes can lead to irreversible and self-perpetuating shifts in Earth's systems. Examples include the collapse of ice sheets (e.g., Greenland), the dieback of the Amazon rainforest, or the shutdown of ocean currents like the Atlantic Meridional Overturning Circulation (AMOC). Crossing these points accelerates climate change and its impacts, making mitigation efforts more urgent."
+    }
+  ]
+}

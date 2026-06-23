@@ -1,0 +1,30 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/2009_World_Championships_in_Athletics_–_Men's_400_metres",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Which American athlete was favored in the men's 400 metres at the 2009 World Championships, and why?",
+      "answer": "LaShawn Merritt was favored as the Olympic champion and had a world-leading time of 44.50 seconds that season. Although both Americans were undefeated, Merritt's recent form gave him the edge over the reigning world champion Jeremy Wariner."
+    },
+    {
+      "question": "List the athletes who were considered capable of winning a medal in the men's 400 metres at the 2009 World Championships.",
+      "answer": "The athletes considered capable of winning a medal were Americans Jeremy Wariner and LaShawn Merritt (expected to contend for gold or silver), and Bahamian Chris Brown, Irishman David Gillick, Frenchman Leslie Djhone, and Americans Gil Roberts and Lionel Larry (seen as capable of a bronze at best)."
+    },
+    {
+      "question": "What notable incident occurred during the heats of the men's 400 metres at the 2009 World Championships?",
+      "answer": "African record holder Gary Kikaya was disqualified for a lane infraction, marking him as the most high-profile casualty of the first round."
+    },
+    {
+      "question": "Who was the fastest qualifier in the heats of the men's 400 metres at the 2009 World Championships, and what was their time?",
+      "answer": "Ramon Miller was the fastest qualifier with a new personal best time of 45 seconds."
+    },
+    {
+      "question": "How often had the United States topped the Olympic 400 m podium prior to the 2009 World Championships in Athletics?",
+      "answer": "The United States had topped the Olympic 400 m podium every time since the 1988 Olympics, indicating a strong tradition in the event."
+    },
+    {
+      "question": "Write a Python function to calculate the winning margin in seconds given the times of the first and second-place finishers in a 400m race.",
+      "answer": "python\ndef calculate_winning_margin(first_place_time, second_place_time):\n    \"\"\"\n    Calculate the winning margin in seconds between first and second place finishers.\n    \n    Args:\n        first_place_time (float): Time of the first-place finisher in seconds.\n        second_place_time (float): Time of the second-place finisher in seconds.\n        \n    Returns:\n        float: Winning margin in seconds (positive value indicates first place was faster).\n    \"\"\"\n    return second_place_time - first_place_time\n\n# Example usage:\nwinning_margin = calculate_winning_margin(44.00, 44.54)\nprint(f\"Winning margin: {winning_margin} seconds\")  # Output: Winning margin: 0.54 seconds\n"
+    }
+  ]
+}

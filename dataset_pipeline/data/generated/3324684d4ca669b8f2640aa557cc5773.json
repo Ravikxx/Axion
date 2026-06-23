@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Cyclone_Alibera",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "How long did Tropical Cyclone Alibera last, and where did it form initially?",
+      "answer": "Tropical Cyclone Alibera lasted for 22 days and initially formed on December 16, 1989, well to the northeast of Madagascar."
+    },
+    {
+      "question": "What were the maximum sustained winds of Alibera when it reached tropical cyclone status on December 20, 1989?",
+      "answer": "On December 20, 1989, Alibera intensified to tropical cyclone status with 10-minute maximum sustained winds of 120 km/h (75 mph)."
+    },
+    {
+      "question": "How did the estimated wind speeds for Alibera differ between Météo-France and the Joint Typhoon Warning Center?",
+      "answer": "The Météo-France office estimated 10-minute sustained winds of 140 km/h (87 mph), while the Joint Typhoon Warning Center estimated peak 1-minute winds of 250 km/h (160 mph)."
+    },
+    {
+      "question": "Describe the path and intensity changes of Alibera from December 29, 1989, to January 5, 1990.",
+      "answer": "After December 29, Alibera began moving steadily southwestward as a weakened system. It struck southeastern Madagascar near Mananjary on January 1, re-intensified slightly over water on January 3, then turned southeast, southwest, and back southeast before dissipating on January 5."
+    },
+    {
+      "question": "What were the impacts of Alibera in Madagascar, particularly in Mananjary?",
+      "answer": "In Mananjary, nearly every building was damaged or destroyed, and locals considered it the worst storm since 1925. The cyclone also brought heavy rainfall and wind gusts up to 250 km/h (150 mph) to coastal cities."
+    },
+    {
+      "question": "What was the human and economic impact of Tropical Cyclone Alibera across the region?",
+      "answer": "Alibera killed 46 people, left 55,346 people homeless, destroyed large areas of crops, thousands of houses, and several roads and bridges. The Malagasy government requested international assistance afterward."
+    },
+    {
+      "question": "Write a Python function to calculate the duration of a tropical cyclone given its start and end dates.",
+      "answer": "python\ndef calculate_cyclone_duration(start_date, end_date):\n    \"\"\"\n    Calculate the duration of a tropical cyclone in days.\n\n    Args:\n        start_date (str): Start date in 'YYYY-MM-DD' format.\n        end_date (str): End date in 'YYYY-MM-DD' format.\n\n    Returns:\n        int: Duration in days.\n    \"\"\"\n    from datetime import datetime\n    start = datetime.strptime(start_date, '%Y-%m-%d')\n    end = datetime.strptime(end_date, '%Y-%m-%d')\n    return (end - start).days + 1  # +1 to include both start and end days\n\n# Example usage:\nduration = calculate_cyclone_duration('1989-12-16', '1990-01-05')\nprint(f'Duration: {duration} days')  # Output: Duration: 21 days (22-day duration includes both start and end dates)\n"
+    }
+  ]
+}

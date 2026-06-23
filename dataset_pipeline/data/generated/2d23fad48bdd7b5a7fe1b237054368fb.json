@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Elgin,_Joliet_and_Eastern_Railway",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the reporting mark for the Elgin, Joliet and Eastern Railway?",
+      "answer": "The reporting mark for the Elgin, Joliet and Eastern Railway was EJE."
+    },
+    {
+      "question": "How did the Elgin, Joliet and Eastern Railway serve Chicago despite operating primarily in its suburbs?",
+      "answer": "The EJ&E served Chicago by connecting to Class I railroads traveling to and from the city, and it entered Chicago specifically to serve the U.S. Steel South Works on the shores of Lake Michigan, despite operating almost entirely within the city's suburbs."
+    },
+    {
+      "question": "What were some of the nicknames for the Elgin, Joliet and Eastern Railway?",
+      "answer": "The EJ&E had several nicknames, including 'The J', 'EJ&E', and 'The Chicago Outer Belt Line'."
+    },
+    {
+      "question": "What were the key details of the Canadian National Railway's acquisition of the EJ&E?",
+      "answer": "On September 26, 2007, Canadian National Railway announced plans to purchase a majority of the EJ&E, with a portion of the line in Indiana reorganized as the Gary Railway. The purchase was approved on December 24, 2008, and the deal was finalized on February 1, 2009. Following the merger, EJ&E locomotives were repainted into CN colors but sub-lettered for EJ&E."
+    },
+    {
+      "question": "Write a Python script to calculate the number of years the EJ&E existed before its merger with Wisconsin Central Ltd.",
+      "answer": "python\n# The EJ&E was founded in 1888 and ceased to exist on January 1, 2013\nstart_year = 1888\nend_year = 2013\nyears_existed = end_year - start_year\nprint(f\"The EJ&E existed for {years_existed} years before its merger.\")\n\nThis script calculates the number of years between the EJ&E's founding in 1888 and its merger completion in 2013, resulting in 125 years."
+    },
+    {
+      "question": "Why might the EJ&E's route being described as 'circular' be significant for its operations?",
+      "answer": "The 'circular' route of the EJ&E was significant because it allowed the railroad to link multiple Class I railroads traveling to and from Chicago, creating a strategic bypass around the city's congested urban core. This design maximized efficiency for freight movement by providing an outer belt line that connected with major rail corridors while avoiding the need to traverse Chicago's dense urban areas."
+    },
+    {
+      "question": "What happened to the EJ&E locomotives after the merger with Canadian National Railway?",
+      "answer": "After the merger with Canadian National Railway, EJ&E locomotives were repainted into CN colors but retained a sub-lettering to indicate their EJ&E heritage. This allowed for brand continuity while integrating the fleet into CN's operations."
+    }
+  ]
+}

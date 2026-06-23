@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/1916_Charleston_hurricane",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When and where was the 1916 Charleston hurricane first detected as a tropical storm?",
+      "answer": "The 1916 Charleston hurricane was first detected as a tropical storm on July 11, approximately 560 miles (900 km) east of Miami, Florida."
+    },
+    {
+      "question": "What was the peak intensity of the 1916 Charleston hurricane, and when did it occur?",
+      "answer": "The hurricane reached its peak intensity on July 13 with sustained winds of 115 mph (185 km/h), equivalent to a Category 3 hurricane on the modern-day Saffir–Simpson scale."
+    },
+    {
+      "question": "Where did the 1916 Charleston hurricane make landfall, and what was its path afterward?",
+      "answer": "The hurricane made landfall near Charleston, South Carolina, on the morning of July 14. It weakened as it moved inland and lost its tropical cyclone status on July 15 over western North Carolina."
+    },
+    {
+      "question": "What were the primary causes of the Great Flood of 1916, and where did it have the most severe impact?",
+      "answer": "The Great Flood of 1916 was primarily caused by torrential rainfall from the 1916 Charleston hurricane combined with orographic lift and saturated soils from an earlier hurricane. The most severe impacts occurred in the southern Blue Ridge Mountains of North Carolina, where record-breaking river flooding destroyed buildings and infrastructure."
+    },
+    {
+      "question": "How did the damage in Charleston differ from the damage in North Carolina during the 1916 Charleston hurricane?",
+      "answer": "In Charleston, South Carolina, the damage was widespread but relatively minor, consisting of downed trees, minor roof and water damage, and shipping damage. In contrast, North Carolina experienced severe flooding due to the storm's rainfall, which destroyed buildings, crops, railways, and other infrastructure, resulting in at least 80 fatalities and $21 million in damage."
+    },
+    {
+      "question": "What role did orographic lift play in the flooding caused by the 1916 Charleston hurricane?",
+      "answer": "Orographic lift, where moist air is forced upward by the Appalachian Mountains, intensified rainfall and contributed to the record-breaking river flooding in North Carolina. This effect, combined with saturated soils from an earlier storm, led to catastrophic flooding in the southern Blue Ridge Mountains and downstream."
+    },
+    {
+      "question": "How much crop damage was reported in the region affected by the 1916 Charleston hurricane?",
+      "answer": "Crop damage was severe, with a reported loss of 75–90 percent of crops north of Charleston along the Santee River. Widespread crop destruction also occurred in North Carolina due to flooding."
+    }
+  ]
+}

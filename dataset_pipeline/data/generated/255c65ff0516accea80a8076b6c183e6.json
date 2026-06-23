@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/E-mail",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is electronic mail and how does it differ from traditional postal mail?",
+      "answer": "Electronic mail, or email, is an Internet service that allows users with email addresses to send and receive electronic letters. Unlike traditional postal mail (snail mail), emails are delivered much faster over long distances and are typically free. While both types of mail can include unwanted content, emails use spam filters to block unwanted messages."
+    },
+    {
+      "question": "What is spam in the context of email, and how is it handled?",
+      "answer": "Spam refers to unwanted email messages sent to a user's inbox. Many email programs and services include spam detection features that can filter out nearly all spam automatically, reducing the clutter in users' inboxes."
+    },
+    {
+      "question": "What are the basic requirements for sending or receiving an email traditionally?",
+      "answer": "To send or receive an email traditionally, a user needs two main components: (1) a device such as a computer or phone connected to the Internet, and (2) an email program or mailer. The device must be able to access the Internet, and the mailer handles the sending and receiving of messages."
+    },
+    {
+      "question": "What is the most common format for email addresses according to RFC 2822?",
+      "answer": "The most common format for email addresses, as defined by RFC 2822, follows the pattern username@domain.com. For example, an email address could look like john.doe@example.com, where 'john.doe' is the username and 'example.com' is the domain."
+    },
+    {
+      "question": "What are some examples of webmail services that allow free email access?",
+      "answer": "Examples of popular webmail services that provide free email access include Gmail, Hotmail, and Yahoo!. These services allow users to send and receive emails directly from a web browser without needing a dedicated email program."
+    },
+    {
+      "question": "How does webmail differ from using a traditional mailer?",
+      "answer": "Webmail operates through a web application accessed via a browser, handling many technical details automatically, such as sending and receiving messages. In contrast, a traditional mailer requires a separate program installed on a device, giving the user more control over the email process but requiring manual setup and maintenance."
+    },
+    {
+      "question": "What is Microsoft Exchange, and how does it relate to traditional email protocols?",
+      "answer": "Microsoft Exchange is a proprietary communication protocol developed by Microsoft for sending and receiving emails. It operates differently from traditional email protocols like RFC 2822 and is designed for use in enterprise environments, often integrated with Microsoft's Outlook software."
+    }
+  ]
+}

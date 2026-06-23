@@ -1,0 +1,38 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Dismissal_(cricket)",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What are the three most common ways a batter can be dismissed in cricket?",
+      "answer": "The three most common ways a batter can be dismissed in cricket are bowled, caught, and leg before wicket (lbw). Bowled occurs when the bowler hits the wicket with the ball, dislodging at least one bail. Caught happens when the batter hits the ball and it is caught on the full by a fielder. Leg before wicket (lbw) occurs when the ball hits the batter's leg and would have gone on to hit the wicket if not for the leg."
+    },
+    {
+      "question": "How is a batter dismissed via run out in cricket?",
+      "answer": "A batter is dismissed via run out when a fielder breaks the wicket with the ball while the batter is out of their ground. This typically happens when a fielder throws the ball accurately to the wicket while the batters are attempting a run, and the wicket is broken before the batter can return to their ground."
+    },
+    {
+      "question": "What is the difference between stumped and run out in cricket?",
+      "answer": "Stumped occurs when the wicket-keeper breaks the wicket with the ball in hand after the batter has stepped out of their ground without attempting a run. In contrast, a run out involves a fielder breaking the wicket with the ball while the batter is out of their ground during an attempted run, usually via a throw."
+    },
+    {
+      "question": "Explain the unusual dismissal method called 'hit wicket' in cricket.",
+      "answer": "Hit wicket is a dismissal where the batter accidentally knocks over their own wicket, either by hitting it with the bat or by falling onto it. This can occur during the batter's attempt to play a shot or when backing away from the crease. It is distinct from being bowled because the batter's own action causes the wicket to fall."
+    },
+    {
+      "question": "Why was the rule 'hit the ball twice' introduced in cricket, and what does it entail?",
+      "answer": "The rule 'hit the ball twice' was introduced in the 18th century as a safety measure to protect fielders and counter dangerous play. It prohibits a batter from intentionally hitting the ball a second time after it has already been hit by the bat or body. There are only two known cases of fielders being killed by a ball hit by a batter, which led to this rule. Breaking this rule results in the batter being dismissed."
+    },
+    {
+      "question": "What constitutes 'obstructing the field' as a dismissal in cricket?",
+      "answer": "Obstructing the field occurs when a batter deliberately interferes with a fielder's attempt to field the ball. This can include using hands to protect the wicket after removing it from the bat or intentionally getting in the way of a fielder. The rule was revised in recent years to include the former offence of 'handled the ball,' where the batter uses a hand to touch the ball without the fielding team's permission."
+    },
+    {
+      "question": "Write a Python function to check if a given dismissal type is considered unusual in cricket.",
+      "answer": "python\ndef is_unusual_dismissal(dismissal_type):\n    unusual_dismissals = ['hit wicket', 'hit the ball twice', 'obstructed the field', 'timed out']\n    return dismissal_type.lower() in unusual_dismissals\n\n# Example usage:\nprint(is_unusual_dismissal('hit wicket'))  # Output: True\nprint(is_unusual_dismissal('caught'))      # Output: False\n\nThe function checks if the provided dismissal type is one of the unusual dismissals by comparing it against a list of known unusual dismissal types."
+    },
+    {
+      "question": "What is the 'timed out' dismissal rule in cricket, and how does it work?",
+      "answer": "The 'timed out' dismissal rule in cricket occurs when the next batter does not arrive at the wicket within two minutes of the previous batter being dismissed. This rule ensures the game progresses smoothly and prevents unnecessary delays. If the next batter is not ready within this time frame, they can be dismissed as 'timed out.' This is an extremely rare dismissal, with no recorded instances in international cricket as of 2023."
+    }
+  ]
+}

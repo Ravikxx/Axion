@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Applicable_convention",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the purpose of applicable conventions under 26 U.S.C. § 168(d)?",
+      "answer": "The purpose of applicable conventions under 26 U.S.C. § 168(d) is to simplify depreciation calculations by providing standardized assumptions about when property is placed into service or disposed of, eliminating the need for taxpayers to prove exact dates to the IRS."
+    },
+    {
+      "question": "What are the three types of depreciation conventions specified in § 168(d)?",
+      "answer": "The three types of depreciation conventions are: (1) the half-year convention, which assumes property is placed into service or disposed of at the midpoint of the taxable year; (2) the mid-month convention, which assumes property is placed into service or disposed of at the midpoint of the month; and (3) the mid-quarter convention, which assumes property is placed into service or disposed of at the midpoint of the quarter."
+    },
+    {
+      "question": "When must a taxpayer use the mid-quarter convention instead of the half-year convention?",
+      "answer": "A taxpayer must use the mid-quarter convention if they acquire a significant amount of depreciable assets in the last three months of the taxable year, as specified in § 168(d)(3). This rule reduces the first-year depreciation deduction compared to the half-year convention."
+    },
+    {
+      "question": "How does the mid-month convention differ from the half-year convention in terms of when property is assumed to be placed into service?",
+      "answer": "Under the mid-month convention, property is assumed to be placed into service or disposed of at the midpoint of the month it was acquired, whereas under the half-year convention, all property is assumed to be placed into service or disposed of at the midpoint of the taxable year, regardless of the month."
+    },
+    {
+      "question": "Write a Python function that calculates the depreciation start date for property under the half-year convention.",
+      "answer": "python\ndef half_year_convention_start_date(tax_year):\n    \"\"\"\n    Calculate the assumed start date for depreciation under the half-year convention.\n    \n    Args:\n        tax_year (int): The taxable year (e.g., 2023).\n    \n    Returns:\n        str: The assumed start date as 'YYYY-MM-DD' (midpoint of the year).\n    \"\"\"\n    start_date = f\"{tax_year}-07-01\"\n    return start_date\n\n\nExample usage:\npython\nprint(half_year_convention_start_date(2023))  # Output: '2023-07-01'\n"
+    },
+    {
+      "question": "Why might a taxpayer prefer the half-year convention over the mid-quarter convention?",
+      "answer": "A taxpayer might prefer the half-year convention because it generally results in a larger depreciation deduction in the first year compared to the mid-quarter convention, which assumes property was placed into service later in the year, reducing the deduction."
+    },
+    {
+      "question": "Explain the legal basis for why the half-year convention is the default method under § 168(d).",
+      "answer": "Section 168(d)(1) explicitly states that all taxpayers should use the half-year convention unless a different convention is required by § 168(d)(2) or § 168(d)(3). This makes the half-year convention the default method for simplicity unless specific conditions (e.g., mid-quarter or mid-month use) apply."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Dinosaur_size",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What are the size extremes observed in dinosaurs, and how do they compare to modern animals?",
+      "answer": "Dinosaurs exhibited extreme size variations, ranging from tiny hummingbirds weighing as little as 3 grams to massive titanosaurs weighing up to 70 tonnes. In comparison, recent predatory mammals typically weigh between 10 and 100 kilograms, while modern mammals are estimated to average around 2 to 5 kilograms in body mass."
+    },
+    {
+      "question": "Why is it challenging to determine the exact largest and smallest dinosaurs that ever existed?",
+      "answer": "Determining the largest and smallest dinosaurs is difficult because only a tiny fraction of animals fossilize, and most fossils remain buried. Additionally, most recovered specimens are incomplete, and soft tissues like skin are rarely preserved. Even with complete skeletons, estimating size involves comparing bones to similar species and making educated guesses about muscles and organs, leading to variability in weight estimates."
+    },
+    {
+      "question": "How do weight estimates for dinosaurs compare to length estimates, and why?",
+      "answer": "Weight estimates for dinosaurs are much more variable than length estimates because length can be directly measured from a skeleton, while weight requires additional assumptions about body shape, muscle mass, and other soft tissues. Techniques like laser scanning to create a 'virtual' skin can help estimate weight, but these remain approximations."
+    },
+    {
+      "question": "What is the typical weight range for predatory theropod dinosaurs, and how does it compare to modern mammals?",
+      "answer": "Predatory theropod dinosaurs, which dominated terrestrial carnivore niches during the Mesozoic, most often fall into the 100- to 1,000-kilogram category. This is significantly larger than recent predatory carnivore mammals, which peak in the 10- to 100-kilogram range."
+    },
+    {
+      "question": "How did the average size of dinosaurs change across different geological periods?",
+      "answer": "Dinosaur average size varied across the Triassic, early Jurassic, late Jurassic, and Cretaceous periods. The mode of Mesozoic dinosaur body masses is between one and ten metric tonnes, which is substantially larger than the average size of Cenozoic mammals, estimated at 2 to 5 kilograms."
+    },
+    {
+      "question": "Provide a Python code snippet to categorize dinosaur weights into size groups based on order of magnitude.",
+      "answer": "python\ndef categorize_dinosaur_weight(weight_kg):\n    if weight_kg < 10:\n        return 'Very small (<10 kg)'\n    elif 10 <= weight_kg < 100:\n        return 'Small (10-100 kg)'\n    elif 100 <= weight_kg < 1000:\n        return 'Medium (100-1000 kg)'\n    elif 1000 <= weight_kg < 10000:\n        return 'Large (1-10 tonnes)'\n    else:\n        return 'Very large (>10 tonnes)'\n\n# Example usage:\nprint(categorize_dinosaur_weight(500))  # Output: Medium (100-1000 kg)\nprint(categorize_dinosaur_weight(5000))  # Output: Large (1-10 tonnes)\n"
+    },
+    {
+      "question": "Why do scientists use laser scanning to estimate dinosaur weights, and what are its limitations?",
+      "answer": "Scientists use laser scanning to create a 'virtual' skin over a dinosaur skeleton, which helps estimate body volume and, consequently, weight. However, this method is limited because it still relies on assumptions about soft tissue distribution and muscle mass, making weight estimates inherently approximate."
+    }
+  ]
+}

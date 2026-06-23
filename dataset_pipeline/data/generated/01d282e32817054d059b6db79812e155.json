@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/John_Morrison_Clay",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was John Morrison Clay and what were his primary occupations?",
+      "answer": "John Morrison Clay was a Kentucky thoroughbred breeder, a son of the statesman Henry Clay, and a husband to Josephine Russell Clay. His primary occupation was breeding and racing thoroughbred horses, which he pursued for about twenty years alongside his wife."
+    },
+    {
+      "question": "What was the significance of Ashland Stock Farm in relation to John M. Clay?",
+      "answer": "Ashland Stock Farm was the name given to the portion of the Ashland estate inherited by John M. Clay after his father's death. This land was distinct from the mansion and lands given to his brother, James Brown Clay, and was used to breed and train racehorses."
+    },
+    {
+      "question": "How did John M. Clay and Josephine Russell Clay contribute to horse racing?",
+      "answer": "John M. Clay and Josephine Russell Clay trained and raced horses for approximately twenty years. They owned and managed Ashland Stud, where they bred notable racehorses such as Skedaddle, Survivor, Star Davis, Sauce Box, Squeeze 'em, and Victory. Josephine Clay also continued running Ashland Stud after John's death in 1887."
+    },
+    {
+      "question": "What role did the horse Victory play in the Battle of Little Big Horn?",
+      "answer": "Victory, also known as Vic, was a famous racehorse owned by John M. Clay. In 1873, Vic was purchased by General George Armstrong Custer, who rode him at the Battle of Little Big Horn in 1876. It is believed that Vic died during the battle."
+    },
+    {
+      "question": "What happened to John M. Clay's family after his death?",
+      "answer": "After John M. Clay's death in 1887, his wife Josephine Russell Clay continued to manage Ashland Stud until her own death in 1920. The couple had no children, and their legacy in horse breeding and racing was carried on solely by Josephine."
+    },
+    {
+      "question": "Write a Python script to calculate the duration John M. Clay and Josephine Russell Clay spent breeding and racing horses.",
+      "answer": "python\n# Calculate the duration John M. Clay and Josephine Russell Clay spent breeding and racing horses\ndef calculate_duration():\n    start_year = 1866  # Year John M. Clay married Josephine\n    end_year = 1887    # Year John M. Clay died\n    duration = end_year - start_year\n    return duration\n\nprint(f\"John M. Clay and Josephine Russell Clay spent {calculate_duration()} years breeding and racing horses.\")\n\nOutput: John M. Clay and Josephine Russell Clay spent 21 years breeding and racing horses."
+    },
+    {
+      "question": "Why was the land John M. Clay inherited referred to as 'Ashland-on-the-Tates-Creek-Pike'?",
+      "answer": "The land inherited by John M. Clay was called 'Ashland-on-the-Tates-Creek-Pike' to distinguish it from the mansion and lands given to his brother, James Brown Clay. The name likely referenced its location along the Tates Creek Pike, a road in Kentucky."
+    }
+  ]
+}

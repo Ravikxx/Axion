@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Conger_(syndicate)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the Conger system in 18th- and early 19th-century England?",
+      "answer": "The Conger system was a bookselling financing method where a syndicate of booksellers, primarily in London, pooled resources to finance the printing of books. Members bought shares, agreed to sell a portion of the printed copies, and split profits based on their initial investment. Their names appeared as co-publishers on title pages, with a major publishing house often leading the arrangement."
+    },
+    {
+      "question": "How did the Conger system influence copyright before the Statute of Anne?",
+      "answer": "Before the Statute of Anne (early 18th century), the Conger system reinforced publishers' claims that purchasing a work from an author granted them permanent control over its publication. Courts upheld this precedent until the Statute was passed, establishing that literary works entered the public domain after a fixed statutory period."
+    },
+    {
+      "question": "What types of projects were typically financed using the Conger system?",
+      "answer": "The Conger system was primarily used for major projects, such as multi-volume works like encyclopedias. These projects required significant financial investment, making them ideal for the syndicate model where shares could be subdivided and resold, complicating ownership structures."
+    },
+    {
+      "question": "How did the Conger system function as a wholesaling mechanism?",
+      "answer": "The Conger syndicate operated as a wholesaling system by holding private auctions where books were bought in bulk for resale. This system controlled the distribution of popular books, with the syndicate meeting regularly from the 1690s. Between 1695 and 1705, over 170,000 books worth nearly £37,000 were handled through this method."
+    },
+    {
+      "question": "Why did the Conger system lead to convoluted ownership balances?",
+      "answer": "Shares in the Conger system were often subdivided and resold, causing ownership structures to become very complex. This fragmentation meant that the actual balance of ownership was difficult to track, as multiple parties could hold partial interests in a single project."
+    },
+    {
+      "question": "What were the key responsibilities of the major publishing house in the Conger system?",
+      "answer": "In the Conger system, a major publishing house typically took the lead role in setting up the deal. This included organizing the syndicate, negotiating terms with authors or other stakeholders, and often managing the financial and logistical aspects of the book's production and distribution."
+    },
+    {
+      "question": "How did the Statute of Anne change the legal landscape for publishers under the Conger system?",
+      "answer": "The Statute of Anne introduced a fixed term for copyright protection, ensuring that literary works entered the public domain after this period. This undermined the Conger system's reliance on perpetual control over publications, shifting the balance toward a more limited and defined copyright framework."
+    }
+  ]
+}

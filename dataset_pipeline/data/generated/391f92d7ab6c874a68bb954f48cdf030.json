@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Dave_Casinelli",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What were David Casinelli's most notable achievements in college football?",
+      "answer": "David Casinelli was a standout fullback for the Memphis State Tigers from 1960 to 1963. His most notable achievements include leading Memphis State to an undefeated season in 1963, becoming the first Memphis State player to lead the NCAA in a major individual statistical category, and winning the NCAA rushing title in 1963 with 1,016 rushing yards and 219 rushing carries. He also tied for the national scoring title with 84 points, having scored 14 touchdowns."
+    },
+    {
+      "question": "How did David Casinelli secure the NCAA rushing title in 1963 despite starting the final game ranked third?",
+      "answer": "Going into the final game of the 1963 season, Casinelli ranked third in rushing yardage. However, he totaled 210 rushing yards in that final game, surpassing Jimmy Sidle and Gale Sayers to finish as the NCAA rushing leader with 1,016 yards for the season."
+    },
+    {
+      "question": "What school records did David Casinelli set during his time at Memphis State?",
+      "answer": "During his four years at Memphis State, Casinelli set school records for total yards from scrimmage (2,796) and career touchdowns (36). These records highlight his impact as a versatile and high-performing player on the team."
+    },
+    {
+      "question": "After his college career, which professional football league did David Casinelli join, and when?",
+      "answer": "After graduating from Memphis State, David Casinelli signed with the Edmonton Eskimos of the Canadian Football League in January 1964. This marked the beginning of his professional football career."
+    },
+    {
+      "question": "What was the cause of David Casinelli's death?",
+      "answer": "David Casinelli died on October 11, 1987, as a result of injuries sustained in an automobile accident in Leon County, Florida."
+    },
+    {
+      "question": "Provide a sample Python code snippet to calculate a player's career rushing efficiency based on total rushing yards and carries.",
+      "answer": "python\ndef calculate_rushing_efficiency(total_yards, total_carries):\n    \"\"\"\n    Calculate a player's rushing efficiency as yards per carry.\n    \n    Args:\n        total_yards (int): Total rushing yards\n        total_carries (int): Total rushing attempts\n        \n    Returns:\n        float: Average yards per carry\n    \"\"\"\n    if total_carries == 0:\n        return 0.0\n    return total_yards / total_carries\n\n# Example usage for David Casinelli's 1963 season:\nyards = 1016\ncarries = 219\nefficiency = calculate_rushing_efficiency(yards, carries)\nprint(f\"Rushing efficiency: {efficiency:.2f} yards per carry\")\n"
+    },
+    {
+      "question": "Why might David Casinelli be considered a trailblazer for Memphis State football?",
+      "answer": "Casinelli is considered a trailblazer for Memphis State football because he was the first player from the school to lead the NCAA in a major statistical category (rushing in 1963) and the first Southern player since 1949 to win the NCAA rushing title. His records and achievements set a high standard for future players at the university."
+    }
+  ]
+}

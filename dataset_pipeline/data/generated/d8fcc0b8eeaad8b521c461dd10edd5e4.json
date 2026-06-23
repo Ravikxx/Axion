@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Dulhazra_Safari_Park",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the primary objective of Dulahazara Safari Park in Cox's Bazar?",
+      "answer": "The primary objective of Dulahazara Safari Park is to create facilities for eco-tourism, research work, and entertainment, while also conserving wild animals in a natural environment."
+    },
+    {
+      "question": "How many animals and species are currently housed in Dulahazara Safari Park?",
+      "answer": "Dulahazara Safari Park is home to at least 4,000 animals representing 165 different species."
+    },
+    {
+      "question": "What notable animals were rescued or donated to Dulahazara Safari Park after the new government took over in January 2007?",
+      "answer": "After the new government took office, joint forces rescued or accepted donations of animals including ninety spotted deer, forty-two barking deer, three sambar deer, one freshwater crocodile, one saltwater crocodile, nine black bears, four pythons, seventeen peacocks, nineteen Turkish pheasants, and two emus."
+    },
+    {
+      "question": "Which zoo donated lions and tigers to Dulahazara Safari Park?",
+      "answer": "The Dhaka Zoo donated a number of lions and tigers to Dulahazara Safari Park as part of its animal population management and breeding initiatives."
+    },
+    {
+      "question": "What are some of the native wild animals protected within Dulahazara Safari Park?",
+      "answer": "The park protects a large number of wild elephants native to the area. Other notable animals include lions, Bengal tigers, crocodiles, bears, spotted deer, various bird species, and monkeys."
+    },
+    {
+      "question": "How many visitors does Dulahazara Safari Park typically receive daily during peak and off seasons?",
+      "answer": "During peak season (November to March), the park attracts approximately 6,000 visitors daily. In the off season (April to October), daily visitor numbers drop to around 2,000."
+    },
+    {
+      "question": "Write a Python function to calculate the average number of daily visitors to Dulahazara Safari Park over one full year.",
+      "answer": "python\ndef calculate_average_visitors():\n    peak_season_visitors = 6000  # daily during peak season\n    off_season_visitors = 2000   # daily during off season\n    peak_months = 5             # November to March (5 months)\n    off_months = 7              # April to October (7 months)\n    \n    total_visitors = (peak_season_visitors * peak_months * 30) + \\\n                     (off_season_visitors * off_months * 30)\n    average_visitors = total_visitors / 365\n    return average_visitors\n\n# Example usage:\naverage = calculate_average_visitors()\nprint(f\"Average daily visitors per year: {average:.2f}\")\n\nThis function calculates the average daily visitors by summing the estimated total visitors for peak and off seasons and dividing by 365 days."
+    }
+  ]
+}

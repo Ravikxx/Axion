@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Hebephilia",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is hebephilia and how does it differ from pedophilia and ephebophilia?",
+      "answer": "Hebephilia refers to a persistent sexual attraction to children who are in the early stages of puberty, typically between 11 and 14 years old. Unlike pedophilia, which involves attraction to prepubescent children (generally under age 11), or ephebophilia, which involves attraction to older teenagers (ages 15–18), hebephilia focuses on children whose bodies are beginning to develop but are not yet fully mature. The distinction lies in the stage of physical development of the children involved."
+    },
+    {
+      "question": "At what ages do most children typically begin puberty, and how does this relate to hebephilia?",
+      "answer": "Most girls begin puberty around ages 10 or 11, while most boys start around ages 11 or 12. Because puberty timing varies, hebephilia targets children in this transitional phase—often aligning with ages 11 to 14. However, some medical guidelines extend the prepubescent range up to age 13, which can blur the boundaries between hebephilia and pedophilia in certain diagnostic systems."
+    },
+    {
+      "question": "Why do experts debate whether hebephilia should be classified as a mental disorder?",
+      "answer": "The debate centers on whether hebephilia represents a distinct paraphilia (a condition characterized by unusual sexual preferences) or a mental disorder requiring clinical intervention. Some researchers, like Ray Blanchard, argue for splitting pedophilia into narrower categories (including hebephilia) based on empirical evidence from arousal studies. However, this proposal has faced resistance, and many experts continue to view hebephilia as a controversial or unvalidated category within psychiatric classification systems."
+    },
+    {
+      "question": "What did Ray Blanchard's 2009 study suggest about grouping sexual preferences in offenders?",
+      "answer": "Blanchard's study analyzed the preferred ages of children among men who committed sex crimes using arousal measurements. The findings supported a more granular categorization of pedophilia, proposing separate groups for prepubescent children (pedophilia), early/mid-puberty children (hebephilia), and older teenagers (ephebophilia). This approach aimed to improve diagnostic precision, though it was ultimately not adopted in the DSM-5."
+    },
+    {
+      "question": "How do the DSM-5 and ICD-10 differ in their definitions of pedophilia with respect to puberty?",
+      "answer": "The DSM-5 extends the prepubescent age range for pedophilia up to 13 years, potentially including early puberty. In contrast, the ICD-10 classifies early puberty as part of pedophilia, further broadening the scope. These differences highlight the lack of consensus on age boundaries and the challenges in defining sexual attractions to minors across diagnostic frameworks."
+    },
+    {
+      "question": "Write a Python function that checks if a given age falls into the hebephilia range (11–14), accounting for variability in puberty onset.",
+      "answer": "def is_hebephilic_age(age):\n    \"\"\"\n    Determines if an age falls within the typical hebephilia range (11–14 years),\n    accounting for the variability in puberty onset.\n    \n    Args:\n        age (int): The age to evaluate.\n    \n    Returns:\n        bool: True if the age is within 11–14, False otherwise.\n    \"\"\"\n    return 11 <= age <= 14\n\n# Example usage:\nprint(is_hebephilic_age(12))  # Output: True\nprint(is_hebephilic_age(10))  # Output: False"
+    },
+    {
+      "question": "Why do some medical guides include early puberty in the definition of pedophilia, while others separate it into hebephilia?",
+      "answer": "The inclusion of early puberty in pedophilia definitions stems from historical and diagnostic conventions prioritizing clear age thresholds over developmental stages. In contrast, separating hebephilia reflects a focus on the child's physical and psychological maturity. This disagreement reflects broader tensions in psychiatry between categorical systems (e.g., DSM-5) and dimensional approaches that emphasize continuous traits."
+    }
+  ]
+}

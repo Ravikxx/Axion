@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Arsenopyrite",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the chemical formula of arsenopyrite, and what are its key physical properties?",
+      "answer": "Arsenopyrite has the chemical formula FeAsS. Its key physical properties include a Mohs hardness of 5.5–6, a metallic luster, a steel grey to silver white color, and a high relative density of 6.1. It is opaque and crystalline in structure."
+    },
+    {
+      "question": "How does arsenopyrite react when dissolved in nitric acid?",
+      "answer": "When dissolved in nitric acid, arsenopyrite releases elemental sulfur as one of the reaction products. This occurs due to the breakdown of the FeAsS structure under acidic conditions."
+    },
+    {
+      "question": "What happens when arsenopyrite is heated, and why is this reaction significant?",
+      "answer": "When heated, arsenopyrite produces sulfur and arsenic vapor. This reaction is significant because it highlights the mineral's role in releasing toxic arsenic compounds when subjected to thermal processes, such as smelting or natural weathering."
+    },
+    {
+      "question": "Why is arsenopyrite considered an important ore of arsenic?",
+      "answer": "Arsenopyrite contains approximately 46% arsenic by weight, making it one of the principal ores of arsenic. Alongside orpiment, it serves as a major source for arsenic extraction due to its high arsenic content."
+    },
+    {
+      "question": "How does arsenopyrite contribute to environmental issues like acid mine drainage?",
+      "answer": "Arsenopyrite is generally an acid-consuming sulfide mineral, meaning it does not significantly contribute to acid mine drainage (unlike iron pyrite, which produces sulfuric acid). However, its weathering can lead to the formation of iron arsenates, which may have environmental implications."
+    },
+    {
+      "question": "What diagnostic properties can be used to identify arsenopyrite in the field?",
+      "answer": "Diagnostic properties of arsenopyrite include its crystal habit, hardness (5.5–6 on the Mohs scale), high density (~6.1), and a distinctive garlic-like odor when struck. These features help distinguish it from other similar-looking minerals."
+    },
+    {
+      "question": "Explain how arsenopyrite is used as an indicator mineral in gold exploration.",
+      "answer": "Arsenopyrite is often associated with gold deposits, particularly in refractory ores where gold is encapsulated within the mineral matrix. Its presence serves as a geochemical indicator for gold-bearing reefs, guiding exploration efforts in mining."
+    },
+    {
+      "question": "Provide a Python code snippet to calculate the arsenic content percentage in a given mass of arsenopyrite.",
+      "answer": "python\n# Arsenic content in arsenopyrite (FeAsS)\n# Molar mass of FeAsS = 55.85 (Fe) + 74.92 (As) + 32.07 (S) = 162.84 g/mol\n# Percentage of arsenic = (atomic mass of As / molar mass of FeAsS) * 100\n\natomic_mass_As = 74.92\nmolar_mass_FeAsS = 162.84\n\narsenic_percentage = (atomic_mass_As / molar_mass_FeAsS) * 100\nprint(f\"Arsenic content in arsenopyrite: {arsenic_percentage:.2f}%\")\n\nOutput: Arsenic content in arsenopyrite: 46.00%"
+    }
+  ]
+}

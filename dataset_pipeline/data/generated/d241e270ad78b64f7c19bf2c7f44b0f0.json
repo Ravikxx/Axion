@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/EFL_Championship_Manager_of_the_Month",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the EFL Championship Manager of the Month award?",
+      "answer": "The EFL Championship Manager of the Month is an association football award that recognizes the best-performing manager each month during the EFL Championship season, which is the second tier of English football. The recipient is selected by a panel assembled by the league's sponsor and announced at the start of the following month, alongside awards for League One and League Two managers."
+    },
+    {
+      "question": "Who was the first recipient of the EFL Championship Manager of the Month award, and when did they receive it?",
+      "answer": "The first recipient of the EFL Championship Manager of the Month award was Paul Jewell, who received it for his achievements in August 2004 while managing Wigan Athletic. The award was introduced at the start of the 2004–05 season when Coca-Cola became the sponsor of the English Football League."
+    },
+    {
+      "question": "How many times has Neil Warnock won the EFL Championship Manager of the Month award?",
+      "answer": "Neil Warnock has won the EFL Championship Manager of the Month award a record eleven times, making him the most successful manager in the history of the award."
+    },
+    {
+      "question": "What were the different sponsors of the EFL Championship Manager of the Month award since its inception, and during which periods?",
+      "answer": "Since its inception in 2004, the EFL Championship Manager of the Month award has had the following sponsors and periods: Coca-Cola (2004–2010), npower (2010–2013), and Sky Bet (2013–present, with sponsorship extended until 2024)."
+    },
+    {
+      "question": "How are the recipients of the EFL Championship Manager of the Month award selected?",
+      "answer": "Recipients of the EFL Championship Manager of the Month award are selected by a panel assembled by the league's sponsor. The panel evaluates the managers' performances each month and announces the winner alongside the Manager of the Month awards for League One and League Two at the beginning of the following month."
+    },
+    {
+      "question": "What changes were made to the English Football League when Coca-Cola became the sponsor in 2004?",
+      "answer": "When Coca-Cola became the sponsor of the English Football League in 2004, two major changes occurred: First, a three-year deal was agreed upon for Coca-Cola to sponsor the league. Second, the First Division, which had been the second tier of English football since 1992, was rebranded as The Championship. Additionally, Coca-Cola introduced the Manager of the Month award for The Championship starting in the 2004–05 season."
+    },
+    {
+      "question": "Write a Python snippet to fetch and display the list of EFL Championship Manager of the Month winners from an API endpoint.",
+      "answer": "Here’s an example using Python’s `requests` library to fetch and display the list of winners from a hypothetical API endpoint:\n\npython\nimport requests\n\n# Hypothetical API endpoint (replace with actual URL)\napi_url = \"https://api.example.com/efl/championship/manager-of-the-month/winners\"\n\ntry:\n    response = requests.get(api_url)\n    response.raise_for_status()  # Raise an error for bad status codes\n    winners = response.json()\n    \n    print(\"EFL Championship Manager of the Month Winners:\")\n    for winner in winners:\n        print(f\"{winner['month']} {winner['year']}: {winner['manager']} ({winner['club']})\")\nexcept requests.exceptions.RequestException as e:\n    print(f\"Error fetching data: {e}\")\n\n\nThis code fetches the list of winners from the API, parses the JSON response, and prints the winners in a readable format. Ensure the API endpoint is correctly specified and accessible."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Hidden_Singer_(South_Korean_TV_series)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the premise of the South Korean TV program 'Hidden Singer'?",
+      "answer": "Hidden Singer is a South Korean variety-music show where a famous singer performs behind blinds alongside impersonators. The audience votes in multiple rounds to eliminate impersonators they believe are not the real singer, and in the final round, they vote to identify the genuine singer. The winner of the episode is the one with the most votes in the final round."
+    },
+    {
+      "question": "How does the voting process work in Hidden Singer across the four rounds?",
+      "answer": "In the first three rounds, the audience of 100 people votes to eliminate the impersonator they believe is not the real singer based on vocal similarity. The person with the most elimination votes is removed each round. In the final round, the audience votes again to identify the real singer, and the person with the most votes wins the episode."
+    },
+    {
+      "question": "Who are the permanent hosts of Hidden Singer, and when did changes occur?",
+      "answer": "The show is hosted by Jun Hyun-moo. Starting from Season 5 (2018), Song Eun-i became a fixed cast member and assistant host. This change was introduced during the show's fifth season, marking a shift in the hosting dynamic."
+    },
+    {
+      "question": "What makes Hidden Singer stand out in the realm of reality television?",
+      "answer": "Hidden Singer is known for its high standards, focusing on nostalgia and vocal similarity rather than visual appearances. This often leads to intense, viral showdowns where impersonators challenge the audience's ability to distinguish the original singer based solely on voice, creating a unique and engaging format."
+    },
+    {
+      "question": "When did Hidden Singer return after its hiatus, and what were the premiere dates for Seasons 5, 6, 7, and 8?",
+      "answer": "Hidden Singer returned after its hiatus with Season 5, premiering with a 'comeback special' on June 10, 2018, followed by regular episodes starting June 17, 2018. Season 6 began with a 'comeback special' on July 31, 2020. Season 7 aired from August 19, 2022, marking the show's tenth anniversary. Season 8 premiered on March 31, 2026, after a four-year hiatus."
+    },
+    {
+      "question": "How many seasons of Hidden Singer have aired, and what milestone did Season 7 mark?",
+      "answer": "As of the given text, eight seasons of Hidden Singer have aired. Season 7, which aired in 2022, marked the tenth anniversary celebration of the show, highlighting its enduring popularity and cultural significance."
+    },
+    {
+      "question": "Write a Python function that simulates the voting rounds of Hidden Singer. The function should take the votes from the audience in each round and return the eliminated impersonator and the final winner.",
+      "answer": "Here’s a Python function simulating the voting rounds:\n\npython\nfrom collections import defaultdict\n\ndef hidden_singer_voting(rounds, votes_per_round):\n    # rounds: List of dictionaries representing votes per round (keys are impersonator names, values are votes)\n    # votes_per_round: List of vote counts for each round\n    \n    if len(rounds) != 4 or len(votes_per_round) != 4:\n        raise ValueError(\"Exactly 4 rounds of voting are required.\")\n    \n    impersonators = list(rounds[0].keys())\n    eliminated = []\n    \n    # Process elimination rounds (rounds 1-3)\n    for round_num in range(3):\n        round_votes = rounds[round_num]\n        max_votes = max(round_votes.values())\n        eliminated_person = [name for name, votes in round_votes.items() if votes == max_votes]\n        eliminated_person = eliminated_person[0]  # Assume no ties for simplicity\n        eliminated.append(eliminated_person)\n        del round_votes[eliminated_person]  # Remove eliminated impersonator from future rounds\n    \n    # Final round determines the winner\n    final_round = rounds[3]\n    winner = max(final_round.keys(), key=lambda k: final_round[k])\n    \n    return {\"eliminated\": eliminated, \"winner\": winner}\n\n# Example usage:\nrounds = [\n    {\"Impersonator A\": 50, \"Impersonator B\": 30, \"Impersonator C\": 20},\n    {\"Impersonator A\": 45, \"Impersonator B\": 55},\n    {\"Impersonator B\": 70},\n    {\"Impersonator A\": 40, \"Impersonator C\": 60}\n]\nresult = hidden_singer_voting(rounds, [50, 55, 70, 60])\nprint(result)  # Output: {'eliminated': ['Impersonator C', 'Impersonator A', 'Impersonator B'], 'winner': 'Impersonator C'}\n"
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Chorus_UK",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is Chorus UK and where are they based?",
+      "answer": "Chorus UK, also known as Chorus Choirs, is a large professional community choir based in Sheffield, Leeds, Manchester, Liverpool, and Birmingham, England. It is managed by Andy Booth Presents and led by musical director Andy Booth."
+    },
+    {
+      "question": "How does Chorus UK recruit new members?",
+      "answer": "Chorus UK recruits new members through regular 'come and try singing' workshops. These workshops are open to anyone interested in joining, as the choir follows an ethos of 'anyone can sing' and does not require auditions."
+    },
+    {
+      "question": "What types of music does Chorus UK perform?",
+      "answer": "Chorus UK performs a variety of popular music genres, including Broadway, pop, and rock. Their repertoire spans these styles, and they prepare for major concerts over a 12-week term."
+    },
+    {
+      "question": "How many members does Chorus UK have?",
+      "answer": "Chorus UK has grown from 50 to over 500 members. The choir is predominantly formed from singers without professional musical experience."
+    },
+    {
+      "question": "Can you provide an example of a guest performer who has collaborated with Chorus UK?",
+      "answer": "Yes, Lance Ellington and Jonathan Ansell have performed as guest soloists with Chorus UK during their concerts."
+    },
+    {
+      "question": "Write a Python function to check if a given city is one of the locations where Chorus UK operates.",
+      "answer": "python\ndef is_chorus_uk_location(city):\n    \"\"\"Check if a given city is one of the locations where Chorus UK operates.\n    \n    Args:\n        city (str): The city name to check.\n    \n    Returns:\n        bool: True if the city is a Chorus UK location, False otherwise.\n    \"\"\"\n    chorus_locations = [\n        \"Sheffield\", \"Leeds\", \"Manchester\", \n        \"Liverpool\", \"Birmingham\"\n    ]\n    return city in chorus_locations\n\n# Example usage:\nprint(is_chorus_uk_location(\"Sheffield\"))  # Output: True\nprint(is_chorus_uk_location(\"London\"))     # Output: False\n"
+    },
+    {
+      "question": "What special projects or tours has Chorus UK participated in?",
+      "answer": "Chorus UK has participated in several notable projects, including supporting Russell Watson on his 'Songs from the Heart' tour in July 2016 and recording an anthem with James Toseland and his band for the 2017 Special Olympics."
+    },
+    {
+      "question": "How often does Chorus UK hold concerts?",
+      "answer": "Chorus UK prepares for a large concert every 12 weeks, typically at major venues such as Sheffield City Hall, Royal Northern College of Music, and Leeds Town Hall."
+    }
+  ]
+}

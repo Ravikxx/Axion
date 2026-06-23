@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Cycloleucine",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is cycloleucine and how is it structurally related to norleucine?",
+      "answer": "Cycloleucine is a non-proteinogenic amino acid that is structurally a cyclopentane derivative of norleucine. It differs from norleucine by having two fewer hydrogen atoms, and its α-carbon atom is not a stereocenter, meaning it lacks chiral centers at this position."
+    },
+    {
+      "question": "What role does cycloleucine play in nucleic acid methylation?",
+      "answer": "Cycloleucine is a non-metabolisable amino acid that specifically and reversibly inhibits nucleic acid methylation. It achieves this by interfering with the methylation process, which is crucial for various cellular functions."
+    },
+    {
+      "question": "How does cycloleucine affect S-adenosyl methionine (SAM) levels in primary rat hepatocytes?",
+      "answer": "Cycloleucine lowers SAM levels in primary rat hepatocytes by inhibiting the conversion of 5′-methylthioadenosine to SAM through the methionine salvage pathway. This was demonstrated in a 2007 study involving primary rat hepatocytes."
+    },
+    {
+      "question": "What is the effect of cycloleucine on cell apoptosis in pyrazole hepatocytes?",
+      "answer": "When pyrazole hepatocytes are treated with cycloleucine, there is an increase in cell apoptosis compared to control hepatocytes. This effect is associated with higher levels of cytochrome P450 2E1 (CYP2E1) and lower SAM levels, as shown in a 2007 study."
+    },
+    {
+      "question": "How does cycloleucine influence adipocyte growth in a 2015 study?",
+      "answer": "In a 2015 study on adipogenesis, researchers treated porcine adipocytes with increasing concentrations of cycloleucine. They found that cycloleucine blocked methylation by inhibiting N6-methyladenosine (m6A) levels, which led to increased adipocyte growth relative to control adipocytes. The mRNA concentration of m6A was measured using the dot blot method."
+    },
+    {
+      "question": "What is the impact of cycloleucine on porcine oocyte and embryo development according to a 2022 study?",
+      "answer": "A 2022 study showed that cycloleucine inhibits porcine oocyte and embryo development. Researchers cultured porcine oocytes and isolated cumulus cells, treating them with increasing concentrations of cycloleucine. The results indicated a positive relationship between cycloleucine concentration and decreased viability and survival rate for oocytes, as observed under fluorescence microscopy."
+    },
+    {
+      "question": "Write a Python snippet to calculate the molecular weight of cycloleucine given its molecular formula C7H13NO2.",
+      "answer": "python\nfrom rdkit import Chem\nfrom rdkit.Chem import Descriptors\n\n# Define the SMILES representation of cycloleucine (C7H13NO2)\nmol = Chem.MolFromSmiles('C1CCC(C1)C(=O)O')\n\n# Calculate molecular weight\nmolecular_weight = Descriptors.MolWt(mol)\nprint(f\"Molecular weight of cycloleucine: {molecular_weight:.2f} g/mol\")\n\nThis code uses the RDKit library to compute the molecular weight of cycloleucine from its SMILES representation."
+    }
+  ]
+}

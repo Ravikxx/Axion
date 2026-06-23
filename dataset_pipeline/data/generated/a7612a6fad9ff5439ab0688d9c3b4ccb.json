@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Bhupen_Hazarika",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What were the primary languages in which Bhupen Hazarika composed his songs?",
+      "answer": "Bhupen Hazarika primarily composed his songs in the Assamese language. However, his works have been widely translated into other languages, particularly Bengali and Hindi."
+    },
+    {
+      "question": "What are the key themes present in Bhupen Hazarika's songs?",
+      "answer": "Hazarika's songs are characterized by themes such as communal amity, universal justice, empathy, and humanity. These themes resonate deeply with people across Assam, West Bengal, and Bangladesh."
+    },
+    {
+      "question": "Can you list the major awards and honors received by Bhupen Hazarika during his lifetime?",
+      "answer": "During his lifetime, Hazarika received several prestigious awards, including the National Film Award for Best Music Direction (1975), Padma Shri (1977), Padma Bhushan (2001), Dada Saheb Phalke Award (1992), and Sangeet Natak Akademi Fellowship (2008). He was also awarded the Sangeet Natak Akademi Award in 1987."
+    },
+    {
+      "question": "What role did Bhupen Hazarika play in promoting Assamese and Northeast Indian folk music to a national audience?",
+      "answer": "Hazarika played a pivotal role in introducing the culture and folk music of Assam and Northeast India to Hindi cinema, thereby bringing these regional traditions to a national level audience."
+    },
+    {
+      "question": "Write a Python function to extract and display the awards Bhupen Hazarika received, given a dictionary of his awards and years.",
+      "answer": "python\ndef display_awards(awards_dict):\n    for award, year in awards_dict.items():\n        print(f\"{award}: {year}\")\n\n# Example usage:\nawards = {\n    \"National Film Award for Best Music Direction\": 1975,\n    \"Padma Shri\": 1977,\n    \"Dada Saheb Phalke Award\": 1992,\n    \"Padma Bhushan\": 2001,\n    \"Sangeet Natak Akademi Fellowship\": 2008\n}\ndisplay_awards(awards)\n"
+    },
+    {
+      "question": "Why is Bhupen Hazarika often referred to as 'Sudha Kontha'?",
+      "answer": "Bhupen Hazarika is often referred to as 'Sudha Kontha' (a term meaning 'sweet voice') as a testament to his exceptional singing talent and the melodious quality of his voice."
+    },
+    {
+      "question": "What was Bhupen Hazarika's contribution as the Chairman of the Sangeet Natak Akademi?",
+      "answer": "As the Chairman of the Sangeet Natak Akademi from December 1998 to December 2003, Hazarika contributed significantly to the promotion and preservation of India's diverse performing arts traditions."
+    }
+  ]
+}

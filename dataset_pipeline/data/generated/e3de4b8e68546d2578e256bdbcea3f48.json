@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Dana_Air_Flight_0992",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What were the primary causes of the dual-engine failure in Dana Air Flight 0992?",
+      "answer": "The primary cause of the dual-engine failure was incorrect assembly of the aircraft's engines, which severed the fuel lines. This prevented fuel from being delivered to both engines, resulting in their loss of power during the approach to Lagos."
+    },
+    {
+      "question": "How did the pilots' actions contribute to the crash of Dana Air Flight 0992?",
+      "answer": "The pilots' lack of situational awareness and poor decision-making played a significant role in the crash. They delayed declaring an emergency until the second engine failed during the final approach, which left them without sufficient time or options to recover from the situation."
+    },
+    {
+      "question": "What was the official ruling of the Accident Investigation Bureau regarding Dana Air Flight 0992?",
+      "answer": "The Accident Investigation Bureau concluded that both engines of the McDonnell Douglas MD-80 aircraft had lost power due to severed fuel lines caused by incorrect assembly. This led to the crash, killing all passengers and crew onboard, as well as six people on the ground."
+    },
+    {
+      "question": "How did the crash of Dana Air Flight 0992 impact Nigeria's aviation sector?",
+      "answer": "The crash was the fifth major Nigerian aviation disaster in a decade, prompting a significant overhaul of the nation's aviation sector. Since the incident, Nigeria's aviation safety has improved substantially, allowing the country to retain its category 1 aviation safety status."
+    },
+    {
+      "question": "What type of aircraft was involved in the Dana Air Flight 0992 crash, and when did the incident occur?",
+      "answer": "The aircraft involved was a McDonnell Douglas MD-80. The incident occurred on 3 June 2012 during a scheduled domestic flight from Nnamdi Azikiwe International Airport to Murtala Muhammed International Airport."
+    },
+    {
+      "question": "List the previous major Nigerian aviation disasters that occurred before Dana Air Flight 0992.",
+      "answer": "The previous major Nigerian aviation disasters included EAS Airlines Flight 4226 in 2002, Bellview Airlines Flight 210 and Sosoliso Airlines Flight 1145 in 2005, and ADC Airlines Flight 053 in 2006."
+    },
+    {
+      "question": "Provide a code snippet simulating a simplified version of the fuel line failure scenario in Dana Air Flight 0992.",
+      "answer": "python\nclass Engine:\n    def __init__(self, fuel_line_intact=True):\n        self.fuel_line_intact = fuel_line_intact\n        self.power_status = 'running'\n    \n    def check_power(self):\n        if not self.fuel_line_intact:\n            self.power_status = 'failed'\n        return self.power_status\n\nclass Aircraft:\n    def __init__(self):\n        self.engine1 = Engine(fuel_line_intact=False)\n        self.engine2 = Engine(fuel_line_intact=False)\n    \n    def check_engines(self):\n        return [engine.check_power() for engine in [self.engine1, self.engine2]]\n\n# Simulate the fuel line failure in Dana Air Flight 0992\naircraft = Aircraft()\nengine_status = aircraft.check_engines()\nprint(f'Engine Status: {engine_status}')\n# Output: Engine Status: ['failed', 'failed']\n\nThis simplified code demonstrates how severed fuel lines in both engines lead to a loss of power, analogous to the incident in Dana Air Flight 0992."
+    }
+  ]
+}

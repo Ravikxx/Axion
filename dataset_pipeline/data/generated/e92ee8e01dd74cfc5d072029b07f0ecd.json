@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Earl_H._Painter",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was Earl Huntington Painter?",
+      "answer": "Earl Huntington Painter (1888–1969) was an American college football player, coach, and lawyer. He played as a halfback for Saint Louis University's football team from 1909 to 1911, captaining the 1911 team. He later served as the head football coach at Saint Louis in 1916 before transitioning to a legal career."
+    },
+    {
+      "question": "What positions did Earl Huntington Painter play in college sports?",
+      "answer": "Painter played as a halfback in football and as a third baseman in baseball while attending Saint Louis University. He starred in football during his time at Pekin High School prior to college."
+    },
+    {
+      "question": "How did Earl Huntington Painter’s military service during World War I impact his career?",
+      "answer": "During World War I, Painter was commissioned as a lieutenant in the U.S. Army Signal Corps. He organized and led the 412th Telegraph Battalion overseas, attaining the rank of captain. This military service contributed to his subsequent career growth in corporate law."
+    },
+    {
+      "question": "What were the key milestones in Earl Huntington Painter’s legal career?",
+      "answer": "Painter graduated with a Bachelor of Laws degree in 1912. He worked as an assistant to the general counsel for Southwestern Bell Telephone Company starting after his 1916 coaching retirement. He was later promoted to general attorney in 1925, general counsel in 1933, vice president in 1943, and director in 1944."
+    },
+    {
+      "question": "Write a Python snippet to calculate the number of years between Earl Huntington Painter’s birth and death.",
+      "answer": "python\ndef years_between_birth_and_death(birth_year, death_year):\n    return death_year - birth_year\n\nbirth_year = 1888\ndeath_year = 1969\nprint(years_between_birth_and_death(birth_year, death_year))  # Output: 81\n"
+    },
+    {
+      "question": "Why might Earl Huntington Painter have graduated from Saint Louis University in three years instead of the typical four?",
+      "answer": "Painter likely graduated early due to the intensity of his academic pursuits, combined with his football and baseball commitments. Earning a Bachelor of Laws degree in three years suggests he took additional courses per term or transferred credits, which was common for motivated students in accelerated programs at the time."
+    },
+    {
+      "question": "Compare the roles of Earl Huntington Painter as a football coach versus his later corporate legal positions.",
+      "answer": "As a football coach, Painter led team strategy and player development, requiring hands-on leadership and motivational skills. In contrast, his corporate legal roles involved advising on contracts, regulations, and corporate governance, focusing on legal precision and strategic business decisions. Both roles demanded leadership but in distinct domains—athletics versus corporate law."
+    }
+  ]
+}

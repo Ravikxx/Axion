@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Counter-Strike_(video_game)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is Counter-Strike and who developed it?",
+      "answer": "Counter-Strike, also known as Half-Life: Counter-Strike or Counter-Strike 1.6, is a tactical first-person shooter game developed by Valve Corporation and published by Sierra Studios. It was first released in November 2000 for Microsoft Windows."
+    },
+    {
+      "question": "Describe the core gameplay mechanics of Counter-Strike.",
+      "answer": "Counter-Strike is a team-based tactical shooter where two teams, Counter-Terrorists and Terrorists, compete in objective-based game modes. Common objectives include bomb defusal (by Counter-Terrorists) and hostage rescue (by Counter-Terrorists). Players start with a basic knife and pistol, earning money by eliminating enemies or completing goals to purchase advanced weapons and equipment. Once eliminated, players must wait until the end of the round to respawn."
+    },
+    {
+      "question": "How did the development of Counter-Strike begin and who were the original creators?",
+      "answer": "Counter-Strike was originally conceived in 1998 by Minh Le and Jess Cliffe as a game based on counter-terrorism. Development started the following year with the release of early beta versions. Initially created as a modification for Half-Life, it gained significant popularity, leading Valve to acquire its intellectual property and partner with Le and Cliffe for its official release."
+    },
+    {
+      "question": "What are some notable sequels or updates in the Counter-Strike franchise?",
+      "answer": "Since its original release, the Counter-Strike franchise has seen several sequels and updates. Notable releases include Counter-Strike: Condition Zero (2004), Counter-Strike: Source (2004), Counter-Strike: Global Offensive (2012), and Counter-Strike 2 (2023), which runs on Valve's Source 2 engine."
+    },
+    {
+      "question": "Why is Counter-Strike considered one of the most influential first-person shooters?",
+      "answer": "Counter-Strike is regarded as one of the most influential first-person shooters due to its realistic and tactical approach to counter-terrorism, emphasis on teamwork and strategy, and its impact on the gaming community. Its objective-based gameplay and competitive nature set a new standard for multiplayer shooters and spawned a highly successful franchise."
+    },
+    {
+      "question": "Write a simple Python script to simulate a player earning money in Counter-Strike based on eliminations and completing objectives.",
+      "answer": "python\nclass CounterStrikePlayer:\n    def __init__(self):\n        self.money = 800  # Starting money in dollars\n        self.kills = 0\n        self.defusal = False\n        self.hostage_rescue = False\n\n    def kill_enemy(self):\n        self.kills += 1\n        self.money += 300  # Award $300 per kill\n\n    def defuse_bomb(self):\n        self.defusal = True\n        self.money += 300  # Award $300 for defusing the bomb\n\n    def rescue_hostage(self):\n        self.hostage_rescue = True\n        self.money += 300  # Award $300 for rescuing a hostage\n\n    def end_round(self):\n        print(f\"Round ended. Total money earned: ${self.money}\")\n        self.money = 1600  # Reset to base money for next round\n        self.kills = 0\n        self.defusal = False\n        self.hostage_rescue = False\n\n# Example usage\nplayer = CounterStrikePlayer()\nplayer.kill_enemy()\nplayer.kill_enemy()\nplayer.defuse_bomb()\nplayer.end_round()\n"
+    },
+    {
+      "question": "What engine did Counter-Strike: Source use and how did it improve upon the original?",
+      "answer": "Counter-Strike: Source, released in 2004, ran on Valve's Source engine. It offered improved visuals and physics compared to the original Counter-Strike, which was built on the Half-Life engine. The Source engine provided enhanced graphics, better lighting, and more realistic environmental interactions, contributing to a more immersive gaming experience."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Acquired_generalized_lipodystrophy",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is acquired generalized lipodystrophy (AGL) and how does it differ from other types of lipodystrophy?",
+      "answer": "Acquired generalized lipodystrophy (AGL), also known as Lawrence syndrome or Lawrence–Seip syndrome, is a rare childhood or adolescent-onset condition characterized by near-total loss of subcutaneous adipose tissue, particularly affecting the face, arms, and legs. Unlike other lipodystrophies, AGL is acquired later in life (not congenital or familial) and involves generalized (near-total) rather than partial fat loss. The four main types of lipodystrophy are differentiated by onset (acquired vs. inherited) and distribution (generalized vs. partial)."
+    },
+    {
+      "question": "What are the three main suspected causes of acquired generalized lipodystrophy (AGL)?",
+      "answer": "The three primary suspected etiologies of AGL are: (1) autoimmune, where the body's immune system attacks adipose tissue; (2) panniculitis-associated, linked to inflammation of subcutaneous fat (panniculitis); and (3) idiopathic, meaning the cause is unknown. These mechanisms lead to the progressive loss of fat tissue observed in AGL."
+    },
+    {
+      "question": "How quickly does acquired generalized lipodystrophy (AGL) progress after onset?",
+      "answer": "The progression of AGL varies widely after onset, ranging from days to years. Some patients experience rapid deterioration within weeks, while others may have a slower, more gradual progression over months or even years. This variability makes early diagnosis and monitoring critical for managing the condition."
+    },
+    {
+      "question": "What are the key clinical presentations of acquired generalized lipodystrophy (AGL)?",
+      "answer": "AGL shares clinical features with other lipodystrophies, including metabolic complications (e.g., insulin resistance, diabetes, or dyslipidemia) and hypoleptinemia (low leptin levels). The near-total loss of adipose tissue also leads to visible physical changes, such as prominent muscles and veins due to the absence of overlying fat. These symptoms often prompt further evaluation for underlying metabolic or autoimmune issues."
+    },
+    {
+      "question": "Can you write a Python function to calculate the body mass index (BMI) of a patient with acquired generalized lipodystrophy (AGL)?",
+      "answer": "Yes. Since AGL involves near-total fat loss, traditional BMI calculations (which rely on weight influenced by adipose tissue) may not accurately reflect body composition. However, here’s a Python function to compute BMI for reference:\n\npython\ndef calculate_bmi(weight_kg, height_m):\n    \"\"\"\n    Calculate Body Mass Index (BMI) from weight (kg) and height (m).\n    Formula: BMI = weight / (height ** 2)\n    \"\"\"\n    if height <= 0:\n        raise ValueError(\"Height must be greater than 0.\")\n    return weight_kg / (height_m ** 2)\n\n# Example usage (note: AGL patients may require alternative metrics):\ntry:\n    bmi = calculate_bmi(50, 1.75)  # 50 kg, 1.75 m\n    print(f\"BMI: {bmi:.2f}\")\nexcept ValueError as e:\n    print(e)\n\nFor AGL patients, clinicians often prioritize metabolic markers (e.g., leptin levels) over BMI due to altered body composition."
+    },
+    {
+      "question": "Why are HIV- or drug-induced lipodystrophy not typically discussed alongside acquired generalized lipodystrophy (AGL)?",
+      "answer": "HIV- or drug-induced lipodystrophy are distinct subtypes of acquired lipodystrophy with specific, known triggers (e.g., antiretroviral therapy for HIV-associated lipodystrophy). While they share some clinical features with AGL (such as fat loss), their etiologies and management differ significantly. AGL is idiopathic or linked to autoimmune/panniculitis mechanisms, whereas drug-induced lipodystrophy resolves upon discontinuing the offending medication. Thus, they are usually classified separately in clinical practice."
+    },
+    {
+      "question": "What treatment options are available for managing symptoms of acquired generalized lipodystrophy (AGL)?",
+      "answer": "Treatment for AGL is primarily supportive and focuses on symptom alleviation and metabolic complications. This may include: (1) leptin replacement therapy (e.g., metreleptin) to address hypoleptinemia and improve metabolic control; (2) dietary interventions to manage insulin resistance or diabetes; (3) lipid-lowering medications for dyslipidemia; and (4) physical therapy or reconstructive surgery for cosmetic concerns (e.g., facial fat grafting). Management is tailored to individual symptoms and requires a multidisciplinary team (endocrinologists, dermatologists, etc.)."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Ephemeral_port",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is an ephemeral port and how does it differ from a well-known port?",
+      "answer": "An ephemeral port is a temporary communication endpoint used for short-lived sessions in protocols like TCP, UDP, or SCTP. Unlike well-known ports (e.g., 80 for HTTP or 22 for SSH), which are fixed and reserved for specific services, ephemeral ports are dynamically assigned by the operating system within a predefined range (e.g., 49152–65535 on Linux) and are only valid for the duration of a single communication session. After the session ends, the port becomes available for reuse."
+    },
+    {
+      "question": "How are ephemeral ports allocated by an operating system?",
+      "answer": "Ephemeral ports are automatically allocated by the IP stack software of a computer's operating system within a predefined range. The allocation is temporary and typically sequential: after a port is used, the next available port number in the range is assigned, incrementing until the upper limit is reached, at which point the numbering rolls over to the start of the range. This process ensures ports are reused efficiently."
+    },
+    {
+      "question": "Provide an example of a protocol or application that uses ephemeral ports on both the client and server sides.",
+      "answer": "The Remote Procedure Call (RPC) protocol often uses ephemeral ports on both the client and server sides. Initially, the client connects to a server's well-known port (e.g., port 111 for RPC portmapper). During the session, the server may dynamically allocate an ephemeral port to continue communicating with the client, enabling further data exchange without tying up a fixed port."
+    },
+    {
+      "question": "Why are ephemeral ports also referred to as dynamic ports, and what is their typical lifespan?",
+      "answer": "Ephemeral ports are called dynamic ports because they are assigned on a per-request basis and only exist for the duration of a single communication session. Their lifespan is inherently short—typically lasting only as long as the session remains active. Once the session concludes, the port is immediately released and becomes available for reuse by another process."
+    },
+    {
+      "question": "Write a Python code snippet to retrieve the default ephemeral port range on a Linux system.",
+      "answer": "python\nimport socket\n\ndef get_ephemeral_port_range():\n    with open('/proc/sys/net/ipv4/ip_local_port_range', 'r') as f:\n        min_port, max_port = map(int, f.read().split())\n    return (min_port, max_port)\n\nmin_port, max_port = get_ephemeral_port_range()\nprint(f\"Ephemeral port range on Linux: {min_port} to {max_port}\")\n\nThis script reads the system's ephemeral port range from `/proc/sys/net/ipv4/ip_local_port_range` and prints the minimum and maximum port numbers."
+    },
+    {
+      "question": "Can a server use an ephemeral port for a service that traditionally uses a well-known port? Explain your answer.",
+      "answer": "Yes, a server can use an ephemeral port for services typically associated with well-known ports, though this is uncommon. For example, if a web server (normally using port 80) temporarily switches to an ephemeral port due to configuration changes or port exhaustion, clients would need to be explicitly configured to connect to the new port. However, this breaks standard conventions, as well-known ports are reserved for predictable service discovery."
+    },
+    {
+      "question": "What happens to an ephemeral port after the communication session it was assigned to ends?",
+      "answer": "After a communication session ends, the ephemeral port is immediately released and returned to the pool of available ports. While some implementations sequentially increment the last used port number until the range is exhausted, the port number itself becomes reusable for new sessions. However, the same port number may or may not be reassigned depending on the system's port allocation algorithm."
+    }
+  ]
+}

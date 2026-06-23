@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/gde/observability-at-scale-mastering-adk-callbacks-for-cost-latency-and-auditability-1mo5",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What are ADK callback hooks and how do they benefit AI agent deployments?",
+      "answer": "ADK callback hooks are design patterns in Google's Agent Development Kit (ADK) that allow developers to refactor logic from agents to callback hooks. They enable observability, cost reduction, latency optimization, and dynamic session state modification. By implementing callbacks at various agent lifecycle stages, developers can log performance metrics, validate data, reset states, and conditionally skip steps, significantly improving agent efficiency and reliability."
+    },
+    {
+      "question": "What are the six types of callback hooks provided by ADK and when are they triggered?",
+      "answer": "ADK provides six callback hook types triggered at different stages of agent execution:\n1. `beforeAgentCallback`: Called before a new agent cycle begins\n2. `afterAgentCallback`: Called after an agent cycle completes\n3. `beforeModelCallback`: Called before an LLM is invoked\n4. `afterModelCallback`: Called after an LLM returns a response\n5. `beforeToolCallback`: Called before a tool is executed\n6. `afterToolCallback`: Called after a tool execution completes\nThese hooks enable fine-grained control over agent behavior at each execution phase."
+    },
+    {
+      "question": "How would you implement performance monitoring using ADK callback hooks? Provide a code example.",
+      "answer": "To implement performance monitoring, use `beforeAgentCallback` to store the start time and `afterAgentCallback` to calculate duration. Here's a complete implementation:\ntypescript\nimport { SingleAgentCallback } from '@google/adk';\n\nexport const START_TIME_KEY = 'start_time';\n\nexport const agentStartCallback: SingleAgentCallback = (context) => {\n  if (!context?.state) return undefined;\n  context.state.set(START_TIME_KEY, Date.now());\n  return undefined;\n};\n\nexport const agentEndCallback: SingleAgentCallback = (context) => {\n  if (!context?.state) return undefined;\n  const now = Date.now();\n  const startTime = context.state.get<number>(START_TIME_KEY) || now;\n  console.log(\n    `Performance Metrics for Agent \"${context.agentName}\": ` +\n    `Total Elapsed Time: ${(now - startTime) / 1000} seconds.`\n  );\n  return undefined;\n};\n\nAttach these callbacks to agents to log execution times during their lifecycle."
+    },
+    {
+      "question": "What is the purpose of session state management in ADK agents and how are callbacks used for this?",
+      "answer": "Session state management in ADK agents maintains context across agent executions. Callbacks enable dynamic state manipulation:\n1. **Resetting state**: Use `beforeAgentCallback` to clear previous evaluation data before new agent cycles\n2. **Tracking attempts**: Use `afterToolCallback` to increment validation counters or modify status flags\n3. **Conditional logic**: Use `beforeModelCallback` to validate state before LLM execution\nFor example, the `resetNewEvaluationCallback` clears all evaluation-related keys before each new assessment, ensuring clean state propagation through the agent workflow."
+    },
+    {
+      "question": "How can callback hooks help skip unnecessary agent steps conditionally? Provide a practical example.",
+      "answer": "Callback hooks enable conditional step skipping through validation in `beforeModelCallback`. For instance:\ntypescript\nimport { SingleAgentCallback } from '@google/adk';\n\nexport const validationCallback: SingleAgentCallback = (context) => {\n  if (!context?.state) return undefined;\n  const projectData = context.state.get('project_data');\n  if (!projectData?.isValid) {\n    console.log('Skipping LLM evaluation - invalid project data');\n    context.state.set('skip_evaluation', true);\n    return undefined;\n  }\n  return undefined;\n};\n\nAttach this to an LLM agent's `beforeModelCallback` to bypass model execution when prerequisites aren't met, reducing costs and latency."
+    },
+    {
+      "question": "What are the system requirements for building ADK agents with callback hooks?",
+      "answer": "To build ADK agents with callback hooks, you need:\n- TypeScript 5.9.3+\n- Node.js 24.13.0+\n- npm 11.8.0+\n- Docker (for MailHog email testing)\n- Google ADK package\n- Optional: Vertex AI access for Gemini models (required if using LLM agents)\n- Environment variables configured: GEMINI_MODEL_NAME, GOOGLE_CLOUD_PROJECT, etc.\nThese pinned versions ensure version consistency between development and production environments."
+    },
+    {
+      "question": "How do callback hooks implement the separation of concerns design pattern in ADK agents?",
+      "answer": "Callback hooks implement separation of concerns by:\n1. **Decoupling business logic**: Tools focus solely on core functionality while callbacks handle cross-cutting concerns like logging and state management\n2. **Modularizing concerns**: Each callback type handles specific responsibilities (e.g., `beforeAgentCallback` resets state, `afterToolCallback` tracks metrics)\n3. **Centralizing logic**: Common operations like validation or cleanup are implemented once in callbacks and reused across agents\nThis pattern makes agents leaner and more maintainable while enabling consistent behavior through standardized callback implementations."
+    }
+  ]
+}

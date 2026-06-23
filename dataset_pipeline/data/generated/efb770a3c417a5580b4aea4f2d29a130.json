@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/A._T._Simmons",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was A. T. Simmons and what types of buildings did he design?",
+      "answer": "A. T. Simmons, also known as Aaron T. Simmons, was an American architect renowned for designing a wide variety of public buildings. His most notable contributions include 71 Carnegie libraries, numerous courthouses, schools, churches, and residential buildings. He is particularly associated with the Cedar Crest area of Normal, Illinois, where he designed many of the houses."
+    },
+    {
+      "question": "How many Carnegie libraries did A. T. Simmons design in Kansas, and which towns were they located in?",
+      "answer": "A. T. Simmons designed six Carnegie libraries in Kansas. These were located in the towns of Abilene, Chanute, Council Grove, Downs, Hays, and Yates Center."
+    },
+    {
+      "question": "List three buildings designed by A. T. Simmons that are listed on the U.S. National Register of Historic Places.",
+      "answer": "Three buildings designed by A. T. Simmons that are listed on the U.S. National Register of Historic Places (NRHP) include the Emmetsburg Public Library in Emmetsburg, Iowa (1912), the Yates Center Carnegie Library in Yates Center, Kansas (c. 1912), and the Dundy County Courthouse in Benkelman, Nebraska (1921)."
+    },
+    {
+      "question": "What is the significance of the Cedar Crest Addition Historic District in Normal, Illinois, in relation to A. T. Simmons?",
+      "answer": "The Cedar Crest Addition Historic District in Normal, Illinois, is significant because it includes numerous works designed by A. T. Simmons. The district is roughly bounded by Constitutional Trail, Division St., Highland Ave., and Fell Ave., and many of the residential buildings in this area were designed by Simmons."
+    },
+    {
+      "question": "Can you provide a code snippet to generate a list of A. T. Simmons' NRHP-listed works from the provided text?",
+      "answer": "python\n# Sample code to extract NRHP-listed works by A. T. Simmons from the provided text\ntext = \"\"\"\nEmmetsburg Public Library (1912), 10th St. on Courthouse Sq., Emmetsburg, Iowa (Simmons, A. T.), NRHP-listed\nYates Center Carnegie Library (c.1912), 218 N. Main, Yates Center, Kansas (Simmons, A. T.), NRHP-listed\nDundy County Courthouse (1921), W. 7th Ave. and Chief St., Benkelman, Nebraska (Simmons, A. T.), NRHP-listed\nAyer Public Library, 200 Locust St., Delavan, Illinois (Simmons, A. T.), NRHP-listed\nNumerous works in Cedar Crest Addition Historic District, roughly bounded by Constitutional Trail, Division St., Highland Ave. and Fell Ave., Normal, Illinois (Simmons, Aaron T.), NRHP-listed\nChardon Courthouse Square District, Public Green, roughly bounded by Main and Center Sts., Chardon, Ohio (Herricks & Simmons), NRHP-listed\nChase County Courthouse, Broadway between 9th and 10th Sts., Imperial, Nebraska (Simmons, A. T.), NRHP-listed\nCouncil Grove Carnegie Library, 303 W. Main, Council Grove, Kansas (Simmons, A. T.), NRHP-listed\nDowns Carnegie Library, 504 S. Morgan, Downs, Kansas (Simmons, A. T.), NRHP-listed\nIowa Yearly Meeting House-College Avenue Friends Church, 912 N. C St., Oskaloosa, Iowa (Simmons, A. T.), NRHP-listed\nOskaloosa Monthly Meeting of Friends Parsonage, 910 N. C St., Oskaloosa, Iowa (Simmons, A. T.), NRHP-listed\nOne or more works in Penn College Historic District, 201 Trueblood Ave., Oskaloosa, Iowa (Simmons, A. T., and Proudfoot), NRHP-listed\n\"\"\"\n\n# Extract NRHP-listed works\nnrhp_works = [line.strip() for line in text.split('\\n') if 'NRHP-listed' in line]\nfor work in nrhp_works:\n    print(work)"
+    },
+    {
+      "question": "Which of A. T. Simmons' works are located in Iowa, and what are their addresses?",
+      "answer": "A. T. Simmons designed several buildings in Iowa that are listed on the NRHP. These include the Emmetsburg Public Library at 10th St. on Courthouse Sq., Emmetsburg; the Iowa Yearly Meeting House-College Avenue Friends Church at 912 N. C St., Oskaloosa; the Oskaloosa Monthly Meeting of Friends Parsonage at 910 N. C St., Oskaloosa; and contributions to the Penn College Historic District at 201 Trueblood Ave., Oskaloosa."
+    },
+    {
+      "question": "What is the relationship between A. T. Simmons and the Chardon Courthouse Square District in Ohio?",
+      "answer": "A. T. Simmons collaborated with Herricks on the design of the Chardon Courthouse Square District in Chardon, Ohio. This district includes the Public Green and is roughly bounded by Main and Center Streets. The collaboration is noted as 'Herricks & Simmons' in the NRHP listing."
+    }
+  ]
+}

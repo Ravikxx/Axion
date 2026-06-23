@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Arsenal_(Central_Park)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When was the Arsenal in Central Park built, and what was its original purpose?",
+      "answer": "The Arsenal was built between 1847 and 1851 as a storehouse for arms and ammunition for the New York State Militia. It was originally designed to serve as a secure storage facility during a time when such preparations were common."
+    },
+    {
+      "question": "Who designed the Arsenal, and what notable organizations is this person associated with?",
+      "answer": "The Arsenal was designed by Martin E. Thompson, originally a carpenter. Thompson was a partner of Ithiel Town and later became one of the founders of the National Academy of Design."
+    },
+    {
+      "question": "What architectural features characterize the Arsenal's exterior design?",
+      "answer": "The Arsenal features a symmetrical brick structure in English bond, with headers every fifth course. It has a central block resembling a fortified gatehouse, flanked by half-octagonal towers. The entrance includes a carpentry doorframe adorned with a bald eagle between cannonballs, crossed sabers, and stacked pikes in flanking panels."
+    },
+    {
+      "question": "What notable artwork is located inside the Arsenal, and when was it created?",
+      "answer": "The Arsenal's lobby contains a series of floor-to-ceiling murals by Allen Saalburg, created between 1935 and 1936. These murals depict historical vignettes of New York life during the Civil War, combined with ornamental scrolls and arabesques."
+    },
+    {
+      "question": "How has the use of the Arsenal building changed over time?",
+      "answer": "Initially built as a military storehouse, the Arsenal was later repurposed in the 1920s after plans to tear it down were abandoned. It has served various roles including a zoo, police precinct, weather bureau, and office space for the New York City Department of Parks and Recreation. Today, it houses the Central Park Zoo offices, City Parks Foundation, Historic House Trust, an art gallery (Arsenal Gallery), and stores the original 'Greensward Plan' for Central Park on the third floor."
+    },
+    {
+      "question": "What is the oldest extant structure within Central Park, and how does the Arsenal compare in age?",
+      "answer": "The oldest extant structure within Central Park is Blockhouse No. 1, built in 1814. The Arsenal, constructed between 1847 and 1851, is the second-oldest extant structure in the park, predating the park's official construction."
+    },
+    {
+      "question": "Write a Python function to calculate how many years the Arsenal has been in existence as of 2023.",
+      "answer": "python\ndef calculate_arsenal_age(current_year=2023):\n    arsenal_construction_start = 1847\n    return current_year - arsenal_construction_start\n\narsenal_age = calculate_arsenal_age()\nprint(f\"The Arsenal has been in existence for {arsenal_age} years as of 2023.\")\n\nThis function computes the difference between the current year (default 2023) and the Arsenal's construction start year (1847), returning the total number of years the building has existed."
+    }
+  ]
+}

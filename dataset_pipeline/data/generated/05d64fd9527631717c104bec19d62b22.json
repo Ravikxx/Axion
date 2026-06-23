@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Human_trafficking_in_Trinidad_and_Tobago",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When did Trinidad and Tobago ratify the 2000 UN TIP Protocol?",
+      "answer": "Trinidad and Tobago ratified the 2000 UN Trafficking in Persons (TIP) Protocol in November 2007."
+    },
+    {
+      "question": "What categories of people were subjected to trafficking in Trinidad and Tobago in 2008?",
+      "answer": "In 2008, Trinidad and Tobago was a destination, source, and transit country for women and children subjected to forced prostitution, as well as children and men in conditions of forced labor."
+    },
+    {
+      "question": "Which countries were identified as sources of trafficking victims in Trinidad and Tobago in 2008?",
+      "answer": "In 2008, victims of trafficking in Trinidad and Tobago originated from Colombia, Dominican Republic, Venezuela, Suriname, as well as undocumented economic migrants from Asia."
+    },
+    {
+      "question": "Why was Trinidad and Tobago placed on the Tier 2 Watch List in 2010?",
+      "answer": "Trinidad and Tobago was placed on the Tier 2 Watch List in 2010 because the government did not show sufficient progress in prosecuting and punishing trafficking crimes, as well as protecting trafficking victims, who were often jailed and deported instead."
+    },
+    {
+      "question": "What progress has Trinidad and Tobago made in combating human trafficking since 2021?",
+      "answer": "Trinidad and Tobago established a National Action Plan in 2021 to fight human trafficking, recognizing some state officials' involvement while also making strides in addressing the issue."
+    },
+    {
+      "question": "How did the U.S. State Department classify Trinidad and Tobago in terms of human trafficking efforts in 2017 and 2023?",
+      "answer": "In 2017, the U.S. State Department placed Trinidad and Tobago in 'Tier 2.' By 2023, it was on the Tier 2 Watch List."
+    },
+    {
+      "question": "Provide a Python code snippet that fetches the current Tier classification of Trinidad and Tobago from the U.S. State Department's TIP Report API (hypothetical endpoint).",
+      "answer": "python\nimport requests\n\ndef get_trinidad_tier_status():\n    # Hypothetical API endpoint (replace with actual URL)\n    url = \"https://api.tipreport.state.gov/countries/TRT/status\"\n    try:\n        response = requests.get(url)\n        response.raise_for_status()\n        data = response.json()\n        return data.get('tier_status', 'Data not available')\n    except requests.exceptions.RequestException as e:\n        return f\"Error fetching data: {e}\"\n\n# Example usage\nprint(get_trinidad_tier_status())  # Output: 'Tier 2' or 'Tier 2 Watch List'\n"
+    }
+  ]
+}

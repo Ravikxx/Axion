@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Body_piercing",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is body piercing and what are some materials used for piercing implants?",
+      "answer": "Body piercing is a form of body modification involving puncturing or cutting a part of the human body to create an opening for jewelry or implants. Piercing implants, which alter the body's profile or appearance, can be made from materials like golden threads (installed subdermally), platinum, titanium, or medical-grade steel."
+    },
+    {
+      "question": "Which types of piercings have been documented historically and where?",
+      "answer": "Historically documented piercings include ear and nose piercings, found globally and dating back over 5,000 years (ear piercings in mummified remains) and 1500 BCE (nose piercings). Lip and tongue piercings were historically found in some African cultures, while nipple piercings date back to Ancient Rome and genital piercings to Ancient India (c. 320–550 CE). The history of navel piercing is less clear."
+    },
+    {
+      "question": "How has the popularity of body piercing changed over time in Western culture?",
+      "answer": "The practice of body piercing in Western culture has fluctuated but has generally increased in popularity since World War II. Subcultural popularity for non-ear piercings emerged in the 1970s, and by the 1990s, these practices spread to the mainstream."
+    },
+    {
+      "question": "What are some common reasons people choose to get piercings?",
+      "answer": "People pierce for diverse reasons, including religious or spiritual purposes, self-expression, aesthetic value, sexual pleasure, cultural conformity, or cultural rebellion. Some also pierce to conform to or challenge societal norms."
+    },
+    {
+      "question": "Why might some forms of body piercing be controversial, and what restrictions have been imposed?",
+      "answer": "Some forms of piercing, particularly on youth, are controversial due to safety concerns or cultural norms. Schools, employers, and religious groups have restricted the display or placement of piercings, though extreme forms (e.g., hundreds or thousands of piercings) have been recognized by Guinness World Records."
+    },
+    {
+      "question": "What are the risks and precautions associated with body piercing?",
+      "answer": "Body piercing carries risks such as allergic reactions, infection, excessive scarring, and physical injuries. To minimize these risks, contemporary practices emphasize using safe materials, sterile tools, sanitary procedures, and proper aftercare. Healing times vary widely by placement, ranging from a month (some genital piercings) to two years (navel piercings)."
+    },
+    {
+      "question": "Write a Python function to calculate the approximate healing time for a body piercing based on its placement, using the provided healing time ranges as a reference.",
+      "answer": "python\ndef calculate_healing_time(piercing_type):\n    healing_times = {\n        'genital': '1 month',\n        'earlobe': '6–8 weeks',\n        'cartilage': '3–12 months',\n        'navel': '6–24 months',\n        'nipple': '3–6 months',\n        'tongue': '4–6 weeks',\n        'lip': '6–8 weeks'\n    }\n    return healing_times.get(piercing_type.lower(), 'Unknown piercing type')\n\n# Example usage:\nprint(calculate_healing_time('navel'))  # Output: 6–24 months\n"
+    }
+  ]
+}

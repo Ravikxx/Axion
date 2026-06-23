@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Bengt_Sjostrom_Theatre",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When was the Bengt Sjostrom Theatre constructed and who was it dedicated to?",
+      "answer": "The Bengt Sjostrom Theatre was constructed in 1983 and dedicated to the memory of Bengt Sjostrom, a builder and civic leader who served as the general contractor for the college's buildings from 1967 to 1971."
+    },
+    {
+      "question": "What was the original name of the Bengt Sjostrom Theatre and when did construction begin?",
+      "answer": "The original name of the Bengt Sjostrom Theatre was the Community Arts Center, and construction began in 1974."
+    },
+    {
+      "question": "How were the initial construction costs of the Bengt Sjostrom Theatre funded?",
+      "answer": "The initial construction of the Community Arts Center (later renamed) was funded entirely with private monies raised by a group of citizens."
+    },
+    {
+      "question": "What notable features were added during the Phase 1 renovations of the Bengt Sjostrom Theatre in 2001?",
+      "answer": "Phase 1 renovations included easier accessibility, increased seating capacity to 1,100, on-site restrooms, a box office, concession stands, and state-of-the-art theatrical technology."
+    },
+    {
+      "question": "Describe the key technological feature added during the Phase 2 renovations of the Bengt Sjostrom Theatre in 2002.",
+      "answer": "Phase 2 renovations featured a 150-foot proscenium stage house with a fully functional fly system, a larger stage platform, a protected stage, and an acoustical barrier to isolate the stage from other events."
+    },
+    {
+      "question": "What is the design and functionality of the retractable roof at the Bengt Sjostrom Theatre?",
+      "answer": "The retractable roof consists of six 36-foot-wide, 42-foot-long triangle-shaped panels weighing a total of 86 tons. It was designed by Studio Gang Architects and Uni-Systems, adapted from stadium roof technologies, and can open to provide a star-shaped view of the sky or close to fully shelter the audience."
+    },
+    {
+      "question": "Provide a Python code snippet that calculates the total weight of the roof panels and the percentage of the roof's weight relative to the total weight of the theatre (assuming the theatre weighs 20,000 tons).",
+      "answer": "python\n# Given values\npanel_weight = 86  # tons\nnum_panels = 6\ntotal_roof_weight = panel_weight * num_panels\ntheatre_total_weight = 20000  # tons\n\n# Calculate percentage\npercentage_weight = (total_roof_weight / theatre_total_weight) * 100\n\n# Output\nprint(f\"Total weight of roof panels: {total_roof_weight} tons\")\nprint(f\"Percentage of theatre's total weight: {percentage_weight:.2f}%\")\n\nOutput:\nTotal weight of roof panels: 516 tons\nPercentage of theatre's total weight: 2.58%"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/terrillo/games-design-themselves-from-rts-to-tactical-strategy-game-3fac",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What was the original concept of Theater Alpha, and how did it evolve into a tactical squad management game?",
+      "answer": "Theater Alpha started as a real-time strategy (RTS) game project with a custom engine, later transitioning to Unity 2D and then Unity 3D. The evolution occurred when the developer realized the core hook wasn't in RTS mechanics but in the stories of individual soldiers. This led to shifting focus from managing hundreds of units to commanding a small elite squad, transforming the game into a tactical squad management experience with meaningful consequences for tactical decisions."
+    },
+    {
+      "question": "What are the key implemented features in Theater Alpha's current tactical squad management system?",
+      "answer": "Theater Alpha includes several key features: a system with 3 named soldiers, two operational modes (Stealth & Engage), an advanced cone-based vision system using 130-ray raycasting, distance-based combat with hit chance calculations, win/lose conditions with meaningful consequences, real-time tactical combat, health tracking (0-100 per unit) with permadeath, line-of-sight blocking via colliders, and visual feedback through colored rays and bullet projectiles."
+    },
+    {
+      "question": "How does Theater Alpha calculate hit chances in combat, and what factors influence them?",
+      "answer": "Theater Alpha uses distance-based combat with hit chance calculations. Factors influencing hit chances include distance between units, stealth bonuses (applied during stealth mode), and potentially other modifiers like cover or unit-specific traits. The exact formula isn't specified in the text, but the system combines these factors to determine the probability of a successful hit during combat."
+    },
+    {
+      "question": "What technical architecture and Unity components are used in Theater Alpha?",
+      "answer": "Theater Alpha is built in Unity 6.2 using a component-based architecture. Key components include: Unit System (UnitBase, UnitFriendly, UnitEnemy classes), Combat System (distance-based hit calculations, stealth bonuses), AI System (cone-based vision, automatic engagement), and Manager Systems (SoldierManager, CombatManager, EngagementManager). This modular approach allows for flexible unit behaviors and combat interactions."
+    },
+    {
+      "question": "Provide a code snippet example demonstrating how Theater Alpha might implement the cone-based vision system.",
+      "answer": "csharp\nusing UnityEngine;\n\npublic class VisionCone : MonoBehaviour {\n    public int rayCount = 130;\n    public float viewRadius = 10f;\n    public float viewAngle = 90f;\n    public LayerMask obstacleMask;\n    public LayerMask targetMask;\n\n    public bool IsTargetVisible(GameObject target) {\n        Vector3 directionToTarget = (target.transform.position - transform.position).normalized;\n        float angleToTarget = Vector3.Angle(transform.forward, directionToTarget);\n\n        if (angleToTarget > viewAngle / 2) return false;\n\n        if (Physics.Raycast(transform.position, directionToTarget, out RaycastHit hit, viewRadius, obstacleMask)) {\n            if (hit.collider.gameObject == target) {\n                return true;\n            }\n        }\n        return false;\n    }\n\n    void Update() {\n        // Cast rays in a cone pattern (simplified example)\n        for (int i = 0; i < rayCount; i++) {\n            float angle = transform.eulerAngles.y - viewAngle / 2 + (float)i / rayCount * viewAngle;\n            Vector3 dir = AngleToVector(angle);\n            Ray ray = new Ray(transform.position, dir);\n            \n            if (Physics.Raycast(ray, out RaycastHit hit, viewRadius)) {\n                if (targetMask == (targetMask | (1 << hit.collider.gameObject.layer))) {\n                    Debug.DrawRay(transform.position, dir * hit.distance, Color.red);\n                } else {\n                    Debug.DrawRay(transform.position, dir * hit.distance, Color.green);\n                }\n            } else {\n                Debug.DrawRay(transform.position, dir * viewRadius, Color.blue);\n            }\n        }\n    }\n\n    Vector3 AngleToVector(float angle) {\n        float rad = angle * Mathf.Deg2Rad;\n        return new Vector3(Mathf.Cos(rad), 0, Mathf.Sin(rad));\n    }\n}\n"
+    },
+    {
+      "question": "What lessons did the developer learn about scope and focus during the development of Theater Alpha?",
+      "answer": "The developer learned that sometimes the best games come from constraints rather than grand ambitions. By narrowing the scope from a massive RTS to a tactical squad management game, the unique elements became clearer. The experience reinforced that having a working prototype is crucial for validating fun, and that every game needs a clear hook—something that makes it stand out from other games in the genre."
+    },
+    {
+      "question": "How does Theater Alpha handle permadeath for units, and what are the consequences of losing a unit?",
+      "answer": "Theater Alpha implements permadeath by tracking unit health on a 0-100 scale, where reaching 0 results in permanent loss of that unit. The consequences of losing a unit are meaningful, affecting the squad's combat capabilities, tactical options, and potentially influencing mission outcomes. Since the game focuses on individual soldier stories, each loss impacts the narrative and strategic depth of the game, adding weight to every tactical decision."
+    }
+  ]
+}

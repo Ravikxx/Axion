@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Coopers'_International_Union_of_North_America",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the Coopers' International Union of North America (CIUNA) and what regions did it represent?",
+      "answer": "The CIUNA was a labor union that represented coopers, i.e., barrel makers, in the United States and Canada. It was formed in 1890 in Titusville, Pennsylvania, by local unions that split from an earlier organization, the Coopers of North America."
+    },
+    {
+      "question": "What historical labor organizations was the CIUNA affiliated with?",
+      "answer": "The CIUNA was initially affiliated with the Federation of Organized Trades and Labor Unions in 1880 as a founding member. Later, it was chartered by the American Federation of Labor (AFL) in 1888 and subsequently by the AFL again in 1891. It later became affiliated with the AFL–CIO in 1955."
+    },
+    {
+      "question": "Why did the CIUNA's membership decline after Prohibition?",
+      "answer": "Prohibition in the United States (1920–1933) reduced demand for barrels used to store and transport alcoholic beverages, which were the primary products associated with coopers' work. This led to a decline in membership, dropping to 1,215 by 1925."
+    },
+    {
+      "question": "What was the membership trend of the CIUNA over time?",
+      "answer": "The CIUNA started with local unions forming in 1890. Membership was 1,215 in 1925, rose to 5,000 by 1953, then declined to 1,056 by 1980. After merging into the Glass, Molders, Pottery, Plastics and Allied Workers International Union in 1992, it ceased to exist as an independent organization."
+    },
+    {
+      "question": "Write a Python function that calculates the percentage change in CIUNA's membership between two given years.",
+      "answer": "python\ndef calculate_membership_change(initial_year, initial_members, final_year, final_members):\n    \"\"\"\n    Calculate the percentage change in union membership between two years.\n    \n    Args:\n        initial_year (int): The starting year\n        initial_members (int): Membership in the starting year\n        final_year (int): The ending year\n        final_members (int): Membership in the ending year\n    \n    Returns:\n        float: Percentage change in membership\n    \"\"\"\n    if initial_members == 0:\n        raise ValueError(\"Initial membership cannot be zero.\")\n    change = ((final_members - initial_members) / initial_members) * 100\n    return change\n\n# Example usage:\n# percentage_change = calculate_membership_change(1925, 1215, 1953, 5000)\n# print(f\"Membership increased by {percentage_change:.2f}%\")\n"
+    },
+    {
+      "question": "What conflict did the CIUNA have with another labor union and what was the outcome?",
+      "answer": "The CIUNA had a long-standing dispute with the United Brewery Workmen, another labor union. This conflict led many coopers to be represented by the United Brewery Workmen instead, which further weakened the CIUNA's influence and membership."
+    },
+    {
+      "question": "How did the CIUNA's formation and merger timeline reflect the broader trends in labor union history?",
+      "answer": "The CIUNA emerged from the fragmentation of an earlier union, reflecting the decentralization and competition among craft unions in the late 19th century. Its eventual merger with the Glass, Molders, Pottery, Plastics and Allied Workers International Union in 1992 illustrates the trend of consolidation in labor unions during the late 20th century, as smaller craft unions merged to survive in a changing industrial landscape."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/francistrdev/forem-is-slow-so-i-deleti-mean-optimized-it-bln",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What is the main complaint about Forem's performance in the post?",
+      "answer": "The author complains that Forem is slow and inaccessible for users with low-end computers, making it hard for them to participate in the community. They specifically mention that Forem's slowness combined with OBS lag makes it difficult to record or use effectively."
+    },
+    {
+      "question": "How does the author claim to have optimized Forem's performance?",
+      "answer": "The author optimized Forem by removing redundant code and refactoring, using a technique they describe as 'deleting' to achieve O(1) constant time. Their solution involved pressing 'Backspace' to remove unnecessary code, which they humorously describe as a revolutionary approach inspired by 'Vibe Coding'."
+    },
+    {
+      "question": "What role did Google Gemini play in the author's Pull Request?",
+      "answer": "Google Gemini assisted the author by suggesting how to make Forem's operations O(1) constant time. The author used the AI's response to edit the codebase and submit the Pull Request. They treated AI like a tool (e.g., a car) to aid in their coding process."
+    },
+    {
+      "question": "What is the author's satirical take on security and overengineering?",
+      "answer": "The author argues that overengineering security and building unnecessary features leads to complexity, which they satirically claim could be solved by simply removing code or features entirely. They joke that 'Scams wouldn't exist if the product didn't exist,' implying that reducing the product's scope could eliminate security risks."
+    },
+    {
+      "question": "What are the 'Prize Categories' mentioned in the post, and why are they humorous?",
+      "answer": "The 'Prize Categories' are satirical awards the author humorously assigns to themselves and their contributions: 'Best AI' (for Google Gemini), 'Teapot' (for Larry Masinter, who they jokingly mention likes tea), and 'Community' (for believing their change will impact the community). The humor lies in the absurdity of treating these as formal awards."
+    },
+    {
+      "question": "How does the author demonstrate Forem's slowness in the post?",
+      "answer": "The author includes screenshots from Google Gemini confirming Forem's slowness and embeds a video (https://www.youtube.com/watch?v=kUzswiwbOhk) showing their experience using Forem on a low-end PC. They also link to a video demonstration (https://tiny.cc/ybi1101) claiming to show performance improvements after their changes."
+    },
+    {
+      "question": "What is the author's reasoning behind their Pull Request being 'the next best thing to AI'?",
+      "answer": "The author humorously claims their Pull Request is the 'next best thing to AI' because it optimizes Forem's performance by removing code, which they frame as a groundbreaking solution. They imply that their approach of deleting code is as impactful as AI-driven optimizations, though it is clearly satirical."
+    }
+  ]
+}

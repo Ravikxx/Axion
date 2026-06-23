@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Elliptical_galaxy",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What are the three main types of galaxies originally described by Edwin Hubble in 1936?",
+      "answer": "The three main types of galaxies described by Edwin Hubble in 1936 are elliptical, spiral, and lenticular galaxies."
+    },
+    {
+      "question": "How do elliptical galaxies differ from spiral galaxies in terms of star age and formation activity?",
+      "answer": "Elliptical galaxies contain older, cooler stars that are redder in color, while spiral galaxies have younger stars. Additionally, elliptical galaxies exhibit minimal or no star formation activity, whereas spiral galaxies are actively forming new stars."
+    },
+    {
+      "question": "What is the range of shapes and sizes for elliptical galaxies?",
+      "answer": "Elliptical galaxies vary in shape from nearly spherical to nearly flat, with the flattest types like E7 being cigar-shaped. They range in size from hundreds of millions to over one trillion stars."
+    },
+    {
+      "question": "Why are elliptical galaxies sometimes referred to as 'early-type' galaxies (ETG)?",
+      "answer": "Elliptical galaxies and lenticular galaxies are called 'early-type' galaxies (ETG) due to their position in the Hubble sequence, which classifies galaxies based on their shape and structure."
+    },
+    {
+      "question": "How common are elliptical galaxies in the Virgo Supercluster and the overall universe?",
+      "answer": "Elliptical galaxies make up approximately 10–15% of galaxies in the Virgo Supercluster but are not the dominant type of galaxy in the universe overall."
+    },
+    {
+      "question": "Write a Python function that checks if a given galaxy type is classified as an 'early-type' galaxy (ETG).",
+      "answer": "python\ndef is_early_type_galaxy(galaxy_type):\n    \"\"\"Check if a galaxy type is classified as an 'early-type' galaxy (ETG).\n    \n    Args:\n        galaxy_type (str): The type of galaxy (e.g., 'elliptical', 'lenticular', 'spiral').\n    \n    Returns:\n        bool: True if the galaxy is an ETG, False otherwise.\n    \"\"\"\n    early_type_galaxies = ['elliptical', 'lenticular']\n    return galaxy_type.lower() in early_type_galaxies\n\n# Example usage:\nprint(is_early_type_galaxy('elliptical'))  # Output: True\nprint(is_early_type_galaxy('spiral'))      # Output: False\n"
+    },
+    {
+      "question": "Why did Edwin Hubble initially believe elliptical galaxies might evolve into spiral galaxies, and what later disproved this idea?",
+      "answer": "Edwin Hubble initially thought elliptical galaxies might evolve into spiral galaxies due to their classification order in the Hubble sequence. Later observations and research disproved this idea, showing that elliptical galaxies do not naturally transform into spiral galaxies."
+    }
+  ]
+}

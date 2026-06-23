@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Cummins_School",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When was the Cummins School built and who was its architect?",
+      "answer": "The Cummins School was built in 1871 and was designed by Samuel Hannaford."
+    },
+    {
+      "question": "What architectural style was the Cummins School designed in and how does it compare to other Cincinnati schools from the same era?",
+      "answer": "The Cummins School was designed in the Italianate style, which was common for Cincinnati schools at the time. For example, it is similar in style to the McKinley School on the city's east side, another of Hannaford's designs."
+    },
+    {
+      "question": "What are some notable architectural features of the Cummins School building?",
+      "answer": "The Cummins School features a 3+1⁄2-story brick structure with a stone foundation, an asphalt roof, wrought iron stairways, ornamental wooden door and window frames, wainscoting, and a central hallway layout shaped like a double 'E' to maximize window space. It also includes rooms such as a library, laboratory, and principal's office."
+    },
+    {
+      "question": "How did the heating system in the Cummins School reflect forward-thinking design for its time?",
+      "answer": "The Cummins School was originally heated with stoves but was designed to allow for easy conversion to a steam-powered central heating system, demonstrating a progressive approach to infrastructure that could adapt to future needs."
+    },
+    {
+      "question": "What was the purpose of the expansion added to the Cummins School around 30 years after its initial construction?",
+      "answer": "The expansion added a small Neoclassical structure to the rear of the Cummins School, likely to accommodate growing educational needs or administrative functions as the school evolved."
+    },
+    {
+      "question": "Provide a code snippet that simulates the central hallway layout of the Cummins School as a double 'E' shape. Assume each wing of the 'E' is 20 units long and classrooms are 10 units wide.",
+      "answer": "python\nimport matplotlib.pyplot as plt\nimport numpy as np\n\n# Define the double 'E' layout coordinates\ndef draw_double_e():\n    fig, ax = plt.subplots(figsize=(10, 6))\n    \n    # Main vertical lines\n    ax.plot([5, 5], [0, 60], 'k-')  # Left vertical\n    ax.plot([25, 25], [0, 60], 'k-')  # Right vertical\n    \n    # Horizontal lines for the 'E' shape\n    ax.plot([5, 25], [10, 10], 'k-')  # Top horizontal\n    ax.plot([5, 25], [30, 30], 'k-')  # Middle horizontal\n    ax.plot([5, 25], [50, 50], 'k-')  # Bottom horizontal\n    \n    # Central hallway (vertical line in the middle)\n    ax.plot([15, 15], [0, 60], 'b--', linewidth=2, label='Central Hallway')\n    \n    # Classrooms (rectangles)\n    classrooms = [\n        [(5, 0), (25, 10)],   # Top classrooms\n        [(5, 10), (25, 30)],  # Left middle classrooms\n        [(5, 30), (25, 50)],  # Bottom classrooms\n        [(5, 50), (25, 60)]   # Right middle classrooms\n    ]\n    \n    for classroom in classrooms:\n        ax.add_patch(plt.Rectangle(classroom[0], classroom[1][0]-classroom[0][0], classroom[1][1]-classroom[0][1], fill=None, edgecolor='gray'))\n    \n    ax.set_xlim(0, 30)\n    ax.set_ylim(0, 65)\n    ax.set_aspect('equal')\n    ax.axis('off')\n    ax.legend()\n    plt.title('Cummins School Double \"E\" Layout')\n    plt.show()\n\ndraw_double_e()\n"
+    },
+    {
+      "question": "Why was the Cummins School later used as a model for other Cincinnati school buildings?",
+      "answer": "The Cummins School was used as a model for later Cincinnati school buildings because of its economical and practical floor plan, which efficiently utilized space with a central hallway and classrooms on both sides, maximizing natural light and functionality."
+    },
+    {
+      "question": "When was the Cummins School added to the National Register of Historic Places and what was its significance?",
+      "answer": "The Cummins School was listed on the National Register of Historic Places in 1986 in recognition of its historically significant architecture by Samuel Hannaford. Its inclusion highlighted the importance of Italianate-style school designs in Cincinnati's educational history."
+    }
+  ]
+}

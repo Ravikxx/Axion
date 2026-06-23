@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Filth_Hounds_of_Hades",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who produced the debut album 'Filth Hounds of Hades' by Tank, and where was it recorded?",
+      "answer": "The album was produced by \"Fast\" Eddie Clarke of Motörhead and recorded at Ramport Studios in London between December 1981 and January 1982."
+    },
+    {
+      "question": "What are the notable differences between the Canadian pressing and the European/Australian releases of 'Filth Hounds of Hades'?",
+      "answer": "The Canadian pressing on Attic Records featured an alternate blue cover with maroon dogs and a different logo. The European (except Germany and the Netherlands) and Australian releases had a dark blue cover with black dogs, while the Dutch release had a light blue cover with black dogs. The German cover was entirely black with black dogs."
+    },
+    {
+      "question": "From where did Tank derive the title of their debut album 'Filth Hounds of Hades'?",
+      "answer": "The album title was inspired by Viv Stanshall's 'Sir Henry at Rawlinson End,' originally a radio series from 1975, later expanded into an album and film. The phrase described the band's fanbase during their early days."
+    },
+    {
+      "question": "What did drummer Mark Brabbs say about the origin of the album title in an interview?",
+      "answer": "Mark Brabbs explained that the title came from Viv Stanshall's work and felt appropriate because their early fans shared their lifestyle of daily drinking parties starting at lunchtime. They even referred to these fans as 'The Filth' at the time."
+    },
+    {
+      "question": "Which Danish Thrash Metal band named themselves after a song from Tank's debut album?",
+      "answer": "The band Artillery named themselves after Tank's song 'Heavy Artillery.'"
+    },
+    {
+      "question": "List the different cover variations of 'Filth Hounds of Hades' and their distinguishing features.",
+      "answer": "1) Canadian pressing: blue cover with maroon dogs and a different logo. 2) European/Australian releases: dark blue cover with black dogs. 3) Dutch release: light blue cover with black dogs. 4) German release: black cover with black dogs. 5) 2023 remastered LP: alternate blue cover with maroon dogs and a different logo, similar to the Canadian pressing."
+    },
+    {
+      "question": "Write a Python script to extract and print the unique cover variations of 'Filth Hounds of Hades' from the given text.",
+      "answer": "python\ncovers = {\n    \"Canadian pressing\": \"blue cover with maroon dogs and a different logo\",\n    \"European/Australian releases\": \"dark blue cover with black dogs\",\n    \"Dutch release\": \"light blue cover with black dogs\",\n    \"German release\": \"black cover with black dogs\",\n    \"2023 remastered LP\": \"alternate blue cover with maroon dogs and a different logo\"\n}\n\nfor region, description in covers.items():\n    print(f\"{region}: {description}\")\n"
+    }
+  ]
+}

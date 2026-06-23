@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/googleai/agent-development-kit-making-it-easy-to-build-multi-agent-applications-4594",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What is the Agent Development Kit (ADK) and what problem does it solve for developers?",
+      "answer": "The Agent Development Kit (ADK) is an open-source framework introduced by Google at Cloud NEXT 2025 to simplify the end-to-end development of intelligent, autonomous multi-agent systems. It addresses the challenge of building production-ready agentic applications by providing a flexible, modular framework that supports different models, tools, orchestration methods, and deployment environments. ADK is already powering agents in Google products like Agentspace and the Google Customer Engagement Suite."
+    },
+    {
+      "question": "What are the core pillars of ADK and how do they support agent development?",
+      "answer": "ADK’s core pillars include: 1) Multi-Agent by Design for modular and scalable applications, 2) Rich Model Ecosystem for choosing the best model (e.g., Gemini or models via Vertex AI Model Garden), 3) Rich Tool Ecosystem for integrating tools like Search, Code Exec, MCP, LangChain, or other agents, 4) Built-in Streaming for multimodal interactions, 5) Flexible Orchestration for defining workflows or dynamic routing, 6) Integrated Developer Experience with CLI and Web UI, 7) Built-in Evaluation for assessing agent performance, and 8) Easy Deployment for containerizing and deploying agents anywhere."
+    },
+    {
+      "question": "How does ADK support working with multiple AI models beyond Google’s own offerings?",
+      "answer": "ADK supports a wide range of models through its integration with LiteLLM, which allows developers to choose from models provided by providers like Anthropic, Meta, Mistral AI, AI21 Labs, and others. This flexibility ensures developers can leverage the best model for their specific use case, whether it’s through Vertex AI Model Garden or directly via LiteLLM."
+    },
+    {
+      "question": "Can you provide a basic example of how to create an agent using ADK in Python?",
+      "answer": "Here’s a basic example of creating an agent using ADK:\npython\nfrom google.adk.agents import LlmAgent\nfrom google.adk.tools import google_Search\n\n# Define the agent\ndice_agent = LlmAgent(\n    model=\"gemini-2.0-flash-exp\",  # Specify the LLM\n    name=\"question_answer_agent\",  # Unique agent name\n    description=\"A helpful assistant agent that can answer questions.\",\n    instruction=\"\"\"Respond to the query using google search\"\"\",\n    tools=[google_search],  # Provide tools\n)\n\nThis agent uses the Gemini model, a Google search tool, and responds to queries by searching the web. The agent can be run using the ADK Web UI or other interfaces."
+    },
+    {
+      "question": "How does ADK facilitate the creation of multi-agent systems with specialized roles?",
+      "answer": "ADK enables the creation of multi-agent systems by allowing developers to define hierarchical structures and clear role-based instructions for each agent. For example, a `WeatherAgent` can delegate greeting tasks to a specialized `GreetingAgent` by defining their roles and descriptions in a way that the LLM understands. The primary agent can then dynamically route tasks to sub-agents based on the conversation context. Here’s a snippet:\npython\ngreeting_agent = Agent(\n    model=LiteLlm(model=\"anthropic/claude-3-sonnet-20240229\"),\n    name=\"greeting_agent\",\n    instruction=\"You are the Greeting Agent. Your ONLY task is to provide a friendly greeting to the user.\",\n    description=\"Handles simple greetings and hellos\"\n)\n"
+    },
+    {
+      "question": "What are some best practices for defining tools in ADK agents?",
+      "answer": "Best practices for defining tools in ADK include: 1) Using descriptive docstrings to explain the tool’s purpose and usage, 2) Logging tool execution for easier debugging, 3) Handling potential errors gracefully within the tool, 4) Normalizing inputs to ensure consistency, and 5) Returning structured data (e.g., dictionaries) for better integration with the agent’s workflow. For example:\npython\ndef get_weather(city: str) -> Dict:\n    print(f\"--- Tool: get_weather called for city: {city} ---\")\n    city_normalized = city.lower().replace(\" \", \"\")\n    # ... tool logic ...\n    if city_normalized in mock_weather_db:\n        return mock_weather_db[city_normalized]\n    else:\n        return {\"status\": \"error\", \"error_message\": f\"Sorry, I don't have weather information for '{city}'.\"}\n"
+    },
+    {
+      "question": "How can developers interact with ADK agents beyond using the CLI?",
+      "answer": "Developers can interact with ADK agents through multiple interfaces: 1) CLI for local development and testing, 2) Web UI for visual inspection of agent state and execution steps, 3) API Server for remote access and integration, and 4) Python API for programmatic control. The agent definition (core logic) remains consistent across these interfaces, with differences only in how the interaction is initiated and managed."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Amy",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the origin of the name Amy?",
+      "answer": "The name Amy originates from the French name Aimée, which means 'beloved.' It is the English version of Aimée and was used as a diminutive of the Latin name Amata. Amata is derived from the passive participle of the Latin word 'amare,' which means 'to love.'"
+    },
+    {
+      "question": "How did the name Amy gain popularity in the 19th century?",
+      "answer": "The name Amy was popularized in the 19th century by a character in Sir Walter Scott's 1821 novel 'Kenilworth,' which was based on the story of Amy Robsart."
+    },
+    {
+      "question": "Why were enslaved Black women in the United States more likely to be named Amy before the Civil War?",
+      "answer": "Enslaved Black women in the United States prior to the American Civil War were more likely to bear the name Amy than white American women because slave masters often chose names for them from literary sources, and the name Amy appeared in popular literature of the time."
+    },
+    {
+      "question": "When did the name Amy peak in popularity in the United States?",
+      "answer": "The name Amy peaked in usage in the United States between 1973 and 1976, when it was among the five most popular names for American girls."
+    },
+    {
+      "question": "What revived interest in the name Amy in the mid-20th century?",
+      "answer": "Interest in the name Amy was revived due to the hit song 'Once in Love with Amy' from the 1948 Broadway musical 'Where's Charley?'."
+    },
+    {
+      "question": "Is the name Amy still used today? If so, how common is it?",
+      "answer": "Yes, the name Amy is still used today. As of the early 2020s, it remained among the top 250 names for American girls, indicating continued but less frequent usage compared to its peak periods."
+    },
+    {
+      "question": "Write a Python function to check if a given name is a variant of 'Amy' based on historical origins.",
+      "answer": "python\n\ndef is_amy_variant(name: str) -> bool:\n    \"\"\"\n    Check if the given name is a variant of 'Amy' based on historical origins.\n    Variants include Aimée, Amata, and other related forms.\n    \"\"\"\n    name_lower = name.lower()\n    variants = {'amy', 'aimée', 'amata', 'amie', 'amee'}\n    return name_lower in variants\n\n# Example usage:\nprint(is_amy_variant('Aimée'))  # Output: True\nprint(is_amy_variant('Emma'))   # Output: False\n"
+    }
+  ]
+}

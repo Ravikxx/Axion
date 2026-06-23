@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/devteam/top-7-featured-dev-posts-of-the-week-2ah",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What is the main argument presented by @sylwia-lask about jQuery's longevity in the modern web development ecosystem?",
+      "answer": "Sylwia Lask argues that jQuery persists not due to technical superiority, but because of economic realities. Large platforms like WordPress rely heavily on jQuery, making the cost of removing it significantly higher than maintaining the legacy code. This economic inertia ensures jQuery's continued existence despite the availability of more modern alternatives."
+    },
+    {
+      "question": "How does @elvissautet's experience with Tailwind CSS reflect broader trends in web development tooling?",
+      "answer": "Elvis Sautet shares how his over-reliance on Tailwind CSS caused him to forget native CSS syntax, highlighting the framework's massive adoption in the industry. His experience underscores how utility-first frameworks can become dominant tools, sometimes overshadowing foundational web technologies like plain CSS."
+    },
+    {
+      "question": "Why does @adamthedeveloper argue that the concept of a 'Full-Stack Developer' is a myth?",
+      "answer": "Adam the Developer contends that the idea of a developer mastering every layer of the modern tech stack is unrealistic due to its growing complexity. Instead, they propose that a great generalist is someone who can efficiently leverage resources (like Google) and understand core fundamentals across systems, rather than deep expertise in every domain."
+    },
+    {
+      "question": "What is the key distinction @sagiadinos makes between Large Language Models (LLMs) and traditional artificial intelligence?",
+      "answer": "Sagi Adinos emphasizes that LLMs are not true AI but advanced pattern-matching calculators that simulate intelligence without consciousness. Calling them 'AI' is misleading marketing that leads to inflated expectations and misallocated resources, as LLMs lack reasoning capabilities or self-awareness."
+    },
+    {
+      "question": "What are the emotional challenges faced by 'invisible developers' as described by @junothreadborne?",
+      "answer": "Invisible developers are those who maintain high code standards and tackle technical debt in environments where such work goes unnoticed. They experience emotional exhaustion from this 'invisible' labor, as their contributions are often overlooked while they shoulder the burden of integrity in code quality and system health."
+    },
+    {
+      "question": "How did @alexiskroberson transition from DevOps to Developer Advocacy, and what role does AI play in their new role?",
+      "answer": "Alexis Kroberson shifted from DevOps to Developer Advocacy by combining their technical background with a passion for communication and teaching. In the age of AI, their role has evolved to focus on AI education and enablement, helping developers understand and leverage AI tools effectively in their workflows."
+    },
+    {
+      "question": "Can you provide the Go code for implementing a producer-consumer pipeline using goroutines and buffered channels to handle SQLite writes?",
+      "answer": "Here's a complete Go implementation of a producer-consumer pattern for SQLite writes using goroutines and buffered channels:\n\ngo\npackage main\n\nimport (\n\t\"fmt\"\n\t\"sync\"\n\t\"time\"\n)\n\nfunc producer(id int, jobs <-chan int, results chan<- int, wg *sync.WaitGroup) {\n\tdefer wg.Done()\n\tfor job := range jobs {\n\t\t// Simulate processing time\n\t\ttime.Sleep(time.Duration(id*100) * time.Millisecond)\n\t\tfmt.Printf(\"Producer %d processed job %d\\n\", id, job)\n\t\tresults <- job\n\t}\n}\n\nfunc main() {\n\tconst numJobs = 10\n\tconst numWorkers = 3\n\tconst bufferSize = 5\n\n\tjobs := make(chan int, bufferSize)\n\tresults := make(chan int, bufferSize)\n\n\tvar wg sync.WaitGroup\n\n\t// Start workers\n\tfor w := 1; w <= numWorkers; w++ {\n\t\twg.Add(1)\n\t\tgo producer(w, jobs, results, &wg)\n\t}\n\n\t// Send jobs\n\tfor j := 1; j <= numJobs; j++ {\n\t\tjobs <- j\n\t}\n\tclose(jobs)\n\n\t// Wait for all producers to finish\n\tgo func() {\n\t\twg.Wait()\n\t\tclose(results)\n\t}()\n\n\t// Process results (simulating database writes)\n\tfor result := range results {\n\t\tfmt.Printf(\"Writing result %d to database\\n\", result)\n\t\t// Simulate database write operation\n\t\ttime.Sleep(200 * time.Millisecond)\n\t}\n}\n\n\nThis code demonstrates:\n1. A producer-consumer pattern with multiple workers\n2. Buffered channels to decouple producers and consumers\n3. Proper synchronization using sync.WaitGroup\n4. Linearized database writes while maximizing parallel processing"
+    }
+  ]
+}

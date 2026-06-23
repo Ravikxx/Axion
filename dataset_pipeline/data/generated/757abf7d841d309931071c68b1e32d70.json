@@ -1,0 +1,34 @@
+{
+  "source_url": "https://mathworld.wolfram.com/NearlyPerfectCode.html",
+  "category": "mathworld",
+  "pairs": [
+    {
+      "question": "What defines a nearly perfect error-correcting code in coding theory?",
+      "answer": "A nearly perfect code is an error-correcting code where each codeword consists of letters from an alphabet of length q. For every possible word of length n with letters in the alphabet, there exists a unique codeword that differs in at most t positions from the word. If the word differs from the codeword in fewer than t positions, the codeword is uniquely determined. If it differs in exactly t positions, there is at most one other codeword that also differs in t positions."
+    },
+    {
+      "question": "How is a nearly perfect code derived from a perfect code?",
+      "answer": "A nearly perfect code can be obtained by adding a parity check digit to the end of each codeword in a perfect code. If the original code is a t-perfect binary linear code, the resulting code becomes a t-nearly perfect binary linear code. For example, the nearly perfect extended Golay code is derived from the perfect Golay code by appending a parity bit."
+    },
+    {
+      "question": "Provide a Python function that checks if a given binary code is nearly perfect by verifying the nearly perfect property for all possible words.",
+      "answer": "python\ndef is_nearly_perfect_code(codewords, n, t):\n    q = 2  # Binary alphabet\n    # Generate all possible words of length n\n    from itertools import product\n    all_words = list(product(range(q), repeat=n))\n    \n    for word in all_words:\n        count = 0\n        closest_codeword = None\n        for codeword in codewords:\n            distance = sum(1 for a, b in zip(word, codeword) if a != b)\n            if distance <= t:\n                if distance < t:\n                    if closest_codeword is not None:\n                        return False  # Not unique\n                    closest_codeword = codeword\n                count += 1\n        if count == 0:\n            return False  # No codeword within distance t\n    return True\n\n# Example usage:\ncodewords = [[0, 0, 0, 0], [1, 1, 1, 1]]  # Near-perfect code (t=2, n=4)\nn = 4\nt = 2\nprint(is_nearly_perfect_code(codewords, n, t))  # Output: True\n"
+    },
+    {
+      "question": "What is the relationship between the extended Golay code and the perfect Golay code?",
+      "answer": "The extended Golay code is a nearly perfect code derived from the perfect Golay code by adding a parity check digit to each codeword. This transformation converts the perfect Golay code (a type of perfect code) into a nearly perfect code while preserving certain error-correcting properties."
+    },
+    {
+      "question": "Explain the difference between perfect and nearly perfect codes in terms of error correction capability.",
+      "answer": "A perfect code can correct up to t errors such that every word within distance t of a codeword is uniquely associated with that codeword. A nearly perfect code relaxes this condition: it ensures every word is within distance t of at least one codeword, but uniqueness is only guaranteed for words differing in fewer than t positions. For words differing in exactly t positions, there may be one other codeword at the same distance."
+    },
+    {
+      "question": "How many codewords are in a binary Hamming code of length 7, and is the extended version nearly perfect?",
+      "answer": "A binary Hamming code of length 7 has 16 codewords and is a 1-perfect code. Its extended version, obtained by adding a parity bit, becomes a 1-nearly perfect code with 16 codewords (each of length 8) and retains certain error-correcting properties, though it is no longer perfect."
+    },
+    {
+      "question": "What is the significance of the parity check digit in transforming a perfect code into a nearly perfect code?",
+      "answer": "The parity check digit extends each codeword by one symbol, ensuring that the total Hamming weight (number of 1s) of the codeword is even (or odd, depending on convention). This extension allows the code to cover all possible words of the new length with the nearly perfect property, balancing the trade-off between code length and error-correcting capability."
+    }
+  ]
+}

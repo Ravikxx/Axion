@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Cake_(band)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When was Cake formed and who were the original members?",
+      "answer": "Cake was formed in August 1991 by John McCrea, Vince DiFiore, Greg Brown (guitar), Frank French (drums), and Shon Meckfessel (bass)."
+    },
+    {
+      "question": "What notable achievement did Cake's single 'The Distance' accomplish?",
+      "answer": "The single 'The Distance' from Cake's second album *Fashion Nugget* (1996) went platinum, largely contributing to the album's success."
+    },
+    {
+      "question": "How many albums did Cake release under Columbia Records, and what were their names?",
+      "answer": "Cake released two albums under Columbia Records: *Comfort Eagle* (2001) and *Pressure Chief* (2004)."
+    },
+    {
+      "question": "What was significant about Cake's album *Showroom of Compassion*?",
+      "answer": "Showroom of Compassion (2011) was Cake's first album to debut at number one on the Billboard charts, selling 44,000 copies in its first week."
+    },
+    {
+      "question": "Write a Python script to fetch and display Cake's discography from Wikipedia.",
+      "answer": "python\nimport requests\nfrom bs4 import BeautifulSoup\n\ndef fetch_cake_discography():\n    url = 'https://en.wikipedia.org/wiki/Cake_(band)'\n    response = requests.get(url)\n    soup = BeautifulSoup(response.text, 'html.parser')\n    \n    # Locate the discography table (adjust selector as needed)\n    discography_table = soup.find('table', {'class': 'wikitable'})\n    albums = []\n    \n    for row in discography_table.find_all('tr')[1:]:\n        cells = row.find_all('td')\n        if len(cells) >= 2:\n            album_name = cells[0].text.strip()\n            release_year = cells[1].text.strip()\n            albums.append(f\"{album_name} ({release_year})\")\n    \n    return albums\n\nprint(\"Cake's Discography:\")\nfor album in fetch_cake_discography():\n    print(album)\n"
+    },
+    {
+      "question": "Why did Cake face speculation about their future in the late 1990s?",
+      "answer": "Cake faced speculation about their future after Greg Brown and Victor Damiani left the band following the release of *Fashion Nugget* (1996), as both were original members. However, the band continued with new members, including Xan McCurdy and Gabe Nelson's return."
+    },
+    {
+      "question": "What musical styles have influenced Cake's sound?",
+      "answer": "Cake's sound has been influenced by a wide range of genres, including norteño, country music, mariachi, disco, rock, funk, folk music, and hip hop."
+    }
+  ]
+}

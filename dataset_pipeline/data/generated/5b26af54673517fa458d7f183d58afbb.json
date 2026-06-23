@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Chanson_des_chétifs",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the Chanson des Chétifs and where does it fit in the Old French Crusade Cycle?",
+      "answer": "The Chanson des Chétifs is an Old French chanson de geste, part of the Old French Crusade Cycle, which recounts events from the First Crusade. It serves as an intermediary text between the Chanson d'Antioche and the Chanson de Jérusalem, forming the central trilogy of the cycle. Its name derives from its focus on Christian knights captured at the battle of Civetot, led by Peter the Hermit."
+    },
+    {
+      "question": "Who are the protagonists of the Chanson des Chétifs and what challenges do they face?",
+      "answer": "The protagonists are Christian knights taken prisoner at the start of the First Crusade during the disastrous defeat at Civetot. The poem follows their adventures as they journey toward Jerusalem, accompanied by the Muslim warrior Corbaran (based on the historical Kerbogha), whose faith gradually shifts toward Christianity."
+    },
+    {
+      "question": "How does the Chanson des Chétifs differ from other branches of the Crusade Cycle?",
+      "answer": "Unlike the longer branches such as the Chanson d'Antioche and the Chanson de Jérusalem, the Chanson des Chétifs is a shorter, fantastical interlude. While the other two branches focus on major battles (Antioch and Jerusalem), the Chanson des Chétifs centers on the experiences of captured knights and their evolving relationships, particularly Corbaran's growing faith."
+    },
+    {
+      "question": "What historical figure is Corbaran based on, and what role does he play in the Chanson des Chétifs?",
+      "answer": "Corbaran is based on the historical military leader Kerbogha, who opposed the First Crusaders. In the Chanson des Chétifs, he serves as a companion to the Christian captives, initially their adversary but later depicted as someone on the verge of converting to Christianity."
+    },
+    {
+      "question": "Write a Python function that classifies a given chanson de geste title as part of the Crusade Cycle's central trilogy based on its name.",
+      "answer": "python\ndef is_central_trilogy_chanson(title: str) -> bool:\n    central_titles = [\n        \"Chanson d'Antioche\",\n        \"Chanson des Chétifs\",\n        \"Chanson de Jérusalem\"\n    ]\n    return title in central_titles\n\n# Example usage:\nprint(is_central_trilogy_chanson(\"Chanson des Chétifs\"))  # Output: True\nprint(is_central_trilogy_chanson(\"Chanson de Roland\"))   # Output: False\n"
+    },
+    {
+      "question": "Why is the Chanson des Chétifs considered a fantastical interlude in the Crusade Cycle?",
+      "answer": "The Chanson des Chétifs is considered fantastical due to its focus on the adventures of captive knights rather than major historical battles. Unlike the epic and historical tone of the Chanson d'Antioche and the Chanson de Jérusalem, it introduces elements of fantasy, such as Corbaran's growing Christian faith and their perilous journey toward Jerusalem."
+    },
+    {
+      "question": "What is the significance of Corbaran's character arc in the context of the Crusade Cycle?",
+      "answer": "Corbaran's character arc symbolizes the potential for conversion and reconciliation between opposing forces during the Crusades. Starting as an adversary based on the historical Kerbogha, his growing faith in Christianity foreshadows his eventual baptism in a later branch of the Crusade Cycle, the Chrétienté Corbaran, highlighting themes of faith and transformation."
+    }
+  ]
+}

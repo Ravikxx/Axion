@@ -1,0 +1,34 @@
+{
+  "source_url": "https://mathworld.wolfram.com/s-Cluster.html",
+  "category": "mathworld",
+  "pairs": [
+    {
+      "question": "What is an s-cluster in the context of percolation theory?",
+      "answer": "An s-cluster is an isolated group of adjacent 1s in a random (0,1)-matrix, where adjacency is defined as horizontal or vertical connectivity. In other words, it is a connected component of 1s in the matrix where each 1 is connected to at least one other 1 via a shared edge."
+    },
+    {
+      "question": "How are the counts of s-clusters in small matrices summarized?",
+      "answer": "The counts of s-clusters of various sizes in small matrices are summarized in OEIS sequence A086266. This sequence provides the number of distinct s-clusters for different matrix sizes, serving as a reference for the distribution of cluster sizes in percolation theory."
+    },
+    {
+      "question": "What is the mean cluster count per site (mean cluster density) in percolation theory, and how is it calculated?",
+      "answer": "The mean cluster count per site, or mean cluster density, is the average number of s-clusters per entry (site) in the matrix. It is calculated as the total number of s-clusters divided by the total number of sites in the matrix. Mathematically, if N is the total number of s-clusters and M is the number of sites, the mean cluster density is given by N/M. Numerically, it has been observed that for small matrices, the mean cluster density follows specific values such as 1/2, 17/16, 897/512, and 168529/65536 for matrices of increasing size."
+    },
+    {
+      "question": "Can you provide a Wolfram Language code snippet to generate a random (0,1)-matrix and count the number of s-clusters?",
+      "answer": "wolfram\n(* Generate a random (0,1)-matrix of size n x n with probability p of a 1 *)\nn = 5; (* Example size *)\np = 0.5; (* Example probability *)\nmatrix = RandomInteger[BernoulliDistribution[p], {n, n}];\n\n(* Function to find connected components (s-clusters) in the matrix *)\nFindClusters[mat_] := Module[{visited, clusters},\n  visited = ConstantArray[False, Dimensions[mat]];\n  clusters = {},\n  \n  Do[\n   If[! visited[[i, j]] && mat[[i, j]] == 1,\n    cluster = {};\n    stack = {{i, j}};\n    visited[[i, j]] = True;\n    \n    While[Length[stack] > 0,\n     {x, y} = First[stack];\n     stack = Rest[stack];\n     AppendTo[cluster, {x, y}];\n     \n     (* Check adjacent cells: up, down, left, right *)\n     Do[\n      nx = x + dx; ny = y + dy;\n      If[nx >= 1 && nx <= n && ny >= 1 && ny <= n && \n       mat[[nx, ny]] == 1 && ! visited[[nx, ny]],\n       visited[[nx, ny]] = True;\n       PrependTo[stack, {nx, ny}];\n       ],\n      {dx, dy} \n      {\n       {-1, 0}, {1, 0}, {0, -1}, {0, 1}\n      }\n     ];\n    ];\n    AppendTo[clusters, cluster];\n   ],\n   {i, n}, {j, n}\n  ];\n  clusters\n];\n\n(* Count the number of s-clusters *)\nclusters = FindClusters[matrix];\nnumClusters = Length[clusters];\n\nPrint[\"Matrix:\"];\nPrint[matrix];\nPrint[\"Number of s-clusters: \", numClusters];\n"
+    },
+    {
+      "question": "What is the significance of OEIS sequences A086265, A086266, and A086268 in the study of s-clusters?",
+      "answer": "OEIS sequences A086265, A086266, and A086268 provide key numerical insights into the behavior of s-clusters in percolation theory. A086265 gives the mean numbers of s-clusters for matrices of increasing size (e.g., 1/2, 17/16, 897/512). A086266 summarizes the counts of s-clusters of various sizes in small matrices, and A086268 provides the mean cluster density per site. These sequences are foundational for understanding the statistical properties and scaling behavior of s-clusters in percolation models."
+    },
+    {
+      "question": "How does percolation theory relate to s-clusters in a random (0,1)-matrix?",
+      "answer": "Percolation theory studies the connectivity and formation of clusters in random media, such as the (0,1)-matrices described here. An s-cluster represents a connected region of 1s in the matrix, and percolation theory examines how these clusters form, grow, and interact as the probability of a 1 (the occupation probability) varies. The behavior of s-clusters underpins critical phenomena such as phase transitions, where a large connected cluster spanning the entire matrix emerges, marking the percolation threshold."
+    },
+    {
+      "question": "What is the percolation threshold, and how does it relate to s-clusters?",
+      "answer": "The percolation threshold is the critical probability p at which an infinite cluster (a cluster that spans the entire system) first appears in a percolation model. For s-clusters in a random (0,1)-matrix, the percolation threshold marks the point where the probability of generating a 1 is high enough that large, connected clusters are likely to form. Below the threshold, most s-clusters are small and isolated, while above it, a macroscopic cluster emerges, fundamentally changing the connectivity of the system."
+    }
+  ]
+}

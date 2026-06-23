@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Electoral_district_of_Bright",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the origin of the name 'Bright' for the South Australian electorate?",
+      "answer": "The electorate Bright was named in honor of Charles Bright, a prominent figure in South Australia who served as a Supreme Court Judge, Flinders University Chancellor, Health Commission chairman, and Electoral Boundaries Commission chairman."
+    },
+    {
+      "question": "When was the Bright electorate created and why?",
+      "answer": "The Bright electorate was created in 1983 during a redistribution to replace the abolished seat of Brighton. It was initially designed as a marginal Liberal seat with a notional one percent two-party margin."
+    },
+    {
+      "question": "Who were the key political figures associated with the Bright electorate during its existence?",
+      "answer": "Key figures included Derek Robertson (Labor, 1985–1989), Wayne Matthew (Liberal, 1989–2006), Chloë Fox (Labor, 2006–2014), and David Speirs (Liberal, 2014–2018). Angus Redford also contested the seat in 2006 but was defeated by Fox."
+    },
+    {
+      "question": "How did the 'fairness clause' impact the Bright electorate's boundaries?",
+      "answer": "The 'fairness clause' led to frequent boundary alterations by the Electoral Commission of South Australia. Small shifts, such as a few kilometers along O'Halloran Hill, significantly altered the seat's political landscape. Moving the seat south favored Labor, while moving it north benefited the Liberals. For example, a redistribution ahead of the 2010 election reduced Fox's margin from 9.2% to 6.6%."
+    },
+    {
+      "question": "What was the political margin of the Bright electorate after the 2010 election, and why was it significant?",
+      "answer": "After the 2010 election, Bright had a margin of 0.4%, making it Labor's most marginal seat. This followed a redistribution that pared Fox's margin from 9.2% to 6.6%, and the Liberals achieved a 6.2% swing but fell short of winning the seat."
+    },
+    {
+      "question": "What happened to the Bright electorate after the 2018 state election?",
+      "answer": "The Bright electorate was abolished following the 2016 electoral redistribution. It was replaced by the new electorate of Gibson. David Speirs, the sitting Liberal MP, chose to contest the Black electorate instead, as it absorbed much of Bright's southern portion."
+    },
+    {
+      "question": "Provide a code snippet to visualize the electoral swings in the Bright electorate from 1985 to 2018.",
+      "answer": "python\nimport matplotlib.pyplot as plt\n\nyears = [1985, 1989, 2006, 2010, 2014]\nswing_data = {\n    'Derek Robertson (Labor)': (1985, 'Won'),\n    'Wayne Matthew (Liberal)': (1989, 'Won'),\n    'Chloë Fox (Labor)': (2006, 'Won'),\n    'Chloë Fox (Labor)': (2010, 'Retained (0.4% margin)'),\n    'David Speirs (Liberal)': (2014, 'Won (3.7% swing)')\n}\n\n# Simplified swing representation (hypothetical values for illustration)\nswings = [14.4, -4.0, 7.7, -6.2, 3.7]  # Negative values represent swings away from Labor\n\nplt.figure(figsize=(10, 5))\nplt.plot(years, swings, marker='o', linestyle='-', color='purple')\nplt.title('Electoral Swings in Bright Electorate (1985–2014)')\nplt.xlabel('Year')\nplt.ylabel('Swing (%)')\nplt.grid(True)\nplt.axhline(0, color='black', linewidth=0.8)\nplt.show()\n\n*Note: This is a simplified representation using hypothetical swing data for illustrative purposes.*"
+    }
+  ]
+}

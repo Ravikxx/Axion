@@ -1,0 +1,42 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/1997–98_Milwaukee_Bucks_season",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What pick did the Milwaukee Bucks have in the 1997 NBA draft, and who did they select?",
+      "answer": "The Milwaukee Bucks had the tenth overall pick in the 1997 NBA draft and selected power forward Danny Fortson from the University of Cincinnati."
+    },
+    {
+      "question": "Which players did the Bucks acquire during the 1997 off-season besides Danny Fortson?",
+      "answer": "During the off-season, the Bucks acquired All-Star guard Terrell Brandon, former All-Star forward Tyrone Hill from the Cleveland Cavaliers in a three-team trade, signed free agent Michael Curry, and re-signed former Bucks star and sixth man Ricky Pierce in December."
+    },
+    {
+      "question": "What key injuries impacted the Milwaukee Bucks' performance during the 1997–98 season?",
+      "answer": "Key injuries included Glenn Robinson's left knee injury forcing him to miss the remainder of the season after 56 games, Terrell Brandon's ankle injury limiting him to 50 games, and Tyrone Hill's knee injury and strained back restricting him to 57 games. These injuries contributed to the team's struggles, including a nine-game losing streak in March."
+    },
+    {
+      "question": "How did Glenn Robinson and Ray Allen perform statistically during the 1997–98 season?",
+      "answer": "Glenn Robinson averaged 23.4 points and 5.5 rebounds per game, while Ray Allen had a stellar season, averaging 19.5 points, 4.3 assists, and 1.4 steals per game. Allen also led the Bucks with 134 three-point field goals."
+    },
+    {
+      "question": "Provide a code snippet to calculate each player's per-game averages based on their total stats and games played during the 1997–98 season.",
+      "answer": "python\n# Player stats and games played during the 1997–98 season\nplayers = {\n    \"Glenn Robinson\": {\"points\": 23.4, \"rebounds\": 5.5, \"games\": 56},\n    \"Ray Allen\": {\"points\": 19.5, \"assists\": 4.3, \"steals\": 1.4, \"games\": 79},\n    \"Terrell Brandon\": {\"points\": 16.8, \"assists\": 7.7, \"steals\": 2.2, \"games\": 50},\n    \"Tyrone Hill\": {\"points\": 10.0, \"rebounds\": 10.7, \"games\": 57},\n    \"Armen Gilliam\": {\"points\": 11.2, \"rebounds\": 5.4, \"games\": 79},\n    \"Ervin Johnson\": {\"points\": 8.0, \"rebounds\": 8.5, \"blocks\": 2.0, \"games\": 79},\n    \"Elliot Perry\": {\"points\": 7.3, \"assists\": 2.8, \"games\": 79},\n    \"Michael Curry\": {\"points\": 6.6, \"games\": 79}\n}\n\n# Calculate total stats for each player\ntotal_stats = {\n    player: {stat: round(average * games, 1) for stat, average in stats.items()}\n    for player, stats in players.items()\n}\n\n# Print total stats\nfor player, stats in total_stats.items():\n    print(f\"{player}: {stats}\")\n"
+    },
+    {
+      "question": "What notable event occurred on January 2, 1998, during the Bucks' game against the Chicago Bulls?",
+      "answer": "On January 2, 1998, in a road game against the two-time defending NBA champion Chicago Bulls, Glenn Robinson and Michael Jordan both scored 44 points each. Terrell Brandon and Armen Gilliam both posted double-doubles, with Brandon scoring 24 points and 13 assists, and Gilliam contributing 18 points and 11 rebounds. However, the Bucks lost to the Bulls by a score of 114–100."
+    },
+    {
+      "question": "Why was Glenn Robinson not selected for the 1998 NBA All-Star Game?",
+      "answer": "Despite Robinson averaging 23.4 points and 5.5 rebounds per game, he was not selected for the 1998 NBA All-Star Game. The exact reason for his omission is not specified in the text, but it could be due to the Bucks' overall record (36–46) or other factors such as conference allocations or voter preferences."
+    },
+    {
+      "question": "How did the Milwaukee Bucks' home-game attendance compare to other NBA teams in the 1997–98 season?",
+      "answer": "The Bucks finished 22nd in the NBA in home-game attendance, with a total of 638,034 attendees at the Bradley Center during the regular season."
+    },
+    {
+      "question": "What were the key roster changes for the Milwaukee Bucks after the 1997–98 season?",
+      "answer": "Following the season, Ricky Pierce retired after his second stint with the Bucks. Andrew Lang signed as a free agent with the Chicago Bulls, and head coach Chris Ford was fired after two seasons with the Bucks."
+    }
+  ]
+}

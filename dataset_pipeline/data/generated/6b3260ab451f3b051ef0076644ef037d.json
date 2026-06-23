@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/maame-codes/is-vibe-coding-ruining-my-cs-degree-3m3",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What is the difference between 'Vibe Coding' and traditional prompt engineering in 2025?",
+      "answer": "Vibe Coding is the evolution of prompt engineering where developers describe the high-level intent or desired outcome ('the vibe') rather than providing detailed specifications. Instead of specifying exact logic, syntax, or edge cases, they rely on AI models to handle boilerplate code, syntax correctness, and even complex logic generation based on a loose description. Traditional prompt engineering involved writing more precise, structured instructions, while Vibe Coding focuses on communicating the desired outcome or mood of the solution."
+    },
+    {
+      "question": "Describe the Red-Black Tree implementation process mentioned in the text. What does it imply about modern coding practices?",
+      "answer": "The author used an AI assistant (GitHub Copilot Workspace and Claude 3.5 Sonnet) to generate a Red-Black Tree implementation in C++ by typing a casual request: 'Yo, I need a Red-Black Tree implementation in C++. Keep the vibe academic, handle the edge cases for rotation, and add comments that sound like a stressed undergrad wrote them.' The AI produced code that compiled, passed test cases, yet left the author with no understanding of how it worked. This illustrates modern 'Vibe Coding' where developers outsource both implementation and comprehension to AI, prioritizing speed over understanding."
+    },
+    {
+      "question": "What are the potential risks of relying too heavily on AI-generated code for learning or academic purposes?",
+      "answer": "Relying too heavily on AI-generated code can lead to 'muscle memory atrophy' where fundamental programming skills like pointer management, algorithm design, or understanding low-level concepts (e.g., memory paging) become underdeveloped. It may create a false sense of productivity, where students feel like '10x developers' but lack deep comprehension. In technical interviews or real-world scenarios requiring manual implementation, this reliance can result in freezing or failure, as seen in the mock interview described where the author couldn’t reverse a linked list without AI assistance."
+    },
+    {
+      "question": "Provide a code snippet for a Red-Black Tree node structure in C++. Include comments explaining the purpose of each attribute.",
+      "answer": "cpp\n// Red-Black Tree Node Structure\ntemplate <typename T>\nstruct RBNode {\n    T data;             // The value stored in the node\n    bool isRed;         // Color of the node (true = red, false = black)\n    RBNode* left;       // Pointer to the left child\n    RBNode* right;      // Pointer to the right child\n    RBNode* parent;     // Pointer to the parent node\n\n    // Constructor to initialize a node with data and default color (red)\n    RBNode(const T& val) : data(val), isRed(true), left(nullptr), right(nullptr), parent(nullptr) {}\n};\n\nIn a Red-Black Tree, the `isRed` attribute tracks the node's color, which is critical for maintaining balance. Red nodes cannot have red children (to avoid consecutive reds), and the tree must maintain black height consistency. The `parent` pointer is essential for rotations and recoloring operations."
+    },
+    {
+      "question": "What is 'Reverse Vibe Checking' as described in the text? How can it help mitigate the downsides of Vibe Coding?",
+      "answer": "Reverse Vibe Checking is a technique the author uses to combat passive consumption of AI-generated code. It involves three steps: 1) Typing out the AI-generated code manually to force the brain to process syntax and structure, 2) Using an AI to explain the code in simple terms ('Explain Like I'm 5'), focusing on the 'why' rather than the 'what,' and 3) Intentionally asking the AI to identify potential failure points in high-load scenarios to uncover edge cases the happy-path solution missed. This approach transforms AI from an enabler of laziness into an active tutor, reinforcing learning through engagement and self-explanation."
+    },
+    {
+      "question": "How does the conflict between academia and industry in 2025 impact CS education?",
+      "answer": "The conflict arises because academia emphasizes foundational understanding (e.g., 'You must understand the fundamentals! Build it in C!') while industry prioritizes speed and output ('Ship it yesterday. Use whatever tools make you fastest'). This creates a tension where students who rely on AI tools for assignments may struggle in situations requiring manual implementation or deep conceptual knowledge. The risk is that graduates may lack the skills needed to debug, optimize, or innovate beyond AI-generated solutions, potentially making them less adaptable in scenarios where AI tools fail or are unavailable."
+    },
+    {
+      "question": "Explain the concept of 'muscle memory atrophy' in the context of programming. How does it relate to the author's experience with AI tools?",
+      "answer": "Muscle memory atrophy in programming refers to the loss of familiarity and automaticity with fundamental skills due to disuse. In the author's case, they outsourced 'low-level thinking' tasks like pointer manipulation, algorithm design, and debugging to AI tools over two years. As a result, when faced with a manual task—such as reversing a linked list on a whiteboard—their brain had not practiced these skills enough to execute them fluidly. This atrophy creates a dependency on AI, where the developer becomes proficient at assembling AI outputs rather than performing the underlying work themselves."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Forbidden_Door_(2025)",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What was the date and location of the Forbidden Door (London) event in 2025?",
+      "answer": "Forbidden Door (also known as Forbidden Door: London) took place on August 24, 2025, at The O2 Arena in London, England. It was the first time the event was held outside of North America."
+    },
+    {
+      "question": "Which wrestling promotions participated in the Forbidden Door: London event?",
+      "answer": "The event was produced by All Elite Wrestling (AEW) and New Japan Pro-Wrestling (NJPW), featuring wrestlers from World Wonder Ring Stardom, Consejo Mundial de Lucha Libre (CMLL), and Revolution Pro Wrestling (RevPro)."
+    },
+    {
+      "question": "Who won the main event at Forbidden Door: London 2025, and what type of match was it?",
+      "answer": "The main event saw Darby Allin, Hiroshi Tanahashi, Will Ospreay, and the Golden Lovers (Kenny Omega and Kota Ibushi) defeat Gabe Kidd, the Death Riders (Jon Moxley and Claudio Castagnoli), and The Young Bucks (Matt and Nick Jackson) in a Lights Out Steel Cage match."
+    },
+    {
+      "question": "How many championships were defended at Forbidden Door: London 2025? List them.",
+      "answer": "Seven championships were defended at the event: AEW World Trios Championships, AEW TNT Championship, AEW TBS Championship, IWGP World Heavyweight Championship, AEW World Tag Team Championship, AEW Unified Championship, and AEW Women's World Championship."
+    },
+    {
+      "question": "What was the result of the AEW World Tag Team Championship match at Forbidden Door: London 2025?",
+      "answer": "Brodido (Brody King and Bandido) defeated The Hurt Syndicate (Bobby Lashley and Shelton Benjamin) and FTR (Cash Wheeler and Dax Harwood) to win the AEW World Tag Team Championship."
+    },
+    {
+      "question": "Provide a Python code snippet to fetch the event results from a hypothetical API and display the champions who retained their titles.",
+      "answer": "python\nimport requests\n\ndef fetch_event_results(event_id):\n    api_url = f\"https://api.wrestlingdata.com/events/{event_id}/results\"\n    response = requests.get(api_url)\n    if response.status_code == 200:\n        return response.json()\n    else:\n        return None\n\n# Example usage\nresults = fetch_event_results(\"forbidden-door-london-2025\")\nif results:\n    retained_champs = [match for match in results if \"retain\" in match.get(\"result\", \"\").lower()]\n    for champ in retained_champs:\n        print(f\"{champ['champion']} retained the {champ['title']}.\")\n"
+    },
+    {
+      "question": "Why was the Forbidden Door: London event significant in the history of AEW and NJPW?",
+      "answer": "The Forbidden Door: London event was significant because it was the first edition of the Forbidden Door to be held outside of North America, marking an expansion of the interpromotional collaboration between AEW and NJPW on a global scale."
+    }
+  ]
+}

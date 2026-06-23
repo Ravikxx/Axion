@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/2017_Atlantic_hurricane_season",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the total damage cost of the 2017 Atlantic hurricane season, and which storms contributed most to this total?",
+      "answer": "The 2017 Atlantic hurricane season caused at least $294.92 billion in damages, making it the costliest tropical cyclone season on record worldwide. Most of the damage was attributed to hurricanes Harvey, Irma, and Maria."
+    },
+    {
+      "question": "How many named storms, hurricanes, and major hurricanes were there during the 2017 Atlantic hurricane season?",
+      "answer": "The 2017 Atlantic hurricane season featured 17 named storms, 10 hurricanes, and 6 major hurricanes."
+    },
+    {
+      "question": "What was the Accumulated Cyclone Energy (ACE) index for the 2017 Atlantic hurricane season, and which hurricanes contributed significantly to this value?",
+      "answer": "The ACE index for the 2017 season was 225 units, one of the highest on record. A record three hurricanes—Irma, Jose, and Maria—each generated an ACE of over 40."
+    },
+    {
+      "question": "What policy change did the National Hurricane Center (NHC) implement before the 2017 season, and what was its purpose?",
+      "answer": "The NHC changed its policy to allow advisories on disturbances that were not yet tropical cyclones but had a high chance of becoming one and were expected to bring tropical storm or hurricane conditions to land within 48 hours. This permitted early watches and warnings by local authorities, with such systems termed 'potential tropical cyclones'."
+    },
+    {
+      "question": "Write a Python function to calculate the ACE index for a given list of hurricanes, where each hurricane's contribution is based on its duration (in days) and maximum sustained wind speed (in knots).",
+      "answer": "python\nimport math\n\ndef calculate_ace(hurricanes):\n    \"\"\"\n    Calculate the Accumulated Cyclone Energy (ACE) index for a list of hurricanes.\n    \n    Parameters:\n    hurricanes (list of dict): Each dict should contain 'days' and 'wind_speed_knots'.\n    \n    Returns:\n    float: The total ACE index.\n    \"\"\"\n    ace = 0.0\n    for storm in hurricanes:\n        days = storm['days']\n        wind_speed = storm['wind_speed_knots']\n        ace_contribution = (wind_speed ** 2) * days / 10000\n        ace += ace_contribution\n    return ace\n\n# Example usage:\nhurricanes_2017 = [\n    {'days': 10, 'wind_speed_knots': 150},\n    {'days': 8, 'wind_speed_knots': 120},\n    {'days': 12, 'wind_speed_knots': 160}\n]\nprint(calculate_ace(hurricanes_2017))  # Output will vary based on input data\n"
+    },
+    {
+      "question": "Which hurricane in the 2017 season was the first to impact the northern Leeward Islands as a Category 5, and what was its maximum sustained wind speed?",
+      "answer": "Hurricane Irma became the first Category 5 hurricane to impact the northern Leeward Islands on record, with maximum sustained winds of 180 mph (285 km/h)."
+    },
+    {
+      "question": "How did the 2017 Atlantic hurricane season's activity compare to the 2007 season in terms of Category 5 hurricanes making landfall?",
+      "answer": "The 2017 season was the only other season besides 2007 with two hurricanes making landfall at Category 5 intensity."
+    },
+    {
+      "question": "What weather phenomenon was initially predicted to develop during the 2017 Atlantic hurricane season, and how did it influence early forecasts?",
+      "answer": "An El Niño was initially predicted to develop, which typically lowers tropical cyclone activity. However, the predicted El Niño failed to develop, leading forecasters to raise their predicted storm totals in late May."
+    }
+  ]
+}

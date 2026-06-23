@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Bristol_City_F.C.",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "In which football leagues did Bristol City compete before being admitted into the Football League in 1901?",
+      "answer": "Before being admitted into the Football League in 1901, Bristol City competed in the Southern League and Western League."
+    },
+    {
+      "question": "What significant achievement did Bristol City accomplish in the 1905–06 season?",
+      "answer": "In the 1905–06 season, Bristol City won the Second Division title."
+    },
+    {
+      "question": "How many times has Bristol City won the Football League Trophy, and in which years?",
+      "answer": "Bristol City has won the Football League Trophy three times, in 1986, 2003, and 2015."
+    },
+    {
+      "question": "What is the home stadium of Bristol City Football Club, and when did they move there?",
+      "answer": "Bristol City has played their home games at Ashton Gate since moving from St John's Lane in 1904."
+    },
+    {
+      "question": "Write a Python function to calculate the total number of promotions and relegations Bristol City has experienced based on the provided history.",
+      "answer": "python\ndef calculate_net_promotions_relegations():\n    promotions = [1905, 1922, 1926, 1954, 1964, 1975, 1989, 1997, 2006, 2015]\n    relegations = [1911, 1932, 1960, 1982, 1995, 1999]\n    total_promotions = len(promotions)\n    total_relegations = len(relegations)\n    return total_promotions, total_relegations\n\n# Example usage:\npromotions, relegations = calculate_net_promotions_relegations()\nprint(f\"Total promotions: {promotions}, Total relegations: {relegations}\")\n"
+    },
+    {
+      "question": "What are the home kit colors and nickname of Bristol City Football Club?",
+      "answer": "Bristol City's home kit colors are red and white, and their nickname is 'The Robins'."
+    },
+    {
+      "question": "Which football clubs are considered main rivals of Bristol City, and what are the names of the derbies they contest?",
+      "answer": "Bristol City's main rivals are Bristol Rovers and Cardiff City. They contest the Bristol derby with Bristol Rovers and the Severnside derby with Cardiff City."
+    }
+  ]
+}

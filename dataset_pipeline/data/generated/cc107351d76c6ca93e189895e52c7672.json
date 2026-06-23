@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Akio_Minakami",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is Akio Minakami's highest Karate rank and which organizations have awarded it?",
+      "answer": "Akio Minakami's highest Karate rank is 9th Dan, which was awarded to him by Hayashi-Ha Shitoryu-Kai."
+    },
+    {
+      "question": "How did Akio Minakami's martial arts journey begin?",
+      "answer": "Akio Minakami began his martial arts training at the age of 7 under a teacher named Takagi, where he practiced Jujitsu and Kodokan Judo."
+    },
+    {
+      "question": "What notable achievement did Akio Minakami accomplish at the All Hawaii Championships?",
+      "answer": "At the age of 21, Akio Minakami became the first person to win both kata (forms) and kumite (sparring) at the All Hawaii Championships."
+    },
+    {
+      "question": "Can you list all the martial arts dan ranks held by Akio Minakami along with their respective organizations?",
+      "answer": "Akio Minakami holds the following dan ranks: 9th Dan Karate (Hayashi-Ha Shitoryu-Kai), 7th Dan Karate (Federation of All Japan Karatedo Organization), 5th Dan Chinen Yamanni ryu Bojutsu (Ryukyu Bujutsu Kenkyu Doyukai), 3rd Dan Kendo, and 1st Dan Judo."
+    },
+    {
+      "question": "What is the Shihan certificate, and when did Akio Minakami receive it?",
+      "answer": "The Shihan certificate is an advanced teaching certification in Japanese martial arts. Akio Minakami received his Shihan certificate in 1983 from both the Hayashi-Ha school and the Federation of All Japan Karatedo Organization."
+    },
+    {
+      "question": "Write a Python function that calculates the total number of gold medals Akio Minakami won across the Hayashi-Ha Shitoryu-Kai International Championships, the All Japan Karate Championships, and the AAU National Championships.",
+      "answer": "python\ndef calculate_gold_medals():\n    return 5 + 5 + 5  # 5 gold medals each at the three championships\n\nprint(calculate_gold_medals())  # Output: 15"
+    },
+    {
+      "question": "What disciplines are taught at the Minakami Karate Dojo?",
+      "answer": "The Minakami Karate Dojo teaches kumite (sparring), kata (forms), sai (a short weapon), bō (staff, including Kenshin-ryū and Yamanni Ryu styles), and traditional Japanese dojo etiquette."
+    }
+  ]
+}

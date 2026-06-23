@@ -1,0 +1,38 @@
+{
+  "source_url": "https://github.com/justjavac/free-programming-books-zh_CN",
+  "category": "github",
+  "pairs": [
+    {
+      "question": "什么是 free-programming-books-zh_CN 项目？它的主要用途是什么？",
+      "answer": "free-programming-books-zh_CN 是一个GitHub仓库，旨在收录免费的中文计算机编程类书籍。项目的主要用途包括：1) 汇总Stack Overflow等平台推荐的必读编程书籍中文版；2) 提供编程、系统设计、算法等多领域的中文免费教程；3) 方便开发者查找和学习技术资源。用户可通过Pull Request贡献更多经典书籍，或提交无法访问的链接。项目欢迎用户star和分享，部分捐赠渠道（如微信赞赏码）用于支持维护者。"
+    },
+    {
+      "question": "如何为 free-programming-books-zh_CN 项目贡献书籍？贡献步骤是什么？",
+      "answer": "贡献书籍需按以下步骤操作：1) 访问项目GitHub仓库；2) 点击「Fork」创建个人分支；3) 在本地编辑或添加书籍信息（如标题、链接、简介）；4) 提交Pull Request（PR），提交时可在无法访问的链接后添加 `:worried:` 标记；5) 等待维护者审核合并。项目维护者会在贡献者名单中记录所有贡献者（链接：https://github.com/justjavac/free-programming-books-zh_CN/graphs/contributors）。"
+    },
+    {
+      "question": "项目中包含哪些编程语言相关的书籍类别？请列举至少5个类别。",
+      "answer": "项目按编程语言分类收录书籍，主要类别包括：1) Android；2) C/C++；3) C#；4) Go；5) Java；6) JavaScript；7) Python；8) Rust；9) Swift；10) Shell；11) Ruby；12) PHP等。每个类别下汇总了该语言的入门教程、进阶指南、API文档及经典书籍（如《C++ Primer》、《JavaScript语言精粹》等）。"
+    },
+    {
+      "question": "项目中有哪些专门针对Web开发的资源？请提供至少3个资源名称。",
+      "answer": "Web开发相关资源包括：1) 正则表达式30分钟入门教程；2) 前端开发体系建设日记；3) HTTP接口设计指北；4) 前端代码规范及最佳实践；5) Chrome开发者工具中文手册。此外，项目还收录了Web安全学习笔记、Serverless架构应用开发指南等专业资源。"
+    },
+    {
+      "question": "如何使用 AICodeConvert 工具？请给出一个将自然语言转换为Python代码的示例。",
+      "answer": "根据项目描述，AICodeConvert 是一个可将「自然语言」转为「代码实现」的在线工具。假设用户输入自然语言：「请生成一个Python函数，计算1到n的和」。AICodeConvert可能输出如下Python代码：\npython\n\ndef sum_to_n(n: int) -> int:\n    \"\"\"计算1到n的和。\"\"\"\n    return n * (n + 1) // 2\n\n# 示例用法:\nprint(sum_to_n(10))  # 输出: 55\n\n该工具还支持代码Debug、优化和不同语言之间的转换（如Python转JavaScript）。用户可通过AICodeConvert官网或集成工具访问。"
+    },
+    {
+      "question": "项目中提到的 Docker 文档有哪些？请列举至少3个。",
+      "answer": "Docker相关文档包括：1) Docker中文指南；2) Docker —— 从入门到实践；3) Docker入门实战；4) Docker Cheat Sheet。这些资源覆盖了Docker基础概念、安装配置、容器管理、镜像构建和命令速查等内容。例如，《Docker —— 从入门到实践》是一本系统性中文教程，适合初学者逐步学习。"
+    },
+    {
+      "question": "项目中收录了哪些数据库相关的书籍？请按数据库类型分类列出。",
+      "answer": "数据库相关资源分为：\n1) NoSQL：Redis设计与实现、The Little MongoDB Book、Neo4j简体中文手册等；\n2) PostgreSQL：PostgreSQL 8/9.x 中文文档（如9.3.1、9.5.3版本）；\n3) MySQL：MySQL索引背后的数据结构及算法原理、21分钟MySQL入门教程等；\n4) 大数据：大数据/数据挖掘/推荐系统相关资源、Spark编程指南中文版等。"
+    },
+    {
+      "question": "如何利用项目中的 Git 教程实现版本控制？请给出一个常用 Git 命令的列表示例。",
+      "answer": "项目中收录了多个Git教程（如《Learn Git》、《Pro Git中文版》），用户可通过它们学习版本控制。常用Git命令示例如下：\nbash\n# 初始化仓库\ngit init\n\n# 添加文件到暂存区\ngit add .\n\n# 提交更改\ngit commit -m \"更新项目文档\"\n\n# 查看分支\ngit branch\n\n# 切换分支\ngit checkout <branch_name>\n\n# 合并分支\ngit merge <branch_name>\n\n# 推送到远程仓库\ngit push origin main\n\n# 拉取远程更新\ngit pull\n\n这些命令帮助开发者管理代码版本、协作开发和远程同步。"
+    }
+  ]
+}

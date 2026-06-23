@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Eagle_(British_comics)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who founded the British children's comic 'Eagle' and what was their profession before launching it?",
+      "answer": "The Eagle was founded by Marcus Morris, who was an Anglican vicar from Lancashire before creating the comic."
+    },
+    {
+      "question": "What was the primary motivation behind Marcus Morris creating 'Eagle'?",
+      "answer": "Marcus Morris felt the church was not effectively communicating its message and was also disillusioned with contemporary children's literature. This led him and artist Frank Hampson to create a comic based on Christian values."
+    },
+    {
+      "question": "Describe the debut issue of 'Eagle' in terms of its release date, sales, and a notable feature.",
+      "answer": "The first issue of Eagle was released in April 1950, sold approximately 900,000 copies, and featured the iconic story 'Dan Dare, Pilot of the Future' on its front cover in color."
+    },
+    {
+      "question": "What are two popular stories published in 'Eagle' besides 'Dan Dare'?",
+      "answer": "Two other popular stories in Eagle were 'Riders of the Range' and 'P.C. 49'."
+    },
+    {
+      "question": "How did 'Eagle' incorporate educational content beyond its comic stories?",
+      "answer": "Eagle included news and sports sections, as well as educational cutaway diagrams of sophisticated machinery to provide informative content to its readers."
+    },
+    {
+      "question": "What led to Marcus Morris and Frank Hampson leaving 'Eagle' in the late 1950s?",
+      "answer": "Marcus Morris left in 1959 due to a takeover of the publisher and disputes, followed shortly by Frank Hampson, which contributed to a decline in the comic's standards and later its merger with Lion in 1969."
+    },
+    {
+      "question": "Provide a code snippet that represents a simplified Python dictionary modeling the key contributors and elements of 'Eagle'.",
+      "answer": "python\n# Simplified Python dictionary modeling Eagle's key contributors and elements\nEagle_Info = {\n    \"founder\": {\n        \"name\": \"Marcus Morris\",\n        \"profession\": \"Anglican vicar\"\n    },\n    \"co_creator\": \"Frank Hampson\",\n    \"debut\": {\n        \"date\": \"April 1950\",\n        \"sales\": \"~900,000 copies\",\n        \"iconic_story\": \"Dan Dare, Pilot of the Future\"\n    },\n    \"notable_stories\": [\"Riders of the Range\", \"P.C. 49\"],\n    \"educational_features\": [\"news sections\", \"sports sections\", \"cutaway diagrams\"]\n}\n"
+    }
+  ]
+}

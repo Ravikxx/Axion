@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Hamilton_Jeffers",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was Hamilton Moore Jeffers and what is he known for in astronomy?",
+      "answer": "Hamilton Moore Jeffers (1893–1976) was an American astronomer renowned for discovering the asteroid (58093) 1934 JP, located in the inner asteroid belt. The asteroid 1934 Jeffers was named in his honor in February 1976."
+    },
+    {
+      "question": "How did Hamilton Jeffers contribute to the war effort during World War II?",
+      "answer": "During World War II, Jeffers contributed to the war effort by serving at the Radiation Laboratory of the Massachusetts Institute of Technology, followed by roles as an operations analyst in Alaska and India."
+    },
+    {
+      "question": "What are some key milestones in Hamilton Jeffers' academic and professional career?",
+      "answer": "Jeffers graduated from the University of California, Berkeley in 1917 and earned his doctorate in astronomy there in 1921. He began his career as an instructor at the State University of Iowa in 1921, became an assistant astronomer at Lick Observatory in 1924, and advanced to Associate Astronomer in 1933 and full astronomer in 1938. He retired in 1961 as Astronomer Emeritus."
+    },
+    {
+      "question": "What notable scientific work is Hamilton Jeffers recognized for besides asteroid discovery?",
+      "answer": "Jeffers was highly regarded for the accuracy and precision of his cometary and double-star observations, particularly during his time at Lick Observatory."
+    },
+    {
+      "question": "How did Hamilton Jeffers' family influence his career or public recognition?",
+      "answer": "Jeffers came from a notable family—his elder brother, Robinson Jeffers, became a celebrated poet. Additionally, an asteroid (1934 Jeffers) was named in his honor in 1976, reflecting his contributions to astronomy."
+    },
+    {
+      "question": "Write a Python function that calculates the orbital period of an asteroid given its semi-major axis, assuming a circular orbit around the Sun.",
+      "answer": "python\nimport math\n\ndef calculate_orbital_period(semi_major_axis_au):\n    \"\"\"\n    Calculate the orbital period of an asteroid in years given its semi-major axis in astronomical units (AU).\n    Assumes a circular orbit around the Sun using Kepler's Third Law.\n    \n    Parameters:\n    semi_major_axis_au (float): Semi-major axis in astronomical units\n    \n    Returns:\n    float: Orbital period in years\n    \"\"\"\n    # Kepler's Third Law: P^2 = a^3, where P is in years and a is in AU\n    orbital_period = math.sqrt(semi_major_axis_au ** 3)\n    return orbital_period\n\n# Example usage:\n# Asteroid (58093) 1934 JP has a semi-major axis of about 2.2 AU\nprint(calculate_orbital_period(2.2))  # Output: ~3.26 years\n"
+    },
+    {
+      "question": "Why might Hamilton Jeffers' work at Lick Observatory have been highly regarded by his peers?",
+      "answer": "Jeffers' peers likely held his work in high regard due to his exceptional accuracy and precision, especially in cometary and double-star observations. His contributions were recognized through promotions to Associate Astronomer (1933) and full Astronomer (1938), as well as the posthumous naming of an asteroid in his honor."
+    }
+  ]
+}

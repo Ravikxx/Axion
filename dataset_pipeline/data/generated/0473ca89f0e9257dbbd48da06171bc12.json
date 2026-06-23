@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/dumebii/i-started-learning-javascript-again-a-beginner-friendly-guide-to-the-basics-5f50",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "Why did the author decide to relearn JavaScript from scratch?",
+      "answer": "The author decided to relearn JavaScript after receiving feedback about poor code quality in a repository they contributed to. The constructive criticism made them realize they had lost touch with many fundamental coding abilities, prompting them to refresh their knowledge starting from the basics."
+    },
+    {
+      "question": "What are the three core technologies of web development, and what role does JavaScript play among them?",
+      "answer": "The three core technologies of web development are HTML, CSS, and JavaScript. HTML provides the structure of a webpage, CSS handles the styling and visual presentation, while JavaScript adds interactivity and dynamic behavior such as dropdown menus, popups, calculators, games, and real-time feedback."
+    },
+    {
+      "question": "How do you open the JavaScript browser console in Google Chrome to run code snippets?",
+      "answer": "To open the JavaScript console in Google Chrome, right-click anywhere on a webpage and select 'Inspect' from the dropdown menu. Then, click on the 'Console' tab in the DevTools panel that appears. You can now type and execute JavaScript commands directly in the console."
+    },
+    {
+      "question": "What is the difference between 'let' and 'const' when declaring variables in JavaScript? Provide code examples.",
+      "answer": "In JavaScript, 'let' is used to declare a variable that can be reassigned later in the code, while 'const' declares a constant variable that cannot be changed after initialization. Use 'const' by default for values that should not change, and switch to 'let' only when reassignment is necessary.\n\nExample with 'let':\njs\nlet quantity = 3;\nquantity = quantity + 1; // Reassignment allowed\nconsole.log(quantity); // Output: 4\n\n\nExample with 'const':\njs\nconst taxRate = 0.1;\ntaxRate = 0.2; // Error: Assignment to constant variable\n"
+    },
+    {
+      "question": "Explain the concept of template literals in JavaScript with an example.",
+      "answer": "Template literals in JavaScript allow for easier string concatenation and embedding of expressions using backticks (`) instead of quotes. They support placeholders marked by ${expression}, which automatically convert the expression result to a string.\n\nExample:\njs\nconst num1 = 5;\nconst num2 = 6;\nconst add = num1 + num2;\nconst output = `Total number is: ${add}`;\nconsole.log(output); // Output: Total number is: 11\n\n\nThis is especially useful in DOM manipulation where dynamic content needs to be inserted into HTML elements."
+    },
+    {
+      "question": "What is the Document Object Model (DOM) in JavaScript, and how can you modify a webpage element using JavaScript?",
+      "answer": "The Document Object Model (DOM) is a programming interface for HTML and XML documents. It represents the structure of a webpage as a tree of objects, allowing JavaScript to dynamically access, modify, and update content, structure, and styles. To modify a webpage element, you can use methods like document.getElementById() to select an element by its ID and then update its properties such as textContent.\n\nExample:\nhtml\n<h1 id=\"main-heading\">Original</h1>\n\n\njs\ndocument.getElementById('main-heading').textContent = 'Updated with JS!';\n\n\nThis changes the heading text to 'Updated with JS!'."
+    },
+    {
+      "question": "Write a JavaScript function to calculate the final price of a shopping cart including tax and shipping based on the total items' cost. Include a conditional for free shipping.",
+      "answer": "js\nfunction calculateCartTotal(item1, item2) {\n  const total = item1 + item2;\n  const shipping = total <= 1000 ? 499 : 0; // Free shipping if total <= $10.00 (in cents)\n  const tax = Math.round(total * 0.1);\n  const finalAmount = total + shipping + tax;\n  return `Final Total: $${finalAmount / 100}`;\n}\n\n// Example usage:\nconsole.log(calculateCartTotal(2095, 799));\n// Output: Final Total: $34.54\n\n\nThis function takes two item prices (in cents), calculates the total, applies conditional shipping, computes tax, and returns the final amount formatted as a dollar value."
+    }
+  ]
+}

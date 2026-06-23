@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Fate/kaleid_liner_Prisma_Illya",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the main premise of Fate/kaleid liner Prisma Illya?",
+      "answer": "Fate/kaleid liner Prisma Illya is an alternate universe spin-off of the Fate/stay night visual novel by Type-Moon, centered around Illyasviel von Einzbern as the protagonist. Unlike the original Fate/stay night, the story follows Illya as she collects magical Class Cards with the aid of a magical girl transformation."
+    },
+    {
+      "question": "How many manga series were part of the Fate/kaleid liner Prisma Illya franchise, and what are their titles?",
+      "answer": "Three manga series were part of the franchise. They are: 1) Fate/kaleid liner Prisma Illya (2007–2008), 2) Fate/kaleid liner Prisma Illya 2wei (2009–2012), and 3) Fate/kaleid liner Prisma Illya 3rei!! (2012–present)."
+    },
+    {
+      "question": "List all anime adaptations of Fate/kaleid liner Prisma Illya in chronological order.",
+      "answer": "The anime adaptations in chronological order are: 1) Fate/kaleid liner Prisma Illya (Season 1, 2013), 2) Fate/kaleid liner Prisma Illya 2wei! Herz! (Season 3, 2015), 3) Fate/kaleid liner Prisma Illya 3rei!! (Season 4, 2016), and 4) Fate/kaleid liner Prisma Illya: Prisma Phantasm (OVA, 2019)."
+    },
+    {
+      "question": "What is the connection between Fate/kaleid liner Prisma Illya and the Fate/stay night visual novel?",
+      "answer": "Fate/kaleid liner Prisma Illya is an alternate universe spin-off of Fate/stay night, meaning it shares themes and some characters (e.g., Illyasviel von Einzbern) but diverges significantly in plot and setting. It introduces new concepts like Class Cards and magical girl transformations."
+    },
+    {
+      "question": "Write a Python code snippet to extract all anime seasons and their release years from the following text: 'A 10-episode anime television series adaptation aired in 2013. A second season aired in 2014. A third season began airing in 2015. A fourth season aired between July and September 2016.'",
+      "answer": "python\nimport re\n\ntext = \"\"\"A 10-episode anime television series adaptation aired in 2013. A second season aired in 2014. \nA third season began airing in 2015. A fourth season aired between July and September 2016.\"\"\"\n\n# Extract seasons and years using regex\npattern = r'(?:first|second|third|fourth|10-episode) season.*?(?:201[3-6])'\nmatches = re.findall(pattern, text, re.IGNORECASE)\n\n# Map seasons to numbers for sorting\nseason_map = {'10-episode': 1, 'second': 2, 'third': 3, 'fourth': 4}\n\n# Process matches to extract season numbers and years\nfor match in matches:\n    for phrase, num in season_map.items():\n        if phrase in match.lower():\n            year = re.search(r'(\\d{4})', match).group()\n            print(f\"Season {num}: {year}\")\n\nOutput:\nSeason 1: 2013\nSeason 2: 2014\nSeason 3: 2015\nSeason 4: 2016"
+    },
+    {
+      "question": "What are the names and release dates of the animated films in the Fate/kaleid liner Prisma Illya franchise?",
+      "answer": "The animated films in the franchise are: 1) Fate/kaleid liner Prisma Illya: Prisma Phantasm (released June 14, 2019), and 2) Fate/kaleid liner Prisma Illya: Licht - The Nameless Girl (released August 27, 2021)."
+    },
+    {
+      "question": "What role does Illyasviel von Einzbern play in Fate/kaleid liner Prisma Illya compared to her role in Fate/stay night?",
+      "answer": "In Fate/kaleid liner Prisma Illya, Illyasviel von Einzbern is the protagonist who actively collects magical Class Cards and undergoes magical girl transformations. In contrast, in Fate/stay night, she is a supporting character in the Einzbern family, primarily associated with the Holy Grail War."
+    }
+  ]
+}

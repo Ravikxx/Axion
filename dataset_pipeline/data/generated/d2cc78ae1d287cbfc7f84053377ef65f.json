@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Autonomous_cargo_ship",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What are autonomous cargo ships and how do they operate?",
+      "answer": "Autonomous cargo ships, also known as Maritime Autonomous Surface Ships (MASS), are crewless vessels designed to transport containers or bulk cargo over navigable waters with minimal or no human interaction. They achieve autonomy through methods like monitoring and remote control from nearby manned ships, onshore control centers, or artificial intelligence and machine learning systems that enable the vessel to make decisions independently."
+    },
+    {
+      "question": "Which countries have conducted trials or reported progress on autonomous cargo ships as of 2020?",
+      "answer": "As of 2020, several countries have reported trials or progress on autonomous cargo ships. Japan tested the Iris Leader, a pure car truck carrier. France conducted trials with the VN REBEL, an 80-meter-long merchant ship remotely controlled from the Paris region. China tested the Jin Dou Yun 0 Hao, a 12.9-meter vessel operated by automatic navigation technology and remote control. Russia also reported trials with three ships equipped for remote operation during commercial voyages."
+    },
+    {
+      "question": "What was the MV Yara Birkeland, and what was its intended operational timeline?",
+      "answer": "The MV Yara Birkeland is a prominent autonomous cargo ship project that was initially scheduled to enter trials in 2019 and operations in 2020. It is a crewless vessel designed to transport containers, representing a significant step in the development of autonomous maritime shipping technology."
+    },
+    {
+      "question": "How did Russian companies advance autonomous navigation in 2021?",
+      "answer": "In 2021, Russian companies conducted trials of autonomous navigation systems during 28 commercial voyages. Due to the promising results, the maritime authorities of Russia allowed any Russian-flagged shipping company to equip their ships with autonomous navigation systems for regular activities as part of a national experiment, subject to certain conditions."
+    },
+    {
+      "question": "What are the key challenges to the widespread adoption of autonomous cargo ships according to industry experts?",
+      "answer": "Regulatory, safety, legal, and security challenges are viewed as the largest obstacles to the widespread adoption of autonomous cargo ships. Industry skepticism also plays a role, with some executives, like Søren Skou, CEO of Maersk, questioning the efficiency and feasibility of fully autonomous cargo ships, especially for large vessels."
+    },
+    {
+      "question": "What did Oskar Levander of Rolls-Royce say about the future of autonomous shipping in 2016?",
+      "answer": "Oskar Levander, Rolls-Royce's VP of Marine Innovation, stated in 2016: 'This is happening. It's not if, it's when. The technologies needed to make remote and autonomous ships a reality exist... We will see a remote controlled ship in commercial use by the end of the decade.' This reflects an optimistic view on the timeline and feasibility of autonomous shipping."
+    },
+    {
+      "question": "Can you provide a Python code snippet demonstrating a simple autonomous navigation decision-making simulation for a cargo ship?",
+      "answer": "Certainly! Below is a Python code snippet that simulates basic autonomous navigation decision-making for a cargo ship using a simple rule-based system. The ship adjusts its course based on predefined conditions like obstacles or waypoints.\n\npython\nimport random\n\nclass AutonomousShip:\n    def __init__(self, name):\n        self.name = name\n        self.position = (0, 0)\n        self.course = 0  # degrees\n        self.speed = 0  # knots\n\n    def navigate(self, obstacles, waypoints):\n        # Simulate obstacle detection and waypoint navigation\n        if obstacles:\n            self.course += random.choice([-10, 10])  # Avoid by turning slightly\n            print(f\"{self.name} detected obstacle! Adjusting course to {self.course} degrees.\")\n        elif waypoints:\n            target_x, target_y = waypoints[0]\n            # Simple heading calculation (simplified for illustration)\n            dx, dy = target_x - self.position[0], target_y - self.position[1]\n            self.course = (90 - (math.degrees(math.atan2(dy, dx)))) % 360\n            print(f\"{self.name} navigating to waypoint {waypoints[0]}. Course set to {self.course} degrees.\")\n        else:\n            self.speed = 10  # Default cruising speed\n            print(f\"{self.name} cruising at {self.speed} knots on course {self.course} degrees.\")\n\n# Example usage\nship = AutonomousShip(\"MV Yara Birkeland\")\nobstacles = True  # Simulate obstacle\nwaypoints = [(10, 10), (20, 20)]  # List of waypoints\nship.navigate(obstacles, waypoints)\n\nThis snippet demonstrates a simplified model of how an autonomous ship might make basic navigation decisions."
+    }
+  ]
+}

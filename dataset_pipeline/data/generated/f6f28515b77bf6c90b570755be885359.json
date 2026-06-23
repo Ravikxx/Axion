@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Burgos_trials",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What were the Burgos trials and when did they take place?",
+      "answer": "The Burgos trials were a series of military tribunals held in the Spanish city of Burgos from 3 to 9 December 1970. They prosecuted 16 members of the Basque separatist organization ETA for their involvement in the murders of two police officers in 1968."
+    },
+    {
+      "question": "Why were the Burgos trials significant in terms of international reaction?",
+      "answer": "The Burgos trials caused international outrage and sympathy for the defendants due to the six death sentences initially handed out, which were later commuted to long prison terms. Public figures like Pope Paul VI and Jean-Paul Sartre condemned the trials, highlighting their notoriety as one of the last occasions political prisoners were sentenced to death."
+    },
+    {
+      "question": "What actions by Basque workers and ETA contributed to the media attention around the Burgos trials?",
+      "answer": "A labor strike by around 100,000 Basque workers and the kidnapping of a German honorary consul by ETA significantly boosted media attention surrounding the Burgos trials."
+    },
+    {
+      "question": "How did the defendants in the Burgos trials portray their organization during the proceedings?",
+      "answer": "In their statements, the defendants sought to portray ETA as an advocate for the working classes, emphasizing their alleged commitment to social justice."
+    },
+    {
+      "question": "What was Francisco Franco's role in the outcome of the Burgos trials?",
+      "answer": "Despite the tribunals finding all defendants guilty and initially sentencing six to death, Spanish dictator Francisco Franco commuted the death sentences to long imprisonment terms in response to international pressure."
+    },
+    {
+      "question": "What evidence or claims did the defendants present regarding their treatment in prison?",
+      "answer": "The defendants detailed incidents of torture they claimed to have experienced while in prison, which they presented during the trials."
+    },
+    {
+      "question": "Write a Python snippet to calculate the total duration of the Burgos trials in days.",
+      "answer": "python\ntrial_start_date = '1970-12-03'\ntrial_end_date = '1970-12-09'\nfrom datetime import datetime\nduration = (datetime.strptime(trial_end_date, '%Y-%m-%d') - datetime.strptime(trial_start_date, '%Y-%m-%d')).days + 1\nprint(f'The Burgos trials lasted {duration} day(s).')\n\nThis code calculates the duration of the Burgos trials by subtracting the start date from the end date and adding 1 to include both the start and end day."
+    }
+  ]
+}

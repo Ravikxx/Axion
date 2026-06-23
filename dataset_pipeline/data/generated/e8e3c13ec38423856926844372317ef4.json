@@ -1,0 +1,42 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Google_Fiber",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is Google Fiber and who operates it?",
+      "answer": "Google Fiber, sometimes stylized as GFiber, is a fiber broadband Internet service operated by Alphabet Inc. It provides high-speed internet access to households in multiple cities across 19 U.S. states."
+    },
+    {
+      "question": "When and where was Google Fiber first introduced?",
+      "answer": "Google Fiber was first introduced in 2012 in the Kansas City metropolitan area, including twenty surrounding suburbs within three years."
+    },
+    {
+      "question": "What was Google Fiber's estimated customer base in mid-2016?",
+      "answer": "In mid-2016, Google Fiber was estimated to have about 453,000 broadband customers across the United States."
+    },
+    {
+      "question": "How did Google Fiber's business model change in December 2012?",
+      "answer": "In December 2012, Google Fiber transitioned from an experimental project to a viable business model, as announced by executive chairman Eric Schmidt during The New York Times' DealBook Conference."
+    },
+    {
+      "question": "Which cities were added to Google Fiber's service between 2013 and 2015?",
+      "answer": "Google Fiber expanded to Austin, Texas, and Provo, Utah, in April 2013. Additional expansions in 2014 and 2015 included Atlanta, Charlotte, Research Triangle, Nashville, Salt Lake City, and San Antonio."
+    },
+    {
+      "question": "What major corporate restructuring occurred in August 2015 that affected Google Fiber?",
+      "answer": "In August 2015, Google restructured into Alphabet Inc., making Google Fiber a subsidiary under the Access and Energy business unit."
+    },
+    {
+      "question": "What was the outcome of Google Fiber's expansion plans in October 2016?",
+      "answer": "In October 2016, Google Fiber paused all expansion plans and cut some jobs, but continued providing service in cities where it was already installed."
+    },
+    {
+      "question": "What recent expansions or rebranding initiatives has Google Fiber undertaken?",
+      "answer": "In October 2023, Google Fiber rebranded to GFiber and announced plans to offer 20Gig internet and Wi-Fi 7 hardware. In August 2022, it expanded into 22 metro areas across five states, including Arizona, Colorado, Idaho, Nebraska, and Nevada."
+    },
+    {
+      "question": "What major merger was announced by Google Fiber in 2026?",
+      "answer": "On March 12, 2026, Google Fiber announced it would merge with Astound Broadband. The combined company will be majority-owned by investment firm Stonepeak, with the transaction expected to close by the end of 2026."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Assassination_of_Qasem_Soleimani",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was Qasem Soleimani and what was his role in Iran?",
+      "answer": "Qasem Soleimani was an Iranian major general and the commander of the Quds Force, a branch of Iran's Islamic Revolutionary Guard Corps (IRGC). He was considered the second most powerful person in Iran, directly subordinate to Supreme Leader Ali Khamenei, and was often referred to as Khamenei's right-hand man."
+    },
+    {
+      "question": "What were the immediate consequences of Qasem Soleimani's assassination on 3 January 2020?",
+      "answer": "Qasem Soleimani's assassination triggered a sharp escalation in tensions between the U.S. and Iran. Iran vowed revenge, while the U.S. warned of preemptive strikes against perceived threats from Iran-backed paramilitary groups in Iraq. On 5 January 2020, the Iraqi parliament passed a non-binding resolution to expel all foreign troops from its territory, and Iran reduced its commitments to the 2015 nuclear deal. Five days later, Iran launched missile strikes on U.S. forces in Iraq and accidentally shot down Ukraine International Airlines Flight 752."
+    },
+    {
+      "question": "How did the U.S. justify the drone strike that killed Qasem Soleimani?",
+      "answer": "The U.S. justified the strike by claiming it was necessary to prevent an \"imminent attack\" on American personnel. Later, the justification was clarified as a response to an escalating series of attacks by Iran-backed groups to protect U.S. personnel, deter further attacks, and end Iran's strategic escalation."
+    },
+    {
+      "question": "What were the international reactions to Qasem Soleimani's assassination?",
+      "answer": "Many in the international community expressed concern and urged restraint and diplomacy. The United Nations special rapporteur on extrajudicial executions considered the assassination a likely violation of international and U.S. domestic law. Iran condemned the strike as \"state terrorism,\" while Iraq viewed it as a breach of its sovereignty and bilateral security agreements."
+    },
+    {
+      "question": "What was the context of the 2019–2022 Persian Gulf crisis leading up to Soleimani's assassination?",
+      "answer": "The crisis began after the U.S. withdrew from the 2015 nuclear deal with Iran in 2018 and reimposed sanctions. The U.S. accused Iran of fomenting harassment campaigns against its forces in the region. Tensions escalated further after a December 2019 attack on the K-1 Air Base in Iraq, killing an American contractor, which led to U.S. airstrikes and retaliatory attacks on the U.S. embassy in Baghdad."
+    },
+    {
+      "question": "What were the legal implications of the Soleimani strike according to international experts?",
+      "answer": "Several experts, including the UN special rapporteur on extrajudicial executions, argued that the assassination likely violated international law and U.S. domestic laws. The strike was criticized for lacking transparency and clear attribution regarding Iran's involvement in attacks on U.S. forces."
+    },
+    {
+      "question": "Write a Python function to extract key dates and events from the assassination timeline.",
+      "answer": "python\nfrom datetime import datetime\n\ndef extract_assassination_timeline():\n    timeline = {\n        'Assassination': '3 January 2020',\n        'U.S. Withdrawal from Nuclear Deal': '2018',\n        'K-1 Air Base Attack': '27 December 2019',\n        'U.S. Airstrikes on Kata\\'ib Hezbollah': 'December 2019',\n        'U.S. Embassy Attack': 'December 2019',\n        'Iraqi Parliament Resolution': '5 January 2020',\n        'Iran Missile Strikes on U.S. Forces': '8 January 2020',\n        'Ukraine Airlines Flight 752 Shootdown': '8 January 2020'\n    }\n    return timeline\n\n# Example usage:\ntimeline = extract_assassination_timeline()\nfor event, date in timeline.items():\n    print(f\"{event}: {date}\")\n"
+    }
+  ]
+}

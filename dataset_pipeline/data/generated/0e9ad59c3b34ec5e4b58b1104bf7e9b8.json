@@ -1,0 +1,34 @@
+{
+  "source_url": "https://mathworld.wolfram.com/ReciprocalFibonacciConstant.html",
+  "category": "mathworld",
+  "pairs": [
+    {
+      "question": "What is the Reciprocal Fibonacci Constant, and what is its closed-form expression?",
+      "answer": "The Reciprocal Fibonacci Constant, denoted as ψ, is the sum of the reciprocals of all Fibonacci numbers. Its closed-form expression for the sum over all indices is: ψ = ∑_{n=1}^∞ 1/F_n = 1 + 1/1 + 1/2 + 1/3 + 1/5 + ... ≈ 3.3598856662. For even-indexed Fibonacci numbers, the sum is given by a Lambert series involving the golden ratio φ = (1 + √5)/2 and the polygamma function ψ^{(1)}(x): ∑_{k=1}^∞ 1/F_{2k} = √5 [ψ^{(1)}((φ-2)/2) - ψ^{(1)}((φ-1)/2)]."
+    },
+    {
+      "question": "How are the sums of reciprocals of even and odd-indexed Fibonacci numbers expressed mathematically?",
+      "answer": "The sum of reciprocals of even-indexed Fibonacci numbers is expressed as: ∑_{k=1}^∞ 1/F_{2k} = (√5/4) [ψ^{(1)}((φ-2)/2) - ψ^{(1)}((φ-1)/2)], where φ is the golden ratio and ψ^{(1)}(x) is the first polygamma function. The sum of reciprocals of odd-indexed Fibonacci numbers is given by: ∑_{k=0}^∞ 1/F_{2k+1} = (√5/2) [ψ^{(1)}((φ-2)/4) - ψ^{(1)}((φ-1)/4)] + 1, involving Jacobi elliptic functions in its derivation."
+    },
+    {
+      "question": "Write a Python function to approximate the Reciprocal Fibonacci Constant using the first N terms of the series.",
+      "answer": "python\ndef reciprocal_fibonacci_constant(N):\n    def fibonacci(n):\n        a, b = 0, 1\n        for _ in range(n):\n            a, b = b, a + b\n        return a\n    \n    return sum(1 / fibonacci(n) for n in range(1, N + 1))\n\n# Example usage:\napproximation = reciprocal_fibonacci_constant(20)\nprint(f\"Approximation with first 20 terms: {approximation}\")\nThe function computes the sum of reciprocals of the first N Fibonacci numbers. For N=20, the result is approximately 3.3598856662431756."
+    },
+    {
+      "question": "Who proved the irrationality of the Reciprocal Fibonacci Constant, and in which year was this result established?",
+      "answer": "The irrationality of the Reciprocal Fibonacci Constant was proved by André-Jeannin in 1989. The question of its irrationality was formally raised earlier by Paul Erdős."
+    },
+    {
+      "question": "What are Lambert series and how are they related to the sums of reciprocals of Fibonacci numbers?",
+      "answer": "A Lambert series is a series of the form L(q) = ∑_{n=1}^∞ a_n q^n / (1 - q^n), where a_n are coefficients and |q| < 1. In the context of Fibonacci numbers, sums like ∑_{k=1}^∞ 1/F_k can be expressed using Lambert series due to the recurrence relation of Fibonacci numbers. Specifically, the sums of reciprocals of even or odd-indexed Fibonacci numbers involve Lambert series with coefficients derived from the Fibonacci sequence."
+    },
+    {
+      "question": "Provide a formula for the sum of reciprocals of even-indexed Fibonacci numbers using the golden ratio φ.",
+      "answer": "The sum of reciprocals of even-indexed Fibonacci numbers is given by: ∑_{k=1}^∞ 1/F_{2k} = (√5/4) [ψ^{(1)}( (φ - 2)/2 ) - ψ^{(1)}( (φ - 1)/2 ) ], where φ = (1 + √5)/2 is the golden ratio and ψ^{(1)}(x) is the first polygamma function. This formula leverages properties of the golden ratio and special functions to provide a closed-form result."
+    },
+    {
+      "question": "What is the OEIS sequence identifier for the sum of reciprocals of all Fibonacci numbers, and what are two related sequences?",
+      "answer": "The OEIS sequence identifier for the sum of reciprocals of all Fibonacci numbers is A079586. Two related sequences are A153386 (sum of reciprocals of even-indexed Fibonacci numbers) and A153387 (sum of reciprocals of odd-indexed Fibonacci numbers)."
+    }
+  ]
+}

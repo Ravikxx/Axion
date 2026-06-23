@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Hampden,_South_Australia",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When was the locality of Hampden officially established in South Australia?",
+      "answer": "Hampden was officially established in August 2000, when boundaries were formalised for the long-established local name."
+    },
+    {
+      "question": "Who was Hampden named after, and what was their relationship to Frederick Dutton?",
+      "answer": "Hampden was named after William Hampden Dutton, who was the brother of Frederick Dutton. Frederick Dutton established Anlaby Station, which included the area where Hampden is now located."
+    },
+    {
+      "question": "What significant infrastructure developments occurred in Hampden in the early 20th century?",
+      "answer": "Several key developments took place in Hampden during this period. A siding on the Morgan railway line was built in 1909. A store opened in 1911, followed by the opening of the Hampden Post Office as Hampden Siding on 8 July 1912. Additionally, a manual telephone exchange opened around August 1915."
+    },
+    {
+      "question": "How did the Hampden School utilize the council chambers, and what eventually happened to the building?",
+      "answer": "The Hampden School opened in the council chambers on 1 September 1925. The building was enlarged in 1932 to better accommodate school and public functions. However, the school closed on 6 September 1951, and the building was later handed over to the community in 1954 for use as a District Hall. The Methodist church held services in the hall until 1970, and the Buchanan Agricultural Bureau met there after the sale of the Buchanan Hall."
+    },
+    {
+      "question": "What recreational facility was established in Hampden in 1958, and how was it managed in the 2000s?",
+      "answer": "The Hampden Tennis Club opened in 1958 after the completion of tennis courts beside the hall. In the 2000s, the tennis club leased both the hall and the tennis courts from the Regional Council of Goyder."
+    },
+    {
+      "question": "What were the closing dates for railway passenger services and the last freight train in Hampden?",
+      "answer": "Railway passenger services ended in December 1968, and the last freight train ran through Hampden in March 1994."
+    },
+    {
+      "question": "Write a Python script to calculate the number of years between the establishment of Hampden and the closure of the Hampden Post Office.",
+      "answer": "python\n# Year Hampden was established\nestablishment_year = 2000\n\n# Year Hampden Post Office closed\npost_office_closure_year = 1983\n\n# Calculate the number of years between the two events\nyears_between = establishment_year - post_office_closure_year\nprint(f\"The Hampden Post Office closed {years_between} years before Hampden was established.\")\n\nOutput:\nThe Hampden Post Office closed 17 years before Hampden was established."
+    }
+  ]
+}

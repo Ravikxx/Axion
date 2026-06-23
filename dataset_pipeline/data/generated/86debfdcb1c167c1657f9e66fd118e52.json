@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Dave_Konig",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What are some notable TV shows and films Dave Konig has appeared in?",
+      "answer": "Dave Konig has appeared in several notable TV shows and films, including the TV series 'Marvelous Mrs. Maisel,' 'Crashing (U.S. TV series),' 'The Blacklist,' 'The Enemy Within,' 'Boardwalk Empire,' 'Law & Order: Criminal Intent,' and 'Louie.' He has also been featured in films such as 'Final Rinse with Joey Ramone,' 'Home Sweet Hoboken with Ben Gazzara,' and 'Mambo Café with Danny Aiello.'"
+    },
+    {
+      "question": "What awards has Dave Konig won and for which work?",
+      "answer": "Dave Konig won three New York Emmy Awards as the co-host of the comedy series 'Subway Q&A.' Additionally, his Off Broadway solo show 'Addicted to Show Business' received positive 'Reader’s Reviews' in the New York Times Theater section."
+    },
+    {
+      "question": "What are some of Dave Konig's notable stand-up comedy performances and tours?",
+      "answer": "In 2010 and 2011, Dave Konig toured the U.S. in the stand-up comedy revue 'Pastrami On Rye With Mayo' alongside Tom Cotter, Cory Kahaney, and Ross Bennett. He has also performed in comedy clubs and on cruise ships throughout his career."
+    },
+    {
+      "question": "What Broadway and Off Broadway productions has Dave Konig been involved in?",
+      "answer": "Dave Konig debuted on Broadway as Vince Fontaine in the Tommy Tune revival of 'Grease.' He also starred Off Broadway in his solo shows 'Hebrew School Dropout' at the Actors Temple Theater in 2010, which was praised by the New York Times as 'lightning fast, charming, insightful, and very, very funny,' and 'Addicted to Show Business' at the St. Luke's Theatre in 2013."
+    },
+    {
+      "question": "How many times did Dave Konig appear on 'Late Night with Joey Reynolds'?",
+      "answer": "Dave Konig made 11 appearances as the featured guest comedian on the talk/variety show 'Late Night with Joey Reynolds' on NBC Nonstop."
+    },
+    {
+      "question": "Can you write a Python function that extracts the names of all TV series Dave Konig has appeared in from the given text?",
+      "answer": "python\nimport re\n\ndef extract_tv_series(text):\n    # Define a list of TV series titles mentioned in the text\n    tv_series = [\n        'Marvelous Mrs. Maisel',\n        'Crashing (U.S. TV series)',\n        'The Blacklist',\n        'The Enemy Within',\n        'Subway Q&A',\n        'Hardcore TV',\n        'Louie',\n        'Boardwalk Empire',\n        'Law & Order: Criminal Intent',\n        'Late Night with Joey Reynolds'\n    ]\n    return tv_series\n\ntv_series_list = extract_tv_series(text)\nprint(tv_series_list)\n"
+    },
+    {
+      "question": "What is Dave Konig's novel titled and what genre does it belong to?",
+      "answer": "Dave Konig is the author of a novel titled 'Good Luck Mr. Gorsky.' The novel belongs to the comedy genre, given Konig's background as a comedian and actor."
+    }
+  ]
+}

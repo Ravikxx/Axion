@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Behestan_Castle",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Where is Behestan Castle located in Iran?",
+      "answer": "Behestan Castle is located in Mahneshan County within Zanjan Province, Iran. It is situated near Behestan village and adjacent to the Ghezel Ozan river."
+    },
+    {
+      "question": "What historical periods are associated with the construction of Behestan Castle?",
+      "answer": "The construction of Behestan Castle has been attributed to multiple historical periods, including the Medes, Achaemenid, and Sasanian Empires. The initial building dates back to the Sasanian Empire, but it was also utilized during the Islamic period and between the 5th to 7th centuries AH."
+    },
+    {
+      "question": "Why was Behestan Castle built by the rulers of its time?",
+      "answer": "The rulers constructed Behestan Castle to defend themselves and the local population against enemies, given the strategic and defensive needs of the period."
+    },
+    {
+      "question": "What are the architectural features of Behestan Castle?",
+      "answer": "Behestan Castle has several floors. The upper floors were designed for defense, while the lower floors served as slums and food storage. The builders excavated mountains and hollowed out rocks to create rooms, and over time, they added communication corridors in the form of tunnels."
+    },
+    {
+      "question": "How many historical castles are there in Mahneshan city, and what is their estimated period of use?",
+      "answer": "There are 20 historical castles in Mahneshan city, Zanjan province. Their period of use is estimated to extend up to the fifth century AH."
+    },
+    {
+      "question": "What is the significance of Behestan Castle in Iran's cultural heritage?",
+      "answer": "Behestan Castle has been registered in the Iran National Heritage List under number 1458, highlighting its cultural and historical importance."
+    },
+    {
+      "question": "Can you provide a Python code snippet to calculate the number of historical castles in Zanjan Province based on the given information?",
+      "answer": "python\ndef count_castles():\n    total_castles_in_mahneshan = 20\n    return total_castles_in_mahneshan\n\nprint(f\"Number of historical castles in Mahneshan: {count_castles()}\")\n\nThis function returns the count of historical castles in Mahneshan city, Zanjan Province."
+    }
+  ]
+}

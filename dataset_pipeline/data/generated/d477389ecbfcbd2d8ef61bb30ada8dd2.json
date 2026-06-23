@@ -1,0 +1,30 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Ear",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What are the three main parts of the human ear and what is the primary function of each?",
+      "answer": "The human ear consists of three main parts:\n1. **Outer ear**: Includes the auricle (visible outer part) and the ear canal. Its primary function is to collect sound waves and direct them toward the middle ear.\n2. **Middle ear**: Contains the tympanic cavity and three ossicles (malleus, incus, and stapes). It transmits sound vibrations from the eardrum to the inner ear.\n3. **Inner ear**: Houses the semicircular canals (balance during movement), utricle and saccule (balance when stationary), and the cochlea (hearing). It converts mechanical vibrations into nerve signals for the brain."
+    },
+    {
+      "question": "How does the ear contribute to balance in humans?",
+      "answer": "The ear contributes to balance through structures in the **inner ear**:\n- **Semicircular canals**: Detect rotational movements of the head and enable eye tracking during motion.\n- **Utricle and saccule**: Detect linear acceleration and gravity, helping maintain balance when stationary.\nThese structures send signals to the brain via the vestibular nerve, which integrates with visual and proprioceptive inputs to coordinate balance."
+    },
+    {
+      "question": "Write a Python function that simulates the migration of earwax from the ear canal to the auricle.",
+      "answer": "python\ndef simulate_earwax_migration(steps=10):\n    \"\"\"\n    Simulates the natural migration of earwax from the ear canal to the auricle.\n    Assumes earwax moves in small increments toward the auricle.\n    \n    Args:\n        steps (int): Number of migration steps to simulate.\n    \n    Returns:\n        list: Positions of earwax at each step (0 = ear canal, 1 = auricle).\n    \"\"\"\n    earwax_position = 0.0\n    migration_path = [earwax_position]\n    \n    for _ in range(steps):\n        # Simulate gradual movement toward the auricle (position 1)\n        earwax_position = min(earwax_position + 0.1, 1.0)\n        migration_path.append(earwax_position)\n    \n    return migration_path\n\n# Example usage:\nprint(simulate_earwax_migration(10))\n# Output: [0.0, 0.1, 0.2, ..., 1.0] (simplified for brevity)\n\nThis function models earwax migration as a linear process, though in reality, movement is influenced by jaw motions and ear canal shape."
+    },
+    {
+      "question": "What embryonic structures give rise to the ear, and from which germ layer are they derived?",
+      "answer": "The ear develops from:\n1. **First pharyngeal pouch** (contributes to the middle ear and Eustachian tube).\n2. **Otic placodes** (six small swellings in the early embryo), which are derived from the **ectoderm**. The otic placodes later form the inner ear structures, including the cochlea and vestibular system."
+    },
+    {
+      "question": "Explain how an ear infection could lead to balance disorders like vertigo.",
+      "answer": "An ear infection (e.g., labyrinthitis or vestibular neuritis) can disrupt balance by:\n1. **Inflammation**: Swelling in the inner ear (semicircular canals, utricle, or saccule) disrupts normal fluid movement or nerve signaling.\n2. **Nerve damage**: The vestibular nerve (transmitting balance signals to the brain) may be irritated or compressed.\n3. **Fluid imbalance**: Infections like otitis media can alter inner ear pressure, mimicking motion and triggering vertigo (a false sense of spinning).\nThese effects are often temporary but can persist if the infection spreads to the brain or neural pathways."
+    },
+    {
+      "question": "Name three cultural practices involving the human ear and their historical significance.",
+      "answer": "Three cultural practices involving the ear include:\n1. **Earrings**: Worn for thousands of years across cultures (e.g., ancient Egypt, India, and Rome) as symbols of status, spirituality (e.g., Hindu traditions), or protection against evil.\n2. **Ear stretching**: Practiced in African, Asian, and Indigenous cultures (e.g., Mursi tribe in Ethiopia) to signify beauty, adulthood, or spiritual connection.\n3. **Ear cropping**: Historically used in some cultures for cosmetic or practical reasons (e.g., in certain dog breeds for breed standards), though now controversial and often banned in veterinary contexts."
+    }
+  ]
+}

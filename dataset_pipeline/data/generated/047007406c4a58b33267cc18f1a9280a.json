@@ -1,0 +1,42 @@
+{
+  "source_url": "https://dev.to/hadil/from-zero-to-373-days-how-daily-leetcode-challenges-transformed-my-programming-journey-47o9",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What is LeetCode and why is it commonly associated with problem-solving in software engineering?",
+      "answer": "LeetCode is an online platform designed to help developers practice and improve their coding skills through algorithmic challenges and data structure problems. It is commonly associated with problem-solving in software engineering because it simulates real-world coding challenges that engineers face, such as optimizing solutions, debugging, and thinking logically. Many companies use LeetCode-style questions in technical interviews to assess a candidate's ability to solve complex problems efficiently."
+    },
+    {
+      "question": "How did the author initially perceive LeetCode and problem-solving before starting?",
+      "answer": "The author initially viewed problem-solving and LeetCode as mysterious concepts reserved for experienced software engineers. They felt intimidated by the jargon and scale, seeing phrases like 'Improve your problem-solving skills' and 'Practice LeetCode daily' as magical formulas that only 'real' engineers understood. The author didn't consider themselves part of that group until they decided to give LeetCode a try out of curiosity."
+    },
+    {
+      "question": "What was the author's global rank when they first started on LeetCode, and how did they react to it?",
+      "answer": "The author's global rank was around 6,000,000 when they first started on LeetCode. They were shocked by the number, realizing that millions of coders worldwide were already climbing the same mountain of challenges. This realization was both intimidating and inspiring, shifting their mindset from feeling overwhelmed to deciding to try solving just one problem."
+    },
+    {
+      "question": "What strategy did the author use to build confidence in solving LeetCode problems?",
+      "answer": "The author started with the simplest 'Easy' problems on LeetCode, focusing solely on making their code work rather than worrying about efficiency, big O notation, or clever tricks. They initially copied solutions from the Discuss section to understand them, and every time they saw the green 'Accepted' message, they felt a small spark of satisfaction. This approach helped them build confidence gradually over time."
+    },
+    {
+      "question": "How did the author approach 'Medium' problems after feeling confident with 'Easy' problems?",
+      "answer": "The author found 'Medium' problems humbling and struggled initially, spending an hour on their first attempt without success. However, they didn't quit permanently; instead, they returned the next day, read others' explanations, watched tutorials, and tried again. They discovered that LeetCode was less about speed and more about consistency, helping them train their brain to think logically, break problems into smaller steps, and be patient with themselves."
+    },
+    {
+      "question": "Why did the author avoid the LeetCode Daily Challenge initially, and what changed their mind?",
+      "answer": "The author avoided the Daily Challenge because it seemed intimidating and like a 'boss fight' reserved for experienced coders. They feared failing publicly and the potential judgment if they couldn't solve it. What changed their mind was a shift in mindset—curiosity, stubbornness, and a desire to prove something to themselves. They clicked the button and solved their first Daily Challenge problem, which took nearly three hours, but the sense of accomplishment motivated them to commit to doing it daily for a month."
+    },
+    {
+      "question": "What are the key lessons the author learned from a year of daily problem-solving on LeetCode?",
+      "answer": "The author summarized five key lessons: 1) Start small—don’t wait to feel ready; just begin. 2) Consistency beats intensity—one problem every day for a year creates more growth than cramming. 3) Read, learn, repeat—failure is part of learning and still valuable. 4) Celebrate progress—acknowledge small wins, like one badge or accepted submission. 5) It’s not about competition—your rank doesn’t define your value; your growth does."
+    },
+    {
+      "question": "Provide a Python code snippet for solving LeetCode's 'Two Sum' problem, a common 'Easy' problem.",
+      "answer": "python\nfrom typing import List\n\ndef two_sum(nums: List[int], target: int) -> List[int]:\n    \"\"\"\n    Given an array of integers nums and an integer target,\n    return indices of the two numbers such that they add up to target.\n    \n    Example:\n    >>> two_sum([2, 7, 11, 15], 9)\n    [0, 1]\n    \"\"\"\n    num_to_index = {}\n    for index, num in enumerate(nums):\n        complement = target - num\n        if complement in num_to_index:\n            return [num_to_index[complement], index]\n        num_to_index[num] = index\n    return []  # In case no solution found, though problem guarantees one exists\n\nThis solution uses a hash map to store each number's index as we iterate through the list, allowing O(n) time complexity. For each number, we check if its complement (target - number) has already been seen."
+    },
+    {
+      "question": "How did LeetCode change the author's approach to problem-solving in general, beyond coding?",
+      "answer": "LeetCode improved the author's ability to think like an engineer, not just solve algorithms. It taught them to structure logic clearly, debug complex issues step-by-step, and approach unfamiliar problems with patience rather than panic. This mindset shift extended beyond coding to real projects and even daily life, where they learned to break down big challenges into smaller, manageable steps and solve them logically and methodically."
+    }
+  ]
+}

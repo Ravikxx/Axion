@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/dayvster/in-defense-of-c-1g7l",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What are some common criticisms of C++ mentioned in the text?",
+      "answer": "The text mentions several criticisms of C++: its complexity and steep learning curve, the perception that it is outdated despite its age, concerns about its safety (particularly memory safety), and the claim that it is hard to read."
+    },
+    {
+      "question": "How does the author address the criticism that C++ is overly complex?",
+      "answer": "The author argues that while C++ is complex with many features, you don’t need to use advanced features like templates or operator overloading to write good code. They suggest focusing on readability and simplicity rather than premature optimization or using the 'best' approach, which is often subjective."
+    },
+    {
+      "question": "Is C++ considered outdated? Provide reasons supporting your answer.",
+      "answer": "No, C++ is not outdated. Despite being released in 1985, it has undergone continuous development with modern standards like C++20 and upcoming C++23 introducing features such as modules, concepts, ranges, and coroutines. It remains widely used in game development, high-performance computing, and embedded systems."
+    },
+    {
+      "question": "The text compares rewriting C++ codebases in Rust to rebuilding a shed. What point is the author making with this analogy?",
+      "answer": "The author is arguing that improvements in safety or quality after rewriting a C++ codebase in Rust are not solely due to Rust itself, but largely because a rewrite allows for rethinking architecture, fixing known issues, and incorporating lessons learned from the original implementation. The analogy highlights that a complete redesign, not just a language change, drives significant improvements."
+    },
+    {
+      "question": "Can C++ be made safer? If so, how?",
+      "answer": "Yes, C++ can be made safer. The author suggests using smart pointers, which automate memory management and reduce risks like leaks and dangling pointers. Other tools include static analysis tools, memory sanitizers, and even optional garbage collectors (though the author advises against it). Learning and applying modern C++ practices are key to improving safety."
+    },
+    {
+      "question": "Write a simple C++ example using smart pointers to manage memory safely.",
+      "answer": "cpp\n#include <iostream>\n#include <memory>\n\nint main() {\n    // Using unique_ptr for exclusive ownership\n    std::unique_ptr<int> ptr(new int(42));\n    std::cout << \"Value: \" << *ptr << std::endl;\n    \n    // Memory is automatically freed when ptr goes out of scope\n    return 0;\n}\n\nIn this example, `std::unique_ptr` ensures that the allocated integer is automatically deleted when `ptr` goes out of scope, preventing memory leaks."
+    },
+    {
+      "question": "How does the text justify that C++ can be written in a readable manner despite being a complex language?",
+      "answer": "The author emphasizes that C++ is a multi-paradigm language, allowing procedural, object-oriented, or functional styles. They suggest keeping code simple and resembling C, avoiding unnecessary advanced features, and adhering to team or personal readability standards. The key takeaway is that readability depends on coding style, not the language itself."
+    }
+  ]
+}

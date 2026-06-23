@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/1992_Cornell_Rams_football_team",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the overall record for the 1992 Cornell Rams football team?",
+      "answer": "The 1992 Cornell Rams football team compiled a perfect 10–0 record during the 1992 NCAA Division III football season, marking the best record in program history."
+    },
+    {
+      "question": "Who was the head coach of the 1992 Cornell Rams football team, and how many years had they been with the team?",
+      "answer": "The head coach of the 1992 Cornell Rams football team was Steve Miller, who was in his sixth year with the program during the 1992 season."
+    },
+    {
+      "question": "Which team did Cornell beat in the MWC championship game in 1992, and what was the final score?",
+      "answer": "Cornell beat Beloit in the Midwest Conference (MWC) championship game with a final score of 40–14."
+    },
+    {
+      "question": "Who led the 1992 Cornell Rams football team in interceptions, and how many did they have?",
+      "answer": "Defensive back Brent Sands led the team with nine interceptions during the 1992 season."
+    },
+    {
+      "question": "List the positions and names of the seven Cornell players selected as first-team players on the All-Midwest Conference South Division team.",
+      "answer": "The seven first-team All-Midwest Conference South Division honorees from Cornell were: quarterback Matt Miller, running back Jason Bennett, offensive lineman Dan Junkins, defensive ends Randy Wies and Tim Fitzpatrick, linebacker Shane Ehresman, and defensive back Brent Sands."
+    },
+    {
+      "question": "What were the passing statistics for Matt Miller during the 1992 season?",
+      "answer": "Matt Miller had 1,086 passing yards and seven passing touchdowns in the 1992 season."
+    },
+    {
+      "question": "Write a Python snippet to calculate the total points scored by Jason Bennett in the 1992 season, given his rushing yards and points scored.",
+      "answer": "Jason Bennett scored 66 points in the 1992 season. Here’s a Python snippet to verify this:\npython\nrushing_yards = 734  # Example value (not directly used for points calculation)\npoints_scored = 66\nprint(f\"Total points scored by Jason Bennett: {points_scored}\")  # Output: 66"
+    }
+  ]
+}

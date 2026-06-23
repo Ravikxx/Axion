@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/2025_Louisville_Cardinals_football_team",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who coached the Louisville Cardinals football team in the 2025 season?",
+      "answer": "Jeff Brohm served as the head coach for the Louisville Cardinals football team during the 2025 NCAA Division I FBS season. This was his third year leading the program."
+    },
+    {
+      "question": "How did Louisville manage to win against #2 Miami in the 2025 season despite being unranked?",
+      "answer": "Louisville pulled off an upset by defeating the undefeated Miami Hurricanes 27–16. The Cardinals' defense was dominant, holding Miami to just 63 rushing yards and forcing four interceptions from Hurricanes quarterback Carson Beck. The game was sealed with a pick-6 by T.J. Capers in the final minute. Chris Bell contributed 136 yards and two touchdowns on offense."
+    },
+    {
+      "question": "What notable defensive plays occurred during Louisville's overtime loss to Virginia?",
+      "answer": "In their overtime loss to Virginia, Louisville's defense held the Cavaliers to 10 points in regulation. However, the offense gave up two crucial defensive touchdowns: a pick-6 and a scoop-and-score, which ultimately cost the Cardinals the game. The score in overtime was 30–27 in favor of Virginia."
+    },
+    {
+      "question": "How did Louisville perform in their rivalry game against Kentucky in 2025?",
+      "answer": "Despite being shorthanded due to injuries, Louisville dominated Kentucky in their rivalry game, winning 41–0. Walk-on freshman RB Braxton Jennings and redshirt freshman RB Shaun Boykins Jr. combined for 258 rushing yards and a touchdown on 42 carries. The game was a shutout victory for the Cardinals."
+    },
+    {
+      "question": "What was Louisville's record and postseason outcome in the 2025 season?",
+      "answer": "The Louisville Cardinals finished the 2025 season with a 9–4 record. They were selected to play in the 2025 Boca Raton Bowl, where they defeated Toledo 27–22. This marked the third consecutive season with at least 9 wins for the program."
+    },
+    {
+      "question": "How did Louisville's home attendance compare to other football teams in Kentucky during the 2025 season?",
+      "answer": "Louisville drew an average home attendance of 50,292 during the 2025 season. This was the second-highest average home attendance among all football teams in Kentucky, trailing only the Kentucky Wildcats."
+    },
+    {
+      "question": "Write a Python function that calculates a football team's win probability based on their record. Assume a team's win probability is (wins + 0.5) / (total_games) and test it with Louisville's 2025 season record.",
+      "answer": "python\ndef calculate_win_probability(wins, losses):\n    \"\"\"\n    Calculate a team's win probability based on their record.\n    Formula: (wins + 0.5) / (total_games)\n    \n    Args:\n        wins (int): Number of wins\n        losses (int): Number of losses\n        \n    Returns:\n        float: Win probability\n    \"\"\"\n    total_games = wins + losses\n    if total_games == 0:\n        return 0.0\n    return (wins + 0.5) / total_games\n\n# Test with Louisville's 2025 season record\nwins = 9\nlosses = 4\nprobability = calculate_win_probability(wins, losses)\nprint(f\"Louisville's 2025 win probability: {probability:.4f}\")\n# Output: Louisville's 2025 win probability: 0.7222\n"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Bruin_(surname)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What are the Dutch surnames Bruin, Bruijn, Bruyn, and Bruins equivalent to in English?",
+      "answer": "The Dutch surnames Bruin, Bruijn, Bruyn, and Bruins are equivalent to the English surname Brown. Additionally, the form 'Bruins' can be a patronymic, derived from the rare Dutch form 'Bruin/Bruijn' of the name Bruno."
+    },
+    {
+      "question": "Which notable individuals with the surname Bruin were involved in sports?",
+      "answer": "Notable individuals with the surname Bruin involved in sports include Jan Bruin (Dutch footballer, born 1969) and Will Bruin (American soccer player, born 1989)."
+    },
+    {
+      "question": "Who was Antonie Augustus Bruijn, and what is he known for?",
+      "answer": "Antonie Augustus Bruijn (1842–1890) was a Dutch navy officer, merchant, and naturalist. He is known for having two species named after him: Bruijn's brushturkey and Bruijn's Riflebird."
+    },
+    {
+      "question": "Provide an example of a notable person with the surname Bruyns and their profession.",
+      "answer": "Mark Bruyns (born 1973) is a notable person with the surname Bruyns, known for being a South African cricketer."
+    },
+    {
+      "question": "How can the Dutch surname 'De Bruin' be translated or understood in English?",
+      "answer": "The Dutch surname 'De Bruin' (and its variants De Bruine, De Bruijn, De Bruyn, De Bruyne) translates to 'the brown' in English. It is a more common form of the surname."
+    },
+    {
+      "question": "Write a Python function to check if a given surname is a variation of the Dutch surname 'Bruin'.",
+      "answer": "python\ndef is_bruin_variation(surname: str) -> bool:\n    bruin_variations = {'bruin', 'bruijn', 'bruyn', 'bruins', 'de bruin', 'de bruine', 'de bruijn', 'de bruyn'}\n    return surname.lower() in bruin_variations\n\n# Example usage:\nprint(is_bruin_variation('Bruin'))  # True\nprint(is_bruin_variation('De Bruyn'))  # True\nprint(is_bruin_variation('Smith'))  # False\n"
+    },
+    {
+      "question": "Which Dutch surname variations can be patronymic, and what do they mean?",
+      "answer": "The surname 'Bruins' can be patronymic, derived from the rare Dutch form 'Bruin/Bruijn' of the name Bruno. This indicates it originally meant 'son of Bruin/Bruijn'."
+    }
+  ]
+}

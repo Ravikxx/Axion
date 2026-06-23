@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Endpaper",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What are endpapers in a book, and how are they structured?",
+      "answer": "Endpapers, also known as endsheets, are double-size sheets folded and attached to the inside covers of a book. One half is pasted against the inside cover (called the pastedown), while the other half serves as the first free page (the free endpaper or flyleaf). Front endpapers appear before the title page, and back endpapers follow the text."
+    },
+    {
+      "question": "How did endpapers differ before mass printing in the 20th century?",
+      "answer": "Before the 20th century, endpapers were commonly decorated with paper marbling. This decorative technique was widely used in handcrafted books before industrial printing became prevalent."
+    },
+    {
+      "question": "What are two alternative uses for endpapers besides decorative purposes?",
+      "answer": "Endpapers are sometimes used to include maps, additional textual information, bookplates, or owner inscriptions. These features make them functional beyond mere structural support."
+    },
+    {
+      "question": "Explain the role of cloth-reinforced endpapers in bookbinding.",
+      "answer": "Cloth-reinforced endpapers are designed for sewn bindings. The cloth strengthens the attachment point, holding stitches securely and preventing the paper from tearing or perforating under stress, which enhances the book's durability."
+    },
+    {
+      "question": "What are Combined and Universal Endsheets, and how are they used in modern binding?",
+      "answer": "Combined and Universal Endsheets are specialized endpapers loaded into the cover feeder of an automatic perfect binder. They attach to the book block, reinforcing it from head to tail without requiring a soft cover, streamlining the binding process."
+    },
+    {
+      "question": "Provide a Python code snippet to simulate the structure of an endpaper in a book.",
+      "answer": "python\nclass Endpaper:\n    def __init__(self, pastedown_side, free_endpaper_side):\n        self.pastedown_side = pastedown_side  # Attached to the inside cover\n        self.free_endpaper_side = free_endpaper_side  # First free page\n\n    def describe(self):\n        return f\"Pastedown: {self.pastedown_side}, Free Endpaper: {self.free_endpaper_side}\"\n\n# Example usage:\nfront_endpaper = Endpaper(\"Inside front cover\", \"First free page before title page\")\nprint(front_endpaper.describe())\n"
+    },
+    {
+      "question": "What specialized endpaper styles are used for textbook or library bindings?",
+      "answer": "Endpapers engineered for textbooks and libraries are designed to meet specific durability and conservation standards. These include reinforced materials, acid-free papers, and methods to withstand frequent handling and long-term preservation."
+    },
+    {
+      "question": "How does the Folded Tabbed Endsheet integrate with the book block during binding?",
+      "answer": "The Folded Tabbed Endsheet is collated with the text pages, milled, and bound together with the book block. Its tabbed design ensures proper alignment and attachment during the automated perfect binding process."
+    }
+  ]
+}

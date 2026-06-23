@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/googleai/how-we-built-aiventure-an-ai-powered-retro-dungeon-2f54",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What was the original inspiration behind the AIventure game concept?",
+      "answer": "The original inspiration for AIventure came from Google's virtual conference technology called Adventure, which powered major Google events during the pandemic. Instead of recreating it as a one-off event, the team wanted to build a persistent, cozy retro world that teaches developers Generative AI principles through gameplay and 'vibe coding'."
+    },
+    {
+      "question": "How did the team prototype the initial game mechanics for AIventure?",
+      "answer": "The team started prototyping in Gemini Canvas by playing with concepts rather than complex engine code. They built a simple educational puzzle game using a split UI layout with Angular for the frontend and Phaser.JS for the retro game canvas. Initial prototypes explored various styles before settling on a top-down retro dungeon approach."
+    },
+    {
+      "question": "What are the two key puzzle mechanics introduced in AIventure, and how do they work?",
+      "answer": "The two key puzzle mechanics are: 1) The Vibe Coding Room where players interact with an AI that generates web pages based on natural language prompts (e.g., 'build a todo app for a chicken'), and 2) The Agent Puzzle featuring a robot NPC that accepts natural language instructions and executes them as step-by-step game actions using tool-calling and reasoning."
+    },
+    {
+      "question": "How does AIventure handle AI model inference to run locally in the browser?",
+      "answer": "AIventure uses MediaPipe and LiteRT to run Gemma 4 models entirely client-side within the browser. The model is hosted using pre-converted formats, and inference happens locally when players prompt NPCs or write code. For developers, toggles allow switching between client-side inference and external endpoints like LM Studio or Vertex AI."
+    },
+    {
+      "question": "What frontend and backend technologies were used to build AIventure?",
+      "answer": "The frontend uses Angular for UI management and Phaser.JS for the retro game canvas. For AI model integration, the team initially used Gemini API endpoints and later transitioned to local Gemma 4 models via MediaPipe. The architecture supports both client-side and external model hosting options."
+    },
+    {
+      "question": "Provide a code snippet showing how AIventure routes player prompts to the local model using MediaPipe.",
+      "answer": "typescript\n// Example of routing a player prompt to the local model via Event Bus\nclass PromptRouter {\n  constructor(private eventBus: EventBus) {}\n\n  async routePrompt(playerInput: string): Promise<string> {\n    // Dispatch event to MediaPipe-loaded model\n    const response = await this.eventBus.dispatch(\n      'prompt-to-model',\n      playerInput\n    );\n    return response;\n  }\n}\n"
+    },
+    {
+      "question": "What are the benefits of running AI models locally in AIventure, and how does it improve accessibility?",
+      "answer": "Running AI models locally eliminates the need for cloud backend setups or private API keys, making the game entirely self-contained and accessible to millions of developers. This approach ensures privacy, reduces latency, and allows offline play while maintaining high performance through client-side inference."
+    }
+  ]
+}

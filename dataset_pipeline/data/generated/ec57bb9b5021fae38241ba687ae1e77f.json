@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Dansband",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What does the term 'dansband' mean in Swedish, and what type of music is typically associated with it?",
+      "answer": "The term 'dansband' (pronounced [ˈdânsˌband]) means 'dance band' in Swedish. It refers to a band that plays 'dansbandsmusik' (dance band music), which is primarily danced to in pairs and often includes styles like jitterbug and foxtrot. The music is inspired by genres such as schlager, country, rock'n'roll, and swing, with a notable influence from 1950s and 1960s rock music."
+    },
+    {
+      "question": "When and how did the terms 'dansband' and 'dansbandsmusik' originate?",
+      "answer": "The terms 'dansband' and 'dansbandsmusik' were coined around 1970. This coincided with the development of a distinct Swedish popular music style during that period."
+    },
+    {
+      "question": "In which countries or regions is the dansband genre popular besides Sweden?",
+      "answer": "The dansband genre originated in Sweden but has spread to neighboring countries, including Norway, Denmark, and the Swedish-speaking regions of Finland."
+    },
+    {
+      "question": "How did the term 'svensktoppar' originate in Norway, and what is its significance?",
+      "answer": "The term 'svensktoppar' (meaning 'Swedish top hits') originated in Norway when the music came from Sweden. It refers to a category of music inspired by the Swedish radio music chart 'Svensktoppen,' which was a major platform for dansband music before its rules changed in January 2003."
+    },
+    {
+      "question": "Describe the typical performance schedule and venues for a dansband.",
+      "answer": "A dansband often travels by bus and performs several times every week throughout the year. In the summer, performances are typically held outdoors, while winter performances are held indoors. They also frequently perform on cruise ships and at venues where the primary focus is on dancing rather than watching the performance."
+    },
+    {
+      "question": "Why do some dansbands have names that end with 'z' instead of 's'?",
+      "answer": "Dansband names often replace the possessive suffix 's' with 'z' as a stylistic choice. This tradition stems from the old dance orchestras, which were frequently named after their Kapellmeister (band leader), and has carried over into modern dansband naming conventions."
+    },
+    {
+      "question": "Write a Python function to check if a given band name follows the dansband naming convention.",
+      "answer": "python\ndef is_dansband_name(name: str) -> bool:\n    \"\"\"Check if a band name follows the dansband naming convention.\n    \n    Dansband names often end with 's' or 'z' (e.g., 'Björns', 'Lassez').\n    They may also include 'orkester' or be named after a lead singer.\n    \"\"\"\n    name_lower = name.lower()\n    return (\n        name_lower.endswith('s') or \n        name_lower.endswith('z') or\n        'orkester' in name_lower or\n        any(c.isdigit() for c in name_lower)  # Some bands include years\n    )\n\n# Example usage:\nprint(is_dansband_name(\"Björns Orkester\"))  # True\nprint(is_dansband_name(\"Lassez\"))          # True\nprint(is_dansband_name(\"The Rolling Stones\"))  # False\n"
+    }
+  ]
+}

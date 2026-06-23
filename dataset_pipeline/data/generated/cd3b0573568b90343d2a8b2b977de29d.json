@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/theoriginalbpc/advice-id-send-back-in-time-technology-in-2026-and-four-lessons-for-my-high-school-self-2elj",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "How many years of additional high school does the author remind Sarah she has left after finishing her freshman year?",
+      "answer": "The author reminds Sarah that she has three more years of high school left after finishing her freshman year."
+    },
+    {
+      "question": "What life-changing event does the author mention happened in 2015?",
+      "answer": "In 2015, the author discovered coding, which transformed their life and set them on a new career path."
+    },
+    {
+      "question": "Why does the author emphasize the importance of taking career assessments seriously?",
+      "answer": "The author emphasizes this because career assessments provide insights into careers that align with Sarah's personality, interests, and work style, helping her make informed decisions and tune out external noise about what careers she 'should' pursue."
+    },
+    {
+      "question": "Provide one piece of advice the author gives about networking and explain why it is important.",
+      "answer": "The author advises Sarah to start networking immediately by engaging with classmates and using platforms like LinkedIn. Networking becomes crucial in the evolving job market, as it helps Sarah stay 'top of mind' and build connections that can open doors to opportunities later."
+    },
+    {
+      "question": "What skills does the author predict will remain vital as AI becomes more prevalent in development?",
+      "answer": "The author predicts that debugging, refactoring, and understanding the syntax of programming languages and frameworks will remain vital skills even as AI-assisted coding becomes more common."
+    },
+    {
+      "question": "Write a Python snippet that demonstrates a simple debugging technique, such as checking for common errors in a function.",
+      "answer": "python\ndef divide(a, b):\n    try:\n        result = a / b\n        return result\n    except ZeroDivisionError:\n        print(\"Error: Cannot divide by zero.\")\n        return None\n    except TypeError:\n        print(\"Error: Both arguments must be numbers.\")\n        return None\n\n# Example usage:\nprint(divide(10, 2))  # Output: 5.0\nprint(divide(10, 0))  # Output: Error: Cannot divide by zero.\nprint(divide(\"10\", 2))  # Output: Error: Both arguments must be numbers.\n"
+    },
+    {
+      "question": "How does the author suggest Sarah should approach learning new skills outside of school?",
+      "answer": "The author suggests Sarah should spend 3-5 weeks trying out each new skill to determine if it suits her. The goal is not to master everything but to explore and identify what she enjoys and excels at, building confidence through experimentation."
+    }
+  ]
+}

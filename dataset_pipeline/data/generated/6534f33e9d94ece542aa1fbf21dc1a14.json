@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Denzil_Holles,_1st_Baron_Holles",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was Colonel Denzil Holles and what role did he play in the First English Civil War?",
+      "answer": "Colonel Denzil Holles (1598–1680) was an English politician and army officer who served as one of the 'Five Members' whose attempted arrest by Charles I in January 1642 sparked the First English Civil War. He led a Parliamentarian regiment that fought at the Battle of Edgehill in August 1642, but his forces were nearly destroyed at Brentford in November 1642, effectively ending his military career."
+    },
+    {
+      "question": "Why did Denzil Holles abandon his military career after the Battle of Brentford?",
+      "answer": "Holles abandoned his military career after his regiment was nearly destroyed at the Battle of Brentford in November 1642. He shifted his focus to politics and became the leader of the Parliamentarian 'Peace Party', advocating for a negotiated settlement with the king rather than continued warfare."
+    },
+    {
+      "question": "What political faction did Denzil Holles lead after the First English Civil War and how did he oppose Oliver Cromwell?",
+      "answer": "After the First English Civil War, Holles led the Parliamentarian 'Peace Party', which favored negotiation with the king over further conflict. He opposed Oliver Cromwell and his supporters by leading those who resisted Cromwell's political and military dominance. This led to his suspension as one of the 'Eleven Members' in June 1647 and his exclusion during Pride's Purge in December 1648."
+    },
+    {
+      "question": "Describe Denzil Holles' involvement in the Exclusion Crisis of 1679.",
+      "answer": "During the Exclusion Crisis of 1679, Denzil Holles was part of the Whig opposition and supported the Exclusion Bill, which aimed to prevent the Catholic heir, James, Duke of York, from inheriting the throne. He also backed the 1673 Test Act, which enforced religious conformity among public officeholders."
+    },
+    {
+      "question": "How did Charles II reward Denzil Holles after the Restoration, and was this appointment successful?",
+      "answer": "After the Restoration in 1660, Charles II elevated Holles to the peerage as Baron Holles and appointed him Ambassador to France (1663–1666). However, this diplomatic mission proved unsuccessful."
+    },
+    {
+      "question": "What is one biographer's summary of Denzil Holles' career?",
+      "answer": "One biographer summarized Holles' career by stating that he was 'successful in almost everything he privately undertook, unsuccessful in almost everything he publicly undertook, (while) his passionate parliamentarianism was constantly counter-productive'."
+    },
+    {
+      "question": "Write a Python function that computes the number of years Denzil Holles served as Ambassador to France.",
+      "answer": "python\ndef years_as_ambassador(start_year, end_year):\n    return end_year - start_year\n\n# Example usage:\nyears = years_as_ambassador(1663, 1666)\nprint(years)  # Output: 3\n\nThis function calculates the duration of Holles' ambassadorship by subtracting the start year (1663) from the end year (1666), yielding a result of 3 years."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Camellia_granthamiana",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the scientific name and common name of the rare camellia species discovered in Hong Kong in 1955?",
+      "answer": "The scientific name is Camellia granthamiana, commonly known as Grantham's camellia or 葛量洪茶 in Chinese (Cantonese: got3 loeng4 hung4 caa4)."
+    },
+    {
+      "question": "Where was Camellia granthamiana first discovered, and who named it?",
+      "answer": "It was first discovered in the ravine of Tai Mo Shan in Hong Kong in 1955 by the Agriculture, Fisheries and Conservation Department (AFCD). It was named in honor of Sir Alexander Grantham, the then Governor of Hong Kong."
+    },
+    {
+      "question": "What are the known wild populations of Camellia granthamiana in China?",
+      "answer": "The species has been found in Hong Kong's Ma On Shan and in Guangdong Province, including Shenzhen."
+    },
+    {
+      "question": "How is Camellia granthamiana protected in Hong Kong?",
+      "answer": "In Hong Kong, it is protected under Forestry Regulations Cap. 96A. The Hong Kong Agriculture, Fisheries and Conservation Department has also actively propagated and reintroduced the species to the wild."
+    },
+    {
+      "question": "What is the conservation significance of Tai Mo Shan Montane Scrub Forest?",
+      "answer": "The Tai Mo Shan Montane Scrub Forest in the upper Shing Mun Valley was designated as a Site of Special Scientific Interest (SSSI) in 1975 because it supports Camellia granthamiana and other rare species such as Camellia waldenae, Amentotaxus argotaenia, and various orchids."
+    },
+    {
+      "question": "What genomic initiative has been undertaken for Camellia granthamiana and why?",
+      "answer": "The Hong Kong Biodiversity Genomics Consortium has sequenced a 2.4 Gb reference genome of Camellia granthamiana due to its high conservation value."
+    },
+    {
+      "question": "Write a Python code snippet to calculate the approximate size of the Camellia granthamiana genome in base pairs, given the genome size is 2.4 Gb.",
+      "answer": "python\n# Genome size of Camellia granthamiana in base pairs\ngenome_size_gb = 2.4\ngenome_size_bp = genome_size_gb * 1024**3  # 1 Gb = 1024^3 bytes\nprint(f\"Approximate genome size: {genome_size_bp:,.0f} base pairs\")\n\nThis calculates the genome size as 2,576,980,377,600 base pairs."
+    }
+  ]
+}

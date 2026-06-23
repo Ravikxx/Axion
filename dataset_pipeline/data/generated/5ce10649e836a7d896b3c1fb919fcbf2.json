@@ -1,0 +1,42 @@
+{
+  "source_url": "https://dev.to/pascal_cescato_692b7a8a20/when-devto-stats-arent-enough-building-my-own-memory-5cid",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What inspired the author to start collecting detailed analytics on their DEV.to articles?",
+      "answer": "The author was frustrated by DEV.to's dashboard only showing cumulative totals like '+37 views' without any context, causes, or patterns. This lack of insight motivated them to manually track their articles' performance over time to understand how they evolve and why certain spikes occur."
+    },
+    {
+      "question": "What frequency of data collection did the author choose for their analytics tool, and why?",
+      "answer": "The author chose to collect data every 4 to 6 hours automatically. This high frequency was selected to capture fine variations in article performance that daily snapshots would miss, revealing patterns like article 'breathing'—moments of activity followed by dormancy."
+    },
+    {
+      "question": "How did a simple like from an active DEV community member impact the author's article performance?",
+      "answer": "A single like from an active community member was enough for DEV.to to feature the article, leading to a distinct but steady increase in views. Without regular tracking, this subtle influence would have gone unnoticed."
+    },
+    {
+      "question": "What was the most surprising discovery about the author's articles when analyzing engagement over time?",
+      "answer": "The author discovered that some articles they considered 'dead' continued to bring readers six months after publication, albeit in small, regular numbers (e.g., 2 views per day, 3 comments per week). Without temporal data, these articles would have appeared inactive."
+    },
+    {
+      "question": "Provide a code snippet that demonstrates how to collect article metrics from DEV.to's API every 4 hours using Python.",
+      "answer": "python\nimport requests\nimport time\nimport sqlite3\nfrom datetime import datetime\n\n# Initialize database\nconn = sqlite3.connect('devto_analytics.db')\ncursor = conn.cursor()\ncursor.execute('''CREATE TABLE IF NOT EXISTS article_metrics\n                 (article_id INTEGER, views INTEGER, likes INTEGER, comments INTEGER, timestamp DATETIME)''')\n\n# DEV.to API endpoint for article stats\ndef fetch_article_metrics(article_id):\n    url = f'https://dev.to/api/articles/{article_id}/stats'\n    response = requests.get(url)\n    return response.json()\n\n# Main loop to collect data every 4 hours\narticle_id = 12345  # Replace with actual article ID\nwhile True:\n    data = fetch_article_metrics(article_id)\n    timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')\n    cursor.execute('''INSERT INTO article_metrics VALUES (?, ?, ?, ?, ?)''',\n                   (article_id, data['views'], data['likes'], data['comments'], timestamp))\n    conn.commit()\n    print(f\"Data logged at {timestamp}\")\n    time.sleep(4 * 3600)  # Wait 4 hours\n"
+    },
+    {
+      "question": "How did the author categorize their articles, and which category had the highest engagement despite lower average views?",
+      "answer": "The author's tool automatically classified articles into four categories: 'Tech Expertise', 'Human & Career', 'Culture & Agile', and 'Free Exploration'. The 'Free Exploration' category, which included personal and reflective pieces, had the highest engagement rate (7.3%) despite reaching fewer people (211 on average) compared to technical articles."
+    },
+    {
+      "question": "Why does the author argue that 'views' alone are a misleading metric for article performance?",
+      "answer": "The author explains that 'views' include a mix of behaviors: some readers fully engage with the content (48+ seconds of reading time), others skim superficially (1.4–19 seconds), and some may not even open the article. For example, the 'Cloud Run Bill' article had 139 total views but only 30–40 actual readers based on cumulative reading time, changing the interpretation of its success."
+    },
+    {
+      "question": "What did the author learn about their loyal readers by analyzing comment patterns?",
+      "answer": "The analysis revealed a small core of loyal readers who commented across multiple articles over extended periods (e.g., one reader commented on 9 articles over 86 days). These readers engaged deeply, averaging 261 characters per comment, unlike casual readers who might leave a brief 'Nice post!' and disappear."
+    },
+    {
+      "question": "How did the timing of comments vary after publishing an article?",
+      "answer": "Most comments (39.8%) arrived in the first 24 hours, with a secondary peak between 24–72 hours (27.8%). After this, engagement tapered off significantly: 10.4% between 3–7 days, 6.9% between 1–4 weeks, and 15% arrived after more than a month, showing that late engagement is uncommon but still notable."
+    }
+  ]
+}

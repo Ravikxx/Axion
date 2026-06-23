@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Bank_of_Xenia",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When was the Bank of Xenia built and what was its original purpose?",
+      "answer": "The Bank of Xenia was built in 1835 and originally served as Greene County's first bank, opening on June 1 of that year."
+    },
+    {
+      "question": "What architectural styles and features characterize the Bank of Xenia?",
+      "answer": "The Bank of Xenia is designed in a heavily Greek Revival style with a two-story rectangular structure on a stone foundation. Key features include a Doric-order entrance porch with two columns, a second-story balcony with a wrought iron railing, and classical frieze elements such as metopes and triglyphs."
+    },
+    {
+      "question": "Which U.S. Supreme Court case involved the Bank of Xenia in the 1880s?",
+      "answer": "The Bank of Xenia was a party to the lawsuit *Xenia Bank v. Stewart*, which was decided by the United States Supreme Court in 1885."
+    },
+    {
+      "question": "How did the Bank of Xenia's ownership and use change after it stopped functioning as a bank in 1865?",
+      "answer": "After First National Bank moved to a newer building in 1865, the Bank of Xenia was repurposed as a home and office by Dr. A.C. Messenger. Later uses included occupancy by Byuti 73, a beauty salon."
+    },
+    {
+      "question": "Why was the Bank of Xenia listed on the National Register of Historic Places?",
+      "answer": "The Bank of Xenia was listed on the National Register of Historic Places in 1973 due to its historically significant Greek Revival architecture."
+    },
+    {
+      "question": "What natural disaster did the Bank of Xenia survive after its historic listing?",
+      "answer": "Despite being added to the National Register of Historic Places in 1973, the Bank of Xenia survived the devastating tornado that struck Xenia the following year, in 1974."
+    },
+    {
+      "question": "Write a Python function to extract the year the Bank of Xenia was built and its architectural style from a given text.",
+      "answer": "python\nimport re\n\ndef extract_bank_info(text):\n    year_built = re.search(r'built in (\\d{4})', text, re.IGNORECASE)\n    architecture = re.search(r'Greek Revival style|Greek Revival', text, re.IGNORECASE)\n    \n    return {\n        'year_built': year_built.group(1) if year_built else None,\n        'architecture': architecture.group(0) if architecture else None\n    }\n\n# Example usage:\ntext = \"The Bank of Xenia is a historic former bank building... Built in 1835, it was the location... in a heavily Greek Revival style of architecture...\"\nprint(extract_bank_info(text))\n"
+    }
+  ]
+}

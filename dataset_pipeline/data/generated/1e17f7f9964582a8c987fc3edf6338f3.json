@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Designated_marksman",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is a designated marksman (DM) in a military context?",
+      "answer": "A designated marksman (DM) is a specialized soldier within an infantry squad who provides accurate fire support at enemy targets up to 600 meters away. They operate as part of a fireteam, unlike more independent snipers, and use a scoped semi-automatic rifle called a designated marksman rifle (DMR) to extend the squad's effective range."
+    },
+    {
+      "question": "How does a designated marksman differ from a sniper?",
+      "answer": "A designated marksman operates as an integral part of an infantry squad, providing support fire and scouting while focusing on targets within 600 meters. In contrast, a sniper is more specialized, often operates independently, and typically engages targets beyond 600 meters using high-powered rounds like .300 Winchester Magnum or .338 Lapua Magnum."
+    },
+    {
+      "question": "What are the primary roles and responsibilities of a DM?",
+      "answer": "The primary roles of a designated marksman include: (1) Providing accurate fire support at enemy targets up to 600 meters, (2) Extending the squad's effective range beyond standard rifle limitations, (3) Assisting in scouting and reconnaissance, and (4) Operating as part of an infantry fireteam to deliver tactical support fire as needed."
+    },
+    {
+      "question": "Why did the role of the designated marksman rifle (DMR) grow in popularity?",
+      "answer": "The role of the DMR grew due to two key factors: (1) The widespread use of intermediate cartridges (e.g., 5.56×45mm, 5.45×39mm) in standard service rifles, which limited effective range to 200–300 meters, and (2) The specialization of Western sniper rifles for long-range engagements (beyond 600 meters) using powerful rounds like .300 Winchester Magnum. This created a gap in firepower that the DMR could fill, especially in theaters like Afghanistan where 5.56mm rifles struggled at longer ranges."
+    },
+    {
+      "question": "What type of rifle does a DM typically use, and why?",
+      "answer": "A designated marksman typically uses a scoped semi-automatic rifle called a designated marksman rifle (DMR). This is because the DMR combines the accuracy of a sniper rifle with the rapid follow-up shots of a standard service rifle, making it ideal for the DM's role of providing repeated effective fire at targets up to 600 meters."
+    },
+    {
+      "question": "Provide an example of how a DM might be deployed in a tactical scenario.",
+      "answer": "In a tactical scenario, a DM might be deployed as follows: As part of an infantry squad, the DM identifies and engages high-value targets at 400–600 meters, such as enemy machine gun nests or officers, using their DMR. They provide precise suppressive fire to allow the squad to maneuver, while also scouting ahead for potential ambushes or enemy positions. Their role ensures the squad can engage threats beyond the effective range of standard rifles, enhancing overall tactical flexibility."
+    },
+    {
+      "question": "What are the caliber limitations of standard service rifles compared to DMRs and sniper rifles?",
+      "answer": "Standard service rifles, chambered in intermediate cartridges like 5.56×45mm or 5.45×39mm, typically have an effective range of 200–300 meters. Designated marksman rifles (DMRs) often use similar or slightly more powerful rounds (e.g., 7.62×51mm NATO) to extend effective range to 600 meters. In contrast, sniper rifles employ more powerful cartridges such as .300 Winchester Magnum or .338 Lapua Magnum, enabling engagements beyond 600 meters but at the cost of reduced rate of fire and mobility."
+    }
+  ]
+}

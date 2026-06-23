@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/AlgaePARC",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the primary goal of AlgaePARC at Wageningen UR?",
+      "answer": "The primary goal of AlgaePARC (Algae Production And Research Centre) is to bridge the gap between fundamental algae research and full-scale algae production facilities by establishing flexible pilot-scale systems for applied research and practical experience. It aims to compare the productivity of different algae production systems under identical conditions to advance the development of new photobioreactors and scaled-up production designs."
+    },
+    {
+      "question": "What are the four types of photobioreactors used at AlgaePARC, and how much ground surface do they cover?",
+      "answer": "AlgaePARC uses four types of photobioreactors: an open pond, two types of tubular reactors, and a plastic film bioreactor. Together, these reactors cover a ground surface area of 24 m²."
+    },
+    {
+      "question": "How is the funding for the construction of AlgaePARC distributed between the Ministry of Agriculture, Nature and Food Quality and Provincie Gelderland?",
+      "answer": "The construction of AlgaePARC was funded with a total of 2.25 million euros, of which 1.5 million euros was provided by the Ministry of Agriculture, Nature and Food Quality and 0.75 million euros by Provincie Gelderland."
+    },
+    {
+      "question": "Provide a code snippet in Python that calculates the total cost of algae biomass production per unit if the current cost is ten times higher than conventional fuels. Assume the cost of conventional fuel is $1.00 per unit.",
+      "answer": "python\n# Calculate the current cost of algae biomass production\nconventional_fuel_cost = 1.00  # in dollars per unit\nalgae_biomass_cost = conventional_fuel_cost * 10  # ten times higher\nprint(f\"Current cost of algae biomass: ${algae_biomass_cost:.2f} per unit\")\n\nOutput:\n\nCurrent cost of algae biomass: $10.00 per unit\n"
+    },
+    {
+      "question": "Why are microalgae considered a promising alternative to petrochemical products?",
+      "answer": "Microalgae are viewed as a promising alternative because they can serve as a sustainable source of biodiesel and chemical building blocks (e.g., for paint and plastics). Their biomass offers a renewable alternative to petrochemical-based products and fuels, helping reduce CO₂ emissions and lessening economic dependence on fossil fuels. This aligns with the development of a biobased economy."
+    },
+    {
+      "question": "What key challenge is the algae industry facing in making algae-based fuels economically viable?",
+      "answer": "The key challenge is that the production cost of algae biomass for biofuels is currently ten times higher than that of conventional fuels, making it economically uncompetitive. Research at AlgaePARC focuses on finding cost-effective methods to produce algae biomass to address this issue."
+    },
+    {
+      "question": "Name the organizations collaborating at AlgaePARC to improve algae production economics.",
+      "answer": "The organizations collaborating at AlgaePARC include companies from the energy, food, oil, and chemical sectors, the Ministry of Agriculture, Nature & Food Quality, the Provincial Government of Gelderland, Oost NV, and Wageningen UR itself."
+    }
+  ]
+}

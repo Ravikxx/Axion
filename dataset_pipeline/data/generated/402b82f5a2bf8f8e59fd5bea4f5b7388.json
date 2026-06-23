@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Alan_R._King",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What languages did Alan Roy King speak and communicate in?",
+      "answer": "Alan Roy King spoke and communicated in English, Welsh, French, Basque, Spanish, Catalan, Galician, Nawat, Hawaiian, Hebrew, Yiddish, and Lenca."
+    },
+    {
+      "question": "What were Alan Roy King's primary areas of interest in linguistics?",
+      "answer": "King's primary areas of interest were linguistics (the study of how languages work), grammar (how to describe languages), and applied linguistics (how to teach languages)."
+    },
+    {
+      "question": "What roles did Alan Roy King hold at the Royal Academy of the Basque Language (Euskaltzaindia)?",
+      "answer": "King was a Member of the Grammar Committee of the Royal Academy of the Basque Language (Euskaltzaindia) since 1985 and a Corresponding Member since 2003."
+    },
+    {
+      "question": "How did Alan Roy King contribute to minority languages like Basque and Nawat?",
+      "answer": "King worked on grammatical description, language recovery, teaching material development, and translation projects for Basque, Nawat (Pipil, Central America), and Lencan (Central America)."
+    },
+    {
+      "question": "What was Alan Roy King's educational and personal background before moving to the Basque Country?",
+      "answer": "King grew up in England until age thirteen, then in California, and later in Europe. His parents were born in London, and his grandparents were Jewish immigrants from Eastern Europe. He moved to the Basque Country at age twenty-five and lived there, primarily in Gipuzkoa, for the rest of his life."
+    },
+    {
+      "question": "Provide an example of a code snippet that might represent a simple grammatical rule in Basque, similar to the kind of work Alan Roy King might have studied.",
+      "answer": "Below is a Python example illustrating a basic Basque verb conjugation rule using a hypothetical rule-based system:\npython\n# Example: Basque verb 'ibili' (to walk) present tense conjugation\nverb = \"ibili\"\npronouns = [\"ni\" (I), \"hi\" (you informal), \"hura\" (he/she/it)]\nendings = {\"ni\": \"-t\", \"hi\": \"-a\", \"hura\": \"-a\"}\n\nconjugated_forms = {pronoun: verb + ending for pronoun, ending in pronouns.items()}\nprint(conjugated_forms)\n\nOutput might look like: {'ni': 'ibilt', 'hi': 'ibila', 'hura': 'ibila'}"
+    },
+    {
+      "question": "What personal connections did Alan Roy King have to Hawaii?",
+      "answer": "King's mother and brother lived in Hawaii, and he also spent time there himself."
+    }
+  ]
+}

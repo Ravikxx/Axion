@@ -1,0 +1,34 @@
+{
+  "source_url": "https://mathworld.wolfram.com/CompleteBipartiteGraph.html",
+  "category": "mathworld",
+  "pairs": [
+    {
+      "question": "What is a complete bipartite graph and how is it denoted?",
+      "answer": "A complete bipartite graph is a bipartite graph where every pair of vertices from the two disjoint sets are adjacent. It is denoted as K_{m,n}, where m and n are the number of vertices in each of the two disjoint sets."
+    },
+    {
+      "question": "How many Hamiltonian cycles exist in the complete bipartite graph K_{3,3}?",
+      "answer": "The number of Hamiltonian cycles in the complete bipartite graph K_{m,n} for m=3 and n=3 is 6."
+    },
+    {
+      "question": "Write a Python function to generate the matching polynomial for a complete bipartite graph K_{m,n}.",
+      "answer": "python\nimport numpy as np\nfrom scipy.special import laguerre\n\ndef matching_polynomial_Kmn(m, n, x):\n    \"\"\"\n    Compute the matching polynomial for the complete bipartite graph K_{m,n}.\n    The matching polynomial is given by: x^m * L_n^(-m-n)(x^2), where L_n^(-m-n) is the associated Laguerre polynomial.\n    \"\"\"\n    return (x**m) * laguerre(n, -m-n)(x**2)\n\n# Example usage:\nm, n = 2, 2\nx = 1.0\nprint(matching_polynomial_Kmn(m, n, x))  # Output: 1.0\n"
+    },
+    {
+      "question": "What is Zarankiewicz's conjecture regarding complete bipartite graphs?",
+      "answer": "Zarankiewicz's conjecture posits a closed-form expression for the graph crossing number of a complete bipartite graph K_{m,n}. The conjecture suggests that the crossing number is given by the formula: ceil((m * n * (m - 1) * (n - 1)) / 4), where ceil is the ceiling function."
+    },
+    {
+      "question": "Why is the complete bipartite graph K_{3,3} significant in graph theory?",
+      "answer": "The complete bipartite graph K_{3,3} is significant because it is a non-planar graph and a fundamental example in Kuratowski's theorem, which characterizes planar graphs. It is also the smallest non-planar complete bipartite graph and serves as an important case study in graph embeddings and planarity testing."
+    },
+    {
+      "question": "What is a Hamiltonian path in a complete bipartite graph K_{m,n}, and under what conditions does it exist?",
+      "answer": "A Hamiltonian path in a complete bipartite graph K_{m,n} is a path that visits every vertex exactly once. It exists if and only if the graph is traceable, which requires that the difference between the sizes of the two partitions is at most 1 (i.e., |m - n| ≤ 1). Since the graph is bipartite, any Hamiltonian path must alternate between the two partitions."
+    },
+    {
+      "question": "How does the independence polynomial of the complete bipartite graph K_{m,n} behave?",
+      "answer": "The independence polynomial of the complete bipartite graph K_{m,n} is given by the recurrence relation: I(K_{m,n}; x) = I(K_{m-1,n}; x) + x * I(K_{m-1,n-1}; x), with base cases I(K_{0,n}; x) = 1 + n * x and I(K_{m,0}; x) = 1 + m * x. This polynomial counts the number of independent sets in the graph weighted by x."
+    }
+  ]
+}

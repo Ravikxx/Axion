@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Edward_Thomas_Wordon_Myers",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When and where was Edward Thomas Wordon Myers born?",
+      "answer": "Edward Thomas Wordon Myers was born on September 15, 1879, in Portland, Ontario, Canada."
+    },
+    {
+      "question": "What were Edward Myers' occupations before he became a physician?",
+      "answer": "Before becoming a physician, Edward Myers graduated from teacher's college and taught school for several years."
+    },
+    {
+      "question": "Which university did Edward Myers attend for his medical education, and in what year did he graduate?",
+      "answer": "Edward Myers studied medicine at Queen's University and graduated in 1908."
+    },
+    {
+      "question": "How long did Edward Myers serve as a member of the House of Commons of Canada, and for which riding?",
+      "answer": "Edward Myers served as a member of the House of Commons representing the Kindersley riding from 1917 to 1921 as a Unionist Party member."
+    },
+    {
+      "question": "What notable medical achievement is attributed to Edward Myers during his career?",
+      "answer": "Edward Myers is said to have delivered over 4,000 babies during his career as a physician."
+    },
+    {
+      "question": "Provide a code snippet to calculate Edward Myers' age at the time of his death.",
+      "answer": "python\nfrom datetime import datetime\n\ndef calculate_age(birth_date, death_date):\n    return death_date.year - birth_date.year - ((death_date.month, death_date.day) < (birth_date.month, birth_date.day))\n\nbirth_date = datetime(1879, 9, 15)\ndeath_date = datetime(1962, 3, 14)\nage = calculate_age(birth_date, death_date)\nprint(age)  # Output: 82\n"
+    },
+    {
+      "question": "Why did Edward Myers' private hospital in Rosetown close in 1914?",
+      "answer": "Edward Myers' private hospital in Rosetown closed in 1914 after the Rosetown Hospital opened, making his facility redundant."
+    }
+  ]
+}

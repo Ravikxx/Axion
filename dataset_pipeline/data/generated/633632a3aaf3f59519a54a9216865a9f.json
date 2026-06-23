@@ -1,0 +1,34 @@
+{
+  "source_url": "https://mathworld.wolfram.com/BarkerCode.html",
+  "category": "mathworld",
+  "pairs": [
+    {
+      "question": "What is a Barker code and what is its primary application?",
+      "answer": "A Barker code is a specific type of binary sequence (string of digits) with a unique property: for all non-zero shifts, the aperiodic autocorrelation function yields a value of either -1 or 0. Its primary application is in pulse compression of radar signals, where it helps improve the resolution and detection capabilities of radar systems."
+    },
+    {
+      "question": "How many different lengths of Barker codes are known to exist and what are they?",
+      "answer": "Barker codes of lengths 2, 3, 4, 5, 7, 11, and 13 are known to exist. It is conjectured that no longer Barker codes exist beyond these lengths."
+    },
+    {
+      "question": "What is the mathematical significance of the number of candidate codes for a given Barker code length?",
+      "answer": "The number of candidate codes of length n for a Barker code corresponds to the number of n-bead black-white reversible strings, as listed in OEIS sequence A005418. For example, for length 2, there are 2 candidates; for length 3, there are 6 candidates; and for length 4, there are 10 candidates, following the sequence 1, 2, 3, 6, 10, 20, 36, 72, ..."
+    },
+    {
+      "question": "How many Barker codes exist for each of the known lengths?",
+      "answer": "The number of Barker codes for each length (up to reversal of digits and negation) are: 2 (length 2), 1 (length 3), 2 (length 4), 3 (length 5), 4 (length 7), 1 (length 11), and 1 (length 13). These values are listed in OEIS sequence A091704."
+    },
+    {
+      "question": "Provide a Python function to generate all possible Barker code candidates for a given length n.",
+      "answer": "python\nimport itertools\n\ndef generate_barker_candidates(n):\n    \"\"\"\n    Generate all possible binary strings of length n that are candidates for Barker codes.\n    Candidates are considered up to reversal and negation.\n    \"\"\"\n    candidates = set()\n    for bits in itertools.product([-1, 1], repeat=n):\n        candidate = list(bits)\n        # Normalize by considering reversal and negation as the same candidate\n        normalized = tuple(min(candidate, [-x for x in candidate][::-1]))\n        candidates.add(normalized)\n    return [list(c) for c in candidates]\n\n# Example usage:\nprint(generate_barker_candidates(3))  # Output: [[-1, -1, 1], [-1, 1, 1]]\n"
+    },
+    {
+      "question": "Why is it conjectured that no Barker codes exist for lengths greater than 13?",
+      "answer": "It is conjectured that no Barker codes exist for lengths greater than 13 because exhaustive searches up to length 13 have failed to find any, and theoretical bounds (such as the Welch bound and the Sidelnikov bound) suggest that longer Barker codes are unlikely to exist. These bounds provide limits on the maximum achievable peak-to-side-lobe ratio for binary sequences, making longer Barker codes improbable."
+    },
+    {
+      "question": "What is the aperiodic autocorrelation of a Barker code and why is it important?",
+      "answer": "The aperiodic autocorrelation of a Barker code is a measure of how the sequence correlates with its shifted versions. For Barker codes, the aperiodic autocorrelation is either -1 or 0 for all non-zero shifts. This property is critical for radar pulse compression, as it allows the radar to distinguish between the transmitted signal and its reflections, improving range resolution and signal-to-noise ratio."
+    }
+  ]
+}

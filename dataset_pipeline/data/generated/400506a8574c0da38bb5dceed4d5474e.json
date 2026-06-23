@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Customary_kings_of_Wallis_and_Futuna",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What are the names of the three traditional kingdoms that make up Wallis and Futuna?",
+      "answer": "The three traditional kingdoms of Wallis and Futuna are Uvea, Alo, and Sigave."
+    },
+    {
+      "question": "How does the French government officially recognize the authority of the customary kings of Wallis and Futuna?",
+      "answer": "The French government recognizes the authority of the customary kings of Wallis and Futuna through the 1961 statute of Wallis and Futuna, which constitutes the last three active monarchies recognized by the French state on French territory."
+    },
+    {
+      "question": "What are the local terms used to refer to the kings in Futuna and Wallisian languages? What is the French term for these sovereigns?",
+      "answer": "The local terms for the kings are 'Sau' in Futunan and 'Hau' in Wallisian, while the French term for these sovereigns is 'king'."
+    },
+    {
+      "question": "Explain the selection process for the kings in Wallis and Futuna. How does it differ from hereditary monarchies?",
+      "answer": "The kings in Wallis and Futuna are not hereditary; instead, they are selected by noble families ('aliki') through negotiations that can span months and may lead to succession crises. The role is primarily male, though the Kingdom of Uvea has seen four female kings. Reigns typically last only a few years."
+    },
+    {
+      "question": "What roles do the customary kings of Wallis and Futuna play in their societies?",
+      "answer": "The customary kings of Wallis and Futuna are responsible for maintaining social order, administering customary justice (especially regarding land), overseeing environmental and natural resources, and acting as intermediaries between God and the people in these religious societies. They are supported by a chieftaincy in managing local affairs."
+    },
+    {
+      "question": "Provide a code snippet that checks whether a given kingdom name is one of the three traditional kingdoms of Wallis and Futuna.",
+      "answer": "python\ndef is_valid_kingdom(kingdom_name):\n    valid_kingdoms = {'Uvea', 'Alo', 'Sigave'}\n    return kingdom_name in valid_kingdoms\n\n# Example usage:\nprint(is_valid_kingdom('Uvea'))  # Output: True\nprint(is_valid_kingdom('Samoa')) # Output: False\n"
+    },
+    {
+      "question": "Why is the French term 'king' considered an inadequate translation for the sovereigns of Wallis and Futuna by anthropologists?",
+      "answer": "Anthropologists consider the French term 'king' inadequate because the role is not hereditary, the selection process is complex, and the kings' duties extend beyond traditional monarchical powers, including religious and social intermediary functions in deeply religious societies."
+    }
+  ]
+}

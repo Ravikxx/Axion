@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Columbia_University",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is Columbia University's official name and where is it located?",
+      "answer": "Columbia University's official name is Columbia University in the City of New York. It is located in New York City, with its main campus situated in the Morningside Heights neighborhood of Manhattan."
+    },
+    {
+      "question": "How many Nobel Prize winners have been affiliated with Columbia University, and how does this compare to Harvard?",
+      "answer": "Columbia University has had 96 Nobel Prize winners affiliated with it, which is the second-highest number in the United States after Harvard University, which has the most."
+    },
+    {
+      "question": "What were Columbia University's previous names and why did they change?",
+      "answer": "Columbia University was originally founded as King's College in 1754 by royal charter from King George II of Great Britain. After the American Revolution, it was renamed Columbia College in 1784 to reflect its newfound independence. In 1896, it became Columbia University when it relocated to its current campus in Morningside Heights."
+    },
+    {
+      "question": "Name three U.S. Presidents who attended Columbia University and three Founding Fathers associated with it.",
+      "answer": "Three U.S. Presidents who attended Columbia University are Barack Obama, Franklin D. Roosevelt, and Theodore Roosevelt. Three Founding Fathers associated with Columbia are Alexander Hamilton, John Jay, and Robert Livingston."
+    },
+    {
+      "question": "What notable contributions has Columbia University made to science and technology?",
+      "answer": "Columbia University has made significant contributions to science and technology, including the creation of FM radio, the discovery of the foundation of modern genetics, and being the first North American site where the uranium atom was split at its Morningside Heights campus."
+    },
+    {
+      "question": "Which colleges within Columbia University are located in Washington Heights, and what are their focuses?",
+      "answer": "Columbia University's College of Physicians and Surgeons and College of Dental Medicine are both located in Washington Heights in Northern Manhattan. The College of Physicians and Surgeons focuses on medical education and research, while the College of Dental Medicine specializes in dental education and oral health sciences."
+    },
+    {
+      "question": "What is the origin of Columbia University's endowment funds, and how has this been acknowledged?",
+      "answer": "A substantial portion of Columbia University's early endowment funds came from the profits of slavery. The university has acknowledged this history and has taken steps toward addressing its legacy, including the creation of initiatives to support research and education on the history of slavery and its impact on American society."
+    }
+  ]
+}

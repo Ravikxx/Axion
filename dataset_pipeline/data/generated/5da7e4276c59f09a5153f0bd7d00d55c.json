@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Cressy_L._Wilbur",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What were the key professional roles and tenures of Cressy L. Wilbur in the field of statistics?",
+      "answer": "Cressy L. Wilbur served as the Director of Vital Statistics in the New York State Department of Health from 1914 to 1916, and prior to that, he was the chief statistician in the Federal Census Bureau from 1906 to 1914. Earlier in his career, he held the position of Chief of the Division of Vital Statistics of Michigan from 1893 to 1906."
+    },
+    {
+      "question": "How did Cressy L. Wilbur contribute to government data collection practices in the United States?",
+      "answer": "Wilbur was a strong advocate for comprehensive data collection efforts by governments. He emphasized the importance of vital statistics registration, stating that it was a valuable institution often neglected in rapidly developing societies. His work influenced statistical collection practices across the United States."
+    },
+    {
+      "question": "What was Cressy L. Wilbur's educational background?",
+      "answer": "Wilbur graduated with an undergraduate degree from Hillsdale College in 1886. He then studied medicine at the University of Michigan for three years and earned his M.D. from Bellevue Hospital Medical College in 1890."
+    },
+    {
+      "question": "What personal challenges did Cressy L. Wilbur face later in his life?",
+      "answer": "In 1916, Wilbur suffered a mental health breakdown from which he never recovered. He passed away in 1928 in a sanitarium in Utica, New York."
+    },
+    {
+      "question": "Can you write a Python code snippet to extract and display the key events of Cressy L. Wilbur's career from the given text?",
+      "answer": "python\ntext = \"\"\"\nCressy L. Wilbur (March 16, 1865, Hillsdale, Michigan – August 10, 1928, Utica, New York) was a statistician who was Director of Vital Statistics of the New York State Department of Health over the period 1914–1916 and chief statistician in the Federal Census Bureau over the period 1906–1914. He influenced practices of statistical collection in the United States and was described as \"one of the leading statisticians of the world\".\nHe graduated with an undergraduate degree from Hillsdale College in 1886, studied medicine at University of Michigan for three years, and received a M.D. from Bellevue Hospital Medical College in 1890. He was Chief of the Division of Vital Statistics of Michigan from 1893 to 1906.\n\"\"\"\n\n# Extract key career events\nimport re\n\ncareer_events = re.findall(r'(?:Director of Vital Statistics of the New York State Department of Health|chief statistician in the Federal Census Bureau|Chief of the Division of Vital Statistics of Michigan|graduated with an undergraduate degree|studied medicine|received a M\\.D\\.)[^.]*\\.', text)\n\nfor event in career_events:\n    print(event.strip())\n"
+    },
+    {
+      "question": "What was the significance of Cressy L. Wilbur's quote about vital statistics registration in the United States?",
+      "answer": "Wilbur's quote highlights the historical neglect of vital statistics registration in the U.S., noting that early development focused more on pioneering and primitive conditions rather than creating permanent records. He argued that this institution was crucial for modern society, despite being overlooked during rapid societal changes."
+    },
+    {
+      "question": "Did Cressy L. Wilbur have a family? If so, describe his family life.",
+      "answer": "Yes, Wilbur married Blanche M. Mead in June 1891. They had three children together."
+    }
+  ]
+}

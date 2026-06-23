@@ -1,0 +1,34 @@
+{
+  "source_url": "https://mathworld.wolfram.com/letters/M.html",
+  "category": "mathworld",
+  "pairs": [
+    {
+      "question": "What is the M'Cay Circle and what are its key properties in geometry?",
+      "answer": "The M'Cay Circle is a special circumconic associated with a triangle, notable for passing through the circumcenter and the orthocenter. For a triangle with vertices A, B, and C, the M'Cay Circle is centered at the midpoint of the segment joining the circumcenter (O) and the orthocenter (H). Its radius is half the distance between O and H, and it is orthogonal to the circumcircle. Unlike the nine-point circle, the M'Cay Circle is not universally defined for all triangles but arises in specific configurations."
+    },
+    {
+      "question": "How do Maclaurin series differ from Taylor series, and what are their applications?",
+      "answer": "Maclaurin series are a special case of Taylor series centered at 0. For a function f(x), the Maclaurin series expansion is given by: f(x) = Σ [f^(n)(0) * x^n / n!] for n = 0 to ∞. While Taylor series can be centered at any point a, Maclaurin series simplify calculations when a = 0. Applications include approximating functions (e.g., e^x ≈ 1 + x + x²/2 + ...), solving differential equations, and evaluating limits. The Maclaurin series for common functions like sin(x), cos(x), and ln(1+x) are widely used in mathematical analysis and physics."
+    },
+    {
+      "question": "Explain Markov chains and provide a Python code snippet to simulate a simple two-state Markov chain.",
+      "answer": "A Markov chain is a stochastic process where the probability of transitioning to the next state depends only on the current state, not on the sequence of events that preceded it. It is defined by a transition matrix P, where P[i][j] represents the probability of moving from state i to state j. To simulate a two-state Markov chain with states {0, 1} and transition matrix P = [[0.7, 0.3], [0.4, 0.6]], use the following Python code:\n\npython\nimport numpy as np\n\ndef simulate_markov_chain(P, initial_state, steps):\n    states = [initial_state]\n    for _ in range(steps):\n        next_state = np.random.choice([0, 1], p=P[states[-1]])\n        states.append(next_state)\n    return states\n\n# Transition matrix: P[i][j] = probability from state i to j\nP = np.array([[0.7, 0.3], [0.4, 0.6]])\nprint(simulate_markov_chain(P, initial_state=0, steps=10))\n\nThe output is a sequence of states (e.g., [0, 0, 1, 1, 0, ...]) generated based on the transition probabilities. Markov chains are used in finance, biology, and computer science for modeling random processes."
+    },
+    {
+      "question": "What is the Mandelbrot set, and how is its boundary characterized?",
+      "answer": "The Mandelbrot set is the set of complex numbers c for which the function f_c(z) = z² + c does not diverge when iterated from z = 0. Mathematically, it is defined as M = {c ∈ ℂ : sup{|f_c^n(0)|} < ∞ for n ∈ ℕ}. The boundary of the Mandelbrot set exhibits fractal properties, with self-similarity at different scales. Its boundary is where the behavior of the iteration changes from bounded to chaotic. The set is connected, and its interior points correspond to values of c for which the orbit of 0 is bounded. The Mandelbrot set is a cornerstone of complex dynamics and fractal geometry."
+    },
+    {
+      "question": "Define the Maximum Clique Problem and discuss its computational complexity.",
+      "answer": "The Maximum Clique Problem is the task of finding the largest subset of vertices in a graph such that every two distinct vertices are adjacent (i.e., a complete subgraph). Formally, given a graph G = (V, E), the problem is to find a clique C ⊆ V with the maximum number of vertices. This problem is NP-hard, meaning no known polynomial-time algorithm solves all instances efficiently. The decision version (does a clique of size k exist?) is NP-complete. Exact solutions can be found using backtracking, branch-and-bound, or integer linear programming, while approximation algorithms (e.g., greedy heuristics) provide near-optimal solutions for large graphs. The problem has applications in social network analysis, bioinformatics, and coding theory."
+    },
+    {
+      "question": "What is the Mean Value Theorem in calculus, and how is it proved?",
+      "answer": "The Mean Value Theorem (MVT) states that if a function f is continuous on the closed interval [a, b] and differentiable on the open interval (a, b), then there exists at least one point c ∈ (a, b) such that f'(c) = [f(b) - f(a)] / (b - a). This means the tangent line at c is parallel to the secant line joining (a, f(a)) and (b, f(b)). \n\nProof outline:\n1. Define g(x) = f(x) - [f(b) - f(a)] / (b - a) * (x - a) - f(a).\n2. Note g(a) = g(b) = 0, and g is continuous/differentiable where f is.\n3. By Rolle's Theorem, there exists c ∈ (a, b) where g'(c) = 0.\n4. Compute g'(c) = f'(c) - [f(b) - f(a)] / (b - a) = 0, yielding the MVT.\nThe MVT is foundational for proving other theorems like Taylor's theorem and L'Hôpital's rule."
+    },
+    {
+      "question": "How are matrix norms defined, and what are the differences between the 1-norm, 2-norm, and ∞-norm?",
+      "answer": "A matrix norm is a function ||A|| that assigns a positive real number to a matrix A, satisfying the properties of (1) positivity, (2) homogeneity, (3) triangle inequality, and (4) submultiplicativity (||AB|| ≤ ||A|| ||B||). Key matrix norms include:\n\n1. **1-norm (Maximum Absolute Column Sum Norm)**: ||A||₁ = max_{1≤j≤n} Σ_{i=1}^m |a_ij|. It measures the maximum absolute column sum.\n2. **2-norm (Spectral Norm)**: ||A||₂ = √(λ_max(AᵀA)), where λ_max is the largest eigenvalue of AᵀA. It equals the largest singular value of A.\n3. **∞-norm (Maximum Absolute Row Sum Norm)**: ||A||∞ = max_{1≤i≤m} Σ_{j=1}^n |a_ij|. It measures the maximum absolute row sum.\n\nThese norms are used in numerical analysis, optimization, and stability analysis of linear systems. The 2-norm is particularly important for understanding spectral properties of matrices."
+    }
+  ]
+}

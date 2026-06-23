@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Edwin_Savage",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What were the key events in Edwin Sidney Savage's education?",
+      "answer": "Edwin Sidney Savage completed his education at New College, Eastbourne, University College London, and Magdalen College, Oxford."
+    },
+    {
+      "question": "How many marriages did Edwin Sidney Savage have, and who were his spouses?",
+      "answer": "Edwin Sidney Savage had two marriages. His first wife was Jane McEwan, who died in 1886. His second wife was Sibil Farrar, whom he married in 1889."
+    },
+    {
+      "question": "What role did Edwin Sidney Savage play during World War I, and what honors did he receive?",
+      "answer": "During World War I, Savage served as Chief Commissioner of YMCA in the Mediterranean, overseeing relief efforts for the civilian population. He was decorated with the Serbian Red Cross Order, the Order of St Sava, the Serbian Orthodox Church's Golden Cross, and received the honorary military rank of major from King Peter I of Serbs, Croats and Slovenes."
+    },
+    {
+      "question": "What was the Abbey Institute in Gilesgate, Hexham, and who constructed it?",
+      "answer": "The Abbey Institute in Gilesgate, Hexham, was constructed by Edwin Sidney Savage. It is now home to the Hexham Community Centre."
+    },
+    {
+      "question": "What is known about the circumstances surrounding Edwin Sidney Savage's death?",
+      "answer": "Edwin Sidney Savage was found dead in a smoke-filled room on 26 October 1947 after raising the alarm for a fire in his sitting room. The coroner returned a verdict of accidental death, though the cause of death remains uncertain due to the lack of evidence of burning."
+    },
+    {
+      "question": "Write a Python code snippet to calculate the number of years Edwin Sidney Savage lived.",
+      "answer": "python\nfrom datetime import datetime\n\nbirth_date = datetime(1862, 2, 28)\ndeath_date = datetime(1947, 10, 26)\nage = death_date.year - birth_date.year - ((death_date.month, death_date.day) < (birth_date.month, birth_date.day))\nprint(age)  # Output: 85\n"
+    },
+    {
+      "question": "What were some of Edwin Sidney Savage's other notable achievements besides his religious and wartime roles?",
+      "answer": "Beyond his religious and wartime roles, Savage constructed the Abbey Institute in Gilesgate, Hexham; restored and conserved the Church of St Bartholomew the Great in Smithfield; served as honorary chaplain to the Worshipful Companies of Butchers and Makers of Playing Cards; and was an honorary canon of Newcastle Cathedral."
+    }
+  ]
+}

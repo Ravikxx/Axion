@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Dubitante",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What does the Latin term 'dubitante' mean in legal contexts?",
+      "answer": "'Dubitante' is a Latin term used in law reports to indicate that a judge is doubtful about a legal proposition but does not explicitly declare it wrong. It suggests hesitation to fully endorse or reject the majority opinion, often implying dissatisfaction without dissenting outright."
+    },
+    {
+      "question": "How do judges sometimes use 'dubitante' in their separate opinions?",
+      "answer": "Some judges append 'dubitante' to their names in separate opinions (e.g., concurrences or dissents) to signal their doubts about the majority's reasoning or conclusion. This usage conveys that the judge finds the majority opinion unsound but lacks sufficient grounds to dissent openly."
+    },
+    {
+      "question": "What did legal philosopher Lon L. Fuller say about the purpose of a 'dubitante' opinion?",
+      "answer": "Lon L. Fuller stated that a 'dubitante' opinion reflects the judge's unhappiness with some aspect of the decision but stops short of an open dissent because the judge cannot fully substantiate their disagreement."
+    },
+    {
+      "question": "Provide an example of a judge using 'dubitante' due to intuition rather than proof.",
+      "answer": "In *Feldman v. Allegheny Airlines, Inc.*, Judge Henry J. Friendly concurred 'dubitante,' stating: 'Although intuition tells me that the Supreme Court of Connecticut would not sustain the award made here, I cannot prove it. I therefore go along with the majority, although with the gravest doubts.'"
+    },
+    {
+      "question": "How frequently has 'dubitante' been used in U.S. legal documents according to Westlaw?",
+      "answer": "Westlaw recorded 626 instances of 'dubitante' in U.S. legal documents in 2005. Nearly half of these usages were attributed to four federal appellate judges: Frank Coffin, Henry J. Friendly, Frank Easterbrook, and James C. Hill."
+    },
+    {
+      "question": "What is the distinction between a 'dubitante' judge and one who dissents?",
+      "answer": "A 'dubitante' judge expresses serious doubts about the majority opinion but lacks the conviction or evidence to dissent openly. In contrast, a dissenting judge explicitly argues that the majority is wrong and provides reasoning to support their position."
+    },
+    {
+      "question": "Write a Python function to check if a legal opinion contains the term 'dubitante'.",
+      "answer": "python\ndef contains_dubitante(text):\n    \"\"\"Check if a legal text contains the term 'dubitante'.\"\"\"\n    return 'dubitante' in text.lower()\n\n# Example usage:\nopinion = \"Justice X concurred dubitante on the question of preemption.\"\nprint(contains_dubitante(opinion))  # Output: True\n"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Adoptive_immunity",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is adoptive immunity, and how does it differ from passive immunity?",
+      "answer": "Adoptive immunity is a process where immunological components (such as immune cells or molecules) are withdrawn from a host, modified externally, and then reinfused into the same host, enabling an immune response. It differs from passive immunity, which involves transferring preformed immune molecules (e.g., antibodies) between different species (xenogeneic hosts), such as antivenom IgG from a horse injected into a human."
+    },
+    {
+      "question": "What types of immune cells can be transferred in adoptive immunity?",
+      "answer": "Immune cells that can be transferred in adoptive immunity include T lymphocytes, tumour-infiltrating lymphocytes, NK cells, macrophages, and B cells. These cells can be autologous (from the same individual) or allogeneic (from a genetically compatible or irradiated host)."
+    },
+    {
+      "question": "How does adoptive immunity work in monozygotic twins or genetically identical animals?",
+      "answer": "In monozygotic twins or genetically identical animals, adoptive immunity involves transferring immune cells from a sensitized individual to a naive one of the same genetic background. Since the hosts are immunologically compatible, the transferred cells engraft without rejection or graft-versus-host disease (GVHD)."
+    },
+    {
+      "question": "What is the purpose of irradiating the host in allogeneic adoptive immunity?",
+      "answer": "Irradiating the host in allogeneic adoptive immunity suppresses the immune system to prevent rejection of the transferred cells or development of graft-versus-host disease (GVHD), allowing the engraftment of immune cells from a genetically different but compatible donor."
+    },
+    {
+      "question": "Can adoptive immunity involve the transfer of immune molecules like immunoglobulins?",
+      "answer": "Yes, adoptive immunity can involve the transfer of immune molecules such as immunoglobulins (antibodies) between allogeneic hosts. This process is distinct from passive immunity, where antibodies are transferred between xenogeneic hosts (e.g., horse-derived antivenom injected into humans)."
+    },
+    {
+      "question": "Write a Python code snippet to simulate the process of adoptive immunity, focusing on the transfer of T lymphocytes.",
+      "answer": "python\nimport random\n\nclass Host:\n    def __init__(self, name, immune_cells):\n        self.name = name\n        self.immune_cells = immune_cells  # List of immune cell types\n\n    def withdraw_cells(self, cell_type):\n        if cell_type in self.immune_cells:\n            self.immune_cells.remove(cell_type)\n            return cell_type\n        return None\n\ndef adoptive_immunity_demo(donor, recipient, cell_type):\n    # Withdraw immune cells from the donor\n    transferred_cell = donor.withdraw_cells(cell_type)\n    \n    if transferred_cell:\n        # Modify the cells extracorporeally (e.g., activation, selection)\n        print(f\"Modifying {cell_type} from {donor.name} extracorporeally...\")\n        \n        # Reinfuse into the recipient\n        recipient.immune_cells.append(transferred_cell)\n        print(f\"Reinfused {cell_type} into {recipient.name}.\")\n    else:\n        print(f\"No {cell_type} found in {donor.name}.\")\n\n# Example usage\ndonor_host = Host(\"Donor\", [\"T lymphocytes\", \"NK cells\", \"B cells\"])\nrecipient_host = Host(\"Recipient\", [\"Macrophages\"])\nadoptive_immunity_demo(donor_host, recipient_host, \"T lymphocytes\")\n"
+    },
+    {
+      "question": "Why is adoptive immunity sometimes compared to the process of adoption?",
+      "answer": "Adoptive immunity is compared to adoption because, like a child being temporarily placed with another family and later returned, immunological components are withdrawn from the host, modified externally (e.g., grown or activated), and then reinfused into the original host, restoring immune function."
+    }
+  ]
+}

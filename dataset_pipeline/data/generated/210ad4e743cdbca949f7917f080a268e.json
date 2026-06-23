@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Biafra",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What was the Republic of Biafra, and when was it established?",
+      "answer": "The Republic of Biafra was a break-away state in West Africa, officially formed on 30 May 1967 by Chukwuemeka Odumegwu Ojukwu, the governor of Nigeria's Eastern Region. It claimed the territory of the Eastern Region and was primarily inhabited by the Igbo people."
+    },
+    {
+      "question": "Which countries officially recognized Biafra during its existence?",
+      "answer": "Biafra was officially recognized by Gabon, Haiti, Ivory Coast, Tanzania, and Zambia. Additionally, it had de facto recognition from France, Spain, Portugal, Norway, Israel, Rhodesia, South Africa, and Vatican City."
+    },
+    {
+      "question": "What role did non-state actors play in supporting Biafra?",
+      "answer": "Biafra received aid from several non-state actors, including Joint Church Aid, foreign mercenaries, and the Holy Ghost Fathers of Ireland."
+    },
+    {
+      "question": "How did the United States government position itself during the Biafran War?",
+      "answer": "The U.S. government under President Lyndon B. Johnson remained officially neutral during the war. However, there was strong public support for Biafra in the U.S., and American activists founded the American Committee to Keep Biafra Alive to advocate for the cause. President Richard Nixon, before his 1968 election, accused Nigeria of committing genocide against the Biafrans and called for U.S. intervention, but these efforts were unsuccessful due to the demands of the Vietnam War."
+    },
+    {
+      "question": "What led to the high civilian death toll in Biafra during the war?",
+      "answer": "The Nigerian blockade of Biafra caused severe food shortages, leading to the deaths of almost two million Biafran civilians over two-and-a-half years of war. Approximately three-quarters of the victims were small children."
+    },
+    {
+      "question": "Write a Python code snippet to calculate the percentage of child casualties in Biafra's civilian death toll.",
+      "answer": "Here is a Python code snippet to compute the percentage of child casualties:\n\npython\n# Total civilian deaths and child casualties\ntotal_deaths = 2_000_000\nchild_deaths = (3 / 4) * total_deaths\n\n# Calculate percentage of child casualties\npercentage_children = (child_deaths / total_deaths) * 100\nprint(f\"Percentage of child casualties: {percentage_children}%\")\n\nThis code calculates that 75% of the civilian deaths were children."
+    },
+    {
+      "question": "Why did President Nixon's efforts to support Biafra ultimately fail?",
+      "answer": "President Nixon's efforts to intervene in the Biafran War failed primarily due to the demands of the ongoing Vietnam War, which diverted U.S. resources and attention, making large-scale intervention in Biafra impractical."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Eucharistic_credo",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the Eucharistic Credo and who wrote it?",
+      "answer": "The Eucharistic Credo is a profession of faith affirming the Real Presence of Jesus in the Eucharistic elements (bread and wine). It was written in 1078 by Pope Gregory VII."
+    },
+    {
+      "question": "What does the term 'Real Presence' mean in Christian theology?",
+      "answer": "The Real Presence refers to the belief that Jesus Christ is physically and personally present in the sacramental Eucharistic elements, which are believed to become His body and blood, rather than being merely symbolic."
+    },
+    {
+      "question": "Who was Berengarius of Tours and what was his challenge to the Church's Eucharistic doctrine?",
+      "answer": "Berengarius of Tours was a Christian theologian in the 11th century who denied the physical presence of the historical Jesus in the Eucharistic elements. He argued for a spiritual presence based on earlier writings by Ratramnus of the ninth century. His views sparked controversy and were condemned by multiple regional councils."
+    },
+    {
+      "question": "How did the Church respond to Berengarius' teachings?",
+      "answer": "The Church condemned Berengarius' teachings through several regional councils, including Rome (1050, 1059), Verecelli (1050), Tours (1055), Poitiers (1075), and St. Maixeut (1076). He was eventually summoned to Rome by Pope Gregory VII in 1078, where he was given the Eucharistic Credo to affirm publicly and was then condemned."
+    },
+    {
+      "question": "What was significant about the Council in Rome in 1078 regarding Berengarius?",
+      "answer": "At the Council in Rome in 1078, Pope Gregory VII presented Berengarius with the Eucharistic Credo, a formal statement affirming the Real Presence. Berengarius' refusal to fully affirm it led to his condemnation. This event is significant because it marked the first time the Church issued a succinct doctrinal definition on the Eucharist."
+    },
+    {
+      "question": "What impact did the Eucharistic Credo have on medieval Christian theology and practice?",
+      "answer": "The Eucharistic Credo crystallized the Church's ancient teachings on the Eucharist and contributed to the 'Eucharistic Renaissance' of the High Middle Ages. This period saw a flourishing of various Eucharistic devotions and a renewed emphasis on the sacrament's centrality in Christian worship."
+    },
+    {
+      "question": "Write a Python function to check if a given year falls within the period when Berengarius' teachings were actively condemned.",
+      "answer": "python\ndef is_berengarius_condemnation_period(year):\n    condemnation_years = [1050, 1050, 1055, 1059, 1075, 1076, 1078]\n    return year in condemnation_years\n\nThis function returns `True` if the input year is one of the years when Berengarius' teachings were condemned by Church councils."
+    }
+  ]
+}

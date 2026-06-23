@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/1973_Glasgow_Govan_by-election",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When was the 1973 Glasgow Govan by-election held and why?",
+      "answer": "The 1973 Glasgow Govan by-election was held on 8 November 1973, following the death of Labour Party MP John Rankin, who had represented the constituency since 1955 and passed away on 8 October 1973."
+    },
+    {
+      "question": "Who were the main candidates in the 1973 Glasgow Govan by-election and which parties did they represent?",
+      "answer": "The main candidates were Harry Selby (Labour Party), John Mair (Conservative Party), Margo MacDonald (Scottish National Party), and Peter McMillan (Liberal Party). The Communist Party of Great Britain did not contest the election."
+    },
+    {
+      "question": "Why was Harry Selby's selection as the Labour candidate controversial?",
+      "answer": "Harry Selby's selection was controversial because some Labour members believed he was too old at 61 to begin a parliamentary career."
+    },
+    {
+      "question": "What was the historical voting pattern of the Glasgow Govan constituency before the 1973 by-election?",
+      "answer": "The seat had been solidly Labour-held since 1918, with the exception of a narrow Conservative victory in 1950."
+    },
+    {
+      "question": "How did the discovery of North Sea oil influence the SNP's performance in the 1973 Glasgow Govan by-election?",
+      "answer": "The discovery of North Sea oil increased nationalist sentiment, which contributed to the SNP's improved performance, despite having won only about 10% of the vote in the 1970 general election."
+    },
+    {
+      "question": "What role did Upper Clyde Shipbuilders play in the Conservative Party's campaign during the 1973 by-election?",
+      "answer": "The Conservative Party's support suffered after they refused a government loan to Upper Clyde Shipbuilders, a major local employer, which likely impacted their campaign performance."
+    },
+    {
+      "question": "Write a Python snippet to calculate the percentage of votes the SNP received in the 1970 general election in Glasgow Govan if the total votes were 50,000.",
+      "answer": "python\n# Given data\ntotal_votes_1970 = 50000\nsnps_vote_percentage_1970 = 10  # SNP won approximately 10% in 1970\n\n# Calculate SNP votes\nsnps_votes_1970 = (total_votes_1970 * snps_vote_percentage_1970) / 100\nprint(f\"SNP votes in 1970: {snps_votes_1970}\")\n\nOutput: `SNP votes in 1970: 5000.0`"
+    }
+  ]
+}

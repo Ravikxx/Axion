@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Hisashi_(architecture)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What are the two primary meanings of the term 'hisashi' in Japanese architecture?",
+      "answer": "In Japanese architecture, 'hisashi' (廂・庇) primarily refers to (1) the eaves of a roof, which project beyond the building's sides to provide weather protection, and (2) the area surrounding the 'moya' (core of a building) either fully or partially (on one, two, or three sides). In Zen Buddhist temples, it specifically denotes a 1 ken wide aisle-like space at the same level as the moya."
+    },
+    {
+      "question": "How is 'hisashi' used in Zen Buddhist temples, and what is its typical width?",
+      "answer": "In Zen Buddhist temples, 'hisashi' refers to a 1 ken wide aisle-like area that surrounds the 'moya' on one or more sides. It is typically at the same level as the moya and serves structural and functional purposes, such as reinforcing the building and providing covered passageways."
+    },
+    {
+      "question": "What structural purpose does the 'hisashi' serve in traditional Japanese architecture?",
+      "answer": "The 'hisashi' reinforces traditional Japanese buildings, which are based on a post-and-lintel system that is inherently weak against side motion. It adds an extra row of pillars and lintels, strengthening the moya's walls. This structural reinforcement can be present on one or all four sides of the building."
+    },
+    {
+      "question": "Provide an example of how the 'hisashi' is described in terms of building dimensions.",
+      "answer": "A building's dimensions can be described with the suffix 'men' (面, meaning surface) to indicate the presence of a 'hisashi.' For example, a '3 x 3 ken, 4 men butsuden' is a main hall surrounded by a 'hisashi' on all four sides, where 'ken' is a traditional Japanese unit of length."
+    },
+    {
+      "question": "What is the relationship between 'hisashi' and the 'moya' in the hip-and-gable roof style (irimoya-zukuri)?",
+      "answer": "In the hip-and-gable roof style (irimoya-zukuri), the gabled part of the roof typically covers the 'moya' (core), while the hipped part covers the 'hisashi' (surrounding area). The 'hisashi' can either be under the same roof as the moya or protrude with its own pent roof, as seen in many Zen main halls."
+    },
+    {
+      "question": "Write a Python function that converts a building's dimensions described with 'ken' and 'men' into a dictionary format. Example input: '3 x 3 ken, 4 men butsuden'.",
+      "answer": "python\ndef parse_building_dimensions(dim_str):\n    # Example input: '3 x 3 ken, 4 men butsuden'\n    parts = dim_str.split(',')\n    dimensions = parts[0].strip().replace('ken', '').strip()\n    men_count = int(parts[1].strip().split()[0])\n    \n    ken_parts = dimensions.split('x')\n    ken_x = int(ken_parts[0].strip())\n    ken_y = int(ken_parts[1].strip())\n    \n    return {\n        'ken_x': ken_x,\n        'ken_y': ken_y,\n        'men': men_count\n    }\n\n# Example usage:\nresult = parse_building_dimensions('3 x 3 ken, 4 men butsuden')\nprint(result)  # Output: {'ken_x': 3, 'ken_y': 3, 'men': 4}\n"
+    },
+    {
+      "question": "Explain how the 'hisashi' can be visually identified in a Zen main hall (butsuden).",
+      "answer": "In a Zen main hall (butsuden), the 'hisashi' can often be visually identified by its pent roof, which protrudes from the main roof and forms an aisle-like area surrounding the 'moya.' Alternatively, if the 'hisashi' is under the same roof as the moya, it may be less visible from the exterior but still structurally present as an extended roofed area."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/6th_Legislative_Council_of_Hong_Kong",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the duration of the Sixth Legislative Council of Hong Kong and why was it extended?",
+      "answer": "The Sixth Legislative Council of Hong Kong ran from 1 October 2016 to 31 December 2021, lasting five years and three months. The term was originally set to end on 30 September 2020 but was extended by the National People's Congress Standing Committee (NPCSC) due to the postponement of the 2020 Legislative Council election."
+    },
+    {
+      "question": "Which political groups held the majority in the Sixth Legislative Council and what was the significance of their control?",
+      "answer": "The pro-Beijing camp retained the majority in the council, with the Democratic Alliance for the Betterment and Progress of Hong Kong (DAB) as the largest party. The anti-establishment camp, including pan-democrats and localists, secured the majority in geographical constituencies and held a crucial one-third minority, which allowed them to veto government proposals on constitutional reform."
+    },
+    {
+      "question": "What event led to the disqualification of Youngspiration legislators Yau Wai-ching and Sixtus Leung in 2016?",
+      "answer": "Yau Wai-ching and Sixtus Leung were disqualified by the court on 15 November 2016 over their oath-taking manner at the inauguration of the council. Their disqualification left two vacant seats in the 70-member council."
+    },
+    {
+      "question": "How did the Carrie Lam administration's introduction of the Fugitive Offenders and Mutual Legal Assistance in Criminal Matters Legislation (Amendment) Bill 2019 impact the Legislative Council?",
+      "answer": "The bill sparked significant clashes between pro-Beijing and pro-democracy legislators. It later turned into a series of massive protests when hundreds of protesters stormed and vandalized the Legislative Council Complex on 1 July 2019. The continued protests led to the bill's downfall on 4 September 2019."
+    },
+    {
+      "question": "What was the outcome of the NPCSC's decision on 31 July 2020 regarding the Legislative Council election?",
+      "answer": "Chief Executive Carrie Lam invoked the Emergency Regulations Ordinance to postpone the September 2020 general election for a year, citing COVID-19 resurgence. The NPCSC backed this decision, and in November 2021, it disqualified four pro-democracy legislators, triggering the resignation of the remaining 15 pro-democracy legislators, leaving 27 vacancies out of 70 seats."
+    },
+    {
+      "question": "Write a Python snippet to calculate the number of vacant seats in the Legislative Council after the mass resignations in November 2021.",
+      "answer": "python\n# Initial total seats\ntotal_seats = 70\n# Seats vacated due to disqualification in November 2021\ndisqualified_seats = 4\n# Seats vacated due to resignations of remaining pro-democracy legislators\nresigned_seats = 15\n# Total vacant seats after mass resignations\ntotal_vacant_seats = disqualified_seats + resigned_seats\nprint(f'Total vacant seats: {total_vacant_seats}')  # Output: Total vacant seats: 19\n"
+    },
+    {
+      "question": "What were the key changes introduced by the NPCSC in March 2021 regarding the electoral system in Hong Kong?",
+      "answer": "In March 2021, the NPCSC unveiled drastic electoral overhauls to the Chief Executive and Legislative Council, bypassing the Legislative Council's power to amend the constitution. The amendments to Annex I and II of the Basic Law were passed, leading to the Improving Electoral System (Consolidated Amendments) Bill 2021, which was approved by the pro-Beijing dominated Legislative Council with a 40-to-2 vote on 27 May 2021."
+    }
+  ]
+}

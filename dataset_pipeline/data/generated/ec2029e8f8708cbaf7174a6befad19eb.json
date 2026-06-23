@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Halvdan_Aarsrud",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When and where was Halvdan Aarsrud born?",
+      "answer": "Halvdan Aarsrud was born on 29 September 1878 in Våler Municipality, Hedmark, Norway."
+    },
+    {
+      "question": "What were the key political positions held by Halvdan Aarsrud?",
+      "answer": "Halvdan Aarsrud served as mayor of Våler Municipality (1913–1918), a member of the municipal council (1913–1925), a member of the Standing Committee on Forestry and Water Resources (1918–1921), and a deputy board member of the Norwegian Water Resources and Energy Agency (1920–1923). He also became a Member of Parliament (MP) in 1916 after replacing the deceased Ivar Hvamstad."
+    },
+    {
+      "question": "How did Halvdan Aarsrud become a Member of Parliament?",
+      "answer": "Aarsrud replaced the deceased Labour Party representative Ivar Hvamstad in 1916, who had won the 1915 election but died in office. Aarsrud then ran for re-election in 1918 and won with 3,952 votes."
+    },
+    {
+      "question": "What was Halvdan Aarsrud's educational background?",
+      "answer": "He completed primary school and county school, followed by graduation from Jønsberg Agricultural School."
+    },
+    {
+      "question": "Write a Python function that calculates the total number of years Halvdan Aarsrud served in political roles (counting mayor, MP, and committee memberships).",
+      "answer": "python\ndef calculate_political_service_years():\n    years_as_mayor = 1918 - 1913  # 5 years\n    years_as_mp = 1921 - 1916  # 5 years (assuming full term until 1921)\n    years_as_deputy = 1923 - 1920  # 3 years\n    total_years = years_as_mayor + years_as_mp + years_as_deputy\n    return total_years\n\nprint(calculate_political_service_years())  # Output: 13\n"
+    },
+    {
+      "question": "What were Halvdan Aarsrud's family connections to politics?",
+      "answer": "His father, Hermann Hansen Aarsrud (1837–1927), was both a farmer and politician, indicating a family tradition in public service."
+    },
+    {
+      "question": "How did Halvdan Aarsrud balance his roles as a farmer and politician?",
+      "answer": "He worked as a farmer in Våler, first at Nervåle and later at Sole, while simultaneously holding political positions such as mayor and bailiff. From 1918, he also served as the director of the local savings bank, demonstrating his ability to manage multiple professional roles."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Bon_Scott",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was Ronald Belford 'Bon' Scott and what role did he play in AC/DC?",
+      "answer": "Ronald Belford 'Bon' Scott was an Australian singer and the second lead vocalist and lyricist of the hard rock band AC/DC from 1974 until his death in 1980. He joined the band after replacing original lead singer Dave Evans in 1974 and contributed to their early success during the 1970s."
+    },
+    {
+      "question": "How did Bon Scott's early life influence his musical career?",
+      "answer": "Bon Scott was born in Forfar, Scotland, and moved to Australia with his family in 1952. He spent his early years in Kirriemuir before relocating to Melbourne, Fremantle, and later Adelaide. His early exposure to music in Australia laid the foundation for his career, as he formed his first band, the Spektors, in 1964."
+    },
+    {
+      "question": "Can you list the albums Bon Scott performed on with AC/DC?",
+      "answer": "Bon Scott performed on the following seven albums with AC/DC: High Voltage (1975, Oceania only release), T.N.T. (1975, Oceania only release), High Voltage (1976, first international release), Dirty Deeds Done Dirt Cheap (1976, not released in the U.S. until 1981), Let There Be Rock (1977), Powerage (1978), and Highway to Hell (1979)."
+    },
+    {
+      "question": "What was AC/DC's commercial breakthrough album and when was it released?",
+      "answer": "AC/DC's commercial breakthrough album was *Highway to Hell*, released in 1979. It reached the top 20 in the United States and marked a significant increase in the band's international popularity."
+    },
+    {
+      "question": "How did Bon Scott's death impact AC/DC, and who replaced him?",
+      "answer": "Bon Scott died on 19 February 1980 after a night out in London. AC/DC briefly considered disbanding but recruited Brian Johnson, the vocalist of the British glam rock band Geordie, as his replacement. The band's subsequent album, *Back in Black*, released five months later, was a tribute to Scott and became one of the best-selling albums of all time."
+    },
+    {
+      "question": "What were Bon Scott's rankings in 'Greatest Frontmen' and 'Heavy Metal Vocalists' lists?",
+      "answer": "In the July 2004 issue of *Classic Rock*, Bon Scott was ranked number one in a list of the '100 Greatest Frontmen of All Time'. In 2006, *Hit Parader* ranked him fifth on their list of the '100 Greatest Heavy Metal Vocalists of all time'."
+    },
+    {
+      "question": "Write a Python function that calculates the number of albums Bon Scott performed on with AC/DC.",
+      "answer": "python\ndef count_bon_scott_albums():\n    albums = [\n        \"High Voltage (1975, Oceania only release)\",\n        \"T.N.T. (1975, Oceania only release)\",\n        \"High Voltage (1976, first international release)\",\n        \"Dirty Deeds Done Dirt Cheap (1976)\",\n        \"Let There Be Rock (1977)\",\n        \"Powerage (1978)\",\n        \"Highway to Hell (1979)\"\n    ]\n    return len(albums)\n\n# Example usage:\nprint(count_bon_scott_albums())  # Output: 7\n"
+    }
+  ]
+}

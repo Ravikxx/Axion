@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Aliʻi_Drive",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is Aliʻi Drive and where is it located?",
+      "answer": "Aliʻi Drive is the main street of Kailua-Kona, situated on the western side of the Island of Hawaii, United States. It is a coastal road that runs along the Bay of Kailua and spans 12.5 miles from the intersection of Kuakini Highway (north of Kailua Pier) to the intersection of Hawaii Belt Road in Captain Cook."
+    },
+    {
+      "question": "How long was Aliʻi Drive before its 2013 expansion, and what changed in that year?",
+      "answer": "Before 2013, Aliʻi Drive was 5.9 miles long, ending at the Keauhou Shopping Center. In 2013, the Hawaii County Council extended Aliʻi Drive by 6.6 miles by renaming the contiguous Mamalahoa Bypass Road to Aliʻi Drive, bringing its total length to 12.5 miles."
+    },
+    {
+      "question": "What notable historical sites can be found along Aliʻi Drive in Kailua Kona?",
+      "answer": "Aliʻi Drive is home to several historical sites, including Ahuena Heiau (where King Kamehameha spent his retirement), Hulihee Palace (used by the Hawaiian royal family), Mokuaikaua Church (the first church in Hawaii), and St. Michael's Catholic Church."
+    },
+    {
+      "question": "Describe the northern section of Aliʻi Drive in Kailua Kona.",
+      "answer": "The northern part of Aliʻi Drive in Kailua Kona is the busiest section. It features Kailua Pier, where cruise ship passengers disembark, as well as souvenir shops, local businesses, a farmers' market, and resort hotels like King Kamehameha's Kona Beach Hotel."
+    },
+    {
+      "question": "How does the southern part of Aliʻi Drive differ from the northern part?",
+      "answer": "The southern section of Aliʻi Drive, south of Keauhou, is largely rural and passes through agricultural lands and cattle ranches, contrasting with the tourist-heavy and commercial northern section."
+    },
+    {
+      "question": "What is the significance of Mokuaikaua Church along Aliʻi Drive?",
+      "answer": "Mokuaikaua Church is historically significant as it was the first church established in Hawaii, reflecting the early influence of Christianity in the region."
+    },
+    {
+      "question": "Write a Python code snippet to calculate the total length of Aliʻi Drive after the 2013 expansion, given its original length and the extension.",
+      "answer": "python\noriginal_length = 5.9  # miles\nextension = 6.6         # miles\nnew_length = original_length + extension\nprint(f\"Total length of Aliʻi Drive after 2013: {new_length} miles\")\n\nOutput: `Total length of Aliʻi Drive after 2013: 12.5 miles`"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Britannia_Secondary_School",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Where is Britannia Community Secondary School located?",
+      "answer": "Britannia Community Secondary School is located in the Grandview–Woodland neighbourhood on the east side of Vancouver, British Columbia, Canada."
+    },
+    {
+      "question": "What is the block schedule program at Britannia Secondary School?",
+      "answer": "Britannia Secondary School uses a district-wide block schedule program that alternates four blocks every two days. Students are subject to eight different blocks in total."
+    },
+    {
+      "question": "When was Britannia Community Secondary School founded and when did it move to its current building?",
+      "answer": "Britannia Community Secondary School was founded in 1908 as the second high school in Vancouver. The first classes were held in the Admiral Seymour Elementary School building in September 1908. The school moved to the partially completed Britannia building in 1910."
+    },
+    {
+      "question": "What are the school colors and motto of Britannia Secondary School?",
+      "answer": "The school colors are red, green, and white, and the school motto is 'Per Vias Rectas'."
+    },
+    {
+      "question": "How many International Baccalaureate (IB) Diploma Programme courses does Britannia Secondary School offer?",
+      "answer": "Britannia Secondary School offers 19 International Baccalaureate (IB) Diploma Programme courses."
+    },
+    {
+      "question": "What facilities are located within the Britannia community site?",
+      "answer": "The Britannia community site includes an elementary school, public library, skating rink, fitness facility, and swimming pool."
+    },
+    {
+      "question": "Write a Python code snippet to calculate the number of courses offered at Britannia Secondary School, excluding IB courses.",
+      "answer": "python\n# Total courses at Britannia Secondary School\ntotal_courses = 200\nib_courses = 19\nother_courses = total_courses - ib_courses\nprint(f\"Number of non-IB courses: {other_courses}\")\n\nThe output will be: 'Number of non-IB courses: 181'."
+    }
+  ]
+}

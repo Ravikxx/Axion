@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Dharmaskandha",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the Dharmaskandha and which Buddhist tradition does it belong to?",
+      "answer": "The Dharmaskandha (Sanskrit: धर्मस्कन्ध; Vietnamese: Pháp uẩn) is one of the seven Sarvastivada Abhidharma Buddhist scriptures. It is titled 'Collection of Dhammas' and serves as a foundational text in the Sarvastivada tradition, which was an early Buddhist school."
+    },
+    {
+      "question": "Who are the claimed authors of the Dharmaskandha according to different sources?",
+      "answer": "The Dharmaskandha is attributed to Sariputra in Sanskrit and Tibetan sources, while Chinese sources attribute it to Maudgalyayana. The Chinese edition was translated into Chinese by Xuanzang and appears as T26, No. 1537 in the Buddhist canon."
+    },
+    {
+      "question": "How is the structure of the Dharmaskandha organized?",
+      "answer": "The Dharmaskandha begins with a matrka (summary) listing 21 topics. The first 15 topics focus on spiritual practice and its fruits, the 16th covers miscellaneous issues, topics 17–20 enumerate the ayatanas, dhatus, and skandhas as encompassing all dharmas, and the 21st addresses dependent origination."
+    },
+    {
+      "question": "What historical evidence suggests the Dharmaskandha predates the split between Sarvastivada and Pāli Abhidharma traditions?",
+      "answer": "Eduard Frauwallner concluded that the Dharmaskandha predates the split between Sanskrit and Pāli Abhidharma traditions due to its correlation with the Pāli Vibhanga. Yin Shun further noted its mention in the Mulasarvastivada Vinaya-vyakaraṇa, indicating an early inclusion in the Sarvastivada canon."
+    },
+    {
+      "question": "What three points does Yin Shun cite to argue that the Dharmaskandha is sourced from pre-sectarian Abhidharma?",
+      "answer": "Yin Shun cites: (1) the Dharmaskandha’s similar analysis of rupa (form) to the Sariputta Abhidhamma and Dhammapariyaya, (2) its lack of mention of avijnapti-rupa, which appears in the Sariputta Abhidhamma, and (3) its emphasis on the five indriya (faculties) and five bala (powers) as central to the spiritual path."
+    },
+    {
+      "question": "Write a Python code snippet to parse the 21 topics listed in the Dharmaskandha.",
+      "answer": "Here is a Python code snippet to represent the 21 topics in the Dharmaskandha:\n\npython\ntopics = {\n    1: \"Spiritual practice (path)\",\n    2: \"Realization of spiritual fruits\",\n    # ... (topics 3-15 similarly defined for spiritual practice)\n    15: \"Fruits of spiritual realization\",\n    16: \"Miscellaneous issues\",\n    17: \"Enumeration of ayatanas (sense bases)\",\n    18: \"Enumeration of dhatus (elements)\",\n    19: \"Enumeration of skandhas (aggregates)\",\n    20: \"All-encompassing dharmas\",\n    21: \"Dependent origination\"\n}\n\nEach topic can be accessed via its index, e.g., `topics[1]` for the first topic."
+    },
+    {
+      "question": "Why does the presence of a matrka (summary) at the beginning of the Dharmaskandha suggest its antiquity?",
+      "answer": "The presence of a matrka (summary) at the beginning of the Dharmaskandha suggests its antiquity because these summaries were supposedly only assigned by the Buddha himself, indicating a very early composition or compilation period. This aligns with the text’s pre-sectarian origins."
+    }
+  ]
+}

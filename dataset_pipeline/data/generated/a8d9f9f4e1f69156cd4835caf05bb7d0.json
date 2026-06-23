@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/k0msenapati/building-a-dashboard-people-actually-want-to-use-5al2",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What is the main purpose of the intranet dashboard built for the fictional 'Acme' company?",
+      "answer": "The main purpose of the intranet dashboard is to provide a dynamic and responsive workspace experience that feels fresh and engaging. It includes real-time elements like weather and time, company news sections, and personal schedules (calendar and tasks) to keep employees informed and productive."
+    },
+    {
+      "question": "What are the key sections included in the Acme company intranet dashboard?",
+      "answer": "The dashboard includes the following key sections: a welcome screen with an office photo, current weather, and time; company updates, executive updates, learning announcements, and industry news; personal calendar; and personal tasks."
+    },
+    {
+      "question": "How was the sidebar and top navbar made responsive in the intranet dashboard?",
+      "answer": "The developer moved the user's profile icon from the top navbar to the sidebar in the desktop view to improve clarity and cleanliness. This adjustment ensured the layout remained user-friendly across different screen sizes while maintaining functionality."
+    },
+    {
+      "question": "What technology was used to build the cards layout in the intranet dashboard?",
+      "answer": "The cards layout in the intranet dashboard was built using Bootstrap, which simplified the development process and ensured a consistent, responsive design."
+    },
+    {
+      "question": "Can you provide the GitHub repository link for the Acme company intranet dashboard?",
+      "answer": "Yes, the GitHub repository for the project can be found at: https://github.com/k0msenapati/company-intranet"
+    },
+    {
+      "question": "How can someone access a live demo of the intranet dashboard?",
+      "answer": "A live demo of the intranet dashboard is available on GitHub Pages at: https://k0msenapati.github.io/company-intranet/"
+    },
+    {
+      "question": "What was the inspiration behind the layout of the main dashboard in the intranet project?",
+      "answer": "The inspiration for the main dashboard layout came from various templates, including designs from Dribbble and Axero. The developer combined these ideas to create a card-based layout that was built layer by layer, starting with the background office photo."
+    }
+  ]
+}

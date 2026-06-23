@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Dahlan_Iskan",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who is Dahlan Iskan and what are his notable positions in Indonesian government and media?",
+      "answer": "Dahlan Iskan is an Indonesian businessman and politician born on 17 August 1951 in Magetan. He served as the CEO of Jawa Pos Group, a major Indonesian newspaper publisher. In government roles, he was the CEO of Indonesia's State Electricity Company (PLN) from 23 December 2009 to 19 October 2011, and later served as Indonesia's Minister of State-Owned Enterprises from October 2011 to October 2014."
+    },
+    {
+      "question": "What was Dahlan Iskan's management style as Minister of State-Owned Enterprises, and why was it controversial?",
+      "answer": "Dahlan Iskan was known for an unorthodox, personalized approach to addressing bureaucratic inefficiencies in state-owned enterprises (SOEs). His style included threatening to expose alleged payments made by SOEs to members of parliament to influence commission hearings. This approach drew criticism from parliamentarians and made him a controversial figure."
+    },
+    {
+      "question": "What environmental initiative did Dahlan Iskan support during his tenure as Minister of State-Owned Enterprises?",
+      "answer": "Dahlan Iskan supported the development of an environmentally friendly car in Indonesia. Notably, he often drove one of these electric cars himself, though he became widely known after crashing one in a much-publicized incident."
+    },
+    {
+      "question": "What is the title of Dahlan Iskan's biography of Karmaka Surjaudaja, and what institution does Surjaudaja's bank have ties to?",
+      "answer": "Dahlan Iskan authored a biography titled 'No such thing as Can't,' which details the life of Karmaka Surjaudaja, the founder of Bank OCBC NISP in Indonesia. Bank OCBC NISP has close ties with OCBC (Overseas-Chinese Banking Corporation)."
+    },
+    {
+      "question": "What did Dahlan Iskan do after completing his term as Minister of State-Owned Enterprises?",
+      "answer": "After leaving office, Dahlan Iskan traveled to various countries to study and gather ideas on sustainable energy. He documented his observations and analyses and shared them through reports published in JPNN, a major Indonesian news outlet."
+    },
+    {
+      "question": "What legal challenges did Dahlan Iskan face, and what was the outcome of his corruption case?",
+      "answer": "In 2017, Dahlan Iskan was found guilty of corruption by Surabaya’s anticorruption court. However, he successfully appealed the verdict, first to the provincial court of East Java and later to the Supreme Court of Indonesia, where he was ultimately found not guilty."
+    },
+    {
+      "question": "Write a Python code snippet that checks if a given year falls within Dahlan Iskan's tenure as CEO of PLN.",
+      "answer": "Here is a simple Python function to verify if a given year falls within Dahlan Iskan's tenure as CEO of PLN (23 December 2009 to 19 October 2011):\npython\ndef is_tenure_year(year):\n    start_year = 2009\n    end_year = 2011\n    return start_year <= year <= end_year\n\n# Example usage:\nprint(is_tenure_year(2010))  # Output: True\nprint(is_tenure_year(2012))  # Output: False\n"
+    }
+  ]
+}

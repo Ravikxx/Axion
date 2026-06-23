@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Grammar_school",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the original purpose of medieval grammar schools in the UK?",
+      "answer": "The original purpose of medieval grammar schools was to teach Latin, serving as institutions focused on classical language education."
+    },
+    {
+      "question": "How did the curriculum of grammar schools evolve over time?",
+      "answer": "Over time, the curriculum of grammar schools expanded from teaching Latin to include Ancient Greek, English, other European languages, natural sciences, mathematics, history, geography, art, and other subjects."
+    },
+    {
+      "question": "What was the Tripartite System in England and Wales, and when did it operate?",
+      "answer": "The Tripartite System was a state-funded secondary education model in England and Wales from the mid-1940s to the late 1960s. It divided students into three tiers based on academic selection, with grammar schools being one of them."
+    },
+    {
+      "question": "What changes occurred to grammar schools after the 1960s in most local education authorities?",
+      "answer": "After the 1960s, most local education authorities transitioned to non-selective comprehensive schools. Some grammar schools became fully independent fee-paying institutions, while others were abolished, merged with secondary modern schools, or retained 'grammar school' in their names despite changes."
+    },
+    {
+      "question": "Which regions in the UK still have grammar schools today, and what is their current status?",
+      "answer": "Grammar schools continue to exist in Northern Ireland as part of its state-funded secondary education system. In England and Wales, some state grammar schools have academy status, making them independent of local education authorities, while others remain under the Tripartite System in certain areas."
+    },
+    {
+      "question": "Provide a Python code snippet to check if a given year falls within the operational period of the Tripartite System in England and Wales.",
+      "answer": "python\ndef is_tripartite_period(year):\n    return 1945 <= year <= 1969\n\n# Example usage:\nprint(is_tripartite_period(1950))  # Output: True\nprint(is_tripartite_period(1970))  # Output: False\n"
+    },
+    {
+      "question": "What distinguishes state grammar schools with academy status from traditional grammar schools?",
+      "answer": "State grammar schools with academy status are independent of local education authorities (LEAs), giving them more autonomy over their operations and funding compared to traditional grammar schools, which are typically under LEA control."
+    }
+  ]
+}

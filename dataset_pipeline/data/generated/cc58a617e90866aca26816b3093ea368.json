@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Charles_Cornwallis",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What was Charles Cornwallis's primary role in the American War of Independence?",
+      "answer": "Charles Cornwallis was a leading British general officer during the American War of Independence, commanding British forces in multiple key battles. He is most notably remembered for his surrender to a combined Franco-American force at the Siege of Yorktown in 1781, which effectively ended major hostilities in North America."
+    },
+    {
+      "question": "How did Charles Cornwallis contribute to the Act of Union between Great Britain and Ireland?",
+      "answer": "As Lord Lieutenant and Commander-in-chief of Ireland from 1798 to 1801, Cornwallis played a crucial role in overseeing the response to the 1798 Irish Rebellion and the French invasion. He was instrumental in bringing about the Union of Great Britain and Ireland, which was enacted in 1801."
+    },
+    {
+      "question": "What were the key reforms enacted by Charles Cornwallis during his tenure as Governor-General of India?",
+      "answer": "As Governor-General and Commander-in-Chief in India (1786–1793), Cornwallis implemented significant reforms, including the Cornwallis Code, which introduced legal and administrative changes. He also enacted the Permanent Settlement, a land taxation system that aimed to stabilize revenue collection and reduce corruption by fixing land revenue demands for long periods."
+    },
+    {
+      "question": "Describe Charles Cornwallis's military career before the American War of Independence.",
+      "answer": "Cornwallis joined the British Army in 1757 and saw action during the Seven Years' War. By 1762, he had succeeded to his father’s peerage and entered the House of Lords. His early military career included service in campaigns during the Seven Years' War, though he did not yet hold a command role in America."
+    },
+    {
+      "question": "What was the Cornwallis Code, and what reforms did it introduce in India?",
+      "answer": "The Cornwallis Code was a set of legal and administrative reforms introduced by Charles Cornwallis during his tenure as Governor-General of India. It aimed to reduce corruption and inefficiency in the East India Company’s administration by establishing clear rules for governance, land revenue collection, and judicial processes. The code also promoted the use of English law in local courts and restricted the power of local zamindars (landholders)."
+    },
+    {
+      "question": "How did Charles Cornwallis's disagreements with Sir Henry Clinton affect his military campaigns in America?",
+      "answer": "Cornwallis frequently clashed with his superior, Sir Henry Clinton, over strategy and operational decisions during the American War of Independence. These disagreements contributed to poor coordination and ultimately weakened British efforts in the Southern colonies. The culmination of these tensions was Cornwallis’s surrender at Yorktown in 1781, where his isolation from support played a decisive role in the British defeat."
+    },
+    {
+      "question": "Write a Python snippet to calculate the age of Charles Cornwallis at the time of his death.",
+      "answer": "Here is a Python code snippet to calculate Cornwallis's age at death:\n\npython\ndef calculate_age(birth_year, death_year, birth_month=12, death_month=10, birth_day=31, death_day=5):\n    age = death_year - birth_year\n    if (death_month, death_day) < (birth_month, birth_day):\n        age -= 1\n    return age\n\nbirth_year = 1738\ndeath_year = 1805\nage = calculate_age(birth_year, death_year)\nprint(f\"Charles Cornwallis was {age} years old at the time of his death.\")\n\n\nThis code correctly computes that Charles Cornwallis was 66 years old when he died on 5 October 1805."
+    }
+  ]
+}

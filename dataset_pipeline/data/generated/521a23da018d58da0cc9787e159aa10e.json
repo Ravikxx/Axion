@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Ahab_(band)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When and where was Ahab founded, and who were its original members?",
+      "answer": "Ahab, a German funeral doom metal band, was founded in 2004 by Christian Hector and Daniel Droste, both guitarists from the band Midnattsol. The band's name is inspired by Captain Ahab, a character from Herman Melville's 1851 novel *Moby-Dick*, and its thematic and lyrical content also draws from the book."
+    },
+    {
+      "question": "What was Ahab's first recorded release and when did it debut?",
+      "answer": "Ahab's first recorded release was the single *The Stream*, recorded in late 2004. Their debut demo, *The Oath*, was released on 15 April 2005 after several months of rehearsal. The demo was limited to 30 hand-numbered copies and included three tracks: the single *The Stream*, two new songs, and an outro."
+    },
+    {
+      "question": "Name Ahab's first full-length album and describe its release process, including key collaborators.",
+      "answer": "Ahab's first full-length album was *The Call of the Wretched Sea*, released on 15 November 2006 under Napalm Records. The album's creation involved new band member Stephan Adolph and session drummer Cornelius Althammer."
+    },
+    {
+      "question": "Why did bassist Stephan Adolph leave Ahab in 2008, and who replaced him?",
+      "answer": "Stephan Adolph left Ahab in 2008 due to personal differences. He was quickly replaced by Stephan Wandernoth, a member of the band Dead Eyed Sleeper, to which drummer Cornelius Althammer also belonged."
+    },
+    {
+      "question": "What is Ahab's 2015 album *The Boats of the \"Glen Carrig\"* based on, and what musical theme does it explore?",
+      "answer": "*The Boats of the \"Glen Carrig\"*, released on 28 August 2015, is a concept album based on William Hope Hodgson's 1907 novel of the same name. The album explores themes of existential dread and the abyssal nature of the sea, aligning with the band's signature funeral doom metal style."
+    },
+    {
+      "question": "Write a Python snippet to scrape Ahab's discography from a music database API and categorize their albums by release year.",
+      "answer": "python\nimport requests\n\n# Mock API endpoint - replace with actual API URL\ndef get_ahab_albums():\n    api_url = \"https://api.musicdb.example.com/bands/Ahab/albums\"\n    response = requests.get(api_url)\n    if response.status_code == 200:\n        albums = response.json()\n        discography = {}\n        for album in albums:\n            year = album['release_year']\n            if year not in discography:\n                discography[year] = []\n            discography[year].append(album['title'])\n        return discography\n    else:\n        return None\n\n# Example usage\nahab_albums = get_ahab_albums()\nprint(ahab_albums)\n"
+    },
+    {
+      "question": "How many studio albums has Ahab released to date, and what was their most recent one?",
+      "answer": "As of January 2025, Ahab has released five studio albums. Their most recent studio album is *The Coral Tombs*, released on 13 January 2023. The album features a concept narrative centered on Captain Nemo and Professor Aronnax from Jules Verne's *Twenty Thousand Leagues Under the Sea*, exploring themes of human existentialism and the depths of the ocean."
+    },
+    {
+      "question": "Which music gear manufacturers currently endorse Ahab, and what does this indicate about the band's professional status?",
+      "answer": "Ahab is currently endorsed by several music gear manufacturers, including Neunaber Audio, LICHTLÆRM Audio, and ICE Stix. This endorsement reflects the band's professional recognition and industry connections within the metal music scene."
+    }
+  ]
+}

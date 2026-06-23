@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/2009_Abierto_Mexicano_Telcel",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What type of surface was used for the 2009 Abierto Mexicano Telcel tennis tournament?",
+      "answer": "The 2009 Abierto Mexicano Telcel was played on outdoor clay courts."
+    },
+    {
+      "question": "Which edition of the men's tournament was the 2009 Abierto Mexicano Telcel, and what category did it belong to in the 2009 ATP World Tour?",
+      "answer": "The 2009 Abierto Mexicano Telcel was the 16th edition of the men's tournament and was part of the 500 series of the 2009 ATP World Tour."
+    },
+    {
+      "question": "Where and when were the 2009 Abierto Mexicano Telcel tennis events held?",
+      "answer": "Both the men's and women's events took place at the Fairmont Acapulco Princess in Acapulco, Mexico, from February 23 through February 28, 2009."
+    },
+    {
+      "question": "List three notable male players who participated in the 2009 Abierto Mexicano Telcel men's singles draw.",
+      "answer": "Three notable male players were David Nalbandian (2008 runner-up), Gaël Monfils (semifinalist in Doha and Rotterdam), and Nicolás Almagro (defending champion)."
+    },
+    {
+      "question": "What were the categories of the 2009 Abierto Mexicano Telcel in both the men's and women's tours?",
+      "answer": "The men's event was part of the 500 series of the 2009 ATP World Tour, while the women's event was in the International category of tournaments on the 2009 WTA Tour."
+    },
+    {
+      "question": "Which female players in the 2009 Abierto Mexicano Telcel women's singles draw had previously won this tournament?",
+      "answer": "Flavia Pennetta had won the tournament twice, and María José Martínez Sánchez won it in Bogotá earlier in 2009."
+    },
+    {
+      "question": "Write a Python code snippet to extract and print the names of all the male players mentioned in the 2009 Abierto Mexicano Telcel men's singles draw.",
+      "answer": "python\nplayers = [\n    'David Nalbandian', 'Gaël Monfils', 'Nicolás Almagro', \n    'Tommy Robredo', 'Carlos Moyá', 'Albert Montañés', \n    'José Acasuso', 'Juan Mónaco'\n]\n\nfor player in players:\n    print(player)\n"
+    }
+  ]
+}

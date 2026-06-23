@@ -1,0 +1,38 @@
+{
+  "source_url": "https://dev.to/copilotkit/heres-how-to-build-fullstack-agent-apps-gemini-copilotkit-langgraph-15jb",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What are the two practical AI agents being built in this project, and what are their primary functions?",
+      "answer": "The project builds two practical AI agents: 1) **Post Generator Agent** which creates LinkedIn/X posts by leveraging live Google Search results to generate relevant and timely content. 2) **Stack Analyzer Agent** which inspects public GitHub repositories, analyzes their metadata, README files, and code manifests, and infers the technology stack used in the repository."
+    },
+    {
+      "question": "How does the architecture of the Post Generator Agent work step-by-step from user input to final output?",
+      "answer": "The Post Generator Agent follows this workflow: 1) User types a prompt in the Next.js UI (CopilotChat), which sends a POST request to the Next.js API route (`/api/copilotkit`). 2) The Next.js API forwards the request to the FastAPI backend. 3) The FastAPI backend uses a LangGraph workflow to process the request through the Post Generator graph nodes. 4) The graph nodes interact with Google Gemini and perform web searches. 5) Streaming responses and tool logs are sent back through the chain. 6) The frontend UI renders the chat, tool logs, and final postcards."
+    },
+    {
+      "question": "List the core technologies and frameworks used in this project, including their roles.",
+      "answer": "The project uses the following core technologies: 1) **Next.js 15** (frontend framework with TypeScript) for building the user interface. 2) **CopilotKit SDK** (`@copilotkit/react-core`, `@copilotkit/runtime`, `@copilotkit/react-ui`) to embed agents into the UI and manage agent workflows. 3) **FastAPI & Uvicorn** as the backend framework for serving agents via APIs. 4) **LangGraph (StateGraphs)** to create stateful agent workflows. 5) **Google Gemini** (via `google-genai` SDK or LangChain adapter) as the LLM for reasoning and text generation. 6) **Pydantic** for structured JSON output from tools."
+    },
+    {
+      "question": "What is the purpose of the `LayoutProvider` in the Next.js frontend, and where is it integrated?",
+      "answer": "The `LayoutProvider` in `frontend/app/contexts/LayoutContext.tsx` sets up a React context to manage layout state and agent selection. It uses `usePathname()` to detect the current route (e.g., `/post-generator` or `/stack-analyzer`) and determines which agent should be active. It is integrated into the root layout file (`layout.tsx`) where the `<LayoutProvider>` wraps the entire application, ensuring consistent state management across the UI."
+    },
+    {
+      "question": "How would you set up the project environment to start developing these agents locally? Provide the steps and commands.",
+      "answer": "To set up the project locally: 1) Clone the repository: `git clone https://github.com/CopilotKit/CopilotKit-Deepmind.git` and `cd copilotkit-deepmind`. 2) Add necessary API keys in the `.env` files for both `agent` and `frontend` directories: `GOOGLE_API_KEY=your_gemini_key_here`. 3) Install frontend dependencies: `pnpm i` inside the `frontend` directory. 4) Start the backend FastAPI server (assuming Uvicorn is configured): `uvicorn agent.main:app --reload`. 5) Start the Next.js frontend: `pnpm run dev`. The app will be accessible at `http://localhost:3000`."
+    },
+    {
+      "question": "Write a Python code snippet using FastAPI to expose the Post Generator and Stack Analyzer agents via a unified API endpoint.",
+      "answer": "python\nfrom fastapi import FastAPI\nfrom copilotkit.runtime import LangGraphAgent\nfrom agent.posts_generator_agent import post_generator_workflow\nfrom agent.stack_agent import stack_analyzer_workflow\n\napp = FastAPI()\n\n# Initialize agents\npost_generator_agent = LangGraphAgent(workflow=post_generator_workflow)\nstack_analyzer_agent = LangGraphAgent(workflow=stack_analyzer_workflow)\n\n# Register agents via FastAPI\n@app.post(\"/copilotkit/post-generator\")\nasync def generate_post(user_prompt: str):\n    result = await post_generator_agent.run(user_prompt)\n    return {\"status\": \"success\", \"result\": result}\n\n@app.post(\"/copilotkit/stack-analyzer\")\nasync def analyze_stack(github_url: str):\n    result = await stack_analyzer_agent.run(github_url)\n    return {\"status\": \"success\", \"result\": result}\n\n@app.get(\"/\")\ndef health_check():\n    return {\"status\": \"agents running\"}\n"
+    },
+    {
+      "question": "Explain the role of LangGraph in this project and how it enables stateful agent workflows.",
+      "answer": "LangGraph enables the creation of **stateful agent workflows** by modeling agent interactions as graphs where nodes represent tasks, tools, or decisions, and edges define the flow of data and control. In this project, LangGraph is used to: 1) Define workflows like the Post Generator and Stack Analyzer as graphs. 2) Maintain state across multiple steps (e.g., gathering context, analyzing, generating output). 3) Orchestrate tool usage, such as web searches or GitHub API calls. 4) Stream responses and logs back to the frontend in real time. This allows agents to perform complex, multi-step tasks while preserving context and enabling asynchronous interactions."
+    },
+    {
+      "question": "What are the key directories and files in the project structure, and what is their purpose?",
+      "answer": "The project structure is organized as follows: 1) `frontend/` contains the Next.js UI and API routes. Key files: `app/layout.tsx` (wraps app with `<CopilotKit>`), `app/post-generator/page.tsx` (Post Generator UI), `app/stack-analyzer/page.tsx` (Stack Analyzer UI), `app/api/copilotkit/route.ts` (CopilotKit router), and `components/` for shared UI elements. 2) `agent/` holds the FastAPI backend and LangGraph agents. Key files: `main.py` (registers agents), `posts_generator_agent.py` and `stack_agent.py` (workflows), `prompts.py` (shared prompts), and `agent.py` (core agent logic). The `README.md` documents setup and usage. This separation ensures clear responsibilities between frontend, backend, and agent logic."
+    }
+  ]
+}

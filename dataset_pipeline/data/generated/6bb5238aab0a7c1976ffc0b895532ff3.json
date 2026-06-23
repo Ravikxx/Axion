@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Burned-over_district",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What geographic region does the term 'burned-over district' refer to?",
+      "answer": "The 'burned-over district' refers to Western and parts of Central New York State, particularly areas in central and western New York."
+    },
+    {
+      "question": "Who coined the term 'burned-over district' and in what context?",
+      "answer": "Charles Grandison Finney coined the term in his 1876 posthumous autobiography to describe the intense religious revivals of the Second Great Awakening in central and western New York. He used 'burnt district' to illustrate the fervor and subsequent reaction, which he felt created skepticism about genuine religious movements."
+    },
+    {
+      "question": "How did Finney describe the effects of the 'wild excitement' of the revivals in the burned-over district?",
+      "answer": "Finney described it as a 'spurious' excitement that led to a profound reaction, leaving many convinced that religion was a delusion. This skepticism made people oppose future revivals, even those he promoted."
+    },
+    {
+      "question": "List three reform movements associated with the burned-over district besides religious revivalism.",
+      "answer": "The burned-over district was linked to abolition, women's rights, utopian social experiments, anti-Masonry, Mormonism, prohibition, vegetarianism, and Seventh-Day Adventism."
+    },
+    {
+      "question": "Who was the first historian to study the burned-over district systematically, and when?",
+      "answer": "Whitney R. Cross was the first historian to study the burned-over district, publishing his work in 1951."
+    },
+    {
+      "question": "How did later scholars challenge the traditional view of the burned-over district's exceptional religiosity?",
+      "answer": "Linda K. Pritchard used statistical data to show that the religiosity of the burned-over district was typical compared to the rest of New York State, the Ohio River Valley, and the U.S. as a whole. This reassessment suggested the region's religious fervor was not as unique as previously thought."
+    },
+    {
+      "question": "Write a Python snippet to compare the religiosity of the burned-over district to other regions using hypothetical data.",
+      "answer": "python\nimport matplotlib.pyplot as plt\n\n# Hypothetical religiosity scores (0-1 scale)\nregions = ['Burned-over District', 'Rest of NY', 'Ohio River Valley', 'U.S. Average']\nreligiosity = [0.65, 0.63, 0.62, 0.64]\n\nplt.bar(regions, religiosity, color=['red', 'blue', 'green', 'purple'])\nplt.title('Religiosity Comparison: Burned-over District vs. Other Regions')\nplt.ylabel('Religiosity Score (0-1)')\nplt.ylim(0, 1)\nplt.show()\n\nThis code generates a bar chart comparing the hypothetical religiosity scores of the burned-over district to other regions, supporting Pritchard's statistical reassessment."
+    }
+  ]
+}

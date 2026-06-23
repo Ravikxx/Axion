@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Dancing_on_Ice",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "Who are the current presenters of Dancing on Ice?",
+      "answer": "The current presenters of Dancing on Ice are Stephen Mulhern and Holly Willoughby."
+    },
+    {
+      "question": "Which celebrities have hosted Dancing on Ice in the past?",
+      "answer": "Former hosts of Dancing on Ice include Phillip Schofield, who hosted from 2006 to 2023, and Christine Lampard, who hosted in Holly Willoughby's absence from 2012 to 2014."
+    },
+    {
+      "question": "What is the format of Dancing on Ice?",
+      "answer": "Dancing on Ice features celebrities and their professional partners figure skating in front of a panel of judges."
+    },
+    {
+      "question": "When did the original run of Dancing on Ice end, and when did the revived series start?",
+      "answer": "The original run of Dancing on Ice ended on 9 March 2014, and the revived series started airing on 7 January 2018."
+    },
+    {
+      "question": "Who are the current judges on Dancing on Ice as of 2024?",
+      "answer": "As of 2024, the judges on Dancing on Ice are Jayne Torvill, Christopher Dean, Ashley Banjo, and Oti Mabuse."
+    },
+    {
+      "question": "Provide a code snippet to simulate the judging panel selection process for Dancing on Ice, where judges are chosen based on their roles and tenure.",
+      "answer": "python\n# Simulate the judging panel selection for Dancing on Ice\njudges = {\n    \"Head Judges\": [\"Jayne Torvill\", \"Christopher Dean\"],\n    \"Permanent Judges\": [\"Ashley Banjo\", \"Oti Mabuse\"],\n    \"Former Judges\": [\"Jason Gardiner\", \"John Barrowman\"]\n}\ncurrent_panel = judges[\"Head Judges\"] + judges[\"Permanent Judges\"]\nprint(\"Current judging panel:\", current_panel)\n"
+    },
+    {
+      "question": "How many series of Dancing on Ice have been confirmed to air in 2024?",
+      "answer": "The sixteenth series of Dancing on Ice was confirmed to return in 2024."
+    }
+  ]
+}

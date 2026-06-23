@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Accident",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What are the three formal factors that define an accident according to the text?",
+      "answer": "An accident is formally defined by three factors: it must be unintended, unpreventable, and unexpected. This definition goes beyond ordinary conversation, where only intentionality is typically considered."
+    },
+    {
+      "question": "Why do many injury prevention experts discourage the use of the term 'accident'?",
+      "answer": "Experts discourage the term 'accident' because it implies no fault, no guilt, and no control, suggesting the situation could not have been anticipated or prevented. Instead, they emphasize preventable factors that increase risk and worsen outcomes, such as human error or negligence."
+    },
+    {
+      "question": "What are the two most common causes of accidental deaths worldwide in recent years?",
+      "answer": "According to the text, the two most common causes of accidental deaths worldwide in recent years are road traffic incidents and falls."
+    },
+    {
+      "question": "How does the text describe the perception of road collisions in the mid-20th century, and what influenced this perception?",
+      "answer": "The text describes that in the mid-20th century, road collisions were often perceived as purely accidental events rather than predictable and preventable ones. This perception was strengthened due to the influence of the automobile industry through media."
+    },
+    {
+      "question": "What percentage of events called accidents are caused by human error, and what does this imply about the term 'accident'?",
+      "answer": "Research shows that up to 80% of events called accidents are caused by human error. This implies that the term 'accident' is often misleading, as it suggests randomness rather than human negligence or misjudgment."
+    },
+    {
+      "question": "Why might a fallen tree during a windstorm not qualify as a true accident according to the text?",
+      "answer": "A fallen tree during a windstorm might not qualify as a true accident because factors such as its condition, placement, or maintenance may have contributed to the outcome. These factors suggest preventable risks rather than pure randomness."
+    },
+    {
+      "question": "What is the limitation of existing theoretical models for analyzing accidents?",
+      "answer": "The limitation of existing theoretical models is that no single model has yet proved sufficient for analyzing accidents, which are often complex events involving multiple interacting factors."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/1967_NFL_Championship_Game",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the 1967 NFL Championship Game called and why?",
+      "answer": "The 1967 NFL Championship Game was called the 'Ice Bowl' due to the extremely cold and adverse playing conditions, with temperatures at −13 °F (−25 °C) at kickoff. It is considered one of the greatest games in NFL history."
+    },
+    {
+      "question": "Which teams played in the Ice Bowl, and what were their regular season records?",
+      "answer": "The Dallas Cowboys (9–5) and the Green Bay Packers (9–4–1) played in the Ice Bowl. The Cowboys were champions of the Eastern Conference, while the Packers were champions of the Western Conference."
+    },
+    {
+      "question": "Who were the head coaches of the Dallas Cowboys and Green Bay Packers during the Ice Bowl, and what was their prior coaching relationship?",
+      "answer": "The head coaches were Tom Landry (Cowboys) and Vince Lombardi (Packers). They had previously worked together on the staff of the 1950s New York Giants, where Lombardi was the offensive coordinator and Landry was the defensive coordinator."
+    },
+    {
+      "question": "What historical significance did the Ice Bowl hold for the NFL and its teams?",
+      "answer": "The Ice Bowl was a rematch of the previous year's title game and featured two future Hall of Fame coaches. It was later ranked as the 3rd greatest game of all time by NFL 100 Greatest Games. The game also marked the Packers' two-time defending league champions status."
+    },
+    {
+      "question": "How did NFL Films commemorate the 50th Anniversary of the Ice Bowl?",
+      "answer": "NFL Films released an episode of its Timeline series about the events of the Ice Bowl and its lasting impact. The episode was narrated and co-produced by filmmaker Michael Meredith, whose father, Don Meredith, was the quarterback for the Cowboys during the game."
+    },
+    {
+      "question": "What was the outcome of the Ice Bowl, and how did it affect the teams' paths to Super Bowl II?",
+      "answer": "The Green Bay Packers won the Ice Bowl, allowing them to advance to Super Bowl II (then called the second AFL–NFL World Championship Game) as the NFL champion. The Dallas Cowboys' loss prevented them from competing in the Super Bowl."
+    },
+    {
+      "question": "Calculate the temperature difference between the Ice Bowl's kickoff temperature and the freezing point of water (0 °C).",
+      "answer": "The temperature at kickoff was −25 °C. The freezing point of water is 0 °C, so the difference is 25 °C. In Fahrenheit, the kickoff temperature was −13 °F, and the freezing point is 32 °F, resulting in a difference of 45 °F."
+    }
+  ]
+}

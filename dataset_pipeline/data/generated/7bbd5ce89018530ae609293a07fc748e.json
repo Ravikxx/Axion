@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/sylwia-lask/if-you-see-these-red-flags-in-an-it-interview-run-real-stories-4am7",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What are some red flags in a company's interview process that indicate poor organizational culture?",
+      "answer": "Red flags include an interview process that lasts an unusually long time without clear communication, multiple rounds of redundant technical interviews, or a hiring manager who expresses interest but claims they 'don’t need' the candidate. Another sign is when recruiters ask overly intrusive questions about work-life balance or make disrespectful comments about candidates receiving outside help during interviews. Additionally, companies that impose excessive surveillance during technical tasks (e.g., full screen sharing, strict time limits with no documentation) may reflect a culture of distrust."
+    },
+    {
+      "question": "How can a candidate evaluate a company's culture during the interview process?",
+      "answer": "Candidates should observe how recruiters and interviewers communicate—are they respectful, transparent, and responsive? Pay attention to the structure of the interview process: is it disorganized, overly long, or lacks feedback? Ask questions about team dynamics, work-life balance, and project organization. Also, note how the company handles technical questions: do they demonstrate curiosity and problem-solving, or do they dismiss valid concerns about security flaws? If possible, seek feedback from current or former employees to gauge the work environment."
+    },
+    {
+      "question": "What is an example of a disrespectful interview question, and why is it problematic?",
+      "answer": "An example is a recruiter asking, 'Is your husband helping you from the side?' during a technical interview. This question is problematic because it assumes the candidate is receiving unauthorized help and implies gender bias. It reflects a lack of professionalism and disrespect for the candidate's abilities. Such behavior is often a preview of how the company treats its employees in the workplace."
+    },
+    {
+      "question": "Write a Python function that checks if a company's interview process is too lengthy based on a list of interview stages and their dates. Assume the stages are stored as tuples of (stage_name, date) in chronological order.",
+      "answer": "python\ndef is_interview_too_long(interview_stages, max_days=90):\n    \"\"\"\n    Check if the interview process exceeds a reasonable duration.\n    \n    Args:\n        interview_stages: List of tuples (stage_name, date) in chronological order.\n        max_days: Maximum allowed days between first and last stage (default: 90).\n    \n    Returns:\n        bool: True if the process is too long, False otherwise.\n    \"\"\"\n    if len(interview_stages) < 2:\n        return False\n    \n    from datetime import datetime\n    start_date = datetime.strptime(interview_stages[0][1], \"%Y-%m-%d\")\n    end_date = datetime.strptime(interview_stages[-1][1], \"%Y-%m-%d\")\n    duration = (end_date - start_date).days\n    \n    return duration > max_days\n\n# Example usage:\nstages = [\n    (\"Application\", \"2023-01-01\"),\n    (\"HR Interview\", \"2023-02-15\"),\n    (\"Technical Interview\", \"2023-03-20\"),\n    (\"Manager Interview\", \"2023-06-10\"),\n    (\"Final Offer\", \"2023-06-25\")\n]\nprint(is_interview_too_long(stages))  # Output: True (exceeds 90 days)\n"
+    },
+    {
+      "question": "What lessons can candidates learn from the author's experience working at a startup that prioritized overwork?",
+      "answer": "The author's experience highlights the importance of recognizing red flags during recruitment. Candidates should pay attention to how companies frame questions about work-life balance—if a startup openly asks for a low value (e.g., rating it 1–3/10) or digs deeply into overtime tolerance, it may indicate an unhealthy culture. Additionally, candidates should trust their intuition and ask current employees about work hours and expectations. Joining a company that normalizes 10–12 hour days without clear boundaries can lead to burnout and high turnover."
+    },
+    {
+      "question": "Why might a company require full screen sharing and camera access during a technical interview task?",
+      "answer": "Companies may justify full screen sharing and camera access as measures to prevent cheating during remote interviews. However, this practice can reflect a lack of trust in candidates and may not effectively assess their true skills. In reality, such strict surveillance often tests memorized syntax or LeetCode patterns rather than problem-solving abilities. For regular roles, this level of monitoring is unnecessary and may deter talented candidates who value autonomy."
+    },
+    {
+      "question": "How should a candidate respond if they notice a company dismissing valid technical concerns during an interview?",
+      "answer": "If a candidate observes a company dismissing valid technical concerns (e.g., ignoring a security flaw in their solution), they should politely but firmly highlight the issue and ask follow-up questions to understand the company's reasoning. If the interviewer remains defensive or dismissive, this is a major red flag. The candidate may choose to address it directly by saying, 'I’m concerned about this vulnerability because it could expose client data. Can you explain how your team mitigates this risk?' If the interviewer still shows no curiosity or concern, it’s a strong indication of poor technical practices or culture."
+    }
+  ]
+}

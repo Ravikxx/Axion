@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Benedetti",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the origin of the surname Benedetti?",
+      "answer": "The surname Benedetti is of Italian origin."
+    },
+    {
+      "question": "List three notable individuals with the surname Benedetti and their professions.",
+      "answer": "1. Arturo Benedetti Michelangeli (1920–1995) was an Italian pianist. 2. Carolina Benedetti is a Colombian mathematician and educator. 3. Nicola Benedetti (born 1987) is a Scottish violinist."
+    },
+    {
+      "question": "Which Benedetti is known for contributions to mathematics?",
+      "answer": "Giambattista Benedetti (1530–1590) was a Venetian mathematician known for his work in the field."
+    },
+    {
+      "question": "How many Italian footballers named Alessio Benedetti are listed in the text?",
+      "answer": "Two Italian footballers named Alessio Benedetti are listed: one born in 1990 and the other born in 1997."
+    },
+    {
+      "question": "Provide a code snippet that verifies if a given name is associated with the surname Benedetti in the provided list.",
+      "answer": "Here is a Python function to check if a given name is associated with the surname Benedetti:\n\npython\ndef is_benedetti_name(full_name):\n    names = [\n        \"Alessio Benedetti\", \"Amedeo Benedetti\", \"Ângelo Sampaio Benedetti\",\n        \"Armando Benedetti\", \"Arturo Benedetti Michelangeli\", \"Atilio Benedetti\",\n        \"Carolina Benedetti\", \"Cesare Benedetti\", \"Enrico Benedetti\", \"Fabrizio Benedetti\",\n        \"Franco Benedetti\", \"Gastón Benedetti\", \"Georges Benedetti\", \"Giacomo Benedetti\",\n        \"Giambattista Benedetti\", \"Giovanni Benedetti\", \"Jonatan Benedetti\",\n        \"Joseph B. Benedetti\", \"Josefina Benedetti\", \"Julia Benedetti\", \"Leonardo Benedetti\",\n        \"Lorenzo Benedetti\", \"Luiz Benedetti\", \"Mario Benedetti\", \"Myria Benedetti\",\n        \"Nicola Benedetti\", \"Sergio Benedetti\", \"Silvano Benedetti\", \"Simone Benedetti\",\n        \"Stefania Benedetti\", \"Vincent, Count Benedetti\", \"Yvan Benedetti\"\n    ]\n    return full_name in names\n\n# Example usage\nprint(is_benedetti_name(\"Mario Benedetti\"))  # Output: True\nprint(is_benedetti_name(\"John Doe\"))        # Output: False\n"
+    },
+    {
+      "question": "Which Benedetti is associated with far-right activism?",
+      "answer": "Yvan Benedetti (born 1965) is a French far-right activist associated with the surname Benedetti."
+    },
+    {
+      "question": "What is the nationality of the footballer Leonardo Benedetti?",
+      "answer": "Leonardo Benedetti, born in 2000, is an Italian footballer."
+    },
+    {
+      "question": "Compare the professions of Amedeo Benedetti (writer) and Amedeo Benedetti (footballer).",
+      "answer": "Amedeo Benedetti (1954–2017) was an Italian scholar and writer, while Amedeo Benedetti (born 1991) is an Italian footballer."
+    }
+  ]
+}

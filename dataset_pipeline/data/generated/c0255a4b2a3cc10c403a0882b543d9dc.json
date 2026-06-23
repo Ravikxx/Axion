@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/saurabh_ssk/curioshorts-3o09",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What is CurioShorts and what problem does it solve?",
+      "answer": "CurioShorts is an AI-powered educational content generator that transforms user questions into short, engaging TikTok-style videos. It solves the problem of 'brain rot'—passive, low-value content consumption on short-form video platforms—by making learning as engaging and interactive as social media scrolling. The app aims to replace mindless scrolling with educational content, particularly benefiting younger audiences."
+    },
+    {
+      "question": "What are the key features of CurioShorts?",
+      "answer": "CurioShorts offers several key features: 1) AI-generated short videos answering user questions, 2) customizable narrators (e.g., Spider-Man or custom characters), 3) selectable visual art styles, 4) automatic generation of songs with lyrics, 5) custom images for each lyric line, 6) voice-over narration with background music, and 7) an interactive learning experience that replaces passive scrolling with active engagement."
+    },
+    {
+      "question": "What technologies power CurioShorts?",
+      "answer": "CurioShorts uses a modern tech stack: Frontend with TypeScript, HTML5, and CSS3; Google's Gemini API for AI models; IndexedDB for client-side storage; Browser APIs like Web Speech API for text-to-speech and Intersection Observer for efficient video playback. It also leverages the `marked` library for rendering lyrics."
+    },
+    {
+      "question": "How does CurioShorts generate its educational videos?",
+      "answer": "CurioShorts uses a two-step multimodal pipeline with Google's Gemini API: 1) Structured Text Generation: The user's question is processed by `gemini-2.5-flash` to output a JSON containing song lyrics, image prompts, and suggested music styles. 2) Text-to-Image Generation: Each image prompt is fed into `gemini-2.5-flash-image-preview` to create stylized visuals. The app then combines these elements into an audio-visual learning experience with narration and music."
+    },
+    {
+      "question": "Can you provide a code snippet showing how the Web Speech API is integrated in CurioShorts?",
+      "answer": "javascript\n// Example of using Web Speech API for narration in CurioShorts\nfunction generateNarration(text) {\n  const utterance = new SpeechSynthesisUtterance(text);\n  utterance.rate = 1.0;\n  utterance.pitch = 1.0;\n  utterance.voice = speechSynthesis.getVoices().find(v => v.lang === 'en-US');\n  speechSynthesis.speak(utterance);\n}\n\n// Usage during video generation\nconst lyrics = [\"What is photosynthesis?\", \"It's how plants make their food!\"];\nlyrics.forEach(line => generateNarration(line));\n"
+    },
+    {
+      "question": "How is client-side storage implemented in CurioShorts?",
+      "answer": "CurioShorts uses IndexedDB to persist generated shorts locally. This allows users to save and access their creations without relying on server storage. Example implementation:\njavascript\n// Saving a generated short to IndexedDB\nasync function saveShort(shortId, data) {\n  const request = indexedDB.open('CurioShorts', 1);\n  request.onupgradeneeded = (event) => {\n    const db = event.target.result;\n    db.createObjectStore('shorts', { keyPath: 'id' });\n  };\n  request.onsuccess = (event) => {\n    const db = event.target.result;\n    const transaction = db.transaction('shorts', 'readwrite');\n    transaction.objectStore('shorts').put(data);\n  };\n}\n"
+    },
+    {
+      "question": "Why would TikTok or YouTube Shorts consider integrating CurioShorts?",
+      "answer": "CurioShorts could revolutionize short-form video platforms by transforming them into educational tools. It addresses the 'brain rot' issue by replacing passive content consumption with active learning. Platforms like TikTok or YouTube Shorts could integrate it to offer an 'educational mode' that makes learning as engaging as entertainment, potentially increasing user engagement and retention while providing social value."
+    }
+  ]
+}

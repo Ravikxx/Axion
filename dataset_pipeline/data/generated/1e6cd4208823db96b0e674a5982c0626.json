@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Dimanche",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who created the artist's book 'Dimanche' and in what year was it published?",
+      "answer": "The artist's book 'Dimanche' was created by the French artist Yves Klein and was published on Sunday, 27 November 1960."
+    },
+    {
+      "question": "What form did 'Dimanche' take and how was it distributed?",
+      "answer": "'Dimanche' took the form of a 4-page Sunday broadsheet newspaper. It was sold on newsstands throughout Paris for one day only and was also handed out at a press conference held by Klein at the Galerie Rive Droite at 11:00 AM on the same day."
+    },
+    {
+      "question": "What is the significance of 'Dimanche' in the context of art history?",
+      "answer": "'Dimanche' is significant as an early example of conceptual art. It is most famous for being the first publication of the photo-montage 'The Leap Into The Void,' which depicts Yves Klein leaping from a second-story window. The work combines elements of appropriation, performance, actionism, and conceptual art, reflecting emerging art movements at the time."
+    },
+    {
+      "question": "What art movements does 'Dimanche' incorporate, and how does it reflect them?",
+      "answer": "'Dimanche' incorporates appropriation, performance, actionism, and conceptual art. It reflects these movements by using the format of a one-day newspaper as an alternative to traditional media, including Klein's manifesto 'Theatre du Vide' and the photo-montage 'The Leap Into The Void,' which explores the body as a medium for artistic expression."
+    },
+    {
+      "question": "What is the text 'Theatre du Vide' in 'Dimanche,' and what does it represent?",
+      "answer": "'Theatre du Vide' (Theater of the Void) is a manifesto included in 'Dimanche.' It represents Klein's conceptual and philosophical ideas about art, emphasizing themes of emptiness, space, and the immaterial, which are central to his work."
+    },
+    {
+      "question": "How did the photo-montage 'The Leap Into The Void' contribute to the legacy of Yves Klein's work?",
+      "answer": "The photo-montage 'The Leap Into The Void' contributed significantly to Yves Klein's legacy by first appearing in 'Dimanche' and later becoming one of his most iconic works. It inspired many artists to explore the human body as a medium for art and solidified Klein's reputation as a pioneer of conceptual and performance art."
+    },
+    {
+      "question": "Write a Python function that simulates the distribution of 'Dimanche' based on the given details.",
+      "answer": "python\nimport random\nfrom datetime import datetime\n\ndef simulate_dimanche_distribution(total_newsstands=100):\n    \"\"\"\n    Simulates the distribution of Yves Klein's 'Dimanche' artist's book.\n    Assumes each newsstand receives a random number of copies (1-10),\n    and a fixed number are handed out at the press conference.\n    \"\"\"\n    newsstand_copies = random.randint(1, 10) * total_newsstands\n    press_conference_copies = 200  # Approximate number handed out\n    \n    total_distributed = newsstand_copies + press_conference_copies\n    \n    print(\"Distribution simulation for 'Dimanche':\")\n    print(f\"- Newsstands in Paris: {total_newsstands}\")\n    print(f\"- Copies sold at newsstands: {newsstand_copies}\")\n    print(f\"- Copies handed out at press conference: {press_conference_copies}\")\n    print(f\"- Total distributed: {total_distributed} copies\")\n    print(f\"- Publication date: {datetime(1960, 11, 27).strftime('%A, %d %B %Y')}\")\n\n# Example usage\nsimulate_dimanche_distribution()\n"
+    }
+  ]
+}

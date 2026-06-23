@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/manuartero/about-wizards-warlocks-programmers-vibe-coders-4p6n",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What is the fundamental difference between wizards and warlocks in terms of spellcasting resources?",
+      "answer": "Wizards rely on spell slots, which they must manage carefully and replenish with rest, while warlocks have all their spell slots at maximum level at all times and require almost no rest to cast spells at full power."
+    },
+    {
+      "question": "How does a warlock obtain their magical power?",
+      "answer": "Warlocks borrow their power from an external entity called a Patron through a pact. This power is not earned through study but granted by the Patron."
+    },
+    {
+      "question": "What are the three notable subclasses a warlock can choose at level 3 according to the 2024 Player Handbook?",
+      "answer": "The three notable subclasses are the OpenAI Patron, Anthropic Patron, and Perplexity Patron, each representing a different external source of power."
+    },
+    {
+      "question": "Provide a Python code snippet that simulates a warlock casting a spell at max level without rest.",
+      "answer": "python\nclass Warlock:\n    def __init__(self):\n        self.spell_slots = {'max_level': True}  # All spell slots at max level\n        self.needs_rest = False  # No rest required\n\n    def cast_spell(self, spell_name):\n        if self.spell_slots['max_level'] and not self.needs_rest:\n            return f\"Casting '{spell_name}' at max level!\"\n        else:\n            return \"Cannot cast spell: insufficient resources.\"\n\n# Example usage\nwarlock = Warlock()\nprint(warlock.cast_spell(\"Astonishing New Project\"))  # Output: Casting 'Astonishing New Project' at max level!\n"
+    },
+    {
+      "question": "What is the risk associated with relying on a Patron for magical power?",
+      "answer": "The risk is that the Patron can change the terms of the pact at any time and withdraw their granted power, leaving the warlock without their source of magic."
+    },
+    {
+      "question": "Explain the syntax breakdown of the sentence 'Their Patron grants them otherworldly powers.'",
+      "answer": "In the sentence 'Their Patron grants them otherworldly powers': - Subject: 'Their Patron' (who performs the action) - Verb: 'grants' (to give something to someone) - Indirect Object: 'them' (the person receiving the action) - Direct Object: 'otherworldly powers' (the thing being given)."
+    },
+    {
+      "question": "Why might a wizard consider multiclassing to warlock despite the risks?",
+      "answer": "A wizard might consider multiclassing to warlock to remain employable by a lord, as warlocks can cast spells at max level with no effort and almost no rest, making them highly attractive for immediate magical needs."
+    }
+  ]
+}

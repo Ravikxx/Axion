@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Ball_chain",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is a ball chain and how is it constructed?",
+      "answer": "A ball chain is a type of chain made from small hollow sheet metal balls connected by short wire segments. Each ball has two antipodal holes through which a wire is inserted. The wire end is deformed like a rivet to secure it inside the ball, and the other end is connected to another ball in the same manner, forming a flexible, swiveling chain."
+    },
+    {
+      "question": "What are the key characteristics of ball chain that differentiate it from other chains?",
+      "answer": "Ball chain differs from other chains due to its unrestricted swiveling capability, which prevents kinking, and its relatively low strength. The hollow balls and short wire segments allow for free movement in multiple directions, making it useful for applications requiring flexibility."
+    },
+    {
+      "question": "What are some common accessories used with ball chains?",
+      "answer": "Common accessories include connectors that snap over balls and wires to join chains or form loops without tools. Other accessories may have features like screw holes for semi-permanent attachments, such as terminations that allow chains to be affixed to objects."
+    },
+    {
+      "question": "How can you programmatically generate a ball chain connection in code?",
+      "answer": "Here's a Python snippet to simulate a ball chain connection using objects:\n\npython\nclass Ball:\n    def __init__(self):\n        self.holes = [None, None]  # Two antipodal holes for wire insertion\n\nclass WireSegment:\n    def __init__(self, start_ball, end_ball):\n        self.start_ball = start_ball\n        self.end_ball = end_ball\n        # Simulate deformation at the ends to secure in balls\n\n# Example chain construction\nball1 = Ball()\nball2 = Ball()\nwire = WireSegment(ball1, ball2)\n\nThis represents the basic structure of a ball chain, where each `Ball` has two holes and `WireSegment` connects them securely."
+    },
+    {
+      "question": "What is the Mould effect in the context of ball chains?",
+      "answer": "The Mould effect is a counter-intuitive physical phenomenon observed when a ball chain is pulled or poured out of a vessel. Instead of following the vessel's edge, the chain rises above the lip of the vessel, creating a curved or 'moulded' shape as it flows outward."
+    },
+    {
+      "question": "What are typical sizes and materials used for ball chains in different applications?",
+      "answer": "Typical ball chains are made of steel with a standard width of size 3 (2.4 mm). In jewelry, ball chains are often made of 925 sterling silver and come in sizes like 1 mm, 1.2 mm, 1.5 mm, 1.8 mm, and 2.2 mm. The material and size depend on the intended use, such as light fixtures, keychains, or jewelry."
+    },
+    {
+      "question": "How do ball chain connectors work without the need for tools?",
+      "answer": "Ball chain connectors snap over the balls and wires at the end of a chain. The design of the connector allows it to surround a ball and grip the wire connection securely. The snap mechanism ensures the connection is tight without requiring tools, and the connectors can be reused and removed easily."
+    }
+  ]
+}

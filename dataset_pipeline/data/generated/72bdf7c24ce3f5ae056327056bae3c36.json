@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Asila_Wardak",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who is Asila Wardak and what are her notable achievements?",
+      "answer": "Asila Wardak is an Afghan human rights activist, women's rights advocate, former diplomat, and the first Afghan woman elected to the Organization of the Islamic Cooperation (OIC) Independent Human Rights Commission. She co-founded the Afghan Women's Network, served as Minister Counselor at the Afghanistan Mission to the United Nations, and headed the human rights division at Afghanistan's Ministry of Foreign Affairs."
+    },
+    {
+      "question": "What roles did Asila Wardak hold at the Afghanistan Mission to the United Nations?",
+      "answer": "Asila Wardak served as Minister Counselor at the Afghanistan Mission to the United Nations, where she represented Afghanistan in diplomatic engagements and policy discussions at the UN."
+    },
+    {
+      "question": "How did Asila Wardak contribute to the Afghan Women's Network?",
+      "answer": "Asila Wardak was one of the co-founders of the Afghan Women's Network, an organization that advocates for women's rights and gender equality in Afghanistan through collective action and policy influence."
+    },
+    {
+      "question": "What significant event did Asila Wardak attend in 2019 and why was it important?",
+      "answer": "In 2019, Asila Wardak attended the Intra Afghan Dialogue talks in Doha as a member of the Afghanistan High Peace Council. This event was important as it aimed to negotiate peace and reconciliation efforts in Afghanistan, including the participation of women in the process."
+    },
+    {
+      "question": "What threats did Asila Wardak face in 2019 and why?",
+      "answer": "In 2019, Asila Wardak received violent threats due to her activism and advocacy for women's rights and human rights in Afghanistan. Her prominent role in promoting gender equality and participating in peace talks made her a target."
+    },
+    {
+      "question": "What role did Asila Wardak play in Mina's List in 2020?",
+      "answer": "In 2020, Asila Wardak served as an Advisory Board Member for Mina's List, an organization focused on increasing women's political participation and achieving gender equality through advocacy and policy change."
+    },
+    {
+      "question": "What fellowships did Asila Wardak receive in 2022-2023?",
+      "answer": "Asila Wardak was a 2022-2023 fellow at the Harvard Radcliffe Institute and a Robert G. James Scholar Fellow, where she focused on Policy & Practice."
+    },
+    {
+      "question": "Can you provide a code snippet that simulates a timeline of key events in Asila Wardak's career?",
+      "answer": "python\nimport pandas as pd\n\n# Key events in Asila Wardak's career\nevents = {\n    \"Year\": [2019, 2019, 2020, 2022, 2022],\n    \"Event\": [\n        \"Attended Intra Afghan Dialogue talks in Doha as member of High Peace Council\",\n        \"Received violent threats due to activism\",\n        \"Advisory Board Member for Mina's List\",\n        \"Harvard Radcliffe Institute fellow\",\n        \"Participated in event with Antony J. Blinken for USACM launch\"\n    ]\n}\n\ndf = pd.DataFrame(events)\nprint(df)\n"
+    }
+  ]
+}

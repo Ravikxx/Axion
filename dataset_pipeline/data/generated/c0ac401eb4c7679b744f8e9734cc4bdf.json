@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Baltimore_Oriole_(song)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who wrote the song 'Baltimore Oriole' and in what year was it released?",
+      "answer": "The song 'Baltimore Oriole' was written by American composer Hoagy Carmichael and lyricist Paul Francis Webster in 1942."
+    },
+    {
+      "question": "How are the lyrics of 'Baltimore Oriole' thematically similar to another Carmichael song, 'Skylark'?",
+      "answer": "The lyrics of 'Baltimore Oriole' and 'Skylark' both use a bird as a metaphor to describe a love affair—in 'Baltimore Oriole', the bird is the Baltimore oriole, while 'Skylark' features a skylark."
+    },
+    {
+      "question": "What role was 'Baltimore Oriole' originally intended to play in the 1944 film 'To Have and Have Not', and why did this change?",
+      "answer": "Howard Hawks, the film's director, envisioned 'Baltimore Oriole' as Lauren Bacall's signature tune. However, Bacall chose to sing 'How Little We Know' instead because it was less vocally demanding, and 'Baltimore Oriole' was used as background music."
+    },
+    {
+      "question": "Which Australian composer named 'Baltimore Oriole' as his favorite song by Hoagy Carmichael, and what specific lyric did he praise?",
+      "answer": "Australian composer Andrew Ford named 'Baltimore Oriole' as his favorite Carmichael song in a 2002 Sydney Morning Herald article. He praised the lyric: 'Forgivin' is easy, it's a woman-like now-and-then-could-happen-to thing.'"
+    },
+    {
+      "question": "Can you provide an example of a jazz instrumental version of 'Baltimore Oriole' and its release details?",
+      "answer": "Yes, a jazz instrumental version of 'Baltimore Oriole' was released in 1964 by Maynard Ferguson on his album 'The Blues Roar'."
+    },
+    {
+      "question": "Which Beatles member covered 'Baltimore Oriole', and on which album was it included?",
+      "answer": "George Harrison, a lifelong fan of Hoagy Carmichael, covered 'Baltimore Oriole' on his 1981 solo album 'Somewhere in England'."
+    },
+    {
+      "question": "Write a Python snippet to extract the year a song was released given its title and artist, assuming the data is stored in a list of dictionaries.",
+      "answer": "Here’s a Python function to extract the release year of 'Baltimore Oriole' by Hoagy Carmichael:\npython\nsongs = [\n    {\"title\": \"Baltimore Oriole\", \"artist\": \"Hoagy Carmichael\", \"year\": 1942},\n    {\"title\": \"Skylark\", \"artist\": \"Hoagy Carmichael\", \"year\": 1942},\n    {\"title\": \"How Little We Know\", \"artist\": \"Lauren Bacall\", \"year\": 1944}\n]\n\ndef get_release_year(title, artist):\n    for song in songs:\n        if song[\"title\"] == title and song[\"artist\"] == artist:\n            return song[\"year\"]\n    return None\n\nprint(get_release_year(\"Baltimore Oriole\", \"Hoagy Carmichael\"))  # Output: 1942\n"
+    }
+  ]
+}

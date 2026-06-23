@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Cecília_Meireles",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What were the primary literary genres or forms in which Cecília Meireles worked?",
+      "answer": "Cecília Meireles primarily worked as a poet, but she was also active as a journalist, writing columns (crônicas) that often focused on education and her travels. Additionally, she contributed to educational reform discussions and advocated for children's libraries."
+    },
+    {
+      "question": "Why did Cecília Meireles object to the term 'poetess'?",
+      "answer": "Cecília Meireles objected to the term 'poetess' because she viewed it as a form of gender discrimination, implying a lesser status or gender-specific categorization of women poets."
+    },
+    {
+      "question": "What is the significance of Cecília Meireles' poem 'USA 1940'?",
+      "answer": "'USA 1940' is a socially aware poem written by Meireles during her time in the United States in the summer of 1940. It reflects her observations and experiences in the country and was published posthumously. The poem is notable for its length (800 lines) and its critical engagement with social themes."
+    },
+    {
+      "question": "Describe Cecília Meireles' teaching career and its impact on education.",
+      "answer": "Cecília Meireles taught at the short-lived federal-district university in Rio de Janeiro from 1935 to 1938, where she contributed to educational reforms. She also advocated for the construction of children's libraries, demonstrating her commitment to improving access to education for young people."
+    },
+    {
+      "question": "What were the key themes in Cecília Meireles' poetry?",
+      "answer": "The key themes in Cecília Meireles' poetry included ephemeral time and the contemplative life. Her style was mostly neosymbolist, and she was known for her nationalistic vanguardism, even though she avoided local color, native vernacular, or experiments in popular syntax."
+    },
+    {
+      "question": "Where did Cecília Meireles travel in the 1940s, and what did she do during these travels?",
+      "answer": "In the 1940s, Cecília Meireles traveled extensively in the Americas, visiting the United States, Mexico, Argentina, Uruguay, and Chile. During these trips, she gave lectures, such as at the University of Texas, Austin, in the summer of 1940, and wrote poems inspired by her experiences abroad."
+    },
+    {
+      "question": "Write a Python code snippet that generates a list of Cecília Meireles' known works, including their types (e.g., poem, chronicle) and years of publication where available.",
+      "answer": "python\ncecilia_works = [\n    {\"title\": \"USA 1940\", \"type\": \"poem\", \"year\": \"posthumous\"},\n    {\"title\": \"Poems about Texas\", \"type\": \"poem\", \"year\": \"1940\"},\n    {\n        \"title\": \"Columns (crônicas)\",\n        \"type\": \"chronicle\",\n        \"topics\": [\"education\", \"travels in the Americas\", \"Europe\", \"Israel\", \"India\"]\n    },\n    {\"title\": \"Educational reforms\", \"type\": \"advocacy\", \"period\": \"1935–1938\"}\n]\n"
+    }
+  ]
+}

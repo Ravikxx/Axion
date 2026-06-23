@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Arbuthnot_&_Co",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was Arbuthnot & Co and where was it based?",
+      "answer": "Arbuthnot & Co was a mercantile bank headquartered in Madras, India. Founded initially as Francis Latour & Co in the late 18th century, it later became known as Arbuthnot De Monte & Co before collapsing spectacularly on October 22, 1906."
+    },
+    {
+      "question": "How did the financial crisis in Madras during late 1906 affect the three major British commercial firms?",
+      "answer": "The crisis resulted in one firm (Arbuthnot & Co) failing completely, a second (Parry's) being rescued through a distress sale, and the third (Binny and Co.) being bailed out by a benefactor. Arbuthnot & Co, once considered the soundest of the three, collapsed, leading to widespread financial losses and reputational damage to British banking."
+    },
+    {
+      "question": "Who were the partners of Arbuthnot & Co at the time of its failure?",
+      "answer": "Arbuthnot & Co had two partners during its collapse: Sir George Gough Arbuthnot and J.M. Young, a salaried partner who had no significant role in the firm's operations."
+    },
+    {
+      "question": "What role did Patrick Macfadyen play in the collapse of Arbuthnot & Co?",
+      "answer": "Patrick Macfadyen operated P Macfadyen & Co., effectively serving as Arbuthnot & Co's London branch. He engaged in speculative activities that led to substantial losses, contributing significantly to the firm's eventual collapse. Macfadyen later committed suicide in 1906 after the failure."
+    },
+    {
+      "question": "What were the financial consequences of Arbuthnot & Co's collapse for its creditors?",
+      "answer": "At the time of its collapse, Arbuthnot & Co had 7,000 creditors and £1,000,000 in liabilities. The English trustee in bankruptcy and the Madras official assignee combined the assets of Arbuthnot & Co and P Macfadyen & Co., allowing 8,000 creditors to pool £1,400,000 in claims and share pro rata in the pooled assets."
+    },
+    {
+      "question": "What legal consequences did Sir George Gough Arbuthnot face after the collapse?",
+      "answer": "Sir George Gough Arbuthnot was tried for fraudulent activities revealed during the collapse and received a sentence of 18 months of rigorous imprisonment."
+    },
+    {
+      "question": "Who was V. Krishnaswamy Iyer and what was his role in the aftermath of Arbuthnot & Co's collapse?",
+      "answer": "V. Krishnaswamy Iyer was a Madras lawyer who played a key role in organizing a group of Chettiars to establish the Indian Bank in 1907, following the financial crisis triggered by the collapse of Arbuthnot & Co."
+    },
+    {
+      "question": "Write a Python code snippet that simulates the creditor claim pooling process described in the text.",
+      "answer": "python\n# Simulating the creditor claim pooling process\ncreditors_arbuthnot = 7000\ncreditors_macfadyen = 1000\ntotal_creditors = creditors_arbuthnot + creditors_macfadyen\n\nliabilities_arbuthnot = 1000000  # £1,000,000\nliabilities_macfadyen = 400000   # £400,000\ntotal_liabilities = liabilities_arbuthnot + liabilities_macfadyen\n\n# Pooling claims and assets\npool_claims = total_liabilities\npool_assets = total_liabilities  # Simplified assumption: assets equal liabilities\n\n# Calculate pro rata share per creditor\nshare_per_creditor = pool_assets / total_creditors\n\nprint(f\"Total Creditors: {total_creditors}\")\nprint(f\"Total Claims Pooled: £{pool_claims}\")\nprint(f\"Pro Rata Share per Creditor: £{share_per_creditor:.2f}\")\n\nThis code simulates the pooling of claims and liabilities, resulting in each creditor receiving an equal pro rata share of the pooled assets."
+    }
+  ]
+}

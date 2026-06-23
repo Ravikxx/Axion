@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Enguri",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the Enguri River and where is it located?",
+      "answer": "The Enguri River is a river in western Georgia, originating near Ushguli in northeastern Svaneti and flowing to the Black Sea near Anaklia. It is 213 km long with a drainage basin of 4,060 km²."
+    },
+    {
+      "question": "How long is the Enguri River and what is its drainage basin size?",
+      "answer": "The Enguri River is 213 kilometers (132 miles) long and has a drainage basin covering 4,060 square kilometers (1,570 square miles)."
+    },
+    {
+      "question": "What role does the Enguri River play in Georgia's energy production?",
+      "answer": "The Enguri River plays a critical role in Georgia's energy production, with the Enguri Dam generating about 40% of the country's national energy. The dam has a capacity of 1,300 megawatts and can hold 1.1 million cubic meters of water."
+    },
+    {
+      "question": "Describe the Enguri Dam, including its dimensions and construction details.",
+      "answer": "The Enguri Dam is 271.5 meters (891 feet) high and 750 meters (2,460 feet) across, making it the largest construction in the Caucasus. Built between 1944 and 1948 by German prisoners of war, it holds 1.1 million cubic meters of water and has an energy capacity of 1,300 megawatts."
+    },
+    {
+      "question": "What is the significance of the Enguri Bridge across the Enguri River?",
+      "answer": "The Enguri Bridge is an 870-meter (2,850-foot) long bridge built by German prisoners of war between 1944 and 1948. It is the only legal crossing point over the Enguri River, connecting areas managed by both Georgia and Abkhazia, where troops from Georgia, Abkhazia, and Russia are stationed."
+    },
+    {
+      "question": "How has the Abkhaz–Georgian conflict affected the management of the Enguri River?",
+      "answer": "Since the Abkhaz–Georgian conflict, Georgia and Abkhazia maintain troops along the Enguri River, with Russia also deploying peacekeeping troops. This has resulted in the river being a militarized zone with limited legal crossing points, such as the Enguri Bridge."
+    },
+    {
+      "question": "Write a Python snippet to calculate the total energy produced by the Enguri Dam annually if its capacity is 1,300 MW and it operates at 50% efficiency for 6 months a year.",
+      "answer": "python\ncapacity_mw = 1300\nefficiency = 0.5\nhours_in_half_year = 365 / 2 * 24  # 4,380 hours\ntotal_energy_mwh = capacity_mw * efficiency * hours_in_half_year\nprint(f\"Total energy produced annually: {total_energy_mwh:.2f} MWh\")\n\nThis calculates the dam's energy output at 50% efficiency for half a year, yielding approximately 2.85 billion MWh annually."
+    }
+  ]
+}

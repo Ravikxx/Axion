@@ -1,0 +1,34 @@
+{
+  "source_url": "https://mathworld.wolfram.com/topics/Point-SetTopology.html",
+  "category": "mathworld",
+  "pairs": [
+    {
+      "question": "What is the definition of a Borel set, and how does it relate to the Borel sigma-algebra?",
+      "answer": "A Borel set is any set that can be formed from open sets through a countable number of unions, intersections, and complements. The Borel sigma-algebra is the smallest sigma-algebra containing all open sets in a topological space, meaning Borel sets are precisely the measurable sets in this context."
+    },
+    {
+      "question": "Explain the concept of a compact set in topology. Provide an example of a compact set in Euclidean space.",
+      "answer": "A compact set in topology is a set that is both closed and bounded in the context of metric spaces, or more generally, a set where every open cover has a finite subcover. In Euclidean space, the closed interval [0, 1] is a classic example of a compact set."
+    },
+    {
+      "question": "What is the difference between a closed set and a clopen set? Provide an example of a clopen set.",
+      "answer": "A closed set contains all its limit points, while a clopen set is both closed and open. In the discrete topology on any set, every subset is clopen because both the set and its complement are open. For example, in the discrete topology on {1, 2, 3}, the set {1} is clopen."
+    },
+    {
+      "question": "Write a Python function to check if a given subset of a metric space is bounded. Assume the metric space is represented as a set of points in Euclidean space with the standard Euclidean metric.",
+      "answer": "python\nimport numpy as np\n\ndef is_bounded(subset, metric='euclidean'):\n    if not subset:\n        return True  # Empty set is trivially bounded\n    \n    if metric == 'euclidean':\n        points = np.array(subset)\n        distances = np.linalg.norm(points[:, np.newaxis] - points, axis=2)\n        max_distance = np.max(distances)\n        return np.isfinite(max_distance)\n    else:\n        raise ValueError(\"Unsupported metric\")\n\n# Example usage:\nsubset = [(1, 2), (3, 4), (5, 6)]\nprint(is_bounded(subset))  # Output: True\n"
+    },
+    {
+      "question": "What is the Heine-Borel theorem, and under what conditions does it hold?",
+      "answer": "The Heine-Borel theorem states that in a Euclidean space, a subset is compact if and only if it is closed and bounded. This theorem holds specifically in finite-dimensional Euclidean spaces and relies on the completeness and local compactness of these spaces."
+    },
+    {
+      "question": "Define the concept of a connected space and provide an example of a disconnected space.",
+      "answer": "A connected space is a topological space that cannot be represented as the union of two or more disjoint non-empty open sets. The real line with the standard topology is connected, while the space {0, 1} with the discrete topology is disconnected, as it can be written as the union of the disjoint open sets {0} and {1}."
+    },
+    {
+      "question": "What is the Tietze extension theorem, and what does it guarantee?",
+      "answer": "The Tietze extension theorem states that if X is a normal topological space (satisfying the T_4 separation axiom) and A is a closed subset of X, then any continuous real-valued function defined on A can be extended to a continuous function on all of X. This guarantees the existence of such an extension under these topological conditions."
+    }
+  ]
+}

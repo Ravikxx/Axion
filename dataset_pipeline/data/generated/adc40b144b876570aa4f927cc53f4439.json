@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Göttingen_State_and_University_Library",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the Göttingen State and University Library (SUB Göttingen) and what institutions does it serve?",
+      "answer": "The Göttingen State and University Library (SUB Göttingen) is the primary library for Göttingen University and the Göttingen Academy of Sciences, as well as the state library for the German state of Lower Saxony. It serves as a major academic and research library with a focus on national and international projects in librarianship and research infrastructure."
+    },
+    {
+      "question": "How many branch libraries does the SUB Göttingen have, and where are they located?",
+      "answer": "The SUB Göttingen operates a dispersed system with six branch libraries situated in various academic departments. These branch libraries supplement the central collection, which is housed in the Central Library on the main campus and the Historical Library Building in downtown Göttingen."
+    },
+    {
+      "question": "What notable collections or special holdings does the SUB Göttingen possess?",
+      "answer": "The SUB Göttingen holds significant special collections, including approximately 14,000 manuscripts, 3,100 incunabula (early printed books), and 400 Nachlässe (literary remains). It also owns one of only four perfect vellum copies of the Gutenberg Bible in existence. The Historical Building houses rare books, maps, and a history-of-science collection."
+    },
+    {
+      "question": "What is the role of the Göttingen Center for Retrospective Digitization (GDZ), and when was it established?",
+      "answer": "The Göttingen Center for Retrospective Digitization (GDZ), established in 1997, focuses on digitizing historical collections and making them accessible digitally. It is part of the SUB Göttingen's efforts to preserve and share cultural and scientific heritage."
+    },
+    {
+      "question": "How does the SUB Göttingen contribute to open access publishing, and what initiatives does it support?",
+      "answer": "The SUB Göttingen operates the Göttingen University Press, committed to the open access principle since its founding in 2003. It also supports consortial initiatives like OpenAIRE 2020 and COAR to establish open access research infrastructures across Europe and globally. Additionally, the library's Department for Research and Development develops new services and virtual research environments."
+    },
+    {
+      "question": "What specialized information services does the SUB Göttingen provide, and with which institutions does it collaborate?",
+      "answer": "The SUB Göttingen operates several specialized information services under the DFG's Specialized Information Services Programme, including Mathematics (with TIB Hannover), Anglo-American Culture (with the J.F. Kennedy Institute at FU Berlin), Geosciences of the Solid Earth (with GFZ Potsdam), and Finno-Ugric/Uralic Languages, Literature, and Culture. It also maintains the GEO-LEO online collection in cooperation with the University Library 'Georgius Agricola' of TU Bergakademie Freiberg."
+    },
+    {
+      "question": "Write a Python function to calculate the growth rate of the SUB Göttingen's digital media holdings from 2002 to 2016, given that the number of digital media increased from 12,000 to 126,000.",
+      "answer": "python\ndef calculate_growth_rate(initial_media, final_media, years):\n    growth_rate = ((final_media - initial_media) / initial_media) ** (1 / years) - 1\n    return growth_rate\n\n# Example usage:\ninitial_media = 12000\nfinal_media = 126000\nyears = 2016 - 2002\ngrowth_rate = calculate_growth_rate(initial_media, final_media, years)\nprint(f\"Annual growth rate: {growth_rate:.4f} or {growth_rate * 100:.2f}%\")\n\nThe function calculates the compound annual growth rate (CAGR) of the digital media holdings. Plugging in the values yields an annual growth rate of approximately 17.28%."
+    }
+  ]
+}

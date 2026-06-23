@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/DAG_(newspaper)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the Dutch-language tabloid newspaper 'Dag' and when was it active?",
+      "answer": "Dag was a Dutch-language tabloid newspaper in the Netherlands that was freely distributed from 2007 to 2008."
+    },
+    {
+      "question": "Who were the key stakeholders involved in launching and publishing Dag?",
+      "answer": "Dag was jointly released by publishing company PCM and telecommunications company KPN. Bob Witman served as the editor-in-chief."
+    },
+    {
+      "question": "How did Dag differentiate itself from competitors like Metro and Spits?",
+      "answer": "Dag stood out for its clear layout, extensive use of images, and focus on public reactions. It also launched a Saturday magazine edition and an experimental delivery service to attract readers."
+    },
+    {
+      "question": "What were the financial challenges faced by Dag leading to its discontinuation?",
+      "answer": "Dag struggled to attract enough advertisers due to fierce competition from other free newspapers and the 2008 financial crisis, which led companies to cut back on advertising spending."
+    },
+    {
+      "question": "What was the initial circulation of Dag when it launched, and how did it change?",
+      "answer": "The first edition of Dag in May 2007 had a circulation of 300,000 copies. By September 2007, the circulation increased to 400,000."
+    },
+    {
+      "question": "What happened to Dag's digital presence after the newspaper ceased print operations?",
+      "answer": "After the newspaper ceased print operations in October 2008, PCM continued Dag's digital activities, including online, mobile, and narrowcasting services, without KPN's support."
+    },
+    {
+      "question": "Write a Python snippet to calculate the total investment made in Dag during its operation, assuming it followed the planned 20 million euro investment over 1.5 years.",
+      "answer": "python\n# Calculate total planned investment over 1.5 years\nannual_investment = 20_000_000 / 1.5  # 20 million over 1.5 years\nprint(f\"Total planned investment: {annual_investment:,.2f} euros per year\")\n# Output: Total planned investment: 13,333,333.33 euros per year\n"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/A20_heavy_tank",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the primary purpose of the A20 tank design by Harland & Wolff?",
+      "answer": "The A20 was designed as a British infantry tank intended to replace the Matilda II and Valentine tanks, with specifications anticipating trench warfare conditions similar to those of World War I."
+    },
+    {
+      "question": "Which organizations were involved in the development and production of the A20 tank?",
+      "answer": "The specification was produced by the Superintendent of Tank Design at Woolwich, with design handled by the Mechanization Board. Harland & Wolff was tasked with detailed work and building pilot models, while Vauxhall Motors provided the power plant (their Bedford 'twin six' engine)."
+    },
+    {
+      "question": "How many pilot models of the A20 were built, and what happened to them after trials?",
+      "answer": "Four pilot models (A20E1 and A20E2, with two built) were constructed. After trials, the order for 100 A20s was canceled, and the four pilot models—made of mild steel—were repurposed for component testing and other experimental uses, including load testing for a tank transporter trailer."
+    },
+    {
+      "question": "Why was the A20 tank project ultimately canceled in favor of the Churchill tank?",
+      "answer": "The Battle of France revealed that trench warfare was not a feature of World War II. As a result, a new specification (A22) was created, leading to the Churchill tank, a modified version of the A20 based on Vauxhall's engine work. The Churchill entered production quickly to meet wartime needs."
+    },
+    {
+      "question": "What role did Vauxhall Motors play in the A20 and Churchill tank projects?",
+      "answer": "Vauxhall Motors was tasked with finding a suitable power plant for the A20, providing their Bedford 'twin six' engine. They were then instructed to expedite production of a tank based on the A20, which became the Churchill (Tank, Infantry, Mark IV)."
+    },
+    {
+      "question": "Describe the timeline and key milestones in the A20 tank's development.",
+      "answer": "The A20 project began with four pilot models ordered in February 1940. The first pilot (A20E1) underwent trials in June 1940 and was transported to Vauxhall Motors and later to the Mechanical Warfare Experimental Establishment at Farnborough. By November 1940, the first Churchill (A22) prototype was completed, leading to the cancellation of the A20 order in June 1940."
+    },
+    {
+      "question": "What experimental uses were the A20 pilot models put to after trials?",
+      "answer": "After trials, A20E1 was moved to the Experimental Bridging Establishment in Christchurch, then to the Wheeled Vehicle Experimental Establishment at Farnborough. There, it was used as a trial load to test a 70-ton capacity tank transporter trailer built by Cranes of Dereham."
+    }
+  ]
+}

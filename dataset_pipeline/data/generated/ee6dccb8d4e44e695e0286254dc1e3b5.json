@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Angelo_Torchi",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was Angiolo Torchi and what was he primarily known for?",
+      "answer": "Angiolo Torchi (1856–1915) was an Italian painter best known for his landscapes, though he also created genre works and portraits."
+    },
+    {
+      "question": "Where did Angiolo Torchi receive his artistic training?",
+      "answer": "Torchi began his studies in Florence under Professor Lorenzo Gelati, then moved to Naples to work with Alceste Campriani."
+    },
+    {
+      "question": "List three cities where Angiolo Torchi exhibited his works.",
+      "answer": "Torchi exhibited in Milan (1881), Rome (1883), and Turin (1884). Other cities included Venice, Bologna, and Paris."
+    },
+    {
+      "question": "What impressionistic techniques did Torchi employ in his work by 1891?",
+      "answer": "By the 1891 Exhibition of the Promotrice of Florence, Torchi's technique reflected impressionistic styles, as seen in works like 'Impressions of a Market' and 'Fra settembre e ottobre'."
+    },
+    {
+      "question": "What are some notable landscape subjects Torchi frequently painted?",
+      "answer": "Torchi painted numerous landscapes of the Arno in Florence, canals in Venice, the Gabbro near Livorno, the Apennine Porrettano railway line, and the Maremma Toscana."
+    },
+    {
+      "question": "Provide a code snippet to generate a list of Torchi's works mentioned in the text.",
+      "answer": "python\nworks = [\n    \"Studies of Canals in Venice\",\n    \"Under the Grapevines in Capri\",\n    \"Vedute of Mergellina\",\n    \"In risaia dopo il raccolto\",\n    \"Study of a Roman Peasant\",\n    \"Sotto la pineta\",\n    \"A Mergellina\",\n    \"Alle Cascine (June Morning)\",\n    \"Dopo il raccolto\",\n    \"March Sun\",\n    \"Naples alla villa reale\",\n    \"Livorno on the Beach\",\n    \"Near Massa Lombarda\",\n    \"Marine Study a Castiglioncello\",\n    \"Nel greto del Mugnone\",\n    \"Alla Porretta in July\",\n    \"San Vincenzo\",\n    \"July Morning\",\n    \"Via Lorenzo il Magnifico in Florence\",\n    \"Impressions of a Market\",\n    \"Fra settembre e ottobre\",\n    \"Along the canal of Massa Lombarda\",\n    \"Ulivi siti mare\",\n    \"Riso sull' Aia\",\n    \"Last Rays of Sunlight\",\n    \"Forte San Giuliano (Genoa)\",\n    \"Pergolato sul mare\"\n]\n"
+    },
+    {
+      "question": "How did Torchi's genre works differ from his landscapes?",
+      "answer": "Torchi's genre works, such as 'In risaia dopo il raccolto,' depicted rural life and activities, while his landscapes focused on natural scenery like canals, mountains, and coastal views."
+    }
+  ]
+}

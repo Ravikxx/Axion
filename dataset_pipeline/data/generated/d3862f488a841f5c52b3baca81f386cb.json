@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/1940_Oregon_Ballot_Measure_7",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the purpose of Oregon Ballot Measure 7 in 1940?",
+      "answer": "Oregon Ballot Measure 7 aimed to repeal the existing liquor law in Oregon and replace it with a system allowing private sales of alcoholic beverages, subject to regulation and taxation. The measure sought to permit liquor to be consumed both on and off the premises where sold, depending on the vendor's license, and to grant the Oregon Liquor Control Commission (OLCC) authority to issue various classes of wholesale and retail liquor licenses while levying sales taxes on liquor businesses."
+    },
+    {
+      "question": "How did voters respond to Oregon Ballot Measure 7 in the 1940 election?",
+      "answer": "Oregon Ballot Measure 7 was defeated in the 1940 election, with 309,183 votes against it and only 90,681 votes in favor. This showed strong opposition to the proposal to repeal the existing liquor law and allow private sales."
+    },
+    {
+      "question": "What was the official ballot title of Oregon Ballot Measure 7?",
+      "answer": "The official ballot title of Oregon Ballot Measure 7 was 'BILL REPEALING PRESENT LIQUOR LAW; AUTHORIZING PRIVATE SALE, LICENSED, TAXED.'"
+    },
+    {
+      "question": "What were the key provisions of the liquor law in Oregon prior to Measure 7?",
+      "answer": "Before Measure 7, Oregon law, enforced by the Oregon Liquor Control Commission (OLCC), restricted the import, purchase, and sale of alcoholic liquor containing over 17% alcohol exclusively to the OLCC. Additionally, such liquor could not be consumed on the premises where sold."
+    },
+    {
+      "question": "What role did the Oregon Liquor Control Commission (OLCC) play in Measure 7?",
+      "answer": "The OLCC was tasked with issuing numerous classes of wholesale and retail liquor licenses, enforcing the new regulations, and levying sales taxes on various classes of liquor businesses. Measure 7 would have further solidified the OLCC's dominance in regulating liquor sales and consumption in Oregon."
+    },
+    {
+      "question": "How did Measure 7 compare to Measure 6 in the 1940 election?",
+      "answer": "Measure 7 and Measure 6 were both defeated in the 1940 election, but Measure 6 had a closer margin. Measure 7 received 90,681 votes in favor against 309,183 against, while Measure 6 had 158,004 votes in favor and 235,128 against. Measure 6 was titled 'BILL TO FURTHER REGULATE SALE AND USE OF ALCOHOLIC LIQUOR' and was a companion measure."
+    },
+    {
+      "question": "Write a Python code snippet to analyze the election results of Measure 7 and Measure 6.",
+      "answer": "python\n# Election results for Measure 7 and Measure 6 in 1940\nmeasure_7 = {\n    \"name\": \"Measure 7\",\n    \"yes_votes\": 90681,\n    \"no_votes\": 309183\n}\n\nmeasure_6 = {\n    \"name\": \"Measure 6\",\n    \"yes_votes\": 158004,\n    \"no_votes\": 235128\n}\n\n# Calculate total votes and percentages\nfor measure in [measure_7, measure_6]:\n    total_votes = measure[\"yes_votes\"] + measure[\"no_votes\"]\n    measure[\"total_votes\"] = total_votes\n    measure[\"yes_percent\"] = round((measure[\"yes_votes\"] / total_votes) * 100, 2)\n    measure[\"no_percent\"] = round((measure[\"no_votes\"] / total_votes) * 100, 2)\n\n# Print the results\nfor measure in [measure_7, measure_6]:\n    print(f\"{measure['name']} Results:\")\n    print(f\"  Yes Votes: {measure['yes_votes']} ({measure['yes_percent']}%)\")\n    print(f\"  No Votes: {measure['no_votes']} ({measure['no_percent']}%)\")\n    print(f\"  Total Votes: {measure['total_votes']}\")\n    print()\n"
+    }
+  ]
+}

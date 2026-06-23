@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Cross-dressing",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is cross-dressing and how does it differ from being transgender?",
+      "answer": "Cross-dressing refers to wearing clothes traditionally or stereotypically associated with a different gender, such as men wearing women's clothes or women wearing men's clothes. It is a form of dress or presentation and does not necessarily indicate a person's gender identity or sexual orientation. Being transgender, on the other hand, involves a person's internal sense of their gender being different from their sex assigned at birth, which is a distinct experience from cross-dressing."
+    },
+    {
+      "question": "Why is modern terminology like 'cross-dressing' preferred over older terms such as 'transvestite'?",
+      "answer": "Modern terminology like 'cross-dressing' is preferred because terms like 'transvestite' originated in medical and psychiatric contexts and are now often regarded as outdated or offensive. 'Cross-dressing' is a more neutral and inclusive term that focuses on the act of dressing rather than labeling a person."
+    },
+    {
+      "question": "What are some historical reasons why people have engaged in cross-dressing?",
+      "answer": "People have cross-dressed for thousands of years for various reasons, including disguise, comfort, self-expression, ritual, performance, and entertainment. For example, in theater traditions like Japanese kabuki, Western drag, and British pantomime, cross-dressing has been used for comedic effect or to challenge societal norms."
+    },
+    {
+      "question": "How have social norms influenced cross-dressing practices?",
+      "answer": "Social norms dictate clothing styles, colors, and types expected for individuals based on gender roles. Cross-dressing involves dressing contrary to these norms or laws, reflecting a challenge to prevailing standards. For instance, in societies where men wearing skirts is uncommon, a man doing so would be engaging in cross-dressing."
+    },
+    {
+      "question": "Provide a code snippet that checks if a person's clothing choice aligns with traditional gender norms for their society.",
+      "answer": "python\n\ndef is_cross_dressing(clothing_gender, person_gender):\n    \"\"\"\n    Check if a person's clothing choice aligns with traditional gender norms.\n    \n    Args:\n        clothing_gender (str): The gender typically associated with the clothing (e.g., 'male', 'female', 'neutral').\n        person_gender (str): The gender identity of the person wearing the clothing.\n        \n    Returns:\n        bool: True if the clothing choice is cross-dressing, False otherwise.\n    \"\"\"\n    return clothing_gender != person_gender\n\n# Example usage:\nprint(is_cross_dressing('female', 'male'))  # Output: True\nprint(is_cross_dressing('male', 'male'))    # Output: False\n"
+    },
+    {
+      "question": "What role has cross-dressing played in cultural traditions like theater and entertainment?",
+      "answer": "Cross-dressing has played a significant role in cultural traditions such as Japanese kabuki theater, where male actors play female roles (onnagata), Western drag performances, and British pantomime, where men traditionally played female characters for comedic effect. These traditions often use cross-dressing to explore gender roles, challenge norms, or enhance storytelling."
+    },
+    {
+      "question": "How have laws historically been used to regulate or criminalize cross-dressing?",
+      "answer": "Laws against cross-dressing have historically been used to enforce gender norms and target transgender and gender-nonconforming people. Such laws were often justified under the guise of public decency or morality but served to suppress non-conforming expressions of gender and identity."
+    }
+  ]
+}

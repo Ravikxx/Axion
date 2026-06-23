@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Cythara",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the cythara and what types of instruments does it encompass?",
+      "answer": "The cythara is a broad category of stringed instruments from medieval and Renaissance Europe, encompassing necked instruments (like lutes and vielles), lyres, and harps. It includes instruments such as fiddles, vielles, violas, citoles, and guitars, which descended from or were influenced by the cythara family."
+    },
+    {
+      "question": "How can you distinguish between a cythara and a lute-family instrument based on how they are held?",
+      "answer": "Cythara players typically hold the instrument by resting it on the playing arm, bringing their forearm and wrist underneath the body to pluck or strum the strings. In contrast, lute-family instruments (like the lute, oud, or gittern) are held with the arm and wrist parallel to the soundboard, similar to how a modern guitar is played."
+    },
+    {
+      "question": "What historical evidence supports the use of the term 'cythara' in the 9th century?",
+      "answer": "The Stuttgart Psalter, a 9th-century manuscript, contains multiple illustrations of a large plucked or strummed instrument labeled 'cythara.' These images show the instrument being played with a plectrum and held in a distinctive manner, with the player's forearm underneath the instrument."
+    },
+    {
+      "question": "Why might the term 'cythara' have been popular during medieval times?",
+      "answer": "The term 'cythara' may have been popular due to its 'magical' connotations, as medieval people believed that music from stringed instruments could deeply influence the emotions of listeners. This cultural association likely contributed to its widespread use."
+    },
+    {
+      "question": "How did the cythara influence the development of bowed instruments?",
+      "answer": "Before the arrival of the bow in the 10th century, stringed instruments like the cythara and lyre were primarily plucked or strummed. After the bow's introduction, existing instruments such as the lyre were adapted to accommodate bowing. Examples include the Byzantine lyra (an early bowed fiddle) and the crwth (a bowed lyre that survived into modern times)."
+    },
+    {
+      "question": "Write a Python function that checks if a given instrument is part of the cythara family based on historical descriptions.",
+      "answer": "python\ndef is_cythara_family(instrument_name):\n    cythara_family = [\n        'cythara', 'kithara', 'lyre', 'harp', 'fiddle', 'viella', \n        'viola', 'citole', 'guitar', 'vielle', 'crwth', 'Byzantine lyra'\n    ]\n    return instrument_name.lower() in cythara_family\n\n# Example usage:\nprint(is_cythara_family('lyre'))  # Output: True\nprint(is_cythara_family('lute'))  # Output: False\n"
+    },
+    {
+      "question": "What visual evidence from the Stuttgart Psalter supports the claim that the cythara was held differently in some cases?",
+      "answer": "One illustration in the Stuttgart Psalter shows a player holding the cythara vertically, resting it on his lap or knee while supporting the neck with his left hand and playing with his right hand. This contrasts with other images in the same document where the cythara is held horizontally under the arm. Citole players were also depicted holding their instruments vertically."
+    }
+  ]
+}

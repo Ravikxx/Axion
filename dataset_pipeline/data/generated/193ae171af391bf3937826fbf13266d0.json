@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/2011_World_Championships_in_Athletics_–_Women's_high_jump",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who were the top three medalists in the Women's high jump at the 2011 World Championships in Athletics?",
+      "answer": "The top three medalists were Anna Chicherova (gold), Blanka Vlašić (silver), and Antonietta Di Martino (bronze)."
+    },
+    {
+      "question": "What was the initial injury status of Blanka Vlašić before the 2011 World Championships?",
+      "answer": "Blanka Vlašić was suffering from a leg injury and had initially withdrawn from the competition before deciding to compete."
+    },
+    {
+      "question": "How many athletes cleared 2.00 meters in the final round of the 2011 Women's high jump event?",
+      "answer": "Three athletes cleared 2.00 meters in the final round: Anna Chicherova on her first attempt, Blanka Vlašić on her second attempt, and Antonietta Di Martino on her third attempt."
+    },
+    {
+      "question": "What was the qualifying height for the final round of the 2011 Women's high jump event?",
+      "answer": "Athletes needed to clear 1.95 meters to qualify for the final round."
+    },
+    {
+      "question": "Which notable athletes were missing from the 2011 Women's high jump event?",
+      "answer": "Notable absences included Chaunté Lowe, Ariane Friedrich, and reigning Olympic champion Tia Hellebaut."
+    },
+    {
+      "question": "Provide a Python code snippet to determine the medalist rankings based on the given heights cleared by athletes in the final round.",
+      "answer": "python\n# Heights cleared by athletes in the final round (height, athlete)\nfinal_round = [\n    (2.00, \"Anna Chicherova\"),\n    (2.00, \"Blanka Vlašić\"),\n    (2.00, \"Antonietta Di Martino\"),\n    (1.95, \"Other athletes\")\n]\n\n# Sort athletes by height cleared (descending) and attempt order (ascending)\nmedalists = sorted(final_round, key=lambda x: (-x[0], final_round.index(x)))\n\n# Extract medalist names in order\nrankings = [athlete for height, athlete in medalists if height >= 2.00]\n\nprint(\"Medalists:\", rankings[:3])\n\nOutput:\nMedalists: ['Anna Chicherova', 'Blanka Vlašić', 'Antonietta Di Martino']"
+    },
+    {
+      "question": "How did Anna Chicherova's performance in the 2011 World Championships differ from her past results against Blanka Vlašić?",
+      "answer": "Anna Chicherova had previously finished one place behind Blanka Vlašić in major meets, but in the 2011 World Championships, she outperformed Vlašić by winning the gold medal while Vlašić took silver."
+    }
+  ]
+}

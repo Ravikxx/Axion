@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Lopes",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the origin of the surname Lopes?",
+      "answer": "The surname Lopes has a Germanic patronymic origin, meaning 'son of Lopo'. The name Lopo itself is derived from the Latin word 'lupus', which translates to 'wolf'."
+    },
+    {
+      "question": "Name three notable people with the surname Lopes and their professions.",
+      "answer": "Notable individuals with the surname Lopes include: (1) Carlos Lopes, a Portuguese long-distance athlete born in 1947; (2) Leila Lopes, an Angolan Miss Universe 2011 winner born in 1986; and (3) Rosaly Lopes, a Brazilian earth-scientist born in 1957."
+    },
+    {
+      "question": "How does the surname Lopes vary across different Romance languages?",
+      "answer": "The surname Lopes has several Romance language variants, including Spanish (López), Italian (Lupo), French (Loup), and Romanian (Lupu or Lupescu)."
+    },
+    {
+      "question": "Write a Python function to check if a given name is a variant of the surname Lopes.",
+      "answer": "python\ndef is_lopes_variant(name):\n    variants = {\"Lopes\", \"López\", \"Lupo\", \"Loup\", \"Lupu\", \"Lupescu\"}\n    return name.strip() in variants\n\nExample usage:\npython\nprint(is_lopes_variant(\"Lopes\"))  # Output: True\nprint(is_lopes_variant(\"López\"))  # Output: True\nprint(is_lopes_variant(\"Smith\"))  # Output: False\n"
+    },
+    {
+      "question": "Which Lopes surname variant is most common in Portugal?",
+      "answer": "The variant 'Lopes' is the most common form of the surname in Portugal. It is a direct patronymic form derived from the given name Lopo."
+    },
+    {
+      "question": "Identify the notable Lopes who was a chronicler and translator, and state their birth and death years.",
+      "answer": "Adília Lopes (1960–2024) was a notable Portuguese poet, chronicler, and translator."
+    },
+    {
+      "question": "What is the historical significance of Fernão Lopes in Portuguese history?",
+      "answer": "Fernão Lopes (c.1380–1459) was a Portuguese royal chronicler, known for his detailed accounts of Portuguese history during the 15th century. His works are considered foundational to Portuguese historiography."
+    }
+  ]
+}

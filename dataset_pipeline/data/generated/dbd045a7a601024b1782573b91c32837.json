@@ -1,0 +1,38 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Apache_Hadoop",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is Apache Hadoop and what are its primary components?",
+      "answer": "Apache Hadoop is an open-source software framework designed for distributed storage and processing of large datasets across clusters of computers. Its primary components are the Hadoop Distributed File System (HDFS) for storage and Hadoop MapReduce for data processing. HDFS abstracts the complexity of distributed storage, allowing data to be easily moved across a cluster, while MapReduce distributes and processes data transformations in parallel across nodes."
+    },
+    {
+      "question": "How does the Hadoop MapReduce process work, including the Map, Shuffle, and Reduce phases?",
+      "answer": "Hadoop MapReduce operates in three key phases: 1) Map: This phase organizes raw data into key-value pairs based on predefined mapping logic. 2) Shuffle: This process sorts and redistributes data across nodes in the cluster using the keys, ensuring similar data is grouped together (data locality). 3) Reduce: This phase applies transformations to the grouped data values, such as mathematical operations, leveraging data locality for efficiency. Finally, the processed data is written back to HDFS."
+    },
+    {
+      "question": "What are the benefits of Hadoop's distributed processing compared to sequential processing?",
+      "answer": "Hadoop's distributed processing offers several advantages over sequential processing: 1) Parallel execution: Tasks are split and processed simultaneously across multiple nodes, significantly reducing total processing time. 2) Fault tolerance: If a node fails, the system can automatically reroute and redistribute work, ensuring higher availability. 3) Resource efficiency: By distributing workloads, Hadoop utilizes available cluster resources more effectively than sequential processing, which waits for one step to complete before starting the next."
+    },
+    {
+      "question": "Write a simple Python code snippet that demonstrates how to set up a basic MapReduce job using Hadoop Streaming.",
+      "answer": "To create a basic MapReduce job in Python using Hadoop Streaming, you would typically write two separate Python scripts for the Mapper and Reducer. Here's an example of a word count job:\n\nMapper (mapper.py):\npython\n#!/usr/bin/env python\nimport sys\nfor line in sys.stdin:\n    line = line.strip()\n    words = line.split()\n    for word in words:\n        print(f\"{word}\\t1\")\n\n\nReducer (reducer.py):\npython\n#!/usr/bin/env python\nimport sys\ncurrent_word = None\ncurrent_count = 0\nfor line in sys.stdin:\n    line = line.strip()\n    word, count = line.split('\\t', 1)\n    try:\n        count = int(count)\n    except ValueError:\n        continue\n    if current_word == word:\n        current_count += count\n    else:\n        if current_word:\n            print(f\"{current_word}\\t{current_count}\")\n        current_count = count\n        current_word = word\nif current_word:\n    print(f\"{current_word}\\t{current_count}\")\n\n\nTo run this job in Hadoop:\nbash\nhadoop jar $HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-*.jar \\\n    -files mapper.py,reducer.py \\\n    -mapper mapper.py \\\n    -reducer reducer.py \\\n    -input /input/path \\\n    -output /output/path\n"
+    },
+    {
+      "question": "What is the relationship between HDFS and other Apache projects like HBase and Hive?",
+      "answer": "HDFS serves as the foundational storage layer for the Hadoop ecosystem and is designed to work alongside other Apache projects. Apache HBase, a NoSQL wide-column store, uses HDFS as its primary storage system while providing real-time read/write access to large datasets. Apache Hive, a data warehousing tool, also relies on HDFS for storage but provides a SQL-like interface that translates queries into MapReduce or Spark jobs, running on top of the HDFS data. Other tools in the ecosystem, such as HBase and Hive, extend HDFS's capabilities for specific use cases while maintaining compatibility with the underlying distributed storage system."
+    },
+    {
+      "question": "How does Apache YARN contribute to the Hadoop ecosystem?",
+      "answer": "Apache YARN (Yet Another Resource Negotiator) is Hadoop's resource management layer that sits between the operating system and the applications running on the cluster. YARN's primary role is to allocate system resources (CPU, memory, network) to various applications in the Hadoop ecosystem. It enables multiple applications to efficiently share the same cluster resources by dynamically allocating resources based on demand. YARN decouples resource management from processing, allowing different processing frameworks (MapReduce, Spark, etc.) to coexist and utilize the same cluster resources."
+    },
+    {
+      "question": "Why might Apache Spark be preferred over Hadoop MapReduce for certain data processing pipelines?",
+      "answer": "Apache Spark is often preferred over Hadoop MapReduce for several reasons: 1) Performance: Spark processes data in memory rather than reading/writing to disk after each transformation, resulting in significantly faster processing for iterative algorithms and interactive queries. 2) Ease of use: Spark provides high-level APIs in multiple languages (Python, Java, Scala) and built-in libraries for common tasks like machine learning (MLlib) and graph processing (GraphX). 3) Unified framework: Spark integrates batch processing, real-time streaming, machine learning, and interactive queries within a single framework, while MapReduce typically requires separate tools for different processing types. 4) Optimization: Spark's Catalyst query optimizer and Tungsten binary processing engine provide better performance optimizations automatically."
+    },
+    {
+      "question": "What is data locality in the context of Hadoop MapReduce and why is it important?",
+      "answer": "Data locality refers to the principle of processing data where it resides, rather than moving it across the network. In Hadoop MapReduce, the Shuffle phase organizes data by key so that related data is grouped together on the same node or rack. During the Reduce phase, the system can then process this data locally, minimizing network transfer. Data locality is crucial because it significantly improves processing efficiency by reducing network I/O overhead, which is often the bottleneck in distributed systems. This concept is analogous to specialization in economics, where resources are allocated where they can be most efficiently utilized."
+    }
+  ]
+}

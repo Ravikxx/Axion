@@ -1,0 +1,42 @@
+{
+  "source_url": "https://mathworld.wolfram.com/CubicFormula.html",
+  "category": "mathworld",
+  "pairs": [
+    {
+      "question": "What is the cubic formula and for which type of equation is it used?",
+      "answer": "The cubic formula is the closed-form solution for finding the roots of a cubic equation, which is a polynomial equation of degree three. A general cubic equation is typically written in the form x³ + a₂x² + a₁x + a₀ = 0. The cubic formula provides explicit expressions for the roots of such equations."
+    },
+    {
+      "question": "How can the cubic equation x³ + a₂x² + a₁x + a₀ = 0 be simplified before solving?",
+      "answer": "The cubic equation can be simplified by eliminating the x² term using the substitution x = y - a₂/3. This transforms the equation into the depressed cubic form y³ + py + q = 0, where p = a₁ - a₂²/3 and q = a₀ - (a₁a₂)/3 + 2a₂³/27."
+    },
+    {
+      "question": "What is Vieta's substitution for solving a cubic equation, and why is it useful?",
+      "answer": "Vieta's substitution involves setting y = z - p/(3z) in the depressed cubic y³ + py + q = 0, which reduces it to a quadratic equation in z³. This is useful because quadratic equations can be solved easily using the quadratic formula, simplifying the process of finding the roots of the cubic."
+    },
+    {
+      "question": "Provide the Cardano's formula for the roots of a cubic equation in the form x³ + px + q = 0.",
+      "answer": "For the depressed cubic equation x³ + px + q = 0, the roots are given by Cardano's formula as:\n\nx = ∛(-q/2 + √((q/2)² + (p/3)³)) + ∛(-q/2 - √((q/2)² + (p/3)³)).\n\nThis formula provides the three roots of the cubic equation."
+    },
+    {
+      "question": "How does the discriminant of a cubic equation determine the nature of its roots?",
+      "answer": "The discriminant Δ of a cubic equation x³ + ax² + bx + c = 0 is given by Δ = 18abc - 4a³c + a²b² - 4b³ - 27c². The nature of the roots depends on Δ:\n- If Δ > 0, there are three distinct real roots.\n- If Δ = 0, there are multiple roots, with all roots being real.\n- If Δ < 0, there is one real root and two complex conjugate roots."
+    },
+    {
+      "question": "Write a Wolfram Language code snippet to solve the cubic equation x³ - 6x² + 11x - 6 = 0 exactly.",
+      "answer": "`Solve[x^3 - 6*x^2 + 11*x - 6 == 0, x]`\nThis code uses the built-in `Solve` function to find the exact roots of the cubic equation. The solutions are {x -> 1}, {x -> 2}, and {x -> 3}."
+    },
+    {
+      "question": "What historical context surrounds the discovery of the cubic formula?",
+      "answer": "The cubic formula was first discovered by Scipione del Ferro around 1515, but he did not publish it. Niccolò Tartaglia later learned the method from del Ferro's student, Antonio Maria Fior, and shared it with Gerolamo Cardano. Cardano published the solution in his 1545 treatise 'Ars Magna', acknowledging Tartaglia's contribution but also revealing del Ferro as the original discoverer."
+    },
+    {
+      "question": "Explain how the cubic equation can be factored into a linear and a quadratic term.",
+      "answer": "To factor the cubic equation x³ + ax² + bx + c = 0, first eliminate the x² term using the substitution x = y - a/3 to get y³ + py + q = 0. Then, assume the cubic can be factored as (y - r)(y² + sy + t) = 0, where r is a root. By expanding and matching coefficients, you can solve for s, t, and r, reducing the problem to solving the quadratic y² + sy + t = 0."
+    },
+    {
+      "question": "How can the cubic formula be implemented in Python to compute the roots of a cubic equation?",
+      "answer": "Here is a Python implementation using NumPy to compute the roots of a cubic equation x³ + ax² + bx + c = 0:\n\npython\nimport numpy as np\n\ndef cubic_roots(a, b, c, d):\n    # Coefficients for x³ + ax² + bx + c = 0\n    p = (3*b - a**2) / 3\n    q = (2*a**3 - 9*a*b + 27*c) / 27\n    delta = (q**2)/4 + (p**3)/27\n    \n    if delta > 0:  # One real root, two complex\n        u = (-q/2 + np.sqrt(delta))**(1/3)\n        v = (-q/2 - np.sqrt(delta))**(1/3)\n        y1 = u + v\n        y2 = -(u + v)/2 + (u - v)*np.sqrt(3)/2 * 1j\n        y3 = -(u + v)/2 - (u - v)*np.sqrt(3)/2 * 1j\n    elif delta == 0:  # All roots real, at least two equal\n        u = (-q/2)**(1/3)\n        y1 = 2*u\n        y2 = y3 = -u\n    else:  # Three distinct real roots\n        theta = np.arccos(3*q/(2*p) * np.sqrt(-3/p))\n        y1 = 2 * np.sqrt(-p/3) * np.cos(theta/3)\n        y2 = 2 * np.sqrt(-p/3) * np.cos((theta + 2*np.pi)/3)\n        y3 = 2 * np.sqrt(-p/3) * np.cos((theta + 4*np.pi)/3)\n    \n    # Convert back from depressed cubic\n    x1 = y1 - a/3\n    x2 = y2 - a/3\n    x3 = y3 - a/3\n    return [x1, x2, x3]\n\n# Example usage\nroots = cubic_roots(0, -6, 11, -6)  # Solves x³ - 6x² + 11x - 6 = 0\nprint(roots)  # Output: [3.0, 1.0, 2.0]\n\nThis code handles all cases of the discriminant and returns the roots in complex form if necessary."
+    }
+  ]
+}

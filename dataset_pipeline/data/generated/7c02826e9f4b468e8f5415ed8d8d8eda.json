@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Cadence",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is a cadence in Western musical theory, and how is it defined?",
+      "answer": "In Western musical theory, a cadence is the end of a phrase in which the melody or harmony creates a sense of full or partial resolution. It is a progression of two or more chords that concludes a musical phrase, section, or piece, and can be classified as 'weak' or 'strong' based on the perceived finality it imparts."
+    },
+    {
+      "question": "What are the main types of cadences mentioned in the text?",
+      "answer": "The text mentions three main types of cadences: harmonic cadences (progressions of chords that conclude a phrase), rhythmic cadences (characteristic rhythmic patterns indicating the end of a phrase), and cadences in general, which may refer to the final notes, chords, or chord progressions of a phrase."
+    },
+    {
+      "question": "How does harmonic rhythm influence the perception of a cadence?",
+      "answer": "Harmonic rhythm plays a crucial role in determining where a cadence occurs. It refers to the rate at which chords change in a piece of music, and a well-placed cadence often aligns with a strong harmonic rhythm to emphasize the sense of closure or resolution."
+    },
+    {
+      "question": "What does it mean for a cadence to be classified as 'weak' or 'strong'?",
+      "answer": "A 'weak' cadence conveys a partial or incomplete sense of resolution, often leaving the listener expecting more. In contrast, a 'strong' cadence provides a clear and definitive sense of finality, often ending on the tonic chord, which signals the conclusion of a musical phrase or piece."
+    },
+    {
+      "question": "How did Edward Lowinsky describe the role of the cadence in tonality?",
+      "answer": "The musicologist Edward Lowinsky proposed that the cadence was the 'cradle of tonality,' suggesting that cadences are fundamental to establishing and reinforcing the central pitch (tonic) of a musical passage or piece, thereby shaping the tonal structure of Western music."
+    },
+    {
+      "question": "Can a chord progression alone be considered a cadence? Explain.",
+      "answer": "No, a chord progression alone does not necessarily constitute a cadence. For a progression to be recognized as a cadence, it must occur at the end of a phrase and convey a sense of closure or resolution. The context and placement within the music are essential for it to function as a cadence."
+    },
+    {
+      "question": "Provide an example of a common harmonic cadence in Western music and its function.",
+      "answer": "A common harmonic cadence is the 'perfect authentic cadence' (PAC), which typically consists of a progression from the dominant chord (V) to the tonic chord (I) in root position, with the melody ending on the tonic note (e.g., V – I). This cadence is strong because it provides a clear sense of finality and resolution to the tonic."
+    }
+  ]
+}

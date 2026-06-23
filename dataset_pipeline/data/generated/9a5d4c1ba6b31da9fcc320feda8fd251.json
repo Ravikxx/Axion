@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Eugenics",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is eugenics, and what are its primary goals?",
+      "answer": "Eugenics is a social and political philosophy that advocates influencing human reproduction to improve the human species according to subjective definitions of desirable traits. Its primary goals are to control who can have children and to shape how individuals choose mates and raise offspring, with the aim of enhancing genetic or hereditary characteristics in future generations."
+    },
+    {
+      "question": "How does eugenics relate to animal breeding practices?",
+      "answer": "Eugenics borrows the idea from animal breeding that selective reproduction can alter hereditary traits across generations. Just as selective breeding in dogs produces distinct breeds with different behavioral and mental characteristics, eugenicists argue that similar selective pressures could be applied to humans to achieve desired genetic outcomes."
+    },
+    {
+      "question": "What is the difference between negative and positive eugenics?",
+      "answer": "Negative eugenics seeks to eliminate or reduce harmful traits by discouraging or preventing reproduction among individuals deemed to carry undesirable genetic traits. Positive eugenics, by contrast, encourages reproduction among individuals with desirable traits, such as intelligence or health, to increase their prevalence in the population."
+    },
+    {
+      "question": "Why is eugenics considered a controversial idea?",
+      "answer": "Eugenics is controversial due to its historical misuse to justify discrimination and injustice against individuals or groups labeled as 'genetically inferior' or 'unhealthy.' Such applications have led to forced sterilizations, racial classifications, and other unethical practices, undermining human rights and reinforcing harmful stereotypes."
+    },
+    {
+      "question": "Provide an example of how eugenics has been historically implemented.",
+      "answer": "In the early 20th century, many U.S. states enacted laws allowing forced sterilization of individuals deemed 'unfit'—such as people with disabilities, mental illnesses, or criminal records—under eugenic policies. For example, Carrie Buck, a woman labeled as 'feeble-minded,' was sterilized in 1927 after the U.S. Supreme Court upheld Virginia’s eugenics law in *Buck v. Bell*."
+    },
+    {
+      "question": "Write a Python function that simulates a simple genetic selection process inspired by eugenics principles.",
+      "answer": "python\ndef simulate_genetic_selection(population, desirable_trait_threshold, reproduction_rate):\n    \"\"\"\n    Simulates a basic genetic selection process where individuals with higher trait values\n    are more likely to reproduce, mimicking positive eugenics.\n    \n    Args:\n        population (list of dict): Each dict contains 'trait_value' (0-100).\n        desirable_trait_threshold (int): Minimum trait value to reproduce.\n        reproduction_rate (float): Probability of reproduction for qualified individuals.\n    \n    Returns:\n        list of dict: New generation after selection.\n    \"\"\"\n    selected = [ind for ind in population if ind['trait_value'] >= desirable_trait_threshold]\n    new_generation = []\n    \n    for individual in selected:\n        if reproduction_rate > 0:\n            offspring_trait = (individual['trait_value'] + 5) * 0.9  # Small improvement\n            new_generation.append({'trait_value': min(100, offspring_trait)})\n    \n    return new_generation\n\n# Example usage:\ninitial_population = [{'trait_value': i} for i in range(0, 100, 10)]\nnew_gen = simulate_genetic_selection(initial_population, 70, 0.7)\nprint(f\"New generation trait values: {[ind['trait_value'] for ind in new_gen]}\")\n\n\nThis function models a simplified version of positive eugenics, where only individuals above a trait threshold reproduce, and their offspring inherit slightly improved traits."
+    },
+    {
+      "question": "What ethical concerns arise from applying eugenics principles to human populations?",
+      "answer": "Applying eugenics principles to humans raises significant ethical concerns, including violations of reproductive autonomy, the potential for state-sponsored discrimination, and the risk of reinforcing harmful biases about 'desirable' traits. Additionally, eugenics assumes genetic determinism—ignoring environmental factors and the complexity of traits—while also posing dangers of unintended consequences, such as reduced genetic diversity or unforeseen health trade-offs."
+    }
+  ]
+}

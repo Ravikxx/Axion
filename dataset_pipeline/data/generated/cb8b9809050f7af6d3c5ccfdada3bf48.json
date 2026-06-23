@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/1944–45_Chicago_Black_Hawks_season",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who replaced Paul Thompson as head coach of the 1944–45 Chicago Black Hawks, and after which game did this change occur?",
+      "answer": "Johnny Gottselig replaced Paul Thompson as head coach after the first game of the season, which was a 11–5 loss against the Toronto Maple Leafs."
+    },
+    {
+      "question": "What were the 1944–45 Chicago Black Hawks' total goals scored and allowed during the season, and how did these numbers rank in the league?",
+      "answer": "The Black Hawks scored 141 goals (league low) and allowed 194 goals (4th in the league) during the 1944–45 season."
+    },
+    {
+      "question": "Name the two top scorers for the 1944–45 Chicago Black Hawks, including their goals, assists, and total points.",
+      "answer": "Bill Mosienko led the team with 28 goals and 54 points (tied for team lead). Clint Smith had 31 assists and also tied for 54 points, making him the other top scorer."
+    },
+    {
+      "question": "Which players were involved in the mid-season trade between the Chicago Black Hawks and the Detroit Red Wings, and what were the traded players from each team?",
+      "answer": "Chicago traded Earl Seibert and Fido Purpur to Detroit, while receiving Butch McDonald, Don Grosso, and Cully Simon in return."
+    },
+    {
+      "question": "What was Mike Karakas' role on the 1944–45 Chicago Black Hawks, and what were his season stats?",
+      "answer": "Mike Karakas was the starting goaltender for the Black Hawks, recording 12 wins, a 3.90 goals-against average (GAA), and 4 shutouts during the season."
+    },
+    {
+      "question": "Why did Doug Bentley miss the 1944–45 Chicago Black Hawks season, and who was his brother also missing the season due to similar circumstances?",
+      "answer": "Doug Bentley stayed home in Saskatchewan to tend the family farm as permitted by the Canadian Armed Forces. His brother Max Bentley also missed the second year of his career due to World War II."
+    },
+    {
+      "question": "Write a Python snippet to calculate the 1944–45 Chicago Black Hawks' goal differential and determine if they would have made the playoffs if they had finished with a goal differential of -52 instead of -53.",
+      "answer": "python\nhawks_goals_scored = 141\nhawks_goals_allowed = 194\nhawks_goal_differential = hawks_goals_scored - hawks_goals_allowed\nprint(f\"Goal differential: {hawks_goal_differential}\")\n\n# Hypothetical scenario with goal differential of -52\nif hawks_goals_scored - (hawks_goals_allowed - 1) == -52:\n    print(\"If the Black Hawks had allowed one fewer goal, their goal differential would have been -52, still not enough to make the playoffs.\")\nelse:\n    print(\"Condition not met.\")\n"
+    }
+  ]
+}

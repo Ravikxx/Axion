@@ -1,0 +1,38 @@
+{
+  "source_url": "https://mathworld.wolfram.com/FiniteField.html",
+  "category": "mathworld",
+  "pairs": [
+    {
+      "question": "What is a finite field and what determines its order?",
+      "answer": "A finite field, also called a Galois field, is a field with a finite number of elements, referred to as its order. The order of a finite field is always a prime number or a power of a prime number (e.g., 2, 3, 4, 5, 7, 8, 9). For each prime power, there exists exactly one finite field up to isomorphism, denoted as GF(p^n) where p is a prime and n is a positive integer."
+    },
+    {
+      "question": "How are elements of GF(2) represented and what are their addition and multiplication tables?",
+      "answer": "The finite field GF(2) consists of two elements: 0 and 1. Addition and multiplication are performed modulo 2. The addition table is: 0+0=0, 0+1=1, 1+0=1, 1+1=0. The multiplication table is: 0×0=0, 0×1=0, 1×0=0, 1×1=1."
+    },
+    {
+      "question": "What is an extension field of GF(2) of degree 3, and how are its elements represented?",
+      "answer": "An extension field of GF(2) of degree 3 is denoted GF(2^3) or GF(8). Its elements can be represented as polynomials of degree less than 3 with coefficients in GF(2). For example, using the irreducible polynomial x^3 + x + 1, the elements are: 0, 1, x, x+1, x^2, x^2+1, x^2+x, x^2+x+1. These can also be represented as 3-dimensional vectors over GF(2), e.g., x^2+x+1 as (1,1,1)."
+    },
+    {
+      "question": "What is a primitive polynomial in the context of finite fields, and why is it important?",
+      "answer": "A primitive polynomial over GF(p) is an irreducible polynomial of degree n such that its roots generate all nonzero elements of GF(p^n). This means a primitive polynomial's powers of its root produce every nonzero element exactly once before repeating. Primitive polynomials are crucial for constructing pseudo-random sequences and efficient implementations of finite field arithmetic. For example, x^3 + x + 1 is a primitive polynomial over GF(2)."
+    },
+    {
+      "question": "Write a Python function to add two elements in GF(2^3) represented as polynomials modulo an irreducible polynomial.",
+      "answer": "python\ndef gf2_3_add(a, b, mod_poly):\n    \"\"\"\n    Add two elements in GF(2^3) represented as polynomials (degree < 3) over GF(2).\n    mod_poly: Irreducible polynomial for GF(2^3), e.g., [1, 0, 1, 1] for x^3 + x + 1.\n    Returns the sum as a polynomial.\n    \"\"\"\n    # Polynomial addition in GF(2) is XOR\n    result = [a[i] ^ b[i] for i in range(len(a))]\n    return result\n\n# Example usage:\na = [0, 1, 1]  # Represents x^2 + x\nb = [1, 0, 1]  # Represents x^2 + 1\nsum_result = gf2_3_add(a, b, [1, 0, 1, 1])  # Result: [1, 1, 0] (x^2 + x + 1)\n"
+    },
+    {
+      "question": "What is the field characteristic of a finite field, and how is it determined?",
+      "answer": "The field characteristic of a finite field GF(p^n) is the smallest positive integer p such that adding the multiplicative identity 1 to itself p times yields 0. For any finite field, the characteristic is always a prime number. For example, in GF(3), the characteristic is 3 because 1 + 1 + 1 = 0. In GF(2^3), the characteristic is 2 because 1 + 1 = 0. This characteristic dictates modular arithmetic operations within the field."
+    },
+    {
+      "question": "Explain the relationship between subfields and base fields in finite fields.",
+      "answer": "A subfield is a subset of a finite field that itself satisfies all field axioms under the same operations. Every finite field GF(p^n) contains a unique subfield GF(p^m) if and only if m divides n. GF(p) is called the prime field and is the smallest subfield of GF(p^n). For example, GF(2^6) has subfields GF(2), GF(2^2), GF(2^3), and GF(2^6), since 1, 2, 3, and 6 divide 6."
+    },
+    {
+      "question": "Why can't GF(4) be represented using the ring of residues modulo 4? Provide an algebraic explanation.",
+      "answer": "The ring of residues modulo 4 (Z/4Z) is not a field because not every nonzero element has a multiplicative inverse. For instance, the element 2 in Z/4Z has no inverse since 2×2 = 0 ≠ 1, violating the field axiom. In contrast, GF(4) requires all nonzero elements to have inverses. GF(4) is constructed using a polynomial representation over GF(2), such as GF(2)[x]/(x^2 + x + 1), ensuring invertibility. Thus, rings like Z/4Z are distinct from finite fields with the same number of elements."
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/FC_Politehnica_Timișoara",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When was Fotbal Club Politehnica Timișoara founded, and who was its original founder?",
+      "answer": "Fotbal Club Politehnica Timișoara was founded in 1921 by mathematician Traian Lalescu. It was initially run by the Polytechnic University of Timișoara and was named in its honor."
+    },
+    {
+      "question": "What are the key achievements of Politehnica Timișoara in Romanian football?",
+      "answer": "Politehnica Timișoara won two Cupa României trophies and finished as runner-up in the Liga I twice, including the 2008–09 and 2010–11 seasons. It also spent 49 seasons in the Liga I competition."
+    },
+    {
+      "question": "How did Politehnica Timișoara perform in European competitions?",
+      "answer": "The club made its European debut in the 1978–79 UEFA Cup, advancing past MTK Hungária in the first round. This marked their only notable international campaign."
+    },
+    {
+      "question": "What led to the dissolution of Politehnica Timișoara in 2012?",
+      "answer": "Politehnica Timișoara was relegated after failing to obtain a new participation license due to unpaid debts. The club was subsequently dissolved in 2012."
+    },
+    {
+      "question": "Which clubs claimed to be the moral successors of Politehnica Timișoara, and how did the brand ownership change over time?",
+      "answer": "After dissolution, ACS Poli Timișoara and SSU Politehnica Timișoara both claimed to be successors. Initially, the Polytechnic University ceded the brand records to ACS Poli (2012–2021) before transferring them to SSU Politehnica in 2021, which also inherited the fanbase."
+    },
+    {
+      "question": "Write a Python script to extract key historical milestones of Politehnica Timișoara from a given text.",
+      "answer": "python\nimport re\n\ndef extract_milestones(text):\n    milestones = {\n        'founded': re.search(r'founded in (\\d{4})', text),\n        'promoted': re.search(r'promoted to the top flight in (\\d{4})', text),\n        'first_trophy': re.search(r'claimed its first trophy in the (\\d{4}-\\d{4}) season', text),\n        'european_debut': re.search(r'made their European debut in the (\\d{4}-\\d{4})', text),\n        'highest_result': re.search(r'finishing second in the (\\d{4}-\\d{4}) Liga I', text),\n        'dissolution': re.search(r'dissolved in (\\d{4})', text)\n    }\n    return {k: v.group(1) if v else None for k, v in milestones.items()}\n\n# Example usage:\ntext = \"...\"  # Insert the provided text here\nprint(extract_milestones(text))\n"
+    }
+  ]
+}

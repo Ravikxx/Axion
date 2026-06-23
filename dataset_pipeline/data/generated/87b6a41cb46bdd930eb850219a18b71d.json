@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Before_They_Make_Me_Run",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who wrote the song 'Before They Make Me Run' and which album is it featured on?",
+      "answer": "The song 'Before They Make Me Run' was written by guitarist Keith Richards and featured on the Rolling Stones' 1978 album *Some Girls*."
+    },
+    {
+      "question": "What personal event inspired Keith Richards to write 'Before They Make Me Run'?",
+      "answer": "The song was written as a response to Keith Richards' arrest for heroin possession in Toronto in February 1977, which posed a threat to the Rolling Stones' future due to the possibility of a prison sentence."
+    },
+    {
+      "question": "How long did it take Keith Richards to record 'Before They Make Me Run' and where was it recorded?",
+      "answer": "Keith Richards recorded the song in five days without sleeping at a Paris studio in March 1978 during one of Mick Jagger's absences from the *Some Girls* recording sessions."
+    },
+    {
+      "question": "What instruments and musicians are featured in the studio recording of 'Before They Make Me Run'?",
+      "answer": "The studio recording features Keith Richards on lead vocals, acoustic and electric guitars, and bass; Ronnie Wood on pedal steel guitar, slide guitar, and backing vocals; Charlie Watts on drums; and Mick Jagger on backing vocals."
+    },
+    {
+      "question": "Provide a JSON snippet of the basic structure of a Rolling Stones concert setlist entry for 'Before They Make Me Run' in a live performance context.",
+      "answer": "\n{\n  \"song_title\": \"Before They Make Me Run\",\n  \"performer\": \"The Rolling Stones\",\n  \"instrumentation\": [\n    \"Vocals (Keith Richards)\",\n    \"Lead Guitar (Keith Richards)\",\n    \"Bass (Keith Richards)\",\n    \"Drums (Charlie Watts)\",\n    \"Pedal Steel Guitar (Ronnie Wood)\",\n    \"Backing Vocals (Mick Jagger, Ronnie Wood)\"\n  ],\n  \"tour_era\": \"Steel Wheels Tour (1989 onwards)\",\n  \"notable_performances\": [\n    \"Four Flicks DVD (2003)\",\n    \"Sweet Summer Sun: Hyde Park Live (2013)\",\n    \"Havana Moon (2016)\"\n  ]\n}\n"
+    },
+    {
+      "question": "What is the significance of the lyric 'it's another goodbye to another good friend' in 'Before They Make Me Run'?",
+      "answer": "The lyric can be interpreted as a reference to Gram Parsons, Richards’ close friend who died in 1973 from a drug overdose, and/or to heroin itself. Richards had sought treatment for heroin addiction after his 1977 arrest, and overcoming this addiction was central to his defense strategy."
+    },
+    {
+      "question": "How did critics describe the musical style and performance of 'Before They Make Me Run'?",
+      "answer": "Cash Box praised the song, stating that 'the beat is perky, and the rhythm and lead guitar work are masterful.' The track is characterized as a high-energy rock & roller with Richards on lead vocals."
+    }
+  ]
+}

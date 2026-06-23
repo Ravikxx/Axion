@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/aragossa/please-stop-redirecting-to-login-on-401-errors-3c0l",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What is the most common cause of losing form data when submitting it after a long period of inactivity?",
+      "answer": "The most common cause is an expired JWT (access token) that triggers a 401 Unauthorized response, causing the frontend to redirect to the login page without saving the form data."
+    },
+    {
+      "question": "Why is it problematic to redirect users to the login page when a 401 Unauthorized error occurs?",
+      "answer": "Redirecting users to the login page without handling unsaved data (like form inputs) results in lost work, as the current page state is destroyed. This is particularly frustrating for users who have spent significant time filling out forms."
+    },
+    {
+      "question": "Describe the 'Lazy' pattern in handling 401 Unauthorized errors and why it is discouraged.",
+      "answer": "The 'Lazy' pattern involves immediately redirecting to the login page when a 401 error is detected, as shown in the following code snippet:\n\njavascript\naxios.interceptors.response.use(null, error => {\n  if (error.response.status === 401) {\n    window.location.href = '/login'; // Loses unsaved data\n    return Promise.reject(error);\n  }\n});\n\n\nThis approach is discouraged because it fails to recover unsaved user input, leading to a poor user experience."
+    },
+    {
+      "question": "What is the 'Better Way' (Resilient) approach to handling 401 Unauthorized errors? List the steps involved.",
+      "answer": "The resilient approach involves intercepting the 401 error, pausing the failed request, refreshing the token, and retrying the original request. The steps are:\n1. Intercept the 401 error.\n2. Queue the failed request and avoid reloading the page.\n3. Refresh the token in the background (using a refresh token) or prompt the user to re-authenticate.\n4. Retry the original request with the new token once authenticated. This ensures unsaved data is preserved without user disruption."
+    },
+    {
+      "question": "Why is testing token expiration behavior challenging in real-world applications?",
+      "answer": "Testing token expiration is challenging because access tokens typically expire after a long duration (e.g., 1 hour). This makes it impractical to ask QA teams to wait for natural token expiration to verify the recovery logic."
+    },
+    {
+      "question": "How can the 'Chaos' approach be used to test token expiration handling without waiting for the token to expire naturally?",
+      "answer": "The 'Chaos' approach involves manually stripping the Authorization header from a request mid-flight using tools like Playwright. This forces the backend to return a 401 error, allowing developers to test the recovery logic immediately. Here is a Python/Playwright example:\n\npython\ndef test_chaos_silent_logout(page):\n  # Login and navigate to a form\n  page.goto(\"/login\")\n  # ... perform login logic ...\n  page.goto(\"/settings/profile\")\n  \n  # Fill out form data\n  page.fill(\"#bio\", \"Important text I don't want to lose.\")\n  \n  # Intercept the save request to strip the token\n  def kill_token(route):\n    headers = route.request.headers\n    if \"authorization\" in headers:\n      del headers[\"authorization\"]\n    route.continue_(headers=headers)\n  \n  page.route(\"**/api/profile/save\", kill_token)\n  \n  # Click Save and verify recovery\n  page.click(\"#save-btn\")\n  expect(page.locator(\"#bio\")).to_have_value(\"Important text I don't want to lose.\")\n  expect(page.locator(\".success-message\")).to_be_visible()\n"
+    },
+    {
+      "question": "What is the purpose of a Chaos Proxy, and how does it differ from the 'Chaos' approach using Playwright?",
+      "answer": "A Chaos Proxy is a network-level tool used to strip headers (like the Authorization header) from requests on real devices where Playwright cannot be used. Unlike the Playwright approach, which operates at the code level, a Chaos Proxy intercepts network traffic externally, making it useful for testing on mobile devices or environments without direct code access."
+    }
+  ]
+}

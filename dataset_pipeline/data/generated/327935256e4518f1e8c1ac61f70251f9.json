@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Botanical_Garden_of_the_KIT",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the full name and location of the botanical garden maintained by the Karlsruhe Institute of Technology?",
+      "answer": "The Botanical Garden of the KIT, originally known as the Botanischer Garten der Universität Karlsruhe, is maintained by the Karlsruhe Institute of Technology's directorate of Peter Nick and is located at Am Fasanengarten 2, Karlsruhe, Baden-Württemberg, Germany."
+    },
+    {
+      "question": "How many plant species are contained in the Botanical Garden of the KIT, and how many of these are endangered according to IUCN or CITES?",
+      "answer": "The Botanical Garden of the KIT contains a total of 5,700 plant species, including 1,930 endangered species as classified by the IUCN Red List or CITES conventions."
+    },
+    {
+      "question": "What are the three major missions of the Botanical Garden of the KIT?",
+      "answer": "The Botanical Garden of the KIT has three major missions: 1) Research, particularly in understanding the molecular basis of plant development, growth, and metabolism, with projects involving species like Arabidopsis thaliana and Vitis vinifera; 2) Teaching, where plant material is provided for courses, field trips, and plant type comparisons; and 3) Conservation of rare plant species and varieties, including succulents and orchids."
+    },
+    {
+      "question": "Which specific plant species are cultivated in the garden for research against downy mildew?",
+      "answer": "The garden currently cultivates over 50 species of wild grape vines for research purposes focused on combating downy mildew."
+    },
+    {
+      "question": "Provide an example of a specific research project involving wild rice species at the Botanical Garden of the KIT.",
+      "answer": "The Botanical Garden of the KIT maintains a collection of wild rice species from around the world, likely used for research on genetic diversity, adaptation, or resistance to pests and diseases, though specific project details are not mentioned in the provided text."
+    },
+    {
+      "question": "List three examples of rare plant species conserved in the Botanical Garden of the KIT.",
+      "answer": "Examples of rare plant species conserved in the garden include Althaea hirsuta, Campanula cervicaria, and Ludwigia palustris."
+    },
+    {
+      "question": "How does the Botanical Garden of the KIT contribute to teaching and education?",
+      "answer": "The Botanical Garden of the KIT supports teaching by providing plant material for courses, organizing field trips, and facilitating the comparison of different plant types, thereby enriching educational experiences in botany and related fields."
+    }
+  ]
+}

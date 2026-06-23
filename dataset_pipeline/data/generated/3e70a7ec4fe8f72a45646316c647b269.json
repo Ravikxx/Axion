@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Aspiration",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is aspiration in linguistics, and how can you observe it experimentally?",
+      "answer": "Aspiration is a phonetic feature where a consonant is produced with a puff of air following its release. You can observe it by holding a piece of paper in front of your mouth and noting whether it moves when pronouncing the consonant. If the paper moves, the consonant is aspirated (e.g., /pʰ/ in 'pick'); if not, it is unaspirated (e.g., /p/ in 'spit')."
+    },
+    {
+      "question": "How are aspirated consonants represented in the International Phonetic Alphabet (IPA)? Provide examples.",
+      "answer": "In the IPA, aspirated consonants are marked with a superscript 'ʰ' after the consonant symbol. For example, aspirated /p/ is written as /pʰ/, aspirated /t/ as /tʰ/, and aspirated /t͡ʃ/ as /t͡ʃʰ/. Words like 'pick' (/pʰɪk/), 'tick' (/tʰɪk/), 'kick' (/kʰɪk/), and 'chick' (/t͡ʃʰɪk/) demonstrate this notation."
+    },
+    {
+      "question": "Why is the /p/ in 'spit' unaspirated while the /p/ in 'pit' is aspirated?",
+      "answer": "In English, voiceless stops and fricatives are aspirated only when they occur at the beginning of a word. The /p/ in 'pit' is at the start, so it is aspirated (/pʰɪt/). However, the /p/ in 'spit' and 'tip' appears after the first sound, making it unaspirated (/spɪt/ and /tɪp/)."
+    },
+    {
+      "question": "How does Hindi represent aspirated voiced sounds in IPA, and what is an example?",
+      "answer": "Hindi uses a superscript 'ʱ' after the consonant symbol to denote aspirated voiced sounds in IPA. For example, the aspirated 'b' sound in 'Bhattacharya' is written as /bʱ/. This distinguishes it from the unaspirated /b/."
+    },
+    {
+      "question": "How does Mandarin Chinese use aspiration to differentiate between sounds, and how is this represented in Pinyin?",
+      "answer": "In Mandarin, aspiration is the primary feature distinguishing between sounds, as there are no voiced stops or fricatives. In Pinyin, aspirated sounds like /pʰ/, /tʰ/, and /kʰ/ are written as 'p', 't', and 'k', while unaspirated sounds /p/, /t/, and /k/ are written as 'b', 'd', and 'g'. For example, 'Gaokao' is written in IPA as /kau̯.kʰau̯/ and in Pinyin as 'Gaokao'."
+    },
+    {
+      "question": "What is the difference between Pinyin and Wade-Giles in representing aspirated sounds in Mandarin?",
+      "answer": "Both Pinyin and Wade-Giles use different letters to represent aspirated and unaspirated sounds in Mandarin. In Pinyin, aspirated sounds are written like voiceless sounds in English (e.g., 'p', 't', 'k'), while unaspirated sounds are written like voiced sounds (e.g., 'b', 'd', 'g'). In Wade-Giles, aspirated stops, fricatives, and affricates are marked with an apostrophe after the letter (e.g., 'p', 't', 'k' become 'p'', 't'', 'k''). For 'Gaokao', Pinyin writes it as 'Gaokao', while Wade-Giles writes it as 'Kaok'ao'."
+    },
+    {
+      "question": "Write a Python function that checks if a given English consonant at the start of a word is aspirated based on IPA notation.",
+      "answer": "python\ndef is_aspirated_english(consonant_ipa, word_position='start'):\n    aspirated_consonants = {'pʰ', 'tʰ', 'kʰ', 't͡ʃʰ'}\n    if word_position == 'start' and consonant_ipa in aspirated_consonants:\n        return True\n    return False\n\n# Example usage:\nprint(is_aspirated_english('pʰ', 'start'))  # Output: True (aspirated)\nprint(is_aspirated_english('p', 'start'))    # Output: False (unaspirated)\n"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://mathworld.wolfram.com/HypothesisTesting.html",
+  "category": "mathworld",
+  "pairs": [
+    {
+      "question": "What is hypothesis testing and what are its primary objectives?",
+      "answer": "Hypothesis testing is a statistical method used to determine the probability that a given hypothesis (an assumption about a population parameter) is true. Its primary objectives are: (1) to evaluate the validity of a claim or assumption about a population, and (2) to assess whether observed data provides sufficient evidence to reject a null hypothesis in favor of an alternative hypothesis. It helps distinguish between real effects and random variations in data."
+    },
+    {
+      "question": "What are the four steps involved in the standard process of hypothesis testing?",
+      "answer": "The standard process of hypothesis testing consists of four steps: (1) Formulate the null hypothesis (typically stating no effect or random chance) and the alternative hypothesis (typically stating a real effect), (2) Select an appropriate test statistic to evaluate the null hypothesis, (3) Compute the P-value, which quantifies the probability of observing a test statistic as extreme as the one calculated, assuming the null hypothesis is true, and (4) Compare the P-value to a predefined significance level (alpha). If the P-value is less than alpha, the null hypothesis is rejected in favor of the alternative hypothesis."
+    },
+    {
+      "question": "How is the P-value interpreted in hypothesis testing, and why is it important?",
+      "answer": "The P-value represents the probability of obtaining a test statistic at least as extreme as the one observed, assuming the null hypothesis is true. A smaller P-value indicates stronger evidence against the null hypothesis. It is important because it helps quantify the strength of evidence against the null hypothesis, allowing researchers to make data-driven decisions about whether to reject or fail to reject the null hypothesis."
+    },
+    {
+      "question": "What is the difference between the null hypothesis and the alternative hypothesis?",
+      "answer": "The null hypothesis (H₀) typically represents a default position or no effect, such as 'there is no difference between groups' or 'a treatment has no effect.' The alternative hypothesis (H₁ or Ha) represents a claim or effect that the researcher aims to support, such as 'there is a difference between groups' or 'a treatment has an effect.' The alternative hypothesis is what the researcher seeks evidence for, while the null hypothesis is the default assumption that is tested against."
+    },
+    {
+      "question": "Provide a Python code snippet to perform a one-sample t-test for hypothesis testing.",
+      "answer": "python\nimport numpy as np\nfrom scipy import stats\n\n# Sample data\ndata = np.array([23, 21, 18, 30, 26, 19, 22])\n\n# Hypothesized population mean\nhyp_mean = 20\n\n# Perform one-sample t-test\nt_stat, p_value = stats.ttest_1samp(data, popmean=hyp_mean)\n\nprint(f\"t-statistic: {t_stat:.4f}\")\nprint(f\"P-value: {p_value:.4f}\")\n\n# Decision based on alpha = 0.05\nalpha = 0.05\nif p_value < alpha:\n    print(\"Reject the null hypothesis: There is significant evidence that the sample mean differs from the hypothesized mean.\")\nelse:\n    print(\"Fail to reject the null hypothesis: No significant evidence that the sample mean differs from the hypothesized mean.\")\n"
+    },
+    {
+      "question": "What is a Type I error and how does it relate to the alpha level in hypothesis testing?",
+      "answer": "A Type I error occurs when the null hypothesis is incorrectly rejected when it is actually true. This is a 'false positive' where an effect is claimed when none exists. The alpha level (significance level) is the probability of committing a Type I error. For example, if alpha is set to 0.05, there is a 5% chance of rejecting the null hypothesis when it is true. Researchers choose alpha before conducting the test to control the risk of Type I errors."
+    },
+    {
+      "question": "Explain the role of the significance level (alpha) in hypothesis testing and how it influences the decision.",
+      "answer": "The significance level (alpha) is a threshold used to determine whether the observed data provides sufficient evidence to reject the null hypothesis. It represents the maximum acceptable probability of making a Type I error. If the computed P-value is less than alpha, the null hypothesis is rejected, indicating that the observed effect is statistically significant. A lower alpha (e.g., 0.01) makes it harder to reject the null hypothesis, reducing the chance of a false positive but increasing the risk of a Type II error (failing to detect a true effect)."
+    }
+  ]
+}

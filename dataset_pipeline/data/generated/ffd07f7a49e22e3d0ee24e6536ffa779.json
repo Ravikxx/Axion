@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Breezeway_(car)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is a breezeway window in automotive terms?",
+      "answer": "A breezeway window is a vertical or reverse-slanted, power-operated retractable rear window on sedans, designed to provide through ventilation. It first appeared on specific Mercury and Lincoln models in the late 1950s and was later revived in the 1960s."
+    },
+    {
+      "question": "Which Mercury models featured the breezeway window in the 1960s?",
+      "answer": "The breezeway window reappeared on some 1963–1968 full-size Mercurys, including models like the Park Lane, Montclair, and Monterey."
+    },
+    {
+      "question": "How did the Continental Mark III differ from standard Lincolns in rear window design?",
+      "answer": "The 1958 Continental Mark III was fitted with a retractable rear window on all body styles, including convertibles, which was borrowed from Mercury station wagons. It also featured a reverse-slant rear window, unlike standard Lincolns."
+    },
+    {
+      "question": "What was the Hardtop Cruiser designation in Mercury's 1959 lineup?",
+      "answer": "In 1959, Mercury designated its hardtop roofline as a Hardtop Cruiser on all non-convertible Park Lanes. This introduced a compound-curved rear window, creating a notchback roofline that influenced later models like the Mercury Marauder and S-55."
+    },
+    {
+      "question": "When did Lincoln discontinue the retractable rear window after its initial introduction?",
+      "answer": "Lincoln discontinued the retractable rear window following the 1960 Continental Mark V."
+    },
+    {
+      "question": "Provide a code snippet to simulate the logic for determining if a vehicle model has a breezeway window based on its year and manufacturer.",
+      "answer": "python\ndef has_breezeway_window(manufacturer, model, year):\n    breezeway_models = {\n        'Mercury': {\n            'Turnpike Cruiser': (1957, 1958),\n            'Park Lane': (1963, 1968),\n            'Montclair': (1963, 1968),\n            'Monterey': (1963, 1968),\n            'S-55': (1963, 1966),\n        },\n        'Lincoln': {\n            'Continental Mark III': (1958, 1960),\n            'Continental Mark IV': (1958, 1960),\n            'Continental Mark V': (1958, 1960),\n        }\n    }\n    if manufacturer in breezeway_models and model in breezeway_models[manufacturer]:\n        start_year, end_year = breezeway_models[manufacturer][model]\n        return start_year <= year <= end_year\n    return False\n\n# Example usage:\nprint(has_breezeway_window('Mercury', 'Park Lane', 1965))  # Output: True\nprint(has_breezeway_window('Lincoln', 'Continental Mark V', 1961))  # Output: False\n"
+    },
+    {
+      "question": "Why was the breezeway window design revived in 1963 by Mercury?",
+      "answer": "The breezeway window design was revived in 1963 by Mercury as a reverse-slant retractable rear window standard on its full-size sedans, including the Monterey, Montclair, S-55, and Park Lane."
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Chelsea_F.C._league_record_by_opponent",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When was Chelsea Football Club founded and when did they first join The Football League?",
+      "answer": "Chelsea Football Club was founded in 1905 and was elected to play in The Football League as a member of the Second Division the same year."
+    },
+    {
+      "question": "How many times has Chelsea won the English football championship?",
+      "answer": "Chelsea have been English football champions six times."
+    },
+    {
+      "question": "What is Chelsea's highest points total in a single season, and in which season did they achieve it?",
+      "answer": "Chelsea's highest points total in a single season is 99, achieved during the 1988–89 season in the Second Division."
+    },
+    {
+      "question": "Which club has Chelsea faced most frequently in league matches, and how many times have they played against them?",
+      "answer": "Chelsea have faced Arsenal most frequently in league matches, playing them on 178 occasions."
+    },
+    {
+      "question": "Which club has Chelsea won the most league matches against?",
+      "answer": "Chelsea have won 70 league matches against Tottenham Hotspur, which is the most they have won against any club."
+    },
+    {
+      "question": "As of the 2025–26 season, what record does Chelsea hold in the Premier League?",
+      "answer": "As of the 2025–26 season, Chelsea holds the record for the most clean sheets in a single Premier League season, with 25 clean sheets in the 2004–05 season."
+    },
+    {
+      "question": "Write a Python function to calculate the percentage of league matches Chelsea has won against Tottenham Hotspur, given the total number of matches played against them (178) and Chelsea's wins (70).",
+      "answer": "python\ndef calculate_win_percentage(total_matches, wins):\n    return (wins / total_matches) * 100\n\n# Example usage:\ntotal_matches = 178\nwins = 70\nwin_percentage = calculate_win_percentage(total_matches, wins)\nprint(f\"Chelsea's win percentage against Tottenham Hotspur: {win_percentage:.2f}%\")\n\nThis function calculates the win percentage by dividing the number of wins by the total matches played and multiplying by 100."
+    },
+    {
+      "question": "Which club has Chelsea drawn more matches with than any other club, and how many draws have they recorded?",
+      "answer": "Chelsea have drawn more matches with Manchester United than with any other club, recording 54 draws."
+    },
+    {
+      "question": "Which club has defeated Chelsea in the most league matches, and how many times have they lost to them?",
+      "answer": "Liverpool has defeated Chelsea in the most league matches, with Chelsea losing to them 72 times."
+    },
+    {
+      "question": "When did Chelsea first face Wigan Athletic in a league match?",
+      "answer": "Chelsea first faced Wigan Athletic in a league match during the 2005–06 FA Premier League season."
+    }
+  ]
+}

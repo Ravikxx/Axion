@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Eurasian_Scout_Region_(World_Organization_of_the_Scout_Movement)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the Eurasian Scout Region and where was it headquartered?",
+      "answer": "The Eurasian Scout Region was a divisional office of the World Scout Bureau under the World Organization of the Scout Movement (WOSM). It was headquartered in Kyiv, Ukraine, with a branch office in Moscow, Russia."
+    },
+    {
+      "question": "Which countries were initially part of the Eurasian Scout Region when it was established in 1997?",
+      "answer": "The Eurasian Scout Region was created to assist in the rebirth of Scouting in 12 former Soviet Republics: Armenia, Azerbaijan, Belarus, Georgia, Kazakhstan, Kyrgyzstan, Moldova, Russia, Tajikistan, Turkmenistan, Ukraine, and Uzbekistan."
+    },
+    {
+      "question": "What was the working language of the Eurasian Scout Region, and how many Scouting manuals were published there?",
+      "answer": "Russian was the working language of the Eurasian Scout Region, and eight Scouting manuals and handbooks were published, all in Russian."
+    },
+    {
+      "question": "Who was the executive director of the Eurasian Scout Region?",
+      "answer": "The executive director of the Eurasian Scout Region was Iurie Emilian from Moldova."
+    },
+    {
+      "question": "How did WOSM handle countries with multiple Scouting associations, such as Kyrgyzstan and Ukraine?",
+      "answer": "In countries with more than one Scouting association, like Kyrgyzstan and Ukraine, these associations could choose to cooperate and form a National Scout Organization."
+    },
+    {
+      "question": "Provide an example of a code snippet that might represent the logic for determining a country's regional membership when the Eurasian Scout Region dissolved in 2023.",
+      "answer": "Here is a Python snippet illustrating how a country's new regional membership might be determined after the Eurasian Scout Region dissolved:\npython\ndef determine_new_region(country):\n    eurasiatic_to_european = ['Ukraine', 'Moldova', 'Belarus', 'Georgia', 'Armenia', 'Azerbaijan']\n    eurasiatic_to_asia_pacific = ['Kazakhstan', 'Russia', 'Tajikistan']\n    \n    if country in eurasiatic_to_european:\n        return 'European Region'\n    elif country in eurasiatic_to_asia_pacific:\n        return 'Asia-Pacific Region'\n    else:\n        return 'Region not applicable'\n\n# Example usage\nprint(determine_new_region('Ukraine'))  # Output: European Region\nprint(determine_new_region('Kazakhstan'))  # Output: Asia-Pacific Region\n"
+    },
+    {
+      "question": "Why did the Eurasian Scout Region dissolve in 2023, and what happened to its member countries?",
+      "answer": "The Eurasian Scout Region dissolved on 30 September 2023 after consultation with the European and Asia-Pacific Regions, as well as the World Scout Committee. Following its dissolution, Ukraine, Moldova, Belarus, Georgia, Armenia, and Azerbaijan joined the European Region, while Kazakhstan, Russia, and Tajikistan joined the Asia-Pacific Region."
+    },
+    {
+      "question": "When did Belarus lose and regain its membership in the World Organization of the Scout Movement?",
+      "answer": "Belarus lost its membership in the World Organization of the Scout Movement in 2005 and regained it in 2010."
+    }
+  ]
+}

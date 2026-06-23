@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Harold_Macmillan",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "Who was Maurice Harold Macmillan and what political positions did he hold?",
+      "answer": "Maurice Harold Macmillan, 1st Earl of Stockton, was a British Conservative politician who served as Prime Minister of the United Kingdom from 1957 to 1963. Before becoming Prime Minister, he held the positions of Minister Resident in the Mediterranean during World War II, Foreign Secretary, and Chancellor of the Exchequer under Prime Minister Sir Anthony Eden."
+    },
+    {
+      "question": "What role did Macmillan play during World War II?",
+      "answer": "During World War II, Macmillan served as Minister Resident in the Mediterranean, acting as a liaison between Winston Churchill and British forces in North Africa and the Middle East, which elevated his status as a serious politician."
+    },
+    {
+      "question": "How did Macmillan become Prime Minister in 1957?",
+      "answer": "Macmillan became Prime Minister in 1957 after the resignation of Sir Anthony Eden following the Suez Crisis. He succeeded Eden as both Prime Minister and Leader of the Conservative Party."
+    },
+    {
+      "question": "What economic conditions characterized Macmillan's tenure as Prime Minister?",
+      "answer": "Macmillan's tenure as Prime Minister saw a period of economic prosperity in the UK, with low unemployment and high—though uneven—economic growth. In his 1957 Bedford speech, he famously declared that the nation had 'never had it so good'."
+    },
+    {
+      "question": "What hereditary peerages were granted to Macmillan, and why were they notable?",
+      "answer": "Macmillan was granted the last hereditary peerage given to a British Prime Minister when he became the Earl of Stockton and Viscount Macmillan of Ovenden. This was notable because it marked the end of the practice of granting hereditary peerages to prime ministers."
+    },
+    {
+      "question": "Write a Python function to check if a given year falls within Macmillan's tenure as Prime Minister.",
+      "answer": "python\ndef is_macmillan_prime_minister(year):\n    return 1957 <= year <= 1963\n\n# Example usage:\nprint(is_macmillan_prime_minister(1958))  # Output: True\nprint(is_macmillan_prime_minister(1964))  # Output: False\n"
+    },
+    {
+      "question": "Compare Macmillan's political career before and after World War II.",
+      "answer": "Before World War II, Macmillan entered Parliament in 1924, lost his seat in 1929, and regained it in 1931. After the war, he served as Minister Resident in the Mediterranean during World War II, which boosted his political career. He later became Foreign Secretary and Chancellor of the Exchequer before ultimately becoming Prime Minister in 1957."
+    }
+  ]
+}

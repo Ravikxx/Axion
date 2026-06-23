@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/dannwaneri/my-chrome-tabs-tell-a-story-we-havent-processed-yet-ec9",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What are the key differences between the 'old way' and 'new way' of software development as described in the text?",
+      "answer": "The 'old way' involved extensive research through documentation, Stack Overflow threads, and blog posts, often requiring days of cross-referencing and manual implementation. The 'new way' leverages AI chat tools to discuss problems, brainstorm solutions, and generate tailored code snippets in real-time, shifting the focus from memorization and manual research to conversation-based problem-solving."
+    },
+    {
+      "question": "How does the author describe the process of implementing rate limiting for an MCP server using AI assistance?",
+      "answer": "Instead of manually searching and piecing together solutions from multiple articles, the author described their use case to an AI (Claude), discussed trade-offs (e.g., token bucket vs. sliding window), received a customized implementation that handled edge cases, reviewed the code, and shipped it. This process was faster and more interactive than the traditional approach."
+    },
+    {
+      "question": "What are the 'uncomfortable questions' the author raises about AI-assisted development?",
+      "answer": "The author wonders: Am I becoming a better developer or just a better prompt engineer? When the AI explains something, am I truly understanding it or just trusting it? What happens to the next generation of developers who skip learning to read documentation the hard way? These questions highlight concerns about skill development, trust, and the long-term impact on learning."
+    },
+    {
+      "question": "How does the text argue that AI assistance might be changing what skills are valuable for developers?",
+      "answer": "The text suggests that memorizing syntax, API methods, and edge cases is becoming less important, while skills like asking the right questions, evaluating AI-generated solutions, understanding trade-offs, and system design are rising in significance. The focus is shifting from knowledge retention to critical evaluation and higher-level thinking."
+    },
+    {
+      "question": "Provide a code snippet demonstrating how an AI might assist in generating a rate-limiting implementation for a Node.js server.",
+      "answer": "javascript\n// Example: Token bucket rate limiter for Express.js\nconst rateLimit = require('express-rate-limit');\n\nconst tokenBucketLimiter = rateLimit({\n  windowMs: 15 * 60 * 1000, // 15 minutes\n  max: 100, // limit each IP to 100 requests per windowMs\n  message: 'Too many requests from this IP, please try again later.',\n  standardHeaders: true,\n  legacyHeaders: false,\n  // Customize for your MCP server's edge cases\n  skip: (req) => req.user?.isAdmin, // exempt admins\n  keyGenerator: (req) => req.ip + (req.user?.id || ''), // group by user/IP\n});\n\n// Apply to all requests\napp.use(tokenBucketLimiter);\n\nThis snippet shows how an AI might generate a practical rate-limiting solution tailored to specific needs, handling edge cases like admin exemptions and user-based grouping."
+    },
+    {
+      "question": "What philosophical shift does the author highlight regarding the loss of Stack Overflow tabs?",
+      "answer": "The author notes that traditional Stack Overflow tabs connected developers to the collective knowledge of thousands who faced similar problems, fostering a sense of community and shared struggle. In contrast, AI chat tabs represent individualized conversations, which, while productive, may lead to greater isolation and a loss of that communal learning experience."
+    },
+    {
+      "question": "How does the author view the evolution of development tools over generations?",
+      "answer": "The author compares AI assistance to past shifts in development tools, such as the move from assembly to high-level languages or from writing code from scratch to using frameworks. They suggest that resistance to AI tools might be similar to past skepticism, framing it as an inevitable abstraction layer in development evolution."
+    }
+  ]
+}

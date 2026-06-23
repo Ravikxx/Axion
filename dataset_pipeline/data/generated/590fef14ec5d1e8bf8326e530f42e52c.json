@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Battle_of_Boksum",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who commanded the Dutch rebel army at the Battle of Boksum?",
+      "answer": "The Dutch rebel army at the Battle of Boksum was commanded by Steen Maltesen Sehested, a Danish officer."
+    },
+    {
+      "question": "What were the key reasons the Spanish army retreated after the Battle of Boksum?",
+      "answer": "The Spanish army retreated primarily due to rising temperatures that turned the roads into swamps, threatening to cut them off from their base in Groningen. Additionally, they abandoned their loot and heavy arms as the thaw made travel difficult."
+    },
+    {
+      "question": "How did the freezing weather initially benefit the Spanish invasion force?",
+      "answer": "The freezing weather turned the Frisian lakes into solid ground, allowing the Spanish artillery and forces to move easily over the hard roads without obstruction."
+    },
+    {
+      "question": "What was the estimated total number of deaths at the Battle of Boksum, and how did the Spanish losses compare?",
+      "answer": "The estimated total number of deaths at the Battle of Boksum was around 1,000. Spanish losses were very low in comparison."
+    },
+    {
+      "question": "Why did Francisco Verdugo decide to invade Frisia in January 1586?",
+      "answer": "Francisco Verdugo invaded Frisia hoping to reclaim the territory for Spain, taking advantage of the absence of William Louis, Count of Nassau-Dillenburg, the stadtholder of Frisia."
+    },
+    {
+      "question": "Describe the composition of the Frisian rebel army that faced the Spanish at Boksum.",
+      "answer": "The Frisian rebel army consisted of a core of professional soldiers and a larger number of Frisian volunteers."
+    },
+    {
+      "question": "Write a Python snippet to calculate the approximate percentage of Spanish losses relative to total deaths at the Battle of Boksum.",
+      "answer": "total_deaths = 1000\nspanish_losses = 0  # Estimated as very low\npercentage_losses = (spanish_losses / total_deaths) * 100\nprint(f\"Approximate Spanish losses percentage: {percentage_losses:.2f}%\")"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Child_marriage",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is the definition of child marriage according to the UN Convention on the Rights of the Child?",
+      "answer": "According to the UN Convention on the Rights of the Child, child marriage is defined as a marriage where at least one of the individuals involved has not yet reached the age of 18."
+    },
+    {
+      "question": "What are the primary consequences of child marriage for girls who are married as children?",
+      "answer": "Girls married as children often experience long-term negative consequences, including interrupted education, limited career opportunities due to poor education, and adverse health effects from early pregnancy and childbirth. Many girls stop attending school after marriage, which further restricts their future prospects."
+    },
+    {
+      "question": "What are the main causes of child marriage?",
+      "answer": "The primary causes of child marriage include poverty, dowry systems, cultural traditions, illiteracy, and beliefs that women are unable to earn money. Other factors include parental desire to ensure virginity, inability to afford education or upkeep of the child, and regional laws that permit marriage at younger ages with parental consent."
+    },
+    {
+      "question": "How does child marriage affect boys who are married as children?",
+      "answer": "Boys married as children may face similar challenges, such as limited education leading to restricted career opportunities. They may also be unprepared for fatherhood due to their young age and lack of life experience, which can impact their ability to support a family."
+    },
+    {
+      "question": "Which countries have the highest rates of child marriage below the age of 18?",
+      "answer": "As of surveys conducted between 2003 and 2009, the countries with the highest observed rates of child marriage below the age of 18 include Niger, Chad, Mali, Bangladesh, Guinea, the Central African Republic, Mozambique, and Nepal, with rates above 50%. Among these, Niger, Chad, Bangladesh, Mali, and Ethiopia had child marriage rates greater than 20% below the age of 15."
+    },
+    {
+      "question": "What is the global trend in child marriage rates over the past decade?",
+      "answer": "The incidence of child marriage has been declining globally. According to UNICEF data from 2018, about 21% of young women aged 20 to 24 were married as children, which represents a 25% decrease compared to data from 10 years prior."
+    },
+    {
+      "question": "Provide a Python code snippet to calculate the percentage decrease in child marriage rates given historical and current data.",
+      "answer": "python\n\ndef calculate_percentage_decrease(old_rate, new_rate):\n    \"\"\"\n    Calculate the percentage decrease between two rates.\n    \n    Args:\n        old_rate (float): The initial rate (e.g., 28%)\n        new_rate (float): The updated rate (e.g., 21%)\n    \n    Returns:\n        float: The percentage decrease\n    \"\"\"\n    decrease = ((old_rate - new_rate) / old_rate) * 100\n    return decrease\n\n# Example usage:\nold_rate = 28  # 28% a decade ago\nnew_rate = 21  # 21% currently\npercentage_decrease = calculate_percentage_decrease(old_rate, new_rate)\nprint(f\"The percentage decrease in child marriage rates is {percentage_decrease}%\")\n\nThis code calculates the percentage decrease between two given rates, which could be used to analyze trends in child marriage data over time."
+    }
+  ]
+}

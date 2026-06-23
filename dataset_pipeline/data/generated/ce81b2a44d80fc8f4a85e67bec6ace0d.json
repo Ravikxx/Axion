@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/1944_United_States_presidential_election_in_South_Carolina",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the political context of South Carolina in the 1944 U.S. presidential election?",
+      "answer": "In 1944, South Carolina was a one-party state dominated by the Democratic Party for six decades. The Republican Party had minimal influence due to historical disfranchisement of Black voters and the lack of opposition groups, such as upland whites or German refugees. No Republican presidential candidate had secured more than 7% of the state's vote between 1900 and 1940, with the lowest being 6.6% in 1924."
+    },
+    {
+      "question": "How did the Smith v. Allwright court case impact the 1944 South Carolina election?",
+      "answer": "The Smith v. Allwright case, decided earlier in 1944, challenged the all-white Democratic primaries in the South and questioned the disfranchisement of Black voters. This case contributed to emerging tensions within South Carolina's Democratic Party, as it raised issues about Black civil rights and influenced support for progressive factions, including those backing Vice-President Henry A. Wallace."
+    },
+    {
+      "question": "What was the outcome of the 1944 U.S. presidential election in South Carolina?",
+      "answer": "Franklin D. Roosevelt (FDR) won South Carolina in a landslide, defeating New York Governor Thomas E. Dewey with 83.18% of the vote. The unpledged slate of anti-Roosevelt Southern Democrats received 7.54% of the vote, performing best among wealthy planters in the lowcountry. This was the last election where every county in South Carolina voted Democratic."
+    },
+    {
+      "question": "Why did some Southern Democrats oppose FDR's renomination in 1944?",
+      "answer": "Some Southern Democrats opposed FDR's renomination due to concerns about the national party's liberal drift on economic issues and its support for Black civil rights, exemplified by Vice-President Henry A. Wallace. This opposition led to the placement of an 'unpledged electors' slate on the ballot, foreshadowing the Dixiecrat movement that would later break from the Democratic Party over civil rights."
+    },
+    {
+      "question": "What demographic groups supported the unpledged electors in the 1944 South Carolina election?",
+      "answer": "The unpledged electors slate, which opposed FDR, received its strongest support from wealthy planter-class voters in the lowcountry region of South Carolina. This group was particularly concerned about potential changes to the social and economic order, including civil rights advancements."
+    },
+    {
+      "question": "How did the 1944 election in South Carolina reflect broader political shifts in the South?",
+      "answer": "The 1944 election highlighted growing divisions within the Southern Democratic Party. While FDR remained popular, the emergence of unpledged electors and dissatisfaction with national party policies signaled the beginning of the Dixiecrat movement, which would fully materialize in the 1948 election as a backlash against civil rights progress."
+    },
+    {
+      "question": "Write a Python script to calculate the percentage of counties won by Democrats in South Carolina in the 1944 election, given a list of county-level results.",
+      "answer": "python\n# List of county-level results in 1944 (True = Democratic, False = Other)\ncounty_results = [\n    True, True, True, True, True, # Example: 5 counties won by Democrats\n    False, False, True, True, True # Example: 3 counties not won by Democrats\n]\n\n# Calculate the percentage of counties won by Democrats\ndenominator = len(county_results)\nnumerator = sum(county_results)\npercentage = (numerator / denominator) * 100\n\nprint(f\"Percentage of counties won by Democrats: {percentage:.2f}%\")\n\nThis script calculates the percentage of counties in South Carolina that voted Democratic in the 1944 election based on provided county-level data."
+    }
+  ]
+}

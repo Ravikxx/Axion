@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/2004–05_Miami_Heat_season",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the Miami Heat's regular season record in the 2004–05 NBA season and how did it compare to their historical performance?",
+      "answer": "The Miami Heat finished the 2004–05 regular season with a 59–23 record, which was the franchise's best since the 1996–97 season. They also finished in first place in both their division and conference."
+    },
+    {
+      "question": "Which key players joined the Miami Heat before the 2004–05 season, and why was Shaquille O'Neal's trade significant?",
+      "answer": "Before the 2004–05 season, the Miami Heat acquired All-Star center Shaquille O'Neal from the Los Angeles Lakers, along with free agents Christian Laettner, Damon Jones, and Shandon Anderson. O'Neal's trade was significant because it followed years of conflict with Kobe Bryant, despite their shared success in winning three consecutive NBA championships with the Lakers from 2000 to 2002."
+    },
+    {
+      "question": "How did Dwyane Wade and Shaquille O'Neal perform statistically during the 2004–05 regular season?",
+      "answer": "Dwyane Wade led the Heat in scoring with an average of 24.1 points per game, while Shaquille O'Neal finished second on the team with an average of 22.9 points per game. Both players were selected to play in the 2005 NBA All-Star Game."
+    },
+    {
+      "question": "What was the Miami Heat's playoff performance in the 2004–05 season, and who eliminated them from the playoffs?",
+      "answer": "The Miami Heat swept the New Jersey Nets in the first round and the Washington Wizards in the semi-finals. However, they were eventually eliminated in seven games by the Detroit Pistons in the Eastern Conference finals, who were the 2nd-seeded team and the defending NBA champions."
+    },
+    {
+      "question": "What notable roster changes occurred for the Miami Heat after the 2004–05 season?",
+      "answer": "After the season, Eddie Jones was traded to the Memphis Grizzlies, Damon Jones signed with the Cleveland Cavaliers as a free agent, and both Christian Laettner and Steve Smith retired."
+    },
+    {
+      "question": "Write a Python code snippet that calculates the Miami Heat's win percentage for the 2004–05 regular season.",
+      "answer": "python\nwin_percentage = 59 / (59 + 23)\nprint(f\"Miami Heat 2004–05 Win Percentage: {win_percentage:.3f}\")\n# Output: Miami Heat 2004–05 Win Percentage: 0.719\n"
+    },
+    {
+      "question": "Why were many fans and analysts expecting the Miami Heat to face the San Antonio Spurs in the 2005 NBA Finals?",
+      "answer": "Many fans and analysts expected the Miami Heat to face the San Antonio Spurs in the 2005 NBA Finals because both teams had strong rosters led by star players (Dwyane Wade and Shaquille O'Neal for the Heat, Tim Duncan for the Spurs), and they would eventually meet in the Finals eight years later in 2013."
+    }
+  ]
+}

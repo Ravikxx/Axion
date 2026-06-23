@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/1999_Vegas.com_500",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who won the 1999 Vegas.com 500 Indy Racing League race?",
+      "answer": "Sam Schmidt of Treadway Racing won the 1999 Vegas.com 500 Indy Racing League race."
+    },
+    {
+      "question": "How many laps were contested in the 1999 Vegas.com 500 race?",
+      "answer": "The 1999 Vegas.com 500 was contested over 208 laps."
+    },
+    {
+      "question": "Which team did Kenny Bräck drive for in the 1999 Vegas.com 500, and what was his finishing position?",
+      "answer": "Kenny Bräck drove for A. J. Foyt Racing and finished in second place."
+    },
+    {
+      "question": "What significant event occurred in January 2000 that impacted Sam Schmidt's racing career?",
+      "answer": "Sam Schmidt crashed in January 2000, resulting in a spinal cord injury that left him quadriplegic and ended his IRL competition."
+    },
+    {
+      "question": "How did the 1999 Vegas.com 500 race affect the Drivers' Championship standings?",
+      "answer": "The race result trimmed Greg Ray's lead in the Drivers' Championship, moved Kenny Bräck to second place, and boosted Sam Schmidt from 12th to third with one race remaining in the season."
+    },
+    {
+      "question": "What was notable about the number of lead changes during the 1999 Vegas.com 500?",
+      "answer": "The race featured 11 lead changes between 5 drivers, which was the most for an IRL-sanctioned race at Las Vegas Motor Speedway."
+    },
+    {
+      "question": "Write a Python script that calculates the total number of cautions and lead changes in the 1999 Vegas.com 500 race using the given data.",
+      "answer": "python\nlead_changes = 11\ncautions = 11\n\nrace_stats = {\n    \"lead_changes\": lead_changes,\n    \"cautions\": cautions\n}\n\nprint(f\"Total lead changes: {race_stats['lead_changes']}\")\nprint(f\"Total cautions: {race_stats['cautions']}\")\n\nThis script initializes variables for lead changes and cautions, stores them in a dictionary, and prints the totals."
+    }
+  ]
+}

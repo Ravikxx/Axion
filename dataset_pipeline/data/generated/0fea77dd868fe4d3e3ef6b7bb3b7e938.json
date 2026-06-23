@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Alf_Haynes",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What position did Alfred Haynes play in football?",
+      "answer": "Alfred Edward Haynes played as a half back, a midfield position in football."
+    },
+    {
+      "question": "How many first-team games did Alfred Haynes play for Arsenal during his six seasons at the club?",
+      "answer": "Alfred Haynes played 29 first-team games for Arsenal during his six seasons at the club."
+    },
+    {
+      "question": "Why didn't Alfred Haynes receive a winners' medal for Arsenal's 1930 FA Cup Final victory?",
+      "answer": "Haynes missed out on a first-team winners' medal for the 1930 FA Cup Final because he was used sparingly by the club, despite playing 14 games that season. Only players who participated in the final match received the medal."
+    },
+    {
+      "question": "What major trophies did Arsenal win during Alfred Haynes' time at the club?",
+      "answer": "During Alfred Haynes' time at Arsenal, the club won their first major trophy, the 1930 FA Cup, as well as two League titles in the 1930-31 and 1932-33 seasons. Haynes received a winners' medal for the 1931 FA Charity Shield, which Arsenal won 1–0 against West Bromwich Albion."
+    },
+    {
+      "question": "Write a Python snippet to calculate the number of seasons Alfred Haynes spent at each of his clubs (Arsenal and Crystal Palace).",
+      "answer": "python\n# Alfred Haynes' club career timeline\nhaynes_arsenal_seasons = 6  # 1928 to 1933\nhaynes_palace_seasons = 3  # 1933 to 1936\n\nprint(f\"Seasons at Arsenal: {haynes_arsenal_seasons}\")\nprint(f\"Seasons at Crystal Palace: {haynes_palace_seasons}\")\n\nOutput:\nSeasons at Arsenal: 6\nSeasons at Crystal Palace: 3"
+    },
+    {
+      "question": "What was the outcome of Alfred Haynes' final appearance for Arsenal?",
+      "answer": "Alfred Haynes' final appearance for Arsenal was on 7 October 1933, in a game against Blackburn Rovers."
+    },
+    {
+      "question": "How many goals did Alfred Haynes score for Crystal Palace during his time at the club?",
+      "answer": "Alfred Haynes scored once for Crystal Palace during his three seasons with the club, making a total of 51 appearances (48 in the league and 3 in other competitions)."
+    }
+  ]
+}

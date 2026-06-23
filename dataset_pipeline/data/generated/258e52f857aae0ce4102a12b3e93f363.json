@@ -1,0 +1,34 @@
+{
+  "source_url": "https://mathworld.wolfram.com/PerfectCode.html",
+  "category": "mathworld",
+  "pairs": [
+    {
+      "question": "What defines a perfect code in coding theory?",
+      "answer": "A perfect code is an error-correcting code where each codeword consists of letters from an alphabet of length `q`, and every two distinct codewords differ in at least `2e + 1` places. It ensures that for every possible word of length `n` with letters in the alphabet, there exists a unique codeword within a Hamming distance of `e`."
+    },
+    {
+      "question": "How can you determine if a binary linear code is perfect?",
+      "answer": "A binary linear code `C` with `k` generators is perfect if it satisfies the equation `2^k = 2^n / sum_{i=0}^e (n choose i)`, where `n` is the codeword length and `e` is the maximum number of errors it can correct."
+    },
+    {
+      "question": "Provide a code snippet to check if a given code is perfect.",
+      "answer": "python\nfrom math import comb\n\ndef is_perfect_code(n, e, k):\n    total_words = 2**n\n    correctable_words = sum(comb(n, i) for i in range(e + 1))\n    return 2**k == total_words // correctable_words\n\n# Example: Binary Hamming code (7,4) corrects 1 error\nprint(is_perfect_code(n=7, e=1, k=4))  # Output: True\n"
+    },
+    {
+      "question": "What are the only nontrivial examples of perfect codes?",
+      "answer": "The only nontrivial examples of perfect codes are the Hamming codes and the Golay code."
+    },
+    {
+      "question": "Explain the relationship between Hamming codes and perfect codes.",
+      "answer": "Hamming codes are a class of linear error-correcting codes that are perfect. They satisfy the condition for perfect codes by ensuring a unique closest codeword for every possible received word within their error-correction capability."
+    },
+    {
+      "question": "How many errors can a perfect code with parameters `(n, e, k)` correct?",
+      "answer": "A perfect code with parameters `(n, e, k)` can correct up to `e` errors, where `e` is derived from the code's properties and satisfies the perfect code equation."
+    },
+    {
+      "question": "Why are perfect codes significant in coding theory?",
+      "answer": "Perfect codes are significant because they achieve the theoretical maximum error-correction capability for a given code length and size, making them highly efficient in terms of redundancy and error correction."
+    }
+  ]
+}

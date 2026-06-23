@@ -1,0 +1,46 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Butterfly_clutch",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is a butterfly clutch and what is its alternative name?",
+      "answer": "A butterfly clutch, also known as a Ballou clutch, is a type of fastener that attaches to the back of a tack pin to secure an accessory to clothing."
+    },
+    {
+      "question": "Who invented the butterfly clutch and when was it patented in the U.S.?",
+      "answer": "The butterfly clutch was invented in 1942 by Frederick A. Ballou, Jr. and Melvin Moore of the B.A. Ballou Company and patented in the U.S. on January 12, 1943."
+    },
+    {
+      "question": "Why is it called a 'butterfly clutch'?",
+      "answer": "The term 'butterfly' refers to the motion of the prongs when the fastener is opened, which resembles the flapping of butterfly wings."
+    },
+    {
+      "question": "What was the original material used for butterfly clutches and how were they initially used?",
+      "answer": "Butterfly clutches were originally composed of lightweight brass and were first used to attach U.S. military insignia during World War II."
+    },
+    {
+      "question": "What are some common uses of butterfly clutches today?",
+      "answer": "Butterfly clutches are commonly used in lapel pins of various kinds, such as fashion accessories, badges, and medals."
+    },
+    {
+      "question": "How do later designs of butterfly clutches improve grip on fabric?",
+      "answer": "Later designs added four or eight cleats on the back of the clutches to better grip the fabric and secure accessories more firmly."
+    },
+    {
+      "question": "What are some modern innovations in butterfly clutch designs?",
+      "answer": "Modern innovations include locking clutches, rubber clutches, and magnetic pin backs, which attach to clothing without puncturing a hole through the material."
+    },
+    {
+      "question": "Are butterfly clutches as secure as other pin types, and when are they less reliable?",
+      "answer": "No, butterfly clutches are less secure compared to other types of pins such as prongs and safety pins. They are less reliable when the surface they go through is thick (e.g., wool) or when the accessory is too heavy (e.g., military orders)."
+    },
+    {
+      "question": "Why are butterfly clutches sometimes called 'dammits' in military circles?",
+      "answer": "They are sometimes called 'dammits' due to the frustration when one belonging to an important badge or medal is lost. The term is also a brand name used by the company Quik-Pin under the name DAMMITS."
+    },
+    {
+      "question": "Write a Python function that simulates the opening motion of a butterfly clutch's prongs.",
+      "answer": "python\nimport math\n\ndef simulate_butterfly_clutch(opening_angle=math.pi/2, num_prongs=2):\n    \"\"\"\n    Simulates the opening motion of butterfly clutch prongs.\n    \n    Args:\n        opening_angle (float): Angle to which prongs are opened (in radians).\n        num_prongs (int): Number of prongs (typically 2).\n    \n    Returns:\n        list: Coordinates of the prong tips as they open.\n    \"\"\"\n    prong_length = 1.0\n    prong_tips = []\n    \n    for i in range(num_prongs):\n        angle = opening_angle * i\n        tip_x = prong_length * math.cos(angle)\n        tip_y = prong_length * math.sin(angle)\n        prong_tips.append((tip_x, tip_y))\n    \n    return prong_tips\n\n# Example usage:\nopened_positions = simulate_butterfly_clutch()\nprint(\"Prong tip positions when opened:\", opened_positions)\n"
+    }
+  ]
+}

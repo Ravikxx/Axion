@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Brian_Retterer",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What events did Brian Retterer specialize in during his swimming career?",
+      "answer": "Brian Retterer specialized in freestyle and backstroke events throughout his swimming career."
+    },
+    {
+      "question": "How many NCAA titles did Brian Retterer win at Stanford University?",
+      "answer": "Brian Retterer won 15 NCAA titles while swimming at Stanford University, which is the most in swimming history."
+    },
+    {
+      "question": "Which two swimmers in NCAA history have won a national title in all 5 relays?",
+      "answer": "Brian Retterer and Shawn Jordan are the only two swimmers in NCAA history to have won a national title in all 5 relays."
+    },
+    {
+      "question": "What notable swimming record did Brian Retterer achieve in the 100yd backstroke?",
+      "answer": "Brian Retterer was the first person to break 46 seconds in the 100yd backstroke and held 7 of the 10 fastest times ever in that event at one time."
+    },
+    {
+      "question": "What was Brian Retterer's role in Stanford's NCAA championship teams?",
+      "answer": "Brian Retterer was part of Stanford's 1992, 1993, and 1994 NCAA championship teams."
+    },
+    {
+      "question": "Can you provide a Python code snippet to calculate the total number of NCAA titles Brian Retterer won?",
+      "answer": "python\ntotal_ncaa_titles = 15\nprint(f\"Brian Retterer won {total_ncaa_titles} NCAA titles at Stanford University.\")\n"
+    },
+    {
+      "question": "What international medals did Brian Retterer win in his swimming career?",
+      "answer": "Brian Retterer won a silver medal at the 1993 Pan Pacific Swimming Championships, a gold medal in the 400 Medley relay at the 1994 World Championships, a silver medal in the men's 100m backstroke at the 1997 Short Course World Championships, and finished 3rd at the 1996 US Olympic Trials. He also finished 9th at the 1995 Pan Pacific Swimming Championships."
+    }
+  ]
+}

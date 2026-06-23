@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/2021–22_North_American_winter",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the overall severity of the 2021–22 North American winter compared to the previous winter?",
+      "answer": "The 2021–22 North American winter was not as significant or record-breaking as the previous winter. While it still featured notable events, none of the storms reached the 'Major' category on the Regional Snowfall Index (RSI)."
+    },
+    {
+      "question": "List the major winter weather events that occurred during the 2021–22 North American winter.",
+      "answer": "The 2021–22 winter included: two record-breaking tornado outbreaks in mid-December, a significant winter storm in the South in mid-January, a powerful blizzard along the Northeast coast at the end of January, a widespread winter storm affecting the eastern half of the country in early February, a late-season winter storm in March impacting the Appalachian Mountains, a major blizzard in North and South Dakota in mid-April, and an out-of-season snowstorm in the Rocky Mountains in late May."
+    },
+    {
+      "question": "How are the astronomical and meteorological definitions of winter different? Provide the exact dates for the 2021–22 winter season.",
+      "answer": "The astronomical definition of winter is based on the solstice and equinox, beginning on December 21, 2021, and ending on March 20, 2022. The meteorological definition uses fixed calendar dates, starting on December 1, 2021, and ending on February 28, 2022."
+    },
+    {
+      "question": "Why might a winter storm occur outside the typical winter season dates?",
+      "answer": "Winter storms can occur outside the typical dates because historical definitions mark periods when storms are most likely, not exclusive periods. For example, a mid-October winter storm occurred on October 12, 2021, and a late-May snowstorm impacted Colorado in 2022, demonstrating that extreme weather can defy seasonal boundaries."
+    },
+    {
+      "question": "What role did La Niña play in the 2021–22 North American winter?",
+      "answer": "A developing La Niña was expected to influence weather patterns across North America during the 2021–22 winter, contributing to the seasonal conditions observed."
+    },
+    {
+      "question": "How many storms during the 2021–22 North American winter were ranked on the Regional Snowfall Index (RSI), and what was their highest category?",
+      "answer": "Four storms were ranked on the Regional Snowfall Index (RSI) during the 2021–22 winter, but none reached the 'Major' category."
+    },
+    {
+      "question": "Write a Python function to calculate the duration of a winter season based on the astronomical definition.",
+      "answer": "python\ndef calculate_astronomical_winter_duration(start_year, end_year):\n    from datetime import datetime\n    \n    # Define fixed dates for astronomical winter\n    winter_start = datetime(start_year, 12, 21)\n    spring_end = datetime(end_year, 3, 20)\n    \n    duration = spring_end - winter_start\n    return duration.days\n\n# Example usage for the 2021–22 winter\nprint(calculate_astronomical_winter_duration(2021, 2022))  # Output: 90 days\n\nThis function calculates the duration in days between the winter solstice (December 21) and the spring equinox (March 20) across two years."
+    }
+  ]
+}

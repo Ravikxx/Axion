@@ -1,0 +1,34 @@
+{
+  "source_url": "https://mathworld.wolfram.com/EllipticCurve.html",
+  "category": "mathworld",
+  "pairs": [
+    {
+      "question": "What is an elliptic curve and how is it topologically related to a torus?",
+      "answer": "An elliptic curve is a type of non-singular cubic curve (defined by a polynomial equation of degree 3) whose solutions are confined to a region of space topologically equivalent to a torus. The Weierstrass elliptic function mathematically describes the mapping from this torus-shaped domain to the algebraic form of an elliptic curve, typically expressed as y² = x³ + ax + b over a field."
+    },
+    {
+      "question": "What is the Weierstrass normal form of an elliptic curve, and under what conditions does it exist?",
+      "answer": "The Weierstrass normal form of an elliptic curve over a field with characteristic not equal to 2 or 3 is given by the equation y² = x³ + ax + b, where a and b are elements of the field, and the discriminant Δ = -16(4a³ + 27b²) ≠ 0 (ensuring the curve is non-singular). For fields of characteristic 2 or 3, the form may require additional terms, as certain coefficients cannot be eliminated."
+    },
+    {
+      "question": "Write a Python function to compute the discriminant of an elliptic curve in Weierstrass form y² = x³ + ax + b.",
+      "answer": "python\ndef compute_elliptic_discriminant(a, b):\n    \"\"\"\n    Compute the discriminant Δ of an elliptic curve in Weierstrass form y² = x³ + ax + b.\n    \n    Parameters:\n    a (numeric): Coefficient of the x term\n    b (numeric): Constant term\n    \n    Returns:\n    numeric: The discriminant Δ = -16(4a³ + 27b²)\n    \"\"\"\n    return -16 * (4 * a**3 + 27 * b**2)\n\n\nExample usage:\npython\na, b = -1, 1  # Curve: y² = x³ - x + 1\nprint(compute_elliptic_discriminant(a, b))  # Output: -16 * (4*(-1)^3 + 27*(1)^2) = 400\n\nThe discriminant must be non-zero for the curve to be non-singular (i.e., smooth)."
+    },
+    {
+      "question": "Explain the group law on an elliptic curve and how to compute the third intersection point given two points on the curve.",
+      "answer": "The group law on an elliptic curve enables addition of points such that the set of rational points forms an abelian group. Given two points P and Q on the curve, draw a line through them (or the tangent line if P = Q). The line intersects the curve at a third point R. Reflecting R across the x-axis gives the sum P + Q. Algebraically, if the curve is y² = x³ + ax + b and P = (x₁, y₁), Q = (x₂, y₂), then:\n\n- If P ≠ Q: Slope m = (y₂ - y₁)/(x₂ - x₁), then R = (x₃, y₃) where:\n  x₃ = m² - x₁ - x₂\n  y₃ = m(x₁ - x₃) - y₁\n- If P = Q (point doubling): Slope m = (3x₁² + a)/(2y₁), then R = (x₃, y₃) as above. The point at infinity serves as the identity element."
+    },
+    {
+      "question": "What is the Mordell-Weil theorem, and what does it imply about the rational points on an elliptic curve over a number field?",
+      "answer": "The Mordell-Weil theorem states that the group of rational points on an elliptic curve defined over a number field is finitely generated. This means the group can be expressed as the direct sum of a finite torsion subgroup (points of finite order) and a free abelian group of finite rank. In other words, all rational points can be written as integer combinations of a finite set of generators plus a finite set of torsion points. For example, if the rank is 2 with generators P and Q, then every rational point can be written as nP + mQ + T, where n, m ∈ ℤ and T is a torsion point."
+    },
+    {
+      "question": "Why is the Taniyama-Shimura conjecture significant, and how did it relate to Fermat's Last Theorem?",
+      "answer": "The Taniyama-Shimura conjecture (now theorem) states that every elliptic curve over ℚ is modular, meaning it is the Jacobian of a modular curve. Its significance lies in bridging elliptic curves and modular forms, two seemingly unrelated areas of mathematics. Andrew Wiles proved the conjecture for semistable elliptic curves in 1995, which indirectly implied Fermat's Last Theorem by showing that a hypothetical counterexample would violate the conjecture. The connection arises via the Frey curve: if a³ + b³ = c³ held for non-zero integers a, b, c, the curve y² = x(x−a³)(x+b³) would be a non-modular elliptic curve, contradicting the Taniyama-Shimura conjecture."
+    },
+    {
+      "question": "What is the Schoof-Elkies-Atkin (SEA) algorithm used for in elliptic curve cryptography?",
+      "answer": "The SEA algorithm is an efficient method to compute the number of points (order) on an elliptic curve over a finite field 𝔽ₚ, where p is a large prime. It operates in polynomial time relative to log(p), making it practical for cryptographic applications. The algorithm combines:\n1. Schoof’s original method (using division polynomials and finite field arithmetic),\n2. Elkies’ improvements (via isogenies to reduce computation),\n3. Atkin’s enhancements (using modular polynomials).\nThe order #E(𝔽ₚ) is critical for elliptic curve cryptography (e.g., in ECDSA) to ensure the curve has a large prime-order subgroup, preventing attacks like Pohlig-Hellman."
+    }
+  ]
+}

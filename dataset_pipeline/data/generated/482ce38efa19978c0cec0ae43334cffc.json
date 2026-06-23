@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Joe_Kennedy_III",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When was Joseph Patrick Kennedy III born and where did he grow up?",
+      "answer": "Joseph Patrick Kennedy III was born on October 4, 1980, in Boston, Massachusetts. He grew up in the Boston area with his twin brother, Matthew Rauch Kennedy."
+    },
+    {
+      "question": "What political offices has Joseph Patrick Kennedy III held?",
+      "answer": "Joseph Patrick Kennedy III served as the U.S. Representative for Massachusetts's 4th congressional district from 2013 to 2021. He also held the position of United States Special Envoy for Northern Ireland from 2022 to 2024."
+    },
+    {
+      "question": "What was Joseph Patrick Kennedy III's educational background?",
+      "answer": "Kennedy graduated from Stanford University with a bachelor's degree. He later earned a Juris Doctor from Harvard Law School in 2009."
+    },
+    {
+      "question": "What did Joseph Patrick Kennedy III do after graduating from law school?",
+      "answer": "After graduating from Harvard Law School, Kennedy worked as an assistant district attorney in the Cape and Islands and Middlesex County offices in Massachusetts before his election to Congress in 2012."
+    },
+    {
+      "question": "What is the Groundwork Project and who founded it?",
+      "answer": "The Groundwork Project is an organization founded by Joseph Patrick Kennedy III that focuses on boosting local community organizing efforts nationwide."
+    },
+    {
+      "question": "How is Joseph Patrick Kennedy III related to other notable political figures in the Kennedy family?",
+      "answer": "Joseph Patrick Kennedy III is the son of U.S. Representative Joseph P. Kennedy II, the grandson of U.S. Senator and U.S. Attorney General Robert F. Kennedy, the nephew of U.S. Secretary of Health and Human Services Robert F. Kennedy Jr., the grandnephew of U.S. President John F. Kennedy and U.S. Senator Ted Kennedy, and the great-grandson of U.S. Ambassador to the United Kingdom Joseph P. Kennedy Sr."
+    },
+    {
+      "question": "Write a Python function to check if a given year falls within Joseph Patrick Kennedy III's tenure as a U.S. Representative.",
+      "answer": "python\ndef is_kennedy_rep_year(year):\n    return 2013 <= year <= 2021\n\n# Example usage:\nprint(is_kennedy_rep_year(2015))  # Output: True\nprint(is_kennedy_rep_year(2022))  # Output: False\n"
+    }
+  ]
+}

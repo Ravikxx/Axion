@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Freedom_from_fear",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What are the Four Freedoms proposed by Franklin D. Roosevelt?",
+      "answer": "The Four Freedoms are a set of fundamental human rights outlined by President Roosevelt in his State of the Union address on January 6, 1941. They include freedom of speech, freedom of worship, freedom from want, and freedom from fear."
+    },
+    {
+      "question": "How does Franklin D. Roosevelt define 'freedom from fear' in his Four Freedoms Speech?",
+      "answer": "Roosevelt defined freedom from fear as a world-wide reduction of armaments to such an extent that no nation could commit acts of physical aggression against any neighbor anywhere in the world."
+    },
+    {
+      "question": "When and by whom was the Universal Declaration of Human Rights accepted?",
+      "answer": "The Universal Declaration of Human Rights was accepted by the General Assembly of the United Nations on December 10, 1948."
+    },
+    {
+      "question": "What role does the concept of 'freedom from fear' play in the Universal Declaration of Human Rights?",
+      "answer": "Freedom from fear is one of the Four Freedoms and is explicitly mentioned in the introduction of the UN Declaration as a fundamental human right."
+    },
+    {
+      "question": "Which artist created a painting titled 'Freedom from Fear' and what was its significance?",
+      "answer": "Norman Rockwell painted 'Freedom from Fear' in 1943 as part of his series of four paintings inspired by Roosevelt's Four Freedoms."
+    },
+    {
+      "question": "How did historian David M. Kennedy incorporate the concept of 'freedom from fear' into his work?",
+      "answer": "In 1991, Kennedy published the book 'Freedom From Fear: The American People in Depression and War, 1929–1945,' exploring how this right influenced American society during that period."
+    },
+    {
+      "question": "Provide a code snippet to generate a list of the Four Freedoms in Python.",
+      "answer": "python\nfour_freedoms = [\n    \"Freedom of speech\",\n    \"Freedom of worship\",\n    \"Freedom from want\",\n    \"Freedom from fear\"\n]\nprint(four_freedoms)\n"
+    }
+  ]
+}

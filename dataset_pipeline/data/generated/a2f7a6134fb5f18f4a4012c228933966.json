@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Hawaii_Democratic_Revolution_of_1954",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What event is referred to as the Hawaii Democratic Revolution of 1954?",
+      "answer": "The Hawaii Democratic Revolution of 1954 refers to the territorial elections in Hawaii where the long-standing dominance of the Hawaii Republican Party in the legislature ended, and the Democratic Party of Hawaii took over, remaining the dominant party since then."
+    },
+    {
+      "question": "What factors contributed to the decline of the sugarcane plantations' power in Hawaii during the 1950s?",
+      "answer": "The decline of the sugarcane plantations' power was primarily due to labor strikes and civil disobedience by workers demanding equal pay and benefits to those on the U.S. mainland. These strikes weakened the plantations' control over workers and the associated 'Big Five' oligopoly."
+    },
+    {
+      "question": "What was the significance of John A. Burns' leadership in the Hawaii Democratic Party during the 1950s?",
+      "answer": "John A. Burns was elected chairman of the 1950 Democratic Convention and pushed for the party to become more competitive in elections. He redefined the party's ideology as center-left, used loyalty oaths to counter communist accusations, and later became Governor of Hawaii after statehood, ending a string of election losses."
+    },
+    {
+      "question": "How did the Democratic Party of Hawaii split into factions in the 1950s, and what were the outcomes?",
+      "answer": "The party split into the right-wing 'Walkout' faction, which opposed Burns, and the left-wing 'Standpat' faction, which supported him. This division led to electoral defeats against Republicans, including President Eisenhower's appointment of Republican Samuel Wilder King as governor, who vetoed legislation 71 times during his administration."
+    },
+    {
+      "question": "What role did labor unions play in the political changes in Hawaii during the 1950s?",
+      "answer": "Labor unions like the International Longshoremen's and Warehousemen's Union (ILWU) organized strikes and civil disobedience to demand better pay and benefits for Hawaiian workers, directly challenging the power of sugarcane plantations and the 'Big Five' oligopoly, which contributed to the decline of Republican influence."
+    },
+    {
+      "question": "Write a Python function to calculate the number of vetoes a governor used during a specific administration, given a list of veto events with dates.",
+      "answer": "python\ndef count_vetoes(veto_events):\n    \"\"\"\n    Calculate the total number of vetoes used by a governor during their administration.\n    \n    Args:\n        veto_events (list of dict): A list of veto events, where each event is a dictionary \n                                   containing at least a 'date' key.\n    \n    Returns:\n        int: The total number of vetoes.\n    \"\"\"\n    return len(veto_events)\n\n# Example usage:\nveto_data = [\n    {'date': '1957-01-15', 'bill_id': 'HB123'},\n    {'date': '1957-02-20', 'bill_id': 'SB456'},\n    # ... more veto events\n]\ntotal_vetoes = count_vetoes(veto_data)\nprint(f\"Total vetoes: {total_vetoes}\")\n"
+    },
+    {
+      "question": "What was the Aloha Strike, and when did it occur?",
+      "answer": "The Aloha Strike was a large sugar workers' strike in Hawaii that took place from February 1 to June 6, 1958. It marked the end of the prolonged strike campaign by the International Longshoremen's and Warehousemen's Union (ILWU) that had lasted until 1958."
+    }
+  ]
+}

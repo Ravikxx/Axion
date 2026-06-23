@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/2016_United_States_presidential_election_in_Nevada",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who were the major party nominees in the 2016 U.S. presidential election in Nevada?",
+      "answer": "The Republican Party's nominees were Donald Trump (presidential candidate) and Mike Pence (running mate). The Democratic Party's nominees were Hillary Clinton (presidential candidate) and Tim Kaine (running mate)."
+    },
+    {
+      "question": "How many electoral votes did Nevada have in the 2016 presidential election, and which candidate won the state?",
+      "answer": "Nevada had six electoral votes in the 2016 presidential election. Hillary Clinton won the state with 47.92% of the vote, compared to Donald Trump's 45.5%."
+    },
+    {
+      "question": "What was the margin of victory for Hillary Clinton over Donald Trump in Nevada during the 2016 election?",
+      "answer": "Hillary Clinton won Nevada by a margin of 2.42% over Donald Trump."
+    },
+    {
+      "question": "How did Nevada's vote share in the 2016 election compare to the national popular vote?",
+      "answer": "Nevada's popular vote results were 0.33% to the left (more Democratic) of the national popular vote, making it the closest to the national results among all states."
+    },
+    {
+      "question": "Write a Python code snippet to calculate the margin of victory between Hillary Clinton and Donald Trump in Nevada's 2016 presidential election.",
+      "answer": "python\nclinton_votes = 47.92\ntrump_votes = 45.5\nmargin = clinton_votes - trump_votes\nprint(f\"Margin of victory: {margin}%\")\n\nThis code calculates the difference between Clinton's and Trump's vote percentages to determine the margin of victory (2.42%)."
+    },
+    {
+      "question": "What historical significance did Donald Trump's victory in the 2016 presidential election have regarding Nevada and Washoe County?",
+      "answer": "Donald Trump became the first Republican since William McKinley in 1900 to win the presidency without carrying Washoe County. Additionally, he was the first Republican since William Howard Taft in 1908 to win the presidency without Nevada's electoral votes."
+    },
+    {
+      "question": "How often has Nevada voted for the winner of the national popular vote in presidential elections since 2004?",
+      "answer": "Nevada has voted for the winner of the national popular vote in every presidential election since 2004."
+    }
+  ]
+}

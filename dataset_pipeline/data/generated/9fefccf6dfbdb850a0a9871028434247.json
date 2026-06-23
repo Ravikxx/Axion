@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Addressability",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is addressability in the context of digital devices?",
+      "answer": "Addressability refers to the capability of a digital device to individually respond to a message sent to a group of similar devices. This allows targeted communication even when physical control over message routing is impractical or impossible, such as with wireless devices."
+    },
+    {
+      "question": "Provide examples of addressable devices and explain how their addresses are determined.",
+      "answer": "Examples of addressable devices include pagers, mobile phones, and set-top boxes for pay TV. Pagers use an electronic serial number (or later IMEI/MEID) stored in firmware or hardware. Mobile phones include additional identifiers like the SIM card, while pay TV devices may use smart cards or PCMCIA CableCARDs for addressing and conditional access."
+    },
+    {
+      "question": "How are computer networks addressable?",
+      "answer": "Computer networks are addressable via unique identifiers such as MAC addresses on Ethernet network cards, or through other networking protocols like Bluetooth. These addresses enable devices to receive targeted data even when connected wirelessly or in large networks."
+    },
+    {
+      "question": "What is the role of addressing in conditional access for pay TV services?",
+      "answer": "Addressing, combined with encryption, is used to enforce conditional access to different TV channel bundles. The pay-TV provider sends messages to specific subscriber identity modules (SIM cards or CableCARDs) to grant or restrict access based on the customer's subscription."
+    },
+    {
+      "question": "How do IP addresses contribute to addressability?",
+      "answer": "IP addresses enable software-level addressing, allowing devices connected to a network to be uniquely identified and communicate with each other. Unlike hardware addresses like MAC, IP addresses can be dynamically allocated, providing flexibility in network management."
+    },
+    {
+      "question": "Explain how addressing is used in the context of digital restrictions like revocation lists.",
+      "answer": "Addressability allows systems to enforce digital restrictions by assigning unique identifiers to devices. For example, revocation lists can be used to block unauthorized devices from accessing content, ensuring compliance with licensing agreements or legal requirements."
+    },
+    {
+      "question": "Provide a code snippet demonstrating how to retrieve the MAC address of a network interface in Python.",
+      "answer": "python\nimport uuid\nmac_address = uuid.getnode()\nprint(f\"MAC Address: {':'.join(['{:02x}'.format((mac_address >> elements) & 0xff) for elements in range(0,2*6,8)][::-1])}\")\n\nThis code uses the `uuid` module to fetch the MAC address of the machine's first network interface. Note that modern systems may require additional dependencies or platform-specific methods due to privacy restrictions."
+    }
+  ]
+}

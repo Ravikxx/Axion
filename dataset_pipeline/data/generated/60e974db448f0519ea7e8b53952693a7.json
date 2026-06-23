@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Chemical_compound",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What defines a chemical compound, and how does it differ from an element or a mixture?",
+      "answer": "A chemical compound is a substance formed when two or more different elements combine in a fixed ratio through chemical bonds. Unlike elements, which are made of only one type of atom, compounds have unique emergent properties due to their bonded structure. Mixtures, on the other hand, are physical combinations of substances where no chemical bonds form, and the components can be separated by physical methods without changing their identities."
+    },
+    {
+      "question": "Write a Python function to generate the molecular formula of water and explain how it represents the compound's composition.",
+      "answer": "python\ndef water_formula():\n    return \"H₂O\"\n\nThe formula 'H₂O' indicates that each molecule of water consists of 2 hydrogen atoms and 1 oxygen atom, reflecting the fixed ratio in which these elements bond to form the compound."
+    },
+    {
+      "question": "How do ionic and covalent compounds differ in their bonding and typical properties?",
+      "answer": "Ionic compounds form when a metal atom donates electrons to a nonmetal atom, creating oppositely charged ions that attract each other. They typically form crystalline solids with high melting points and conduct electricity when dissolved in water. Covalent compounds form when nonmetal atoms share electrons, creating molecules with discrete units. They often have lower melting points and do not conduct electricity. Examples include NaCl (ionic) and CO₂ (covalent)."
+    },
+    {
+      "question": "Explain the concept of emergent properties in chemical compounds with examples.",
+      "answer": "Emergent properties are new characteristics that arise when elements combine to form a compound, properties not present in the individual elements. For example, sodium (a reactive metal) and chlorine (a toxic gas) combine to form sodium chloride (table salt), a stable, edible crystal. Similarly, hydrogen and oxygen gases react to form liquid water, which is essential for life."
+    },
+    {
+      "question": "What is the role of IUPAC in chemical nomenclature, and why is it important?",
+      "answer": "IUPAC (International Union of Pure and Applied Chemistry) establishes standardized rules for naming chemical compounds and writing their formulas globally. This ensures consistency and clarity in scientific communication, preventing confusion across languages and regions. For instance, 'H₂O' and 'dihydrogen monoxide' both unambiguously refer to water."
+    },
+    {
+      "question": "How can you distinguish between an organic and an inorganic compound? Provide examples of each.",
+      "answer": "Organic compounds contain carbon atoms bonded to hydrogen atoms (C-H bonds) and often include other elements like oxygen or nitrogen. They are the basis of life and include sugars, fats, and fuels. Inorganic compounds lack C-H bonds and include salts, metals, and minerals. Examples: organic (CH₄, C₆H₁₂O₆) and inorganic (NaCl, CO₂, H₂O)."
+    },
+    {
+      "question": "What is a non-stoichiometric compound, and where are they commonly found?",
+      "answer": "A non-stoichiometric compound does not have a fixed, whole-number ratio between its elements. These compounds often form in solid crystals, particularly in metal oxides, where slight variations in composition can occur due to defects or substitutions in the crystal lattice."
+    }
+  ]
+}

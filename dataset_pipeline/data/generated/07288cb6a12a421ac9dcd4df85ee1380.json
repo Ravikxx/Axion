@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/British_national_identity",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is British national identity, and what elements does it encompass?",
+      "answer": "British national identity refers to the shared sense of belonging among the British people, rooted in their collective culture, languages, traditions, habits, behaviors, and symbols. It includes the qualities that unite and distinguish them, such as iconic cultural expressions like tea-drinking customs, the Union Jack, and the BBC. This identity is fluid and often debated, reflecting power relations and political dynamics, and can evoke responses ranging from advocacy to rejection."
+    },
+    {
+      "question": "When did the term 'Britishness' gain political and academic prominence, and what historical factors contributed to its development?",
+      "answer": "The term 'Britishness' gained political and academic prominence in the late 20th century, though its origins trace back to the formation of the Kingdom of Great Britain in 1707. Historian Linda Colley argues that the Acts of Union 1707 led to a 'layered' identity, where Britons saw themselves as both British and Scottish, English, or Welsh simultaneously. Britishness was also closely tied to Protestantism during this formative period, and the first recorded use of the term in its modern sense appeared in 1857."
+    },
+    {
+      "question": "How has the concept of Britishness been linked to nationalism and political movements in the UK?",
+      "answer": "Britishness has been associated with efforts to define, sustain, or restore a homogeneous national identity, particularly in the late 20th century. Political movements like the UK Independence Party frame it as civic nationalism, while critics argue it reflects ethnic English dominance, excluding Scots, Welsh, Irish, and minorities. For example, the controversial 'Life in the United Kingdom' citizenship test has been criticized for marginalizing non-English identities."
+    },
+    {
+      "question": "What arguments have historians made about the conflation of Britishness and Englishness?",
+      "answer": "Historians such as Graham Macphee and Prem Poddar contend that Britishness and Englishness are often conflated because both are tied to the legacy of the British Empire and the UK’s imperial identity. The two terms are frequently used interchangeably, reinforcing a perception that British culture is synonymous with English culture, which can alienate non-English groups."
+    },
+    {
+      "question": "Why did historian David Starkey argue that 'a British nation doesn’t exist' in the context of a proposed school leaver’s oath of allegiance?",
+      "answer": "Starkey argued that Britishness cannot be taught or enforced because the UK lacks a unified national identity. He suggests that England’s 71.1% identification as British (per the 2021 census) contrasts sharply with Scotland (22.1%) and Wales (26.6%), where national identities like Scottish or Welsh are prioritized. This reflects deep regional divisions in how Britishness is perceived and embraced."
+    },
+    {
+      "question": "How do national identity statistics from the 2021 UK census reflect regional differences in British identity?",
+      "answer": "The 2021 census reveals significant regional variation in British identity. In England, 71.1% of respondents identified as British, while only 26.6% in Wales and 22.1% in Scotland did so. Northern Ireland showed a more divided picture, with 31.9% identifying as British, 29.1% as Irish, and 19.8% as Northern Irish. These disparities highlight the complexity of national identity within the UK."
+    },
+    {
+      "question": "Provide a Python code snippet that visualizes the regional differences in British identity based on the 2021 census data.",
+      "answer": "python\nimport matplotlib.pyplot as plt\n\nregions = ['England', 'Wales', 'Scotland', 'Northern Ireland']\nbritish_identity = [71.1, 26.6, 22.1, 31.9]  # Percentages\n\nplt.figure(figsize=(8, 5))\nplt.bar(regions, british_identity, color=['blue', 'red', 'green', 'purple'])\nplt.title('Percentage of Population Identifying as British (2021 Census)')\nplt.ylabel('Percentage (%)')\nplt.ylim(0, 100)\nplt.grid(axis='y', linestyle='--', alpha=0.7)\nplt.show()\n\nThis code generates a bar chart comparing the percentage of people identifying as British across the four UK regions, using data from the 2021 census."
+    }
+  ]
+}

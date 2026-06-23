@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Ektal",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is Ektal in Indian music and what are its distinguishing features?",
+      "answer": "Ektal is a tala (rhythmic cycle) in Indian music, specifically in Hindustani classical tradition. It consists of 12 matras (beats) divided into 6 vibhags (groups) of two matras each. Key features include: claps (Tali) on the 1st, 5th, 9th, and 11th matras; waves (Khali) on the 3rd and 7th matras; and a characteristic theka (pattern) played on tabla. It is often associated with Vilambit (slow pace) but can also be performed in Drut gatti (fast speed) with variations like 'Tirkita' or 'Traka'."
+    },
+    {
+      "question": "How does the matra structure of Ektal differ from its vibhags?",
+      "answer": "Ektal has a total of 12 matras, which are organized into 6 vibhags (groups), each containing exactly 2 matras. This division is fundamental to its rhythmic structure, with claps (Tali) and waves (Khali) occurring at specific matras to mark the tala's progression."
+    },
+    {
+      "question": "Write a Python function to represent the Ektal tala pattern in terms of matras, claps, and waves.",
+      "answer": "python\ndef represent_ektal():\n    matras = list(range(1, 13))\n    tali = [1, 5, 9, 11]\n    khali = [3, 7]\n    pattern = []\n    \n    for matra in matras:\n        if matra in tali:\n            pattern.append(\"clap\")\n        elif matra in khali:\n            pattern.append(\"wave\")\n        else:\n            pattern.append(\"tap\")\n    \n    return pattern\n\n# Example output:\nprint(represent_ektal())\n# Output: ['clap', 'tap', 'wave', 'tap', 'clap', 'tap', 'wave', 'tap', 'clap', 'tap', 'clap', 'tap']\n"
+    },
+    {
+      "question": "What are the similarities and differences between Ektal and Chowtal?",
+      "answer": "Both Ektal and Chowtal are tala systems in Indian music with a 12-matra structure. However, they differ in instrumentation: Ektal is played on tabla, while Chowtal is performed on Pakhavaj. Ektal is more commonly associated with Vilambit (slow pace) and features variations like 'Tirkita' in Drut gatti (fast speed). Chowtal, on the other hand, is typically linked to semi-classical or folk traditions and lacks the fast-paced variations of Ektal."
+    },
+    {
+      "question": "What is the theka of Ektal, and why is it important in Hindustani classical music?",
+      "answer": "The theka of Ektal is its characteristic bols (syllables) pattern, which serves as the foundational rhythmic structure for compositions. The standard theka is: 'Dha Dhin Dhin Dha | Dha Tin Tin Ta | Ta Dhin Dhin Dha | Dha Tin Tin Ta'. This pattern is crucial as it provides a reference for improvisation, composition, and performance in Hindustani classical music. Many kaidas (basic compositions) are based on variations of this theka."
+    },
+    {
+      "question": "How is the 'Tirkita' variation used in Ektal during Drut gatti?",
+      "answer": "In Drut gatti (fast speed), the 'Tirkita' variation replaces slower bols with faster, more intricate patterns. For example, the 'Dha' bols in the theka may be substituted with 'Traka' syllables, creating a rapid, percussive effect. This variation is often used to add complexity and speed to the performance while maintaining the 12-matra structure of Ektal."
+    },
+    {
+      "question": "List the instruments commonly associated with Ektal and explain their roles.",
+      "answer": "Ektal is primarily played on the tabla, which is a pair of hand drums that produce the characteristic bols (syllables) of the tala. The tabla's versatility allows it to mimic the claps (Tali), waves (Khali), and taps of the Ektal pattern. Additionally, Ektal is sometimes used in compositions for other instruments like the pakhavaj or vocal forms like Khayal and Rabindra Sangeet, but the tabla remains the most iconic instrument for its performance."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/DigiLocker",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is DigiLocker and which government ministry oversees it?",
+      "answer": "DigiLocker is an Indian state-owned cloud digitization service provided by the Ministry of Electronics and Information Technology (MEITy) under the Digital India initiative. It enables digital access to documents like driver's licenses, vehicle registration certificates, and academic mark sheets."
+    },
+    {
+      "question": "What are the key features of DigiLocker related to document storage and access?",
+      "answer": "DigiLocker offers 1 GB of storage per account for uploading scanned legacy documents. It allows users to access digital versions of government-issued documents, share them electronically, and use an e-signing facility. Users can also request documents from issuers directly through the platform."
+    },
+    {
+      "question": "How does a user register for DigiLocker and what verification steps are involved?",
+      "answer": "To register for DigiLocker, a user must possess an Aadhaar number. During registration, identity verification is done via a one-time password (OTP) sent to the Aadhaar-linked mobile number. This ensures secure authentication before account activation."
+    },
+    {
+      "question": "What are the storage and file size limitations in DigiLocker?",
+      "answer": "Initially, DigiLocker provided 100 MB of storage. As of recent updates, it offers 1 GB per user for legacy documents. Individual files are limited to a maximum size of 10 MB, ensuring efficient storage and sharing."
+    },
+    {
+      "question": "Provide a code snippet to programmatically fetch a document from DigiLocker using its API.",
+      "answer": "python\nimport requests\n\ndef fetch_digilocker_document(access_token, document_id):\n    url = f\"https://api.digilocker.gov.in/public/document/{document_id}\"\n    headers = {\n        \"Authorization\": f\"Bearer {access_token}\n    }\n    response = requests.get(url, headers=headers)\n    if response.status_code == 200:\n        return response.json()\n    else:\n        raise Exception(\"Failed to fetch document\")\n\nThis Python function uses the DigiLocker API to retrieve a document by its ID, requiring an access token for authentication."
+    },
+    {
+      "question": "How has DigiLocker contributed to the Digital India initiative in terms of adoption and impact?",
+      "answer": "DigiLocker has significantly reduced paper usage by enabling digital storage and sharing of documents. As of December 2024, it facilitated 9.4 billion document issuances to 43.49 crore users, supporting over 43 requester organizations and integrating with services like passport applications to promote a paperless administration."
+    },
+    {
+      "question": "Explain the e-signing feature of DigiLocker and its benefits.",
+      "answer": "DigiLocker includes an e-signing facility that allows users to electronically sign documents stored on the platform. This feature enables secure and legally recognized document authentication, reducing the need for physical signatures and streamlining administrative processes for government and private entities."
+    }
+  ]
+}

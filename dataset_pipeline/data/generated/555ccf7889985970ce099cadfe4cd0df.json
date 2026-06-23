@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/2005_Japanese_architectural_forgery_scandal",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the 'structural calculation forgery problem' in Japan, and who was primarily responsible for it?",
+      "answer": "The 'structural calculation forgery problem' refers to a scandal in Japan where structural engineer Hidetsugu Aneha falsified earthquake design calculations for buildings. The issue was exposed in November 2005, leading to bankruptcies among construction and real estate companies involved. Aneha, registered as a first-class architect in Japan's licensing system, was the primary figure behind the forgery."
+    },
+    {
+      "question": "What were the key causes of the structural calculation forgery problem in Japan?",
+      "answer": "The causes included inadequate oversight by private organizations responsible for confirming compliance with Japanese safety standards, as well as failures by government agencies to detect forgeries. A 1999 law change allowed private organizations to conduct investigations, but these entities, such as EHomes and Nihon ERI, did not adequately function in their oversight roles."
+    },
+    {
+      "question": "How did the structural calculation forgery problem affect building safety in Japan?",
+      "answer": "The forgery problem raised concerns about the safety of high-rise buildings in earthquake-prone Japan. Two of 14 hotels built with falsified calculations were found to fail earthquake resistance standards due to insufficient reinforcing steel, potentially making them vulnerable to collapse during an earthquake of magnitude 5 on the Japanese Shindo scale."
+    },
+    {
+      "question": "What legal consequences did individuals and companies face due to the structural calculation forgery problem?",
+      "answer": "Hidetsugu Aneha, Moriyoshi Kimura, Akira Shinozuka, and Togo Fujita were arrested on April 26, 2006. Susumu Ojima, president of Huser, was arrested on May 17, 2006, and later convicted in September 2007. The scandal led to the bankruptcy of several construction and real estate companies, including Kimura Construction and Huser."
+    },
+    {
+      "question": "How did Japan's licensing system contribute to the structural calculation forgery problem?",
+      "answer": "Japan's unique licensing system classifies structural engineers designing buildings as first-class architects. This classification may have contributed to confusion in oversight and accountability. Additionally, the system allowed private organizations to conduct investigations, which were later found to be inadequate in detecting forgeries."
+    },
+    {
+      "question": "What role did bloggers play in exposing the structural calculation forgery problem?",
+      "answer": "Bloggers were the first to publicize the incident in Japan. They played a crucial role in bringing the issue to public attention, which led to the subsequent investigations and arrests related to the scandal."
+    },
+    {
+      "question": "Write a Python snippet to simulate the detection of falsified structural calculations based on a set of building parameters.",
+      "answer": "python\nimport numpy as np\n\ndef detect_falsified_calculations(max_floors, concrete_strength, steel_reinforcement_ratio, seismic_zone_factor):\n    # Define expected thresholds for earthquake resistance\n    max_allowed_floors = 10\n    min_concrete_strength = 30  # MPa\n    min_steel_reinforcement = 0.01  # 1%\n    seismic_standards = {'Zone A': 1.0, 'Zone B': 1.2, 'Zone C': 1.5}\n    \n    # Check if parameters meet safety standards\n    if max_floors > max_allowed_floors or concrete_strength < min_concrete_strength or \\\n       steel_reinforcement_ratio < min_steel_reinforcement or \\\n       seismic_zone_factor < seismic_standards['Zone A']:\n        return \"Falsified calculations detected: Building does not meet safety standards.\"\n    else:\n        return \"Calculations appear compliant with safety standards.\"\n\n# Example usage\nresult = detect_falsified_calculations(max_floors=12, concrete_strength=25, \n                                     steel_reinforcement_ratio=0.008, \n                                     seismic_zone_factor=1.1)\nprint(result)  # Output: Falsified calculations detected: Building does not meet safety standards.\n"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Child_care",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is child care and what age range does it typically cover?",
+      "answer": "Child care, also known as day care, refers to the care and supervision provided to a child or group of children. It typically covers children from six weeks to thirteen years old."
+    },
+    {
+      "question": "Who is a child carer, and what are some of their responsibilities?",
+      "answer": "A child carer is a person who provides care and supervision to children. Their responsibilities may include cooking food, feeding children, reading books, singing, supervising naps, organizing sports or physical activities, and ensuring overall safety and well-being."
+    },
+    {
+      "question": "How does the cost of child care vary based on the number of children?",
+      "answer": "The cost of child care often increases when more children are involved because supervising multiple children can be more challenging and requires additional resources, such as more staff or a larger facility."
+    },
+    {
+      "question": "What are some common roles in professional child care settings?",
+      "answer": "In professional child care, roles may include cooks who prepare meals, caregivers who feed and supervise children, educators who read books or teach activities, and nurses or midwives who provide specialized care when needed."
+    },
+    {
+      "question": "Can you describe how child care can be learned as a skill?",
+      "answer": "Yes, child care can be learned naturally or acquired through experience. For example, older siblings may teach younger siblings how to care for infants, or individuals may develop skills through formal training or employment in child care settings."
+    },
+    {
+      "question": "What safety measures are typically implemented in child care centers?",
+      "answer": "Child care centers often have safety measures such as keeping emergency service numbers (e.g., ambulance or police) written down and easily accessible near telephones. Additionally, centers may have trained staff, secure facilities, and protocols to handle emergencies."
+    },
+    {
+      "question": "How does child care differ from babysitting?",
+      "answer": "While a babysitter is a type of child carer, child care typically refers to professional supervision and care provided in a structured setting, often involving multiple caregivers and roles. Babysitting is usually more informal and short-term, often done by a single individual in a home setting."
+    }
+  ]
+}

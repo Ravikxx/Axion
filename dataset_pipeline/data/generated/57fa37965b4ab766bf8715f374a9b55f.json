@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Dream_Within_a_Dream_Tour",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the main theme of Britney Spears' Dream Within a Dream Tour according to Wade Robson?",
+      "answer": "The main theme of the Dream Within a Dream Tour was Britney Spears's coming of age and her newfound independence, as explained by the choreographer Wade Robson."
+    },
+    {
+      "question": "How many segments was the Dream Within a Dream Tour divided into and what was the final segment?",
+      "answer": "The Dream Within a Dream Tour was divided into seven segments, with the last segment being the encore."
+    },
+    {
+      "question": "What were some of the special effects used during the Dream Within a Dream Tour performances?",
+      "answer": "The performances featured special effects such as confetti, pyrotechnics, laser lights, artificial fog, artificial snow, and a water screen that pumped two tons of water onto the stage."
+    },
+    {
+      "question": "What notable event occurred during the second show in Mexico City on the Dream Within a Dream Tour?",
+      "answer": "During the second show in Mexico City, Britney Spears left the stage after the sixth song due to a lightning storm, resulting in the cancellation of the show and angering the audience."
+    },
+    {
+      "question": "What were the total gross earnings and total attendance figures for the Dream Within a Dream Tour according to Pollstar?",
+      "answer": "According to Pollstar, the Dream Within a Dream Tour had a total gross of $53.3 million and sold 946,169 tickets across 66 of 69 shows."
+    },
+    {
+      "question": "Provide a code snippet to calculate the average gross and average attendance per show for the Dream Within a Dream Tour based on Billboard data.",
+      "answer": "python\ntour_data = {\n    'total_gross': 53_300_000,  # Approximate total gross from Pollstar\n    'total_shows': 69,\n    'north_america_gross': 803_683,\n    'north_america_attendance': 14_344\n}\n\n# Calculate average gross and attendance for North America\navg_gross_na = tour_data['north_america_gross']\navg_attendance_na = tour_data['north_america_attendance']\n\n# Calculate average gross per show (Pollstar total gross / shows with data)\navg_gross_total = tour_data['total_gross'] / tour_data['total_shows']\n\nprint(f\"Average gross per show (North America): ${avg_gross_na:,.2f}\")\nprint(f\"Average attendance per show (North America): {avg_attendance_na:,.0f}\")\nprint(f\"Average gross per show (Total): ${avg_gross_total:,.2f}\")\n"
+    },
+    {
+      "question": "Which HBO special featured the Dream Within a Dream Tour and what award did it win?",
+      "answer": "The Dream Within a Dream Tour was broadcast live on an HBO special on November 18, 2001, and later won an Emmy for Outstanding Technical Direction at the 2002 ceremony."
+    },
+    {
+      "question": "What unreleased song did Britney Spears premiere during the 2002 leg of the Dream Within a Dream Tour?",
+      "answer": "During the 2002 leg of the Dream Within a Dream Tour, Britney Spears premiered the unreleased song 'Mystic Man'."
+    }
+  ]
+}

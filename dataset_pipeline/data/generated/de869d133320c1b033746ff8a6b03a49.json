@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Inferno_Crater_Lake",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is Inferno Crater Lake and where is it located?",
+      "answer": "Inferno Crater Lake is a large hot spring situated in the Waimangu Volcanic Rift Valley on New Zealand's North Island. It is the world's largest geyser-like feature, though the actual geyser itself is submerged underwater at the lake's bottom."
+    },
+    {
+      "question": "How does the water temperature of Inferno Crater Lake change over time?",
+      "answer": "The water temperature in Inferno Crater Lake fluctuates between 35°C and 80°C (95°F to 176°F) every six weeks, following a complex 38-day cycle tied to the lake's hydrological behavior. The temperature is highest when the lake is full."
+    },
+    {
+      "question": "What causes the color changes in Inferno Crater Lake?",
+      "answer": "The lake's color changes due to finely suspended silica particles. At low water levels, the lake appears dull grey, while at higher levels—especially after overflow—it turns an intense sky blue. White silica deposits also grow to the overflow level."
+    },
+    {
+      "question": "What geological event formed Inferno Crater Lake?",
+      "answer": "Inferno Crater was created during the 1886 Mount Tarawera eruption, which blasted a hole in the side of Mt Haszard. This eruption also formed a 17-kilometer (11-mile) rift stretching southwest from Mount Tarawera."
+    },
+    {
+      "question": "How does Inferno Crater Lake interact with Frying Pan Lake?",
+      "answer": "Inferno Crater Lake and Frying Pan Lake share an interconnected 38-day cycle where their water levels and temperatures inversely affect each other. When Inferno's levels and temperature rise, Frying Pan's levels and outflow decrease, and vice versa."
+    },
+    {
+      "question": "Describe the four phases of Inferno Crater Lake's 38-day cycle.",
+      "answer": "1) **Rise Phase**: Lake level increases by ~5 meters over 8 days. 2) **Oscillation Phase**: Level continues rising with oscillations until overflow (~8 days). 3) **Overflow Phase**: Lake overflows for ~51 hours, releasing ~140,000 cubic meters of >70°C water. 4) **Recession Phase**: Lake recedes over 13 days, losing ~30 million liters of water back underground."
+    },
+    {
+      "question": "What is the maximum depth of Inferno Crater Lake when full, and how is it accessed by visitors?",
+      "answer": "When full, Inferno Crater Lake can reach depths of up to 30 meters (98 feet). Visitors can access it via a side track with 50 steps off the main Waimangu walking trail."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Antoine_Cormery",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is Antoine Cormery's current professional role?",
+      "answer": "Antoine Cormery is the managing director of Académie France24-MCD-RFI, an educational institution for journalists."
+    },
+    {
+      "question": "Which journalism school did Antoine Cormery graduate from, and in what year?",
+      "answer": "Antoine Cormery graduated from the Centre de formation des journalistes (CFJ) in Paris in 1991."
+    },
+    {
+      "question": "What notable competitions or opportunities helped Antoine Cormery advance his early career?",
+      "answer": "In 1990, Antoine Cormery won the bourse Lauga competition, which led to a position at Europe 1 radio station."
+    },
+    {
+      "question": "Describe Antoine Cormery's career progression at France 2 before 2003.",
+      "answer": "Antoine Cormery started as a senior reporter in the 'Economics' department at France 2, then became the deputy manager of the 'Culture' and later the 'Society' departments. Between 1996 and 2004, he also served as a substitute presenter for the 1pm and 8pm news on France 2, regularly replacing David Pujadas."
+    },
+    {
+      "question": "What were some of the key programs or segments Antoine Cormery hosted or produced at France 24?",
+      "answer": "At France 24, Antoine Cormery presented the morning session in French, hosted the weekly show 'Reporters' focused on grand reportages, and moderated special shows like 'Sur la route de Pekin' during the 2008 Summer Olympics, 'USA 2008' covering the U.S. presidential elections, and 'Haïti, un an après' about Haiti one year after the 2010 earthquake. He also started 'Paris Direct,' a talk-show combining news and debates."
+    },
+    {
+      "question": "How did Antoine Cormery contribute to journalism training beyond his broadcasting work?",
+      "answer": "Antoine Cormery regularly conducts training sessions and educational interventions for journalists in France (e.g., CFJ, Sciences Po Paris, France 3, BFM) and internationally (e.g., Radio Nationale Algérienne, Télévision nationale du Mali, RTBF). He is also involved in managing the Académie France24-MCD-RFI, which focuses on journalistic education."
+    },
+    {
+      "question": "Write a Python function that takes a list of Antoine Cormery's career milestones as input and returns a formatted timeline of his professional journey.",
+      "answer": "python\ndef format_career_timeline(milestones):\n    timeline = []\n    for year, event in milestones:\n        timeline.append(f\"{year}: {event}\")\n    return '\\n'.join(timeline)\n\n# Example usage:\nmilestones = [\n    (1991, \"Graduated from Centre de formation des journalistes (CFJ)\"),\n    (1992, \"Joined TF1 as a general news reporter\"),\n    (1996, \"Began substituting as presenter for France 2 news\"),\n    (2003, \"Left France 2 to head press review at France Info radio\"),\n    (2006, \"Joined the launch team of France 24\"),\n    (2009, \"Started hosting 'Paris Direct' talk-show\")\n]\nprint(format_career_timeline(milestones))\n\nThis function takes a list of tuples (year, event) and returns a string with each milestone formatted as a timeline entry."
+    }
+  ]
+}

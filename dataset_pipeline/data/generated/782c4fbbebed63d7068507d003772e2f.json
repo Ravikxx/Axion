@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Castile",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What was the Crown of Castile and when was it formed?",
+      "answer": "The Crown of Castile was a historical kingdom formed in 1230 by the union of the Kingdom of Castile and the Kingdom of León. This union created a political entity that played a significant role in the medieval history of the Iberian Peninsula."
+    },
+    {
+      "question": "Which autonomous communities in Spain include the traditional region of Old Castile?",
+      "answer": "Old Castile no longer exists as a distinct political region, but its former territory is now part of the autonomous communities of Castile and León and Castile-La Mancha in Spain."
+    },
+    {
+      "question": "Compare and contrast Castile-La Mancha and Castile and León as autonomous communities of Spain.",
+      "answer": "Castile-La Mancha, formed in 1982, consists of five provinces: Albacete, Ciudad Real, Cuenca, Guadalajara, and Toledo. Castile and León, established in 1983, includes nine provinces: León, Zamora, Salamanca, Ávila, Burgos, Palencia, Segovia, Soria, and Valladolid. While both contain historic Castilian regions, Castile and León also incorporates three Leonese provinces."
+    },
+    {
+      "question": "What is Castile soap, and how is it traditionally made?",
+      "answer": "Castile soap is a type of soap made exclusively from vegetable oils, traditionally olive oil. It originated in the Castile region of Spain but is now widely used in English-speaking countries due to its gentle, biodegradable properties."
+    },
+    {
+      "question": "Write a Python function that checks if a given region is part of the historic Old Castile region.",
+      "answer": "python\n\ndef is_in_old_castile(province: str, region: str = \"Castile and León\") -> bool:\n    \"\"\"Check if a province is part of historic Old Castile.\n    \n    Args:\n        province: Name of the province to check (case-insensitive).\n        region: Optional region name for additional filtering (default: Castile and León).\n    \n    Returns:\n        True if the province is in Old Castile, False otherwise.\n    \"\"\"\n    old_castile_provinces = {\n        \"Burgos\", \"Soria\", \"Segovia\", \"Ávila\", \"Valladolid\", \"Palencia\",\n        \"Santander\"  # Historically included, now Cantabria\n    }\n    \n    return province.lower() in {p.lower() for p in old_castile_provinces}\n\n\nExample usage:\npython\nprint(is_in_old_castile(\"Burgos\"))  # Output: True\nprint(is_in_old_castile(\"Madrid\"))   # Output: False\n"
+    },
+    {
+      "question": "How did the name 'Castella' come to be associated with the Japanese sponge cake?",
+      "answer": "The name 'Castella' for the Japanese sponge cake originates from the Portuguese phrase 'pão de Castella', meaning 'bread from Castile'. This reflects the cake's introduction to Japan via Portuguese traders and missionaries during the 16th century."
+    },
+    {
+      "question": "What was New Castile, and when did it cease to exist?",
+      "answer": "New Castile was a historic region in Spain that included provinces such as Madrid, Toledo, and Cuenca. It was named in the 18th century and disappeared as a political entity with the establishment of democratic governance in Spain."
+    }
+  ]
+}

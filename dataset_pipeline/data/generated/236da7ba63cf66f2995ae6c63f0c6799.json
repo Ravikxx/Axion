@@ -1,0 +1,42 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Beer",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What are the primary ingredients used in beer production?",
+      "answer": "Beer is primarily produced using starches from cereal grains, with malted barley being the most common. Other grains such as wheat, maize, rice, and oats are also used."
+    },
+    {
+      "question": "How does the mashing process contribute to beer production?",
+      "answer": "During mashing, the grain is mixed with water and heated to convert the starches into sugars. These sugars dissolve in water to form a liquid called wort, which is essential for fermentation."
+    },
+    {
+      "question": "What role do hops play in beer brewing?",
+      "answer": "Hops add bitterness and other flavors to beer, act as a natural preservative, and help stabilize the beverage. They are commonly used in modern beer brewing."
+    },
+    {
+      "question": "What is the typical alcohol content of modern beer?",
+      "answer": "The strength of modern beer usually ranges between 4% and 6% alcohol by volume (ABV)."
+    },
+    {
+      "question": "Can you provide a Python code snippet to calculate the alcohol by volume (ABV) of a beer given its original gravity (OG) and final gravity (FG)?",
+      "answer": "Certainly! Here's a simple function to calculate ABV:\npython\ndef calculate_abv(og, fg):\n    \"\"\"Calculate ABV from Original Gravity (OG) and Final Gravity (FG).\"\"\"\n    abv = (og - fg) * 131.25\n    return abv\n\n# Example usage:\noriginal_gravity = 1.050\nfinal_gravity = 1.010\nprint(calculate_abv(original_gravity, final_gravity))  # Output: ~5.25% ABV\n"
+    },
+    {
+      "question": "What historical references exist to the production and distribution of beer?",
+      "answer": "Early references to beer include the Code of Hammurabi (1750 BC), which contained laws regulating beer, and 'The Hymn to Ninkasi', a Mesopotamian prayer to the goddess of beer that includes a recipe."
+    },
+    {
+      "question": "How is beer distributed and sold in the modern market?",
+      "answer": "Beer is typically distributed in bottles and cans, and is commonly available on draught in pubs and bars. The industry includes large multinational corporations as well as smaller producers ranging from brewpubs to regional breweries."
+    },
+    {
+      "question": "What are some social and cultural associations of beer?",
+      "answer": "Beer is deeply embedded in many cultures and is linked to social traditions such as beer festivals and activities like pub games. It also plays a role in various national customs and celebrations."
+    },
+    {
+      "question": "What are the potential health risks associated with excessive beer consumption?",
+      "answer": "Excessive beer consumption can lead to health issues, as alcohol is classified as an IARC Group 1 carcinogen. Drinking beer frequently or in large quantities increases the risk of developing certain cancers."
+    }
+  ]
+}

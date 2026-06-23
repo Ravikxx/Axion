@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Aquilegia_vulgaris_subsp._nevadensis",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is Aquilegia vulgaris subsp. nevadensis and where is it endemic to?",
+      "answer": "Aquilegia vulgaris subsp. nevadensis is a subspecies of the perennial flowering plant Aquilegia vulgaris within the genus Aquilegia and family Ranunculaceae. It is endemic to the Baetic System mountain ranges in the Andalusia region of southeastern Spain, specifically found in areas like the Sierra de Almijara, Sierra de Baza, Sierra Nevada, and Sierra de Tejeda."
+    },
+    {
+      "question": "What are the typical habitat conditions for Aquilegia vulgaris subsp. nevadensis?",
+      "answer": "This subspecies thrives in damp soil at elevations between 1,100 meters and 2,500 meters above sea level. It is adapted to mountainous regions and prefers moist environments within its native range."
+    },
+    {
+      "question": "When does Aquilegia vulgaris subsp. nevadensis flower, and what do its flowers look like?",
+      "answer": "Aquilegia vulgaris subsp. nevadensis flowers from May to July. It produces blue or violet flowers with diameters ranging from 40 mm to 50 mm. The nectar spurs are slightly curved and roughly the same length as the petals."
+    },
+    {
+      "question": "Who first described Aquilegia vulgaris subsp. nevadensis, and what was its original classification?",
+      "answer": "The plant was first described in 1854 by Pierre Edmond Boissier and Georges François Reuter. They initially classified it as a new species and named it Aquilegia nevadensis. Some taxonomic authorities still accept this name."
+    },
+    {
+      "question": "How has the classification of Aquilegia vulgaris subsp. nevadensis changed over time?",
+      "answer": "Originally classified as Aquilegia nevadensis in 1854, a reassessment by Tomás Emilio Díaz in 1984 reclassified it as a subspecies of Aquilegia vulgaris. This change has been widely accepted, though some populations in the Sierra de Tejeda are sometimes treated as a distinct variety named Aquilegia vulgaris var. tegedensis."
+    },
+    {
+      "question": "What is the conservation status of Aquilegia vulgaris subsp. nevadensis?",
+      "answer": "The conservation status of Aquilegia vulgaris subsp. nevadensis was evaluated as near threatened in 2014, indicating it faces potential risks to its survival."
+    },
+    {
+      "question": "Provide a Python function to calculate the elevation range (in meters) for Aquilegia vulgaris subsp. nevadensis based on the given data.",
+      "answer": "python\ndef get_elevation_range():\n    \"\"\"\n    Returns the elevation range (in meters) for Aquilegia vulgaris subsp. nevadensis.\n    \"\"\"\n    min_elevation = 1100  # meters\n    max_elevation = 2500  # meters\n    return (min_elevation, max_elevation)\n\n# Example usage:\nmin_elev, max_elev = get_elevation_range()\nprint(f\"Elevation range: {min_elev} - {max_elev} meters\")\n"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://mathworld.wolfram.com/letters/F.html",
+  "category": "mathworld",
+  "pairs": [
+    {
+      "question": "What is the F-distribution and how is it related to the F-ratio?",
+      "answer": "The F-distribution is a continuous probability distribution that arises frequently as the null distribution of a test statistic, most commonly in the analysis of variance (ANOVA) and in the testing of whether two observed samples have the same variance. It is defined by two parameters: the degrees of freedom of the numerator (d₁) and the denominator (d₂). The F-ratio is the ratio of two independent chi-squared distributions, each divided by their respective degrees of freedom, and follows an F-distribution under the null hypothesis. Mathematically, if X ~ χ²(d₁) and Y ~ χ²(d₂), then F = (X/d₁)/(Y/d₂) ~ F(d₁, d₂)."
+    },
+    {
+      "question": "What is Faà di Bruno's formula, and can you provide a code example to compute the nth derivative of a composite function?",
+      "answer": "Faà di Bruno's formula generalizes the chain rule to higher derivatives and expresses the nth derivative of a composite function f(g(x)) in terms of derivatives of f and g. For n = 3, it states: d³/dx³ f(g(x)) = f'''(g(x))·(g'(x))³ + 3f''(g(x))·g'(x)·g''(x) + f'(g(x))·g'''(x). For a general n, it involves the Bell polynomials. Below is a Python example using the sympy library to compute the third derivative of cos(x²):\n\npython\nfrom sympy import symbols, cos, diff\nx = symbols('x')\nf = cos(x**2)\nthird_derivative = diff(f, x, 3)\nprint(third_derivative)\n\nOutput: -12*x*sin(x**2) - 8*x**3*cos(x**2)"
+    },
+    {
+      "question": "Explain Fermat's Last Theorem and its historical significance.",
+      "answer": "Fermat's Last Theorem states that no three positive integers a, b, and c satisfy the equation aⁿ + bⁿ = cⁿ for any integer value of n greater than 2. Proposed by Pierre de Fermat in 1637, it remained unproven for over 350 years and became one of the most famous unsolved problems in mathematics. Andrew Wiles, with help from Richard Taylor, finally proved the theorem in 1994 using advanced techniques from algebraic geometry and modular forms, specifically by proving a special case of the Taniyama-Shimura-Weil conjecture. The theorem's significance lies in its deep connections to number theory, elliptic curves, and Galois representations."
+    },
+    {
+      "question": "What is the Fast Fourier Transform (FFT), and how does it work?",
+      "answer": "The Fast Fourier Transform (FFT) is an algorithm to compute the Discrete Fourier Transform (DFT) and its inverse efficiently, reducing the computational complexity from O(n²) to O(n log n). The most common FFT algorithm, the Cooley-Tukey FFT, recursively breaks down a DFT of size n into many smaller DFTs of sizes that are factors of n, typically using radix-2 (dividing by 2 at each step). The DFT of a sequence x₀, x₁, ..., xₙ₋₁ is given by Xₖ = Σₙ₀ⁿ₋¹ xₙ e^(-2πi kn/n). The FFT exploits the symmetry and periodicity properties of the complex exponential function to minimize redundant calculations. Here is a Python example using numpy's FFT implementation:\n\npython\nimport numpy as np\nx = [1, 2, 3, 4]\nX = np.fft.fft(x)\nprint(X)\n# Output: array([10.+0.j, -2.+2.j, -2.+0.j, -2.-2.j])\n"
+    },
+    {
+      "question": "Define the Fibonacci sequence and provide a recursive and iterative implementation in Python.",
+      "answer": "The Fibonacci sequence is a series of numbers where each number is the sum of the two preceding ones, starting from 0 and 1. Mathematically, it is defined as F₀ = 0, F₁ = 1, and Fₙ = Fₙ₋₁ + Fₙ₋₂ for n ≥ 2. The sequence begins: 0, 1, 1, 2, 3, 5, 8, 13, 21, ... \n\nRecursive implementation (inefficient for large n due to repeated calculations):\npython\ndef fib_recursive(n):\n    if n <= 1:\n        return n\n    return fib_recursive(n-1) + fib_recursive(n-2)\n\n\nIterative implementation (efficient O(n) time):\npython\ndef fib_iterative(n):\n    a, b = 0, 1\n    for _ in range(n):\n        a, b = b, a + b\n    return a\n\n"
+    },
+    {
+      "question": "What is the Feigenbaum constant, and how is it derived?",
+      "answer": "The Feigenbaum constant (δ ≈ 4.669201...) is a universal constant that appears in the study of chaotic systems, particularly in the period-doubling route to chaos. It describes the geometric rate at which the period-doubling bifurcations accumulate as a parameter (e.g., in the logistic map xₙ₊₁ = r·xₙ·(1 - xₙ)) is varied. Specifically, if dₙ is the difference between the parameter values at which successive period doublings occur, then δ = limₙ→∞ dₙ/dₙ₊₁ ≈ 4.6692. Mitchell Feigenbaum discovered this constant in 1975, showing it is the same for a wide class of nonlinear systems with a single quadratic maximum."
+    },
+    {
+      "question": "Explain the concept of a finite field and provide an example of arithmetic in GF(5).",
+      "answer": "A finite field (or Galois field) is a field with a finite number of elements. A finite field GF(p) exists for any prime p and contains the integers {0, 1, ..., p-1} under addition and multiplication modulo p. Arithmetic in GF(5) proceeds as follows: addition and multiplication are performed modulo 5, and every non-zero element has a multiplicative inverse. For example:\n- 3 + 4 ≡ 2 (mod 5)\n- 2 × 3 ≡ 1 (mod 5), so 2⁻¹ ≡ 3 in GF(5)\n- 4 × 2 ≡ 3 (mod 5)\nGF(5) is a field because all non-zero elements form a cyclic multiplicative group, and addition forms an abelian group. Finite fields are fundamental in coding theory, cryptography (e.g., AES, elliptic curve cryptography), and combinatorial designs."
+    }
+  ]
+}

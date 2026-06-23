@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Arc-fault_circuit_interrupter",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is an arc-fault circuit interrupter (AFCI) and what does it do?",
+      "answer": "An arc-fault circuit interrupter (AFCI) is a specialized circuit breaker designed to detect and interrupt dangerous electric arcs in home wiring that could lead to fires. Unlike conventional circuit breakers, which only respond to overloads and short circuits, AFCIs continuously monitor the current and distinguish between harmless arcs (e.g., from switches or motors) and potentially hazardous arcs (e.g., from damaged lamp cords). When a dangerous arc is detected, the AFCI opens its internal contacts to de-energize the circuit, reducing the risk of fire."
+    },
+    {
+      "question": "How do AFCIs differ from conventional circuit breakers in terms of protection?",
+      "answer": "Conventional circuit breakers only protect against overloads and short circuits by interrupting the circuit when current exceeds safe levels. In contrast, AFCIs provide additional protection by detecting erratic, often reduced currents caused by arcing faults—conditions that conventional breakers cannot sense. AFCIs monitor the electrical waveform for signatures of dangerous arcs and disconnect the circuit to prevent fires."
+    },
+    {
+      "question": "Why is the adoption of AFCIs slower in regions with 230V or higher voltage systems like Western Europe and the UK?",
+      "answer": "In regions using 230V or higher voltages, the combination of higher voltage and lower load currents creates different conditions for arc initiation and characteristics. Arcs may either burn clear or weld into a short circuit more quickly, making arc detection more complex. Additionally, higher voltages can sustain arcs longer, but the electrical codes in these regions often require different standards, resulting in slower adoption and optional use of AFCIs, except in high-risk locations."
+    },
+    {
+      "question": "What is the regulatory status of AFCIs or AFDDs in New Zealand according to AS NZS 3000:2018?",
+      "answer": "Under the Australian and New Zealand Wiring Rules (AS NZS 3000:2018), AFCIs or arc-fault detection devices (AFDDs) are not universally required in Australia. However, in New Zealand, all final sub-circuits rated up to 20A must be protected by an AFDD if they supply locations with significant fire risk, irreplaceable items, certain historic buildings, or socket-outlets in school sleeping accommodations. Most sockets in these countries operate on circuits rated at 20A or less."
+    },
+    {
+      "question": "Write a Python function that simulates the operation of an AFCI by detecting an arc fault based on current waveform anomalies.",
+      "answer": "python\nimport numpy as np\n\ndef detect_arc_fault(current_waveform, threshold=0.5, arc_duration=5):\n    \"\"\"\n    Simulates AFCI arc fault detection by analyzing a current waveform.\n    \n    Args:\n        current_waveform (np.array): Array of current measurements over time.\n        threshold (float): Minimum current fluctuation (peak-to-peak) to consider as an arc.\n        arc_duration (int): Minimum number of samples with arc-like fluctuations to trigger AFCI.\n    \n    Returns:\n        bool: True if an arc fault is detected, False otherwise.\n    \"\"\"\n    fluctuations = np.abs(np.diff(current_waveform))\n    arc_conditions = fluctuations > threshold\n    \n    # Check if arc-like fluctuations persist for the required duration\n    if np.sum(arc_conditions) >= arc_duration:\n        return True\n    return False\n\n# Example usage:\ncurrent_data = np.random.normal(0, 0.1, 100)  # Normal operation\ncurrent_data[50:55] += 1.0  # Simulate an arc event\narc_detected = detect_arc_fault(current_data)\nprint(f\"Arc fault detected: {arc_detected}\")\n\nThis function checks for current waveform fluctuations exceeding a threshold and sustained for a minimum duration to simulate AFCI detection."
+    },
+    {
+      "question": "What are the annual statistics for electrical fires in the United States related to arc faults?",
+      "answer": "In the United States, arc faults are a leading cause of residential electrical fires. Annually, over 40,000 fires are attributed to home electrical wiring. These fires result in more than 350 deaths and over 1,400 injuries each year. AFCIs are specifically designed to mitigate these risks by detecting and interrupting dangerous arc faults before they can ignite fires."
+    },
+    {
+      "question": "How do electrical codes in the US and Canada mandate the use of AFCIs for residential outlets?",
+      "answer": "In Canada and the United States, electrical codes have progressively required AFCIs for residential outlets. In Canada, AFCIs have been mandatory for circuits feeding electrical outlets in bedrooms since the early 2000s. In the US, the National Electrical Code has required AFCIs to protect most residential outlets since 2014. These regulations aim to reduce fire risks associated with arc faults in residential wiring."
+    }
+  ]
+}

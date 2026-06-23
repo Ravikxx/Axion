@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/4_Cassiopeiae",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What type of star is 4 Cassiopeiae classified as, and what is its current evolutionary stage?",
+      "answer": "4 Cassiopeiae is classified as a red giant star (specifically an M2− IIIab type) and is currently in the asymptotic giant branch (AGB) phase of its evolution. This stage occurs late in a star's life, where it undergoes shell hydrogen and helium fusion, leading to significant expansion and luminosity increases."
+    },
+    {
+      "question": "How far is 4 Cassiopeiae from Earth, and how does interstellar dust affect its observed brightness?",
+      "answer": "4 Cassiopeiae is approximately 790 light-years away from the Sun. Interstellar dust causes an extinction of 0.56 magnitudes, which dims its apparent brightness as seen from Earth. Without this extinction, its visual magnitude would be brighter than its observed 4.96."
+    },
+    {
+      "question": "What is the heliocentric radial velocity of 4 Cassiopeiae, and what does it indicate about its motion relative to the Sun?",
+      "answer": "The heliocentric radial velocity of 4 Cassiopeiae is −39 km/s. This negative value indicates that the star is moving closer to the Earth along the line of sight."
+    },
+    {
+      "question": "What is known about the variability of 4 Cassiopeiae's brightness?",
+      "answer": "4 Cassiopeiae is a suspected variable star with an unknown type of variability. Its brightness fluctuates between visual magnitude 4.95 and 5.00, which is a relatively small range but detectable over time."
+    },
+    {
+      "question": "Describe the companions of 4 Cassiopeiae listed in star catalogues. Provide details for component B and the other fainter components.",
+      "answer": "Multiple star catalogues list several companions to 4 Cassiopeiae, all of which are unrelated stars at different distances. Component B has a magnitude of 9.88 and is located 96.10 arcseconds away from the primary star at a position angle of 226°. Components C, E, F, and G are fainter and positioned more than two arcminutes from 4 Cassiopeiae. Components C and G are themselves close doubles."
+    },
+    {
+      "question": "Write a Python function to convert an angular separation in arcseconds to degrees. Include an example calculation for the angular separation of component B from 4 Cassiopeiae.",
+      "answer": "python\ndef arcseconds_to_degrees(arcseconds):\n    \"\"\"Convert angular separation from arcseconds to degrees.\"\"\"\n    return arcseconds / 3600\n\n# Example: Convert 96.10 arcseconds to degrees\nangular_separation_degrees = arcseconds_to_degrees(96.10)\nprint(angular_separation_degrees)  # Output: 0.026694444...\n\nThe angular separation of component B from 4 Cassiopeiae is approximately 0.0267 degrees."
+    },
+    {
+      "question": "What is the relationship between 4 Cassiopeiae and the open cluster Messier 52?",
+      "answer": "4 Cassiopeiae is located 40 arcminutes north of the open cluster Messier 52, near the border of the Cepheus constellation. Despite its proximity in the sky, 4 Cassiopeiae is not a member of Messier 52 and is unrelated to the cluster."
+    }
+  ]
+}

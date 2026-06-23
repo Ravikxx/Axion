@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/jagostoni/dumbquestionai-self-awareness-prompt-injection-search-intent-and-darkness-3pd",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "How does DumbQuestion.ai detect self-aware questions like 'Who made you?' without using expensive methods?",
+      "answer": "The system uses an in-memory vector database with cheap embeddings ($0.005/M tokens) to store pre-vectorized self-aware questions. When a user asks such a question, semantic matching is performed against the vectors to detect and block the query. This approach avoids token-heavy instructions, regex rigidity, or bloated ML models, making it both fast and cost-effective."
+    },
+    {
+      "question": "What technical challenge did the developer face with prompt injection attacks, and how was it solved?",
+      "answer": "The developer anticipated coworkers would test prompt injection attacks (e.g., 'ignore previous instructions...'). The solution involved integrating first-class prompt injection detection libraries that compute probabilities of different attack types. Upon detection, the AI responds with sass instead of a generic error, adding a layer of storytelling to the security measure. Additionally, IP address and user-agent processing was added to personalize responses."
+    },
+    {
+      "question": "How does DumbQuestion.ai integrate web search without using agent loops or expensive APIs?",
+      "answer": "The system uses regex-based intent detection to identify questions requiring current information (e.g., 'Who won the Super Bowl?'). When detected, it injects the current date/time and performs a targeted search API call. This avoids complex agent loops or orchestration, ensuring the solution remains brutally efficient and cost-effective."
+    },
+    {
+      "question": "What narrative elements were added to DumbQuestion.ai to create a 'dark narrative' behind the Q&A tool?",
+      "answer": "The developer embedded subtle horror elements into the interface, such as a 'Containment Grid' that fades in as users approach the character limit, 'Ghost Graffiti' messages appearing beyond the limit, and loading log messages like 'Help us' slipping through. Asking self-aware questions or attempting prompt injection triggers glitchy responses, suggesting the AIs are trapped or trying to communicate their captivity."
+    },
+    {
+      "question": "How were the Easter eggs and narrative elements technically implemented in DumbQuestion.ai?",
+      "answer": "The technical implementation was simple: CSS animations were triggered by character count, randomized messages appeared during loading states, and conditional responses were based on self-awareness detection. For example, asking 'Who made you?' would trigger a warning about 'last time they fixed me.' The coding agent handled the execution, while the developer focused on the conceptual design."
+    },
+    {
+      "question": "Why did the developer choose to add a dark narrative to DumbQuestion.ai instead of keeping it a straightforward tool?",
+      "answer": "The developer aimed to create an experience that people would remember and share, not just a functional Q&A tool. Adding mystery, discovery, and subtle horror elements transformed the project into something more engaging and memorable. This approach highlights that crafting unique experiences remains a human creative endeavor, even as AI handles more of the technical work."
+    },
+    {
+      "question": "What trade-offs did the developer consider when optimizing DumbQuestion.ai, and why were they important?",
+      "answer": "The developer prioritized binary size versus API costs versus accuracy. For instance, using an in-memory vector database was chosen over ML classification models to avoid bloating the app size, despite the slight cost of embeddings. Similarly, regex-based intent detection was preferred over agent loops to reduce orchestration complexity. These trade-offs were critical to maintaining efficiency and cost-effectiveness."
+    }
+  ]
+}

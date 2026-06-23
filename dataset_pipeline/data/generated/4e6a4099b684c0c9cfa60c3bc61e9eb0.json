@@ -1,0 +1,34 @@
+{
+  "source_url": "https://mathworld.wolfram.com/LargeWittGraph.html",
+  "category": "mathworld",
+  "pairs": [
+    {
+      "question": "What is the Large Witt Graph and how is it constructed?",
+      "answer": "The Large Witt Graph is a distance-regular graph with 759 vertices, where each vertex represents a block in a Steiner system. Two vertices are adjacent if their corresponding blocks are disjoint. A simpler construction involves the 759 codewords of weight 8 from the extended binary Golay code, where two codewords are connected if their supports are disjoint (i.e., the codeword vectors are orthogonal)."
+    },
+    {
+      "question": "What are the key properties of the Large Witt Graph?",
+      "answer": "The Large Witt Graph is a distance-regular graph with an intersection array [7,6,4;1,2,7], and it is also distance-transitive. It is an integral graph with a well-defined spectrum, and its automorphism group has an order of 2,548,870,400, which is the largest Mathieu group. However, its chromatic number remains unknown."
+    },
+    {
+      "question": "How can you represent the Large Witt Graph in the Wolfram Language?",
+      "answer": "In the Wolfram Language, the Large Witt Graph can be represented using the built-in function `GraphData[\"LargeWittGraph\"]`. This provides a direct way to work with the graph structure and its properties in computational environments."
+    },
+    {
+      "question": "What is the relationship between the Large Witt Graph and the extended binary Golay code?",
+      "answer": "The vertices of the Large Witt Graph correspond to the 759 codewords of weight 8 in the extended binary Golay code. Two vertices are adjacent if their associated codewords have disjoint supports, meaning no overlapping 1s in their binary representations."
+    },
+    {
+      "question": "Why is the Large Witt Graph considered an integral graph?",
+      "answer": "The Large Witt Graph is integral because all eigenvalues of its adjacency matrix are integers. This property is significant in algebraic graph theory and often relates to highly symmetric or combinatorially structured graphs like the Large Witt Graph."
+    },
+    {
+      "question": "What is the intersection array of the Large Witt Graph, and what does it signify?",
+      "answer": "The intersection array of the Large Witt Graph is [7,6,4;1,2,7]. This array describes the structure of the graph by specifying the number of vertices at each distance from a given vertex, reflecting its distance-regularity and symmetry."
+    },
+    {
+      "question": "How would you write a Wolfram Language function to check if two codewords from the extended Golay code are adjacent in the Large Witt Graph?",
+      "answer": "Here is a Wolfram Language function to check adjacency based on disjoint supports:\n\nAreAdjacentInLargeWittGraph[codeword1_, codeword2_] := \n  Module[{intersection}, \n    intersection = BitAnd[codeword1, codeword2];\n    If[intersection == 0, True, False]\n  ]\n\nThis function returns `True` if the supports of the two codewords are disjoint, indicating adjacency in the Large Witt Graph."
+    }
+  ]
+}

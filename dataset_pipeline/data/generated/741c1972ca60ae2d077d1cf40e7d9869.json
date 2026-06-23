@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/An_Annotated_Checklist_of_the_Birds_of_the_Oriental_Region",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the title, publication year, and authors of 'An Annotated Checklist of the Birds of the Oriental Region'?",
+      "answer": "The book is titled 'An Annotated Checklist of the Birds of the Oriental Region', published in 1996 by the Oriental Bird Club. It was authored by Tim Inskipp, Nigel Lindsey, and Will Duckworth."
+    },
+    {
+      "question": "How many bird species are listed in 'An Annotated Checklist of the Birds of the Oriental Region'?",
+      "answer": "The book contains a list of all 2,586 bird species recorded in the Oriental Bird Club's areas of operation up to the date of publication."
+    },
+    {
+      "question": "What is the geographical scope of the checklist in 'An Annotated Checklist of the Birds of the Oriental Region'?",
+      "answer": "The checklist covers the Oriental zoogeographical region, with adjustments for countries straddling the Oriental/Palaearctic boundary (e.g., China and Pakistan), including the whole country but marking species that do not occur within the Oriental region."
+    },
+    {
+      "question": "What taxonomic system does 'An Annotated Checklist of the Birds of the Oriental Region' use for higher-level classifications?",
+      "answer": "For higher-level taxonomy, the book uses the Sibley–Ahlquist classification."
+    },
+    {
+      "question": "How did the authors of 'An Annotated Checklist of the Birds of the Oriental Region' handle species-level taxonomic decisions?",
+      "answer": "The authors reviewed individual cases themselves and provided annotations explaining the reasons for their taxonomic decisions within the species' entries."
+    },
+    {
+      "question": "What are the key components of the book 'An Annotated Checklist of the Birds of the Oriental Region'?",
+      "answer": "The book comprises:\n- An 18-page introduction discussing the rationale behind English names\n- A 195-page systematic list of species\n- A 17-page references list with 814 items\n- Indexes of English and scientific names\n- A map of the covered region\n- A list of eight excluded species"
+    },
+    {
+      "question": "Which notable works used 'An Annotated Checklist of the Birds of the Oriental Region' as a taxonomic basis?",
+      "answer": "Notable works that used this checklist for their taxonomic basis include:\n- 'Birds of the Indian Subcontinent' by Richard Grimmett, Carol Inskipp, and Tim Inskipp\n- 'A Guide to the Birds of South-East Asia' by Craig Robson"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Finnhems",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is FinnHEMS Oy and what is its primary role in Finland's emergency medical services?",
+      "answer": "FinnHEMS Oy is a government-owned non-profit joint-stock company that manages Finland's nationwide system of medical helicopters. Its primary role is to oversee the operation of medical helicopter bases across the country, hire and contract the helicopter companies providing air medical services, and ensure the efficient dispatch of emergency medical helicopters to respond to critical incidents."
+    },
+    {
+      "question": "Which helicopter companies operate medical helicopters in Finland under FinnHEMS, and what types of helicopters do they use?",
+      "answer": "The helicopter companies operating medical helicopters in Finland under FinnHEMS are Babcock Scandinavian AirAmbulance and Skärgårdshavets Helikoptertjänst. They use Airbus EC 145 T2, Airbus H145 T2, and Eurocopter EC135 P2 helicopters, all equipped for Single Pilot IFR operations."
+    },
+    {
+      "question": "What is the difference between the medical personnel onboard FinnHEMS helicopters compared to the Rovaniemi unit?",
+      "answer": "Most FinnHEMS helicopters have a medical doctor onboard, while the Rovaniemi unit specifically operates with a paramedic instead of a doctor."
+    },
+    {
+      "question": "Explain how FinnHEMS responds to emergencies and the typical patient transfer process.",
+      "answer": "FinnHEMS units are dispatched to emergency scenes where the patient receives immediate advanced medical care from the onboard medical personnel. Unlike typical hospital transports, FinnHEMS helicopters rarely transport patients directly to the hospital. Instead, they bring emergency medicine to the patient on-site. An ambulance, also dispatched to the scene, typically handles the patient transfer to the hospital after initial stabilization by the FinnHEMS team."
+    },
+    {
+      "question": "What criteria are used by emergency medical dispatchers to decide when to dispatch a FinnHEMS unit?",
+      "answer": "Emergency medical dispatchers consult a doctor and perform a risk assessment to determine whether a FinnHEMS unit is needed. The most common reasons for dispatch include cardiac arrest, unconsciousness, chest pain, and traffic accidents—conditions where rapid advanced medical intervention is critical."
+    },
+    {
+      "question": "Write a Python code snippet that checks if a given emergency call reason matches common FinnHEMS dispatch criteria.",
+      "answer": "python\ndef is_finnhems_dispatch_needed(emergency_reason):\n    \"\"\"\n    Determines if a FinnHEMS helicopter should be dispatched based on the emergency call reason.\n    Returns True if the reason is a common dispatch criterion, otherwise False.\n    \"\"\"\n    common_dispatch_reasons = [\n        'cardiac arrest',\n        'unconsciousness',\n        'chest pain',\n        'traffic accident'\n    ]\n    return emergency_reason.lower() in common_dispatch_reasons\n\n# Example usage:\nprint(is_finnhems_dispatch_needed('chest pain'))  # Output: True\nprint(is_finnhems_dispatch_needed('seizure'))     # Output: False\n"
+    },
+    {
+      "question": "How reliable and available are FinnHEMS medical helicopters throughout the year in Finland?",
+      "answer": "FinnHEMS medical helicopters and ground units operate 24/7, 365 days a year, ensuring that intensive care-level emergency medicine is available around the clock. This continuous availability is crucial for responding to severe medical emergencies promptly, regardless of time or season."
+    }
+  ]
+}

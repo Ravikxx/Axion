@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/HMS_Endeavour",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What was the original name of HMS Endeavour before it was purchased by the British Royal Navy?",
+      "answer": "The ship was originally launched in 1764 as the coal-carrying vessel named Earl of Pembroke."
+    },
+    {
+      "question": "What were the primary scientific and exploratory goals of James Cook's voyage aboard HMS Endeavour from 1769 to 1771?",
+      "answer": "The primary goals were to observe the 1769 transit of Venus across the Sun in Tahiti, explore the largely uncharted Pacific Ocean, search for the unknown southern land Terra Australis Incognita, and claim territories for Great Britain, including parts of New Zealand and Australia."
+    },
+    {
+      "question": "Describe the damage HMS Endeavour sustained and the repairs it required during its voyage.",
+      "answer": "After running into the Great Barrier Reef near Cape Tribulation, the Endeavour's hull was damaged, necessitating seven weeks of repairs on the Australian mainland near present-day Cooktown. Later, the ship required more substantial repairs in Batavia (modern-day Jakarta) before continuing its journey."
+    },
+    {
+      "question": "How long was HMS Endeavour at sea during its first voyage of discovery, and what were the key milestones of the voyage?",
+      "answer": "The voyage lasted nearly three years, from August 1768 to July 1771. Key milestones included observing the transit of Venus in Tahiti, claiming parts of New Zealand and Australia for Britain, and successfully navigating the Great Barrier Reef."
+    },
+    {
+      "question": "What happened to HMS Endeavour after its first voyage of discovery?",
+      "answer": "After the voyage, the Endeavour spent three years shipping Navy stores to the Falkland Islands. It was renamed and sold in 1775, used as a troop transport during the American Revolutionary War, and sank in 1778 during a blockade of Narragansett Bay, Rhode Island."
+    },
+    {
+      "question": "Is the wreck of HMS Endeavour still afloat today? If not, what artifacts from the ship are preserved?",
+      "answer": "No, the wreck of HMS Endeavour sank in 1778. However, relics such as six of its cannons and an anchor are displayed in maritime museums worldwide."
+    },
+    {
+      "question": "Provide a Python code snippet that calculates the total duration in days of HMS Endeavour's first voyage of discovery.",
+      "answer": "python\nfrom datetime import datetime\n\n# Dates of departure and return\ndeparture_date = datetime(1768, 8, 1)\nreturn_date = datetime(1771, 7, 12)\n\n# Calculate the total duration in days\nduration_days = (return_date - departure_date).days\nprint(f\"The total duration of the voyage was {duration_days} days.\")\n\nThe code calculates the duration between August 1, 1768, and July 12, 1771, resulting in a total of 1073 days."
+    }
+  ]
+}

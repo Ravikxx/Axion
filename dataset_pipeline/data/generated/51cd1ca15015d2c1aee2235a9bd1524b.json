@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Garudimimus",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What does the name 'Garudimimus' mean, and what genus does it belong to?",
+      "answer": "The name 'Garudimimus' means 'Garuda mimic,' referring to its resemblance to the mythical bird Garuda. It belongs to the genus *Garudimimus*, a group of ornithomimosaur dinosaurs."
+    },
+    {
+      "question": "When and where was the first specimen of Garudimimus discovered?",
+      "answer": "The first specimen of Garudimimus was discovered in 1981 by a Soviet-Mongolian paleontological expedition in the Bayanshiree Formation in Asia."
+    },
+    {
+      "question": "What are the known anatomical traits of Garudimimus brevipes?",
+      "answer": "Garudimimus brevipes was a medium-sized ornithomimosaur measuring nearly 3.5 meters in length and weighing between 77.3 and 98 kilograms. It had toothless jaws, short and stocky hindlimbs, robust feet with four toes (the first toe reduced), and a reduced ilia. Its skull was toothless with straight jaws ending in a rounded snout tip."
+    },
+    {
+      "question": "How did the redescription of the Garudimimus specimen in 2005 change the understanding of its skull structure?",
+      "answer": "The 2005 redescription corrected earlier interpretations by showing that the supposed 'lacrimal horn' at the top of the skull was actually a distorted left prefrontal bone, not a true horn."
+    },
+    {
+      "question": "What is the significance of the arctometatarsalian condition in Garudimimus?",
+      "answer": "The arctometatarsalian condition refers to the metatarsus structure where the middle metatarsal is pinched between the outer two. Early interpretations suggested this condition in Garudimimus, but it was later disputed during the 2005 redescription."
+    },
+    {
+      "question": "How was Garudimimus initially classified, and how has its classification changed over time?",
+      "answer": "Initially, Garudimimus was classified as a primitive ornithomimosaur within its own family in 1981. However, after the description of new *Deinocheirus* specimens in 2014, it was reclassified as a sister taxon within the Deinocheiridae, a group of ornithomimosaurs not adapted for running or agile movements. This placement remains disputed."
+    },
+    {
+      "question": "What does the pelvic girdle and hindlimb structure of Garudimimus suggest about its running abilities?",
+      "answer": "The pelvic girdle and hindlimb structure of Garudimimus indicates that its leg musculature was not as well-developed as in fast-running ornithomimids, suggesting poor cursorial (running) capacities."
+    },
+    {
+      "question": "What was the likely diet of Garudimimus, and how did its jaw adapt to this diet?",
+      "answer": "Garudimimus was likely an omnivore or herbivore with a reduced bite force. Its adaptation to this diet included the presence of a horny beak, which compensated for the reduced bite force by allowing it to process plant material more efficiently."
+    }
+  ]
+}

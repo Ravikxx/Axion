@@ -1,0 +1,30 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Galaxy_(Australian_television)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What were the two primary delivery methods used by Galaxy for pay television programming?",
+      "answer": "Galaxy provided pay television via satellite and wireless cable (microwave) delivery methods."
+    },
+    {
+      "question": "What were the two initial operational channels at Galaxy's launch on Australia Day 1995?",
+      "answer": "At launch, only two channels were fully operational: Premier Sports (local) and ANBC (international news)."
+    },
+    {
+      "question": "Which companies were the joint venture partners behind Galaxy?",
+      "answer": "Galaxy was a joint venture between Continental Century Pay-TV and Australis Media."
+    },
+    {
+      "question": "How many Galaxy subscribers were there at its peak?",
+      "answer": "At its peak, Galaxy had around 120,000 subscribers."
+    },
+    {
+      "question": "What was the significance of Galaxy's test broadcasting on 1 January 1995?",
+      "answer": "Galaxy's test broadcasting on 1 January 1995 marked the first time a provider offered pay-TV services in Australia via microwave transmission."
+    },
+    {
+      "question": "Write a Python snippet to calculate the duration Galaxy operated before ceasing operations in May 1998.",
+      "answer": "python\nfrom datetime import datetime\n\nlaunch_date = datetime(1995, 1, 26)\nend_date = datetime(1998, 5, 18)\nduration = end_date - launch_date\nprint(f'Galaxy operated for {duration.days} days before ceasing operations.')\n\nThis code calculates the duration between Galaxy's official launch on Australia Day 1995 and its cessation of operations on 18 May 1998, resulting in approximately 1,209 days."
+    }
+  ]
+}

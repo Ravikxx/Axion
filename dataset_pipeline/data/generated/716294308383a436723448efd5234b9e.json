@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Amit_Agarwal",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was Amit Agarwal's role as Solicitor General of Florida?",
+      "answer": "Amit Agarwal served as the Solicitor General of Florida, representing the State of Florida in the Supreme Court of the United States and the Florida Supreme Court. He supervised appellate litigation for the State in lower state and federal appellate courts and expanded the office from 5 to 10 attorneys during his tenure."
+    },
+    {
+      "question": "Which law schools did Amit Agarwal attend, and what notable achievements did he accomplish there?",
+      "answer": "Amit Agarwal earned his B.A. in English from Duke University and attended Georgetown University Law Center, where he graduated magna cum laude. At Georgetown, he was selected as Editor-in-Chief of the American Criminal Law Review."
+    },
+    {
+      "question": "Describe Amit Agarwal's career path after law school, including his clerkships and early professional roles.",
+      "answer": "After law school, Agarwal worked as an associate at Wilmer Hale in Washington, DC. He then clerked for three federal appellate judges: Judge Samuel A. Alito Jr., Judge Edward R. Becker (both on the U.S. Court of Appeals for the Third Circuit), and Judge Brett M. Kavanaugh (on the U.S. Court of Appeals for the District of Columbia Circuit)."
+    },
+    {
+      "question": "What notable awards or recognitions has Amit Agarwal received in his legal career?",
+      "answer": "Agarwal received several awards, including the 'Rising Star (40 under 40)' in 2015 from the South Florida legal community, a 'Director’s Award' from the U.S. Department of Justice in 2016 for excellence in appellate litigation, and the 'Cornerstone Award' from the North American South Asian Bar Association in 2019."
+    },
+    {
+      "question": "How did Amit Agarwal's career evolve after his clerkship with Justice Alito on the U.S. Supreme Court?",
+      "answer": "After clerking for Justice Alito, Agarwal worked as an Assistant U.S. Attorney (AUSA) in the Southern District of Florida from 2010 to 2016. He served in the Major Crimes Section and Appellate Division, later becoming Deputy Chief of the Appellate Division. In 2016, he was appointed Solicitor General of Florida."
+    },
+    {
+      "question": "What is Amit Agarwal's current professional role, and when did he transition to it?",
+      "answer": "As of October 2021, Amit Agarwal joined the law firm Holland & Knight as a partner. This marked his transition from government service to private practice."
+    },
+    {
+      "question": "Write a Python dictionary containing key milestones in Amit Agarwal's career, including dates and roles.",
+      "answer": "python\ncareer_milestones = {\n    \"2007-2009\": \"Attorney Advisor, Office of Legal Counsel, U.S. Department of Justice\",\n    \"2010-2016\": \"Assistant U.S. Attorney, Southern District of Florida\",\n    \"2016\": \"Deputy Chief, Appellate Division, U.S. Attorney's Office (Southern District of Florida)\",\n    \"June 2016\": \"Appointed Solicitor General of Florida\",\n    \"October 2021\": \"Joined Holland & Knight as a Partner\"\n}\n"
+    }
+  ]
+}

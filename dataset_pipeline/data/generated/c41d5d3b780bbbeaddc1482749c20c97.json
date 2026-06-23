@@ -1,0 +1,34 @@
+{
+  "source_url": "https://mathworld.wolfram.com/TribonacciSequence.html",
+  "category": "mathworld",
+  "pairs": [
+    {
+      "question": "What is the tribonacci sequence and how does it generalize the Fibonacci sequence?",
+      "answer": "The tribonacci sequence is a generalization of the Fibonacci sequence where each term is the sum of the three preceding terms, rather than two. Specifically, the sequence starts with 0, 1, 1, and each subsequent term is calculated as T(n) = T(n-1) + T(n-2) + T(n-3). This contrasts with the Fibonacci sequence, which uses T(n) = T(n-1) + T(n-2)."
+    },
+    {
+      "question": "Write a Python function to compute the nth tribonacci number using a recursive approach.",
+      "answer": "python\ndef tribonacci_recursive(n):\n    if n == 0:\n        return 0\n    elif n == 1 or n == 2:\n        return 1\n    else:\n        return tribonacci_recursive(n-1) + tribonacci_recursive(n-2) + tribonacci_recursive(n-3)\n"
+    },
+    {
+      "question": "How can you compute the nth tribonacci number using dynamic programming to improve efficiency?",
+      "answer": "python\ndef tribonacci_dp(n):\n    if n == 0:\n        return 0\n    elif n == 1 or n == 2:\n        return 1\n    \n    dp = [0] * (n + 1)\n    dp[0], dp[1], dp[2] = 0, 1, 1\n    \n    for i in range(3, n + 1):\n        dp[i] = dp[i-1] + dp[i-2] + dp[i-3]\n    \n    return dp[n]\n"
+    },
+    {
+      "question": "What is the tribonacci constant and what is its approximate value?",
+      "answer": "The tribonacci constant is the limit of the ratio of consecutive tribonacci numbers as n approaches infinity. It is the real root of the polynomial x³ - x² - x - 1 = 0. The approximate value of the tribonacci constant is 1.83929, as listed in OEIS sequence A058265."
+    },
+    {
+      "question": "How does the Zeckendorf-like expansion work for the tribonacci sequence?",
+      "answer": "The Zeckendorf-like expansion states that every positive integer can be uniquely expressed as a sum of distinct tribonacci numbers without three consecutive tribonacci numbers. This can be computed using a greedy algorithm, where the largest possible tribonacci number less than or equal to the target is repeatedly subtracted from the remaining value."
+    },
+    {
+      "question": "What is the explicit formula for the nth tribonacci number, and what are the terms involved?",
+      "answer": "The nth tribonacci number can be expressed explicitly as T(n) = (αⁿ - βⁿ - γⁿ)/(αβ + αγ + βγ), where α, β, and γ are the roots of the polynomial x³ - x² - x - 1 = 0. Here, α is the real root (~1.83929), and β and γ are the complex conjugate roots."
+    },
+    {
+      "question": "Can you prove that the tribonacci numbers are complete? If so, how?",
+      "answer": "Yes, the tribonacci numbers are complete. This can be shown using Brown's criterion, which states that a sequence is complete if every positive integer can be expressed as a sum of distinct terms from the sequence. For the tribonacci sequence, this holds because the greedy algorithm for the Zeckendorf-like expansion always succeeds in expressing any positive integer as such a sum."
+    }
+  ]
+}

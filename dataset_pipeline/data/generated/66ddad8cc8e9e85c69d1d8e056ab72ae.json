@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Graph_of_a_polytope",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the edge graph of a polytope and what information does it encode?",
+      "answer": "The edge graph (or vertex-edge graph) of a polytope is a combinatorial graph where vertices and edges correspond directly to the vertices and edges of the polytope. It encodes incidence information, such as which vertices are connected by edges, but does not retain geometric data like vertex positions or edge lengths."
+    },
+    {
+      "question": "How does the edge graph relate to the skeleton of a polytope, and what distinguishes the 1-skeleton from other skeletons?",
+      "answer": "The edge graph is often referred to as the skeleton or 1-skeleton of a polytope, as it captures the combinatorial structure of vertices and edges. The 1-skeleton specifically refers to the part of the face lattice containing information about faces up to dimension 1 (vertices and edges). Higher skeletons (e.g., 2-skeleton) include information about faces of higher dimensions."
+    },
+    {
+      "question": "What are some common notations used for the edge graph of a polytope, and why is there no universally agreed notation?",
+      "answer": "Common notations for the edge graph include G_P, G(P), and skel(P). The lack of a universally agreed notation arises from the diverse ways polytope theory is approached, with different authors prioritizing different aspects of the graph or its geometric embedding."
+    },
+    {
+      "question": "What is the difference between a polytopal graph and a polyhedral graph?",
+      "answer": "A polytopal graph is a graph that can be realized as the edge graph of a polytope in any dimension. A polyhedral graph is specifically the edge graph of a 3-dimensional polytope (i.e., a polyhedron). Not all graphs are polytopal, and those that are must satisfy additional combinatorial constraints."
+    },
+    {
+      "question": "Why is the realization problem for polytopal graphs NP-hard, and what is its significance in polytope theory?",
+      "answer": "The realization problem asks whether a given graph can be realized as the edge graph of a polytope. It is NP-hard in general dimensions due to the combinatorial complexity of verifying such realizations. In 3D, it is known as the Steinitz problem, which was resolved by Ernst Steinitz, highlighting its foundational role in polytope theory."
+    },
+    {
+      "question": "What limitations does the edge graph have in representing the full combinatorial structure of a polytope?",
+      "answer": "The edge graph only captures information about vertices and edges (0- and 1-dimensional faces). Information about higher-dimensional faces (e.g., 2D faces like polygons or 3D faces like polyhedral cells) is not directly accessible from the edge graph and often cannot be reconstructed from it alone. The face lattice is required for a complete representation."
+    },
+    {
+      "question": "Write a Python function that checks if a given graph is polytopal by verifying its realizability as an edge graph of a polytope.",
+      "answer": "python\nimport networkx as nx\n\ndef is_polytopal_graph(graph):\n    \"\"\"\n    Determines if a given graph is polytopal (i.e., realizable as the edge graph of a polytope).\n    Note: This is a simplified placeholder; actual realization checks are NP-hard and require advanced algorithms.\n    \"\"\"\n    # Placeholder for actual realization check (not implemented due to complexity)\n    # In practice, this would involve geometric or combinatorial constraints\n    return False  # Default return for demonstration\n\n# Example usage:\nG = nx.Graph()\nG.add_edges_from([(1, 2), (2, 3), (3, 1)])  # Triangle graph (polytopal)\nis_polytopal = is_polytopal_graph(G)\n\nNote: A full implementation would require solving the NP-hard realization problem, which is non-trivial."
+    }
+  ]
+}

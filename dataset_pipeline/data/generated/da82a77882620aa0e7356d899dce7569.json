@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/2000_Wisconsin_elections",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What offices and seats were up for election in the 2000 Wisconsin Fall General Election?",
+      "answer": "The 2000 Wisconsin Fall General Election included: one U.S. Senate seat, all nine U.S. House of Representatives seats, the sixteen even-numbered seats in the Wisconsin State Senate, all 99 seats in the Wisconsin State Assembly, and the selection of eleven presidential electors for the Electoral College."
+    },
+    {
+      "question": "Who won Wisconsin's electoral votes in the 2000 U.S. presidential election, and by what margin?",
+      "answer": "Vice President Al Gore, the Democratic presidential candidate, won Wisconsin's eleven electoral votes by a margin of 5,708 votes, defeating Republican candidate George W. Bush."
+    },
+    {
+      "question": "How did the 2000 Wisconsin Spring Election differ from the Fall General Election?",
+      "answer": "The 2000 Wisconsin Spring Election, held on April 4, 2000, included a contested Wisconsin Supreme Court election, a Presidential preference primary for both major parties, and various nonpartisan local and judicial offices. In contrast, the Fall General Election focused on federal and state legislative races, including congressional and assembly seats."
+    },
+    {
+      "question": "What were the outcomes for Wisconsin incumbents running in the 2000 Fall General Election?",
+      "answer": "All nine incumbent members of Congress from Wisconsin were reelected in the 2000 Fall General Election."
+    },
+    {
+      "question": "Which party gained a seat in the Wisconsin Senate during the 2000 Fall General Election, and which party gained a seat in the Wisconsin Assembly?",
+      "answer": "Democrats gained one seat in the Wisconsin Senate, while Republicans gained one seat in the Wisconsin Assembly during the 2000 Fall General Election."
+    },
+    {
+      "question": "When were the 2000 Wisconsin Spring Primary and General Election held, and what major primaries occurred during the Spring Primary?",
+      "answer": "The 2000 Wisconsin Spring Primary was held on February 15, 2000, followed by the Spring General Election on April 4, 2000. During the Spring Primary, a Presidential preference primary was held for both major political parties, as most candidates had already dropped out by that time."
+    },
+    {
+      "question": "Provide a Python code snippet to calculate the margin of victory for Al Gore over George W. Bush in Wisconsin's 2000 presidential election.",
+      "answer": "python\n# Margin of victory calculation for Wisconsin's 2000 presidential election\nal_gore_votes = 1382961\ngw_bush_votes = 1377253\n\nmargin = al_gore_votes - gw_bush_votes\nprint(f\"Al Gore won Wisconsin by a margin of {margin:,} votes.\")\n\nOutput:\nAl Gore won Wisconsin by a margin of 5,708 votes."
+    }
+  ]
+}

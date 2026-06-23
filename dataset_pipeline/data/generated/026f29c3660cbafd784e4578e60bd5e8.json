@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/1935_United_Kingdom_general_election",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What were the major parties involved in the 1935 UK general election, and how did their performance compare to the 1931 election?",
+      "answer": "The 1935 UK general election featured the National Government (a coalition of the Conservative Party with breakaway factions of the Labour and Liberal parties), the Labour Party, and the Liberal Party. The National Government won a reduced landslide, maintaining its majority while the Conservatives remained dominant. Labour improved significantly, achieving its best-ever share of the popular vote and regaining about half of the seats lost in 1931. The Liberal Party continued its decline, losing many seats including that of its leader Sir Herbert Samuel."
+    },
+    {
+      "question": "Who led the National Government in the 1935 UK general election, and what was the government's platform?",
+      "answer": "The National Government was led by Stanley Baldwin of the Conservative Party. The government's platform centered on continuing economic recovery efforts from the Great Depression, emphasizing stability and addressing the crises caused by the economic downturn."
+    },
+    {
+      "question": "What historical significance did the 1935 UK general election hold for British politics?",
+      "answer": "The 1935 election marked the beginning of an era of two-party politics dominated by the Conservatives and Labour, which lasted until the 1970s revival of the Liberals. It was also the first election since 1895 in which the Independent Labour Party contested separately, and the first general election contested by the Scottish National Party in Scotland."
+    },
+    {
+      "question": "How did Ramsay MacDonald's resignation affect the National Government before the 1935 UK general election?",
+      "answer": "Ramsay MacDonald resigned due to ill health earlier in 1935, leading to Stanley Baldwin taking over leadership of the National Government. This shift resulted in the National Labour faction losing many seats in the election, including MacDonald's own seat."
+    },
+    {
+      "question": "What were some of the key electoral changes in Scotland during the 1935 UK general election?",
+      "answer": "The 1935 election was the first general election contested by the Scottish National Party in Scotland. Additionally, the Communist Party gained its first seat in ten years, specifically in the West Fife constituency."
+    },
+    {
+      "question": "Why was the 1935 UK general election the last election held during King George V's reign?",
+      "answer": "The 1935 UK general election was the last one held during King George V's reign because he died in January 1936. Consequently, the next general election was postponed until 1945 due to the outbreak of the Second World War in 1939."
+    },
+    {
+      "question": "Write a Python function that calculates the percentage of seats gained or lost by the Labour Party between the 1931 and 1935 UK general elections, given the number of seats held in each election.",
+      "answer": "python\ndef calculate_seat_change(seats_1931, seats_1935):\n    \"\"\"\n    Calculate the percentage change in seats for the Labour Party between 1931 and 1935.\n    \n    Args:\n        seats_1931 (int): Number of seats held by Labour in 1931.\n        seats_1935 (int): Number of seats held by Labour in 1935.\n    \n    Returns:\n        float: Percentage change in seats (positive for gain, negative for loss).\n    \"\"\"\n    if seats_1931 == 0:\n        return float('inf') if seats_1935 > 0 else 0.0\n    return ((seats_1935 - seats_1931) / seats_1931) * 100\n\n# Example usage:\nseats_1931 = 52\nseats_1935 = 154\npercentage_change = calculate_seat_change(seats_1931, seats_1935)\nprint(f\"Labour Party seat change: {percentage_change:.2f}%\")\n"
+    }
+  ]
+}

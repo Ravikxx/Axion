@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Districts_of_Thailand",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is an amphoe in Thailand's administrative system?",
+      "answer": "An amphoe, also spelled amphur, is the second-level administrative subdivision in Thailand. It functions similarly to counties in other countries and is part of a larger province. Each amphoe is governed by a chief district officer known as the Nai Amphoe."
+    },
+    {
+      "question": "How many districts are there in Thailand, and how does Bangkok differ in its classification?",
+      "answer": "Thailand has a total of 928 districts, including 50 districts in Bangkok. Unlike other provinces, Bangkok's districts are called 'khet' due to an administrative reform in 1972."
+    },
+    {
+      "question": "What are the smallest and largest districts in Thailand by area and population?",
+      "answer": "The smallest district by area is Khet Samphanthawong in Bangkok (1.4 km²), while the largest is Umphang in Tak province (4,325.4 km²). The smallest by population is Ko Kut in Trat province (2,042 citizens), and the largest is Mueang Samut Prakan in Samut Prakan province (509,262 citizens)."
+    },
+    {
+      "question": "Why is the name 'Amphoe Chaloem Phra Kiat' notable in Thailand?",
+      "answer": "The name 'Amphoe Chaloem Phra Kiat' is notable because it was given to five districts created in 1996 to commemorate the 50th anniversary of King Bhumibol Adulyadej's accession. The term 'Chaloem Phra Kiat' (เฉลิมพระเกียรติ) means 'in commemoration of' or 'in honour of' a royal family member."
+    },
+    {
+      "question": "How are amphoe typically divided within provinces?",
+      "answer": "Amphoe are divided into smaller units called tambons, which are analogous to subdistricts. Each amphoe is governed by a chief district officer, the Nai Amphoe."
+    },
+    {
+      "question": "What is the average area and population of a district in Thailand?",
+      "answer": "The average area of a district in Thailand is approximately 552.93 km² (213.49 sq mi), while the average population per district is about 75,345 people."
+    },
+    {
+      "question": "Can you provide a Python code snippet to calculate the population density of a district given its area and population?",
+      "answer": "Certainly! Here's a simple Python function to compute population density:\n\npython\ndef calculate_population_density(population, area_km2):\n    \"\"\"Calculate population density per square kilometer.\"\"\"\n    return population / area_km2\n\n# Example usage:\npopulation = 509262  # Mueang Samut Prakan\narea = 552.93  # Average area in km²\npopulation_density = calculate_population_density(population, area)\nprint(f\"Population density: {population_density:.2f} people/km²\")\n\nThis function divides the population by the area in square kilometers to return the population density."
+    }
+  ]
+}

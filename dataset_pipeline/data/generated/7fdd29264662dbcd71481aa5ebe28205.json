@@ -1,0 +1,42 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Henry_Wade",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "Who was Henry Menasco Wade and what were his notable professional roles?",
+      "answer": "Henry Menasco Wade was an American lawyer who served as the district attorney of Dallas County from 1951 to 1987. He was notable for prosecuting Jack Ruby for the murder of Lee Harvey Oswald and for his role in cases that influenced the U.S. Supreme Court's decision in *Roe v. Wade* regarding abortion legality."
+    },
+    {
+      "question": "What was Henry Wade's stance on alcohol consumption and driving in the 1960s?",
+      "answer": "In a 1964 interview with the *Dallas Times Herald*, Wade's wife stated that he would be harsh on her if she drank even a small amount of wine and then drove, indicating his strict stance on alcohol and driving during that era."
+    },
+    {
+      "question": "What controversial practices were associated with Henry Wade's jury selection methods?",
+      "answer": "Henry Wade's office used discriminatory criteria for jury selection, including explicitly excluding minorities such as Jews, Negroes, Mexicans, and other racial groups. A 1969 training manual by his assistant advised against selecting free-thinkers, overweight individuals, and those who might be perceived as fair or unbiased, instead favoring biased jurors who would assume defendants were inherently different."
+    },
+    {
+      "question": "How did the U.S. Supreme Court address Wade's jury exclusion practices in the Thomas Miller-El case?",
+      "answer": "In Wade’s final year in office, the U.S. Supreme Court overturned the death sentence of Thomas Miller-El, a black man, ruling that black individuals had been systematically excluded from his jury. The court cited Wade’s 1969 prosecutor manual, which provided instructions on keeping minorities off juries, as evidence of discriminatory practices."
+    },
+    {
+      "question": "What was the significance of DNA evidence in reversing a Dallas County conviction during Wade's tenure?",
+      "answer": "DNA evidence was used for the first time in Dallas County to reverse a conviction in the case of David Shawn Pope, who had been found guilty of rape in 1986 and served 15 years in prison. This marked a turning point in challenging wrongful convictions linked to Wade's era."
+    },
+    {
+      "question": "Provide a code snippet in Python that demonstrates how to check if a jury selection exclusion list violates constitutional principles.",
+      "answer": "python\n# Example: Checking if a jury exclusion list violates constitutional principles (e.g., Batson v. Kentucky)\nfrom typing import List\n\ndef is_exclusion_list_unconstitutional(exclusion_criteria: List[str]) -> bool:\n    \"\"\"Determine if jury exclusion criteria violate constitutional protections.\n    \n    Args:\n        exclusion_criteria: List of criteria used to exclude jurors.\n    \n    Returns:\n        True if criteria violate constitutional principles (e.g., race, religion), False otherwise.\n    \"\"\"\n    unconstitutional_criteria = {\n        'Jews', 'Negroes', 'Dagos', 'Mexicans', 'free-thinkers', \n        'extremely overweight people', 'minority race'\n    }\n    return any(criterion.lower() in unconstitutional_criteria for criterion in exclusion_criteria)\n\n# Example usage:\nexclusion_list = ['Negroes', 'Mexicans', 'free-thinkers']\nprint(is_exclusion_list_unconstitutional(exclusion_list))  # Output: True\n"
+    },
+    {
+      "question": "How did Craig Watkins describe Henry Wade's approach to prosecution?",
+      "answer": "Craig Watkins, the first black district attorney of Dallas County, described Wade's tenure as having a \"cowboy kind of mentality,\" characterized by archaic, racist, elitist, and arrogant practices in the criminal justice system."
+    },
+    {
+      "question": "What were the consequences of Henry Wade's aggressive prosecution style according to Edward Gray?",
+      "answer": "Edward Gray, a former assistant district attorney, wrote in his 2010 book *Henry Wade's Tough Justice* that Wade's office had a conviction rate of innocent defendants ten times the national average. While Wade didn’t intentionally convict innocents, he pursued cases aggressively even with weak evidence, driven by a competitive and uncompromising approach."
+    },
+    {
+      "question": "What was the outcome of Lenell Geter's case, and why was it significant?",
+      "answer": "Lenell Geter, a black engineer, was initially convicted of armed robbery and sentenced to life in prison. After spending over a year in jail, Wade agreed to a new trial and dropped the charges in 1983 due to shoddy evidence and allegations that Geter was targeted because of his race. This case highlighted racial bias and misconduct in Wade's office."
+    }
+  ]
+}

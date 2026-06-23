@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/2016–17_Ukrainian_Premier_League",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "How many teams competed in the 2016–17 Ukrainian Premier League season?",
+      "answer": "The 2016–17 Ukrainian Premier League season was contested by 12 teams, reduced from 14 in the previous season."
+    },
+    {
+      "question": "When did the second stage of the 2016–17 Ukrainian Premier League start and end?",
+      "answer": "The second stage of the 2016–17 Ukrainian Premier League started on 1 April 2017 and concluded on 31 May 2017."
+    },
+    {
+      "question": "Which club won the 2016–17 Ukrainian Premier League title, and when did they secure the championship?",
+      "answer": "Shakhtar Donetsk won the 2016–17 Ukrainian Premier League title. They secured the championship on 6 May 2017 with a victory over Zorya Luhansk, four games before the end of the season."
+    },
+    {
+      "question": "What change in format did the Ukrainian Premier League implement for the 2016–17 season due to the ongoing military conflict?",
+      "answer": "Due to the ongoing military conflict in eastern Ukraine and the Russian occupation of Crimea, the league reduced the number of competing teams from 14 in the 2015–16 season to 12 in the 2016–17 season."
+    },
+    {
+      "question": "What is the significance of Shakhtar Donetsk's 2016–17 championship title in terms of their club crest?",
+      "answer": "Shakhtar Donetsk's 10th championship title in the 2016–17 season allowed the club to place a star on their crest to commemorate this achievement."
+    },
+    {
+      "question": "Which company was the title sponsor of the 2016–17 Ukrainian Premier League season?",
+      "answer": "The title sponsor of the 2016–17 Ukrainian Premier League season was Parimatch, a bookmaker company."
+    },
+    {
+      "question": "Provide a code snippet to generate a timeline of key dates in the 2016–17 Ukrainian Premier League season. Use Python with the `matplotlib` library.",
+      "answer": "python\nimport matplotlib.pyplot as plt\nfrom datetime import datetime\n\n# Key dates for the 2016–17 Ukrainian Premier League season\nevents = [\n    {\"event\": \"First 18 rounds start\", \"date\": \"2016-12-10\"},\n    {\"event\": \"First 18 rounds end\", \"date\": \"2017-02-25\"},\n    {\"event\": \"First stage of tournament ends\", \"date\": \"2017-03-01\"},\n    {\"event\": \"Second stage starts\", \"date\": \"2017-04-01\"},\n    {\"event\": \"Second stage ends\", \"date\": \"2017-05-31\"},\n    {\"event\": \"Shakhtar Donetsk secures title\", \"date\": \"2017-05-06\"}\n]\n\n# Extract dates and event names\ndates = [datetime.strptime(event[\"date\"], \"%Y-%m-%d\") for event in events]\nevent_names = [event[\"event\"] for event in events]\n\n# Plot the timeline\nplt.figure(figsize=(10, 5))\nplt.plot(dates, range(len(dates)), \"o--\")\nplt.yticks(range(len(events)), event_names)\nplt.title(\"Key Dates in the 2016–17 Ukrainian Premier League Season\")\nplt.gca().invert_yaxis()\nplt.grid(True)\nplt.show()\n"
+    }
+  ]
+}

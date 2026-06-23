@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Besanosaurus",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the scientific name of the single species within the genus Besanosaurus?",
+      "answer": "The single species within the genus Besanosaurus is *Besanosaurus leptorhynchus*."
+    },
+    {
+      "question": "Who named Besanosaurus, and in what year was it described?",
+      "answer": "Besanosaurus was named by Cristiano Dal Sasso and Giovanni Pinna in 1996."
+    },
+    {
+      "question": "What is the estimated total length of the largest known Besanosaurus specimen?",
+      "answer": "The largest known specimen of Besanosaurus is estimated to have measured about 8 metres (26 feet) in length."
+    },
+    {
+      "question": "How many vertebrae are present in the tail of Besanosaurus?",
+      "answer": "Besanosaurus had at least 138 vertebrae in its tail."
+    },
+    {
+      "question": "Describe the anatomical adaptations of Besanosaurus that suggest it fed on small prey like fish and coleoid cephalopods.",
+      "answer": "Besanosaurus had a delicate snout with numerous small pointed teeth, suggesting it fed on small prey such as fish and coleoid cephalopods. Its strong jaw muscles, inferred from the skull bones, would have allowed it to make rapid, snapping bites to catch prey."
+    },
+    {
+      "question": "Provide a code snippet in Python that estimates the total length of a Besanosaurus specimen given the length of its tail and the number of vertebrae in its tail.",
+      "answer": "python\ndef estimate_besanosarus_length(tail_length_cm, tail_vertebrae_count):\n    # Besanosaurus tail makes up more than half its total length\n    # Average tail length per vertebra (simplified assumption)\n    avg_vertebra_length = tail_length_cm / tail_vertebrae_count\n    total_length_cm = tail_length_cm / 0.55  # Tail >50% of total length\n    return total_length_cm\n\n# Example: A specimen with a 440 cm tail and 138 vertebrae\ntotal_length = estimate_besanosarus_length(440, 138)\nprint(f\"Estimated total length: {total_length:.2f} cm\")\n"
+    },
+    {
+      "question": "What evidence supports the hypothesis that Besanosaurus gave birth to live young?",
+      "answer": "The presence of an embryo in the chest cavity of the holotype specimen (BES SC 999) supports the hypothesis that Besanosaurus gave birth to live young, as ichthyosaurs are known to be viviparous."
+    },
+    {
+      "question": "Why might different ichthyosaurs in the Besano Formation have used different feeding strategies?",
+      "answer": "Different ichthyosaurs in the Besano Formation likely used different feeding strategies to avoid competition for resources in the shared marine ecosystem."
+    }
+  ]
+}

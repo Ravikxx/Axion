@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Glam_rock",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What are the defining characteristics of glam rock?",
+      "answer": "Glam rock is a subgenre of rock music from the early 1970s characterized by flamboyant fashion, such as glitter, makeup, platform shoes, and androgynous or camp clothing. Musically, it drew from bubblegum pop, 1950s rock and roll, cabaret, science fiction, and art rock. Performers often played with gender roles, blending camp aesthetics with theatrical stage presence."
+    },
+    {
+      "question": "Name three key figures in the glam rock movement and their contributions.",
+      "answer": "1. Marc Bolan: Frontman of T. Rex, his March 1971 appearance on Top of the Pops wearing glitter and satin is often cited as the movement's launch. 2. David Bowie: Known for his androgynous persona and hits like 'Starman,' he helped define glam rock's visual and musical style. 3. Alice Cooper: Blending shock rock with glam aesthetics, he achieved fame with theatrical performances and hits like 'School's Out'."
+    },
+    {
+      "question": "How did glam rock spread from the UK to the US?",
+      "answer": "While glam rock originated in the UK, several US artists adopted and adapted the genre, achieving success in both countries. Bands like New York Dolls and Sparks embraced the flamboyant style, while artists such as Suzi Quatro and Lou Reed incorporated glam elements into their music and image. This cross-pollination helped spread the genre's influence."
+    },
+    {
+      "question": "What role did glam rock play in the development of punk rock?",
+      "answer": "Glam rock's theatricality, DIY ethos, and rebellion against conventional norms directly influenced punk rock. Artists like Iggy Pop and the New York Dolls bridged the two genres, while glam's emphasis on appearance and attitude paved the way for punk's raw energy and provocative style."
+    },
+    {
+      "question": "Write a Python function that generates a list of glam rock artists mentioned in the text.",
+      "answer": "python\ndef get_glam_rock_artists():\n    uk_artists = [\n        \"Marc Bolan\", \"David Bowie\", \"Mott the Hoople\", \"Sweet\", \n        \"Slade\", \"Mud\", \"Roxy Music\", \"Alvin Stardust\", \n        \"Wizzard\", \"Gary Glitter\", \"T. Rex\"\n    ]\n    us_artists = [\n        \"New York Dolls\", \"Sparks\", \"Suzi Quatro\", \"Iggy Pop\", \n        \"Alice Cooper\", \"Lou Reed\", \"Jobriath\"\n    ]\n    return uk_artists + us_artists\n\n# Example usage:\nprint(get_glam_rock_artists())\n"
+    },
+    {
+      "question": "Why is Marc Bolan's appearance on Top of the Pops in 1971 significant?",
+      "answer": "Marc Bolan's 1971 appearance on Top of the Pops performing 'Hot Love' while wearing glitter and satin is often considered the beginning of the glam rock movement. His bold visual style and performance captivated audiences, signaling a shift toward flamboyant fashion and theatricality in rock music."
+    },
+    {
+      "question": "How did glam rock's visual style influence the new romantic movement?",
+      "answer": "The new romantic movement, emerging in the late 1970s, drew inspiration from glam rock's camp aesthetics, androgynous fashion, and theatrical personas. Both movements embraced exaggerated clothing, makeup, and gender ambiguity, with new romantics like Boy George building on glam rock's legacy to create a more stylized, club-centric aesthetic."
+    }
+  ]
+}

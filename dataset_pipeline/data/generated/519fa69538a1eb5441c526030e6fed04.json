@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Entomology_Research_Museum",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the Entomology Research Museum at UC Riverside, and what types of specimens does it primarily hold?",
+      "answer": "The Entomology Research Museum at the University of California, Riverside is an insect collection within the Department of Entomology. It primarily holds approximately 4 million insect specimens, including over 3 million pinned specimens, around 400,000 mounted on slides, and the remainder preserved in ethanol. The collection also includes non-insect arthropods and some snails."
+    },
+    {
+      "question": "How many primary types does the Entomology Research Museum at UC Riverside have, and which taxa are these primarily attributed to?",
+      "answer": "The Entomology Research Museum at UC Riverside has over 1,100 primary types. The majority of these are attributable to P.H. Timberlake, encompassing various taxa such as Apoidea, Asiloidea, Meloidae, Thysanoptera, and multiple families within Hymenoptera and Coleoptera."
+    },
+    {
+      "question": "Which orders of insects make up the largest proportions of the Entomology Research Museum's curated holdings?",
+      "answer": "Approximately 25% of the Entomology Research Museum's curated holdings are Hymenoptera, 21% are Coleoptera, 18% are Diptera, and 18% are Lepidoptera."
+    },
+    {
+      "question": "What is the significance of the Chalcidoidea collection in the Entomology Research Museum at UC Riverside?",
+      "answer": "The UCR collection of Chalcidoidea (a superfamily within Hymenoptera) is one of the world's largest, with a particularly renowned slide collection exceeding 100,000 slides. This slide collection includes families such as Trichogrammatidae, Aphelinidae, Mymaridae, Eulophidae, and Encyrtidae, making it unparalleled globally."
+    },
+    {
+      "question": "How did the Entomology Research Museum at UC Riverside begin, and what were some key milestones in its development?",
+      "answer": "The museum originated when the first specimens were transferred from the California State Insectary at Sacramento by Harry Smith in 1923. Key milestones include the addition of P.H. Timberlake's personal collection in 1924, L.D. Anderson's collection in 1948, and the acquisition of the G.P. McKenzie collection of North American Coleoptera in 1965. The museum was formalized as a division by E.I. Schlinger in 1962."
+    },
+    {
+      "question": "Provide a Python code snippet to calculate the percentage of each major insect order in the Entomology Research Museum's curated holdings based on the given statistics.",
+      "answer": "python\n# Percentages of major insect orders in the Entomology Research Museum's curated holdings\nholdings = {\n    'Hymenoptera': 25,\n    'Coleoptera': 21,\n    'Diptera': 18,\n    'Lepidoptera': 18\n}\n\n# Calculate and print percentages\ntotal = sum(holdings.values())\nfor order, percentage in holdings.items():\n    print(f\"{order}: {percentage}%\")\n"
+    },
+    {
+      "question": "What geographic regions are most represented in the Entomology Research Museum's collections, and which regions have the most diverse parasitic wasp collections?",
+      "answer": "The majority of material in the Entomology Research Museum is from southern California, Arizona, and the Baja California Peninsula, including significant collections from the Sonoran Desert and Coastal sage scrub ecological zones. The parasitic wasp (Chalcidoidea) collection is the most geographically diverse, containing material from all biogeographic regions, including Central and South America, the Russian Far East, India, Australia, South Africa, and Thailand."
+    }
+  ]
+}

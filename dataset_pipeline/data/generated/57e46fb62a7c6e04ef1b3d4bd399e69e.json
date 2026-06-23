@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Bosnian_War",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What were the main belligerents in the Bosnian War and who supported them?",
+      "answer": "The main belligerents were the government of the Republic of Bosnia and Herzegovina, the breakaway Republic of Herzeg-Bosnia (led by Croats), and the Republika Srpska (led by Serbs). The Republika Srpska was supported by Serbia, while Herzeg-Bosnia received backing from Croatia. The Yugoslav People's Army (JNA) initially supplied and supported the Bosnian Serbs before transforming into the Army of Republika Srpska (VRS)."
+    },
+    {
+      "question": "When did the Bosnian War start and end, and what significant event marked its beginning?",
+      "answer": "The Bosnian War started on 6 April 1992, following the international recognition of the newly independent Republic of Bosnia and Herzegovina, which had declared independence on 1 March 1992. The war ended on 21 November 1995 with the initialing of the Dayton Accords."
+    },
+    {
+      "question": "What was the ethnic composition of Bosnia and Herzegovina before the war, and how did the referendum for independence influence the conflict?",
+      "answer": "Before the war, Bosnia and Herzegovina was inhabited primarily by Bosniaks (44%), Serbs (32.5%), and Croats (17%). The referendum for independence, held on 29 February 1992, was boycotted by Bosnian Serbs, who rejected its outcome. This led to the proclamation of the 'Republic of the Serb People of Bosnia and Herzegovina' on 9 January 1992, effectively creating the Republika Srpska and laying the groundwork for the war."
+    },
+    {
+      "question": "Describe the key military alliances and shifts during the Bosnian War.",
+      "answer": "Initially, the conflict was between the Yugoslav Army units (later the VRS) and the Army of the Republic of Bosnia and Herzegovina (ARBiH) along with the Croatian Defence Council (HVO). Tensions between Croats and Bosniaks escalated in late 1992, leading to the Croat–Bosniak War in early 1993. In 1994, Bosniaks and Croats allied against the Republika Srpska with the creation of the Federation of Bosnia and Herzegovina following the Washington Agreement."
+    },
+    {
+      "question": "What was Operation Deliberate Force, and how did it impact the Bosnian War?",
+      "answer": "Operation Deliberate Force was a NATO intervention in 1995 targeting the positions of the Army of the Republika Srpska (VRS). It was launched in response to the Srebrenica and Markale massacres. The operation proved crucial in ending the war by weakening the VRS and contributing to the eventual negotiation of the Dayton Accords."
+    },
+    {
+      "question": "Provide a Python code snippet to calculate the total percentage of casualties by ethnic group during the Bosnian War based on the given estimates.",
+      "answer": "python\ndef calculate_casualty_percentages(total_casualties=100000):\n    # Estimated percentages based on historical data\n    bosniak_percentage = 64.3  # Bosniaks accounted for ~64.3% of casualties\n    serbian_percentage = 24.7  # Serbs accounted for ~24.7%\n    croatian_percentage = 11.0  # Croats accounted for ~11.0%\n    \n    bosniak_casualties = int(total_casualties * (bosniak_percentage / 100))\n    serbian_casualties = int(total_casualties * (serbian_percentage / 100))\n    croatian_casualties = int(total_casualties * (croatian_percentage / 100))\n    \n    return {\n        'Bosniaks': bosniak_casualties,\n        'Serbs': serbian_casualties,\n        'Croats': croatian_casualties,\n        'Total': total_casualties\n    }\n\n# Example usage\nprint(calculate_casualty_percentages())\n\nThis code calculates estimated casualties based on historical percentages and a user-provided total."
+    },
+    {
+      "question": "What were the Dayton Accords, and why are they significant in the context of the Bosnian War?",
+      "answer": "The Dayton Accords were a set of peace agreements initialed on 21 November 1995 in Dayton, Ohio, that officially ended the Bosnian War. They established a ceasefire, divided Bosnia and Herzegovina into two entities (the Federation of Bosnia and Herzegovina and Republika Srpska), and created a central government structure. The accords are significant because they brought an end to one of the most violent conflicts in Europe since World War II and set the framework for post-war governance."
+    }
+  ]
+}

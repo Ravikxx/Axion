@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/El_Oro_de_Hidalgo",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the Spanish meaning of the name 'El Oro'?",
+      "answer": "The Spanish meaning of 'El Oro' is 'the gold'."
+    },
+    {
+      "question": "What is the Nahuatl name for El Oro, and what does it translate to?",
+      "answer": "The Nahuatl name for El Oro is 'Teocuitlatl', which translates to 'sacred excrement', referring to gold."
+    },
+    {
+      "question": "Where is the municipality of El Oro located, and what are its boundaries?",
+      "answer": "El Oro is located in the northwest of the State of Mexico, 96 km from the state capital of Toluca. It is bounded by Temascalcingo to the north, Jocotitlán to the east, San Felipe del Progreso and San José del Rincón to the south, and the state of Michoacán to the west."
+    },
+    {
+      "question": "What were the main economic activities of El Oro in the past, and what are they now?",
+      "answer": "El Oro was previously a major gold- and silver-mining town from the 17th to the early 20th centuries. Now, the town is shifting its economic focus to tourism for development."
+    },
+    {
+      "question": "What are the populations of the municipal seat and the entire municipality of El Oro as of 2005?",
+      "answer": "As of 2005, the municipal seat, El Oro de Hidalgo, had a population of 5,797, while the entire municipality of El Oro had a population of 31,847."
+    },
+    {
+      "question": "Describe the seal of El Oro and its symbolism.",
+      "answer": "The seal of El Oro is in the form of an Aztec glyph and contains elements that refer to gold and caves. The presence of caves reflects the municipality's geological features, as there are many caves in the area."
+    },
+    {
+      "question": "Write a Python code snippet to calculate the distance from El Oro to Toluca in miles (1 km ≈ 0.621371 miles).",
+      "answer": "python\n# Distance from El Oro to Toluca in kilometers\nkilometers = 96\n# Convert kilometers to miles\nmiles = kilometers * 0.621371\nprint(f\"The distance from El Oro to Toluca is approximately {miles:.2f} miles.\")\n\nOutput: The distance from El Oro to Toluca is approximately 59.65 miles."
+    }
+  ]
+}

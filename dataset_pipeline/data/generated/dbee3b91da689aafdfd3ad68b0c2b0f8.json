@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Investor–state_dispute_settlement",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is Investor–State Dispute Settlement (ISDS) and how does it function under public international law?",
+      "answer": "Investor–State Dispute Settlement (ISDS) is a legal mechanism under public international law that allows foreign investors to sue sovereign states for actions that harm their investments. It operates primarily through international arbitration, where disputes between investors and states are resolved outside the domestic court systems of the involved countries. This system grants private investors the right to challenge state actions by invoking rights established in international investment agreements, such as bilateral investment treaties (BITs) or trade treaties like the USMCA."
+    },
+    {
+      "question": "What are the key criteria for an investor to bring a claim under ISDS?",
+      "answer": "To bring a claim under ISDS, three key criteria must be met: (1) both the investor's home state and the host state must have agreed to ISDS provisions; (2) the investor must be from one state and have an investment in another state; and (3) the investor must allege that the host state violated one or more rights granted under a specific treaty or agreement."
+    },
+    {
+      "question": "Which arbitration institutions are commonly used for ISDS claims?",
+      "answer": "Common arbitration institutions for ISDS claims include the International Centre for Settlement of Investment Disputes (ICSID) of the World Bank, the London Court of International Arbitration (LCIA), the International Chamber of Commerce (ICC), the Hong Kong International Arbitration Centre (HKIAC), and the United Nations Commission on International Trade Law (UNCITRAL)."
+    },
+    {
+      "question": "What are some of the criticisms of the ISDS system?",
+      "answer": "The ISDS system has faced criticism for several issues, including perceived biases favoring investors, inconsistent or inaccurate rulings, excessively high damage awards, and high costs associated with legal proceedings. These concerns have led to widespread calls for reforming the system to improve fairness and transparency."
+    },
+    {
+      "question": "Can you provide an example of an ISDS case involving fossil fuel interests?",
+      "answer": "As of June 2024, over $113 billion has been paid by states to investors under ISDS, with the vast majority of these payments going to fossil fuel interests. For example, in a well-known case, a foreign investor successfully sued a state under the Energy Charter Treaty for actions that allegedly harmed their fossil fuel investment, resulting in a multi-billion dollar award to the investor."
+    },
+    {
+      "question": "How has the European Union proposed reforming the ISDS system?",
+      "answer": "Since 2015, the European Union has advocated for replacing ISDS with a multilateral investment court system to address criticisms of the current arbitration-based system. This proposed court aims to provide a more transparent, consistent, and balanced mechanism for resolving investor-state disputes."
+    },
+    {
+      "question": "What role does UNCITRAL play in the reform of ISDS?",
+      "answer": "Since 2017, multilateral negotiations for ISDS reform have been taking place in UNCITRAL's Working Group III. This working group focuses on addressing systemic issues within ISDS, such as inconsistency in rulings, high costs, and transparency concerns, with the goal of developing a more equitable and efficient dispute resolution framework."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Constitutionalism",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is constitutionalism and what are its primary goals?",
+      "answer": "Constitutionalism is a political philosophy and practice that aims to prevent tyranny—including the potential excesses of majority rule—and safeguard individual liberty and rights. It operates by conducting political affairs in accordance with a constitution, ensuring that government power is exercised within predefined legal boundaries."
+    },
+    {
+      "question": "How does limited government function under constitutionalism?",
+      "answer": "Limited government under constitutionalism means that public officials cannot act arbitrarily; their decisions and enforcement of laws must comply with the constitution. The constitution serves as the supreme legal authority, restricting how officials may exercise power to prevent abuse."
+    },
+    {
+      "question": "What does Article 6 of the U.S. Constitution establish, and why is it significant?",
+      "answer": "Article 6 of the U.S. Constitution declares that the Constitution, along with federal laws made in pursuance of it, is the 'supreme Law of the Land.' This means all laws passed by Congress or state legislatures must conform to the Constitution. It establishes the legal primacy of the Constitution over all other laws, ensuring consistency with constitutional principles."
+    },
+    {
+      "question": "How can unconstitutional legislative or executive actions be addressed in the U.S.?",
+      "answer": "In the U.S., unconstitutional actions by the legislature or executive branch can be declared unlawful by the Supreme Court through the power of judicial review. As Alexander Hamilton wrote in Federalist No. 78, 'No legislative act contrary to the Constitution... can be valid,' highlighting the judiciary's role in upholding constitutional limits on government power."
+    },
+    {
+      "question": "Compare constitutional monarchy with absolutism and parliamentary republic.",
+      "answer": "A constitutional monarchy balances between absolutism and a parliamentary republic. In absolutism, the monarch holds unrestricted power with no checks, whereas in a parliamentary republic, there is no monarch and power is typically exercised by elected representatives. A constitutional monarchy, by contrast, places the monarch’s authority under a constitution that defines limits and procedures, blending monarchical and democratic elements."
+    },
+    {
+      "question": "Write a Python function that checks whether a given law complies with a constitutional principle. Assume the constitution is represented as a dictionary of allowed clauses and the law as a list of clauses.",
+      "answer": "python\ndef is_law_constitutional(constitution_clauses, law_clauses):\n    \"\"\"Check if a law complies with the constitution.\n    \n    Args:\n        constitution_clauses (dict): Dictionary of allowed constitutional clauses.\n        law_clauses (list): List of clauses in the proposed law.\n        \n    Returns:\n        bool: True if the law complies with the constitution, False otherwise.\n    \"\"\"\n    for clause in law_clauses:\n        if clause not in constitution_clauses:\n            return False\n    return True\n\n# Example usage:\nconstitution = {\"free_speech\", \"due_process\", \"equal_protection\"}\nlaw = [\"free_speech\", \"due_process\"]\nprint(is_law_constitutional(constitution, law))  # Output: True\n"
+    },
+    {
+      "question": "Why is the doctrine of limited government considered essential to modern constitutionalism?",
+      "answer": "The doctrine of limited government is essential to modern constitutionalism because it directly addresses the risk of tyranny by legally restricting the scope and methods of government action. By establishing a written constitution as the supreme law, it ensures officials cannot exceed their authority, thereby protecting individual rights and promoting accountability."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Erin_Merryn",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who is Erin Merryn and what is she known for?",
+      "answer": "Erin Merryn is an American author, activist, and survivor of child sexual abuse, known for founding Erin's Law and advocating for child safety. She has written several books, including 'Stolen Innocence' and 'Bailey No Ordinary Cat,' and has spoken publicly about her experiences to raise awareness."
+    },
+    {
+      "question": "What is Erin's Law and what impact has it had?",
+      "answer": "Erin's Law is legislation requiring public schools to teach children personal body safety to prevent child sexual abuse. It was the first U.S. law of its kind and has been adopted in 38 states, later signed into federal law, and even implemented internationally in Kerala, India."
+    },
+    {
+      "question": "How did Erin Merryn use social media to connect with audiences?",
+      "answer": "Merryn owned the viral Instagram cat Bailey, sharing his gentle interactions with her children in a book titled 'Bailey No Ordinary Cat.' After Bailey's death, she adopted Carrot, who now has 296,000 followers and her own bestselling book, 'Diary of a Cat Named Carrot.'"
+    },
+    {
+      "question": "What notable media appearances has Erin Merryn made?",
+      "answer": "Merryn has appeared on major shows and networks such as Oprah, Today Show, Good Morning America, CNN, Fox, MSNBC, TLC’s 'Breaking the Silence,' and CBS This Morning, among others, totaling over 200 local and national media appearances."
+    },
+    {
+      "question": "What role does Erin Merryn play in the National Children's Alliance?",
+      "answer": "Merryn serves as a national spokesperson for the National Children's Alliance, making her the first survivor of child sexual abuse who underwent a Children's Advocacy Center process to share her story on national television."
+    },
+    {
+      "question": "How did Erin Merryn's cats become part of her advocacy work?",
+      "answer": "Merryn documented her cats Bailey and Carrot on social media and in books, using their gentle interactions with her children to highlight themes of safety and care. Bailey’s book and Instagram fame helped raise awareness, and Carrot continues this legacy with her own book and 296,000 followers."
+    },
+    {
+      "question": "Write a Python script to fetch the number of Instagram followers for Carrot.",
+      "answer": "Here’s a Python script using the `instaloader` library to fetch Carrot’s Instagram follower count:\npython\nimport instaloader\n\n# Initialize an Instaloader object\nL = instaloader.Instaloader()\n\n# Set the target Instagram profile\nprofile = instaloader.Profile.from_username(L.context, 'carrot.thecat')\n\n# Print the follower count\nprint(f\"Carrot has {profile.followers} Instagram followers.\")\n\nNote: Ensure you have the `instaloader` library installed (`pip install instaloader`) and follow Instagram’s terms of service when scraping or accessing public data."
+    }
+  ]
+}

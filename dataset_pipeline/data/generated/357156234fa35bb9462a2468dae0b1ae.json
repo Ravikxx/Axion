@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Consumerism",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is overproduction and how did it emerge during the Industrial Revolution?",
+      "answer": "Overproduction occurs when the supply of a good exceeds consumer demand. During the Industrial Revolution, companies began producing goods at a scale that outpaced market consumption, leading to excess inventory. Manufacturers responded by using strategies like planned obsolescence (designing products to wear out faster) and advertising to stimulate demand and clear excess supply."
+    },
+    {
+      "question": "What is consumerism, and how does it differ from traditional economic views?",
+      "answer": "Consumerism is an economic and social concept that emphasizes the importance of consumption as a driver of economic growth and societal organization. Unlike traditional economic views that focus on production efficiency, consumerism prioritizes consumer choice and market demand, encouraging people to buy more goods to sustain economic activity. It contrasts with critiques that advocate for simpler, less consumptive lifestyles."
+    },
+    {
+      "question": "Who was Thorstein Veblen, and what key concepts did he introduce in 'The Theory of the Leisure Class'?",
+      "answer": "Thorstein Veblen was an economist and sociologist who published 'The Theory of the Leisure Class' in 1899. In the book, he introduced concepts like conspicuous consumption (buying goods to display wealth), vicarious consumption (using others to signal status), and waste as a means of exhibiting social status rather than functional utility. Goods associated with these behaviors are now known as Veblen goods."
+    },
+    {
+      "question": "How does consumerism impact the environment according to critics?",
+      "answer": "Critics argue that consumerism leads to overconsumption, which strains natural resources (e.g., deforestation, water depletion) and increases waste generation. The environmental impacts include pollution, habitat destruction, and climate change due to unsustainable production and consumption patterns. Experts emphasize that infinite economic growth is physically impossible without causing severe ecological damage."
+    },
+    {
+      "question": "What are the social consequences of consumerism, as described in the text?",
+      "answer": "Consumerism is criticized for reinforcing class barriers and widening social inequalities. By encouraging status-driven consumption, it creates disparities where individuals use goods to signal wealth or social standing, deepening divides between socioeconomic groups. Additionally, it fosters a culture of materialism that can marginalize values like community or sustainability."
+    },
+    {
+      "question": "Provide a Python code snippet to simulate a simple model of overproduction and its economic impact.",
+      "answer": "python\nimport numpy as np\nimport matplotlib.pyplot as plt\n\n# Simulate supply and demand over time\nnp.random.seed(42)\nyears = np.arange(2000, 2020)\nsupply = np.linspace(100, 250, len(years)) + np.random.normal(0, 10, len(years))  # Growing supply\ndemand = np.linspace(100, 200, len(years)) + np.random.normal(0, 5, len(years))    # Growing demand\n\n# Overproduction occurs when supply > demand\noverproduction = supply - demand\n\n# Plot\nplt.figure(figsize=(10, 5))\nplt.plot(years, supply, label='Supply', color='blue')\nplt.plot(years, demand, label='Demand', color='green')\nplt.fill_between(years, demand, supply, where=(supply > demand), color='red', alpha=0.3, label='Overproduction')\nplt.title('Overproduction Over Time')\nplt.xlabel('Year')\nplt.ylabel('Quantity')\nplt.legend()\nplt.grid(True)\nplt.show()\n\nprint(f\"Years with overproduction: {np.sum(overproduction > 0)}\")\n\nThis code simulates supply and demand over 20 years, highlighting periods where overproduction occurs (supply exceeds demand). The output visualizes the trend and calculates the number of years with overproduction."
+    },
+    {
+      "question": "What is planned obsolescence, and how does it relate to consumerism?",
+      "answer": "Planned obsolescence is a business strategy where manufacturers design products with a deliberately limited lifespan (e.g., using low-quality materials or software updates to disable functionality). This forces consumers to repurchase goods more frequently, sustaining demand and aligning with the goals of consumerism, which encourages continuous buying to drive economic growth. Critics argue it contributes to waste and resource depletion."
+    }
+  ]
+}

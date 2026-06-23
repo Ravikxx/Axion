@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Canada's_Sweetheart:_The_Saga_of_Hal_C._Banks",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who directed, wrote, and produced the Canadian docudrama film 'Canada's Sweetheart: The Saga of Hal C. Banks'?",
+      "answer": "Donald Brittain directed, wrote, and produced the film."
+    },
+    {
+      "question": "What was the main focus of the documentary 'Canada's Sweetheart: The Saga of Hal C. Banks'?",
+      "answer": "The film chronicled the controversial career of Hal C. Banks, an American labor union leader who came to Canada in 1949 to replace the Communist-controlled Canadian Seaman's Union with the Seafarers International Union."
+    },
+    {
+      "question": "Why did Hal C. Banks leave Canada in 1962?",
+      "answer": "Banks left Canada in 1962 after being charged with criminal offenses, likely related to his strongarm tactics and alleged links to violence against opposition unions and non-union shipping companies."
+    },
+    {
+      "question": "What was the purpose of the Norris Commission mentioned in the film?",
+      "answer": "The Norris Commission was established to investigate Hal C. Banks' strongarm tactics and his alleged connections to beatings of opposition unions and non-union shipping companies."
+    },
+    {
+      "question": "Who portrayed Hal C. Banks in the docudrama 'Canada's Sweetheart: The Saga of Hal C. Banks'?",
+      "answer": "Maury Chaykin played the role of Hal C. Banks in dramatic reenactments."
+    },
+    {
+      "question": "How was 'Canada's Sweetheart: The Saga of Hal C. Banks' primarily distributed?",
+      "answer": "The film was primarily distributed as a CBC Television broadcast rather than a theatrical release."
+    },
+    {
+      "question": "Provide a code snippet to calculate the duration between Hal C. Banks' arrival in Canada (1949) and his departure (1962).",
+      "answer": "python\nstart_year = 1949\nend_year = 1962\nduration = end_year - start_year\nprint(f'Hal C. Banks was in Canada for {duration} years.')\n\nOutput: Hal C. Banks was in Canada for 13 years."
+    }
+  ]
+}

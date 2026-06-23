@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Fran_Tarkenton",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was Francis Asbury Tarkenton and what was his nickname?",
+      "answer": "Francis Asbury Tarkenton, nicknamed 'the Scrambler', was an American professional football quarterback who played in the NFL for 18 seasons, primarily with the Minnesota Vikings. He is widely regarded as the first great dual-threat quarterback in NFL history."
+    },
+    {
+      "question": "What notable records did Tarkenton hold at the time of his retirement from the NFL?",
+      "answer": "At the time of his retirement in 1979, Tarkenton was the all-time NFL career leader in several records, including career passing touchdowns, passing yards, and completions."
+    },
+    {
+      "question": "How did Tarkenton's NFL career span across teams?",
+      "answer": "Tarkenton's NFL career spanned 13 non-consecutive seasons with the Minnesota Vikings. He played for Minnesota from 1961 to 1966, then was traded to the New York Giants for five seasons (1967-1971), and returned to Minnesota for his final seven seasons from 1972 to 1978."
+    },
+    {
+      "question": "What college football achievements did Tarkenton earn while playing for the Georgia Bulldogs?",
+      "answer": "While playing for the Georgia Bulldogs, Tarkenton was recognized as a twice first-team All-SEC (Southeastern Conference) player."
+    },
+    {
+      "question": "What business ventures did Tarkenton pursue after retiring from football?",
+      "answer": "After retiring from football, Tarkenton became a media personality and founded Tarkenton Software, a computer-program generator company. He later merged the company with KnowledgeWare, serving as its president, and eventually sold it to Sterling Software in 1994. He also promoted CASE (computer-aided software engineering) with Albert F. Case Jr."
+    },
+    {
+      "question": "In which year was Francis Asbury Tarkenton inducted into the Pro Football Hall of Fame and the College Football Hall of Fame?",
+      "answer": "Tarkenton was inducted into the Pro Football Hall of Fame in 1986 and the College Football Hall of Fame in 1987."
+    },
+    {
+      "question": "Write a Python snippet to calculate the total years Tarkenton played for the Minnesota Vikings, including both stints.",
+      "answer": "python\ntotal_years_vikings = 6 + 7  # First stint (1961-1966) + Second stint (1972-1978)\nprint(total_years_vikings)  # Output: 13\n"
+    }
+  ]
+}

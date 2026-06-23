@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Ira_(Polish_band)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When and where was the Polish rock band IRA formed?",
+      "answer": "IRA was formed in 1987 in Radom, Poland."
+    },
+    {
+      "question": "What was IRA's first commercially successful album, and when was it released?",
+      "answer": "IRA's first commercially successful album was 'Mój Dom,' released in the early 1990s. The title track became a hit and contributed significantly to their popularity in Poland."
+    },
+    {
+      "question": "What does the name 'IRA' stand for, and what is its origin?",
+      "answer": "The name 'IRA' comes from the Latin word 'ira,' which means 'anger.' This was the band founders' intended meaning, though it is often mistaken for the acronym of the Irish Republican Army."
+    },
+    {
+      "question": "What happened to IRA's popularity after their initial success in the early 1990s?",
+      "answer": "After their initial success with 'Mój Dom,' IRA released a few more albums that were not commercially successful, leading to their disbandment. However, they reunited a few years later and remain active, though they have not regained widespread popularity."
+    },
+    {
+      "question": "What notable event occurred in Artur Gadowski's solo career?",
+      "answer": "Artur Gadowski, IRA's lead vocalist, opened for Brian May before his show in Warsaw in September 1998."
+    },
+    {
+      "question": "Provide a code snippet in Python that generates a list of IRA's albums mentioned in the text along with their release years.",
+      "answer": "python\nalbums = [\n    {\"title\": \"Mój Dom\", \"year\": \"early 1990s\"},\n    {\"title\": \"IRA 1993\", \"year\": 1993},\n    {\"title\": \"Other unreleased albums (post-reunion)\", \"year\": \"N/A\"}\n]\nprint(albums)\n"
+    },
+    {
+      "question": "How did IRA's popularity differ before and after their disbandment?",
+      "answer": "Before disbanding, IRA gained wide popularity in Poland, especially with their early 1990s album 'Mój Dom.' After reuniting, they did not attain much mainstream popularity but remained well-known among hard rock fans in Poland, with their concerts still drawing good attendance."
+    }
+  ]
+}

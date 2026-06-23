@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Lorenzo_D._Gasser",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What were the major military conflicts in which Lorenzo Dow Gasser served during his career?",
+      "answer": "Lorenzo Dow Gasser served in the Spanish–American War, Philippine–American War, the United States Military Government in Cuba, the Pancho Villa Expedition, World War I, and World War II."
+    },
+    {
+      "question": "How did Lorenzo Dow Gasser contribute to the U.S. response to the Japanese invasion of Manchuria in 1932?",
+      "answer": "In 1931, Gasser was assigned to command the 31st Infantry Regiment and the Post of Manila. In 1932, his regiment took part in the U.S. response to the Japanese invasion of Manchuria."
+    },
+    {
+      "question": "What leadership positions did Lorenzo Dow Gasser hold during World War I?",
+      "answer": "During World War I, Gasser served as assistant chief of staff of the 30th Division, assistant chief of staff of III Corps, and assistant chief of staff for transportation (G-4) at the American Expeditionary Forces headquarters."
+    },
+    {
+      "question": "What awards did Lorenzo Dow Gasser receive for his military service?",
+      "answer": "Gasser was a recipient of three Army Distinguished Service Medals, the Legion of Merit, and the French Legion of Honor (Chevalier)."
+    },
+    {
+      "question": "How did Lorenzo Dow Gasser's career progress from private to major general?",
+      "answer": "Gasser enlisted as a private in 1893, was promoted to sergeant, and received his commission as a captain in 1898. He continued to rise through the ranks, attaining the rank of major general through his distinguished service, including roles as Deputy Chief of Staff of the United States Army and president of the War Department Manpower Board."
+    },
+    {
+      "question": "What was Lorenzo Dow Gasser's role in the Pancho Villa Expedition?",
+      "answer": "In early 1916, Gasser participated in the Pancho Villa Expedition on the staff of the army's Southern Department headquarters in El Paso, Texas."
+    },
+    {
+      "question": "Write a Python code snippet to calculate the duration of Lorenzo Dow Gasser's military service in years.",
+      "answer": "python\nfrom datetime import datetime\n\n# Birth and death dates\nbirth_date = datetime(1876, 5, 3)\ndeath_date = datetime(1955, 10, 29)\n\n# Calculate duration in years\nservice_duration = death_date.year - birth_date.year - ((death_date.month, death_date.day) < (birth_date.month, birth_date.day))\nprint(f\"Lorenzo Dow Gasser's military service spanned approximately {service_duration} years.\")\n\nThe code calculates that Gasser's military service spanned approximately 79 years, from his enlistment in 1893 to his death in 1955."
+    }
+  ]
+}

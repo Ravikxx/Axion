@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Aikido",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the meaning of the Japanese term 'Aikido' and how is it typically translated?",
+      "answer": "The term 'Aikido' (合気道) combines three Japanese characters: 'ai' (合, meaning 'harmony' or 'uniting'), 'ki' (気, meaning 'life energy' or 'spirit'), and 'dō' (道, meaning 'way' or 'path'). It is typically translated as 'the way of unifying (with) life energy' or 'the way of harmonious spirit'."
+    },
+    {
+      "question": "Who founded Aikido and what was their primary goal in developing the martial art?",
+      "answer": "Aikido was founded by Morihei Ueshiba. His primary goal was to create a martial art that practitioners could use to defend themselves while also protecting their attackers from injury, emphasizing the principle of overcoming oneself rather than cultivating violence."
+    },
+    {
+      "question": "What are the core principles of Aikido and how do they influence its techniques?",
+      "answer": "Aikido's core principles include irimi (entering), atemi (strikes), kokyu-ho (breathing control), sankaku-ho (triangular principle), and tenkan (turning) movements. These principles guide techniques that redirect an opponent's attack momentum, typically through throws and joint locks, while minimizing harm to both parties."
+    },
+    {
+      "question": "How does Aikido's weapons system integrate with its unarmed techniques?",
+      "answer": "Aikido includes a weapons system that complements its unarmed techniques, featuring weapons such as the bokken (wooden sword), tantō (knife), and jō (staff). These weapons are used to practice fundamental movements, timing, and distancing, which directly translate to unarmed techniques. For example, a practitioner might use a bokken to perform suburi (basic cutting drills) that reinforce the mechanics of entering (irimi) and blending (awase) in unarmed practice."
+    },
+    {
+      "question": "What is the historical relationship between Aikido and Daitō-ryū Aiki-jūjutsu?",
+      "answer": "Aikido derives primarily from Daitō-ryū Aiki-jūjutsu, a traditional Japanese martial art. Aikido began to diverge from Daitō-ryū in the late 1920s, partly due to Morihei Ueshiba's involvement with the Ōmoto-kyō religion. Early documents from Ueshiba's students even refer to the art as aiki-jūjutsu before it evolved into Aikido."
+    },
+    {
+      "question": "Provide a Python code snippet that simulates the calculation of an Aikido practitioner's rank progression based on a simplified grading system.",
+      "answer": "python\ndef calculate_rank_progression(years_practiced, training_hours_per_week, competitions_won):\n    \"\"\"\n    Simulates a simplified Aikido rank progression system.\n    Assumes 1 dan (black belt) per 5 years of practice (minimum 2 years),\n    with additional dan ranks every 3 years thereafter.\n    Participation in competitions adds 0.5 dan per year.\n    \"\"\"\n    base_dan = min(1, years_practiced / 2)  # Minimum 2 years to earn 1st dan\n    if years_practiced >= 5:\n        base_dan += (years_practiced - 5) // 3\n    competition_bonus = competitions_won * 0.5\n    total_dan = base_dan + competition_bonus\n    return min(10, round(total_dan, 1))  # Cap at 10th dan\n\n# Example usage:\nrank = calculate_rank_progression(years_practiced=8, training_hours_per_week=3, competitions_won=2)\nprint(f\"Estimated rank: {rank} dan\")  # Output: Estimated rank: 2.0 dan\n"
+    },
+    {
+      "question": "How do different Aikido styles vary in their interpretation and emphasis?",
+      "answer": "Aikido styles vary widely in interpretation and emphasis due to differences in lineage, training methods, and philosophical focus. For example:\n- Aikikai emphasizes Ueshiba's original teachings and spiritual development.\n- Shodokan Aikido incorporates sport-like competitions and randori (free practice).\n- Yoshinkan focuses on practical self-defense with structured, repetitive training.\n- Ki Aikido emphasizes the development and use of 'ki' (energy) in techniques.\nDespite these differences, most styles share core techniques and concern for the attacker's well-being."
+    }
+  ]
+}

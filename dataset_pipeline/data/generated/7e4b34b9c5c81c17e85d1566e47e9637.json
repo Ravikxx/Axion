@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Competitive_swimwear",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is competitive swimwear and in which aquatic sports is it used?",
+      "answer": "Competitive swimwear refers to specialized swimsuits, clothing, equipment, and accessories designed for use in aquatic sports such as swimming, diving, synchronized swimming, triathlon, and water polo. These items are engineered to enhance performance by reducing drag and improving hydrodynamics."
+    },
+    {
+      "question": "What materials are commonly used in high-performance competitive swimsuits to reduce drag?",
+      "answer": "High-performance competitive swimsuits are typically constructed from low-resistance fabrics such as polyester, nylon, or polyurethane blends. These fabrics are engineered to minimize skin drag and maximize hydrodynamic efficiency. For example, suits may incorporate hydrophobic coatings or textured surfaces inspired by shark skin to further reduce water resistance."
+    },
+    {
+      "question": "What is a 'dive skin' and under what conditions is it worn?",
+      "answer": "A 'dive skin' is a specialized bodysuit worn by divers in water temperatures above 25°C (77°F). Made from spandex, it provides minimal thermal protection but shields the skin from jellyfish stings, sunburn, and abrasion. Divers may layer it under a wetsuit to facilitate easier donning and for added comfort."
+    },
+    {
+      "question": "How do competition swimsuits differ from regular swimsuits in terms of design and purpose?",
+      "answer": "Competition swimsuits are designed primarily to enhance athletic performance by reducing friction and drag, improving glide, and increasing forward motion efficiency. Unlike regular swimsuits, which prioritize aesthetics, competition suits feature tight fits, streamlined designs, and advanced materials to support hydrodynamics and muscle stability."
+    },
+    {
+      "question": "What was the rationale behind World Aquatics' 2009 decision to ban non-textile swimsuits in competitive events?",
+      "answer": "World Aquatics banned non-textile (non-woven) swimsuits in 2010 to address issues associated with performance-enhancing swimwear. The ban aimed to restore fairness by preventing suits from providing an unfair advantage, ensuring that performance outcomes were based on athlete skill rather than technological enhancements."
+    },
+    {
+      "question": "What are the current regulations for men's and women's competitive swimsuits according to the 2009 ruling?",
+      "answer": "The 2009 ruling states that men's swimsuits may maximally cover the area from the navel to the knee, while women's swimsuits may cover from the shoulder to the knee. These regulations ensure a standardized approach to competitive swimwear while balancing performance and fairness."
+    },
+    {
+      "question": "What is a drag suit and how does it benefit a swimmer's training?",
+      "answer": "A drag suit is a specialized training garment designed to artificially increase water resistance during practice. It features an outer layer of looser fabric, such as mesh or nylon, which creates drag to build endurance and strengthen swimming muscles. Drag suits often resemble square-cut or swim briefs but are deliberately less aerodynamic to challenge the swimmer.\n\nExample usage in Python to model drag effects:\npython\n# Simplified model of drag force (F_d) on a swimmer\n# F_d = 0.5 * ρ * v² * C_d * A, where:\n# ρ = water density (1000 kg/m³)\n# v = swimmer velocity (m/s)\n# C_d = drag coefficient (0.04 for sleek suit, 0.10 for drag suit)\n# A = frontal area (m²)\n\ndef calculate_drag_force(velocity, drag_coefficient, frontal_area):\n    water_density = 1000  # kg/m³\n    drag_force = 0.5 * water_density * (velocity ** 2) * drag_coefficient * frontal_area\n    return drag_force\n\n# Example: Drag force for a swimmer at 2 m/s\nprint(calculate_drag_force(2, 0.04, 0.1))  # Sleek suit\nprint(calculate_drag_force(2, 0.10, 0.1))  # Drag suit\n"
+    }
+  ]
+}

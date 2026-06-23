@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/alvaromontoro/interview-with-ben-evans-3o3b",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "How would Ben Evans describe himself in a few sentences?",
+      "answer": "Ben Evans describes himself as a 'total geek' who loves sci-fi, art, music, coding, and exploring every corner of humanity. He embraces his passion openly, having previously pretended he wasn’t as interested in these areas."
+    },
+    {
+      "question": "What was the most technically challenging aspect of building CSS Backrooms, and how did Ben address it?",
+      "answer": "The most challenging hurdle was optimizing the 3D maze for iPhones, as the previous version had performance issues. Ben spent significant time removing non-visible parts of the 3D landscape and reducing the use of `box-shadow` to improve performance. He also implemented logic to dynamically hide elements not in the player's view."
+    },
+    {
+      "question": "How did Ben Evans ensure CSS Backrooms worked across different browsers, particularly Safari?",
+      "answer": "Ben relied on guesswork and simplicity due to limited access to Apple devices. He used BrowserStack initially but later asked friends to test it on their devices. While newer iPhones handled it well, older devices and Intel-based Macs struggled with performance."
+    },
+    {
+      "question": "What is Ben Evans' creative process for overcoming blocks or technical challenges in CSS?",
+      "answer": "Ben takes a break and engages in other activities, allowing his subconscious to process the problem. He calls this approach 'leaning on ideas,' where solutions often emerge unexpectedly after stepping away. This method helps reduce pressure and fosters creativity."
+    },
+    {
+      "question": "How did Ben Evans first start using CSS for art creation?",
+      "answer": "His entry into CSS art was driven by laziness. After struggling to choose an art form, he fell in love with web design for its dual appeal to his sculpting instincts. Instead of using traditional tools, he leveraged CSS within Visual Studio to create images, blending code with visual creativity."
+    },
+    {
+      "question": "Provide a code snippet demonstrating how Ben might structure a simple CSS-only maze corridor.",
+      "answer": "css\n.maze-corridor {\n  width: 200px;\n  height: 100px;\n  position: relative;\n  background: repeating-linear-gradient(\n    90deg,\n    #555,\n    #555 10px,\n    transparent 10px,\n    transparent 20px\n  );\n  \n  /* Walls */\n  &::before,\n  &::after {\n    content: '';\n    position: absolute;\n    top: 0;\n    bottom: 0;\n    width: 10px;\n    background: #555;\n  }\n  &::before { left: 0; }\n  &::after { right: 0; }\n}\n\nThis creates a basic corridor with textured walls using minimal CSS."
+    },
+    {
+      "question": "What does Ben Evans view as the future potential of CSS, and where might its limits lie?",
+      "answer": "Ben believes CSS's capabilities are expanding rapidly, with new features like `@if` rules enabling more dynamic behavior. While CSS can achieve surprising feats (e.g., games, art), he acknowledges practical limits—it’s not always the most efficient tool for complex applications. However, he sees it as an excellent learning tool and a fun creative outlet."
+    }
+  ]
+}

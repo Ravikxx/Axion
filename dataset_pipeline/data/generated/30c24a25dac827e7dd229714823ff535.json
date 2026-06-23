@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Debbie_Steinbach",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is Debbie Meisterlin Steinbach's full name and birthdate?",
+      "answer": "Debbie Meisterlin Steinbach was born on January 28, 1953."
+    },
+    {
+      "question": "What are some of Debbie Meisterlin Steinbach's notable achievements in golf?",
+      "answer": "Debbie Meisterlin Steinbach is a Class A teaching professional with eight course records and eleven holes-in-one to her credit. She achieved her best finish of T-5 at the 1979 Florida Lady Citrus."
+    },
+    {
+      "question": "How did Debbie Meisterlin Steinbach contribute to golf instruction for women?",
+      "answer": "Steinbach founded and serves as the CEO of women's golf clinic Venus Golf. She authored the book 'Venus on the Fairway,' which highlights physical and psychological differences between men and women in golf instruction. She also released an instructional DVD titled 'Venus on the Fundamentals of Golf' in 2004, praised by Arnold Palmer for simplifying information and making learning fun."
+    },
+    {
+      "question": "What media roles has Debbie Meisterlin Steinbach held?",
+      "answer": "Steinbach has experience as a broadcaster, including local radio in California's Coachella Valley and color commentary on national television for NBC-TV and ESPN. She has also been an infomercial spokesperson for brands like Daiwa, Carbite, and GolfGear."
+    },
+    {
+      "question": "What charitable work is Debbie Meisterlin Steinbach involved in?",
+      "answer": "She serves as a spokesperson for Rally For A Cure, a national breast cancer awareness organization."
+    },
+    {
+      "question": "Can you provide an example of a code snippet that could be used to extract key details from Debbie Meisterlin Steinbach's biography?",
+      "answer": "python\nimport re\n\nbiography = \"\"\"Debbie Meisterlin Steinbach (born January 28, 1953) is an American professional golfer...\n\"\"\"\n\n# Extract birthdate using regex\nbirthdate_pattern = r'born (\\w+ \\d{1,2}, \\d{4})'\nbirthdate = re.search(birthdate_pattern, biography).group(1)\nprint(f\"Birthdate: {birthdate}\")\n\n# Extract notable achievements\nachievements = [\n    \"Class A teaching professional\",\n    \"Golf for Women Magazine 'Top 50' instructor\",\n    \"Founder and CEO of Venus Golf\",\n    \"Author of 'Venus on the Fairway'\"\n]\nprint(\"Notable achievements:\", achievements)"
+    },
+    {
+      "question": "What was Debbie Meisterlin Steinbach's experience on the TV show Family Feud?",
+      "answer": "As Debbie Meisterlin, she appeared with her family on an episode of Family Feud on Christmas Day 1981. Her family was shut out and did not win any money, while the opposing family went on to be undefeated."
+    }
+  ]
+}

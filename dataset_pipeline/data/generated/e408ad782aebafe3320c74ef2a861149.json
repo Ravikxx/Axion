@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Fortress_of_Klis",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the historical significance of Klis Fortress in relation to the Ottoman Empire?",
+      "answer": "Klis Fortress served as a critical defensive stronghold against the Ottoman Empire due to its strategic location on the pass between the Mosor and Kozjak mountains. It was lost and re-conquered multiple times during the Ottoman wars in Europe, with notable events including its defense led by Croatian captain Petar Kružić for over 25 years and its eventual fall to the Ottomans in 1537 after a prolonged siege."
+    },
+    {
+      "question": "Who was Duke Trpimir I, and what role did he play in the history of Klis Fortress?",
+      "answer": "Duke Trpimir I was a Croatian ruler who succeeded Duke Mislav in the 9th century. He is significant for expanding Klis Fortress and spreading Christianity in the Duchy of Croatia. He also built a church and the first Benedictine monastery in Croatia at Rižinice, located in the valley below the fortress."
+    },
+    {
+      "question": "Describe the role of Klis Fortress during the Mongol invasion of 1242.",
+      "answer": "In March 1242, Klis Fortress was the site of a major defeat for the Mongols. Tatars serving in the Mongol army pursued the Hungarian army led by King Béla IV but were repelled by the fortress's defenders, marking a significant military setback for the Mongols in the region."
+    },
+    {
+      "question": "How did Petar Kružić contribute to the defense of Klis Fortress during the Ottoman siege?",
+      "answer": "Petar Kružić was a Croatian captain who led the defense of Klis Fortress against the Ottoman invasion for over 25 years without external allies. His leadership and the formation of the Uskoks military faction became legendary, though the fortress ultimately fell to the Ottomans in 1537."
+    },
+    {
+      "question": "What is the Uskoks, and how did it originate in relation to Klis Fortress?",
+      "answer": "The Uskoks were an elite Croatian militant sect formed during the prolonged Ottoman siege of Klis Fortress. They originated as a military faction led by defenders like Petar Kružić, who fought without allies against the Turkish forces. The Uskoks later gained fame for their military prowess."
+    },
+    {
+      "question": "Provide a code snippet to parse historical dates related to Klis Fortress using Python.",
+      "answer": "python\nfrom datetime import datetime\n\n# Example historical dates related to Klis Fortress\nhistorical_events = [\n    (950, \"Duke Mislav makes Klis Fortress the seat of his throne\"),\n    (1242, \"Mongols defeated at Klis Fortress\"),\n    (1537, \"Klis Fortress falls to the Ottomans\"),\n    (1669, \"Venetians seize Klis Fortress from the Ottomans\"),\n    (1797, \"Austria takes control of Klis Fortress\")\n]\n\n# Function to format and print these events\ndef print_historical_events(events):\n    for year, event in events:\n        print(f\"{year}: {event}\")\n\nprint_historical_events(historical_events)\n"
+    },
+    {
+      "question": "What are some key features of Klis Fortress that can be seen by visitors today?",
+      "answer": "Today, Klis Fortress features a museum with an array of historical artifacts, including arms, armor, and traditional uniforms. Visitors can explore the fortress's military history and its role in defending Dalmatia against various invasions throughout the centuries."
+    }
+  ]
+}

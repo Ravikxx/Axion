@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/eleftheriabatsou/how-i-cut-my-debugging-time-in-half-as-a-front-end-developer-a-practical-guide-3kd0",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What percentage of a developer's time is typically spent debugging, and what are some common debugging challenges in front-end development?",
+      "answer": "Studies estimate that up to 50% of a developer’s time is spent debugging. Common front-end debugging challenges include: 1) Fragmented workflows involving multiple tools (Chrome DevTools, VS Code, etc.), 2) Misreading cryptic error messages, 3) Ignoring the Network tab to check API responses, and 4) Difficulty tracing issues in deployed builds due to minification."
+    },
+    {
+      "question": "What are the five steps in the proposed debugging framework to reduce debugging time?",
+      "answer": "The five-step debugging framework is: 1) **Reproduce the bug** – Ensure the issue can be consistently triggered, 2) **Isolate** – Determine if the problem lies in the component, API, data shape, or side effects, 3) **Inspect** – Use DevTools, breakpoints, and network traces before making changes, 4) **Patch** – Implement the smallest possible fix, and 5) **Validate** – Confirm the fix works across different states and scenarios."
+    },
+    {
+      "question": "What is theORQL, and how does it improve the front-end debugging workflow?",
+      "answer": "theORQL is a Chrome-based debugging tool that automatically captures runtime errors, console logs, and network failures, then provides probable root cause explanations and proposed code fixes. It improves debugging workflows by: 1) Unifying debugging surfaces in one view, reducing context switching, 2) Offering direct syncing of accepted fixes to VS Code, and 3) Reducing the time spent hunting for bugs by providing clearer error context."
+    },
+    {
+      "question": "How does theORQL handle undefined property errors in React components? Provide a code example of how it suggests fixing such an error.",
+      "answer": "When an undefined property error occurs, theORQL highlights the problematic line of code, explains the likely cause (e.g., missing prop validation or uninitialized state), and suggests a patch. For example, if a component fails due to an undefined `user.name` property, theORQL might suggest:\n\njsx\n// Before (failing):\nfunction UserProfile({ user }) {\n  return <h1>{user.name}</h1>;\n}\n\n// After (patched with optional chaining or default props):\nfunction UserProfile({ user }) {\n  return <h1>{user?.name || 'Guest'}</h1>;\n}\n\n\nThe patch can be synced directly to VS Code, eliminating manual copy-pasting."
+    },
+    {
+      "question": "What debugging mistakes do developers commonly make, and how can they avoid them?",
+      "answer": "Common debugging mistakes include: 1) **Reloading instead of inspecting** – Developers refresh the page without examining stack traces or component boundaries. Avoid this by using breakpoints and error logs first. 2) **Misreading error messages** – Runtime errors often contain clues; learn to interpret them (e.g., `TypeError` vs. `ReferenceError`). 3) **Ignoring the Network tab** – Many UI bugs stem from failed API responses; always check the Network tab for HTTP errors. 4) **Debugging deployed builds blindly** – Production builds are minified, making debugging harder. Use source maps or tools like theORQL for better visibility."
+    },
+    {
+      "question": "How does theORQL sync accepted patches to VS Code, and what advantage does this provide over traditional debugging?",
+      "answer": "theORQL syncs accepted patches to VS Code automatically via a direct integration. This eliminates the need to manually copy code changes between tools, reducing context switching and human error. For example, instead of copying a suggested fix from Chrome DevTools to VS Code, the change appears directly in your editor, streamlining the workflow and saving time."
+    },
+    {
+      "question": "Why is debugging considered part of the development process, not a separate task?",
+      "answer": "Debugging is considered part of development because it is an iterative and integral part of writing code. Debugging involves understanding, inspecting, and fixing issues, which are essential steps in refining and validating code. As the article states, 'Debugging isn’t separate from development—it is development.' Tools and workflows that improve debugging efficiency directly enhance overall development productivity."
+    }
+  ]
+}

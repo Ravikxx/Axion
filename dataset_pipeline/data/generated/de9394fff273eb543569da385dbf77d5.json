@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Common_stingray",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the scientific name and family of the common stingray?",
+      "answer": "The common stingray is scientifically named *Dasyatis pastinaca* and belongs to the family Dasyatidae."
+    },
+    {
+      "question": "Where is the common stingray typically found, and what are its preferred habitats?",
+      "answer": "The common stingray is found in the northeastern Atlantic Ocean and the Mediterranean and Black Seas. It prefers sandy or muddy habitats in coastal waters shallower than 60 meters (200 feet) and often buries itself in sediment."
+    },
+    {
+      "question": "How does the common stingray reproduce, and how many offspring does it typically have?",
+      "answer": "The common stingray is aplacental viviparous, meaning embryos are nourished by yolk and later histotroph ('uterine milk') produced by the mother. Females give birth to 4–9 young twice per year after a gestation period of four months."
+    },
+    {
+      "question": "What does the common stingray primarily feed on, and how does it hunt?",
+      "answer": "The common stingray primarily feeds on bottom-dwelling crustaceans but also consumes molluscs, polychaete worms, and small bony fishes. It hunts by burying itself in sediment and ambushing prey."
+    },
+    {
+      "question": "What are the physical characteristics used to identify the common stingray?",
+      "answer": "The common stingray has a diamond-shaped pectoral fin disc slightly wider than long, a whip-like tail with upper and lower fin folds, and plain coloration with mostly smooth skin. Larger individuals have a row of tubercles along the midline of the back."
+    },
+    {
+      "question": "Why is the common stingray considered vulnerable, and what threats does it face?",
+      "answer": "The common stingray is considered Vulnerable by the IUCN due to a dwindling population across its range. Threats include being taken as bycatch in large numbers and limited commercial interest, as it is not actively targeted by fisheries."
+    },
+    {
+      "question": "Provide a Python code snippet to calculate the average size of a common stingray in inches and centimeters.",
+      "answer": "python\n# Average size of a common stingray in inches and centimeters\naverage_size_inches = 18\naverage_size_cm = 45\n\nprint(f\"Average size: {average_size_inches} inches ({average_size_cm} cm)\")\n"
+    }
+  ]
+}

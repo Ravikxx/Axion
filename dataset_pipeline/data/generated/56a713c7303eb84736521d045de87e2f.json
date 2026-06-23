@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/History_of_the_Catholic_Church_in_Spain",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What percentage of Spaniards identified as Catholic in the dataset referenced?",
+      "answer": "According to the data provided, 58.6% of Spaniards identified as Catholic."
+    },
+    {
+      "question": "Which apostle is traditionally credited with early Christian preaching in Spain?",
+      "answer": "The Apostle James the Great is traditionally credited with early preaching of the Christian faith in Spain."
+    },
+    {
+      "question": "What historical event in 313 AD significantly improved the situation for Christians in Iberia?",
+      "answer": "The Edict of Milan in 313 AD granted Christians the freedom to openly practice their religion within the Roman Empire, significantly improving their situation in Iberia."
+    },
+    {
+      "question": "Why does Jerome Murphy-O'Connor argue that Paul the Apostle likely traveled to Spain after writing the Epistle to the Romans?",
+      "answer": "Jerome Murphy-O'Connor suggests Paul traveled to Spain and preached there for a few months with little success, likely due to the lack of widespread Greek language in the region."
+    },
+    {
+      "question": "What do the Canons of the Synod of Elvira (circa 305 AD) reveal about the early Christian church in Iberia?",
+      "answer": "The Canons of the Synod of Elvira indicate that the early Christian church in Iberia was greatly isolated from the general population around that time."
+    },
+    {
+      "question": "How did the spread of Christianity in Spain evolve from the 4th century onward?",
+      "answer": "Over the course of the 4th century, Christianity built significant footholds in key cities such as Barcelona, Córdoba, Seville, and Toledo, following the Edict of Milan which allowed open practice of the religion."
+    },
+    {
+      "question": "Provide a code snippet in Python that calculates the percentage of Spaniards identifying as Catholic based on the given data.",
+      "answer": "python\n# Percentage of Spaniards identifying as Catholic\npercentage_catholic = 58.6\ntotal_population = 100  # Assuming percentage scale\ncatholic_population = (percentage_catholic / total_population) * 100\nprint(f\"Percentage of Spaniards identifying as Catholic: {catholic_population}%\")\n"
+    }
+  ]
+}

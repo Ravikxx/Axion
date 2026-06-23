@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Eric_Williams_Plaza",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the Eric Williams Plaza and where is it located?",
+      "answer": "The Eric Williams Plaza, also known as the Eric Williams Financial Complex, is a prominent government and financial complex located on Independence Square (formerly Marine Square) in downtown Port of Spain, Trinidad and Tobago. It consists of two 22-story skyscrapers known as the 'Twin Towers' and an older building surrounding them, forming a significant part of the city's skyline."
+    },
+    {
+      "question": "What are the names and purposes of the two towers in the Eric Williams Plaza?",
+      "answer": "The first tower is named the Eric Williams Financial Tower and houses the Central Bank of Trinidad and Tobago. The second tower is called the Central Bank Tower and contains the Ministry of Finance."
+    },
+    {
+      "question": "When was the Eric Williams Plaza constructed, and who was the architect?",
+      "answer": "Construction of the Eric Williams Plaza began in 1979 and was completed in 1986. The project was managed by the architectural firm Anthony C. Lewis Partnership."
+    },
+    {
+      "question": "How are the Twin Towers designed to withstand earthquakes?",
+      "answer": "The Twin Towers feature an earthquake-resistant design. Cross braces in the towers take on 15% of seismic forces, while core walls absorb the remaining 85%. The reinforcement detailing was carefully engineered to enhance structural resilience."
+    },
+    {
+      "question": "What is the structural foundation design of the Twin Towers?",
+      "answer": "Each tower has a basement thickness of 25 feet. The pile cap is a cellular raft composed of 9' × 6' beams and an 18-inch slab. Water storage for the complex is housed within the basements of both towers."
+    },
+    {
+      "question": "What notable events occurred at the Eric Williams Plaza between 1993 and 1999?",
+      "answer": "From 1993 to January 1999, the office of the Prime Minister of Trinidad and Tobago was located in the Eric Williams Plaza. In 1999, the Prime Minister's office was relocated back to Whitehall."
+    },
+    {
+      "question": "Provide a Python code snippet to calculate the height of the Twin Towers in meters.",
+      "answer": "python\n# Heights of the Twin Towers in feet\ntower_height_feet = 302\n# Conversion factor from feet to meters\nfeet_to_meters = 0.3048\n# Calculate height in meters\ntower_height_meters = tower_height_feet * feet_to_meters\nprint(f\"The height of the Twin Towers is {tower_height_meters:.2f} meters.\")\n\nThe output will be: The height of the Twin Towers is 92.06 meters."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/1974_Central_Dutch_football_team",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the record of the 1974 Central Dutch football team during the season?",
+      "answer": "The 1974 Central Dutch football team compiled an undefeated 11–0 record during the season."
+    },
+    {
+      "question": "Who was the head coach of the 1974 Central Dutch football team and what was their notable achievement?",
+      "answer": "The head coach was Ron Schipper, who led the team to an 11–0 record, winning both the Iowa Conference championship and the NCAA Division III national championship."
+    },
+    {
+      "question": "How many players from the 1974 Central Dutch team received first-team honors on the All-IIAC team?",
+      "answer": "Eight Central players received first-team honors on the All-IIAC team."
+    },
+    {
+      "question": "What were the key passing statistics for quarterback Gary Cutler in the 1974 season?",
+      "answer": "Gary Cutler completed 69 of 126 passes for 1,236 yards and 16 touchdowns, with a pass efficiency rating of 174.3."
+    },
+    {
+      "question": "What is the significance of the 174.3 pass efficiency rating achieved by Gary Cutler in 1974?",
+      "answer": "Gary Cutler's 1974 pass efficiency rating of 174.3 remains a single-season school record (minimum 100 attempts)."
+    },
+    {
+      "question": "Which player set a single-game school record for receiving yards in 1974, and what was the record?",
+      "answer": "Receiver Randy Busscher set a single-game school record with 259 receiving yards in the victory over Ferris State."
+    },
+    {
+      "question": "Write a Python snippet to calculate the average points allowed per game by the 1974 Central Dutch football team's defense.",
+      "answer": "The team's defense allowed an average of 6.9 points per game. Here's a Python snippet to calculate it:\npython\ntotal_games = 11\ntotal_points_allowed = 6.9 * total_games\naverage_points_per_game = total_points_allowed / total_games\nprint(average_points_per_game)  # Output: 6.9"
+    }
+  ]
+}

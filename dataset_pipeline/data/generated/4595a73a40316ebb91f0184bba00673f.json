@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/City_of_Westminster",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the City of Westminster and where is it located?",
+      "answer": "The City of Westminster is a London borough with city status in Greater London, England. It is situated in central London and contains much of the British government, including the Houses of Parliament, as well as major landmarks like Buckingham Palace, Westminster Abbey, and Trafalgar Square."
+    },
+    {
+      "question": "Which borough borders the City of Westminster to the east, and how is the boundary marked?",
+      "answer": "The City of London borders the City of Westminster to the east, with the boundary marked by Temple Bar."
+    },
+    {
+      "question": "What are some major shopping and entertainment areas within the City of Westminster?",
+      "answer": "The City of Westminster includes major shopping areas such as Oxford Street, Regent Street, Piccadilly, and Bond Street, as well as the entertainment district of Soho."
+    },
+    {
+      "question": "How did the City of Westminster gain its city status, and when was it declared a city?",
+      "answer": "Westminster gained its city status from royal authority during Saxon times and was officially declared a city in 1540."
+    },
+    {
+      "question": "What administrative changes occurred in the area now known as the City of Westminster in the 19th and 20th centuries?",
+      "answer": "In the 19th century, metropolis-wide administrative bodies were introduced, including the creation of the County of London in 1889. This was later replaced by Greater London in 1965, which is now led by the mayor of London."
+    },
+    {
+      "question": "Which boroughs border the City of Westminster, and what notable geographical feature separates some of them?",
+      "answer": "The City of Westminster borders Camden, Brent, Kensington and Chelsea, Wandsworth, Lambeth, and the City of London. Lambeth and Wandsworth are separated from Westminster by the River Thames."
+    },
+    {
+      "question": "Where is the notional center of London located, and why is it significant?",
+      "answer": "The notional center of London is Charing Cross in Westminster. It is significant because it is the point from which distances from London are measured."
+    }
+  ]
+}

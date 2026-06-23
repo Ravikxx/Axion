@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Eddie_Stubbs",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is Eddie Stubbs known for in the radio industry?",
+      "answer": "Eddie Stubbs is best known for his work in promoting country music on WSM, a radio station with a powerful nighttime clear channel signal broadcast from Nashville, Tennessee. He also served as one of the regular announcers for the long-running Grand Ole Opry on Tuesday, Friday, and Saturday nights."
+    },
+    {
+      "question": "How did Eddie Stubbs start his radio career?",
+      "answer": "Stubbs began his radio career in 1983 with a weekly bluegrass show on WYII in Williamsport, Maryland, earning $20 per program. He moved to WAMU in Washington, D.C. in 1984 and later hosted his own show there starting in 1990."
+    },
+    {
+      "question": "What notable awards or recognitions has Eddie Stubbs received?",
+      "answer": "Stubbs was named the Country Music Association's Large Market Air Personality of the Year in 2002. He was also named Best Country Deejay by Nashville Scene and listed among Nashville Life Magazine's '100 Coolest People'. In 2020, he was inducted into the International Bluegrass Music Hall of Fame as a member of The Johnson Mountain Boys."
+    },
+    {
+      "question": "What was Eddie Stubbs' role with the Grand Ole Opry?",
+      "answer": "Stubbs served as one of the regular announcers for the Grand Ole Opry, broadcasting on Tuesday, Friday, and Saturday nights. He was hired shortly after moving to Nashville in 1995, despite being the 'new kid in town'."
+    },
+    {
+      "question": "How did Eddie Stubbs' move to Nashville impact his career?",
+      "answer": "After Stubbs moved to Nashville in 1995, his friends Kitty Wells and Johnnie Wright convinced him to join them full-time. Within just seventeen days of arriving, he was hired as a regular announcer for the Grand Ole Opry, marking a significant turning point in his career."
+    },
+    {
+      "question": "What were some of Eddie Stubbs' early musical and career influences?",
+      "answer": "Stubbs was a fifth-generation resident of Montgomery County, Maryland, and played fiddle with the traditional bluegrass band The Johnson Mountain Boys for about a decade. He also developed a friendship with country singer Kitty Wells and her husband, guitarist Johnnie Wright, who encouraged his move to Nashville."
+    },
+    {
+      "question": "Write a Python function to calculate the number of years Eddie Stubbs worked at WSM before retiring in 2020.",
+      "answer": "python\ndef years_at_wsm(start_year, end_year):\n    \"\"\"\n    Calculate the number of years Eddie Stubbs worked at WSM.\n    \n    Args:\n        start_year (int): The year Stubbs started at WSM (default assumed as 1995).\n        end_year (int): The year Stubbs retired from WSM (2020).\n    \n    Returns:\n        int: Number of years worked at WSM.\n    \"\"\"\n    return end_year - start_year\n\n# Example usage:\nprint(years_at_wsm(1995, 2020))  # Output: 25\n\nThis function calculates the duration of Stubbs' career at WSM by subtracting the start year from the retirement year."
+    }
+  ]
+}

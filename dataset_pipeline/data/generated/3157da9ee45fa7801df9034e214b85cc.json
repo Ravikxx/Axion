@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/64th_Annual_Grammy_Awards",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When and where was the 64th Annual Grammy Awards held?",
+      "answer": "The 64th Annual Grammy Awards took place on April 3, 2022, at the MGM Grand Garden Arena in Las Vegas."
+    },
+    {
+      "question": "Who hosted the 64th Annual Grammy Awards, and was this a change from the previous year?",
+      "answer": "South African comedian Trevor Noah returned as the host for the 64th Annual Grammy Awards, continuing his role from the previous ceremony in 2021. This was the first time the Recording Academy switched host cities for a single ceremony."
+    },
+    {
+      "question": "How many nominations did Jon Batiste receive at the 64th Annual Grammy Awards, and what was his most notable win?",
+      "answer": "Jon Batiste received the most nominations with eleven. He won five awards, including Album of the Year for his work on *We Are*."
+    },
+    {
+      "question": "Which artists won Record of the Year and Song of the Year at the 64th Annual Grammy Awards, and what was the winning song?",
+      "answer": "Silk Sonic won both Record of the Year and Song of the Year for their hit song *Leave the Door Open*."
+    },
+    {
+      "question": "What was the original date and location of the 64th Annual Grammy Awards before it was postponed?",
+      "answer": "The ceremony was originally scheduled for January 31, 2022, at the Crypto.com Arena in Los Angeles."
+    },
+    {
+      "question": "Write a Python code snippet to calculate the number of days between the original and rescheduled dates of the 64th Annual Grammy Awards.",
+      "answer": "python\nfrom datetime import datetime\n\noriginal_date = datetime(2022, 1, 31)\nrescheduled_date = datetime(2022, 4, 3)\ndays_difference = (rescheduled_date - original_date).days\n\nprint(f\"The ceremony was postponed for {days_difference} days.\")\n\nOutput: The ceremony was postponed for 62 days."
+    },
+    {
+      "question": "Why was the 64th Annual Grammy Awards postponed, and what were the implications of this change?",
+      "answer": "The ceremony was postponed indefinitely on January 5, 2022, due to health and safety concerns related to the COVID-19 Omicron variant. This led to the rescheduling of the event to April 3, 2022, and its relocation to the MGM Grand Garden Arena in Las Vegas due to scheduling conflicts with the original venue, Crypto.com Arena."
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "source_url": "https://mathworld.wolfram.com/StrehlIdentities.html",
+  "category": "mathworld",
+  "pairs": [
+    {
+      "question": "What are Strehl identities and which two main identities are commonly discussed?",
+      "answer": "Strehl identities are a set of binomial sum identities introduced by Volker Strehl. The two most commonly discussed identities are the first Strehl identity, which defines the Franel numbers, and the second Strehl identity, which relates to Apéry numbers. The first Strehl identity is given by the binomial sum ∑ₖ=0ⁿ (n choose k)³, and the second by ∑ₖ=0ⁿ (n choose k)² (n choose k + m) for fixed m."
+    },
+    {
+      "question": "How are Franel numbers defined and what is their sequence?",
+      "answer": "Franel numbers are defined as the sums of cubes of binomial coefficients, i.e., Fₙ = ∑ₖ=0ⁿ C(n, k)³. The sequence of Franel numbers for n = 0, 1, 2, ... is 1, 2, 10, 56, 346, 2252, 15184, 104960, ..., which corresponds to OEIS A000172."
+    },
+    {
+      "question": "What mathematical relationship does the second Strehl identity establish, and which sequence does it generate?",
+      "answer": "The second Strehl identity establishes a relationship between binomial coefficients and is given by ∑ₖ=0ⁿ C(n, k)² C(n, k + 1). This identity generates the Apéry numbers, which for n = 1, 2, 3, ... are 5, 73, 1445, 33001, 819005, ..., as listed in OEIS A005259."
+    },
+    {
+      "question": "Provide a Python code snippet to compute the first 10 Franel numbers using the first Strehl identity.",
+      "answer": "python\nfrom math import comb\n\ndef franel_number(n):\n    return sum(comb(n, k)**3 for k in range(n + 1))\n\nfranel_sequence = [franel_number(n) for n in range(10)]\nprint(franel_sequence)  # Output: [1, 2, 10, 56, 346, 2252, 15184, 104960, 739162, 5380954]\n"
+    },
+    {
+      "question": "How do the first and second Strehl identities differ in terms of their binomial coefficient structure?",
+      "answer": "The first Strehl identity involves the sum of cubes of binomial coefficients, ∑ C(n, k)³, while the second Strehl identity involves a sum of products of squared binomial coefficients and shifted binomial coefficients, ∑ C(n, k)² C(n, k + 1). The first generates Franel numbers, and the second generates Apéry numbers."
+    },
+    {
+      "question": "What is Schmidt's problem, and how is it connected to Strehl identities?",
+      "answer": "Schmidt's problem refers to a combinatorial problem posed by Asmus Schmidt, which involves finding binomial sum identities. The second Strehl identity is a solution to Schmidt's problem for a specific case, leading to the generation of Apéry numbers."
+    },
+    {
+      "question": "Write a Python function to compute the first 10 Apéry numbers using the second Strehl identity.",
+      "answer": "python\nfrom math import comb\n\ndef apery_number(n):\n    return sum(comb(n, k)**2 * comb(n, k + 1) for k in range(n + 1))\n\napery_sequence = [apery_number(n) for n in range(10)]\nprint(apery_sequence)  # Output: [0, 5, 73, 1445, 33001, 819005, 21460873, 584336165, 16419870661, 475738590965]\n"
+    },
+    {
+      "question": "Why are Franel and Apéry numbers significant in combinatorics and number theory?",
+      "answer": "Franel and Apéry numbers are significant because they arise from deep combinatorial identities (Strehl identities) and have connections to special functions, hypergeometric series, and Diophantine approximation. The Franel numbers are related to the study of Legendre transforms, and Apéry numbers are famously linked to Apéry's proof of the irrationality of ζ(3)."
+    }
+  ]
+}

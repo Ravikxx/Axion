@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Freedmen's_Colony_of_Roanoke_Island",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When was the Freedmen's Colony of Roanoke Island founded, and who was responsible for its establishment?",
+      "answer": "The Freedmen's Colony of Roanoke Island was founded in 1863. It was established after Union Major General John G. Foster, Commander of the 18th Army Corps, captured Confederate fortifications on Roanoke Island in 1862. Foster classified the enslaved people there as 'contraband', refusing to return them to Confederate slaveholders, which laid the groundwork for the colony."
+    },
+    {
+      "question": "What was the role of Horace James in the Freedmen's Colony of Roanoke Island?",
+      "answer": "In 1863, Union Major General John G. Foster appointed Horace James, a Congregational chaplain, as the 'Superintendent of Negro Affairs in the North Carolina District'. James was tasked with supervising the contraband camps and administering to freedmen. He was based in New Bern and managed the Trent River contraband camp, believing the Roanoke Island Colony could serve as a model for other freedmen communities."
+    },
+    {
+      "question": "How did the Emancipation Proclamation impact the residents of the Freedmen's Colony of Roanoke Island?",
+      "answer": "The Emancipation Proclamation, issued in 1863, declared all enslaved people in Union-occupied territories free. This directly impacted the residents of the Freedmen's Colony of Roanoke Island, as it legally granted them freedom and allowed them to live as freedmen rather than enslaved people."
+    },
+    {
+      "question": "What educational opportunities were available to children in the Freedmen's Colony of Roanoke Island?",
+      "answer": "The Freedmen's Colony of Roanoke Island was home to the first free school for Black children in the area. Freedmen built churches and established schools, which were soon joined by Northern missionary teachers who came to the South to support education. A core group of six teachers initially served, eventually growing to 27 teachers by the end of the war."
+    },
+    {
+      "question": "What challenges did the residents of the Freedmen's Colony of Roanoke Island face during the Civil War?",
+      "answer": "The residents of the Freedmen's Colony faced several challenges, including overcrowding, infectious diseases, and difficult living conditions as the war progressed. Additionally, in 1865, President Andrew Johnson's 'Amnesty Proclamation' led to the return of lands to their original owners, forcing most freedmen to leave the colony."
+    },
+    {
+      "question": "What happened to the Freedmen's Colony of Roanoke Island after the Civil War ended?",
+      "answer": "After the Civil War, in 1865, President Andrew Johnson ordered the return of all property under his 'Amnesty Proclamation', which included the lands occupied by contraband camps like the Freedmen's Colony of Roanoke Island. The freedmen were not granted rights to their holdings, and most left. The U.S. Army dismantled the three forts on the island, and by 1867, the colony was abandoned. However, about 300 freedmen still lived there independently in 1870."
+    },
+    {
+      "question": "Write a Python script to calculate the number of years the Freedmen's Colony of Roanoke Island existed.",
+      "answer": "python\ndef calculate_colony_duration():\n    # Founded in 1863, abandoned by 1867\n    start_year = 1863\n    end_year = 1867\n    duration = end_year - start_year\n    return duration\n\nprint(calculate_colony_duration())  # Output: 4\n\n\nThe Freedmen's Colony of Roanoke Island existed for approximately 4 years, from its founding in 1863 until its abandonment in 1867."
+    }
+  ]
+}

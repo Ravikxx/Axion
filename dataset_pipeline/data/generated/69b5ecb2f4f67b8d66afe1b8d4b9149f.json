@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Integer",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is an integer in mathematics?",
+      "answer": "An integer is a whole number that can be positive, negative, or zero. It has no fractional or decimal part, meaning it is not a fraction or decimal number. Examples include -3, 0, 4, and 100."
+    },
+    {
+      "question": "How are integers represented on a number line?",
+      "answer": "Integers are represented as distinct points on a number line, where each point corresponds to an integer value. For example, -4, -3, -2, -1, 0, +1, +2, +3, and +4 are all marked on the line. Zero is the central point, with positive integers to the right and negative integers to the left."
+    },
+    {
+      "question": "What are consecutive integers? Provide an example.",
+      "answer": "Consecutive integers are integers that follow each other in order without gaps. For example, the sequence {1, 2, 3, 4} consists of consecutive integers, where each number is one more than the previous one."
+    },
+    {
+      "question": "Why is the sum, difference, and product of any two integers always an integer? Give a mathematical explanation.",
+      "answer": "The sum, difference, and product of any two integers are always integers because these operations preserve the closure property of integers under addition, subtraction, and multiplication. For example, if a and b are integers, then (a + b), (a - b), and (a × b) are also integers. This is a fundamental property of the set of integers, denoted as ℤ."
+    },
+    {
+      "question": "Is the division of two integers always an integer? Explain with an example.",
+      "answer": "No, the division of two integers is not always an integer. When an integer is divided by another integer, the result may be a non-integer, especially if the division does not yield a whole number. For example, 1 divided by 2 equals 0.5, which is not an integer."
+    },
+    {
+      "question": "What is the set of all integers denoted by? Provide the symbol and its meaning.",
+      "answer": "The set of all integers is denoted by the symbol ℤ (a boldface Z or blackboard bold Z). This symbol represents the infinite set containing all whole numbers, including positive, negative, and zero. The set of positive integers is denoted by ℤ₊."
+    },
+    {
+      "question": "How many integers are there? What is the cardinality of the set of integers?",
+      "answer": "There are infinitely many integers. The cardinality of the set of integers (ℤ) is denoted by ℵ₀ (aleph-null), which represents the smallest infinity in set theory. This means that although integers are infinite, they can be counted in a sequence."
+    }
+  ]
+}

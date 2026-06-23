@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Chris_Mahaffey",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Where was Chris Mahaffey born?",
+      "answer": "Chris Mahaffey was born in Atlanta, Georgia."
+    },
+    {
+      "question": "What high school did Chris Mahaffey attend, and what honor did he receive there?",
+      "answer": "Chris Mahaffey attended Heritage High School in Conyers, Georgia, where he was named the Georgia State 4A Soccer Player of the Year."
+    },
+    {
+      "question": "Describe Chris Mahaffey’s early soccer career, including notable teams he played for.",
+      "answer": "Mahaffey played for several youth teams, including the Brookwood Steamers, Stone Mountain Storm, Norcross Fury, and AFC Lightning, which won the 2004 State Cup. He also spent a season with Georgia State University’s men’s soccer team, earning Colonial Athletic Association Freshman of the Year honors in 2003."
+    },
+    {
+      "question": "What was Chris Mahaffey’s first professional soccer experience?",
+      "answer": "His first professional experience was in 2008 when he was called up to the senior team of the Atlanta Silverbacks in the USL First Division, after previously playing for their U23s in the Premier Development League."
+    },
+    {
+      "question": "What notable coaching achievements has Chris Mahaffey earned in Georgia Soccer?",
+      "answer": "In 2011, Mahaffey was named the Georgia Soccer Girls Select Coach of the Year. He has also won two State Cup Championships, reached the Regional Semi Finals twice, and won the Region 3 Premier League Championship. Additionally, he coached Oglethorpe University Women's Soccer to its best season in school history."
+    },
+    {
+      "question": "What are Chris Mahaffey’s current roles in soccer?",
+      "answer": "As of the provided information, Mahaffey serves as the Executive Director for the Henry County Soccer Association and was previously the Head Coach of Georgia Revolution FC in the National Premier Soccer League."
+    },
+    {
+      "question": "Provide a Python code snippet to extract Chris Mahaffey’s coaching achievements from a structured dataset.",
+      "answer": "python\ncoach_achievements = {\n    '2011': 'Georgia Soccer Girls Select Coach of the Year',\n    'State Cups': 2,\n    'Regional Semi Finals': 2,\n    'Region 3 Premier League Championship': 1\n}\n\nfor year, achievement in coach_achievements.items():\n    print(f\"{year}: {achievement}\")\n\nThis code initializes a dictionary of Mahaffey’s coaching achievements and iterates through it to print each one."
+    }
+  ]
+}

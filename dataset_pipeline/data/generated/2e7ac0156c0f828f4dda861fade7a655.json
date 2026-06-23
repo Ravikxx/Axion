@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Bob_Christian_(baseball)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When and where was Robert Christian born?",
+      "answer": "Robert Charles Christian was born in Chicago, Illinois, on October 17, 1945."
+    },
+    {
+      "question": "What positions did Robert Christian play professionally in baseball?",
+      "answer": "Robert Christian played as a third baseman and outfielder throughout his professional baseball career."
+    },
+    {
+      "question": "How many Major League Baseball games did Robert Christian play during his career?",
+      "answer": "Christian appeared in a total of 54 Major League Baseball games during his career."
+    },
+    {
+      "question": "What notable event occurred in Robert Christian's MLB career on May 20, 1970?",
+      "answer": "On May 20, 1970, Christian hit a ninth-inning, two-run pinch home run against Tom Murphy of the California Angels, which sparked a come-from-behind rally to win the game 3-2 for the Chicago White Sox."
+    },
+    {
+      "question": "Provide a Python code snippet to calculate Robert Christian's career batting average in the Major Leagues given his total hits and plate appearances.",
+      "answer": "python\n# Robert Christian's MLB career stats\nhits = 33\ntotal_pa = 143\n\n# Calculate batting average\nbatting_average = hits / total_pa\nprint(f\"Robert Christian's career batting average: {batting_average:.3f}\")\n\nThis code calculates Christian's career batting average as .231 (33 hits divided by 143 plate appearances)."
+    },
+    {
+      "question": "What was the cause of Robert Christian's early death?",
+      "answer": "Christian died at the age of 28 due to leukemia, which significantly curtailed both his baseball career and life."
+    },
+    {
+      "question": "How many seasons did Robert Christian play in Japan and for which team?",
+      "answer": "Christian played two seasons (1971–1972) in Japan for the Toei Flyers of the Japan Pacific League."
+    }
+  ]
+}

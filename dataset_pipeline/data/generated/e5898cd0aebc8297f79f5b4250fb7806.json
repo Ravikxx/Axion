@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Danish_football_league_system",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the Danish football league system and how is it structured?",
+      "answer": "The Danish football league system, or football league pyramid, is a hierarchical structure of interconnected football leagues in Denmark. It operates on a promotion and relegation system where teams move between divisions based on their performance. The top two levels are single-division professional leagues, while lower levels consist of semi-professional and amateur divisions covering smaller geographic areas. The top four tiers are nationwide, and the fifth tier and below are provincial leagues."
+    },
+    {
+      "question": "How does promotion and relegation work in the Danish football league system?",
+      "answer": "Teams that finish at the top of their division are promoted to the next higher division, while teams finishing at the bottom are relegated to a lower division. The number of teams promoted or relegated varies between divisions. Promotion to upper tiers often requires meeting additional criteria, such as having appropriate facilities and financial stability."
+    },
+    {
+      "question": "What organizations govern the Danish football league system?",
+      "answer": "The Danish football league system is governed by the Danish FA (DBU), Divisionsforeningen (DF), and six regional associations. These bodies oversee the men's and women's league structures and enforce regulations, including criteria for promotion and league standards."
+    },
+    {
+      "question": "How does the women's football league system in Denmark differ from the men's system?",
+      "answer": "The women's football league system in Denmark runs separately with fewer divisions and levels. The top-flight women's league is semi-professional, and promotion to higher tiers involves additional criteria compared to the men's system."
+    },
+    {
+      "question": "Are there any parallel football leagues in Denmark outside the main league system?",
+      "answer": "Yes, the Reserveliga operates alongside the Superliga as a national youth developmental and reserve league for men's football. Additionally, the Danish Workers’ Sport Association (DAI) and Danish Gymnastics and Sports Associations (DGI) organize separate grassroots tournaments and previously ran a separate league system. Company football leagues also exist outside the influence of the national FA."
+    },
+    {
+      "question": "Can an amateur club theoretically rise to the top of the Danish football league system? How?",
+      "answer": "Yes, in theory, an amateur club can rise from the lowest local level to the top of the Danish football league system. This is possible through consistent performance, winning promotions through the tiers. The system is designed to allow any club to reach the top, though the path requires meeting promotion criteria at each stage."
+    },
+    {
+      "question": "What are the key differences between professional, semi-professional, and amateur divisions in the Danish football league system?",
+      "answer": "The top two tiers are fully professional leagues. Below these, divisions are semi-professional, with teams often balancing football with other jobs. Lower tiers are amateur, with players participating primarily for recreation rather than financial gain. Professional divisions cover larger geographic areas, while amateur and semi-professional divisions cover smaller regions as you descend the pyramid."
+    }
+  ]
+}

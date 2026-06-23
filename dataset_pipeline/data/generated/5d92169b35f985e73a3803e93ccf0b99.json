@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Caughey_Roberts",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was Caughey Roberts and what was he best known for in the jazz music scene?",
+      "answer": "Caughey Roberts was an American jazz alto saxophonist, best known for his time in the Count Basie Orchestra during the 1930s. He was also recognized for his work with Buck Clayton’s 14-piece jazz ensemble, which performed in Shanghai, China."
+    },
+    {
+      "question": "What instruments did Caughey Roberts play besides the alto saxophone?",
+      "answer": "Besides the alto saxophone, Caughey Roberts played the baritone saxophone, clarinet, and baritone sax."
+    },
+    {
+      "question": "Where did Caughey Roberts teach music during the early 1930s?",
+      "answer": "Caughey Roberts was a music band teacher at Jefferson High School in Los Angeles during the early 1930s."
+    },
+    {
+      "question": "Describe Caughey Roberts' military service during World War II.",
+      "answer": "Caughey Roberts was drafted into the U.S. Army on August 13, 1942. He trained at Fort Huachuca but was assigned to a band at Papago Park Prisoner-of-War Camp near Phoenix, Arizona, where he played for nearly four years. He was honorably discharged as a Sergeant in February 1946."
+    },
+    {
+      "question": "What was the significance of Caughey Roberts' time in Buck Clayton’s Harlem Gentlemen jazz ensemble?",
+      "answer": "Caughey Roberts joined Buck Clayton’s 14-piece jazz ensemble, known as the Harlem Gentlemen, and traveled with them by cruise liner to Shanghai, China. They performed an extended engagement at the Canidrome Ballroom before Roberts left Shanghai in 1937 due to the Second Sino-Japanese War."
+    },
+    {
+      "question": "How did Caughey Roberts contribute to the jazz scene at Disneyland?",
+      "answer": "In his later years, Caughey Roberts played in the traditional jazz band at Disneyland's New Orleans Square, alongside musicians like Teddy Buckner."
+    },
+    {
+      "question": "Write a Python function that takes a musician's name and returns their birth year, death year (if applicable), and primary instruments played, formatted as a dictionary.",
+      "answer": "python\ndef get_musician_info(name):\n    musicians_db = {\n        \"Caughey Roberts\": {\n            \"birth_year\": 1912,\n            \"death_year\": 1990,\n            \"instruments\": [\"alto saxophone\", \"baritone saxophone\", \"clarinet\"]\n        }\n    }\n    return musicians_db.get(name, {})\n\n# Example usage:\nprint(get_musician_info(\"Caughey Roberts\"))\n\nOutput:\n\n{'birth_year': 1912, 'death_year': 1990, 'instruments': ['alto saxophone', 'baritone saxophone', 'clarinet']}\n"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Albert_Chevalier",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was Albert Chevalier's nickname among his audiences, and why was he given this title?",
+      "answer": "Albert Chevalier was known to his audiences as the 'costers' laureate' due to his specialization in cockney-related humor and songs that depicted the life of costermongers (street sellers) in Victorian London."
+    },
+    {
+      "question": "Describe Albert Chevalier's early life and how he became involved in entertainment.",
+      "answer": "Albert Chevalier was born in London to a French father and Welsh mother. From a young age, he showed an interest in entertainment by performing privately for family and friends. He made his stage debut at age eight in a production of Julius Caesar at Cornwall Hall and later joined an amateur dramatics group before adopting the stage name 'Albert Knight'."
+    },
+    {
+      "question": "What were some of the most famous songs written by Albert Chevalier and his brother Charles Ingle?",
+      "answer": "Some of Albert Chevalier's most famous songs, co-written with his brother Charles Ingle, include 'Wot Cher! Knocked 'em in the Old Kent Road', 'The Future Mrs. 'Awkins', 'Appy 'Ampstead', and the melodrama 'My Old Dutch'."
+    },
+    {
+      "question": "How did Albert Chevalier's career evolve from the 1880s to the 1910s?",
+      "answer": "Chevalier joined the music hall circuit in the 1880s and became highly successful by the early 1890s, allowing him to choose his performance venues. In the 1910s, he transitioned from comedy into music composition for straight plays, marking a shift in his artistic focus."
+    },
+    {
+      "question": "Write a Python function that takes a list of Albert Chevalier's song titles and returns the one with the most words.",
+      "answer": "python\ndef longest_song_title(song_titles):\n    return max(song_titles, key=lambda title: len(title.split()))\n\n# Example usage:\nsongs = [\"Wot Cher! Knocked 'em in the Old Kent Road\", \"The Future Mrs. 'Awkins\", \"Appy 'Ampstead\", \"My Old Dutch\"]\nprint(longest_song_title(songs))  # Output: \"Wot Cher! Knocked 'em in the Old Kent Road\"\n"
+    },
+    {
+      "question": "Where was Albert Chevalier buried, and who else is buried in the same plot?",
+      "answer": "Albert Chevalier was buried in Abney Park Cemetery. His grave is in the same plot as his son and his father-in-law, George Leybourne."
+    },
+    {
+      "question": "Why did Albert Chevalier's final performance in 1922 hold personal significance for him?",
+      "answer": "Chevalier's final performance in November 1922 was for the play 'My Old Dutch', which was based on his own song of the same name. This connection made the performance personally significant for him."
+    }
+  ]
+}

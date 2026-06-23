@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Elevation_of_the_Holy_Cross",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the Elevation of the Holy Cross and when is it celebrated?",
+      "answer": "The Elevation of the Holy Cross, also known as the Exaltation of the Holy Cross, is a major feast day in the Orthodox Church. It is celebrated annually on September 14 to commemorate two key events: the discovery of the True Cross by Saint Helena and the dedication of the Church of the Holy Sepulchre in Jerusalem in 335 AD, as well as its recapture and elevation by Emperor Heraclius in 629 AD."
+    },
+    {
+      "question": "Why is the Elevation of the Holy Cross considered a strict fast in the Orthodox Church?",
+      "answer": "The Elevation of the Holy Cross is one of only two Orthodox feast days classified as a strict fast, alongside Great Friday. This means that regardless of the day of the week on which it falls, Orthodox Christians observe a stringent fasting period, abstaining from certain foods and practices as a sign of reverence and penitence."
+    },
+    {
+      "question": "What is the significance of the cross decorated with flowers in the Orthodox celebration of this feast?",
+      "answer": "During the Elevation of the Holy Cross feast day, a cross adorned with flowers is brought into the center of the church in a ceremonial procession. This ritual symbolizes the reverence for the True Cross and its role in Christian salvation history. The flowers represent the joy of the resurrection, while the procession itself reflects the historical moments of discovery and restoration associated with the feast."
+    },
+    {
+      "question": "Describe the ritual performed by the priest during the Elevation of the Holy Cross liturgy.",
+      "answer": "During the liturgical service, the priest lifts the flower-decorated cross and elevates it in the four cardinal directions (north, south, east, and west). With each elevation, the priest recites a benediction, invoking God's blessing upon the congregation. This act symbolizes the universal reach of the Cross and the spread of the Christian faith across the world."
+    },
+    {
+      "question": "What does the term 'Kýrie, eléison' mean and how is it used during this feast?",
+      "answer": "'Kýrie, eléison' is a Greek phrase meaning 'Lord, have mercy.' During the Elevation of the Holy Cross services, the congregation recites this prayer between 70 and 100 times as part of the liturgy. This repetitive invocation expresses deep penitence, humility, and a plea for divine mercy, reflecting the solemn and reflective nature of the feast."
+    },
+    {
+      "question": "Can you write a simple Python script to calculate the date of the Elevation of the Holy Cross for a given year?",
+      "answer": "python\ndef get_elevation_of_holy_cross_date(year):\n    \"\"\"\n    Returns the date of the Elevation of the Holy Cross (September 14) for a given year.\n    Since the feast is always on September 14, the function simply returns that date.\n    \"\"\"\n    return f\"September 14, {year}\"\n\n# Example usage:\nprint(get_elevation_of_holy_cross_date(2025))\n\nThis script assumes the feast is always celebrated on September 14 and returns the formatted date string for any input year."
+    },
+    {
+      "question": "How does the Elevation of the Holy Cross differ from other major Orthodox feast days?",
+      "answer": "Unlike many Orthodox feasts that celebrate events in the life of Jesus or Mary, the Elevation of the Holy Cross focuses on the discovery, dedication, and restoration of the True Cross itself. It is unique in blending historical commemoration with a strict fast, and it involves a specific ritual of elevating the cross in four directions during liturgy, which is not typical of other major feasts such as Christmas or Easter."
+    }
+  ]
+}

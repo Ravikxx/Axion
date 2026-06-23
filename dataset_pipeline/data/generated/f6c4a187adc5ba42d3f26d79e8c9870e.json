@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Electronic_identification",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is an electronic identification (eID) and what are its primary uses?",
+      "answer": "An electronic identification (eID) is a digital solution that verifies the identity of citizens or organizations. It enables access to benefits or services from government authorities, banks, or companies, such as mobile payments. In addition to online authentication and login, many eID services allow users to sign electronic documents using a digital signature."
+    },
+    {
+      "question": "What is an electronic identification card (eIC) and how does it differ from a regular smart card?",
+      "answer": "An electronic identification card (eIC) is a physical smart card used for online and offline personal identification or authentication. It resembles a standard bank card in ID-1 format and contains identity information on the surface (e.g., personal details and a photograph) and in an embedded RFID microchip. Unlike a regular smart card, the eIC stores biometric data such as facial images from multiple angles and may also store fingerprints."
+    },
+    {
+      "question": "How does the embedded RFID microchip in an eIC function for identity verification?",
+      "answer": "The embedded RFID microchip in an eIC stores the identity information printed on the card, including the holder's name, date of birth, and photographs. It may also store multiple facial images taken from different angles and expressions to enable biometric facial recognition. Additionally, the chip can store fingerprints, which are used to verify the cardholder's identity during authentication processes."
+    },
+    {
+      "question": "Provide a Python code snippet to simulate the extraction of biometric data stored in an eIC's RFID chip.",
+      "answer": "Here’s a Python example using a hypothetical library to simulate reading biometric data from an eIC’s RFID chip:\npython\nimport json\nfrom typing import Dict, List\n\ndef read_eic_biometrics(chip_data: Dict[str, any]) -> Dict[str, any]:\n    \"\"\"\n    Simulates extracting biometric data from an eIC's RFID chip.\n    Args:\n        chip_data: A dictionary containing the chip's stored data.\n    Returns:\n        A dictionary with extracted biometric data.\n    \"\"\"\n    biometrics = {\n        'photos': chip_data.get('photos', []),\n        'fingerprints': chip_data.get('fingerprints', []),\n        'verification_score': 0.0\n    }\n    \n    # Simulate facial recognition score calculation\n    if biometrics['photos']:\n        biometrics['verification_score'] = 0.95  # Example score\n    \n    return biometrics\n\n# Example usage\nchip_data = {\n    'name': 'John Doe',\n    'photos': ['photo1.jpg', 'photo2.jpg', 'photo3.jpg'],\n    'fingerprints': ['fprint1.dat', 'fprint2.dat']\n}\n\nbiometrics = read_eic_biometrics(chip_data)\nprint(json.dumps(biometrics, indent=2))\n"
+    },
+    {
+      "question": "Which countries currently issue government-issued electronic IDs (eIDs)?",
+      "answer": "Countries that currently issue government-issued eIDs include Afghanistan, Bangladesh, Belgium, Bulgaria, Chile, Estonia, Finland, Guatemala, Germany, Iceland, India, Indonesia, Israel, Italy, Latvia, Lithuania, Luxembourg, the Netherlands, Nigeria, Morocco, Pakistan, Peru, Portugal, Poland, Romania, Saudi Arabia, Spain, Slovakia, Malta, and Mauritius."
+    },
+    {
+      "question": "How do some countries like Norway and Sweden use bank-issued eIDs for government identification?",
+      "answer": "In countries like Norway, Sweden, and Finland, government authorities accept bank-issued eIDs, such as BankID, for identification purposes. BankID is a private-sector eID solution that allows users to authenticate their identity digitally, which is then recognized by government entities for various services and transactions."
+    },
+    {
+      "question": "What role does eID play in electronic voting systems, and which countries use biometric voter registration?",
+      "answer": "Electronic identification (eID) is increasingly used in electronic voting systems for tasks such as voter enrollment, issuing voter ID cards, and voter identification and authentication. Countries that employ biometric voter registration include those that use fingerprint or facial recognition to verify voter identities, enhancing security and reducing fraud in elections."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Dave_Beard",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who is Charles David Beard, and what teams did he play for in Major League Baseball?",
+      "answer": "Charles David Beard is an American former professional baseball right-handed pitcher. He played in Major League Baseball for the Oakland Athletics, Seattle Mariners, Chicago Cubs, and Detroit Tigers from 1980 to 1989."
+    },
+    {
+      "question": "What was Charles David Beard's performance in his MLB debut on July 16, 1980?",
+      "answer": "Beard made his major league debut at age 20 on July 16, 1980, pitching the ninth inning of a loss to the Tigers. He appeared in twelve more games that season, all in relief, and earned one save and one loss, posting an earned run average of 3.38."
+    },
+    {
+      "question": "How did Charles David Beard contribute to the Oakland Athletics' 1981 postseason run?",
+      "answer": "In 1981, Beard made two postseason appearances with the Athletics. He recorded a 1 1/3-inning save to close out the Divisional Series against the Kansas City Royals, helping the team advance."
+    },
+    {
+      "question": "What were Charles David Beard's statistics for the 1982 MLB season?",
+      "answer": "In 1982, Beard spent nearly the entire season in the big leagues for the first time, going 10–9 with 11 saves and a 3.44 ERA."
+    },
+    {
+      "question": "Write a Python snippet to calculate Charles David Beard's career win percentage, given his career record of 13 wins and 11 losses.",
+      "answer": "python\nwins = 13\nlosses = 11\nwin_percentage = wins / (wins + losses)\nprint(f\"Charles David Beard's career win percentage: {win_percentage:.3f}\")\n# Output: Charles David Beard's career win percentage: 0.542\n"
+    },
+    {
+      "question": "What factors contributed to Charles David Beard's decline in performance after 1982?",
+      "answer": "After 1982, Beard faced recurring injuries and inconsistent performance. In 1983, his ERA ballooned to 5.61 with a 5–5 record, leading to his trade to Seattle. Injury issues persisted in 1984, and his time with Cleveland and the Cubs in 1985 also saw high ERAs, ultimately contributing to his release multiple times."
+    },
+    {
+      "question": "How did Charles David Beard return to the major leagues in 1989 after being out of baseball?",
+      "answer": "Beard was out of baseball for 14 months before signing with the Tigers in 1988. He worked his way back to the majors through Detroit's farm system, making his first start since 1982 on July 18, 1989, before being released at the end of the season."
+    }
+  ]
+}

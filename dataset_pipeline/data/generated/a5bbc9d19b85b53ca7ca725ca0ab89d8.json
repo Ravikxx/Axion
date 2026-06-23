@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Catastrophism",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is catastrophism in geology?",
+      "answer": "Catastrophism is a geological theory proposing that the Earth's surface and features have been primarily shaped by sudden, violent, and often global-scale events rather than gradual processes."
+    },
+    {
+      "question": "How does catastrophism differ from uniformitarianism?",
+      "answer": "Catastrophism emphasizes sudden catastrophic events as the primary drivers of geological change, while uniformitarianism, also known as gradualism, asserts that Earth's features are shaped by slow, consistent processes like erosion operating over long periods."
+    },
+    {
+      "question": "What role did Georges Cuvier play in the development of catastrophism?",
+      "answer": "Georges Cuvier, a French scientist in the early 1800s, was a key proponent of catastrophism. He argued that many of Earth's major changes resulted from catastrophic events like floods, though he kept these ideas distinct from religious or supernatural explanations in his scientific work."
+    },
+    {
+      "question": "Can you provide an example of a catastrophic event that catastrophists might cite as evidence for their theory?",
+      "answer": "An example would be a rapid mountain formation event or a massive global flood. Catastrophists believe such sudden events could cause mass extinctions, clearing the way for new species to emerge suddenly rather than through slow evolutionary processes."
+    },
+    {
+      "question": "How do modern scientists view the relationship between catastrophism and gradualism?",
+      "answer": "Modern geology recognizes that both catastrophic events and gradual processes have played significant roles in shaping Earth's history. While catastrophism alone does not explain all geological changes, large-scale disasters like asteroid impacts and volcanic eruptions have indeed influenced biodiversity and landscape evolution."
+    },
+    {
+      "question": "What is the connection between catastrophism and the biblical story of Noah's flood?",
+      "answer": "Some early catastrophists, including those in the 18th and early 19th centuries, proposed that the global flood described in the Bible's account of Noah could have been one such catastrophic event that reshaped Earth's surface and caused mass extinctions."
+    },
+    {
+      "question": "Write a Python function that classifies a given geological theory as either catastrophism or uniformitarianism based on a list of keywords.",
+      "answer": "python\ndef classify_geological_theory(description: str) -> str:\n    \"\"\"\n    Classifies a geological theory as either 'catastrophism' or 'uniformitarianism'\n    based on the presence of certain keywords.\n    \n    Args:\n        description: A string describing a geological theory.\n    \n    Returns:\n        'catastrophism' if sudden/violet keywords are present,\n        'uniformitarianism' if gradual/long-term keywords are dominant,\n        'mixed' otherwise.\n    \"\"\"\n    catastrophism_keywords = ['sudden', 'violent', 'disaster', 'flood', 'quickly', 'rapid', 'mass extinction', 'catastrophic']\n    uniformitarianism_keywords = ['slow', 'gradual', 'erosion', 'consistent', 'long-term', 'uniform']\n    \n    desc_lower = description.lower()\n    cat_count = sum(desc_lower.count(kw) for kw in catastrophism_keywords)\n    uni_count = sum(desc_lower.count(kw) for kw in uniformitarianism_keywords)\n    \n    if cat_count > uni_count:\n        return 'catastrophism'\n    elif uni_count > cat_count:\n        return 'uniformitarianism'\n    else:\n        return 'mixed'\n\n# Example usage:\ntheory1 = \"The event was sudden and caused a global flood.\"\ntheory2 = \"The landscape changed gradually through erosion.\"\nprint(classify_geological_theory(theory1))  # Output: catastrophism\nprint(classify_geological_theory(theory2))  # Output: uniformitarianism\n"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/hmpljs/hmpl-dom-v001-release-the-most-important-module-4783",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What is the main purpose of the HMPL-DOM project?",
+      "answer": "The HMPL-DOM project aims to bridge the gap between traditional template languages and modern JavaScript frameworks by enabling developers to work with the real DOM directly while maintaining the simplicity of template-based development. It combines the declarative nature of template languages with the flexibility of real DOM manipulation, reducing the need for heavy frameworks."
+    },
+    {
+      "question": "How does HMPL-DOM differ from frameworks like React or Alpine.js?",
+      "answer": "Unlike React or Alpine.js, which rely heavily on JavaScript for state management and reactivity, HMPL-DOM focuses on minimal JavaScript usage and leverages template languages to handle DOM operations. It avoids complex framework setups and allows developers to work directly with the real DOM using simple template syntax."
+    },
+    {
+      "question": "Provide an example of how to use HMPL-DOM to fetch and display data from an API.",
+      "answer": "Here’s an example of using HMPL-DOM to fetch and display data from an API:\nhtml\n<div class=\"container\">\n  {{#request src=\"/api/my-component.html\"}}\n    {{#indicator trigger=\"pending\"}}\n      <p>Loading...</p>\n    {{/indicator}}\n  {{/request}}\n</div>\n\nThis snippet fetches content from `/api/my-component.html` and displays a loading indicator while waiting for the response."
+    },
+    {
+      "question": "What is the role of the `hmpl-dom` module in the HMPL-DOM project?",
+      "answer": "The `hmpl-dom` module extends the HMPL template language to work seamlessly with the real DOM. It enables developers to define templates in HTML, handle dynamic content via API requests, and manage state without relying on heavy JavaScript frameworks. It acts as a bridge between template syntax and DOM operations."
+    },
+    {
+      "question": "How can you pass `RequestInit` options to an API request in HMPL-DOM?",
+      "answer": "You can pass `RequestInit` options by defining a `templateFunction` in the configuration. For example:\njavascript\nimport { init } from \"hmpl-dom\";\ninit([\n  {\n    id: \"clicker-config\",\n    value: {\n      compile: { memo: true },\n      templateFunction: ({ request: { event } }) => ({\n        body: JSON.stringify({\n          action: event.target.getAttribute(\"data-action\")\n        })\n      })\n    }\n  }\n]);\n\nThis allows customization of API requests, such as setting headers or method types."
+    },
+    {
+      "question": "Why does the author argue that template languages are not relics of the past?",
+      "answer": "The author argues that template languages are not outdated because they offer simplicity, lightweight setups, and direct DOM manipulation without the overhead of modern JavaScript frameworks. Projects like HMPL-DOM demonstrate that template languages can still be relevant, especially for developers who prefer minimalism and avoid complex framework dependencies."
+    },
+    {
+      "question": "What are the advantages of using HMPL-DOM over traditional PHP-to-JS integrations?",
+      "answer": "HMPL-DOM simplifies server-client interactions by allowing developers to directly embed template-based logic in HTML, reducing the need for convoluted PHP-to-JavaScript conversions. Unlike PHP, which requires separate handling for server-side and client-side rendering, HMPL-DOM enables seamless integration of API-driven content within templates."
+    }
+  ]
+}

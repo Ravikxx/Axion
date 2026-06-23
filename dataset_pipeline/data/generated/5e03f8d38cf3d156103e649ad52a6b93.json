@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Chris_Kamara",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was Christopher Kamara's role in football, and how long did he work for Sky Sports?",
+      "answer": "Christopher Kamara was an English professional footballer and later a football manager. He played as a midfielder and had a 30-year career as a presenter and football analyst at Sky Sports, from 1992 to 2022."
+    },
+    {
+      "question": "How did Christopher Kamara's career progress from joining Portsmouth in 1974 to his move to Brentford in 1981?",
+      "answer": "Kamara joined Portsmouth in November 1974 and spent three years there before being sold to Swindon Town for £14,000. He returned to Portsmouth in 1981 for £50,000, then transferred to Brentford in October 1981, where he spent four years."
+    },
+    {
+      "question": "What achievements did Christopher Kamara contribute to Swindon Town during his second spell?",
+      "answer": "During his second spell at Swindon Town, which began in August 1985, Kamara helped the club achieve two successive promotions into the Second Division."
+    },
+    {
+      "question": "Write a Python script that calculates the total transfer fees Kamara was involved in during his career, using the given transfer amounts.",
+      "answer": "Here is a Python script that sums the known transfer fees for Kamara’s career:\npython\ntransfers = [14000, 50000, 150000]\ntotal_fees = sum(transfers)\nprint(f\"Total transfer fees: £{total_fees:,}\")\n\nThis script outputs: Total transfer fees: £214,000."
+    },
+    {
+      "question": "How did Christopher Kamara transition from playing to management, and what was his first managerial role?",
+      "answer": "After retiring as a player, Kamara became a player-coach at Bradford City in 1994. He was appointed manager of Bradford City in November 1995, leading the club to promotion via the Second Division play-offs in 1996."
+    },
+    {
+      "question": "What significant event happened in Kamara's time as Bradford City manager in 1996?",
+      "answer": "Under Kamara’s leadership, Bradford City moved from a relegation scrap to securing promotion out of the Second Division via the play-offs in 1996."
+    },
+    {
+      "question": "After leaving Bradford City, what managerial roles did Christopher Kamara take on next?",
+      "answer": "After leaving Bradford City in January 1998, Kamara quickly became manager of Stoke City. However, he was relieved of his duties at Stoke City in April 1998."
+    }
+  ]
+}

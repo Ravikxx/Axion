@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Australian_Labor_Party_(NSW)",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What was the Australian Labor Party (NSW) commonly known as, and why?",
+      "answer": "The Australian Labor Party (NSW) was commonly known as Lang Labor. This was because it was the New South Wales branch of the Australian Labor Party that broke away from the national party under the leadership of Jack Lang, the Premier of New South Wales, during the period from 1931 to 1936."
+    },
+    {
+      "question": "What was the primary feature of the 'Lang Plan' proposed by Jack Lang in 1931?",
+      "answer": "The primary feature of the 'Lang Plan' was to stop making loan repayments to foreign banks. This was intended to reduce the effects of the Great Depression, contrasting with the policy of the federal Labor government led by James Scullin."
+    },
+    {
+      "question": "How did the split between the federal and state Labor leaders in 1931 impact the federal government?",
+      "answer": "The split led to Lang's supporters voting with the United Australia Party Opposition to bring down the Scullin government, causing an early election. This resulted in a significant defeat for Labor in the federal elections."
+    },
+    {
+      "question": "What were the outcomes of the 1931 and 1934 federal elections for Federal Labor in New South Wales?",
+      "answer": "In the 1931 federal elections, Federal Labor won only three seats in New South Wales, and Jack Lang's supporters (Lang Labor) retained most of their safe working-class seats. In the 1934 federal elections, Federal Labor won only one seat in New South Wales, which was Newcastle."
+    },
+    {
+      "question": "Who were the key leaders of the federal Labor party in New South Wales during the split with Lang Labor?",
+      "answer": "The key leaders of the federal Labor party in New South Wales during the split were Ted Theodore and Ben Chifley. Both were defeated in the 1931 federal elections."
+    },
+    {
+      "question": "How and when did the reconciliation between the federal and New South Wales branches of the Labor Party occur?",
+      "answer": "The reconciliation occurred in 1935 when John Curtin became the new federal Labor leader. In February 1936, he brought about a reconciliation with the New South Wales Branch, leading to the party running as a united party in New South Wales in the 1937 elections."
+    },
+    {
+      "question": "Write a Python function to simulate the election outcomes of Federal Labor in New South Wales for the years 1931, 1934, and 1937 based on the given data.",
+      "answer": "python\n\ndef simulate_election_outcomes():\n    outcomes = {\n        1931: {\"Federal Labor\": 3, \"Lang Labor\": \"Most safe working-class seats retained\"},\n        1934: {\"Federal Labor\": 1, \"Lang Labor\": \"Defeated\"},\n        1937: {\"Federal Labor and Lang Labor\": \"United as a single party\"}\n    }\n    return outcomes\n\n# Example usage:\nelection_results = simulate_election_outcomes()\nprint(election_results)\n\nThis function returns a dictionary with the election outcomes for Federal Labor in New South Wales for the years 1931, 1934, and 1937."
+    }
+  ]
+}

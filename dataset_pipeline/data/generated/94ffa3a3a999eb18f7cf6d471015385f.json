@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Favonius_taxila",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What family does Favonius taxila belong to?",
+      "answer": "Favonius taxila belongs to the family Lycaenidae, which is a family of butterflies commonly known as gossamer-winged butterflies."
+    },
+    {
+      "question": "Where is Favonius taxila geographically distributed?",
+      "answer": "Favonius taxila is found in the Russian Far East, north-eastern China, Korea, and Japan."
+    },
+    {
+      "question": "How can you distinguish between male and female Favonius taxila based on wing characteristics?",
+      "answer": "Male Favonius taxila have emerald green and shiny upper wings with a narrow dark border (0.5 mm on the front wing, 2–2.5 mm on the hind wing), while females have brownish upper wings with a blurred light spot on the front wing. Females are also slightly larger than males."
+    },
+    {
+      "question": "What are the key visual differences between the upper and undersides of Favonius taxila wings?",
+      "answer": "The upper side of the wings in males is emerald green and shiny, while in females it is brownish with a blurred light spot on the front wing. The undersides of the wings are yellowish-gray in both sexes, featuring a distinct white transverse stripe that bends toward the apex of the forewing on the upper edge."
+    },
+    {
+      "question": "Describe the tail and spot features of Favonius taxila wings.",
+      "answer": "Favonius taxila has a tail on the hind wing that reaches about 4 mm in length. On the underside of the hind wing, there is an orange spot with a black pupil, and an additional small spot adjacent to it. On the upper side of the forewing, there is a narrow spot at the top of the central cell that is practically invisible."
+    },
+    {
+      "question": "What are the distinguishing features of the subspecies japonica Murr. of Favonius taxila?",
+      "answer": "The subspecies japonica Murr. is the largest form of Favonius taxila and exhibits the strongest golden gloss on its wings. It is found in Japan."
+    },
+    {
+      "question": "Write a Python function to generate a summary description of Favonius taxila based on its morphological features.",
+      "answer": "python\n\ndef describe_favonius_taxila():\n    description = (\n        \"Favonius taxila is a Lycaenidae butterfly found in the Russian Far East, north-eastern China, Korea, and Japan. \"\n        \"Males have emerald green and shiny upper wings with a narrow dark border (0.5 mm on the front wing, 2–2.5 mm on the hind wing) \"\n        \"and a 4 mm tail on the hind wing. Females are slightly larger and have brownish upper wings with a blurred light spot. \"\n        \"Both sexes have yellowish-gray undersides with a distinct white transverse stripe bending toward the forewing apex. \"\n        \"Subspecies japonica Murr. is the largest form with the strongest golden gloss.\"\n    )\n    return description\n\n# Example usage:\nprint(describe_favonius_taxila())\n"
+    }
+  ]
+}

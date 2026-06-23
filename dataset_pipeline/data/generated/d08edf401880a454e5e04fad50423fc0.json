@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/How_the_West_Was_Won_(film)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who directed the film 'How the West Was Won' and which chapters did they oversee?",
+      "answer": "The film was directed by three directors: Henry Hathaway directed three chapters—'The Rivers,' 'The Plains,' and 'The Outlaws'; John Ford directed 'The Civil War'; and George Marshall directed 'The Railroad'."
+    },
+    {
+      "question": "What is the runtime of 'How the West Was Won' and how was it originally filmed?",
+      "answer": "The runtime is approximately 164 minutes. Originally, it was filmed in true three-lens Cinerama, a widescreen process that used three synchronized cameras to capture a panoramic image projected onto a massive curved screen, creating an immersive viewing experience."
+    },
+    {
+      "question": "Can you list three actors who starred in 'How the West Was Won' and their roles?",
+      "answer": "Sure! Henry Fonda played Jethro Stuart, John Wayne portrayed William Tecumseh Sherman, and James Stewart starred as Linus Rawlings, a surveyor and later a Civil War veteran."
+    },
+    {
+      "question": "What awards did 'How the West Was Won' win at the 36th Academy Awards?",
+      "answer": "At the 36th Academy Awards, 'How the West Was Won' won three Oscars: Best Story and Screenplay Written Directly for the Screen, Best Sound, and Best Film Editing. It was also nominated for Best Picture among eight total nominations."
+    },
+    {
+      "question": "Why is 'How the West Was Won' considered culturally significant in the United States?",
+      "answer": "In 1997, the Library of Congress selected 'How the West Was Won' for preservation in the United States National Film Registry because it is deemed 'culturally, historically or aesthetically significant' to American cinema and heritage."
+    },
+    {
+      "question": "Write a Python script to fetch the cast list of 'How the West Was Won' from the Wikipedia API.",
+      "answer": "python\nimport requests\n\ndef fetch_cast_from_wikipedia():\n    url = 'https://en.wikipedia.org/w/api.php'\n    params = {\n        'action': 'query',\n        'format': 'json',\n        'titles': 'How the West Was Won',\n        'prop': 'revisions',\n        'rvprop': 'content',\n        'rvsection': 0  # Main infobox content\n    }\n    response = requests.get(url, params=params)\n    data = response.json()\n    page = next(iter(data['query']['pages'].values()))\n    content = page['revisions'][0]['*']\n    # Extract cast list using a simple heuristic (not production-ready)\n    cast_start = content.find('| starring')\n    cast_end = content.find('}}', cast_start)\n    cast_section = content[cast_start:cast_end]\n    print(cast_section)\n\nfetch_cast_from_wikipedia()\n"
+    },
+    {
+      "question": "How did the box office performance of 'How the West Was Won' compare to its budget?",
+      "answer": "The film was a major financial success, grossing $50 million at the box office against a budget of $15 million, resulting in a net profit of $35 million and making it one of the highest-grossing Western epics of its time."
+    }
+  ]
+}

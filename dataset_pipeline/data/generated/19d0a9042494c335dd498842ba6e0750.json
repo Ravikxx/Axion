@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Dieppe_Raid",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What was the primary goal of the Dieppe Raid during World War II?",
+      "answer": "The primary goals of the Dieppe Raid were to capture a major port for a short period, gather intelligence, destroy coastal defenses and port structures, and demonstrate the United Kingdom's commitment to attacking the Western front in Europe."
+    },
+    {
+      "question": "How many Allied troops participated in the Dieppe Raid, and which forces primarily led the operation?",
+      "answer": "Over 6,000 infantrymen, mostly Canadian, participated in the Dieppe Raid. They were supported by a Canadian armored regiment, the Royal Navy, and a smaller Royal Air Force group."
+    },
+    {
+      "question": "What were the key reasons for the failure of the Dieppe Raid?",
+      "answer": "The raid failed due to insufficient Allied artillery support, troops being trapped on the beach by German obstacles and gunfire, and the inability of the Royal Air Force to engage the Luftwaffe effectively."
+    },
+    {
+      "question": "What were the casualties and losses suffered by the Allies during the Dieppe Raid?",
+      "answer": "The Allies suffered 3,623 casualties (killed, wounded, or captured) out of 6,086 men who went ashore. The Royal Air Force lost 96 aircraft, while the Royal Navy lost 33 landing craft and one destroyer."
+    },
+    {
+      "question": "How did the Dieppe Raid influence later Allied operations in World War II?",
+      "answer": "The events at Dieppe affected the planning for the North African landings (Operation Torch) and the Normandy landings (Operation Overlord), serving as a costly lesson for future amphibious assaults."
+    },
+    {
+      "question": "Write a Python code snippet that calculates the percentage of Allied casualties during the Dieppe Raid.",
+      "answer": "python\ntotal_troops = 6086\ncasualties = 3623\npercentage_casualties = (casualties / total_troops) * 100\nprint(f\"Percentage of Allied casualties: {percentage_casualties:.2f}%\")\nThis code calculates the percentage of casualties (killed, wounded, or captured) out of the total troops who landed during the Dieppe Raid."
+    },
+    {
+      "question": "Why was the Dieppe Raid considered a failure in terms of morale and strategic impact?",
+      "answer": "The Dieppe Raid was considered a failure because none of its primary goals were achieved, and the high number of Allied casualties (almost 60%) demonstrated that the Allies were not yet prepared for a large-scale invasion of France, undermining morale and strategic confidence."
+    }
+  ]
+}

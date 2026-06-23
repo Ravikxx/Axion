@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/1998_Iowa_Senate_election",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "How often are Iowa State Senate elections held, and which districts were up for election in 1998?",
+      "answer": "Iowa State Senate elections are held biennially, with half of the 50 state senate districts up for election every two years. In 1998, the elections were for the 25 odd-numbered state senate districts."
+    },
+    {
+      "question": "What were the results of the 1998 Iowa State Senate general election, and how did they change the balance of power?",
+      "answer": "In the 1998 general election, Republicans gained two seats, increasing their majority from 28 to 30 seats, while Democrats lost two seats, reducing their count from 22 to 20 seats. Republicans maintained control of the Iowa State Senate."
+    },
+    {
+      "question": "Why did Democrats need to net 4 Senate seats in the 1998 election to reclaim control of the Iowa State Senate?",
+      "answer": "Democrats needed to net 4 Senate seats because they held 22 seats before the election and Republicans held 28. To regain a majority (26 seats), Democrats would have needed to surpass Republicans by at least 2 seats (28 + 2 = 30), meaning they needed to gain a net of 4 seats (22 + 4 = 26)."
+    },
+    {
+      "question": "What role did the 1997 special election in District 13 play in the 1998 Iowa State Senate elections?",
+      "answer": "The 1997 special election in District 13 filled a vacancy caused by Sen. Jim Lind's (R) resignation. Democratic candidate Patricia M. \"Pat\" Harper won the seat, flipping it from Republican to Democratic control. This reduced Republican seats from 29 to 28 and increased Democratic seats from 21 to 22 before the 1998 elections."
+    },
+    {
+      "question": "When were the primary and general elections held for the 1998 Iowa State Senate elections?",
+      "answer": "The primary election was held on June 2, 1998, and determined which candidates appeared on the November 3, 1998, general election ballot."
+    },
+    {
+      "question": "How can one access the results of the 1998 Iowa State Senate primary and general elections?",
+      "answer": "The primary election results can be obtained from the Iowa General Assembly's provided resource, and the general election results can also be accessed through the same or related Iowa General Assembly sources."
+    },
+    {
+      "question": "Write a Python code snippet to calculate the number of seats needed for a party to gain a majority in the Iowa State Senate, given the total seats and the opposing party's seats.",
+      "answer": "Here is a Python function to calculate the number of seats needed for a party to gain a majority:\npython\ndef seats_needed_for_majority(total_seats, opposing_party_seats):\n    majority_threshold = (total_seats // 2) + 1\n    seats_needed = max(0, majority_threshold - opposing_party_seats)\n    return seats_needed\n\n# Example usage for the 1998 Iowa State Senate:\ntotal_seats = 50\nrepublican_seats_before = 28\ndemocrat_seats_before = 22\n\nseats_needed = seats_needed_for_majority(total_seats, republican_seats_before)\nprint(f\"Democrats needed to net {seats_needed} seats to gain a majority in 1998.\")\n\nThis code calculates that Democrats needed to net 4 seats to gain a majority (26 seats) against Republicans' 28."
+    }
+  ]
+}

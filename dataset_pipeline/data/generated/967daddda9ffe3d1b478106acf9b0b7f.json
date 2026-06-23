@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/praveen-sripati/introducing-nexus-a-polished-dashboard-built-with-vite-react-and-shadcnui-494c",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What is Nexus and what problem does it solve for modern workplaces?",
+      "answer": "Nexus is a modern, single-page intranet dashboard designed to serve as a company's digital heartbeat. It addresses the core challenge of information overload in the modern workplace by providing a clean, intuitive interface that balances high-efficiency productivity with vibrant community engagement. Nexus acts as a central hub for company news, team events, and essential tools while fostering a positive workplace culture through features like a 'Kudos' feed."
+    },
+    {
+      "question": "What technologies were used to build Nexus and why?",
+      "answer": "Nexus was built using a modern frontend stack: React for the UI framework, Vite for rapid development setup, TypeScript for type safety and code quality, Tailwind CSS for utility-first styling, and shadcn/ui for pre-designed accessible components. TypeScript was chosen for its type safety benefits, while Tailwind CSS and shadcn/ui allowed for efficient implementation of responsive layouts and polished UI components."
+    },
+    {
+      "question": "How does the responsive layout of Nexus work?",
+      "answer": "Nexus uses a responsive two-column design with a main content area and a right sidebar for tools and events. This layout adapts to different screen sizes, ensuring usability across devices. The main content area typically displays company news and core functionality, while the sidebar provides quick access to tools, events, and other resources. Tailwind CSS's utility classes were used to implement this responsive behavior efficiently."
+    },
+    {
+      "question": "Can you provide a code snippet showing how the light/dark mode theme switcher was implemented in Nexus?",
+      "answer": "The light/dark mode theme switcher was implemented using a custom theme provider rather than an external library. Below is a simplified version of how this might look in React with TypeScript and Tailwind CSS:\n\ntsx\nimport { createContext, useContext, useEffect, useState } from 'react';\n\nconst ThemeContext = createContext({\n  theme: 'light',\n  toggleTheme: () => {},\n});\n\nexport const ThemeProvider = ({ children }: { children: React.ReactNode }) => {\n  const [theme, setTheme] = useState<'light' | 'dark'>('light');\n\n  useEffect(() => {\n    const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null;\n    if (savedTheme) setTheme(savedTheme);\n  }, []);\n\n  const toggleTheme = () => {\n    const newTheme = theme === 'light' ? 'dark' : 'light';\n    setTheme(newTheme);\n    localStorage.setItem('theme', newTheme);\n    document.documentElement.classList.toggle('dark', newTheme === 'dark');\n  };\n\n  return (\n    <ThemeContext.Provider value={{ theme, toggleTheme }}>\n      {children}\n    </ThemeContext.Provider>\n  );\n};\n\nexport const useTheme = () => useContext(ThemeContext);\n\n\nThis custom theme provider handles theme persistence in localStorage and applies Tailwind CSS dark mode classes dynamically based on the selected theme."
+    },
+    {
+      "question": "What is the 'Kudos' feed feature in Nexus and what purpose does it serve?",
+      "answer": "The 'Kudos' feed is a feature in Nexus designed to foster a positive workplace culture by allowing employees to publicly acknowledge and appreciate their colleagues' contributions. This feature serves as a digital recognition system that enhances team morale, encourages peer-to-peer recognition, and strengthens community engagement within the organization."
+    },
+    {
+      "question": "How can someone access the live demo and source code of Nexus?",
+      "answer": "The live demo of Nexus is available at https://nexus-drab-ten.vercel.app/, where you can interact with the application. The complete source code is hosted on GitHub at https://github.com/praveen-sripati/nexus, allowing developers to explore, fork, or contribute to the project."
+    },
+    {
+      "question": "Why did the developer choose to build the theme switcher from scratch instead of using a library like next-themes?",
+      "answer": "The developer chose to build the theme switcher from scratch to gain deeper understanding and control over the implementation. This decision provided valuable learning experience in managing state, persistence, and DOM manipulation directly. It also allowed for customization that might not have been possible with an external library, all while avoiding additional dependencies in the project."
+    }
+  ]
+}

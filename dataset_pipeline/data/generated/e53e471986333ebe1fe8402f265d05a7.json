@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Ajda_Pekkan",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When and where was Ayşe Ajda Pekkan born?",
+      "answer": "Ayşe Ajda Pekkan was born on 12 February 1946 in Beyoğlu, Istanbul, Turkey."
+    },
+    {
+      "question": "What title is Ajda Pekkan commonly referred to by in Turkish media?",
+      "answer": "Ajda Pekkan is commonly referred to as the 'superstar' in Turkish media."
+    },
+    {
+      "question": "How did Ajda Pekkan begin her music career in the early 1960s?",
+      "answer": "Ajda Pekkan began her music career in the early 1960s as a member of the music group Los Çatikos, performing in a nightclub."
+    },
+    {
+      "question": "List three songs composed by Fikret Şeneş that were popularized by Ajda Pekkan.",
+      "answer": "Three songs composed by Fikret Şeneş and popularized by Ajda Pekkan are 'Kimler Geldi Kimler Geçti', 'Palavra Palavra', and 'Sana Neler Edeceğim'."
+    },
+    {
+      "question": "What was Ajda Pekkan's experience in the Eurovision Song Contest 1980, and how did it affect her career?",
+      "answer": "Ajda Pekkan participated in the Eurovision Song Contest 1980 with her song 'Pet'r Oil', which ranked fifteenth. Disappointed by the result, she took a break from her career for a few years."
+    },
+    {
+      "question": "How many records has Ajda Pekkan sold throughout her career?",
+      "answer": "Ajda Pekkan has sold over 15 million records, making her one of the best-selling artists in Turkey."
+    },
+    {
+      "question": "Write a Python code snippet to calculate Ajda Pekkan's approximate age as of 2023.",
+      "answer": "python\nfrom datetime import datetime\n\nbirth_year = 1946\ncurrent_year = datetime.now().year\nage = current_year - birth_year\nprint(f\"Ajda Pekkan's approximate age in 2023 is {age} years.\")\n\nThis code calculates her age by subtracting her birth year from the current year."
+    }
+  ]
+}

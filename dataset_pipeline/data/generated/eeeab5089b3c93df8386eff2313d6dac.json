@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/varshithvhegde/i-built-a-form-backend-in-a-weekend-because-paying-20month-for-contact-forms-is-stupid-1o34",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What are the key features of FormRelay that make it a cost-effective alternative to paid form backend services?",
+      "answer": "FormRelay allows you to self-host a contact form backend with the following key features: 1) Stores form submissions in your Supabase database (50k free users tier), 2) Sends email notifications via Resend (3k free emails/month) or SMTP if you already have email hosting, 3) Provides a real-time dashboard to view submissions, and 4) Is completely free to host on Vercel's hobby plan. This eliminates the need for paid services that charge $20/month for basic form handling."
+    },
+    {
+      "question": "How can I deploy FormRelay to Vercel and Supabase, and what are the required steps?",
+      "answer": "To deploy FormRelay, follow these steps: 1) Fork the GitHub repository at [github.com/Varshithvhegde/formrelay](https://github.com/Varshithvhegde/formrelay), 2) Create a new Supabase project and obtain the database URL and public/anonymized keys, 3) Set up a Resend account (or configure SMTP), 4) Create a new Vercel project and link it to your forked repository, 5) Add the environment variables (Supabase URL, keys, Resend API key or SMTP credentials) in Vercel's project settings, 6) Deploy the project. The entire process typically takes less time than writing a README."
+    },
+    {
+      "question": "What are the technical components used in FormRelay, and why did the author choose these specific technologies?",
+      "answer": "FormRelay is built using Next.js 15 (App Router) for the frontend and backend, Supabase for database storage (PostgreSQL), real-time updates, and authentication, Tailwind CSS for styling, Radix UI for accessible components, Resend (or SMTP) for email delivery, and Lucide icons. The author chose these technologies because they are modern, reliable, and free within reasonable usage limits. Next.js 15's server actions simplify form handling, while Supabase provides an all-in-one backend solution with excellent documentation."
+    },
+    {
+      "question": "Can I use FormRelay with my existing email setup instead of Resend? If so, how?",
+      "answer": "Yes, you can use FormRelay with your existing email setup by swapping Resend for SMTP. Instead of providing a Resend API key, you only need to configure your SMTP credentials (server address, port, username, password, and sender email) in the environment variables. This approach is often simpler and avoids adding another dependency. The author notes that this flexibility ensures FormRelay can work with any email service you already use."
+    },
+    {
+      "question": "What are the main advantages of self-hosting a contact form backend like FormRelay compared to using a paid SaaS service?",
+      "answer": "Self-hosting FormRelay offers several advantages: 1) Cost savings (free vs. $20/month), 2) Data ownership (your data stays in your Supabase database), 3) No arbitrary limits (50k users and 3k emails/month on free tiers), 4) Avoiding vendor lock-in (no migration needed when prices increase or features change), 5) Customization (you can modify the code to fit your needs), and 6) Learning experience (building and owning your infrastructure). The author argues that many basic services are overpriced for what they offer."
+    },
+    {
+      "question": "How does FormRelay handle form submissions in real-time, and what backend technologies enable this?",
+      "answer": "FormRelay leverages Supabase's real-time capabilities to instantly reflect form submissions in the dashboard. When a form is submitted, the data is stored in Supabase's PostgreSQL database, and Supabase's real-time API pushes updates to the connected clients. This is enabled by Supabase's Postgres database with the real-time extension, which allows the frontend (built with Next.js) to subscribe to changes and update the UI dynamically without manual refreshes."
+    },
+    {
+      "question": "What are some potential challenges of self-hosting FormRelay, and how does the author address them?",
+      "answer": "While self-hosting is simpler today than in the past, potential challenges include: 1) Initial setup complexity (the author spent significant time making instructions clear for non-technical users), 2) Maintenance (keeping dependencies updated and ensuring security), and 3) Scaling (handling high traffic volumes within free tier limits). The author addresses these by using managed services (Vercel and Supabase) to handle infrastructure, providing clear documentation, and designing the system to work within free tier limits for most use cases."
+    }
+  ]
+}

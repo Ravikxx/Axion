@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Hurts_2B_Human",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the title of Pink's eighth studio album and when was it released?",
+      "answer": "The title of Pink's eighth studio album is 'Hurts 2B Human'. It was released on April 26, 2019, by RCA Records."
+    },
+    {
+      "question": "Which music producers and songwriters collaborated with Pink on 'Hurts 2B Human'?",
+      "answer": "Pink collaborated with producers and songwriters such as Greg Kurstin, Max Martin, and Ryan Tedder on the album 'Hurts 2B Human'."
+    },
+    {
+      "question": "What are the primary themes explored in the lyrics of 'Hurts 2B Human'?",
+      "answer": "The primary themes explored in the lyrics of 'Hurts 2B Human' include love, family, introspection, life, and self-worth."
+    },
+    {
+      "question": "How did critics generally respond to Pink's album 'Hurts 2B Human'?",
+      "answer": "Music critics generally responded favorably to 'Hurts 2B Human', praising its production and cohesiveness. However, some critics felt the album was overly calculated and formulaic."
+    },
+    {
+      "question": "What was the commercial performance of 'Hurts 2B Human' in the United States?",
+      "answer": "In the United States, 'Hurts 2B Human' debuted at number one on the Billboard 200 chart, making it Pink's third consecutive album to achieve this."
+    },
+    {
+      "question": "Which singles were released to promote 'Hurts 2B Human' and when?",
+      "answer": "The lead single 'Walk Me Home' was released on February 20, 2019. The second single 'Can We Pretend' was released on June 21, 2019. The title track and 'Love Me Anyway' had a limited release."
+    },
+    {
+      "question": "Write a Python code snippet to fetch and display the top 5 countries where 'Hurts 2B Human' reached number one.",
+      "answer": "python\nimport requests\n\n# List of countries and their chart positions (simulated data for demonstration)\nchart_data = {\n    \"United Kingdom\": 1,\n    \"Australia\": 1,\n    \"Canada\": 1,\n    \"New Zealand\": 1,\n    \"Switzerland\": 1,\n    \"United States\": 1,\n    \"Germany\": 2,\n    \"France\": 3\n}\n\n# Filter countries where the album reached number one\ntop_countries = [country for country, rank in chart_data.items() if rank == 1]\n\n# Display the top 5 countries\ntop_5_countries = top_countries[:5]\nprint(\"Top 5 countries where 'Hurts 2B Human' reached number one:\")\nfor country in top_5_countries:\n    print(f\"- {country}\")\n"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Caparo_Industries_plc_v_Dickman",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the 'three-fold test' established in Caparo Industries PLC v Dickman [1990] UKHL 2, and what are its three components?",
+      "answer": "The 'three-fold test' is a framework set out by the House of Lords in Caparo Industries PLC v Dickman to determine whether a duty of care exists in negligence cases. It consists of three components: (1) harm must be reasonably foreseeable as a potential result of the defendant's conduct, (2) the parties must be in a relationship of proximity, and (3) it must be fair, just, and reasonable to impose liability."
+    },
+    {
+      "question": "How did the House of Lords apply the three-fold test in Caparo Industries PLC v Dickman to a case involving an accountant's negligent misstatement?",
+      "answer": "In Caparo Industries PLC v Dickman, the House of Lords held that an accountant who carelessly stated a company's profits were healthier than they were did not owe a duty of care to a takeover bidder. The court found that while the harm (financial loss) was foreseeable and there was proximity between the accountant and the company, it was not fair, just, or reasonable to impose liability on the accountant for losses suffered by a third-party takeover bidder."
+    },
+    {
+      "question": "What was the principle established in Hedley Byrne v Heller, and how did it relate to the Caparo case?",
+      "answer": "The principle established in Hedley Byrne v Heller states that if a person makes a statement and voluntarily assumes responsibility for it (or to those in his contemplation), and the statement is made negligently, he will be liable for any resulting loss. In Caparo, the question was whether this principle extended to liability for negligent misstatements made to third parties outside the original relationship, such as takeover bidders."
+    },
+    {
+      "question": "How did the UK Supreme Court clarify the application of the three-fold test in Robinson v Chief Constable of West Yorkshire Police?",
+      "answer": "In Robinson v Chief Constable of West Yorkshire Police, the UK Supreme Court clarified that the three-fold test from Caparo is not to be applied rigidly in every case. Instead, it serves as a useful guide only in novel situations where the existence of a duty of care is not already established by precedent."
+    },
+    {
+      "question": "What is the difference between a duty of care in negligence and liability under the Hedley Byrne principle?",
+      "answer": "A duty of care in negligence arises where harm is foreseeable, there is proximity between parties, and it is fair to impose liability, as set out in the three-fold test from Caparo. In contrast, liability under the Hedley Byrne principle arises specifically from negligent misstatements where the defendant voluntarily assumed responsibility for the statement's accuracy, leading to liability for resulting losses."
+    },
+    {
+      "question": "Provide a Python code snippet that demonstrates how a simple duty of care analysis might be structured as a function, using the three-fold test from Caparo as criteria.",
+      "answer": "python\n\ndef assess_duty_of_care(harmed_foreseeable, proximity_exists, fair_to_impose_liability):\n    \"\"\"\n    Determines whether a duty of care exists based on the three-fold test from Caparo.\n    \n    Args:\n        harmed_foreseeable (bool): Whether the harm was reasonably foreseeable.\n        proximity_exists (bool): Whether there is a relationship of proximity between parties.\n        fair_to_impose_liability (bool): Whether it is fair, just, and reasonable to impose liability.\n    \n    Returns:\n        bool: True if all three criteria are met, False otherwise.\n    \"\"\"\n    return harmed_foreseeable and proximity_exists and fair_to_impose_liability\n\n# Example usage:\nharmed_foreseeable = True\nproximity_exists = True\nfair_to_impose_liability = False\n\nif assess_duty_of_care(harmed_foreseeable, proximity_exists, fair_to_impose_liability):\n    print(\"Duty of care exists.\")\nelse:\n    print(\"Duty of care does not exist.\")\n"
+    },
+    {
+      "question": "Why did the House of Lords reject the application of the Hedley Byrne principle to the takeover bidder in Caparo Industries PLC v Dickman?",
+      "answer": "The House of Lords rejected the application of the Hedley Byrne principle to the takeover bidder in Caparo because they found it was not fair, just, or reasonable to impose liability on the accountant for losses suffered by a third party outside the original scope of his assumed responsibility. The court determined that extending liability to such third parties would create an overly broad and uncertain range of potential liabilities."
+    }
+  ]
+}

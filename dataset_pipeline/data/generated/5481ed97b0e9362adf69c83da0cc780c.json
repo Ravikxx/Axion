@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Asociación_de_Televisoras_de_Centroamérica_y_Panamá",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was ATELCAP and which countries were involved in this broadcasting alliance?",
+      "answer": "ATELCAP (Asociación de Televisoras de Centroamérica y Panamá) was a pan-regional broadcasting alliance formed by television channels from five Spanish-speaking Central American nations and Panama. The countries involved were Guatemala, El Salvador, Honduras, Costa Rica, and Panama."
+    },
+    {
+      "question": "Who were the five founding members of ATELCAP and which television channels did they own?",
+      "answer": "The five founding members of ATELCAP were José Antonio Mourra (owner of Trecevisión, Guatemala), Boris Eserski (owner of Telecorporación Salvadoreña, El Salvador), Rafael Ferrari (owner of Canal 5, Honduras), Octavio Sacasa (owner of Televicentro, Nicaragua), and Fernando Eleta Almaran (owner of RPC Televisión, Panama)."
+    },
+    {
+      "question": "How did ATELCAP acquire international content for its member channels?",
+      "answer": "ATELCAP's member channels acquired international content by purchasing it collectively through their collaborative efforts. They utilized a shared microwave network provided by telecommunications company COMTELCA to distribute the content across member countries."
+    },
+    {
+      "question": "Why was Nicaragua initially suspended from ATELCAP, and when was it later reintegrated?",
+      "answer": "Nicaragua was suspended from ATELCAP in 1979 because the channels owned by Octavio Sacasa (channels 2 and 12, with relayers 7 and 5) were usurped by the state, forming Sistema Sandinista de Televisión. Nicaragua was reintegrated into ATELCAP in 1992 after ATELCAP demanded the return of the channels to their rightful owner, following the Esquipulas II agreement."
+    },
+    {
+      "question": "What was the purpose of the joint forum held by ATELCAP and ASDER on December 1, 2006?",
+      "answer": "The joint forum held by ATELCAP and ASDER on December 1, 2006, aimed to discuss the incoming arrival of digital terrestrial television in the region and plan for long-term strategies. One key suggestion was for the countries to adopt the ATSC format for digital television."
+    },
+    {
+      "question": "Provide a code snippet to check if a given year falls within the active period of ATELCAP (assumed to be between its founding and 2022).",
+      "answer": "python\ndef is_atelecap_active(year):\n    return 1987 <= year <= 2022\n\n# Example usage:\nprint(is_atelecap_active(1995))  # True\nprint(is_atelecap_active(2023))  # False\n"
+    },
+    {
+      "question": "What was the significance of the removal of the ATELCAP ID from TCS networks in October 2022?",
+      "answer": "The removal of the ATELCAP ID from the sign-on and sign-off routines of the three TCS networks in October 2022 marked the likely end of ATELCAP's operations. This change coincided with TCS unveiling a new national anthem video, signaling a shift away from the association's branding."
+    }
+  ]
+}

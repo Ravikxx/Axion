@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Dido_and_Aeneas",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "Who wrote the libretto for the opera 'Dido and Aeneas'?",
+      "answer": "The libretto (story and words) for 'Dido and Aeneas' was written by Nahum Tate."
+    },
+    {
+      "question": "What is the historical context of the composition and premiere of 'Dido and Aeneas'?",
+      "answer": "'Dido and Aeneas' was composed around 1684–1685 by Henry Purcell, possibly inspired by John Blow's 'Venus and Adonis' and French operas by Marc-Antoine Charpentier. Its first performance was delayed due to the death of King Charles II and took place in 1689 at a girls' school in Chelsea directed by Josias Priest."
+    },
+    {
+      "question": "How does 'Dido and Aeneas' blend tragedy and comedy?",
+      "answer": "The opera combines tragic love scenes between Dido and Aeneas with comical and mischievous scenes involving witches, creating a contrast between emotional depth and lighthearted humor."
+    },
+    {
+      "question": "From which classical work is the story of 'Dido and Aeneas' adapted?",
+      "answer": "The story is adapted from Book IV of Virgil's epic poem 'The Aeneid', which recounts the tragic love affair between the Trojan hero Aeneas and Queen Dido of Carthage."
+    },
+    {
+      "question": "Why is some of the music in 'Dido and Aeneas' composed by modern composers?",
+      "answer": "The original manuscript of the opera has been lost or destroyed, so performances rely on early printed copies. Some music is missing from these copies and is re-created by modern composers in Purcell's style or supplemented with music he composed around 1685 to fill the gaps."
+    },
+    {
+      "question": "Provide a code snippet that generates a simple plot summary of 'Dido and Aeneas' in Python.",
+      "answer": "python\ndef plot_summary():\n    summary = (\n        \"The opera 'Dido and Aeneas' tells the tragic love story of Aeneas, a Trojan prince, \"\n        \"and Dido, the Queen of Carthage, based on Virgil's Aeneid. After Aeneas lands in \"\n        \"Carthage, they fall in love, but the gods compel Aeneas to leave and found Rome, \"\n        \"leading to Dido's despair and suicide. The work blends tragic and comic elements.\"\n    )\n    return summary\n\nprint(plot_summary())\n"
+    },
+    {
+      "question": "What is the significance of 'Dido and Aeneas' in Henry Purcell's body of work?",
+      "answer": "'Dido and Aeneas' is Henry Purcell's only true opera and is widely regarded as his most famous and enduring composition, showcasing his mastery of dramatic music and emotional expression."
+    }
+  ]
+}

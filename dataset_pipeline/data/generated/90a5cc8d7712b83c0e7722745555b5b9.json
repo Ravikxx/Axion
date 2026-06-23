@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Endeavour_Awards",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the Endeavour Leadership Program and what were its main goals?",
+      "answer": "The Endeavour Leadership Program (ELP), formerly known as Endeavour Scholarships and Fellowships and Endeavour Awards, was an internationally competitive, merit-based scholarship program established by the Australian Government as part of its $1.4 billion Australian initiative. Its main goals were to foster global research collaboration, professional development, and education linkages between Australia and other nations by supporting both Australians studying abroad and international students, researchers, and professionals studying or working in Australia."
+    },
+    {
+      "question": "When and why were the Endeavour Awards established?",
+      "answer": "The Endeavour Awards were established in 2003 as part of the International Education Package titled 'Engaging the World Through Education.' They were created to promote international education exchanges and strengthen global connections by funding Australian and international students, researchers, and professionals in various fields of study and professional development."
+    },
+    {
+      "question": "How did the Australian Scholarships initiative expand the Endeavour Awards?",
+      "answer": "Under the Australian Scholarships initiative, the Endeavour Awards were significantly expanded to provide approximately 9,000 scholarships over five years starting from July 2006. Nearly half of these scholarships were allocated for outgoing Australians, and the awards covered a wide range of fields including postgraduate, undergraduate, vocational, technical education, research, and professional development. This expansion doubled the number of Australian Government-funded scholarships in the Asia-Pacific region."
+    },
+    {
+      "question": "What types of scholarships were offered under the Endeavour Awards?",
+      "answer": "The Endeavour Awards included four categories: 1) Endeavour Postgraduate and Post-doctoral Awards for advanced academic research, 2) Endeavour Vocational Education and Training Awards for practical, skill-based learning, 3) Endeavour Executive Awards for mid-career professionals seeking leadership development, and 4) Endeavour Student Exchange Programmes for short-term academic exchanges."
+    },
+    {
+      "question": "Who were some notable recipients of the Endeavour Awards?",
+      "answer": "Notable recipients of the Endeavour Awards include Professor Jane Hirst from Oxford University, recognized for her contributions to global health research, and Chef Ganesh Iyer from LCB in Sydney, who participated in culinary exchange programs under the initiative."
+    },
+    {
+      "question": "Why and when did the Endeavour Leadership Program end?",
+      "answer": "The Endeavour Leadership Program (ELP) ended in April 2019, with the 2019 cohort being the last to receive funding. It was replaced by the Destination Australia program, marking a transition in Australia’s approach to international education scholarships and exchanges."
+    },
+    {
+      "question": "How would you write a Python function to validate if a given year falls within the period the Endeavour Awards were active?",
+      "answer": "python\ndef is_endeavour_active(year):\n    \"\"\"Check if the Endeavour Awards were active in the given year.\n    \n    Args:\n        year (int): The year to check.\n        \n    Returns:\n        bool: True if the Endeavour Awards were active, False otherwise.\n    \"\"\"\n    start_year = 2003\n    end_year = 2019\n    return start_year <= year <= end_year\n\n# Example usage:\nprint(is_endeavour_active(2015))  # Output: True\nprint(is_endeavour_active(2020))  # Output: False\n"
+    }
+  ]
+}

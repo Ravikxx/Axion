@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Andy_Farrell",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is Andrew David Farrell's current professional role in rugby?",
+      "answer": "Andrew David Farrell is the head coach of the Ireland national rugby union team, a position he has held since 2019."
+    },
+    {
+      "question": "How many caps did Andrew David Farrell earn in rugby league and rugby union combined?",
+      "answer": "Andrew David Farrell earned a total of 45 caps (34 for Great Britain and 11 for England) in rugby league, and 8 caps for England in rugby union, combining to 53 caps across both codes."
+    },
+    {
+      "question": "What notable achievements did Andrew David Farrell accomplish during his rugby league career with Wigan?",
+      "answer": "During his rugby league career with Wigan (1991–2004), Farrell won six Championships, four Challenge Cups, and was awarded the Man of Steel prize twice."
+    },
+    {
+      "question": "Which rugby union clubs did Andrew David Farrell play for after transitioning from rugby league?",
+      "answer": "After retiring from rugby league, Farrell played rugby union for Saracens from 2005 to 2009, primarily as a centre."
+    },
+    {
+      "question": "What significant coaching milestones has Andrew David Farrell achieved with the Ireland national rugby union team?",
+      "answer": "Farrell coached Ireland to a 2–1 series victory over New Zealand in 2022, consecutive Six Nations Championship wins in 2023 and 2024, and a Grand Slam in 2023."
+    },
+    {
+      "question": "In 2024, what major coaching assignment was given to Andrew David Farrell?",
+      "answer": "In January 2024, Farrell was appointed coach of the British & Irish Lions for their 2025 tour of Australia, which the team won 2–1 in the test series."
+    },
+    {
+      "question": "Provide a code snippet that calculates Andrew David Farrell's total career caps by summing his rugby league and rugby union appearances.",
+      "answer": "python\n# Caps in rugby league: 34 (Great Britain) + 11 (England)\nrugby_league_caps = 34 + 11\n\n# Caps in rugby union: 8 (England)\nrugby_union_caps = 8\n\n# Total career caps\ntotal_caps = rugby_league_caps + rugby_union_caps\nprint(total_caps)  # Output: 53\n"
+    }
+  ]
+}

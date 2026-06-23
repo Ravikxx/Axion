@@ -1,0 +1,38 @@
+{
+  "source_url": "https://mathworld.wolfram.com/topics/Notation.html",
+  "category": "mathworld",
+  "pairs": [
+    {
+      "question": "What is the difference between Big-O, Big-Omega, and Big-Theta notation in asymptotic analysis?",
+      "answer": "Big-O notation (O) describes the upper bound of a function's growth rate, meaning the function grows no faster than the bound asymptotically. Big-Omega notation (Ω) describes the lower bound, indicating the function grows no slower than the bound. Big-Theta notation (Θ) provides a tight bound, meaning the function grows at the same rate as the bound within constant factors, both above and below. For example, if f(n) = 3n² + 2n + 1, then f(n) = O(n²), f(n) = Ω(n²), and f(n) = Θ(n²)."
+    },
+    {
+      "question": "How is the conjugate transpose of a matrix denoted, and what is its mathematical significance?",
+      "answer": "The conjugate transpose of a matrix is denoted by a dagger symbol (A†) or a superscript asterisk (A*), where each element is the complex conjugate of the original matrix's transpose. Mathematically, if A = [aᵢⱼ], then A† = [āⱼᵢ]. The conjugate transpose is significant in quantum mechanics, signal processing, and linear algebra, particularly in operations like Hermitian matrices (where A = A†) and unitary matrices (where A†A = I)."
+    },
+    {
+      "question": "Write a Python function to compute the L²-norm of a vector. Include an example usage.",
+      "answer": "python\nimport math\n\ndef l2_norm(vector):\n    \"\"\"Compute the L²-norm (Euclidean norm) of a vector.\n    \n    Args:\n        vector: A list or tuple of numerical values.\n    \n    Returns:\n        The L²-norm as a float.\n    \"\"\"\n    return math.sqrt(sum(x**2 for x in vector))\n\n# Example usage:\nvector = [3, 4, 0]\nnorm = l2_norm(vector)\nprint(f\"The L²-norm of {vector} is {norm}\")  # Output: The L²-norm of [3, 4, 0] is 5.0\n"
+    },
+    {
+      "question": "What is the purpose of reverse Polish notation (RPN), and how does it differ from standard infix notation?",
+      "answer": "Reverse Polish notation (RPN) is a postfix notation where operators follow their operands, eliminating the need for parentheses to dictate precedence. It is used in calculators and stack-based algorithms for its efficiency in evaluation. For example, the infix expression (3 + 4) × 2 is written as 3 4 + 2 × in RPN. RPN simplifies parsing and reduces computational overhead by using a stack to evaluate expressions step-by-step."
+    },
+    {
+      "question": "Explain the concept of the golden ratio and its notation. How is it approximated mathematically?",
+      "answer": "The golden ratio, denoted by the Greek letter φ (phi), is an irrational number approximately equal to 1.61803398875. It is defined as the positive solution to the equation φ = 1 + 1/φ, or equivalently, φ = (1 + √5)/2. The golden ratio appears in art, architecture, and nature, often associated with aesthetically pleasing proportions. It can be approximated using the Fibonacci sequence, where the ratio of consecutive terms approaches φ as the sequence progresses."
+    },
+    {
+      "question": "What is the difference between the symbols '≅' (congruent) and '≡' (equivalent) in mathematics?",
+      "answer": "The symbol '≅' denotes congruence, typically used in geometry to indicate that two figures have the same shape and size, or in modular arithmetic to show that two numbers are congruent modulo n (e.g., 7 ≅ 2 mod 5). The symbol '≡' denotes equivalence or identity, often used in logic to mean 'if and only if' (biconditional) or in algebra to indicate that two expressions are identical (e.g., x ≡ x + 0)."
+    },
+    {
+      "question": "How does scientific notation represent very large or very small numbers? Provide an example.",
+      "answer": "Scientific notation expresses numbers as a product of a coefficient (between 1 and 10) and a power of 10. For example, the number 123,000 is written as 1.23 × 10⁵, and 0.000456 is written as 4.56 × 10⁻⁴. This notation simplifies the representation and calculation of extreme values by standardizing the scale using powers of 10."
+    },
+    {
+      "question": "What is the purpose of the PEMDAS rule in arithmetic, and what do the letters stand for?",
+      "answer": "PEMDAS is an acronym for the order of operations in arithmetic: Parentheses, Exponents, Multiplication and Division (from left to right), Addition and Subtraction (from left to right). It dictates the sequence in which operations should be performed to ensure consistent and correct results. For example, in the expression 3 + 4 × 2, multiplication is performed first, yielding 11, not 14."
+    }
+  ]
+}

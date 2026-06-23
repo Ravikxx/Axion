@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/American_cuisine",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What are the primary cultural influences on American cuisine?",
+      "answer": "American cuisine is primarily influenced by European cuisine, Native American and Alaskan cuisine, and African American cuisine (soul food). Additional influences come from Latin American cuisine (e.g., Tex-Mex, New Mexican), East Asian cuisine (e.g., Hawaiian), and French and West African cuisines (e.g., Louisiana Creole). Modern American cuisine also incorporates global immigrant contributions, such as Chinese American, Italian American, and German American dishes."
+    },
+    {
+      "question": "How did Native American cuisine contribute to early American cooking traditions?",
+      "answer": "Native American cuisines formed the foundation of early American cooking, with diets including a mix of farmed foods (e.g., corn, beans, squash) and hunted game (e.g., bison, deer). These traditions varied widely across the continent, with regional adaptations like Tlingit cuisine in Alaska. Many Native American foodways, such as the use of corn in various forms, were adopted and adapted by later settlers."
+    },
+    {
+      "question": "What role did immigration play in shaping 19th-century American cuisine?",
+      "answer": "Immigration in the 19th century diversified American cuisine by introducing new ingredients, techniques, and dishes. European immigrants brought dairy products, baking traditions, and livestock, while Asian and Latin American immigrants contributed spices, cooking styles, and dishes like chop suey and tamales. This period also saw the rise of distinct ethnic cuisines, such as German American and Italian American, which evolved from immigrant communities."
+    },
+    {
+      "question": "Write a Python function to categorize a list of American regional dishes by their geographical origin.",
+      "answer": "python\ndef categorize_regional_dishes(dishes):\n    regions = {\n        'Northeast': ['cheesesteak', 'clam chowder', 'Boston baked beans'],\n        'South': ['gumbo', 'fried chicken', 'biscuits'],\n        'Midwest': ['deep-dish pizza', 'hotdish', 'cornbread'],\n        'West': ['cioppino', 'avocado toast', 'Dungeness crab'],\n        'Southwest': ['chile relleno', 'green chile stew', 'tortilla chips'],\n        'Hawaii': ['poke', 'kalua pig', 'loco moco'],\n        'Louisiana': ['jambalaya', 'beignets', 'po'boys']\n    }\n    categorized = {region: [] for region in regions}\n    for dish in dishes:\n        for region, dishes_in_region in regions.items():\n            if dish.lower() in dishes_in_region:\n                categorized[region].append(dish)\n                break\n    return categorized\n\n# Example usage:\ndishes = ['cheesesteak', 'gumbo', 'avocado toast', 'poke']\nprint(categorize_regional_dishes(dishes))\n# Output: {'Northeast': ['cheesesteak'], 'South': ['gumbo'], 'West': ['avocado toast'], 'Hawaii': ['poke'], ...}\n"
+    },
+    {
+      "question": "What are some examples of American dishes that originated from other culinary traditions?",
+      "answer": "Many American dishes are adaptations of foods from other cultures, including:\n- Burgers (adapted from German Hamburg steak)\n- Pizza (adapted from Italian cuisine, popularized in New York and Chicago)\n- Hot dogs (adapted from European sausages, popularized in street vendors)\n- Tex-Mex (fusion of Mexican and Texas cuisines, e.g., chili con carne, fajitas)\n- Chop suey (Americanized Chinese dish)\n- General Tso's chicken (Chinese-American invention)"
+    },
+    {
+      "question": "How did the 20th century change American eating habits?",
+      "answer": "The 20th century revolutionized American eating habits through several factors:\n1. **Technology**: Home refrigeration, microwaves, and fast-food chains enabled convenience foods.\n2. **Wars**: World War II popularized canned and processed foods (e.g., spam, MREs), while post-war military rations influenced home cooking.\n3. **Science**: Nutrition science led to fortified foods, diet trends (e.g., low-fat, low-carb), and food labeling.\n4. **Immigration**: Continued waves of immigrants expanded ethnic food options (e.g., sushi, tacos).\n5. **Automobiles**: Drive-in and drive-through restaurants emerged, making fast food accessible.\n6. **Media**: Celebrity chefs (e.g., Julia Child, Emeril Lagasse) and foodie culture popularized gourmet cooking at home."
+    },
+    {
+      "question": "What are some holiday-specific foods in American cuisine?",
+      "answer": "American cuisine features several foods traditionally associated with holidays:\n- **Thanksgiving**: Roast turkey, stuffing, cranberry sauce, mashed potatoes, pumpkin pie.\n- **Christmas**: Ham (glazed or spiral-cut), fruitcake, candy canes, eggnog.\n- **Fourth of July**: Barbecued ribs, corn on the cob, apple pie, watermelon.\n- **Halloween**: Candy corn, caramel apples, pumpkin soup.\n- **Super Bowl Sunday**: Buffalo wings, nachos, sliders, chili.\n- **Easter**: Hot cross buns, deviled eggs, ham, carrot cake."
+    }
+  ]
+}

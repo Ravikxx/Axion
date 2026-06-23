@@ -1,0 +1,38 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Concerto_grosso",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is a concerto grosso, and what does the term mean in Italian?",
+      "answer": "A concerto grosso is a musical composition from the 18th century featuring a contrast between a small group of solo instruments (concertino) and a larger ensemble (tutti, ripieno, or concerto grosso). The term 'concerto grosso' translates from Italian as 'big concerto'. The plural form is 'concerti grossi'."
+    },
+    {
+      "question": "What are the typical movement structures of a concerto grosso?",
+      "answer": "A concerto grosso typically consists of three movements with distinct speeds and characters: the first movement is fast and contrasts the tutti and concertino groups, the second movement is slow and quiet, and the third movement is fast and lively."
+    },
+    {
+      "question": "How did Arcangelo Corelli contribute to the development of the concerto grosso?",
+      "answer": "Arcangelo Corelli (1653–1713) was an Italian composer who made the concerto grosso highly popular. He often used a concertino group consisting of two violins and one cello in his works."
+    },
+    {
+      "question": "What instruments were commonly used in the concertino group of Corelli's concerti grossi?",
+      "answer": "In Corelli's concerti grossi, the concertino group typically included two violins and one cello."
+    },
+    {
+      "question": "How does the Brandenburg Concerto No. 2 by J.S. Bach differ from Corelli's concerti grossi?",
+      "answer": "Bach's Brandenburg Concerto No. 2 features a concertino group of four instruments—trumpet, violin, recorder, and oboe—whereas Corelli's concerti grossi usually included two violins and a cello. Additionally, each of Bach's Brandenburg Concertos uses a different combination of instruments."
+    },
+    {
+      "question": "Why did composers after the Baroque period show less interest in the concerto grosso?",
+      "answer": "After the Baroque period, composers shifted their focus toward the solo concerto, which featured a single soloist rather than a small group of soloists. This preference led to fewer concerti grossi being composed during later periods."
+    },
+    {
+      "question": "Provide a Python code snippet that categorizes a list of Baroque composers and their concerti grossi works based on the concertino group size.",
+      "answer": "python\ncomposers_works = {\n    'Arcangelo Corelli': {'concertino_size': 3, 'works': ['Concerto Grosso Op. 6']},\n    'George Frideric Handel': {'concertino_size': 3, 'works': ['Concerto Grosso Op. 6']},\n    'Johann Sebastian Bach': {'concertino_size': 4, 'works': ['Brandenburg Concerto No. 2']}\n}\n\ndef categorize_concerti_grossi(composers_data):\n    for composer, data in composers_data.items():\n        print(f\"{composer}: Concertino size = {data['concertino_size']}, Works = {', '.join(data['works'])}\")\n\ncategorize_concerti_grossi(composers_works)\n\nThis code categorizes Baroque composers and their concerti grossi works based on the number of instruments in the concertino group."
+    },
+    {
+      "question": "In what ways did 20th-century composers like Stravinsky and Bartok revive the concerto grosso form?",
+      "answer": "20th-century composers such as Igor Stravinsky and Bela Bartok revived the concerto grosso form by composing pieces that incorporated its principles, such as contrasting small and large instrumental groups, even though they were not strictly within the Baroque tradition."
+    }
+  ]
+}

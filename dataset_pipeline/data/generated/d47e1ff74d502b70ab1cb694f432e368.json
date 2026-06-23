@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/1990–91_San_Antonio_Spurs_season",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Which players were acquired or signed by the San Antonio Spurs during the 1990–91 off-season?",
+      "answer": "During the 1990–91 off-season, the San Antonio Spurs acquired Paul Pressey from the Milwaukee Bucks. Mid-season, they also signed free agent Avery Johnson after releasing Reggie Williams to free agency."
+    },
+    {
+      "question": "What was the San Antonio Spurs' regular season record at the All-Star break in 1990–91?",
+      "answer": "At the All-Star break, the San Antonio Spurs had a 32–13 record."
+    },
+    {
+      "question": "How did the San Antonio Spurs perform in the final 17 games of the 1990–91 regular season?",
+      "answer": "The Spurs won 13 of their final 17 games of the 1991 regular season."
+    },
+    {
+      "question": "What were David Robinson's per-game averages for the 1990–91 season, and which All-NBA and All-Defensive teams was he named to?",
+      "answer": "David Robinson averaged 25.6 points, 13.0 rebounds, 1.5 steals, and 3.9 blocks per game during the 1990–91 season. He was named to the All-NBA First Team and the NBA All-Defensive Second Team."
+    },
+    {
+      "question": "Which San Antonio Spurs players averaged double-doubles during the 1990–91 season?",
+      "answer": "David Robinson (25.6 points, 13.0 rebounds) and Terry Cummings (17.6 points, 7.8 rebounds) both averaged double-doubles during the 1990–91 season."
+    },
+    {
+      "question": "How did the San Antonio Spurs perform in the 1991 NBA playoffs against the Golden State Warriors?",
+      "answer": "The Spurs won Game 1 of the series against the Golden State Warriors at home, 130–121, but lost the next three games, including a Game 4 loss on the road, 110–97, resulting in a four-game series loss."
+    },
+    {
+      "question": "Write a Python function to calculate a basketball player's Player Efficiency Rating (PER) using their per-game averages for points, rebounds, assists, steals, and blocks. Use a simplified formula: PER = (points + rebounds + assists + steals + blocks) / games_played.",
+      "answer": "python\ndef calculate_per(points, rebounds, assists, steals, blocks, games_played):\n    if games_played <= 0:\n        raise ValueError(\"games_played must be greater than 0\")\n    per = (points + rebounds + assists + steals + blocks) / games_played\n    return per\n\n# Example usage for David Robinson's 1990–91 season:\nper = calculate_per(points=25.6, rebounds=13.0, assists=3.0, steals=1.5, blocks=3.9, games_played=82)\nprint(per)  # Output: 0.8646341463414634\n"
+    }
+  ]
+}

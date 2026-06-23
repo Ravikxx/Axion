@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Common_Interface",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the primary purpose of the DVB Common Interface (DVB-CI) in pay TV systems?",
+      "answer": "The primary purpose of the DVB Common Interface (DVB-CI) is to enable decryption of pay TV channels by allowing TV manufacturers to support multiple encryption schemes through exchangeable conditional-access modules (CAMs). This flexibility lets broadcasters choose different cryptographic methods while ensuring compatibility with various TV receivers."
+    },
+    {
+      "question": "Explain the roles of the host and the CAM in a DVB-CI system.",
+      "answer": "In a DVB-CI system, the host (TV or set-top box) is responsible for tuning to pay TV channels and demodulating the RF signal. The CAM (Conditional Access Module), which is plugged into the host via the Common Interface, handles the descrambling of the encrypted TV signal. The CAM also accepts the subscriber card, which contains the access keys and permissions required for decryption."
+    },
+    {
+      "question": "What standard governs the DVB Common Interface, and why is it important?",
+      "answer": "The DVB Common Interface is governed by the EN 50221-1997 standard. This standard is crucial because it defines the specifications for adding a CAM to a digital TV receiver, enabling the receiver to adapt to different cryptographic methods used by broadcasters. Compliance with this standard ensures interoperability between various DVB-CI equipment."
+    },
+    {
+      "question": "How does the DVB Common Interface benefit broadcasters in the pay TV market?",
+      "answer": "The DVB Common Interface benefits broadcasters by allowing them to implement different conditional access solutions from various suppliers. This flexibility increases their choices of anti-piracy options and reduces dependency on a single encryption method, enhancing security and market competitiveness."
+    },
+    {
+      "question": "Why has the Conditional Access Module (CAM) become more popular than other types of modules in the DVB Common Interface?",
+      "answer": "The CAM has gained popularity in the DVB Common Interface primarily due to the pay TV market's demand for robust conditional access solutions. While the EN 50221 specification allows many types of modules, the CAM's ability to handle subscriber cards and encryption schemes specifically tailored for pay TV has made it the preferred choice for broadcasters and manufacturers alike."
+    },
+    {
+      "question": "Provide a simple code snippet demonstrating how a CAM might be initialized in a DVB-CI system.",
+      "answer": "python\n# Pseudo-code for initializing a CAM in a DVB-CI system\nclass ConditionalAccessModule:\n    def __init__(self, module_type):\n        self.module_type = module_type\n        self.keys = None\n        \n    def load_subscriber_card(self, card_data):\n        # Simulate loading access keys from the subscriber card\n        self.keys = card_data.get('access_keys')\n        return self.keys is not None\n\n# Example usage\ncam = ConditionalAccessModule(module_type='DVB-CI')\nsubscriber_card = {'access_keys': ['key1', 'key2']}\nif cam.load_subscriber_card(subscriber_card):\n    print(\"CAM initialized with access keys.\")\n"
+    },
+    {
+      "question": "What would happen if a TV or set-top box did not support the DVB Common Interface?",
+      "answer": "If a TV or set-top box did not support the DVB Common Interface, it would be unable to decrypt pay TV channels that rely on conditional access modules (CAMs). The lack of support would limit the device's compatibility with pay TV broadcasters, as it would not be able to accommodate different encryption schemes or subscriber cards, effectively restricting access to encrypted content."
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Clan_Macfie",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is Clan Macfie's current status with the Court of the Lord Lyon?",
+      "answer": "Clan Macfie is officially registered with the Court of the Lord Lyon since 1981, but it is considered an armigerous clan because it currently lacks a recognized chief."
+    },
+    {
+      "question": "What does the name 'Macfie' mean, and what is its Gaelic origin?",
+      "answer": "The name 'Macfie' is derived from the Gaelic patronymic 'Mac Dhuibhshíthe', meaning 'son of the dark fairy' in modern Scottish Gaelic. It has been Anglicized into various forms, including MacPhee and MacFie."
+    },
+    {
+      "question": "Which historical figure traced his ancestry to the Siol Alpin clans, including Clan Macfie?",
+      "answer": "The historian W. F. Skene named Clan Macfie as one of the seven clans of Siol Alpin, all of whom could trace their ancestry back to Alpin, the father of Cináed mac Ailpín (Kenneth MacAlpin)."
+    },
+    {
+      "question": "What role did Clan Macfie play under the Lords of the Isles, and how did this change after the late 15th century?",
+      "answer": "Clan Macfie served under the Lords of the Isles, descendants of Somerled, from the 14th to late 16th centuries. After the Lordship of the Isles was forfeited in the late 15th century, the Macfies attached themselves to powerful Macdonalds, particularly the Macdonalds of Islay."
+    },
+    {
+      "question": "Who was the last chief of Clan Macfie, and what happened to the clan after his execution?",
+      "answer": "The last chief of Clan Macfie was executed in the early 17th century as Colonsay fell under Macdonald control. Without a chief, the clan became a leaderless 'broken clan' and followed the Macdonalds of Islay. A branch of the clan dispersed to lands controlled by Clan Cameron."
+    },
+    {
+      "question": "Describe the significance of Ewen Macphee in Clan Macfie's history.",
+      "answer": "Ewen Macphee was a notorious outlaw in the early 19th century, known for being both revered and feared by locals while despised by authorities. His actions marked a period of clan dispersal and struggle."
+    },
+    {
+      "question": "Where are the primary historical sites associated with Clan Macfie located, and what can be found there?",
+      "answer": "The primary historical sites associated with Clan Macfie are the islands of Colonsay and Oronsay in the Scottish Inner Hebrides. Many monuments to lairds and churchmen of the clan can be found on these islands today."
+    },
+    {
+      "question": "Write a Python script to convert the Gaelic name 'Mac Dhuibhshíthe' into its Anglicized form 'Macfie'.",
+      "answer": "python\ndef gaelic_to_anglicized(gaelic_name):\n    # Simple mapping for this specific case\n    anglicized_forms = {\n        'Mac Dhuibhshíthe': 'Macfie',\n        'MacDhubhShìth': 'MacFie',\n        'Mac Phee': 'MacPhee',\n        'Mac Phie': 'MacPhie'\n    }\n    return anglicized_forms.get(gaelic_name, \"Unknown form\")\n\n# Example usage\nprint(gaelic_to_anglicized('Mac Dhuibhshíthe'))  # Output: Macfie\n"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://mathworld.wolfram.com/Category.html",
+  "category": "mathworld",
+  "pairs": [
+    {
+      "question": "What are the three fundamental components that define a category in category theory?",
+      "answer": "A category is defined by: 1) a collection of objects; 2) for each pair of objects, a collection of morphisms (or arrows) from one object to another; and 3) a binary operation called composition defined on compatible pairs of morphisms. Composition must satisfy the identity axiom and the associative axiom, analogous to monoid axioms."
+    },
+    {
+      "question": "What are the three laws that morphisms in a category must obey?",
+      "answer": "Morphisms in a category must satisfy: 1) For objects A, B, and C, if there are morphisms f: A → B and g: B → C, then there must exist a morphism g∘f: A → C (composition); 2) Composition is associative, so for f: A → B, g: B → C, and h: C → D, (h∘g)∘f = h∘(g∘f); 3) For each object A, there exists an identity morphism id_A: A → A such that for any morphism f: A → B, id_B∘f = f and f∘id_A = f."
+    },
+    {
+      "question": "How are identity morphisms and composition defined in concrete categories over sets?",
+      "answer": "In concrete categories over sets, an object is a mathematical structure (e.g., a group, vector space, or smooth manifold), and a morphism is a map between two objects. The identity morphism for an object is the identity map on that object (e.g., id_A: A → A where A is a set or structure). Composition of morphisms corresponds to function composition: if f: A → B and g: B → C are morphisms (maps), then their composition g∘f: A → C is the usual function composition (g(f(x)) for x ∈ A)."
+    },
+    {
+      "question": "Provide an example of a category where objects are groups and morphisms are group homomorphisms. Explain how composition and identity work in this category.",
+      "answer": "In the category **Grp**, objects are groups (e.g., (G, ∘) and (H, ⊕)), and morphisms are group homomorphisms (structure-preserving maps f: G → H such that f(a ∘ b) = f(a) ⊕ f(b) for all a, b ∈ G). Composition is function composition: if f: G → H and g: H → K are group homomorphisms, then g∘f: G → K is also a group homomorphism. The identity morphism for a group G is the identity map id_G: G → G, which is trivially a group homomorphism. For example, if G = (ℝ, +) and H = (ℝ⁺, ×), the exponential map exp: ℝ → ℝ⁺ is a group homomorphism, and composition with the logarithm (which is also a homomorphism) works as expected: log(exp(x)) = x."
+    },
+    {
+      "question": "How would you define a category where objects are topological spaces and morphisms are continuous maps? Write a Python code snippet to represent this category and demonstrate morphism composition.",
+      "answer": "In the category **Top**, objects are topological spaces (e.g., (X, τ_X) and (Y, τ_Y)), and morphisms are continuous maps f: X → Y (maps where the preimage of every open set in Y is open in X). Composition is function composition, and the identity morphism for a space X is the identity map id_X: X → X. Here’s a Python snippet using the `networkx` library to represent this category and demonstrate composition:\n\npython\nimport networkx as nx\n\n# Define a simple category Top with objects as topological spaces and morphisms as continuous maps\nclass TopSpace:\n    def __init__(self, name):\n        self.name = name\n    def __repr__(self):\n        return f\"TopSpace({self.name})\"\n\nclass ContinuousMap:\n    def __init__(self, source, target, func):\n        self.source = source\n        self.target = target\n        self.func = func  # Actual Python function representing the map\n    def __call__(self, x):\n        return self.func(x)\n    def __repr__(self):\n        return f\"ContinuousMap({self.source} -> {self.target})\"\n\n# Example: Define two topological spaces (simplified as sets with no topology here)\nX = TopSpace(\"X\")\nY = TopSpace(\"Y\")\nZ = TopSpace(\"Z\")\n\n# Define continuous maps (identity and a simple map)\nid_X = ContinuousMap(X, X, lambda x: x)\nf = ContinuousMap(X, Y, lambda x: x + 1)  # Example: f(x) = x + 1\ng = ContinuousMap(Y, Z, lambda y: y * 2)  # Example: g(y) = 2y\n\n# Composition of morphisms\ncomposed_map = ContinuousMap(X, Z, lambda x: g(f(x)))\n\nprint(f\"Identity morphism: {id_X}\")\nprint(f\"Morphism f: {f}\")\nprint(f\"Morphism g: {g}\")\nprint(f\"Composed morphism g∘f: {composed_map}\")\nprint(f\"Example: g(f(3)) = {composed_map(3)}\")"
+    },
+    {
+      "question": "What is the difference between the 'standard' category of topological spaces and other category structures with topological spaces as objects?",
+      "answer": "The 'standard' category of topological spaces, denoted **Top**, has topological spaces as objects and continuous maps as morphisms. This is the most widely used and important category structure for topological spaces. However, other category structures can be defined where the objects are still topological spaces, but the morphisms are different: for example, smooth maps (for differentiable manifolds), proper maps, or even homotopy classes of maps. These alternative categories are less common and typically arise in specialized contexts (e.g., differential topology or homotopy theory). The 'standard' category **Top** remains the primary reference."
+    },
+    {
+      "question": "Why must morphisms in a category preserve the mathematical structure of the objects? Provide examples for groups, vector spaces, and topological spaces.",
+      "answer": "Morphisms must preserve the mathematical structure of objects to ensure that the category captures meaningful relationships between mathematical entities. For example:\n- In the category of groups (**Grp**), morphisms (group homomorphisms) must preserve the group operation: f(a ∘ b) = f(a) ⊕ f(b).\n- In the category of vector spaces (**Vect**), morphisms (linear maps) must preserve scalar multiplication and vector addition: f(αv + βw) = αf(v) + βf(w).\n- In the category of topological spaces (**Top**), morphisms (continuous maps) must preserve open sets: the preimage of every open set in the target space must be open in the source space.\nBy preserving structure, morphisms allow the study of invariants and properties that are independent of the specific representation of objects."
+    }
+  ]
+}

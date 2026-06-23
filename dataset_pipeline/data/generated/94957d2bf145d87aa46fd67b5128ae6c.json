@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Cosmo_Gang_the_Video",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What year was Cosmo Gang the Video released for arcades?",
+      "answer": "Cosmo Gang the Video was released in 1992 for arcades."
+    },
+    {
+      "question": "What arcade board was Cosmo Gang the Video developed for?",
+      "answer": "Cosmo Gang the Video ran on the Namco System 2 arcade board."
+    },
+    {
+      "question": "What are the key gameplay elements of Cosmo Gang the Video?",
+      "answer": "The key gameplay elements include shooting enemies, avoiding projectiles, and collecting power-up items that grant additional abilities."
+    },
+    {
+      "question": "How did Cosmo Gang the Video originate from a previous Namco game?",
+      "answer": "Cosmo Gang the Video features characters and ideas from Cosmo Gangs, a 1990 Namco redemption game originally exported outside Japan by Data East, from which it drew inspiration."
+    },
+    {
+      "question": "What were the reception differences between the arcade and Super Famicom versions of Cosmo Gang the Video?",
+      "answer": "The arcade version was widely successful and well-received for its graphics, gameplay, and music, while the Super Famicom home conversion received a more mixed response due to simplistic gameplay and lacking replay value."
+    },
+    {
+      "question": "Provide a Python code snippet to parse and extract the release year from the given text about Cosmo Gang the Video.",
+      "answer": "python\nimport re\n\ntext = \"\"\"Cosmo Gang the Video is a 1992 fixed shooter video game developed and published by Namco for arcades.\"\"\"\n\n# Extract the year using regex\nmatch = re.search(r'\\b(19|20)\\d{2}\\b', text)\nrelease_year = match.group(0) if match else None\nprint(release_year)  # Output: 1992\n"
+    },
+    {
+      "question": "What are the notable re-releases of Cosmo Gang the Video?",
+      "answer": "Notable re-releases include the Japanese Wii Virtual Console in 2009, and the Nintendo Switch and PlayStation 4 as part of the Arcade Archives series by Hamster Corporation on April 20, 2023."
+    }
+  ]
+}

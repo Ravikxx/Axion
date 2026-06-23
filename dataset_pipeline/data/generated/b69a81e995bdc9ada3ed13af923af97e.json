@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Equestrian_statue_of_Napoleon",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Where is the equestrian statue of Napoleon located?",
+      "answer": "The equestrian statue of Napoleon is located at Place du Général-de-Gaulle in Rouen, Normandy, France."
+    },
+    {
+      "question": "Who sculpted the equestrian statue of Napoleon in Rouen and in what year was it erected?",
+      "answer": "The statue was sculpted by Gabriel-Vital Dubray in bronze and was erected in 1865."
+    },
+    {
+      "question": "What historical events led to the temporary removal of the Napoleon statue from Rouen in 2020?",
+      "answer": "In June 2020, the statue was taken down for repairs due to fractures in the horse's hoof, which posed a risk of it falling."
+    },
+    {
+      "question": "What was discovered inside the pedestal of Napoleon's equestrian statue when it was removed in 2020?",
+      "answer": "A treasure chest containing bronze, silver, and gold coins from the reign of Napoleon III was found inside the pedestal."
+    },
+    {
+      "question": "Why was there debate in 2021 about replacing Napoleon's statue in Rouen with one dedicated to Gisèle Halimi?",
+      "answer": "Socialist mayor Nicolas Mayer-Rossignol proposed replacing the statue with one dedicated to feminist Gisèle Halimi, arguing her contributions were more relevant. This plan was opposed by figures like historian Thierry Lentz, who called it 'cancel culture' and emphasized Napoleon's local contributions."
+    },
+    {
+      "question": "What percentage of Rouen residents supported keeping Napoleon's statue in a 2021 survey?",
+      "answer": "A survey of 4,080 residents in December 2021 found that 68% wanted the statue to remain."
+    },
+    {
+      "question": "What action did the Rouen city council take in December 2021 regarding Napoleon's statue?",
+      "answer": "The city council registered the statue as a 'monument historique' (historic monument) and stated it would respect the survey results favoring the statue's retention."
+    },
+    {
+      "question": "Explain the significance of the term 'cancel culture' in the context of the 2021 debate over Napoleon's statue in Rouen.",
+      "answer": "In this context, 'cancel culture' refers to the perceived erasure or replacement of historical figures (like Napoleon) from public spaces due to changing societal values or controversies. Historians like Thierry Lentz argued that replacing Napoleon's statue with one of Gisèle Halimi was an example of this trend, dismissing the idea as ideological rather than merit-based."
+    }
+  ]
+}

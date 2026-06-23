@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Edward_P._Kimball",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was Edward Partridge Kimball and what were his primary roles within the LDS Church?",
+      "answer": "Edward Partridge Kimball (1882–1937) was an American organist and hymn writer for the Church of Jesus Christ of Latter-day Saints (LDS Church). He served as the organist or assistant organist of the Mormon Tabernacle Choir from 1905 to 1937, was a missionary in Germany from 1902 to 1906, and later became president of the LDS Church's German–Austrian Mission. He also held leadership roles in the church's Bureau of Information in Washington, D.C."
+    },
+    {
+      "question": "What hymns did Edward Partridge Kimball write or compose, and where are they featured in LDS hymnals?",
+      "answer": "Edward Partridge Kimball wrote the lyrics to 'God Loved Us, So He Sent His Son' and composed the music for 'Great God, To Thee My Evening Song' and 'The Wintry Day Descending to a Close'. These hymns are included in the 1985 English language edition of the LDS Church hymnal."
+    },
+    {
+      "question": "How long did Edward Partridge Kimball serve as a missionary for the LDS Church, and where was his mission located?",
+      "answer": "Edward Partridge Kimball served as a missionary for the LDS Church from April 1902 to April 1906, specifically in Germany."
+    },
+    {
+      "question": "What role did Edward Partridge Kimball play in the launch of 'Music and the Spoken Word'?",
+      "answer": "Edward Partridge Kimball was the organist of the Mormon Tabernacle Choir when 'Music and the Spoken Word' began. His son, Ted Kimball, became the first announcer for the show."
+    },
+    {
+      "question": "Write a Python script that generates a list of Edward Partridge Kimball's hymns and their types (lyrics or music).",
+      "answer": "python\nhymns = {\n    \"God Loved Us, So He Sent His Son\": \"lyrics\",\n    \"Great God, To Thee My Evening Song\": \"music\",\n    \"The Wintry Day Descending to a Close\": \"music\"\n}\n\nfor hymn, hymn_type in hymns.items():\n    print(f\"Hymn: {hymn}, Type: {hymn_type}\")\n"
+    },
+    {
+      "question": "Why did Edward Partridge Kimball take a leave from his role as a Tabernacle organist?",
+      "answer": "Edward Partridge Kimball took a leave from his active service as a Tabernacle organist to serve as president of the LDS Church's German–Austrian Mission."
+    },
+    {
+      "question": "What was Edward Partridge Kimball's role in Washington, D.C., and how long did he serve there?",
+      "answer": "In 1933, Edward Partridge Kimball was appointed organist and director of the LDS Church's Bureau of Information in Washington, D.C. He served in this role until his death in 1937 following a brief illness."
+    }
+  ]
+}

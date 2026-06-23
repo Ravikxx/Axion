@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Atmospheric_entry",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is atmospheric entry and what are its two main types?",
+      "answer": "Atmospheric entry is the movement of an object from outer space into and through the gases of a planet's, dwarf planet's, or natural satellite's atmosphere. The two main types are uncontrolled entry, such as meteors or space debris, and controlled entry (or reentry), such as spacecraft following a predetermined course or navigable trajectory."
+    },
+    {
+      "question": "What physical forces do objects experience during atmospheric entry, and what effects can these forces have?",
+      "answer": "Objects entering an atmosphere experience atmospheric drag, which causes mechanical stress and aerodynamic heating. Aerodynamic heating results primarily from air compression in front of the object and secondarily from drag. These forces can lead to mass loss (ablation) or complete disintegration of smaller objects. Objects with lower compressive strength may even explode due to the intense stresses."
+    },
+    {
+      "question": "Why is it impractical to use retrorockets for the entire atmospheric reentry procedure for spacecraft?",
+      "answer": "It is impractical to use retrorockets for the entire reentry because spacecraft reenter with extremely high kinetic energies—ranging from 7.8 km/s for low Earth orbit to 12.5 km/s for probes like Stardust. Dissipating this energy through atmospheric drag is far more effective and feasible than relying solely on retrorockets, which would require an impractical amount of fuel and energy."
+    },
+    {
+      "question": "What are the key differences between controlled and uncontrolled atmospheric entry in terms of speed and purpose?",
+      "answer": "Controlled atmospheric entry, such as spacecraft reentry, requires slowing the object to subsonic speeds before deploying parachutes or air brakes. Uncontrolled entries, such as those of ballistic warheads or meteors, do not require slowing and are often designed to maintain high speed. Controlled entries are used for safe return of crewed or valuable payloads, while uncontrolled entries may involve objects like debris or meteors that do not need to be preserved."
+    },
+    {
+      "question": "At what altitudes does atmospheric entry conventionally occur for Earth, Venus, and Mars?",
+      "answer": "Atmospheric entry is conventionally defined at the Kármán line—100 km above Earth's surface. For Venus, entry occurs at approximately 250 km, and for Mars, it occurs at about 80 km. These altitudes mark the boundary where atmospheric effects become significant enough to slow entering objects."
+    },
+    {
+      "question": "Why do most objects enter Earth's atmosphere at hypersonic speeds?",
+      "answer": "Most objects enter Earth's atmosphere at hypersonic speeds due to their trajectories: sub-orbital (e.g., intercontinental ballistic missile reentry vehicles), orbital (e.g., spacecraft like Soyuz), or unbounded (e.g., meteors). These trajectories result in high velocities relative to Earth, and acceleration under gravity further increases speed before atmospheric drag begins to decelerate the object."
+    },
+    {
+      "question": "Describe one advanced method for controlled atmospheric entry and explain when it is particularly useful.",
+      "answer": "One advanced method for controlled atmospheric entry is buoyancy-assisted entry. This technique is especially useful for planetary entries where thick atmospheres or strong gravity (e.g., Venus, Titan, or giant planets) make high-velocity hyperbolic entry challenging. By using buoyancy, spacecraft can achieve controlled, lower-velocity descents through these dense or gravity-rich environments."
+    }
+  ]
+}

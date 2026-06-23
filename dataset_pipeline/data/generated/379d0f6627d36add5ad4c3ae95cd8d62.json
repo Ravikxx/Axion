@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/sylwia-lask/how-are-developers-actually-using-ai-at-work-4g9c",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What is the main discussion topic in the 'The New Senior Engineer: Builder, Reviewer or Orchestrator?' room at JSNation?",
+      "answer": "The discussion room focuses on the evolving role of a Senior Engineer in the AI era, questioning whether they should act as a builder, reviewer, or orchestrator of AI tools and workflows."
+    },
+    {
+      "question": "How does the author describe the initial excitement and later cost concerns around using AI tools like Copilot and Claude Code at a large tech corporation?",
+      "answer": "Initially, the company was highly enthusiastic about AI tools, encouraging aggressive usage and even purchasing expensive plans. However, after several months, they discovered that AI usage was extremely costly, leading to discussions about optimization, token usage limits, and potential cost-saving measures."
+    },
+    {
+      "question": "What is the author's experience with AI coding agents in an enterprise legacy system, and why do they find the agents less effective in their work?",
+      "answer": "The author finds that AI coding agents struggle with complex enterprise legacy systems due to the accumulated context, history, and unique quirks of the system. While AI agents are useful for simple tasks like bugs or boilerplate code, the author often outperforms the AI in debugging scenarios because they possess the necessary contextual knowledge."
+    },
+    {
+      "question": "What is 'tokenmaxxing' and which company introduced this concept?",
+      "answer": "'Tokenmaxxing' is a culture where developers are rewarded for using fewer tokens in AI interactions to optimize costs. Meta introduced this concept as part of their efforts to reduce AI-related expenses."
+    },
+    {
+      "question": "Why does the author humorously suggest considering a career change to hairdressing due to AI advancements?",
+      "answer": "The author jokingly suggests hairdressing as an alternative career because the rapid advancements in AI tools, including coding agents and autonomous development workflows, can make some traditional programming tasks seem at risk of automation, though the author ultimately concludes that enterprise legacy systems provide job security."
+    },
+    {
+      "question": "Provide a code snippet that demonstrates how to optimize token usage when interacting with an AI coding agent like Claude Code.",
+      "answer": "To optimize token usage, you can structure your prompts to be concise and specific. For example:\npython\n# Instead of a vague request like:\n# \"Fix this bug\"\n# Use a more detailed and structured prompt:\nprompt = \"\"\"\nAnalyze the following JavaScript function for a bug causing a memory leak.\nThe function processes an array of user sessions and should clear each session's data after processing.\nIdentify the issue and provide a corrected version of the function.\n\nCurrent code:\nfunction processSessions(sessions) {\n  sessions.forEach(session => {\n    const data = session.getData();\n    // ... process data ...\n  });\n}\n\"\"\"\n"
+    },
+    {
+      "question": "What are some challenges AI coding agents face when working with large, complex codebases, and how can developers mitigate these issues?",
+      "answer": "AI coding agents struggle with large codebases due to the lack of contextual understanding, hidden dependencies, and legacy quirks. Developers can mitigate these issues by providing detailed prompts, breaking down complex tasks into smaller steps, and supplementing AI outputs with their own expertise in the system's history and architecture."
+    }
+  ]
+}

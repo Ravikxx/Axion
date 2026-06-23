@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Commemorative_plaque",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is a commemorative plaque and what materials are commonly used to make them?",
+      "answer": "A commemorative plaque is a flat, rigid plate made from materials such as metal, ceramic, stone, wood, or other substances. It typically bears text or an image in relief—or both—to honor a person, event, former use of a place, or another significant thing. These plaques are often attached to vertical surfaces like walls or monuments to serve as lasting tributes."
+    },
+    {
+      "question": "How do modern plaques contribute to tourism or local visits?",
+      "answer": "Many modern plaques are installed to designate a location as historically significant or worthy of visitation. By associating a place with a commemorated person, event, or item, they encourage people to explore and engage with cultural or historical sites. This practice helps preserve collective memory and fosters local tourism."
+    },
+    {
+      "question": "What is the difference between a monumental plaque and a regular commemorative plaque?",
+      "answer": "A monumental plaque, or tablet, is a type of commemorative plaque specifically used to honor a deceased person or persons. It often serves as a simple form of church monument. While all monumental plaques are commemorative, not all commemorative plaques are monumental—some may be religious, signify ownership, or serve other purposes."
+    },
+    {
+      "question": "What is a plaquette and how is its usage different in English compared to European languages?",
+      "answer": "A plaquette is a small plaque. In English, unlike many European languages, the term 'plaquette' is not commonly used for outdoor plaques mounted on walls. Instead, English speakers typically refer to such objects simply as plaques."
+    },
+    {
+      "question": "How have QR codes been integrated into memorial plaques in recent years?",
+      "answer": "In the early 21st century, many memorials began including QR codes on plaques. For example, Scan2Remember offers QR memorial plaques that link to digital memorial pages when scanned with a smartphone. These pages display photographs, videos, and stories about the deceased, providing an interactive and modern way to preserve and share memories."
+    },
+    {
+      "question": "Write a Python function that simulates scanning a QR code on a plaque and retrieving memorial content.",
+      "answer": "python\nimport webbrowser\n\ndef scan_qr_memorial(qr_content):\n    \"\"\"\n    Simulates scanning a QR code on a memorial plaque and opens the linked memorial page.\n    \n    Args:\n        qr_content (str): The URL or identifier embedded in the QR code.\n    \"\"\"\n    memorial_url = f\"https://scan2remember.com/memorial/{qr_content}\"\n    print(f\"Scanning QR code... Opening memorial page at: {memorial_url}\")\n    webbrowser.open(memorial_url)\n\n# Example usage:\nscan_qr_memorial(\"deceased123\")\n\nThis function constructs a memorial URL from the QR content and opens it in the default web browser."
+    },
+    {
+      "question": "Why might a plaque signify ownership or affiliation instead of commemorating an event or person?",
+      "answer": "While most plaques are commemorative, some serve practical or organizational purposes. For example, plaques can indicate ownership of a property, affiliation with a group or institution, or adherence to specific religious or cultural practices. These plaques help convey identity, belonging, or administrative information in a public or visible manner."
+    }
+  ]
+}

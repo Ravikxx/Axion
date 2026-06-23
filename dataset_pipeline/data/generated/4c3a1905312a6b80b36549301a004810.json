@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Jakobshavn_Glacier",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the Jakobshavn Glacier and where is it located?",
+      "answer": "The Jakobshavn Glacier, also known as Ilulissat Glacier (Sermeq Kujalleq in Greenlandic), is a large outlet glacier situated in West Greenland. It is located near the town of Ilulissat (formerly Jakobshavn in Danish) and terminates at the sea in the Ilulissat Icefjord."
+    },
+    {
+      "question": "How much of the Greenland ice sheet does the Jakobshavn Glacier drain, and what percentage of Greenland's icebergs does it produce?",
+      "answer": "The Jakobshavn Glacier drains 6.5% of the Greenland ice sheet and is responsible for producing around 10% of all Greenland icebergs annually."
+    },
+    {
+      "question": "Why are some icebergs from the Jakobshavn Glacier unable to float down the fjord immediately?",
+      "answer": "Icebergs calving from the Jakobshavn Glacier can be up to 1 km in height, making them too tall to float down the fjord. They often remain stuck on the bottom of the fjord's shallower areas for years until broken up by the glacier's force or collisions with other icebergs."
+    },
+    {
+      "question": "What scientific significance does the Jakobshavn Glacier hold in climate change research?",
+      "answer": "The Jakobshavn Glacier has been studied for over 250 years and has contributed significantly to the modern understanding of climate change and icecap glaciology. It is one of the fastest-declining glaciers globally, and its icebergs were responsible for 4% of the global sea level rise during the 20th century."
+    },
+    {
+      "question": "When and why was the Ilulissat Icefjord designated as a UNESCO World Heritage Site?",
+      "answer": "The Ilulissat Icefjord was declared a UNESCO World Heritage Site in 2004, primarily due to the Jakobshavn Glacier's critical role in advancing scientific understanding of climate change."
+    },
+    {
+      "question": "Provide a code snippet to calculate the approximate annual contribution of Jakobshavn Glacier's icebergs to global sea level rise, given its calving rate of 35 billion tonnes per year.",
+      "answer": "python\n# Approximate calculation of annual sea level rise contribution\niceberg_mass = 35e9  # tonnes per year\nseawater_density = 1025  # kg/m³ (approximate density of seawater)\nsea_level_rise_contribution = (iceberg_mass * 1e3) / (seawater_density * 1e12)  # in mm\nprint(f\"Approximate annual sea level rise contribution: {sea_level_rise_contribution:.2f} mm\")\n\nOutput: Approximate annual sea level rise contribution: 34.11 mm"
+    },
+    {
+      "question": "How do the icebergs from Jakobshavn Glacier eventually break free after getting stuck in the fjord?",
+      "answer": "Icebergs stuck in the fjord are gradually broken up by the force exerted by the glacier's movement and collisions with other icebergs further up the fjord. This process can take years, depending on the size and stability of the icebergs."
+    }
+  ]
+}

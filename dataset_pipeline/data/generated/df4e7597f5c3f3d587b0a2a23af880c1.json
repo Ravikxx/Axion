@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Carolina–Duke_rivalry",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the North Carolina–Duke rivalry commonly called by fans and sports commentators?",
+      "answer": "The North Carolina–Duke rivalry is commonly referred to as 'The Battle of the Blues' by fans and sports commentators."
+    },
+    {
+      "question": "How does the proximity of Duke University and the University of North Carolina contribute to the intensity of their basketball rivalry?",
+      "answer": "The two universities are located only ten miles apart along U.S. Highway 15–501 (also known as Tobacco Road), which intensifies the rivalry due to geographic closeness and shared regional affiliations."
+    },
+    {
+      "question": "What are the key differences between Duke University and the University of North Carolina that add to the rivalry's intensity?",
+      "answer": "Duke is a private university with a distinct funding structure and culture, while Carolina is a public school. These differences, along with their contrasting institutional identities, contribute to the rivalry's intensity."
+    },
+    {
+      "question": "According to ESPN's 2000 poll, how was the North Carolina–Duke basketball rivalry ranked among North American sports rivalries?",
+      "answer": "ESPN's 2000 poll ranked the North Carolina–Duke basketball rivalry as the third greatest North American sports rivalry."
+    },
+    {
+      "question": "Which publication named the North Carolina–Duke rivalry the #1 'Hottest Rivalry' in college basketball, and in what year?",
+      "answer": "Sports Illustrated on Campus named the North Carolina–Duke rivalry the #1 'Hottest Rivalry' in college basketball in its November 18, 2003 issue."
+    },
+    {
+      "question": "Provide a Python script to fetch and display the all-time head-to-head record between North Carolina and Duke in basketball.",
+      "answer": "python\nimport requests\nfrom bs4 import BeautifulSoup\n\n# Scraping the head-to-head record from a reliable sports statistics website\nurl = 'https://www.sports-reference.com/cbb/rivals/rivalry.html?p1=northc&p2=duke'\nresponse = requests.get(url)\nsoup = BeautifulSoup(response.text, 'html.parser')\n\n# Locate the relevant table row for the NC vs Duke rivalry\nrivalry_table = soup.find('table', {'id': 'rivalry'})\nif rivalry_table:\n    rows = rivalry_table.find_all('tr')\n    for row in rows:\n        cells = row.find_all('td')\n        if len(cells) >= 3 and 'North Carolina' in cells[0].text and 'Duke' in cells[1].text:\n            print(f\"All-time head-to-head record (basketball): {cells[0].text.strip()} vs {cells[1].text.strip()}\")\n            print(f\"Record: {cells[2].text.strip()}\")\n            break\nelse:\n    print(\"Could not retrieve the rivalry data.\")\n"
+    },
+    {
+      "question": "Why is the North Carolina–Duke basketball rivalry considered one of the most intense in U.S. sports?",
+      "answer": "The rivalry is considered one of the most intense due to multiple factors: their close geographic proximity (only eight miles apart in straight-line distance), differences in institutional culture (private vs. public), and the consistent success of both basketball programs, with at least one school often contending for the national championship each year."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Chronicon_Aquitanicum",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the Chronicon Aquitanicum and what time period does it cover?",
+      "answer": "The Chronicon Aquitanicum is a set of annals (chronicles) that records events from the years 830 to 930, with several gaps in the entries. It also includes an additional notice for the year 1025."
+    },
+    {
+      "question": "Where can the original manuscript of the Chronicon Aquitanicum be found?",
+      "answer": "The original manuscript of the Chronicon Aquitanicum is preserved in the 'great encyclopedia codex', BN lat. 5239, which is housed at the Abbey of Saint Martial in Limoges."
+    },
+    {
+      "question": "Who were the key editors of the Chronicon Aquitanicum, and in what years were their editions published?",
+      "answer": "The Chronicon Aquitanicum was first published by Philippe Labbe in 1653. It was later edited by Edmond Martène and Ursin Durand in 1717 under the title 'Breve chronicon Normannicum sive Britannicum'. Georg Pertz published another edition for the Monumenta Germaniae Historica in 1829."
+    },
+    {
+      "question": "What sources did the Chronicon Aquitanicum rely on for its information?",
+      "answer": "The Chronicon Aquitanicum primarily draws on the Annales Engolismenses for much of its content. Both sets of annals were later used by Adhemar of Chabannes in composing his Historiae."
+    },
+    {
+      "question": "What notable entry was added to the Chronicon Aquitanicum in 1025, and who added it?",
+      "answer": "In 1025, Adhemar of Chabannes added a marginal notice to the Chronicon Aquitanicum while copying from the codex BN lat. 5239. This notice recorded the deaths of Emperors Henry II (who died in 1024) and Basil II, as well as the death of Viscount Guy of Limoges on 27 October 1025."
+    },
+    {
+      "question": "Why is Adhemar of Chabannes' 1025 entry in the Chronicon Aquitanicum considered historically imprecise?",
+      "answer": "Adhemar of Chabannes' 1025 entry is considered historically imprecise because it inaccurately suggests that Emperors Henry II and Basil II died in the same twelve-month period, and implies that Conrad immediately succeeded Henry II, despite historical records showing otherwise."
+    },
+    {
+      "question": "What does the 'false precision' in Adhemar of Chabannes' 1025 entry reveal about the historical context?",
+      "answer": "The 'false precision' in Adhemar of Chabannes' 1025 entry reflects a 'sense of global drama and continuity' as well as an 'excited optimism' that characterized the cultural and intellectual atmosphere at Limoges during that time."
+    }
+  ]
+}

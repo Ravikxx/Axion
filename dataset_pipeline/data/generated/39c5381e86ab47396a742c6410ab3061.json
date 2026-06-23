@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/iampraveen/ai-didnt-make-software-engineering-easier-it-made-the-hard-parts-harder-39n4",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What was the historical breakdown of a software engineer's work before AI tools became prevalent?",
+      "answer": "Before AI tools, a software engineer's work was roughly divided into two parts: 80% execution and 20% deep thinking. The execution layer included writing boilerplate code, fixing repetitive bugs, moving tickets, updating documentation, setting up configurations and environments, and writing tests for known behaviors. The deep thinking layer involved understanding the real problem, designing systems under constraints, debugging edge cases, making trade-offs with incomplete information, and knowing what not to build."
+    },
+    {
+      "question": "How has AI affected the distribution of work for software engineers?",
+      "answer": "AI tools like Claude Code, Cursor, and GitHub Copilot have automated much of the execution layer, effectively removing the 80% of repetitive tasks. As a result, the remaining 20% of deep thinking work has become the entire job, increasing the cognitive load and complexity for engineers. This shift has made the work harder and more exhausting, as the human brain was not designed to sustain deep focus indefinitely."
+    },
+    {
+      "question": "Why is the human engineer's context window a concern in the age of AI?",
+      "answer": "The human engineer's context window—the brain's capacity to hold and process information—has not expanded. Engineers are now expected to manage more architectural complexity, make faster decisions under uncertainty, and context-switch between systems more frequently than ever before. Unlike AI models, which can have their context windows upgraded, humans cannot simply add more 'RAM' to their prefrontal cortex, making cognitive load a growing challenge."
+    },
+    {
+      "question": "What are some practical strategies to manage the increased cognitive load from AI tools?",
+      "answer": "To manage the increased cognitive load, engineers should protect deep work time by blocking uninterrupted hours, especially before engaging with AI tools. They should also get comfortable saying, 'I need to think about this,' to resist the pressure to decide faster. Treating cognitive recovery as part of the job—such as ending deep work sessions with low-stakes tasks—is crucial. Additionally, knowing when not to use AI is important to avoid comprehension debt, as instant execution can sometimes come at the cost of understanding the system."
+    },
+    {
+      "question": "Provide an example of a scenario where using AI for execution led to a negative outcome.",
+      "answer": "In one case, the author let AI generate an entire data-fetching layer for a product. The generated code looked clean, passed a quick review, and was shipped. Three weeks later, a caching bug appeared that was difficult to debug because the author had never fully understood how the layer worked. Fixing the bug took two days, whereas it would have taken only two hours if the author had written the layer themselves. This highlights the 'comprehension debt' that can arise from over-reliance on AI-generated code."
+    },
+    {
+      "question": "How has AI impacted the development journey for junior engineers compared to senior engineers?",
+      "answer": "Historically, junior engineers built foundational skills gradually through the 80% execution work, which provided a scaffold for developing the 20% deep thinking skills over time. With AI automating much of the execution work, junior engineers are increasingly thrown into the deep end before they have had the chance to develop this foundation. This compression of the learning timeline can either accelerate growth or overwhelm them, depending on how deliberately their work and learning are managed."
+    },
+    {
+      "question": "Write a Python code snippet demonstrating how to use GitHub Copilot to generate a simple CRUD endpoint for a Flask application.",
+      "answer": "python\nfrom flask import Flask, request, jsonify\nfrom flask_sqlalchemy import SQLAlchemy\n\napp = Flask(__name__)\ndb = SQLAlchemy(app)\n\n# Define a simple model\nclass User(db.Model):\n    id = db.Column(db.Integer, primary_key=True)\n    username = db.Column(db.String(80), unique=True, nullable=False)\n    email = db.Column(db.String(120), unique=True, nullable=False)\n\n# Generate CRUD endpoints using Flask and SQLAlchemy\n@app.route('/users', methods=['GET'])\ndef get_users():\n    users = User.query.all()\n    return jsonify([{'id': user.id, 'username': user.username, 'email': user.email} for user in users])\n\n@app.route('/users', methods=['POST'])\ndef create_user():\n    data = request.get_json()\n    new_user = User(username=data['username'], email=data['email'])\n    db.session.add(new_user)\n    db.session.commit()\n    return jsonify({'id': new_user.id}), 201\n\n@app.route('/users/<int:user_id>', methods=['GET'])\ndef get_user(user_id):\n    user = User.query.get_or_404(user_id)\n    return jsonify({'id': user.id, 'username': user.username, 'email': user.email})\n\n@app.route('/users/<int:user_id>', methods=['PUT'])\ndef update_user(user_id):\n    user = User.query.get_or_404(user_id)\n    data = request.get_json()\n    user.username = data.get('username', user.username)\n    user.email = data.get('email', user.email)\n    db.session.commit()\n    return jsonify({'message': 'User updated successfully'})\n\n@app.route('/users/<int:user_id>', methods=['DELETE'])\ndef delete_user(user_id):\n    user = User.query.get_or_404(user_id)\n    db.session.delete(user)\n    db.session.commit()\n    return jsonify({'message': 'User deleted successfully'})\n\nif __name__ == '__main__':\n    app.run(debug=True)\n"
+    }
+  ]
+}

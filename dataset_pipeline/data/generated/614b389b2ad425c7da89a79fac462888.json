@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Journalism_sourcing",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is a source in journalism, and what types of entities or materials can serve as news sources?",
+      "answer": "In journalism, a source is any person, written material, or other means of obtaining information that provides a reporter with new knowledge. Sources can include official records, books, printed works, broadcasts, government or business employees, organizations, eyewitnesses to events like crimes or accidents, and individuals directly affected by a news event or issue."
+    },
+    {
+      "question": "What qualities make a news source 'bona fide' according to Shoemaker (1996) and McQuail (1994)?",
+      "answer": "A 'bona fide' or good news source is one that is reliable, trustworthy, and provides accurate information. Qualities that contribute to a source being considered good include credibility, relevance to the story, and consistency with other sources. Reporters should verify information and assess whether the source has a bias or motive that could compromise their trustworthiness."
+    },
+    {
+      "question": "Why is building good relationships with sources important for reporters, and what risks should they avoid?",
+      "answer": "Building good relationships with sources fosters trust and open communication, which is especially valuable for beat reporters who cover the same topics repeatedly. However, reporters must avoid becoming too close to their sources to prevent conflicts of interest or compromised objectivity. Maintaining professional boundaries ensures that journalism remains impartial and credible."
+    },
+    {
+      "question": "What does it mean for journalists to be skeptical, and how should they apply this principle when evaluating sources?",
+      "answer": "Being skeptical means approaching sources with a critical mindset, questioning the accuracy and truthfulness of the information provided. Journalists should verify claims independently, cross-check details with multiple sources, and consider whether a source might have a bias or incentive to mislead. The adage 'If your mother says she loves you, check it out' underscores the need for thorough verification regardless of the source's perceived reliability."
+    },
+    {
+      "question": "For controversial topics, how should journalists approach the use of multiple sources?",
+      "answer": "Journalists should avoid relying on a single source for controversial topics, as this increases the risk of inaccuracies or bias. Instead, they should gather information from multiple sources that corroborate each other's accounts. This practice strengthens the credibility of the reporting and helps reveal different perspectives on contentious issues."
+    },
+    {
+      "question": "What is a 'beat reporter,' and what role do they play in maintaining source relationships?",
+      "answer": "A 'beat reporter' is a journalist who covers a specific topic, industry, or institution (e.g., politics, sports, or local government) regularly. This specialization allows them to develop deep relationships with sources in their beat, gaining trust and access to insider knowledge. However, they must balance these relationships to maintain objectivity and avoid becoming overly influenced by their sources."
+    },
+    {
+      "question": "Write a Python function that checks whether a given list of sources corroborates a specific claim by comparing their statements.",
+      "answer": "python\ndef corroborate_claim(sources, claim):\n    \"\"\"\n    Checks if multiple sources corroborate a given claim.\n    \n    Args:\n        sources (list of dict): Each dictionary contains 'name' and 'statement' keys.\n        claim (str): The claim to verify.\n    \n    Returns:\n        bool: True if all sources' statements match the claim, False otherwise.\n    \"\"\"\n    for source in sources:\n        if source['statement'].lower() != claim.lower():\n            return False\n    return True\n\n# Example usage:\nsources = [\n    {'name': 'Source A', 'statement': 'The event occurred on Monday'},\n    {'name': 'Source B', 'statement': 'The event occurred on Monday'}\n]\nclaim = 'The event occurred on Monday'\nprint(corroborate_claim(sources, claim))  # Output: True\n"
+    }
+  ]
+}

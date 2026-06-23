@@ -1,0 +1,30 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/1958–59_Rheinlandliga",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the 1958–59 Rheinlandliga and how did it relate to the current Rheinlandliga?",
+      "answer": "The 1958–59 Rheinlandliga was the seventh season of the highest amateur football league under the Rhineland Football Association, known at the time as the 1. Amateurliga Rheinland. It served as a precursor to today's Rheinlandliga. The league operated as the third tier in the German football hierarchy, below the II. Division Southwest, until 1963."
+    },
+    {
+      "question": "How was the Rhineland champion determined during the 1958–59 season?",
+      "answer": "The Rhineland champion was determined by a match between the division champions of the two regional divisions within the 1. Amateurliga Rheinland: East and West. The champions of each division faced off to decide the overall Rhineland champion."
+    },
+    {
+      "question": "What changes occurred to the Rhineland league structure after the 1962–63 season?",
+      "answer": "Starting with the 1963–64 season, the 1. Amateurliga Rheinland was consolidated into a single division after previously operating as two separate divisions (East and West). This change was due to the introduction of the regional league Southwest as the second-highest class in the German football league system."
+    },
+    {
+      "question": "What role did the Rheinlandliga play in the 2. Bundesliga system beginning in 1974–75?",
+      "answer": "From the 1974–75 season, the Rhineland champion participated in a relegation playoff against the champions of the Verbandsliga Südwest and Saarlandliga. The winner of this playoff earned a spot in the southern divisions of the 2. Bundesliga, the second tier of German professional football at the time."
+    },
+    {
+      "question": "How did the league hierarchy change with the introduction of the Oberliga Rheinland-Pfalz/Saar in 1978–79?",
+      "answer": "The Oberliga Rheinland-Pfalz/Saar was introduced as the new highest amateur class in 1978–79. Consequently, the 1. Amateurliga Rheinland was renamed to the 'Verbandsliga Rheinland' and demoted to the fourth tier in the German football league system."
+    },
+    {
+      "question": "Write a Python snippet to generate a list of all seasons from 1956–57 to 1962–63 when the Rheinlandliga operated in two divisions.",
+      "answer": "python\nseasons = [f\"{year}-{str(year + 1)[-2:]}\" for year in range(1956, 1963)]\nprint(seasons)\n\nThis code generates the seasons ['1956-57', '1957-58', '1958-59', '1959-60', '1960-61', '1961-62', '1962-63'], covering the period when the Rheinlandliga was split into East and West divisions."
+    }
+  ]
+}

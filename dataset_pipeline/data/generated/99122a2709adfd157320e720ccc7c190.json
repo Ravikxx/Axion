@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Amud_1",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the estimated age of the Amud 1 Neanderthal skeleton and how was this age determined?",
+      "answer": "The Amud 1 Neanderthal skeleton is estimated to be about 55,000 years old. Initially, radiocarbon dating suggested much younger ages of 28,000 and 20,000 years, but these were not taken seriously due to inconsistencies with the stratigraphic context. The age was later confirmed using Electron Spin Resonance (ESR) dating, which provided a more reliable estimate consistent with the fossil's stratigraphic position."
+    },
+    {
+      "question": "How does the cranial capacity of Amud 1 compare to other human fossils in the fossil record?",
+      "answer": "Amud 1 has one of the largest cranial capacities of any human skull in the fossil record, ranging from 1736 to 1740 cm³. This is significantly larger than most other Neanderthal specimens and even surpasses the cranial capacity of many modern humans."
+    },
+    {
+      "question": "What are some of the distinctive anatomical features of Amud 1 compared to other Neanderthals?",
+      "answer": "Amud 1 exhibits several distinctive features, including slender brow ridges, a somewhat developed chin, a large nose, a big face, and moderate midfacial prognathism. Unlike most European Neanderthals, it also has a gracile skeletal structure with long arms and legs, and it is considerably taller, standing at an estimated 1.78 meters (5 ft 10 in)."
+    },
+    {
+      "question": "Why were the initial radiocarbon dates for Amud 1 not accepted as accurate?",
+      "answer": "The initial radiocarbon dates of 28,000 and 20,000 years for Amud 1 and other remains were not taken seriously because the skull was found high in the stratigraphy and mixed with Upper Palaeolithic artifacts and pottery from higher levels. These younger artifacts suggested that the remains might have been contaminated or disturbed, making the radiocarbon dates unreliable."
+    },
+    {
+      "question": "How has the reconstruction of Amud 1's facial skeleton changed over time?",
+      "answer": "The facial skeleton of Amud 1 was initially reconstructed based on fragmented remains, leading to speculative measurements. However, a virtual reconstruction conducted by Japanese scientists in 2015 revealed that the facial skeleton was smaller than previously estimated. It also indicated that the cranial vault was shorter and more brachycephalic during the individual's lifetime, having been deformed by geological pressure after death."
+    },
+    {
+      "question": "What is the current location of the Amud 1 skeleton, and why is this significant?",
+      "answer": "The Amud 1 skeleton is currently held at Tel Aviv University in Israel. This is significant because it allows researchers ongoing access to study the fossil, contributing to our understanding of Neanderthal anatomy and evolution. The specimen remains one of the most important for research due to its unique features and well-preserved state."
+    },
+    {
+      "question": "How do researchers classify Amud 1 in terms of its relationship to Neanderthals and modern humans?",
+      "answer": "The classification of Amud 1 has been debated. Suzuki initially interpreted its features as intermediate between Levantine Neanderthals and Levantine anatomically modern humans. In 1995, Hovers et al. argued that its cranial and mandibular features made it fully Neanderthal, though this view was rejected by Belfer-Cohen (1998). Amud 1 shares traits with early Homo sapiens and modern humans, sometimes leading to misclassification as Homo sapiens in multivariate analyses, unlike other Neanderthals."
+    }
+  ]
+}

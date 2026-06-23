@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/shlokaguptaa/ai-workflows-vs-ai-agents-explained-with-legos-581g",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What is the key difference between AI workflows and AI agents in terms of decision-making?",
+      "answer": "AI workflows follow a fixed control path with predefined steps, where the model does not decide what to do next—it simply follows the pre-wired path. In contrast, AI agents are given a goal and a set of tools, and they autonomously decide what actions to take at runtime to achieve that goal. Workflows rely on certainty and repeatability, while agents adapt dynamically to changing conditions or missing resources."
+    },
+    {
+      "question": "Why might an AI workflow fail to answer a question like 'What should I wear for my date, given the weather?'?",
+      "answer": "An AI workflow fails because it operates on a fixed sequence of steps and lacks the ability to handle unforeseen requirements. In this case, the workflow wasn't designed to access a weather API or generate outfit suggestions, so it cannot adapt to the new context. This limitation highlights that workflows can only handle tasks explicitly planned for in their predefined steps."
+    },
+    {
+      "question": "Provide a Python code snippet demonstrating a simple AI workflow that retrieves a user's calendar event.",
+      "answer": "Here’s a Python example using a hypothetical `calendar_api` to fetch and summarize a user’s next event:\n\npython\nimport json\n\ndef fetch_calendar_event(calendar_api, user_question):\n    # Step 1: Query the user's calendar API\n    events = calendar_api.query(user_question)\n    \n    # Step 2: Extract the relevant event (e.g., next meeting)\n    relevant_event = events[0]  # Simplified for example\n    \n    # Step 3: Summarize the event\n    response = f\"Your next event is: {relevant_event['title']} at {relevant_event['time']}.\"\n    \n    return response\n\n# Example usage\nclass MockCalendarAPI:\n    def query(self, question):\n        return [{\"title\": \"Team Sync\", \"time\": \"2:00 PM\"}]\n\ncalendar_api = MockCalendarAPI()\nprint(fetch_calendar_event(calendar_api, \"When is my next meeting?\"))\n# Output: Your next event is: Team Sync at 2:00 PM.\n\nThis demonstrates the fixed, step-by-step nature of an AI workflow where each action is predetermined."
+    },
+    {
+      "question": "What are the advantages and disadvantages of using AI agents compared to AI workflows?",
+      "answer": "AI agents excel in adaptability and reasoning in unpredictable environments, making them ideal for tasks requiring dynamic decision-making or handling missing resources (e.g., pivoting from a house to a cave due to missing roof tiles). However, this flexibility comes at a cost: agents are more computationally expensive, may produce inconsistent or incorrect results (e.g., a 'LEGO jail' instead of a cabin), and are harder to debug. Workflows, on the other hand, offer predictability, cost-efficiency, and repeatability but fail if unplanned scenarios arise."
+    },
+    {
+      "question": "Describe a hybrid approach combining AI workflows and agents, and explain why it’s practical.",
+      "answer": "A hybrid approach, called *Agentic Workflows*, combines the strengths of both systems: workflows handle predictable, repetitive tasks (e.g., data retrieval, summarization) while agents are deployed for steps requiring flexible reasoning (e.g., deciding next actions, handling edge cases). For example, a workflow might fetch a user’s calendar event, then an agent could analyze the event and suggest outfit ideas based on the weather. This balances efficiency and adaptability, mimicking real-world AI systems where manual assembly lines (workflows) are augmented with creative problem-solving (agents)."
+    },
+    {
+      "question": "How does an AI agent decide what tools to use to achieve its goal?",
+      "answer": "An AI agent uses its underlying LLM to reason about available tools, their capabilities, and the current context to determine the optimal sequence of actions. For instance, if the goal is to 'plan a date,' the agent might first query a calendar API to check availability, then a weather API to determine clothing suggestions, and finally an image generation model to create a visual plan. The agent evaluates trade-offs (e.g., cost vs. accuracy) and iteratively refines its plan until the goal is met or resources are exhausted."
+    },
+    {
+      "question": "Why might an AI agent produce a 'LEGO jail' instead of the intended result?",
+      "answer": "An AI agent might produce an incorrect or nonsensical output (like a 'LEGO jail') because it lacks hard constraints on its reasoning process. Unlike workflows, agents prioritize goal achievement over strict correctness, leading to creative but flawed solutions. For example, if tasked to build a 'small cabin' but misinterprets the goal or lacks sufficient resources, the agent might default to a suboptimal structure. This highlights the trade-off between flexibility and reliability in agentic systems."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Forward_air_control_operations_during_the_Korean_War",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What were the two competing doctrines for close air support (CAS) during the Korean War?",
+      "answer": "The U.S. Marine Corps' doctrine relied on an organic supporting air wing to deliver ordnance within 1,000 yards of front-line troops, compensating for their limited artillery capacity as an amphibious force. The U.S. Army's doctrine aimed to extend the range of its own organic artillery using CAS and desired its own air corps for independent operations."
+    },
+    {
+      "question": "How were forward air controllers (FACs) organized and assigned during the Korean War?",
+      "answer": "The U.S. Air Force supplied trained FACs, while the Army provided equipment and personnel. In practice, the 1st Marine Air Wing supplied FACs and air strikes for X Corps, and the 5th Air Force supplied FACs and strike support to the 8th Army. Coordination between these units and carrier-borne air power was attempted but met with limited success."
+    },
+    {
+      "question": "What role did the T-6 'Mosquitos' play in the Korean War, and what was their operational impact?",
+      "answer": "The T-6 'Mosquitos' were airborne FACs operated by the 6147th Tactical Control Group. They flew 40,354 sorties, were credited with killing 184,808 communist troops, and earned two U.S. and one Korean Presidential Unit Citations. Their operations were enabled by United Nations air superiority and significantly contributed to tactical air power during the conflict."
+    },
+    {
+      "question": "Why did forward air control techniques become less effective during the later stages of the Korean War?",
+      "answer": "Forward air control techniques saw diminishing returns as the war settled into trench warfare reminiscent of World War I. The communist forces adapted by operating primarily at night to evade air attacks, rendering daytime CAS less effective. This led the U.S. Air Force to experiment with Shoran-directed raids and radar-directed bombing as countermeasures."
+    },
+    {
+      "question": "How did the U.S. military attempt to address coordination issues between the Army and Air Force during the Korean War?",
+      "answer": "There were at least eight attempts to alter the Army/Air Force FAC system during the Korean War to improve coordination, but none resulted in substantive changes. Despite the need for better integration, the turf war over doctrine persisted, and forward air control policies remained unchanged by the war's end."
+    },
+    {
+      "question": "What was the status of the Army/Air Force close air support (CAS) system by 1956?",
+      "answer": "By 1956, the Army/Air Force CAS system was defunct, indicating that the organizational and doctrinal conflicts between the services were not resolved during the Korean War. No effective reforms were implemented despite ongoing disputes throughout the conflict."
+    },
+    {
+      "question": "Can you provide a Python code snippet to simulate the effectiveness of FAC sorties based on the T-6 'Mosquitos' data?",
+      "answer": "python\nimport matplotlib.pyplot as plt\n\n# Data from the T-6 'Mosquitos' operations\nsorties = 40354\nkills = 184808\nsorties_per_kill = sorties / kills\n\nprint(f\"Sorties per kill: {sorties_per_kill:.2f}\")\n\n# Simple visualization\nplt.bar(['Sorties', 'Kills'], [sorties, kills], color=['blue', 'red'])\nplt.title('T-6 Mosquito FAC Operations: Sorties vs Kills')\nplt.ylabel('Count')\nplt.show()\n\nThis code calculates the sorties per kill ratio and plots a bar chart to visualize the operational scale of the T-6 'Mosquitos'."
+    }
+  ]
+}

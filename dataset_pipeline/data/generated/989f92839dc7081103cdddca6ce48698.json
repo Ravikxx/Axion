@@ -1,0 +1,46 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/HD_99706",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the apparent visual magnitude of HD 99706, and is it visible to the naked eye?",
+      "answer": "HD 99706 has an apparent visual magnitude of 7.65, which is too dim to be visible to the naked eye. It can, however, be observed with a pair of binoculars."
+    },
+    {
+      "question": "How far is HD 99706 from the Sun, and is it moving toward or away from us?",
+      "answer": "HD 99706 is approximately 480 light years from the Sun. It is drifting closer to us with a radial velocity of −30 km/s, as indicated by Doppler shift measurements."
+    },
+    {
+      "question": "What is the absolute magnitude of HD 99706, and what does this imply about its visibility at a standard distance?",
+      "answer": "HD 99706 has an absolute magnitude of 2.12. If it were located 10 parsecs (about 32.6 light years) away, it would appear as a 2nd magnitude star visible to the naked eye."
+    },
+    {
+      "question": "What is the spectral class of HD 99706, and what stage of stellar evolution is it currently in?",
+      "answer": "HD 99706 is a subgiant star belonging to spectral class K0. It has exhausted the hydrogen at its core and is beginning to evolve into a giant star."
+    },
+    {
+      "question": "How does the age of HD 99706 compare to the Sun's age?",
+      "answer": "HD 99706 is younger than the Sun, with an estimated age of 2.8±0.2 billion years."
+    },
+    {
+      "question": "What is the rotational velocity of HD 99706, and how does it compare to the Sun's rotation?",
+      "answer": "HD 99706 has a very slow projected rotational velocity of 2 km/s, indicating it spins much slower than the Sun."
+    },
+    {
+      "question": "How does the mass and radius of HD 99706 compare to the Sun's?",
+      "answer": "HD 99706 has 1.5 times the mass of the Sun and has expanded to 5.5 times the Sun's radius."
+    },
+    {
+      "question": "Is HD 99706 enriched in heavy elements compared to the Sun? Provide the abundance ratio.",
+      "answer": "Yes, HD 99706 is slightly enriched in heavy elements, with 110% of the Sun's heavy element abundance."
+    },
+    {
+      "question": "What is the luminosity and effective temperature of HD 99706?",
+      "answer": "HD 99706 radiates 13 times the luminosity of the Sun from its photosphere and has an effective temperature of 4,862 K."
+    },
+    {
+      "question": "Was any stellar companion detected for HD 99706 in the 2016 imaging survey at Calar Alto Observatory?",
+      "answer": "No, the 2016 imaging survey at Calar Alto Observatory did not detect any stellar companions to HD 99706."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Homelessness_in_Oregon",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the estimated homeless population in Oregon in January 2017?",
+      "answer": "In January 2017, Oregon had an estimated 13,953 individuals experiencing homelessness."
+    },
+    {
+      "question": "How has Oregon's homeless population changed over time, and what are the recent growth rates?",
+      "answer": "Oregon's homeless population has increased every year since 2010. Specifically, there was a 13.1% increase from 2019 to 2020, a 22.5% increase from 2020 to 2021, and a 98.5% increase from 2021 to 2022."
+    },
+    {
+      "question": "What are the demographic breakdowns of Oregon's homeless population as of 2022?",
+      "answer": "As of 2022, Oregon's homeless population included 2,157 youth under 18, 6,671 females, 10,931 males, and 131 transgender individuals. Additionally, 15,876 were Non-Hispanic/Non-Latino, 2,083 were Hispanic/Latino, 13,960 were white, 1,172 were Black, African American, or African, 101 were Asian or Asian American, 880 were Native American, and 1,619 were of multiple races."
+    },
+    {
+      "question": "What are the specific subgroups within Oregon's homeless population in 2017, and how many people belong to each subgroup?",
+      "answer": "In 2017, Oregon's homeless population included 1,083 family households, 1,251 veterans, 1,462 unaccompanied young adults (aged 18–24), and 3,387 individuals experiencing chronic homelessness."
+    },
+    {
+      "question": "Why did some businesses in Portland complain about homeless individuals, and what was the city's response?",
+      "answer": "Businesses in Portland complained that homeless individuals 'scare customers away,' 'are too noisy,' and 'block the way.' The city's response included a 'sidewalk obstruction ordinance,' which was later ruled unconstitutional by a judge in 2009, leaving police and business owners to rely on disorderly conduct laws that are difficult to enforce due to challenges in proving intent and finding witnesses."
+    },
+    {
+      "question": "Write a Python function to calculate the year-over-year percentage increase in Oregon's homeless population from 2019 to 2022.",
+      "answer": "python\ndef calculate_population_increase(base_year, base_pop, years_data):\n    \"\"\"\n    Calculate year-over-year percentage increase in homeless population.\n    \n    Args:\n        base_year (int): The starting year (e.g., 2019)\n        base_pop (int): Population in the base year\n        years_data (list of tuples): [(year, population), ...]\n    \n    Returns:\n        dict: Year-over-year percentage increases\n    \"\"\"\n    increases = {}\n    prev_year, prev_pop = base_year, base_pop\n    \n    for year, pop in years_data:\n        increase = ((pop - prev_pop) / prev_pop) * 100\n        increases[f\"{prev_year}-{year}\"] = increase\n        prev_year, prev_pop = year, pop\n    \n    return increases\n\n# Example usage:\nbase_year = 2019\nbase_pop = 15943  # Approximate value inferred from growth rates\n\nyears_data = [\n    (2020, base_pop * 1.131),\n    (2021, base_pop * 1.131 * 1.225),\n    (2022, base_pop * 1.131 * 1.225 * 1.985)\n]\n\nprint(calculate_population_increase(base_year, base_pop, years_data))\n"
+    },
+    {
+      "question": "What percentage of Oregon's homeless population in 2016 was unsheltered?",
+      "answer": "In 2016, approximately 60.5% of Oregon's homeless population was unsheltered."
+    }
+  ]
+}

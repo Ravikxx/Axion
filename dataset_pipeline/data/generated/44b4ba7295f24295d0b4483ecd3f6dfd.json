@@ -1,0 +1,30 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Alness",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Where is Alness located in Scotland, and what are its neighboring settlements?",
+      "answer": "Alness is a town and civil parish in Ross and Cromarty, Scotland. It is situated near the mouth of the River Averon and the Cromarty Firth. The town of Invergordon lies three miles (five kilometres) to the east, and the village of Evanton is four miles (six kilometres) to the southwest."
+    },
+    {
+      "question": "What was the population of Alness according to the 2016 census, and how has it changed since 2011?",
+      "answer": "The population of Alness was 6,101 in 2016, representing an increase of around 20% since the 2011 census."
+    },
+    {
+      "question": "What role did flower competitions play in the regeneration of Alness?",
+      "answer": "For most of the 1990s and early 2000s, Alness regularly entered and won flower competitions such as Scotland in Bloom and Britain in Bloom. This participation helped regenerate many areas of the town, with housing estates winning separate awards. Although they no longer enter due to financial costs, the town remains adorned by flowers maintained by volunteers."
+    },
+    {
+      "question": "What award did Alness receive in 2018, and what were the criteria for selection?",
+      "answer": "In 2018, Alness was crowned the Scottish Champion at the Great British High Street Awards. The judges assessed shortlisted high streets across England, Scotland, Wales, and Northern Ireland based on visits to local businesses, shoppers, and community organizations. Alness impressed with its reinvention into a diverse commercial area featuring florists, bridal wear shops, delis, and bakeries."
+    },
+    {
+      "question": "How does the population of the census locality in Alness compare to the overall parish population?",
+      "answer": "The census locality, which includes part of the parish of Rosskeen, has a population of 5,186, slightly lower than the overall parish population of 5,310."
+    },
+    {
+      "question": "Write a Python snippet to calculate the percentage increase in Alness's population from 2011 to 2016.",
+      "answer": "python\n# Population data\npopulation_2011 = 5100  # Approximate based on 20% increase leading to 6101 in 2016\npopulation_2016 = 6101\n\n# Calculate percentage increase\npercentage_increase = ((population_2016 - population_2011) / population_2011) * 100\nprint(f\"Percentage increase in population from 2011 to 2016: {percentage_increase:.2f}%\")\n\nThis calculates the 20% increase mentioned in the text."
+    }
+  ]
+}

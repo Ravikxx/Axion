@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Ebenezer_Alfred_Johnson",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What were the two honorary degrees awarded to Ebenezer Alfred Johnson, and in what years did he receive them?",
+      "answer": "Ebenezer Alfred Johnson received the honorary degree of LL.D. in 1867 and the honorary degree of L.H.D. in 1888 from the University of the City of New York."
+    },
+    {
+      "question": "How many years did Ebenezer Alfred Johnson serve as a Professor of Latin at the University of the City of New York?",
+      "answer": "Ebenezer Alfred Johnson served as a Professor of Latin at the University of the City of New York for 51 years, from 1840 until his death in 1891."
+    },
+    {
+      "question": "What were the names and fates of Ebenezer Alfred Johnson's children?",
+      "answer": "Ebenezer Alfred Johnson had four children: two died in infancy, while the surviving children were a daughter and a son. His son graduated from the University of New York and the Yale Divinity School."
+    },
+    {
+      "question": "What notable works did Ebenezer Alfred Johnson publish early in his career?",
+      "answer": "Early in his career, Ebenezer Alfred Johnson published editions of Cicero's *Select Orations* and Cornelius Nepos."
+    },
+    {
+      "question": "Write a Python function that calculates the number of years between Ebenezer Alfred Johnson's birth and death.",
+      "answer": "python\ndef calculate_johnson_lifespan():\n    birth_year = 1813\n    death_year = 1891\n    lifespan = death_year - birth_year\n    return lifespan\n\n# Example usage:\nprint(calculate_johnson_lifespan())  # Output: 78\n"
+    },
+    {
+      "question": "What was Ebenezer Alfred Johnson's educational background, and how did it influence his career?",
+      "answer": "Ebenezer Alfred Johnson graduated from Yale College in 1833. He later became a tutor at Yale College while studying at Yale Law School. His education in classical studies led him to a professorship in Greek and Latin, shaping his career as a classical scholar."
+    },
+    {
+      "question": "How many times was Ebenezer Alfred Johnson married, and who were his spouses?",
+      "answer": "Ebenezer Alfred Johnson was married twice. His first wife was Margaret F., daughter of Dr. John Yan Cleve, whom he married on August 18, 1842. After her death in 1849, he married Harriet, daughter of William B. Gilley, on July 9, 1851."
+    }
+  ]
+}

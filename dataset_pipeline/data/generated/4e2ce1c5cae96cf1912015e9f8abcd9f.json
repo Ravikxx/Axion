@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Crime_of_aggression",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What constitutes a 'crime of aggression' according to international law?",
+      "answer": "A crime of aggression is the planning, initiation, or execution of a large-scale and serious act of aggression using state military force. It is a leadership crime that can only be committed by those with the authority to shape a state's policy of aggression, not by those merely executing it. Examples include invasion, military occupation, annexation by force, bombardment, and military blockade of ports."
+    },
+    {
+      "question": "Why is the definition and scope of the crime of aggression considered controversial?",
+      "answer": "The definition of aggression is controversial because it involves complex legal and political considerations, such as determining what constitutes a 'just cause' for self-defense under just war theory. Additionally, cases like the 'war on terror' blur the lines between aggressive action and state-initiated harm, making it difficult to apply existing legal frameworks consistently."
+    },
+    {
+      "question": "What historical events led to the criminalization of aggression in international law?",
+      "answer": "The criminalization of aggression was significantly influenced by World War II, particularly the German invasion of the Soviet Union. Soviet jurist Aron Trainin proposed criminalizing aggression, and the Charter of the International Military Tribunal established criminal liability for waging aggressive war, which was central to the Nuremberg trials. Similar prosecutions occurred in Finland, Poland, China, and Japan."
+    },
+    {
+      "question": "What are the core crimes in international criminal law, and how does aggression compare to them?",
+      "answer": "The core crimes in international criminal law are aggression, genocide, crimes against humanity, and war crimes. Aggression is considered 'the supreme international crime' because it encompasses the cumulative harm of the entire conflict. Unlike genocide or crimes against humanity, which target specific groups or individuals, aggression is primarily a crime against the state that is attacked but can also harm individuals."
+    },
+    {
+      "question": "How does the International Criminal Court (ICC) exercise jurisdiction over the crime of aggression?",
+      "answer": "The ICC's jurisdiction over aggression was defined in 2010 at the Kampala Review Conference. States parties adopted specific definitions and conditions for exercising jurisdiction. Aggression is criminalized under the ICC's statute law, and some countries also prosecute it under universal jurisdiction, allowing for cases to be brought regardless of where the crime occurred."
+    },
+    {
+      "question": "Provide a Python code snippet to check if a given act meets the legal criteria for aggression under the Rome Statute.",
+      "answer": "python\nfrom typing import List\n\n# Acts of aggression as defined by the Rome Statute\nAGGRESSION_ACTS = [\n    \"invasion\", \"military occupation\", \"annexation by force\",\n    \"bombardment\", \"military blockade of ports\"\n]\n\ndef is_act_of_aggression(act: str) -> bool:\n    \"\"\"Check if the act meets the legal criteria for aggression under the Rome Statute.\"\"\"\n    return act.lower() in AGGRESSION_ACTS\n\n# Example usage\nact = \"invasion\"\nprint(is_act_of_aggression(act))  # Output: True\n"
+    },
+    {
+      "question": "How does the 'war on terror' challenge the legal definition of aggression?",
+      "answer": "The 'war on terror' presents a challenge because it involves state-initiated harm that may not fit neatly into traditional definitions of aggression. The vague nature of the conflict can restrict or undermine the applicability of international norms, potentially justifying actions that might otherwise be considered aggressive."
+    }
+  ]
+}

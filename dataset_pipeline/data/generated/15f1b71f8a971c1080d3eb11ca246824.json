@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/ben/when-is-a-side-project-worth-committing-to-5ec7",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What criteria does the author use to decide whether to commit to a side project?",
+      "answer": "The author commits to a side project when it meets the following criteria: (1) It solves a specific problem immediately without requiring long-term maintenance. (2) It is free or cheap to host and maintain, with minimal risk of unexpected costs (e.g., bot traffic). (3) It can be built quickly using modern tools or AI assistance, reducing setup overhead."
+    },
+    {
+      "question": "What are the key differences between golf launch monitors in terms of features and cost?",
+      "answer": "Golf launch monitors vary widely in features and cost. Entry-level options like the Garmin R10 (~$400) offer surprisingly good performance, while enterprise-grade units can exceed $20,000. Differences include tracking technology (radar vs. high-speed cameras), data accessibility (some require subscriptions), and intended use cases. Some monitors are standalone, while others require a gaming PC for simulator functionality."
+    },
+    {
+      "question": "How did the author use AI tools to build the Choosy Golf project?",
+      "answer": "The author used Google AI Studio to generate a React/Vite project from a single prompt, then refined the code manually and with additional AI assistance. They also used AI for deep research to aggregate and verify data about golf launch monitors, combining AI output with manual verification to correct hallucinations."
+    },
+    {
+      "question": "What are the benefits of hosting a static React/Vite project for a comparison site like Choosy Golf?",
+      "answer": "Hosting a static React/Vite project is cost-effective because it requires minimal server resources. The site can be served directly from a CDN or static hosting service (e.g., Netlify, Vercel, GitHub Pages) at little to no cost. Additionally, static sites are immune to sudden spikes in traffic costs from bots or high usage, as there is no backend server to scale."
+    },
+    {
+      "question": "What is PiTrac, and why hasn't the author committed to maintaining it?",
+      "answer": "PiTrac is an open-source DIY golf launch monitor project that users can build themselves using affordable hardware. The author hasn’t committed to maintaining it due to time constraints, as the utility-to-maintenance ratio doesn’t currently favor long-term upkeep. However, they express interest in building and maintaining one in the future."
+    },
+    {
+      "question": "Provide a code snippet showing how to deploy a static React/Vite app to Vercel.",
+      "answer": "`# Install Vercel CLI globally (if not already installed)\nnpm install -g vercel\n\n# Deploy the app\nvercel --prod\n\n# Alternatively, push to a GitHub repository and link it to Vercel for automatic deployments."
+    },
+    {
+      "question": "Why does the author consider \"quick and dirty\" MVPs problematic in software development?",
+      "answer": "The author finds \"quick and dirty\" MVPs problematic because they often lead to abandoned repositories and technical debt. These projects may solve an initial problem but require ongoing maintenance, which can drain time and energy. The author prefers projects with a high utility-to-maintenance ratio, where the solution is both immediately useful and sustainable long-term."
+    }
+  ]
+}

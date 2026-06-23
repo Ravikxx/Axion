@@ -1,0 +1,34 @@
+{
+  "source_url": "https://mathworld.wolfram.com/BayesianAnalysis.html",
+  "category": "mathworld",
+  "pairs": [
+    {
+      "question": "What is Bayesian analysis and how does it differ from other statistical procedures?",
+      "answer": "Bayesian analysis is a statistical method that estimates parameters of an underlying distribution by combining observed data with prior knowledge. Unlike frequentist methods, which rely solely on observed data, Bayesian analysis incorporates a prior distribution that represents initial beliefs about the parameters. This prior is updated with observed data to produce a posterior distribution, which serves as the basis for parameter estimation and inference."
+    },
+    {
+      "question": "How is the posterior distribution calculated in Bayesian analysis?",
+      "answer": "The posterior distribution is calculated using Bayes' theorem. Given a prior distribution π(θ) and a likelihood function L(θ|data) derived from observed data, the posterior π(θ|data) is computed as proportional to the product of the likelihood and the prior: π(θ|data) ∝ L(θ|data) × π(θ). This product is then normalized to ensure it integrates to 1 over all possible parameter values."
+    },
+    {
+      "question": "What role does the prior distribution play in Bayesian analysis, and how is it typically chosen?",
+      "answer": "The prior distribution represents initial beliefs or assumptions about the parameters before observing data. It can be based on expert knowledge, previous studies, or non-Bayesian observations. In practice, a uniform prior is often assumed when there is little prior information, assigning equal probability to all parameter values within a specified range."
+    },
+    {
+      "question": "What is the difference between Bayesian inference and maximum likelihood estimation?",
+      "answer": "Bayesian inference updates prior beliefs with observed data to produce a posterior distribution, incorporating both data and prior knowledge. Maximum likelihood estimation (MLE) focuses solely on the observed data to find the parameter values that maximize the likelihood function. MLE does not incorporate prior information and provides a point estimate rather than a full distribution of possible parameter values."
+    },
+    {
+      "question": "How can you compute the mode of the posterior distribution to estimate parameters in Bayesian analysis?",
+      "answer": "The mode of the posterior distribution is the parameter value that maximizes the posterior density. This can be found by solving for the θ that maximizes π(θ|data), which is equivalent to maximizing the product of the likelihood L(θ|data) and the prior π(θ). For continuous distributions, this often involves taking the derivative of the posterior and setting it to zero to find critical points."
+    },
+    {
+      "question": "Write a Python code snippet to compute the posterior distribution for a simple Bayesian problem.",
+      "answer": "python\nimport numpy as np\nfrom scipy.stats import norm, uniform\n\n# Prior: Uniform distribution over [0, 10]\nprior = uniform(loc=0, scale=10)\n\n# Observed data: Assume 5 samples with mean=3 and known variance=1\nobserved_mean = 3\nvariance = 1\nn = 5\n\n# Likelihood: Normal distribution centered at observed_mean with known variance\nlikelihood = norm(loc=observed_mean, scale=np.sqrt(variance/n))\n\n# Parameter space (theta)\ntheta = np.linspace(0, 10, 1000)\n\n# Compute prior and likelihood\nprior_vals = prior.pdf(theta)\nlikelihood_vals = likelihood.pdf(theta)\n\n# Posterior (unnormalized)\nposterior_unnorm = likelihoood_vals * prior_vals\n\n# Normalize to get posterior\nposterior = posterior_unnorm / np.sum(posterior_unnorm)\n\n# Find the mode (parameter estimate)\nmode = theta[np.argmax(posterior)]\nprint(f\"Posterior mode (parameter estimate): {mode:.2f}\")\n"
+    },
+    {
+      "question": "Why is Bayesian analysis considered controversial, and what are the implications of a poorly chosen prior?",
+      "answer": "Bayesian analysis is controversial because the validity of its results depends heavily on the choice of the prior distribution. If the prior is poorly chosen or unrepresentative of true parameter values, the posterior distribution may be biased or misleading. Unlike frequentist methods, Bayesian analysis does not provide a statistically assessable way to validate the prior, making the results sensitive to subjective assumptions."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Armstrong_Whitworth_Albemarle",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the primary role for which the Armstrong Whitworth A.W.41 Albemarle was originally designed?",
+      "answer": "The Armstrong Whitworth A.W.41 Albemarle was originally designed as a medium bomber to fulfill Specification B.9/38, which called for an aircraft that could be built using a combination of wood and metal without relying on any light alloys."
+    },
+    {
+      "question": "Why was the Albemarle's entry into service delayed, and when did it finally enter RAF service?",
+      "answer": "The Albemarle's entry into service was delayed due to a mid-development redesign after it was passed over for the bomber role. Despite its maiden flight occurring on 20 March 1940, the aircraft was not received in quantity by 295 Squadron at RAF Harwell until January 1943."
+    },
+    {
+      "question": "What were the primary uses of the Albemarle during World War II?",
+      "answer": "The Albemarle was primarily used by the RAF for general and special transport duties, including paratroop transport, glider towing, and other secondary roles. It participated in key operations such as the Normandy landings and the assault on Arnhem during Operation Market Garden."
+    },
+    {
+      "question": "How many Albemarle aircraft were delivered to the Soviet Air Force, and what happened to the order?",
+      "answer": "The Soviet Air Force ordered 200 Albemarle aircraft in October 1942, but only a handful were delivered before the Soviet government suspended deliveries in May 1943. The order was later canceled in favor of procuring the American Douglas C-47 Skytrain instead."
+    },
+    {
+      "question": "Write a Python code snippet to calculate the number of years the Albemarle remained in RAF service after the war ended.",
+      "answer": "Assuming the Albemarle was withdrawn from RAF service in 1946 (less than a year after the war ended in 1945), the following code calculates the duration of its post-war service:\n\npython\nwar_end_year = 1945\nwithdrawal_year = 1946\nservice_years = withdrawal_year - war_end_year\nprint(f\"The Albemarle remained in RAF service for {service_years} year after the war ended.\")\n\nOutput: `The Albemarle remained in RAF service for 1 year after the war ended.`"
+    },
+    {
+      "question": "Compare the Albemarle to the Vickers Wellington in terms of their roles and service timelines.",
+      "answer": "While both the Albemarle and Vickers Wellington were British aircraft used during World War II, they served different primary roles. The Wellington was already in quantity service as a bomber by the time the Albemarle was redesigned, leading to the abandonment of the Albemarle's bomber role. The Albemarle, instead, was repurposed for transport and secondary duties, entering RAF service in 1943, whereas the Wellington had been operational as a bomber earlier in the war."
+    },
+    {
+      "question": "What design specifications led to the Albemarle being built without light alloys?",
+      "answer": "The Albemarle was designed to Specification B.9/38, which required an aircraft that could be constructed using a combination of wood and metal without relying on any light alloys. This specification likely aimed to reduce reliance on scarce materials or to simplify production processes during wartime."
+    }
+  ]
+}

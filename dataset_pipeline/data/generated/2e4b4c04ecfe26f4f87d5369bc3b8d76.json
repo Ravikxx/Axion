@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Fiberglass",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is fiberglass and how is it made?",
+      "answer": "Fiberglass is a material composed of extremely fine fibers of glass, typically extruded from silica-based or other glass formulations into small-diameter fibers suitable for textile processing. Unlike many polymers, glass retains little crystalline structure even when spun into fiber, remaining largely amorphous."
+    },
+    {
+      "question": "How does fiberglass compare to carbon fiber in terms of cost and flexibility?",
+      "answer": "Fiberglass is cheaper and more flexible than carbon fiber, while still offering high strength relative to its weight. This makes it a cost-effective alternative for applications where both budget and material pliability are important considerations."
+    },
+    {
+      "question": "What are the common matrix materials used with fiberglass reinforcement?",
+      "answer": "The plastic matrix for fiberglass reinforcement is typically a thermoset polymer like epoxy or polyester resin, though thermoplastics may also be used. These matrices bind the glass fibers together to form a composite material with enhanced structural properties."
+    },
+    {
+      "question": "What are the proper technical names for fiberglass composites?",
+      "answer": "The proper technical names for fiberglass composites are fiber-reinforced polymer (FRP) or glass-reinforced plastic (GRP). These terms distinguish the material from raw fiberglass and emphasize its composite nature."
+    },
+    {
+      "question": "What was the first major commercial application of fiberglass?",
+      "answer": "The first major commercial use of fiberglass was in \"glass wool\" for insulation, which began in the 1930s. This application leveraged the material's thermal insulation properties derived from its fine glass fibers."
+    },
+    {
+      "question": "Why does glass retain similar properties whether in a soft stage or as a fiber?",
+      "answer": "This is because glass, unlike many polymers, has little crystalline structure even in its soft (amorphous) state. The lack of significant crystalline organization means its fundamental properties are preserved when extruded into fiber form."
+    },
+    {
+      "question": "Write a Python function that calculates the weight efficiency ratio of fiberglass compared to steel, assuming fiberglass has a strength-to-weight ratio of 500 MPa/(g/cm³) and steel has 250 MPa/(g/cm³).",
+      "answer": "python\n\ndef calculate_weight_efficiency_ratio():\n    fiberglass_ratio = 500  # MPa/(g/cm³)\n    steel_ratio = 250        # MPa/(g/cm³)\n    return fiberglass_ratio / steel_ratio\n\n# Example usage:\nefficiency = calculate_weight_efficiency_ratio()\nprint(f\"Fiberglass is {efficiency}x more weight-efficient than steel in terms of strength per weight.\")\n\nThis function computes the relative weight efficiency ratio, showing that fiberglass offers twice the strength-to-weight performance compared to steel in this scenario."
+    }
+  ]
+}

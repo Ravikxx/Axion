@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Dylan_and_Cole_Sprouse",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "Who are Dylan and Cole Sprouse?",
+      "answer": "Dylan Thomas Sprouse and Cole Mitchell Sprouse are American actors born on August 4, 1992. They are twin brothers, often referred to as the Sprouse Bros or Dylan and Cole Sprouse. They began their acting careers in movies like *Big Daddy* alongside Adam Sandler and later starred in television sitcoms and family films."
+    },
+    {
+      "question": "What was the Sprouse Bros franchise, and when did it end?",
+      "answer": "The Sprouse Bros franchise was a brand launched in 2006 that included a clothing line, book series, and magazine. Most of the franchise concluded in 2008, except for their clothing line. The franchise was part of their broader entertainment ventures during their Disney Channel success."
+    },
+    {
+      "question": "How much did Dylan and Cole Sprouse earn per episode in 2010?",
+      "answer": "In 2010, Dylan and Cole Sprouse were the highest-paid teenage Disney television actors, earning $40,000 combined for each episode of *The Suite Life on Deck*."
+    },
+    {
+      "question": "What is a notable example of Dylan and Cole Sprouse transitioning to adult roles?",
+      "answer": "In 2009, the brothers starred in the independent suspense movie *The Kings of Appletown*, marking an effort to shift toward an adult image. They also acted in *The Suite Life Movie* (2011) as part of this transition."
+    },
+    {
+      "question": "Did Dylan and Cole Sprouse attend college? If so, which university and when?",
+      "answer": "Yes, the Sprouse brothers were accepted to New York University. They delayed their admission for one year and began attending in the fall of 2011."
+    },
+    {
+      "question": "What personal projects did Dylan and Cole Sprouse create outside of acting?",
+      "answer": "Dylan launched a website called *Sprouse Arts* in mid-2010 to showcase his art. Cole started *Cole Sprouse Photography* in mid-2011 to display his photography work. Both projects reflect their creative interests beyond acting."
+    },
+    {
+      "question": "Write a Python function to determine if two given years fall within the peak fame period of Dylan and Cole Sprouse (2005–2011).",
+      "answer": "python\ndef is_peak_fame_year(start_year, end_year):\n    peak_start = 2005\n    peak_end = 2011\n    return peak_start <= start_year <= peak_end and peak_start <= end_year <= peak_end\n\n# Example usage:\nprint(is_peak_fame_year(2007, 2009))  # Output: True\nprint(is_peak_fame_year(2004, 2012))  # Output: False\n"
+    }
+  ]
+}

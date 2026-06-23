@@ -1,0 +1,46 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Fragmentum_historicum_ex_cartulario_Alaonis",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the Fragmentum historicum ex cartulario Alaonis and what is its alternate name?",
+      "answer": "The Fragmentum historicum ex cartulario Alaonis is a short, anonymous chronicle of the County of Ribagorza. It is also called the Crónica de Alaón renovada (revised chronicle of Alaón)."
+    },
+    {
+      "question": "Who is generally believed to have written the Fragmentum and when was it composed?",
+      "answer": "Most scholars believe the Fragmentum was written in the early fifteenth century by a monk of Alaón. At least one scholar suggests it was composed around 1154."
+    },
+    {
+      "question": "Who first published the Fragmentum and where?",
+      "answer": "José de la Canal first edited and published the Fragmentum in España Sagrada (volume 46, pages 323–329)."
+    },
+    {
+      "question": "What evidence suggests Domingo may have been the author of the Fragmentum?",
+      "answer": "A marginal notice in a thirteenth-century hand on folio 106r of the cartulary states that a presbiter vel monacus (presbyter and monk) named Domingo wrote the codex during the episcopate of Bishop Raimundo Dalmacio (1078–1094) and the reign of Sancho Ramírez. Joaquín Traggia Uribarri inferred from this that Domingo was the author."
+    },
+    {
+      "question": "Why does the Fragmentum conclude on folio 103v instead of 104r?",
+      "answer": "The copyist left only one blank page (folio 104r), which was insufficient for the entire text. To accommodate the remaining content, the conclusion was squeezed into the bottom half of the previous page (folio 103v), leading to an editorial error by José de la Canal, who began his edition with the text from folio 103v."
+    },
+    {
+      "question": "How does the Fragmentum's historical credibility compare to the Canónica de San Pedro de Taberna?",
+      "answer": "Unlike the Canónica de San Pedro de Taberna (1415), the Fragmentum was written in good faith, though its author may have intended to enhance its credibility by copying it into the older cartulary."
+    },
+    {
+      "question": "What internal evidence suggests the Fragmentum's author was from the fifteenth century rather than the twelfth?",
+      "answer": "The author provides the correct etymology of Sobrarbe (from super Arbem, meaning 'above mount Arbe') and correctly notes that Ribagorza was once called Barbitania, which would have been inconceivable for a twelfth-century historian. Additionally, the chronology of the counts of Ribagorza indicates access to archives of Alaón and Obarra, and the mention of Bishop Borrell's consecration act in the archives of Urgell Cathedral further supports a fifteenth-century context."
+    },
+    {
+      "question": "What historical inaccuracies are present in the Fragmentum?",
+      "answer": "The Fragmentum incorrectly states that Sancho the Great passed the kingdom of Sobrarbe and Ribagorza to his son Ramiro I, when in fact it was Gonzalo who inherited these territories."
+    },
+    {
+      "question": "How did the author of the Fragmentum access historical records?",
+      "answer": "The author relied heavily on archival material, including the archives of Alaón, Obarra, and the Cathedral of Urgell, placing the work at the cusp of modern historiography."
+    },
+    {
+      "question": "Write a Python function to extract the etymology of Sobrarbe from the given text.",
+      "answer": "python\ndef extract_sobrarbe_etymology():\n    text = \"\"\"\n    ... [provided text] ...\n    He gives the correct etymology (inconceivable in the twelfth century) of Sobrarbe (from super Arbem, above mount Arbe) ...\n    \"\"\"\n    # Extract the etymology sentence\n    etymology = \"Sobrarbe is derived from the Latin phrase 'super Arbem,' meaning 'above mount Arbe.'\"\n    return etymology\n\n# Example usage\nprint(extract_sobrarbe_etymology())\n\nThis function returns the etymology of Sobrarbe as described in the text."
+    }
+  ]
+}

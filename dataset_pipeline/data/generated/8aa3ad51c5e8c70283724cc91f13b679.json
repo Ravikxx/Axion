@@ -1,0 +1,30 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Cao_Shuo_(Cao_Cao's_son)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was Cao Shuo and what was his relationship to Cao Cao?",
+      "answer": "Cao Shuo was a son of Cao Cao, a prominent warlord at the end of the Han dynasty who later founded the Cao Wei state during the Three Kingdoms period of China. Cao Shuo's mother was Lady Liu, a concubine of Cao Cao."
+    },
+    {
+      "question": "What posthumous title was Cao Shuo granted by Cao Rui in 229?",
+      "answer": "In 229, Cao Rui posthumously honored Cao Shuo with the title 'Prince Shang of Xiang' (相殤王)."
+    },
+    {
+      "question": "How did Cao Rui's actions in 233 and 234 affect the lineage of the Prince of Xiang?",
+      "answer": "In 233, Cao Rui designated Cao Shuo's son, Cao Qian, as Prince of Xiang, but Cao Qian died the same year and was posthumously honored as 'Prince Min of Xiang.' In 234, Cao Rui designated Cao Qian's son, Cao Yan, as the new Prince of Xiang, granting him a princedom with 2,500 taxable households. Cao Yan died childless in 236, leading to the abolition of his princedom."
+    },
+    {
+      "question": "What was the significance of Cao Yan's death in 236 for the Prince of Xiang title?",
+      "answer": "Since Cao Yan died without a son in 236, his princedom was abolished, and the title 'Prince of Xiang' remained vacant until 255."
+    },
+    {
+      "question": "Who succeeded Cao Yan as Prince of Xiang in 255, and what was their relationship to Cao Mao?",
+      "answer": "In 255, Cao Mao, the fifth Wei emperor, designated Cao Song, his own son (Prince of Laoling), as Cao Yan's successor and restored the Prince of Xiang title."
+    },
+    {
+      "question": "Provide a Python code snippet to generate a timeline of key events in Cao Shuo's lineage.",
+      "answer": "python\nimport pandas as pd\n\nevents = [\n    {\"Year\": 229, \"Event\": \"Cao Rui posthumously honors Cao Shuo as 'Prince Shang of Xiang'\"},\n    {\"Year\": 233, \"Event\": \"Cao Rui designates Cao Qian (Cao Shuo's son) as Prince of Xiang\"},\n    {\"Year\": 233, \"Event\": \"Cao Qian dies; posthumously honored as 'Prince Min of Xiang'\"},\n    {\"Year\": 234, \"Event\": \"Cao Rui designates Cao Yan (Cao Qian's son) as Prince of Xiang\"},\n    {\"Year\": 236, \"Event\": \"Cao Yan dies childless; his princedom is abolished\"},\n    {\"Year\": 255, \"Event\": \"Cao Mao designates Cao Song as Prince of Xiang, restoring the title\"}\n]\n\ndf = pd.DataFrame(events)\nprint(df.to_string(index=False))\n"
+    }
+  ]
+}

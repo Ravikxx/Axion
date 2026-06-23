@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Bio-based_material",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What defines a bio-based material according to the provided text?",
+      "answer": "A bio-based material is intentionally made, either wholly or partially, from substances derived from living or once-living organisms such as plants, animals, enzymes, bacteria, fungi, and yeast."
+    },
+    {
+      "question": "Why have bio-based materials gained popularity in recent years?",
+      "answer": "Bio-based materials have gained popularity due to their renewable nature and their ability to store carbon during growth, making them a valid alternative to traditional materials for climate mitigation."
+    },
+    {
+      "question": "What is the EU's target date for achieving climate neutrality, and how do bio-based materials fit into this goal?",
+      "answer": "The European Union has set 2050 as the target date for achieving climate neutrality. Bio-based materials are part of the strategy to reduce reliance on fossil-based materials and support the transition to a circular economy, as highlighted in regulations like the European Industrial Strategy and the EU Biotechnology and Biomanufacturing Initiative."
+    },
+    {
+      "question": "List at least five types of processed bio-based materials mentioned in the text.",
+      "answer": "The text mentions bio-based polymers, bio-based plastics, bio-based chemical fibres, bio-based leather, bio-based rubber, bio-based coatings, bio-based material additives, and bio-based composites as processed bio-based materials."
+    },
+    {
+      "question": "How can bio-based materials be categorized based on their origin and processing?",
+      "answer": "Bio-based materials can be categorized based on their biomass origin (e.g., plant-derived, animal-derived) and their level of processing. Processed materials include engineered bio-products like bio-based polymers and composites, while unprocessed materials are referred to as biotic materials."
+    },
+    {
+      "question": "What is the role of the EU's Circular Economy Action Plan in promoting bio-based materials?",
+      "answer": "The EU's Circular Economy Action Plan supports innovation, investment, and market adoption of bio-based materials as part of efforts to enhance resource efficiency and transition towards a circular economy, where materials are reused and recycled more effectively."
+    },
+    {
+      "question": "Provide a Python code snippet that classifies a given material as bio-based or traditional based on its origin and processing level.",
+      "answer": "python\ndef classify_material(origin, is_processed):\n    if origin in ['plant', 'animal', 'enzyme', 'bacteria', 'fungus', 'yeast'] and is_processed:\n        return 'bio-based (processed)'\n    elif origin in ['plant', 'animal', 'enzyme', 'bacteria', 'fungus', 'yeast']:\n        return 'bio-based (unprocessed)'\n    else:\n        return 'traditional'\n\n# Example usage:\nprint(classify_material('plant', True))  # Output: bio-based (processed)\nprint(classify_material('animal', False)) # Output: bio-based (unprocessed)\nprint(classify_material('mineral', True)) # Output: traditional\n"
+    }
+  ]
+}

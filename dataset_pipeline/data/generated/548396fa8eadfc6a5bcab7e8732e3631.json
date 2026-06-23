@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Front_Line_(political_party)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When was the Greek nationalist party Front Line founded, and who has led the party since its inception?",
+      "answer": "Front Line was founded in 1999 and has been led by Konstantinos Plevris, a self-described 'Nazi, fascist, racist, anti-democrat, anti-Semite'. Plevris also founded the newer party E.M.E.I.S in 2017."
+    },
+    {
+      "question": "What were the electoral results of Front Line in the 1999 European Parliament elections and the 2000 Greek general election?",
+      "answer": "In the 1999 European Parliament elections, Front Line received 48,532 votes, which was 0.75% of the total vote. In the 2000 Greek general election, the party secured 12,125 votes, accounting for 0.18% of the poll."
+    },
+    {
+      "question": "Name three notable individuals associated with Front Line besides Konstantinos Plevris.",
+      "answer": "Notable individuals associated with Front Line include Panayiota Adonopoulou, Nikolaos Michaloliakos, and Michail Arvanitis-Avramis, all of whom were electoral candidates for the party in 1999."
+    },
+    {
+      "question": "What happened to Front Line after it was dissolved in 2000? Where did many of its former members go?",
+      "answer": "Front Line was dissolved in 2000. Many of its former members joined the Popular Orthodox Rally, while others participated in the foundation of the Patriotic Alliance."
+    },
+    {
+      "question": "In 2017, a new political entity called E.M.E.I.S was formed. What was its purpose, and who founded it?",
+      "answer": "E.M.E.I.S (United Front of Greek Ideology of Compatriots) was founded in Athens in January 2017 by Konstantinos Plevris, Tassos Symigdalas, and others. Its aim was to unite parties and personalities within the 'national space' and facilitate joint electoral participation among 'national forces'."
+    },
+    {
+      "question": "What is the significance of the coalition named K.Y.M.A of Hellenism, and which parties were involved in its formation?",
+      "answer": "K.Y.M.A of Hellenism was announced as a coalition in December 2020, involving ELASYN, LEPEN, the Spartans party, E.M.E.I.S, and Front Line. The coalition aimed for joint electoral participation. In February 2021, retired captain Andreas Petropoulos also joined the coalition. ELASYN later announced its departure in November 2021."
+    },
+    {
+      "question": "Write a Python function that checks if a given year falls within the active period of Front Line (1999–2000).",
+      "answer": "python\ndef is_front_line_active(year: int) -> bool:\n    \"\"\"Check if the given year falls within Front Line's active period (1999–2000).\"\"\"\n    return 1999 <= year <= 2000\n\n# Example usage:\nprint(is_front_line_active(2000))  # Output: True\nprint(is_front_line_active(2001))  # Output: False\n"
+    }
+  ]
+}

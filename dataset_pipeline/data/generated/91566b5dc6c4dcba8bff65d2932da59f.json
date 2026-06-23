@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Ajaxo_Inc._v._E*Trade_Financial_Corp.",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the original dispute between Ajaxo Inc. and E*Trade Financial Corp. about?",
+      "answer": "The original dispute between Ajaxo Inc. and E*Trade Financial Corp., dating back to 1999, involved E*Trade's malicious and willful misappropriation of trade secrets related to wireless stock trading technology that Ajaxo had shared under a Non-disclosure agreement (NDA)."
+    },
+    {
+      "question": "Under which legal framework was E*Trade found liable for misappropriating Ajaxo's trade secrets?",
+      "answer": "E*Trade was found liable under the Uniform Trade Secrets Act, which required them to maintain the confidentiality of Ajaxo's trade secrets as per the mutually signed NDA."
+    },
+    {
+      "question": "What was the outcome of the jury trial in 2003 regarding the damages awarded to Ajaxo?",
+      "answer": "In the 2003 jury trial, E*Trade was fined $1.3 million to be paid to Ajaxo for the misappropriation of trade secrets and breach of the NDA. However, the court denied Ajaxo's request for additional damages."
+    },
+    {
+      "question": "Why did the California courts of appeal remand the case back to the trial court in 2005 and 2010?",
+      "answer": "In 2005, the California courts of appeal affirmed the original ruling but remanded the case to determine additional damages. In 2010, the courts remanded it again, reasoning that an exact quantitative measure of wrongful enrichment damages might not be sufficient to reject a claim for reasonable royalty-based damages."
+    },
+    {
+      "question": "What is the significance of seeking royalty damages in trade secret misappropriation cases?",
+      "answer": "In trade secret cases, plaintiffs often seek royalty damages when they cannot demonstrate actual loss or inequitable benefit gained by the defendant. It serves as a measure of compensation based on the reasonable value of the misappropriated information."
+    },
+    {
+      "question": "How did the court rule on Ajaxo's claim for royalty damages in this case?",
+      "answer": "The court refused to allow evidence of royalty damages, claiming there were no net damages. However, the 2010 appellate decision suggested that this reasoning might not be sufficient grounds to dismiss reasonable royalty-based damages."
+    },
+    {
+      "question": "Write a Python snippet to simulate calculating damages based on reasonable royalties for misappropriated trade secrets.",
+      "answer": "python\n# Example calculation of reasonable royalty damages for misappropriated trade secrets\ndef calculate_royalty_damages(market_value, royalty_rate, duration_years):\n    \"\"\"\n    Calculate reasonable royalty damages based on market value, royalty rate, and duration.\n    \n    Args:\n        market_value (float): Estimated market value of the trade secret.\n        royalty_rate (float): Royalty rate (e.g., 5% as 0.05).\n        duration_years (int): Duration in years for which royalties are claimed.\n    \n    Returns:\n        float: Total estimated damages.\n    \"\"\"\n    annual_damages = market_value * royalty_rate\n    total_damages = annual_damages * duration_years\n    return total_damages\n\n# Example usage\nmarket_value = 1000000  # $1 million\nroyalty_rate = 0.05      # 5% royalty rate\nduration_years = 3       # 3 years\n\nestimated_damages = calculate_royalty_damages(market_value, royalty_rate, duration_years)\nprint(f\"Estimated reasonable royalty damages: ${estimated_damages:,.2f}\")\n"
+    }
+  ]
+}

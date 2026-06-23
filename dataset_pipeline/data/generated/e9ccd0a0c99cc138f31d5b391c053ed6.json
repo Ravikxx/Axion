@@ -1,0 +1,38 @@
+{
+  "source_url": "https://mathworld.wolfram.com/AlgebraicInteger.html",
+  "category": "mathworld",
+  "pairs": [
+    {
+      "question": "What is an algebraic integer and how is it defined in terms of polynomial equations?",
+      "answer": "An algebraic integer is a root of a monic polynomial equation with integer coefficients. Formally, a complex number α is an algebraic integer if there exists a non-zero polynomial P(x) = xⁿ + aₙ₋₁xⁿ⁻¹ + ... + a₀, where all aᵢ are integers, such that P(α) = 0. This contrasts with algebraic numbers, where the leading coefficient of the defining polynomial need not be 1."
+    },
+    {
+      "question": "Provide an example of an algebraic integer and explain how it satisfies the definition.",
+      "answer": "Consider the number √2. It is an algebraic integer because it is a root of the monic polynomial x² - 2 = 0, where all coefficients are integers. The polynomial is monic (leading coefficient is 1), and √2 satisfies the equation: (√2)² - 2 = 2 - 2 = 0."
+    },
+    {
+      "question": "What is the degree of an algebraic integer, and how is it determined?",
+      "answer": "The degree of an algebraic integer is the degree of the minimal monic polynomial with integer coefficients for which it is a root. For example, the algebraic integer √2 has degree 2 because its minimal polynomial x² - 2 is of degree 2. The degree is unique for each algebraic integer and reflects the 'complexity' of its minimal polynomial."
+    },
+    {
+      "question": "Are algebraic integers closed under multiplication? Provide a proof or explanation.",
+      "answer": "Yes, the set of algebraic integers is closed under multiplication. If α and β are algebraic integers, then they are roots of monic polynomials with integer coefficients. The product αβ is also a root of a monic polynomial with integer coefficients, which can be derived from the resultant of the minimal polynomials of α and β. Thus, αβ is an algebraic integer."
+    },
+    {
+      "question": "What are Gaussian integers, and why are they considered algebraic integers?",
+      "answer": "Gaussian integers are complex numbers of the form a + bi, where a and b are integers, and i is the imaginary unit (i² = -1). They are algebraic integers because they are roots of the monic polynomial x² - 2a x + (a² + b²) = 0, which has integer coefficients. For example, 1 + i is a root of x² - 2x + 2 = 0."
+    },
+    {
+      "question": "Explain Abel's impossibility theorem in the context of algebraic integers.",
+      "answer": "Abel's impossibility theorem states that there is no general algebraic solution (using a finite number of additions, subtractions, multiplications, divisions, and root extractions) for polynomial equations of degree 5 or higher. This implies that some algebraic integers of degree 5 or higher cannot be expressed using elementary operations on rational numbers, even though they are roots of monic polynomials with integer coefficients."
+    },
+    {
+      "question": "Write a Python code snippet to check if a given number is an algebraic integer.",
+      "answer": "python\nimport sympy as sp\n\ndef is_algebraic_integer(alpha):\n    # Compute the minimal polynomial of alpha\n    minimal_poly = sp.minpoly(alpha, extension=True)\n    # Check if the polynomial is monic and has integer coefficients\n    if minimal_poly.is_monic and all(c.is_integer for c in minimal_poly.all_coeffs()):\n        return True\n    return False\n\n# Example usage:\nprint(is_algebraic_integer(sp.sqrt(2)))  # Output: True\nprint(is_algebraic_integer(1 + sp.I))    # Output: True\nprint(is_algebraic_integer(sp.pi))       # Output: False\n"
+    },
+    {
+      "question": "How do radical integers relate to algebraic integers, and what is their significance?",
+      "answer": "Radical integers are a subring of the algebraic integers. They are algebraic integers that can be expressed as roots of polynomials of the form xⁿ - k, where k is an integer. For example, √2 and ∛3 are radical integers. Their significance lies in the fact that they form a specific and well-studied subset of algebraic integers, often used in number theory and algebraic geometry due to their simpler structure compared to general algebraic integers."
+    }
+  ]
+}

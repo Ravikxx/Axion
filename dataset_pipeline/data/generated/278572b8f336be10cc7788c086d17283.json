@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Burrages_End",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the architectural style of Burrages End and when was it constructed?",
+      "answer": "Burrages End is a small 1+1⁄2-story frame house with a gambrel roof. It was constructed around 1780, replacing an earlier house on the same site."
+    },
+    {
+      "question": "Who originally owned the land where Burrages End is located, and when was it patented?",
+      "answer": "The land was originally patented in 1665 to John Burrage, who sold it to Major John Welsh in 1668."
+    },
+    {
+      "question": "What historical significance does Burrages End have, and when was it listed on the National Register of Historic Places?",
+      "answer": "Burrages End is a historic home in Anne Arundel County, Maryland, notable for its late 18th or early 19th century buildings. It was listed on the National Register of Historic Places in 1973."
+    },
+    {
+      "question": "What notable features or structures are present on the Burrages End property?",
+      "answer": "The property includes a historic house (c. 1780), a Weems-Sellman cemetery, a slave quarter, a tobacco barn, and remnants of a hall-and-parlor plan house built by Major John Welsh in the late 1700s."
+    },
+    {
+      "question": "Who was Col. John Weems, and what is his connection to Burrages End?",
+      "answer": "Col. John Weems purchased the Burrages End property in 1764 and was likely the contractor who built the present house around 1780. He was also the construction contractor for St. James' Church (1762-65), located 3/4 mile south of Burrages End."
+    },
+    {
+      "question": "How long was Burrages End owned by the Sellman family, and when did they acquire it?",
+      "answer": "Burrages End was sold to Thomas Sellman in 1794 after Col. John Weems' death and remained in the Sellman family's possession until 1946."
+    },
+    {
+      "question": "Provide a Python code snippet to calculate the number of years Burrages End was owned by the Sellman family.",
+      "answer": "python\n# Years Burrages End was owned by the Sellman family\nstart_year = 1794\nend_year = 1946\nownership_duration = end_year - start_year\nprint(f\"The Sellman family owned Burrages End for {ownership_duration} years.\")\n\nOutput: The Sellman family owned Burrages End for 152 years."
+    }
+  ]
+}

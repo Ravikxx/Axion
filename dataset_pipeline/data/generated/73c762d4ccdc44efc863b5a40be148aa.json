@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/ABNKKBSNPLAko?!",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the English translation of Bob Ong's autobiography 'ABNKKBSNPLAko?!' and who published it?",
+      "answer": "The English translation of Bob Ong's autobiography 'ABNKKBSNPLAko?!' is titled 'The Boy with a Snake in His Schoolbag: A Memoir from Manila (Or Something Like That)', published by Tuttle Publishing in 2023."
+    },
+    {
+      "question": "How did the title 'ABNKKBSNPLAko?!' come about and what does it mean?",
+      "answer": "The title 'ABNKKBSNPLAko?!' is meant to be read phonetically as 'Aba, nakakabasa na pala ako?!', which roughly translates to 'Wow, I can actually read now?!' in English. It reflects the author's surprise and joy at learning to read as a child."
+    },
+    {
+      "question": "What themes does Bob Ong's work, including 'ABNKKBSNPLAko?!', often explore according to literary experts?",
+      "answer": "Bob Ong's work, including 'ABNKKBSNPLAko?!', often explores themes familiar to Filipino urban culture, referred to as 'urban culture lore.' Literary professor Paolo Manalo noted that these themes resonate deeply with Filipinos due to their nostalgic and relatable nature."
+    },
+    {
+      "question": "How many copies of 'ABNKKBSNPLAko?!' were sold by 2013, and what milestone edition was released that year?",
+      "answer": "By 2013, 'ABNKKBSNPLAko?!' had sold over 240,000 copies, and a 12th anniversary edition was published that year."
+    },
+    {
+      "question": "What writing style does Bob Ong employ in 'ABNKKBSNPLAko?!' that contributed to its popularity?",
+      "answer": "Bob Ong employs a conversational tone with humor in 'ABNKKBSNPLAko?!', using it to highlight the absurdities in Filipino culture. This style made the book relatable and appealing to a wide audience, contributing significantly to its success."
+    },
+    {
+      "question": "Write a Python function to generate a phonetic pronunciation guide for 'ABNKKBSNPLAko?!' based on the given explanation.",
+      "answer": "Here is a Python function to generate a phonetic pronunciation guide for 'ABNKKBSNPLAko?!':\n\npython\ndef generate_pronunciation_guide(title: str) -> str:\n    pronunciation_map = {\n        'ABNKKBSNPLAko?!': 'Aba, nakakabasa na pala ako?!'\n    }\n    return pronunciation_map.get(title, \"Pronunciation guide not available.\")\n\n# Example usage:\nprint(generate_pronunciation_guide('ABNKKBSNPLAko?!'))\n\nThis function maps the title to its phonetic pronunciation and returns it. The pronunciation guide is 'Aba, nakakabasa na pala ako?!'."
+    },
+    {
+      "question": "Why do you think the conversational tone and humor in Bob Ong's books resonate so well with Filipino readers?",
+      "answer": "The conversational tone and humor in Bob Ong's books resonate with Filipino readers because they highlight everyday absurdities and cultural quirks in a relatable and lighthearted manner. This approach makes the content feel personal and nostalgic, as it reflects common experiences among Filipinos, particularly those from urban settings."
+    }
+  ]
+}

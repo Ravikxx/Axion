@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Charles_E._Collins_(American_football)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who is Charles E. Collins better known as among the athletes he coaches?",
+      "answer": "Charles E. Collins is known as 'Coach C.' among the athletes he works with, including high school and professional players."
+    },
+    {
+      "question": "What are some of the notable professional teams Charles E. Collins has been associated with as a coach?",
+      "answer": "Charles E. Collins has served as a wide-receiver assistant coach for the San Francisco 49ers, Cincinnati Bengals, and the United Football League Sacramento Mountain Lions."
+    },
+    {
+      "question": "How did Charles E. Collins contribute to Chad 'Ochocinco' Johnson's football career?",
+      "answer": "Charles E. Collins helped transform Chad 'Ochocinco' Johnson from a high school quarterback into a successful wide receiver. His coaching and encouragement enabled Johnson to earn a spot on the Oregon State University team and later get drafted by the Cincinnati Bengals in 2001."
+    },
+    {
+      "question": "What app did Charles E. Collins and Chad 'Ochocinco' Johnson release together?",
+      "answer": "Collins and Johnson teamed up to release a wide-receiver training app called 'In The Breaks'."
+    },
+    {
+      "question": "In what year did the Oaks Christian High School football team achieve a CIF championship under Charles E. Collins' leadership?",
+      "answer": "The Oaks Christian High School football team won a CIF championship in 2017 under Charles E. Collins' leadership as offensive coordinator."
+    },
+    {
+      "question": "What is Charles E. Collins' current role in the Pro Football Hall of Fame?",
+      "answer": "Charles E. Collins is currently a member of the Pro Football Hall of Fame instructional staff, where he works with youth American football wide receivers in major cities across the U.S."
+    },
+    {
+      "question": "Write a Python code snippet that simulates a simple function to check if a player's name is associated with Charles E. Collins' coaching career.",
+      "answer": "python\ndef is_associated_with_coach_c(player_name):\n    # List of players known to have worked with Charles E. Collins\n    associated_players = [\n        \"Chad 'Ochocinco' Johnson\",\n        \"Steve Smith\",\n        \"Coach C.\"\n    ]\n    return player_name in associated_players\n\n# Example usage\nprint(is_associated_with_coach_c(\"Chad 'Ochocinco' Johnson\"))  # Output: True\nprint(is_associated_with_coach_c(\"Tom Brady\"))  # Output: False\n"
+    }
+  ]
+}

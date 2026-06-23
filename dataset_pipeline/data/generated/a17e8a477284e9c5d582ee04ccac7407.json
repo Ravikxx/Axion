@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Donal_O'Sullivan_(Gaelic_footballer)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was Donal O'Sullivan and what were his primary roles in Gaelic football?",
+      "answer": "Donal O'Sullivan (1930–2001) was an Irish Gaelic footballer from Cork who played as a full-back at both club and inter-county levels. He played for Lees club, winning a Cork Senior Championship as captain in 1955, and for the Cork senior football team, serving as team captain in 1956 and leading them to National League and Munster Championship titles that year."
+    },
+    {
+      "question": "What significant achievements did Donal O'Sullivan accomplish as captain of the Cork senior football team in 1956?",
+      "answer": "As captain of the Cork senior football team in 1956, O'Sullivan led the team to victories in the National League and the Munster Championship. However, Cork was defeated in the All-Ireland final by Galway that same year."
+    },
+    {
+      "question": "What administrative roles did Donal O'Sullivan hold within the Gaelic Athletic Association (GAA)?",
+      "answer": "O'Sullivan served as a member of the Cork County Board starting at age 21. He was elected vice-chairman of the Cork County Board in 1970, serving for five years, and later became acting vice-chairman before being elected to a three-year term as vice-chairman in 1976. From 1980, he chaired the Munster Council, overseeing a highly successful period for Cork hurling, including three consecutive All-Ireland Championships."
+    },
+    {
+      "question": "How did Donal O'Sullivan contribute to the success of Cork hurling during his tenure as Munster Council chairman?",
+      "answer": "During his time as chairman of the Munster Council (1980), O'Sullivan presided over one of Cork's most successful eras in modern hurling, with the Cork senior hurling team winning three successive All-Ireland Championships."
+    },
+    {
+      "question": "What family connection did Donal O'Sullivan have to rugby union?",
+      "answer": "Donal O'Sullivan's grandsons, Niall and Rory Scannell, represented both Munster and Ireland in rugby union, highlighting a notable family legacy in sports beyond Gaelic football."
+    },
+    {
+      "question": "Provide a code snippet that generates a timeline of Donal O'Sullivan's career milestones in chronological order.",
+      "answer": "python\ntimeline = [\n    {'year': 1930, 'event': 'Born in Cork'},\n    {'year': 1955, 'event': 'Won Cork Senior Championship as captain with Lees club'},\n    {'year': 1956, 'event': 'Appointed captain of Cork senior football team; won National League and Munster Championship'},\n    {'year': 1956, 'event': 'Led Cork to All-Ireland final (lost to Galway)'},\n    {'year': 1951, 'event': 'Became member of Cork County Board at age 21'},\n    {'year': 1970, 'event': 'Elected vice-chairman of Cork County Board'},\n    {'year': 1975, 'event': 'Served as acting vice-chairman of Cork County Board'},\n    {'year': 1976, 'event': 'Elected vice-chairman of Cork County Board for a three-year term'},\n    {'year': 1980, 'event': 'Chosen as chairman of the Munster Council'}\n]\nfor entry in timeline:\n    print(f\"{entry['year']}: {entry['event']}\")\n"
+    },
+    {
+      "question": "What political background did Donal O'Sullivan's family have?",
+      "answer": "Donal O'Sullivan was the son of Timothy O'Sullivan, who served as a Fianna Fáil TD (Teachta Dála, member of parliament) and Senator. This reflects a political lineage within the family."
+    }
+  ]
+}

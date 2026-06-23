@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Bellatrix_Lestrange",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "Who are Bellatrix Lestrange's sisters in the Harry Potter series?",
+      "answer": "Bellatrix Lestrange has two sisters: Andromeda Black and Narcissa Malfoy."
+    },
+    {
+      "question": "What is Bellatrix Lestrange's maiden name and what does it imply about her?",
+      "answer": "Bellatrix's maiden name is Black. The surname 'Black' symbolizes her dark life, as the color black does not absorb light, reflecting her malevolent nature."
+    },
+    {
+      "question": "How did Bellatrix Lestrange escape from Azkaban prison?",
+      "answer": "Lord Voldemort helped Bellatrix and other Death Eaters escape from Azkaban prison."
+    },
+    {
+      "question": "Write a Python function that checks if a given name matches Bellatrix Lestrange's known aliases (Bellatrix Black, Bellatrix Lestrange).",
+      "answer": "python\ndef is_bellatrix_alias(name):\n    aliases = ['Bellatrix Black', 'Bellatrix Lestrange']\n    return name in aliases\n\n# Example usage:\nprint(is_bellatrix_alias('Bellatrix Lestrange'))  # Output: True\nprint(is_bellatrix_alias('Bellatrix'))            # Output: False\n"
+    },
+    {
+      "question": "What was Bellatrix Lestrange's relationship with Lord Voldemort, and how did it influence her actions?",
+      "answer": "Bellatrix was deeply infatuated with Voldemort, which drove her fanatical loyalty and violent behavior as a Death Eater. Her obsession even led to the birth of her daughter, Delphini, through their relationship."
+    },
+    {
+      "question": "Which characters did Bellatrix Lestrange murder in the Harry Potter series?",
+      "answer": "Bellatrix murdered Sirius Black, Nymphadora Tonks, and Dobby (a house-elf)."
+    },
+    {
+      "question": "How was Bellatrix Lestrange killed in the Harry Potter series?",
+      "answer": "Bellatrix was ultimately killed by Molly Weasley during the Battle of Hogwarts when she attempted to use the killing curse *Avada Kedavra* on Ginny Weasley."
+    }
+  ]
+}

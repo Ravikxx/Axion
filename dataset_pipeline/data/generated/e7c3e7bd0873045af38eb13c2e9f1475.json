@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/iamovi/i-built-a-social-platform-where-everything-vanishes-after-24-hours-3imk",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What is Genjutsu and how does it differ from traditional social networks?",
+      "answer": "Genjutsu is a fast-paced, developer-focused social network where all posts, comments, and interactions vanish after 24 hours. Unlike traditional platforms that retain content indefinitely, Genjutsu provides a temporary space for ephemeral thoughts, reducing performance anxiety and the pressure of permanent records. It is optimized for sharing code snippets and technical insights, with a clean manga-inspired aesthetic and real-time engagement."
+    },
+    {
+      "question": "What are the key features of Genjutsu?",
+      "answer": "The key features of Genjutsu include: (1) A strict 24-hour lifespan for all content, ensuring no permanent history; (2) A developer-first design optimized for sharing code and technical insights; (3) Real-time connections with a community of builders; (4) A manga-inspired visual style with high contrast; and (5) A clutter-free experience with fresh feeds every day."
+    },
+    {
+      "question": "What technologies power Genjutsu's frontend and backend?",
+      "answer": "Genjutsu's frontend is built with React and Vite, styled using Tailwind CSS for a crisp manga look, and animated with Framer Motion for smooth transitions. The backend relies on Supabase for real-time functionality, and the app is deployed on Vercel. The source code is open-source and available on GitHub: [github.com/iamovi/genjutsu](https://github.com/iamovi/genjutsu)."
+    },
+    {
+      "question": "How can I contribute to the Genjutsu project?",
+      "answer": "Genjutsu is open source, and contributions are welcome. You can help by fixing bugs, suggesting features, or contributing to the manga-inspired design. To get started, review the [CONTRIBUTING.md](https://github.com/iamovi/genjutsu/blob/main/.github/CONTRIBUTING.md) file on GitHub, clone the repository, and follow the guidelines for submitting pull requests or issues."
+    },
+    {
+      "question": "What is the purpose of the 24-hour lifespan in Genjutsu?",
+      "answer": "The 24-hour lifespan in Genjutsu removes the pressure of permanent records, allowing users to share raw, experimental, or half-baked ideas without fear of long-term consequences. It fosters an environment where users can be authentically themselves, knowing their mistakes or temporary thoughts will disappear after 24 hours."
+    },
+    {
+      "question": "What are some planned future features for Genjutsu?",
+      "answer": "Future features planned for Genjutsu include ephemeral messaging (called 'whispers') that also vanish after 24 hours, social mini-games for community engagement, dynamic Open Graph images for better social sharing, and progressive web app (PWA) support for a native-like experience."
+    },
+    {
+      "question": "Provide a code snippet to fetch and display posts from the Genjutsu API using Supabase.",
+      "answer": "Here’s an example React component using Supabase to fetch and display posts from Genjutsu. First, ensure you have the Supabase client installed:\nbash\nnpm install @supabase/supabase-js\n\n\nThen, use the following code to fetch and render posts:\njavascript\nimport { useEffect, useState } from 'react';\nimport { createClient } from '@supabase/supabase-js';\n\nconst supabaseUrl = 'YOUR_SUPABASE_URL';\nconst supabaseKey = 'YOUR_SUPABASE_KEY';\nconst supabase = createClient(supabaseUrl, supabaseKey);\n\nfunction PostList() {\n  const [posts, setPosts] = useState([]);\n\n  useEffect(() => {\n    const fetchPosts = async () => {\n      const { data, error } = await supabase\n        .from('posts')\n        .select('*')\n        .order('created_at', { ascending: false });\n\n      if (error) console.error('Error fetching posts:', error);\n      else setPosts(data);\n    };\n\n    fetchPosts();\n  }, []);\n\n  return (\n    <div className=\"space-y-4\">\n      {posts.map((post) => (\n        <div key={post.id} className=\"p-4 border rounded-lg\">\n          <h3 className=\"font-bold\">{post.title}</h3>\n          <p className=\"text-gray-600\">{post.content}</p>\n          <p className=\"text-sm text-gray-400\">Expires in {calculateTimeRemaining(post.created_at)}</p>\n        </div>\n      ))}\n    </div>\n  );\n}\n\nfunction calculateTimeRemaining(createdAt) {\n  const createdTime = new Date(createdAt).getTime();\n  const now = new Date().getTime();\n  const diffHours = Math.floor((24 * 60 * 60 * 1000 - (now - createdTime)) / (60 * 60 * 1000));\n  return `${diffHours} hours`;\n}\n\nReplace `YOUR_SUPABASE_URL` and `YOUR_SUPABASE_KEY` with your Supabase project details."
+    }
+  ]
+}

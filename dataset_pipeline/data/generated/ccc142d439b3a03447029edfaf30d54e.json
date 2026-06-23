@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Bismarck-class_battleship",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the primary role envisioned for the Bismarck-class battleships by the German High Command of the Navy?",
+      "answer": "The German High Command of the Navy (Oberkommando der Marine) envisioned the Bismarck-class battleships as long-range commerce raiders against British shipping in the Atlantic Ocean, despite their design being initially intended for engaging enemy battleships in home waters."
+    },
+    {
+      "question": "How did the Bismarck-class battleships compare in size and armament to other warships of their era?",
+      "answer": "The Bismarck-class battleships were the largest and most powerful warships built for the Kriegsmarine, displacing over 41,000 metric tons and armed with eight 38 cm (15 in) guns, making them formidable opponents."
+    },
+    {
+      "question": "What was the outcome of Operation Rheinübung conducted by the Bismarck?",
+      "answer": "During Operation Rheinübung, Bismarck destroyed the British battlecruiser HMS Hood and damaged the battleship Prince of Wales in the Battle of the Denmark Strait. However, it was subsequently sunk by the Royal Navy after a three-day chase, with debate remaining over whether scuttling or battle damage was the primary cause of sinking."
+    },
+    {
+      "question": "Describe the career of the battleship Tirpitz from 1941 to 1944.",
+      "answer": "Tirpitz operated briefly in the Baltic Sea in 1941 before being stationed in Norwegian waters in 1942. She acted as a 'fleet in being,' threatening Allied convoys to the Soviet Union. Between 1942 and 1944, she survived repeated attacks by the Royal Navy and Royal Air Force, but sustained significant damage in late 1943 during Operation Source by X-craft. In 1944, Tallboy bombs from Lancaster bombers caused extensive internal damage and capsized the ship. She was scrapped between 1948 and 1957."
+    },
+    {
+      "question": "Why were the Bismarck-class battleships ordered in response to the French Richelieu-class?",
+      "answer": "The Bismarck-class battleships were ordered in response to the French Richelieu-class battleships, which were themselves laid down in reaction to the Italian Littorio-class battleships. This demonstrates the naval arms race and strategic posturing among European powers in the 1930s."
+    },
+    {
+      "question": "Provide a code snippet in Python to calculate the top speed of the Bismarck in kilometers per hour, given its top speed in knots.",
+      "answer": "The top speed of the Bismarck was 30 knots. To convert this to kilometers per hour:\npython\nknots_to_kmh = lambda knots: knots * 1.852\nbismarck_speed_kmh = knots_to_kmh(30)\nprint(f\"Bismarck's top speed: {bismarck_speed_kmh} km/h\")  # Output: 55.56 km/h\n"
+    },
+    {
+      "question": "What strategic confusion characterized German naval construction in the 1930s as reflected in the Bismarck-class design?",
+      "answer": "The Bismarck-class design reflected strategic confusion in the 1930s German naval construction, as the ships were initially intended for traditional battleship engagements in home waters but were later envisioned for long-range commerce raiding against British shipping in the Atlantic."
+    }
+  ]
+}

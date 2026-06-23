@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Herb_Capozzi",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was Harold Peter 'Herb' Capozzi and what were his primary roles in British Columbia?",
+      "answer": "Harold Peter 'Herb' Capozzi was a multifaceted figure in British Columbia, serving as an athlete, businessman, professional sports team manager, and political figure. He represented Vancouver Centre in the Legislative Assembly of British Columbia from 1966 to 1972 as a Social Credit member. He was also a key figure in sports management, including roles as the general manager of the BC Lions and owner of the Vancouver Whitecaps soccer team."
+    },
+    {
+      "question": "What were Herb Capozzi's notable achievements in sports, and which teams did he manage or own?",
+      "answer": "Herb Capozzi had several notable achievements in sports. As a football player, he played for the Calgary Stampeders and Montreal Alouettes in the Canadian Football League. He served as the general manager of the BC Lions from 1957 to 1966, during which the team won the Grey Cup in 1964. He later established and owned the Vancouver Whitecaps soccer team, which won the North American Soccer League (NASL) Soccer Bowl title in 1979 under his leadership."
+    },
+    {
+      "question": "How did Herb Capozzi contribute to the Vancouver Canucks hockey team in 1971?",
+      "answer": "In 1971, Herb Capozzi loaned the Vancouver Canucks hockey team, then owned by Northwest Sports, enough money to continue operations. This financial assistance helped keep the team in Canada, ensuring its survival and stability."
+    },
+    {
+      "question": "What educational background did Herb Capozzi have, and where did he study?",
+      "answer": "Herb Capozzi earned a sports scholarship to the University of British Columbia, where he received Bachelor of Arts (B.A.) and Bachelor of Commerce (BComm) degrees. He was also a member of the BC Alpha chapter of the Phi Delta Theta fraternity during his time at the university."
+    },
+    {
+      "question": "List some of the business ventures and organizations Herb Capozzi was involved in besides sports.",
+      "answer": "Herb Capozzi was involved in several business ventures and organizations. He co-founded The Keg restaurant chain with George Tidball and played a key role in bringing McDonald's restaurants to Canada. He also owned Calona Wines, the Capri Hotel (now the Coast Capri Hotel), and the Capri Centre Mall. Additionally, he served as president of Pasadena Investments, a development company based in Kelowna."
+    },
+    {
+      "question": "What awards and recognitions did Herb Capozzi receive during his lifetime?",
+      "answer": "Herb Capozzi was inducted into the BC Sports Hall of Fame and the Canadian Soccer Hall of Fame. He was also honored with the Order of British Columbia in 2008 for his contributions to the province."
+    },
+    {
+      "question": "Provide a code snippet that simulates a simplified timeline of Herb Capozzi's career milestones in Python.",
+      "answer": "python\nimport datetime\n\nclass HerbCapozziTimeline:\n    def __init__(self):\n        self.timeline = []\n\n    def add_event(self, year, event):\n        self.timeline.append((year, event))\n\n    def display_timeline(self):\n        for year, event in sorted(self.timeline, key=lambda x: x[0]):\n            print(f\"{year}: {event}\")\n\n# Initialize timeline\ntimeline = HerbCapozziTimeline()\n\n# Add key events\ntimeline.add_event(1925, \"Born in Kelowna\")\ntimeline.add_event(1952, \"Moved to Calgary, worked for Shell Oil\")\ntimeline.add_event(1957, \"Became general manager of the BC Lions\")\ntimeline.add_event(1964, \"BC Lions won the Grey Cup\")\ntimeline.add_event(1966, \"Began serving in the Legislative Assembly of British Columbia\")\ntimeline.add_event(1971, \"Loaned money to Vancouver Canucks to keep them in Canada\")\ntimeline.add_event(1974, \"Established the Vancouver Whitecaps soccer team\")\ntimeline.add_event(1979, \"Vancouver Whitecaps won the NASL Soccer Bowl\")\ntimeline.add_event(2008, \"Received the Order of British Columbia\")\ntimeline.add_event(2011, \"Passed away at the age of 86\")\n\n# Display timeline\ntimeline.display_timeline()\n"
+    }
+  ]
+}

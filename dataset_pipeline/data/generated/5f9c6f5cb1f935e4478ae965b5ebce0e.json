@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Early_life_of_Shivaji",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who founded the Maratha Empire and when was this individual born?",
+      "answer": "Chhatrapati Shivaji Maharaj founded the Maratha Empire in the Indian subcontinent. He was born at the hill fort of Shivneri on 1 March 1630 (corresponding to 19 February 1630 in the Julian calendar)."
+    },
+    {
+      "question": "What were the roles of Shivaji Maharaj's parents, Shahaji and Jijabai, in the Ahmednagar Sultanate?",
+      "answer": "At the time of Shivaji's birth, both Shahaji and Jijabai served the Ahmednagar Sultanate in military and administrative capacities. Later, their loyalty shifted to different powers—the Mughal Empire and the Bijapur Sultanate."
+    },
+    {
+      "question": "Why did Shivaji Maharaj spend his early years separated from his father, Shahaji?",
+      "answer": "Shahaji, as a general of Bijapur, was posted in southern Deccan after 1636 and was away from Shivaji for several years. Shivaji and his mother Jijabai remained in Pune, where Shahaji's subordinate Dadoji Kondadeo administered the family's jagir (feudal land grant) in Shivaji’s name."
+    },
+    {
+      "question": "How did Shivaji Maharaj assert his independence during his teenage years?",
+      "answer": "Despite advice from Shahaji and Dadoji, Shivaji began acting independently of the Bijapur government. He captured several hill forts from other Bijapur vassals and, by age 15, started identifying himself as a Raja (king)."
+    },
+    {
+      "question": "What significant event occurred in 1647 that allowed Shivaji Maharaj to expand his influence?",
+      "answer": "After Dadoji Kondadeo's death in 1647, Shivaji assumed full control of his father’s jagir in the Pune region. He then eliminated local challenges to his authority and expanded his influence by invading the northern Konkan region, targeting the territory of the Siddis of Janjira."
+    },
+    {
+      "question": "What title did Shivaji Maharaj begin using at the age of 15, and why was this significant?",
+      "answer": "At the age of 15, Shivaji started calling himself a Raja (king). This was significant because it marked his early assertion of independent political identity and authority, despite being under Bijapur's nominal suzerainty."
+    },
+    {
+      "question": "Provide a code snippet that calculates Shivaji Maharaj's age in 1649 based on his birth year. Explain the logic.",
+      "answer": "python\n# Shivaji Maharaj was born in 1630\nbirth_year = 1630\ncurrent_year = 1649\n\nage = current_year - birth_year\nprint(f\"Shivaji Maharaj was {age} years old in 1649.\")\n\nThe code calculates Shivaji’s age by subtracting his birth year (1630) from the target year (1649), resulting in 19 years old."
+    }
+  ]
+}

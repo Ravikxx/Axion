@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Die_Forelle",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who composed 'Die Forelle' and in what year?",
+      "answer": "'Die Forelle' (Op. 32, D. 550) was composed by the Austrian composer Franz Schubert in early 1817."
+    },
+    {
+      "question": "What is the original source of the text set to music in 'Die Forelle'?",
+      "answer": "The text of 'Die Forelle' is based on a poem by Christian Friedrich Daniel Schubart, first published in the Schwäbischer Musenalmanach in 1783."
+    },
+    {
+      "question": "How did Franz Schubert modify the poem when composing 'Die Forelle'?",
+      "answer": "Schubert removed the last verse of Schubart's poem, which contained the moral, changing the song's focus to make it more universal and enabling it to be sung by both male and female singers."
+    },
+    {
+      "question": "What is the musical key and form of 'Die Forelle'?",
+      "answer": "'Die Forelle' is composed in the key of D-flat major and uses a varied (or modified) strophic form, where the first two verses share the same musical structure, but the final verse changes to musically depict the trout being caught."
+    },
+    {
+      "question": "How is 'Die Forelle' categorized in the Deutsch catalogue of Schubert's works?",
+      "answer": "In the Deutsch catalogue, 'Die Forelle' is listed as number 550, or D. 550."
+    },
+    {
+      "question": "What is the Trout Quintet and how is it related to 'Die Forelle'?",
+      "answer": "The Trout Quintet (D. 667) is a chamber music piece composed by Schubert as a result of the popularity of 'Die Forelle'. The fourth movement of the quintet features a set of variations based on the melody of 'Die Forelle'."
+    },
+    {
+      "question": "Provide a Python code snippet to play the melody of 'Die Forelle' using the music21 library.",
+      "answer": "python\nfrom music21 import converter, instrument, stream\n\n# Load the MIDI file for 'Die Forelle' (assuming it's available)\nscore = converter.parse('Die_Forelle.mid')\n\n# Display the score\nscore.show('t')\n\n# Play the melody\nscore.show('m')\n\n*Note: Replace 'Die_Forelle.mid' with the actual file path. If no MIDI file is available, you would need to manually encode the melody or extract it from a sheet music source."
+    }
+  ]
+}

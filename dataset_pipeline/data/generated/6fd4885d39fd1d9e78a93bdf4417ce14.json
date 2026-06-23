@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Golden_swallow",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Where is the golden swallow (Tachycineta euchrysea) endemic to, and in which countries is it currently found?",
+      "answer": "The golden swallow is endemic to the Caribbean island of Hispaniola, which is split between the Dominican Republic and Haiti. It was once native to Jamaica but is now extirpated there."
+    },
+    {
+      "question": "What are the primary threats to the golden swallow's survival, and why is it considered vulnerable?",
+      "answer": "The golden swallow is considered vulnerable by the IUCN due to factors such as predation by introduced mammals and habitat loss. While predation is a likely cause for its extirpation from Jamaica, habitat loss is not strongly supported by evidence. Its restricted range to isolated montane forests also contributes to its vulnerability."
+    },
+    {
+      "question": "How can the Jamaican and Hispaniolan subspecies of the golden swallow be distinguished visually?",
+      "answer": "The Jamaican subspecies has bronze upperparts, sides of the head, and coppery-bronze shoulders, back, and rump, with a greenish forehead. The Hispaniolan subspecies (T. e. sclateri) is distinguished by a more deeply forked tail, blue-green forehead, blue-black wings, and blue-black tail."
+    },
+    {
+      "question": "What is the breeding season and clutch size of the golden swallow in Hispaniola?",
+      "answer": "In Hispaniola, the golden swallow breeds from April to July, laying a clutch of two to four white eggs. It formerly bred from June to July in Jamaica. The eggs are typically laid in a cup nest found in Hispaniolan pine or other locations like caves, under house eaves, burned stands, or nest boxes."
+    },
+    {
+      "question": "Write a Python function that simulates the foraging behavior of a golden swallow given its typical flight height.",
+      "answer": "python\ndef simulate_golden_swallow_foraging(foraging_height):\n    # Golden swallows typically forage under 20m, rarely over 30m\n    if foraging_height < 0:\n        return \"Invalid height: must be non-negative\"\n    if foraging_height <= 20:\n        return \"Foraging at typical height (<=20m)\"\n    elif foraging_height <= 30:\n        return \"Foraging at rare height (20-30m)\"\n    else:\n        return \"Foraging height exceeds typical range (>30m)\"\n\n# Example usage:\nprint(simulate_golden_swallow_foraging(15))  # Output: Foraging at typical height (<=20m)\nprint(simulate_golden_swallow_foraging(25))  # Output: Foraging at rare height (20-30m)\n"
+    },
+    {
+      "question": "Why might the golden swallow avoid forests during foraging, and what habitats does it typically explore?",
+      "answer": "The golden swallow avoids forests during foraging because it prefers open habitats where aerial insectivory is more efficient. It primarily explores most habitats except forests, likely due to the open terrain providing better access to flying insects. Its foraging typically occurs at heights under 20 meters."
+    },
+    {
+      "question": "When was the last confirmed sighting of the Jamaican subspecies of the golden swallow, and where did it occur?",
+      "answer": "The last confirmed sighting of the Jamaican subspecies (nominate subspecies) was on 8 June 1989 at Hardwar Gap, which is located on the boundary between Saint Andrew and Portland parishes in Jamaica."
+    }
+  ]
+}

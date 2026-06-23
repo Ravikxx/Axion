@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/1904_Open_Championship",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who won the 1904 Open Championship, and what was their margin of victory?",
+      "answer": "Jack White won the 1904 Open Championship with a one-stroke margin over the runners-up James Braid and J.H. Taylor, both former champions."
+    },
+    {
+      "question": "How many days did the 1904 Open Championship span, and what changes were made to its format compared to previous years?",
+      "answer": "The 1904 Open Championship was held over three days. Previously, it was a single-day event, but this year, the first two rounds were spread over two days, while the final 36 holes remained on the last day. Additionally, for the first time, a cut was introduced: players within nineteen strokes of the leader advanced to the final day, with a minimum of 32 professionals required in the final field."
+    },
+    {
+      "question": "What was the scoring record set during the third round of the 1904 Open Championship?",
+      "answer": "James Braid set a new Championship record in the third round with a score of 69, which included reaching the turn in 31 strokes."
+    },
+    {
+      "question": "How did the weather conditions affect scoring in the first round of the 1904 Open Championship?",
+      "answer": "The opening round on Wednesday was cold and windy, leading to high scoring. Robert Thomson led with a 75, while amateur John Graham Jr. and Harry Vardon were tied for second at 76."
+    },
+    {
+      "question": "What was the final total score achieved by Jack White in the 1904 Open Championship, and why was it significant?",
+      "answer": "Jack White finished with a total score of 296, the first total under 300 in Open Championship history. This milestone was achieved despite starting poorly, as he scored 72 in the third round and 69 in the final round."
+    },
+    {
+      "question": "What was the cut rule applied in the 1904 Open Championship, and how many players made the cut?",
+      "answer": "Players within nineteen strokes of the leader after two rounds made the 36-hole cut. Additionally, the final day's field had to include at least 32 professionals. A total of 52 players made the cut at a score of 168 or better."
+    },
+    {
+      "question": "Write a Python function to calculate the margin of victory in a golf tournament given the scores of the top three players.",
+      "answer": "python\ndef calculate_margin_of_victory(scores):\n    # Sort scores in ascending order (lower score is better in golf)\n    sorted_scores = sorted(scores)\n    # Margin is the difference between the winner's score and the next best score\n    margin = sorted_scores[1] - sorted_scores[0]\n    return margin\n\n# Example usage:\nwinner_score = 296\nrunner_up_score = 297\nmargin = calculate_margin_of_victory([winner_score, runner_up_score])\nprint(f\"Margin of victory: {margin} stroke(s)\")  # Output: Margin of victory: 1 stroke(s)\n"
+    },
+    {
+      "question": "Why did James Braid and J.H. Taylor finish tied for second place despite strong final rounds?",
+      "answer": "Both James Braid and J.H. Taylor finished tied for second place because they each took four strokes at the 16th hole in their final rounds. Braid's final round score of 71 left him one shot behind Jack White, while Taylor's final round of 68 (a new Open record) still left him one stroke behind White after taking four at the 16th."
+    }
+  ]
+}

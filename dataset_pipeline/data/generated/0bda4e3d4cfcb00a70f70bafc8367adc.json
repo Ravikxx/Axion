@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Dartmouth_College",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "When was Dartmouth College founded and by whom?",
+      "answer": "Dartmouth College was founded in 1769 by Congregational minister Eleazar Wheelock."
+    },
+    {
+      "question": "What is Dartmouth College's enrollment and how does it compare to other Ivy League schools?",
+      "answer": "Dartmouth College has a total enrollment of 5,848 students, making it the smallest school in the Ivy League."
+    },
+    {
+      "question": "What are the major academic divisions or schools at Dartmouth College?",
+      "answer": "Dartmouth College includes undergraduate liberal arts programs, as well as medical, engineering, and business schools, along with 19 graduate programs in the arts and sciences."
+    },
+    {
+      "question": "Provide an example of Dartmouth College's academic impact as recognized by a major consulting firm in 2004.",
+      "answer": "In 2004, Booz Allen Hamilton selected Dartmouth College as a model of institutional endurance, highlighting its record and benefits for American organizations both academic and commercial, referencing Trustees of Dartmouth College v. Woodward and Dartmouth's successful self-reinvention in the late 1800s."
+    },
+    {
+      "question": "What notable conference did Dartmouth College join in 2010, and which other universities are part of this network?",
+      "answer": "In 2010, Dartmouth College joined the Matariki Network of Universities (MNU), which includes the University of Tübingen (Germany), Durham University (UK), Queen’s University (Canada), University of Otago (New Zealand), University of Western Australia (Australia), and Uppsala University (Sweden)."
+    },
+    {
+      "question": "How does Dartmouth College's location influence student life and traditions?",
+      "answer": "Located on a rural 269-acre campus in the Upper Valley region of New Hampshire, Dartmouth's isolated setting contributes to high participation in athletics and the Greek system. Students are also known for preserving a variety of strong campus traditions."
+    },
+    {
+      "question": "Write a Python code snippet to calculate the enrollment ratio of Dartmouth College compared to the average Ivy League enrollment. Assume the average Ivy League enrollment is 15,000 students.",
+      "answer": "python\n# Calculate Dartmouth's enrollment ratio compared to the average Ivy League enrollment\ndartmouth_enrollment = 5848\naverage_ivy_enrollment = 15000\nratio = dartmouth_enrollment / average_ivy_enrollment\nprint(f\"Dartmouth's enrollment is {ratio:.2f} times the average Ivy League enrollment.\")\n# Output: Dartmouth's enrollment is 0.39 times the average Ivy League enrollment.\n"
+    }
+  ]
+}

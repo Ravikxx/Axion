@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/newellpaul/i-programmed-an-ai-in-6502-assembly-it-worked-gpi",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What was the original purpose of the 6502 processor, and which modern systems did it power?",
+      "answer": "The 6502 was an 8-bit processor introduced in 1975. It powered iconic systems like the Apple II, Commodore 64, BBC Micro, and Nintendo Entertainment System (NES). Despite its simplicity, it became a foundational chip in early computing."
+    },
+    {
+      "question": "How does the Opcode skill bridge the 6502's instruction set with modern issue triage workflows?",
+      "answer": "The Opcode skill maps 6502 mnemonics onto a triage-and-fix workflow. For example, `LDA` loads an issue, `STA` persists data, and `BRK` commits changes. The carry flag (`C`) routes control flow based on test outcomes—`C=1` means success, `C=0` means failure."
+    },
+    {
+      "question": "Write a minimal `.s` program that fetches an issue, tests it, and commits if tests pass.",
+      "answer": "Here's a minimal program (`peek.s`) that implements this logic:\nassembly\nLDA #42      ; Load issue 42\nJSR TEST     ; Run tests (sets carry flag)\nBCS success  ; Branch if tests pass\nBRK         ; Halt if tests fail\nsuccess:\nBRK         ; Commit and halt on success\n"
+    },
+    {
+      "question": "What are the core opcodes of the Opcode skill, and what do they do?",
+      "answer": "The core ISA includes 15 opcodes:\n- `LDA`: Load issue\n- `STA`: Persist to slot\n- `LDX`/`INX`/`CPX`: Loop handling\n- `JSR`: Call I/O vectors (e.g., `FETCH`, `FIX`, `TEST`)\n- `BCC`/`BCS`: Branch on test results\n- `BRK`: Commit and halt\n- `PHA`/`PLA`: Push/pop tasks to the Claude Code task stack\nThere's also a zero-page (e.g., `$00` for issue ID) and nine I/O vectors."
+    },
+    {
+      "question": "How does the Opcode skill handle retries for failed fixes?",
+      "answer": "The `oneshot.s` program demonstrates retry logic. If the first fix fails tests, it branches to a retry handler. If the retry also fails, `RTS` leaves the branch uncommitted for human intervention. The carry flag (`C`) routes control flow based on binary outcomes."
+    },
+    {
+      "question": "What is Opcode Oriented Programming (OOP), and how does it differ from traditional OOP?",
+      "answer": "OOP (Opcode Oriented Programming) uses 6502 mnemonics to encode workflows as structured programs. Unlike traditional OOP, it focuses on deterministic, verb-driven sequences (e.g., `JSR FIX` followed by `JSR TEST`) with no prose overhead. The output is a diffable, greppable assembly trace."
+    },
+    {
+      "question": "Why does the Opcode skill enforce strict output constraints, and what are the allowed exceptions?",
+      "answer": "Strict output constraints (e.g., no prose) ensure output is executable and audit-friendly. Allowed exceptions include:\n- `.ASK`: Short questions (≤60 chars)\n- `.NOTE`: Observations (≤80 chars)\n- `.ERR`: Errors\nThese are pressure-release valves, not invitations to prose."
+    }
+  ]
+}

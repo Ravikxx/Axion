@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Epoxygenase",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What are epoxygenases and what is their biological role?",
+      "answer": "Epoxygenases are membrane-bound, heme-containing cytochrome P450 (CYP450 or CYP) enzymes that metabolize polyunsaturated fatty acids (PUFAs) to epoxide products. These epoxides serve as secondary signaling molecules, activating parent or nearby cells to orchestrate functional responses. Unlike other enzymes like cyclooxygenases and lipoxygenases, epoxygenases act broadly across multiple PUFAs, producing a diverse range of structurally analogous metabolites with varying bioactivity profiles."
+    },
+    {
+      "question": "Which polyunsaturated fatty acid is the most studied substrate for CYP epoxygenases, and what are the primary products formed?",
+      "answer": "The most thoroughly studied substrate for CYP epoxygenases is arachidonic acid (AA). CYP epoxygenases metabolize AA to epoxyeicosatrienoic acids (EETs), which function as secondary signaling molecules in cellular responses."
+    },
+    {
+      "question": "How do the products of CYP epoxygenases compare to those of cyclooxygenases and lipoxygenases in terms of receptor specificity?",
+      "answer": "Unlike cyclooxygenase and lipoxygenase metabolites, which have well-characterized receptor proteins, the epoxide metabolites produced by CYP epoxygenases lack fully characterized receptors. This makes it challenging to define the specific roles of these pathways in human physiology and pathology."
+    },
+    {
+      "question": "Provide a code snippet that demonstrates how to simulate the metabolism of arachidonic acid to EETs using a hypothetical CYP epoxygenase model.",
+      "answer": "Below is a Python snippet illustrating a simplified model of CYP epoxygenase activity on arachidonic acid (AA) to produce EETs. This is a conceptual representation and not a real biochemical simulation:\n\npython\nimport numpy as np\n\n# Hypothetical model parameters\nAA_concentration = 100.0  # arbitrary units\nCYP_epoxygenase_activity = 0.1  # arbitrary rate constant\n\n# Simulate EET production\nepoxygenase_activity = AA_concentration * CYP_epoxygenase_activity\nEET_production = epoxygenase_activity * np.exp(-0.01 * time)  # Simulated decay\n\nprint(f\"Initial AA: {AA_concentration} units\")\nprint(f\"EETs produced over time: {EET_production} units\")\n\nThis snippet models the rate of EET production from AA based on a hypothetical enzyme activity."
+    },
+    {
+      "question": "Why is it difficult to translate research on CYP epoxygenases from animal models to human biology?",
+      "answer": "Research on CYP epoxygenases is challenging to translate to human biology due to species-specific differences in the number and function of metabolite-forming CYP epoxygenases. Additionally, the absence of fully characterized receptors for EET metabolites complicates the assignment of clear physiological or pathological roles, further hindering direct application of animal model findings to humans."
+    },
+    {
+      "question": "What are the three primary metabolic pathways for arachidonic acid (AA) in eicosanoid synthesis, and what are the products of each?",
+      "answer": "The three primary metabolic pathways for arachidonic acid (AA) are:\n1. **Cyclooxygenase pathway**: Produces prostaglandins, thromboxanes, and prostacyclins.\n2. **Lipoxygenase pathway**: Generates hydroxyeicosatetraenoic acids (e.g., 5-HETE, 12-HETE) and leukotrienes (e.g., leukotriene B4, leukotriene C4).\n3. **CYP epoxygenase pathway**: Converts AA to epoxyeicosatrienoic acids (EETs)."
+    },
+    {
+      "question": "How does the diversity of CYP epoxygenases differ from that of cyclooxygenases and lipoxygenases?",
+      "answer": "CYP epoxygenases are much more diverse in number and function compared to cyclooxygenases and lipoxygenases. While cyclooxygenases and lipoxygenases have relatively few isoforms that form specific metabolites, there are a larger number of CYP epoxygenases. This diversity contributes to the broad substrate specificity of epoxygenases, producing a wide range of structurally analogous metabolites with varied bioactivities."
+    }
+  ]
+}

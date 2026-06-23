@@ -1,0 +1,38 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Concert",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is the definition of a concert tour?",
+      "answer": "A concert tour is a series of concerts where performers travel to different cities or towns to perform in front of audiences."
+    },
+    {
+      "question": "How does a recital differ from a typical concert?",
+      "answer": "A recital is a concert performed by just one performer or possibly two, rather than a larger group."
+    },
+    {
+      "question": "Name three types of venues where concerts can be held.",
+      "answer": "Concerts can be held in concert halls, nightclubs, barns, schools, stadiums, or even open fields."
+    },
+    {
+      "question": "What is the purpose of amplification at open-air concerts?",
+      "answer": "Amplification using loudspeakers ensures that large audiences in open-air venues can clearly hear the music."
+    },
+    {
+      "question": "How do benefit concerts financially support charitable causes?",
+      "answer": "At benefit concerts, either all ticket proceeds or a portion of profits are donated to charity instead of being used solely for performers and organizers."
+    },
+    {
+      "question": "Write a Python function that checks if a given music event is a concert tour based on its definition.",
+      "answer": "python\ndef is_concert_tour(event_type, performers_count):\n    \"\"\"\n    Determines if a given event is a concert tour based on its type and number of performers.\n    \n    Args:\n        event_type (str): The type of event (e.g., 'concert tour', 'recital', 'festival').\n        performers_count (int): Number of performers involved.\n    \n    Returns:\n        bool: True if it is a concert tour, False otherwise.\n    \"\"\"\n    return event_type.lower() == 'concert tour' and performers_count > 2\n\n# Example usage:\nprint(is_concert_tour('concert tour', 5))  # Output: True\nprint(is_concert_tour('recital', 1))       # Output: False\n"
+    },
+    {
+      "question": "What is the significance of musical theater or opera in relation to concerts?",
+      "answer": "Musical theater or opera includes acting out a story as a key part of the performance, which distinguishes them from typical concerts that focus primarily on music."
+    },
+    {
+      "question": "How long did the world’s longest concert last?",
+      "answer": "The world’s longest concert lasted 453 hours."
+    }
+  ]
+}

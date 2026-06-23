@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Call_of_Duty",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the Call of Duty series known for and who publishes it?",
+      "answer": "Call of Duty (CoD) is a first-person shooter video game series and media franchise known for its military-themed gameplay and long-running success. The series is published by Activision."
+    },
+    {
+      "question": "Which developers have contributed to the Call of Duty franchise over time?",
+      "answer": "The Call of Duty franchise was initially developed by Infinity Ward, followed by contributions from Treyarch, Sledgehammer Games, and other studios. Infinity Ward created the first two games and later the Modern Warfare sub-series, while Treyarch developed World War II and Black Ops entries. Sledgehammer Games developed Advanced Warfare, WWII, and Vanguard, and co-developed Modern Warfare 3 and Modern Warfare III."
+    },
+    {
+      "question": "What was the breakthrough title for the Call of Duty series and why?",
+      "answer": "Call of Duty 4: Modern Warfare (2007), developed by Infinity Ward, was the breakthrough title that introduced a modern military setting, diverging from the series' original World War II theme. Its success led to the creation of the Modern Warfare sub-series and significantly expanded the franchise's popularity."
+    },
+    {
+      "question": "How many games are there in the Black Ops sub-series as of 2025 and who developed them?",
+      "answer": "As of 2025, there are eight games in the Black Ops sub-series: Black Ops (2010), Black Ops II (2012), Black Ops III (2015), Black Ops 4 (2018), Black Ops Cold War (2020), Black Ops 6 (2024), and Black Ops 7 (2025). Treyarch developed all entries, with Raven Software collaborating on the latter three games."
+    },
+    {
+      "question": "What are two non-game products associated with the Call of Duty franchise?",
+      "answer": "Two non-game products associated with the Call of Duty franchise are a line of action figures designed by Plan B Toys and a card game created by Upper Deck Company."
+    },
+    {
+      "question": "Write a Python script to fetch the release dates of all Modern Warfare sub-series games using a mock API.",
+      "answer": "python\nimport requests\n\n# Mock API endpoint (simulated data)\nMODERN_WARFARE_API = \"https://api.example.com/callofduty/modernwarfare\"\n\ndef get_modern_warfare_release_dates():\n    try:\n        response = requests.get(MODERN_WARFARE_API)\n        response.raise_for_status()\n        data = response.json()\n        \n        # Extract release dates for Modern Warfare sub-series games\n        release_dates = {\n            game['title']: game['release_date']\n            for game in data\n            if game['sub_series'] == 'Modern Warfare'\n        }\n        return release_dates\n    except requests.exceptions.RequestException as e:\n        return f\"Error fetching data: {e}\"\n\n# Example usage\nif __name__ == \"__main__\":\n    dates = get_modern_warfare_release_dates()\n    for title, date in dates.items():\n        print(f\"{title}: {date}\")\n"
+    },
+    {
+      "question": "How has the Call of Duty franchise expanded beyond video games?",
+      "answer": "The Call of Duty franchise has expanded into various merchandise, including action figures by Plan B Toys, a card game by Upper Deck Company, Mega Bloks sets by Mega Brands, and a comic book miniseries published by WildStorm Productions. Additionally, a feature film is reportedly in development."
+    },
+    {
+      "question": "What records and achievements has the Call of Duty franchise attained?",
+      "answer": "The Call of Duty franchise holds the Guinness World Record for the best-selling first-person shooter game series. It is the most successful video game franchise created in the United States and the fourth best-selling video game franchise of all time, with over 500 million copies sold and $30 billion in revenue by 2022, as well as 100 million monthly active players as of October 2023."
+    }
+  ]
+}

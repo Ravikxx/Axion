@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Fokker_V.17",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What were the Fokker V.17 and its derivatives, and when were they produced?",
+      "answer": "The Fokker V.17 and its derivatives were a series of experimental monoplane fighter aircraft produced by the Dutch aircraft company Fokker in the 1910s."
+    },
+    {
+      "question": "How did the Fokker V.20 differ from the V.17 in terms of engine power and wing position?",
+      "answer": "The Fokker V.20 was powered by a more powerful 119 kW (160 hp) Mercedes D IIIa engine, whereas the V.17 used an 82 kW (110 hp) Oberursel engine. Additionally, the V.20 had a cantilever mid-wing configuration, unlike the V.17’s shoulder cantilever wing."
+    },
+    {
+      "question": "What was the main design change in the Fokker V.21 compared to the V.20?",
+      "answer": "The Fokker V.21 was similar to the V.20 except for tapered wings, which differed from the V.20’s straight wing design."
+    },
+    {
+      "question": "Why was the Fokker V.23 rejected by the German Army, and what were its key specifications?",
+      "answer": "The Fokker V.23 was rejected by the German Army due to poor forward visibility, particularly during landing. Key specifications included a 119 kW (160 hp) Mercedes III engine, a length of 5.8 m (19 ft), a wingspan of 8.73 m (28.64 ft), a height of 2.65 m (8.69 ft), a wing area of 11.12 m² (119.69 ft²), an empty weight of 673 kg (1,484 lb), a maximum weight of 853 kg (1,881 lb), and a maximum speed of 200 km/h (124 mph). It was armed with two 7.92 mm (.312 in) machine guns."
+    },
+    {
+      "question": "How did the Fokker V.25's performance compare to the V.23, and what was its engine specification?",
+      "answer": "The Fokker V.25 was underpowered compared to the V.23, using an 82 kW (110 hp) Oberursel Ur. II engine instead of the V.23’s 119 kW (160 hp) engine. The V.25 had a length of 5.93 m (18.46 ft), a wingspan of 8.73 m (28.64 ft), a height of 2.63 m (8.63 ft), a wing area of 11.12 m² (119.69 ft²), an empty weight of 383 kg (844 lb), and a maximum weight of 584 kg (1,287 lb)."
+    },
+    {
+      "question": "Write a Python function that compares the maximum speeds of the Fokker V.23 and V.25 aircraft.",
+      "answer": "python\ndef compare_max_speeds():\n    v23_speed = 200  # km/h\n    v25_speed = None  # Not provided in the text\n    \n    if v25_speed is None:\n        return f\"Fokker V.23: {v23_speed} km/h, Fokker V.25: Speed data unavailable\"\n    else:\n        comparison = \"faster\" if v23_speed > v25_speed else \"slower\"\n        return f\"Fokker V.23 is {comparison} than Fokker V.25\"\n\nresult = compare_max_speeds()\nprint(result)\n\nOutput: 'Fokker V.23: 200 km/h, Fokker V.25: Speed data unavailable'"
+    },
+    {
+      "question": "What common design features did the V.20, V.21, and V.23 share?",
+      "answer": "The Fokker V.20, V.21, and V.23 shared several design features: all were cantilever monoplanes with plywood covering and were powered by similar engines (119 kW or 160 hp). Additionally, they had comparable dimensions, including a wingspan of approximately 8.73 m (28.64 ft) and a wing area of 11.12 m² (119.69 ft²)."
+    }
+  ]
+}

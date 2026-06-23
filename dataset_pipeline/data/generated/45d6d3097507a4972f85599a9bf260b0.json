@@ -1,0 +1,34 @@
+{
+  "source_url": "https://mathworld.wolfram.com/PartialGeometry.html",
+  "category": "mathworld",
+  "pairs": [
+    {
+      "question": "What is a partial geometry in the context of incidence structures?",
+      "answer": "A partial geometry is an incidence structure consisting of points and lines that satisfies the following conditions: (1) every line contains exactly the same number of points, (2) every point lies on exactly the same number of lines, (3) any two distinct points lie on at most one common line, and (4) for any point not on a given line, there are exactly a specific number of lines passing through that point which intersect the given line. These parameters are often denoted as (r, s, α), where r is the number of points per line, s is the number of lines per point, and α is the number of intersecting lines for the given condition."
+    },
+    {
+      "question": "How is the point graph of a partial geometry defined, and what properties does it have?",
+      "answer": "The point graph of a partial geometry is obtained by connecting two points with an edge if and only if they lie on a common line in the geometry. This point graph is always a strongly regular graph with specific parameters derived from the partial geometry's parameters. For example, if the partial geometry has parameters (r, s, α), the point graph will have parameters (v, k, λ, μ) where v is the total number of points, k is the degree of each vertex (number of lines through a point minus one), λ is the number of common neighbors for adjacent vertices, and μ is the number of common neighbors for non-adjacent vertices."
+    },
+    {
+      "question": "What is a pseudogeometric graph, and how does it relate to partial geometries?",
+      "answer": "A pseudogeometric graph is a strongly regular graph that has parameters consistent with those of the point graph of some partial geometry, but it is not necessarily the point graph of an actual partial geometry. This means the graph satisfies the numerical conditions that would arise from a partial geometry, but no such geometry may exist to realize it. For instance, the McLaughlin graph is a pseudogeometric graph related to the hypothetical McLaughlin geometry, which is a non-existent partial geometry."
+    },
+    {
+      "question": "Write a Python function to check if a given strongly regular graph is pseudogeometric based on its parameters.",
+      "answer": "python\ndef is_pseudogeometric(v, k, λ, μ):\n    \"\"\"\n    Check if a strongly regular graph with parameters (v, k, λ, μ) is pseudogeometric.\n    \n    A strongly regular graph is pseudogeometric if there exist integers r, s, α such that:\n    k = r\n    λ = s - 1 + α\n    μ = α\n    and the following equations hold:\n    r*(s - 1 + α) = k*(k - λ - 1)\n    v = 1 + k + k*(k - λ - 1)/μ\n    \"\"\"\n    # Try possible integer values for α, r, and s\n    for α in range(1, k + 1):\n        for r in range(1, v):\n            s = (k * (k - λ - 1)) / (r * α) + 1 - α\n            if s.is_integer() and s > 0:\n                s = int(s)\n                # Check the second equation: v = 1 + k + k*(k - λ - 1)/μ\n                rhs = 1 + k + (k * (k - λ - 1)) / μ\n                if abs(rhs - v) < 1e-9:  # Account for floating point precision\n                    return True, (r, s, α)\n    return False, None\n\n# Example usage:\n# Parameters for the McLaughlin graph (a known pseudogeometric graph)\nv, k, λ, μ = 275, 112, 30, 56\ntests = is_pseudogeometric(v, k, λ, μ)\nprint(tests)  # Output: (True, (16, 10, 7)) or similar depending on parameterization\n"
+    },
+    {
+      "question": "What is the relationship between Delsarte cliques and the lines of a partial geometry?",
+      "answer": "In the context of partial geometries, the lines of the geometry correspond to Delsarte cliques in the point graph. A Delsarte clique is a maximal clique in the graph with the property that every vertex not in the clique has exactly μ neighbors in the clique. For a point graph derived from a partial geometry, the lines naturally form such cliques because they satisfy this condition: any point not on a given line has exactly α lines intersecting the given line, corresponding to μ common neighbors in the graph."
+    },
+    {
+      "question": "Why is the McLaughlin geometry mentioned as a nonexistent partial geometry? What are its hypothetical parameters?",
+      "answer": "The McLaughlin geometry is hypothesized to be a partial geometry with parameters (r, s, α) = (16, 10, 7), meaning each line contains 16 points, each point lies on 10 lines, and for any point not on a line, there are exactly 7 lines through that point intersecting the given line. However, no such geometry has been constructed or proven to exist, despite its point graph (the McLaughlin graph) being a well-known pseudogeometric graph with parameters (v, k, λ, μ) = (275, 112, 30, 56)."
+    },
+    {
+      "question": "How do generalized quadrangles relate to partial geometries?",
+      "answer": "Generalized quadrangles are a special case of partial geometries where the parameter α is 1. This means that for any point not on a line, there is exactly one line through that point intersecting the given line. Generalized quadrangles satisfy all the axioms of partial geometries but with the additional constraint of α = 1. They are important in finite geometry and have applications in coding theory and design theory. Examples include the classical quadrangles derived from finite projective spaces."
+    }
+  ]
+}

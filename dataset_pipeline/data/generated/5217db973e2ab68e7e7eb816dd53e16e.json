@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Copyleft",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is copyleft and how does it differ from copyright?",
+      "answer": "Copyleft is a licensing approach that uses copyright law to ensure that derivative works remain free and open. Unlike traditional copyright licenses—which restrict modification, redistribution, and sale—copyleft licenses impose the condition that any derivative works must also be distributed under the same or a compatible copyleft license. For example, a book licensed under a copyleft license must remain openly accessible even if modified and redistributed by others."
+    },
+    {
+      "question": "Can you provide a simple Python code snippet demonstrating a copyleft-style license notice in a software file?",
+      "answer": "python\n# This file is part of the Example Program.\n# \n# It is licensed under the GNU General Public License (GPL) Version 3,\n# a copyleft license. You may copy, modify, and redistribute this file\n# under the terms of the GPL, provided that you license derivative works\n# under the same license.\n\n\"\"\"\nExample Module - GPLv3 Licensed\n\"\"\"\n\ndef example_function():\n    print(\"This function is part of a copyleft-licensed program.\")\n"
+    },
+    {
+      "question": "Is content released under a copyleft license in the public domain? Explain why or why not.",
+      "answer": "No, copyleft content is not in the public domain. Public domain means the work has no copyright restrictions at all—anyone can use, modify, and distribute it without any conditions. Copyleft, on the other hand, still relies on copyright law to enforce its conditions, such as requiring that derivative works be licensed under the same terms. Public domain works have no such obligations; copyleft licenses do."
+    },
+    {
+      "question": "What are two examples of popular copyleft licenses used in software and creative works?",
+      "answer": "Two well-known copyleft licenses are the GNU General Public License (GPL), widely used in software, and the Creative Commons Attribution-ShareAlike (CC BY-SA) license, commonly applied to books, music, and other creative content. Both require that derivative works be shared under the same license terms."
+    },
+    {
+      "question": "What obligation does a person have when they sell a copyleft-licensed work to a friend?",
+      "answer": "When selling or giving away a copyleft-licensed work—whether modified or unchanged—the person must pass along the same freedoms granted by the original license. This typically means the recipient must be allowed to modify, share, and redistribute the work under the same copyleft terms. Failure to do so violates the license's core principle of preserving freedom in derivative works."
+    },
+    {
+      "question": "Are there commercial copyleft licenses? If so, give two examples.",
+      "answer": "Yes, there are commercial copyleft licenses designed for business use. Two examples are the Server Side Public License (SSPL), used for software-as-a-service models, and the Open Compensation Token License (OCTL), which focuses on decentralized compensation in open projects. These licenses maintain copyleft principles while addressing modern commercial contexts."
+    },
+    {
+      "question": "Why might someone choose a permissive license over a copyleft license for open-source software?",
+      "answer": "Someone might choose a permissive license, like MIT or Apache 2.0, to allow maximum flexibility in how others use, modify, and redistribute the software. Permissive licenses impose fewer restrictions than copyleft licenses, making it easier for companies or individuals to incorporate the code into proprietary products without releasing their own code under the same terms."
+    }
+  ]
+}

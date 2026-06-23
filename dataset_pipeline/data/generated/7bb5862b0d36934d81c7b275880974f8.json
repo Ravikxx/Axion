@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/BALLOONS_Lit._Journal",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When was BALLOONS Lit. Journal (BLJ) founded and who were its founders?",
+      "answer": "BALLOONS Lit. Journal (BLJ) was founded in 2014 by Ho-cheung Lee, with Ricci Fong serving as the editorial advisor."
+    },
+    {
+      "question": "What types of content does BLJ publish and who is its primary audience?",
+      "answer": "BLJ publishes English poetry, prose, and artwork. Its primary audience consists of readers aged 12 and above."
+    },
+    {
+      "question": "Name three notable contributors to BLJ and their backgrounds.",
+      "answer": "Notable contributors include Polish photographer Izabela Urbaniak, American writer Jacqueline Jules, and British poets John Foster and Paul Cookson. Brazilian street artist Fredone Fone and Irish painter and playwright Sam McCready are also featured contributors."
+    },
+    {
+      "question": "How does BLJ incorporate audio into its publications?",
+      "answer": "BLJ features audio clips of selected prose and poetry works on its website. These recordings are typically made by the original authors or poets, young people with speech and drama awards, English teachers, and professional actors, including notable figures like Hong Kong artiste Flora Chan."
+    },
+    {
+      "question": "What funding did BLJ receive in April 2016, and how was it used?",
+      "answer": "In April 2016, BLJ was selected by the Hong Kong Teachers Dream Fund as one of 17 funded projects. The funding enabled BLJ to produce print copies starting from Issue 3 for contributors and associates for complimentary and promotional purposes."
+    },
+    {
+      "question": "Provide a code snippet to fetch and display the latest issue of BLJ from its website using Python.",
+      "answer": "python\nimport requests\nfrom bs4 import BeautifulSoup\n\n# Fetch the BLJ website\nurl = 'https://www.balloonslitjournal.org/'\nresponse = requests.get(url)\nsoup = BeautifulSoup(response.text, 'html.parser')\n\n# Find and display the latest issue link (example structure)\nlatest_issue = soup.find('a', class_='latest-issue')\nif latest_issue:\n    print(f\"Latest Issue: {latest_issue.text}\")\n    print(f\"Link: {latest_issue['href']}\")\nelse:\n    print(\"Latest issue not found.\")\n"
+    },
+    {
+      "question": "How does BLJ describe itself, and where is it listed as a resource?",
+      "answer": "Sam McCready describes BLJ as 'An invaluable resource for innovative teachers of English Literature, Speech and Drama.' Additionally, BLJ is listed as a resource by Poets & Writers, New Pages, New Hampshire Writers' Project, South Washington County Schools, and The Winged Pen."
+    }
+  ]
+}

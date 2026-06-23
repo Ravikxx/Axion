@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Autonomic_dysreflexia",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is autonomic dysreflexia and which populations are most at risk?",
+      "answer": "Autonomic dysreflexia (AD) is a life-threatening medical emergency marked by severe hypertension and cardiac arrhythmias. It most commonly occurs in individuals with spinal cord injuries, particularly those with lesions at or above the T6 spinal level, though cases have been reported at T10. It may also rarely occur in conditions like Guillain–Barré syndrome."
+    },
+    {
+      "question": "What are the common symptoms of autonomic dysreflexia, and how do they differ above and below the spinal lesion?",
+      "answer": "Mild symptoms include sweating above the lesion, goosebumps, blurred vision, and headache. Severe symptoms may lead to seizures, stroke, heart attack, or retinal detachment. Above the lesion, flushed skin, nasal stuffiness, and pupillary constriction occur due to parasympathetic activation. Below the lesion, pale, cool skin and piloerection occur due to unopposed sympathetic outflow."
+    },
+    {
+      "question": "What triggers autonomic dysreflexia and how does the nervous system respond?",
+      "answer": "AD can be triggered by noxious or non-noxious stimuli such as bladder distension, bowel compaction, pressure sores, or fractures. A noxious stimulus causes a sympathetic surge below the lesion, leading to vasoconstriction and hypertension. Baroreceptors detect this and trigger a parasympathetic surge from the brain, but this signal cannot pass below the lesion, leaving hypertension unchecked and causing bradycardia or tachycardia."
+    },
+    {
+      "question": "What are the most common causes of autonomic dysreflexia?",
+      "answer": "The most frequent causes are bladder over-distension from urinary retention and bowel over-distension from fecal compaction. Other causes include pressure sores, extreme temperatures, fractures, undetected painful stimuli (e.g., a pebble in a shoe), sexual activity, and severe spinal cord pain."
+    },
+    {
+      "question": "Describe the immediate treatment steps for a patient experiencing autonomic dysreflexia.",
+      "answer": "Immediate treatment includes: 1) Sitting the patient upright to lower blood pressure, 2) Removing constrictive clothing like abdominal binders or support stockings, 3) Frequently rechecking blood pressure, 4) Correcting the inciting cause such as catheterization for urinary retention or bowel disimpaction. If systolic BP remains above 150 mm Hg, fast-acting antihypertensives may be used while investigating other causes."
+    },
+    {
+      "question": "Why is patient education important in managing autonomic dysreflexia?",
+      "answer": "Patient, family, and caregiver education is crucial because it helps individuals recognize and avoid triggers, thereby reducing the frequency and severity of AD episodes. Since bladder and bowel issues are common triggers, education on routine bladder and bowel management, and regular urological follow-ups (including cystoscopy or urodynamic studies), can significantly improve outcomes and prevent life-threatening complications."
+    },
+    {
+      "question": "What is the prognosis for a patient who develops autonomic dysreflexia?",
+      "answer": "The prognosis is generally good if the trigger is promptly identified and managed. Mortality is rare under such conditions. However, repeated or unmanaged episodes can lead to serious complications like stroke or heart attack, so prevention through trigger avoidance and regular medical follow-up is essential."
+    }
+  ]
+}

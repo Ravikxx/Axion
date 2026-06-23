@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Dave_Sheasby",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When and where was David Sheasby born?",
+      "answer": "David Sheasby was born on 20 September 1940 in Fulwood, Sheffield, England."
+    },
+    {
+      "question": "What were David Sheasby's notable awards and recognitions?",
+      "answer": "David Sheasby won a Giles Cooper Award in 1988 for his play *Apple Blossom Afternoon*. His dramatisations of *All Quiet on the Western Front* and *Slaughterhouse-Five* were also critically acclaimed."
+    },
+    {
+      "question": "Describe David Sheasby's educational background.",
+      "answer": "Sheasby was educated at King Edward VII School in Sheffield. He later attended the London School of Economics to study history. Additionally, he trained as a teacher."
+    },
+    {
+      "question": "What roles did David Sheasby hold in his radio career?",
+      "answer": "He began his radio career in 1967 as an education producer at Radio Sheffield. From 1988 onwards, he worked for BBC Radio 4."
+    },
+    {
+      "question": "How did David Sheasby's personal life influence his professional work, if at all?",
+      "answer": "While there is no direct evidence linking his personal experiences (such as the death of his first wife or his marriages) to his professional work, his resilience in completing *A Month in the Country* while in a hospice suggests a strong dedication to his craft."
+    },
+    {
+      "question": "Write a Python function to generate a timeline of David Sheasby's career milestones.",
+      "answer": "python\ndef generate_timeline():\n    timeline = [\n        {\"year\": 1940, \"event\": \"Born in Fulwood, Sheffield\"},\n        {\"year\": 1967, \"event\": \"Started radio career at Radio Sheffield as education producer\"},\n        {\"year\": 1988, \"event\": \"Won Giles Cooper Award for *Apple Blossom Afternoon*\"},\n        {\"year\": 1988, \"event\": \"Began working for BBC Radio 4\"},\n        {\"year\": 2002, \"event\": \"Taught Media Studies and Creative Writing at University of Leeds as Royal Literary Fund fellow\"},\n        {\"year\": 2004, \"event\": \"Married Eve Shrewsbury\"},\n        {\"year\": 2009, \"event\": \"Critically acclaimed dramatisation of *Slaughterhouse-Five*\"},\n        {\"year\": 2010, \"event\": \"Completed *A Month in the Country* adaptation in a hospice; broadcast posthumously in November 2010\"}\n    ]\n    return timeline\n\n# Example usage:\nfor item in generate_timeline():\n    print(f\"{item['year']}: {item['event']}\")\n"
+    },
+    {
+      "question": "What was David Sheasby's final completed work, and how was it produced under challenging circumstances?",
+      "answer": "Sheasby's final completed work was an adaptation of J.L. Carr's *A Month in the Country*. Despite being in a hospice bed, he completed the dramatisation using a borrowed laptop. It was later broadcast as the *Saturday Play* in November 2010."
+    }
+  ]
+}

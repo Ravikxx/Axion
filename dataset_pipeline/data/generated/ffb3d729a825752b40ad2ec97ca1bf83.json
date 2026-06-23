@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/A961_road",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the A961 and where is it located?",
+      "answer": "The A961 is a single-carriageway road on the eastern side of Scapa Flow in the Orkney Islands. It connects the town of Kirkwall on the Orkney Mainland to Burwick at the southern end of South Ronaldsay."
+    },
+    {
+      "question": "Why were the Churchill Barriers built, and during which conflict?",
+      "answer": "The Churchill Barriers were built during World War II as naval defences to protect the natural harbour of Scapa Flow. This was necessary after a successful attack by a German U-boat highlighted the vulnerability of the area."
+    },
+    {
+      "question": "How many islands does the A961 link to the Orkney Mainland, and what are their names?",
+      "answer": "The A961 links four islands to the Orkney Mainland. These islands are Lamb Holm, Glimps Holm, Burray, and South Ronaldsay."
+    },
+    {
+      "question": "What notable structure is located on Lamb Holm, and who built it?",
+      "answer": "The Italian Chapel is located on Lamb Holm. It was built by Italian prisoners of war who were constructing the Churchill Barriers."
+    },
+    {
+      "question": "Describe the route of the A961 from Kirkwall to Burwick, including the islands it crosses.",
+      "answer": "Starting from Kirkwall, the A961 travels south to St Mary's, then crosses Kirk Sound via the first Churchill Barrier to Lamb Holm. It proceeds to Glimps Holm via the second barrier, then to Burray via the third barrier. From Burray, the fourth barrier leads to South Ronaldsay, where the road turns southwest to St Margaret's Hope before continuing south to Burwick."
+    },
+    {
+      "question": "What is unusual about the fourth Churchill Barrier?",
+      "answer": "The fourth Churchill Barrier has accumulated large sand dunes and no longer resembles a traditional barrier structure."
+    },
+    {
+      "question": "What is the southernmost point of Orkney, and where is it located relative to the A961?",
+      "answer": "The southernmost point of Orkney is near Burwick, which is located at the southern end of the A961."
+    }
+  ]
+}

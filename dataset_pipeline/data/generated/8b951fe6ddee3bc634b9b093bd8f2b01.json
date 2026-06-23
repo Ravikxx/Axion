@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Chinese_Communist_Revolution",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What were the key events that led to the founding of the Chinese Communist Party (CCP) in 1921?",
+      "answer": "The CCP was founded in 1921 by a small group of urban intellectuals inspired by the October Revolution and European socialist ideas. These intellectuals sought to address the social, economic, and political problems caused by the decline of the Qing dynasty and foreign imperialism during the 'century of humiliation.' The CCP was established as a response to the instability following the collapse of the Qing in 1912 and the fragmentation of the Republic of China into warring factions by 1917."
+    },
+    {
+      "question": "How did the First United Front between the CCP and the Kuomintang (KMT) form, and why did it end in 1927?",
+      "answer": "The First United Front formed in 1923 when the CCP, led by urban intellectuals, allied with the larger KMT under Sun Yat-sen to overthrow warlord rule in China. The alliance aimed to unite China under a single government. However, the union collapsed in 1927 when KMT leader Chiang Kai-shek initiated the Shanghai massacre, purging Communists and ending the alliance to consolidate his power."
+    },
+    {
+      "question": "What role did Mao Zedong play during the Chinese Civil War and the Long March?",
+      "answer": "During the Chinese Civil War, Mao Zedong became a key leader by turning the Jiangxi Soviet into a self-governing 'state within a state' through land reforms and peasant appeals. After a military defeat in 1935, Mao led his forces on the Long March—a 6,000-mile retreat to northwest China—to evade Nationalist forces. During this journey, Mao rose to undisputed leadership of the CCP and solidified his strategy of peasant-based revolution."
+    },
+    {
+      "question": "Why did the CCP and KMT temporarily reunite during the Second United Front, and how did this alliance affect their influence?",
+      "answer": "The Second United Front was formed in 1937 after the Xi’an Incident, where Nationalist troops sympathetic to the CCP kidnapped Chiang Kai-shek, forcing him to negotiate a ceasefire. This alliance was crucial because Japan had launched a full-scale invasion of China, and the CCP and KMT agreed to cooperate against the common enemy. The temporary alliance allowed the CCP to expand its influence behind Japanese lines through guerrilla warfare, while the KMT focused on frontline resistance."
+    },
+    {
+      "question": "What factors contributed to the CCP's victory in the Chinese Civil War (1945–1949) over the Nationalists?",
+      "answer": "Several factors led to the CCP's victory: (1) The Nationalists, led by Chiang Kai-shek, were weakened by corruption, inflation, and unpopular U.S. military presence in Chinese cities, which fueled anti-imperialist sentiment. (2) The CCP gained widespread support in rural and urban areas by addressing land reform and economic grievances. (3) The People’s Liberation Army (PLA), the CCP’s military arm, executed a series of successful campaigns that outmaneuvered the Nationalist forces. (4) The CCP’s disciplined and ideologically unified forces contrasted with the Nationalists’ fractured and demoralized army."
+    },
+    {
+      "question": "How did the outcome of the Chinese Communist Revolution impact global geopolitics during the Cold War?",
+      "answer": "The CCP’s victory in 1949 created the largest socialist state by population and positioned China as a third force in the Cold War, particularly after the 1956 Sino-Soviet split. The PRC provided support to communist movements worldwide, inspiring Maoist parties in countries like India, Nepal, and Peru. The U.S. responded with alarm, adopting the 'domino theory' and intervening militarily in Korea and Southeast Asia to counter communist expansion."
+    },
+    {
+      "question": "Write a Python code snippet that calculates the duration of the Chinese Civil War (1927–1949).",
+      "answer": "python\ndef calculate_civil_war_duration():\n    start_year = 1927\n    end_year = 1949\n    duration = end_year - start_year\n    return duration\n\n# Output the result\nprint(f\"The Chinese Civil War lasted {calculate_civil_war_duration()} years.\")\n\nThis code calculates the duration of the Chinese Civil War by subtracting the start year (1927) from the end year (1949), returning the result as the number of years the conflict spanned."
+    }
+  ]
+}

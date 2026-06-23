@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Bolesatine",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is bolesatine and where is it isolated from?",
+      "answer": "Bolesatine is a glycoprotein isolated from the mushroom Rubroboletus satanas (Boletus satanas Lenz), which belongs to the basidiomycete family of boletes."
+    },
+    {
+      "question": "What is the molecular mass of bolesatine, and what structural features does it have?",
+      "answer": "Bolesatine has a molecular mass of approximately 63 kDa. It is a monomeric protein with a compact globular structure, contains one tryptophan in its primary sequence, and features one disulfide bridge."
+    },
+    {
+      "question": "How does bolesatine function as a lectin, and what is its specificity?",
+      "answer": "Bolesatine functions as a lectin with specificity for the sugar binding site of D-galactose, enabling it to bind to glycan structures containing this sugar."
+    },
+    {
+      "question": "What are the biological effects of bolesatine on humans at varying concentrations?",
+      "answer": "At high concentrations, bolesatine inhibits protein synthesis and causes gastroenteritis in humans. At lower concentrations, it acts as a mitogen to human and rat T lymphocytes and activates protein kinases C (PKC), increasing DNA synthesis activity."
+    },
+    {
+      "question": "Does bolesatine inhibit protein synthesis directly, and how was this determined?",
+      "answer": "No, bolesatine does not inhibit protein synthesis directly. Experimental analysis using Endo's assay did not detect β-fragments characteristic of N-glycosylase activity, ruling out ribosomal depurination as the mechanism. Instead, it acts as a phosphatase for nucleoside triphosphates like GTP, disrupting cellular GTP-dependent processes."
+    },
+    {
+      "question": "What is the effect of heat on bolesatine's toxicity and biological activity?",
+      "answer": "The toxicity of bolesatine is heat-labile; exposure to elevated temperatures denatures the protein, leading to the loss of its biological activity, including its ability to inhibit protein synthesis."
+    },
+    {
+      "question": "Write a Python function to calculate the approximate number of amino acids in bolesatine's primary sequence, given its molecular mass of 63 kDa.",
+      "answer": "python\ndef calculate_amino_acids(molecular_mass_kda):\n    # Average molecular mass of an amino acid is approximately 110 Da\n    amino_acid_mass = 110\n    molecular_mass_da = molecular_mass_kda * 1000\n    num_amino_acids = molecular_mass_da // amino_acid_mass\n    return num_amino_acids\n\n# Example for bolesatine (63 kDa)\nmolecular_mass = 63\napproximate_amino_acids = calculate_amino_acids(molecular_mass)\nprint(approximate_amino_acids)  # Output: 572\n"
+    }
+  ]
+}

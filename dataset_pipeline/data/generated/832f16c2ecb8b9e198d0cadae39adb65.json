@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/General_Norzagaray_Bridge",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When was the General Norzagaray Bridge built and who was it named after?",
+      "answer": "The General Norzagaray Bridge was built in 1855 and is named after Fernándo de Norzagaray y Escudero, who served as governor of Puerto Rico from 1852 to 1855."
+    },
+    {
+      "question": "What are the key structural features of the General Norzagaray Bridge?",
+      "answer": "The bridge is a brick and masonry barrel vault structure with eight spans of 9.8 metres (32 ft) each. It has a total length of 120.7 metres (396 ft) and a roadway width of 7.00 metres (22.97 ft). It was originally built to support the Carretara Central road."
+    },
+    {
+      "question": "What modifications were made to the General Norzagaray Bridge in 1927, and did they affect its historic integrity?",
+      "answer": "In 1927, the bridge's superstructure was modified by removing earth fill and adding steel girders on the arch piers to support a concrete deck. These changes did not significantly interfere with the bridge's historic integrity."
+    },
+    {
+      "question": "Who designed and built the General Norzagaray Bridge, and what other notable project is associated with one of them?",
+      "answer": "The bridge was designed by Manuel Sanchez-Nunez y Layne and built by Gustavo Steinacher. Steinacher also designed and built the first suspension bridge in the Caribbean, located over the Cagüitas River near Caguas, Puerto Rico."
+    },
+    {
+      "question": "Why is the General Norzagaray Bridge considered historically significant?",
+      "answer": "The bridge is considered one of the most impressive bridges from the Spanish Colonial period and is a prime example of Spanish 19th-century masonry arch technology. It is the only such example in the United States and was listed on both the National Register of Historic Places (1995) and the Puerto Rico Register of Historic Sites and Zones (2000)."
+    },
+    {
+      "question": "What is the current route that the General Norzagaray Bridge carries?",
+      "answer": "The bridge currently carries Puerto Rico Highway 873 across Frailes Creek, a tributary to the Guaynabo River."
+    },
+    {
+      "question": "Write a Python script to calculate the total number of vault spans in the General Norzagaray Bridge.",
+      "answer": "python\n# Number of vault spans in the General Norzagaray Bridge\nnum_spans = 8\nprint(f\"The General Norzagaray Bridge has {num_spans} vault spans.\")\n"
+    }
+  ]
+}

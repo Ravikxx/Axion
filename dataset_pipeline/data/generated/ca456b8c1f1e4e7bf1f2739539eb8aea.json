@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/shayy/everyone-is-wrong-about-sqlite-4gjf",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What are the key differences between SQLite and traditional client-server databases like PostgreSQL?",
+      "answer": "SQLite is an embedded database engine that runs within the application process rather than as a separate server. Unlike PostgreSQL, it doesn't require network communication, connection pooling, or authentication systems. SQLite stores entire databases in a single file, offers simpler deployment, and eliminates many operational overheads like replication lag or split-brain scenarios. While PostgreSQL excels at high write concurrency and multi-writer architectures, SQLite provides direct disk access with intelligent caching and is often faster for read-heavy workloads."
+    },
+    {
+      "question": "How does SQLite handle concurrent read operations compared to PostgreSQL?",
+      "answer": "SQLite handles unlimited concurrent read operations by default, as readers don't block each other. When using Write-Ahead Logging (WAL) mode, SQLite can also allow concurrent readers while a writer is active. PostgreSQL can handle concurrent reads similarly but requires more complex architecture to achieve it. The key difference is that SQLite achieves this with a single writer model while maintaining high read throughput, whereas PostgreSQL typically uses multi-writer architectures that add operational complexity."
+    },
+    {
+      "question": "Provide a code example showing how to enable WAL mode in SQLite and explain its benefits.",
+      "answer": "To enable Write-Ahead Logging (WAL) mode in SQLite, execute this SQL command once when setting up your database:\n\nsql\nPRAGMA journal_mode=WAL;\n\n\nBenefits of WAL mode:\n1. Writers don't block readers, and readers don't block writers\n2. Multiple readers can access the database simultaneously\n3. Improved write performance through batching\n4. Better handling of concurrent workloads\n\nWith WAL enabled, SQLite can typically handle 500-1000+ writes per second while serving thousands of concurrent reads on modern hardware."
+    },
+    {
+      "question": "What are the operational advantages of using SQLite over PostgreSQL for a SaaS startup?",
+      "answer": "SQLite offers several operational advantages for SaaS startups:\n1. Simplified deployment - no separate database server required\n2. Incredibly simple backup strategy (just copy the database file)\n3. Reduced monitoring needs (no connection pools, replication lag, or vacuum schedules)\n4. Lower infrastructure costs ($0 for database operations vs hundreds/month for managed PostgreSQL)\n5. Faster recovery from failures (just restore from a file copy)\n6. Easier testing (copy production database for staging)\n7. Built-in atomicity and ACID compliance without complex configuration\n\nThese advantages translate to faster development cycles and reduced DevOps overhead, allowing the team to focus on product features rather than database administration."
+    },
+    {
+      "question": "When would you recommend against using SQLite for a production application?",
+      "answer": "Avoid SQLite in these scenarios:\n1. High write concurrency requirements (>1000 sustained writes/second)\n2. Multi-server architectures requiring shared database access\n3. Applications needing built-in replication without third-party solutions\n4. Systems requiring fine-grained access control (row-level security, user/role management)\n5. Workloads that need complex clustering or sharding\n6. Applications that must scale horizontally beyond a single server\n\nFor these cases, traditional client-server databases like PostgreSQL or MySQL would be more appropriate."
+    },
+    {
+      "question": "How can SQLite be used in an edge computing architecture?",
+      "answer": "SQLite is ideal for edge computing deployments because:\n1. Each edge location can maintain its own local SQLite database\n2. No network latency for database operations (sub-10ms response times)\n3. Simple deployment model works with platforms like Cloudflare Workers or Fly.io\n4. Data is automatically local to the user, improving performance\n5. No need for complex synchronization between edge locations\n\nExample deployment pattern:\ntypescript\n// Cloudflare Worker example\nconst db = new Database('./edge.db');\nexport default {\n  async fetch(request) {\n    const url = new URL(request.url);\n    if (url.pathname === '/api/data') {\n      return new Response(JSON.stringify(db.prepare('SELECT * FROM data').all()));\n    }\n  }\n}\n\n\nChanges between edge locations can be synchronized using tools like LiteFS or custom replication."
+    },
+    {
+      "question": "What are three common architectural patterns using SQLite in production applications?",
+      "answer": "1. **Write-Through Cache Pattern**: Use SQLite as both primary database and cache layer, eliminating the need for separate Redis instances. All reads and writes go through SQLite with zero latency overhead.\n\ntypescript\n// Instead of complex Postgres + Redis setup\nasync function getUser(id: string) {\n  return db.get('SELECT * FROM users WHERE id = ?', id);\n}\n\n\n2. **Per-Tenant Database Pattern**: Each customer gets their own SQLite database file, providing perfect isolation, easy backups, and simple compliance.\n\ntypescript\nfunction getCustomerDb(customerId: string) {\n  return new Database(`./data/customers/${customerId}.db`);\n}\n\n\n3. **Hybrid Architecture Pattern**: Use SQLite for read operations and PostgreSQL for writes, with changes streamed from PostgreSQL to SQLite replicas for 99% of queries hitting the faster local storage.\n\ntypescript\nconst read = async (query: string) => sqlite.get(query);\nconst write = async (query: string) => postgres.execute(query);\n"
+    }
+  ]
+}

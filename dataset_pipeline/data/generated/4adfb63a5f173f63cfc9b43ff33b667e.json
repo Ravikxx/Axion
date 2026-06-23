@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Detroit_Grand_Prix",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What are the two major racing series that the Detroit Grand Prix has been a part of?",
+      "answer": "The Detroit Grand Prix was part of the Formula One series from 1982 to 1988 and has been part of the IndyCar Series since 1988."
+    },
+    {
+      "question": "In which year did the Detroit Grand Prix first become a part of the Formula One series, and what made it historically significant?",
+      "answer": "The Detroit Grand Prix first became part of the Formula One series in 1982. It was historically significant because the U.S. became the first country to host three World Championship Grands Prix in one season, a record that remains unmatched as of 2010."
+    },
+    {
+      "question": "Describe the original layout of the Detroit Grand Prix circuit. Include details about the number of corners and notable features.",
+      "answer": "The original Detroit Grand Prix circuit had seventeen corners and spanned 2.493 miles. Notable features included a tunnel and a railroad track crossing."
+    },
+    {
+      "question": "Why was the Detroit Grand Prix moved to Phoenix in 1989, and what event replaced it after Formula One stopped racing there?",
+      "answer": "The Detroit Grand Prix was moved to Phoenix in 1989 because an agreement for a new circuit at Belle Isle could not be reached. After Formula One stopped racing at Detroit, CART held a similar event on the same track, except the 18th turn (a chicane) was removed."
+    },
+    {
+      "question": "How many times and in which years was the Detroit Grand Prix held on Belle Isle between 1992 and 2022?",
+      "answer": "The Detroit Grand Prix was held on Belle Isle in the following years between 1992 and 2022: 1992 to 2001, 2007 to 2008, and from 2012 to 2022."
+    },
+    {
+      "question": "When and why was the Detroit Grand Prix track moved in 2023?",
+      "answer": "In 2023, the Detroit Grand Prix track was moved roughly two miles to return to downtown Detroit. This change was made to relocate the race to a new street circuit while maintaining the event's street racing format."
+    },
+    {
+      "question": "Write a Python list containing all the years the Detroit Grand Prix was held on Belle Isle from 1992 to 2022.",
+      "answer": "python\nyears_on_belle_isle = [\n    year for year in range(1992, 2002)  # 1992 to 2001\n] + [\n    2007, 2008\n] + [\n    year for year in range(2012, 2023)  # 2012 to 2022\n]\n"
+    }
+  ]
+}

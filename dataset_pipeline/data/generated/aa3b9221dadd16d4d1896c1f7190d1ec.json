@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Dashi",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is dashi and what are its primary uses in Japanese cooking?",
+      "answer": "Dashi is a type of stock or broth commonly used in Japanese cuisine as a base for soups and dishes. It serves as the foundation for miso soup, Japanese noodle soups like udon or soba, and other simmered or boiled liquids."
+    },
+    {
+      "question": "What are the traditional ingredients used to make dashi?",
+      "answer": "The most common ingredients for traditional dashi are kombu (edible kelp), katsuobushi (dried skipjack tuna flakes), and niboshi (dried small sardines). Other variations include shiitake mushrooms."
+    },
+    {
+      "question": "How is konbu dashi prepared?",
+      "answer": "Konbu dashi is made by soaking kelp, also known as sea tangle, in water. Some recipes call for heating the mixture nearly to boiling before straining the broth."
+    },
+    {
+      "question": "What is the difference between fresh dashi and instant dashi substitutes?",
+      "answer": "Fresh dashi is traditionally made from kombu and katsuobushi, but it is less popular today in Japan. Instant substitutes are pre-made powders or granules that dissolve in hot water for convenience."
+    },
+    {
+      "question": "What are some alternative methods for preparing dashi besides boiling?",
+      "answer": "Dashi can be made by soaking ingredients like kelp, shiitake, or niboshi in cool water for several hours without heating. This slow extraction method is often used for delicate flavors."
+    },
+    {
+      "question": "How does the preparation of niboshi dashi differ when using whole sardines versus cleaned ones?",
+      "answer": "Some recipes use whole niboshi (dried small sardines) directly, as this method yields flavorful dashi. Others clean the sardines by removing heads and entrails before soaking or boiling."
+    },
+    {
+      "question": "List five other important Japanese flavorings besides dashi.",
+      "answer": "Five essential Japanese flavorings are shoyu (soy sauce), mirin (sweet rice wine), rice vinegar, miso (fermented soybean paste), and sake (Japanese rice wine)."
+    }
+  ]
+}

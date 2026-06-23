@@ -1,0 +1,38 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Foot_(human)",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is a foot in terms of measurement?",
+      "answer": "A foot is a unit of measurement. One foot equals 12 inches or 0.3048 meters."
+    },
+    {
+      "question": "How do feet help with balance?",
+      "answer": "Feet help with balance by providing a stable base of support. The heel and sole distribute weight evenly, and the toes assist in adjusting posture to maintain stability while standing or walking."
+    },
+    {
+      "question": "What are the main parts of a human foot?",
+      "answer": "The main parts of a human foot include the heel (where the foot connects to the leg), the sole (the bottom surface), and five digits (toes). There are also arches that help with weight distribution and movement."
+    },
+    {
+      "question": "What is the difference between a hoof, a paw, and a typical human foot?",
+      "answer": "A hoof is a hard, keratinized structure found on the feet of ungulates (e.g., horses, cows), used for walking and running. A paw is a soft, padded foot found in many mammals like cats and dogs, often used for gripping or digging. A typical human foot has five toes, arches, and a soft sole for bipedal movement."
+    },
+    {
+      "question": "Write a Python function that calculates the distance in feet after converting from meters. Include an example.",
+      "answer": "python\ndef meters_to_feet(meters):\n    \"\"\"Convert meters to feet.\n    \n    Args:\n        meters (float): Distance in meters.\n    \n    Returns:\n        float: Distance in feet.\n    \"\"\"\n    return meters * 3.28084\n\n# Example usage:\ndistance_in_meters = 2.5\nprint(f\"{distance_in_meters} meters = {meters_to_feet(distance_in_meters):.2f} feet\")\n\nOutput: `2.5 meters = 8.20 feet`"
+    },
+    {
+      "question": "Why might people prefer not to wear shoes in certain cultures?",
+      "answer": "In some cultures, like Japan, not wearing shoes inside homes is a cultural tradition rooted in hygiene and respect. Floors are often soft (e.g., tatami mats), and removing shoes prevents dirt and germs from being tracked indoors. Additionally, going barefoot can benefit foot health by allowing natural movement and reducing pressure points."
+    },
+    {
+      "question": "What causes foot odor, and how can it be prevented?",
+      "answer": "Foot odor (bromodosis) is caused by sweat and the growth of bacteria on the feet. Sweat provides moisture for bacteria, which then produce unpleasant-smelling waste. To prevent it, wear breathable footwear, change socks daily, use moisture-wicking insoles, and practice good foot hygiene. Antifungal powders or sprays can also help."
+    },
+    {
+      "question": "What are Athlete's foot and its symptoms?",
+      "answer": "Athlete's foot (tinea pedis) is a fungal infection that affects the skin of the feet, often causing dryness, cracking, itching, and redness. It thrives in warm, moist environments like sweaty shoes or public showers. Treatment typically involves antifungal creams, powders, or oral medications. Keeping feet clean and dry can prevent recurrence."
+    }
+  ]
+}

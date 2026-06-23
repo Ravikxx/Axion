@@ -1,0 +1,42 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Agriculture",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is agriculture and what are its main components?",
+      "answer": "Agriculture is the practice of cultivating soil, planting, raising, and harvesting crops (both food and non-food) as well as livestock production. Broader definitions include forestry and aquaculture. Its main components are crop farming (e.g., cereals, vegetables, fruits) and animal husbandry (e.g., sheep, goats, cattle), which collectively provide food, fibers, fuels, and raw materials like rubber and timber."
+    },
+    {
+      "question": "How did the domestication of plants and animals contribute to the rise of sedentary human civilization?",
+      "answer": "Domestication of plants and animals created food surpluses by enabling reliable and large-scale food production. These surpluses allowed humans to settle in one place (sedentary lifestyle) and support non-farming populations, such as artisans and leaders, which led to the development of cities and complex societies."
+    },
+    {
+      "question": "What percentage of the world's food is produced by small farms, and how much land do they occupy?",
+      "answer": "As of 2021, small farms (1 hectare or smaller) produce about one-third of the world's food. However, they occupy only around 12% of all agricultural land globally."
+    },
+    {
+      "question": "Compare the distribution of global agricultural land between small and large farms.",
+      "answer": "Small farms (≤2 hectares) constitute five out of six farms worldwide but use only ~12% of agricultural land. In contrast, large farms (over 50 hectares) make up just 1% of farms but control over 70% of farmland. Farms larger than 1,000 hectares occupy nearly 40% of all global agricultural land."
+    },
+    {
+      "question": "What are the major agricultural product groups, and what are some examples?",
+      "answer": "Major agricultural product groups include foods (e.g., cereals, vegetables, fruits, meat, milk), fibers (e.g., cotton, wool), fuels (e.g., ethanol from crops), and raw materials (e.g., rubber, timber). Global production includes approximately 11 billion tonnes of food, 32 million tonnes of natural fibers, and 4 billion cubic meters of wood annually."
+    },
+    {
+      "question": "What are some ways modern agriculture has increased crop yields, and what are the associated drawbacks?",
+      "answer": "Modern agriculture boosts yields through agronomy, plant breeding, agrochemicals (pesticides, fertilizers), and technology. However, these methods contribute to ecological damage, such as climate change, aquifer depletion, deforestation, and biodiversity loss. For example, excessive fertilizer use can lead to water pollution and soil degradation."
+    },
+    {
+      "question": "Write a Python code snippet to calculate the percentage of global agricultural land occupied by farms larger than 1,000 hectares.",
+      "answer": "python\n# Given data: farms >1,000 hectares occupy ~40% of global agricultural land\nglobal_land_percentage = 40.0  # in percent\nprint(f\"Farms larger than 1,000 hectares occupy {global_land_percentage}% of global agricultural land.\")\n"
+    },
+    {
+      "question": "Why is agriculture considered both a cause of and sensitive to environmental degradation?",
+      "answer": "Agriculture drives environmental degradation through practices like deforestation, pesticide use, and greenhouse gas emissions, which contribute to climate change and biodiversity loss. Simultaneously, it is sensitive to degradation because factors like soil erosion, drought, or climate shifts reduce crop yields, creating a feedback loop that threatens food security."
+    },
+    {
+      "question": "What is the role of genetically modified organisms (GMOs) in modern agriculture?",
+      "answer": "Genetically modified organisms (GMOs) are widely used in modern agriculture to enhance traits like pest resistance, drought tolerance, and yield. They help improve productivity but face regulatory restrictions in some countries due to concerns over environmental impact, food safety, and ethical considerations."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Azhakodi_Devi_Temple",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Where is Azhakodi Devi Temple located, and what are its key geographical landmarks?",
+      "answer": "Azhakodi Devi Temple is located in Thiruthiyad, Kozhikode District, Kerala, South India. It is situated 1.5 kilometers from the Mofussil Bus stand and 2.5 kilometers from the KSRTC Bus stand, within the heart of Kozhikode city but retains a rural charm."
+    },
+    {
+      "question": "What is the historical significance of Azhakodi Devi Temple?",
+      "answer": "Azhakodi Devi Temple, originally known as 'Arikkodikkavu,' is one of the most ancient and historically renowned temples dedicated to the goddess Bhadrakali. It gained prominence when the Samoothiri of Kozhikode entrusted six generals to worship an idol of Bhavani Devi gifted by Gujarati traders. The temple was renamed in 1965 as 'Azhakodi Devi Mahashekthram'."
+    },
+    {
+      "question": "Describe the deity and the architectural features of Azhakodi Devi Temple.",
+      "answer": "The principal deity of Azhakodi Devi Temple is Bhadrakali in a calm disposition. The temple consists of seven maternal incarnations: Brahmani, Maheshvari, Kaumari, Vaishnavi, Varahi, Indrani, and Chamundi. Additionally, a Sivalinga is present in the temple."
+    },
+    {
+      "question": "What are the major festivals celebrated at Azhakodi Devi Temple, and when do they occur?",
+      "answer": "Major festivals include Kodiyettem during the Malayalam month of Medom on Uthrattadi Nakshathram, Pallivetta on Thiruvathira Nakshathram, Arrattu on Punartham Nakshathram, Navarathri Mahotsavam, Vijayadasami Pooja, and an annual Bhagavatha Saptaham."
+    },
+    {
+      "question": "How is Azhakodi Devi Temple administered and governed?",
+      "answer": "The temple is administered by the Malabar Devaswom Board, which oversees its day-to-day activities. The temple and its Kalayana Mandapom (Azhakodi Devi Mandiram) are managed directly by the Board, ensuring structured governance and operations."
+    },
+    {
+      "question": "What is the legend associated with the idol of Bhavani Devi in Azhakodi Devi Temple?",
+      "answer": "According to legend, the Samoothiri of Kozhikode received an idol of Bhavani Devi from Gujarati traders. He entrusted six generals to place this idol beside the Bhagavathi idol in Arikkodikkavu and worship it, which led to the temple's renaming and increased significance."
+    },
+    {
+      "question": "Write a Python script to calculate the distance between Azhakodi Devi Temple and the nearest bus stands.",
+      "answer": "Here is a Python script to calculate the distances:\npython\nimport geopy.distance\n\n# Coordinates of Azhakodi Devi Temple (approximate)\ntemple_coords = (11.25, 75.7833)\n\n# Coordinates of Mofussil Bus Stand (approximate)\nmofussil_coords = (11.255, 75.77)\n\n# Coordinates of KSRTC Bus Stand (approximate)\nksrtc_coords = (11.26, 75.765)\n\n# Calculate distances in kilometers\ndistance_mofussil = geopy.distance.distance(temple_coords, mofussil_coords).km\ndistance_ksrtc = geopy.distance.distance(temple_coords, ksrtc_coords).km\n\nprint(f\"Distance to Mofussil Bus Stand: {distance_mofussil:.2f} km\")\nprint(f\"Distance to KSRTC Bus Stand: {distance_ksrtc:.2f} km\")\n\nThis script uses the geopy library to compute distances between the temple and the bus stands based on approximate coordinates."
+    }
+  ]
+}

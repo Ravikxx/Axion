@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Brian_MacArt_O'Neill",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was Brian MacArt O'Neill and what was his familial background?",
+      "answer": "Brian MacArt O'Neill was a member of the O'Neill Dynasty, the dominant Gaelic family of Ulster. He was the son and heir of Art MacBaron O'Neill of Oneilland and the grandson of Matthew O'Neill, 1st Baron Dungannon. His uncle was Hugh O'Neill, the powerful Earl of Tyrone."
+    },
+    {
+      "question": "What role did Brian MacArt O'Neill play in Tyrone's Rebellion?",
+      "answer": "Brian MacArt O'Neill may have participated in Tyrone's Rebellion, a major conflict during which several of his brothers were killed."
+    },
+    {
+      "question": "Why was Brian MacArt O'Neill tried in Dublin instead of County Armagh?",
+      "answer": "He was tried in Dublin because a jury in County Armagh, where many remained fearful of the O'Neills, was unlikely to convict him. This decision was made to ensure a fair trial despite the local bias."
+    },
+    {
+      "question": "How did Sir Arthur Chichester's refusal to overturn Brian MacArt O'Neill's sentence impact Hugh O'Neill, Earl of Tyrone?",
+      "answer": "Chichester's refusal to pardon Brian convinced the Earl of Tyrone that his influence was waning, despite his generally good relations with King James I. This contributed to his decision to flee Ireland in the Flight of the Earls."
+    },
+    {
+      "question": "What was the outcome of Brian MacArt O'Neill's trial and subsequent events?",
+      "answer": "Brian was sentenced to death for murder and ultimately hanged on the reduced charge of manslaughter. His uncle, Hugh O'Neill, failed to secure his release despite offering a bribe of £500, which was refused."
+    },
+    {
+      "question": "Which of Brian MacArt O'Neill's brothers served as mercenaries in the Spanish Army, and who was the most notable among them?",
+      "answer": "Three of Brian's brothers served as mercenaries in the Spanish Army. The most renowned was Owen Roe O'Neill, who later became a significant figure in Irish military history."
+    },
+    {
+      "question": "Write a Python function to calculate the number of years between Brian MacArt O'Neill's execution in 1614 and the Treaty of Mellifont in 1603.",
+      "answer": "python\ndef years_between_events(): \n    execution_year = 1614\n    treaty_year = 1603\n    return execution_year - treaty_year\n\n# Example usage:\nprint(years_between_events())  # Output: 11\n"
+    }
+  ]
+}

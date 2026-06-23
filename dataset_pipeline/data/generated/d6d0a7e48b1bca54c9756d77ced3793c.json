@@ -1,0 +1,34 @@
+{
+  "source_url": "https://mathworld.wolfram.com/RandomNumber.html",
+  "category": "mathworld",
+  "pairs": [
+    {
+      "question": "What is the difference between a random number and a pseudorandom number?",
+      "answer": "A random number is generated from an unpredictable physical process, exhibiting true randomness and no correlations between successive selections. In contrast, a pseudorandom number is computer-generated using deterministic algorithms to simulate randomness, producing sequences that appear random but are reproducible if the initial seed is known. Pseudorandom numbers are designed to approximate the properties of true random numbers while being computationally efficient."
+    },
+    {
+      "question": "How does the Box-Muller transformation convert uniform random numbers into normally distributed random numbers?",
+      "answer": "The Box-Muller transformation takes two independent uniform random numbers, U₁ and U₂, from the interval [0, 1) and transforms them into two independent standard normal random variables, Z₀ and Z₁, using the formulas:\n\npython\nimport math\nimport random\n\ndef box_muller_transform():\n    U1 = random.random()\n    U2 = random.random()\n    Z0 = math.sqrt(-2.0 * math.log(U1)) * math.cos(2.0 * math.pi * U2)\n    Z1 = math.sqrt(-2.0 * math.log(U1)) * math.sin(2.0 * math.pi * U2)\n    return Z0, Z1\n\nThis method exploits the mathematical relationship between uniform and normal distributions to generate normally distributed random numbers efficiently."
+    },
+    {
+      "question": "Why is it challenging to prove that a long sequence of digits is truly random?",
+      "answer": "Proving true randomness for an arbitrarily long sequence is impossible because randomness requires unpredictability and lack of patterns, which cannot be definitively established through finite testing. True randomness arises from physical processes (e.g., quantum noise), but such processes cannot be analyzed exhaustively. Statistical tests can only assess *apparent* randomness, not certify true randomness."
+    },
+    {
+      "question": "What is a 'seed' in the context of pseudorandom number generators, and why is it important?",
+      "answer": "A seed is an initial value provided to a pseudorandom number generator (PRNG) to initialize its internal state. It determines the starting point of the sequence, ensuring reproducibility. Without a fixed seed, the same PRNG algorithm would produce different sequences each run. Seeds are critical for debugging, testing, and ensuring consistency in simulations or applications requiring reproducible results."
+    },
+    {
+      "question": "How can you generate a power-law distribution from a uniform distribution?",
+      "answer": "To generate a power-law (Pareto-distributed) random variable from a uniform distribution, use the inverse transform sampling method. Given a uniform random variable U ∈ [0, 1) and a power-law distribution with exponent α > 0, the power-law variate X is computed as:\n\npython\nimport random\n\ndef power_law(alpha, x_min=1.0):\n    U = random.random()\n    X = x_min * (1 - U) ** (-1 / alpha)\n    return X\n\nThis leverages the inverse of the power-law cumulative distribution function (CDF). The result X will follow P(X) ∝ X^(-(α+1)) for X ≥ x_min."
+    },
+    {
+      "question": "What is the linear congruential method for generating pseudorandom numbers, and how does it work?",
+      "answer": "The linear congruential method (LCM) is a classic PRNG algorithm defined by the recurrence relation:\n\nXₙ₊₁ = (a × Xₙ + c) mod m\n\nwhere:\n- Xₙ is the sequence of pseudorandom values,\n- a (multiplier) and c (increment) are constants,\n- m (modulus) defines the range [0, m-1].\n\nA simple Python implementation:\npython\nclass LinearCongruentialGenerator:\n    def __init__(self, seed, a=1664525, c=1013904223, m=2**32):\n        self.state = seed\n        self.a, self.c, self.m = a, c, m\n\n    def next(self):\n        self.state = (self.a * self.state + self.c) % self.m\n        return self.state\n\nThe choice of parameters (a, c, m) critically affects the quality and period of the generated sequence."
+    },
+    {
+      "question": "What is Rule 30 in the context of cellular automata, and how is it used for random number generation?",
+      "answer": "Rule 30 is a one-dimensional cellular automaton rule where each cell's next state is determined by its current state and its two neighbors. It is defined as follows: the new state of a cell is 1 if exactly one of its three neighbors is 1; otherwise, it is 0. Rule 30 exhibits chaotic behavior and is used in the Wolfram Language for generating pseudorandom numbers for large integers. Its central column produces a sequence of bits (e.g., 1, 1, 0, 1, 1, 1, 0, 0, ...) with good statistical randomness properties, making it suitable for simple PRNG applications."
+    }
+  ]
+}

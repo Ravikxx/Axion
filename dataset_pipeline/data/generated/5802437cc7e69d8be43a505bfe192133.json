@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/alvaromontoro/drawing-a-koala-with-html-and-css-bpf",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What was the main challenge the author faced while creating the CSS koala artwork?",
+      "answer": "The author struggled primarily with adding realistic lighting, shadows, and textures to the koala artwork, which required more practice with CSS properties like gradients and shadows than they had recently used."
+    },
+    {
+      "question": "List at least five CSS techniques used to create the koala in the tutorial.",
+      "answer": "The tutorial utilized positioning, custom properties, background gradients, border radius, pseudo-elements, shadows, masks, clip-path, combinators, and code repetition for the koala artwork."
+    },
+    {
+      "question": "How can you view the live demo of the koala created with HTML and CSS?",
+      "answer": "You can view the live demo of the koala artwork on CodePen by visiting the provided link: https://codepen.io/alvaromontoro/embed/EajMaBL."
+    },
+    {
+      "question": "What inspired the author to create a koala using CSS art?",
+      "answer": "The author was inspired after seeing a cartoon of a koala online and decided to challenge themselves by creating a CSS art version of it, even though the final result didn't closely resemble the original cartoon."
+    },
+    {
+      "question": "Provide a code snippet demonstrating how to create a simple rounded rectangle using CSS, similar to elements in CSS art.",
+      "answer": "Here’s a basic example of creating a rounded rectangle with CSS:\n\ncss\n.rounded-rectangle {\n  width: 100px;\n  height: 60px;\n  background-color: #ccc;\n  border-radius: 10px;\n}\n\n\nIn this snippet, `border-radius` is used to create rounded corners, which is a common technique in CSS art for shaping elements."
+    },
+    {
+      "question": "Why did the author mention they had \"some bad coding and code repetition\" in their project?",
+      "answer": "The author likely referred to inefficient or redundant CSS code in their project, such as repeating similar styles or not optimizing selectors, which is common in early CSS art projects as creators focus more on visual results than code structure."
+    },
+    {
+      "question": "How can you add a gradient background to a CSS art element to enhance its appearance?",
+      "answer": "You can add a gradient background using the `background` property with either linear or radial gradients. For example:\n\ncss\n.koala-element {\n  background: linear-gradient(to bottom, #a8a8a8, #7a7a7a);\n}\n\n\nThis creates a vertical gradient from light gray to dark gray, which can give elements a more three-dimensional or textured appearance."
+    }
+  ]
+}

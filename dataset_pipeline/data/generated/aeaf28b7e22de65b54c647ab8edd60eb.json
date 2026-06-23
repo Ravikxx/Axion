@@ -1,0 +1,34 @@
+{
+  "source_url": "https://stackoverflow.com/questions/65818400/should-i-use-put-or-update-command-while-adding-an-item-to-dynamodb-table",
+  "category": "stackoverflow",
+  "pairs": [
+    {
+      "question": "What is the difference between the `put` and `update` commands in DynamoDB when adding an item with a specific primary key?",
+      "answer": "In DynamoDB, the `put` command inserts a new item or overwrites an existing one if the primary key matches. The `update` command modifies an existing item's attributes or adds new attributes if the item doesn't exist, but only if the primary key is present. Both require a primary key, but `put` is idempotent (overwrites), while `update` is conditional (only works if the item exists or uses `ConditionExpression`)."
+    },
+    {
+      "question": "How can you ensure a DynamoDB item with a given primary key doesn't already exist using the `put` command?",
+      "answer": "Use a `ConditionExpression` to check the primary key doesn't exist before inserting. For example, with a primary key `year`, the condition `\"year <> :year\"` ensures the item won't be overwritten if it exists. If the item exists, the operation fails with a `ConditionalCheckFailedException`."
+    },
+    {
+      "question": "Write a JavaScript code snippet using the `update` command in DynamoDB with a `ConditionExpression` to add an item only if it doesn't exist.",
+      "answer": "Here’s how you can use `update` with a condition to mimic `put` behavior:\njavascript\nvar AWS = require('aws-sdk');\nAWS.config.update({region: \"us-east-1\"});\nconst docClient = new DynamoDB.DocumentClient();\n\nlet params = {\n  TableName: TABLE_NAME,\n  Key: {\"year\": 2021},\n  UpdateExpression: \"SET #title = :title\",\n  ExpressionAttributeNames: {\"#title\": \"title\"},\n  ExpressionAttributeValues: {\":title\": \"Title A\", \":year\": 2021},\n  ConditionExpression: \"attribute_not_exists(year)\",\n  ReturnValues: \"ALL_NEW\"\n};\n\nlet promise = docClient.update(params).promise();\npromise.then(res => {\n  console.log(\"res:\", res);\n});\n"
+    },
+    {
+      "question": "Why might someone prefer using the `update` command over `put` in DynamoDB, even for inserting new items?",
+      "answer": "The `update` command offers more control over the operation, such as specifying `ReturnValues` (e.g., `ALL_NEW` to retrieve the updated item). It also allows conditional updates (e.g., `attribute_not_exists(year)`) and partial updates, which can be more flexible. However, `update` requires the item to exist (or use conditions) unless you're adding new attributes."
+    },
+    {
+      "question": "Is there a performance difference between using the `put` and `update` commands in DynamoDB for inserting new items?",
+      "answer": "Performance differences are minimal for inserting new items, as both commands perform similarly under the hood. However, `update` may require additional I/O if the item doesn’t exist (depending on the `ConditionExpression`), while `put` is a straightforward write. For high-throughput scenarios, `put` is slightly more efficient for pure inserts, but the difference is negligible in most cases."
+    },
+    {
+      "question": "When should you use the `put` command instead of `update` in DynamoDB?",
+      "answer": "Use `put` when you want to explicitly insert or overwrite an item without conditions. It’s simpler for bulk inserts or when you don’t need to check for existing items. `put` is also more intuitive for idempotent operations where you want to ensure a specific item exists in a certain state."
+    },
+    {
+      "question": "Can the `put` command return the updated item after insertion? If not, how can you achieve this functionality?",
+      "answer": "No, the `put` command does not support `ReturnValues` like `ALL_NEW`. To retrieve the item after insertion, you must perform a separate `get` operation. Alternatively, use the `update` command with `ReturnValues: \"ALL_NEW\"` to get the item immediately after insertion if the update succeeds."
+    }
+  ]
+}

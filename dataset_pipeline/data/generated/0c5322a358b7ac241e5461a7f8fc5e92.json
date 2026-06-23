@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/East_Asian_Yogācāra",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the East Asian Yogācāra school of Buddhism, and what are its alternative names?",
+      "answer": "East Asian Yogācāra is a Mahayana Buddhist tradition that emerged from Indian Yogācāra systems, also known as Vijñānavāda (the doctrine of consciousness) or Cittamātra (mind-only). In East Asia, it is commonly referred to as the 'Consciousness-Only school' (唯識宗; Wéishí-zōng in Chinese, Yuishiki-shū in Japanese, and 유식종 in Korean)."
+    },
+    {
+      "question": "Who are the classic founders of the Indian Yogācāra school, and in which century did they live?",
+      "answer": "The classic founders of the Indian Yogācāra school are the 4th-century brothers Asaṅga and Vasubandhu."
+    },
+    {
+      "question": "Name three key figures from the East Asian Consciousness-Only school and their contributions.",
+      "answer": "Key figures include Xuanzang, a Chinese translator who systematized Yogācāra philosophy in China; Kuiji, his student who authored influential commentaries; and Paramārtha, who translated important Yogācāra texts into Chinese."
+    },
+    {
+      "question": "How did the East Asian Consciousness-Only school divide into two main groups?",
+      "answer": "The school split into two branches: the 'Old Translation' (Jiù yì) schools, which blended Buddha-nature thought with Yogācāra (e.g., Dilun and Shelun), and the 'New Translation' (Xīn yì) schools, led by Xuanzang, which strictly followed mainstream Yogācāra philosophy as taught by Dharmapala."
+    },
+    {
+      "question": "What distinguishes the 'New Translation' schools from the 'Old Translation' schools in East Asian Yogācāra?",
+      "answer": "The 'New Translation' schools, associated with Xuanzang, emphasize strict adherence to Indian Yogācāra philosophy as interpreted by Dharmapala. In contrast, the 'Old Translation' schools (e.g., Dilun and Shelun) integrate Buddha-nature thought with Yogācāra principles."
+    },
+    {
+      "question": "Provide a code snippet to represent the hierarchical structure of the East Asian Yogācāra schools.",
+      "answer": "\nEast Asian Yogācāra\n├── Old Translation (Jiù yì)\n│   ├── Dilun\n│   └── Shelun\n└── New Translation (Xīn yì)\n    ├── Xuanzang\n    └── Dharmapala's followers (e.g., Kuiji, Woncheuk)\n\nThis tree represents the division of the East Asian Yogācāra schools into two primary branches and their key figures."
+    },
+    {
+      "question": "Why is the Consciousness-Only school significant in East Asian Buddhism?",
+      "answer": "The Consciousness-Only school is significant because it represents a major philosophical development in Mahayana Buddhism, emphasizing the nature of consciousness and reality. It influenced East Asian Buddhist thought, particularly in China, Japan, and Korea, shaping interpretations of meditation, epistemology, and metaphysics."
+    }
+  ]
+}

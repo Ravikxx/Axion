@@ -1,0 +1,38 @@
+{
+  "source_url": "https://mathworld.wolfram.com/HawkesProcess.html",
+  "category": "mathworld",
+  "pairs": [
+    {
+      "question": "What is a univariate Hawkes process and how is its conditional intensity function typically defined?",
+      "answer": "A univariate Hawkes process is a self-exciting temporal point process where the conditional intensity function λ(t) depends on the history of events prior to time t. It is commonly defined as λ(t) = μ + ∑_{t_i < t} g(t - t_i), where μ is the background rate, t_i are the event times, and g(·) is the excitation function governing clustering density. This function captures how past events influence the likelihood of future events."
+    },
+    {
+      "question": "How does a linear Hawkes process differ from a non-linear Hawkes process?",
+      "answer": "A linear Hawkes process is a specific type where the conditional intensity function λ(t) is linear in its dependence on past events, typically expressed as λ(t) = μ + ∑_{t_i < t} α g(t - t_i) with α as a constant scaling factor. In contrast, a non-linear Hawkes process has a non-linear relationship between past events and the current intensity, such as multiplicative or exponential terms, allowing for more complex dynamic behavior."
+    },
+    {
+      "question": "Can you provide the mathematical formulation of the intensity-based Hawkes process with exponential decay?",
+      "answer": "An intensity-based Hawkes process with exponential decay is defined by λ(t) = μ + ∑_{t_i < t} α e^{-β(t - t_i)} Y_i, where μ is the reversion level (background rate), α is the initial intensity scaling, β is the exponential decay rate, and Y_i are independent random jump sizes. This model assumes the intensity decays exponentially toward μ between events."
+    },
+    {
+      "question": "Explain the equivalence between the intensity-based and cluster-based formulations of a Hawkes process.",
+      "answer": "The intensity-based Hawkes process models events via a stochastic intensity function driven by past events, while the cluster-based view treats events as originating from immigrants (independent Poisson arrivals) that generate offspring via a branching structure. These formulations are mathematically equivalent: immigrants correspond to the background rate μ, and offspring correspond to self-excited events governed by the excitation function g(·)."
+    },
+    {
+      "question": "What is a multivariate Hawkes process and how is its intensity function structured?",
+      "answer": "A multivariate Hawkes process extends the univariate case to d-dimensional counting processes N₁(t), ..., N_d(t). Its intensity function λ_i(t) for the i-th component is λ_i(t) = μ_i + ∑_{j=1}^d ∑_{t_k < t} g_{ij}(t - t_k), where μ_i is the background rate, and g_{ij}(·) governs how events in process j excite process i. This allows modeling interactions between multiple event streams."
+    },
+    {
+      "question": "Write a Python code snippet to simulate a univariate linear Hawkes process with constant background rate and exponential excitation.",
+      "answer": "python\nimport numpy as np\n\ndef simulate_hawkes_process(mu, alpha, beta, T_max):\n    t = 0.0\n    events = []\n    while t < T_max:\n        # Background event\n        t_next = t - np.log(np.random.rand()) / mu\n        if t_next < T_max:\n            events.append(t_next)\n            t = t_next\n        # Excited events\n        t_next_excited = t - np.log(np.random.rand()) / (mu + alpha * np.sum(np.exp(-beta * (t - np.array(events)))))\n        if t_next_excited < T_max:\n            events.append(t_next_excited)\n            t = t_next_excited\n    return sorted(events)\n\n# Example parameters\nmu = 0.5  # Background rate\nalpha = 0.8  # Excitation strength\nbeta = 2.0  # Decay rate\nT_max = 10.0  # Simulation time\n\nsimulated_events = simulate_hawkes_process(mu, alpha, beta, T_max)\nprint(\"Simulated event times:\", simulated_events)\n"
+    },
+    {
+      "question": "How do generalized Hawkes processes extend the classical linear model?",
+      "answer": "Generalized Hawkes processes introduce multiple excitation functions g_k(·) and separate offspring processes Z_k(t), allowing each generation of events to have distinct influence patterns. Mathematically, the intensity becomes λ(t) = μ + ∑_{k=1}^∞ ∫_{-∞}^t g_k(t - s) dZ_k(s), where Z_k(t) are independent Poisson processes. This framework captures heterogeneous excitation effects across event generations."
+    },
+    {
+      "question": "Why might different authors use different definitions for Hawkes processes, and what are the implications for modeling?",
+      "answer": "Different authors emphasize distinct aspects of the process: some focus on the intensity function formulation (intensity-based view), others on event clustering (cluster-based view), or on specific mathematical properties like linearity vs. non-linearity. These variations affect model interpretation and application - linear models are tractable for analysis, while non-linear or generalized versions offer richer behavior for complex systems but may require more sophisticated estimation techniques."
+    }
+  ]
+}

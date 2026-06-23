@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Economic_evaluation_of_time",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What does 'economic evaluation of time' mean in organizational behavior and psychology?",
+      "answer": "Economic evaluation of time refers to the tendency to perceive time in terms of monetary value, treating time as a scarce resource that should be allocated efficiently to maximize perceived financial gains. This perspective contrasts with other forms of time evaluation, such as those focused on community benefits or intangible costs and rewards."
+    },
+    {
+      "question": "How does economic evaluation of time influence people's decisions about time use?",
+      "answer": "When individuals evaluate time economically, they prioritize monetary gains over time savings in their decisions. For example, they may drive to a farther but cheaper gas station, even if it consumes more time, to save money. This trade-off often leads to lower subjective well-being over time."
+    },
+    {
+      "question": "What types of payment schedules are linked to the activation of economic evaluation of time?",
+      "answer": "Hourly payment schedules and performance-based incentives are robust predictors of economic evaluation of time. These payment structures encourage employees to view their time primarily through a monetary lens, reinforcing behaviors aimed at maximizing economic returns."
+    },
+    {
+      "question": "What are some behavioral consequences of economic evaluation of time in the workplace?",
+      "answer": "Employees who adopt an economic evaluation of time tend to work longer hours, reduce social interactions with loved ones, and volunteer less. These behaviors are driven by the goal of maximizing personal success and financial gains at the expense of other life priorities."
+    },
+    {
+      "question": "Can you provide a Python code snippet that simulates an economic evaluation of time decision?",
+      "answer": "Here’s a simple simulation where a person chooses between spending 10 minutes to save $5 or spending 5 minutes for the same $5:\n\npython\nimport time\n\ndef economic_time_evaluation(choice_1_time, choice_1_value, choice_2_time, choice_2_value):\n    # Calculate monetary efficiency (value per minute)\n    efficiency_choice_1 = choice_1_value / choice_1_time\n    efficiency_choice_2 = choice_2_value / choice_2_time\n    \n    # Choose the option with higher monetary efficiency\n    if efficiency_choice_1 > efficiency_choice_2:\n        return f\"Choose Option 1: {choice_1_value} in {choice_1_time} minutes (Efficiency: ${efficiency_choice_1:.2f}/min)\"\n    else:\n        return f\"Choose Option 2: {choice_2_value} in {choice_2_time} minutes (Efficiency: ${efficiency_choice_2:.2f}/min)\"\n\n# Example: Driving to a farther gas station to save money\nresult = economic_time_evaluation(10, 5, 5, 5)\nprint(result)\n\n\nThis code models how someone might decide to spend extra time for a small monetary gain."
+    },
+    {
+      "question": "Why might economic evaluation of time lead to lower subjective well-being?",
+      "answer": "Economic evaluation of time encourages prioritizing monetary gains over time efficiency or personal well-being. Over time, this can result in increased stress, reduced leisure, and weaker social connections, all of which contribute to lower overall life satisfaction."
+    },
+    {
+      "question": "How do performance incentives reinforce economic evaluation of time?",
+      "answer": "Performance incentives tie rewards directly to measurable outputs, reinforcing the idea that time should be spent on activities that yield the highest financial return. This shifts focus from intrinsic motivation or community-oriented goals to purely economic outcomes."
+    }
+  ]
+}

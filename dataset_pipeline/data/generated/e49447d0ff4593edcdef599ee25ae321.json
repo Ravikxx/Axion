@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/forgecode/claude-4-opus-vs-grok-4-which-model-dominates-complex-coding-tasks-2h74",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What are the key differences between Grok 4 and Claude 4 Opus in terms of cost efficiency for coding tasks?",
+      "answer": "Grok 4 is significantly cheaper for small contexts (under 128k tokens), averaging $4.50 per task compared to Claude 4 Opus's $13. However, Grok's pricing doubles after 128k tokens, while Opus maintains flat pricing. Here’s the cost breakdown per task:\n\n**Grok 4:**\n- Small contexts (<128k tokens): ~$4.50/task\n- Large contexts (>128k tokens): ~$9/task (due to doubled rates)\n\n**Claude 4 Opus:**\n- Flat rate: ~$13/task (regardless of context size)\n\nFor small to medium tasks, Grok 4 offers substantial cost savings, but for larger contexts, the price gap narrows."
+    },
+    {
+      "question": "How do Grok 4 and Claude 4 Opus perform in detecting race conditions and deadlocks in Rust code?",
+      "answer": "Grok 4 outperforms Claude 4 Opus in detecting race conditions and deadlocks, particularly in complex async Rust projects using `tokio`. In the testing, Grok detected all concurrency issues, including a subtle deadlock in a `tokio::RwLock`-based setup that Opus completely missed. Grok also identified a thread drop that prevented a panic hook from executing in an async block, which Opus overlooked. This makes Grok 4 the better choice for debugging concurrency bugs."
+    },
+    {
+      "question": "What is the average response time for Grok 4 and Claude 4 Opus when handling coding tasks?",
+      "answer": "Grok 4 is consistently faster, with response times ranging from 9 to 15 seconds per task. In contrast, Claude 4 Opus averages 13 to 24 seconds per task. This makes Grok 4 nearly twice as fast per request, improving iteration speed during development. However, Grok’s low rate limits can disrupt workflow continuity, slowing down testing sessions due to throttling."
+    },
+    {
+      "question": "Provide a Python code snippet to compare the cost of using Grok 4 and Claude 4 Opus for a task with a 200k token context.",
+      "answer": "Here’s a Python snippet to calculate the cost for a 200k token context using both models:\n\npython\n# Constants\ngrok_input_cost_large = 6.0  # $6/1M tokens for input beyond 128k\ngrok_output_cost_large = 30.0  # $30/1M tokens for output beyond 128k\nclaude_cost = 13.0  # Fixed $13 per task\n\n# For a 200k token context\ntotal_tokens = 200000\n\n# Grok 4 costs for large context (doubled rates)\ngrok_input_cost = (128000 * 3 + (total_tokens - 128000) * grok_input_cost_large) / 1_000_000\ngrok_output_cost = (128000 * 15 + (total_tokens - 128000) * grok_output_cost_large) / 1_000_000\ntotal_grok_cost = grok_input_cost + grok_output_cost\n\nprint(f\"Grok 4 cost for 200k tokens: ${total_grok_cost:.2f}\")\nprint(f\"Claude 4 Opus cost for 200k tokens: ${claude_cost:.2f}\")\n\n\n**Output:**\n- Grok 4 cost for 200k tokens: ~$14.40\n- Claude 4 Opus cost for 200k tokens: $13.00\n\nFor large contexts, Grok 4 becomes more expensive than Claude 4 Opus."
+    },
+    {
+      "question": "What are the tool calling accuracies of Grok 4 and Claude 4 Opus, and how do they compare in XML-based setups?",
+      "answer": "Both models achieve near-perfect tool calling accuracy in standard setups:\n- **Claude 4 Opus:** 99% accuracy (1614/1630 correct calls)\n- **Grok 4:** 99% accuracy (1785/1803 correct calls)\n\nHowever, when switching to an XML-based tool calling setup, accuracy drops for both:\n- **Claude 4 Opus:** 83% accuracy\n- **Grok 4:** 78% accuracy\n\nDespite the drop, both models still perform well, with Opus slightly outperforming Grok in XML-based setups."
+    },
+    {
+      "question": "How did Grok 4 and Claude 4 Opus handle custom instructions in the testing scenarios?",
+      "answer": "Claude 4 Opus demonstrated excellent rule adherence, consistently following custom instructions without deviation. In contrast, Grok 4 ignored custom instructions in 2 out of 15 tasks. This behavior reflects Grok’s more creative approach, which can be advantageous for bug hunting but may lead to scope creep in team environments where strict rule-following is required. Opus’s reliability makes it better suited for tasks demanding strict adherence to guidelines."
+    },
+    {
+      "question": "What are the hardware and API configuration details used for testing Grok 4 and Claude 4 Opus in the Rust coding challenges?",
+      "answer": "The testing environment was standardized across both models:\n\n**Hardware Configuration:**\n- MacBook Pro M2 Pro with 16GB RAM\n- 500Mbps network connection\n- Development environment: VS Code with Forge running in the integrated terminal\n\n**API Configuration:**\n- **Claude 4 Opus:** Anthropic API (https://docs.anthropic.com/en/api/admin-api/apikeys/get-api-key)\n- **Grok 4:** xAI API (https://x.ai/api)\n- Request timeout: 120 seconds\n- Max retries: 3\n\n**Task Specifications:**\n- 15 tasks involving concurrency issues, code refactors, and fixes\n- Mix of small (<128k tokens) and large contexts (up to 200k tokens)\n- Custom rules for design patterns, library usage (e.g., Pretty assertions in tests)\n\nThis setup ensured fair and consistent comparisons between the two models."
+    }
+  ]
+}

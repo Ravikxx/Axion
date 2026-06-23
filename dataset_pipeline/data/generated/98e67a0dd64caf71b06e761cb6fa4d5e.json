@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Elizabeth_Connell",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What were the key stages in Frances Elizabeth Connell's vocal transition from mezzo-soprano to soprano?",
+      "answer": "Frances Elizabeth Connell transitioned to singing full-time as a soprano in 1983 by canceling all mezzo-soprano engagements, taking time to rest her voice, and gradually shifting into soprano roles. Her early soprano performances included Corine in Luigi Cherubini's *Anacréon*, Fiordiligi in Mozart's *Così fan tutte*, and Julia in Gasparo Spontini's *La Vestale*."
+    },
+    {
+      "question": "Which major opera houses did Frances Elizabeth Connell debut at, and in what roles?",
+      "answer": "Connell made her professional debut at the Wexford Festival Opera in Ireland in 1972. She later debuted at the Royal Opera House, Covent Garden (Verdi's *I Lombardi*), the Bayreuth Festival (Ortrud in Wagner's *Lohengrin* in 1980), the Metropolitan Opera (Vitellia in Mozart's *La clemenza di Tito* in 1985), the Opéra de Paris (Senta in Wagner's *The Flying Dutchman* in 1987), and the San Francisco Opera (also in 1987)."
+    },
+    {
+      "question": "How did Frances Elizabeth Connell's early career in the UK begin, and what challenges did she face?",
+      "answer": "Connell began her UK career in 1970 after receiving an opera scholarship to the London Opera Centre, where her teachers included Otakar Kraus. Early on, she faced challenges performing in British opera houses due to apartheid policies in South Africa, as she was a white South African. She obtained Irish citizenship through her grandfather to circumvent these restrictions."
+    },
+    {
+      "question": "What role did Frances Elizabeth Connell play at the opening of the Sydney Opera House, and who invited her?",
+      "answer": "Connell sang the role of Princess Marya in Prokofiev's *War and Peace* at the opening of the Sydney Opera House in 1973. She was invited by conductor Edward Downes, marking the beginning of her long-standing relationship with Opera Australia."
+    },
+    {
+      "question": "Write a Python function that extracts all roles Frances Elizabeth Connell performed from a given text about her career.",
+      "answer": "python\ndef extract_roles(text):\n    roles_keywords = ['Corine', 'Fiordiligi', 'Julia', 'Vitellia', 'Senta', 'Brünnhilde', 'Isolde', \n                     'Ellen Orford', 'Kostelnicka', 'Leonore', 'Ortrud']\n    roles = []\n    for keyword in roles_keywords:\n        if keyword in text:\n            roles.append(keyword)\n    return roles\n\n# Example usage:\ncareer_text = \"...\"\nextracted_roles = extract_roles(career_text)\nprint(extracted_roles)\n"
+    },
+    {
+      "question": "What was Frances Elizabeth Connell's final performance, and what were her plans at the time?",
+      "answer": "Connell's final performance was a recital on 27 November 2011 in Hastings. She had intended to retire to Australia, but her plans were disrupted by a cancer diagnosis, and she passed away in London on 18 February 2012."
+    },
+    {
+      "question": "Which famous conductors and performances are associated with Frances Elizabeth Connell's career?",
+      "answer": "Connell performed under Seiji Ozawa in Tokyo as Senta in Wagner's *The Flying Dutchman*. She also sang Isolde in Wagner's *Tristan und Isolde* in Madrid and Carnegie Hall, and Leonore in Beethoven's *Fidelio* at Robben Island in 2004."
+    }
+  ]
+}

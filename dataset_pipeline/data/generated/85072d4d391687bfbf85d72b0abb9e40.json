@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Archibald_Gowanlock_Huntsman",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What were Archibald Gowanlock Huntsman's primary contributions to fisheries science and marine biology?",
+      "answer": "Archibald Gowanlock Huntsman is best known for his groundbreaking research on Atlantic salmon and for inventing the fast freezing of fish fillets in 1929, which he marketed as 'Ice Fillets' for the Toronto market. He also pioneered 'jacketed cold storage,' an innovation encasing coolant coils in steel to reduce frost buildup in freezers, widely adopted in railway cooling cars. Additionally, he played a pivotal role in shaping Canadian fisheries science through his leadership at the St. Andrews Biological Station (Director from 1919 to 1934) and the Fisheries Experimental Station in Halifax (Director from 1924 to 1928), where he trained generations of fisheries scientists."
+    },
+    {
+      "question": "How did Huntsman's collaboration with Johan Hjort influence his research focus?",
+      "answer": "Huntsman's collaboration with Johan Hjort during the Canadian Fisheries Expedition of 1914-15 profoundly shifted his research from ascidian taxonomy and evolutionary questions to fisheries science. Hjort, a leading Norwegian fisheries biologist, introduced Huntsman to the latest developments in fisheries biology and Scandinavian dynamic oceanography, which became central to Huntsman's later work in marine science."
+    },
+    {
+      "question": "What was Huntsman's role in the founding of the North American Council on Fisheries Research, and who were its collaborators?",
+      "answer": "In 1921, Huntsman helped found the North American Council on Fisheries Research and served as its secretary. The council facilitated US, Canadian, French, and British (Newfoundland) collaboration on fisheries and oceanographic research, mirroring the European International Council for the Exploration of the Sea."
+    },
+    {
+      "question": "Write a Python code snippet to calculate the age of Archibald Gowanlock Huntsman at the time of his death.",
+      "answer": "Archibald Gowanlock Huntsman was born on November 23, 1883, and died on August 8, 1973. Here is a Python code snippet to compute his age at death:\n\npython\nfrom datetime import date\n\ndef calculate_age(birth_date, death_date):\n    birth = date.fromisoformat(birth_date)\n    death = date.fromisoformat(death_date)\n    age = death.year - birth.year\n    if (death.month, death.day) < (birth.month, birth.day):\n        age -= 1\n    return age\n\nbirth_date = '1883-11-23'\ndeath_date = '1973-08-08'\nage = calculate_age(birth_date, death_date)\nprint(f\"Archibald Gowanlock Huntsman was {age} years old at the time of his death.\")\n\n\nThis code correctly outputs that Huntsman was **89 years old** when he died."
+    },
+    {
+      "question": "Why was Huntsman's fast-frozen fish fillet experiment in Halifax curtailed by the Canadian government?",
+      "answer": "Huntsman's fast-frozen fish fillet experiment in Halifax was highly successful, but the Canadian government terminated it because they believed it was inappropriate for government-run research to compete directly with private business. Despite this setback, his invention of 'Ice Fillets' predated and rivaled Clarence Birdseye's commercialization of fast-frozen foods."
+    },
+    {
+      "question": "What major international collaborations did Huntsman engage in during his career?",
+      "answer": "Huntsman fostered international collaboration in marine science through his involvement in founding the North American Council on Fisheries Research, which included participants from the US, Canada, France, and Britain (Newfoundland). He also worked closely with prominent figures like Henry Bryant Bigelow (first director of Woods Hole Oceanographic Institution), Michael Graham (later director of the Fisheries Laboratory at Lowestoft, England), and William F. Thompson (a pioneer in fish population analysis). His leadership helped build an international marine science community."
+    },
+    {
+      "question": "What awards and honors did Archibald Gowanlock Huntsman receive during his lifetime?",
+      "answer": "Huntsman received several prestigious awards and honors, including serving as President of the Royal Society of Canada from 1937 to 1938, being awarded the Flavelle Medal in 1952, and having a 46-cent Canadian postage stamp issued in his honor in 2000 with the title 'Dr. Archibald Gowanlock Huntsman: The Fisherman's Friend.' Additionally, the A.G. Huntsman Award for Excellence in the Marine Sciences was established in 1980 to recognize outstanding contributions to marine sciences."
+    }
+  ]
+}

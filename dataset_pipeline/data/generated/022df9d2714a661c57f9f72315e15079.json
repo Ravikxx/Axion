@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Bernice_Summerfield",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who created the character Bernice Surprise Summerfield, and in which Doctor Who spin-off media did she first appear?",
+      "answer": "Bernice Surprise Summerfield, often called Benny, was created by author Paul Cornell. She first appeared in the 1992 novel *Love and War*, which was part of Virgin Publishing's *Doctor Who* New Adventures—a series of original full-length novels licensed to continue the *Doctor Who* story beyond the television series."
+    },
+    {
+      "question": "What legal clause allowed Paul Cornell to develop Bernice Summerfield into a standalone character after leaving the Doctor Who New Adventures?",
+      "answer": "An unusual contract clause granted character rights to their creators as long as the characters could be used in future novels by the company. This allowed Paul Cornell to retain rights to Bernice Summerfield and develop her into the lead of a spin-off series after Virgin Publishing lost the *Doctor Who* license to BBC Books."
+    },
+    {
+      "question": "How did Big Finish Productions adapt Bernice Summerfield into audio dramas, and who portrayed her in these productions?",
+      "answer": "Big Finish Productions adapted Bernice Summerfield into audio dramas starting with a 1998 adaptation of *Oh No It Isn't!* by Jacqueline Rayner. British actress Lisa Bowerman portrayed Summerfield in these productions, a role she continued to voice for decades, including in both adaptations of existing novels and original stories."
+    },
+    {
+      "question": "What was the significance of the 2014 reboot of Bernice Summerfield's audio series under the Doctor Who branding?",
+      "answer": "The 2014 reboot, titled *The New Adventures of Bernice Summerfield*, marked a significant shift by allowing full crossover with the broader *Doctor Who* franchise. This version reintroduced her alongside the Seventh Doctor and Ace, later pairing her with David Warner's 'Unbound' Third Doctor, and included direct references to classic *Doctor Who* elements like the Daleks and Cybermen."
+    },
+    {
+      "question": "Provide a code snippet that demonstrates how to query a dataset of Bernice Summerfield audio releases to find all adaptations of New Adventures novels.",
+      "answer": "python\n# Example pseudocode to filter Bernice Summerfield audio adaptations from New Adventures novels\nnew_adventures_adaptations = [\n    audio for audio in big_finish_audio_releases\n    if audio['type'] == 'adaptation' and \n       audio['source'] in ['Beyond the Sun', 'Walking to Babylon', 'Dragons\\' Wrath', 'Birthright', 'Just War']\n]\n# This would return metadata for the specified adaptations."
+    },
+    {
+      "question": "What are the two longest-running female-led science fiction audio series, and which holds the official Guinness World Record?",
+      "answer": "Unofficially, Bernice Summerfield's audio dramas hold the record for the longest-running female-led science fiction audio series and the longest-running female-led audio series. However, the official Guinness World Record for the longest-running science fiction audio series is held by *Doctor Who: The Monthly Adventures*, due to Bernice Summerfield's 2014 branding reboot disrupting eligibility."
+    },
+    {
+      "question": "How did Bernice Summerfield's audio series structure change in 2024 with *The Eternity Club*?",
+      "answer": "In 2024, Bernice Summerfield's audio series shifted to a new format with *The Eternity Club*. The series moved from boxset releases to single-disc formats, each containing two shorter audios per part of a four-part series. Additionally, after *The Dalek Eternity 1* in 2025, the series dropped 'The New Adventures' from its title, simplifying promotion and cover art to focus on Bernice Summerfield as an independent franchise."
+    }
+  ]
+}

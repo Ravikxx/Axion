@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Centro_Nazionale_per_l'Informatica_nella_Pubblica_Amministrazione",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the CNIPA and what was its primary role in Italy?",
+      "answer": "The Centro Nazionale per l'Informatica nella Pubblica Amministrazione (CNIPA) was an Italian public body operating under the Presidency of the Council of Ministers. Its primary role was to implement policies related to IT innovation and technology in the public administration, with full technical, functional, administrative, and financial autonomy."
+    },
+    {
+      "question": "When and by which legislative decree was CNIPA established?",
+      "answer": "CNIPA was established by Legislative Decree No. 196 of June 30, 2003, specifically under Article 176 of the Code for the Protection of Personal Data."
+    },
+    {
+      "question": "Which public bodies preceded CNIPA, and what happened to their powers when CNIPA was created?",
+      "answer": "CNIPA replaced the Authority for IT in Public Administration (AIPA), which retained its powers despite the establishment of CNIPA."
+    },
+    {
+      "question": "What additional responsibilities were assigned to CNIPA in December 2003?",
+      "answer": "By Legislative Decree No. 343 of December 5, 2003, CNIPA was assigned tasks, functions, and activities previously carried out by the Technical Centre for the Unified Network of Public Administration (RUPA), including financial resources, equipment, and human resources."
+    },
+    {
+      "question": "How was the composition of CNIPA determined by law?",
+      "answer": "CNIPA was a collegial body composed of the Chairman and four members, all selected for their high competence, professionalism, morality, and independence. The President was appointed by a decree of the President of the Council of Ministers, following deliberation by the Council of Ministers. The other four members were appointed within fifteen days of the President's appointment, based on a proposal from the President of the Council of Ministers and after Council of Ministers consideration."
+    },
+    {
+      "question": "Which organizations replaced CNIPA, and in what years did these changes occur?",
+      "answer": "CNIPA was replaced by DigitPA in 2009, which was then replaced by AgID in 2012."
+    },
+    {
+      "question": "Write a Python snippet to extract the years in which CNIPA was replaced from the given text.",
+      "answer": "python\nimport re\n\ntext = \"\"\"The Centro Nazionale per l'Informatica nella Pubblica Amministrazione (\"The National Centre for IT in the Public Administration\") or CNIPA (replaced in 2009 by DigitPA and, in 2012, by AgID) was an Italian public body which operated at the Presidency of the Council of Ministers...\"\"\"\n\n# Extract years when CNIPA was replaced\nyears = re.findall(r'replaced in (\\d{4}) by', text)\nprint(years)  # Output: ['2009', '2012']\n"
+    }
+  ]
+}

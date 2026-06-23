@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/yashksaini/i-built-a-tui-that-makes-rust-code-inspection-feel-like-magic-375k",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What problem did the creator of Oracle face that led to its development?",
+      "answer": "The creator struggled to locate the implementation of the Rust trait `DeserializeOwned` in a large codebase (50,000 lines) with scattered `impl` blocks across multiple files. Traditional tools like `grep` or VSCode were slow or inefficient over SSH, prompting them to build Oracle as a more effective terminal-based solution."
+    },
+    {
+      "question": "What is Oracle and what core features does it provide for Rust projects?",
+      "answer": "Oracle is a terminal-based code inspector for Rust projects that provides deep code analysis (functions, structs, enums, traits, impl blocks, etc.), intelligent search with fuzzy matching and context-aware filtering, dependency inspection from `Cargo.toml`, multiple themes, and smooth animations. It combines the power of `grep` and VSCode without GUI bloat."
+    },
+    {
+      "question": "How can you install and run Oracle on a Rust project?",
+      "answer": "To install Oracle from source, run:\nbash\ngit clone https://github.com/yashksaini-coder/oracle.git\ncd oracle\ncargo install --path .\n\nThen execute it on a Rust project with:\nbash\noracle /path/to/rust/project\n\nOr analyze the current directory by running `oracle` without arguments."
+    },
+    {
+      "question": "How does Oracle's dependency inspector work and what information does it display?",
+      "answer": "Oracle's dependency inspector reads your `Cargo.toml` and displays:\n1. A visualization of your entire dependency tree\n2. Live data from crates.io (descriptions, GitHub stars, license info)\n3. Installed crates in your `~/.cargo/registry` folder\n4. Interactive shortcuts: Press `o` to open docs.rs or `c` to open crates.io for any crate."
+    },
+    {
+      "question": "What Rust crates did the developer use to implement fuzzy search in Oracle, and how is it implemented?",
+      "answer": "The developer used the `fuzzy-matcher` crate with `SkimMatcherV2` for fuzzy search. Here's a simplified implementation:\nrust\nuse fuzzy_matcher::skim::SkimMatcherV2;\n\nlet matcher = SkimMatcherV2::default();\nlet scored: Vec<_> = items\n    .iter()\n    .filter_map(|item| {\n        matcher.fuzzy_match(&item.name, query)\n            .map(|score| (item, score))\n    })\n    .collect();\nscored.sort_by(|a, b| b.1.cmp(&a.1)); // Sort by score (highest first)\n\nThis provides instantaneous, VSCode-like search results."
+    },
+    {
+      "question": "How did GitHub Copilot assist the developer in parsing Rust code with the `syn` crate?",
+      "answer": "The developer used Copilot to generate Rust code for parsing structs with `syn`. Copilot provided this foundation:\nrust\nuse syn::{ItemStruct, Fields};\nfn analyze_struct(st: &ItemStruct) -> Vec<Field> {\n    match &st.fields {\n        Fields::Named(named) => {\n            named.named.iter().map(|f| Field {\n                name: f.ident.as_ref().unwrap().to_string(),\n                ty: quote!(#ty).to_string(),\n                visibility: parse_visibility(&f.vis),\n            }).collect()\n        }\n        // ... handles Tuple and Unit variants\n    }\n}\n\nThis pattern was extended to parse functions, enums, traits, and impl blocks, saving 8-10 hours of development time."
+    },
+    {
+      "question": "What are the available themes in Oracle and how do you switch between them?",
+      "answer": "Oracle includes five themes: Default Dark, Nord, Catppuccin Mocha, and Dracula. To cycle through themes, press the `t` key while using Oracle. Each theme offers different aesthetics to suit user preferences."
+    }
+  ]
+}

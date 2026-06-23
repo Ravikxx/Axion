@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Argead_dynasty",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "Who founded the Argead dynasty and when did it rule the kingdom of Macedon?",
+      "answer": "The Argead dynasty was founded by Perdiccas I around 700 BCE. The dynasty ruled the kingdom of Macedon from approximately 700 BCE until 310 BCE."
+    },
+    {
+      "question": "What was the significance of Aegae in the history of the Argead dynasty?",
+      "answer": "Aegae, now known as Vergina, served as the capital of the kingdom of Macedon during the reign of the Argead dynasty. It was a central political and cultural hub for the dynasty."
+    },
+    {
+      "question": "How did Philip II of Macedon contribute to the expansion of Macedonian power?",
+      "answer": "Philip II (reigned 359–336 BCE) significantly expanded Macedonian power by subduing Greece and uniting the defeated Greek city-states into the League of Corinth, with Macedon as the hegemon."
+    },
+    {
+      "question": "What territories did Alexander the Great's empire encompass at its height?",
+      "answer": "At its height, Alexander the Great's empire stretched from Macedonia and Greece to Egypt and the Indus River, encompassing vast regions of the known world at the time."
+    },
+    {
+      "question": "How did the Argead dynasty claim descent from Heracles?",
+      "answer": "The Argead dynasty claimed descent from Heracles, a legendary figure in Greek mythology, to legitimize their royal authority and connect themselves to a divine lineage."
+    },
+    {
+      "question": "What event marked the end of the Argead dynasty?",
+      "answer": "The Argead dynasty ended during the Wars of the Diadochi when Alexander IV of Macedon and his mother Roxana were murdered."
+    },
+    {
+      "question": "Write a Python code snippet to calculate the duration of the Argead dynasty's rule.",
+      "answer": "python\nstart_year = 700  # Approximate start year BCE\ntotal_years = 310  # Duration in years\nend_year = start_year - total_years\nprint(f\"The Argead dynasty ruled from {start_year} BCE to {end_year} BCE.\")\n\nOutput:\nThe Argead dynasty ruled from 700 BCE to 390 BCE."
+    }
+  ]
+}

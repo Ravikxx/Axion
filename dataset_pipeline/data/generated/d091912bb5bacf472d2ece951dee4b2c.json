@@ -1,0 +1,30 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Bark_bread",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What was bark bread historically used for?",
+      "answer": "Bark bread was historically used as a form of bread during famines. It was made by adding ground phloem (inner bark) to flour as an extender to stretch the limited grain supply."
+    },
+    {
+      "question": "During which historical periods was bark bread commonly used in Northern Europe?",
+      "answer": "Bark bread was commonly used during the 18th and early 19th centuries, particularly during the Little Ice Age in the mid-18th century, as well as during the Napoleonic Wars."
+    },
+    {
+      "question": "How was bark bread made according to historical records?",
+      "answer": "Historical records describe bark bread as being made from a mixture of grain husks and sometimes even burned bones, with ground phloem (inner bark) added to the flour to extend its supply."
+    },
+    {
+      "question": "What role did the potato play in the decline of bark bread usage?",
+      "answer": "The introduction of the potato as a staple crop provided an alternative food source when grain production failed, reducing the need for bark bread and other famine foods like moss cakes."
+    },
+    {
+      "question": "Can you provide an example of bark bread being used in a specific historical event?",
+      "answer": "In 1742, samples of 'emergency bread' including bark bread were sent from Kristiansand, Norway, to the Royal Administration in Copenhagen during a period of severe crop failure."
+    },
+    {
+      "question": "Was bark bread used outside of Norway during famines?",
+      "answer": "Yes, in Northern Sweden, traces of Sami harvest of bark from Scots pine are known from the 1890s, and in Finland, 'pettuleipä' (pinewood-bark bread) was produced during the Finnish Civil War of 1918."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Cell_division",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What are the two main types of cell division in eukaryotes, and how do they differ in their outcomes?",
+      "answer": "In eukaryotes, the two main types of cell division are mitosis and meiosis. Mitosis produces two genetically identical daughter cells with the same number of chromosomes as the parent cell (diploid). Meiosis, however, produces four haploid daughter cells (gametes) with half the chromosome number of the parent cell, which is crucial for sexual reproduction."
+    },
+    {
+      "question": "Describe the stages of mitosis and their role in the cell cycle.",
+      "answer": "Mitosis consists of several stages: prophase (chromosomes condense, nuclear envelope breaks down), metaphase (chromosomes align at the metaphase plate), anaphase (sister chromatids separate), and telophase (nuclear envelopes reform). Mitosis is preceded by the S phase of interphase (DNA replication) and followed by cytokinesis, which divides the cytoplasm to form two daughter cells. Together, these stages define the M phase of the cell cycle."
+    },
+    {
+      "question": "How does meiosis differ from mitosis in terms of chromosome number and genetic variation?",
+      "answer": "Meiosis reduces the chromosome number by half, resulting in haploid gametes (n), while mitosis maintains the diploid chromosome number (2n). Meiosis also introduces genetic variation through crossing over during prophase I and independent assortment of homologous chromosomes, whereas mitosis produces genetically identical daughter cells."
+    },
+    {
+      "question": "What are cell cycle checkpoints, and why are they important?",
+      "answer": "Cell cycle checkpoints are regulatory points that ensure proper progression through the cell cycle. They detect DNA damage and halt the cycle by inhibiting cyclin-CDK complexes if errors are found. This prevents the division of damaged cells and maintains genomic integrity, reducing the risk of mutations or cancer."
+    },
+    {
+      "question": "Explain binary fission in prokaryotes and provide a code snippet simulating the process.",
+      "answer": "Binary fission is the primary method of cell division in prokaryotes (bacteria and archaea), where the cell replicates its DNA and divides into two genetically identical daughter cells. Here’s a simple Python simulation:\n\npython\ndef binary_fission(genome_length=1000):\n    # Simulate DNA replication\n    replicated_genome = genome_length * 2\n    # Simulate equal segregation into two daughter cells\n    daughter1 = replicated_genome // 2\n    daughter2 = replicated_genome // 2\n    return daughter1, daughter2\n\nprint(binary_fission())  # Output: (1000, 1000)\n\nIn this example, the genome is replicated once, and the genetic material is equally divided between the two daughter cells."
+    },
+    {
+      "question": "How does mitotic cell division contribute to growth and repair in multicellular organisms?",
+      "answer": "Mitotic cell division enables multicellular organisms to grow by increasing cell number and repair tissues by replacing damaged or dead cells. For example, plants can grow from cuttings via mitotic division, and humans undergo about 10 quadrillion cell divisions in a lifetime to construct and repair tissues from the zygote stage onward."
+    },
+    {
+      "question": "What is the role of DNA replication in cell division, and why is it essential?",
+      "answer": "DNA replication ensures that the genetic material is duplicated before cell division, allowing each daughter cell to receive an identical copy of the genome. This is essential for maintaining genetic consistency across generations and is a prerequisite for both mitosis and meiosis."
+    }
+  ]
+}

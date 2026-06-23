@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Frank_O'Bannon",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What political party did Frank O'Bannon belong to?",
+      "answer": "Frank O'Bannon was a member of the Democratic Party and is described as a conservative Democrat."
+    },
+    {
+      "question": "How many terms did Frank O'Bannon serve as Indiana's governor?",
+      "answer": "Frank O'Bannon served two terms as Indiana's governor, from 1997 until his death in 2003."
+    },
+    {
+      "question": "What notable education-related initiative was Frank O'Bannon known for during his time as governor?",
+      "answer": "As governor, Frank O'Bannon was known for advocating for education-related issues and helping to create the state's Amber Alert system."
+    },
+    {
+      "question": "Before becoming governor, what significant political role did Frank O'Bannon hold in Indiana?",
+      "answer": "Before becoming governor, Frank O'Bannon served as the Lieutenant Governor of Indiana for eight years, from 1989 to 1997, under Governor Evan Bayh."
+    },
+    {
+      "question": "Provide a code snippet in Python that generates a timeline of Frank O'Bannon's political career.",
+      "answer": "python\nimport pandas as pd\n\ndata = {\n    'Year': [1969, 1989, 1997, 2003],\n    'Event': [\n        'Elected to Indiana Senate',\n        'Became Lieutenant Governor',\n        'Elected Governor of Indiana',\n        'Died in office'\n    ]\n}\n\ndf = pd.DataFrame(data)\ndf['Year'] = pd.to_datetime(df['Year'], format='%Y')\nprint(df.to_string(index=False))\n\nThis code snippet creates a DataFrame to visualize key milestones in Frank O'Bannon's political career."
+    },
+    {
+      "question": "Why did Frank O'Bannon drop out of the 1988 Indiana gubernatorial race?",
+      "answer": "Frank O'Bannon dropped out of the 1988 Indiana gubernatorial primary to become the running mate of Evan Bayh. The Bayh/O'Bannon ticket ultimately won the election, allowing O'Bannon to serve as lieutenant governor."
+    },
+    {
+      "question": "How did Frank O'Bannon's background in Corydon influence his political career?",
+      "answer": "Frank O'Bannon's background in Corydon, Indiana, included serving as a practicing attorney and newspaper publisher for The Corydon Democrat. This experience in local governance and public service likely contributed to his later success in state politics, including his election to the Indiana Senate in 1969."
+    }
+  ]
+}

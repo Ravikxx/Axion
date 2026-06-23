@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Douglas_Ferreira_(locomotive)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the Douglas Ferreira locomotive, and when was it built?",
+      "answer": "The Douglas Ferreira is a 15-inch gauge diesel-hydraulic locomotive built in 2005 by TMA Engineering for the Ravenglass and Eskdale Railway in Cumbria, England."
+    },
+    {
+      "question": "What are the key technical specifications of the Douglas Ferreira locomotive?",
+      "answer": "The Douglas Ferreira has a B-B wheel configuration, uses a diesel-hydraulic transmission, and is equipped with a Westinghouse air brake system that combines locomotive and train brakes. It also features a separate parking brake and bright aircraft landing lights as headlights."
+    },
+    {
+      "question": "How did the Douglas Ferreira locomotive perform in terms of distance traveled in 2006 and 2007?",
+      "answer": "In 2006, the Douglas Ferreira traveled 9,230 miles (14,854 kilometers) on the Ravenglass and Eskdale Railway. In 2007, it covered 8,958 miles (14,417 kilometers) between Ravenglass and Dalegarth."
+    },
+    {
+      "question": "What is the historical livery of the Douglas Ferreira locomotive, and what is its significance?",
+      "answer": "The Douglas Ferreira carries the Indian red livery of the Furness Railway, which operated on the Cumbrian Coast Line until 1922. It also features the White and Red lining of the T & J Harrison Shipping Line, the locomotive's first employer. This livery is identical to that used on the River Mite, another steam locomotive owned by the R&ER Preservation Society."
+    },
+    {
+      "question": "What notable event occurred with the Douglas Ferreira locomotive in September 2008?",
+      "answer": "In September 2008, the Douglas Ferreira made its first visit to another 15-inch gauge line, the Bure Valley Railway's Super Power event."
+    },
+    {
+      "question": "What challenges did the Ravenglass and Eskdale Railway face regarding motive power in 2013?",
+      "answer": "In April 2013, the Douglas Ferreira suffered a catastrophic power unit failure and was sent to TMA Engineering for repairs. At the same time, the railway struggled with operational motive power due to a major fire in its engineering workshops and the unavailability of steam locomotives. The 1929-vintage Perkins locomotive was temporarily used for passenger service, while Lady Wakefield and Shelagh of Eskdale were also undergoing repairs."
+    },
+    {
+      "question": "Provide a code snippet to simulate the operation of the Douglas Ferreira locomotive's brake system.",
+      "answer": "python\nclass DouglasFerreiraLocomotive:\n    def __init__(self):\n        self.train_brake_pressure = 0.0  # in bar\n        self.locomotive_brake_pressure = 0.0  # in bar\n        self.parking_brake_engaged = False\n        \n    def apply_brakes(self, brake_pressure):\n        self.train_brake_pressure = brake_pressure\n        self.locomotive_brake_pressure = brake_pressure\n        \n    def engage_parking_brake(self):\n        self.parking_brake_engaged = True\n        \n    def release_parking_brake(self):\n        self.parking_brake_engaged = False\n\n# Example usage:\nloco = DouglasFerreiraLocomotive()\nloco.apply_brakes(3.5)  # Apply 3.5 bar of brake pressure\nloco.engage_parking_brake()\n"
+    }
+  ]
+}

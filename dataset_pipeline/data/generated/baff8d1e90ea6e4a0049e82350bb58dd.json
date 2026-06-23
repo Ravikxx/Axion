@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Carter_Glass",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was Carter Glass and what were his primary political roles in the U.S. government?",
+      "answer": "Carter Glass (1858–1946) was an American newspaper publisher and Democratic politician from Lynchburg, Virginia. He served in both the U.S. House of Representatives and the Senate, representing Virginia. His primary political roles included serving as the United States Secretary of the Treasury under President Woodrow Wilson (1918–1920) and co-sponsoring key financial legislation such as the Glass–Steagall Act of 1933."
+    },
+    {
+      "question": "What major financial regulatory systems did Carter Glass help establish during his career?",
+      "answer": "Carter Glass played a major role in establishing the U.S. financial regulatory system by helping to create the Federal Reserve System and the Federal Deposit Insurance Corporation (FDIC). He co-sponsored the Glass–Steagall Act of 1933, which enforced the separation of investment and commercial banking and created the FDIC."
+    },
+    {
+      "question": "How did Carter Glass's early career in journalism influence his political trajectory?",
+      "answer": "Before entering politics, Carter Glass worked as a newspaper editor and publisher. His experience in journalism likely contributed to his political career, as he gained public recognition and connections through his editorial work. This foundation helped him win election to the Senate of Virginia in 1899 and later to the U.S. House of Representatives in 1902."
+    },
+    {
+      "question": "What was Carter Glass's stance on the New Deal, and how did it reflect his political beliefs?",
+      "answer": "Carter Glass was a critic of the New Deal and generally opposed its most reformist aspects. This stance reflected his broader political beliefs, including his support for states' rights and his skepticism of federal overreach. He clashed with President Franklin D. Roosevelt over federal appointments in Virginia, further illustrating his opposition to centralized federal control."
+    },
+    {
+      "question": "Write a Python code snippet to fetch and display Carter Glass's birth and death years from a dictionary containing his biographical data.",
+      "answer": "Here is a Python code snippet to fetch and display Carter Glass's birth and death years:\n\npython\ncarter_glass = {\n    \"name\": \"Carter Glass\",\n    \"birth_year\": 1858,\n    \"death_year\": 1946,\n    \"political_roles\": [\"U.S. Secretary of the Treasury\", \"Senator\", \"Representative\"]\n}\n\nbirth_year = carter_glass[\"birth_year\"]\ndeath_year = carter_glass[\"death_year\"]\n\nprint(f\"Carter Glass was born in {birth_year} and died in {death_year}.\")\n\n\nOutput:\n\nCarter Glass was born in 1858 and died in 1946.\n"
+    },
+    {
+      "question": "What role did Carter Glass play at the 1920 Democratic National Convention?",
+      "answer": "Carter Glass was a favorite son candidate for the presidential nomination at the 1920 Democratic National Convention. This meant he was nominated by the delegates from his home state of Virginia, though he did not ultimately secure the party's nomination."
+    },
+    {
+      "question": "Explain the significance of the Glass–Steagall Act (1933) and its lasting impact on U.S. banking.",
+      "answer": "The Glass–Steagall Act of 1933, co-sponsored by Carter Glass, was a major piece of financial legislation enacted during the Great Depression. It established the Federal Deposit Insurance Corporation (FDIC) to protect bank deposits and enforced the separation of investment banking firms from commercial banks. This separation aimed to reduce risk and prevent conflicts of interest. While parts of the Act were later repealed in 1999, its legacy includes the creation of the FDIC, which remains a critical component of the U.S. banking system today."
+    }
+  ]
+}

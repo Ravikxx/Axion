@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Albanian_nationalism",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is Albanian nationalism and when did it first emerge?",
+      "answer": "Albanian nationalism refers to a set of nationalist ideas and concepts developed by ethnic Albanians, first emerging in the 19th century during the Albanian National Awakening (Rilindja). This movement was a response to cultural and political changes in the Balkans, particularly the threat of territorial partition by neighboring Orthodox Christian states during the Great Eastern Crisis (1875–1878)."
+    },
+    {
+      "question": "What is the 'Greater Albania' concept and what historical events influenced its development?",
+      "answer": "Greater Albania is a nationalist idea proposing the creation of an expanded Albanian state encompassing adjacent Balkan regions with significant Albanian populations. Its development was influenced by the Great Eastern Crisis (1875–1878), the Albanian revolt of 1912, and territorial reorganizations during World War II, when parts of Kosovo and western Macedonia were incorporated into Albania under Axis rule. These events fueled irredentist claims and territorial disputes with neighboring states."
+    },
+    {
+      "question": "What role did the figure of Skanderbeg play in Albanian nationalism?",
+      "answer": "Skanderbeg, a 15th-century Albanian nobleman, is a central figure in Albanian nationalism. He is celebrated as a symbol of resistance against Ottoman expansion and is credited with defying the empire for over two decades. His legacy is used to reinforce the narrative of Albanian cultural purity, historical continuity, and national struggle, serving as a unifying myth for Albanian identity."
+    },
+    {
+      "question": "How does Albanian nationalism address the concept of ethnogenesis and historical continuity?",
+      "answer": "Albanian nationalism promotes the idea of Illyrian-Albanian continuity as its founding myth, claiming that modern Albanians are descendants of the ancient Illyrians. Additional claims include ancestry from the Epirotes and Pelasgians to support narratives of autochthony and historical precedence. These myths are used to justify territorial claims in regions like Kosovo and North Macedonia."
+    },
+    {
+      "question": "Provide a code snippet that simulates a simple classifier to distinguish between nationalistic and non-nationalistic Albanian-related content in text.",
+      "answer": "python\nfrom sklearn.feature_extraction.text import TfidfVectorizer\nfrom sklearn.ensemble import RandomForestClassifier\n\n# Sample data\ntexts = [\n    \"Albanians have a rich history and deserve their own state.\",\n    \"The Illyrians were the ancient ancestors of modern Albanians.\",\n    \"Kosovo should be part of a greater Albanian homeland.\",\n    \"The Ottoman Empire ruled over Albania for centuries.\",\n    \"Skanderbeg is a national hero who fought against invaders.\"\n]\nlabels = [1, 1, 1, 0, 1]  # 1 for nationalistic, 0 for neutral\n\n# Vectorize text\nvectorizer = TfidfVectorizer()\nX = vectorizer.fit_transform(texts)\n\n# Train a simple classifier\nclf = RandomForestClassifier()\nclf.fit(X, labels)\n\n# Example prediction\nnew_text = \"Albanian culture is unique and should be preserved.\"\nprint(clf.predict(vectorizer.transform([new_text]))[0])  # Output: 1 (nationalistic)\n"
+    },
+    {
+      "question": "What are the main differences between traditional and contemporary Albanian nationalism?",
+      "answer": "Traditional Albanian nationalism, rooted in the 19th-century National Awakening, focused on self-determination, cultural revival, and historical myths like Illyrian continuity. Contemporary Albanian nationalism, emerging prominently since the 1990s, emphasizes unity among Albanians in the Balkans and diaspora, political advocacy for pan-Albanian interests, and responses to issues like Kosovo’s independence, EU policies, and diaspora assimilation."
+    },
+    {
+      "question": "How has Albanian nationalism influenced sports, particularly in the context of Kosovo’s participation in international competitions?",
+      "answer": "Albanian nationalism has significantly impacted sports since Kosovo’s admission to FIFA and UEFA. Debates have arisen over whether there should be one or two national teams, loyalty of Kosovo-born fans between Albanian and Kosovar teams, and the symbolism of representing distinct national identities within a shared ethnic framework. These discussions reflect broader tensions between unity and separate statehood within Albanian nationalism."
+    }
+  ]
+}

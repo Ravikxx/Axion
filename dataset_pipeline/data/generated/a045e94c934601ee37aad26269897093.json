@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Elections_in_Virginia",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What constitutional articles and statutes govern elections in Virginia?",
+      "answer": "Elections in Virginia are authorized under Article I (sections 5–6) of the Virginia State Constitution, Article V (for state-level officers, cabinet, and legislature), and Article VII section 4 (for county-level officers). Additionally, they are regulated under state statute **§ 24.2-102**. The Virginia State Board of Elections oversees elections under state law."
+    },
+    {
+      "question": "How does Virginia conduct its primary elections, and what changes were made in 2021?",
+      "answer": "Virginia conducts **open primaries**, allowing any registered voter to cast a ballot for either party. Traditionally, parties could choose between a state-run primary or a party-run convention for nominations. However, a 2021 law (effective in 2024) requires nomination methods to accommodate absentee voters, effectively outlawing party-run conventions."
+    },
+    {
+      "question": "Which parties are recognized in Virginia besides the Democratic and Republican parties?",
+      "answer": "Besides the Democratic and Republican parties, Virginia recognizes the Libertarian Party of Virginia, Constitution Party of Virginia, Green Party of Virginia, and the Independent Greens of Virginia. These parties have benefited from streamlined ballot access reforms, enabling them to appear on statewide ballots and win local offices."
+    },
+    {
+      "question": "What was Governor Tim Kaine's proposal regarding early voting in 2009, and what was the outcome?",
+      "answer": "In 2009, Governor Tim Kaine proposed **no-excuse early voting**, citing that 26 other states allowed it. While the Democratic-controlled Senate passed the bill, the Republican-controlled House of Delegates rejected the proposal."
+    },
+    {
+      "question": "How did Governor Tim Kaine work to restore voting rights in Virginia?",
+      "answer": "Governor Tim Kaine worked with civic groups to restore voting rights for non-violent felons who had completed their sentences and remained conviction-free for at least five years. His staff reviewed individual applications, and an estimated **366,000 citizens** were disenfranchised due to prior felony convictions at the time."
+    },
+    {
+      "question": "What is the role of the Virginia State Board of Elections?",
+      "answer": "The Virginia State Board of Elections is responsible for **overseeing the execution of elections** under state law, ensuring compliance with regulations and procedures for state-level and county-level elections."
+    },
+    {
+      "question": "Write a Python script to check if a given Virginia election statute number is valid.",
+      "answer": "python\ndef is_valid_virginia_statute(statute: str) -> bool:\n    \"\"\"Check if a given Virginia election statute number is valid.\"\"\"\n    return statute == \"24.2-102\"\n\n# Example usage:\nprint(is_valid_virginia_statute(\"24.2-102\"))  # Output: True\nprint(is_valid_virginia_statute(\"15.2-300\"))  # Output: False\n"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Erik_Bye",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What were the primary occupations of Erik Bye?",
+      "answer": "Erik Bye was a Norwegian-American journalist, artist, author, film actor, folk singer, and radio and television personality. He gained significant fame in Norway as a versatile media figure, contributing across multiple creative and communication fields."
+    },
+    {
+      "question": "How did Erik Bye contribute to the Norwegian Society for Sea Rescue?",
+      "answer": "Erik Bye played a key role in supporting Norwegian sailors and the Norwegian Society for Sea Rescue. In 1960, he helped raise funds for a new rescue ship, the Skomvær II, which was named after the barque featured in his song 'Skomværvalsen.' The society later named another rescue vessel after him in recognition of his contributions."
+    },
+    {
+      "question": "What educational background did Erik Bye have?",
+      "answer": "After moving to Norway post-WWII, Erik Bye studied English, journalism, and drama at Midland Lutheran College in Nebraska and the University of Wisconsin-Madison. During his studies, he traveled extensively across the United States, working odd jobs and gathering experiences."
+    },
+    {
+      "question": "Write a Python function to calculate Erik Bye's age at death in years.",
+      "answer": "python\ndef calculate_age_at_death(birth_date, death_date):\n    from datetime import datetime\n    birth = datetime.strptime(birth_date, \"%B %d, %Y\").date()\n    death = datetime.strptime(death_date, \"%B %d, %Y\").date()\n    age = death.year - birth.year - ((death.month, death.day) < (birth.month, birth.day))\n    return age\n\n# Example usage:\nage = calculate_age_at_death(\"March 1, 1926\", \"October 13, 2004\")\nprint(age)  # Output: 78\n"
+    },
+    {
+      "question": "Why was Erik Bye awarded the Knight, 1st Class in the Royal Norwegian Order of St. Olav in 1978?",
+      "answer": "Erik Bye was knighted in 1978 by the King of Norway for his extensive contributions to Norwegian culture, media, and society. His work as a beloved radio and television personality, folk singer, and philanthropist—particularly his support for Norwegian sailors and sea rescue efforts—earned him this high honor."
+    },
+    {
+      "question": "What notable event involving an African chieftain occurred during Erik Bye's career?",
+      "answer": "During his career, Erik Bye organized a unique stunt where he brought an African chieftain from Ghana to Norway. The chieftain had responded to a message in a bottle released by NRK (Norwegian Broadcasting Corporation), showcasing Bye's innovative and engaging approach to storytelling and audience connection."
+    },
+    {
+      "question": "Where did Erik Bye spend his early childhood, and how did it influence his career?",
+      "answer": "Erik Bye was born in Brooklyn, New York, but moved to Norway at age six. He grew up in Ringerike and later settled in Oslo’s Nordstrand borough, where his family ran a bed and breakfast. This early life in Norway immersed him in the culture he later celebrated and represented through his media work, resistance efforts during WWII, and lifelong connection to Norwegian society."
+    }
+  ]
+}

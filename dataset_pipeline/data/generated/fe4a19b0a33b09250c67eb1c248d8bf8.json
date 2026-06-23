@@ -1,0 +1,38 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Dennis_the_Menace_(TV_series)",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What television network originally aired 'Dennis the Menace' and during what years?",
+      "answer": "'Dennis the Menace' originally aired on CBS from 1959 to 1963."
+    },
+    {
+      "question": "Who played the character Dennis Mitchell in the TV series 'Dennis the Menace'?",
+      "answer": "Jay North played the character Dennis Mitchell in the TV series 'Dennis the Menace'."
+    },
+    {
+      "question": "What were the notable costume features of Dennis Mitchell throughout the series?",
+      "answer": "Dennis Mitchell wore a striped tee-shirt, bib overalls with a slingshot in the back pocket, sneakers, and an enormous blond cowlick in every episode."
+    },
+    {
+      "question": "Why was the slingshot eventually removed from Dennis's costume?",
+      "answer": "Viewers complained about the slingshot, so it was eventually removed from Dennis's costume."
+    },
+    {
+      "question": "Describe the recurring gag involving Margaret Wade and Dennis Mitchell.",
+      "answer": "Margaret Wade wanted to marry Dennis Mitchell, and she often pressured him to 'play house' with her. If Dennis refused, she would hit him with one of the rag dolls in her baby carriage and walk away."
+    },
+    {
+      "question": "What happened to the character George Wilson in the TV series, and why?",
+      "answer": "George Wilson, played by Joseph Kearns, died during the show's production. Gale Gordon joined the series as John Wilson, George's brother, to explain George and Martha Wilson's absence as a long journey."
+    },
+    {
+      "question": "Provide a Python code snippet to simulate a simple interaction between Dennis and Margaret, where Dennis tries to avoid playing house and Margaret retaliates.",
+      "answer": "python\ndef dennis_and_margaret_interaction():\n    dennis_response = input(\"Dennis, will you play house with me? (yes/no): \").strip().lower()\n    if dennis_response == 'yes':\n        print(\"Dennis: Okay, let's play house!\")\n        print(\"Margaret: Yay! Let's go!\")\n    else:\n        print(\"Dennis: No, Margaret, I don't want to.\")\n        print(\"Margaret: *hits Dennis with a rag doll* and prances away!\")\n\n# Example usage:\n# dennis_and_margaret_interaction()\n"
+    },
+    {
+      "question": "Who were some of the minor characters frequently appearing in 'Dennis the Menace'?",
+      "answer": "Some minor characters frequently appearing in 'Dennis the Menace' include Maud Prickett, Irene Tedrow, Dub Taylor, Mary Wickes, and Ron Howard (who played Stewart and also Opie Taylor on The Andy Griffith Show)."
+    }
+  ]
+}

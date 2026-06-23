@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/sylwia-lask/if-you-think-your-commit-messages-are-bad-just-wait-3fgk",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What are some examples of humorous or lazy commit messages commonly used in software development?",
+      "answer": "Some classic examples include 'fix', 'fix-final', 'attempt to fix the build', 'rollback the rollback', 'please work', and 'too tired to explain'. These messages often reflect developer frustration, last-minute fixes, or humorous acknowledgment of code struggles."
+    },
+    {
+      "question": "What does the commit message 'did the needful' typically imply in a software project context?",
+      "answer": "The commit message 'did the needful' is often used sarcastically to describe performing a task that was vaguely specified or poorly defined, usually because a manager or teammate assigned it as a 'do it now' request without clear instructions."
+    },
+    {
+      "question": "How can commit messages like 'added a coma, now works fine' impact code readability and maintainability?",
+      "answer": "Messages like 'added a coma, now works fine' highlight careless or rushed coding practices, as they suggest the developer made a minor change (adding a comma) without properly understanding or documenting the fix. This can make code harder to maintain and debug in the future."
+    },
+    {
+      "question": "Write a Python function that generates a random humorous commit message from a predefined list of common examples.",
+      "answer": "python\nimport random\n\ndef generate_humorous_commit_message():\n    funny_commit_messages = [\n        \"fix\",\n        \"fix-final\",\n        \"did the needful\",\n        \"rollback the rollback\",\n        \"please work\",\n        \"too tired to explain\",\n        \"added a coma, now works fine\",\n        \"some minor fixes\"\n    ]\n    return random.choice(funny_commit_messages)\n\n# Example usage:\nprint(generate_humorous_commit_message())\n"
+    },
+    {
+      "question": "Why might developers use commit messages like 'some minor fixes' when 100 lines of code were changed?",
+      "answer": "Developers often use vague commit messages like 'some minor fixes' to downplay the scope of a change, possibly to avoid blame or to imply the modifications were trivial. This can be misleading during code reviews or when tracking changes, as it hides the actual complexity of the updates."
+    },
+    {
+      "question": "What does the phrase 'Demo-Driven Development™' sarcastically refer to in software engineering?",
+      "answer": "The phrase 'Demo-Driven Development™' sarcastically refers to making hasty, last-minute fixes or changes right before a demo to ensure the software appears functional, even if those fixes are not properly tested or documented. It highlights the pressure to deliver results under tight deadlines."
+    },
+    {
+      "question": "How can commit message practices like squashing commits improve collaboration in a development team?",
+      "answer": "Squashing commits consolidates multiple small or messy commits (like 'fix', 'fix-final', etc.) into a single, clean commit. This makes the commit history easier to follow, reduces noise, and helps maintain clarity about what changes were actually made and why."
+    }
+  ]
+}

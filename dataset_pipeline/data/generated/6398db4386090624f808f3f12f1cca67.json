@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Battle_of_Harlem_Heights",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When and where did the Battle of Harlem Heights take place?",
+      "answer": "The Battle of Harlem Heights occurred on September 16, 1776, in the Morningside Heights area and eastern Harlem neighborhoods of Manhattan Island in present-day New York City."
+    },
+    {
+      "question": "What were the opposing forces in the Battle of Harlem Heights?",
+      "answer": "The Battle of Harlem Heights pitted the Continental Army, led by General George Washington, Major General Nathanael Greene, and Major General Israel Putnam with approximately 9,000 men, against a British vanguard force of around 5,000 soldiers commanded by Major General Henry Clinton."
+    },
+    {
+      "question": "How did Washington's flanking maneuver contribute to the outcome of the battle?",
+      "answer": "Washington's flanking maneuver failed to trap the British force but pressured them into retreat by exposing their vulnerable position. This forced the overconfident British light troops, who had advanced without support, to retreat after being counterattacked and facing pressure from reinforcements."
+    },
+    {
+      "question": "What happened after the British light infantry turned to make a stand on Morningside Heights?",
+      "answer": "After reinforcing their position with a pair of field pieces, the British made a stand in open fields on Morningside Heights. The Americans, also reinforced, engaged in a prolonged exchange of fire for about two hours. With ammunition running low, the British began retreating to their lines, while Washington chose not to pursue further to avoid risking a larger engagement."
+    },
+    {
+      "question": "What strategic significance did the Battle of Harlem Heights hold for the Continental Army?",
+      "answer": "The battle was Washington's first battlefield success of the war and helped restore the Continental Army's confidence after several prior defeats. It demonstrated Washington's tactical abilities and served as a morale boost for American forces facing a larger and better-equipped British army."
+    },
+    {
+      "question": "Why did Washington withdraw his army to White Plains after the battle?",
+      "answer": "After a month without major conflict, Washington retreated north to White Plains when the British moved west into Westchester County. This threatened to outflank Washington's forces further south on Manhattan, forcing him to withdraw to avoid being encircled by the more mobile British army."
+    },
+    {
+      "question": "Provide a Python code snippet to calculate the casualty ratio between the Continental Army and British forces during the Battle of Harlem Heights.",
+      "answer": "python\ncontinental_army_men = 9000\nbritish_army_men = 5000\n\n# Assuming 5% casualties for the Continental Army and 10% for the British (common in battles of this era)\ncontinental_casualties = continental_army_men * 0.05\nbritish_casualties = british_army_men * 0.10\n\ncasualty_ratio = continental_casualties / british_casualties\nprint(f\"Casualty ratio (Continental Army : British): {casualty_ratio:.2f}:1\")\n\nThe output would be approximately `0.90:1`, indicating the British suffered slightly higher casualties relative to their force size."
+    }
+  ]
+}

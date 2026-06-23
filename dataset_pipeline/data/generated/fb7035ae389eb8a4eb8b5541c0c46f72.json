@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Cab_Gallery",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the Cab Gallery art project and who curated it?",
+      "answer": "Cab Gallery was an art project that ran from 1999 to 2001, curated by London art dealer Paul Stolper of Paul Stolper Gallery and art collector and London taxi driver Jason Brown."
+    },
+    {
+      "question": "How did the Cab Gallery project differ from traditional gallery spaces?",
+      "answer": "Unlike traditional gallery spaces, the Cab Gallery exhibited art on the outside and inside of a working London taxi, making the artwork incidental to the passenger's journey rather than the primary focus."
+    },
+    {
+      "question": "What types of spaces were available for artworks inside and outside the taxi?",
+      "answer": "Artists could use spaces such as the bottom of fold-up seats ('tip-up seats'), the exterior of the cab, and limited inside options for free-standing work. Exterior artworks were printed in vinyl, following standard advertising procedures."
+    },
+    {
+      "question": "What approval process was required for artworks in the Cab Gallery project?",
+      "answer": "After an artwork was selected by the curators, approval from the Cab Advertising Committee of the Public Carriage Office was required, especially for pieces placed on the exterior of the cab."
+    },
+    {
+      "question": "How did Jason Brown ensure passengers discovered the art naturally?",
+      "answer": "Throughout the project, Brown maintained the concept of never bringing attention to the art while the cab was operating as a working taxi, allowing passengers to discover it unexpectedly as part of their environment."
+    },
+    {
+      "question": "What additional role did the Cab Gallery taxi serve outside traditional gallery hours?",
+      "answer": "Outside working cab hours, the Cab Gallery would park outside galleries on their opening nights, enabling artists to exhibit more ambitious and experimental installation and sound pieces."
+    },
+    {
+      "question": "Provide a code snippet to simulate a simple passenger experience in the Cab Gallery taxi.",
+      "answer": "python\nimport random\n\nclass Passenger:\n    def __init__(self, name):\n        self.name = name\n        self.discovered_art = False\n\n    def ride_taxi(self):\n        print(f\"{self.name} is riding in the Cab Gallery taxi...\")\n        if random.random() < 0.3:  # 30% chance of noticing art\n            self.discovered_art = True\n            print(\"They notice an artwork on the seat or exterior!\")\n        else:\n            print(\"They are focused on their journey and miss the artwork.\")\n\npassenger = Passenger(\"Alex\")\npassenger.ride_taxi()\n"
+    }
+  ]
+}

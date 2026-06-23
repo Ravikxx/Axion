@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Enigmail",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is Enigmail and what email clients does it support?",
+      "answer": "Enigmail is a data encryption and decryption extension for Mozilla Thunderbird and Postbox that provides OpenPGP public key email encryption and signing. It supports a variety of email clients compatible with PGP/MIME and inline PGP, including Microsoft Outlook (with Gpg4win), Gnome Evolution, KMail, Claws Mail, Gnus, and Mutt."
+    },
+    {
+      "question": "How does Enigmail differ from S/MIME for email encryption in Thunderbird?",
+      "answer": "By default, Thunderbird and SeaMonkey use S/MIME for email encryption and signing, which relies on X.509 keys provided by a centralized certificate authority. Enigmail offers an alternative mechanism using OpenPGP, where users can leverage a web of trust for key verification. This decentralized approach enhances security by avoiding reliance on a single entity that could be compromised or influenced by commercial or jurisdictional pressures."
+    },
+    {
+      "question": "What cryptographic system does Enigmail use for its encryption and signing operations?",
+      "answer": "Enigmail's cryptographic functionality is handled by GNU Privacy Guard (GPG), a free and open-source software that implements the OpenPGP standard. This allows Enigmail to perform encryption, decryption, and digital signing using public and private key pairs."
+    },
+    {
+      "question": "When was Enigmail first released, and who are its current maintainers?",
+      "answer": "Enigmail was first released in 2001 by Ramalingam Saravanan. Since 2003, it has been maintained by Patrick Brunschwig. Both Enigmail and GNU Privacy Guard are free, open-source software projects."
+    },
+    {
+      "question": "What is the 'pretty Easy privacy' (p≡p) scheme, and how does it relate to Enigmail?",
+      "answer": "The 'pretty Easy privacy' (p≡p) is a new encryption scheme designed to simplify end-to-end encryption. Enigmail announced support for p≡p in a joint Thunderbird extension released in December 2015, with availability planned for Q3 2016. This integration aims to make secure email communication more user-friendly."
+    },
+    {
+      "question": "How does Enigmail handle key exchange for cryptographic operations?",
+      "answer": "Enigmail supports automatic key exchange through the Autocrypt standard since version 2.0. Autocrypt allows email clients to automatically exchange and manage encryption keys, simplifying the setup process for end-to-end encryption between users."
+    },
+    {
+      "question": "What changes in Thunderbird 78 led to the end of Enigmail's add-on support, and how was this addressed?",
+      "answer": "Thunderbird 78 removed support for legacy add-ons, which would have required Enigmail to be rewritten from scratch. Instead of rewriting, Patrick Brunschwig collaborated with the Thunderbird team to implement native OpenPGP support directly into Thunderbird 78. Enigmail continued to be maintained for Thunderbird 68 until 6 months after Thunderbird 78's release, while Postbox support remained unaffected."
+    }
+  ]
+}

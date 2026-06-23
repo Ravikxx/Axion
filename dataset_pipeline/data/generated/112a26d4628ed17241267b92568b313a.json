@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Jim_McGuinn",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What were the names and timeframes of the radio stations where Jim McGuinn worked as a program director?",
+      "answer": "Jim McGuinn served as program director for the following radio stations: WDRE in Philadelphia, Pennsylvania (1995–1997), KPNT in St. Louis (1994–1995), WEQX in Manchester, Vermont (1990–1994), Y100 100.3FM in Philadelphia (1997–2005), Y-Rock On XPN (assumed in 2007, exact start unclear), and 89.3 The Current at Minnesota Public Radio (January 2009–April 2022). He also returned as Assistant Program Director at WXPN in August 2022."
+    },
+    {
+      "question": "How did Jim McGuinn attempt to preserve the legacy of Y100 after its format change?",
+      "answer": "In 2004, McGuinn launched Y100Rocks.com as an online platform to revive the Y100 brand, responding to public outcry over the station's abandonment of its modern rock format. The website served as an internet reincarnation of Y100 until it was merged into WXPN's programming in August 2006."
+    },
+    {
+      "question": "What role did Jim McGuinn play at WXPN after 2007?",
+      "answer": "After becoming WXPN's afternoon drive time host in April 2007, McGuinn also served as the program director for Y-Rock On XPN, which operated both as a radio program on WXPN and a full-time internet radio station."
+    },
+    {
+      "question": "Provide a timeline of Jim McGuinn's career at Minnesota Public Radio's 89.3 The Current.",
+      "answer": "Jim McGuinn served as program director of Minnesota Public Radio's 89.3 The Current from January 2009 until his departure in April 2022. This marked one of the longest continuous tenures of his career in commercial and public radio."
+    },
+    {
+      "question": "What was Jim McGuinn's first role in commercial radio, and where did he begin his career?",
+      "answer": "Jim McGuinn began his career in commercial radio as a DJ at WWRX in Providence (1988–1990), following earlier experience at his college radio station, WPGU in Champaign, Illinois (1984–1988). His first commercial role followed time spent in college broadcasting."
+    },
+    {
+      "question": "Write a Python script to extract all years from the given text related to Jim McGuinn's radio career.",
+      "answer": "python\nimport re\n\ntext = \"\"\"\nJim McGuinn, born James Slusarek, is an American radio personality. He served as program director of the now defunct Y100 100.3FM (1997–2005) and its predecessor, WDRE in Philadelphia, Pennsylvania (1995–97), both of which changed formats after being bought by Radio One.  McGuinn also served as program director for KPNT (1994–95), St. Louis, and WEQX (1990–94), Manchester, Vermont, beginning his career in commercial radio as a DJ at WWRX (1988–90), Providence, following time at his college radio station, WPGU (1984–88), Champaign, Illinois.\n\n...\n\"\"\"\n\nyears = re.findall(r'\\b(19\\d{2}|20\\d{2})[–-](19\\d{2}|20\\d{2})\\b', text)\n# Extract individual years from ranges (e.g., 1997–2005 → 1997, 1998, ..., 2005)\nall_years = []\nfor start, end in years:\n    all_years.extend(range(int(start), int(end) + 1))\n\nprint(sorted(set(all_years)))\n\nThis script extracts all years mentioned in date ranges related to Jim McGuinn's radio career, such as 1984, 1988, 1990, 1994, 1995, 1997, 2005, 2009, 2022."
+    },
+    {
+      "question": "How long did Jim McGuinn serve as program director at 89.3 The Current, and when did his tenure end?",
+      "answer": "Jim McGuinn served as program director of 89.3 The Current from January 2009 until April 2022. His tenure lasted approximately 13 years and 3 months, ending with his departure in April 2022."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/24th_Group_Army",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What were the three original divisions of the 24th Corps when it was activated in February 1949?",
+      "answer": "The 24th Corps was originally composed of the 70th Division (now the 3rd Guard Division), the 71st Division, and the 72nd Division."
+    },
+    {
+      "question": "In which month and year did the 74th Division join the 24th Corps, and why?",
+      "answer": "The 74th Division joined the 24th Corps on August 26, 1952, following the disbandment of the 25th Corps."
+    },
+    {
+      "question": "Describe the composition of the 24th Army Corps as of April 1960.",
+      "answer": "By April 1960, the 24th Army Corps included the 70th Army Division, 208th, 209th, and 210th Motorized Infantry Regiments, 275th Tank Self-Propelled Artillery Regiment, 350th Artillery Regiment, Antiaircraft Artillery Regiment, 72nd Army Division with its 214th, 215th, and 216th Regiments, 197th Army Division with its 589th, 590th, and 591st Regiments, and supporting artillery and tank units."
+    },
+    {
+      "question": "Provide a Python code snippet to extract the years of significant changes for the 24th Army/24th Corps from the given text.",
+      "answer": "python\nimport re\n\ntext = \"\"\"\n... [insert the full text here] ...\n\"\"\"\n\n# Extract years of significant changes\nchanges = {\n    \"activated\": re.findall(r'activated in (\\d{4})', text),\n    \"deployed_to_north_korea\": re.findall(r'deployed into North Korea in (\\d{4})', text),\n    \"withdrew_from_n_korea\": re.findall(r'withdrew from North Korea in (\\d{4})', text),\n    \"redesignated_as_24th_army\": re.findall(r'redesignated as the 24th Army\\(Chinese: 第24集团军\\) in (\\d{4})', text),\n    \"disbanded\": re.findall(r'disbanded in (\\d{4}|circa \\d{4})', text)\n}\n\nprint(\"Significant years for the 24th Army/24th Corps:\")\nfor change, years in changes.items():\n    print(f\"- {change}: {', '.join(years)}\")\n"
+    },
+    {
+      "question": "What was the role of the 24th Army during the 1989 protests in Beijing?",
+      "answer": "In 1989, the 24th Army participated in the crackdown on protests in Beijing, deploying its 70th Infantry Division, 72nd Infantry Brigade, and the 7th Garrison Brigade."
+    },
+    {
+      "question": "How did the structure of the 24th Army change between 1985 and 2003?",
+      "answer": "In 1985, the 24th Army Corps was reconstituted as the 24th Army, including the 70th and 72nd Infantry Divisions, garrison brigades, artillery and anti-aircraft brigades, and support units. By 2003, it had been disbanded, with its divisions reorganized into the 65th Army and supporting units either disbanded or reassigned."
+    },
+    {
+      "question": "Explain the evolution of the 70th Division within the 24th Army/24th Corps over time.",
+      "answer": "The 70th Division began as part of the 24th Corps in 1949. In 1960, it was reconstituted into a mechanized division. In 1969, it was redesignated as the 70th Army Division, and by 1985, it became the 70th Infantry Division (a category A northern motorized infantry division). In 2003, it was reduced to the 70th Motorized Infantry Brigade and transferred to the 65th Army."
+    }
+  ]
+}

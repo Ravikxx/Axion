@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Chad–Cameroon_Petroleum_Development_and_Pipeline_Project",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the primary purpose of the Chad–Cameroon Petroleum Development and Pipeline Project?",
+      "answer": "The primary purpose of the project was to develop the production capacity of oilfields near Doba in southern Chad and to transport the oil through a 1,070-kilometre (660 mi) pipeline to a floating storage and offloading vessel anchored off the coast of Kribi, Cameroon."
+    },
+    {
+      "question": "Which companies and governments were involved in the Chad–Cameroon Petroleum Development and Pipeline Project as of its completion in 2003?",
+      "answer": "As of 2003, the project was a joint venture among ExxonMobil (40%), Petronas (35%), Chevron (25%), and the governments of Cameroon and Chad, which held a combined 3% stake in the pipeline portion."
+    },
+    {
+      "question": "What significant ownership changes occurred in the Chad–Cameroon Petroleum Development and Pipeline Project after 2014?",
+      "answer": "In 2014, Chevron sold its stake to the Chadian government. In December 2022, ExxonMobil sold its shares to Savannah Energy, though Chad challenged the deal. In May 2023, Petronas sold its shares to the state-owned oil company Société des Hydrocarbures du Tchad."
+    },
+    {
+      "question": "How was the Chad–Cameroon Petroleum Development and Pipeline Project primarily funded?",
+      "answer": "The project was largely funded by multilateral and bilateral credit financing from Western governments, including $100 million from the International Finance Corporation (IFC), $200 million each from France's COFACE and the U.S. Export-Import Bank, and an additional $100 million from private lenders coordinated by the IFC."
+    },
+    {
+      "question": "Where was the oil from the Chad–Cameroon pipeline transported to, and what are its coordinates?",
+      "answer": "The oil was transported to a floating storage and offloading vessel anchored off the coast of Kribi, Cameroon, at coordinates 2°54′7″N 9°47′35″E."
+    },
+    {
+      "question": "What is the current legal status of the dispute involving ExxonMobil's sale of shares in the Chad–Cameroon project?",
+      "answer": "The dispute arose after Chad challenged ExxonMobil's sale of its shares to Savannah Energy in December 2022. The case is now before the International Chamber of Commerce in Paris."
+    },
+    {
+      "question": "Write a Python function to extract the pipeline length and its start and end points from the given text.",
+      "answer": "python\ndef extract_pipeline_details(text):\n    import re\n    pipeline_length = re.search(r'(\\d+,\\d+)-kilometre \\((\\d+ mi\\)) pipeline', text).group(1)\n    start_point = \"Oilfields near Doba, southern Chad\"\n    end_point = \"Floating storage and offloading vessel off Kribi, Cameroon (2°54′7″N 9°47′35″E)\"\n    return {\n        \"pipeline_length_km\": pipeline_length,\n        \"start_point\": start_point,\n        \"end_point\": end_point\n    }\n\n# Example usage:\ntext = \"...\"  # Insert the provided text here\nprint(extract_pipeline_details(text))\n\nThe function returns the pipeline length in kilometers, the start point (oilfields near Doba, Chad), and the end point (coordinates off Kribi, Cameroon)."
+    }
+  ]
+}

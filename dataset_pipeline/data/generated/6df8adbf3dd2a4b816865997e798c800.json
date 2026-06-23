@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/David_Forbes_Smith",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was David Forbes Smith and what architectural style is he most associated with in Fife?",
+      "answer": "David Forbes Smith (1865–1923) was a Scottish architect renowned for designing many Edwardian Baroque civic and co-operative buildings in Fife during the late 19th and early 20th centuries. The Edwardian Baroque style, characterized by grand facades, ornate detailing, and classical motifs, is prominently featured in his works."
+    },
+    {
+      "question": "What were the key milestones in David Forbes Smith's early architectural career?",
+      "answer": "David Forbes Smith began as a carpenter before articling under architect John Murray in Kirkcaldy from 1885 to 1888. He then joined the Glasgow-based partnership of Honeyman & Keppie, where he worked alongside Charles Rennie Mackintosh and later passed his qualifying exam in 1893 while assisting architect Fred Bath in Salisbury. He became an Associate of the Royal Institute of British Architects in 1894."
+    },
+    {
+      "question": "List three significant buildings designed by David Forbes Smith that are still standing today.",
+      "answer": "Three notable buildings designed by David Forbes Smith that remain today include: 1) Strathearn House (now Strathearn Hotel), a Category B listed building; 2) Viewforth High School in Kirkcaldy; and 3) Pathhead Baptist Church. Additionally, alterations to The Mechanics Institute in Dysart (now a Category B listed building) were among his early listed works."
+    },
+    {
+      "question": "How did David Forbes Smith's partnership with Adam Legge Johnston contribute to his legacy?",
+      "answer": "David Forbes Smith partnered with Adam Legge Johnston from 1920 until his death in 1923. This partnership ensured the continuity of his architectural practice, allowing Johnston to carry on the firm until his own death in 1955. Their collaboration extended Smith's influence and preserved his architectural style in Fife."
+    },
+    {
+      "question": "What role did David Forbes Smith play in the Edinburgh and Glasgow architectural scenes during his career?",
+      "answer": "David Forbes Smith worked in Glasgow with the prestigious firm Honeyman & Keppie, where he overlapped with Charles Rennie Mackintosh. His career also included roles in Edinburgh and Salisbury, where he gained experience under notable architects like Fred Bath. His return to Kirkcaldy marked a focus on local civic projects, solidifying his reputation in Scotland's architectural landscape."
+    },
+    {
+      "question": "Provide a code snippet in Python that generates a timeline of David Forbes Smith's career milestones.",
+      "answer": "python\nmilestones = [\n    {\"year\": 1865, \"event\": \"Born in Kirkcaldy\"},\n    {\"year\": \"1885–1888\", \"event\": \"Articled to John Murray of Kirkcaldy\"},\n    {\"year\": \"1888–1893\", \"event\": \"Worked at Honeyman & Keppie (Glasgow)\"},\n    {\"year\": 1893, \"event\": \"Passed qualifying exam under Fred Bath\"},\n    {\"year\": 1894, \"event\": \"Admitted as Associate of RIBA\"},\n    {\"year\": 1898, \"event\": \"Returned to Kirkcaldy to establish own practice\"},\n    {\"year\": \"1920–1923\", \"event\": \"Partnered with Adam Legge Johnston\"},\n    {\"year\": 1923, \"event\": \"Died on 28 October\"}\n]\n\nfor entry in milestones:\n    print(f\"{entry['year']}: {entry['event']}\")\n"
+    },
+    {
+      "question": "Why might David Forbes Smith's buildings in Fife be considered historically significant today?",
+      "answer": "David Forbes Smith's buildings in Fife are historically significant because they exemplify the Edwardian Baroque style, a period that reflects the civic pride and architectural innovation of early 20th-century Scotland. Many of his works, such as Strathearn House and The Mechanics Institute in Dysart, are now Category B listed, preserving their cultural and architectural heritage for future generations."
+    }
+  ]
+}

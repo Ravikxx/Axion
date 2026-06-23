@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/1956_United_States_presidential_election_in_Minnesota",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who won the 1956 United States presidential election in Minnesota?",
+      "answer": "The Republican Party candidate, incumbent President Dwight D. Eisenhower, won the 1956 U.S. presidential election in Minnesota. He defeated former Illinois governor Adlai Stevenson by a margin of 101,777 votes, or 7.6%, making Minnesota 8% more Democratic than the national average."
+    },
+    {
+      "question": "What was the margin of victory for Dwight D. Eisenhower in the 1956 Minnesota presidential election?",
+      "answer": "Dwight D. Eisenhower won Minnesota by a margin of 101,777 votes, which translated to a 7.6% lead over Adlai Stevenson."
+    },
+    {
+      "question": "Why is Coya Knutson significant in the context of the 1956 U.S. presidential election?",
+      "answer": "Coya Knutson was the first woman elected to the U.S. House of Representatives from Minnesota. Her endorsement of Estes Kefauver in the 1956 Minnesota Democratic-Farmer-Labor (DFL) Presidential Primary contributed to Kefauver's victory, which in turn led to Kefauver being selected as Adlai Stevenson's running mate. Her actions indirectly influenced the vice presidential nomination and may have led to the end of her political career through a controversial letter campaign."
+    },
+    {
+      "question": "What role did the 1956 Minnesota DFL Presidential Primary play in the eventual vice presidential nomination?",
+      "answer": "The Minnesota DFL Presidential Primary was strategically important because the DFL Party wanted to secure a vice presidential nomination for Hubert Humphrey. However, Congresswoman Coya Knutson's endorsement of Estes Kefauver led to his victory in the primary. As a result, Kefauver was chosen as Stevenson's running mate, denying Humphrey the opportunity."
+    },
+    {
+      "question": "How did the 1956 Minnesota presidential election impact future elections in the state?",
+      "answer": "The 1956 election marked the last time Minnesota voted for a Republican presidential candidate until 1972, when Richard Nixon won the state in his re-election bid. Since 1956, no Republican presidential nominee has received over 70% of the vote in any Minnesota county again until Donald Trump in 2016. After 1956, Minnesota consistently voted Democratic in presidential elections."
+    },
+    {
+      "question": "What controversial event led to Coya Knutson's political downfall?",
+      "answer": "Two years after the 1956 election, a letter signed but not written by Knutson's husband was circulated to reporters. The letter played on gender role anxieties of the time and contributed to her defeat in the 1958 election. It has been alleged that DFL state leadership or operatives were involved in creating and circulating the letter as retribution for Knutson's support of Estes Kefauver over Hubert Humphrey in 1956."
+    },
+    {
+      "question": "Write a Python function to calculate the margin of victory in a U.S. presidential election based on vote counts.",
+      "answer": "python\ndef calculate_margin(votes_winner, votes_loser):\n    \"\"\"Calculate the margin of victory in a U.S. presidential election.\n    \n    Args:\n        votes_winner (int): Total votes received by the winning candidate.\n        votes_loser (int): Total votes received by the losing candidate.\n    \n    Returns:\n        tuple: (margin_in_votes, margin_in_percentage)\n    \"\"\"\n    total_votes = votes_winner + votes_loser\n    margin_votes = votes_winner - votes_loser\n    margin_percentage = (margin_votes / total_votes) * 100\n    return margin_votes, margin_percentage\n\n# Example usage for the 1956 Minnesota election:\nwinner_votes = 993330  # Eisenhower's votes\nloser_votes = 891553   # Stevenson's votes\nmargin_votes, margin_percentage = calculate_margin(winner_votes, loser_votes)\nprint(f\"Margin: {margin_votes} votes, {margin_percentage:.1f}%\")\n"
+    }
+  ]
+}

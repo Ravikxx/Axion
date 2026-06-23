@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Apostles'_Creed",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the Apostles' Creed and what are its alternative titles?",
+      "answer": "The Apostles' Creed is a Christian creed or 'symbol of faith' with alternative titles such as the Apostolic Creed or the Symbol of the Apostles. It is a concise statement of faith that outlines core beliefs in God the Father, God the Son (Jesus Christ), and God the Holy Spirit."
+    },
+    {
+      "question": "When was the title 'Apostles' Creed' first recorded in historical documents?",
+      "answer": "The title 'Apostles' Creed' was first mentioned in a letter from the Synod of Milan dated AD 390."
+    },
+    {
+      "question": "What is the historical origin of the Apostles' Creed and how does it relate to the Old Roman Symbol?",
+      "answer": "The Apostles' Creed most likely originated as a development of the Old Roman Symbol, a 4th-century Latin creed. It evolved over time and was used in Latin liturgical rites from the 8th century onward."
+    },
+    {
+      "question": "How does the Apostles' Creed differ from the Niceno-Constantinopolitan Creed in terms of its structure and content?",
+      "answer": "The Apostles' Creed is shorter than the Niceno-Constantinopolitan Creed (adopted in 381) and has a trinitarian structure, affirming belief in God the Father, God the Son, and God the Holy Spirit. However, it does not explicitly address Christological issues such as the divinity of Jesus or the Holy Spirit, which are addressed in the Nicene Creed."
+    },
+    {
+      "question": "Which branches of Christianity commonly use the Apostles' Creed in their liturgy and catechesis?",
+      "answer": "The Apostles' Creed is used in the liturgy and catechesis of various branches of Western Christianity, including Roman Catholicism, Evangelical Lutheranism, Reformed traditions (Continental Reformed, Presbyterian, Congregationalist, Calvinistic Methodist, Reformed Baptist), Moravianism, Anglicanism, and Methodism."
+    },
+    {
+      "question": "Why was the Apostles' Creed traditionally held to predate the Nicene Creed in medieval Latin tradition?",
+      "answer": "The Apostles' Creed was held to predate the Nicene Creed in medieval Latin tradition because it does not explicitly address Christological issues defined in the Nicene Creed, such as the divinity of Jesus or the Holy Spirit. This omission led to the belief that it was older and simpler."
+    },
+    {
+      "question": "Provide a Python code snippet that dynamically generates the twelve articles of the Apostles' Creed based on historical records.",
+      "answer": "python\n# Historical articles of the Apostles' Creed (approximate reconstruction)\napostles_creed_articles = [\n    \"I believe in God the Father almighty, creator of heaven and earth.\",\n    \"I believe in Jesus Christ, his only Son, our Lord.\",\n    \"He was conceived by the Holy Spirit and born of the Virgin Mary.\",\n    \"He suffered under Pontius Pilate, was crucified, died, and was buried.\",\n    \"He descended into hell; the third day he rose again from the dead.\",\n    \"He ascended into heaven and is seated at the right hand of God the Father almighty.\",\n    \"From there he will come to judge the living and the dead.\",\n    \"I believe in the Holy Spirit.\",\n    \"I believe in the holy catholic Church, the communion of saints.\",\n    \"The forgiveness of sins.\",\n    \"The resurrection of the body.\",\n    \"And life everlasting. Amen.\"\n]\n\n# Print the Apostles' Creed articles\nfor i, article in enumerate(apostles_creed_articles, 1):\n    print(f\"{i}. {article}\")\n"
+    }
+  ]
+}

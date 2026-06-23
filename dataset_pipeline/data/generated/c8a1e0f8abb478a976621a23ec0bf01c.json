@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Herbert_Page",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What were Herbert Vivian Page's cricket statistics in first-class matches?",
+      "answer": "Herbert Vivian Page scored 4,005 runs and took 212 wickets in first-class cricket. As an occasional wicket-keeper, he also made 14 stumpings."
+    },
+    {
+      "question": "How did Herbert Vivian Page perform in the University Match against Cambridge between 1883 and 1886?",
+      "answer": "Page played in the University Match against Cambridge each year between 1883 and 1886. He scored consistently, reached fifty on two occasions, and was captain in his final two years."
+    },
+    {
+      "question": "What notable bowling technique did Herbert Vivian Page reportedly use in the 1880s, and who later corroborated this?",
+      "answer": "Herbert Vivian Page is claimed by Jack Hobbs to have bowled the googly while at Oxford in the 1880s. Hobbs' source was Kingsmill Key, a contemporary of Page at Oxford and later captain of Surrey."
+    },
+    {
+      "question": "What was Herbert Vivian Page's role in Gloucestershire cricket, and how long did he play for the team?",
+      "answer": "Page played for Gloucestershire between 1883 and 1895. During this time, he scored one century and was regularly selected for the prestigious Gentlemen v Players matches (1884–1894)."
+    },
+    {
+      "question": "Provide a code snippet to calculate Herbert Vivian Page's career batting average in first-class cricket.",
+      "answer": "python\n# Herbert Vivian Page's first-class cricket stats\nruns_scored = 4005\ntotal_wickets = 212\n\n# Calculate batting average (runs per wicket)\nbatting_average = runs_scored / total_wickets\nbatting_average_rounded = round(batting_average, 2)\nprint(f\"Herbert Vivian Page's first-class cricket batting average: {batting_average_rounded}\")\n"
+    },
+    {
+      "question": "What sports did Herbert Vivian Page play besides cricket, and which teams did he captain?",
+      "answer": "Besides cricket, Page played rugby for Oxford and Gloucestershire, and hockey for East Gloucestershire, where he captained the club for 22 years."
+    },
+    {
+      "question": "Who was Herbert Vivian Page's son, and what significant achievement did he accomplish in cricket?",
+      "answer": "Herbert Vivian Page's son, Dallas Page, was the captain of Gloucestershire in 1935 and 1936."
+    }
+  ]
+}

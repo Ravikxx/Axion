@@ -1,0 +1,38 @@
+{
+  "source_url": "https://dev.to/hemapriya_kanagala/letters-to-tomorrow-a-june-solstice-game-about-the-things-we-carry-into-tomorrow-1lnf",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What is the core premise of the game 'Letters to Tomorrow'?",
+      "answer": "Letters to Tomorrow is a narrative web game set during the June Solstice, where players act as a postmaster helping townspeople complete scattered unfinished letters to the future before sunset. The game focuses on ordinary moments and emotions like friendship, kindness, and new beginnings, with no need for players to 'save the world'—just to help others (and themselves) reflect on meaningful experiences."
+    },
+    {
+      "question": "How does the time mechanic work in 'Letters to Tomorrow'?",
+      "answer": "The game progresses through phases of the day, with each phase containing up to four letters. Players can move time forward by completing at least two letters per phase, but they may choose to stay longer to complete all letters. Only the letters finished by the player are sealed and carried into the next day."
+    },
+    {
+      "question": "What is the significance of the June Solstice in the game's narrative?",
+      "answer": "The June Solstice represents a turning point—the longest day eventually becomes evening, symbolizing the passage of time. The game explores this theme by framing the solstice as a moment to reflect on what we choose to carry forward into the future, both for ourselves and others."
+    },
+    {
+      "question": "How was Google AI (Gemini Pro) used in the development of 'Letters to Tomorrow'?",
+      "answer": "Google AI was primarily used as a coding partner during development to assist with interface design, layout refinement, responsive design across devices, and implementing animations and accessibility features. It also helped review instructional content like the 'How To Play' guide and FAQ to ensure clarity. Notably, AI was not used to generate the game's narrative content or letters, which were written by the creator to ensure personal, human, and authentic experiences."
+    },
+    {
+      "question": "What technical decisions were made to prioritize player privacy in the game?",
+      "answer": "The game uses local storage exclusively, ensuring that all player-written content—such as custom letter endings, personal reflections, and the final letter to Tomorrow—remains on the player's device. No data is sent to a server or visible to others, creating a safe space for players to write honestly without fear of exposure."
+    },
+    {
+      "question": "Provide a code snippet demonstrating how the game's local storage system works for saving player progress.",
+      "answer": "`// Example code for saving and loading player progress using localStorage\nfunction saveProgress(letterId, playerText) {\n  // Save the player's custom ending for a specific letter\n  localStorage.setItem(`letter_${letterId}_ending`, playerText);\n}\n\nfunction loadProgress(letterId) {\n  // Load the saved ending for a specific letter\n  return localStorage.getItem(`letter_${letterId}_ending`) || null;\n}\n\nfunction saveFinalLetter(text) {\n  // Save the player's final letter to Tomorrow\n  localStorage.setItem('final_letter', text);\n}\n\nfunction clearProgress() {\n  // Clear all saved data (e.g., when starting a new game)\n  localStorage.clear();\n}`"
+    },
+    {
+      "question": "Why did the creator choose not to include background music in 'Letters to Tomorrow'?",
+      "answer": "The absence of background music was an intentional design choice to create a quiet, reflective atmosphere that encourages players to focus on their own thoughts and the game's narrative. The silence mimics the feeling of a peaceful desk at the end of a long day, allowing players to slow down and engage with the letters more deeply."
+    },
+    {
+      "question": "What are the player's options when completing a letter if none of the suggested endings feel right?",
+      "answer": "If the provided options do not resonate with the player, they have the freedom to write their own ending for the letter. This flexibility ensures that players can express themselves authentically and complete the letters in a way that feels true to their own experiences."
+    }
+  ]
+}

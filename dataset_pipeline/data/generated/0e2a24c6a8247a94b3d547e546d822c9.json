@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/2006_Toyota_Indy_300",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What race was the 2006 Toyota Indy 300 Presented by XM Satellite Radio, and who won it?",
+      "answer": "The 2006 Toyota Indy 300 Presented by XM Satellite Radio was the first round of the 2006 IRL IndyCar Series season, held at the Homestead–Miami Speedway in Homestead, Florida, on March 26, 2006. Chip Ganassi Racing driver Dan Wheldon won the race."
+    },
+    {
+      "question": "Who secured the pole position in the 2006 Toyota Indy 300, and how did their race progress?",
+      "answer": "Sam Hornish Jr. won the pole position and led the first 145 laps before losing the lead during a pit stop on lap 161. A caution flag due to Tony Kanaan's spin sent him to the back of the field, ending his dominant run."
+    },
+    {
+      "question": "How close was the finish of the 2006 Toyota Indy 300, and who were the top three finishers?",
+      "answer": "The race finished extremely close, with Dan Wheldon winning by just 0.0147 seconds over Hélio Castroneves after overtaking him on the final corner of the last lap. The podium consisted of Wheldon (1st), Castroneves (2nd), and Sam Hornish Jr. (3rd)."
+    },
+    {
+      "question": "What incident occurred during the warm-up session of the 2006 Toyota Indy 300, and how did it affect the race?",
+      "answer": "During the warm-up session, rookie driver Paul Dana died in a violent crash after colliding with Ed Carpenter. Carpenter suffered lung injuries but recovered. In honor of Dana, his Rahal Letterman Racing teammates, Buddy Rice and Danica Patrick, withdrew from the race."
+    },
+    {
+      "question": "What is the significance of the 2006 Toyota Indy 300 in IndyCar Series history?",
+      "answer": "The 2006 Toyota Indy 300 marked the first race of the 2006 IRL IndyCar Series season and was the eleventh edition of the event, with the sixth under Indy Racing League sanctioning. It is also notable for the tragic warm-up crash involving Paul Dana and the extremely close finish between Wheldon and Castroneves."
+    },
+    {
+      "question": "How many laps did each of the top three finishers lead in the 2006 Toyota Indy 300?",
+      "answer": "Dan Wheldon led 8 laps, Hélio Castroneves led the most laps (not explicitly stated, but he inherited the lead from Hornish Jr. and battled Wheldon in the final laps), and Sam Hornish Jr. led 145 laps before his pit stop."
+    },
+    {
+      "question": "Write a Python function to calculate the win margin in seconds given the final lap time difference in milliseconds.",
+      "answer": "python\n\ndef calculate_win_margin(lap_time_difference_ms: float) -> float:\n    \"\"\"\n    Calculate the win margin in seconds from a given lap time difference in milliseconds.\n    \n    Args:\n        lap_time_difference_ms: The time difference in milliseconds.\n        \n    Returns:\n        The win margin in seconds.\n    \"\"\"\n    return lap_time_difference_ms / 1000\n\n# Example usage:\nwin_margin = calculate_win_margin(14.7)  # 0.0147 seconds\nprint(f\"Win margin: {win_margin} seconds\")\n\nThe function converts the lap time difference from milliseconds to seconds by dividing by 1000. For the 2006 Toyota Indy 300, the win margin of 0.0147 seconds corresponds to a 14.7 millisecond difference."
+    }
+  ]
+}

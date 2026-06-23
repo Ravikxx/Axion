@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Disney's_Nine_Old_Men",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "Who were Disney's Nine Old Men and why were they given that name?",
+      "answer": "Disney's Nine Old Men were a group of nine key animators at Walt Disney Studios, including Les Clark, Ollie Johnston, Frank Thomas, Wolfgang Reitherman, John Lounsbery, Eric Larson, Ward Kimball, Milt Kahl, and Marc Davis. Walt Disney jokingly referred to them as 'Nine Old Men' in reference to President Franklin D. Roosevelt's description of the US Supreme Court justices as 'nine old men,' despite the animators being relatively young at the time."
+    },
+    {
+      "question": "What significant contributions did Ollie Johnston make to Disney animation beyond his animation work?",
+      "answer": "Ollie Johnston co-authored the influential book *The Illusion of Life* with Frank Thomas, which became a foundational text in animation theory and practice. He also co-wrote *The Disney Villain* with Thomas, analyzing the creation of memorable villainous characters in Disney films."
+    },
+    {
+      "question": "How did Wolfgang Reitherman contribute to Disney animation after Walt Disney's death?",
+      "answer": "After Walt Disney's death in 1966, Wolfgang Reitherman directed all of Disney's animated feature films until his retirement. Some of his notable works include *The Aristocats*, *The Jungle Book*, *The Sword in the Stone*, and *Robin Hood*."
+    },
+    {
+      "question": "Which characters did Milt Kahl animate, and what was his reputation among animators?",
+      "answer": "Milt Kahl animated iconic characters such as Shere Khan (*The Jungle Book*), Edgar the Butler (*The Aristocats*), the Sheriff of Nottingham (*Robin Hood*), and Madame Medusa (*The Rescuers*). He was renowned for his sophisticated draftsmanship and ability to bring life and personality to his characters, making him one of Disney's most respected animators."
+    },
+    {
+      "question": "Write a Python function that takes a list of the Nine Old Men's names and returns a dictionary mapping each name to their first credited Disney film.",
+      "answer": "python\ndef map_animators_to_first_film(animators):\n    animator_films = {\n        \"Les Clark\": \"Plane Crazy\" (1928),\n        \"Ollie Johnston\": \"Snow White and the Seven Dwarfs\" (1937),\n        \"Frank Thomas\": \"Snow White and the Seven Dwarfs\" (1937),\n        \"Wolfgang Reitherman\": \"Snow White and the Seven Dwarfs\" (1937),\n        \"John Lounsbery\": \"Snow White and the Seven Dwarfs\" (1937),\n        \"Eric Larson\": \"Bambi\" (1942),\n        \"Ward Kimball\": \"Snow White and the Seven Dwarfs\" (1937),\n        \"Milt Kahl\": \"Snow White and the Seven Dwarfs\" (1937),\n        \"Marc Davis\": \"Snow White and the Seven Dwarfs\" (1937)\n    }\n    return {name: animator_films.get(name, \"Unknown\") for name in animators}\n\nExample usage:\npython\nanimators = [\"Frank Thomas\", \"Ward Kimball\", \"Les Clark\"]\nprint(map_animators_to_first_film(animators))\n# Output: {'Frank Thomas': 'Snow White and the Seven Dwarfs (1937)', 'Ward Kimball': 'Snow White and the Seven Dwarfs (1937)', 'Les Clark': 'Plane Crazy (1928)'}\n"
+    },
+    {
+      "question": "What unique stylistic traits were associated with Ward Kimball's animation work?",
+      "answer": "Ward Kimball's animation style was distinctive for its energy and unpredictability, often incorporating 'wild' and experimental elements. His work included characters like Lucifer, Jaq, and Gus (*Cinderella*), the Mad Hatter and Cheshire Cat (*Alice in Wonderland*), and the dancing penguins (*Mary Poppins*). Unlike many of his peers, Kimball frequently embraced humor and whimsy in his designs."
+    },
+    {
+      "question": "How did Eric Larson contribute to the training and development of new animators at Disney?",
+      "answer": "Eric Larson played a pivotal role in nurturing new talent at Disney during the 1970s and 1980s. Due to his exceptional ability to spot and train animators, he was tasked with identifying and mentoring the next generation of artists. Many prominent animators at Disney today were trained by Larson during this period, including Chris Buck and John Lasseter."
+    }
+  ]
+}

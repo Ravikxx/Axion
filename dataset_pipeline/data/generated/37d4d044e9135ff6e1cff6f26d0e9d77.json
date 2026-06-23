@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/2006_Finnish_presidential_election",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When were the Finnish presidential elections held in 2006?",
+      "answer": "The Finnish presidential elections in 2006 were held on 15 January (first round) and 29 January (second round)."
+    },
+    {
+      "question": "Who won the 2006 Finnish presidential election, and by what margin?",
+      "answer": "Tarja Halonen won the 2006 Finnish presidential election in the second round with a margin of 3.6 percentage points over Sauli Niinistö."
+    },
+    {
+      "question": "What happens if no candidate receives a majority of votes in the first round of a Finnish presidential election?",
+      "answer": "If no candidate receives more than half of the vote in the first round, a second round is held between the two highest-placed candidates from the first round."
+    },
+    {
+      "question": "What are the dates for advance voting in Finnish elections, and what locations are typically used for advance polling stations?",
+      "answer": "Advance voting in Finnish elections typically occurs on the 4th, 5th, and 7th to 10th of January. Advance polling stations often include post offices, while election-day polling stations are usually fixed locations such as schools, libraries, or town halls."
+    },
+    {
+      "question": "What is the significance of the date 1 March in the context of the 2006 Finnish presidential election?",
+      "answer": "1 March marked the formal start of Tarja Halonen's second six-year term as President of Finland, following her re-election in January 2006."
+    },
+    {
+      "question": "How does advance voting in Finland differ for citizens voting abroad compared to those voting domestically?",
+      "answer": "Finnish citizens voting abroad could cast their ballots from 4 January to 7 January, while domestic advance voting took place on 4, 5, and 7–10 January. The key difference is the extended window for domestic voters, who had additional voting days."
+    },
+    {
+      "question": "According to the Finnish Constitution (55 §), when would Tarja Halonen have taken office if no run-off election had been necessary?",
+      "answer": "If no second round had been required, Tarja Halonen would have taken office for her second term on 1 February, as stipulated by the Finnish Constitution (55 §)."
+    }
+  ]
+}

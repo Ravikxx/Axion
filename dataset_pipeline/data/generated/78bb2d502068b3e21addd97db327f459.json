@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/List_of_Polish_gminas",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the highest level of administrative division in Poland's three-tier system?",
+      "answer": "The highest level of administrative division in Poland is the voivodeship (województwo). There are 16 voivodeships in Poland, which serve as the top-level administrative units."
+    },
+    {
+      "question": "How are municipalities (gminas) categorized in Poland, and how many are there in each category?",
+      "answer": "Poland's municipalities (gminas) are grouped into four categories: (1) 66 cities with county rights, (2) 302 urban municipalities, (3) 724 urban-rural gminas, and (4) 1,453 rural gminas. These categories are based on the presence of towns and the structure of the surrounding areas."
+    },
+    {
+      "question": "What is the role of the Council of Ministers in relation to gminas?",
+      "answer": "The Council of Ministers decides on the status and changes in borders of gminas. It typically handles their creation and dissolution, though in exceptional cases, the parliament may direct the Council of Ministers to issue ordinances for dissolution. These ordinances take effect on January 1 of the year following their publication."
+    },
+    {
+      "question": "What law governs the framework and regulation of powers and duties of Poland's local self-government?",
+      "answer": "The current framework and regulation of powers and duties of Poland's local self-government was established by a law adopted in 1998. This law became effective on January 1, 1999, with additional regulations specific to Warsaw coming into effect in 2002."
+    },
+    {
+      "question": "Provide a Python code snippet that checks if a given gmina is categorized as a 'city with county rights'.",
+      "answer": "Here is a Python function that checks if a gmina is a 'city with county rights' based on its count:\npython\ndef is_city_with_county_rights(gmina_count):\n    return gmina_count in range(1, 67)\n\n# Example usage:\ngmina_name = \"Warsaw\"\ngmina_count = 1  # Assuming Warsaw is the first city with county rights\nif is_city_with_county_rights(gmina_count):\n    print(f\"{gmina_name} is a city with county rights.\")\nelse:\n    print(f\"{gmina_name} is not a city with county rights.\")\n"
+    },
+    {
+      "question": "Why are major changes to Poland's local administration framework not made through ordinances?",
+      "answer": "Major changes to Poland's local administration framework, such as restructuring or regulating duties and powers of self-government, require a law rather than an ordinance. This is because such significant changes necessitate legislative approval, ensuring broader consensus and legal authority."
+    },
+    {
+      "question": "What happens if the parliament directs the Council of Ministers to dissolve a gmina, such as Ostrowice?",
+      "answer": "If the parliament directs the Council of Ministers to dissolve a gmina, the Council of Ministers issues an ordinance for dissolution. This ordinance takes effect on January 1 of the year following its publication. For example, the dissolution of gmina Ostrowice would become effective on January 1 of the year after the ordinance was published."
+    }
+  ]
+}

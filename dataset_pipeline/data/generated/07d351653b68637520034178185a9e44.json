@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Gukesh_Dommaraju",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who is Gukesh Dommaraju and what are some of his notable achievements in chess?",
+      "answer": "Gukesh Dommaraju is an Indian chess grandmaster and the reigning World Chess Champion. Notable achievements include becoming the youngest undisputed World Champion, the youngest player to surpass a FIDE rating of 2750 at age 17, and the fourth-youngest grandmaster in history, earning the title at age 12."
+    },
+    {
+      "question": "At what age did Gukesh Dommaraju become a grandmaster, and how does this compare to other prodigies?",
+      "answer": "Gukesh became a grandmaster at age 12 years, 7 months, and 17 days, making him the fourth-youngest grandmaster in chess history. This is younger than most grandmasters but slightly older than Sergey Karjakin, who became a GM at age 12 years and 7 months."
+    },
+    {
+      "question": "What were Gukesh Dommaraju's achievements at the 2018 World Youth Chess Championship and the 2018 Asian Youth Chess Championship?",
+      "answer": "In 2018, Gukesh won the under-12 title at the World Youth Chess Championship and secured multiple gold medals at the Asian Youth Chess Championship."
+    },
+    {
+      "question": "Can you provide a code snippet that calculates the age difference between Gukesh Dommaraju and Sergey Karjakin when they became grandmasters?",
+      "answer": "python\nfrom datetime import date\n\n# Gukesh's GM date: 15 January 2019\ngukesh_gm_date = date(2019, 1, 15)\n# Karjakin's GM date: 12 August 2002\nkarjakin_gm_date = date(2002, 8, 12)\n\n# Calculate age difference in years and months\ndef age_difference(d1, d2):\n    years_diff = d1.year - d2.year\n    months_diff = d1.month - d2.month\n    if months_diff < 0:\n        years_diff -= 1\n        months_diff += 12\n    return years_diff, months_diff\n\nyears, months = age_difference(gukesh_gm_date, karjakin_gm_date)\nprint(f\"Age difference: {years} years and {months} months\")\n\nOutput: Age difference: 16 years and 5 months"
+    },
+    {
+      "question": "How did Gukesh Dommaraju's performance at the 2022 Chess Olympiad contribute to his career?",
+      "answer": "At the 44th Chess Olympiad in 2022, Gukesh won a team bronze medal and an individual gold medal, which significantly boosted his international standing and reputation as a top player."
+    },
+    {
+      "question": "What records did Gukesh Dommaraju break in the September 2023 FIDE rating list?",
+      "answer": "In the September 2023 rating list, Gukesh became the top-rated Indian player, ending Viswanathan Anand's 37-year record as the highest-rated Indian player."
+    },
+    {
+      "question": "What was Gukesh Dommaraju's achievement at the 2024 Candidates Tournament, and how did it impact his career?",
+      "answer": "In 2024, Gukesh became the youngest winner of the Candidates Tournament. This victory allowed him to challenge Ding Liren in the World Chess Championship, where he won and became the youngest undisputed World Chess Champion at 18 years and 195 days."
+    }
+  ]
+}

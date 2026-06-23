@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Fairbanks_(surname)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was Arthur Fairbanks and what was his primary field of work?",
+      "answer": "Arthur Fairbanks (1864–1944) was an American art historian and administrator who specialized in the study and curation of art."
+    },
+    {
+      "question": "Which notable person with the surname Fairbanks served as Vice President of the United States?",
+      "answer": "Charles W. Fairbanks (1852–1918) was the Vice President under President Theodore Roosevelt (1905–1909)."
+    },
+    {
+      "question": "Write a Python function to check if a given person is a notable Fairbanks based on the provided list.",
+      "answer": "python\ndef is_notable_fairbanks(first_name, last_name='Fairbanks'):\n    notable_fairbanks = {\n        'Arthur', 'Avard', 'Charles Rufus', 'Charles W.', 'Charles H.',\n        'Chuck', 'Cornelia Cole', 'Dana', 'Douglas', 'Douglas Jr.',\n        'Edward', 'Erastus', 'Franklin', 'Gene', 'George Rainsford',\n        'Horace', 'Jason', 'Jerry', 'John B.', 'Jonathan',\n        'Jonathan Leo', 'Joseph', 'E. LeBron', 'Lloyd', 'Lucile',\n        'Mabel', 'Madeline', 'Marion', 'Nola', 'Ortho R.',\n        'Pete', 'Ralph Jacobus', 'Richard M.', 'Thaddeus', 'William'\n    }\n    return last_name == 'Fairbanks' and first_name in notable_fairbanks\n"
+    },
+    {
+      "question": "What professions did Douglas Fairbanks and Douglas Fairbanks Jr. share?",
+      "answer": "Both Douglas Fairbanks (1883–1939) and Douglas Fairbanks Jr. (1909–2000) were American actors. Additionally, Douglas Sr. was a screenwriter, director, and producer, while Douglas Jr. served as a naval officer."
+    },
+    {
+      "question": "Identify two Fairbanks family members known for their contributions to women's rights.",
+      "answer": "Cornelia Cole Fairbanks (1852–1913) was an American women's suffragist, and Mabel Fairbanks (1915–2001) was a figure skater and coach who advocated for diversity in sports."
+    },
+    {
+      "question": "How many Canadian politicians with the surname Fairbanks are listed, and who are they?",
+      "answer": "Two Canadian politicians with the surname Fairbanks are listed: Charles Rufus Fairbanks (1790–1841), a lawyer, judge, entrepreneur, and politician, and Joseph Fairbanks (1718–1796), a merchant and politician."
+    },
+    {
+      "question": "Which Fairbanks individuals were involved in sports, and what roles did they play?",
+      "answer": "Gene Fairbanks (born 1982) was an Australian professional rugby union footballer, Chuck Fairbanks (1933–2013) was an American football coach, and Mabel Fairbanks (1915–2001) was a figure skater and coach."
+    }
+  ]
+}

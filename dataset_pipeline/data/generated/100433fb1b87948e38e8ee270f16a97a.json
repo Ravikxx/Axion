@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Hancock_Field_Air_National_Guard_Base",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Where is Hancock Field Air National Guard Base located, and what is its relationship to Syracuse Hancock International Airport?",
+      "answer": "Hancock Field Air National Guard Base is located 4.6 miles (7.4 km) north-northeast of Syracuse, New York, specifically at 6001 East Molloy Road in Mattydale. It is co-located with Syracuse Hancock International Airport, sharing the same facilities on the south side of the airport, covering approximately 350 acres (1.4 km²) of flight line, aircraft ramp, and support infrastructure."
+    },
+    {
+      "question": "What units are stationed at Hancock Field Air National Guard Base, and which command are they operationally gained by?",
+      "answer": "Hancock Field is home to the New York Air National Guard's 174th Attack Wing (174 ATW) and the 274th Air Support Operations Squadron (274 ASOS). Both units are operationally gained by Air Combat Command (ACC)."
+    },
+    {
+      "question": "How many personnel are employed at Hancock Field Air National Guard Base, and what types of personnel make up this workforce?",
+      "answer": "The base employs approximately 2,000 personnel, consisting of full-time Active Guard and Reserve (AGR), Air Reserve Technicians (ART), and traditional part-time Air National Guardsmen."
+    },
+    {
+      "question": "What role does the New York Air National Guard play at Hancock Field regarding runway safety for military aircraft?",
+      "answer": "ANG personnel at Hancock Field maintain the BAK-14 arresting gear on the airport's primary runway, which is used for emergency stops by military tactical jet aircraft."
+    },
+    {
+      "question": "What emergency services does the Air Force crash fire department at Hancock Field provide?",
+      "answer": "The Air Force crash fire department at Hancock Field provides Aircraft Rescue and Fire Fighting (ARFF), structural Fire/Rescue, and Emergency Services to both the National Guard Base and the adjacent civilian Syracuse Hancock International Airport."
+    },
+    {
+      "question": "When did the 174th Fighter Wing transition from F-16 Fighting Falcon aircraft to MQ-9 Reaper unmanned combat aircraft, and what marked the end of F-16 operations at Hancock Field?",
+      "answer": "The transition began on 11 August 2008, with the last two F-16Cs departing Hancock Field on 6 March 2010. Aircraft 85-1570 and 85-1561 performed three low passes to commemorate the end of manned aviation for the Wing, after which the unit transitioned to the MQ-9 Reaper and was re-designated as an Attack Wing."
+    },
+    {
+      "question": "Provide a code snippet demonstrating how to query a database for all personnel employed at Hancock Field Air National Guard Base, assuming a table named 'personnel' with relevant fields.",
+      "answer": "sql\nSELECT * FROM personnel \nWHERE base = 'Hancock Field Air National Guard Base'\n  AND unit IN ('174 ATW', '274 ASOS');\n\nThis query retrieves all records from the 'personnel' table where the base is Hancock Field and the unit is either the 174th Attack Wing or the 274th Air Support Operations Squadron."
+    }
+  ]
+}

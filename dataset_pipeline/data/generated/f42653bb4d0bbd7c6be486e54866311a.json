@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Anolbanolis",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is Anolbanolis and where were its fossils discovered?",
+      "answer": "Anolbanolis is an extinct genus of iguanian lizards that lived in the Bighorn Basin of present-day Wyoming during the earliest Eocene epoch. Its fossils were discovered in the Willwood Formation, specifically in a layer dating to the Paleocene-Eocene thermal maximum (PETM) around 56 million years ago."
+    },
+    {
+      "question": "Who named the genus Anolbanolis, and what does its name mean?",
+      "answer": "The genus Anolbanolis was named by paleontologist Krister Smith in 2009. The name combines the Greek words 'anolbos' (meaning 'poor, wretched') and 'Anolis,' referencing the scrappy nature of the fossil material and its resemblance to modern Anolis lizards."
+    },
+    {
+      "question": "What distinguishes the species A. banalis from A. geminus?",
+      "answer": "A. banalis, named in 2009, was a smaller species of Anolbanolis, while A. geminus, named in 2011, was about 50% larger. A. geminus lived shortly after the PETM, and its features suggested a closer relationship to Anolis than to Polychrus."
+    },
+    {
+      "question": "How did the Paleocene-Eocene thermal maximum (PETM) influence the discovery of Anolbanolis?",
+      "answer": "The PETM was a brief period of global warming around 56 million years ago, during which the Willwood Formation layers containing Anolbanolis fossils were deposited. This warmer climate likely made the Bighorn Basin more hospitable to subtropical and tropical lizard clades like Anolbanolis."
+    },
+    {
+      "question": "Why does the name 'banalis' in A. banalis reflect its discovery context?",
+      "answer": "The species name 'banalis' refers to the lizard being 'quite abundant in the type locality' and not unusual, as Smith noted that discoveries of Eocene fossil members of living subtropical and tropical clades in boreal regions were becoming commonplace."
+    },
+    {
+      "question": "What evidence supports Anolbanolis being closely related to Anolis rather than Polychrus?",
+      "answer": "Features in A. geminus, such as specific anatomical traits, led Smith to conclude that Anolbanolis is more closely related to Anolis than to Polychrus. Additionally, modern Anolis and Polychrus are found in Central and South America, not Wyoming, but Anolbanolis' presence in the Eocene Bighorn Basin aligns with a warmer climate."
+    },
+    {
+      "question": "Write a Python function to calculate the percent increase in size between A. banalis and A. geminus.",
+      "answer": "python\ndef calculate_size_increase():\n    size_banalis = 1.0  # Assuming A. banalis as baseline\n    size_geminus = 1.5  # 50% larger than A. banalis\n    percent_increase = ((size_geminus - size_banalis) / size_banalis) * 100\n    return f\"The size increase from A. banalis to A. geminus is {percent_increase}%\"\n\nprint(calculate_size_increase())\n\nThis function returns the percent increase in size between the two species based on the given data."
+    }
+  ]
+}

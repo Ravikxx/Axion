@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Cookie_Run_(video_game)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is Cookie Run and who developed it?",
+      "answer": "Cookie Run is an online mobile endless running game developed by Devsisters. It is inspired by the fairy tale 'The Gingerbread Man' and is part of the Cookie Run series."
+    },
+    {
+      "question": "When was Cookie Run first released, and on which platforms?",
+      "answer": "Cookie Run was first released on April 2, 2013, for Kakao, and later on January 29, 2014, for LINE. The India-exclusive version, Cookie Run India, was released on December 11, 2024."
+    },
+    {
+      "question": "What are the differences between the Kakao and LINE versions of Cookie Run?",
+      "answer": "The Kakao version is exclusive to South Korea and supports only Korean. The LINE version was available globally with support for English, Thai, Japanese, and Traditional Chinese, but it was discontinued on June 5, 2018."
+    },
+    {
+      "question": "How do players progress in Cookie Run?",
+      "answer": "Players help a cookie run as far as possible from the starting point by avoiding obstacles, jumping through holes, and collecting coins and 'Jellies'."
+    },
+    {
+      "question": "What languages are supported in Cookie Run India?",
+      "answer": "Cookie Run India supports only English and is available exclusively in India."
+    },
+    {
+      "question": "What significant updates have occurred in Cookie Run's history?",
+      "answer": "On April 2, 2023, Cookie Run celebrated its 10th anniversary. On April 2, 2024, the Kakao version resumed updates after an 8-year hiatus, marking its 11th anniversary with a large-scale update."
+    },
+    {
+      "question": "Is there any code snippet or gameplay-related information available for Cookie Run?",
+      "answer": "Cookie Run does not provide a public code snippet, but here’s a conceptual example of how a simple endless runner might handle player input in Python:\npython\ndef handle_player_input(input_key, cookie_position):\n    if input_key == 'jump' and cookie_position == 'ground':\n        return 'jump'\n    elif input_key == 'slide' and cookie_position == 'ground':\n        return 'slide'\n    return 'idle'\n"
+    }
+  ]
+}

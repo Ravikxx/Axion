@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Caen",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the population of Caen as of 2018?",
+      "answer": "As of 2018, Caen had 105,512 inhabitants within the city proper."
+    },
+    {
+      "question": "How far is Caen from the coast of France?",
+      "answer": "Caen is situated a few kilometres inland from the northwestern coast of France."
+    },
+    {
+      "question": "What notable historical events are associated with Caen?",
+      "answer": "Caen is known for its historical buildings from the reign of William the Conqueror and for the heavy fighting during the Battle for Caen in 1944, part of the Battle of Normandy."
+    },
+    {
+      "question": "What is the Mémorial de Caen and why is it significant?",
+      "answer": "The Mémorial de Caen is a memorial and museum dedicated to peace, established to preserve the memory of the Battle for Caen and promote peace."
+    },
+    {
+      "question": "How is Caen connected to the South of England?",
+      "answer": "Caen is connected to the South of England by the Caen (Ouistreham) to Portsmouth ferry route through the English Channel."
+    },
+    {
+      "question": "What are some major landmarks or attractions near Caen?",
+      "answer": "Caen is located near the landing beaches, the resorts of Deauville and Cabourg, Norman Switzerland, and the Pays d'Auge."
+    },
+    {
+      "question": "Which French department is Caen the prefecture of?",
+      "answer": "Caen is the prefecture of the department of Calvados."
+    }
+  ]
+}

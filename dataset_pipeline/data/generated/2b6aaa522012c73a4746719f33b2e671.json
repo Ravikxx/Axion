@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Deutscher_Memorial_Prize",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the Isaac and Tamara Deutscher Memorial Prize awarded for?",
+      "answer": "The Isaac and Tamara Deutscher Memorial Prize is an annual award given to a new book published in English that exemplifies the best and most innovative new writing in or about the Marxist tradition."
+    },
+    {
+      "question": "Name three past recipients of the Deutscher Prize and their winning works.",
+      "answer": "Past recipients include David Harvey (2010, *The Enigma of Capital and the Crises of Capitalism*), Terry Eagleton (1989, *The Ideology of the Aesthetic*), and Eric Hobsbawm (1995, *The Age of Extremes*)."
+    },
+    {
+      "question": "Who are some of the current members of the Deutscher Prize jury as of November 2025?",
+      "answer": "As of November 2025, the Deutscher Prize jury includes Gilbert Achcar, Alex Callinicos, Alejandro Colas, Ben Fine, Rob Knox, Chun Lin, Esther Leslie, Alfredo Saad-Filho, Gabriel Winant, and Lea Ypi."
+    },
+    {
+      "question": "How does the Deutscher Prize recognize authors beyond the book itself?",
+      "answer": "Winning authors are invited to contribute to the Deutscher Memorial Lecture series the following year, with the lecture or its derived text published in journals like *Historical Materialism*, *New Left Review*, *International Socialism*, or the *International Socialist Review*."
+    },
+    {
+      "question": "What is one notable Marxist historian who received the Deutscher Prize, and which of their works won?",
+      "answer": "Christopher Wickham received the Deutscher Prize in 2006 for his book *Framing the Early Middle Ages*."
+    },
+    {
+      "question": "Write a Python function to generate a list of recent Deutscher Prize winners and their years if provided with a dictionary of winners.",
+      "answer": "python\ndef get_recent_winners(winner_dict, min_year=None):\n    \"\"\"\n    Returns a list of recent Deutscher Prize winners and their years.\n    \n    Args:\n        winner_dict (dict): Dictionary of {year: winner_name}\n        min_year (int, optional): Minimum year to include. Defaults to None.\n    \n    Returns:\n        list: List of tuples (year, winner_name)\n    \"\"\"\n    if min_year:\n        return [(year, winner) for year, winner in winner_dict.items() if year >= min_year]\n    return list(winner_dict.items())\n\n# Example usage:\nwinners = {\n    2011: \"Jairus Banaji\",\n    2010: \"David Harvey\",\n    2007: \"Rick Kuhn\",\n    2006: \"Christopher Wickham\"\n}\nprint(get_recent_winners(winners, min_year=2006))\n"
+    },
+    {
+      "question": "Why might the Deutscher Prize be considered significant in the field of Marxist studies?",
+      "answer": "The Deutscher Prize is significant because it highlights and rewards the best and most innovative new writing in or about the Marxist tradition, fostering critical engagement with Marxist thought. Its long-standing history since 1969 and association with renowned scholars and authors further enhance its prestige in the field."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Century_leap_year",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is a century leap year in the Gregorian calendar?",
+      "answer": "A century leap year is a year that is exactly divisible by 400. These years have February 29 and align with the Gregorian calendar's rules to maintain accuracy with Earth's solar year. Examples include 1600 and 2000."
+    },
+    {
+      "question": "Why is the year 2100 not a leap year despite being divisible by 4?",
+      "answer": "The year 2100 is not a leap year because it is divisible by 100 but not by 400. According to Gregorian calendar rules, only years divisible by 400 are leap years when they end a century."
+    },
+    {
+      "question": "How does the Gregorian calendar differ from the Julian calendar in handling leap years?",
+      "answer": "The Gregorian calendar specifies that end-of-century years are only leap years if divisible by 400, whereas the Julian calendar treats every fourth year, including end-of-century years, as a leap year. This change in the Gregorian calendar prevents seasonal drift."
+    },
+    {
+      "question": "On which day of the week does February 29 fall in a century leap year?",
+      "answer": "In a century leap year, February 29 always falls on a Tuesday. Additionally, a century leap year begins on a Saturday and ends on a Sunday."
+    },
+    {
+      "question": "Given a century year, how can you determine if it is a common year or a leap year using Python?",
+      "answer": "You can use the following Python code to check if a century year is a leap year:\npython\ndef is_century_leap_year(year):\n    if year % 400 == 0:\n        return True\n    elif year % 100 == 0:\n        return False\n    else:\n        return False\n\n# Example usage:\nprint(is_century_leap_year(2000))  # Output: True (leap year)\nprint(is_century_leap_year(2100))  # Output: False (common year)\n"
+    },
+    {
+      "question": "What is the next century leap year after 2400?",
+      "answer": "The next century leap year after 2400 is 2800. Century leap years occur every 400 years, so the sequence includes 2400, 2800, 3200, etc."
+    },
+    {
+      "question": "How do you determine the starting day of a century year like 1800 using modulo 400?",
+      "answer": "The starting day of a century year depends on the remainder when the year is divided by 400:\n- If the remainder is 100 (e.g., 1700), the year begins on a Friday.\n- If the remainder is 200 (e.g., 1800), the year begins on a Wednesday.\n- If the remainder is 300 (e.g., 1900), the year begins on a Monday.\nFor 1800, 1800 % 400 = 200, so it begins on a Wednesday."
+    }
+  ]
+}

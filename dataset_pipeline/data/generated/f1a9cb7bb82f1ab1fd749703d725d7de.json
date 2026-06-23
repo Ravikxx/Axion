@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/1909_Scottish_Cup_final",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the outcome of the 1909 Scottish Cup final between Rangers and Celtic?",
+      "answer": "The 1909 Scottish Cup final between Rangers and Celtic ended in a 2–2 draw on 10 April. After a replay on 17 April also ended 1–1, the Scottish Football Association (SFA) withheld the trophy due to crowd disorder, and no winner was declared."
+    },
+    {
+      "question": "Why was extra time not played in the 1909 Scottish Cup final replay?",
+      "answer": "Extra time was not played because the competition rules only permitted it in the event of a second replay. Since the replay ended 1–1, the SFA did not schedule a second replay, which led to confusion and unrest among the crowd."
+    },
+    {
+      "question": "What caused the crowd disorder during the 1909 Scottish Cup final replay?",
+      "answer": "The crowd invaded the pitch after realizing extra time would not be played and believing the results were manipulated to increase ticket revenue. This unrest escalated into violence, including the destruction of goalposts, tearing up the pitch, and setting fire to wooden pay-boxes."
+    },
+    {
+      "question": "How did the Scottish Football Association respond to the events of the 1909 Scottish Cup final?",
+      "answer": "The SFA withheld the trophy and medals after both clubs requested not to schedule a second replay. They also ordered Queen's Park F.C., the owners of Hampden Park, to be compensated £500, while both Rangers and Celtic were fined £150 each."
+    },
+    {
+      "question": "How many injuries were reported during the 1909 Scottish Cup final crowd disorder?",
+      "answer": "Over 100 injuries were reported during the crowd disorder that followed the 1909 Scottish Cup final replay."
+    },
+    {
+      "question": "What role did mounted police and the fire brigade play in the 1909 Scottish Cup final incident?",
+      "answer": "Mounted police and the fire brigade were deployed to control the crowd disorder. However, they also came under attack from the angry spectators during the unrest."
+    },
+    {
+      "question": "Write a Python function to calculate the total financial penalties imposed by the SFA in the aftermath of the 1909 Scottish Cup final.",
+      "answer": "python\ndef calculate_sfa_penalties():\n    compensation_to_queens_park = 500  # £500\n    fine_per_club = 150  # £150\n    total_penalties = compensation_to_queens_park + (2 * fine_per_club)\n    return total_penalties\n\n# Example usage:\ntotal_penalties = calculate_sfa_penalties()\nprint(f\"Total penalties imposed by the SFA: £{total_penalties}\")\n\nThis function calculates the total financial penalties, including the £500 compensation paid to Queen's Park F.C. and the £150 fines imposed on each of the two clubs (Rangers and Celtic)."
+    }
+  ]
+}

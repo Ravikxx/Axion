@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Bombing_of_Wieluń",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the historical significance of the bombing of Wieluń?",
+      "answer": "The bombing of Wieluń is widely regarded as the first major act of World War II and the September Campaign. It marked the beginning of coordinated military operations by Nazi Germany against Poland, occurring on 1 September 1939. The airstrikes, conducted without a declaration of war, violated international law and are considered the first German war crime of World War II, as it breached the 1907 Hague Convention III, which prohibits hostilities against neutral powers without prior notification."
+    },
+    {
+      "question": "What were the key details of the Luftwaffe's attack on Wieluń?",
+      "answer": "On 1 September 1939, between 04:40 and 04:45, German Luftwaffe Junkers Ju 87 (Stuka) dive bombers initiated attacks on the undefended Polish town of Wieluń. Over nine hours, approximately 46,000 kg of bombs were dropped on civilian targets, including a clearly marked hospital. The town lacked anti-air defenses or a military garrison. Nearby towns such as Działoszyn, Radomsko, and Sulejów were also bombed despite having no military objectives."
+    },
+    {
+      "question": "Why was the bombing of Wieluń considered a war crime?",
+      "answer": "The bombardment of Wieluń constituted a war crime because it violated the 1907 Hague Convention III, which mandates that hostilities against neutral powers must be preceded by a declaration of war. Since Germany attacked Poland without any formal declaration, the attack on civilian infrastructure and the lack of military targets made it a blatant violation of international law and the laws of war."
+    },
+    {
+      "question": "What were the immediate consequences of the attack on Wieluń?",
+      "answer": "The bombing resulted in the destruction of 70% of the town, with up to 90% of the city center being obliterated. Reported civilian casualties were 127, though estimates suggest the true number may have been several hundred. The attack left the town devastated and symbolized the start of Germany’s full-scale invasion of Poland, which included simultaneous assaults at Westerplatte and Danzig."
+    },
+    {
+      "question": "How did German intelligence influence the attack on Wieluń?",
+      "answer": "German intelligence mistakenly reported that a Polish cavalry brigade was stationed in Wieluń. Relying on this inaccurate information, the Luftwaffe targeted the town despite its lack of military infrastructure or defenses. This misinformation led to the deliberate bombing of civilian areas, including a clearly marked hospital, demonstrating how faulty intelligence can result in grave humanitarian consequences."
+    },
+    {
+      "question": "Write a Python script to calculate the percentage of Wieluń that was destroyed during the bombing, given that 70% of the town and 90% of the city center were destroyed.",
+      "answer": "python\n# Calculate the total destruction percentage of Wieluń\n\n# Total area destroyed (70% of the entire town)\ntotal_destroyed_percentage = 70\n\n# City center destruction (90% of the city center)\ncity_center_destroyed_percentage = 90\n\n# Average destruction across the entire town (simple average for illustrative purposes)\naverage_destruction = (total_destroyed_percentage + city_center_destroyed_percentage) / 2\n\nprint(f\"Total town destruction: {total_destroyed_percentage}%\")\nprint(f\"City center destruction: {city_center_destroyed_percentage}%\")\nprint(f\"Average destruction estimate: {average_destruction:.1f}%\")\n\nOutput:\nTotal town destruction: 70%\nCity center destruction: 90%\nAverage destruction estimate: 80.0%"
+    },
+    {
+      "question": "What international law did Germany violate by bombing Wieluń without a declaration of war?",
+      "answer": "Germany violated the 1907 Hague Convention III – Opening of Hostilities, which requires that a declaration of war be issued before initiating hostilities against another sovereign nation. The bombing of Wieluń occurred without such a declaration, making it an illegal act under international law and establishing it as the first German war crime of World War II."
+    }
+  ]
+}

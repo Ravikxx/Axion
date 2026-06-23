@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Districts_of_La_Paz",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "How many Macro Distritos (main districts) is La Paz, Bolivia divided into?",
+      "answer": "La Paz is divided into seven main districts, called Macro Distritos."
+    },
+    {
+      "question": "List the three main zones that people commonly divide La Paz into.",
+      "answer": "The three main zones are the South Zone, Central Zone, and North Zone."
+    },
+    {
+      "question": "Which districts make up the Central Zone of La Paz?",
+      "answer": "The Central Zone is primarily formed by the 6th Main District: Distrito Centro (Central District), which includes El Rosario, San Sebastián, Santa Bárbara, Casco Urbano Central, Parque Urbano Central, Miraflores, and Casco Viejo."
+    },
+    {
+      "question": "What are the districts included in the 4th Main District of La Paz?",
+      "answer": "The 4th Main District, Periférica, consists of Limanipata, Achachicala, Vino Tinto, 25 de Mayo, 5 Dedos, Santiago de Lacaya, Rosasani, La Merced, and Chuquiaguillo."
+    },
+    {
+      "question": "Write a Python snippet to categorize a given district of La Paz into its corresponding Macro Distrito.",
+      "answer": "python\nmacro_distritos = {\n    'Mallasa': '1st Main District',\n    'Amor de Dios': '1st Main District',\n    'Aranjuez': '1st Main District',\n    'Distrito Sur': '2nd Main District',\n    'Irpavi': '2nd Main District',\n    'San Antonio': '3rd Main District',\n    'Villa de Copacabana': '3rd Main District',\n    'Periférica': '4th Main District',\n    'Max Paredes': '5th Main District',\n    'Distrito Centro': '6th Main District',\n    'Cotahuma': '7th Main District',\n    'Sopocachi': '7th Main District'\n}\n\ndef get_macro_distrito(district_name):\n    return macro_distritos.get(district_name, 'Unknown District')\n"
+    },
+    {
+      "question": "Explain the administrative division structure of La Paz, Bolivia, from largest to smallest.",
+      "answer": "La Paz is divided administratively into three levels: 1) Seven main districts called Macro Distritos, 2) Each Macro Distrito is further divided into smaller districts or zones (21 in total), and 3) The city is informally grouped by locals into three broad zones: South Zone, Central Zone, and North Zone."
+    },
+    {
+      "question": "Which Macro Distrito includes the area known as Sopocachi Highlands?",
+      "answer": "Sopocachi Highlands, referred to as Alto Sopocachi, is part of the 7th Main District: Cotahuma."
+    }
+  ]
+}

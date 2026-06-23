@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Gallia_Belgica",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was Gallia Belgica and where was it located historically?",
+      "answer": "Gallia Belgica was a Roman province in north-eastern Gaul, encompassing what is now primarily northern France, Belgium, Luxembourg, and parts of the Netherlands and Germany."
+    },
+    {
+      "question": "Which emperor created the Roman province of Gallia Belgica, and when did this occur?",
+      "answer": "Emperor Augustus established the Roman province of Gallia Belgica in 22 BC, naming it after the Belgae, the largest tribal confederation in the region."
+    },
+    {
+      "question": "What were the three parts of Gaul (Tres Galliae) as described by Julius Caesar?",
+      "answer": "According to Caesar's Commentarii de Bello Gallico, the three parts of Gaul were Gallia Belgica, Gallia Aquitania, and Gallia Lugdunensis."
+    },
+    {
+      "question": "How did the borders of Gallia Belgica change during the reign of Diocletian?",
+      "answer": "Under Diocletian, the northeastern Civitas Tungrorum was transferred to Germania Inferior, while the remaining territory of Gallia Belgica was divided into Belgica Prima and Belgica Secunda."
+    },
+    {
+      "question": "What were the capitals of Belgica Prima and Belgica Secunda after the reforms under Diocletian?",
+      "answer": "After Diocletian's reorganization, Belgica Prima's capital was Trier, while the capital of Belgica Secunda was not explicitly mentioned in the text."
+    },
+    {
+      "question": "Which major tribes were included in Gallia Belgica despite not being explicitly designated as Belgic by Julius Caesar?",
+      "answer": "Gallia Belgica included the territories of the Treveri, Mediomatrici, Leuci, and Sequani, among others."
+    },
+    {
+      "question": "How did Julius Caesar describe the cultural boundary between the Belgae and the Celtic Gauls in his writings?",
+      "answer": "Caesar described the Marne and Seine rivers as a cultural boundary separating the Belgae in the north from the Celtic Gauls in the south."
+    }
+  ]
+}

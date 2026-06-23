@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Bellona_(ship)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the original name of the ship Bellona launched in 1775, and what was its primary function?",
+      "answer": "The original name of the ship Bellona, launched in 1775, was 'True Briton.' Its primary function was as a slave ship, participating in the triangular trade in enslaved people."
+    },
+    {
+      "question": "How many voyages did the ship Bellona (1775) make transporting enslaved people, and what was its final name?",
+      "answer": "The ship Bellona (1775) made a total of six voyages transporting enslaved people. It was initially named 'True Briton,' later renamed 'John,' and finally renamed 'Lord Stanley' by new owners."
+    },
+    {
+      "question": "What role did the Bellona (1782 ship) play in the British East India Company's operations?",
+      "answer": "The Bellona (1782 ship) served as an 'extra ship' for the British East India Company, meaning it operated under a charter contract. During its tenure, it transported convicts from Britain to New South Wales and was involved in multiple captures by French privateers and the British Royal Navy."
+    },
+    {
+      "question": "What happened to the Bellona (1796 ship) after it was launched in Calcutta?",
+      "answer": "After being launched in Calcutta, the Bellona (1796 ship) sailed to Great Britain in 1799 and was admitted to the Registry of Great Britain in 1800. It was later captured by a French frigate in 1801."
+    },
+    {
+      "question": "Describe the career of the Bellona (1804 ship), including its unusual reward to the captain.",
+      "answer": "The Bellona (1804 ship) was originally built in Spain in 1797 and taken in prize around late 1804. It made two voyages as a privateer, including one to the River Plate area. Despite lack of success, its owners awarded the captain £100. It later made a voyage as a slave ship before being wrecked upon return to Liverpool."
+    },
+    {
+      "question": "What was the fate of the SS Bellona (1862 ship)?",
+      "answer": "The SS Bellona (1862 ship) was a steam cargo ship built by Smith and Rodger at Govan. In 1889, it was renamed SS Benbrach and wrecked on 25 January 1889."
+    },
+    {
+      "question": "Write a Python code snippet to filter and list all ships named Bellona that were involved in slave trade activities.",
+      "answer": "python\nships = [\n    {\"name\": \"Bellona (1775)\", \"original_name\": \"True Briton\", \"role\": \"slave ship\"},\n    {\"name\": \"Bellona (1782)\", \"role\": \"transported convicts\"},\n    {\"name\": \"Bellona (1804)\", \"role\": \"slave ship\"}\n]\n\nslave_trade_ships = [ship for ship in ships if ship.get(\"role\") in [\"slave ship\", \"transported convicts\"]]\nfor ship in slave_trade_ships:\n    print(f\"{ship['name']} was originally {ship.get('original_name', 'unknown')} and was involved in slave trade activities.\")\n"
+    }
+  ]
+}

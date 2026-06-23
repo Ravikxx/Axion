@@ -1,0 +1,30 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Come_Dine_with_Me_South_Africa",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When did 'Come Dine With Me South Africa' first air on BBC Entertainment in South Africa?",
+      "answer": "'Come Dine With Me South Africa' made its debut on BBC Entertainment in South Africa in October 2011."
+    },
+    {
+      "question": "What is the prize for winning 'Come Dine With Me South Africa'?",
+      "answer": "The winner of 'Come Dine With Me South Africa' receives a cash prize of R10,000 and Pick n Pay vouchers."
+    },
+    {
+      "question": "How many territories is 'Come Dine With Me South Africa' produced in internationally?",
+      "answer": "The show is produced in 36 territories internationally."
+    },
+    {
+      "question": "List the celebrities featured in the celebrity special of the first series of 'Come Dine With Me South Africa'.",
+      "answer": "The celebrity special of the first series featured Ashley Hayden (M-Net presenter), Neil Andrews (SuperSport), Sam Cowen (94.7 Highveld Stereo), and Shashi Naidoo (model)."
+    },
+    {
+      "question": "When was 'Come Dine With Me South Africa' cancelled and when did it return?",
+      "answer": "The show was cancelled in April 2014 and returned for a fourth season in 2018 on BBC Brit."
+    },
+    {
+      "question": "Write a Python script to fetch the premiere episode viewership data for 'Come Dine With Me South Africa'.",
+      "answer": "python\nimport requests\nfrom bs4 import BeautifulSoup\n\n# Example script to fetch data (replace with actual API or web scraping logic)\ndef get_viewership_data():\n    url = 'https://example.com/viewership_data'  # Replace with actual URL\n    response = requests.get(url)\n    soup = BeautifulSoup(response.text, 'html.parser')\n    # Parse and extract viewership data (example logic)\n    data = {\n        'premiere_episode_viewers': '100,000',\n        'total_viewers': '2.5 million'\n    }\n    return data\n\nviewership = get_viewership_data()\nprint(f\"Premiere episode viewers: {viewership['premiere_episode_viewers']}\")\nprint(f\"Total viewers: {viewership['total_viewers']}\")\n"
+    }
+  ]
+}

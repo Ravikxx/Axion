@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Daboll_trumpet",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who invented the Daboll trumpet and what was its primary purpose?",
+      "answer": "The Daboll trumpet was invented by Celadon Leeds Daboll, an American from New London, Connecticut. It was developed to meet the announced needs of the United States Lighthouse Board, primarily as an air foghorn to aid navigation during foggy conditions."
+    },
+    {
+      "question": "How does the Daboll trumpet produce sound?",
+      "answer": "The Daboll trumpet produces sound through a vibrating steel reed inside a horn. Hot air or steam machinery compresses air in a reservoir, which is then forced through the trumpet via an air pump. The compressed air passes through a valve, causing the reed to vibrate and generate a loud, penetrating sound. The vibrations are regulated by an automatic cam for consistent output."
+    },
+    {
+      "question": "What were the key specifications of the largest Daboll trumpet built?",
+      "answer": "The largest Daboll trumpet measured seventeen feet in length, with a throat diameter of three and a half inches and a flaring mouth thirty-eight inches across. The reed inside was ten inches long, two and three-quarter inches wide, one inch thick at its fixed end, and half an inch thick at its free end. It operated at an air pressure of fifteen to twenty pounds per square inch."
+    },
+    {
+      "question": "Write a Python function to simulate the basic operation of a Daboll trumpet's air compression system. Assume the air pressure starts at 0 psi and increases to 15-20 psi in 2 seconds before activating the reed vibration.",
+      "answer": "python\nimport time\n\ndef simulate_daboll_trumpet_air_compression():\n    pressure = 0  # Initial air pressure in psi\n    target_pressure = 18  # Average target pressure in psi\n    duration = 2  # Time to reach target pressure in seconds\n    \n    print(\"Simulating Daboll Trumpet air compression...\")\n    for t in range(duration + 1):\n        pressure = min(target_pressure, pressure + (target_pressure / duration))\n        print(f\"Time: {t}s | Pressure: {pressure:.1f} psi\")\n        time.sleep(0.5)  # Simulate real-time progression\n    \n    print(\"\\nAir pressure sufficient for reed vibration. Sound produced!\")\n    return pressure\n\nsimulate_daboll_trumpet_air_compression()\n"
+    },
+    {
+      "question": "Why were Daboll trumpets considered unreliable for lighthouse use despite their powerful sound?",
+      "answer": "Daboll trumpets were deemed unreliable due to frequent stoppages and high repair costs, especially during foggy weather when maintenance was difficult. Their mechanical complexity, reliance on hot air engines, and need for constant care made them impractical for sustained use. Engineers reported that the sound quality deteriorated over time, and they were only recommended for exceptional cases where water was unavailable or varied sound signals were necessary."
+    },
+    {
+      "question": "Compare the power output of the Daboll trumpet to a twelve-inch whistle based on 1874 trials.",
+      "answer": "According to Gen. Duane's 1874 trials, the twelve-inch whistle was reported to exceed the first-class Daboll trumpet in power output. However, the Daboll trumpet was noted for its exceptional sound penetration and ability to be heard from five to ten miles, depending on conditions."
+    },
+    {
+      "question": "List three lighthouses where Daboll trumpets were installed during trials.",
+      "answer": "Daboll trumpets were installed at the following lighthouses during trials: Cape Ann Light (Thatcher's Island) in 1869, Execution Rocks Light (Long Island Sound) in 1869, and Monhegan Island Light (Manana Island, Maine) in 1870."
+    }
+  ]
+}

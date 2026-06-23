@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/alvaromontoro/css-art-severance-office-1mf6",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What was the inspiration behind creating the 3D Severance office desks with CSS?",
+      "answer": "The author was inspired by watching the TV show *Severance*, specifically noting the unique office desk arrangement depicted in the show. They wanted to recreate these iconic desks using HTML and 3D CSS as a frontend challenge."
+    },
+    {
+      "question": "How did the author approach building the 3D cubicles in CSS?",
+      "answer": "The author started by defining a generic 'cube' component using HTML and CSS with custom properties for width, height, and depth. They then created one cubicle, rotated it at 0°, 90°, 180°, and 270°, and reused the same cubicle four times, adding small details like a tissue box or pencil holder to each instance."
+    },
+    {
+      "question": "What specific issue did the author encounter when rotating the cubicle 180 degrees, and how was it resolved?",
+      "answer": "When rotating the cubicle 180 degrees in Chrome, the element disappeared due to a browser-specific bug where the element was flattened into the container. The author resolved it by rotating the cubicle 179.999 degrees instead of exactly 180 degrees. This workaround was tested and confirmed to work across different browsers."
+    },
+    {
+      "question": "How can you create a basic 3D cube using only HTML and CSS?",
+      "answer": "Here’s a simple example of creating a 3D cube using CSS transforms:\n\nhtml\n<div class=\"cube\">\n  <div class=\"face front\">Front</div>\n  <div class=\"face back\">Back</div>\n  <div class=\"face right\">Right</div>\n  <div class=\"face left\">Left</div>\n  <div class=\"face top\">Top</div>\n  <div class=\"face bottom\">Bottom</div>\n</div>\n\n\ncss\n.cube {\n  position: relative;\n  width: 100px;\n  height: 100px;\n  transform-style: preserve-3d;\n  margin: 100px auto;\n}\n\n.face {\n  position: absolute;\n  width: 100px;\n  height: 100px;\n  background: rgba(255, 255, 255, 0.8);\n  border: 2px solid #333;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}\n\n.front  { transform: rotateY(  0deg) translateZ(50px); }\n.back   { transform: rotateY(180deg) translateZ(50px); }\n.right  { transform: rotateY( 90deg) translateZ(50px); }\n.left   { transform: rotateY(-90deg) translateZ(50px); }\n.top    { transform: rotateX( 90deg) translateZ(50px); }\n.bottom { transform: rotateX(-90deg) translateZ(50px); }\n\n\nKey properties:\n- `transform-style: preserve-3d` ensures child elements maintain their 3D position.\n- `transform` with `rotate` and `translateZ` positions each face in 3D space."
+    },
+    {
+      "question": "What licensing terms apply to this CSS art project, and what are the implications for reuse?",
+      "answer": "The CSS art project is licensed under a Creative Commons Attribution-NonCommercial 4.0 License. This means others are free to copy, reuse, and modify the work for non-commercial purposes as long as they give appropriate credit to the original author. Commercial use is not permitted without explicit permission."
+    },
+    {
+      "question": "Why did the author choose to use the same cubicle structure four times instead of coding each one separately?",
+      "answer": "The author used the same cubicle structure four times and applied different rotations (0°, 90°, 180°, 270°) to save time and ensure consistency. Small customizations like adding a tissue box or notes were made to each cubicle to differentiate them visually without altering the core structure."
+    },
+    {
+      "question": "What is a common workaround for gradient color stops in Safari, and how did the author apply it in this project?",
+      "answer": "A common workaround for Safari's issue with gradient color stops at 100% is to set the stop at 99.99% instead. This ensures the browser renders the gradient correctly. The author had previously encountered this issue and applied the same workaround in this project to maintain visual consistency across browsers."
+    }
+  ]
+}

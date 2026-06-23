@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Arthur_Cook_(Pennsylvania_politician)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was Arthur Cook (or Cooke) and what were his primary political roles in colonial America?",
+      "answer": "Arthur Cook (or Cooke) was a colonial politician in Rhode Island and Pennsylvania during the 17th century. His key roles included serving as a justice of the Supreme Court of Pennsylvania (1685–1690), chief justice (1686–1690), member of the Pennsylvania Provincial Council (1686–1688, 1690–1692), speaker of the Pennsylvania General Assembly (1689), and commissioner of property for Pennsylvania (1694). He also held offices in Rhode Island and Philadelphia County."
+    },
+    {
+      "question": "What were Arthur Cook's specific duties as the chief justice of Pennsylvania?",
+      "answer": "As chief justice of Pennsylvania from 1686 to 1690, Arthur Cook presided over the Supreme Court, interpreting and applying colonial laws, overseeing legal proceedings, and ensuring the administration of justice in the colony. His role involved both judicial decision-making and leadership within the colonial legal system."
+    },
+    {
+      "question": "How did Arthur Cook's political career transition from Rhode Island to Pennsylvania?",
+      "answer": "Arthur Cook began his political career in Rhode Island as a member of the General Assembly in 1681 and 1683. In 1683, he moved to Bucks County, Pennsylvania, where he became a justice of the peace and later a member of the provincial council (1686–1688). His move marked a shift in his political influence from Rhode Island to Pennsylvania, culminating in roles such as speaker of the Pennsylvania General Assembly."
+    },
+    {
+      "question": "What was the significance of the 2,000-acre patent Arthur Cook received in 1686?",
+      "answer": "In 1686, Arthur Cook was granted a patent for 2,000 acres of land, part of which lay along the northwest boundary of the township of Frankford, Pennsylvania (now the Dublin road). This land grant reflects his political influence and economic standing in colonial Pennsylvania."
+    },
+    {
+      "question": "What happened to Arthur Cook's land after his death in 1699?",
+      "answer": "Upon Arthur Cook's death in 1699, his widow Margaret Cooke and son John conveyed 1,000 acres of his land to Clement and Thomas Dungan, settlers in the township. This transaction demonstrates the inheritance and distribution of colonial land holdings in Pennsylvania."
+    },
+    {
+      "question": "List all the positions Arthur Cook held in Pennsylvania's provincial government.",
+      "answer": "In Pennsylvania, Arthur Cook held the following positions: justice of the Supreme Court (1685–1690), chief justice (1686–1690), member of the Provincial Council (1686–1688, 1690–1692), speaker of the General Assembly (1689), commissioner of the state (1688), justice of the peace of Philadelphia County (1690, 1692, 1695), and commissioner of property (1694)."
+    },
+    {
+      "question": "Write a Python function to extract and summarize Arthur Cook's political career from a given text about his life.",
+      "answer": "python\ndef summarize_arthur_cook_career(text):\n    \"\"\"Extracts and summarizes Arthur Cook's political career from a given text.\"\"\"\n    positions = []\n    lines = text.split('.')\n    for line in lines:\n        if 'justice' in line and ('Pennsylvania' in line or 'Supreme Court' in line):\n            positions.append(line.strip())\n        elif 'member of the' in line and 'Assembly' in line:\n            positions.append(line.strip())\n        elif 'commissioner' in line:\n            positions.append(line.strip())\n        elif 'speaker' in line:\n            positions.append(line.strip())\n    return '\\n'.join(positions)\n\n# Example usage:\ntext = \"Arthur Cook was a justice of the Supreme Court of Pennsylvania...\"\nprint(summarize_arthur_cook_career(text))\n\nThis function parses a text to extract Arthur Cook's political roles, including judicial, legislative, and administrative positions."
+    }
+  ]
+}

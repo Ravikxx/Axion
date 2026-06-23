@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Corona_station_(LIRR)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Where was Corona station located in Queens, New York City?",
+      "answer": "Corona station was located at Grand Avenue (later called National Avenue, now National Street) and 45th Avenue in the Corona section of Queens, New York City."
+    },
+    {
+      "question": "What was the original name of Corona station when it first opened in 1855?",
+      "answer": "The station first opened as Fashion Race Course in March 1855."
+    },
+    {
+      "question": "How many depots were built at the Corona station site over time?",
+      "answer": "Four depots were built at the Corona station site over time. The first depot opened in 1855, the second in 1872, the third (moved from Corona Park) in 1890, and the fourth in 1894."
+    },
+    {
+      "question": "Can you write a Python snippet to calculate the number of years between the station's opening in 1855 and its discontinuation in 1964?",
+      "answer": "python\ndef calculate_years_between_events(start_year, end_year):\n    return end_year - start_year\n\nopening_year = 1855\ndiscontinuation_year = 1964\nyears_active = calculate_years_between_events(opening_year, discontinuation_year)\nprint(years_active)  # Output: 109\n\nThe Corona station was active for 109 years from its opening in 1855 to its discontinuation in 1964."
+    },
+    {
+      "question": "Why was the fourth depot at Corona station razed in 1930?",
+      "answer": "The fourth depot was razed in 1930 due to a grade crossing elimination project, which involved removing railroad crossings at street level to improve traffic flow and safety."
+    },
+    {
+      "question": "What significant event coincided with the discontinuation of Corona station in 1964?",
+      "answer": "The discontinuation of Corona station on April 8, 1964, coincided with the re-opening of the World's Fair station the same year, suggesting a shift in service to accommodate the World's Fair."
+    },
+    {
+      "question": "What improvements were made to Corona station in 1930?",
+      "answer": "In 1930, elevated platforms were constructed at Corona station. The westbound platform opened on October 13, 1930, and the eastbound platform opened on October 17, 1930, following the razing of the fourth depot in September 1930."
+    }
+  ]
+}

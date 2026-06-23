@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Cerdà_Plan",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the Cerdà Plan and who created it?",
+      "answer": "The Cerdà Plan was an 1860 urban development plan created by Ildefons Cerdà, a civil engineer, aimed at reforming and expanding the city of Barcelona beyond its medieval walls. The plan proposed an egalitarian and hygienic city layout using a Hippodamian grid system."
+    },
+    {
+      "question": "Why did the Cerdà Plan face controversy?",
+      "answer": "The Cerdà Plan faced controversy because it was imposed by the Spanish government against the wishes of local authorities. Antoni Rovira i Trias had already won a city council competition for Barcelona's expansion, but the central government prioritized Cerdà's plan instead."
+    },
+    {
+      "question": "What were the key features of the Cerdà Plan's urban layout?",
+      "answer": "The Cerdà Plan proposed a continuous grid of 113.3-meter blocks from the Besòs River to Montjuïc, with streets of 20, 30, and 60 meters. Buildings were limited to a maximum height of 16 meters, and blocks featured 45-degree chamfers to improve visibility."
+    },
+    {
+      "question": "How did the Cerdà Plan incorporate the Hippodamian grid layout?",
+      "answer": "The Cerdà Plan adapted the Hippodamian grid layout by introducing 45-degree chamfers on building blocks, which was a novel application of the concept. This design allowed for better visibility at intersections and improved pedestrian flow compared to traditional orthogonal grids."
+    },
+    {
+      "question": "Why was the area targeted by the Cerdà Plan initially undeveloped?",
+      "answer": "The area was free of buildings because it was designated as a strategic military zone, making it unsuitable for construction before the plan's implementation."
+    },
+    {
+      "question": "What was the original timeline for the Cerdà Plan's development, and how was it affected over time?",
+      "answer": "The Cerdà Plan's development lasted nearly a century, but many of its guidelines were not fully applied due to modifications driven by landowner interests and speculative pressures. These changes altered the original vision of the plan."
+    },
+    {
+      "question": "Write a Python function that calculates the chamfered area of a Cerdà Plan block given its side length.",
+      "answer": "python\ndef calculate_chamfered_area(side_length):\n    \"\"\"\n    Calculate the area of a Cerdà Plan block with 45-degree chamfers.\n    \n    Args:\n        side_length (float): Length of the block's side in meters.\n    \n    Returns:\n        float: Area of the chamfered block in square meters.\n    \"\"\"\n    # A chamfered block is a square with four 45-degree triangles removed\n    original_area = side_length ** 2\n    # Each triangle has legs of length side_length/2\n    triangle_area = 0.5 * (side_length / 2) * (side_length / 2)\n    # Total area removed is 4 triangles\n    total_removed_area = 4 * triangle_area\n    chamfered_area = original_area - total_removed_area\n    return chamfered_area\n\n# Example usage:\nblock_side = 113.3  # meters\nprint(f\"Chamfered area: {calculate_chamfered_area(block_side):.2f} m²\")\n"
+    }
+  ]
+}

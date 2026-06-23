@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Danica_ilirska",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When was Danica ilirska first published and what was its original title?",
+      "answer": "Danica ilirska was first published on 10 January 1835 under the original title *Danicza horvatzka, slavonzka y dalmatinzka* (Danica of Croatia, Slavonia and Dalmatia)."
+    },
+    {
+      "question": "Who edited Danica ilirska during its initial publication and what was the magazine's connection to the Illyrian movement?",
+      "answer": "The magazine was edited by Ljudevit Gaj, a leader of the Croatian national revival. It was renamed *Danica ilirska* in 1836 in reference to Count Janko Drašković's political programme for the Illyrian movement, which advocated for the unification of Croatian lands under the Habsburg monarchy."
+    },
+    {
+      "question": "What role did Danica ilirska play in the Illyrian movement before 1848?",
+      "answer": "Due to restrictions on *Novine horvatske*, Danica ilirska functioned as the central newspaper of the Illyrian movement, popularizing its ideology and patriotic poetry, such as Antun Mihanović's *Horvatska domovina*, which later became the Croatian national anthem."
+    },
+    {
+      "question": "How did the name and publication of Danica ilirska change between 1843 and 1849?",
+      "answer": "After being renamed *Danica ilirska* in 1836, the magazine reverted to its original title on 2 January 1843 due to the banning of Illyrian symbols. It switched back to *Danica ilirska* in January 1849 but ceased publication on 30 June 1849."
+    },
+    {
+      "question": "Provide a code snippet that calculates the total years Danica ilirska was published across all its runs.",
+      "answer": "python\ndef calculate_publication_years():\n    # Initial run: 1835–1849 (15 years)\n    # Second run: 1853 (1 year)\n    # Third run: 1863–1867 (5 years)\n    total_years = 15 + 1 + 5\n    return total_years\n\nprint(calculate_publication_years())  # Output: 21\n"
+    },
+    {
+      "question": "What linguistic and orthographic reforms did Danica ilirska contribute to?",
+      "answer": "Danica ilirska played a key role in popularizing the Shtokavian dialect and promoting the orthographic reforms proposed by Ljudevit Gaj, which were foundational to standardizing the Croatian language."
+    },
+    {
+      "question": "Why was Danica ilirska briefly discontinued in 1853 and what led to its final revival in 1863?",
+      "answer": "The magazine was discontinued in 1853 due to low circulation. It was revived in 1863–1867 under the editorial leadership of Velimir Gaj (Ljudevit's son), alongside Antun Mažuranić, Dragutin Rakovac, Vjekoslav Babukić, Bogoslav Šulek, and Dimitrija Demeter."
+    }
+  ]
+}

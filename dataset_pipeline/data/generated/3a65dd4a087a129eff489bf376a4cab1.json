@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Ah_Pah_Dam",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the Ah Pah Dam, and when was it proposed?",
+      "answer": "Ah Pah Dam was a proposed dam on the Klamath River in California, suggested by the U.S. Bureau of Reclamation in 1951 as part of its United Western Investigation study."
+    },
+    {
+      "question": "How tall was the proposed Ah Pah Dam, and how would its height compare to other structures?",
+      "answer": "The proposed Ah Pah Dam was intended to be 813 feet (248 meters) tall, making it taller than any existing dam in the United States at the time. Its height would have been nearly equivalent to the Transamerica Pyramid in San Francisco, though its mass would have been significantly greater."
+    },
+    {
+      "question": "What environmental and cultural impacts would the Ah Pah Dam have had if constructed?",
+      "answer": "If built, the Ah Pah Dam would have flooded 40 miles of the Trinity River, including areas inhabited by the Yurok, Karuk, and Hupa Indian Reservations, as well as 70 miles of the Klamath River. This would have created a reservoir with a volume of 15,000,000 acre-feet, submerging significant portions of tribal lands and ecosystems."
+    },
+    {
+      "question": "Describe the Klamath Diversion plan associated with the Ah Pah Dam.",
+      "answer": "The Klamath Diversion plan involved diverting water from the Klamath River through a 60-mile (97 km) tunnel by gravity flow. The water would travel to the Sacramento River near Redding and then onward to Southern California, facilitating large-scale water transfer for agricultural and municipal use."
+    },
+    {
+      "question": "How would the reservoir created by the Ah Pah Dam compare in size to existing reservoirs in California?",
+      "answer": "The reservoir created by the Ah Pah Dam would have held 15,000,000 acre-feet (19 km³) of water, which is roughly three-fifths the size of Lake Mead and over three times the size of Shasta Lake, the largest reservoir in California at the time."
+    },
+    {
+      "question": "What was the origin of the name 'Ah Pah Dam'?",
+      "answer": "The name 'Ah Pah Dam' was derived from the language of the Yurok people, an Indigenous tribe native to the region where the dam was proposed."
+    },
+    {
+      "question": "Provide a code snippet that calculates the percentage of Lake Mead's volume that the Ah Pah Dam reservoir would have held.",
+      "answer": "python\n# Given data\nah_pah_volume = 15_000_000  # acre-feet\nlake_mead_volume = 26_000_000  # acre-feet (approximate)\n\n# Calculate percentage\npercentage = (ah_pah_volume / lake_mead_volume) * 100\nprint(f\"Ah Pah Dam reservoir would have held {percentage:.1f}% of Lake Mead's volume.\")\n\nOutput: Ah Pah Dam reservoir would have held 57.7% of Lake Mead's volume."
+    }
+  ]
+}

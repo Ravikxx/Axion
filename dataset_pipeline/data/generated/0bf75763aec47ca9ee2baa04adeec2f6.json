@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Disability_Living_Allowance",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is Disability Living Allowance (DLA) and who is eligible for it in the UK?",
+      "answer": "Disability Living Allowance (DLA) is a Social Security benefit in the United Kingdom designed to support disabled people with additional costs. Initially, it covered people under 65, but since 2013, it has been available only for children under sixteen. After turning sixteen, disabled individuals must claim Personal Independence Payment (PIP) instead. In Scotland, the Child Disability Payment is available for disabled children as an alternative."
+    },
+    {
+      "question": "What are the two main parts of Disability Living Allowance and how do they differ?",
+      "answer": "DLA consists of two parts: the care component and the mobility component. The care component provides financial assistance for children who need help with daily activities like washing, dressing, eating, or using the toilet. The mobility component supports children who have difficulty walking or require supervision due to behavioral or cognitive issues. Each part has different rates based on the level of need."
+    },
+    {
+      "question": "What are the three rates for the care component of DLA in 2022-2023, and what are the eligibility criteria for each?",
+      "answer": "The care component of DLA has three rates: \n1. **Lowest rate (£24.45)**: For children who need help with bodily functions for some of the day, such as washing, dressing, or eating.\n2. **Middle rate (£61.85)**: For children who need frequent help throughout the day, require supervision to avoid danger, or need significant help at night.\n3. **Highest rate (£92.40)**: For children who meet both day and night care conditions."
+    },
+    {
+      "question": "How does the mobility component of DLA work, and what are the two rates available in 2022-2023?",
+      "answer": "The mobility component supports children with walking difficulties or behavioral issues. There are two rates: \n1. **High rate (£64.50)**: For children who are unable to walk, can only walk limited distances, or have severe behavioral problems that prevent them from being left alone (if they also receive the highest care rate). Blind children or those with no feet also qualify.\n2. **Low rate (£24.45)**: For children who need constant guidance or supervision while walking."
+    },
+    {
+      "question": "Can a child receive both the high mobility rate of DLA and use it to obtain a car or wheelchair from Motability?",
+      "answer": "Yes, if a child qualifies for the high mobility rate (£64.50) of DLA, they can use it to access a car or wheelchair through the Motability scheme. This is particularly useful for children with severe mobility impairments."
+    },
+    {
+      "question": "What is the Scottish Government’s alternative to Disability Living Allowance for disabled children?",
+      "answer": "The Scottish Government introduced the Child Disability Payment in November 2021 as an alternative to DLA for disabled children. This benefit provides support tailored to the needs of children in Scotland."
+    },
+    {
+      "question": "How many children were receiving Disability Living Allowance in the UK as of February 2022?",
+      "answer": "As of February 2022, approximately 1,349,000 children in the UK were receiving Disability Living Allowance, including those in Scotland."
+    }
+  ]
+}

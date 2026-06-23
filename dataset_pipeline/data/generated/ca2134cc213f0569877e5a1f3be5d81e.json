@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/2011_Japanese_Grand_Prix",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who won the 2011 Japanese Grand Prix?",
+      "answer": "Jenson Button won the 2011 Japanese Grand Prix, driving for McLaren. He started from second position on the grid and finished the 53-lap race in first place."
+    },
+    {
+      "question": "What was the starting grid position of Jenson Button and Sebastian Vettel at the 2011 Japanese Grand Prix?",
+      "answer": "Jenson Button started from second on the grid, while Sebastian Vettel started from pole position. Vettel had marginally outqualified Button."
+    },
+    {
+      "question": "How did the safety car period affect the race outcome at the 2011 Japanese Grand Prix?",
+      "answer": "A collision between Lewis Hamilton and Felipe Massa caused debris on the track, triggering a safety car period. This period led to Hamilton slipping from second to fifth place, primarily due to pit-stop positioning."
+    },
+    {
+      "question": "What was the final podium result of the 2011 Japanese Grand Prix?",
+      "answer": "The final podium positions were: 1st place - Jenson Button (McLaren), 2nd place - Fernando Alonso (Ferrari), and 3rd place - Sebastian Vettel (Red Bull Racing)."
+    },
+    {
+      "question": "How did the 2011 Japanese Grand Prix result impact the World Drivers' Championship standings?",
+      "answer": "Sebastian Vettel secured the World Drivers' Championship for the second consecutive year after the race. Jenson Button remained in second place, increasing his lead over third-placed Fernando Alonso to eight points."
+    },
+    {
+      "question": "Write a Python code snippet to calculate the points difference between Red Bull and McLaren in the World Constructors' Championship after the 2011 Japanese Grand Prix.",
+      "answer": "python\n# Points before the race (example values based on the context)\nred_bull_points_before = 498  # Hypothetical points before the race\nmclaren_points_before = 368    # Hypothetical points before the race\n\n# Points after the race\nred_bull_points_after = red_bull_points_before + 25  # Winning team gets 25 points for a race\nmclaren_points_after = mclaren_points_before + 18    # 2nd place gets 18 points\n\n# Calculate the difference\ndifference = red_bull_points_after - mclaren_points_after\nprint(f\"Red Bull leads McLaren by {difference} points after the 2011 Japanese Grand Prix.\")\n\nThe output would be: 'Red Bull leads McLaren by 130 points after the 2011 Japanese Grand Prix.'"
+    },
+    {
+      "question": "Why was the 2011 Japanese Grand Prix significant for Sebastian Vettel?",
+      "answer": "The 2011 Japanese Grand Prix was significant for Sebastian Vettel because securing his second-place finish ensured he won the World Drivers' Championship for the second year in a row. He only needed one point before the race weekend to be declared champion, and he achieved this with his podium finish."
+    }
+  ]
+}

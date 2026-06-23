@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/googleai/how-i-used-gemini-cli-to-orchestrate-a-complex-rag-migration-43ga",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What are the key components of a RAG migration project mentioned in the text?",
+      "answer": "A RAG migration project involves orchestrating multiple components: infrastructure (Terraform), backend services (Python), frontend UI (Next.js), data pipelines (BigQuery/AlloyDB), and documentation. It also emphasizes the use of AI tools like Gemini CLI with the Conductor extension to manage the entire project lifecycle."
+    },
+    {
+      "question": "How does spec-driven development work in the Conductor extension?",
+      "answer": "Spec-driven development in the Conductor extension involves defining the project's source of truth in Markdown files before writing code. Key files include `product.md` (what to build), `tech-stack.md` (tools used), `tracks.md` (milestones), `plan.md` (step-by-step tasks), and `workflow.md` (how to build). This ensures AI agents have high-level context for decision-making."
+    },
+    {
+      "question": "What are the steps to initialize a new track in the Conductor workflow?",
+      "answer": "To initialize a new track, run `/conductor:newTrack`. The agent will: 1) Create a `spec.md` file outlining track goals, 2) Map the codebase and validate assumptions, and 3) Generate a `plan.md` file with implementation steps. User review and approval are required before proceeding with implementation."
+    },
+    {
+      "question": "How does AI-driven Test-Driven Development (TDD) work in this workflow?",
+      "answer": "AI-driven TDD follows a strict protocol: 1) Write failing tests first, 2) Run tests to confirm failure (Red Phase), 3) Write minimal code to pass tests (Green Phase), 4) Refactor code and tests for clarity and performance, 5) Verify test coverage meets requirements (>80%), and 6) Commit changes. This ensures functional verification of AI-generated code."
+    },
+    {
+      "question": "Provide a code snippet for Terraform initialization as described in the workflow.",
+      "answer": "hcl\n# Example Terraform initialization for a GCP project\nprovider \"google\" {\n  project = \"your-project-id\"\n  region  = \"us-central1\"\n}\n\nresource \"google_project_service\" \"apis\" {\n  for_each = toset([\n    \"bigquery.googleapis.com\",\n    \"alloydb.googleapis.com\",\n    \"compute.googleapis.com\"\n  ])\n  service = each.key\n}\nThe workflow mandates running `terraform plan` before `terraform apply` for all infrastructure changes."
+    },
+    {
+      "question": "What is the role of checkpoints in the Conductor workflow?",
+      "answer": "Checkpoints are quality gates at the end of each phase that include: 1) Automated verification (running full test suite), 2) Manual verification (user instructions for step-by-step validation), and 3) Auditable records (verification reports attached to git commits via `git notes` and `plan.md` updates with commit hashes). This ensures project reliability and traceability."
+    },
+    {
+      "question": "How does the Human-in-the-Loop model improve AI-agent collaboration in this workflow?",
+      "answer": "The Human-in-the-Loop model ensures effective synergy by: 1) Requiring user review and approval at critical stages (e.g., track initialization, code changes), 2) Providing step-by-step manual verification instructions, and 3) Using sandboxes (e.g., Gemini CLI in a sandbox with Yo) to safely test AI-generated outputs. This balances automation with human oversight for quality control."
+    }
+  ]
+}

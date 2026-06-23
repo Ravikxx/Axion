@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Doggie_Adventure",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who produced and directed the 1989 video 'Doggie Adventure'?",
+      "answer": "The video 'Doggie Adventure' was produced and directed by Harley Toberman and his wife, Kim Wood."
+    },
+    {
+      "question": "What filming technique was used to simulate a dog's perspective in 'Doggie Adventure'?",
+      "answer": "The video was shot using a steadicam camera mount positioned approximately 2 feet (0.61 m) above the ground to emulate a dog's point of view."
+    },
+    {
+      "question": "How did the media react to the novelty of 'Doggie Adventure'?",
+      "answer": "The video received 'aggressive' press coverage, including features in Time magazine, Newsweek, and the Today Show due to its novelty."
+    },
+    {
+      "question": "What were some of the mixed reviews of 'Doggie Adventure'?",
+      "answer": "Andy Wickstrom of the Chicago Tribune called it 'nothing but delightful,' Ed Condran of The Philadelphia Inquirer reported his dog was highly engaged, while Dave Barry of the Miami Herald noted his dogs 'totally ignored' the video."
+    },
+    {
+      "question": "What awards did 'Doggie Adventure' win at the New York International Film Festival?",
+      "answer": "The movie won a Bronze and Silver award for Sound Design and Original Score by The Client Brothers."
+    },
+    {
+      "question": "How can one access 'Doggie Adventure' today, and what extras are included in the DVD release?",
+      "answer": "The video is available as a DVD on Amazon with extras such as director's commentary, music tracks, a trivia game, and the ability to switch between source sound and final mix audio tracks—a first for a DVD."
+    },
+    {
+      "question": "Write a Python snippet to scrape reviews of 'Doggie Adventure' from a hypothetical website using BeautifulSoup.",
+      "answer": "python\nfrom bs4 import BeautifulSoup\nimport requests\n\ndef scrape_reviews(url):\n    response = requests.get(url)\n    soup = BeautifulSoup(response.text, 'html.parser')\n    reviews = [review.text.strip() for review in soup.find_all('div', class_='review')]\n    return reviews\n\n# Example usage:\n# reviews = scrape_reviews('https://example.com/doggie_adventure_reviews')\n# print(reviews)\n"
+    }
+  ]
+}

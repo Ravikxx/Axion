@@ -1,0 +1,30 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Glomeromycota",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is Glomeromycota and where can it be found in the environment?",
+      "answer": "Glomeromycota is a group of fungi that form symbiotic relationships with the roots of trees and plants. They are widespread across nearly all land ecosystems, including Antarctica, and are found in association with the roots of most plant species."
+    },
+    {
+      "question": "How do Glomeromycota and plants benefit each other in their symbiotic relationship?",
+      "answer": "Glomeromycota and plants engage in a mutualistic relationship. Plants provide the fungi with carbohydrates and energy, while the fungi supply essential minerals from the soil to the plants. This exchange supports the survival and health of both organisms."
+    },
+    {
+      "question": "What are arbuscules, and what is their role in the Glomeromycota-plant symbiosis?",
+      "answer": "Arbuscules are branching structures produced by nearly all Glomeromycota that penetrate plant roots. They facilitate the bidirectional transfer of substances between the plant and fungus, enabling nutrient exchange critical for the symbiosis."
+    },
+    {
+      "question": "What are the effects of Glomeromycota on crop plants and invasive species?",
+      "answer": "Glomeromycota can positively impact crop plants by increasing growth and transporting essential nitrogen products, which are vital for protein synthesis. However, they may negatively affect non-host plants and contribute to the growth and spread of invasive species by consuming resources and soil space."
+    },
+    {
+      "question": "How do Glomeromycota reproduce, and what are their spores like?",
+      "answer": "Glomeromycota reproduce via spore formation. Their spores are relatively large for fungi, ranging from 40 µm to 800 µm, some of which are visible to the naked eye. These spores have thick, often multi-layered cell walls and, under suitable conditions, germinate into small branches that seek out and colonize host plant roots."
+    },
+    {
+      "question": "Write a Python function that simulates the spore germination process of Glomeromycota. Assume spores need soil moisture above a threshold to germinate.",
+      "answer": "python\nimport random\n\ndef simulate_spore_germination(moisture_level, threshold=0.6):\n    \"\"\"\n    Simulates the germination of Glomeromycota spores based on soil moisture.\n    \n    Args:\n        moisture_level (float): Soil moisture level (0.0 to 1.0)\n        threshold (float): Minimum moisture required for germination (default: 0.6)\n    \n    Returns:\n        str: Result of the germination process\n    \"\"\"\n    if moisture_level >= threshold:\n        return \"Spore germinated successfully. A small branch has emerged and is searching for host roots.\"\n    else:\n        return \"Spore did not germinate due to insufficient moisture.\"\n\n# Example usage\nprint(simulate_spore_germination(0.75))  # Output: Spore germinated successfully...\nprint(simulate_spore_germination(0.4))   # Output: Spore did not germinate...\n"
+    }
+  ]
+}

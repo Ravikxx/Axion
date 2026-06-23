@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Brewarrina_Aboriginal_Fish_Traps",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "Where are the Brewarrina fish traps located, and what is their significance?",
+      "answer": "The Brewarrina fish traps, also known as Baiames Ngunnhu, are located in the town of Brewarrina on the Barwon River in northwestern New South Wales, approximately 800 km northwest of Sydney. They are the largest known Aboriginal fish trap facility in Australia and are believed to be the oldest human construction in the world, with an estimated age of around 40,000 years. Their design and complexity make them unique in Australia, leading to their designation as a national monument."
+    },
+    {
+      "question": "How old are the Brewarrina fish traps, and what do they consist of?",
+      "answer": "The Brewarrina fish traps are estimated to be around 40,000 years old, though the exact date remains unconfirmed. They consist of numerous small stone circles connected by stone weirs, which guide fish into areas where they can be caught. The system spans approximately 500 meters in length and is located within the Ngunnhu Aboriginal territory."
+    },
+    {
+      "question": "What role did the Brewarrina fish traps play in Aboriginal culture before European settlement?",
+      "answer": "Before European settlement, the Ngunnhu people used the river and fish traps for fishing and as a central site for social, cultural, and spiritual activities. They maintained strong relationships with other Aboriginal groups, including the Kamilaroi, Marowari, and Ualaria tribes, and invited neighboring groups to participate in ceremonies, trade, and barter. The Ngunnhu attributed the existence of the fish traps to Baiame, a mythical Dreamtime creator."
+    },
+    {
+      "question": "How did European settlement impact the Brewarrina fish traps?",
+      "answer": "European settlers disrupted the fish traps by removing stones from the river to allow paddle steamers to navigate, particularly during non-dry seasons. In the 1920s, additional rocks were taken for use in house foundations and road construction. These actions altered the natural flow and structure of the fish traps, reducing their original functionality."
+    },
+    {
+      "question": "What is the significance of the fish ladder in the Brewarrina fish traps, and when was it opened?",
+      "answer": "The fish ladder at the Brewarrina fish traps was opened on June 3, 2005, and registered in the Australian National Heritage List due to its historical importance. It plays a key role in maintaining the ecological and cultural connectivity of the site, supporting social and cultural coexistence within the Aboriginal community. The ladder facilitates fish migration while preserving the site's heritage value."
+    },
+    {
+      "question": "Write a Python function to simulate the flow of fish through a simplified version of the Brewarrina fish traps system.",
+      "answer": "python\nimport random\n\ndef simulate_fish_trap_flow(num_fish=100, weir_positions=[10, 25, 40, 60], trap_length=100):\n    fish_positions = {i: random.randint(0, trap_length) for i in range(num_fish)}\n    caught_fish = []\n    \n    for step in range(trap_length):\n        for fish_id, pos in list(fish_positions.items()):\n            if pos == step:\n                if step in weir_positions:\n                    caught_fish.append(fish_id)\n                fish_positions.pop(fish_id)\n    \n    return {\n        \"initial_fish\": num_fish,\n        \"caught_fish\": caught_fish,\n        \"percentage_caught\": (len(caught_fish) / num_fish) * 100\n    }\n\n# Example usage\nresult = simulate_fish_trap_flow(num_fish=200)\nprint(f\"Caught {result['percentage_caught']:.1f}% of fish.\")\n\nThis function simulates the movement of fish through a trap system with defined weir positions, returning the number of fish caught and the percentage of the total."
+    },
+    {
+      "question": "Why are the Brewarrina fish traps considered a national monument, and what does this designation entail?",
+      "answer": "The Brewarrina fish traps are considered a national monument due to their unique design, complexity, size, and historical significance as one of the oldest human constructions in the world. The national monument designation acknowledges their cultural importance and protects the site from further damage or alteration, ensuring its preservation for future generations."
+    }
+  ]
+}

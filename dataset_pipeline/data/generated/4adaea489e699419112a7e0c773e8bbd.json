@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/dannwaneri/i-shipped-broken-code-and-wrote-an-article-about-it-98p",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What was the initial flaw in the clipboard scraping system for capturing Claude.ai conversations?",
+      "answer": "The clipboard scraping system initially only captured user messages because it relied on `window.getSelection().toString()`, which only selects rendered DOM content. Since Claude.ai is a React SPA with virtual scrolling, AI responses and artifacts often existed in JavaScript state rather than the DOM, causing them to be missed entirely. Additionally, anything above the visible viewport was not captured, as `Ctrl+A` only selects what is currently rendered."
+    },
+    {
+      "question": "How did the author realize the clipboard scraping approach was flawed?",
+      "answer": "The author realized the flaw after shipping the system and receiving public feedback. They initially reviewed the extension by running it and observing captured content, which seemed to work. However, they later discovered it missed AI responses, artifacts, and viewport elements. This realization came to light when they documented the issue publicly, five days after the initial launch, and later fixed it by implementing API-based capture on February 18."
+    },
+    {
+      "question": "Provide a code snippet illustrating the flawed clipboard approach and explain why it failed.",
+      "answer": "Here’s the flawed event listener code used to capture clipboard events:\njavascript\ndocument.addEventListener('copy', async (e) => {\n  const copiedText = window.getSelection().toString();\n  // Parse timestamps to detect Claude vs user...\n});\n\nThis failed because `window.getSelection()` only captures text that is currently rendered in the DOM. Since Claude.ai dynamically loads content via virtual scrolling, many AI responses and artifacts exist in JavaScript memory and are not part of the rendered DOM. As a result, the extension missed most of the conversation."
+    },
+    {
+      "question": "What cultural shift does the author advocate for in response to AI's impact on software development?",
+      "answer": "The author advocates for a cultural shift toward deeper ownership and verification in software development. Instead of relying on surface-level checks (e.g., AI detectors or punctuation analysis), developers should ask critical questions like \"What is this not capturing?\" before shipping code or publishing articles. This involves documenting rejected AI outputs, defining clear bug conditions, and ensuring processes like property-aware code evolution are in place to maintain review depth."
+    },
+    {
+      "question": "How does the author describe the relationship between AI generation and review processes?",
+      "answer": "The author argues that AI has widened the gap between fast generation and slow understanding, but the bottleneck isn’t AI itself—it’s that review processes haven’t adapted to this speed disparity. Historically, engineering practices like code review and testing were designed to bridge this gap, but under AI pressure, teams often resort to cheap, superficial reviews (e.g., scanning for AI signals) instead of deeper scrutiny. The fix requires intentional slowing down and prioritizing review quality over speed."
+    },
+    {
+      "question": "What is property-aware code evolution, and how does it address the clipboard scraping flaw?",
+      "answer": "Property-aware code evolution is a process where developers define explicit boundaries and conditions before code execution begins. For example, before an AI agent writes code, the team specifies what conditions constitute a bug, what \"fixed\" means, and what existing functionality must remain intact. This approach addresses flaws like the clipboard scraping issue by forcing developers to ask \"what is this not capturing?\" upfront, ensuring comprehensive validation rather than reactive fixes."
+    },
+    {
+      "question": "Why does the author emphasize transparency in their development process?",
+      "answer": "The author emphasizes transparency to highlight the value of documenting mistakes and the learning process. By publicly sharing the evolution of their system—from the flawed clipboard approach to the API-based solution—they provide a real-world example of how shallow reviews (e.g., checking if something \"works\" superficially) can lead to errors. Transparency also serves as a cultural counterpoint to polished success stories, showing that growth comes from acknowledging and fixing gaps."
+    }
+  ]
+}

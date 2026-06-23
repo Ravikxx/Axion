@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Darren_Kelly",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When and where was Darren Kelly born?",
+      "answer": "Darren Kelly was born on 30 June 1979 in Northern Ireland."
+    },
+    {
+      "question": "What positions did Darren Kelly play during his football career?",
+      "answer": "Darren Kelly played as a centre-back throughout his football career."
+    },
+    {
+      "question": "List the clubs Darren Kelly played for in chronological order.",
+      "answer": "Darren Kelly played for Derry City, Carlisle United, Portadown (first spell), Derry City (second spell), York City, Portadown (second spell), Stalybridge Celtic, Garforth Town, Frickley Athletic, and Scarborough Athletic."
+    },
+    {
+      "question": "What notable achievement occurred during Darren Kelly's time at Carlisle United?",
+      "answer": "During his tenure at Carlisle United, Darren Kelly appeared in the 2003 Football League Trophy final."
+    },
+    {
+      "question": "Provide an example of Darren Kelly's involvement in European competition.",
+      "answer": "While playing for Derry City during his second spell, Darren Kelly featured in European competition, which attracted interest from Scottish Premier League clubs."
+    },
+    {
+      "question": "What was Darren Kelly's first managerial position, and when was he appointed?",
+      "answer": "Darren Kelly's first managerial position was at League One club Oldham Athletic, where he was appointed in May 2015."
+    },
+    {
+      "question": "Write a Python function to extract all the clubs Darren Kelly played for from the given text.",
+      "answer": "python\ndef extract_clubs_played(text):\n    clubs = [\n        \"Derry City\", \"Carlisle United\", \"Portadown\", \n        \"Derry City\", \"York City\", \"Portadown\",\n        \"Stalybridge Celtic\", \"Garforth Town\", \n        \"Frickley Athletic\", \"Scarborough Athletic\"\n    ]\n    return clubs\n\n# Example usage:\ntext = \"...\"  # Insert the provided text here\nclubs = extract_clubs_played(text)\nprint(clubs)\n"
+    }
+  ]
+}

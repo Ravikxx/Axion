@@ -1,0 +1,34 @@
+{
+  "source_url": "https://mathworld.wolfram.com/SmithNormalForm.html",
+  "category": "mathworld",
+  "pairs": [
+    {
+      "question": "What is the Smith Normal Form of a matrix over a field?",
+      "answer": "The Smith Normal Form (SNF) of a matrix over a field is a diagonal matrix obtained by performing elementary row and column operations. The diagonal entries are monic nonzero elements (often denoted as d₁, d₂, ..., dₙ) with degrees at least one, satisfying d₁ | d₂ | ... | dₙ (where \"|\" denotes divisibility). This form is unique up to the order of the diagonal entries."
+    },
+    {
+      "question": "How are the invariant factors of a matrix related to its Smith Normal Form?",
+      "answer": "The invariant factors of a matrix are the diagonal entries (d₁, d₂, ..., dₙ) of its Smith Normal Form. These factors are monic nonzero elements of the underlying principal ideal domain (PID) and satisfy the divisibility condition d₁ | d₂ | ... | dₙ. They are invariant under elementary row and column operations, meaning they remain unchanged regardless of the specific operations performed to reach the SNF."
+    },
+    {
+      "question": "Write a Python code snippet to compute the Smith Normal Form of a matrix using the SageMath library.",
+      "answer": "python\nfrom sage.all import matrix, ZZ\n\n# Define a matrix over the integers (a PID)\nM = matrix(ZZ, [[2, 4, 6], [3, 6, 9], [4, 8, 12]])\n\n# Compute the Smith Normal Form\nS, U, V = M.smith_form()\n\nprint(\"Smith Normal Form (S):\")\nprint(S)\nprint(\"\\nTransformation matrices (U and V):\")\nprint(\"U:\")\nprint(U)\nprint(\"V:\")\nprint(V)\n\nThis code computes the Smith Normal Form of a given integer matrix, along with the transformation matrices U and V such that U * M * V = S."
+    },
+    {
+      "question": "Why is the Smith Normal Form important in linear algebra and abstract algebra?",
+      "answer": "The Smith Normal Form is important because it provides a canonical form for matrices over principal ideal domains (PIDs), allowing for the classification of matrices up to equivalence under elementary row and column operations. It is used in solving systems of linear Diophantine equations, computing the structure of finitely generated modules over PIDs, and analyzing the rational canonical form of linear operators. The invariant factors derived from the SNF also play a key role in invariant theory and module theory."
+    },
+    {
+      "question": "What are the elementary row and column operations used to compute the Smith Normal Form?",
+      "answer": "The elementary row and column operations used to compute the Smith Normal Form are:\n1. Swapping two rows or two columns.\n2. Multiplying a row or column by a unit (invertible element) of the field or PID.\n3. Adding a multiple of one row (or column) to another row (or column).\nThese operations are reversible and preserve the equivalence class of the matrix."
+    },
+    {
+      "question": "How does the Smith Normal Form differ from the Hermite Normal Form?",
+      "answer": "The Smith Normal Form (SNF) and Hermite Normal Form (HNF) are both canonical forms for matrices over PIDs, but they serve different purposes. The SNF is a diagonal matrix obtained via both row and column operations, making it unique up to the order of diagonal entries. In contrast, the HNF is an upper triangular matrix obtained via row operations alone and is typically used for matrices over Euclidean domains (e.g., integers). The HNF is not necessarily diagonal and is not unique in the same way as the SNF."
+    },
+    {
+      "question": "What is the relationship between the invariant factors of a matrix and its characteristic polynomial?",
+      "answer": "The invariant factors of a matrix are related to its characteristic polynomial through the fact that the characteristic polynomial factors into the product of the invariant factors. Specifically, if the Smith Normal Form of a matrix M is diag(d₁, d₂, ..., dₙ), then the characteristic polynomial of M is the product (x - d₁)(x - d₂)...(x - dₙ). The invariant factors provide a finer invariant than the characteristic polynomial, as they capture more detailed information about the matrix's structure."
+    }
+  ]
+}

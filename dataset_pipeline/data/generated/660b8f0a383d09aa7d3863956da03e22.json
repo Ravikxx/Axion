@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Bisaya_(Borneo)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Where are the Bisaya people primarily located geographically?",
+      "answer": "The Bisaya people are primarily concentrated in East Malaysia (Sabah and Sarawak) and Brunei. In Sabah, they are found in the southwestern interior regions, including the Klias Peninsula, along the Padas and Klias rivers, and in the districts of Beaufort, Kuala Penyu, and Sipitang, as well as Labuan. In Sarawak, they reside in the Lawas and Limbang districts. In Brunei, they are located in the Belait, Temburong, and Tutong districts."
+    },
+    {
+      "question": "What are the linguistic similarities between the Bisaya and Tatana Dusun tribes?",
+      "answer": "The Bisaya and Tatana Dusun tribes share a high degree of mutual intelligibility in their languages, indicating strong linguistic similarities. This suggests that their languages may be closely related or even dialects of the same language family, contributing to cultural and social connections between the two groups."
+    },
+    {
+      "question": "How do the religious practices of Bisaya people in Sabah, Sarawak, and Brunei differ?",
+      "answer": "The Bisaya people exhibit variation in religious practices across regions: those in Sabah are mostly Muslim, particularly along the southwestern coasts including Labuan; those in Sarawak are predominantly Christian, often found along the Limbang River; and those in Brunei have either Muslim or non-Muslim populations, with some classified as Dusun or Jati Dusun."
+    },
+    {
+      "question": "What historical influences shaped the Bisaya people's spiritual beliefs?",
+      "answer": "The Bisaya people were formerly animist-pagan with strong spiritualist beliefs. They were also influenced by Buddhist-Hindu local governments in the region, which contributed to the blending of spiritual and religious practices within their culture."
+    },
+    {
+      "question": "Why are Bisaya people in Brunei sometimes referred to as Dusun in official records?",
+      "answer": "In Brunei, the Bisaya people are sometimes included under the official Malay ethnic designation in national censuses and are referred to as both Dusun and Bisaya. This classification arises because of linguistic and cultural similarities with the Dusun group, leading to overlapping identities in official documentation."
+    },
+    {
+      "question": "Provide a Python-style pseudocode snippet that categorizes Bisaya subgroups by region and religion.",
+      "answer": "python\ndef categorize_bisaya_subgroups(region, religion=None):\n    categories = {\n        'Sabah': {'religion': 'Muslim', 'locations': ['Beaufort', 'Kuala Penyu', 'Sipitang', 'Labuan']},\n        'Sarawak': {'religion': 'Christian', 'locations': ['Limbang River', 'Lawas']},\n        'Brunei': {'religion': ['Muslim', 'Non-Muslim'], 'classifications': ['Dusun', 'Jati Dusun'], 'locations': ['Belait', 'Temburong', 'Tutong']}\n    }\n    return categories.get(region, 'Region not found')\n\n# Example usage:\nprint(categorize_bisaya_subgroups('Sabah'))\nprint(categorize_bisaya_subgroups('Sarawak', 'Christian'))\n"
+    },
+    {
+      "question": "What role did agriculture and fishing play in the Bisaya community's historical economy?",
+      "answer": "The Bisaya people traditionally formed an important agricultural and fishing community along the northwestern coast of Borneo. Their proximity to river systems like the Padas and Klias, as well as coastal estuaries, supported sustainable livelihoods centered on farming and marine resource harvesting, reinforcing their connection to the region's natural environment and the Sultanate of Brunei."
+    }
+  ]
+}

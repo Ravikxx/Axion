@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Adaptive_software_development",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is Adaptive Software Development (ASD) and who were its key contributors?",
+      "answer": "Adaptive Software Development (ASD) is a software development process created by Jim Highsmith and Sam Bayer as an evolution of Rapid Application Development (RAD). It emphasizes continuous adaptation of the development process to project needs by replacing traditional waterfall cycles with iterative 'speculate, collaborate, and learn' cycles."
+    },
+    {
+      "question": "What are the six key characteristics of an ASD lifecycle?",
+      "answer": "The six key characteristics of an Adaptive Software Development (ASD) lifecycle are: mission focused, feature based, iterative, timeboxed, risk driven, and change tolerant. These traits enable continuous learning and adaptation throughout the project."
+    },
+    {
+      "question": "How does the 'speculate' phase in ASD differ from traditional planning approaches?",
+      "answer": "In the 'speculate' phase, ASD acknowledges that all stakeholders are likely partially wrong about certain aspects of the project's mission. It focuses on adaptive cycle planning using the customer's mission statement, project constraints (like delivery dates), and basic requirements to define release cycles, rather than attempting perfect upfront planning."
+    },
+    {
+      "question": "What is adaptive cycle planning in ASD and what inputs does it use?",
+      "answer": "Adaptive cycle planning in ASD is the process of defining the set of required release cycles (software increments) for a project. It uses three primary inputs: the customer's mission statement, project constraints (such as delivery dates or user descriptions), and basic requirements to structure the development timeline."
+    },
+    {
+      "question": "How does the 'collaborate' phase in ASD balance predictability and adaptability?",
+      "answer": "The 'collaborate' phase in ASD balances predictability by planning and guiding work based on stable aspects of the environment, while adapting to unpredictable changes caused by factors like technology shifts, requirement changes, stakeholder feedback, or vendor constraints. This dual approach ensures both structure and flexibility in the development process."
+    },
+    {
+      "question": "What is the purpose of learning cycles in ASD and how do they function?",
+      "answer": "Learning cycles in ASD challenge stakeholders through short iterations that include design, build, and testing phases. These cycles gather knowledge by allowing small mistakes based on false assumptions, which are then corrected. This iterative learning process builds experience and expertise in the problem domain over time."
+    },
+    {
+      "question": "Provide a Python code snippet that models the ASD cycle structure.",
+      "answer": "python\ndef adaptive_software_development_cycle():\n    while project_active:\n        # Speculate: Plan adaptive cycles based on current understanding\n        release_cycles = adaptive_cycle_planning(\n            mission=customer_mission,\n            constraints=project_constraints,\n            requirements=basic_requirements\n        )\n        \n        # Collaborate: Execute feature-based iterations\n        for cycle in release_cycles:\n            for iteration in cycle:\n                design, build, test(iteration)\n                \n        # Learn: Analyze outcomes and adapt\n        insights = gather_knowledge()\n        update_process(insights)\n        \n        # Check if project goals are met\n        if project_complete():\n            project_active = False\n\n# Helper functions (conceptual)\ndef adaptive_cycle_planning(mission, constraints, requirements):\n    # Returns a list of release cycles\n    return []\n\ndef design_build_test(iteration):\n    # Performs the core iterative work\n    pass\n\ndef gather_knowledge():\n    # Collects learnings from the iteration\n    return []\n\ndef update_process(insights):\n    # Adjusts the process based on new insights\n    pass\n"
+    }
+  ]
+}

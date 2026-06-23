@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/mikkel_frimerrasmussen_9/vegi-vegetables-are-not-aliens-1587",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What is the primary goal of the Vegi web applet?",
+      "answer": "The primary goal of Vegi is to help young, pre-literate children discover and develop an interest in vegetables through a playful, interactive learning experience. The app uses a friendly vegetable mascot named Vegi to teach kids about vegetables, their facts, and how to prepare tasty dishes, making healthy foods less intimidating and more intriguing."
+    },
+    {
+      "question": "What are the two main multimodal features of Vegi?",
+      "answer": "The two main multimodal features of Vegi are:\n1. **Visual Vegetable Recognition**: Children can point their device's camera at a real vegetable, snap a picture, and Vegi will identify it using Gemini 2.5 Flash. The app then provides a fun fact about the vegetable and speaks it aloud, creating a 'See & Say' experience.\n2. **Voice-Activated Discovery**: Children can speak the name of a vegetable into the microphone. The app transcribes the speech to text, uses Gemini to generate a kid-friendly description of the vegetable's taste and uses, and then creates a cartoon image of a dish featuring that vegetable."
+    },
+    {
+      "question": "How does Vegi use Google AI Studio and Gemini models for development and functionality?",
+      "answer": "Vegi was entirely built and prototyped using Google AI Studio, with Gemini 2.5 Pro serving as a development strategist and troubleshooter. AI Studio was used to:\n- Craft and test core multimodal prompts for Vegi's personality and logic.\n- Scaffold the React frontend and backend logic.\n- Deploy the app as a containerized applet on Google Cloud Run. The app leverages Gemini 2.5 Flash for its multimodal understanding of image and audio inputs, enabling real-time vegetable recognition and voice-based interactions."
+    },
+    {
+      "question": "Provide a Python code snippet that demonstrates how to send a voice query to Vegi's API and receive a response.",
+      "answer": "python\nimport requests\nimport speech_recognition as sr\n\n# Initialize speech recognizer\nrecognizer = sr.Recognizer()\n\n# Capture voice input\nwith sr.Microphone() as source:\n    print(\"Say the name of a vegetable...\")\n    audio = recognizer.listen(source)\n\ntry:\n    # Convert speech to text\n    voice_text = recognizer.recognize_google(audio).lower()\n    print(f\"You said: {voice_text}\")\n\n    # Send to Vegi's API (example endpoint)\n    response = requests.post(\n        \"https://vegi-967579883759.us-west1.run.app/api/voice-discovery\",\n        json={\"query\": voice_text}\n    )\n    \n    # Process response\n    if response.status_code == 200:\n        data = response.json()\n        print(\"Vegi's response:\", data.get(\"description\"))\n        print(\"Generated dish image:\", data.get(\"image_url\"))\n    else:\n        print(\"Error:\", response.text)\n\nexcept sr.UnknownValueError:\n    print(\"Could not understand audio.\")\nexcept sr.RequestError as e:\n    print(f\"Speech recognition error: {e}\")\n"
+    },
+    {
+      "question": "What are the known limitations of the Vegi app?",
+      "answer": "The known limitations of the Vegi app include:\n1. **Browser Text-to-Speech**: On some smartphones, the text-to-speech feature requires the app to be reloaded after initial loading to work properly.\n2. **Simple AI Guardrails**: The app's safety measures for AI responses are currently basic and may need improvement.\n3. **English-Only**: The app is currently limited to English to simplify development for the competition, though Gemini 2.5 Flash supports multiple languages."
+    },
+    {
+      "question": "How does Vegi handle multiple vegetables in a single interaction?",
+      "answer": "Vegi is designed to handle more than one vegetable at a time. When a child points the camera at multiple vegetables or speaks a list of vegetables, the app uses Gemini 2.5 Flash's multimodal capabilities to identify and process each vegetable individually. For example, if a child places a carrot and a tomato in front of the camera, Vegi will recognize both, provide fun facts for each, and may even generate a dish image that incorporates both vegetables."
+    },
+    {
+      "question": "What is the significance of the app's motto, 'Vegetables are not Aliens'?",
+      "answer": "The motto 'Vegetables are not Aliens' is a playful way to frame the app's mission of making vegetables less intimidating and more approachable for children. By anthropomorphizing vegetables as 'aliens' that need to be understood, the app encourages kids to see vegetables as familiar, intriguing, and even fun—turning an educational challenge into an engaging adventure."
+    }
+  ]
+}

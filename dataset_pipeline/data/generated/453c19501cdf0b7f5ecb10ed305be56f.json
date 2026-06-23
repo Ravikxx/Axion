@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Afshar_dialect",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the Afshar dialect and where is it primarily spoken?",
+      "answer": "Afshar, also called Afshari, is a Turkic dialect spoken by the Afshar people in Iran and Afghanistan. It is primarily associated with communities in these two countries, where the Afshar ethnic group resides."
+    },
+    {
+      "question": "How is the Afshar dialect classified linguistically according to different sources?",
+      "answer": "The classification of Afshar varies by source. The Encyclopaedia Iranica considers it a separate Southern Oghuz language, while Ethnologue and Glottolog classify it as a dialect of Azerbaijani. Linguistically, it is often grouped within the South Oghuz subgroup of Turkic languages, specifically as part of the Southwestern South (SWS) Oghuz group."
+    },
+    {
+      "question": "What are some phonological and lexical features that distinguish Afshar from Azerbaijani?",
+      "answer": "Afshar is distinguished by several features, including many loanwords from Persian and the rounding of the phoneme /a/ to [ɒ], similar to Uzbek. Additionally, some vowels that are rounded in Azerbaijani are unrounded in Afshar. For example, the word for '100' is /jiz/ in Afshar, whereas it is /jyz/ in standard Azerbaijani."
+    },
+    {
+      "question": "How did contact with Persian influence the Afshar dialect?",
+      "answer": "Due to prolonged exposure to a Persian-speaking environment, many Afshars adopted Persian as their mother tongue. In some regions like Kirmān, bilingualism developed. This linguistic contact has also transformed the original Afshar dialect, leading to changes in phonology, vocabulary, and grammar."
+    },
+    {
+      "question": "Who are the leading linguists that classify Afshar within the South Oghuz group?",
+      "answer": "Lars Johanson, emeritus professor of Turcology and linguistics at the University of Mainz, and Eva Csato, professor emeritus in Turkic languages at Uppsala University, classify Afshar as part of the Southwestern South Oghuz group. This group includes dialects spoken in Iran (e.g., Qashqai, Sonqori, Aynallu) and Afghanistan (e.g., Afshar)."
+    },
+    {
+      "question": "Is there a comprehensive linguistic comparison of Afshar dialects available?",
+      "answer": "As of 2009, a comprehensive linguistic comparison of different Afshar groups remains outstanding, according to scholarly literature. This means that detailed studies comparing variants within the Afshar dialect continuum are lacking."
+    },
+    {
+      "question": "Write a Python function that checks if a given word's vowel rounding in Afshar matches the expected pattern compared to Azerbaijani. Assume vowels are represented as characters.",
+      "answer": "python\ndef check_vowel_rounding(word_afshar, word_azeri):\n    # Define vowels that are typically rounded in Azerbaijani but not in Afshar\n    rounded_vowels_azeri = {'ü', 'ö', 'o'}\n    unrounded_vowels_afshar = {'i', 'e', 'a'}\n    \n    # Check if the word contains vowels that should differ in rounding\n    for a_char, az_char in zip(word_afshar, word_azeri):\n        if a_char in unrounded_vowels_afshar and az_char in rounded_vowels_azeri:\n            return True\n    return False\n\n# Example usage:\nafshar_word = \"jiz\"  # meaning 100\nazeri_word = \"jyz\"\nprint(check_vowel_rounding(afshar_word, azeri_word))  # Output: False (no rounded vowels in this example)\n\nThis function compares corresponding characters in two words to detect differences in vowel rounding between Afshar and Azerbaijani."
+    }
+  ]
+}

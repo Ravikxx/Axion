@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Argentine_Institute_of_Radio_Astronomy",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When was the Argentine Institute of Radio Astronomy (IAR) founded and what institutions initially established it?",
+      "answer": "The Argentine Institute of Radio Astronomy (IAR) was created in 1962 through an agreement between CONICET, CIC, the National University of La Plata, and the University of Buenos Aires."
+    },
+    {
+      "question": "What are the primary functions of the IAR?",
+      "answer": "The IAR promotes and coordinates research and technical development in radio astronomy in Argentina, collaborates in teaching and disseminating astrophysics and related disciplines, and engages in technological development and technology transfer."
+    },
+    {
+      "question": "Who are the current director and deputy director of the IAR?",
+      "answer": "The current director of the IAR is Dr. Gustavo E. Romero, and the deputy director is Dr. Paula Benaglia."
+    },
+    {
+      "question": "List the main research areas at the IAR.",
+      "answer": "The IAR focuses on high-energy astrophysics and compact objects, gravitation and numerical relativity, interstellar medium, planetary science, pulsar astronomy, massive stars, and machine learning applied to signal processing."
+    },
+    {
+      "question": "Describe the telescope infrastructure at the IAR.",
+      "answer": "The IAR operates two twin radio telescopes, each equipped with 30-meter reflective dishes operating at 1420 MHz. The first telescope was partially built using components sent by the Carnegie Institution of Washington, while the second was entirely constructed at the IAR."
+    },
+    {
+      "question": "Provide an example of historical collaboration involving the IAR.",
+      "answer": "In the 1960s, the Carnegie Institution of Washington (CIW) collaborated with the IAR by sending parts for its first radio telescope antenna."
+    },
+    {
+      "question": "Write a Python snippet to simulate a 1420 MHz radio signal detection from a pulsar using a simplified model.",
+      "answer": "python\nimport numpy as np\nimport matplotlib.pyplot as plt\n\n# Simulated parameters\nfrequency = 1420e6  # 1420 MHz\npulsar_period = 1.5  # seconds\nsampling_rate = frequency * 2  # Nyquist rate\ntime = np.arange(0, 10, 1/sampling_rate)  # 10-second observation\n\n# Simulate pulsar signal (periodic Gaussian pulses)\npulses = np.exp(-0.5 * ((time % pulsar_period - pulsar_period/2) / 0.1)**2)\nnoise = np.random.normal(0, 0.1, len(time))\nsignal_with_noise = pulses + noise\n\nplt.figure(figsize=(10, 4))\nplt.plot(time, signal_with_noise)\nplt.title('Simulated 1420 MHz Radio Signal from a Pulsar')\nplt.xlabel('Time (s)')\nplt.ylabel('Amplitude')\nplt.grid(True)\nplt.show()\n\nThis code generates a synthetic radio signal at 1420 MHz with periodic pulsar-like pulses and additive noise, similar to data the IAR's telescopes might process."
+    }
+  ]
+}

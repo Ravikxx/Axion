@@ -1,0 +1,38 @@
+{
+  "source_url": "https://dev.to/devteam/congrats-to-the-github-copilot-cli-challenge-winners-2240",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What tool did @georgekobaidze build for tracking planes overhead?",
+      "answer": "@georgekobaidze built Metal Birds Watch, a terminal-based tool that allows users to track planes overhead without leaving their terminal. The tool demonstrates how the Copilot CLI can transform a hobbyist idea into a functional application."
+    },
+    {
+      "question": "How did GitHub Copilot CLI contribute to the development of RuStroke?",
+      "answer": "Peter (username: pengeszikra) used GitHub Copilot CLI as a thinking partner and code modifier to build RuStroke, a minimal vector drawing application. Copilot helped implement a complex geometry engine that can be integrated into other frontend or future drawing applications."
+    },
+    {
+      "question": "What is BinMate and what problem does it solve?",
+      "answer": "BinMate is an application developed by @cturner8 for managing binary installations from GitHub releases. It provides an easy way to install, manage, and switch between different versions of command-line tools, particularly benefiting Linux developers."
+    },
+    {
+      "question": "What are the prizes for the winners of the GitHub Copilot CLI Challenge?",
+      "answer": "The three winners each receive $1,000 USD, a ticket to GitHub Universe 2026, a 1-year GitHub Copilot Pro+ subscription, and an exclusive DEV Badge. The 25 runner-ups each receive a 1-year GitHub Copilot Pro+ subscription and an exclusive DEV Badge."
+    },
+    {
+      "question": "How can developers participate in future DEV Challenges?",
+      "answer": "Developers can participate in future DEV Challenges by keeping an eye on the [DEV Challenges](https://dev.to/challenges) page and following the challenge tag (e.g., {% tag devchallenge %}) to receive announcements about upcoming events."
+    },
+    {
+      "question": "Provide a code snippet showing how GitHub Copilot CLI might assist in building a CLI tool like Metal Birds Watch.",
+      "answer": "bash\n# Example Copilot CLI interaction for building a CLI tool to track planes\n# User prompt:\n\"Create a Python script that uses the requests library to fetch live flight data from OpenSky API and display it in a terminal-friendly format.\"\n\n# Copilot CLI generates:\nimport requests\nimport json\n\ndef fetch_flights():\n    url = \"https://opensky-network.org/api/states/all\"\n    response = requests.get(url)\n    if response.status_code == 200:\n        flights = response.json().get('states', [])\n        for flight in flights:\n            print(f\"Flight: {flight[1]}, Altitude: {flight[7]} ft, Speed: {flight[9]} m/s\")\n    else:\n        print(\"Failed to fetch flight data.\")\n\nif __name__ == \"__main__\":\n    fetch_flights()\n"
+    },
+    {
+      "question": "What GitHub product was highlighted as a key enabler for participants in the challenge?",
+      "answer": "GitHub Copilot, an AI-powered coding assistant, was highlighted as a key enabler for participants. It provided capabilities such as code generation, modification, and acting as a thinking partner, helping developers build complex applications like RuStroke and BinMate efficiently."
+    },
+    {
+      "question": "How many total participants were shortlisted in the GitHub Copilot CLI Challenge?",
+      "answer": "Over 400 submissions were reviewed for the challenge, though the exact number of shortlisted participants is not specified. Winners and runner-ups were selected from these submissions."
+    }
+  ]
+}

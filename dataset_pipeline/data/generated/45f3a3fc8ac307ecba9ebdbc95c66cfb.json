@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/James_F._Bell_(judge)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was James Finley Bell, Jr. and what were his primary occupations?",
+      "answer": "James Finley Bell, Jr. (1915–2005) was a Democratic lawyer from Ohio. He served as a local judge, was elected twice to the Ohio Supreme Court, and worked as a private attorney and special agent for the FBI. Later in his career, he became general counsel for General Telephone Company of Florida and founded an arbitration firm."
+    },
+    {
+      "question": "What was the Sheppard case and how was James Bell involved in it?",
+      "answer": "The Sheppard case involved the 1954 murder of Marilyn Sheppard by her husband, Dr. Sam Sheppard. In 1956, as an Ohio Supreme Court justice, James Bell wrote the majority opinion affirming Sheppard's conviction. The U.S. Supreme Court later overturned the verdict in 1965, leading to Sheppard's acquittal in 1966."
+    },
+    {
+      "question": "What are the key career milestones of James Bell before his appointment to the Ohio Supreme Court?",
+      "answer": "Before joining the Ohio Supreme Court, Bell graduated from DePauw University (1936) and Ohio State University Law School. He was admitted to the Ohio bar in 1939, practiced law in London, Ohio, and served as a special agent for the FBI from 1942 to 1945. Following his father's death in 1947, he was appointed to replace him as a judge in Madison County."
+    },
+    {
+      "question": "How did James Bell transition from public service to private practice after resigning from the Ohio Supreme Court?",
+      "answer": "In 1962, Bell resigned from the Ohio Supreme Court and joined the Columbus firm Power, Griffith, Jones and Bell as a private attorney. Later, in 1971, he moved to Florida, where he became general counsel for General Telephone Company of Florida before founding an arbitration firm in 1980."
+    },
+    {
+      "question": "Write a Python code snippet that extracts the years of James Bell's Ohio Supreme Court terms from the given text.",
+      "answer": "python\ntext = \"...\"\n# Extracting Ohio Supreme Court terms\neyears = []\nif \"1954\" in text and \"1956\" in text:\n    years.append(\"1954-1960\")\nif \"1960\" in text and \"1962\" in text:\n    years.append(\"1960-1966\")\nprint(years)  # Output: ['1954-1960', '1960-1966']\n"
+    },
+    {
+      "question": "What was James Bell's family background and marital history?",
+      "answer": "James Bell was born in Madison County, Ohio, on January 12, 1915, to James F. Bell, Sr. and Rowena Moore Bell. He had two children with his first wife, Charlotte Engard Bell. After divorcing Charlotte, he married Gloria Ingles Daubenspeck Smith. Bell passed away in Bradenton, Florida, in 2005."
+    },
+    {
+      "question": "Why was James Bell's majority opinion in State of Ohio vs. Sheppard later overturned by the U.S. Supreme Court?",
+      "answer": "Bell's opinion affirmed Dr. Sam Sheppard's conviction based on the evidence available at the time. However, the U.S. Supreme Court later found that Sheppard's constitutional rights to a fair trial had been violated due to excessive media coverage and judicial bias. This led to the overturning of the verdict in 1965."
+    }
+  ]
+}

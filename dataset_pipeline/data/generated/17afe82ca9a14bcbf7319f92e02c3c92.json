@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/canro91/dear-junior-coders-stop-chasing-shiny-objects-1p51",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What is the core advice the author's coworker gave about learning to code?",
+      "answer": "The author's coworker advised to focus on learning one thing at a time rather than trying to learn everything simultaneously."
+    },
+    {
+      "question": "What does the author mean by 'Don't chase shiny objects' in the context of coding?",
+      "answer": "The phrase refers to avoiding the temptation to constantly switch between new tools, libraries, or frameworks without mastering the fundamentals first. These things change frequently, while foundational skills like SQL, HTTP, and design patterns remain relevant over time."
+    },
+    {
+      "question": "List at least five topics the author recommends mastering for long-term coding success.",
+      "answer": "The author recommends mastering SQL, HTTP, C/C++, data structures, design patterns, vanilla JavaScript, clean code principles, debugging and testing, and Linux and operating systems."
+    },
+    {
+      "question": "Why does the author believe that coding is more about collaboration than individual coding skills?",
+      "answer": "The author emphasizes that coding is fundamentally a collaborative activity, requiring soft skills like negotiation and persuasion. This is why they wrote the book 'Street-Smart Coding: 30 Ways to Get Better at Coding'—to highlight the importance of interpersonal skills alongside technical abilities."
+    },
+    {
+      "question": "How has the author's perspective on learning to code evolved over the years?",
+      "answer": "Initially, the author was distracted by new frameworks and tools, trying to learn everything at once. Over time, they realized the value of deep focus on foundational topics and developed a roadmap to guide others from junior to senior levels, encapsulated in their book 'Street-Smart Coding'."
+    },
+    {
+      "question": "Provide a Python code snippet that demonstrates a foundational concept like data structures.",
+      "answer": "Here's a Python example demonstrating a basic linked list implementation, a fundamental data structure:\n\npython\nclass Node:\n    def __init__(self, data):\n        self.data = data\n        self.next = None\n\nclass LinkedList:\n    def __init__(self):\n        self.head = None\n\n    def append(self, data):\n        new_node = Node(data)\n        if not self.head:\n            self.head = new_node\n            return\n        last_node = self.head\n        while last_node.next:\n            last_node = last_node.next\n        last_node.next = new_node\n\n    def print_list(self):\n        current_node = self.head\n        while current_node:\n            print(current_node.data, end=\" -> \")\n            current_node = current_node.next\n        print(\"None\")\n\n# Example usage:\nllist = LinkedList()\nllist.append(1)\nllist.append(2)\nllist.append(3)\nllist.print_list()\n# Output: 1 -> 2 -> 3 -> None\n"
+    },
+    {
+      "question": "What are some timeless technologies or concepts in programming that the author mentions, and why are they considered timeless?",
+      "answer": "The author mentions technologies like C/C++, SQL, HTTP, and concepts like design patterns, data structures, and clean code principles. These are considered timeless because they have remained relevant for decades despite the constant evolution of tools and frameworks. For example, C/C++ has been foundational for modern systems programming, while SQL is still the standard for database queries. These basics provide a stable foundation for adapting to new technologies."
+    }
+  ]
+}

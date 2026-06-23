@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Joey_DiPaolo",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When and how did Joey DiPaolo contract HIV?",
+      "answer": "Joey DiPaolo contracted HIV in 1984 during a heart surgery. He required a blood transfusion, and the blood he received came from an HIV-infected donor."
+    },
+    {
+      "question": "What was Joey DiPaolo's initial medical prognosis after his HIV diagnosis in 1988?",
+      "answer": "After being diagnosed with HIV in 1988, doctors gave Joey DiPaolo only one year to live and advised his family to hide his condition."
+    },
+    {
+      "question": "How did Joey DiPaolo's health improve in 1989 despite his HIV diagnosis?",
+      "answer": "With the help of medications, Joey DiPaolo's health improved significantly in 1989, allowing him to live a typical life."
+    },
+    {
+      "question": "What notable event occurred in early 1990 that involved Joey DiPaolo and Lawrence Taylor?",
+      "answer": "In early 1990, after recovering from a severe illness, Joey DiPaolo attended an AIDS funds gala where he met NFL player Lawrence Taylor. Taylor autographed a ball for him, and DiPaolo disclosed his HIV status."
+    },
+    {
+      "question": "How did the public and community react to Joey DiPaolo's HIV disclosure in 1990?",
+      "answer": "Following his disclosure in local newspapers, Joey DiPaolo faced threats from schoolmates' parents, avoidance from family friends, and protests outside his school. A legal battle ensued, but a New York court ruled that he could remain in his educational center."
+    },
+    {
+      "question": "What legal outcome did Joey DiPaolo achieve regarding the source of his HIV infection?",
+      "answer": "In 1992, Joey DiPaolo won a lawsuit against the medical center from which the contaminated blood came."
+    },
+    {
+      "question": "What initiative did Joey DiPaolo establish to support children affected by AIDS, and when was it founded?",
+      "answer": "In 2000, Joey DiPaolo founded Camp TLC (Together Living a Challenge), a summer camp for children who cannot attend regular camps due to AIDS. The camp provides a supportive environment for these children to enjoy outdoor activities and community."
+    },
+    {
+      "question": "Write a Python function that calculates the number of years Joey DiPaolo has lived since his HIV diagnosis in 1988.",
+      "answer": "python\ndef years_since_diagnosis(diagnosis_year=1988, current_year=None):\n    \"\"\"\n    Calculate the number of years Joey DiPaolo has lived since his HIV diagnosis.\n    \n    Args:\n        diagnosis_year (int): Year of diagnosis (default 1988)\n        current_year (int): Year to calculate from (default current year)\n    \n    Returns:\n        int: Number of years since diagnosis\n    \"\"\"\n    if current_year is None:\n        import datetime\n        current_year = datetime.datetime.now().year\n    return current_year - diagnosis_year\n\n# Example usage:\nprint(years_since_diagnosis())  # Output will vary based on current year\n"
+    }
+  ]
+}

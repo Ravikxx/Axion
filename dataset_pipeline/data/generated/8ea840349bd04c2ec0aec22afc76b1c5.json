@@ -1,0 +1,38 @@
+{
+  "source_url": "https://dev.to/googleai/how-i-made-an-mcp-server-that-saves-me-an-hour-per-week-3k8k",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What is the main problem the author faced with their podcast publishing workflow before implementing the MCP server?",
+      "answer": "The author's podcast publishing workflow involved multiple manual steps (listening to episodes, writing show notes, uploading audio, updating the website via pull requests, and promoting on social media) which were time-consuming and created a significant bottleneck in their publishing process."
+    },
+    {
+      "question": "How did the author initially use AI to improve their podcast publishing workflow?",
+      "answer": "The author created a Python script that took an audio file as input, used AI to convert it to a transcript, and generated drafts of show notes and social media posts. This script consistently saved 1.5-2 hours per episode by automating the most time-consuming parts of their workflow."
+    },
+    {
+      "question": "Why wasn't the author's initial Python script widely adopted by their co-hosts?",
+      "answer": "The script wasn't integrated into their existing publishing workflow, requiring manual sharing and setup. It lacked user-friendly interfaces and required each co-host to manually run the script, making it inconvenient for team-wide adoption."
+    },
+    {
+      "question": "What are the key benefits of using an MCP server for this podcast publishing use case?",
+      "answer": "The MCP server approach provided a simple backend-focused interface, integrated with existing tools like the Gemini CLI, offered extensibility to add new tools incrementally, and leveraged existing MCP server design patterns from the author's workshop experience."
+    },
+    {
+      "question": "Provide a code snippet showing how the author initialized the MCP server using FastMCP.",
+      "answer": "python\nfrom fastmcp import FastMCP\n\nmcp = FastMCP(\"podcast-assistant\")\n\n@mcp.tool()\nasync def transcribe_audio(audio_file_path: str) -> str:\n    \"\"\"Transcribe audio file to text using Gemini AI\"\"\"\n    # Implementation would use google-genai library\n    pass\n\n@mcp.tool()\nasync def generate_show_notes(transcript: str) -> str:\n    \"\"\"Generate show notes from transcript\"\"\"\n    pass\n"
+    },
+    {
+      "question": "How did the author deploy their podcast-assistant-mcp server to Cloud Run?",
+      "answer": "The author containerized the MCP server using Docker, defined dependencies in pyproject.toml (including FastMCP and google-genai libraries), and deployed to Cloud Run following the methodology from their Accelerate AI workshop, which provided a secure and scalable hosting solution."
+    },
+    {
+      "question": "What specific tools did the author implement in their podcast-assistant-mcp server to streamline publishing?",
+      "answer": "The author implemented tools for transcribing audio files, generating show notes, creating social media posts, and generating Hugo post content for the website. Each tool could be called independently, offering flexibility in the publishing workflow."
+    },
+    {
+      "question": "How can someone try out the podcast-assistant-mcp server solution?",
+      "answer": "You can try the solution by visiting the GitHub repository at https://github.com/GoogleCloudPlatform/devrel-demos/tree/main/containers/podcast-assistant-mcp, where you'll find the complete code and deployment instructions for the podcast-assistant-mcp server."
+    }
+  ]
+}

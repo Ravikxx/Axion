@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/2010_Indianapolis_500",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who won the 94th Indianapolis 500, and what was notable about the race's conclusion?",
+      "answer": "Dario Franchitti won the 94th Indianapolis 500 on May 30, 2010. The race's conclusion was notable for its fuel mileage strategy, where several drivers gambled on a late caution period but were forced to pit for fuel. Franchitti, conserving fuel himself, capitalized on the situation and took the lead on lap 192. The race also saw a dramatic crash involving Mike Conway, Ryan Hunter-Reay, and others as the leaders took the white flag."
+    },
+    {
+      "question": "What was the Centennial era in the context of the Indianapolis 500, and when did it occur?",
+      "answer": "The Centennial era was a three-year-long celebration of the Indianapolis 500, marking the 100th anniversary of the opening of the Indianapolis Motor Speedway in 1909 and the 100th anniversary of the inaugural race in 1911. The 94th Indianapolis 500, held in 2010, was the second event in this era."
+    },
+    {
+      "question": "How many female drivers participated in the 2010 Indianapolis 500, and who was awarded Rookie of the Year?",
+      "answer": "The 2010 Indianapolis 500 featured four female drivers. Simona de Silvestro was awarded Rookie of the Year for her performance in the race."
+    },
+    {
+      "question": "What happened during Bump Day of the 2010 Indianapolis 500 qualifying?",
+      "answer": "During Bump Day of the 2010 Indianapolis 500 qualifying, rookie Sebastian Saavedra secured a spot in the race while lying in a hospital bed. Veteran driver Paul Tracy, however, missed the field after a last-minute qualifying attempt failed."
+    },
+    {
+      "question": "Provide a Python code snippet to calculate the average finishing position of the top three drivers in the 94th Indianapolis 500.",
+      "answer": "python\n# Finishing positions of the top three drivers\npositions = [1, 2, 3]  # Dario Franchitti (1st), Dan Wheldon (2nd), Marco Andretti (3rd)\n\n# Calculate the average\naverage_position = sum(positions) / len(positions)\nprint(f\"Average finishing position: {average_position}\")\n\nThis code calculates the average finishing position of Dario Franchitti, Dan Wheldon, and Marco Andretti, who finished 1st, 2nd, and 3rd respectively."
+    },
+    {
+      "question": "What was Tony Kanaan's starting position in the 2010 Indianapolis 500, and how did he perform?",
+      "answer": "Tony Kanaan started the 2010 Indianapolis 500 in the final position (33rd). Despite this, he ran as high as second during the race before finishing eleventh."
+    },
+    {
+      "question": "Explain the fuel mileage strategy used by four drivers during the 2010 Indianapolis 500 and why it failed.",
+      "answer": "Four drivers—Mike Conway, Justin Wilson, Helio Castroneves, and Graham Rahal—chose not to pit during a caution period on laps 161–165, gambling on another caution to extend their fuel range. Their strategy failed because no additional caution occurred, forcing them to pit for fuel. This left them unable to challenge the leaders, who had conserved fuel more effectively and capitalized on the situation."
+    }
+  ]
+}

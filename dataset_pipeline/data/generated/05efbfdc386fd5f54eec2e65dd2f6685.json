@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Final_Battle_(2021)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the 2021 Final Battle event, and why was it historically significant for Ring of Honor?",
+      "answer": "The 2021 Final Battle was a professional wrestling pay-per-view event produced by Ring of Honor (ROH). It was historically significant because it marked the last event before ROH's hiatus, ending an era, and was followed by a resumption of operations in April 2022."
+    },
+    {
+      "question": "Where and when did the 2021 Final Battle take place?",
+      "answer": "The 2021 Final Battle took place on December 11, 2021, at the Chesapeake Employers Insurance Arena in Baltimore, Maryland."
+    },
+    {
+      "question": "Who won the main event at the 2021 Final Battle, and what championship did they win?",
+      "answer": "Jonathan Gresham won the main event at the 2021 Final Battle by defeating Jay Lethal to win the vacant ROH World Championship."
+    },
+    {
+      "question": "List three notable matches from the 2021 Final Battle and their outcomes.",
+      "answer": "1. Dragon Lee defeated Rey Horus. 2. Shane Taylor defeated Kenny King in a Fight Without Honor match. 3. Rok-C retained the ROH Women's World Championship by defeating Willow Nightingale. The Briscoe Brothers also defeated The OGK to win the ROH World Tag Team Championship."
+    },
+    {
+      "question": "Which wrestlers made their ROH debuts at the 2021 Final Battle?",
+      "answer": "Adam Scherr, Westin Blake, and the tag team FTR made their debuts at the 2021 Final Battle."
+    },
+    {
+      "question": "Write a Python script to extract the list of wrestlers who sent well-wishes via pre-recorded message at the 2021 Final Battle.",
+      "answer": "python\nwrestlers = [\n    \"Eddie Edwards\", \"Moose\", \"Jerry Lynn\", \"Jimmy Jacobs\", \"Matt Hardy\",\n    \"Christopher Daniels\", \"Jay Lethal\", \"Colt Cabana\", \"Hangman Adam Page\",\n    \"CM Punk\", \"Cody Rhodes\", \"B. J. Whitmer\", \"Adam Cole\", \n    \"The Young Bucks\", \"Bryan Danielson\"\n]\nprint(\"Wrestlers who sent well-wishes via pre-recorded message:\")\nfor wrestler in wrestlers:\n    print(f\"- {wrestler}\")\n"
+    },
+    {
+      "question": "How many matches were contested at the 2021 Final Battle, and how many were on the pre-show?",
+      "answer": "A total of eleven matches were contested at the 2021 Final Battle, with three of those matches taking place on the pre-show."
+    }
+  ]
+}

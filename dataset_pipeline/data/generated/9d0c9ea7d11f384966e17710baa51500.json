@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Client_Hints",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is Client Hints in the context of HTTP protocol?",
+      "answer": "Client Hints is an extension to the HTTP protocol that enables servers to request specific information about a client's configuration, such as screen size or device capabilities. This allows servers to tailor responses accordingly, for example, sending a smaller image to a client with a small screen. The client can share this information via HTTP headers or expose it to JavaScript running on a web page."
+    },
+    {
+      "question": "How does Client Hints differ from user-agent headers in terms of privacy?",
+      "answer": "Client Hints was designed as a privacy-focused alternative to user-agent headers. User-agent headers, while originally intended for statistical purposes, became tools for cross-site user tracking. Client Hints provides a more controlled way to share client information, reducing the risk of tracking by limiting the exposure of identifying data compared to the more verbose user-agent strings."
+    },
+    {
+      "question": "What was the origin and adoption timeline of Client Hints?",
+      "answer": "Client Hints was proposed by Google engineers in 2013 as part of the Privacy Sandbox initiative. Despite initial criticism regarding potential tracking vectors, Chrome implemented support for Client Hints in August 2020. By 2024, over 75% of web users had browsers supporting Client Hints, indicating widespread adoption."
+    },
+    {
+      "question": "Can you provide a code example showing how a server requests Client Hints information?",
+      "answer": "A server can request Client Hints information by sending an HTTP response header like this:\nhttp\nAccept-CH: Sec-CH-UA, Sec-CH-UA-Mobile, Sec-CH-UA-Platform\n\nThis header asks the client to include additional information in subsequent requests, such as the user agent (`Sec-CH-UA`), mobile status (`Sec-CH-UA-Mobile`), and platform (`Sec-CH-UA-Platform`)."
+    },
+    {
+      "question": "What are third-party domains, and why were they a concern in the design of Client Hints?",
+      "answer": "Third-party domains are web servers not owned by the website a user is visiting, which load resources like images or scripts. Critics argued that Client Hints could enable new forms of tracking by these domains, as they might use the additional client information to build detailed user profiles across multiple websites, undermining the intended privacy benefits."
+    },
+    {
+      "question": "How is Client Hints used in JavaScript for tracking purposes?",
+      "answer": "Client Hints can be accessed via JavaScript using the `navigator.userAgentData` API. For example, a website can retrieve Client Hints values like this:\njavascript\nif ('userAgentData' in navigator) {\n  const hints = await navigator.userAgentData.getHighEntropyValues(['model', 'platform']);\n  console.log(hints.model, hints.platform);\n}\n\nResearch has shown that many websites use this method to collect Client Hints for tracking and advertising, raising privacy concerns about the protocol's implementation."
+    },
+    {
+      "question": "What did the 2023 study from KU Leuven and Radboud University reveal about Client Hints usage?",
+      "answer": "The 2023 study examined the top 100,000 websites and found that most accesses of Client Hints were initiated by JavaScript code used for tracking and advertising purposes. This indicates that despite its privacy-focused design, Client Hints is predominantly leveraged for user tracking rather than its intended use cases like adaptive content delivery."
+    }
+  ]
+}

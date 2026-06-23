@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Düsseldorf_International_Airport",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is the IATA code for Düsseldorf International Airport?",
+      "answer": "The IATA code for Düsseldorf International Airport is DUS."
+    },
+    {
+      "question": "How many airlines operate at Düsseldorf International Airport?",
+      "answer": "Düsseldorf International Airport hosts 70 airlines."
+    },
+    {
+      "question": "What major event occurred at Düsseldorf Airport on April 11, 1996, and what were its consequences?",
+      "answer": "On April 11, 1996, a fire broke out at Düsseldorf Airport, likely caused by welding work on the roof. The incident resulted in 17 deaths, mostly from smoke inhalation, and severely damaged the terminal building. The terminal was closed for five years and re-opened on July 1, 2001, after nearly complete reconstruction."
+    },
+    {
+      "question": "Describe the SkyTrain service at Düsseldorf International Airport, including its purpose, speed, and operational details.",
+      "answer": "The SkyTrain is a suspended monorail that connects the terminal building with the InterCity and ICE train station. It covers a distance of 2.5 kilometers at a maximum speed of 50 km/h. The service, which started operation in 2002, replaced a shuttle bus and is not free to use."
+    },
+    {
+      "question": "How many takeoffs and landings occur daily at Düsseldorf International Airport?",
+      "answer": "Düsseldorf International Airport handles 800 takeoffs and landings per day."
+    },
+    {
+      "question": "What was the first aircraft to land in northern Düsseldorf, and when did it occur?",
+      "answer": "The first aircraft to land in northern Düsseldorf was the Zeppelin LZ-III in 1909."
+    },
+    {
+      "question": "Write a Python code snippet to calculate the total number of destinations served by Düsseldorf International Airport across its 70 airlines, assuming an average of 2.57 destinations per airline.",
+      "answer": "python\n# Average destinations per airline (70 airlines serving 180 destinations)\naverage_destinations_per_airline = 180 / 70\n\n# Calculate total destinations (for illustration)\ntotal_destinations = 70 * average_destinations_per_airline\nprint(f\"Estimated total destinations: {total_destinations}\")\n# Output: Estimated total destinations: 180.0"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/devteam/top-7-featured-dev-posts-of-the-week-4pmf",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What are the key lessons shared by @cristea_theodora_6200140b from her first year as a self-taught developer?",
+      "answer": "The author emphasizes three main lessons: 1) **Patience is crucial**—learning to code is a marathon, not a sprint, and progress comes with time and practice. 2) **Master the fundamentals**—strong foundational knowledge (e.g., data structures, algorithms, and problem-solving) is essential before diving into advanced topics. 3) **Work with your brain**—understand how you learn best, leverage active recall, and avoid forcing unnatural learning methods. For example, breaking problems into smaller, digestible parts aligns with cognitive science principles."
+    },
+    {
+      "question": "How does @kathryngrayson use AI as a skeptic, and what boundaries does she set?",
+      "answer": "Kathryn Grayson integrates AI as a **pair programming partner** for brainstorming and debugging but avoids letting it dictate the entire creative process. She uses it as a **documentation reference** to quickly look up syntax or API details but ensures she retains control over the final code. Her approach balances efficiency with critical thinking: she reviews all AI-generated suggestions to prevent 'garbage in, garbage out' scenarios. For example, she might write pseudocode first, then use AI to refine it, rather than relying on it to write entire functions from scratch."
+    },
+    {
+      "question": "What concerns does @holasoymalva raise about the shift from programming to 'prompting'?",
+      "answer": "The author argues that as programming increasingly involves assembling AI outputs, developers risk losing the **core problem-solving joy** of building systems from scratch. They highlight a paradox: while prompting is becoming a primary skill, it may reduce the deep, hands-on engagement with code that fosters innovation. For instance, writing a prompt to generate a web scraper is easier than debugging a custom scraper, but the latter teaches more about the underlying mechanics. The concern is that this shift could lead to a generation of developers who excel at 'prompt engineering' but lack foundational programming intuition."
+    },
+    {
+      "question": "Why does @pauljlucas argue that learning C is still valuable today?",
+      "answer": "Paul Lucas contends that C remains vital for three reasons: 1) **Understanding the underpinnings**—C forces developers to confront memory management, pointers, and low-level operations, which are abstracted away in higher-level languages. 2) **Systems programming**—many foundational tools (e.g., databases, operating systems) are written in C, and knowledge of it is essential for contributing to or debugging such systems. 3) **Algorithmic clarity**—working with C sharpens problem-solving skills, as developers must think carefully about efficiency and correctness. For example, implementing a linked list in C reveals how pointers and memory allocation work in ways that high-level languages obscure."
+    },
+    {
+      "question": "What was the bug that @skeptrune was so frustrated by, and how did it lead to him joining the company?",
+      "answer": "The bug was a **race condition in a documentation tool** that caused inconsistent rendering of API examples. Skeptrune was so annoyed by its persistence that he traced it to a shared state issue in a JavaScript async function. Ultimately, his frustration drove him to reach out to the company, where he was hired to finally resolve the issue. The experience highlights how deep engagement with a problem—even as an outsider—can lead to unexpected career opportunities. It also underscores the importance of addressing technical debt, as unresolved race conditions can cascade into larger issues."
+    },
+    {
+      "question": "Why does @abiji-2020 argue that `.env` files are insecure and outdated for managing secrets?",
+      "answer": "Abiji-2020 argues that `.env` files are problematic for three reasons: 1) **Security risks**—they often end up in version control (e.g., GitHub), exposing secrets to the public. 2) **Lack of granularity**—they don’t support dynamic or role-based access control for secrets. 3) **Scalability issues**—managing multiple environments (dev, staging, prod) becomes unwieldy. Instead, they recommend tools like **Infisical** (for developer-friendly secret management) or **HashiCorp Vault** (for enterprise-grade solutions). For example, a `.env` file might look like this:\n\nDB_PASSWORD=supersecret\nAPI_KEY=12345\n\nBut with Vault, secrets are dynamically injected at runtime, reducing exposure."
+    },
+    {
+      "question": "How does @mjlynch123 argue that AI won't replace skilled developers but will expose the 'frauds'?",
+      "answer": "MJ Lynch argues that AI will **displace developers who rely on shallow knowledge** (e.g., copying-and-pasting from Stack Overflow without understanding the code) but **reward those with deep expertise**. The reason: AI tools excel at generating boilerplate or common patterns but struggle with novel, complex problems that require creativity and foundational understanding. For example, an AI might write a basic REST API endpoint, but a skilled developer can optimize it for performance, handle edge cases, and integrate it into a larger system. AI thus acts as a filter, revealing who truly understands the craft."
+    }
+  ]
+}

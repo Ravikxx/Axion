@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/googleai/my-daughter-asked-if-developers-used-to-write-code-by-hand-but-it-was-the-follow-up-question-that-1bh8",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What is the main historical shift in software development that the author describes?",
+      "answer": "The author describes a shift from developers manually writing each character of code by hand to the widespread use of advanced tools and frameworks that automate much of the process, akin to the transition from hand tools to power tools in woodworking. This change has made coding more efficient but also raises questions about the future role of traditional coding skills."
+    },
+    {
+      "question": "How does the author compare coding to woodworking in terms of craftsmanship?",
+      "answer": "The author compares coding to woodworking by noting that both fields have historically required meticulous, hands-on work to craft something from scratch. Just as woodworking traditionally involved using handsaws and other manual tools, coding involved writing each line of code by hand. Both crafts have since evolved with the introduction of power tools and automation."
+    },
+    {
+      "question": "What are the potential benefits and drawbacks of using automated tools in software development?",
+      "answer": "The benefits of using automated tools include increased productivity, the ability to build more complex systems quickly, and the potential to create more output (e.g., building more birdhouses in woodworking). The drawbacks include the risk of losing traditional craftsmanship skills, over-reliance on tools, and the challenge of adapting to a rapidly changing professional landscape."
+    },
+    {
+      "question": "Why does the author describe the current state of software development as 'exciting and scary'?",
+      "answer": "The author describes the current state as 'exciting and scary' because while automation and advanced tools offer unprecedented opportunities for learning and building software, they also challenge the traditional identity and skills of developers. The profession is undergoing a transformation, and it's unclear what the future holds for those who once prided themselves on their hands-on coding abilities."
+    },
+    {
+      "question": "What does the author imply about the future of professional software development with the rise of automated tools?",
+      "answer": "The author implies that the future of software development will likely involve a blend of traditional coding skills and the use of automated tools. While power tools (like frameworks and libraries) can handle repetitive tasks, fundamental skills (like using a handsaw in woodworking) may still be valuable for customization, problem-solving, and maintaining control over the craft."
+    },
+    {
+      "question": "Provide a code snippet that demonstrates how modern tools can automate repetitive tasks in software development.",
+      "answer": "Here’s an example of using a code generator (like a scaffolding tool) to automate the creation of a basic web application structure in Python with Flask:\n\npython\n# Using a tool like 'cookiecutter' to scaffold a Flask project\nfrom cookiecutter.main import cookiecutter\n\n# This command generates a basic Flask project structure\ncookiecutter('https://github.com/cookiecutter-flask/cookiecutter-flask', output_dir='./my_flask_app')\n\n# The generated project includes:\n# - A project directory with templates, static files, and configuration\n# - Pre-configured settings for Flask\n# - Basic routes and dependencies\n\nThis snippet shows how tools can automate the repetitive setup of a project, allowing developers to focus on writing custom logic."
+    },
+    {
+      "question": "How might the rise of automated tools change the learning process for new developers?",
+      "answer": "The rise of automated tools may shift the learning process for new developers toward understanding high-level concepts, problem-solving, and leveraging tools effectively rather than memorizing syntax or writing every line of code manually. It could also democratize software development by making it easier for beginners to build functional applications without starting from scratch."
+    }
+  ]
+}

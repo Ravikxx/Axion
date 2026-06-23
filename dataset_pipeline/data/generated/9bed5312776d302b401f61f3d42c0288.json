@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/tahosin/my-github-graveyard-has-27-dead-projects-here-is-the-brutal-truth-about-why-52d9",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What is the main reason most developers fail to finish their side projects, according to the text?",
+      "answer": "According to the text, most developers fail to finish their side projects because they enjoy the dopamine rush of starting a new project more than the grind of finishing it."
+    },
+    {
+      "question": "What is the 'Perfect Stack' Trap, and how does it hinder project completion?",
+      "answer": "The 'Perfect Stack' Trap refers to the tendency of developers to use the latest or most complex technologies when starting a project, often spending excessive time configuring infrastructure instead of writing core business logic. This delays the actual development and can lead to loss of interest before the project is completed."
+    },
+    {
+      "question": "Why does the text argue against over-engineering projects with features like Redis caching layers?",
+      "answer": "The text argues against over-engineering because the biggest threat to a project's success is not server crashes or scalability issues, but rather the lack of users. Spending time on unnecessary features like Redis caching delays the project's launch and diverts focus from core functionality that could attract real users."
+    },
+    {
+      "question": "What is the '48-Hour Rule,' and how does it help developers finish projects?",
+      "answer": "The '48-Hour Rule' is a strict guideline that requires developers to launch a working, albeit ugly, prototype within 48 hours. This rule helps by forcing developers to focus on the core features and avoid scope creep, ensuring that the project is shipped rather than remaining in development limbo."
+    },
+    {
+      "question": "Provide a code snippet demonstrating how to use a simple, boring stack (e.g., Flask with SQLite) to quickly prototype a to-do list app.",
+      "answer": "python\nfrom flask import Flask, request, jsonify\nimport sqlite3\n\napp = Flask(__name__)\n\n# Initialize SQLite database\nconn = sqlite3.connect('todo.db', check_same_thread=False)\ncursor = conn.cursor()\ncursor.execute('''CREATE TABLE IF NOT EXISTS todos (id INTEGER PRIMARY KEY, task TEXT)''')\nconn.commit()\n\n@app.route('/todos', methods=['GET'])\ndef get_todos():\n    cursor.execute('SELECT * FROM todos')\n    todos = cursor.fetchall()\n    return jsonify([{'id': todo[0], 'task': todo[1]} for todo in todos])\n\n@app.route('/todos', methods=['POST'])\ndef add_todo():\n    task = request.json.get('task')\n    cursor.execute('INSERT INTO todos (task) VALUES (?)', (task,))\n    conn.commit()\n    return jsonify({'message': 'Todo added'}), 201\n\nif __name__ == '__main__':\n    app.run(debug=True)\nThis simple Flask app with SQLite allows you to quickly prototype a to-do list without over-engineering."
+    },
+    {
+      "question": "What is the most common excuse developers give for not launching a project, and why does the text argue against it?",
+      "answer": "The most common excuse developers give for not launching a project is that it 'just needs a little more polish.' The text argues against this because a buggy, ugly app that is live on the internet is infinitely more valuable than a perfect app sitting on localhost. Shipping early allows for real-world testing and feedback."
+    },
+    {
+      "question": "How can a developer apply the '48-Hour Rule' to a project idea they have today? What steps should they take?",
+      "answer": "To apply the '48-Hour Rule,' a developer should first identify the core feature of their project—the minimal viable functionality that solves the primary problem. They should then set a strict 48-hour deadline, use familiar and simple technologies to build a working prototype, and launch it online, even if it's ugly or buggy. The focus should be on shipping quickly rather than achieving perfection."
+    }
+  ]
+}

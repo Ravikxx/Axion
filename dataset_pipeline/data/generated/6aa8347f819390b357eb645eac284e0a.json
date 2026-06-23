@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Battlefield_2",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is Battlefield 2, and when was it released?",
+      "answer": "Battlefield 2 is a first-person shooter game developed by Digital Illusions CE and published by Electronic Arts. It was released on June 21, 2005, in North America."
+    },
+    {
+      "question": "Which factions are involved in the fictional world war depicted in Battlefield 2?",
+      "answer": "The game's story features a conflict between China, the European Union, the fictional Middle Eastern Coalition (MEC), Russia, and the United States."
+    },
+    {
+      "question": "How does the multiplayer aspect of Battlefield 2 promote teamwork?",
+      "answer": "In Battlefield 2's multiplayer mode, players can organize into squads led by a single commander, fostering coordination and teamwork."
+    },
+    {
+      "question": "What happened to the multiplayer servers of Battlefield 2 in 2014?",
+      "answer": "On June 30, 2014, the official multiplayer master server for Battlefield 2 was shut down due to the discontinuation of GameSpy services. However, the game can still be played online using fan-created mods with alternative servers."
+    },
+    {
+      "question": "Why were modified versions of Battlefield 2 taken down in 2017?",
+      "answer": "In 2017, Electronic Arts issued takedown notices against modified versions of Battlefield 2 distributed by the 'Revive Network' for copyright infringement."
+    },
+    {
+      "question": "What are the key gameplay elements of Battlefield 2?",
+      "answer": "Battlefield 2 combines first-person shooter mechanics with strategy and tactical elements, featuring modern weapon systems and squad-based multiplayer combat."
+    },
+    {
+      "question": "Write a Python script to fetch and print the release date of Battlefield 2.",
+      "answer": "python\nimport requests\nfrom bs4 import BeautifulSoup\n\nurl = 'https://en.wikipedia.org/wiki/Battlefield_2'\nresponse = requests.get(url)\nsoup = BeautifulSoup(response.text, 'html.parser')\nrelease_date = soup.find('span', {'class': 'bday dtstart published updated'})\nprint('Battlefield 2 was released on:', release_date.get_text())\n"
+    }
+  ]
+}

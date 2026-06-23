@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Carlton,_Bedfordshire",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the historical origin of the name 'Carlton'?",
+      "answer": "The name 'Carlton' originates from Old English and combines two elements: 'carl,' meaning 'free man' or 'peasant,' and 'ton,' meaning 'town' or 'settlement.' Together, it translates to 'the town of the free men,' reflecting the social structure and demographics of medieval England."
+    },
+    {
+      "question": "When was Carlton first recorded in historical documents?",
+      "answer": "Carlton was first recorded in the Domesday Book of 1086 as a parish within the Hundred of Willey."
+    },
+    {
+      "question": "Describe the layout of Carlton village.",
+      "answer": "Carlton is historically laid out in a rectangular road pattern. The main parts of the village are centered around Bridgend and High Street, with The Moor and The Causeway forming the other sides. During the 20th century, housing developments filled in the areas between these roads, including Rectory Close, Carriers Way, Street Close, and Beeby Way."
+    },
+    {
+      "question": "What notable landmarks or features can be found in Carlton Park?",
+      "answer": "Carlton Park, located on Rectory Close, features three swings, a small basketball court, a football pitch, and a 1.5-meter slide. Its most prominent landmark is a giant oak tree."
+    },
+    {
+      "question": "How did the tornado in 1981 impact Carlton?",
+      "answer": "On November 23, 1981, an F1/T2 tornado struck Carlton as part of a record-breaking nationwide tornado outbreak. This event caused significant damage to the village."
+    },
+    {
+      "question": "What are the current pubs in Carlton, and are there any historical pubs?",
+      "answer": "Carlton currently has two pubs: The Royal Oak and The Fox. Historically, The Angel pub operated on the High Street until the 1990s, after which it was converted into a private residence."
+    },
+    {
+      "question": "Write a Python script to find the distance between Carlton and nearby villages like Chellington, Harrold, and Pavenham.",
+      "answer": "Below is a Python script using the Haversine formula to calculate the distance between Carlton and nearby villages. Note: Replace the coordinates with accurate values for precise results.\n\npython\nfrom math import radians, sin, cos, sqrt, atan2\n\ndef haversine(lat1, lon1, lat2, lon2):\n    # Convert decimal degrees to radians\n    lat1, lon1, lat2, lon2 = map(radians, [lat1, lon1, lat2, lon2])\n    \n    # Haversine formula\n    dlat = lat2 - lat1\n    dlon = lon2 - lon1\n    a = sin(dlat/2)**2 + cos(lat1) * cos(lat2) * sin(dlon/2)**2\n    c = 2 * atan2(sqrt(a), sqrt(1-a))\n    r = 6371  # Radius of Earth in kilometers\n    return c * r\n\n# Approximate coordinates for Carlton and nearby villages (example values)\n# Carlton: lat=52.2, lon=-0.5\n# Chellington: lat=52.22, lon=-0.48\n# Harrold: lat=52.18, lon=-0.52\n# Pavenham: lat=52.16, lon=-0.55\n\ncarlton_coords = (52.2, -0.5)\nvillages = {\n    \"Chellington\": (52.22, -0.48),\n    \"Harrold\": (52.18, -0.52),\n    \"Pavenham\": (52.16, -0.55)\n}\n\nfor village, coords in villages.items():\n    distance = haversine(carlton_coords[0], carlton_coords[1], coords[0], coords[1])\n    print(f\"Distance from Carlton to {village}: {distance:.2f} km\")\n\n\n*Note: The coordinates used are approximate. For accurate results, use precise latitude and longitude data for Carlton and the villages."
+    }
+  ]
+}

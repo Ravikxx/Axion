@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Durand_Union_Station",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the current primary passenger rail service operating out of Durand Union Station?",
+      "answer": "The current primary passenger rail service operating out of Durand Union Station is Amtrak's Blue Water train."
+    },
+    {
+      "question": "Which three railroad museums are currently housed within Durand Union Station?",
+      "answer": "Durand Union Station currently houses the Michigan Railroad History Museum (which also functions as a gift shop), the Grand Trunk Western Railroad Museum, and the Ann Arbor Railroad History Museum."
+    },
+    {
+      "question": "How has Durand Union Station contributed to Michigan's railfan culture?",
+      "answer": "Durand Union Station is one of Michigan's most popular locations for railfans to visit, particularly due to its historic significance and the annual Durand Railroad Days Festival held in May."
+    },
+    {
+      "question": "What is the purpose of Durand Union Station, Inc.?",
+      "answer": "Durand Union Station, Inc. is a nonprofit organization dedicated to the preservation, restoration, and maintenance of the station building and its surrounding property."
+    },
+    {
+      "question": "Write a code snippet to calculate the number of years Durand Union Station has been listed on the National Register of Historic Places.",
+      "answer": "Assuming the current year is 2023, the calculation would be:\n\npython\ncurrent_year = 2023\nregistration_year = 1971\n\nyears_listed = current_year - registration_year\nyears_listed  # Output: 52\n"
+    },
+    {
+      "question": "What railroad carriers operate freight services near Durand Union Station, and where is their shared facility located?",
+      "answer": "Canadian National Railway, Great Lakes Central Railroad, and Huron and Eastern Railway operate freight services near Durand Union Station. Their shared freight yard is located just north of the station."
+    },
+    {
+      "question": "Why was Durand Union Station added to the Michigan Register of Historic Places in 1987 after being listed on the National Register in 1971?",
+      "answer": "Durand Union Station was added to the Michigan Register of Historic Places in 1987 to provide additional state-level recognition and protection for its historical significance, complementing its earlier federal listing in 1971."
+    }
+  ]
+}

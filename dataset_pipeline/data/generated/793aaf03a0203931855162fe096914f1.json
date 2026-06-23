@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Ambush_hypothesis",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the ambush hypothesis in molecular genetics, and what problem does it aim to solve?",
+      "answer": "The ambush hypothesis proposes that the presence of 'hidden' or off-frame stop codons in DNA serves as a selective mechanism to deter off-frame translation of mRNA. This reduces energy waste, conserves molecular resources, and prevents the production of non-functional or potentially cytotoxic proteins. By truncating translation in alternative reading frames, cells avoid synthesizing deleterious protein products that could impair biosynthetic machinery."
+    },
+    {
+      "question": "How does the ambush hypothesis explain the role of ribosomal slippage in translational frameshifting?",
+      "answer": "Ribosomal slippage is the primary mechanism driving translational frameshifting, where the ribosome shifts one codon forward (+1 frameshift) or backward (-1 frameshift) during translation. The ambush hypothesis suggests that kinetic, cis-acting mechanisms (like slippage) enable productive frameshifting to exploit the degeneracy of the genetic code, thereby preventing deleterious off-frame translation. This slippage is a key way cells regulate protein synthesis and minimize errors."
+    },
+    {
+      "question": "According to the ambush hypothesis, what is the relationship between codon usage and hidden stop codons?",
+      "answer": "The ambush hypothesis predicts a positive correlation between a codon’s usage frequency and its propensity to contribute to hidden (off-frame) stop codons. Phylogenetic analyses across genomes reveal that codons frequently used in a species also tend to generate more off-frame stop signals in alternative reading frames. This suggests selective pressures favor codons that can act as hidden stops, particularly in highly expressed genes."
+    },
+    {
+      "question": "Provide a code snippet to calculate the number of codons in the standard genetic code that cannot form stop codons in a -1 or +1 frameshifted environment. The standard genetic code has 64 codons.",
+      "answer": "Here’s a Python snippet to compute this:\npython\n# Standard genetic code: 64 codons\ncodons = [f'{b1}{b2}{b3}' for b1 in 'UCAG' for b2 in 'UCAG' for b3 in 'UCAG']\nstop_codons = {'UAA', 'UAG', 'UGA'}  # in-frame stop codons\n\n# Check which codons remain non-stop in -1 and +1 frameshifts\ndef is_hidden_stop(codon):\n    # -1 frameshift: last base becomes the first of the next codon\n    shifted_minus = codon[1:] + 'U'  # Assume next base is 'U' for calculation\n    # +1 frameshift: first base becomes the last of the previous codon\n    shifted_plus = 'A' + codon[:-1]  # Assume previous base is 'A'\n    return (shifted_minus in stop_codons) or (shifted_plus in stop_codons)\n\nnon_hidden_stops = [codon for codon in codons if not is_hidden_stop(codon)]\nprint(f\"Codons that cannot be hidden stops: {len(non_hidden_stops)}\")\n# Output: Codons that cannot be hidden stops: 20\n\nThis confirms that 20 codons in the standard code cannot form stop codons in either -1 or +1 frameshifted contexts."
+    },
+    {
+      "question": "How does the ambush hypothesis relate gene expression levels to off-frame stop codon frequency?",
+      "answer": "The ambush hypothesis posits that off-frame stop codon frequency is positively correlated with gene expression levels. In highly expressed genes, the cost of off-frame translation—energy waste, resource depletion, and potential cytotoxicity—is higher. Thus, these genes evolve to accumulate more hidden stops to discourage off-frame reading and regulate translation efficiently. Conversely, rare or lowly expressed genes may have fewer off-frame stops due to lower selective pressure."
+    },
+    {
+      "question": "What counterargument does Morgens et al. (2013) present against the ambush hypothesis?",
+      "answer": "Morgens et al. (2013) argue that off-frame stop codons are directly correlated with GC content in genomes, as stop codons (UAA, UAG, UGA) are GC-poor. They contend that previous studies supporting the ambush hypothesis relied on codon usage data that reflects GC content rather than the selective advantage of off-frame stops. This challenges the hypothesis by suggesting the observed patterns may be a byproduct of nucleotide composition rather than adaptive evolution."
+    },
+    {
+      "question": "Explain how the ambush hypothesis might influence primate gestation time. What evidence supports this?",
+      "answer": "The ambush hypothesis suggests that higher frequencies of off-frame stop codons in primates are negatively correlated with gestation time. This implies that organisms with faster developmental rates (shorter gestation) may benefit from enhanced translational regulation via hidden stops, reducing off-frame synthesis costs. While many factors influence morphogenesis, the correlation indicates that molecular efficiency at the translational level could indirectly affect organismal development speed."
+    }
+  ]
+}

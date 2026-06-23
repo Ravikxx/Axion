@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/1987–88_Utah_Jazz_season",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the Utah Jazz's record at the All-Star break during the 1987–88 NBA season?",
+      "answer": "The Utah Jazz had a 22–22 record at the All-Star break during the 1987–88 NBA season."
+    },
+    {
+      "question": "Which players on the 1987–88 Utah Jazz roster were named to the All-NBA Second Team?",
+      "answer": "Karl Malone and John Stockton were both named to the All-NBA Second Team for the 1987–88 season."
+    },
+    {
+      "question": "How many games did Darrell Griffith play during the 1987–88 NBA season, and what was the reason for the shortened season?",
+      "answer": "Darrell Griffith played 52 games during the 1987–88 season due to a season-ending left knee injury."
+    },
+    {
+      "question": "What was Karl Malone's statistical line for the 1987–88 NBA season?",
+      "answer": "Karl Malone averaged 27.7 points, 12.0 rebounds, and 1.4 steals per game during the 1987–88 NBA season."
+    },
+    {
+      "question": "Describe the Utah Jazz's playoff performance against the Portland Trail Blazers in the first round of the 1988 NBA playoffs.",
+      "answer": "The Utah Jazz faced the Portland Trail Blazers in the first round of the 1988 NBA playoffs. They lost Game 1 on the road 108–96 but won the next three games, including a Game 4 home win 111–96, to win the series in four games."
+    },
+    {
+      "question": "Which players on the 1987–88 Utah Jazz roster were named to the NBA All-Defensive Second Team?",
+      "answer": "Karl Malone, John Stockton, and Mark Eaton were all named to the NBA All-Defensive Second Team for the 1987–88 season."
+    },
+    {
+      "question": "Write a Python function that calculates the win–loss record of the 1987–88 Utah Jazz from their regular season record of 47–35.",
+      "answer": "python\ndef calculate_win_percentage(wins, losses):\n    total_games = wins + losses\n    return wins / total_games\n\n# Example usage for the Utah Jazz's 1987–88 season\nwin_percentage = calculate_win_percentage(47, 35)\nprint(f\"Utah Jazz 1987–88 win percentage: {win_percentage:.3f}\")\n# Output: Utah Jazz 1987–88 win percentage: 0.574\n"
+    },
+    {
+      "question": "What happened to Rickey Green after the 1987–88 NBA season?",
+      "answer": "Rickey Green was left unprotected in the 1988 NBA expansion draft and was selected by the Charlotte Hornets expansion team."
+    }
+  ]
+}

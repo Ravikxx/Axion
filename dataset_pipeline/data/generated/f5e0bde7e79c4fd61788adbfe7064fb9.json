@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Fisher_market",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is a Fisher market and what are its key components?",
+      "answer": "A Fisher market is an economic model introduced by Irving Fisher comprising three main components: (1) a set of m divisible products with pre-specified supplies (typically normalized to 1 per product), (2) a set of n buyers, each with a fixed monetary budget B_i, and (3) a utility function u_i representing each buyer's preferences over bundles. Prices p_j are assigned to products, and a bundle's price is the sum of its product prices weighted by quantities."
+    },
+    {
+      "question": "How is the price of a bundle calculated in a Fisher market?",
+      "answer": "In a Fisher market, the price of a bundle x = (x₁, ..., xₘ) is computed as the sum of the individual product prices multiplied by their respective quantities: p(x) = Σⱼ₌₁ᵐ pⱼ · xⱼ. This reflects the linear pricing assumption where products are perfectly divisible and prices scale linearly with quantity."
+    },
+    {
+      "question": "What defines an affordable bundle for a buyer in a Fisher market?",
+      "answer": "A bundle x is affordable for buyer i if its total price does not exceed their budget: p(x) ≤ B_i. Affordability depends on the buyer's budget and the current market prices."
+    },
+    {
+      "question": "How is the demand set of a buyer determined in a Fisher market?",
+      "answer": "The demand set of buyer i, denoted Demand_i(p), is the set of all affordable bundles (satisfying p(x) ≤ B_i) that maximize the buyer's utility u_i(x). It consists of bundles that are both within budget and optimal in terms of utility."
+    },
+    {
+      "question": "What is a competitive equilibrium (CE) in a Fisher market and what are market-clearing prices?",
+      "answer": "A competitive equilibrium is a price vector (p₁, ..., pₘ) where: (1) Each buyer can be assigned a bundle from their demand set, and (2) The total allocation of each product exactly matches its supply (typically normalized to 1). Market-clearing prices are the equilibrium prices that make these conditions simultaneously true."
+    },
+    {
+      "question": "Why is finding a competitive equilibrium challenging in Fisher markets?",
+      "answer": "Finding a competitive equilibrium is challenging because it requires solving a system where prices must simultaneously satisfy two interdependent conditions: (1) each buyer's optimal bundle must be affordable under the prices, and (2) the aggregate demand for each product must exactly match its fixed supply. This involves solving a complex optimization problem with constraints across all buyers and products."
+    },
+    {
+      "question": "Provide a Python function to check if a given price vector in a Fisher market is a competitive equilibrium.",
+      "answer": "python\ndef is_competitive_equilibrium(prices, budgets, supplies, utility_functions):\n    m = len(prices)  # number of products\n    n = len(budgets)  # number of buyers\n    \n    # Step 1: Compute demand sets for each buyer\n    demand_sets = []\n    for i in range(n):\n        # Find all bundles x where p(x) <= budgets[i] and u_i(x) is maximized\n        # Simplified: assume utility is linear for demonstration\n        max_utility = -float('inf')\n        demand = []\n        for x in itertools.product(range(10), repeat=m):  # discretized space\n            bundle_price = sum(prices[j] * x[j] for j in range(m))\n            if bundle_price <= budgets[i]:\n                utility = utility_functions[i](x)\n                if utility > max_utility:\n                    max_utility = utility\n                    demand = [x]\n                elif utility == max_utility:\n                    demand.append(x)\n        demand_sets.append(demand)\n    \n    # Step 2: Check if total demand equals supply for each product\n    total_demand = [0] * m\n    for buyer_demand in demand_sets:\n        for bundle in buyer_demand:\n            for j in range(m):\n                total_demand[j] += bundle[j]\n    \n    return all(abs(total_demand[j] - supplies[j]) < 1e-5 for j in range(m))\n\nNote: This is a simplified implementation assuming discretized bundles and linear utilities for demonstration purposes."
+    }
+  ]
+}

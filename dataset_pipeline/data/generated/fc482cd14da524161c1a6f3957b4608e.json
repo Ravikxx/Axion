@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/EFTP",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was EFTP and when was it developed?",
+      "answer": "EFTP (Ether File Transfer Protocol or Experimental File Transfer Protocol) was a simple file transfer protocol developed as part of the PARC Universal Packet (PUP) protocol suite at Xerox PARC in the late 1970s."
+    },
+    {
+      "question": "How did EFTP differ from the Byte Stream Protocol in the PUP suite?",
+      "answer": "Unlike the Byte Stream Protocol in the PUP suite, which provided a reliable byte stream, EFTP ran directly on top of the basic internetwork layer and did not use reliable byte stream services."
+    },
+    {
+      "question": "What were the key operational characteristics of EFTP?",
+      "answer": "EFTP was a simple lock-step protocol where only one packet was in transit at any time. Each received packet triggered an immediate reply packet until the transfer completed. It also did not include file-name provisioning in its packets."
+    },
+    {
+      "question": "Why was EFTP considered easy to implement in limited memory environments?",
+      "answer": "EFTP's simplicity—using a lock-step protocol without reliability mechanisms—allowed it to be implemented with minimal memory, making it suitable for resource-constrained systems of the late 1970s."
+    },
+    {
+      "question": "What were some practical uses of EFTP at Xerox PARC?",
+      "answer": "EFTP was used to boot Xerox Altos over Ethernet and to send files to print spoolers of laser printers."
+    },
+    {
+      "question": "How does EFTP compare to TFTP in the TCP/IP suite?",
+      "answer": "EFTP served as the inspiration for TFTP. Both protocols are simple, lock-step file transfer protocols that run directly on the internetwork layer without reliable byte stream services. However, TFTP includes provisions for sending file names as part of transfers, unlike EFTP."
+    },
+    {
+      "question": "Provide a Python code snippet simulating a basic EFTP-like lock-step file transfer mechanism.",
+      "answer": "python\nimport socket\nimport struct\n\ndef eftp_server(file_data, host='localhost', port=12345):\n    with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:\n        sock.bind((host, port))\n        print(f\"Server waiting on {host}:{port}\")\n        chunk_size = 512\n        sequence = 0\n        for i in range(0, len(file_data), chunk_size):\n            chunk = file_data[i:i+chunk_size]\n            sock.sendto(chunk, (host, port+1))  # Send data chunk\n            print(f\"Sent chunk {sequence}\")\n            ack, addr = sock.recvfrom(4)  # Expect 4-byte ACK\n            if ack == struct.pack('>I', sequence):\n                sequence += 1\n            else:\n                break  # ACK mismatch\n\ndef eftp_client(output_file, host='localhost', port=12345):\n    with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:\n        sock.bind((host, port+1))\n        with open(output_file, 'wb') as f:\n            while True:\n                data, addr = sock.recvfrom(512)\n                if not data:\n                    break\n                f.write(data)\n                sock.sendto(struct.pack('>I', 0), addr)  # Send ACK (simplified)\n        print(\"File transfer complete.\")\n\n# Example usage:\n# eftp_server(b'Sample file data...', host='localhost', port=12345)\n# eftp_client('received_file.bin', host='localhost', port=12345)\n"
+    }
+  ]
+}

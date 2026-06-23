@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Antarctic",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the Antarctic region and where is it located?",
+      "answer": "The Antarctic region is Earth's polar region surrounding the South Pole, lying within the Antarctic Circle. It is diametrically opposite the Arctic region around the North Pole. The region includes the continent of Antarctica, the Kerguelen Plateau, and other island territories on the Antarctic Plate or south of the Antarctic Convergence. It covers approximately 20% of the Southern Hemisphere, with Antarctica's land area alone covering about 14 million km²."
+    },
+    {
+      "question": "What is the Antarctic Convergence, and what role does it play in defining the Antarctic region?",
+      "answer": "The Antarctic Convergence is a natural boundary zone in the Southern Ocean, approximately 32 to 48 km wide, where cold Antarctic waters meet warmer subantarctic waters. This zone varies in latitude seasonally. South of the Antarctic Convergence defines the Antarctic region, including its waters, ice shelves, and island territories, which together are administered under the Antarctic Treaty System."
+    },
+    {
+      "question": "How is Antarctica administered, and why is there no permanent country in Antarctica?",
+      "answer": "All land and ice shelves south of 60°S latitude in Antarctica are administered under the Antarctic Treaty System, an international agreement established in 1959. The treaty promotes scientific research and prohibits military activity, mining, and territorial claims, ensuring the region remains dedicated to peaceful purposes and international cooperation. No single country governs Antarctica, and no permanent population resides there."
+    },
+    {
+      "question": "What are the main biogeographic and climatic implications of Antarctica?",
+      "answer": "Antarctica is one of Earth's eight biogeographic realms, characterized by unique and limited biodiversity adapted to extreme cold. Climate change impacts Antarctica significantly: melting of the Antarctic ice sheet contributes to global sea level rise and disrupts the Southern Ocean overturning circulation, which affects local climate patterns and marine ecosystems. These changes have cascading effects on global ocean currents and weather systems."
+    },
+    {
+      "question": "Write a Python script to calculate the percentage of the Southern Hemisphere covered by Antarctica and its land area proportion.",
+      "answer": "python\n# Earth's Southern Hemisphere total area: approximately 255 million km²\nsouthern_hemisphere_area_km2 = 255_000_000\n\n# Antarctica land area (km²) and total Antarctic region coverage (% of Southern Hemisphere)\nantarctica_land_area_km2 = 14_000_000\nantarctic_region_coverage_percent = 20\n\n# Calculate proportion of land area to Southern Hemisphere\nproportion_land_to_southern_hemisphere = (antarctica_land_area_km2 / southern_hemisphere_area_km2) * 100\n\nprint(f\"Antarctica's land area covers {proportion_land_to_southern_hemisphere:.2f}% of the Southern Hemisphere.\")\nprint(f\"The Antarctic region covers {antarctic_region_coverage_percent}% of the Southern Hemisphere.\")\n\nThis script outputs the land area proportion of Antarctica relative to the Southern Hemisphere and confirms the 20% coverage of the Antarctic region."
+    },
+    {
+      "question": "Why is Antarctic climate change considered globally significant compared to other regions?",
+      "answer": "Antarctic climate change is globally significant because the melting of the Antarctic ice sheet directly contributes to rising global sea levels, which threatens coastal communities worldwide. Additionally, the Antarctic ice sheet influences the Southern Ocean overturning circulation—a key driver of global climate patterns. Disruption to this system could alter weather, marine ecosystems, and ocean temperatures far beyond the Antarctic region, affecting global climate stability."
+    },
+    {
+      "question": "List the components included in the Antarctic region according to the provided definition.",
+      "answer": "The Antarctic region includes: (1) the continent of Antarctica, (2) the Kerguelen Plateau, (3) other island territories on the Antarctic Plate, (4) ice shelves, (5) waters of the Southern Ocean, and (6) all island territories located south of the Antarctic Convergence. This region encompasses land, ice, and marine environments governed collectively under the Antarctic Treaty System."
+    }
+  ]
+}

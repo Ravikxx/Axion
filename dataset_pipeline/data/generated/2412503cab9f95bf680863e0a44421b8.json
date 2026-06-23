@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Georgi–Jarlskog_mass_relation",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What are the Georgi–Jarlskog mass relations in Grand Unified Theories?",
+      "answer": "The Georgi–Jarlskog mass relations are predictions in Grand Unified Theories (GUTs) of the SU(5) or SO(10) type that establish a mass relation between charged leptons and down-type quarks. Specifically, they relate the electron mass (m_e) to the down quark mass (m_d), the muon mass (m_μ) to the strange quark mass (m_s), and the tau lepton mass (m_τ) to the bottom quark mass (m_b). These relations were formulated by Howard Georgi and Cecilia Jarlskog."
+    },
+    {
+      "question": "Write the Georgi–Jarlskog mass relations at the GUT scale in mathematical form.",
+      "answer": "At the GUT scale, the Georgi–Jarlskog mass relations are given by:\n- m_e ≈ (1/3) m_d,GUT\n- m_μ ≈ 3 m_s,GUT\n- m_τ ≈ m_b,GUT"
+    },
+    {
+      "question": "How do the Georgi–Jarlskog relations connect down-type quark masses at the GUT scale to their masses at low energy scales?",
+      "answer": "The Georgi–Jarlskog relations provide a bridge between quark masses at the GUT scale and their low-energy (physical) masses through the following approximate relations:\n- m_d,GUT ≈ (1/3) m_d\n- m_s,GUT ≈ (1/3) m_s\n- m_b,GUT ≈ (1/3) m_b\nThis implies that the physical down quark mass is approximately 9 times the electron mass (m_d ≈ 9 m_e)."
+    },
+    {
+      "question": "What is the predicted relationship between the muon and strange quark masses according to the Georgi–Jarlskog relations? What is the associated error?",
+      "answer": "According to the Georgi–Jarlskog relations, the muon mass (m_μ) is approximately equal to the strange quark mass at the GUT scale, with an error of about 21%. In mathematical terms: m_s ≈ m_μ (error ≈ 21%)."
+    },
+    {
+      "question": "Derive the approximate relationship between the bottom quark mass and the tau lepton mass at low energy scales from the Georgi–Jarlskog relations.",
+      "answer": "Starting from the Georgi–Jarlskog relations:\n1. m_τ ≈ m_b,GUT\n2. m_b,GUT ≈ (1/3) m_b\nSubstituting the second into the first gives: m_τ ≈ (1/3) m_b\nRearranging this yields: m_b ≈ 3 m_τ\nThis is the predicted relationship at low energy scales, with an error of about 26%."
+    },
+    {
+      "question": "Write a Python function that calculates the low-energy down quark mass (m_d) from the electron mass (m_e) using the Georgi–Jarlskog relations. Include the GUT-scale scaling factor.",
+      "answer": "python\ndef calculate_down_quark_mass(m_e, gut_scale_factor=3.0):\n    \"\"\"\n    Calculate the low-energy down quark mass (m_d) from the electron mass (m_e)\n    using the Georgi–Jarlskog relations.\n    \n    Parameters:\n    m_e (float): Electron mass\n    gut_scale_factor (float): Factor relating GUT-scale and low-energy masses (default 3.0)\n    \n    Returns:\n    float: Predicted down quark mass\n    \"\"\"\n    m_d_gut = 3 * m_e  # m_d ≈ 3 m_e (from m_e ≈ (1/3) m_d,GUT)\n    m_d = gut_scale_factor * m_d_gut  # m_d,GUT ≈ (1/3) m_d\n    return m_d\n\n# Example usage:\nm_e = 0.511  # Electron mass in MeV\nm_d = calculate_down_quark_mass(m_e)\nprint(f\"Predicted down quark mass: {m_d:.2f} MeV\")\n"
+    },
+    {
+      "question": "Why are the Georgi–Jarlskog relations considered important in Grand Unified Theories?",
+      "answer": "The Georgi–Jarlskog relations are important in Grand Unified Theories because they provide testable predictions that connect the masses of different particle types (charged leptons and down-type quarks), which belong to different representations of the gauge group in the Standard Model. These relations help bridge the gap between high-energy GUT-scale physics and low-energy observables, offering a way to test the validity of GUT models such as SU(5) and SO(10). The relations also highlight the predictive power of GUTs in connecting seemingly unrelated particle properties."
+    }
+  ]
+}

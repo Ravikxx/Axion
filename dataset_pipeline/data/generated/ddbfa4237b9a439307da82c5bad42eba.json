@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Archives_of_African_American_Music_and_Culture",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the mission of the Indiana University Archives of African American Music and Culture (AAAMC)?",
+      "answer": "The mission of the AAAMC is to establish a unique collection of primary and secondary source materials documenting African American music and culture, particularly in areas where such materials are scarce or nonexistent. It aims to preserve and disseminate these materials for research and instructional purposes, while making them accessible to the general public through outreach programs like live performances, exhibitions, seminars, workshops, and summer music camps. The AAAMC also engages in collaborative research and creative projects with academic and cultural institutions."
+    },
+    {
+      "question": "What types of materials are included in the AAAMC's collections?",
+      "answer": "The AAAMC's collections include a diverse range of materials such as oral histories, photographs, musical and print manuscripts, audio and video recordings, educational broadcast programs, and personal papers of individuals and organizations. These materials cover genres like blues, gospel, R&B, hip hop, and classical music, as well as documentation of Black radio."
+    },
+    {
+      "question": "How does the AAAMC engage with the public beyond providing access to its collections?",
+      "answer": "The AAAMC engages the public through outreach programs like live performances, exhibitions, seminars, workshops, and summer music camps. It also develops instructional multimedia materials, including websites, CD-ROM programs, and video documentaries, and provides practical experience in archiving and preparing materials for public use. Additionally, the AAAMC hosts public events and publishes print and online resources to encourage exploration of its collections."
+    },
+    {
+      "question": "What role does the AAAMC play in supporting research?",
+      "answer": "The AAAMC supports research by providing global access to its holdings for scholars, students, and the public. It preserves and disseminates materials that document African American music and culture, enabling in-depth study and scholarship. The repository also collaborates with academic and cultural institutions to foster research and creative projects."
+    },
+    {
+      "question": "Provide a Python code snippet to fetch metadata from the AAAMC's digital collections using a hypothetical API endpoint.",
+      "answer": "python\nimport requests\n\ndef fetch_aaamc_metadata(api_endpoint, collection_type='all', limit=50):\n    \"\"\"\n    Fetches metadata from the AAAMC's digital collections API.\n    \n    Args:\n        api_endpoint (str): Base URL of the AAAMC API.\n        collection_type (str): Type of collection to filter (e.g., 'oral_histories', 'audio_recordings').\n        limit (int): Maximum number of results to return.\n    \n    Returns:\n        list: A list of metadata dictionaries.\n    \"\"\"\n    params = {\n        'type': collection_type,\n        'limit': limit\n    }\n    response = requests.get(api_endpoint, params=params)\n    \n    if response.status_code == 200:\n        return response.json().get('results', [])\n    else:\n        raise Exception(f\"Failed to fetch data: {response.status_code}\")\n\n# Example usage:\n# metadata = fetch_aaamc_metadata('https://api.aaamc.indiana.edu/v1/collections')\n"
+    },
+    {
+      "question": "Why was the AAAMC established in 1991, and what historical context does it address?",
+      "answer": "The AAAMC was established in 1991 to address the scarcity of primary and secondary source materials documenting African American music and culture from the post-World War II era. During this period, many cultural artifacts and recordings were at risk of being lost or undocumented. The AAAMC was created to preserve these materials and ensure their accessibility for research, education, and public engagement, filling a critical gap in the historical record."
+    },
+    {
+      "question": "How can researchers or the public contribute to or utilize the AAAMC's collections for a project on Black gospel music?",
+      "answer": "Researchers or the public can utilize the AAAMC's collections by accessing its holdings of audio recordings, photographs, print manuscripts, and personal papers related to gospel music. They can attend AAAMC-sponsored events, workshops, or exhibitions focused on gospel music, or request access to specific materials for research purposes. The AAAMC also welcomes collaborations for creative projects or instructional materials, such as developing educational resources or multimedia content about gospel music."
+    }
+  ]
+}

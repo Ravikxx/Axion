@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Frank_Lloyd_Wright",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is organic architecture as defined by Frank Lloyd Wright?",
+      "answer": "Organic architecture is Frank Lloyd Wright's design philosophy which emphasizes creating structures that exist in harmony with humanity and its natural environment. Wright believed buildings should be integrated into their surroundings, using materials and forms that reflect their context. This approach is exemplified in his masterpiece Fallingwater, where the house is built directly over a waterfall, blending architecture with nature."
+    },
+    {
+      "question": "How many structures did Frank Lloyd Wright design and how many did he complete?",
+      "answer": "Frank Lloyd Wright designed more than 1,000 structures in his lifetime, but only 532 of these were completed during his career."
+    },
+    {
+      "question": "What was the Prairie School movement and how was Wright associated with it?",
+      "answer": "The Prairie School was a late 19th and early 20th-century architectural style that emphasized horizontal lines, flat or hipped roofs with broad overhanging eaves, and integration with the surrounding landscape. Frank Lloyd Wright was a leading figure of this movement, developing its core principles and creating signature residential designs that exemplified its aesthetic."
+    },
+    {
+      "question": "What is a Usonian home and what distinguishes it from other architectural styles?",
+      "answer": "A Usonian home is Frank Lloyd Wright's vision for affordable, single-family residences designed for middle-class Americans. These homes feature open floor plans, natural materials like brick and wood, radiant floor heating, and integration with the landscape. They typically include flat roofs, large windows, and minimal ornamentation, distinguishing them from more ornate architectural styles."
+    },
+    {
+      "question": "Write a Python function that calculates the total number of structures Frank Lloyd Wright designed versus those he completed, given the values from the biographical text.",
+      "answer": "python\ndef calculate_wright_designs(designed, completed):\n    \"\"\"\n    Calculate the total number of structures Frank Lloyd Wright designed versus completed.\n    \n    Args:\n        designed (int): Total number of structures designed (1000)\n        completed (int): Total number of structures completed (532)\n    \n    Returns:\n        dict: Dictionary containing both values\n    \"\"\"\n    return {\n        \"total_designed\": designed,\n        \"total_completed\": completed,\n        \"difference\": designed - completed\n    }\n\n# Example usage:\nwright_stats = calculate_wright_designs(1000, 532)\nprint(wright_stats)\n# Output: {'total_designed': 1000, 'total_completed': 532, 'difference': 468}\n"
+    },
+    {
+      "question": "Why was Frank Lloyd Wright's personal life frequently in the news?",
+      "answer": "Wright's personal life often generated headlines due to dramatic and controversial events. The most notable incident occurred in 1914 when a fire at his Taliesin studio resulted in the deaths of seven people, including his partner Mamah Borthwick Cheney and her two children. The fire was later determined to be arson, committed by a worker Wright had previously employed. This tragedy overshadowed much of Wright's later career and was widely covered in the press."
+    },
+    {
+      "question": "What recognition did Frank Lloyd Wright receive during his lifetime and posthumously?",
+      "answer": "During his lifetime, Wright was already well established as one of the most prominent architects in the world. In 1991, more than three decades after his death, the American Institute of Architects posthumously honored him by naming him 'the greatest American architect of all time,' cementing his legacy in architectural history."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/IDARB",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is IDARB and when was it released?",
+      "answer": "IDARB (pronounced EYE-darb) is an abbreviation of 'It Draws a Red Box'. It is a 2D multiplayer sports video game developed and published by Other Ocean Interactive. The game was released in 2015 exclusively for Microsoft's Xbox One console under the ID@Xbox initiative."
+    },
+    {
+      "question": "How does the main gameplay mode of IDARB work?",
+      "answer": "In IDARB's main mode, up to eight players form two teams (maximum four per team). Players run and jump across platforms to shoot a ball into the opposing team's goal. Extra points are awarded for scoring from a distance or bouncing the ball off platforms."
+    },
+    {
+      "question": "What are hashbombs in IDARB and how are they triggered?",
+      "answer": "Hashbombs are special visual and gameplay effects in IDARB that can be activated by Twitter posts or Twitch chat messages containing specific keywords or hashtags."
+    },
+    {
+      "question": "Who developed IDARB and what was the game's origin story?",
+      "answer": "IDARB was developed by Other Ocean Interactive, with lead developer Mike Mika originating the concept. In January 2014, Mika tweeted a simple image of a red box among platforms and asked followers for input on how to develop it. Suggestions led to the unified hashtag #IDARB, which became the game's title. Fellow designer Brandon Sheffield suggested adding a ball a week later, and development progressed rapidly from there."
+    },
+    {
+      "question": "How did the development of IDARB involve community collaboration?",
+      "answer": "The game's development began with a tweet asking followers for ideas about a simple concept (a red box among platforms). The community's rapid and diverse suggestions were unified under the hashtag #IDARB, which later became the game's title. This collaborative approach brought Twitter users together to collectively shape the game's development."
+    },
+    {
+      "question": "What were some criticisms of IDARB upon its release?",
+      "answer": "Despite praise for its originality and rapid multiplayer gameplay, IDARB received criticism for poor online multiplayer latency and matchmaking issues."
+    },
+    {
+      "question": "Why was IDARB released exclusively on Xbox One?",
+      "answer": "IDARB was released exclusively for Xbox One under Microsoft's ID@Xbox initiative, which supported independent developers in publishing games directly on the Xbox platform."
+    }
+  ]
+}

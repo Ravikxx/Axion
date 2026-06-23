@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Dignitas_(Swiss_non-profit_organisation)",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is Dignitas and what does it do?",
+      "answer": "Dignitas is a Swiss organization that provides assisted suicide services to individuals with terminal illnesses or severe physical or mental conditions. It helps terminally ill patients who wish to end their life by ensuring they meet legal and ethical requirements, including medical assessments and voluntary consent."
+    },
+    {
+      "question": "Who founded Dignitas and when?",
+      "answer": "Dignitas was founded in 1998 by Ludwig Minelli, a Swiss lawyer."
+    },
+    {
+      "question": "What are the legal requirements for assisted suicide in Switzerland according to the text?",
+      "answer": "In Switzerland, assisted suicide is legal if the helper has no self-interest (e.g., no financial gain). The process requires a doctor to meet the patient twice to confirm their wish to die, with signed documentation and witness verification. If the patient is unable to sign, a video recording can serve as evidence."
+    },
+    {
+      "question": "How does Dignitas ensure a patient's decision to die is voluntary?",
+      "answer": "Dignitas follows a strict protocol to confirm the patient's decision. The doctor meets the patient twice, asks repeatedly if they wish to die, and requires signed consent with two witnesses (or a video recording if the patient is unable to sign). This ensures the decision is well-considered and voluntary."
+    },
+    {
+      "question": "Provide an example of a high-profile case where someone traveled to Switzerland for assisted suicide through Dignitas.",
+      "answer": "Daniel James, a 23-year-old rugby player paralyzed from the chest down due to a spinal injury, traveled to Dignitas with his parents in 2008 to end his life. Another example is British conductor Edward Downes and his wife, who died together at Dignitas in 2009."
+    },
+    {
+      "question": "What is the role of a doctor in the Dignitas assisted suicide process?",
+      "answer": "The doctor's role is to assess the patient's condition and confirm their wish to die. They must meet the patient twice, document their consent, and ensure the decision is voluntary and well-considered. Once all legal and ethical requirements are met, the doctor prescribes the lethal drug."
+    },
+    {
+      "question": "How does Dignitas handle cases where the patient cannot physically sign the consent form?",
+      "answer": "If the patient is too ill to sign, Dignitas records a video of the patient expressing their wish to die, which serves as valid evidence of consent. This is reviewed alongside witness statements to ensure the decision is authentic."
+    }
+  ]
+}

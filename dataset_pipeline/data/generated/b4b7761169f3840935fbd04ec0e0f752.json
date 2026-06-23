@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Euryapsida",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the defining anatomical feature of Euryapsida, and how does it differ from Synapsida?",
+      "answer": "Euryapsida is characterized by a single temporal fenestra (opening) behind the orbit, formed by the articulation of the post-orbital and squamosal bones. Unlike Synapsida, which also has a single temporal fenestra behind the orbit, the fenestra in synapsids is positioned *below* the articulation of the post-orbital and squamosal bones. In euryapsids, the fenestra is *above* this articulation."
+    },
+    {
+      "question": "Why is Euryapsida considered a polyphyletic group?",
+      "answer": "Euryapsida is polyphyletic because its members are not closely related. Modern studies suggest that many euryapsids, particularly sauropterygians (e.g., plesiosaurs, nothosaurs), are actually diapsids that lost their lower temporal fenestra, rather than sharing a single evolutionary origin. This makes Euryapsida an unnatural grouping based on convergent loss of the lower fenestra."
+    },
+    {
+      "question": "How has the classification of ichthyosaurs evolved in relation to Euryapsida and Parapsida?",
+      "answer": "Ichthyosaur skulls are sometimes described as having a *metapsid* (or *parapsid*) condition because their squamosal bone is never part of the temporal fenestra’s margin. Historically, ichthyosaurs were grouped under Parapsida alongside squamates and protorosaurs, but they are now widely considered diapsids that secondarily lost the lower temporal fenestra. Some studies suggest ichthyosaurs, thalattosaurs, and sauropterygians may form a clade of close relatives."
+    },
+    {
+      "question": "Provide a code snippet in Python that checks whether a given reptile's skull fenestration pattern matches a euryapsid condition (single upper fenestra).",
+      "answer": "python\ndef is_euryapsid_skeleton(post_orbital_articulates_with_squamosal, fenestra_below_articulation, fenestra_count):\n    \"\"\"\n    Check if a reptile's skull matches the euryapsid condition.\n    Args:\n        post_orbital_articulates_with_squamosal: Boolean (True if post-orbital and squamosal articulate)\n        fenestra_below_articulation: Boolean (True if fenestra is below articulation)\n        fenestra_count: Integer (number of temporal fenestrae)\n    Returns:\n        Boolean: True if euryapsid condition is met.\n    \"\"\"\n    return (\n        post_orbital_articulates_with_squamosal and\n        not fenestra_below_articulation and\n        fenestra_count == 1\n    )\n\n# Example: Plesiosaur (euryapsid)\nprint(is_euryapsid_skeleton(\n    post_orbital_articulates_with_squamosal=True,\n    fenestra_below_articulation=False,\n    fenestra_count=1\n))  # Output: True\n\n# Example: Mammal (synapsid)\nprint(is_euryapsid_skeleton(\n    post_orbital_articulates_with_squamosal=True,\n    fenestra_below_articulation=True,\n    fenestra_count=1\n))  # Output: False\n"
+    },
+    {
+      "question": "What are some examples of reptiles historically classified as euryapsids that are now considered diapsids?",
+      "answer": "Several groups once classified as euryapsids are now recognized as diapsids that lost the lower temporal fenestra. These include:\n- **Araeoscelidans** (early diapsids with a closed lower fenestra),\n- **Trilophosaurs** (diapsids that secondarily closed the lower bar),\n- **Squamates** (lizards and snakes, which lost the lower temporal arch),\n- **Pleurosaurs** (extinct marine reptiles),\n- **Protorosaurs** (early diapsids with reduced lower fenestra).\nThe exception is **mesosaurs**, which only have a *lower* temporal opening and are not euryapsids."
+    },
+    {
+      "question": "How did the taxon 'Synaptosauria' relate to Euryapsida, and who proposed it?",
+      "answer": "Synaptosauria was an earlier term proposed by Edward D. Cope for a taxon including sauropterygians, turtles, and rhynchocephalians. Later, Euryapsida was proposed by Edwin H. Colbert as a substitute for Synaptosauria. However, the composition of Synaptosauria changed over time: Baur removed rhynchocephalians, and Williston later restricted it to Sauropterygia (Nothosauria and Plesiosauria) and Placodontia."
+    },
+    {
+      "question": "Are any living reptiles considered part of the Euryapsida group? Explain the debate.",
+      "answer": "No living reptiles are universally accepted as euryapsids, but there is debate about **turtles**. Some studies suggest turtles may be part of the sauropterygian clade (a subgroup of Euryapsida), while others argue they are more closely related to diapsids (e.g., archosaurs or lepidosaurs). The placement of turtles remains unresolved due to conflicting morphological and genetic evidence."
+    }
+  ]
+}

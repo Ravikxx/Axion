@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Armenian_Revolutionary_Federation",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the Armenian Revolutionary Federation (ARF) and when was it founded?",
+      "answer": "The Armenian Revolutionary Federation (ARF), also known as Dashnaktsutyun, is an Armenian nationalist and socialist political party founded in 1890 in Tiflis, Russian Empire by Christapor Mikaelian, Stepan Zorian, and Simon Zavarian. It advocates for socialist democracy, the recognition of the Armenian genocide, reparations, and the establishment of United Armenia."
+    },
+    {
+      "question": "What are the key historical roles of the ARF in Armenian politics?",
+      "answer": "The ARF played a pivotal role in forming the First Republic of Armenia in 1918 and defended Armenian civilians during the late Ottoman Empire through armed resistance (fedayi). After the Soviet takeover in 1920, the party shifted its focus to preserving Armenian cultural identity in the diaspora. It re-established itself in Armenia after the Soviet Union's dissolution in 1991 and briefly participated in governing coalitions in 2008 and 2016–2018."
+    },
+    {
+      "question": "How has the ARF's political presence evolved in Armenia and Lebanon as of 2023?",
+      "answer": "As of 2023, the ARF holds ten seats in Armenia's National Assembly and three seats in Lebanon's Parliament as part of the March 8 Alliance. However, its support in Armenia has declined significantly, polling at 1–2% and failing to meet the 5% threshold for representation in the 2018 parliamentary election. In the 2021 election, it gained 29 seats through the Armenia Alliance, winning 21% of the popular vote."
+    },
+    {
+      "question": "What is the ARF's stance on the Armenian Genocide and territorial claims?",
+      "answer": "The ARF campaigns for international recognition of the Armenian Genocide and demands reparations. It also advocates for the establishment of 'United Armenia,' a concept partially based on the Treaty of Sèvres of 1920, which includes territories from modern-day Armenia, Turkey, and parts of other neighboring countries."
+    },
+    {
+      "question": "Provide a Python code snippet to extract and count the number of countries where the ARF operates as of 2023.",
+      "answer": "python\narf_countries = ['Armenia', 'Lebanon', 'Iran'] + ['diaspora communities']\ncountry_count = len(arf_countries)\nprint(f'ARF operates in {country_count} core regions and diaspora communities.')\n\nThis code snippet lists the countries where the ARF has an operational presence and calculates the count, including diaspora communities as a single category."
+    },
+    {
+      "question": "Why did the ARF withdraw from the governing coalition in Armenia in April 2018?",
+      "answer": "The ARF withdrew from the governing coalition on 25 April 2018 amid large-scale protests during the 2018 Armenian Revolution. The party had approved Serzh Sargsyan's nomination as Prime Minister on 23 April 2018, but his resignation six days later, triggered by public pressure, led to the ARF's withdrawal from the coalition agreement with the Republican Party."
+    },
+    {
+      "question": "What was the ARF's involvement in the 2021 Armenian parliamentary election?",
+      "answer": "In the 2021 Armenian parliamentary election, the ARF participated as part of the Armenia Alliance, a political coalition led by former President Robert Kocharyan. The alliance won 21% of the popular vote and secured 29 seats in the National Assembly."
+    }
+  ]
+}

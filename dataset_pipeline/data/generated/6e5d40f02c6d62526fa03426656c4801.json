@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Chichagof_Island",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the total land area and coastline length of Chichagof Island?",
+      "answer": "Chichagof Island has a land area of 2,048.61 square miles (5,305.9 km²) and a coastline length of 742 miles."
+    },
+    {
+      "question": "How does Chichagof Island's size compare to other islands in the United States?",
+      "answer": "Chichagof Island is the fifth largest island in the United States by land area."
+    },
+    {
+      "question": "Which major bodies of water surround Chichagof Island?",
+      "answer": "Chichagof Island is bounded by Chatham Strait to the east, Icy Strait to the northeast, Cross Sound to the northwest, and the Gulf of Alaska to the west."
+    },
+    {
+      "question": "What is the significance of the name 'Chichagof' and who was it named after?",
+      "answer": "Chichagof Island is named after Admiral Vasili Chichagov, a Russian Arctic explorer who never visited Alaska."
+    },
+    {
+      "question": "How many people lived on Chichagof Island according to the 2000 census?",
+      "answer": "The 2000 census recorded a population of 1,342 persons on Chichagof Island."
+    },
+    {
+      "question": "What are the primary economic activities on Chichagof Island?",
+      "answer": "The primary economic sources include commercial fishing, guided hunting trips, charter fishing, and logging."
+    },
+    {
+      "question": "Write a Python snippet to calculate the population density of bears on Chichagof Island given its land area and the fact that it has the highest bear population density in the world.",
+      "answer": "Assuming an estimated 5000 bears on the island (for illustration, since exact numbers are not provided):\npython\nland_area_sq_miles = 2048.61\nestimated_bears = 5000\nbear_density = estimated_bears / land_area_sq_miles\nprint(f\"Estimated bear population density: {bear_density:.2f} bears per square mile\")\n\nThis calculates approximately 2.44 bears per square mile, illustrating why Chichagof Island has the highest bear population density on Earth."
+    }
+  ]
+}

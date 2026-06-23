@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Bonar_Dunlop",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What were the two primary artistic disciplines for which John Bonar Dunlop was best known?",
+      "answer": "John Bonar Dunlop was best known for his work as an illustrator and sculptor, particularly excelling in figurative art and later gaining recognition for his sculptures of rugby players from New Zealand and Wales."
+    },
+    {
+      "question": "How did John Bonar Dunlop's early life experiences influence his later artistic career?",
+      "answer": "Dunlop's childhood on the family farm in New Zealand, where he learned to ride horses, later became evident in his sculptures and illustrations. His time in Europe, including his escape attempts during wartime, also shaped his artistic perspective and resilience."
+    },
+    {
+      "question": "What prestigious prize did John Bonar Dunlop win during his studies at the Royal Academy Schools?",
+      "answer": "During his studies at the Royal Academy Schools in London, Dunlop won the prestigious Landseer Prize."
+    },
+    {
+      "question": "Describe John Bonar Dunlop's military service during World War II.",
+      "answer": "Dunlop volunteered to serve in Finland's 'Winter War' in 1940, where his horse-riding skills were useful. After demobilization, he and a companion attempted an escape on foot via the Arctic Circle, which failed when they were arrested. He later reached Stockholm, attended art school, and eventually returned to Britain, where he joined the Royal Air Force and trained as a pilot in South Africa before flying operations in North Africa and Italy."
+    },
+    {
+      "question": "Provide an example of John Bonar Dunlop's commercial art work in the 1950s and 1960s.",
+      "answer": "In the 1950s and 1960s, Dunlop contributed to high-visibility advertising campaigns for brands like Harrods, Rothmans, and Lee Cooper. Additionally, he illustrated Ruby Ferguson's 'Jill' book series, including 'Jill's Gymkhana', 'Jill's Riding Club', and 'A Stable for Jill', as well as their paperback versions."
+    },
+    {
+      "question": "What marked John Bonar Dunlop's transition to becoming a full-time sculptor?",
+      "answer": "In the early 1970s, Dunlop shifted his focus from illustration to sculpture, creating busts and sporting pieces, particularly of rugby players. His first one-man show in 1975 in London marked this transition."
+    },
+    {
+      "question": "Write a Python code snippet to calculate the age of John Bonar Dunlop at the time of his death in 1992.",
+      "answer": "python\ndef calculate_age(birth_year, death_year):\n    return death_year - birth_year\n\nage_at_death = calculate_age(1916, 1992)\nprint(f\"John Bonar Dunlop was {age_at_death} years old at the time of his death.\")\n\nThis code calculates that John Bonar Dunlop was 76 years old when he died in 1992."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Karakhanid_dynasty",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What was the Karakhanid dynasty, and which regions did it rule over?",
+      "answer": "The Karakhanid dynasty was a Turkic dynasty that ruled parts of Central Asia between the 9th and 12th centuries. Their territories included Transoxiana, the Fergana Valley, and parts of Kashgar and Balasagun."
+    },
+    {
+      "question": "Why is the Karakhanid dynasty historically significant in the context of Islam among Turkic peoples?",
+      "answer": "The Karakhanid dynasty is historically significant because it was the first Turkic dynasty to convert to Islam in 960 under the leadership of Khan Satuq Bughra Khan. This conversion played a key role in spreading Islam among Turkic tribes."
+    },
+    {
+      "question": "What were the capital cities of the Karakhanid dynasty, and how was the dynasty divided?",
+      "answer": "The capital cities of the Karakhanid dynasty were Balasagun and Kashgar. The dynasty was divided into eastern and western branches, with the eastern branch ruling in Kashgar and Balasagun, and the western branch ruling in Samarkand and Bukhara."
+    },
+    {
+      "question": "How did the Karakhanid dynasty come to power in Transoxiana?",
+      "answer": "The Karakhanid dynasty took control of Transoxiana after the fall of the Samanid dynasty. They captured Bukhara in 999 and established it as one of their main administrative centers."
+    },
+    {
+      "question": "What architectural contributions are associated with the Karakhanid dynasty?",
+      "answer": "Under the Karakhanid dynasty, many mosques, madrasas, and palaces were constructed. One notable example is the Kalyan Minaret in Bukhara, which was initiated during their rule."
+    },
+    {
+      "question": "Write a Python function that takes the name of a city and checks if it was a major city of the Karakhanid dynasty.",
+      "answer": "python\n\ndef is_karakhanid_city(city_name):\n    karakhanid_cities = ['Transoxiana', 'Fergana Valley', 'Kashgar', 'Balasagun', 'Samarkand', 'Bukhara']\n    return city_name in karakhanid_cities\n\n# Example usage:\nprint(is_karakhanid_city(\"Bukhara\"))  # Output: True\nprint(is_karakhanid_city(\"Samarkand\"))  # Output: True\nprint(is_karakhanid_city(\"Tashkent\"))  # Output: False\n"
+    },
+    {
+      "question": "Why did the Karakhanid dynasty weaken and eventually fall by the 12th century?",
+      "answer": "The Karakhanid dynasty weakened due to internal divisions and external pressures. By the 12th century, their lands were conquered by the Seljuk Empire and later by the Khwarazmian dynasty, leading to the end of their rule."
+    }
+  ]
+}

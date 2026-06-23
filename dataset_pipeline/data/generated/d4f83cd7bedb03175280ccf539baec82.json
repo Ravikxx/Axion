@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Eric_Atkinson",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "How many Test matches did Eric Atkinson play for the West Indies?",
+      "answer": "Eric Atkinson played eight Test matches for the West Indies."
+    },
+    {
+      "question": "Who was Eric Atkinson's brother, and what notable cricketing feat did they share?",
+      "answer": "Eric Atkinson's brother was Denis Atkinson, and they were the third pair of brothers to play together for the West Indies."
+    },
+    {
+      "question": "What were Eric Atkinson's best bowling figures in a Test match, and against which team did he achieve them?",
+      "answer": "Eric Atkinson's best Test bowling figures were 5 for 42, achieved against Pakistan in the first innings of the Third Test during the 1957–58 series."
+    },
+    {
+      "question": "How did Eric Atkinson perform in first-class cricket before his Test debut?",
+      "answer": "Before his Test debut, Eric Atkinson played 11 first-class matches for Barbados from 1949–50 to 1956–57, scoring 411 runs at an average of 29.37 and taking 5 wickets at an average of 96.00."
+    },
+    {
+      "question": "Provide an example of Eric Atkinson's standout bowling performance in a first-class match.",
+      "answer": "In the 1957–58 season, Eric Atkinson took 4 for 70 for Barbados against the touring Pakistanis in his first match of the season, showcasing his bowling prowess."
+    },
+    {
+      "question": "What was Eric Atkinson's career-best bowling figures in first-class cricket, and when did he achieve them?",
+      "answer": "Eric Atkinson's career-best first-class bowling figures were 6 for 10, achieved in consecutive matches against East Zone and South Zone in India during the 1958–59 tour. He took 12 wickets at an average of 7.25 in these matches."
+    },
+    {
+      "question": "Write a Python function to calculate the average bowling figures (runs per wicket) for Eric Atkinson in his first-class career before his Test debut.",
+      "answer": "python\ndef calculate_bowling_average(runs, wickets):\n    if wickets == 0:\n        return float('inf')  # Avoid division by zero\n    return runs / wickets\n\n# Eric Atkinson's first-class bowling stats before Test debut:\nruns_conceded = 5 * 96.00  # 5 wickets at 96.00 average\nwickets_taken = 5\n\nbowling_average = calculate_bowling_average(runs_conceded, wickets_taken)\nprint(f\"Eric Atkinson's bowling average before Test debut: {bowling_average:.2f}\")\n\nOutput: `Eric Atkinson's bowling average before Test debut: 96.00`"
+    }
+  ]
+}

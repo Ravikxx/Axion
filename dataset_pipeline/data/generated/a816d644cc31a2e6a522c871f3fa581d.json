@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/2005–06_FA_Cup",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When did the 2005–06 FA Cup competition begin, and which round did the top 44 clubs enter?",
+      "answer": "The 2005–06 FA Cup competition began on 20 August 2005 with the Extra preliminary round for the lowest-ranked entrants. The top 44 clubs entered the competition in the third round, which took place in January."
+    },
+    {
+      "question": "How are FA Cup ties resolved if the match ends in a draw during the early rounds?",
+      "answer": "If a match in the early rounds ends in a draw, it is replayed at the away club's stadium, typically 10 days later. If the scores remain level after the replay, extra-time and penalties are used to determine the winner."
+    },
+    {
+      "question": "What is the format difference for FA Cup semi-finals and finals compared to earlier rounds?",
+      "answer": "Semi-finals and finals are played as single matches at neutral venues without replays. If the match ends in a draw, extra-time and penalties are used to decide the winner immediately."
+    },
+    {
+      "question": "Why were the 2005–06 FA Cup quarter-finals scheduled on weeknights instead of weekends?",
+      "answer": "England national team manager Sven-Göran Eriksson requested the change to hold the quarter-finals on weeknights to allow the season to finish earlier. This provided players with a full month's rest before the 2006 World Cup finals."
+    },
+    {
+      "question": "Which stadium hosted the 2005–06 FA Cup final, and why?",
+      "answer": "The final was hosted at the Millennium Stadium in Cardiff because the newly rebuilt Wembley Stadium was not completed in time. The match was contested between Liverpool and West Ham United on 13 May 2006."
+    },
+    {
+      "question": "Write a Python function to simulate a simple FA Cup tie resolution based on the given rules.",
+      "answer": "python\ndef simulate_fa_cup_tie(home_score, away_score, round_type='early'):\n    if round_type == 'early':\n        if home_score > away_score:\n            return \"Home team wins\"\n        elif home_score < away_score:\n            return \"Away team wins\"\n        else:\n            return \"Replay needed\"\n    else:  # semi-final or final\n        if home_score > away_score:\n            return \"Home team wins\"\n        elif home_score < away_score:\n            return \"Away team wins\"\n        else:\n            return \"Extra-time and penalties required\"\n\n# Example usage:\nprint(simulate_fa_cup_tie(2, 1))  # Early round: Home team wins\nprint(simulate_fa_cup_tie(1, 1, 'semi'))  # Semi-final: Extra-time and penalties required\n"
+    },
+    {
+      "question": "How many clubs entered the 2005–06 FA Cup, and how many rounds did the competition have?",
+      "answer": "The 2005–06 FA Cup had 674 entrants. The competition began with the Extra preliminary round and proceeded through multiple rounds, including the third round for the top 44 clubs, quarter-finals, semi-finals, and the final."
+    }
+  ]
+}

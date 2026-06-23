@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Culture_of_Nepal",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What are the three major language groups that contribute to Nepal's linguistic heritage?",
+      "answer": "Nepal's languages originate from three major language groups: Indo-Aryan, Tibeto-Burman, and indigenous languages."
+    },
+    {
+      "question": "Which language is the official national language of Nepal, and in what script is it written?",
+      "answer": "The official national language of Nepal is Nepali, and it is written in the Devanagari script."
+    },
+    {
+      "question": "What percentage of Nepal's population practices Hinduism according to the 2001 census?",
+      "answer": "According to the 2001 census, 80.6% of Nepal's population practiced Hinduism."
+    },
+    {
+      "question": "Describe the festival Dashain in Nepal, including its duration and significance.",
+      "answer": "Dashain is the longest and most important festival in Nepal, celebrated for 15 days in honor of the Hindu goddess Durga. The festival typically includes dancing, music, and the preparation of various local foods."
+    },
+    {
+      "question": "Give an example of a Nepalese dance that is popular among the Buddhist community, and another that is linked to a historical figure.",
+      "answer": "Charya is a dance popular among the Buddhist community. Kartik is a dance started by King Siddhi Nasingh Malla in the Kathmandu valley."
+    },
+    {
+      "question": "How do Nepalese festivals typically incorporate cultural elements?",
+      "answer": "Nepalese festivals commonly feature dancing, music, and the preparation of local cuisines, reflecting the country's rich cultural traditions."
+    },
+    {
+      "question": "Write a Python code snippet to count the number of languages spoken in Nepal based on the given data.",
+      "answer": "languages_spoken = [92, 123]\nprint(f\"Languages spoken in Nepal: At least {languages_spoken[0]} or possibly up to {languages_spoken[1]} based on different studies.\")"
+    }
+  ]
+}

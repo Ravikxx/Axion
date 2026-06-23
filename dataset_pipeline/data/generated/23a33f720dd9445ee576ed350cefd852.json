@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/David_Bader_(computer_scientist)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who is David A. Bader and what are his current roles?",
+      "answer": "David A. Bader is a Distinguished Professor and Director of the Institute for Data Science at the New Jersey Institute of Technology. He previously served as the Chair of the Georgia Institute of Technology's School of Computational Science & Engineering, a founding professor, and the executive director of High-Performance Computing at the Georgia Tech College of Computing."
+    },
+    {
+      "question": "What were some of David A. Bader's key leadership positions at Georgia Tech?",
+      "answer": "At Georgia Tech, David A. Bader served as the first director of the Sony Toshiba IBM Center of Competence for the Cell Processor (2007), the Chair of the School of Computational Science & Engineering, and the executive director of High-Performance Computing at the College of Computing."
+    },
+    {
+      "question": "What are David A. Bader's primary areas of research expertise?",
+      "answer": "Bader's main research areas focus on high-performance computing, parallel and multicore algorithms, computational biology, cybersecurity, massive-scale analytics, and computational genomics."
+    },
+    {
+      "question": "What significant contribution did David A. Bader make to supercomputing?",
+      "answer": "Bader built the first Linux supercomputer using commodity processors and a high-speed interconnection network."
+    },
+    {
+      "question": "Which major fellowships and awards has David A. Bader received?",
+      "answer": "Bader is an IEEE Fellow, AAAS Fellow, SIAM Fellow, and ACM Fellow. He has received awards from IBM, Microsoft Research, Nvidia, Facebook, Intel, Accenture, and Sony."
+    },
+    {
+      "question": "What committees or organizations has David A. Bader served on?",
+      "answer": "Bader serves on the Computing Research Association's board of directors, the National Science Foundation's advisory committee on cyberinfrastructure, and has served on the IEEE Computer Society's board of governors."
+    },
+    {
+      "question": "How was David A. Bader recognized for his work in 2018?",
+      "answer": "In 2018, Bader was recognized as one of the most impactful authors in the history of the IEEE International Conference on High-Performance Computing, Data, and Analytics (HiPC)."
+    }
+  ]
+}

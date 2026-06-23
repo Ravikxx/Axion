@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Ealdred_(archbishop_of_York)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What were the three major ecclesiastical positions held by Ealdred during his lifetime?",
+      "answer": "Ealdred served as Abbot of Tavistock, Bishop of Worcester, and Archbishop of York at different points in his career."
+    },
+    {
+      "question": "How did Ealdred contribute to securing an heir for King Edward the Confessor?",
+      "answer": "Ealdred worked as a diplomat to bring Edward the Exile back to England from Hungary, as King Edward was childless and needed a potential heir."
+    },
+    {
+      "question": "What significant religious journey did Ealdred undertake in 1058, and why was it notable?",
+      "answer": "In 1058, Ealdred undertook a pilgrimage to Jerusalem, making him the first bishop from England to complete this journey."
+    },
+    {
+      "question": "What challenges did Ealdred face in becoming Archbishop of York, and how did he resolve them?",
+      "answer": "Ealdred was elected Archbishop of York in 1060 but struggled to gain papal approval. He resolved this by promising not to hold the bishoprics of York and Worcester simultaneously."
+    },
+    {
+      "question": "Describe Ealdred's involvement in the succession crisis following King Edward the Confessor's death in 1066.",
+      "answer": "After Edward's death, Ealdred crowned Harold Godwinson as king but later backed Edgar the Ætheling and eventually endorsed William the Conqueror. He crowned William on Christmas Day in 1066."
+    },
+    {
+      "question": "Why did William the Conqueror not fully trust Ealdred, and what happened as a result?",
+      "answer": "William distrusted Ealdred and other English leaders, so he required Ealdred to accompany him to Normandy in 1067. Ealdred, however, had returned to York by the time of his death in 1069."
+    },
+    {
+      "question": "Write a Python function that generates a list of Ealdred's ecclesiastical positions in chronological order based on the provided text.",
+      "answer": "python\ndef get_ealdred_positions():\n    positions = [\n        \"Abbot of Tavistock (around 1027)\",\n        \"Bishop of Worcester (1046)\",\n        \"Archbishop of York (1060)\"\n    ]\n    return positions\n\n# Example usage:\nprint(get_ealdred_positions())\n"
+    }
+  ]
+}

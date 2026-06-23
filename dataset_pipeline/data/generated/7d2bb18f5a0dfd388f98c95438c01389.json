@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Be_Welcoming",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who created the 'Be Welcoming' sculpture and in what year?",
+      "answer": "The 'Be Welcoming' sculpture was created by Canadian artist Timothy Schmalz in 2019."
+    },
+    {
+      "question": "What biblical verse inspired the 'Be Welcoming' sculpture?",
+      "answer": "The 'Be Welcoming' sculpture was inspired by Hebrews 13:2, which states: 'Be welcoming to strangers, many have entertained angels unawares.'"
+    },
+    {
+      "question": "Describe the interactive design of the 'Be Welcoming' sculpture.",
+      "answer": "The 'Be Welcoming' sculpture initially appears as a hooded figure resembling a stranger or pilgrim. As the viewer walks around it, the figure transforms into an angel with an outstretched hand, inviting the viewer to sit beside them. The sculpture includes a life-sized pilgrim-angel figure and a bronze bench large enough for an adult."
+    },
+    {
+      "question": "Where are the locations of the 'Be Welcoming' sculpture replicas?",
+      "answer": "Replicas of the 'Be Welcoming' sculpture have been installed in Chicago, Des Moines, Toronto, and Quebec City. The original sculpture is also located along Christian pilgrimage paths such as El Camino de Santiago in Spain and the St. Padre Pio Shrine in Southern Italy."
+    },
+    {
+      "question": "When and where was the 'Be Welcoming' sculpture installed in St. Peter’s Square?",
+      "answer": "The 'Be Welcoming' sculpture was installed near the Showers for the Poor and the Mother of Mercy Clinic in the colonnade of St. Peter’s Square on April 15, 2025."
+    },
+    {
+      "question": "What other sculptures by Timothy Schmalz are located near St. Peter’s Basilica?",
+      "answer": "Two other sculptures by Timothy Schmalz near St. Peter’s Basilica are 'Homeless Jesus,' inaugurated in March 2016 during the Extraordinary Jubilee of Mercy, and 'Angels Unawares,' which is also located in St. Peter’s Square."
+    },
+    {
+      "question": "Write a Python function that checks if a given location has a replica of the 'Be Welcoming' sculpture installed.",
+      "answer": "python\ndef has_be_welcoming_replica(location):\n    replicas = {\n        \"Chicago\", \"Des Moines\", \"Toronto\", \"Quebec City\",\n        \"El Camino de Santiago\", \"St. Padre Pio Shrine\"\n    }\n    return location in replicas\n\n# Example usage:\nprint(has_be_welcoming_replica(\"Toronto\"))  # Output: True\nprint(has_be_welcoming_replica(\"New York\")) # Output: False\n"
+    }
+  ]
+}

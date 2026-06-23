@@ -1,0 +1,30 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Casualty_loss",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What qualifies as a casualty loss for tax purposes in the United States?",
+      "answer": "A casualty loss is a tax loss resulting from a sudden, unexpected, or unusual event that causes damage or loss to property. Examples include fires, storms, shipwrecks, or other similar events. Progressive deterioration of property due to steady causes (e.g., wear and tear) does not qualify as a casualty loss. The loss must occur due to force applied to the property that the owner was unaware of or unable to prevent because of its suddenness or other reasons."
+    },
+    {
+      "question": "How are casualty losses treated under U.S. tax law according to 26 U.S.C. § 165?",
+      "answer": "Under 26 U.S.C. § 165, casualty losses are tax-deductible if they are sustained during the taxable year and not compensated by insurance or otherwise. The deduction is limited to losses exceeding $100 per casualty. Additionally, the total deduction is capped at the amount by which personal casualty losses exceed personal casualty gains plus 10% of the individual's adjusted gross income (AGI) for the taxable year."
+    },
+    {
+      "question": "What are the key limitations on deducting casualty losses under 26 U.S.C. § 165(h)?",
+      "answer": "Under 26 U.S.C. § 165(h), there are three main limitations: (1) Only losses exceeding $100 per casualty can be deducted. (2) The total deduction is limited to the excess of personal casualty losses over personal casualty gains. (3) The deduction cannot exceed the total casualty losses minus 10% of the taxpayer's adjusted gross income (AGI)."
+    },
+    {
+      "question": "Can you provide an example calculation of a casualty loss deduction?",
+      "answer": "Suppose a taxpayer has $5,000 in casualty losses, $1,000 in casualty gains, and an AGI of $50,000. First, subtract the gains from the losses: $5,000 - $1,000 = $4,000. Then, subtract 10% of AGI ($5,000) from the result: $4,000 - $5,000 = -$1,000. Since the result is negative, the taxpayer cannot claim any deduction for the casualty losses in this scenario."
+    },
+    {
+      "question": "What is the purpose of the $100 per casualty limitation under 26 U.S.C. § 165(h)(1)?",
+      "answer": "The $100 per casualty limitation is designed to exclude minor losses from being claimed as deductions, reducing administrative burden and focusing the deduction on significant losses. It ensures that only meaningful financial impacts are considered for tax relief."
+    },
+    {
+      "question": "How does insurance compensation affect the deductibility of casualty losses?",
+      "answer": "Casualty losses are only deductible if they are not compensated by insurance or otherwise. If an insurance payout covers the loss in full or in part, the deductible amount is reduced by the compensation received. For example, if a $10,000 loss is fully covered by insurance, no deduction is allowed. If only $6,000 is covered, the deductible loss is $4,000."
+    }
+  ]
+}

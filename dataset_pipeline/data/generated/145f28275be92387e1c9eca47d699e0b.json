@@ -1,0 +1,38 @@
+{
+  "source_url": "https://dev.to/devteam/join-the-real-time-ai-agents-challenge-powered-by-n8n-and-bright-data-5000-in-prizes-across-five-3nmb",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What is the Real-Time AI Agents Challenge and who are the partners involved?",
+      "answer": "The Real-Time AI Agents Challenge is a community event running through August 31, 2025. It is powered by a partnership between n8n and Bright Data, inviting participants to build AI agents using their cutting-edge tools. The challenge focuses on creating AI agents that leverage n8n's automation platform and Bright Data's web data infrastructure to process and access real-time data."
+    },
+    {
+      "question": "How can participants win in the Real-Time AI Agents Challenge?",
+      "answer": "Participants can win by submitting a project that meets all challenge criteria. Five talented prompt winners will each receive $1,000 USD, a DEV++ Membership, and an exclusive DEV Badge. Additionally, all participants with valid submissions will earn a completion badge on their DEV profile."
+    },
+    {
+      "question": "What are the key requirements to participate in the challenge?",
+      "answer": "To participate, you must publish a post using the provided submission template, use n8n's AI Agent node with Bright Data's verified node, make your project publicly accessible via n8n's chat interface or include a demo video, and share your n8n workflow JSON in a GitHub Gist or similar format."
+    },
+    {
+      "question": "How can participants receive Bright Data credits for the challenge?",
+      "answer": "Participants can receive $250 in Bright Data credits by signing up through the dedicated sign-up link provided in the challenge. If credits are not visible, use the promo code 'devto'. For additional credits, email noah@brightdata.com with the subject line 'DEV Challenge - Credit Required' and include your signup email and project details."
+    },
+    {
+      "question": "What are the judging criteria for the Real-Time AI Agents Challenge?",
+      "answer": "Submissions are judged based on: Utilization of Underlying Technology, Accessibility and User Experience, Business Value and Use Case, Creativity and Usability, and Writing Quality (Clarity and Originality)."
+    },
+    {
+      "question": "Provide a Python code snippet to set up a basic n8n workflow using Bright Data's verified node.",
+      "answer": "Below is a basic example of how to set up an n8n workflow JSON snippet for integration with Bright Data's verified node. This assumes you have already configured your Bright Data credentials and n8n instance.\n\n\n{\n  \"name\": \"Bright Data AI Agent Workflow\",\n  \"nodes\": [\n    {\n      \"parameters\": {\n        \"functionCode\": \"return [{ json: { query: 'latest AI news' } }];\"\n      },\n      \"id\": \"generate-query\",\n      \"name\": \"Generate Query\",\n      \"type\": \"n8n-nodes-base.function\",\n      \"typeVersion\": 1,\n      \"position\": [250, 300]\n    },\n    {\n      \"parameters\": {\n        \"authentication\": \"genericCredentialType\",\n        \"credentials\": {\n          \"brightDataApi\": {\n            \"id\": \"bright-data-cred-id\",\n            \"name\": \"Bright Data API\"\n          }\n        },\n        \"operation\": \"get\",\n        \"path\": \"datasets/{{$json.query}}\",\n        \"options\": {}\n      },\n      \"id\": \"bright-data-node\",\n      \"name\": \"Bright Data\",\n      \"type\": \"n8n-nodes-base.brightData\",\n      \"typeVersion\": 1,\n      \"position\": [450, 300]\n    },\n    {\n      \"parameters\": {\n        \"functionCode\": \"return [{\n          json: {\n            result: items[0].json.data,\n            metadata: items[0].json.metadata\n          }\n        }];\"\n      },\n      \"id\": \"process-data\",\n      \"name\": \"Process Data\",\n      \"type\": \"n8n-nodes-base.function\",\n      \"typeVersion\": 1,\n      \"position\": [650, 300]\n    }\n  ],\n  \"connections\": {\n    \"Generate Query\": {\n      \"main\": [[{ \"node\": \"Bright Data\", \"type\": \"main\", \"index\": 0 }]]\n    },\n    \"Bright Data\": {\n      \"main\": [[{ \"node\": \"Process Data\", \"type\": \"main\", \"index\": 0 }]]\n    }\n  },\n  \"active\": false,\n  \"settings\": {},\n  \"versionId\": \"1.0\"\n}\n\n\nThis workflow generates a query, fetches data using Bright Data's API via the verified node, and processes the returned data."
+    },
+    {
+      "question": "What should participants avoid when using data provided by Bright Data in the challenge?",
+      "answer": "Participants must not reuse, resell, or redistribute any data provided by Bright Data as part of the challenge. The data is solely for use in your project submission. Misuse of the data or credits may result in disqualification from the competition or revocation of access."
+    },
+    {
+      "question": "When is the submission deadline for the Real-Time AI Agents Challenge and when will winners be announced?",
+      "answer": "The submission deadline is August 31, 2025, at 11:59 PM PDT. Winners will be announced on September 11, 2025."
+    }
+  ]
+}

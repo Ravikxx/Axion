@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/4-D_(psychedelic)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is 4-D chemically, and how does it differ from mescaline?",
+      "answer": "4-D, or 4-trideuteromethoxy-3,5-methoxyphenethylamine, is a deuterated isotopologue of mescaline. It is chemically identical to mescaline except for the replacement of the three hydrogen atoms in the methoxy group at the 4-position with deuterium isotopes."
+    },
+    {
+      "question": "What are the typical doses of 4-D according to Alexander Shulgin?",
+      "answer": "Shulgin lists 4-D's dose as 200 to 400 mg orally for the sulfate salt or 178 to 356 mg orally for the hydrochloride salt. The duration of effects is approximately 12 hours, with an onset time ranging from 20 minutes to about 1 hour."
+    },
+    {
+      "question": "How do the effects of 4-D compare to those of mescaline?",
+      "answer": "The effects of 4-D are reported to be very similar or indistinguishable from mescaline in terms of properties, effects, and metabolism. Specific effects include visual enhancement, closed-eye visuals, color distortion, increased energy, calmness, and quickening of thought and verbal flow."
+    },
+    {
+      "question": "What are some physical effects associated with 4-D use?",
+      "answer": "Physical effects of 4-D may include slight queasiness or 'pre-nausea,' considerable nausea, stomach uneasiness, pupil dilation, cold hands and feet, and a possible element of confusion. Unlike mescaline, 4-D is not associated with physical instability."
+    },
+    {
+      "question": "Can you describe the chemical synthesis process for 4-D?",
+      "answer": "The chemical synthesis of 4-D has been described, though specific details are not provided in the text. It involves deuteration of the methoxy group at the 4-position of mescaline. Other deuterated isotopologues like β-D and α-D have also been synthesized."
+    },
+    {
+      "question": "What is known about the potency of α-D compared to mescaline?",
+      "answer": "α-D, or alpha-D (α,α-dideuteromescaline), may resist oxidative deamination, a metabolic process that affects mescaline. This resistance could potentially make α-D more potent than mescaline, though α-D has not been extensively studied."
+    },
+    {
+      "question": "Is 4-D a controlled substance in Canada as of 2025?",
+      "answer": "As of 2025, 4-D does not appear to be a controlled substance in Canada."
+    },
+    {
+      "question": "Provide a Python function that calculates the molecular weight of 4-D given the molecular weights of mescaline and deuterium.",
+      "answer": "python\ndef calculate_molecular_weight_mescaline_d4(mescaline_mw, deuterium_mw):\n    # Mescaline has 3 hydrogen atoms in the 4-methoxy group replaced by deuterium in 4-D.\n    # Original methoxy group: -OCH3 (1 H replaced by D in 4-D)\n    # 4-D methoxy group: -OCD3 (3 hydrogens replaced by deuterium)\n    deuterium_replacement = 3 * (deuterium_mw - 1)  # Each H (1 Da) replaced by D (~2 Da)\n    return mescaline_mw + deuterium_replacement\n\n# Example usage:\n# Mescaline MW ≈ 211.26 g/mol, Deuterium atomic mass ≈ 2.014 Da\nmw_4d = calculate_molecular_weight_mescaline_d4(211.26, 2.014)\nprint(f\"Estimated molecular weight of 4-D: {mw_4d:.2f} g/mol\")\n"
+    }
+  ]
+}

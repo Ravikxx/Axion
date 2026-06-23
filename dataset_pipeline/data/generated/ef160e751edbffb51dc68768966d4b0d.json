@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Climate_change_and_insurance_in_the_United_States",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What percentage of U.S. property insurance losses from 1980 to 2005 were weather-related?",
+      "answer": "88% of all property insurance losses in the United States from 1980 to 2005 were weather-related."
+    },
+    {
+      "question": "How have annual insured natural catastrophe losses in the U.S. changed over time in inflation-adjusted terms?",
+      "answer": "Annual insured natural catastrophe losses in the United States grew 10-fold in inflation-adjusted terms from $49 billion (total from 1959 to 1988) to $98 billion (total from 1989 to 1998). From 2005 to 2021, average annual losses increased by 700% in constant 2021 dollars compared to 1985."
+    },
+    {
+      "question": "What did a 2005 Ceres report project about the impact of climate change on insurance premiums and deductibles?",
+      "answer": "The 2005 Ceres report projected that climate change would likely cause higher premiums and deductibles and impact the affordability and availability of property insurance, crop insurance, health insurance, life insurance, business interruption insurance, and liability insurance in the United States."
+    },
+    {
+      "question": "How much did U.S. insurance companies pay in natural disaster claims from 2013 to 2023?",
+      "answer": "U.S. insurance companies paid $655.7 billion in natural disaster claims from 2013 to 2023, with $295.8 billion paid from 2020 to 2022 setting a record for a three-year period."
+    },
+    {
+      "question": "What factors primarily drive interannual changes in global insured natural catastrophe losses according to Verisk Analytics' 2024 report?",
+      "answer": "According to Verisk Analytics' 2024 report, interannual changes in global insured natural catastrophe losses are primarily driven by increased exposure (e.g., growth in insurance policies sold), inflation, and climate variability, rather than climate change. However, the report notes that climate change contributes to a 1% year-over-year increase in average annual insured loss."
+    },
+    {
+      "question": "Write a Python function to calculate the compound annual growth rate (CAGR) of average annual insured natural catastrophe losses from 1985 to 2021, given the total losses for these years.",
+      "answer": "python\ndef calculate_cagr(initial_value, final_value, years):\n    \"\"\"\n    Calculate the Compound Annual Growth Rate (CAGR).\n    Args:\n        initial_value (float): Initial value (loss in 1985).\n        final_value (float): Final value (loss in 2021).\n        years (int): Number of years between initial and final value.\n    Returns:\n        float: CAGR as a percentage.\n    \"\"\"\n    cagr = (final_value / initial_value) ** (1 / years) - 1\n    return cagr * 100\n\n# Example usage:\n# If losses were $X in 1985 and $Y in 2021 over 36 years:\ninitial_loss = 1  # Placeholder for 1985 loss\nfinal_loss = 8    # Placeholder for 2021 loss (700% increase implies 8x)\nyears = 2021 - 1985\ncagr = calculate_cagr(initial_loss, final_loss, years)\nprint(f\"Compound Annual Growth Rate: {cagr:.2f}%\")\n"
+    },
+    {
+      "question": "What did the Federal Insurance Office's 2025 report reveal about the trend in U.S. home insurance premiums from 2018 to 2022?",
+      "answer": "The Federal Insurance Office's 2025 report showed that the average home insurance policy premium in the United States rose 8.7% faster than the inflation rate from 2018 through 2022. In the top quintile of ZIP Codes for expected annual losses to structures from climate-related perils, premiums rose 14.7% faster than inflation, while in the bottom quintile, premiums fell by 1.4% relative to the inflation rate."
+    },
+    {
+      "question": "Why might natural catastrophe losses contribute to insurance company insolvencies, and what percentage of insolvencies were they a primary factor in from 1969 to 1999?",
+      "answer": "Natural catastrophe losses were the primary factor in 10% of the approximately 700 U.S. insurance company insolvencies from 1969 to 1999 and possibly a contributing factor in 53%. These losses can lead to insolvencies by overwhelming an insurer's financial reserves, especially when claims exceed premium revenue, as seen in the six-fold decline in the ratio of premium revenue to natural catastrophe losses from 1971 to 1999."
+    }
+  ]
+}

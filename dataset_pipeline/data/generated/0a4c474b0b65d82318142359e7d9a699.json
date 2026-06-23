@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Gilda_Jovine",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who is Gilda Jovine and what notable titles has she held?",
+      "answer": "Gilda Jovine, born Gilda Gross on February 10, 1980, in Santo Domingo, is a Dominican actress, model, and beauty pageant titleholder. She is best known for winning the Miss Latina International pageant in 1999 and being crowned Miss Dominican Republic 2000."
+    },
+    {
+      "question": "How did Gilda Jovine's upbringing influence her career in fashion?",
+      "answer": "Jovine was inspired by her grandmother, who was one of the first dressmakers for Oscar De La Renta. This early exposure to fashion led her to begin modeling at age 15 and participate in fashion shows across the Dominican Republic, New York City, and Puerto Rico."
+    },
+    {
+      "question": "What educational background did Gilda Jovine have, and what did she enjoy studying most?",
+      "answer": "Jovine graduated from the Barbizon School in New York City and Universidad Iberoamericana in Santo Domingo, where she majored in Public Relations. Despite her degree, she loved painting the most, and some of her artwork has been displayed in galleries like Salon 94 and Art Gotham in New York."
+    },
+    {
+      "question": "In which international beauty pageants did Gilda Jovine represent the Dominican Republic?",
+      "answer": "Gilda Jovine represented the Dominican Republic in the Miss Universe 2000 pageant held in Cyprus and the Miss World 2000 pageant held in London."
+    },
+    {
+      "question": "Can you provide a code snippet that calculates Gilda Jovine's age as of January 2025?",
+      "answer": "python\nfrom datetime import datetime\n\n# Gilda Jovine's birth date\nbirth_date = datetime(1980, 2, 10)\n# Current date\ncurrent_date = datetime(2025, 1, 1)\n\n# Calculate age\nage = current_date.year - birth_date.year - ((current_date.month, current_date.day) < (birth_date.month, birth_date.day))\nage\n# Output: 44\n"
+    },
+    {
+      "question": "What are some of the industries in which Gilda Jovine has worked professionally?",
+      "answer": "Govine has worked in modeling, acting (including television commercials), pageant competitions, and fine arts (as a painter). Her professional presence includes fashion shows, magazine and billboard appearances, catalog work, and gallery exhibitions."
+    },
+    {
+      "question": "Why might Gilda Jovine's height have been notable in her Miss Dominican Republic 2000 participation?",
+      "answer": "At nearly 6 feet tall, Jovine stood out among contestants in the Miss Dominican Republic 2000 pageant. Her height may have contributed to her visibility and presence in pageantry, where physical stature is often a consideration for judges and audience perception."
+    }
+  ]
+}

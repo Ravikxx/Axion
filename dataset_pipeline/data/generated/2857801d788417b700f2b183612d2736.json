@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Alpine_ibex",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the scientific name of the Alpine ibex and where does it primarily live?",
+      "answer": "The scientific name of the Alpine ibex is *Capra ibex*. It primarily lives in the European Alps, inhabiting steep, rough terrain and open alpine meadows."
+    },
+    {
+      "question": "How does the physical appearance of male and female Alpine ibexes differ?",
+      "answer": "Alpine ibexes are sexually dimorphic. Males are significantly larger than females and possess much larger, longer horns. Both sexes have a brownish-grey coat."
+    },
+    {
+      "question": "What adaptations allow Alpine ibexes to thrive in mountainous habitats?",
+      "answer": "Alpine ibexes have sharp hooves that enable them to scale steep slopes and cliffs. They can be found at elevations as high as 3,300 meters (10,800 feet), and their diet consists mainly of grass, which they graze on throughout the year."
+    },
+    {
+      "question": "Describe the social behavior and mating habits of Alpine ibexes.",
+      "answer": "Alpine ibexes are social animals, but adult males and females typically segregate for most of the year. They come together only during the breeding season, where males use their long horns to fight for access to females."
+    },
+    {
+      "question": "What were the major threats to the Alpine ibex in the 19th century, and how has its conservation status changed since then?",
+      "answer": "In the 19th century, human hunting nearly drove the Alpine ibex to extinction, reducing its population to fewer than 100 individuals in Gran Paradiso National Park, Italy. Thanks to conservation efforts, the species has been successfully reintroduced to parts of its historical range and, as of 2020, is listed as a species of least concern by the IUCN."
+    },
+    {
+      "question": "Write a Python snippet to classify an Alpine ibex's sex based on its horn length and body size.",
+      "answer": "python\ndef classify_ibex_sex(horn_length_cm, body_size_class):\n    if horn_length_cm > 80 and body_size_class == 'large':\n        return 'male'\n    elif horn_length_cm < 50 and body_size_class == 'small':\n        return 'female'\n    else:\n        return 'unknown'\n\n# Example usage:\nprint(classify_ibex_sex(90, 'large'))  # Output: 'male'\nprint(classify_ibex_sex(40, 'small'))  # Output: 'female'\n"
+    },
+    {
+      "question": "Why does the Alpine ibex have low genetic diversity across its current populations, and how has it survived despite this?",
+      "answer": "The Alpine ibex went through a population bottleneck in the 19th century, where its population was reduced to fewer than 100 individuals, leading to very low genetic diversity. Despite this, the species has survived through successful reintroduction efforts and conservation programs, which have helped restore its population to stable levels."
+    }
+  ]
+}

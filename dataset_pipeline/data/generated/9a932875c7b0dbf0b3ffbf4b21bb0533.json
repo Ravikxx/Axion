@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Geevarghese",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What are the Syriac–Malayalam variants of the name George in India?",
+      "answer": "The Syriac–Malayalam variants of George in India include Geevarghese, Varughese, Varghese, Verghese, Varkey, Varughis, and Vergis."
+    },
+    {
+      "question": "Who was the second Catholicos of the Malankara Orthodox Syrian Church in India?",
+      "answer": "The second Catholicos of the Malankara Orthodox Syrian Church in India was Geevarghese I, also known as Baselios Geevarghese I, who served from 1870 to 1928."
+    },
+    {
+      "question": "Which notable figure named Geevarghese is associated with the Syro-Malankara Catholic Reunion Movement?",
+      "answer": "Geevarghese Ivanios (1882–1953) is the figure associated with the Syro-Malankara Catholic Reunion Movement, as he was the first Metropolitan Archbishop of Trivandrum and founded the movement."
+    },
+    {
+      "question": "List the roles held by Geevarghese Gregorios (1933–1999) during his career.",
+      "answer": "Geevarghese Gregorios held multiple roles, including bishop of the Syriac Orthodox Church, Malankara Metropolitan, President of the Episcopal Synod of the Church in India, President of the Synod of the Malankara Jacobite Syrian Orthodox Church, and Metropolitan of several dioceses: Cochin, Kottayam, Kollam, Niranam, and Thumpamon."
+    },
+    {
+      "question": "How many Metropolitans or Catholicos figures named Geevarghese are listed in the provided text?",
+      "answer": "There are 12 Metropolitans or Catholicos figures named Geevarghese listed in the text."
+    },
+    {
+      "question": "What was the tenure period of Geevarghese Mar Philoxenos II as Metropolitan?",
+      "answer": "Geevarghese Mar Philoxenos II served as Metropolitan from 1812 to 1829."
+    },
+    {
+      "question": "Write a Python code snippet to extract all names starting with 'Geevarghese' from the given text.",
+      "answer": "python\nimport re\n\ntext = \"\"\"Geevarghese alongside Varughese, Varghese, Verghese, Varkey, Varughis, and Vergis are Syriac–Malayalam variants of George in India. Geevarghese may refer to:\nGeevarghese I or Baselios Geevarghese I of the East (1870–1928), the second Catholicos of the Malankara Orthodox Syrian Church in India\n... [rest of the text] ...\"\"\"\n\n# Extract names starting with 'Geevarghese'\nnames = re.findall(r'Geevarghese\\s+(?:\\w+\\s*)+', text)\nprint(names)\n\nThis code uses regular expressions to find all names starting with 'Geevarghese' followed by additional names or titles."
+    }
+  ]
+}

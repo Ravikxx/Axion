@@ -1,0 +1,42 @@
+{
+  "source_url": "https://dev.to/pascal_cescato_692b7a8a20/unboxable-in-tech-2knm",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What are the key characteristics of 'Unboxable in Tech' as described in the text?",
+      "answer": "Unboxable in Tech refers to individuals who resist fitting into conventional industry norms or job requirements. They prioritize problem-solving, human interaction, and practical outcomes over rigid job descriptions or trends. These individuals often choose non-traditional roles or tools that better suit the actual needs of the task, even if it means deviating from industry standards or expectations."
+    },
+    {
+      "question": "How did the author's choice of a middle school internship in 1989 challenge conventional career paths?",
+      "answer": "In 1989, the author chose a middle school internship over traditional paths like SSII firms or banks to focus on human contact and real-world problems. This decision allowed the author to build a complete application with real users, gaining experience in system-wide thinking rather than just coding isolated components, which would not have been possible in a typical software firm."
+    },
+    {
+      "question": "Describe a situation where the author solved a technical problem by using unconventional methods. Include the technical details.",
+      "answer": "In 1993, the author worked at an architecture firm that needed an HP printer to print in French on A4 paper. The printer was designed for PC and mainframe use with ASCII-only documentation, lacking French language support. The author drove 400 km to obtain the 300-page manual, analyzed the ASCII-only logic, deduced the necessary adjustments, and reconfigured the printer’s switches to enable French printing on A4 paper. This approach contrasted with the firm’s reliance on HP support, which had not resolved the issue for months."
+    },
+    {
+      "question": "What is the significance of the author's approach to selecting tools and technologies, as illustrated in the cleaning company example?",
+      "answer": "The author prioritized suitability and cost-efficiency over industry trends. For a cleaning company needing a system to manage schedules and clients, the author chose OS/2 and Lotus Symphony over the recommended Windows 3.1 and Office. This decision doubled the system’s stability and allowed the saved budget to upgrade hardware significantly, demonstrating that the actual need should drive tool selection rather than hype or market trends."
+    },
+    {
+      "question": "Write a Python code snippet that demonstrates the author's emphasis on performance optimization, as seen in the 'SELECT COUNT(*)' example.",
+      "answer": "python\n# Demonstrating the performance advantage of COUNT(*) over COUNT(column) in MySQL\nimport mysql.connector\n\n# Connect to the database\nconnection = mysql.connector.connect(\n    host=\"localhost\",\n    user=\"user\",\n    password=\"password\",\n    database=\"test_db\"\n)\n\ncursor = connection.cursor()\n\n# Example 1: Using COUNT(*) - Optimized for performance\nquery = \"SELECT COUNT(*) FROM employees;\"\ncursor.execute(query)\ncount_all = cursor.fetchone()[0]\n\n# Example 2: Using COUNT(column) - Less performant\nquery = \"SELECT COUNT(employee_id) FROM employees;\"\ncursor.execute(query)\ncount_column = cursor.fetchone()[0]\n\nprint(f\"COUNT(*): {count_all}\")\nprint(f\"COUNT(employee_id): {count_column}\")\n\ncursor.close()\nconnection.close()\n"
+    },
+    {
+      "question": "What does the author mean by 'They don't want people who think. They want people who validate.' Explain with an example from the text.",
+      "answer": "The author criticizes environments where conformity and adherence to authority are prioritized over innovation and critical thinking. In 2010, a project manager criticized the author for using `SELECT COUNT(*)`, a more performant SQL feature, despite the author explaining its efficiency. The manager’s focus was on enforcing a rule (`no SELECT *`) rather than evaluating the actual solution’s merit, reflecting a culture that values blind validation over thoughtful problem-solving."
+    },
+    {
+      "question": "How did the author's implementation of RFC 2324 and RFC 1516 demonstrate their approach to problem-solving?",
+      "answer": "The author implemented RFC 2324 (the Hyper Text Coffee Pot Control Protocol) and RFC 1516 (the Hyper Text Beer Mug Control Protocol) as playful yet technically rigorous solutions to problems not explicitly requested. These implementations showcased the author’s ability to solve niche problems with creativity and deep technical skill. The projects were driven by personal curiosity and a desire to address unmet or overlooked needs, reflecting a problem-first, process-second mindset."
+    },
+    {
+      "question": "What lesson about career advice can be learned from the author's experience coaching a young entrepreneur?",
+      "answer": "The author’s coaching led to a principle of resilience: advising the entrepreneur to avoid dependency on single points of failure, such as hosting providers. When OVH’s servers burned down, the entrepreneur’s adherence to this principle allowed them to recover all 60 sites within 48 hours. This highlights the importance of proactive contingency planning and the long-term value of robust advice over superficial compliance with standardized systems."
+    },
+    {
+      "question": "What does the term 'The Handover and the Veto' illustrate about institutional bias in tech hiring?",
+      "answer": "The term illustrates how institutional bias can overlook tangible expertise in favor of standardization. Despite the author’s protégé saving 60 sites in 48 hours due to the author’s advice, the protégé’s BNI group vetoed hiring the author for a training role because the author’s unconventional background did not fit the standardized hiring criteria. This underscores how rigid hiring systems may reject highly competent individuals who don’t conform to traditional profiles."
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Brooklyn_Nets",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Where are the Brooklyn Nets based and which league do they compete in?",
+      "answer": "The Brooklyn Nets are based in the New York City borough of Brooklyn and compete in the National Basketball Association (NBA) as part of the Atlantic Division of the Eastern Conference."
+    },
+    {
+      "question": "How many NBA teams are currently located in New York City, and what are their names?",
+      "answer": "There are two NBA teams currently located in New York City: the Brooklyn Nets and the New York Knicks."
+    },
+    {
+      "question": "What was the original name and location of the Brooklyn Nets when they were founded in 1967?",
+      "answer": "The team was originally established in 1967 as the New Jersey Americans, based in New Jersey, and was a charter franchise of the American Basketball Association (ABA)."
+    },
+    {
+      "question": "Which ABA championships did the Nets win, and who was their star player during that era?",
+      "answer": "The Brooklyn Nets (then known as the New York Nets) won two ABA championships in 1974 and 1976, led by Hall of Famer Julius Erving."
+    },
+    {
+      "question": "What happened to the ABA in 1976, and how did it affect the Nets?",
+      "answer": "In 1976, the ABA merged with the NBA, and four ABA teams, including the Nets, were absorbed into the NBA. The Nets continued to play in the league and remain active today."
+    },
+    {
+      "question": "In what years did the Nets reach the NBA Finals, and who was their key player during that period?",
+      "answer": "The Brooklyn Nets reached consecutive NBA Finals in 2002 and 2003, with star point guard Jason Kidd being a key player during that time."
+    },
+    {
+      "question": "When did the Nets move to Barclays Center in Brooklyn, and what significance does this move hold?",
+      "answer": "The Nets moved to Barclays Center in Brooklyn in the summer of 2012, marking the first major sports franchise to return to the borough since the Brooklyn Dodgers baseball team left in 1957."
+    },
+    {
+      "question": "Can you write a Python function that checks if a given year falls within the Nets' playoff qualification years since moving to Brooklyn in 2012?",
+      "answer": "python\ndef is_playoff_year(year):\n    # List of playoff qualification years since 2012\n    playoff_years = [2013, 2014, 2015, 2019, 2020, 2021, 2022, 2023]\n    return year in playoff_years\n\n# Example usage:\nprint(is_playoff_year(2021))  # Output: True\nprint(is_playoff_year(2010))  # Output: False\n"
+    }
+  ]
+}

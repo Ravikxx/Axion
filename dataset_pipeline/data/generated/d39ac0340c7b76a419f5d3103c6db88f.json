@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Esing_Bakery_incident",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the Esing Bakery incident, and when did it occur?",
+      "answer": "The Esing Bakery incident, also known as the Ah Lum affair, was a food contamination scandal in British Hong Kong where several hundred European residents were poisoned by arsenic in bread from a Chinese-owned store. It occurred on 15 January 1857, during the Second Opium War."
+    },
+    {
+      "question": "Who was Cheong Ah-lum, and what was the outcome of his trial?",
+      "answer": "Cheong Ah-lum was the proprietor of the Esing Bakery. He was accused of plotting the arsenic poisoning of European residents but was acquitted by a jury. Despite the acquittal, he was successfully sued for damages and was banished from the colony."
+    },
+    {
+      "question": "What are the debated theories about the responsibility for the Esing Bakery poisoning incident?",
+      "answer": "The true responsibility for the incident remains debated. Possible explanations include an individual act of terrorism, commercial sabotage, a war crime orchestrated by the Qing government, or it being purely accidental."
+    },
+    {
+      "question": "How did the Esing Bakery incident influence British politics in 1857?",
+      "answer": "The incident became a political issue during the 1857 general election in Britain, where it helped mobilise support for the war and the incumbent prime minister, Lord Palmerston."
+    },
+    {
+      "question": "What long-term effects did the Esing Bakery incident have on Hong Kong's colonial society?",
+      "answer": "The incident contributed to growing tensions between Hong Kong's European and Chinese residents, as well as within the European community itself. It also highlighted the precariousness of imperial rule in the colony, sowing panic and insecurity among local colonists."
+    },
+    {
+      "question": "Why did the colonists believe the Esing Bakery poisoning could have wiped out their community?",
+      "answer": "The colonists believed the scale and potential consequences of the poisoning were unprecedented in the history of the British Empire. They feared that a successful large-scale poisoning could have decimated their community during a time of conflict."
+    },
+    {
+      "question": "Write a Python code snippet to simulate the spread of a hypothetical food contamination event in a dataset of 1000 residents, assuming 5% of the population gets poisoned and the contamination source is traced back to a bakery.",
+      "answer": "python\nimport numpy as np\n\n# Simulate 1000 residents\nnp.random.seed(42)\nresidents = np.arange(1000)\ncontaminated = np.random.choice(residents, size=50, replace=False)\ncontamination_source = 'Esing Bakery'  # Hypothetical bakery name\n\nprint(f\"Total residents: {len(residents)}\")\nprint(f\"Contaminated residents: {len(contaminated)}\")\nprint(f\"Contamination source: {contamination_source}\")\nprint(f\"Affected residents: {contaminated[:10]}...\")  # Display first 10 affected residents\n"
+    }
+  ]
+}

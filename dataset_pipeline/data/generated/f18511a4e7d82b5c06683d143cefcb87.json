@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Hambly_Arena",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the Hambly Arena and where was it located?",
+      "answer": "The Hambly Arena, also known as the Oshawa Arena, was an indoor ice rink in Oshawa, Ontario, primarily used for ice hockey. It was located at the northeast corner of Bond Street West and Arena Street, beside the Oshawa Creek and south of Kinsmen Stadium."
+    },
+    {
+      "question": "Who led the construction of the Oshawa Arena, and when did construction begin and end?",
+      "answer": "The construction of the Oshawa Arena was led by the Hambly brothers (Ernie and Harold), Samuel McLaughlin, Paul Clark, and the Ontario Hockey Association. Construction began during the Great Depression in October 1929 and was completed in January 1930."
+    },
+    {
+      "question": "What were the dimensions of the ice surface in the Hambly Arena, and how many people could it hold?",
+      "answer": "The artificial ice surface in the Hambly Arena measured 194 feet by 85 feet. The arena had a seating capacity of 3,750, with room for an additional 1,250 standing spectators, totaling 5,000."
+    },
+    {
+      "question": "How did the Oshawa Generals perform during their tenure at the Hambly Arena?",
+      "answer": "While playing at the Hambly Arena, the Oshawa Generals won seven consecutive J. Ross Robertson Cup titles and three Memorial Cup championships from 1937 to 1944."
+    },
+    {
+      "question": "What caused the closure of the Hambly Arena, and what were the consequences for the Oshawa Generals?",
+      "answer": "The Hambly Arena burned down on September 15, 1953. The fire resulted in an estimated loss of $350,000, destroyed all of the Generals' equipment and uniforms, and forced the team to suspend operations since the season was set to begin the following week."
+    },
+    {
+      "question": "Provide a Python code snippet that calculates the total capacity of the Hambly Arena, including standing room.",
+      "answer": "python\nhambly_seated_capacity = 3750\nhambly_standing_capacity = 1250\ntotal_capacity = hambly_seated_capacity + hambly_standing_capacity\nprint(f\"Total capacity of Hambly Arena: {total_capacity}\")\n\nThis code calculates the total capacity of the Hambly Arena by adding the seated capacity (3,750) and the standing room capacity (1,250), resulting in 5,000."
+    },
+    {
+      "question": "What replaced the Hambly Arena after it burned down?",
+      "answer": "After the Hambly Arena burned down in 1953, a car dealership occupied the former site in 1955. The Oshawa Civic Auditorium opened as the city's new primary hockey venue in 1964."
+    }
+  ]
+}

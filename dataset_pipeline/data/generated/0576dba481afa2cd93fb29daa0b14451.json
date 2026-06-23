@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Harjinder_Singh_(air_vice_marshal)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was Air Vice Marshal Harjinder Singh's first rank when he joined the Indian Air Force in 1933?",
+      "answer": "His first rank was 'Hawai sepoy', the lowest enlisted rank in the Indian Air Force at the time."
+    },
+    {
+      "question": "How did Air Vice Marshal Harjinder Singh contribute to the Indian Air Force during the Indo-Pakistani War of 1947?",
+      "answer": "He led the technical and maintenance operations of the IAF, ensuring a high serviceability of aircraft during the war."
+    },
+    {
+      "question": "What notable achievements did Harjinder Singh accomplish in the realm of aircraft innovation?",
+      "answer": "He designed and built a light communication aircraft, which he test-flew, launched the first Indian-built jet engine, and oversaw the manufacturing of the Hawker Siddeley HS 748 aircraft at Kanpur."
+    },
+    {
+      "question": "Describe Harjinder Singh's career progression from 'Hawai sepoy' to Air Vice Marshal.",
+      "answer": "Singh started as a 'Hawai sepoy' in 1933, progressed through various enlisted ranks, became a commissioned officer after World War II, and eventually rose to the rank of Air Vice Marshal in 1959, spanning over three decades and two wars."
+    },
+    {
+      "question": "What awards and honors did Harjinder Singh receive during his career?",
+      "answer": "He was awarded the Member of the Order of the British Empire (MBE) in June 1943 and later became a Padma Vibhushan (PVSM) recipient, reflecting his distinguished service in the Indian Air Force."
+    },
+    {
+      "question": "Write a Python code snippet to calculate the duration of Harjinder Singh's career in years, given his joining year (1933) and retirement year (1971).",
+      "answer": "python\njoining_year = 1933\nretirement_year = 1971\nduration = retirement_year - joining_year\nprint(f\"Harjinder Singh's career spanned {duration} years.\")\n\nOutput: Harjinder Singh's career spanned 38 years."
+    },
+    {
+      "question": "How did Harjinder Singh's early life experiences shape his career choices?",
+      "answer": "Orphaned at age 11, he was raised by his aunt and pursued engineering at MacLagan Engineering College. Despite a potentially comfortable life as a civil engineer, he chose to join the Royal Air Force as a 'Hawai sepoy', demonstrating resilience and a passion for aviation."
+    }
+  ]
+}

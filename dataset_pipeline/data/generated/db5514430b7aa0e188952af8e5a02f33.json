@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Chittenden-3-7_Vermont_Representative_District,_2002–2012",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the Chittenden-3-7 Representative District and where is it located?",
+      "answer": "The Chittenden-3-7 Representative District is a one-member state Representative district in the U.S. state of Vermont. It is located in the city of South Burlington, within Chittenden County. The district is defined by specific boundaries along Lake Champlain, Shelburne Road, Allen Road, Spear Street, Pheasant Way, Deerfield Drive, Nowland Farm Road, Pinnacle Drive, Olivia Drive, and Swift Street."
+    },
+    {
+      "question": "How was the Chittenden-3-7 district boundary determined?",
+      "answer": "The boundary of the Chittenden-3-7 district is determined by a series of landmarks and roads in South Burlington. Starting at a point on Lake Champlain at the Shelburne-South Burlington boundary, the boundary follows the Shelburne-South Burlington boundary easterly to Shelburne Road, then northerly along Shelburne Road to Allen Road, and continues through a sequence of roads (Allen Road, Spear Street, Pheasant Way, Deerfield Drive, Pinnacle Drive, Olivia Drive, and Swift Street) before returning to Lake Champlain."
+    },
+    {
+      "question": "What is the population of the Chittenden-3-7 district, and how does it compare to the state average?",
+      "answer": "As of the 2000 U.S. census, the Chittenden-3-7 district had a population of 3,721. This is 8.33% below the Vermont state average of 4,059 residents per representative (or 8,118 residents per two representatives)."
+    },
+    {
+      "question": "How often are Vermont's Representative districts redrawn?",
+      "answer": "Vermont's Representative districts are redrawn every 10 years following the U.S. census. The redistricting and reapportionment plan is developed by the Vermont General Assembly. The Chittenden-3-7 district was established after the 2000 census and applied to legislatures elected between 2002 and 2010. A new plan was developed in 2012 following the 2010 census."
+    },
+    {
+      "question": "How many total Representative districts are there in Vermont?",
+      "answer": "Vermont has a total of 108 one or two member Representative districts. These districts were established by the Vermont General Assembly following the 2000 U.S. census."
+    },
+    {
+      "question": "Can you write a Python function to check if a given point (latitude, longitude) is within the Chittenden-3-7 district boundary?",
+      "answer": "Here is a Python function that uses the Shapely library to check if a point is within the Chittenden-3-7 district boundary. Note: This is a simplified representation of the boundary and may not be 100% accurate.\n\npython\nfrom shapely.geometry import Polygon, Point\n\ndef is_in_chittenden_3_7(lat, lon):\n    # Define the boundary as a polygon (approximate coordinates for illustration)\n    boundary = Polygon([\n        (-73.2000, 44.4750),  # Lake Champlain starting point\n        (-73.1900, 44.4750),  # Shelburne-South Burlington boundary\n        (-73.1800, 44.4800),  # Shelburne Road\n        (-73.1850, 44.4850),  # Allen Road\n        (-73.1800, 44.4900),  # Spear Street\n        (-73.1850, 44.4950),  # Pheasant Way\n        (-73.1900, 44.4950),  # Deerfield Drive\n        (-73.1900, 44.5000),  # Pinnacle Drive\n        (-73.1950, 44.5050),  # Olivia Drive\n        (-73.1950, 44.5000),  # Spear Street\n        (-73.2000, 44.4950),  # Swift Street\n        (-73.2050, 44.4950),  # Shelburne Road\n        (-73.2100, 44.4900),  # Burlington-South Burlington boundary\n        (-73.2100, 44.4750),  # Lake Champlain\n        (-73.2000, 44.4750)   # Back to starting point\n    ])\n    point = Point(lon, lat)\n    return boundary.contains(point)\n\n# Example usage:\n# print(is_in_chittenden_3_7(44.4850, -73.1850))  # Returns True or False\n"
+    },
+    {
+      "question": "What is the relationship between the Chittenden-3-7 district and other districts in South Burlington?",
+      "answer": "The Chittenden-3-7 district covers a specific section of South Burlington. The rest of South Burlington is divided into other districts: Chittenden-3-8, Chittenden-3-9, and Chittenden-3-10. The boundaries of these districts are also defined by the Vermont General Assembly's redistricting plan."
+    }
+  ]
+}

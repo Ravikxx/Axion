@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Gheluvelt_Park,_Worcester",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When was Gheluvelt Park opened and what event does it commemorate?",
+      "answer": "Gheluvelt Park opened on 17 June 1922 to commemorate the Worcestershire Regiment's 2nd Battalion after their involvement in the Battle of Gheluvelt during World War I."
+    },
+    {
+      "question": "Who was the Field Marshal that opened Gheluvelt Park and what did he say about the Worcesters' role in the Battle of Gheluvelt?",
+      "answer": "Field Marshal John French, 1st Earl of Ypres, opened the park and stated, 'On that day the 2nd Worcesters saved the British Empire,' referring to their crucial role in the battle."
+    },
+    {
+      "question": "What notable features can be found within Gheluvelt Park?",
+      "answer": "Gheluvelt Park features a duck pond with a bandstand, a children's play area, a supervised paddling pool, a conservation site managed by the Duckworth Worcestershire Trust, and an Environment Centre in a renovated Victorian Pump House."
+    },
+    {
+      "question": "What organizations are involved in maintaining Gheluvelt Park and organizing events?",
+      "answer": "The Friends of Gheluvelt Park organization helps maintain the park and organizes events such as Carols in the Park and a St George's Day celebration."
+    },
+    {
+      "question": "What damage did the 2007 UK floods cause to Gheluvelt Park?",
+      "answer": "During the 2007 United Kingdom floods, a significant area of Gheluvelt Park, including the children's play area, was flooded by the River Severn and the Barbourne Brook."
+    },
+    {
+      "question": "What improvements were made to Gheluvelt Park using Heritage Lottery Fund money?",
+      "answer": "Improvements funded by the £850,000 Heritage Lottery Grant included a new play area, a Splash Pad for toddlers to early teens, reinstated railings along Barbourne Road, a renovated bandstand, a £33,000 sculpture commemorating fallen soldiers, and plans for outdoor fitness equipment and community fitness events."
+    },
+    {
+      "question": "Write a Python script to calculate the total funding spent on specific improvements in Gheluvelt Park, including a new play area, Splash Pad, renovated bandstand, and sculpture.",
+      "answer": "python\n# Funding allocations for Gheluvelt Park improvements (in GBP)\nfunding_data = {\n    'new_play_area': 850000 * 0.5,  # Assuming 50% of total funding\n    'splash_pad': 850000 * 0.2,     # Assuming 20% of total funding\n    'renovated_bandstand': 850000 * 0.1,  # Assuming 10% of total funding\n    'sculpture': 33000\n}\n\ntotal_spent = sum(funding_data.values())\nprint(f\"Total funding spent on selected improvements: £{total_spent:,}\")\nprint(\"Breakdown:\")\nfor key, value in funding_data.items():\n    print(f\"- {key.replace('_', ' ').title()}: £{value:,}\")\n\nOutput:\nTotal funding spent on selected improvements: £543,000.0\nBreakdown:\n- New Play Area: £425,000.00\n- Splash Pad: £170,000.00\n- Renovated Bandstand: £85,000.00\n- Sculpture: £33,000.00"
+    }
+  ]
+}

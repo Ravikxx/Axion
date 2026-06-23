@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Ahmad_ibn_Qudam",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was Ahmad ibn Qudam and what was his role in Sistan?",
+      "answer": "Ahmad ibn Qudam was the amir (ruler) of Sistan from approximately 919 until 923. He came to power after the assassination of Kathir ibn Ahmad in 919 and ruled during a period marked by internal conflicts and challenges to his authority."
+    },
+    {
+      "question": "What initial steps did Ahmad ibn Qudam take to secure his rule after becoming amir of Sistan?",
+      "answer": "To maintain friendly relations with the Abbasid Caliphate, Ahmad offered to pay tribute that his predecessor, Kathir ibn Ahmad, had promised to Baghdad."
+    },
+    {
+      "question": "Who opposed Ahmad ibn Qudam's rule and how did they challenge him?",
+      "answer": "Muhammad ibn Qasim, the governor of Zabulistan and son-in-law of the murdered Kathir ibn Ahmad, opposed Ahmad's rule. He gathered supporters, marched from Bust with an army, and nearly overthrew Ahmad before being defeated and killed by Ahmad's forces."
+    },
+    {
+      "question": "What was the outcome of Ahmad ibn Qudam's conflict with the Turkish commander Toghan?",
+      "answer": "Ahmad sent two expeditions against Toghan, a Turkish commander opposing his authority in Bust and Zamindawar. The first failed, but the second defeated and killed Toghan in January 922."
+    },
+    {
+      "question": "Describe the plot against Ahmad ibn Qudam in the capital, Zarang.",
+      "answer": "In Zarang, a plot led by ‘Abdallah ibn Ahmad overthrew Ahmad. The citizens supported the plot, seizing Ahmad's wealth and arms, and most of his supporters deserted him. Ahmad fled the town with only his Indian personal guards."
+    },
+    {
+      "question": "What happened to Ahmad ibn Qudam after his defeat in Zarang?",
+      "answer": "Ahmad fled to Bust and al-Rukhkhaj but faced further setbacks, including the defection of his personal guard commander. ‘Abdallah ibn Ahmad pursued him, poisoning wells along the desert route to Bust. Ahmad was eventually defeated and captured near Bust on January 17, 923, ending his rule."
+    },
+    {
+      "question": "What code snippet could represent the sequence of events in Ahmad ibn Qudam's rise and fall? Assume a timeline of events as a list of dictionaries.",
+      "answer": "python\nevents = [\n    {\"year\": 919, \"event\": \"Assassination of Kathir ibn Ahmad; Ahmad ibn Qudam becomes amir of Sistan\"},\n    {\"year\": 919, \"event\": \"Muhammad ibn Qasim challenges Ahmad's rule; defeated and killed\"},\n    {\"year\": 922, \"event\": \"Ahmad defeats and kills Turkish commander Toghan\"},\n    {\"year\": 922, \"event\": \"Plot against Ahmad in Zarang; Ahmad flees\"},\n    {\"year\": 923, \"event\": \"Ahmad captured and defeated near Bust by ‘Abdallah ibn Ahmad\"}\n]\n"
+    }
+  ]
+}

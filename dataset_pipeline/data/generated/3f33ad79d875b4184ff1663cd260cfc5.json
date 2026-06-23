@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Jeeno_Thitikul",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When did Atthaya Thitikul first achieve the number one ranking in the Women's World Golf Rankings?",
+      "answer": "Atthaya Thitikul first achieved the number one ranking in the Women's World Golf Rankings on 31 October 2022."
+    },
+    {
+      "question": "What significant milestone did Atthaya Thitikul achieve at the age of 14, and when did it occur?",
+      "answer": "At the age of 14 years, 4 months, and 19 days, Atthaya Thitikul became the youngest golfer ever to win a professional golf tournament. This occurred on 9 July 2017, when she won the Ladies European Thailand Championship as an amateur."
+    },
+    {
+      "question": "How many LPGA Tour wins and Ladies European Tour wins did Atthaya Thitikul have by September 2022?",
+      "answer": "By September 2022, Atthaya Thitikul had two wins on the LPGA Tour and four wins on the Ladies European Tour."
+    },
+    {
+      "question": "What awards and titles did Atthaya Thitikul receive in 2022?",
+      "answer": "In 2022, Atthaya Thitikul won the JTBC Classic on the LPGA Tour for the first time, became the number one ranked golfer in the Women's World Golf Rankings on 31 October 2022, and was named the 2022 LPGA Tour Rookie of the Year on 10 November."
+    },
+    {
+      "question": "What notable achievements did Atthaya Thitikul accomplish in November 2024 and 2025?",
+      "answer": "In November 2024 and 2025, Atthaya Thitikul won the CME Group Tour Championship, earning a prize of $4 million each year. Additionally, in 2025, she led the LPGA money list and recorded the lowest scoring average in LPGA history (68.68), which marked her second time winning the Vare Trophy (2023)."
+    },
+    {
+      "question": "Provide a code snippet in Python that calculates the age of Atthaya Thitikul based on her birthdate and a given date.",
+      "answer": "python\nfrom datetime import date\n\ndef calculate_age(birthdate, given_date):\n    age = given_date.year - birthdate.year\n    if (given_date.month, given_date.day) < (birthdate.month, birthdate.day):\n        age -= 1\n    return age\n\nbirthdate = date(2003, 2, 20)\ngiven_date = date(2023, 7, 9)\nage = calculate_age(birthdate, given_date)\nprint(f'Atthaya Thitikul was {age} years old when she won the Ladies European Thailand Championship on 9 July 2017.')\n"
+    },
+    {
+      "question": "What records or achievements did Atthaya Thitikul set in golf history by 2025?",
+      "answer": "By 2025, Atthaya Thitikul recorded the lowest scoring average in LPGA history (68.68) and became the first golfer to win the CME Group Tour Championship twice in consecutive years (2024 and 2025), earning $4 million each time."
+    }
+  ]
+}

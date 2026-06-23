@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Barcroft_Boake_(educator)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was Dr. Barcroft Boake and what were his most significant roles in education?",
+      "answer": "Dr. Barcroft Boake (1814–1876) was an Irish-born clergyman and educator best known for serving as the longest-tenured principal of Royal College Colombo from 1842 to 1870. He played a pivotal role in establishing Queen's College in 1859, the first higher education institution in Ceylon, which prepared students for entrance exams to English universities. Additionally, he co-founded the Colombo Academy, served as its principal, and later helped merge it with Queen's College in 1869. He also set up one of Ceylon's first boarding schools at the Colombo Academy in 1868."
+    },
+    {
+      "question": "What educational qualifications did Barcroft Boake achieve during his academic career?",
+      "answer": "Barcroft Boake earned multiple degrees from Trinity College Dublin: a Bachelor of Arts in 1836, followed by a Master of Arts, Bachelor of Divinity, and Doctorate of Divinity. He was ordained as a deacon in 1838 and as a priest in 1839 by the Bishop of Cork."
+    },
+    {
+      "question": "How did Barcroft Boake transition from a proposed role in India to becoming principal of the Colombo Academy?",
+      "answer": "In 1841, the Church Missionary Society offered Boake the position of headmaster for a new school in southern India, but the project collapsed. The Society then recommended him to the Secretary of State for the position of principal at Colombo Academy. He accepted, arriving in Ceylon in September 1842 and taking up the role in October 1842."
+    },
+    {
+      "question": "What reforms did the Morgan Committee propose regarding education in Ceylon, and how did these impact Queen's College?",
+      "answer": "The Morgan Committee, appointed in 1865, conducted an inquiry into Ceylon’s education system and recommended reorganizing it. Their suggestions included awarding scholarships for study at the University of Oxford. As a result, Queen's College was amalgamated with the Colombo Academy in 1869, consolidating the institutions under a unified educational framework."
+    },
+    {
+      "question": "Describe Barcroft Boake’s family background and his personal life.",
+      "answer": "Barcroft Boake was born in Dublin in 1814 to John Fuller Boake, a brick merchant, and Mary née Lodge. In 1843, he married Mary Catherine Slade, the daughter of Major General William Henry Slade, with whom he had eight children. After her death in 1860, he remarried Agnes Jane Marsh in 1861, a daughter of Reverend Joseph Marsh, and had five more children with her. The family later migrated to Melbourne, Australia, in 1870."
+    },
+    {
+      "question": "What contributions did Barcroft Boake make to publishing and religious works?",
+      "answer": "Boake authored several treatises published in the Ceylon Times (1853–1854) and a sermon printed by the Church Mission Press in 1857, which was delivered at Trinity Church, Colombo, on 1 June 1851. These works reflect his involvement in both educational and religious spheres."
+    },
+    {
+      "question": "Write a Python function to calculate the total number of children Barcroft Boake had across both marriages.",
+      "answer": "python\ndef calculate_total_children():\n    children_first_marriage = 8\n    children_second_marriage = 5\n    return children_first_marriage + children_second_marriage\n\n# Example usage:\ntotal_children = calculate_total_children()\nprint(f\"Barcroft Boake had a total of {total_children} children.\")\n\nThis function sums the children from both marriages, yielding a total of 13 children."
+    }
+  ]
+}

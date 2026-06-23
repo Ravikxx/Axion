@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Battle_of_White_Oak_Road",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What were the alternative names for the Battle of White Oak Road, and when did it occur?",
+      "answer": "The Battle of White Oak Road was also known as the Battle of Hatcher's Run, Gravelly Run, Boydton Plank Road, and White Oak Ridge. It was fought on March 31, 1865, during the final stages of the American Civil War."
+    },
+    {
+      "question": "What were General Robert E. Lee's objectives in launching the Battle of White Oak Road and the simultaneous Battle of Dinwiddie Court House?",
+      "answer": "General Robert E. Lee's objectives were to stop the progress of Lieutenant General Ulysses S. Grant's Union Army, cut remaining Confederate supply lines, and force the Confederates to extend their defensive lines to the breaking point or into a decisive open-field battle."
+    },
+    {
+      "question": "How did Major General Gouverneur K. Warren's V Corps contribute to the Union's strategy on March 29, 1865?",
+      "answer": "On March 29, 1865, Major General Gouverneur K. Warren's V Corps moved to the end of the Confederates' White Oak Road Line, securing Confederate outpost positions and occupying a segment of the Boydton Plank Road at its junction with Quaker Road. This placed them as the closest Union infantry unit to Major General Philip Sheridan's cavalry force near Dinwiddie Court House."
+    },
+    {
+      "question": "What tactical error did Brigadier General Romeyn B. Ayres make on March 30, 1865, and what were the consequences?",
+      "answer": "Brigadier General Romeyn B. Ayres was unaware that his troops had moved too close to the Confederate White Oak Road Line and that the Confederate defenses extended beyond their position. This oversight, combined with the separation between Ayres's corps and Sheridan's cavalry, led to a Confederate surprise attack the following day."
+    },
+    {
+      "question": "Describe the role of Brevet Major General Charles Griffin's First Division in the Battle of White Oak Road.",
+      "answer": "Brevet Major General Charles Griffin's First Division, part of Warren's V Corps, counterattacked the Confederates, pushed them back to their original lines, secured advanced positions, and cut the Confederates' access to direct communication with General George Pickett via White Oak Road and the Boydton Plank Road."
+    },
+    {
+      "question": "What strategic significance did the battles at White Oak Road and Dinwiddie Court House have in the broader context of the Appomattox Campaign?",
+      "answer": "While the battles initially resulted in Confederate tactical successes, they failed to achieve Lee's strategic objectives of weakening Union forces or separating Sheridan's cavalry from support. These engagements set the stage for the decisive Confederate defeats at the Battle of Five Forks (April 1, 1865) and the Third Battle of Petersburg (April 2, 1865), ultimately leading to the surrender of Lee's Army of Northern Virginia on April 9, 1865."
+    },
+    {
+      "question": "Write a Python snippet to calculate the time elapsed between the Battle of White Oak Road and the surrender at Appomattox Court House.",
+      "answer": "python\nfrom datetime import datetime\n\nbattle_date = datetime(1865, 3, 31)\nsurrender_date = datetime(1865, 4, 9)\ntime_elapsed = surrender_date - battle_date\n\nprint(f\"Time elapsed: {time_elapsed.days} days\")\n# Output: Time elapsed: 9 days\n"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Anglo-Persian_Treaty_of_1801",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who were the key signatories of the Anglo-Persian Treaty of 1801?",
+      "answer": "The Anglo-Persian Treaty of 1801 was signed between John Malcolm, a British diplomat, and Fath Ali Shah, the Shah of Persia."
+    },
+    {
+      "question": "What were the primary strategic motivations behind the Anglo-Persian Treaty of 1801 for Great Britain?",
+      "answer": "The primary motivations for Great Britain were to reinforce the western border of British India and counter the threats posed by French expansion during the Campaign of Egypt and Russian advances into the Caucasus (specifically the annexation of the Kingdom of Kartli-Kakheti and Georgia in 1800–1801)."
+    },
+    {
+      "question": "What specific military commitments did the Anglo-Persian Treaty of 1801 outline in the event of a French invasion of Persia?",
+      "answer": "The treaty stipulated that if a French army attempted to establish itself on any islands or shores of Persia, both parties would appoint a joint military force to cooperate in destroying it."
+    },
+    {
+      "question": "How did the Anglo-Persian Treaty of 1801 address the issue of French settlement in Persia?",
+      "answer": "The treaty explicitly prohibited the Persian Government from consenting to any request by French officials or citizens to establish residence or dwelling places in Persia, ensuring no French foothold could be secured."
+    },
+    {
+      "question": "What trade benefits did the Anglo-Persian Treaty of 1801 provide to the involved parties?",
+      "answer": "The treaty included provisions for trade advantages between Great Britain and Persia, though the specific details of these commercial benefits are not outlined in the given text."
+    },
+    {
+      "question": "Why was the Russian conquest of Georgia a concern for both Qajar Iran and Britain?",
+      "answer": "The Russian conquest of the Kingdom of Kartli-Kakheti and annexation of Georgia in 1800–1801 heightened regional tensions, as it expanded Russian influence toward Persia and British India, prompting both nations to seek alliances to counterbalance Russian power."
+    },
+    {
+      "question": "Write a Python function that checks whether a given text string matches the key military commitment of the Anglo-Persian Treaty of 1801 regarding French invasion.",
+      "answer": "python\ndef check_french_invasion_clause(text: str) -> bool:\n    \"\"\"\n    Checks if the given text contains the key military commitment from the Anglo-Persian Treaty of 1801\n    regarding French invasion, specifically the requirement for a joint force to destroy a French army.\n    \n    Args:\n        text (str): The input text to analyze.\n    \n    Returns:\n        bool: True if the key phrase is found, False otherwise.\n    \"\"\"\n    key_phrase = \"conjunct force shall be appointed by the two high contracted parties, to act in cooperation, to destroy it\"\n    return key_phrase.lower() in text.lower()\n\n# Example usage:\ntreaty_text = \"...a conjunct force shall be appointed by the two high contracted parties, to act in cooperation, to destroy it...\"\nprint(check_french_invasion_clause(treaty_text))  # Output: True\n"
+    }
+  ]
+}

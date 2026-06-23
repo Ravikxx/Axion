@@ -1,0 +1,34 @@
+{
+  "source_url": "https://dev.to/devengers/two-devs-and-a-copilot-created-classifierai-a-prototype-chrome-extension-that-automatically-4fge",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What is the purpose of the ClassifierAI Chrome Extension?",
+      "answer": "ClassifierAI is a prototype Chrome Extension designed to automatically detect AI-generated content on DEV by analyzing both article text and cover images. It aims to reduce manual work for users who want to verify the authenticity of content, addressing issues like the proliferation of AI-generated articles on the platform."
+    },
+    {
+      "question": "What datasets were used to train the image classification model in ClassifierAI?",
+      "answer": "The image classification model in ClassifierAI was trained using the 'AI-Generated-vs-Real-Images-Datasets' from Hugging Face, which contains 866 images total (433 labeled 'AI' and 433 labeled 'NotAI'). The model was trained with 30 epochs, a batch size of 16, and a learning rate of 0.0001 using TensorFlow.js."
+    },
+    {
+      "question": "How can you install the ClassifierAI Chrome Extension from the GitHub repository?",
+      "answer": "To install ClassifierAI from the GitHub repository:\n1. Clone the repository: `git clone https://github.com/FrancisTR/ClassifierAI.git`\n2. Navigate to the directory: `cd ClassifierAI`\n3. Install dependencies and build: `npm install` followed by `npm run build`\n4. Enable Developer Mode in your browser's extension page.\n5. Drag the '_dist_' folder into the extension page to add it as an extension."
+    },
+    {
+      "question": "What are the key technical components used to build ClassifierAI?",
+      "answer": "ClassifierAI leverages TensorFlow.js for both image and text classification. For image classification, it uses a model trained via Google's Teachable Machine with a dataset of 866 images. For text classification, it uses a model trained on the 'wikipedia-human-ai' dataset from Hugging Face. The Chrome Extension integrates these models to scan and classify content on DEV."
+    },
+    {
+      "question": "Why did the creators of ClassifierAI choose to focus on DEV specifically?",
+      "answer": "The creators focused on DEV to personalize the tool for the platform's unique writing styles and community standards. They argue that AI-generated content detection models trained on broader datasets may not generalize well to niche platforms like DEV. By tailoring the model to DEV, they aim to reduce false positives and improve accuracy for DEV's specific context."
+    },
+    {
+      "question": "What are some of the limitations mentioned for the ClassifierAI Chrome Extension?",
+      "answer": "ClassifierAI is a prototype and not a perfect solution. The models are trained on datasets not directly sourced from DEV, which can lead to inaccuracies. Additionally, tools exist that can bypass AI detection systems like GPTZero, and the extension may struggle to keep up with evolving AI-generated content styles over time. The creators acknowledge these limitations and plan to refine the model as more DEV-specific data becomes available."
+    },
+    {
+      "question": "How does the ClassifierAI Chrome Extension work when a user clicks on a DEV article?",
+      "answer": "When a user clicks on a DEV article, the Chrome Extension automatically scans the article's cover image and text content. It then uses the trained models to classify whether the image or text is AI-generated. The results are displayed to the user, indicating the likelihood of AI-generated content for each component."
+    }
+  ]
+}

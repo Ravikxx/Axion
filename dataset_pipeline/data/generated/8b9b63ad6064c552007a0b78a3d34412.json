@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Antonio_Chiaramonte_Bordonaro",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was Antonio Chiaramonte Bordonaro and what was his primary profession?",
+      "answer": "Antonio Chiaramonte Bordonaro was an Italian diplomat born into a noble Sicilian family. He served as a key figure in the Italian diplomatic service, holding several important positions including Ambassador to the United Kingdom and Secretary General of the Ministry of Foreign Affairs."
+    },
+    {
+      "question": "In which year did Antonio Chiaramonte Bordonaro join the Italian diplomatic service?",
+      "answer": "Antonio Chiaramonte Bordonaro joined the Italian diplomatic service in 1899, one year after graduating from the School of Social Science of the Istituto Cesare Alfieri in Florence in 1898."
+    },
+    {
+      "question": "What were some of the diplomatic postings held by Antonio Chiaramonte Bordonaro before his appointment as Secretary General?",
+      "answer": "Before becoming Secretary General, Antonio Chiaramonte Bordonaro served in diplomatic postings in Trieste, Budapest, Bern, St. Petersburg, Berlin, Czechoslovakia, and Austria."
+    },
+    {
+      "question": "What significant event led to Antonio Chiaramonte Bordonaro's appointment as Secretary General of the Ministry of Foreign Affairs?",
+      "answer": "His appointment as Secretary General on April 6, 1926, followed the resignation of Salvatore Contarini."
+    },
+    {
+      "question": "How long did Antonio Chiaramonte Bordonaro serve as Secretary General of the Ministry of Foreign Affairs, and why did his term end?",
+      "answer": "He served as Secretary General for only ten months, until the position was abolished by the Fascist government in February 1927."
+    },
+    {
+      "question": "Which honors and awards were bestowed upon Antonio Chiaramonte Bordonaro during his diplomatic career?",
+      "answer": "He was awarded the Grand Cross of the Czechoslovak Order of the White Lion in 1924 and an honorary Knight Grand Cross of the Order of the British Empire in 1930."
+    },
+    {
+      "question": "Write a Python code snippet to calculate the duration of Antonio Chiaramonte Bordonaro's tenure as Secretary General of the Ministry of Foreign Affairs.",
+      "answer": "python\nfrom datetime import datetime\n\n# Define the start and end dates of his tenure\nstart_date = datetime(1926, 4, 6)\nend_date = datetime(1927, 2, 6)\n\n# Calculate the duration in days\ntenure_duration_days = (end_date - start_date).days\n\n# Convert days to months and days\nmonths = tenure_duration_days // 30\ndays = tenure_duration_days % 30\n\nprint(f\"Antonio Chiaramonte Bordonaro served as Secretary General for {months} months and {days} days.\")\n\nOutput: Antonio Chiaramonte Bordonaro served as Secretary General for 10 months and 1 days."
+    }
+  ]
+}

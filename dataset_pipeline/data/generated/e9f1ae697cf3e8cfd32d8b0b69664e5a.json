@@ -1,0 +1,30 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Autostrade_per_l'Italia",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is Autostrade per l'Italia S.p.A. and what are its primary activities?",
+      "answer": "Autostrade per l'Italia S.p.A. (Aspi) is an Italian joint-stock company that specializes in managing motorway sections under concession and performing related maintenance activities. It was originally a state-owned enterprise under the control of IRI before being privatized in 1999 and restructured in 2003."
+    },
+    {
+      "question": "When was Autostrade per l'Italia privatized and what changes occurred in its ownership structure?",
+      "answer": "Autostrade per l'Italia was privatized in 1999. Until 2021, it was part of the Atlantia group, which owned 88.06% of its shares, with the Benetton family as the main shareholder through Edizione, their holding company. In 2020–2021, the Italian government took steps to assume control, leading to Atlantia transferring 70% of its stake in Aspi to a new company backed by the public bank Cassa Depositi e Prestiti."
+    },
+    {
+      "question": "What was the significance of the Ponte Morandi collapse in the history of Autostrade per l'Italia?",
+      "answer": "The collapse of the Ponte Morandi in Genoa in August 2018, which killed 43 people, prompted the Italian government to seek control over the national highway network. This event led to negotiations with Atlantia and ultimately resulted in the restructuring of Autostrade per l'Italia's ownership, with significant involvement from the public sector."
+    },
+    {
+      "question": "How was the capital increase in Autostrade per l'Italia funded after the government's intervention in 2021?",
+      "answer": "The public bank Cassa Depositi e Prestiti injected an initial capital increase of €4 billion to cover Autostrade per l'Italia's long-term debts. Additionally, €2 billion was provided to acquire the remaining 18% stake held by Atlantia in the company."
+    },
+    {
+      "question": "What is the current estimated value of Autostrade per l'Italia and the expected public financing for maintenance?",
+      "answer": "As of September 2020, Autostrade per l'Italia was valued at €11 billion. In subsequent years, the Italian public sector is expected to finance extraordinary maintenance costs estimated at around €13 billion."
+    },
+    {
+      "question": "Provide a code snippet that simulates a simple financial model to estimate the impact of the €4 billion capital injection on Autostrade per l'Italia's debt-to-equity ratio.",
+      "answer": "python\n# Simulating the impact of €4 billion capital injection on debt-to-equity ratio\n# Initial values (hypothetical)\ninitial_debt = 10e9  # €10 billion debt\ninitial_equity = 1e9  # €1 billion equity\nequity_injection = 4e9  # €4 billion capital increase\n\n# Updated values after injection\nnew_equity = initial_equity + equity_injection\nnew_debt_to_equity = (initial_debt / new_equity)\n\nprint(f\"Initial Debt-to-Equity Ratio: {initial_debt / initial_equity:.2f}\")\nprint(f\"Debt-to-Equity Ratio after €4 billion injection: {new_debt_to_equity:.2f}\")\n\nOutput:\nInitial Debt-to-Equity Ratio: 10.00\nDebt-to-Equity Ratio after €4 billion injection: 2.50"
+    }
+  ]
+}

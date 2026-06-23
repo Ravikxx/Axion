@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/2021_Toronto_Argonauts_season",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "How many wins did the Toronto Argonauts have in the 2021 CFL season?",
+      "answer": "The Toronto Argonauts had 7 wins in the 2021 CFL season."
+    },
+    {
+      "question": "What significant change occurred in the Toronto Argonauts' schedule for the 2021 season compared to the original plan?",
+      "answer": "The original 18-game season schedule was shortened to a 14-game schedule due to delays, with the regular season starting on August 5, 2021."
+    },
+    {
+      "question": "Who was the head coach of the Toronto Argonauts in their 2021 season?",
+      "answer": "Ryan Dinwiddie was the head coach of the Toronto Argonauts in the 2021 season."
+    },
+    {
+      "question": "What milestone did Michael Clemons achieve with the Toronto Argonauts in the 2021 season?",
+      "answer": "Michael Clemons served as the general manager for his first full season with the team, having been appointed mid-way through the 2019 season."
+    },
+    {
+      "question": "How did the Toronto Argonauts qualify for the playoffs in the 2021 season?",
+      "answer": "The Argonauts qualified for the playoffs by winning against the BC Lions on October 30, 2021."
+    },
+    {
+      "question": "What was the outcome of the Toronto Argonauts' East Final match against the Hamilton Tiger-Cats in 2021?",
+      "answer": "The Argonauts lost to the Hamilton Tiger-Cats in the East Final with a final score of 27–19, despite leading 12–0 at halftime."
+    },
+    {
+      "question": "Write Python code to calculate the Toronto Argonauts' win percentage for the 2021 season.",
+      "answer": "python\nwins = 7\ngames_played = 14\nwin_percentage = (wins / games_played) * 100\nprint(f\"Win percentage: {win_percentage:.2f}%\")\n\nOutput: Win percentage: 50.00%"
+    }
+  ]
+}

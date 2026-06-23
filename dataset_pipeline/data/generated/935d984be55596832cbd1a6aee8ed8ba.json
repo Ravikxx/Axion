@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Franconia",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What are the three governmental districts that make up Franconia in Bavaria?",
+      "answer": "Franconia in Bavaria is composed of the governmental districts of Lower Franconia, Middle Franconia, and Upper Franconia."
+    },
+    {
+      "question": "Which dialect is primarily spoken in Franconia and what is its name?",
+      "answer": "The primary dialect spoken in Franconia is called East Franconian (Ostfränkisch)."
+    },
+    {
+      "question": "How is the geographical and cultural region of Franconia defined in terms of its borders?",
+      "answer": "Franconia is defined as the three Bavarian Regierungsbezirke (Lower, Middle, Upper Franconia), the Franconian-speaking parts of South Thuringia south of the Thuringian Forest, and the eastern parts of Heilbronn-Franconia in Baden-Württemberg. Parts of the Vogtland in Saxony are sometimes included, while areas west of the Spessart in Lower Franconia and parts of the Oden Forest District in Hesse are only occasionally considered Franconian."
+    },
+    {
+      "question": "What is the largest city in Franconia, and which nearby cities form a significant conurbation with it?",
+      "answer": "The largest city in Franconia is Nuremberg. It forms a conurbation with the nearby cities of Erlangen and Fürth, collectively known as the Franconian conurbation, which has approximately 1.3 million inhabitants."
+    },
+    {
+      "question": "How did the ethnic group known as the Franconians originate historically?",
+      "answer": "The Franconians originated from the settlement of the Germanic Franks in the 6th century in the Main River area, which was likely inhabited by the Elbe Germanic people. By the 9th century, this region was known as East Francia (Francia Orientalis)."
+    },
+    {
+      "question": "Provide a Python code snippet to check if a given city is located in Franconia based on a predefined list of Franconian cities.",
+      "answer": "python\nfranconian_cities = {\n    \"Bavaria\": [\"Nuremberg\", \"Würzburg\", \"Bamberg\", \"Bayreuth\", \"Ansbach\", \"Coburg\"],\n    \"Thuringia\": [\"Suhl\", \"Meiningen\"],\n    \"Baden-Württemberg\": [\"Schwäbisch Hall\"]\n}\n\ndef is_in_franconia(city):\n    for region, cities in franconian_cities.items():\n        if city in cities:\n            return True\n    return False\n\n# Example usage:\nprint(is_in_franconia(\"Bamberg\"))  # Output: True\nprint(is_in_franconia(\"Berlin\"))   # Output: False\n"
+    },
+    {
+      "question": "What historical administrative division included much of Franconia during the Middle Ages?",
+      "answer": "During the Middle Ages, much of Franconia was part of the eastern region of the Duchy of Franconia. Later, from 1500, it became part of the Franconian Circle, a territorial division of the Holy Roman Empire."
+    },
+    {
+      "question": "How did Napoleon's restructuring of South German states affect the political affiliation of Franconia?",
+      "answer": "After the dissolution of the Holy Roman Empire, Napoleon's restructuring awarded most of Franconia to Bavaria, significantly altering its political boundaries and affiliations."
+    }
+  ]
+}

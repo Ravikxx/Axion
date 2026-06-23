@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/BigCouch",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is BigCouch and how does it relate to Apache CouchDB?",
+      "answer": "BigCouch is an open-source, distributed, fault-tolerant, and API-compliant version of Apache CouchDB, originally maintained by Cloudant. It was designed to enable horizontal scaling across multiple servers, addressing the limitation that CouchDB alone does not scale well for Big Data workloads. BigCouch merges its horizontal scaling framework into the CouchDB project, and while it operates as a single CouchDB instance to end-users, it actually functions as one or more nodes within an elastic cluster."
+    },
+    {
+      "question": "When was BigCouch merged into the CouchDB project, and what was the timeline of its support?",
+      "answer": "The merge of BigCouch's horizontal scaling framework into the CouchDB project was completed in July 2013, following Cloudant's announcement on January 5, 2012. Cloudant announced they would no longer support BigCouch in June 2015."
+    },
+    {
+      "question": "How does BigCouch enable horizontal scaling in a distributed environment?",
+      "answer": "BigCouch enables horizontal scaling by allowing users to create clusters of CouchDB nodes distributed across multiple servers. Each node in the cluster can accept requests, and data is partitioned using a consistent hashing algorithm. The system relies on quorum protocols for read/write operations, ensuring fault tolerance and high availability."
+    },
+    {
+      "question": "What underlying technologies does BigCouch use, and how does it handle communication between nodes?",
+      "answer": "BigCouch relies on Erlang and the Open Telecom Platform (OTP) for its architecture, despite using its own RPC mechanism over OTP's 'rex' server for inter-node communication. This design allows it to efficiently manage distributed operations and fault tolerance."
+    },
+    {
+      "question": "Can you provide a conceptual example of how data is partitioned and retrieved in a BigCouch cluster?",
+      "answer": "In a BigCouch cluster, data is partitioned using a consistent hashing algorithm. For example, if a document's ID is hashed to a specific partition, that document will be stored on the corresponding node responsible for that partition. When a read request is made, the system follows quorum protocols to retrieve the document from the appropriate partition, ensuring data consistency and availability."
+    },
+    {
+      "question": "Why was BigCouch developed, and what problem did it solve for CouchDB users?",
+      "answer": "BigCouch was developed to address the common criticism that CouchDB does not scale horizontally across many servers. By enabling horizontal scaling, BigCouch allows CouchDB to be used for Big Data problems, where distributed storage and retrieval of large datasets are essential. This makes it possible for organizations to handle larger workloads without compromising performance."
+    },
+    {
+      "question": "What are the key architectural principles behind BigCouch's design, as inspired by Amazon's Dynamo paper?",
+      "answer": "BigCouch's design is influenced by Amazon's Dynamo paper, which emphasizes decentralization, scalability, and fault tolerance. Key principles include: each node can accept requests, data is partitioned using consistent hashing, and quorum protocols are used for read/write operations to ensure data consistency and availability across the distributed cluster."
+    }
+  ]
+}

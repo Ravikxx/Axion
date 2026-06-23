@@ -1,0 +1,38 @@
+{
+  "source_url": "https://dev.to/googleai/teaching-a-robot-to-play-a-toddler-game-vlas-gemini-3-flash-and-first-orchard-14g4",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What is Embodied AI and why is it considered the next frontier in AI development?",
+      "answer": "Embodied AI refers to the integration of reasoning capabilities from Large Language Models (LLMs) into physical systems, such as robotics, to make them useful in real-world applications. It is considered the next frontier because it bridges the gap between abstract AI reasoning and tangible physical interaction, enabling robots to perform tasks in dynamic environments."
+    },
+    {
+      "question": "What are the key components involved in the robotics field beyond just software?",
+      "answer": "The robotics field spans multiple disciplines including mechanical engineering (design of physical components), electrical engineering (sensor and actuator systems), software control systems (algorithms for movement and task execution), computer vision (environment perception), and complex mathematics (kinematics, dynamics, and control theory) to handle basic movements and tasks."
+    },
+    {
+      "question": "What is the objective of the 'First Orchard' game being played by the SOARM101 robot arm?",
+      "answer": "The objective of 'First Orchard' is to roll a die and harvest (remove) all the fruit pieces from the four tree tiles before the crow game piece reaches the end of its path. The die includes faces for four fruit colors (matching the fruit types), a basket (allows removing any fruit), and the crow (moves the crow forward)."
+    },
+    {
+      "question": "How was the data collection process structured for training the VLA model in this project?",
+      "answer": "The data collection involved recording 100 episodes for each of the four tasks: placing red, blue, green, and yellow fruit into the box, totaling 400 episodes. The process used teleoperation with a leader/follower robot setup, where the operator controlled the leader arm while the follower arm performed the actions. The setup included overhead and wrist cameras to capture the environment."
+    },
+    {
+      "question": "What were the two main approaches considered for solving the pick-and-place task, and which one was chosen?",
+      "answer": "The two approaches were task decomposition (breaking the task into smaller steps like reaching, gripping, and lifting) and end-to-end policy (training a single policy to handle the entire sequence). The end-to-end flow was chosen to push the boundaries of Vision-Language-Action (VLA) model capabilities in a home environment."
+    },
+    {
+      "question": "Provide the command used to configure the cameras, robots, and dataset settings for recording the 'Place the blue fruit in the box' task.",
+      "answer": "bash\nlerobot-record \\\n--robot.type=so101_follower \\\n--robot.port=/dev/ttyACM0 \\\n--robot.id=follower_arm \\\n--robot.cameras=\"{ wrist_cam_left: {type: opencv, index_or_path: 8, width: 640, height: 480, fps: 30}, overhead_cam: {type: opencv, index_or_path: 4, width: 640, height: 480, fps: 30}}\"  \\\n--teleop.type=so101_leader \\\n--robot.port=/dev/ttyACM1 \\\n--teleop.id=leader_arm \\\n--display_data=true \\\n--dataset.repo_id=paultr/first-orchard \\\n--dataset.num_episodes=25 \\\n--dataset.single_task=\"Place the blue fruit in the box\"\n"
+    },
+    {
+      "question": "What are the key differences between Iteration 1 and Iteration 2 of the VLA model training?",
+      "answer": "Iteration 1 involved a quick test with a 2-hour refinement of SmolVLA using a small batch size of 8 and 20,000 steps, leading to mixed results with some episodes working well but others being off-target. Iteration 2 used a longer training time of 100,000 steps with a larger batch size of 64, resulting in significantly better performance and reliability for playing the game."
+    },
+    {
+      "question": "How did the author handle interruptions during the long training sessions for the Pi0-Fast model?",
+      "answer": "The author linked their Google Drive to the Colab session to periodically save and resume checkpoints, as Colab sessions shut down after about 24 hours. This allowed the training to continue for up to five days without losing progress."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Freedom_of_religion_in_Uzbekistan",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What does the Constitution of Uzbekistan guarantee regarding religious freedom?",
+      "answer": "The Constitution of Uzbekistan guarantees freedom of religion and the separation of church and state."
+    },
+    {
+      "question": "According to Human Rights Watch, how do Uzbek authorities restrict religious freedom in practice?",
+      "answer": "Uzbek authorities restrict religious freedom by preventing the registration of religious communities, subjecting former religious prisoners to arbitrary controls, and prosecuting Muslims on broad and vaguely worded extremism-related charges."
+    },
+    {
+      "question": "Which religious groups face restrictions on proselytizing in Uzbekistan and why?",
+      "answer": "Mainstream religious groups such as Muslims, Jews, and Christians face restrictions on proselytizing, particularly among ethnic Uzbeks. This is because Uzbek law prohibits or severely restricts proselytizing, importing and disseminating religious literature, and offering private religious instruction."
+    },
+    {
+      "question": "What legal changes in 2006 impacted religious freedom in Uzbekistan, and what were their consequences?",
+      "answer": "In 2006, new criminal statutes were enacted that led to criminal charges against religious figures. For example, two pastors were prosecuted—one was sentenced to 4 years in a labor camp, and the other received a suspended sentence and probation."
+    },
+    {
+      "question": "Which Islamic groups have been targeted by the Uzbek government, and under what legal framework?",
+      "answer": "The Uzbek government has targeted Islamic groups suspected of extremism, including Hizb ut-Tahrir (HT), the banned Islamic group Akromiya (Akromiylar), and Wahhabi groups. These prosecutions were conducted under criminal statutes enacted in 2006."
+    },
+    {
+      "question": "How has religious freedom in Uzbekistan changed since the election of Shavkat Mirziyoyev?",
+      "answer": "Since Shavkat Mirziyoyev's election, Uzbekistan has enjoyed greater religious freedom, and the country was removed from an American list of problematic countries for religious tolerance."
+    },
+    {
+      "question": "Provide a code snippet that checks if a list of religious groups contains any banned groups as defined by Uzbek law.",
+      "answer": "python\nbanned_groups = {'Hizb ut-Tahrir', 'Akromiya', 'Wahhabi'}\nreligious_groups = ['Sunni', 'Shia', 'Hizb ut-Tahrir', 'Christian']\n\nif any(group in banned_groups for group in religious_groups):\n    print('Warning: Banned group detected.')\nelse:\n    print('No banned groups detected.')\n"
+    }
+  ]
+}

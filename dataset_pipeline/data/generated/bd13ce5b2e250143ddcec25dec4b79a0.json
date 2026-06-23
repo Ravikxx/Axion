@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Drag_(physics)",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is drag in fluid dynamics and how does it relate to the motion of an object through a fluid?",
+      "answer": "Drag is a force that opposes the motion of an object moving through a fluid, such as a liquid or gas. It acts in the opposite direction to the object's movement and increases with the object's velocity. Unlike solid friction, drag arises from the fluid pushing back on the object as it displaces the surrounding fluid."
+    },
+    {
+      "question": "Why does air resistance increase when an object moves faster through the air?",
+      "answer": "Air resistance increases with speed because the drag force is proportional to the square of the velocity in many cases, particularly at higher speeds. As the object moves faster, it collides with more air particles per unit time, transferring more momentum to the fluid and experiencing a greater opposing force."
+    },
+    {
+      "question": "How does the surface area of an object affect the drag force acting on it?",
+      "answer": "A larger surface area exposed to the fluid increases drag because more fluid particles collide with the object, transferring momentum and slowing it down. For example, a flat-fronted truck experiences more air resistance than a streamlined sports car due to its larger frontal area."
+    },
+    {
+      "question": "What is streamlining and why is it used in the design of fast-moving objects?",
+      "answer": "Streamlining is the shaping of an object to reduce drag by allowing fluid to flow smoothly around it. This minimizes the surface area exposed to the fluid and reduces turbulence, enabling faster movement. Examples include the curved shapes of sports cars, airplanes, and fish."
+    },
+    {
+      "question": "How does drag influence the terminal velocity of a falling object?",
+      "answer": "Terminal velocity is the constant speed reached when the drag force balances the gravitational force acting on the object. Higher drag results in a lower terminal velocity because the opposing force slows the object more effectively. For instance, a snowflake falls more slowly than a drop of water of the same weight due to greater air resistance."
+    },
+    {
+      "question": "Write a Python code snippet to calculate the drag force on an object moving through air.",
+      "answer": "python\nimport math\n\ndef calculate_drag_force(density, velocity, drag_coefficient, area):\n    \"\"\"\n    Calculate drag force using the formula: F_d = 0.5 * ρ * v² * C_d * A\n    \n    Args:\n        density (float): Air density in kg/m³\n        velocity (float): Object velocity in m/s\n        drag_coefficient (float): Dimensionless drag coefficient\n        area (float): Frontal area in m²\n    \n    Returns:\n        float: Drag force in Newtons\n    \"\"\"\n    drag_force = 0.5 * density * (velocity ** 2) * drag_coefficient * area\n    return drag_force\n\n# Example usage:\nrho = 1.225  # Air density at sea level (kg/m³)\nv = 30.0     # Velocity in m/s (108 km/h)\nCd = 0.3     # Drag coefficient for a streamlined car\nA = 2.0      # Frontal area in m²\n\nforce = calculate_drag_force(rho, v, Cd, A)\nprint(f\"Drag Force: {force:.2f} N\")\n"
+    },
+    {
+      "question": "Compare the drag forces acting on a flat-fronted truck and a streamlined sports car moving at the same speed. Which one experiences less drag and why?",
+      "answer": "The streamlined sports car experiences less drag because its curved shape reduces the frontal area exposed to the air and allows smoother airflow around it. In contrast, the flat-fronted truck has a larger frontal area and causes more air turbulence, resulting in higher drag. At the same speed, the truck's drag force can be significantly greater than that of the sports car."
+    }
+  ]
+}

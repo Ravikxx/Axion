@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Gaelic_Society_of_Dublin",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the primary purpose of the Gaelic Society of Dublin?",
+      "answer": "The primary purpose of the Gaelic Society of Dublin was to save and support the Irish language, preserving its customs and promoting its use through documentation and publication."
+    },
+    {
+      "question": "Who served as the first secretary of the Gaelic Society of Dublin?",
+      "answer": "Theophilus O'Flanagan AB served as the first secretary of the Gaelic Society of Dublin when it was established in 1807."
+    },
+    {
+      "question": "List the key members involved in founding the Gaelic Society of Dublin.",
+      "answer": "The key members involved in founding the Gaelic Society of Dublin were Dr. John Lanigan, Richard MacElligott, Edward O'Reilly, William Halliday, and Father Paul O'Brien, a professor of Irish at Maynooth College."
+    },
+    {
+      "question": "What notable publication did the Gaelic Society of Dublin produce in 1808, and what did it document?",
+      "answer": "In 1808, the Gaelic Society of Dublin published *The Transactions of the Gaelic Society of Dublin*, one of the first printed documents on the Irish language. It documented Gaelic customs, including Brehon law."
+    },
+    {
+      "question": "What eventually happened to the Gaelic Society of Dublin?",
+      "answer": "The Gaelic Society of Dublin gradually declined and ceased operations. Later, some of its former members contributed to new initiatives like the Iberno-Celtic Society in 1818 and the Irish Archaeological Society in 1840."
+    },
+    {
+      "question": "What were some of the later organizations inspired by efforts similar to the Gaelic Society of Dublin?",
+      "answer": "Following the decline of the Gaelic Society of Dublin, several organizations continued its mission, including the Iberno-Celtic Society (1818), the Irish Archaeological Society (1840), the Dublin Celtic Society (1845), the Ossianic Society (1853), the Society for the Preservation of the Irish Language (1877), the Gaelic Union (1880), and ultimately the Gaelic League (1892), which successfully revived the Irish language."
+    },
+    {
+      "question": "Generate a Python code snippet that constructs a timeline of the key organizations mentioned in the text, sorted by the year they were established.",
+      "answer": "python\norganizations = [\n    {\"name\": \"Gaelic Society of Dublin\", \"year\": 1807},\n    {\"name\": \"Iberno-Celtic Society\", \"year\": 1818},\n    {\"name\": \"Dublin Celtic Society\", \"year\": 1845},\n    {\"name\": \"Irish Archaeological Society\", \"year\": 1840},\n    {\"name\": \"Ossianic Society\", \"year\": 1853},\n    {\"name\": \"Gaelic League\", \"year\": 1892},\n    {\"name\": \"Society for the Preservation of the Irish Language\", \"year\": 1877},\n    {\"name\": \"Gaelic Union\", \"year\": 1880}\n]\n\ntimeline = sorted(organizations, key=lambda x: x[\"year\"])\nfor org in timeline:\n    print(f\"{org['year']}: {org['name']}\")\n"
+    }
+  ]
+}

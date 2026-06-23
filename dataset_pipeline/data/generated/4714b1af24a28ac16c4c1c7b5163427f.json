@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Drygalski_Ice_Tongue",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the Drygalski Ice Tongue and where is it located?",
+      "answer": "The Drygalski Ice Tongue is a glacier in Antarctica, specifically on the Scott Coast in the northern McMurdo Sound of Ross Dependency. It extends 70 kilometers (43 miles) out to sea from the David Glacier, originating from a valley in the Prince Albert Mountains of Victoria Land. It ranges in width from 14 to 24 kilometers (9 to 15 miles)."
+    },
+    {
+      "question": "Who discovered the Drygalski Ice Tongue and when?",
+      "answer": "Captain Robert Falcon Scott discovered the Drygalski Ice Tongue in January 1902 during the British National Antarctic Expedition (1901-1904). He named it after Professor Erich von Drygalski, a contemporary German explorer."
+    },
+    {
+      "question": "How old is the Drygalski Ice Tongue estimated to be?",
+      "answer": "The Drygalski Ice Tongue is thought to be at least 4,000 years old. Analysis of rocks deposited along the margin of the David Glacier indicates a rapid thinning event began over 7,000 years ago and lasted approximately 2,000 years."
+    },
+    {
+      "question": "What is the significance of the David Glacier grounding line in relation to the Drygalski Ice Tongue?",
+      "answer": "The David Glacier grounding line, where the ice transitions from resting on land to floating, is located at a depth of about 1,900 meters (6,200 feet). The floating ice tongue contributes to the frequent formation of the Terra Nova Bay polynya, which facilitates sea ice production and the generation of high salinity seawater. The floating glacier is also between 300 meters (980 feet) thick and rests on ocean depths of 300 to 900 meters (980 to 2,950 feet)."
+    },
+    {
+      "question": "What are the katabatic winds and how do they affect the Nansen Ice Shelf?",
+      "answer": "Katabatic winds are strong downslope winds that occur in polar regions. The Nansen Ice Shelf, which forms the southern boundary of the Drygalski Ice Tongue, is subject to these winds. The winds contribute to the dynamics of the ice shelf, and free-flowing meltwater can also be observed on its surface during summer conditions."
+    },
+    {
+      "question": "Provide a Python code snippet to calculate the volume of the floating part of the Drygalski Ice Tongue given its thickness and area.",
+      "answer": "python\ndef calculate_ice_volume(thickness_meters, area_square_kilometers):\n    \"\"\"\n    Calculate the volume of the floating part of the Drygalski Ice Tongue.\n    \n    Parameters:\n    thickness_meters (float): Thickness of the ice in meters\n    area_square_kilometers (float): Area of the ice tongue in square kilometers\n    \n    Returns:\n    float: Volume in cubic meters\n    \"\"\"\n    area_square_meters = area_square_kilometers * 1_000_000\n    volume = thickness_meters * area_square_meters\n    return volume\n\n# Example usage:\nthickness = 300  # meters\narea = 70  # square kilometers\nvolume = calculate_ice_volume(thickness, area)\nprint(f\"Volume of floating ice: {volume:,} cubic meters\")\n"
+    },
+    {
+      "question": "What impact did Iceberg B-15A have on the Drygalski Ice Tongue in 2005?",
+      "answer": "In March–April 2005, Iceberg B-15A, a 3,000 square kilometer remnant of Iceberg B-15 that calved from the Ross Ice Shelf in 2000, collided with the Drygalski Ice Tongue. This impact broke off two chunks from the ice tongue, each with a surface area of about 70 square kilometers. The event disrupted nearby penguin colonies by isolating them from the open sea."
+    },
+    {
+      "question": "Explain the relationship between the Drygalski Ice Tongue and the Terra Nova Bay polynya.",
+      "answer": "The floating part of the Drygalski Ice Tongue acts as a barrier that influences the formation of the Terra Nova Bay polynya. A polynya is an area of open water surrounded by sea ice. The presence of the ice tongue helps maintain this polynya by blocking sea ice movement and facilitating the production of dense, high salinity seawater beneath it. This process supports both sea ice formation and marine ecosystem dynamics in the region."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Black_Wednesday_(disambiguation)",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is Black Wednesday in the context of the United Kingdom's financial history?",
+      "answer": "Black Wednesday refers to the British financial crisis that occurred on 16 September 1992, when the UK was forced to withdraw the pound sterling from the European Exchange Rate Mechanism (ERM) after a speculative attack. This led to a significant devaluation of the pound and economic consequences for the UK."
+    },
+    {
+      "question": "List at least four events historically referred to as 'Black Wednesday' other than the 1992 UK financial crisis.",
+      "answer": "Historical events referred to as 'Black Wednesday' include: 1) 9 January 1878, a political crisis in Victoria, Australia; 2) 15 September 1954, an air traffic control crisis in the U.S. East Coast due to severe weather; 3) 27 September 1968, a day of despair in the 1967 Chicago White Sox season; 4) 3 April 1974, the most violent tornado outbreak in U.S. history; and 5) 25 February 1981, when Michael Scott fired forty employees at Apple Computer."
+    },
+    {
+      "question": "What was the 1981 Black Wednesday event involving Apple Computer?",
+      "answer": "On 25 February 1981, Apple Computer's co-founder Michael Scott fired forty employees in a single day, an event later dubbed 'Black Wednesday.' This drastic action was part of management changes during a turbulent period in the company's early history."
+    },
+    {
+      "question": "How many tornadoes were recorded during the 2011 Black Wednesday Super Outbreak, and how many of them were classified as EF5?",
+      "answer": "During the 2011 Black Wednesday Super Outbreak on 27 April 2011, there were 216 tornadoes recorded, including 4 classified as EF5 tornadoes. This event remains the most prolific tornado day in recorded history."
+    },
+    {
+      "question": "What is the significance of Black Wednesday in the context of Wimbledon?",
+      "answer": "Black Wednesday 2013 refers to 26 June 2013, the first Wednesday of the 2013 Wimbledon Championships. On this day, several former world number one tennis players were unexpectedly eliminated in the second round of the tournament."
+    },
+    {
+      "question": "Write a Python code snippet that extracts all years associated with events named 'Black Wednesday' from the provided text.",
+      "answer": "python\nimport re\n\ntext = \"\"\"\nBlack Wednesday was a British financial crisis on 16 September 1992.\nBlack Wednesday may also refer to:\nOther one-time events:\n9 January 1878: Black Wednesday 1878, a political crisis in Victoria, Australia\nSeptember 15, 1954: Black Wednesday 1954, a 1954 air traffic control crisis caused by severe weather in the East Coast of the United States\nSeptember 27, 1968: Black Wednesday 1968, a day of despair in the 1967 Chicago White Sox season\nApril 3, 1974: Black Wednesday 1974 – 1974 Super Outbreak, the most violent tornado outbreak on record with 30 out of 148 tornadoes being of F4-F5 intensity, with 7 F5 tornadoes recorded\nFebruary 25, 1981: Black Wednesday 1981, when Michael Scott fired forty employees at Apple Computer\n26 March 1986: Black Wednesday 1986, the day when Swindon Works closed after 143 years of operation\n25 May 2005: Black Wednesday 2005, a day of mass sexual assault in Egypt\nApril 27, 2011: Black Wednesday 2011 – 2011 Super Outbreak, the most prolific day with tornadoes in recorded history, which saw 216 tornadoes with 15 violent tornadoes and 4 EF5 tornadoes\n26 June 2013: Black Wednesday 2013, the first Wednesday of the 2013 Wimbledon Championships in which a number of former world number ones got knocked out in the second round of the tournament\n8 April 2026: Black Wednesday 2026, Israeli attacks in Lebanon which killed more than 300 people\n\"\"\"\n\nyears = re.findall(r'Black Wednesday (\\d{4})', text)\nprint(years)\n\nOutput: ['1878', '1954', '1968', '1974', '1981', '1986', '2005', '2011', '2013', '2026']"
+    },
+    {
+      "question": "What is the difference between the 1974 and 2011 Black Wednesday tornado outbreaks?",
+      "answer": "The 1974 Black Wednesday (3 April 1974) was part of the 1974 Super Outbreak, the most violent tornado outbreak on record, with 30 out of 148 tornadoes being F4-F5 intensity, including 7 F5 tornadoes. In contrast, the 2011 Black Wednesday (27 April 2011) was the 2011 Super Outbreak, the most prolific tornado day in history, with 216 tornadoes recorded, including 15 violent tornadoes and 4 EF5 tornadoes."
+    }
+  ]
+}

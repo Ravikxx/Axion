@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Europasaurus",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What geological period did Europasaurus live in and where were its fossils discovered?",
+      "answer": "Europasaurus lived during the Upper Jurassic period, specifically in the middle Kimmeridgian stage around 154 million years ago. Its fossils were discovered in northern Germany, particularly in the Lower Saxony basin."
+    },
+    {
+      "question": "What is insular dwarfism, and how does it relate to Europasaurus?",
+      "answer": "Insular dwarfism is a biological phenomenon where species isolated on islands evolve to become significantly smaller than their mainland relatives due to limited resources. Europasaurus is an example of this, as it was a basal sauropod from the titanosaur clade but much smaller than typical sauropods, likely due to its isolation on an island in the Lower Saxony basin."
+    },
+    {
+      "question": "How do scientists determine that Europasaurus was a dwarf species and not just a juvenile?",
+      "answer": "Scientists analyzed the bone histology of Europasaurus fossils, which revealed that the individuals were fully grown adults despite their small size. Additionally, the presence of multiple specimens ranging from 1.7 to 6.2 meters in length confirmed that the species exhibited size variations across growth stages, supporting the conclusion that Europasaurus was a dwarf species."
+    },
+    {
+      "question": "What evidence supports the idea that Europasaurus lived on an island?",
+      "answer": "The fossils of Europasaurus were found in the Lower Saxony basin, which was part of a system of large islands during the Upper Jurassic. The concept of insular dwarfism, supported by the small adult size of Europasaurus, aligns with the known occurrence of dwarf elephants on islands during the Ice Age. Additionally, the discovery of a similar dwarf sauropod, Magyarosaurus, in Transylvania by Franz Nopcsa further supports the island habitat hypothesis."
+    },
+    {
+      "question": "Who was Franz Nopcsa, and what was his contribution to the study of Europasaurus?",
+      "answer": "Franz Nopcsa was a local aristocrat who discovered dwarf sauropod fossils on his estate in Transylvania at the start of the 20th century. He proposed that these dinosaurs lived on an island, drawing a parallel to dwarf elephants known from Ice Age islands. His work led to the classification of the fossils as Magyarosaurus, contributing to the understanding of insular dwarfism in dinosaurs."
+    },
+    {
+      "question": "Write a Python function to calculate the average body length of Europasaurus based on the given size ranges.",
+      "answer": "python\ndef calculate_average_body_length(min_length, max_length):\n    return (min_length + max_length) / 2\n\n# Example usage:\naverage_length = calculate_average_body_length(1.7, 6.2)\nprint(f\"Average body length of Europasaurus: {average_length:.2f} meters\")\n\nThis function takes the minimum and maximum body lengths of Europasaurus (1.7 m and 6.2 m, respectively) and returns their average, which is approximately 3.95 meters."
+    },
+    {
+      "question": "Compare the body size of Europasaurus to a typical sauropod. How does it differ?",
+      "answer": "Europasaurus was an exceptionally small sauropod, with an adult body mass estimated to be less than five tonnes. In contrast, typical sauropods like Brachiosaurus or Diplodocus could weigh up to 50–80 tonnes and reach lengths of 20–30 meters. Europasaurus' small size is attributed to insular dwarfism, making it a rare example of a fully grown adult sauropod that remained small."
+    }
+  ]
+}

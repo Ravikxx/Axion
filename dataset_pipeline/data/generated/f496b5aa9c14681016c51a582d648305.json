@@ -1,0 +1,34 @@
+{
+  "source_url": "https://stackoverflow.com/questions/65695788/how-to-query-dynamodb-filtering-by-value-in-a-list",
+  "category": "stackoverflow",
+  "pairs": [
+    {
+      "question": "How do you query a DynamoDB table to find items where a specific attribute in a list contains a given value?",
+      "answer": "To query a DynamoDB table for items where a list attribute contains a specific string, use the `contains` comparison operator in a `FilterExpression`. For example, to find items where the `info.genres` list contains the string \"Biography\", structure your query as follows:\n\njavascript\nvar params = {\n  TableName: TABLE_NAME,\n  KeyConditionExpression: \"year = :yyyy\",\n  FilterExpression: `contains(info.genres, :qqqq)`,\n  ExpressionAttributeValues: {\n    \":yyyy\": 2013,\n    \":qqqq\": \"Biography\"\n  }\n};\n\nvar AWS = require(\"aws-sdk\");\nvar docClient = new AWS.DynamoDB.DocumentClient();\nlet promise = docClient.query(params).promise();\npromise.then(res => {\n  console.log(\"res:\", res);\n});\n\n\nThis will return all items from the year 2013 where the `genres` list includes \"Biography\"."
+    },
+    {
+      "question": "What is the difference between using a FilterExpression with `=` and `contains` in DynamoDB queries?",
+      "answer": "In DynamoDB, using `=` in a `FilterExpression` requires an exact match of the entire list. For example, `info.genres = :genres` would only return items where `genres` is exactly [\"Action\", \"Biography\"].\n\nOn the other hand, `contains` checks if the specified value exists anywhere in the list. For instance, `contains(info.genres, :value)` will return items where `genres` includes \"Biography\", regardless of other elements in the list. This makes `contains` more flexible for querying partial matches in lists."
+    },
+    {
+      "question": "How do you structure a DynamoDB query with a FilterExpression to match items by year and a list attribute?",
+      "answer": "To query items by a partition key (e.g., `year`) and filter by a list attribute, combine `KeyConditionExpression` for the partition key and `FilterExpression` for the list. For example:\n\njavascript\nvar params = {\n  TableName: TABLE_NAME,\n  KeyConditionExpression: \"year = :yyyy\",\n  FilterExpression: \"contains(info.genres, :genre)\",\n  ExpressionAttributeValues: {\n    \":yyyy\": 2013,\n    \":genre\": \"Biography\"\n  }\n};\n\nvar AWS = require(\"aws-sdk\");\nvar docClient = new AWS.DynamoDB.DocumentClient();\ndocClient.query(params, function(err, data) {\n  if (err) console.log(err);\n  else console.log(data.Items);\n});\n\n\nThis query will return items from 2013 where the `genres` list includes \"Biography\"."
+    },
+    {
+      "question": "Can you use `contains` with DynamoDB DocumentClient for querying nested list attributes?",
+      "answer": "Yes, the `contains` operator works with DynamoDB DocumentClient for querying nested list attributes. For example, to check if a list within a nested object (like `info.genres`) contains a value, use:\n\njavascript\nvar params = {\n  TableName: TABLE_NAME,\n  KeyConditionExpression: \"year = :yyyy\",\n  FilterExpression: \"contains(info.genres, :genre)\",\n  ExpressionAttributeValues: {\n    \":yyyy\": 2013,\n    \":genre\": \"Drama\"\n  }\n};\n\nvar docClient = new AWS.DOCDynamoDB.DocumentClient();\ndocClient.query(params).promise().then(data => {\n  console.log(\"Matching items:\", data.Items);\n});\n\n\nThis will return items from 2013 where the `genres` list includes \"Drama\"."
+    },
+    {
+      "question": "What are the limitations of using `contains` in DynamoDB FilterExpression?",
+      "answer": "The `contains` operator in DynamoDB has the following limitations:\n1. It only checks for the presence of a value in a string set, list, or binary set. It does not work with scalar attributes like strings or numbers.\n2. It performs a case-sensitive comparison. For case-insensitive searches, you would need to preprocess data or use additional logic.\n3. It cannot be used with nested attributes beyond the supported types (e.g., you cannot use `contains` on a list within a map of a map).\n4. Performance may degrade with large datasets, as `contains` is applied post-query filtering and does not leverage indexes."
+    },
+    {
+      "question": "How do you handle DynamoDB queries when the target attribute is a list of strings?",
+      "answer": "For DynamoDB queries targeting a list of strings, you can use the `contains` operator in the `FilterExpression` to check for the presence of a specific string. For example:\n\njavascript\nvar params = {\n  TableName: TABLE_NAME,\n  KeyConditionExpression: \"year = :yyyy\",\n  FilterExpression: \"contains(info.genres, :genre)\",\n  ExpressionAttributeValues: {\n    \":yyyy\": 2013,\n    \":genre\": \"Thriller\"\n  }\n};\n\nvar docClient = new AWS.DynamoDB.DocumentClient();\ndocClient.query(params).promise().then(res => {\n  console.log(\"Items with 'Thriller':\", res.Items);\n});\n\n\nThis query will return all items from 2013 where the `genres` list includes \"Thriller\". For exact matches of the entire list, use `=` with the full list as the value."
+    },
+    {
+      "question": "What is the syntax for using `ExpressionAttributeNames` in DynamoDB queries with nested attributes?",
+      "answer": "When querying nested attributes in DynamoDB, you can use `ExpressionAttributeNames` to simplify attribute names or avoid conflicts with reserved words. For example:\n\njavascript\nvar params = {\n  TableName: TABLE_NAME,\n  KeyConditionExpression: \"#yr = :yyyy\",\n  FilterExpression: \"contains(#info.#genres, :genre)\",\n  ExpressionAttributeNames: {\n    \"#yr\": \"year\",\n    \"#info\": \"info\",\n    \"#genres\": \"genres\"\n  },\n  ExpressionAttributeValues: {\n    \":yyyy\": 2013,\n    \":genre\": \"Action\"\n  }\n};\n\nvar docClient = new AWS.DynamoDB.DocumentClient();\ndocClient.query(params).promise().then(res => {\n  console.log(\"Items with 'Action':\", res.Items);\n});\n\n\nThis approach is useful when attribute names might conflict with DynamoDB reserved words or when simplifying complex nested attribute paths."
+    }
+  ]
+}

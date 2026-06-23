@@ -1,0 +1,38 @@
+{
+  "source_url": "https://dev.to/devteam/top-7-featured-dev-posts-of-the-week-1ho6",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What is the purpose of DEV's 'Top 7' weekly roundup?",
+      "answer": "DEV's 'Top 7' is a weekly curated list where the editorial team selects and highlights their seven favorite posts from the previous week, showcasing diverse technical and personal stories shared by the community."
+    },
+    {
+      "question": "How does @lissy93's post compare frontend frameworks in their project?",
+      "answer": "@lissy93 built the same application across multiple frontend frameworks to analyze and compare their performance, developer experience, and trade-offs. The study provides data-driven insights into the modern web ecosystem's strengths and weaknesses."
+    },
+    {
+      "question": "What key lessons did @itsugo learn during their first week at a startup?",
+      "answer": "@itsugo shared that starting at a startup requires rapid learning, adaptability, and wearing multiple hats. The experience emphasized the value of agility and the steep learning curve in small-team environments."
+    },
+    {
+      "question": "What technologies did @montmont20z use to build their Breakout clone game engine, and why?",
+      "answer": "@montmont20z built a custom game engine from scratch using C++ and SDL2 to create a Breakout clone. The choice of these technologies was driven by their control over memory management and rendering loops, which are critical for game development."
+    },
+    {
+      "question": "How did replacing Redis with PostgreSQL improve caching performance for @polliog's use case?",
+      "answer": "@polliog demonstrated that replacing Redis with PostgreSQL for caching improved performance in their specific scenario. They achieved this by configuring unlogged tables and provided benchmarks to support the unconventional infrastructure choice."
+    },
+    {
+      "question": "Can you provide a Python code snippet from @m4rri4nne's AI-powered API test generator that parses Swagger documentation?",
+      "answer": "Here’s a simplified snippet inspired by @m4rri4nne’s approach:\npython\nimport openapi_parser\nfrom llm_inference import generate_test_cases\n\nswagger_doc = openapi_parser.parse_swagger('swagger.json')\ntest_cases = generate_test_cases(swagger_doc)\nprint(test_cases)\n\nThe tool automates API test generation by parsing Swagger docs and using LLMs to create edge cases with minimal manual effort."
+    },
+    {
+      "question": "What lightweight technologies did @warren_jitsing_dd1c1d6fc6 use to build a feature-rich article viewer?",
+      "answer": "@warren_jitsing_dd1c1d6fc6 built a lightweight article viewer using vanilla HTML, CSS, and JavaScript. The solution integrates Markdown parsing, syntax highlighting, and MathJax support without relying on heavy frontend frameworks."
+    },
+    {
+      "question": "Why is pluralization important in user interfaces, and how can it be handled programmatically?",
+      "answer": "Pluralization affects user experience by ensuring correct grammar in dynamic content. For example, distinguishing between '2 items' and '2 boxes' requires logic like:\njavascript\nfunction pluralize(count, singular, plural) {\n  return count === 1 ? singular : plural;\n}\nconsole.log(`${count} ${pluralize(count, 'item', 'items')}`);\n\nAttention to such details enhances clarity and professionalism in UI text."
+    }
+  ]
+}

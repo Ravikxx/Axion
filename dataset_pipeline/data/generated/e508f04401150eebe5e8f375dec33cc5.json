@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/2026_World_Baseball_Classic",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When and where was the 2026 World Baseball Classic held?",
+      "answer": "The 2026 World Baseball Classic took place from March 5 to 17, 2026. Pool-play rounds were held at LoanDepot Park in Miami, Florida; Daikin Park in Houston, Texas; Hiram Bithorn Stadium in San Juan, Puerto Rico; and the Tokyo Dome in Tokyo, Japan. Quarterfinals were played in Houston, while knockout stage games were held in Miami."
+    },
+    {
+      "question": "Who won the 2026 World Baseball Classic, and what was the final score?",
+      "answer": "Venezuela won the 2026 World Baseball Classic for the first time, defeating the United States 3–2 in the championship game. The winning run was scored via a run batted in double by Eugenio Suárez in the top of the ninth inning."
+    },
+    {
+      "question": "Which teams qualified for the 2028 Olympic baseball tournament from the 2026 World Baseball Classic?",
+      "answer": "The Dominican Republic and Venezuela, the top two teams from the Americas (alongside the United States as Olympic hosts), qualified for the 2028 Olympic baseball tournament, to be held in Los Angeles."
+    },
+    {
+      "question": "Why was Japan's performance in the 2026 World Baseball Classic considered historically significant?",
+      "answer": "Japan's elimination in the quarterfinals marked its worst-ever finish in World Baseball Classic history, as it failed to reach the semifinals for the first time since the tournament's inception."
+    },
+    {
+      "question": "Who was named the most valuable player of the 2026 World Baseball Classic?",
+      "answer": "Maikel García was named the most valuable player of the 2026 World Baseball Classic."
+    },
+    {
+      "question": "How many national teams participated in the 2026 World Baseball Classic?",
+      "answer": "Twenty national baseball teams participated in the 2026 World Baseball Classic, which was the sixth iteration of the tournament."
+    },
+    {
+      "question": "Write a Python function to calculate the number of days between the start and end dates of the 2026 World Baseball Classic.",
+      "answer": "python\nfrom datetime import datetime\n\ndef calculate_tournament_duration():\n    start_date = datetime(2026, 3, 5)\n    end_date = datetime(2026, 3, 17)\n    duration = (end_date - start_date).days\n    return duration\n\n# Example usage:\ntournament_days = calculate_tournament_duration()\nprint(f\"The 2026 World Baseball Classic ran for {tournament_days} days.\")\n\nThis function calculates the total duration of the tournament by subtracting the start date from the end date and returning the difference in days."
+    }
+  ]
+}

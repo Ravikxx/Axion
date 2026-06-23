@@ -1,0 +1,34 @@
+{
+  "source_url": "https://mathworld.wolfram.com/Run.html",
+  "category": "mathworld",
+  "pairs": [
+    {
+      "question": "What is a run in the context of coin tosses or Bernoulli trials?",
+      "answer": "A run, or clump, is a sequence of more than one consecutive identical outcome in a series of independent trials, such as tossing a coin. For example, in a sequence of coin tosses like HHTTHHH, the runs of heads are HH, T, and HHH, while the runs of tails are TT."
+    },
+    {
+      "question": "How can the probability of obtaining a run of at least r consecutive heads in n independent coin tosses be calculated using generating functions?",
+      "answer": "The probability can be derived using the generating function for the sequence of Bernoulli trials. The generating function's coefficients encode the probabilities of runs of varying lengths. For a fair coin, the probability is given by the sum of the coefficients of the generating function corresponding to runs of length >= r. For example, the generating function for two tosses is (1/4)x^2 + (1/2)x + (1/4), where the coefficient of x^2 (1/4) represents the probability of two consecutive heads. For unfair coins with probability p of heads, the generating function becomes (1-p)^2 x^2 + 2p(1-p)x + p^2."
+    },
+    {
+      "question": "Provide a Python code snippet to compute the expected number of runs in a sequence of n Bernoulli trials with probability p of success (heads).",
+      "answer": "python\nimport numpy as np\n\ndef expected_runs(n, p):\n    \"\"\"\n    Calculate the expected number of runs in n Bernoulli trials with success probability p.\n    A run is a sequence of one or more consecutive identical outcomes.\n    \"\"\"\n    expected_heads_runs = 1 + (n - 1) * p\n    expected_tails_runs = 1 + (n - 1) * (1 - p)\n    total_expected_runs = expected_heads_runs + expected_tails_runs\n    return total_expected_runs\n\n# Example: Expected runs in 10 coin tosses with p=0.5\nn = 10\np = 0.5\nexpected = expected_runs(n, p)\nprint(f\"Expected number of runs in {n} tosses: {expected}\")\n\nThis function calculates the expected number of runs by summing the expected runs of heads and tails. For n tosses, the expected number of heads runs is 1 + (n-1)p, and similarly for tails."
+    },
+    {
+      "question": "What is the longest expected run length in a sequence of n Bernoulli trials, and how is it derived?",
+      "answer": "The longest expected run length in a sequence of n Bernoulli trials is approximately given by -log(n(1-p))/log(p), where p is the probability of success (heads). This result is derived from extreme value theory and was proven by Gordon et al. (1986) and Schilling (1990). For a fair coin (p=0.5), this simplifies to -log(n)/log(2). For example, with n=100, the longest expected run is about -log(100)/log(2) ≈ 6.64, meaning runs of 6 or 7 are expected in 100 tosses."
+    },
+    {
+      "question": "How do you calculate the number of permutations of k indistinguishable objects of one type and m indistinguishable objects of another type that contain at least one run of length r?",
+      "answer": "The number of such permutations is given by the binomial coefficient C(k+m, k) minus the number of permutations without any runs of length >= r. For example, with k=2 heads and m=2 tails, there are C(4,2)=6 total permutations. The permutations without a run of length 2 or more are HTHT and THTH, so there are 6 - 2 = 4 permutations with at least one run of length 2. The general formula for the number of permutations without runs of length >= r is given by the recurrence relation provided by Bloom (1996):\n\nA(k, m, r) = A(k-1, m, r) + A(k, m-1, r) - A(k-r-1, m, r) - A(k, m-r-1, r) + A(k-r-1, m-r-1, r)\n\nwhere A(k, m, r) is the number of permutations of k heads and m tails without any runs of length >= r."
+    },
+    {
+      "question": "What is the probability of having a run of at least 6 cards of the same color in a standard 52-card deck, and how does this refute Gardner's assertion?",
+      "answer": "The probability of having at least one run of 6 or more cards of the same color in a shuffled 52-card deck is extremely high (approaching 1). For example, the probability is 1 - 1/247959266474052 ≈ 0.9999999999999996, which is effectively 1. This refutes Martin Gardner's assertion that 'there will almost always be a clump of six or seven cards of the same color' in a normal deck, as the actual probability is even higher than suggested, making such clumps highly probable rather than 'almost always' occurring."
+    },
+    {
+      "question": "How does the distribution of the number of noncontiguous runs of length r in a sequence of 0s and 1s behave asymptotically for large n?",
+      "answer": "For large n, the number of noncontiguous runs of length r in a sequence of 0s and 1s follows an approximately normal distribution with mean μ = (n - r + 1) * p^r * (1 - p) and variance σ^2 = (n - r + 1) * p^r * (1 - p) * (1 - 2p + p^r + 2p^(r+1) - p^(2r+1)), where p is the probability of a 1 (or success). This result is derived from Bloom (1996) and is useful for approximating the likelihood of observing a certain number of runs in large datasets."
+    }
+  ]
+}

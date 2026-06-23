@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/California_Earthquake_Prediction_Evaluation_Council",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the primary role of the California Earthquake Prediction Evaluation Council (CEPEC)?",
+      "answer": "The California Earthquake Prediction Evaluation Council (CEPEC) is a committee of earthquake experts that reviews and evaluates potentially credible earthquake predictions and forecasts. Its primary role is to advise the Governor of California via the California Office of Emergency Services (CalOES) on whether a prediction or seismic activity warrants a public warning or action by emergency responders."
+    },
+    {
+      "question": "Who currently chairs the CEPEC, and what is their official position?",
+      "answer": "As of the provided information, Jeremy Lancaster, the state geologist of the California Geological Survey, serves as the chair of CEPEC."
+    },
+    {
+      "question": "Under what circumstances would CEPEC be convened to evaluate seismic activity?",
+      "answer": "CEPEC is convened at the request of the California Emergency Management Agency (CalEMA) to evaluate whether an earthquake prediction or an incident, such as a swarm of small earthquakes, is serious enough to merit a warning to emergency responders or the public. They typically meet a couple of times a year but are available 24–7 for urgent teleconferences following a major earthquake."
+    },
+    {
+      "question": "Can you provide an example of a seismic event where CEPEC issued a warning or advisory?",
+      "answer": "Following the 2016 earthquake swarm at Bombay Beach, CEPEC estimated that the probability of a magnitude 7 or larger earthquake on the San Andreas fault within the following week was between 0.03% and 1%. This advisory led to the temporary closure of San Bernardino's city hall."
+    },
+    {
+      "question": "How does CEPEC handle earthquake predictions that are submitted for evaluation?",
+      "answer": "CEPEC evaluates earthquake predictions by reviewing their credibility and potential impact. For example, they evaluated predictions like the 2004 Keilis-Borok prediction and a 2015 prediction following the La Habra earthquake. In both cases, no action was recommended as earthquakes did not occur within the specified timeframes. As of 2019, CEPEC had never advised any government or public action based on an earthquake prediction."
+    },
+    {
+      "question": "List some of the notable members of CEPEC and their affiliations.",
+      "answer": "Notable members of CEPEC include Greg Beroza (Stanford University), Morgan Page (USGS Pasadena), Wendy Bohon (California Geological Survey), Diego Melgar (University of Oregon), Gareth Funning (UC Riverside), Taka'aki Taira (UC Berkeley), Zachary Ross (Caltech), Justin Rubinstein (USGS Moffett Field), and Sara McBride (Cal OES)."
+    },
+    {
+      "question": "Write a Python function that simulates the probability calculation performed by CEPEC during the 2016 Bombay Beach swarm. Assume the function takes a magnitude threshold and a time window as inputs and returns a probability estimate.",
+      "answer": "python\nimport random\n\ndef estimate_earthquake_probability(magnitude_threshold: float, time_window_days: int) -> float:\n    \"\"\"\n    Simulates the probability calculation for a major earthquake during a seismic swarm.\n    \n    Args:\n        magnitude_threshold: Minimum magnitude for the event to be considered (e.g., 7.0).\n        time_window_days: Number of days to evaluate the probability for.\n        \n    Returns:\n        A simulated probability estimate (as a percentage) for the given conditions.\n    \"\"\"\n    # Simulate a low probability range similar to CEPEC's 2016 Bombay Beach advisory\n    base_probability = random.uniform(0.03, 1.0)\n    # Adjust for time window (e.g., probability scales linearly with time)\n    adjusted_probability = base_probability * (time_window_days / 7)\n    return round(adjusted_probability, 2)\n\n# Example usage:\nprob = estimate_earthquake_probability(7.0, 7)\nprint(f\"Estimated probability of M7+ earthquake: {prob}%\")\n"
+    }
+  ]
+}

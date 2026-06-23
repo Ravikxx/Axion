@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/2003_Ohio_State_Buckeyes_football_team",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the final record of the 2003 Ohio State Buckeyes football team?",
+      "answer": "The 2003 Ohio State Buckeyes football team finished with an 11–2 record overall."
+    },
+    {
+      "question": "Which teams did the 2003 Ohio State Buckeyes defeat against ranked opponents?",
+      "answer": "The Buckeyes defeated No. 17 Washington, No. 24 NC State, No. 9 Iowa, No. 14 Michigan State, and No. 11 Purdue in games against ranked opponents."
+    },
+    {
+      "question": "What was the final score of the 2004 Fiesta Bowl, and which team won?",
+      "answer": "The Ohio State Buckeyes won the 2004 Fiesta Bowl with a final score of 35–28 over Kansas State."
+    },
+    {
+      "question": "Who were the statistical leaders for the 2003 Ohio State Buckeyes in passing, rushing, receiving, and scoring?",
+      "answer": "The team's statistical leaders were: quarterback Craig Krenzel (2,040 passing yards, 55.0% completion), running back Lydell Ross (826 rushing yards, 4.3 yards per carry), wide receiver Michael Jenkins (55 receptions, 834 yards), and kicker Mike Nugent (86 points, 38/38 extra points, 16/19 field goals)."
+    },
+    {
+      "question": "List the eight Ohio State players named to the 2003 All-Big Ten Conference first team.",
+      "answer": "The eight first-team All-Big Ten players were: Will Smith, Will Allen, B. J. Sander, Alex Stepanovich, Ben Hartsock, Tim Anderson, A. J. Hawk, and Chris Gamble."
+    },
+    {
+      "question": "What were the average rushing and passing yards allowed by the 2003 Ohio State defense per game?",
+      "answer": "The defense allowed an average of 62.3 rushing yards and 234.5 passing yards per game."
+    },
+    {
+      "question": "Write a Python function that calculates the total yardage difference between the 2003 Ohio State Buckeyes' offense and defense.",
+      "answer": "python\ndef calculate_yardage_difference():\n    offense_rushing = 126.1\n    offense_passing = 206.1\n    defense_rushing = 62.3\n    defense_passing = 234.5\n    \n    total_offense = offense_rushing + offense_passing\n    total_defense = defense_rushing + defense_passing\n    difference = total_offense - total_defense\n    return difference\n\nprint(calculate_yardage_difference())  # Output: 34.4\n\nThe function returns a positive difference of 34.4 yards, indicating the offense outgained the defense by this margin per game."
+    }
+  ]
+}

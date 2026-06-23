@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Coat_of_arms_of_Leeds",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What historical event led to the creation of the original coat of arms for Leeds?",
+      "answer": "The original coat of arms for Leeds dates back to around 1662, when the Borough of Leeds received a new charter that established the office of mayor. The shield portion of the arms incorporated elements from the arms of the first mayor and was recorded during the heraldic visitation of Yorkshire in 1666."
+    },
+    {
+      "question": "What unauthorized additions were made to the Leeds coat of arms by 1835, and how were they later addressed?",
+      "answer": "By 1835, silver owls had been added as a crest above the shield and as supporters on either side of the coat of arms. These additions were not officially authorized until 1920, when the Leeds County Borough Council applied to the College of Arms for official recognition. In 1921, the College of Arms granted the crest and supporters, with the owls' color changed to their natural hues."
+    },
+    {
+      "question": "Explain the changes made to the Leeds coat of arms in 1920–1921.",
+      "answer": "In 1920, the Leeds County Borough Council requested official authorization for the unauthorised additions to the coat of arms, which included silver owls as a crest and supporters. The College of Arms granted these additions in 1921, modifying the owls' color to 'proper' (natural colors) and adding gold ducal coronets to the supporters for further heraldic distinction."
+    },
+    {
+      "question": "How did the Local Government Act 1972 affect the coat of arms of Leeds?",
+      "answer": "The Local Government Act 1972 abolished the county borough of Leeds in 1974, transforming it into the larger Metropolitan District of Leeds. Despite this administrative change, the new Leeds City Council continued to use the existing coat of arms inherited from its predecessor, though no formal transfer of the armorial bearings was applied for."
+    },
+    {
+      "question": "What is the significance of the natural-colored owls in the Leeds coat of arms?",
+      "answer": "The natural-colored owls, added as a crest and supporters in 1921, were originally depicted in silver. The College of Arms altered their color to 'proper' (natural hues) when officially granting these additions, signifying a return to more traditional heraldic practices and enhancing the authenticity of the design."
+    },
+    {
+      "question": "Write a Python function to validate the historical timeline of the Leeds coat of arms modifications.",
+      "answer": "python\ndef validate_leeds_arms_timeline():\n    events = [\n        {\"year\": 1662, \"event\": \"New charter for Borough of Leeds creates mayor's office; arms likely originate\"},\n        {\"year\": 1666, \"event\": \"Arms recorded at heraldic visitation of Yorkshire\"},\n        {\"year\": 1835, \"event\": \"Silver owls added as crest and supporters (unauthorised)\"},\n        {\"year\": 1920, \"event\": \"Application made to College of Arms for official grant\"},\n        {\"year\": 1921, \"event\": \"Grant of crest and supporters with natural-colored owls and gold coronets\"},\n        {\"year\": 1974, \"event\": \"Leeds county borough abolished; arms continue to be used by Leeds City Council\"}\n    ]\n    return events\n\nThis function returns a list of key historical events in the development of the Leeds coat of arms, allowing for timeline validation."
+    },
+    {
+      "question": "Why does the Leeds City Council continue to use the coat of arms of its predecessor despite administrative changes?",
+      "answer": "The Leeds City Council continues to use the existing coat of arms inherited from the former Leeds County Borough Council because no formal application has been made for the transfer of the armorial bearings under the new administrative structure. This decision reflects continuity in civic identity despite structural changes."
+    }
+  ]
+}

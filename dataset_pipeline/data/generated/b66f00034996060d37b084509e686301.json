@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/2022_Saarland_state_election",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When was the 2022 Saarland state election held, and who was the outgoing Minister-President?",
+      "answer": "The 2022 Saarland state election was held on 27 March 2022. The outgoing Minister-President was Tobias Hans, who led a coalition government of the Christian Democratic Union (CDU) and Social Democratic Party (SPD)."
+    },
+    {
+      "question": "Which party won the 2022 Saarland state election, and what percentage of votes did they receive?",
+      "answer": "The Social Democratic Party (SPD) won the 2022 Saarland state election, capturing 43.5% of the votes."
+    },
+    {
+      "question": "What historical significance did the 2022 Saarland state election hold for the SPD?",
+      "answer": "The 2022 Saarland state election marked the first time since 1994 that the SPD achieved an absolute majority in the Landtag of Saarland."
+    },
+    {
+      "question": "How did the CDU's performance compare to the SPD's in the 2022 Saarland state election?",
+      "answer": "The CDU received 28.5% of the votes, which was 15 percentage points less than the SPD. This represented a significant swing against the CDU compared to previous elections."
+    },
+    {
+      "question": "What happened to The Left party in the 2022 Saarland state election?",
+      "answer": "The Left party lost all their seats in the Landtag after suffering a decline of 10 percentage points in vote share."
+    },
+    {
+      "question": "Which minor parties entered the Landtag in the 2022 Saarland state election, and what were their vote shares?",
+      "answer": "Only the Alternative for Germany (AfD) entered the Landtag with just under 6% of the vote. The Greens fell just 23 votes short of the 5% electoral threshold, and the Free Democratic Party (FDP) received 4.8% of the vote, failing to enter the Landtag."
+    },
+    {
+      "question": "What percentage of votes did not translate into seats in the 2022 Saarland state election, and why?",
+      "answer": "A total of 22.3% of votes did not translate into seats due to the 5% electoral threshold, which is the highest record of any state election in Germany."
+    }
+  ]
+}

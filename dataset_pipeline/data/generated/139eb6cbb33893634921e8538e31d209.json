@@ -1,0 +1,38 @@
+{
+  "source_url": "https://dev.to/devteam/congrats-to-the-frontend-challenge-june-celebrations-winners-5dd1",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What was the purpose of the Frontend Challenge: June Celebrations?",
+      "answer": "The Frontend Challenge: June Celebrations was designed to celebrate the diverse festivities of June, such as Hug Your Cat Day, Brazilian Festa Junina, Father's Day, National Donut Day, Pride Month, World Asteroid Day, and Juneteenth. Participants were tasked with creating interactive web experiences or visual art pieces that embraced the theme's all-encompassing spirit."
+    },
+    {
+      "question": "How many winners were selected for each prompt in the Frontend Challenge: June Celebrations, and what additional recognition was given?",
+      "answer": "Two winners were selected for each prompt. Additionally, an honorable mention was awarded to recognize a particularly meaningful or impressive project that stood out during judging."
+    },
+    {
+      "question": "What did @jarvisscript create for the CSS Art: June Celebrations prompt, and where can it be viewed?",
+      "answer": "@jarvisscript created a delightful CSS art piece titled 'Dad's Canned Jokes,' which brings Father's Day to life by depicting a root beer can. The project can be viewed on [dev.to](https://dev.to/jarvisscript/dads-canned-jokes-june-css-art-challenge-1cp4) and includes a companion landing page at [dev.to](https://dev.to/jarvisscript/fathers-day-means-dad-jokes-2554) for added context."
+    },
+    {
+      "question": "Describe the CSS-driven donut created by @axrisi for National Donut Day. What features make it interactive?",
+      "answer": "@axrisi created a purely CSS-driven donut with colorful sprinkles to celebrate National Donut Day. The donut features a gentle 'bobbing' animation that adds a playful, interactive element to the visual art piece."
+    },
+    {
+      "question": "What is QueerStation, and who created it?",
+      "answer": "QueerStation is a vibrant digital space created by @sneha_2004. It is an interactive web experience that channels punk aesthetics and queer joy into a Pride zine, celebrating diversity and inclusivity."
+    },
+    {
+      "question": "Provide a code snippet demonstrating a simple CSS animation similar to the 'bobbing' effect seen in @axrisi's donut.",
+      "answer": "`@keyframes bobbing {\n  0%, 100% { transform: translateY(0); }\n  50% { transform: translateY(-10px); }\n}\n\n.donut {\n  animation: bobbing 2s ease-in-out infinite;\n}`"
+    },
+    {
+      "question": "What special recognition was given to @_boweii for their project in the Frontend Challenge: June Celebrations?",
+      "answer": "@_boweii received an honorable mention for creating the 'Juneteenth Freedom Clock,' a beautifully crafted art piece that honors Juneteenth. Despite including JavaScript beyond the CSS Art guidelines, the project's meaningful historical context, intricate animations, and celebration of Juneteenth earned it special recognition."
+    },
+    {
+      "question": "What are the prizes for the winners of the Frontend Challenge: June Celebrations?",
+      "answer": "Each of the four winners received a [DEV++ Membership](https://dev.to/++), which provides exclusive benefits, and an exclusive DEV badge. All participants, regardless of winning, received a completion badge for participating in the challenge."
+    }
+  ]
+}

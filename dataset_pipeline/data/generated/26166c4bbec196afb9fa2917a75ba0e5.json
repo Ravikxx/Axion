@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/December_1982_lunar_eclipse",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is a total lunar eclipse and how does it differ from a solar eclipse?",
+      "answer": "A total lunar eclipse happens when the entire near side of the Moon moves into Earth's umbral shadow, causing the Moon to darken. Unlike a solar eclipse, which is only visible from a small area on Earth due to the Moon's smaller shadow, a total lunar eclipse can be seen from anywhere on Earth's night side because Earth's shadow covers a larger area."
+    },
+    {
+      "question": "Why was the lunar eclipse on December 30, 1982, considered a 'super blue blood moon'?",
+      "answer": "The eclipse was called a 'super blue blood moon' because it coincided with three rare lunar events: it was a supermoon (occurring near perigee, making the Moon appear larger), a blue moon (the second full moon in December for the Eastern Hemisphere), and a total lunar eclipse (also known as a blood moon due to its reddish color). This combination would not recur until January 31, 2018."
+    },
+    {
+      "question": "How long can a total lunar eclipse last compared to a total solar eclipse, and why?",
+      "answer": "A total lunar eclipse can last up to nearly two hours at a given location, while a total solar eclipse lasts only a few minutes. This is because Earth's shadow is much larger than the Moon's shadow, allowing the Moon to traverse it gradually, whereas the Moon's shadow moves quickly across Earth's surface during a solar eclipse."
+    },
+    {
+      "question": "What made the lunar eclipse on December 30, 1982, unusually dark?",
+      "answer": "The lunar eclipse on December 30, 1982, was abnormally dark likely due to atmospheric conditions on Earth at the time, such as volcanic ash or other particulates in the atmosphere, which can scatter more sunlight and make the shadow darker. Additionally, the Moon's proximity to perigee (just 10.5 hours earlier) may have contributed to its larger apparent diameter, affecting the eclipse's appearance."
+    },
+    {
+      "question": "Write a Python function to calculate the umbral magnitude of a lunar eclipse given the Moon's distance from Earth (in km) and the radius of Earth's umbral shadow (in km).",
+      "answer": "python\ndef calculate_umbral_magnitude(moon_distance_km, umbral_shadow_radius_km):\n    # Approximate Earth's radius (km)\n    earth_radius_km = 6371\n    # Calculate the angular radius of the umbral shadow at the Moon's distance\n    umbral_angular_radius = (umbral_shadow_radius_km / 2) / (moon_distance_km - earth_radius_km)\n    # Calculate the angular radius of the Moon\n    moon_angular_radius = 1737.4 / moon_distance_km  # 1737.4 km is the Moon's radius\n    # Umbral magnitude is the ratio of the Moon's diameter to the umbral shadow's diameter at the Moon's distance\n    umbral_magnitude = (2 * moon_angular_radius) / (2 * umbral_angular_radius)\n    return umbral_magnitude\n\n# Example usage:\nmoon_distance = 362000  # km (near perigee)\numbral_shadow_radius = 4600  # km (approximate)\nprint(calculate_umbral_magnitude(moon_distance, umbral_shadow_radius))  # Output: ~1.1822\n"
+    },
+    {
+      "question": "What is the difference between a 'blue moon' and a 'supermoon'?",
+      "answer": "A 'blue moon' refers to the second full moon in a calendar month (or the third full moon in a season with four full moons). A 'supermoon' occurs when a full moon coincides with perigee, the point in the Moon's orbit where it is closest to Earth, making the Moon appear larger and brighter in the sky."
+    },
+    {
+      "question": "Why might a total lunar eclipse be visible from any location on Earth's night side, while a solar eclipse is not?",
+      "answer": "A total lunar eclipse is visible from anywhere on Earth's night side because Earth's shadow is much larger than the Moon's shadow and covers a significant portion of the Moon. In contrast, a solar eclipse is only visible from a narrow path on Earth because the Moon's shadow is small and moves quickly across the surface, blocking the Sun only for observers in that specific path."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Frond_dimorphism",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is frond dimorphism in ferns?",
+      "answer": "Frond dimorphism refers to the observable differences in structure between fertile and sterile fronds in ferns. Fertile fronds typically carry spores on their leaf blades, while sterile fronds do not. These differences can range from subtle variations, such as the presence of sori (spore clusters) on fertile fronds, to more pronounced morphological changes where fertile and sterile fronds differ significantly in size, shape, or even color."
+    },
+    {
+      "question": "How do species like Dryopteris differ in their display of frond dimorphism compared to Osmunda?",
+      "answer": "In genera like Dryopteris, there is minimal dimorphism between fertile and sterile fronds beyond the presence of sori on the back of the fronds. In contrast, species like Osmunda feature dimorphism only in specific parts of the frond, or exhibit marked differences such as fertile fronds being taller or structurally distinct from sterile fronds."
+    },
+    {
+      "question": "Can you provide examples of ferns with highly dimorphic fertile fronds?",
+      "answer": "Yes, for instance, the Cinnamon fern (Osmunda cinnamomea) and species in the family Onocleaceae have fertile fronds that are entirely different in appearance from their sterile counterparts. Similarly, in genera like Blechnum and Woodwardia, fertile fronds are notably taller than sterile fronds."
+    },
+    {
+      "question": "Which fern families exhibit a strong propensity for dimorphism?",
+      "answer": "The Onocleaceae and Blechnaceae families are notable for their tendency towards dimorphism. In contrast, the Athyriaceae family shows no strong dimorphism, while only some members of the Thelypteridaceae family exhibit this trait. This suggests a possible evolutionary relationship between Onocleaceae and Blechnaceae."
+    },
+    {
+      "question": "How do taxonomists view the importance of frond dimorphism in classifying ferns?",
+      "answer": "Opinions vary among taxonomists. Copeland considered frond dimorphism to be taxonomically significant, while Tryon and Tryon, as well as Kramer, argued that its importance can only be assessed in relation to other morphological traits. This disagreement highlights the complexity of using dimorphism as a definitive classification criterion."
+    },
+    {
+      "question": "Write a Python function to check if a given fern genus exhibits dimorphism based on a predefined dictionary of genera.",
+      "answer": "python\ndef is_dimorphic(genus, dimorphic_genera):\n    \"\"\"\n    Check if a given fern genus exhibits dimorphism.\n    \n    Args:\n        genus (str): The genus name to check.\n        dimorphic_genera (set): A set of genera known to exhibit dimorphism.\n    \n    Returns:\n        bool: True if the genus is dimorphic, False otherwise.\n    \"\"\"\n    return genus in dimorphic_genera\n\n# Example usage:\ndimorphic_families = {\"Onocleaceae\", \"Blechnaceae\"}\nprint(is_dimorphic(\"Osmunda\", dimorphic_families))  # Output: False\nprint(is_dimorphic(\"Blechnum\", dimorphic_families))  # Output: True\n"
+    },
+    {
+      "question": "Why might frond dimorphism be evolutionarily advantageous for ferns?",
+      "answer": "Frond dimorphism may provide evolutionary advantages by separating reproductive and vegetative functions. Fertile fronds specialized for spore production could enhance reproductive success, while sterile fronds optimized for photosynthesis may improve energy acquisition. This division of labor could be particularly beneficial in resource-limited environments or competitive ecosystems."
+    }
+  ]
+}

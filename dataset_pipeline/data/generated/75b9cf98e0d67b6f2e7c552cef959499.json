@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Appalachian_temperate_rainforest",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the Appalachian temperate rainforest, and where is it located?",
+      "answer": "The Appalachian temperate rainforest, also known as the Appalachian cloud forest, is a highly biodiverse temperate region situated in the southern Appalachian Mountains of the eastern United States. It spans primarily between southwestern Virginia and southwestern North Carolina, centered around Southern Appalachian spruce–fir forests."
+    },
+    {
+      "question": "What are the key climate characteristics of the Appalachian temperate rainforest?",
+      "answer": "The Appalachian temperate rainforest has a cool, mild climate with highly variable temperatures and precipitation patterns linked to elevation. It has a mean annual temperature of around 7 °C (45 °F) and receives over 140 centimeters (55 inches) of annual precipitation. The highest peaks can exceed 200 centimeters (79 inches) of precipitation and are often shrouded in fog."
+    },
+    {
+      "question": "What types of plant species are found in the Appalachian temperate rainforest?",
+      "answer": "The ecosystem supports thousands of plant species, including evergreen spruce and fir forests at higher elevations and deciduous cove forests at lower elevations. Notable plant groups include epiphytes, orchids, mosses, and ferns, many of which are adapted to the region's microclimates."
+    },
+    {
+      "question": "Which animal groups reach their highest global diversity in the Appalachian temperate rainforest?",
+      "answer": "The Appalachian temperate rainforest is home to the highest diversities of mushrooms, salamanders, land snails, and millipedes in the world. These groups thrive in the region's unique microclimates and diverse habitats."
+    },
+    {
+      "question": "How have human activities impacted the Appalachian temperate rainforest over time?",
+      "answer": "Humans have influenced the rainforest for the last 12,000 years through hunting, agriculture, and later industrialization. European colonization led to significant changes, including the decline of native populations, land use alterations, and the introduction of invasive species like chestnut blight and the balsam woolly adelgid."
+    },
+    {
+      "question": "What are some major threats to the Appalachian temperate rainforest today?",
+      "answer": "Ongoing threats to the ecosystem include wildfires and climate change. While conservation efforts such as national forests and parks have helped preserve parts of the rainforest, these challenges continue to pose risks to its biodiversity and stability."
+    },
+    {
+      "question": "Write a Python function to calculate the average annual temperature of the Appalachian temperate rainforest in both Celsius and Fahrenheit.",
+      "answer": "python\ndef calculate_avg_temperature():\n    celsius = 7\n    fahrenheit = (celsius * 9/5) + 32\n    return f\"Mean annual temperature: {celsius} °C ({fahrenheit:.0f} °F)\"\n\nprint(calculate_avg_temperature())\n\nThis function returns the mean annual temperature of the Appalachian temperate rainforest as 7 °C (45 °F)."
+    }
+  ]
+}

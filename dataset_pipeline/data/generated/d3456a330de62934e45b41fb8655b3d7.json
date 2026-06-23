@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/History_of_Russia",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What were the primary ethnic groups that contributed to the early history of Russia?",
+      "answer": "The early history of Russia was shaped by the East Slavs, Turkic peoples, and Finno-Ugric groups. The East Slavs were particularly influential in forming the foundation of Russian culture and statehood."
+    },
+    {
+      "question": "How did the Kievan Rus come into existence, and which group played a key role in its establishment?",
+      "answer": "The Kievan Rus was established by Vikings, who integrated with the East Slavic tribes in the region. This fusion led to the formation of a powerful state centered around Kiev, which became a precursor to modern Russia."
+    },
+    {
+      "question": "What role did the Mongols play in the history of Russia, and how long did their rule last?",
+      "answer": "The Mongols, under the Golden Horde, conquered and ruled over parts of Russia from the 13th century until the 15th century. Their dominance influenced Russian political and cultural development, including the rise of the Tsardom of Russia."
+    },
+    {
+      "question": "Can you provide a brief overview of Russia's territorial expansion from the 16th century onward?",
+      "answer": "After the fall of Mongol rule, Russia expanded westward into Poland-Lithuania and eastward into Siberia. This expansion continued through the 16th and 17th centuries, significantly increasing its territory and influence."
+    },
+    {
+      "question": "What were the key events leading to the formation of the Soviet Union in 1917?",
+      "answer": "The October Revolution of 1917 marked the overthrow of the Russian Provisional Government by the Bolsheviks, led by Vladimir Lenin. This led to the establishment of the Soviet Union, the world's first communist state, in 1922."
+    },
+    {
+      "question": "How did Russia's involvement in World War II impact its post-war position in Europe?",
+      "answer": "Russia played a decisive role in defeating Nazi Germany during World War II. Post-war, it occupied East Germany, Poland, and much of Eastern Europe, becoming a dominant power in the region and a rival to the United States during the Cold War."
+    },
+    {
+      "question": "Write a Python function that checks if a given year falls within the period of Mongol rule over Russia (1237–1480).",
+      "answer": "python\ndef is_mongol_rule(year):\n    return 1237 <= year <= 1480\n\n# Example usage:\nprint(is_mongol_rule(1300))  # Output: True\nprint(is_mongol_rule(1500))  # Output: False\n"
+    }
+  ]
+}

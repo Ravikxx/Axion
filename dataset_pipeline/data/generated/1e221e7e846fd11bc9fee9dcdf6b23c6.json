@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Camillo_Serafini",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was Camillo Serafini and what were his two primary roles in Vatican history?",
+      "answer": "Camillo Serafini (1864–1952) was an Italian Marquis who served as the first and only Governor of Vatican City from 1929 until his death in 1952. He was also a distinguished numismatist, serving as curator of the Vatican Library's numismatic collections and publishing a catalogue of their holdings between 1910 and 1928."
+    },
+    {
+      "question": "What significant administrative change did Pope Pius XI make to Vatican City in December 1934 under Serafini's governance?",
+      "answer": "In December 1934, Pope Pius XI granted Serafini absolute legislative powers for six months to reorganize the civil administration of Vatican City. This action was reported by The New York Times under the headline 'Dictator named for Vatican City,' highlighting the extraordinary authority bestowed upon him."
+    },
+    {
+      "question": "Describe the diplomatic role Camillo Serafini played in Vatican-Italy relations in 1929 and 1932.",
+      "answer": "In 1929, Serafini welcomed the king and queen of Italy during their state visit to the Vatican. Additionally, on 6 September 1932, he signed the convention between the Holy See and the Kingdom of Italy, formalizing agreements between the two entities."
+    },
+    {
+      "question": "How did Camillo Serafini contribute to the governance of religious buildings during World War II?",
+      "answer": "In 1943, during the German-controlled Italian Social Republic period, Serafini signed an agreement guaranteeing extraterritoriality for religious buildings not covered by the Lateran Treaty. This ensured the protection of these sites under international law amid the wartime political landscape."
+    },
+    {
+      "question": "What was the relationship between Camillo Serafini and Pope Pius XII?",
+      "answer": "Camillo Serafini was described by Charles H. Doyle in 1950 as a 'colorful layman' and a frequent visitor to Pope Pius XII. Their relationship reflects Serafini's prominence within the Vatican's social and administrative circles during Pius XII's papacy."
+    },
+    {
+      "question": "What happened to the office of Governor of Vatican City after Camillo Serafini's death?",
+      "answer": "Following Serafini's death in 1952, Pope Pius XII abolished the office of Governor of Vatican City. Its functions were transferred to the Pontifical Commission for Vatican City State, which took over administrative responsibilities."
+    },
+    {
+      "question": "Provide a code snippet that calculates the duration of Camillo Serafini's tenure as Governor of Vatican City.",
+      "answer": "python\ndef calculate_tenure(start_year, end_year):\n    return end_year - start_year\n\n# Camillo Serafini served from 1929 to 1952\nstart_year = 1929\nend_year = 1952\n\nprint(f\"Duration of Serafini's tenure: {calculate_tenure(start_year, end_year)} years\")\n\nOutput: `Duration of Serafini's tenure: 23 years`"
+    }
+  ]
+}

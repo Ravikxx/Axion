@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/A_Shabby_Genteel_Story",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is 'A Shabby Genteel Story' and who wrote it?",
+      "answer": "'A Shabby Genteel Story' is an early and unfinished novel written by William Makepeace Thackeray, a renowned Victorian author."
+    },
+    {
+      "question": "When was 'A Shabby Genteel Story' first published, and in what collection did it appear?",
+      "answer": "It was first published in 1857 as part of William Makepeace Thackeray's collection titled 'Miscellanies,' which included other stories and sketches."
+    },
+    {
+      "question": "Why did William Makepeace Thackeray describe 'A Shabby Genteel Story' as 'only the first part' of a longer story?",
+      "answer": "Thackeray noted in a 1857 note that the story was 'interrupted at a sad period of the writer's own life' and was never completed due to personal struggles."
+    },
+    {
+      "question": "What personal circumstances influenced the writing and completion of 'A Shabby Genteel Story'?",
+      "answer": "Thackeray’s wife became mentally unstable around 1840, causing significant personal turmoil. This period, marked by distress, prevented him from completing the story despite later attempts."
+    },
+    {
+      "question": "How did Thackeray’s stay in Paris influence his literary work during this time?",
+      "answer": "To escape the sad impressions of his immediate environment, Thackeray traveled to Paris in December 1857. His extended stay until the summer of the following year resulted in a series of new publications, demonstrating his determination to continue writing despite personal challenges."
+    },
+    {
+      "question": "What did Thackeray mean by stating that the sketch was 'best left in its original form'?",
+      "answer": "Thackeray felt that revisiting the old papers reignited painful memories, so he chose to preserve the incomplete story as it was rather than alter or complete it."
+    },
+    {
+      "question": "Provide a code snippet in Python that generates a random year between 1840 and 1857, simulating the timeframe of Thackeray's life events mentioned.",
+      "answer": "python\nimport random\n\n# Generate a random year between 1840 and 1857 (inclusive)\nrandom_year = random.randint(1840, 1857)\nprint(random_year)\n"
+    }
+  ]
+}

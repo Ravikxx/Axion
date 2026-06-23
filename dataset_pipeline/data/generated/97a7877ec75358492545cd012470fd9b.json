@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/API_gravity",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is API gravity and how does it relate to the density of petroleum liquids compared to water?",
+      "answer": "API gravity is a measure of how heavy or light a petroleum liquid is compared to water. A petroleum liquid with an API gravity greater than 10 is less dense than water and will float, while one with an API gravity less than 10 is denser and will sink. API gravity is an inverse measure of a petroleum liquid's density relative to water, meaning a higher API gravity indicates a lower density."
+    },
+    {
+      "question": "How is API gravity calculated? Provide the formula and explain its components.",
+      "answer": "API gravity is calculated using the formula: API gravity = (141.5 / specific gravity) - 131.5. Here, specific gravity is the ratio of the density of the petroleum liquid to the density of water at 60°F. The result is expressed in 'degrees API' and provides a standardized way to compare the densities of different petroleum liquids."
+    },
+    {
+      "question": "What historical context led to the development of the API gravity scale in the early 20th century?",
+      "answer": "In 1916, the U.S. National Bureau of Standards adopted the Baumé scale for measuring the specific gravity of liquids less dense than water. However, errors in salinity and temperature controls led to significant variations in published values. By 1921, the American Petroleum Institute introduced the API gravity scale to standardize measurements, recognizing the scale that was already in widespread use with a modulus of 141.5, despite the Baumé scale's intended modulus of 140."
+    },
+    {
+      "question": "Why is API gravity referred to as a dimensionless quantity, and how is it expressed?",
+      "answer": "API gravity is dimensionless because it is derived from the ratio of densities (specific gravity), which cancels out the units. However, it is expressed in 'degrees' to indicate that it is part of a graduated scale on a hydrometer instrument. This convention helps differentiate it from pure numerical ratios in scientific contexts."
+    },
+    {
+      "question": "What is the typical range of API gravity values for petroleum liquids, and what does this range indicate?",
+      "answer": "The API gravity values of most petroleum liquids fall between 10 and 70 degrees. This range indicates that petroleum liquids are generally less dense than water (since API gravity greater than 10 means they float), but their densities can vary significantly. Lighter petroleum products, such as gasoline, tend to have higher API gravities, while heavier products, like crude oil, have lower API gravities."
+    },
+    {
+      "question": "How does API gravity help in comparing the densities of different petroleum liquids?",
+      "answer": "API gravity provides a standardized way to compare the densities of petroleum liquids by converting their specific gravities into a common scale. For example, if one petroleum liquid has an API gravity of 40 and another has an API gravity of 30, the first liquid is less dense than the second. This comparison is useful for refining, transportation, and determining the quality or grade of petroleum products."
+    },
+    {
+      "question": "Write a Python function to convert specific gravity to API gravity. Include an example usage.",
+      "answer": "python\ndef specific_gravity_to_api(specific_gravity):\n    \"\"\"\n    Convert specific gravity to API gravity.\n    \n    Args:\n        specific_gravity (float): The specific gravity of the petroleum liquid.\n    \n    Returns:\n        float: The API gravity in degrees.\n    \"\"\"\n    if specific_gravity <= 0:\n        raise ValueError(\"Specific gravity must be greater than 0.\")\n    api_gravity = (141.5 / specific_gravity) - 131.5\n    return api_gravity\n\n# Example usage:\nspecific_gravity = 0.85  # Example specific gravity of a petroleum liquid\napi_gravity = specific_gravity_to_api(specific_gravity)\nprint(f\"API gravity: {api_gravity:.2f} degrees\")\n\nThe function takes the specific gravity as input, applies the API gravity formula, and returns the result in degrees. For example, a specific gravity of 0.85 converts to an API gravity of approximately 35.10 degrees."
+    }
+  ]
+}

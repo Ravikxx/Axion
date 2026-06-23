@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Hilma_Svedbom",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When and where was Hilma Svedbom born?",
+      "answer": "Hilma Hildegard Josefina Svedbom was born on 28 September 1856 in Stockholm, Sweden."
+    },
+    {
+      "question": "Who were Hilma Svedbom's early music instructors, and where did she receive formal training?",
+      "answer": "Her early musical education was taught by Oscar de Wahl. Later, she became a student at the Stockholm Conservatory in 1874, where she studied under the prominent pianist Hilda Thegerström."
+    },
+    {
+      "question": "What was Damtrion, and who were its founding members?",
+      "answer": "Damtrion, or 'the Women's Trio,' was founded by Hilma Svedbom in 1881 along with Walborg Lagerwall and Hilma Åberg. The trio toured Sweden, Denmark, and Norway in 1882."
+    },
+    {
+      "question": "How did Hilma Svedbom contribute to women's issues and organizations?",
+      "answer": "In 1885, Svedbom was one of the first fifteen committee members of the women's association Nya Idun. She was also involved in philanthropy, donating to schools and the Stockholm Concert Society, and establishing a scholarship fund."
+    },
+    {
+      "question": "What notable collaborations or performances was Hilma Svedbom involved in during the 1890s?",
+      "answer": "In the early 1890s, she collaborated with musicians Tor Aulin and Franz Neruda. She also provided accompaniment for singers Teresa Carreño, Dina Edling, and Julia Ohlsson."
+    },
+    {
+      "question": "For what achievement was Hilma Svedbom elected to the Royal Swedish Academy of Music?",
+      "answer": "In 1897, she was elected to the Royal Swedish Academy of Music in recognition of her contributions to music as a pianist and philanthropist."
+    },
+    {
+      "question": "Write a Python function that takes a birth year as input and returns the age Hilma Svedbom would have been in a given year. Assume she lived until 1921.",
+      "answer": "python\ndef calculate_svedbom_age(birth_year: int, target_year: int) -> int:\n    \"\"\"\n    Calculate Hilma Svedbom's age in a given year.\n    \n    Args:\n        birth_year: Year of birth (1856).\n        target_year: Year to calculate age for.\n    \n    Returns:\n        Age in the target year, or -1 if the target year is before birth.\n    \"\"\"\n    if target_year < birth_year:\n        return -1\n    return target_year - birth_year\n\n# Example usage:\nage_in_1900 = calculate_svedbom_age(1856, 1900)\nprint(age_in_1900)  # Output: 44\n"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/EV_Landshut",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the current name and league of the EV Landshut ice hockey team?",
+      "answer": "EV Landshut, formerly known as the Landshut Cannibals and EVL Landshut Eishockey, is a professional ice hockey team based in Landshut, Bavaria, Germany. They currently compete in the Deutsche Eishockey Liga 2, the second tier of German ice hockey."
+    },
+    {
+      "question": "When and why did the team change its name from Landshut Cannibals to EVL Landshut Eishockey?",
+      "answer": "In 2013, the team reverted to the name EVL Landshut Eishockey to better reflect its historical roots and tradition, as the original name Eislaufverein Landshut (EVL) dates back to the club's founding in 1948."
+    },
+    {
+      "question": "What significant achievements did EV Landshut accomplish in the West German National Championship?",
+      "answer": "EV Landshut won the West German National Championship twice, in 1970 and 1983."
+    },
+    {
+      "question": "List the notable alumni from EV Landshut's player development program.",
+      "answer": "EV Landshut's player development program has produced several notable hockey players, including Erich Kühnhackl (voted Germany's hockey player of the century), Gerd Truntschka (All-Star at the 1987 World Ice Hockey Championships), Marco Sturm (former NHL player and Washington Capitals draft pick), Christoph Schubert (NHL player with Atlanta Thrashers), Tobias Rieder (NHL player), and Tom Kühnhackl (NHL player and two-time Stanley Cup winner)."
+    },
+    {
+      "question": "What are the key differences between the professional and non-professional operations of EV Landshut?",
+      "answer": "The professional operations of EV Landshut are managed as a separate entity since 2002, competing in leagues like DEL2. The non-professional sporting competitions, including junior hockey and figure skating, are still overseen by the not-for-profit Eislaufverein Landshut (EVL), which maintains the club’s amateur and traditional activities."
+    },
+    {
+      "question": "Provide a Python code snippet to fetch and display the current league of EV Landshut from a hypothetical API endpoint.",
+      "answer": "python\nimport requests\n\n# Hypothetical API endpoint for EV Landshut's league information\ndef get_team_league(team_name):\n    api_url = f\"https://api.example.com/teams/{team_name}\"\n    response = requests.get(api_url)\n    if response.status_code == 200:\n        team_data = response.json()\n        return team_data.get('league', 'League information not available')\n    return \"Failed to fetch data\"\n\n# Example usage\nevl_league = get_team_league(\"EV Landshut\")\nprint(f\"EV Landshut's current league: {evl_league}\")\n"
+    },
+    {
+      "question": "How has EV Landshut's home arena evolved over time, and what is its current capacity?",
+      "answer": "EV Landshut's home arena, the Eisstadion am Gutenbergweg, has been their venue since 1957 after moving from other locations. The arena has undergone multiple renovations, with the most recent in 2021, and currently accommodates 4,448 spectators."
+    }
+  ]
+}

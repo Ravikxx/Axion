@@ -1,0 +1,38 @@
+{
+  "source_url": "https://dev.to/cristea_theodora/11-months-as-a-self-taught-developer-what-have-i-learned-g8p",
+  "category": "devto",
+  "pairs": [
+    {
+      "question": "What programming languages did the author initially struggle with when starting as a self-taught developer?",
+      "answer": "The author struggled with HTML, CSS, and JavaScript when starting as a self-taught developer. They initially wrote code manually in Notepad, which helped them deeply understand syntax basics like curly braces, quotation marks, and commas."
+    },
+    {
+      "question": "How did the author progress in learning Git commands after initially finding them overwhelming?",
+      "answer": "The author focused on the Git commands they used most frequently, gradually recognizing more commands over time. They still discover new commands or revisit forgotten ones, showing that Git learning is an ongoing process."
+    },
+    {
+      "question": "Why does the author emphasize consistency over cramming in learning to code?",
+      "answer": "The author emphasizes consistency because doing a bit every day builds real progress and deeper understanding. For example, 2-3 focused hours daily while well-rested creates more learning than 10 unfocused hours once a week, as the brain needs time to process and retain information."
+    },
+    {
+      "question": "What was the author's approach to overcoming the fear of starting coding sessions?",
+      "answer": "The author started small by working on something they already knew for just 10 minutes. This approach helped build confidence, silence inner fears, and prove to themselves that each day adds value to their learning journey."
+    },
+    {
+      "question": "Write a Python function that demonstrates the author's advice about consistent daily practice.",
+      "answer": "python\ndef daily_practice_tracker(days_practiced):\n    \"\"\"\n    Simulates tracking consistent daily practice over time.\n    Returns a confidence score based on the number of days practiced.\n    \"\"\"\n    base_confidence = 50  # Starting confidence\n    confidence_increase = 2  # Points per day of practice\n    \n    confidence = base_confidence + (days_practiced * confidence_increase)\n    return min(confidence, 100)  # Cap at 100\n\n# Example usage:\nprint(f\"After 30 days: {daily_practice_tracker(30)}%\")  # Output: 110% (capped at 100)\nprint(f\"After 60 days: {daily_practice_tracker(60)}%\")  # Output: 100%\n"
+    },
+    {
+      "question": "How did the author's approach to learning change when they started applying their knowledge through projects?",
+      "answer": "The author's confidence grew significantly when they shifted from collecting knowledge to applying it by building projects. This practical application helped organize their learning, prove their capabilities to themselves, and turn their inner critic into a supportive voice that celebrates progress."
+    },
+    {
+      "question": "What are the key differences between the author's initial learning approach (watching tutorials) and their later effective approach?",
+      "answer": "Initially, the author passively consumed video tutorials in a loop without applying or reviewing content, which led to tired eyes and no real progress. Their effective approach involved taking focused breaks, reviewing material, and immediately applying what they learned through building projects, creating deeper understanding and tangible results."
+    },
+    {
+      "question": "Why does the author compare learning programming languages to learning spoken languages?",
+      "answer": "The author compares them because both require gradual mastery over time, not instant perfection. Just as learning multiple spoken languages simultaneously would overwhelm the brain, trying to master programming languages quickly without building foundations leads to burnout and prevents true understanding."
+    }
+  ]
+}

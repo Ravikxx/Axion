@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/IBM_App_Connect_Enterprise",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What are the historical names of IBM App Connect Enterprise (IBM ACE) before its current name?",
+      "answer": "IBM App Connect Enterprise (IBM ACE) was previously known as IBM Integration Bus (IIB), WebSphere Message Broker (WMB), WebSphere Business Integration Message Broker (WBIMB), WebSphere MQSeries Integrator (WMQI), and originally started as MQSeries Systems Integrator (MQSI)."
+    },
+    {
+      "question": "How does IBM ACE support cloud-native deployments and what are its advantages?",
+      "answer": "IBM ACE supports container-native deployments with optimized container start-up times, particularly from version 11. Cloud hosting of the IBM ACE runtime simplifies maintenance, reduces OS-level patch disruptions, and allows easy capacity expansion by scaling CPU resources or adding nodes in an Active-Active configuration. It also enables secure external access to the Enterprise Service Bus via DataPower or API Connect, avoiding internal network exposure."
+    },
+    {
+      "question": "What protocols are supported by IBM ACE for connecting applications and services?",
+      "answer": "IBM ACE supports multiple protocols for connecting applications and services, including SOAP, HTTP, and JMS. It also supports modern secure authentication mechanisms such as LDAP, X-AUTH, OAuth, and two-way SSL."
+    },
+    {
+      "question": "How can IBM ACE integrate with .NET and Microsoft development environments?",
+      "answer": "IBM ACE embeds a Common Language Runtime to invoke .NET logic within integrations. It also offers full support for the Visual Studio development environment, including an integrated debugger and code templates, enabling seamless .NET integration and development workflows."
+    },
+    {
+      "question": "What is a BAR file in IBM ACE, and what new feature allows runtime parameter configuration?",
+      "answer": "A BAR file (Broker Archive) in IBM ACE is a deployable artifact that packages integration flows and related resources. Previously, runtime parameters were configured via MQSI command-line commands. Now, a new feature called Policy Editor allows runtime parameters to be configured using a property file within the BAR file, enabling version control and environment-specific configurations (e.g., DEV, INT, QA, PROD)."
+    },
+    {
+      "question": "Provide a code snippet demonstrating how to deploy an IBM ACE integration flow as a Docker microservice.",
+      "answer": "To deploy an IBM ACE integration flow as a Docker microservice, you can use the following Docker command to run the IBM ACE runtime locally:\n\ndocker\n# Pull the IBM ACE runtime image from the global Docker repository\ndocker pull ibmcom/ace:latest\n\n# Run the container with the administrative console enabled\ndocker run -d -p 7600:7600 -p 7800:7800 --name ace-runtime ibmcom/ace:latest\n\n# Access the administrative console at http://localhost:7600/ibm/console\n\n\nMessage flows and BAR files can be packaged into this Docker image, and Policy files within the BAR file enable automatic node configuration during deployment."
+    },
+    {
+      "question": "What are the benefits of using IBM ACE for integrating legacy applications with web services?",
+      "answer": "IBM ACE enables existing applications to be exposed as web services without requiring costly rewrites. It acts as an intermediary to connect legacy systems with modern web services, supporting diverse integration requirements through connectors for packaged applications, files, databases, and messaging systems. This reduces point-to-point strain on development resources and simplifies integration across multiple protocols."
+    }
+  ]
+}

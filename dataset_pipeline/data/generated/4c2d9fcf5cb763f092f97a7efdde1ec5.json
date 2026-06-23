@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/INS_Sagardhwani",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is INS Sagardhwani (A74) and who owns it?",
+      "answer": "INS Sagardhwani (A74), also known as 'Voice of the Sea' in Hindi, is a marine acoustic research ship (MARS) owned by the Naval Physical and Oceanographic Laboratory (NPOL), a laboratory under the Defence Research and Development Organisation (DRDO). It is maintained and operated by the Indian Navy and based at the Southern Naval Command in Kochi."
+    },
+    {
+      "question": "What are the key features of INS Sagardhwani's design that enable low-noise acoustic research?",
+      "answer": "INS Sagardhwani is designed with several features to facilitate low noise and low vibration during acoustic research. These include floating floors for scientific laboratories, anti-vibration mountings for machinery and equipment, and a superstructure positioned amidships to minimize interference. Additionally, it has a balloon launching container and wind weather radar for conducting experiments."
+    },
+    {
+      "question": "How many laboratories are onboard INS Sagardhwani and what are they used for?",
+      "answer": "INS Sagardhwani has eight laboratories onboard dedicated to various scientific disciplines. These laboratories support the ship's primary mission of marine acoustic research and other related scientific activities."
+    },
+    {
+      "question": "What equipment and facilities are available on INS Sagardhwani for oceanographic and acoustic research?",
+      "answer": "The ship is equipped with handling equipment at the stern for mooring and retrieving oceanographic and acoustic buoys. It also features balloon launching containers, wind weather radar, VHF sets, marine radio, and an auto telephone exchange to support research activities."
+    },
+    {
+      "question": "Who operates INS Sagardhwani and in collaboration with which organization?",
+      "answer": "INS Sagardhwani is operated by the Indian Navy and works in conjunction with the Defence Research and Development Organisation (DRDO), which owns the vessel through its laboratory NPOL."
+    },
+    {
+      "question": "How many crew members and scientists can INS Sagardhwani accommodate?",
+      "answer": "INS Sagardhwani can accommodate up to 82 persons, including 16 scientists, and a crew consisting of 8 officers and 58 sailors."
+    },
+    {
+      "question": "Write a Python code snippet to fetch and display the basic specifications of INS Sagardhwani from a hypothetical JSON dataset.",
+      "answer": "python\nimport json\n\n# Hypothetical dataset\nship_data = {\n    \"name\": \"INS Sagardhwani (A74)\",\n    \"alias\": \"Voice of the Sea\",\n    \"owner\": \"Naval Physical and Oceanographic Laboratory (NPOL), DRDO\",\n    \"operator\": \"Indian Navy\",\n    \"home_port\": \"Southern Naval Command, Kochi\",\n    \"crew_capacity\": {\"scientists\": 16, \"officers\": 8, \"sailors\": 58},\n    \"total_capacity\": 82,\n    \"launched\": \"May 1991\",\n    \"commissioned\": 1994\n}\n\n# Function to display specifications\n\ndef display_ship_specs(data):\n    print(\"Basic Specifications of\", data[\"name\"])\n    print(\"-\" * 30)\n    print(f\"Alias: {data['alias']}\")\n    print(f\"Owner: {data['owner']}\")\n    print(f\"Operator: {data['operator']}\")\n    print(f\"Home Port: {data['home_port']}\")\n    print(f\"\\nCrew Capacity:\")\n    print(f\"  Scientists: {data['crew_capacity']['scientists']}\")\n    print(f\"  Officers: {data['crew_capacity']['officers']}\")\n    print(f\"  Sailors: {data['crew_capacity']['sailors']}\")\n    print(f\"Total Persons: {data['total_capacity']}\")\n    print(f\"\\nTimeline:\")\n    print(f\"  Launched: {data['launched']}\")\n    print(f\"  Commissioned: {data['commissioned']}\")\n\n# Display specifications\ndisplay_ship_specs(ship_data)\n"
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Any_Given_Sunday",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the origin of the title 'Any Given Sunday'?",
+      "answer": "The title is derived from a line in the 1984 novel 'On Any Given Sunday' by Pat Toomay, and from a 1952 statement by NFL commissioner Bert Bell about the league's competitive parity. It reflects the idea that a team can win or lose on any given Sunday."
+    },
+    {
+      "question": "Name at least three actors who starred in 'Any Given Sunday' besides Al Pacino and Cameron Diaz.",
+      "answer": "Other notable actors in the film include Dennis Quaid, Jamie Foxx, James Woods, LL Cool J, Ann-Margret, Lauren Holly, Matthew Modine, John C. McGinley, Charlton Heston, Bill Bellamy, Lela Rochon, Aaron Eckhart, and Elizabeth Berkley."
+    },
+    {
+      "question": "How many executive producers worked on 'Any Given Sunday', and who were they?",
+      "answer": "Three individuals served as executive producers: Oliver Stone, Richard Donner, and Lauren Shuler Donner."
+    },
+    {
+      "question": "What is the significance of the 1992 Warner Bros. Pictures logo in relation to 'Any Given Sunday'?",
+      "answer": "It is the last film to use the 1992 version of the 1984–2000 Warner Bros. Pictures logo during the Time Warner Entertainment era, alongside the 'Extended Director’s Cut' of *The Exorcist*."
+    },
+    {
+      "question": "Write a Python script that extracts all actor names mentioned in the text and prints them in a comma-separated list.",
+      "answer": "python\nactors = [\n    \"Al Pacino\", \"Cameron Diaz\", \"Dennis Quaid\", \"Jamie Foxx\", \"James Woods\",\n    \"LL Cool J\", \"Ann-Margret\", \"Lauren Holly\", \"Matthew Modine\", \"John C. McGinley\",\n    \"Charlton Heston\", \"Bill Bellamy\", \"Lela Rochon\", \"Aaron Eckhart\", \"Elizabeth Berkley\"\n]\nprint(', '.join(actors))\n"
+    },
+    {
+      "question": "Why might 'Any Given Sunday' be considered a meta-commentary on American football culture?",
+      "answer": "The film blends real NFL players and coaches in cameo roles with fictional characters, and its narrative emphasizes themes like competition, parity, and the unpredictable nature of sports, mirroring the ideas behind the phrase 'any given Sunday.' This integration of real and fictional elements critiques both the glamour and grit of professional football."
+    }
+  ]
+}

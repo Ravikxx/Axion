@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Alvin_Gouldner",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was Alvin Ward Gouldner and what were his major contributions to sociology?",
+      "answer": "Alvin Ward Gouldner (1920–1980) was an American sociologist and social theorist known for his work on industrial sociology, reflexive sociology, and the role of intellectuals in society. His major contributions include foundational studies like *Patterns of Industrial Bureaucracy* (1954) and *Wildcat Strike* (1954), the influential critique *The Coming Crisis of Western Sociology* (1970), and the concept of the 'flawed universal class' in *The Dark Side of the Dialectic* series. He also founded the journal *Theory and Society* in 1974."
+    },
+    {
+      "question": "What did Gouldner argue in *The Coming Crisis of Western Sociology* (1970)?",
+      "answer": "In *The Coming Crisis of Western Sociology*, Gouldner argued that American sociology was facing a crisis due to its lack of self-criticism. He called for a 'reflexive sociology' that would critically examine the assumptions and biases of sociologists themselves, rather than merely studying external social phenomena. The work challenged the field to become more self-aware and accountable."
+    },
+    {
+      "question": "How did Gouldner define the 'flawed universal class' and what critique did he offer about it?",
+      "answer": "Gouldner defined the 'flawed universal class' as a emerging group of intellectuals and technical professionals ('New Class') who claimed to represent universal human interests but were, in reality, pursuing their own class interests. He criticized this class for disguising its partiality as universalism, thereby undermining its legitimacy and contributing to societal conflicts."
+    },
+    {
+      "question": "What role did Gouldner play in the field of industrial sociology?",
+      "answer": "Gouldner made foundational contributions to industrial sociology through his empirical studies of a gypsum plant, *Patterns of Industrial Bureaucracy* (1954) and *Wildcat Strike* (1954). These works analyzed bureaucratic structures and labor strikes, providing early insights into organizational behavior and the dynamics of workplace conflict."
+    },
+    {
+      "question": "What is the significance of Gouldner's 'Culture of Critical Discourse' concept?",
+      "answer": "The 'Culture of Critical Discourse' is a concept developed in Gouldner's later work to describe a societal shift toward intellectual critique and reflexivity. It emphasizes the importance of subjecting dominant ideas, including those of sociologists, to rigorous scrutiny, fostering a more transparent and democratic intellectual culture."
+    },
+    {
+      "question": "Where did Alvin Ward Gouldner teach and what was his academic career trajectory?",
+      "answer": "Gouldner spent most of his career at Washington University in St. Louis, where he held the Max Weber Research Professorship of Social Theory. Earlier, he trained under Robert K. Merton at Columbia University. He also had a visiting professorship at the University of Amsterdam from 1972 to 1976."
+    },
+    {
+      "question": "Write a Python function to generate a timeline of Alvin Ward Gouldner's life and career based on the provided text.",
+      "answer": "python\ndef gouldner_timeline():\n    timeline = [\n        {\"year\": 1920, \"event\": \"Born in Alvin Ward Gouldner\"},\n        {\"year\": 1940, \"event\": \"Trained under Robert K. Merton at Columbia University\"},\n        {\"year\": 1954, \"event\": \"Published *Patterns of Industrial Bureaucracy* and *Wildcat Strike*, foundational texts in industrial sociology\"},\n        {\"year\": 1970, \"event\": \"Published *The Coming Crisis of Western Sociology*, critiquing American sociology\"},\n        {\"year\": 1972, \"event\": \"Began visiting professorship at the University of Amsterdam (until 1976)\"},\n        {\"year\": 1974, \"event\": \"Founded the journal *Theory and Society*\"},\n        {\"year\": 1980, \"event\": \"Died of a heart attack in Madrid at age 60\"}\n    ]\n    return timeline\n\n# Example usage:\nprint(gouldner_timeline())\n"
+    }
+  ]
+}

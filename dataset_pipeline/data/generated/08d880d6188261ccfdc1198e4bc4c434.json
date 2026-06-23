@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/House_of_Medici",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the House of Medici, and where did it originate?",
+      "answer": "The House of Medici was an Italian banking family and political dynasty that rose to power in the Republic of Florence during the 15th century. The family originated in the Mugello region of Tuscany and gained prominence through trade before establishing the Medici Bank, which became the largest in Europe in the 15th century."
+    },
+    {
+      "question": "How did the Medici family transition from merchants to political rulers?",
+      "answer": "The Medici family initially prospered in trade, particularly through the wool guild of Florence (Arte della Lana). Their wealth from the Medici Bank allowed them to consolidate political power in Florence, though they remained citizens rather than monarchs until 1532, when they acquired the hereditary title Duke of Florence."
+    },
+    {
+      "question": "What significant titles did the Medici family hold, and when?",
+      "answer": "In 1532, the Medici became the hereditary Dukes of Florence. This title was elevated to Grand Duchy of Tuscany in 1569 after territorial expansion. The family ruled until 1737 with the death of Gian Gastone de' Medici."
+    },
+    {
+      "question": "Which notable religious and political figures emerged from the Medici family?",
+      "answer": "The Medici produced four popes: Leo X (1513–1521), Clement VII (1523–1534), Pius IV (1559–1565), and Leo XI (1605). They also had two queens of France: Catherine de' Medici (1547–1559) and Marie de' Medici (1600–1610)."
+    },
+    {
+      "question": "What role did the Medici Bank play in the family's rise to power?",
+      "answer": "The Medici Bank, founded in 1397, was one of Europe's most prosperous institutions until its fall in 1494. It generated immense wealth, making the Medici the wealthiest family in Europe at the time. The bank also pioneered double-entry bookkeeping, a system still used in accounting today. The bank's success funded the family's political influence in Florence and beyond."
+    },
+    {
+      "question": "Provide a code snippet demonstrating the double-entry bookkeeping system the Medici Bank pioneered.",
+      "answer": "The Medici Bank is credited with developing the double-entry bookkeeping system. Here’s a simplified example in Python to illustrate how it works:\n\npython\nclass Ledger:\n    def __init__(self):\n        self.transactions = []\n\n    def record_debit(self, account, amount):\n        self.transactions.append((account, 'Debit', amount))\n\n    def record_credit(self, account, amount):\n        self.transactions.append((account, 'Credit', amount))\n\n    def get_balance(self, account):\n        debits = sum(amount for acc, typ, amount in self.transactions \n                   if acc == account and typ == 'Debit')\n        credits = sum(amount for acc, typ, amount in self.transactions \n                    if acc == account and typ == 'Credit')\n        return debits - credits\n\n# Example usage\nledger = Ledger()\nledger.record_debit('Cash', 1000)\nledger.record_credit('Revenue', 1000)\nprint(ledger.get_balance('Cash'))  # Output: 1000\n"
+    },
+    {
+      "question": "Which famous artists and scientists were supported by the Medici family?",
+      "answer": "The Medici family were major patrons of the arts and sciences, supporting figures such as Donatello, Brunelleschi, Botticelli, Leonardo da Vinci, Michelangelo, Raphael, Machiavelli, Galileo, and Francesco Redi. They funded the construction of Florence Cathedral and Saint Peter's Basilica, and are credited with financing the invention of the piano and, arguably, opera."
+    },
+    {
+      "question": "How did the Medici family contribute to the Counter-Reformation?",
+      "answer": "The Medici family played a significant role in the Counter-Reformation, which was the Catholic Church's response to the Protestant Reformation. They were active participants from the early stages of the Reformation through the Council of Trent (1545–1563) and were involved in the French Wars of Religion, particularly through the influence of Catherine de' Medici, who acted as regent for her son Charles IX."
+    }
+  ]
+}

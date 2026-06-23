@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Dubuque_City_Hall",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who designed Dubuque City Hall and what architectural influences inspired its design?",
+      "answer": "Dubuque City Hall was designed by J.N. Moody, who drew inspiration from Faneuil Hall in Boston and the Fulton Street Market in New York City."
+    },
+    {
+      "question": "What are the three floors of Dubuque City Hall historically used for according to Medieval tradition?",
+      "answer": "Following Medieval tradition, the first floor housed the city market, the second floor contained municipal offices, and the third floor featured a ballroom for civic events."
+    },
+    {
+      "question": "What architectural features characterize the exterior of Dubuque City Hall?",
+      "answer": "The building is a three-story brick structure with a raised limestone basement, a gable roof with bracketed eaves, and circular windows in each gable. The 11-foot tall windows are set within arched bays."
+    },
+    {
+      "question": "How has the interior layout of Dubuque City Hall changed over time?",
+      "answer": "Originally, the main floor had stalls for the market, which were later converted into office space after the market relocated. The third floor ballroom served as a police archery and pistol range, bowling alley, and horseshoe pitching area before being restored."
+    },
+    {
+      "question": "What happened to the original cupola of Dubuque City Hall and when was it replaced?",
+      "answer": "The original cupola, which held a bell and a four-faced clock, deteriorated and was removed in 1954. A new cupola matching the original design was erected in 1990, and the bell was returned to the tower at that time."
+    },
+    {
+      "question": "When was Dubuque City Hall listed on the National Register of Historic Places?",
+      "answer": "Dubuque City Hall was listed on the National Register of Historic Places in 1972."
+    },
+    {
+      "question": "Write a Python function to check if a given year is the year Dubuque City Hall was listed on the National Register of Historic Places.",
+      "answer": "python\ndef is_listed_year(year):\n    return year == 1972\n\n# Example usage:\nprint(is_listed_year(1972))  # Output: True\nprint(is_listed_year(2000))  # Output: False\n"
+    }
+  ]
+}

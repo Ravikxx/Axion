@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/A._Martin_Freeman",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was Alexander Martin Freeman and what were his primary contributions to Irish culture?",
+      "answer": "Alexander Martin Freeman (1878–1959) was a scholar of medieval Irish texts and a collector of traditional Irish music. He made notable contributions by preserving nearly a hundred traditional songs from the Ballyvourney area in County Cork, documented in the Ballyvourney Collection. This work, published in the Journal of the Folk Song Society (1920–21), included original texts, prose translations, and annotations, making it one of the finest collections of Irish songs recorded from oral tradition in his time."
+    },
+    {
+      "question": "What notable collection of Irish songs did Alexander Martin Freeman compile, and where can it be found?",
+      "answer": "Freeman compiled the Ballyvourney Collection, which consists of nearly a hundred traditional Irish songs with original texts, translations, and annotations. These songs were featured as numbers 23–25 in the Journal of the Folk Song Society between 1920 and 1921."
+    },
+    {
+      "question": "What was Alexander Martin Freeman's role in the Irish Folk Song Society, and how long did he serve?",
+      "answer": "Freeman served on the Publication Committee of the Irish Folk Song Society from 1920 until the society's dissolution in 1939. Additionally, he sat on the editorial board of the society as a member."
+    },
+    {
+      "question": "What is considered Freeman's magnum opus in his scholarly work?",
+      "answer": "Freeman's magnum opus is regarded as his edition of the *Annals of Connacht*, published in 1944. This work reflects his extensive scholarship in medieval Irish texts."
+    },
+    {
+      "question": "How did Freeman contribute to the preservation of Irish music beyond the Ballyvourney Collection?",
+      "answer": "Beyond the Ballyvourney Collection, Freeman contributed songs and texts to the *Journal of the English Folk Dance and Song Society* and served on the editorial board of the Irish Folk Song Society. His work helped preserve and disseminate traditional Irish music during his lifetime."
+    },
+    {
+      "question": "What was the Muskery Collection, and how was it related to Freeman's legacy?",
+      "answer": "The Muskery Collection refers to Freeman's unpublished or lesser-known works in Irish music scholarship. A lecture on this collection was given by Iarla Ó Lionáird at Cork University on 30 January 2014, highlighting Freeman's enduring influence on the study of Irish traditional music."
+    },
+    {
+      "question": "Write a Python script to extract the names of all the collections or works mentioned in the provided text related to Alexander Martin Freeman.",
+      "answer": "python\ntext = \"\"\"\nAlexander Martin Freeman (1878 in Tooting, London – 18 December 1959) was a scholar of medieval Irish texts and collector of Irish music. A native of Surrey, he was educated at Bedford Grammar School and Lincoln College, Oxford. He married a lady from Donegal.\n\nHe collected traditional songs from older generations of singers in the West Cork Gaeltacht (Irish-speaking area) of Ballyvourney, County Cork, during 1913/14, which became the Ballyvourney Collection.\nHis Ballyvourney collection featured as numbers 23–25 of the Journal of the Folk Song Society, 1920–21. This collection consists of almost a hundred songs, with original texts, prose translations and annotations, constituting incomparably the finest collection published in our time of Irish songs noted from oral tradition.\n\nHis other works of scholarship are varied, and includes his edition of Annals of Connacht (1944), his magnum opus.\nHe was on the Publication Committee for the Irish Folk Song Society from 1920 until 1939, when the society was dissolved. He contributed songs and texts occasionally to the Journal of the English Folk Dance and Song Society. He sat on the editorial board of the Society as a member.\nA lecture was given by Iarla Ó Lionáird on his Muskery Collection in Cork University on 30 January 2014.\n\"\"\"\n\n# Extract collections or works\nimport re\ncollections = re.findall(r'(Ballyvourney Collection|Annals of Connacht|Muskery Collection)', text)\nprint(collections)\n\nThis script will output: `['Ballyvourney Collection', 'Annals of Connacht', 'Muskery Collection']`."
+    }
+  ]
+}

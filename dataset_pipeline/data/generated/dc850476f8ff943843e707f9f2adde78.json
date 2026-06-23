@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Global_Partnership_for_the_Prevention_of_Armed_Conflict",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the Global Partnership for the Prevention of Armed Conflict (GPPAC), and who are its primary members?",
+      "answer": "The Global Partnership for the Prevention of Armed Conflict (GPPAC) is a member-led network of civil society organizations (CSOs) focused on conflict prevention and peacebuilding worldwide. Its primary members are local CSOs organized into 15 regional networks, each with its own priorities and agenda. These regional networks are represented in an International Steering Group that sets global priorities and actions."
+    },
+    {
+      "question": "How does GPPAC facilitate collaboration between local and global actors in conflict prevention?",
+      "answer": "GPPAC bridges local and global levels by connecting regional networks with actors such as the UN, regional organizations (e.g., OAS, ECOWAS), state actors, media, and academia. It organizes exchanges where members learn from each other’s experiences, develops joint strategies, and supports local CSOs through tools, advice, and political leverage. Initiatives like the Preventive Action framework enable CSOs to engage from conflict assessment to strategy implementation."
+    },
+    {
+      "question": "What are some key achievements of GPPAC in involving local civil society in policy processes?",
+      "answer": "GPPAC has increased local CSO involvement in policy processes such as the Geneva Declaration on Armed Violence and Development and UN initiatives like the UN Peacebuilding Commission. It mobilized its network to support local organizations during crises, including the post-election crisis in Kenya, political transitions in Guinea Conakry, and clashes in Kyrgyzstan."
+    },
+    {
+      "question": "How does GPPAC support conflict prevention in politically sensitive regions like South Asia?",
+      "answer": "GPPAC promotes networks and dialogue initiatives (track II diplomacy) in regions such as South Asia and Northeast Asia. For example, it initiated the Ulaanbaatar Process to foster collaboration between CSOs and regional organizations like SAARC and ASEAN on security issues, enhancing local ownership and conflict prevention strategies."
+    },
+    {
+      "question": "What is the Peace Portal, and how does it contribute to GPPAC’s mission?",
+      "answer": "The Peace Portal is an online platform developed by GPPAC to support interaction, information-sharing, and joint action among actors in conflict prevention and peacebuilding. It serves as a custom-built tool to strengthen collaboration, coordinate initiatives, and facilitate the sharing of expertise and resources across the GPPAC network."
+    },
+    {
+      "question": "Provide an example of a code snippet that could be used to analyze GPPAC’s regional networks or initiatives.",
+      "answer": "python\nimport pandas as pd\n\n# Example dataset of GPPAC regional networks and their priorities\ndata = {\n    \"Region\": [\"Africa\", \"Asia\", \"Europe\", \"Latin America\", \"Middle East\", \"North America\"],\n    \"Regional Network\": [\n        \"GPPAC Africa\", \"GPPAC Asia\", \"GPPAC Europe\", \"GPPAC Latin America\", \n        \"GPPAC Middle East & North Africa\", \"GPPAC North America\"\n    ],\n    \"Key Priorities\": [\n        \"Women, Peace and Security, Election Monitoring\",\n        \"Track II Diplomacy, Nuclear Security\",\n        \"Conflict Early Warning, Migration\",\n        \"Indigenous Rights, Climate Security\",\n        \"Youth Engagement, Mediation\",\n        \"Gun Violence Prevention, Policy Advocacy\"\n    ]\n}\n\n# Create a DataFrame\ndf = pd.DataFrame(data)\n\n# Display the regional networks and their priorities\nprint(df.to_string(index=False))\n"
+    },
+    {
+      "question": "How did GPPAC’s structure evolve from its inception to its official launch?",
+      "answer": "GPPAC was initiated through extensive consultations between 2003 and 2004, involving civil society organizations worldwide. It was officially launched in 2005 at a global conference held at the UN headquarters in New York, marking the formal establishment of the network and its regional structures."
+    },
+    {
+      "question": "What role does GPPAC play in promoting gender equality in peacebuilding, and what initiative reflects this?",
+      "answer": "GPPAC has increased the capacity of CSOs to engage with policy makers and media through initiatives like ‘Media Focal Points’ and policy liaison functions. Additionally, it conducted a global mapping of expertise related to UN Security Council Resolution 1325 on Women, Peace and Security, demonstrating its commitment to gender equality in conflict prevention and peacebuilding."
+    }
+  ]
+}

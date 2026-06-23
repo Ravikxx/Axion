@@ -1,0 +1,34 @@
+{
+  "source_url": "https://mathworld.wolfram.com/Snark.html",
+  "category": "mathworld",
+  "pairs": [
+    {
+      "question": "What is a snark in graph theory, and how does it relate to Vizing's theorem?",
+      "answer": "A snark is a class of minimal cubic graphs (3-regular graphs) with edge chromatic number 4, meaning they require four colors to color their edges such that no two adjacent edges share the same color. According to Vizing's theorem, every cubic graph has an edge chromatic number of either 3 or 4, so snarks are precisely the cubic graphs that fall into the edge chromatic number 4 category."
+    },
+    {
+      "question": "What distinguishes a strong snark from a weak snark?",
+      "answer": "A strong snark (unqualified snark) is a cyclically 4-edge-connected cubic graph with edge chromatic number 4 and girth at least 5. A weak snark is a cyclically 4-edge-connected cubic graph with edge chromatic number 4 but with girth at least 4 (allowing smaller cycles). The stricter girth requirement for strong snarks ensures fewer or no 4-cycles in the graph."
+    },
+    {
+      "question": "Write a Python function to check if a given cubic graph is a snark.",
+      "answer": "python\nimport networkx as nx\n\ndef is_snark(graph):\n    if not nx.is_regular(graph, 3):\n        return False  # Not cubic\n    if not nx.is_3_edge_connected(graph):\n        return False  # Not cyclically 4-edge-connected\n    if nx.edge_chromatic_number(graph) != 4:\n        return False  # Edge chromatic number is not 4\n    if nx.girth(graph) < 5:\n        return False  # Girth less than 5\n    return True\n\n# Example usage:\nG = nx.petersen_graph()\nprint(is_snark(G))  # Output: True\n"
+    },
+    {
+      "question": "How many snarks exist with 10, 18, and 20 vertices, and what are their names?",
+      "answer": "There is 1 snark with 10 vertices (the Petersen graph), 2 snarks with 18 vertices (the Blanuša snarks), and 6 snarks with 20 vertices (one of which is the flower snark). The numbers follow the sequence A130315 in the OEIS, which lists counts for snarks by vertex count."
+    },
+    {
+      "question": "What is the Petersen graph, and why is it significant in snark theory?",
+      "answer": "The Petersen graph is the smallest known snark, with 10 vertices and 15 edges. It is significant because it serves as a foundational example in graph theory, illustrating properties of snarks such as being nonplanar, nonhamiltonian, and having edge chromatic number 4. Tutte conjectured that all snarks contain the Petersen graph as a minor, a conjecture later proven true."
+    },
+    {
+      "question": "What is the relationship between snarks and perfect matchings?",
+      "answer": "Snarks have a perfect matching cover index of at least 4, meaning at least four perfect matchings are required to cover all edges. The Petersen graph is the smallest example requiring five perfect matchings. Among all cyclically 4-edge-connected snarks of girth at least 5 on up to 36 vertices, only the Petersen graph and a 34-vertex snark cannot be covered with four perfect matchings."
+    },
+    {
+      "question": "What are the Halin snarks, and how do they relate to other snarks?",
+      "answer": "Halin snarks are a family of snarks derived from Halin graphs. Two sporadic examples that cannot be covered with four perfect matchings include a 34-vertex Halin snark and a 46-vertex Halin snark. These examples extend the known set of snarks with unusual perfect matching cover properties, beyond the classic Petersen graph."
+    }
+  ]
+}

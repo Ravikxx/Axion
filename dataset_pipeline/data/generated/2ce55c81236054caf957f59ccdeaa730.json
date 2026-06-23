@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Coat_of_arms_of_Mexico",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What Aztec symbol inspired the coat of arms on the flag of Mexico?",
+      "answer": "The coat of arms on the flag of Mexico is derived from an Aztec symbol depicting an eagle with a snake in its mouth."
+    },
+    {
+      "question": "How did the Mexica people find the location for their new city, Tenochtitlan?",
+      "answer": "According to legend, the Mexica people were told by their god Huitzilopochtli to establish a city where they would find an eagle eating a snake on top of a cactus. They found this sign on a small, swampy island in the middle of the shallow Texcoco lake."
+    },
+    {
+      "question": "What were the primary activities of the Mexica people before settling in Tenochtitlan?",
+      "answer": "Before settling in Tenochtitlan, the Mexica people were a wandering tribe surviving by hunting and gathering. They were often hired as mercenaries to fight for city-states in central Mexico."
+    },
+    {
+      "question": "What is the chinampa system and how did it contribute to the growth of Tenochtitlan?",
+      "answer": "The chinampa system was a resourceful gardening technique invented by the Mexica people. It involved creating small gardens on swampy land, which eventually helped them dry out the lake and expand their settlement. This contributed significantly to the growth and development of Tenochtitlan."
+    },
+    {
+      "question": "When was Tenochtitlan founded and what role did it play in the Aztec Empire?",
+      "answer": "Tenochtitlan was founded in 1325. It became the capital of the Aztec Empire, which dominated central Mexico until its destruction by Spanish Conquistadores led by Hernando Cortes in the early 16th century."
+    },
+    {
+      "question": "How does the Mexican flag incorporate Aztec heritage?",
+      "answer": "After winning independence from Spain in 1810, Mexico adopted the symbol of the eagle and the snake from Aztec heritage. This symbol is displayed at the center of the Mexican flag, commemorating the nation's Aztec roots."
+    },
+    {
+      "question": "Write a Python code snippet to generate a simple representation of the Mexican flag's coat of arms using ASCII art.",
+      "answer": "python\nprint(\"\"\"\n   /\\___/\\      \n  /       \\     \n (  O   O  )    \n (    ∆    )   \n  \\  \\_/  /    \n   \\_____/     \n\"\"\")  # Represents an eagle with wings spread, holding a snake\nprint(\"Mexican Coat of Arms: Eagle with a snake in its mouth\")"
+    }
+  ]
+}

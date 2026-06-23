@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Beisong",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What are the two miner's residential communities in Beisong town?",
+      "answer": "The two miner's residential communities in Beisong town are Shengli Oilfield Binnan Second Mine and Shengli Oilfield Binnan Third Mine."
+    },
+    {
+      "question": "How many villages are administered by Beisong town as of 2020?",
+      "answer": "As of 2020, Beisong town administers 72 villages."
+    },
+    {
+      "question": "List three villages under Beisong town's administration that start with the letter 'W'.",
+      "answer": "Three villages starting with 'W' are Wazhang Village (洼张村), Wangjia Village (王家村), and Wuji Village (吴家村)."
+    },
+    {
+      "question": "What is the administrative region of Beisong town, including its county, city, and province?",
+      "answer": "Beisong town is in Lijin County, Dongying, Shandong province, China."
+    },
+    {
+      "question": "Generate a Python script to extract all village names from the given text.",
+      "answer": "python\nimport re\n\ntext = \"\"\"[Beisong's village list text]\"\"\"\n\n# Extract village names using regex\nvillage_names = re.findall(r'([A-Za-z]+(?: [A-Za-z]+)* Village \\([^)]+\\))', text)\n\n# Clean and print the village names\nfor name in village_names:\n    print(name.split('(')[0].strip())\n"
+    },
+    {
+      "question": "How can you differentiate between miner's residential communities and villages in Beisong town?",
+      "answer": "Miner's residential communities are designated areas for oilfield workers, such as Shengli Oilfield Binnan Second Mine and Shengli Oilfield Binnan Third Mine. Villages, on the other hand, are traditional rural settlements like Beisong Village or Wazhang Village, which are named after families or geographic features."
+    },
+    {
+      "question": "What is the Chinese name of Beisong town, and what does it translate to in English?",
+      "answer": "The Chinese name of Beisong town is 北宋 (Běisòng), which translates to 'Northern Song' in English."
+    }
+  ]
+}

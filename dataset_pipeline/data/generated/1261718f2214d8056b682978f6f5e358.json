@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Erastus_Corning_2nd",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was Erastus Corning 2nd and what were his primary roles in Albany, New York?",
+      "answer": "Erastus Corning 2nd was an American businessman and Democratic politician who served as the 72nd mayor of Albany, New York, from 1942 until his death in 1983. He was a member of the prominent Corning family and held the longest mayoral tenure in Albany's history, as well as the longest in any large U.S. city."
+    },
+    {
+      "question": "What notable political machine controlled Albany County during Erastus Corning 2nd's mayoralty?",
+      "answer": "The O'Connell political machine, led by Daniel P. O'Connell, controlled Albany city and county during Corning's tenure. This machine remained influential until the early 1980s, making it one of the last classic urban political machines in the United States."
+    },
+    {
+      "question": "How did Erastus Corning 2nd's family influence his political career?",
+      "answer": "Corning hailed from a highly political and influential Albany family. His great-grandfather served as Albany's mayor and founded the New York Central Railroad, his father was Lieutenant Governor of New York, and other relatives held prominent political positions. This legacy helped Corning enter politics early, joining the O'Connell organization and winning seats in the New York State Assembly and Senate before becoming mayor."
+    },
+    {
+      "question": "What was Erastus Corning 2nd's educational background?",
+      "answer": "Corning attended The Albany Academy, Groton School, and Yale University, graduating in 1932. His education at these institutions helped shape his career in business and politics."
+    },
+    {
+      "question": "Describe Erastus Corning 2nd's military service during World War II.",
+      "answer": "During World War II, Corning was drafted into the United States Army and served in the 2nd Infantry Division in combat operations in Europe. His military service occurred before he completed his tenure as mayor."
+    },
+    {
+      "question": "What was the Empire State Plaza, and how was Erastus Corning 2nd involved in its creation?",
+      "answer": "The Empire State Plaza is a large state government office complex near Albany's downtown area, built in the 1970s. Corning collaborated with Governor Nelson A. Rockefeller to finance its construction. The plaza's tallest building, Erastus Corning Tower, was named in his honor."
+    },
+    {
+      "question": "Create a Python code snippet that calculates the duration of Erastus Corning 2nd's mayoral tenure in years.",
+      "answer": "python\ndef calculate_tenure_duration(start_year, end_year):\n    return end_year - start_year\n\n# Corning served from 1941 to 1983\nstart_year = 1941\nend_year = 1983\ntenure_years = calculate_tenure_duration(start_year, end_year)\nprint(f\"Erastus Corning 2nd's mayoral tenure lasted {tenure_years} years.\")\n\nOutput: Erastus Corning 2nd's mayoral tenure lasted 42 years."
+    }
+  ]
+}

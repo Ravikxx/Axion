@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Cassini–Huygens",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What were the primary goals of the Cassini–Huygens mission?",
+      "answer": "The primary goals of the Cassini–Huygens mission were to study Saturn, its rings, its moons, and its surrounding environment using a robotic spacecraft. The mission aimed to gather detailed scientific data about Saturn's atmosphere, magnetic field, and the composition of its rings and moons, including Titan, Saturn's largest moon. Additionally, the Huygens lander was tasked with directly studying Titan's surface and atmosphere after landing."
+    },
+    {
+      "question": "How did the Cassini spacecraft end its mission, and why was this necessary?",
+      "answer": "The Cassini spacecraft ended its mission by intentionally entering Saturn's upper atmosphere and burning up on September 15, 2017. This was necessary to prevent any risk of contaminating Saturn's potentially habitable moons (like Enceladus or Titan) with Earth microbes. If Cassini were to crash into one of these moons due to power loss or communication issues, it could introduce contamination, potentially interfering with future scientific studies of those moons' habitability."
+    },
+    {
+      "question": "What were the key milestones in Cassini's journey to Saturn?",
+      "answer": "Cassini's journey to Saturn included multiple gravity-assist flybys: it passed Venus in April 1998 and July 1999, Earth in August 1999, the asteroid 2685 Masursky, and Jupiter in December 2000. These flybys provided the spacecraft with the necessary speed and trajectory to reach Saturn. Cassini was launched on October 15, 1997, and entered Saturn's orbit on July 1, 2004."
+    },
+    {
+      "question": "Describe the Huygens lander's descent and landing on Titan.",
+      "answer": "The Huygens lander separated from the Cassini spacecraft on December 25, 2004, using the Spin/Eject device (SED), which propelled it away at 0.35 meters per second and set it spinning at 7.5 rpm. Huygens entered Titan's atmosphere on January 14, 2005, and descended using a parachute for about 2.5 hours. During this time, it collected data on Titan's atmosphere and surface. For approximately 90 minutes after landing, Huygens transmitted data back to Earth via Cassini as a relay. This marked the first landing on a moon other than Earth's Moon and the first in the outer Solar System."
+    },
+    {
+      "question": "What were the three main mission phases of Cassini, and how long did each last?",
+      "answer": "Cassini had three main mission phases: the Prime Mission (June 2004 to May 2008), lasting 4 years; the Cassini Equinox Mission (extended to September 2010), lasting 2 additional years; and the Cassini Solstice Mission (extended to September 15, 2017), lasting another 7 years. These extensions allowed for extended scientific observations and data collection."
+    },
+    {
+      "question": "What was the 'Grand Finale' of the Cassini mission, and what was its purpose?",
+      "answer": "The 'Grand Finale' was the final phase of Cassini's mission, consisting of a series of daring close passes through the gap between Saturn and its inner rings. This phase lasted from April to September 2017 and aimed to gather as much high-quality scientific data as possible before Cassini's destruction. The Grand Finale provided unprecedented insights into Saturn's atmosphere, magnetic field, and ring structure while ensuring that Cassini would not risk contaminating Saturn's moons."
+    },
+    {
+      "question": "Write a Python code snippet to calculate the total duration of the Cassini mission from launch to end.",
+      "answer": "python\nfrom datetime import datetime\n\n# Define mission start and end dates\nlaunch_date = datetime(1997, 10, 15)\nend_date = datetime(2017, 9, 15)\n\n# Calculate duration\ntotal_duration = end_date - launch_date\ntotal_days = total_duration.days\ntotal_years = total_days / 365.25\n\nprint(f\"Total mission duration: {total_days} days ({total_years:.2f} years)\")\n\n\nThis code calculates the total duration of the Cassini mission as approximately 6,940 days (19.03 years) from launch to its final entry into Saturn's atmosphere."
+    }
+  ]
+}

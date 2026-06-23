@@ -1,0 +1,34 @@
+{
+  "source_url": "https://simple.wikipedia.org/wiki/Ephebophilia",
+  "category": "wikipedia_simple",
+  "pairs": [
+    {
+      "question": "What is ephebophilia and how does it differ from hebephilia?",
+      "answer": "Ephebophilia is the sexual attraction to pubescent or post-pubescent teenagers (typically in Tanner stages 4 and 5) who are still under the legal age of consent, usually aged 15–19. Unlike hebephilia, which involves attraction to younger pubescent individuals, ephebophilia specifically targets older adolescents."
+    },
+    {
+      "question": "Is ephebophilia considered a psychiatric disorder?",
+      "answer": "No, ephebophilia is not classified as a psychiatric diagnosis or disorder in contrast to pedophilia, which is recognized as a paraphilic disorder in diagnostic manuals."
+    },
+    {
+      "question": "How do the terms 'age of majority' and 'age of consent' differ legally?",
+      "answer": "The age of majority is the legal threshold at which a person is considered an adult (e.g., 18 in many U.S. states), while the age of consent is the minimum age for engaging in legal sexual activity. These ages can vary by jurisdiction and are often conflated in public discourse, leading to confusion."
+    },
+    {
+      "question": "Why is the term 'pedophilia' often misused to describe attraction to minors?",
+      "answer": "The term 'pedophilia' is commonly misapplied to any sexual interest in minors, even post-pubescent individuals, due to media portrayal, legal conflation of age-related terms, and societal misunderstanding. This misuse can result in serious legal and social consequences, including defamation."
+    },
+    {
+      "question": "Provide a code snippet to programmatically validate whether a given age falls within the typical range for ephebophilia.",
+      "answer": "python\ndef is_ephebophilia_age(age: int) -> bool:\n    \"\"\"Check if an age falls within the typical range for ephebophilia (15–19).\"\"\"\n    return 15 <= age <= 19\n\n# Example usage:\nage = 17\nprint(f\"Age {age} is within ephebophilic range: {is_ephebophilia_age(age)}\")\n"
+    },
+    {
+      "question": "What are the Tanner stages, and how do they relate to ephebophilia?",
+      "answer": "The Tanner stages are a scale of physical development in children, adolescents, and adults. Ephebophilia typically involves attraction to individuals in Tanner stages 4 and 5, which correspond to late puberty or post-puberty."
+    },
+    {
+      "question": "How might the misuse of terms like 'pedophilia' lead to ageism?",
+      "answer": "Mislabeling post-pubescent minors as 'pedophilic' perpetuates harmful stereotypes, equating consensual adolescent relationships with predatory behavior. This can stigmatize adults with normative attractions to older teenagers and reinforce discriminatory attitudes."
+    }
+  ]
+}

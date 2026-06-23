@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Central_American_red-tailed_hawk",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What is the scientific name of the Central American red-tailed hawk subspecies?",
+      "answer": "The Central American red-tailed hawk subspecies is scientifically named Buteo jamaicensis costaricensis."
+    },
+    {
+      "question": "What is the average wing chord length for female Central American red-tailed hawks?",
+      "answer": "The average wing chord length for female Central American red-tailed hawks is 401.9 mm (15.82 inches)."
+    },
+    {
+      "question": "How does the tail length of male Central American red-tailed hawks compare to that of females?",
+      "answer": "Male Central American red-tailed hawks have a shorter average tail length of 213.2 mm (8.39 inches) compared to females, which average 230 mm (9.06 inches)."
+    },
+    {
+      "question": "What are the key visual differences between the Central American red-tailed hawk and the northern migrants' western red-tailed hawk (B. j. calurus)?",
+      "answer": "The Central American red-tailed hawk has less streaking on the chest and a deep rufous abdominal band with black streaks and spots. In contrast, the northern migrants' western red-tailed hawk (B. j. calurus) exhibits more heavily streaked chests."
+    },
+    {
+      "question": "Is the Central American red-tailed hawk subspecies known to have a dark morph? Explain your answer.",
+      "answer": "No, unlike other Central American races of red-tailed hawk, the Central American red-tailed hawk subspecies (Buteo jamaicensis costaricensis) does not appear to have a dark morph. All observed individuals exhibit typical adult plumage."
+    },
+    {
+      "question": "Write a Python function that compares the average wing chord lengths of male and female Central American red-tailed hawks.",
+      "answer": "python\ndef compare_wing_chords():\n    male_avg = 372.7  # in mm\n    female_avg = 401.9  # in mm\n    \n    if male_avg < female_avg:\n        return f\"Male wing chord ({male_avg} mm) is shorter than female wing chord ({female_avg} mm).\"\n    else:\n        return \"Unexpected result: Male wing chord is not shorter than female wing chord.\"\n\n# Example usage\nprint(compare_wing_chords())\n"
+    },
+    {
+      "question": "What is the typical weight range of the Central American red-tailed hawk subspecies?",
+      "answer": "The Central American red-tailed hawk subspecies typically weighs around 900 grams (2.0 pounds)."
+    }
+  ]
+}

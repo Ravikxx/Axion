@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Cyclone_Kelvin",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What was the initial classification of Cyclone Kelvin when it was first identified by the Bureau of Meteorology?",
+      "answer": "Cyclone Kelvin was initially identified as a weak tropical low by the Bureau of Meteorology on the morning of 11 February 2018 over the Northern Territory's Tiwi Islands."
+    },
+    {
+      "question": "How did Cyclone Kelvin intensify just before making landfall on 18 February 2018?",
+      "answer": "Prior to landfall, Cyclone Kelvin began to rapidly intensify as it moved slowly eastwards. It made landfall along Eighty Mile Beach as a Category 3 severe tropical cyclone on the Australian scale."
+    },
+    {
+      "question": "What was the estimated total financial loss caused by Cyclone Kelvin?",
+      "answer": "Cyclone Kelvin incurred an estimated AUS$25 million in losses."
+    },
+    {
+      "question": "Which regions experienced significant flooding due to Cyclone Kelvin, and why?",
+      "answer": "The Kimberley region experienced significant flooding due to widespread heavy rainfall brought by Cyclone Kelvin. This region had already been saturated by other tropical cyclones earlier in the season, exacerbating the flooding. Towns such as Broome and Kalumburu were particularly affected."
+    },
+    {
+      "question": "How did Cyclone Kelvin impact transportation infrastructure?",
+      "answer": "The Great Northern Highway sustained infrastructural damage from heavy rainfall and flooding caused by Cyclone Kelvin. This damage cut off access to towns, leading to a shortage of supplies. Repairs were estimated to take months."
+    },
+    {
+      "question": "Provide a code snippet to calculate the total rainfall in Broome during February 2018, given that the annual rainfall total was 1210 mm and the average annual rainfall is 592 mm.",
+      "answer": "python\naverage_annual_rainfall = 592  # mm\nannual_rainfall_2018 = 1210  # mm\nrainfall_due_to_kelvin = annual_rainfall_2018 - average_annual_rainfall\nprint(f\"Rainfall due to Cyclone Kelvin in Broome: {rainfall_due_to_kelvin} mm\")\n\nThis snippet calculates the additional rainfall attributed to Cyclone Kelvin by subtracting the average annual rainfall from the recorded annual total."
+    },
+    {
+      "question": "Why did Cyclone Kelvin weaken slowly after making landfall?",
+      "answer": "After making landfall on 18 February, Cyclone Kelvin weakened at a slow rate over the next few days because it remained over land but retained moisture and energy, allowing it to persist longer than typical landfalling cyclones."
+    }
+  ]
+}

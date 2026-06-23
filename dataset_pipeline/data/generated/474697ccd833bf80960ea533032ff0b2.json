@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Cripps_Corner",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Where is Cripps Corner located, and what notable natural feature is near it?",
+      "answer": "Cripps Corner is a village in the civil parish of Ewhurst, part of the Rother district in East Sussex, England. It is situated in the High Weald Area of Outstanding Natural Beauty, near the valley of the River Rother, which flows through Bodiam, located 2.5 miles (4 km) to the north of Cripps Corner."
+    },
+    {
+      "question": "What are the three settlements in Ewhurst parish, and where is Cripps Corner in relation to them?",
+      "answer": "The three settlements in Ewhurst parish are Cripps Corner, Staplecross, and Ewhurst Green. Cripps Corner is located to the south of Staplecross and Ewhurst Green, which lie to the north."
+    },
+    {
+      "question": "Describe the road network around Cripps Corner, including the key roads and their directions.",
+      "answer": "Cripps Corner is centered on the convergence of three roads forming a triangle: the B2165 runs northeast to Beckley, the B2089 runs west to the A21 and east to Rye, and the B2244 runs north to Sedlescombe and south to Hawkhurst. The B2089 crosses the B2244 via a viaduct built in 1834."
+    },
+    {
+      "question": "What notable structures or landmarks are near Cripps Corner?",
+      "answer": "Near Cripps Corner, there is a viaduct carrying the B2089 over the B2244, built in 1834 by Stephen Putnam. Additionally, there is a garden center, a plant nursery, a glamping site, a pet supplies company, a furniture maker, an organic vineyard, a light industrial site, and the venue for the annual 'Big Green Cardigan' music event."
+    },
+    {
+      "question": "How is Cripps Corner connected to public transportation, and what are the nearest railway stations?",
+      "answer": "Cripps Corner is connected by several bus routes, including routes 349, 360, 381, 382, 383, and B72, which link it to nearby towns like Hastings, Hawkhurst, Sedlescombe, and Battle. The closest heritage railway station is Bodiam, 2.5 miles north, part of the Kent and East Sussex Railway. The nearest National Rail station is Robertsbridge, 3 miles northwest, on the Hastings line."
+    },
+    {
+      "question": "Write a Python code snippet to calculate the distance from Cripps Corner to Lewes in kilometers.",
+      "answer": "python\n# Distance from Cripps Corner to Lewes in kilometers\ndistance_km = 40\nprint(f\"The distance from Cripps Corner to Lewes is approximately {distance_km} kilometers.\")\n"
+    },
+    {
+      "question": "What is the historical significance of the viaduct near Cripps Corner?",
+      "answer": "The viaduct near Cripps Corner, built in 1834 by Stephen Putnam, is historically significant as it was part of an improvement project for the East Sussex section of the road between the Medway towns and Hastings. Putnam followed designs by Thomas Telford, who had previously designed road-over-road bridges in Kent."
+    }
+  ]
+}

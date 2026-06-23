@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Amstrad_CPC",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What does 'Amstrad CPC' stand for, and which company developed it?",
+      "answer": "The Amstrad CPC stands for 'Colour Personal Computer,' and it was developed by the British company Amstrad. The series was produced between 1984 and 1990."
+    },
+    {
+      "question": "List all the distinct models in the Amstrad CPC series and briefly describe their market success.",
+      "answer": "The Amstrad CPC series included six distinct models: CPC 464, CPC 664, CPC 6128, CPC 464 plus, CPC 6128 plus, and the GX4000. The CPC 464, CPC 664, and CPC 6128 were highly successful in the European home computer market, while the later 464 plus, 6128 plus, and GX4000 were considerably less successful."
+    },
+    {
+      "question": "What CPU and RAM configuration were used in the Amstrad CPC series?",
+      "answer": "The Amstrad CPC series was based on the Zilog Z80A CPU and came with either 64 KB or 128 KB of RAM, depending on the model."
+    },
+    {
+      "question": "What types of integrated storage devices were included with the Amstrad CPC models?",
+      "answer": "The Amstrad CPC models featured either a compact cassette deck or a 3-inch floppy disk drive as integrated storage devices."
+    },
+    {
+      "question": "How were the Amstrad CPC computers marketed to both gamers and business users?",
+      "answer": "The Amstrad CPC series was marketed to gamers due to its strong supply of game software and low price for a complete system. It also attracted business users with its high-resolution monochrome text and graphics capabilities, as well as the ability to run CP/M software."
+    },
+    {
+      "question": "Provide a Python code snippet to calculate the total sales of the Amstrad CPC series over its lifetime.",
+      "answer": "python\n# Total sales of the Amstrad CPC series\ntotal_sales = 3_000_000  # Approximately 3 million units sold\nprint(f\"Total Amstrad CPC series sales: {total_sales:,}\")\n"
+    },
+    {
+      "question": "Why were the later Amstrad CPC models (464 plus, 6128 plus, and GX4000) less successful than the earlier ones?",
+      "answer": "The later models (464 plus, 6128 plus, and GX4000) were less successful due to hardware updates that did not significantly improve performance or attract new users. Additionally, the attempt to repurpose the plus hardware into a game console (GX4000) did not resonate well with the market."
+    }
+  ]
+}

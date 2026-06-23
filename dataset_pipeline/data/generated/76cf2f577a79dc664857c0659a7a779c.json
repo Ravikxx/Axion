@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Charles_Townshend_Murdoch",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "When and where was Charles Townshend Murdoch born?",
+      "answer": "Charles Townshend Murdoch was born on 27 May 1837 in Ashfold, Sussex, England."
+    },
+    {
+      "question": "What were the political positions held by Murdoch in the House of Commons?",
+      "answer": "Murdoch served as the Member of Parliament (MP) for Reading from 1885 to 1892, then again from 1895 until his death in 1898."
+    },
+    {
+      "question": "Who were Murdoch's parents and what was his family background?",
+      "answer": "Murdoch was the son of James Gordon Murdoch of Ashfold, Sussex, and Caroline Penelope Gambier, daughter of Samuel Gambier. His mother's sister was married to Edward John Gambier, making him part of the Gambier family."
+    },
+    {
+      "question": "What military roles did Murdoch undertake?",
+      "answer": "Murdoch served as a lieutenant in the Rifle Brigade, a captain in the South Middlesex Volunteers, and adjutant of the Hertfordshire Yeoman Cavalry."
+    },
+    {
+      "question": "What were Murdoch's professional roles outside of politics?",
+      "answer": "Murdoch was a banker, partner at Ransom, Bouverie & Co, director of Imperial Fire Insurance Co and London Life Association, and chairman of the Llanelly Railway. He also served as a Justice of the Peace (J.P.) for Berkshire."
+    },
+    {
+      "question": "Who were Murdoch's political opponents in the Reading constituency?",
+      "answer": "Murdoch's opponents in the elections were members of the Palmer family, who were associated with Huntley & Palmers biscuits."
+    },
+    {
+      "question": "Write a Python script to calculate the age of Charles Townshend Murdoch at the time of his death.",
+      "answer": "python\nfrom datetime import datetime\n\nbirth_date = datetime(1837, 5, 27)\ndeath_date = datetime(1898, 7, 8)\nage = death_date.year - birth_date.year\nif (death_date.month, death_date.day) < (birth_date.month, birth_date.day):\n    age -= 1\nprint(f\"Charles Townshend Murdoch was {age} years old at the time of his death.\")\n\nThis script calculates his age as 61 years."
+    },
+    {
+      "question": "How many children did Murdoch have, and what was the fate of his son?",
+      "answer": "Murdoch had several daughters and one son, Charles Edward Gambier, who was born in 1865 and died of typhus in 1894, unmarried."
+    }
+  ]
+}

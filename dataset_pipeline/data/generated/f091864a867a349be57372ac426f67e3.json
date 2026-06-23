@@ -1,0 +1,38 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Addax",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "What are the alternative names for the addax antelope?",
+      "answer": "The addax antelope is also known as the white antelope and the screwhorn antelope."
+    },
+    {
+      "question": "How long are the horns of an addax antelope, and do they differ between males and females?",
+      "answer": "The addax has spiral horns that are 55 to 80 cm (22 to 31 in) long in females and 70 to 85 cm (28 to 33 in) long in males."
+    },
+    {
+      "question": "Describe the seasonal coat color changes in an addax antelope.",
+      "answer": "In winter, the addax has a greyish-brown coat with white hindquarters and legs, along with long brown hair on the head, neck, and shoulders. In summer, its coat turns almost completely white or sandy blonde."
+    },
+    {
+      "question": "What is the typical herd structure of an addax antelope group?",
+      "answer": "Addax form herds of five to 20 members, consisting of both males and females, and are usually led by a dominant male."
+    },
+    {
+      "question": "What is the conservation status of the addax antelope, and which countries are they currently found in?",
+      "answer": "The addax is listed as critically endangered on the IUCN Red List. Currently, it is restricted to Chad, Mauritania, and Niger, and has become locally extinct in Western Sahara, Algeria, Libya, Egypt, and Sudan due to unregulated hunting."
+    },
+    {
+      "question": "How does the addax antelope survive in arid environments with limited water availability?",
+      "answer": "The addax can live without water for long periods of time, which helps it survive in arid regions, semideserts, and sandy and stony deserts in North Africa."
+    },
+    {
+      "question": "Write a Python function that checks if a given animal is an addax based on its scientific name.",
+      "answer": "python\ndef is_addax(scientific_name):\n    return scientific_name.lower() == 'addax nasomaculatus'\n\n# Example usage:\nprint(is_addax('Addax nasomaculatus'))  # Output: True\nprint(is_addax('Equus ferus caballus'))   # Output: False\n"
+    },
+    {
+      "question": "Why is the addax antelope considered sexually dimorphic?",
+      "answer": "The addax antelope is considered sexually dimorphic because females are generally smaller than males, with males standing 105 to 115 cm at the shoulder and females standing 95 to 110 cm."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_url": "https://en.wikipedia.org/wiki/Alain_Desrosières",
+  "category": "wikipedia",
+  "pairs": [
+    {
+      "question": "Who was Alain Desrosières and what were his primary fields of expertise?",
+      "answer": "Alain Desrosières (1940–2013) was a French statistician, sociologist, and historian of science, renowned for his work on the history and philosophy of statistics. His expertise spanned the technical, social, and historical dimensions of statistical reasoning and its societal applications."
+    },
+    {
+      "question": "What is the main focus of Alain Desrosières' book 'The Politics of Large Numbers'?",
+      "answer": "The book explores the historical development of statistical reasoning as a technical and administrative tool in the 19th and 20th centuries. It examines how statistics emerged to measure human and economic development, abstracting societal features to enable better governance and understanding."
+    },
+    {
+      "question": "How did Alain Desrosières contribute to the field of socio-professional categorisation in France?",
+      "answer": "Desrosières played a pivotal role in updating the French socio-professional categorisation scheme, a system used in official statistics. His work spanned over fifteen years and five editions, ensuring the scheme's alignment with evolving societal structures while maintaining methodological rigor."
+    },
+    {
+      "question": "What does it mean to frame public statistics as 'constructed reality' according to Desrosières?",
+      "answer": "Desrosières argued that public statistics are not purely objective facts nor mere political propaganda. Instead, they represent a 'constructed reality'—categories invented to describe society, but rigorously tracked using defined methods. This bridges the divide between objectivity and subjectivity in statistical practice."
+    },
+    {
+      "question": "List two posthumously published works by Alain Desrosières.",
+      "answer": "Two posthumously published works by Desrosières are 'Prouver et Gouverner' (2014) and 'The Statistical Argument' (2008) in two volumes, which compile his collected papers on the role and methodology of statistics in society."
+    },
+    {
+      "question": "How did Alain Desrosières' background in statistics and sociology influence his work?",
+      "answer": "His combined training in statistics and sociology enabled him to critically analyze statistical systems as both technical tools and social constructs. This dual perspective allowed him to explore how statistics shape and reflect societal power structures, administrative practices, and collective understanding."
+    },
+    {
+      "question": "What was the significance of the 1998 English translation of 'The Politics of Large Numbers'?",
+      "answer": "The 1998 English translation broadened the book's accessibility to an international audience, facilitating its review in influential publications like the London Review of Books in 2000. This expanded reach helped disseminate Desrosières' ideas on the historical and political dimensions of statistical reasoning beyond France."
+    }
+  ]
+}
