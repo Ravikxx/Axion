@@ -1,10 +1,11 @@
 import { spawn, execSync } from 'child_process';
 import { join } from 'path';
 import { tmpdir } from 'os';
-import { unlinkSync, existsSync, readFileSync } from 'fs';
+import { unlinkSync, existsSync, readFileSync, writeFileSync } from 'fs';
 import { API_KEYS } from '../config.js';
 
 const AUDIO_FILE = join(tmpdir(), 'axion-voice.wav');
+const TTS_FILE   = join(tmpdir(), 'axion-tts.mp3');
 let recordingProcess = null;
 
 function getWindowsAudioDevice() {
@@ -112,4 +113,45 @@ export async function transcribeAudio(filePath) {
   if (!res.ok) throw new Error(`Whisper API error ${res.status}: ${await res.text()}`);
   const data = await res.json();
   return (data.text || '').trim();
+}
+
+export async function speakText(text, { voice = 'alloy', model = 'tts-1' } = {}) {
+  const openaiKey = API_KEYS.openai;
+  if (!openaiKey) throw new Error('Text-to-speech needs an OpenAI key.\nSet one: /api openai <key>');
+
+  const { default: fetch } = await import('node-fetch');
+  const res = await fetch('https://api.openai.com/v1/audio/speech', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${openaiKey}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ model, input: text, voice, response_format: 'mp3' }),
+  });
+
+  if (!res.ok) throw new Error(`TTS API error ${res.status}: ${await res.text()}`);
+
+  const buffer = Buffer.from(await res.arrayBuffer());
+  writeFileSync(TTS_FILE, buffer);
+
+  playAudio(TTS_FILE);
+  return TTS_FILE;
+}
+
+function playAudio(filePath) {
+  const { platform } = process;
+  try {
+    if (platform === 'darwin') {
+      execSync(`afplay "${filePath}"`, { stdio: 'ignore', timeout: 120000 });
+    } else if (platform === 'win32') {
+      execSync(`powershell -c (New-Object Media.SoundPlayer '"${filePath}"').PlaySync()`, { timeout: 120000 });
+    } else {
+      try { execSync(`ffplay -nodisp -autoexit "${filePath}"`, { stdio: 'ignore', timeout: 120000 }); }
+      catch { execSync(`aplay "${filePath}"`, { stdio: 'ignore', timeout: 120000 }); }
+    }
+  } catch (err) {
+    throw new Error(`Could not play audio: ${err.message}\nInstall afplay (macOS), aplay/ffplay (Linux), or use a media player.`);
+  } finally {
+    try { unlinkSync(TTS_FILE); } catch {}
+  }
 }

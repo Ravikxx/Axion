@@ -5,7 +5,7 @@ import { existsSync, readFileSync, unlinkSync, statSync, readdirSync } from 'fs'
 import { join, resolve } from 'path';
 import Spinner from 'ink-spinner';
 import { MessageRow } from './ChatPane.jsx';
-import { InputBox, YesNoPrompt } from './Input.jsx';
+import { InputBox, YesNoPrompt, QuestionPrompt } from './Input.jsx';
 import { SuggestionBox, getTabCompletion } from './Suggestions.jsx';
 import { Agent } from '../agent/agent.js';
 import { MODELS, MODEL_PROVIDERS, API_KEYS, setApiKey, CUSTOM_ENDPOINTS, VISION_MODEL, IMAGE_GEN_MODEL, estimateCost, getContextWindow } from '../config.js';
@@ -14,7 +14,7 @@ import {
   getAdviserModel, saveAdviserModel,
   saveChat, loadChat, listChats, deleteChat,
   autosaveSession, clearLastSession,
-  undoLastBackup, undoStackSize, exportChat,
+  undoLastBackup, undoStackSize, exportChat, exportSession, importSession,
   getMemories, addMemory, removeMemory,
   getSavedVisionModel, saveVisionModel,
   getSavedImageModel, saveImageModel,
@@ -350,6 +350,7 @@ export function App({
   const [onboardingChoice, setOnboardingChoice] = useState(null);
   const [voiceActive, setVoiceActive]         = useState(false);
   const [pendingConfirm, setPendingConfirm] = useState(null);
+  const [pendingQuestion, setPendingQuestion] = useState(null);
   const [inputValue, setInputValue]       = useState('');
   const [tokens, setTokens]               = useState({ total: 0, input: 0, output: 0 });
   const [diffsExpanded, setDiffsExpanded] = useState(false);
@@ -402,6 +403,7 @@ export function App({
 
   const agentRef           = useRef(null);
   const confirmResolverRef = useRef(null);
+  const questionResolverRef = useRef(null);
   const oauthPasteRef      = useRef(null);
   const lastUserMsgRef     = useRef('');
   const activeDiscordMsgRef      = useRef(null);  // Discord msg to reply to after this turn
@@ -747,6 +749,13 @@ export function App({
           confirmResolverRef.current = resolve;
         });
 
+      const askUser = (prompt) =>
+        new Promise((resolve) => {
+          questionResolverRef.current = resolve;
+          setPendingQuestion(prompt);
+          setInputMode('question');
+        });
+
       if (goal) {
         // Goal loop — keep running until GOAL_COMPLETE or max iterations
         goalActiveRef.current = true;
@@ -759,7 +768,7 @@ export function App({
             pushStatic({ type: 'info', content: `── goal iteration ${iter + 1} ──` });
             liveRef.current = []; setLiveMessages([]);
           }
-          await agentRef.current.run(msg, { askConfirm, askPlanConfirm });
+          await agentRef.current.run(msg, { askConfirm, askPlanConfirm, askUser });
 
           // Check last assistant message for completion signal
           const hist = agentRef.current.history;
@@ -780,7 +789,7 @@ export function App({
         goalActiveRef.current = false;
         setGoalIteration(0);
       } else {
-        await agentRef.current.run(message, { askConfirm, askPlanConfirm });
+        await agentRef.current.run(message, { askConfirm, askPlanConfirm, askUser });
       }
 
       // If the agent ended the conversation, wipe history so next message starts fresh
@@ -1486,6 +1495,55 @@ triggers: <comma-separated words that should activate it, include "${skillName.t
           return true;
         }
 
+        case 'export-session': {
+          if (!arg) {
+            pushStatic({ type: 'error', content: 'usage: /export-session <path>   e.g. /export-session ./my-session' });
+            return true;
+          }
+          try {
+            const sessionData = {
+              model: MODEL.current,
+              mode: currentMode,
+              agentHistory: agent.history || [],
+              displayMessages: staticMessages,
+              tokenCount: totalTokens.total,
+              tab: sessionTab || 'code',
+              systemOverride: systemOverride || '',
+            };
+            const outPath = exportSession(arg, sessionData);
+            pushStatic({ type: 'info', content: `✔ Session exported to ${outPath}` });
+          } catch (err) {
+            pushStatic({ type: 'error', content: `Export failed: ${err.message}` });
+          }
+          return true;
+        }
+
+        case 'import-session': {
+          if (!arg) {
+            pushStatic({ type: 'error', content: 'usage: /import-session <path>   e.g. /import-session ./my-session.axion-session.json' });
+            return true;
+          }
+          try {
+            const data = importSession(arg);
+            if (!data) {
+              pushStatic({ type: 'error', content: `Not a valid Axion session file: ${arg}` });
+              return true;
+            }
+            if (data.model) { setModel(data.model); agent.setModel(data.model); saveModel(data.model); }
+            if (data.mode)  { setCurrentMode(data.mode); agent.setMode(data.mode); saveMode(data.mode); }
+            if (data.agentHistory) agent.history = data.agentHistory;
+            if (data.systemOverride) { setSystemOverride(data.systemOverride); agent.setSystemOverride(data.systemOverride); }
+            if (data.tab) { sessionTab = data.tab; }
+            totalTokens = data.tokenCount ? { total: data.tokenCount, input: 0, output: data.tokenCount } : { total: 0, input: 0, output: 0 };
+            const msgs = data.displayMessages || [];
+            setStaticMessages(msgs.map(m => ({ ...m, _key: Math.random() })));
+            pushStatic({ type: 'info', content: `✔ Session imported: ${data.model || model} · ${data.mode || mode} · ${msgs.length} messages` });
+          } catch (err) {
+            pushStatic({ type: 'error', content: `Import failed: ${err.message}` });
+          }
+          return true;
+        }
+
         case 'endpoint': {
           const [first, second, third, fourth] = args;
           if (!first) {
@@ -1699,6 +1757,25 @@ triggers: <comma-separated words that should activate it, include "${skillName.t
             return true;
           }
           setVoiceActive(true);
+          return true;
+        }
+
+        case 'speak': {
+          if (!arg) {
+            pushStatic({ type: 'error', content: 'usage: /speak <text>   e.g. /speak Hello, how can I help you?' });
+            return true;
+          }
+          setThinking(true);
+          setThinkingWord('speaking');
+          try {
+            const { speakText } = await import('../agent/voice.js');
+            await speakText(arg);
+            pushStatic({ type: 'info', content: `🔊 "${arg}"` });
+          } catch (err) {
+            pushStatic({ type: 'error', content: `TTS failed: ${err.message}` });
+          } finally {
+            setThinking(false);
+          }
           return true;
         }
 
@@ -2890,6 +2967,25 @@ triggers: <comma-separated words that should activate it, include "${skillName.t
         return;
       }
 
+      // Question mode — answer a question from the AI
+      if (inputMode === 'question' && pendingQuestion) {
+        const resolve = questionResolverRef.current;
+        questionResolverRef.current = null;
+        setPendingQuestion(null);
+        setInputMode('chat');
+        if (pendingQuestion.type === 'multiple_choice') {
+          const idx = parseInt(input.trim(), 10) - 1;
+          if (idx >= 0 && idx < (pendingQuestion.options || []).length) {
+            resolve(pendingQuestion.options[idx]);
+          } else {
+            resolve(input.trim());
+          }
+        } else {
+          resolve(input.trim());
+        }
+        return;
+      }
+
       // Voice mode: Enter stops recording and transcribes
       if (voiceActive) {
         setVoiceActive(false);
@@ -3216,6 +3312,24 @@ triggers: <comma-separated words that should activate it, include "${skillName.t
         </Box>
       )}
 
+      {/* ── AI question prompt ──────────────────────────────────────── */}
+      {inputMode === 'question' && pendingQuestion && (
+        <Box marginX={2} marginTop={0} marginBottom={0} flexDirection="column" borderStyle="round" borderColor="cyan" paddingX={2} paddingY={1}>
+          <QuestionPrompt
+            type={pendingQuestion.type}
+            question={pendingQuestion.question}
+            options={pendingQuestion.options}
+            onAnswer={(answer) => {
+              const resolve = questionResolverRef.current;
+              questionResolverRef.current = null;
+              setPendingQuestion(null);
+              setInputMode('chat');
+              resolve(answer);
+            }}
+          />
+        </Box>
+      )}
+
       {/* ── Command autocomplete ─────────────────────────────────────── */}
       {!thinking && inputMode === 'chat' && (
         <SuggestionBox inputValue={inputValue} />
@@ -3230,12 +3344,14 @@ triggers: <comma-separated words that should activate it, include "${skillName.t
       {/* ── Input ───────────────────────────────────────────────────── */}
       <InputBox
         onSubmit={handleSubmit}
-        disabled={inputMode !== 'chat' && inputMode !== 'oauth-paste' && inputMode !== 'onboarding' && !voiceActive}
+        disabled={inputMode !== 'chat' && inputMode !== 'oauth-paste' && inputMode !== 'onboarding' && inputMode !== 'question' && !voiceActive}
         voiceActive={voiceActive}
         placeholder={
           voiceActive ? 'press Enter to stop recording…' :
           inputMode === 'oauth-paste' ? 'Paste your token here and press Enter…' :
           inputMode === 'onboarding' && onboardingStep === 'pick' ? 'Type 1–5 and press Enter…' :
+          inputMode === 'question' && pendingQuestion?.type === 'multiple_choice' ? 'Type a number and press Enter…' :
+          inputMode === 'question' ? 'Type your answer and press Enter…' :
           inputMode === 'onboarding' && onboardingStep === 'key' ? 'Paste your API key and press Enter (or Enter to skip)…' :
           goal ? `goal active (iter ${goalIteration}) — send message or /goal to cancel` :
           thinking ? 'type to queue the next message…' :

@@ -506,6 +506,7 @@ export default function App() {
   const [thinkingWord, setThinkingWord]   = useState('');
   const [inputMode, setInputMode]         = useState('chat');
   const [confirmInfo, setConfirmInfo]     = useState(null);
+  const [pendingQuestion, setPendingQuestion] = useState(null);
   const [status, setStatus]               = useState(null);
   const [inputValue, setInputValue]       = useState('');
   const [connected, setConnected]         = useState(false);
@@ -523,6 +524,8 @@ export default function App() {
   const streamBufRef   = useRef('');
   const messagesEndRef = useRef(null);
   const inputRef       = useRef(null);
+  const fileInputRef   = useRef(null);
+  const [attachedFiles, setAttachedFiles] = useState([]); // [{name, path}]
 
   const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
@@ -623,6 +626,11 @@ export default function App() {
           }
           break;
 
+        case 'question':
+          setPendingQuestion(data.prompt);
+          setInputMode('question');
+          break;
+
         case 'confirm_request':
           setInputMode(data.kind === 'tool' ? 'confirm-tool' : 'confirm-plan');
           setConfirmInfo(data.kind === 'tool' ? data.tool : null);
@@ -691,9 +699,17 @@ export default function App() {
     inputRef.current?.focus();
   }, [sendWs]);
 
+  const sendQuestionAnswer = useCallback((answer) => {
+    sendWs({ type: 'question_answer', answer });
+    setInputMode('chat');
+    setPendingQuestion(null);
+    setInputValue('');
+    inputRef.current?.focus();
+  }, [sendWs]);
+
   const handleSubmit = useCallback(() => {
     const val = inputValue.trim();
-    if (!val) return;
+    if (!val && !attachedFiles.length) return;
     if (inputMode === 'confirm-tool' || inputMode === 'confirm-plan') {
       const lower = val.toLowerCase();
       if (lower === 'y' || lower === 'yes') sendConfirm(true);
@@ -701,10 +717,64 @@ export default function App() {
       setInputValue('');
       return;
     }
-    sendWs({ type: 'submit', content: val, tab: activeTab });
+    if (inputMode === 'question') {
+      sendQuestionAnswer(val);
+      return;
+    }
+    const uploadPaths = attachedFiles.map((f) => f.path);
+    sendWs({ type: 'submit', content: val, tab: activeTab, uploadPaths });
     setInputValue('');
+    setAttachedFiles([]);
     if (inputRef.current) inputRef.current.style.height = 'auto';
-  }, [inputValue, inputMode, sendWs, sendConfirm, activeTab]);
+  }, [inputValue, inputMode, sendWs, sendConfirm, sendQuestionAnswer, activeTab, attachedFiles]);
+
+  const handleFileSelect = useCallback((e) => {
+    const files = e.target.files;
+    if (!files?.length) return;
+    for (const file of files) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const base64 = reader.result.split(',')[1];
+        sendWs({ type: 'file_upload', name: file.name, data: base64 });
+      };
+      reader.readAsDataURL(file);
+    }
+    e.target.value = '';
+  }, [sendWs]);
+
+  useEffect(() => {
+    const handler = (e) => {
+      if (e.data?.type === 'file_uploaded') {
+        setAttachedFiles((prev) => [...prev, { name: e.data.name, path: e.data.path }]);
+      }
+    };
+    const ws = wsRef.current;
+    if (!ws) return;
+    ws.addEventListener('message', handler);
+    return () => ws.removeEventListener('message', handler);
+  }, []);
+
+  const handleDrop = useCallback((e) => {
+    e.preventDefault();
+    const files = e.dataTransfer?.files;
+    if (!files?.length) return;
+    for (const file of files) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const base64 = reader.result.split(',')[1];
+        sendWs({ type: 'file_upload', name: file.name, data: base64 });
+      };
+      reader.readAsDataURL(file);
+    }
+  }, [sendWs]);
+
+  const handleDragOver = useCallback((e) => {
+    e.preventDefault();
+  }, []);
+
+  const removeAttachedFile = useCallback((idx) => {
+    setAttachedFiles((prev) => prev.filter((_, i) => i !== idx));
+  }, []);
 
   const handleKeyDown = useCallback((e) => {
     if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSubmit(); }
@@ -741,9 +811,10 @@ export default function App() {
     sendWs({ type: 'submit', content: `/mode ${next}` });
   }, [currentMode, sendWs]);
 
-  const inputDisabled = !connected || (inputMode !== 'chat' && inputMode !== 'confirm-tool' && inputMode !== 'confirm-plan');
+  const inputDisabled = !connected || (inputMode !== 'chat' && inputMode !== 'confirm-tool' && inputMode !== 'confirm-plan' && inputMode !== 'question');
 
   const placeholder = !connected ? 'Connecting…'
+    : inputMode === 'question' ? (pendingQuestion?.type === 'multiple_choice' ? 'Type a number…' : 'Type your answer…')
     : inputMode === 'confirm-tool' || inputMode === 'confirm-plan' ? 'y / n'
     : thinking ? `${thinkingWord}… — ESC to stop, /btw for side question`
     : activeTab === 'code' ? 'Ask Axion to read, write, or run code…'
@@ -848,8 +919,31 @@ export default function App() {
               </div>
             )}
 
+            {/* Question prompt */}
+            {inputMode === 'question' && pendingQuestion && (
+              <div id="question-bar">
+                <div className="question-type">{pendingQuestion.type === 'multiple_choice' ? '☰ Pick one' : pendingQuestion.type === 'confirm' ? '✓ Confirm' : '✎ Question'}</div>
+                <div className="question-text">{pendingQuestion.question}</div>
+                {pendingQuestion.type === 'multiple_choice' && pendingQuestion.options && (
+                  <div className="question-options">
+                    {pendingQuestion.options.map((opt, i) => (
+                      <button key={i} className="question-option" onClick={() => sendQuestionAnswer(opt)}>
+                        {i + 1}. {opt}
+                      </button>
+                    ))}
+                  </div>
+                )}
+                {pendingQuestion.type === 'confirm' && (
+                  <div className="question-confirm-btns">
+                    <button className="confirm-btn confirm-yes" onClick={() => sendQuestionAnswer('yes')}>Yes</button>
+                    <button className="confirm-btn confirm-no"  onClick={() => sendQuestionAnswer('no')}>No</button>
+                  </div>
+                )}
+              </div>
+            )}
+
             {/* Input area */}
-            <div id="input-wrap">
+            <div id="input-wrap" onDrop={handleDrop} onDragOver={handleDragOver}>
               <div className="input-card">
                 <textarea
                   id="chat-input"
@@ -862,6 +956,16 @@ export default function App() {
                   rows={1}
                   autoFocus
                 />
+                {attachedFiles.length > 0 && (
+                  <div className="attach-pills">
+                    {attachedFiles.map((f, i) => (
+                      <span key={i} className="attach-pill">
+                        {f.name}
+                        <button className="attach-remove" onClick={() => removeAttachedFile(i)}>×</button>
+                      </span>
+                    ))}
+                  </div>
+                )}
                 <div className="input-footer">
                   <div className="input-footer-left">
                     <button className={`mode-badge mode-badge-${currentMode}`} onClick={cycleMode} title="Click to cycle: ask → plan → bypass">
@@ -870,6 +974,18 @@ export default function App() {
                     {tokStr && <span className="tok-count">{tokStr} tok</span>}
                   </div>
                   <div className="input-footer-right">
+                    <input
+                      type="file"
+                      ref={fileInputRef}
+                      onChange={handleFileSelect}
+                      style={{ display: 'none' }}
+                      multiple
+                    />
+                    <button
+                      className="attach-btn"
+                      onClick={() => fileInputRef.current?.click()}
+                      title="Attach file"
+                    >📎</button>
                     <select
                       className="model-select"
                       value={status?.model || ''}
@@ -886,14 +1002,14 @@ export default function App() {
                     <button
                       className="send-btn"
                       onClick={handleSubmit}
-                      disabled={!inputValue.trim() || inputDisabled}
+                      disabled={(!inputValue.trim() && !attachedFiles.length) || inputDisabled}
                       title="Send (Enter)"
                     >↑</button>
                   </div>
                 </div>
               </div>
               <div className="hint-text">
-                Shift+Enter for newline · /help for commands · ESC to stop · click mode to cycle
+                Shift+Enter for newline · /help for commands · ESC to stop · click mode to cycle · 📎 attach files
               </div>
             </div>
           </>

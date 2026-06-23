@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { createServer } from 'http';
 import { readFileSync, writeFileSync, unlinkSync, mkdirSync } from 'fs';
-import { join, dirname } from 'path';
+import { join, dirname, basename } from 'path';
 import { homedir } from 'os';
 import { fileURLToPath } from 'url';
 import { WebSocketServer } from 'ws';
@@ -18,6 +18,7 @@ import {
   getMemories, addMemory, removeMemory,
   getSavedImageModel, saveImageModel,
   saveAxionKey,
+  exportSession, importSession,
 } from '../persist.js';
 import { generateImage } from '../agent/image.js';
 import { startScheduler } from '../scheduler.js';
@@ -116,6 +117,7 @@ function createSharedSession(defaultModel, defaultMode) {
   let mode            = defaultMode;
   let thinking        = false;
   let confirmResolver = null;
+  let questionResolver = null;
   let extThinking     = false;
   let thinkingBudget  = 10000;
   let systemOverride  = '';
@@ -131,6 +133,7 @@ function createSharedSession(defaultModel, defaultMode) {
   let messageQueue    = [];
   let cancelFn        = null;
   let streamBuffer    = '';
+  let uploadPaths     = []; // file paths uploaded in current session
 
   const MAX_GOAL_ITERS = 25;
   const THINKING_WORDS = ['baking','brewing','conjuring','weaving','crafting',
@@ -256,9 +259,32 @@ function createSharedSession(defaultModel, defaultMode) {
       if (msg.type === 'confirm') {
         if (confirmResolver) {
           const resolve = confirmResolver;
-          confirmResolver = null;
+      confirmResolver = null;
+      questionResolver = null;
           resolve(msg.answer);
         }
+        return;
+      }
+
+      if (msg.type === 'question_answer') {
+        if (questionResolver) {
+          const resolve = questionResolver;
+          questionResolver = null;
+          resolve(msg.answer);
+        }
+        return;
+      }
+
+      if (msg.type === 'file_upload') {
+        const fileName = msg.name || 'upload';
+        const fileData = Buffer.from(msg.data, 'base64');
+        const uploadDir = join(homedir(), '.axion', 'uploads');
+        mkdirSync(uploadDir, { recursive: true });
+        const safeName = fileName.replace(/[^a-zA-Z0-9._-]/g, '_');
+        const filePath = join(uploadDir, `${Date.now()}-${safeName}`);
+        writeFileSync(filePath, fileData);
+        uploadPaths.push(filePath);
+        sendTo(ws, { type: 'file_uploaded', name: fileName, path: filePath });
         return;
       }
 
@@ -279,7 +305,13 @@ function createSharedSession(defaultModel, defaultMode) {
           return;
         }
 
-        await processMessage(input, ws._clientType || 'web', msg.tab || 'code');
+        // Prepend file references to the message
+        let uploadMsg = input;
+        if (msg.uploadPaths?.length) {
+          const refs = msg.uploadPaths.map((p) => `[file] ${basename(p)} (${p})`).join('\n');
+          uploadMsg = `${refs}\n\n${input}`;
+        }
+        await processMessage(uploadMsg, ws._clientType || 'web', msg.tab || 'code');
       }
     });
 
@@ -301,13 +333,18 @@ function createSharedSession(defaultModel, defaultMode) {
       broadcast({ type: 'confirm_request', kind: 'plan' });
     });
 
+    const askUser = (prompt) => new Promise((resolve) => {
+      questionResolver = resolve;
+      broadcast({ type: 'question', prompt });
+    });
+
     if (goal) {
       goalActive = true;
       for (let iter = 0; iter < MAX_GOAL_ITERS && goalActive; iter++) {
         broadcastStatus();
         const msg = iter === 0 ? message : 'Continue working on the goal.';
         if (iter > 0) pushDisplay({ type: 'info', content: `── goal iteration ${iter + 1} ──` });
-        await agent.run(msg, { askConfirm, askPlanConfirm });
+        await agent.run(msg, { askConfirm, askPlanConfirm, askUser });
         const hist = agent.history;
         const last = [...hist].reverse().find((m) => m.role === 'assistant');
         const lastText = typeof last?.content === 'string' ? last.content
@@ -321,7 +358,7 @@ function createSharedSession(defaultModel, defaultMode) {
       if (goalActive) pushDisplay({ type: 'info', content: `Goal reached max iterations (${MAX_GOAL_ITERS}).` });
       goalActive = false;
     } else {
-      await agent.run(message, { askConfirm, askPlanConfirm });
+      await agent.run(message, { askConfirm, askPlanConfirm, askUser });
     }
   }
 
@@ -408,6 +445,7 @@ function createSharedSession(defaultModel, defaultMode) {
         tokens = { total: 0, input: 0, output: 0 };
         lastUserMsg = ''; displayMessages = [];
         currentChatName = null; chatAutoNamed = false; sessionTab = null; messageQueue = [];
+        uploadPaths = [];
         broadcast({ type: 'clear' });
         broadcast({ type: 'queue_update', count: 0 });
         broadcastStatus();
@@ -496,6 +534,35 @@ function createSharedSession(defaultModel, defaultMode) {
         const r = undoLastBackup();
         if (r) info(`↩ Restored: ${r}  (${undoStackSize()} more available)`);
         else info('Nothing to undo.');
+        break;
+      }
+
+      case 'export-session': {
+        if (!arg) { error('usage: /export-session <path>'); break; }
+        try {
+          const sessionData = { model, mode, agentHistory: agent.history || [], displayMessages, tokenCount: tokens.total, tab: sessionTab || 'code', systemOverride };
+          const outPath = exportSession(arg, sessionData);
+          info(`✔ Session exported to ${outPath}`);
+        } catch (err) { error(`Export failed: ${err.message}`); }
+        break;
+      }
+
+      case 'import-session': {
+        if (!arg) { error('usage: /import-session <path>'); break; }
+        try {
+          const data = importSession(arg);
+          if (!data) { error(`Not a valid Axion session file: ${arg}`); break; }
+          if (data.model) { model = data.model; agent.setModel(data.model); saveModel(data.model); }
+          if (data.mode)  { mode = data.mode; agent.setMode(data.mode); saveMode(data.mode); }
+          if (data.agentHistory) agent.history = data.agentHistory;
+          if (data.systemOverride) { systemOverride = data.systemOverride; agent.setSystemOverride(data.systemOverride); }
+          if (data.tab) sessionTab = data.tab;
+          tokens = data.tokenCount ? { total: data.tokenCount, input: 0, output: data.tokenCount } : { total: 0, input: 0, output: 0 };
+          displayMessages = data.displayMessages || [];
+          broadcast({ type: 'resume', model, mode, messages: displayMessages, tab: sessionTab });
+          broadcastStatus();
+          info(`✔ Session imported: ${data.model || model} · ${data.mode || mode} · ${displayMessages.length} messages`);
+        } catch (err) { error(`Import failed: ${err.message}`); }
         break;
       }
 

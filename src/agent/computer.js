@@ -560,6 +560,7 @@ for ($i = 0; $i -lt ${count}; $i++) {
 
   } else if (isWayland()) {
     // Wayland: ydotool (requires ydotoold daemon running)
+    if (!which('ydotool')) throw new Error('ydotool not found — run: sudo apt install ydotool  (Wayland input tool)');
     // Button flags: 0x40000000 = click, low bits = button ID (0=left,1=right,2=middle)
     const btnId = button === 'right' ? 1 : button === 'middle' ? 2 : 0;
     const btn = `0x${(0x40000000 | btnId).toString(16)}`;
@@ -594,13 +595,15 @@ Start-Sleep -Milliseconds 150
     execSync(`printf '%s' '${escaped}' | pbcopy && osascript -e 'tell application "System Events" to keystroke "v" using command down'`, { timeout: 5000 });
 
   } else if (isWayland()) {
-    // Wayland: wtype is the lightest option; ydotool type works too; wl-copy fallback
+    // Wayland: wtype is the lightest option; ydotool type works too
     const esc = text.replace(/\\/g, '\\\\').replace(/'/g, "'\\''");
     if (which('wtype')) {
       execSync(`wtype -- '${esc}'`, { timeout: 10000 });
-    } else {
+    } else if (which('ydotool')) {
       const esc2 = text.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
       execSync(`ydotool type --key-delay 0 -- "${esc2}"`, { timeout: 10000 });
+    } else {
+      throw new Error('No Wayland keyboard tool found. Install wtype or ydotool:\n  sudo apt install wtype    (recommended)\n  sudo apt install ydotool  (requires ydotoold daemon)');
     }
 
   } else {
@@ -673,7 +676,7 @@ Add-Type -AssemblyName System.Windows.Forms
     try { execSync(`osascript "${tmp}"`, { timeout: 5000 }); } finally { try { unlinkSync(tmp); } catch {} }
 
   } else if (isWayland()) {
-    // ydotool uses the same XKB key names as xdotool
+    if (!which('ydotool')) throw new Error('ydotool not found — run: sudo apt install ydotool  (Wayland input tool, requires ydotoold daemon)');
     execSync(`ydotool key ${sendKeysToX11(keys)}`, { timeout: 5000 });
 
   } else {
@@ -752,6 +755,7 @@ Add-Type -TypeDefinition @"${AXION_INPUT_CS}"@
     }
 
   } else if (isWayland()) {
+    if (!which('ydotool')) throw new Error('ydotool not found — run: sudo apt install ydotool  (Wayland input tool)');
     execSync(`ydotool mousemove --absolute -x ${xi} -y ${yi}`, { timeout: 3000 });
     // ydotool scroll --axis: 0=vertical, value: negative=up, positive=down (120 units per notch)
     const delta = direction === 'up' ? -(amount * 120) : amount * 120;

@@ -1,5 +1,5 @@
 import minimist from 'minimist';
-import { createInterface } from 'readline/promises';
+import { emitKeypressEvents } from 'readline';
 import { readFileSync, existsSync } from 'fs';
 import { resolve, dirname, join } from 'path';
 import { homedir } from 'os';
@@ -42,11 +42,10 @@ Options:
   -v, --version       Print version and exit
   -h, --help          Show this help
 
-Examples:
-  axion
-  axion "explain this codebase"
-  axion -m fable -M auto "refactor src/agent/tools.js"
-  axion --doctor
+Pipe mode:
+  echo "refactor this" | axion          Read input from stdin
+  cat file.js | axion -M auto           Pipe file content as prompt
+  axion -m claude < prompt.txt          Run with file redirect
 
 Shell completions:
   bash  source /path/to/axion/completions/axion.bash
@@ -76,30 +75,82 @@ async function promptForDirectoryTrust() {
     process.exit(1);
   }
 
-  const rl = createInterface({ input: process.stdin, output: process.stdout });
-  try {
-    while (true) {
-      console.log(`
+  const options = ['Yes, continue', 'No, quit'];
+  let selected = 0;
+  let renderedLines = 0;
+
+  function renderPrompt() {
+    if (renderedLines) {
+      process.stdout.write(`\x1b[${renderedLines}A\x1b[J`);
+    }
+
+    const body = `
 > You are in ${cwd}
 
   Do you trust the contents of this directory? Working with untrusted contents comes with higher risk of
   prompt injection. Trusting the directory allows project-local config, hooks, and exec policies to load.
 
-› 1. Yes, continue
-  2. No, quit
-`);
-      const answer = (await rl.question('  Press Enter to continue ')).trim().toLowerCase();
-      if (answer === '' || answer === '1' || answer === 'y' || answer === 'yes') {
-        trustDirectory(cwd);
-        return;
+${options.map((option, index) => `${index === selected ? '›' : ' '} ${option}`).join('\n')}
+
+  Use ↑/↓ and Enter to select
+`;
+
+    process.stdout.write(body);
+    renderedLines = body.split('\n').length - 1;
+  }
+
+  emitKeypressEvents(process.stdin);
+  const wasRaw = process.stdin.isRaw;
+  process.stdin.setRawMode(true);
+  process.stdin.resume();
+  renderPrompt();
+
+  // Persistent listener + queue so rapid key bursts (e.g. Down+Enter from a PTY)
+  // are never dropped between loop iterations.
+  const keyQueue = [];
+  let keyWaiter = null;
+  function onKey(_str, key) {
+    if (keyWaiter) {
+      const resolve = keyWaiter;
+      keyWaiter = null;
+      resolve(key);
+    } else {
+      keyQueue.push(key);
+    }
+  }
+  function nextKey() {
+    if (keyQueue.length) return Promise.resolve(keyQueue.shift());
+    return new Promise((r) => { keyWaiter = r; });
+  }
+
+  process.stdin.on('keypress', onKey);
+
+  try {
+    while (true) {
+      const key = await nextKey();
+
+      if (key?.ctrl && key?.name === 'c') {
+        process.stdout.write('\n');
+        process.exit(130);
       }
-      if (answer === '2' || answer === 'n' || answer === 'no' || answer === 'q' || answer === 'quit') {
+      if (key?.name === 'up' || key?.name === 'k') {
+        selected = selected === 0 ? options.length - 1 : selected - 1;
+        renderPrompt();
+      } else if (key?.name === 'down' || key?.name === 'j') {
+        selected = (selected + 1) % options.length;
+        renderPrompt();
+      } else if (key?.name === 'return' || key?.name === 'enter') {
+        process.stdout.write('\n');
+        if (selected === 0) {
+          trustDirectory(cwd);
+          return;
+        }
         process.exit(0);
       }
-      console.log('  Enter 1 to continue, or 2 to quit.');
     }
   } finally {
-    rl.close();
+    process.stdin.off('keypress', onKey);
+    process.stdin.setRawMode(Boolean(wasRaw));
   }
 }
 
@@ -115,7 +166,23 @@ const { MCP } = await import('./agent/mcp.js');
 const { PLUGINS } = await import('./agent/plugins.js');
 
 // Positional args become the initial prompt sent on startup
-const initialPrompt = argv._.join(' ').trim();
+let initialPrompt = argv._.join(' ').trim();
+
+// Pipe mode: when stdin is not a TTY, read piped input and run headlessly
+const isPipe = !process.stdin.isTTY;
+
+if (isPipe) {
+  try {
+    const chunks = [];
+    for await (const chunk of process.stdin) chunks.push(chunk);
+    const pipeInput = Buffer.concat(chunks).toString('utf8').trim();
+    if (pipeInput) {
+      initialPrompt = initialPrompt
+        ? `${initialPrompt}\n\n${pipeInput}`
+        : pipeInput;
+    }
+  } catch {} // swallow pipe errors silently
+}
 
 // --continue restores the most recent autosaved session (null if none exists)
 const resumeSession = argv['continue'] ? loadLastSession() : null;
@@ -172,6 +239,30 @@ const modeArg  = rawMode === 'bypass' ? 'auto' : rawMode;
 if (!['ask', 'plan', 'auto'].includes(modeArg)) {
   console.error(`Invalid mode: ${rawMode}. Must be: ask, plan, auto (or bypass)`);
   process.exit(1);
+}
+
+// ── Pipe mode: run headlessly and print response to stdout ──────────────────
+
+if (isPipe && initialPrompt) {
+  const { Agent } = await import('./agent/agent.js');
+  const agent = new Agent({ modelAlias: modelArg, mode: modeArg });
+  // Let tool results be approved automatically in pipe mode
+  const askConfirm = () => Promise.resolve(true);
+  console.error(`\n  ◈ Axion  ·  ${modelArg}  ·  ${modeArg}\n`);
+  try {
+    const result = await agent.run(initialPrompt, { askConfirm });
+    const lastMsg = [...agent.history].reverse().find((m) => m.role === 'assistant');
+    if (lastMsg) {
+      const text = typeof lastMsg.content === 'string'
+        ? lastMsg.content
+        : lastMsg.content?.find?.((c) => c.type === 'text')?.text || '';
+      process.stdout.write(text + '\n');
+    }
+  } catch (err) {
+    console.error(`\n✖ ${err.message}`);
+    process.exit(1);
+  }
+  process.exit(0);
 }
 
 // Seed image model from saved config

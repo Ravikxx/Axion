@@ -232,3 +232,87 @@ export function YesNoPrompt({ onAnswer }) {
   }, { isActive });
   return null;
 }
+
+let _questionResolve = null;
+
+export function QuestionPrompt({ type, question, options, onAnswer }) {
+  const [value, setValue] = useState('');
+  const [submitted, setSubmitted] = useState(false);
+
+  const isActive = process.stdin.isTTY !== false;
+  useInput((input, key) => {
+    if (submitted) return;
+
+    if (type === 'confirm') {
+      const ch = input.toLowerCase();
+      if (ch === 'y' || key.return) { setSubmitted(true); onAnswer(true); }
+      else if (ch === 'n' || key.escape) { setSubmitted(true); onAnswer(false); }
+      return;
+    }
+
+    if (type === 'multiple_choice') {
+      if (key.return) {
+        if (value) {
+          const idx = parseInt(value, 10) - 1;
+          if (idx >= 0 && idx < (options || []).length) {
+            setSubmitted(true);
+            onAnswer(options[idx]);
+            return;
+          }
+        }
+        return;
+      }
+      if (key.escape) { setSubmitted(true); onAnswer(''); return; }
+      if (key.backspace || key.delete) { setValue((v) => v.slice(0, -1)); return; }
+      if (!key.ctrl && !key.meta && input) { setValue((v) => v + input); }
+      return;
+    }
+
+    if (type === 'question') {
+      if (key.return) {
+        const trimmed = value.trim();
+        if (trimmed) { setSubmitted(true); onAnswer(trimmed); }
+        return;
+      }
+      if (key.escape) { setSubmitted(true); onAnswer(''); return; }
+      if (key.backspace || key.delete) { setValue((v) => v.slice(0, -1)); return; }
+      if (!key.ctrl && !key.meta && input) { setValue((v) => v + input); }
+    }
+  }, { isActive });
+
+  if (type === 'confirm') {
+    return (
+      <Box flexDirection="column" marginX={1} marginY={0}>
+        <Text color="cyan" bold>? {question}</Text>
+        <Text color="gray">  (y/n)</Text>
+      </Box>
+    );
+  }
+
+  if (type === 'multiple_choice') {
+    return (
+      <Box flexDirection="column" marginX={1} marginY={0}>
+        <Text color="cyan" bold>? {question}</Text>
+        {(options || []).map((opt, i) => (
+          <Text key={i} color="white">  {i + 1}. {opt}</Text>
+        ))}
+        <Box>
+          <Text color="gray">  {'›'} </Text>
+          <Text color="white">{value}</Text>
+          {!submitted && <Text inverse color="white">{value.length === 0 ? '1' : ' '}</Text>}
+        </Box>
+      </Box>
+    );
+  }
+
+  return (
+    <Box flexDirection="column" marginX={1} marginY={0}>
+      <Text color="cyan" bold>? {question}</Text>
+      <Box>
+        <Text color="gray">  {'›'} </Text>
+        <Text color="white">{value}</Text>
+        {!submitted && <Text inverse color="white">{value.length === 0 ? ' ' : ' '}</Text>}
+      </Box>
+    </Box>
+  );
+}

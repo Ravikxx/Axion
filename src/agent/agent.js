@@ -387,7 +387,7 @@ CRITICAL RULES — follow these exactly:
 
   // ── Main run ─────────────────────────────────────────────────────────────
 
-  async run(userMessage, { askConfirm, askPlanConfirm } = {}) {
+  async run(userMessage, { askConfirm, askPlanConfirm, askUser } = {}) {
     this.cancelled = false;
     this._activateSkills(userMessage);
     // Set think reminder if the user's message asks for reasoning
@@ -405,7 +405,7 @@ CRITICAL RULES — follow these exactly:
       }
     }
 
-    await this._agentLoop(askConfirm);
+    await this._agentLoop(askConfirm, askUser);
   }
 
   // ── Agent loop ────────────────────────────────────────────────────────────
@@ -416,7 +416,7 @@ CRITICAL RULES — follow these exactly:
     'web_search', 'fetch_url', 'screenshot', 'screen_size',
   ]);
 
-  async _agentLoop(askConfirm) {
+  async _agentLoop(askConfirm, askUser) {
     const MAX = 20;
     let iterations = 0;
     let lastBatchSig = null;
@@ -474,7 +474,7 @@ CRITICAL RULES — follow these exactly:
               ? MCP.callTool(tc.name, tc.input)
               : PLUGINS.isPluginTool(tc.name)
                 ? PLUGINS.callTool(tc.name, tc.input)
-                : executeTool(tc.name, tc.input, { agentLabel: this.label, onNotify: this.onNotify })
+                : executeTool(tc.name, tc.input, { agentLabel: this.label, onNotify: this.onNotify, askUser })
           )
         );
         for (let i = 0; i < toolCalls.length; i++) {
@@ -515,7 +515,7 @@ CRITICAL RULES — follow these exactly:
           } else if (PLUGINS.isPluginTool(tc.name)) {
             result = await PLUGINS.callTool(tc.name, tc.input);
           } else {
-            result = await executeTool(tc.name, tc.input, { agentLabel: this.label, onNotify: this.onNotify });
+            result = await executeTool(tc.name, tc.input, { agentLabel: this.label, onNotify: this.onNotify, askUser });
           }
           toolResults.push({ id: tc.id, name: tc.name, ...result });
           this.onToolResult({ id: tc.id, name: tc.name, ...result });
@@ -741,6 +741,7 @@ CRITICAL RULES — follow these exactly:
           await sub.run(task, {
             askConfirm:     () => Promise.resolve(true),
             askPlanConfirm: () => Promise.resolve(true),
+            askUser:        () => Promise.resolve('User interaction not available in sub-agent. Continue without user input.'),
           });
           // Drain any messages the sub-agent sent to main
           const mainMsgs = BUS.readMain();

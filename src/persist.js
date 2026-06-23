@@ -1,14 +1,17 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync, unlinkSync } from 'fs';
 import { join, resolve } from 'path';
 import { homedir } from 'os';
+import { encryptJSON, decryptJSON } from './utils/crypto.js';
 
 const DIR  = join(homedir(), '.axion');
 const FILE = join(DIR, 'config.json');
+const SECRET_KEYS = ['apiKeys', 'axionKey', 'discordToken'];
 
 function load() {
   try {
     if (!existsSync(FILE)) return {};
-    return JSON.parse(readFileSync(FILE, 'utf8'));
+    const raw = JSON.parse(readFileSync(FILE, 'utf8'));
+    return decryptJSON(raw, SECRET_KEYS);
   } catch {
     return {};
   }
@@ -17,7 +20,8 @@ function load() {
 function save(data) {
   try {
     if (!existsSync(DIR)) mkdirSync(DIR, { recursive: true });
-    writeFileSync(FILE, JSON.stringify(data, null, 2), 'utf8');
+    const encrypted = encryptJSON(data, SECRET_KEYS);
+    writeFileSync(FILE, JSON.stringify(encrypted, null, 2), 'utf8');
   } catch {}
 }
 
@@ -462,6 +466,21 @@ export function deleteChat(name) {
   if (!existsSync(file)) return false;
   unlinkSync(file);
   return true;
+}
+
+export function exportSession(filePath, sessionData) {
+  const outPath = filePath.endsWith('.axion-session.json') ? filePath : `${filePath}.axion-session.json`;
+  writeFileSync(outPath, JSON.stringify({ ...sessionData, __axion: true, exportedAt: new Date().toISOString() }, null, 2), 'utf8');
+  return outPath;
+}
+
+export function importSession(filePath) {
+  if (!existsSync(filePath)) return null;
+  try {
+    const data = JSON.parse(readFileSync(filePath, 'utf8'));
+    if (!data.__axion) return null;
+    return data;
+  } catch { return null; }
 }
 
 export function exportChat(filename, messages) {

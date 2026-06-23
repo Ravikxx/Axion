@@ -1,15 +1,16 @@
-import { getOAuthToken } from '../oauth/oauth.js';
+import { getValidAccessToken } from '../oauth/oauth.js';
 
-function token() {
-  const t = getOAuthToken('google');
+async function token() {
+  const t = await getValidAccessToken('google');
   if (!t) throw new Error('Google not connected — run /oauth connect google');
-  return t.accessToken;
+  return t;
 }
 
 async function gFetch(url, opts = {}) {
+  const tok = await token();
   const res = await fetch(url, {
     ...opts,
-    headers: { Authorization: `Bearer ${token()}`, 'Content-Type': 'application/json', ...(opts.headers || {}) },
+    headers: { Authorization: `Bearer ${tok}`, 'Content-Type': 'application/json', ...(opts.headers || {}) },
   });
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
@@ -41,15 +42,17 @@ export async function driveRead({ fileId, fileName } = {}) {
 
   // Google Docs → export as plain text
   if (meta.mimeType === 'application/vnd.google-apps.document') {
-    const res = await fetch(`https://www.googleapis.com/drive/v3/files/${fileId}/export?mimeType=text/plain`, {
-      headers: { Authorization: `Bearer ${token()}` },
+    const tok  = await token();
+    const res  = await fetch(`https://www.googleapis.com/drive/v3/files/${fileId}/export?mimeType=text/plain`, {
+      headers: { Authorization: `Bearer ${tok}` },
     });
     return { name: meta.name, content: await res.text() };
   }
 
   // Other files — download raw (limit to text-ish)
-  const res = await fetch(`https://www.googleapis.com/drive/v3/files/${fileId}?alt=media`, {
-    headers: { Authorization: `Bearer ${token()}` },
+  const tok  = await token();
+  const res  = await fetch(`https://www.googleapis.com/drive/v3/files/${fileId}?alt=media`, {
+    headers: { Authorization: `Bearer ${tok}` },
   });
   const text = await res.text();
   return { name: meta.name, content: text.slice(0, 8000) };
@@ -91,8 +94,9 @@ export async function calendarCreateEvent({ title, start, end, description = '',
 }
 
 export async function calendarDeleteEvent({ eventId, calendarId = 'primary' } = {}) {
+  const tok = await token();
   const res = await fetch(`https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calendarId)}/events/${eventId}`, {
-    method: 'DELETE', headers: { Authorization: `Bearer ${token()}` },
+    method: 'DELETE', headers: { Authorization: `Bearer ${tok}` },
   });
   if (!res.ok && res.status !== 204) throw new Error(`Failed to delete event: ${res.status}`);
   return { deleted: true, eventId };

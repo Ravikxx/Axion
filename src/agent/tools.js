@@ -403,6 +403,54 @@ export const TOOL_DEFINITIONS = [
       required: ['reason'],
     },
   },
+  {
+    name: 'ask_question',
+    description: 'Ask the user a free-form question and wait for their text response. Use this when you need clarification, preferences, or any additional information from the user.',
+    input_schema: {
+      type: 'object',
+      properties: {
+        question:   { type: 'string', description: 'The question to ask the user.' },
+        placeholder: { type: 'string', description: 'Optional placeholder text shown inside the input.' },
+      },
+      required: ['question'],
+    },
+  },
+  {
+    name: 'ask_multiple_choice',
+    description: 'Ask the user a multiple-choice question and wait for their selection. Use this when the user should pick from a predefined list of options.',
+    input_schema: {
+      type: 'object',
+      properties: {
+        question:    { type: 'string', description: 'The question to ask the user.' },
+        options:     { type: 'array', items: { type: 'string' }, description: 'List of choices the user can pick from.' },
+        allow_custom: { type: 'boolean', description: 'Whether to allow a custom answer not in the list (default: false).' },
+      },
+      required: ['question', 'options'],
+    },
+  },
+  {
+    name: 'ask_confirm',
+    description: 'Ask the user a yes/no question and wait for their response. Use this when you need explicit user approval before proceeding.',
+    input_schema: {
+      type: 'object',
+      properties: {
+        question: { type: 'string', description: 'The yes/no question to ask the user.' },
+      },
+      required: ['question'],
+    },
+  },
+  {
+    name: 'speak',
+    description: 'Speak text aloud using text-to-speech (OpenAI TTS). Use this to communicate information audibly to the user, such as alerts, confirmations, or when reading long text would be helpful.',
+    input_schema: {
+      type: 'object',
+      properties: {
+        text: { type: 'string', description: 'The text to speak aloud.' },
+        voice: { type: 'string', enum: ['alloy', 'echo', 'fable', 'onyx', 'nova', 'shimmer'], description: 'Voice to use (default: alloy).' },
+      },
+      required: ['text'],
+    },
+  },
 ];
 
 export const TOOL_DEFINITIONS_OPENAI = TOOL_DEFINITIONS.map((t) => ({
@@ -493,7 +541,7 @@ export const COMPUTER_TOOL_DEFINITIONS = [
   },
   {
     name: 'find_text',
-    description: 'Use Windows OCR to locate text on screen and return its pixel coordinates. More reliable than vision-based click_on for clearly visible text labels, buttons, or menu items.',
+    description: 'Locate text on screen via OCR and return its pixel coordinates. Uses Windows OCR on Windows, Tesseract on macOS/Linux. More reliable than vision-based click_on for clearly visible text labels, buttons, or menu items.',
     input_schema: {
       type: 'object',
       properties: {
@@ -514,7 +562,7 @@ export const COMPUTER_TOOL_DEFINITIONS_OPENAI = COMPUTER_TOOL_DEFINITIONS.map((t
 
 const MACRO_RECORDABLE = new Set(['click_on', 'click_at', 'type_text', 'press_key', 'scroll', 'find_text']);
 
-export async function executeTool(name, input, { agentLabel = 'main', onNotify = () => {} } = {}) {
+export async function executeTool(name, input, { agentLabel = 'main', onNotify = () => {}, askUser = null } = {}) {
   // Log to active macro recording before executing
   if (MACRO_STATE.recording && MACRO_RECORDABLE.has(name)) {
     MACRO_STATE.steps.push({ name, input: { ...input } });
@@ -696,6 +744,32 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
         if (start > all.length) return { success: false, output: `start ${start} is past end of file (${all.length} lines)` };
         const numbered = all.slice(start - 1, end).map((l, i) => `${start + i}\t${l}`).join('\n');
         return { success: true, output: numbered || '(no lines in range)' };
+      }
+
+      case 'ask_question': {
+        if (!askUser) return { success: false, output: 'User interaction is not available in this context.' };
+        const qAns = await askUser({ type: 'question', question: input.question, placeholder: input.placeholder });
+        return { success: true, output: qAns };
+      }
+      case 'ask_multiple_choice': {
+        if (!askUser) return { success: false, output: 'User interaction is not available in this context.' };
+        const mcAns = await askUser({ type: 'multiple_choice', question: input.question, options: input.options, allow_custom: input.allow_custom });
+        return { success: true, output: mcAns };
+      }
+      case 'ask_confirm': {
+        if (!askUser) return { success: false, output: 'User interaction is not available in this context.' };
+        const cAns = await askUser({ type: 'confirm', question: input.question });
+        return { success: true, output: cAns ? 'yes' : 'no' };
+      }
+
+      case 'speak': {
+        const { speakText } = await import('./voice.js');
+        try {
+          await speakText(input.text, { voice: input.voice || 'alloy' });
+          return { success: true, output: `Spoken: "${input.text}"` };
+        } catch (err) {
+          return { success: false, output: `TTS failed: ${err.message}` };
+        }
       }
 
       case 'change_working_dir': {
