@@ -218,6 +218,8 @@
       font-size: 11px; padding: 2px 6px; border-radius: 5px; transition: color .12s, background .12s;
     }
     .code-copy:hover { color: var(--text); background: var(--surface3); }
+    .chart-wrap { margin: 12px 0; max-width: 480px; background: var(--surface); border-radius: 8px; padding: 16px; }
+    .chart-wrap canvas { width: 100% !important; height: auto !important; }
     .code-block pre { margin: 0; padding: 12px 14px; overflow-x: auto; }
     .code-block code {
       font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
@@ -385,6 +387,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
   <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
   <link rel="manifest" href="/manifest.json">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js" defer></script>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="theme-color" content="#e8602c">
@@ -651,11 +654,20 @@
     // fenced code blocks → sentinel placeholder on its own line
     let text = src.replace(/```(\w*)\n?([\s\S]*?)```/g, (_, lang, code) => {
       const i = blocks.length
-      const safe = escHtml(code.replace(/\n$/, ''))
-      blocks.push(
-        `<div class="code-block"><div class="code-head"><span>${escHtml(lang || 'code')}</span>` +
-        `<button class="code-copy" onclick="copyCode(this)">Copy</button></div>` +
-        `<pre><code>${safe}</code></pre></div>`)
+      const cleaned = code.replace(/\n$/, '')
+      if (lang === 'chart') {
+        try {
+          const cfg = JSON.parse(cleaned)
+          blocks.push(`<div class="chart-wrap"><canvas data-chart='${escHtml(JSON.stringify(cfg))}'></canvas></div>`)
+        } catch {
+          blocks.push(`<div class="code-block"><div class="code-head"><span>chart (invalid)</span></div><pre><code>${escHtml(cleaned)}</code></pre></div>`)
+        }
+      } else {
+        blocks.push(
+          `<div class="code-block"><div class="code-head"><span>${escHtml(lang || 'code')}</span>` +
+          `<button class="code-copy" onclick="copyCode(this)">Copy</button></div>` +
+          `<pre><code>${escHtml(cleaned)}</code></pre></div>`)
+      }
       return `\n${SENT}${i}${SENT}\n`
     })
 
@@ -713,6 +725,40 @@
     })
   }
 
+  let chartInstances = []
+  function initCharts() {
+    chartInstances.forEach(c => c.destroy())
+    chartInstances = []
+    document.querySelectorAll('.chart-wrap canvas[data-chart]').forEach(el => {
+      try {
+        const cfg = JSON.parse(el.dataset.chart)
+        const colors = ['#e8602c','#34d399','#60a5fa','#f59e0b','#a78bfa','#f472b6','#14b8a6','#f97316']
+        const defaults = {
+          type: 'bar', data: { labels: [], datasets: [{ data: [] }] },
+          options: {
+            responsive: true, maintainAspectRatio: true,
+            plugins: { legend: { labels: { color: '#9899a8', font: { size: 11 } } } },
+            scales: cfg.type !== 'pie' && cfg.type !== 'doughnut' ? {
+              x: { ticks: { color: '#6b6d80', font: { size: 10 } }, grid: { color: '#23242f' } },
+              y: { ticks: { color: '#6b6d80', font: { size: 10 } }, grid: { color: '#23242f' } }
+            } : undefined
+          }
+        }
+        const merged = deepMerge(defaults, cfg)
+        if (!merged.data.datasets[0].backgroundColor) {
+          merged.data.datasets.forEach((ds, i) => { ds.backgroundColor = colors[i % colors.length] })
+        }
+        const chart = new Chart(el.getContext('2d'), merged)
+        chartInstances.push(chart)
+      } catch {}
+    })
+  }
+  function deepMerge(a, b) {
+    const o = JSON.parse(JSON.stringify(a))
+    for (const k in b) { if (b[k] && typeof b[k] === 'object' && !Array.isArray(b[k])) { o[k] = deepMerge(o[k] || {}, b[k]) } else { o[k] = b[k] } }
+    return o
+  }
+
   const AVATAR = '<img src="/assets/logo.png" alt="">'
 
   function renderMessages() {
@@ -758,6 +804,7 @@
       wrap.appendChild(div)
     })
     container.scrollTop = container.scrollHeight
+    setTimeout(initCharts, 50)
   }
 
   function useSuggestion(el) {
@@ -917,7 +964,7 @@
     }
 
     live.classList.remove('streaming')
-    if (!failed) live.innerHTML = full ? renderMarkdown(full) : '<p style="color:var(--muted)">(stopped)</p>'
+    if (!failed) { live.innerHTML = full ? renderMarkdown(full) : '<p style="color:var(--muted)">(stopped)</p>'; initCharts() }
 
     if (!failed && full) {
       c.messages.push({ role: 'assistant', content: full })

@@ -61,7 +61,7 @@ Open-source AI coding agent ecosystem by Axion Labs.
 </a>
 
 <div class="nav-links">
-  <a href="https://github.com/Ravikxx/axion">GitHub Repository</a>
+  <a href="https://github.com/AxionLabsAI/axion">GitHub Repository</a>
   <a href="/announcements">Announcements</a>
   <a href="/lumen-12">Lumen 1.2 Release</a>
   <a href="/privacy">Privacy Policy</a>

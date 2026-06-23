@@ -38,8 +38,8 @@ Axion connects to AI providers (Anthropic, OpenAI, Google Gemini, etc.) using AP
 
 - You can disconnect any service at any time with `/oauth revoke <service>`
 - You can delete your local token file at `~/.axion/oauth.json`
-- Axion is open source — you can audit exactly what it does at [github.com/Ravikxx/axion](https://github.com/Ravikxx/axion)
+- Axion is open source — you can audit exactly what it does at [github.com/AxionLabsAI/axion](https://github.com/AxionLabsAI/axion)
 
 ## Contact
 
-For questions, open an issue at [github.com/Ravikxx/axion/issues](https://github.com/Ravikxx/axion/issues) or visit [axion.amplifiedsmp.org](https://axion.amplifiedsmp.org).
+For questions, open an issue at [github.com/AxionLabsAI/axion/issues](https://github.com/AxionLabsAI/axion/issues) or visit [axion.amplifiedsmp.org](https://axion.amplifiedsmp.org).

@@ -46,7 +46,13 @@ export function parseBlocks(text) {
         codeLines.push(lines[i]);
         i++;
       }
-      blocks.push({ type: 'code-block', lang, text: codeLines.join('\n') });
+      const text = codeLines.join('\n');
+      if (lang === 'chart') {
+        try { blocks.push({ type: 'chart', config: JSON.parse(text) }) }
+        catch { blocks.push({ type: 'code-block', lang, text }) }
+      } else {
+        blocks.push({ type: 'code-block', lang, text });
+      }
       i++;
       continue;
     }
@@ -198,6 +204,45 @@ function RichLine({ text }) {
   return <Text><InlineTokens tokens={parseInline(text)} /></Text>;
 }
 
+function ChartBlock({ config }) {
+  const width = Math.min(process.stdout.columns - 6 || 50, 60);
+  const ds = config.data?.datasets?.[0];
+  const labels = config.data?.labels || [];
+  const values = ds?.data || [];
+  if (!values.length) return <Text color="gray">(empty chart)</Text>;
+
+  const maxVal = Math.max(...values, 1);
+  const barMax = Math.max(width - 20, 10);
+  const colors = ['#e8602c','#34d399','#60a5fa','#f59e0b','#a78bfa','#f472b6','#14b8a6','#f97316'];
+  const labelPad = Math.max(...labels.map(l => l.length), 1);
+
+  const bars = values.map((v, i) => {
+    const barLen = Math.round((Math.abs(v) / maxVal) * barMax);
+    if (barLen < 1) return null;
+    return (
+      <Box key={i} flexDirection="row" gap={0}>
+        <Text color={colors[i % colors.length]}>{' '.repeat(2)}</Text>
+        <Text color={colors[i % colors.length]}>{'▇'.repeat(Math.max(barLen, 1))}</Text>
+        <Text color="gray">{' ' + v}</Text>
+      </Box>
+    );
+  }).filter(Boolean);
+
+  return (
+    <Box flexDirection="column" marginY={0} paddingX={1} gap={0}>
+      {config.title && <Text bold color="#cc785c">{config.title}</Text>}
+      {labels.length > 0 && (
+        <Box flexDirection="row" gap={1}>
+          {labels.map((l, i) => (
+            <Text key={i} color="gray" wrap="truncate">{l}</Text>
+          ))}
+        </Box>
+      )}
+      {bars}
+    </Box>
+  );
+}
+
 export function RichText({ children }) {
   const text = typeof children === 'string' ? children : String(children ?? '');
   const blocks = parseBlocks(text);
@@ -216,6 +261,9 @@ export function RichText({ children }) {
               ))}
             </Box>
           );
+        }
+        if (block.type === 'chart') {
+          return <ChartBlock key={i} config={block.config} />;
         }
         return <RichLine key={i} text={block.text} />;
       })}
