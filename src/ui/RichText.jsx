@@ -247,6 +247,52 @@ function ChartBlock({ config }) {
     );
   }
 
+  if (config.type === 'scatter') {
+    const points = ds.data || values;
+    const isObj = points[0] && typeof points[0] === 'object' && 'x' in points[0];
+    return (
+      <Box flexDirection="column" marginY={0} paddingX={1} gap={0}>
+        {config.title && <Text bold color="#cc785c">{config.title}</Text>}
+        <Box flexDirection="row" gap={1}>
+          <Box flexDirection="column">
+            <Text bold color="gray">x</Text>
+            {points.map((p, i) => (
+              <Text key={i}>{isObj ? p.x : i}</Text>
+            ))}
+          </Box>
+          <Box flexDirection="column">
+            <Text bold color="gray">y</Text>
+            {points.map((p, i) => (
+              <Text key={i}>{isObj ? p.y : p}</Text>
+            ))}
+          </Box>
+        </Box>
+      </Box>
+    );
+  }
+
+  if (config.type === 'radar') {
+    const allLabels = labels.length ? labels : values.map((_, i) => `#${i + 1}`);
+    const axisMax = Math.max(...values, 1);
+    const barW = Math.min(width - 20, 30);
+    return (
+      <Box flexDirection="column" marginY={0} paddingX={1} gap={0}>
+        {config.title && <Text bold color="#cc785c">{config.title} (radar)</Text>}
+        {allLabels.map((label, i) => {
+          const v = values[i] || 0;
+          const barLen = Math.round((Math.abs(v) / axisMax) * barW);
+          return (
+            <Box key={i} flexDirection="row" gap={0}>
+              <Text color={colors[i % colors.length]}>{' '.repeat(2)}</Text>
+              <Text color={colors[i % colors.length]}>{'▇'.repeat(Math.max(barLen, 1))}</Text>
+              <Text color="gray">{' ' + label + '=' + v}</Text>
+            </Box>
+          );
+        })}
+      </Box>
+    );
+  }
+
   if (config.type === 'pie' || config.type === 'doughnut') {
     const total = values.reduce((a, b) => Math.abs(a) + Math.abs(b), 0) || 1;
     const AR = 2; // terminal char height:width ratio

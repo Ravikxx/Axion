@@ -14,6 +14,8 @@ Models can render charts by outputting a ` ```chart ` fenced code block with Cha
 - `pie`, `doughnut` — circular, CLI renders with half-block chars (▀/▄/█), aspect-ratio corrected (AR=2)
 - `bar` — horizontal bars
 - `line` — sparkline (CLI: ▁▂▃▄▅▆▇█ characters)
+- `scatter` — coordinate table (CLI), dot plot (web)
+- `radar` — multi-axis axis bars (CLI), polygon (web)
 
 ### Minimal required fields
 ```json

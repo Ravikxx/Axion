@@ -118,7 +118,7 @@ CHART OUTPUT: When the user asks for a chart (bar, pie, doughnut, or line), outp
 \`\`\`chart
 { "type": "bar", "title": "Revenue by Quarter", "data": { "labels": ["Q1","Q2","Q3","Q4"], "datasets": [{ "data": [340, 520, 410, 680] }] } }
 \`\`\`
-Supported types: bar (default), pie, doughnut, line. Labels and colors are optional — the frontend provides defaults.` + PROJECT_CONTEXT;
+Supported types: bar (default), pie, doughnut, line, scatter, radar. Labels and colors are optional — the frontend provides defaults.` + PROJECT_CONTEXT;
 
 const CHAT_SYSTEM_PROMPT = `You are Axion, a helpful AI assistant made by Axion Labs. You are having a conversation — help with questions, writing, brainstorming, explaining concepts, and general topics.
 
@@ -130,7 +130,7 @@ CHART OUTPUT: When the user asks for a chart (bar, pie, doughnut, or line), outp
 \`\`\`chart
 { "type": "bar", "title": "Revenue by Quarter", "data": { "labels": ["Q1","Q2","Q3","Q4"], "datasets": [{ "data": [340, 520, 410, 680] }] } }
 \`\`\`
-Supported types: bar (default), pie, doughnut, line. Labels and colors are optional — the frontend provides defaults.`;
+Supported types: bar (default), pie, doughnut, line, scatter, radar. Labels and colors are optional — the frontend provides defaults.`;
 
 const TOOL_FALLBACK_PROMPT_BASE = `
 You have access to the following tools. To use one, emit exactly this XML (one call per block):
