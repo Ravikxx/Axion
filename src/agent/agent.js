@@ -534,13 +534,8 @@ CRITICAL RULES — follow these exactly:
               toolResults.push(declined);
               this.onToolResult({ id: tc.id, name: tc.name, output: 'User declined.', success: false });
               continue;
-    }
-    // Flush any remaining accumulated text (e.g. loop maxed out without a tool-free turn)
-    if (accumulatedText) {
-      this.onMessage({ role: 'assistant', content: accumulatedText });
-      this.history.push({ role: 'assistant', content: accumulatedText });
-    }
-  }
+          }
+        }
 
           let result;
           if (tc.name === 'spawn_agents') {
@@ -566,6 +561,11 @@ CRITICAL RULES — follow these exactly:
         this.onMessage({ role: 'session-ended', content: termination.output });
         break;
       }
+    }
+    // Flush any remaining accumulated text (e.g. loop maxed out without a tool-free turn)
+    if (accumulatedText) {
+      this.onMessage({ role: 'assistant', content: accumulatedText });
+      this.history.push({ role: 'assistant', content: accumulatedText });
     }
   }
 
