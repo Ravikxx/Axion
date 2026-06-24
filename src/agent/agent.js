@@ -451,8 +451,11 @@ CRITICAL RULES — follow these exactly:
 
       const { text, toolCalls } = response;
 
+      // Strip draft chart blocks from accumulated — final text's chart supersedes
+      const noChartAccum = accumulatedText.replace(/```chart\n[\s\S]*?```/g, '').replace(/\n{3,}/g, '\n\n').trim();
+
       if (!toolCalls || toolCalls.length === 0) {
-        const finalText = text ? (accumulatedText ? accumulatedText + '\n' + text : text) : accumulatedText;
+        const finalText = text ? (noChartAccum ? noChartAccum + '\n' + text : text) : noChartAccum;
         if (finalText) {
           this.onMessage({ role: 'assistant', content: finalText });
           this.history.push({ role: 'assistant', content: finalText });
@@ -460,7 +463,12 @@ CRITICAL RULES — follow these exactly:
         break;
       }
 
-      if (text) accumulatedText += (accumulatedText ? '\n' : '') + text;
+      // Strip old chart blocks from accumulated before adding new text
+      // — the new text (post-tools) supersedes any draft chart emitted alongside thinking
+      if (text) {
+        const stripped = accumulatedText.replace(/```chart\n[\s\S]*?```/g, '').replace(/\n{2,}/g, '\n').trim();
+        accumulatedText = stripped ? stripped + '\n' + text : text;
+      }
 
       this._pushAssistantWithTools(text, toolCalls, response.raw);
 
