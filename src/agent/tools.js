@@ -404,36 +404,6 @@ export const TOOL_DEFINITIONS = [
     },
   },
   {
-    name: 'chart',
-    description: 'Render a chart (bar, pie, doughnut, or line). Returns a chart block you should include directly in your reply. Do NOT call this tool if you can output the chart code block yourself.',
-    input_schema: {
-      type: 'object',
-      properties: {
-        type: { type: 'string', enum: ['bar', 'pie', 'doughnut', 'line'], description: 'Chart type' },
-        title: { type: 'string', description: 'Optional chart title' },
-        data: {
-          type: 'object',
-          properties: {
-            labels: { type: 'array', items: { type: 'string' }, description: 'Category labels' },
-            datasets: {
-              type: 'array',
-              items: {
-                type: 'object',
-                properties: {
-                  data: { type: 'array', items: { type: 'number' }, description: 'Numeric values' },
-                  label: { type: 'string', description: 'Dataset label' },
-                },
-                required: ['data'],
-              },
-            },
-          },
-          required: ['datasets'],
-        },
-      },
-      required: ['type', 'data'],
-    },
-  },
-  {
     name: 'ask_question',
     description: 'Ask the user a free-form question and wait for their text response. Use this when you need clarification, preferences, or any additional information from the user.',
     input_schema: {
@@ -1072,11 +1042,6 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
       case 'list_tools': {
         const list = TOOL_DEFINITIONS.map((t) => `• ${t.name} — ${t.description}`).join('\n');
         return { success: true, output: `Available tools:\n${list}` };
-      }
-
-      case 'chart': {
-        const chartJson = JSON.stringify(input, null, 2);
-        return { success: true, output: `Chart data accepted. Include this in your reply:\n\`\`\`chart\n${chartJson}\n\`\`\`` };
       }
 
       case 'send_message': {

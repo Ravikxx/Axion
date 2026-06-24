@@ -248,20 +248,90 @@ function ChartBlock({ config }) {
   }
 
   if (config.type === 'pie' || config.type === 'doughnut') {
+    const total = values.reduce((a, b) => Math.abs(a) + Math.abs(b), 0) || 1;
+    const AR = 2; // terminal char height:width ratio
+    const R = Math.min(Math.max(5, Math.floor(width / 5)), 10);
+    const diam = R * 2 + 1;
+    const holeR = config.type === 'doughnut' ? R * 0.3 : 0;
+
+    let cumAngle = Math.PI / 2; // start at 12 o'clock, go CCW
     const slices = values.map((v, i) => {
-      const pct = ((Math.abs(v) / totalVal) * 100).toFixed(1);
-      const segLen = Math.max(Math.round((Math.abs(v) / totalVal) * barMax), 1);
-      const c = colors[i % colors.length];
-      return { label: labels[i] || '', value: v, pct, segLen, color: c };
+      const a = (Math.abs(v) / total) * 2 * Math.PI;
+      const s = { start: cumAngle, end: cumAngle + a, color: colors[i % colors.length], label: labels[i] || '', value: v, pct: ((Math.abs(v) / total) * 100).toFixed(1) };
+      cumAngle += a;
+      return s;
     });
+
+    const norm = a => ((a % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
+
+    const sliceAt = (x, y) => {
+      const a = norm(Math.atan2(y * AR, x));
+      for (const s of slices) {
+        const sA = norm(s.start), sB = norm(s.end);
+        if (sA < sB ? (a >= sA && a < sB) : (a >= sA || a < sB)) return s;
+      }
+      return slices[slices.length - 1];
+    };
+
+    const rows = [];
+    for (let py = 0; py < diam; py++) {
+      const runs = [];
+      // two sub-pixel rows per character row (half-blocks)
+      for (let sub = 0; sub < 2; sub++) {
+        for (let px = 0; px < diam; px++) {
+          const x = px - R;
+          const y = (R - py) + (sub === 0 ? -0.25 : 0.25);
+          const d2 = x * x + (y * AR) * (y * AR);
+          const edge = R + 0.5;
+          if (d2 > edge * edge) {
+            runs.push(null);
+          } else if (d2 < holeR * holeR) {
+            runs.push(null);
+          } else {
+            runs.push(sliceAt(x, y).color);
+          }
+        }
+      }
+      // Merge two sub-rows into half-block characters
+      const merged = [];
+      const top = runs.slice(0, diam);
+      const bot = runs.slice(diam);
+      for (let i = 0; i < diam; i++) {
+        const t = top[i], b = bot[i];
+        if (t && b) {
+          merged.push({ char: '█', color: b });
+        } else if (t && !b) {
+          merged.push({ char: '▀', color: t });
+        } else if (!t && b) {
+          merged.push({ char: '▄', color: b });
+        } else {
+          merged.push({ char: ' ', color: null });
+        }
+      }
+      // Merge consecutive same-color runs
+      const groups = [];
+      for (let i = 0; i < merged.length; ) {
+        const cur = merged[i];
+        let j = i;
+        while (j < merged.length && merged[j].color === cur.color && merged[j].char === cur.char) j++;
+        groups.push({ color: cur.color, text: cur.char.repeat(j - i) });
+        i = j;
+      }
+      rows.push(groups);
+    }
+
     return (
       <Box flexDirection="column" marginY={0} paddingX={1} gap={0}>
         {config.title && <Text bold color="#cc785c">{config.title} ({config.type})</Text>}
-        <Box flexDirection="row" gap={0}>
-          {slices.map((s, i) => (
-            <Text key={i} color={s.color}>{'▇'.repeat(s.segLen)}</Text>
-          ))}
-        </Box>
+        {rows.map((groups, ri) => (
+          <Box key={ri} flexDirection="row" gap={0}>
+            {groups.map((g, gi) =>
+              g.color === null
+                ? <Text key={gi}>{g.text}</Text>
+                : <Text key={gi} color={g.color}>{g.text}</Text>
+            )}
+          </Box>
+        ))}
         {slices.map((s, i) => (
           <Box key={i} flexDirection="row" gap={0}>
             <Text color={s.color}>{'█'}</Text>

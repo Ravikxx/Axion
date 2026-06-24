@@ -645,11 +645,22 @@
       .replace(/"/g,'&quot;')
   }
 
+  // Detect raw JSON that looks like a chart config (model forgot ```chart fence)
+  function autoWrapChart(src) {
+    return src.replace(/\{[\s\S]*?"type"\s*:\s*"(?:pie|bar|doughnut|line)"[\s\S]*?"data"\s*:\s*\{[\s\S]*?"datasets"[\s\S]*?\}/g, (m) => {
+      try {
+        JSON.parse(m)
+        return '```chart\n' + m + '\n```'
+      } catch { return m }
+    })
+  }
+
   // Minimal, safe markdown: escapes first, then formats.
   // Code blocks are pulled out behind a private-use sentinel so formatting
   // can't touch them, then restored at the end.
   const SENT = ''
   function renderMarkdown(src) {
+    src = autoWrapChart(src)
     const blocks = []
     // fenced code blocks → sentinel placeholder on its own line
     let text = src.replace(/```(\w*)\n?([\s\S]*?)```/g, (_, lang, code) => {

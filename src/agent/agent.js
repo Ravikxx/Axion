@@ -114,7 +114,7 @@ Write your reasoning as plain text inside the tags — never call tools inside a
 
 TOOL DISCIPLINE: Never use send_message to send a message to yourself or to "main" when you are the main agent — that is pointless self-messaging. send_message is only for communicating with other agents spawned by spawn_agents. Do not use any tool as a substitute for thinking.
 
-CHART OUTPUT: When the user asks for a chart (bar, pie, doughnut, or line), output the chart data directly in your response as a fenced code block with language "chart". Do NOT call a tool named "chart" — chart is NOT a tool. Simply write the code block in your reply:
+CHART OUTPUT: When the user asks for a chart (bar, pie, doughnut, or line), output the chart data directly in your response as a fenced code block with language "chart". Do NOT call any tool named "chart" — there is no such tool and calling it will fail with "Unknown tool: chart". Simply write the code block in your reply:
 \`\`\`chart
 { "type": "bar", "title": "Revenue by Quarter", "data": { "labels": ["Q1","Q2","Q3","Q4"], "datasets": [{ "data": [340, 520, 410, 680] }] } }
 \`\`\`
@@ -126,7 +126,7 @@ You are in Chat mode. You have no access to files, the terminal, or any tools. J
 
 REASONING: Use <think>...</think> tags to think through nuanced or complex questions before answering. Write reasoning as plain text inside the tags, then give your response after.
 
-CHART OUTPUT: When the user asks for a chart (bar, pie, doughnut, or line), output the chart data directly in your response as a fenced code block with language "chart". Do NOT call a tool named "chart" — chart is NOT a tool. Simply write the code block in your reply:
+CHART OUTPUT: When the user asks for a chart (bar, pie, doughnut, or line), output the chart data directly in your response as a fenced code block with language "chart". Do NOT call any tool named "chart" — there is no such tool and calling it will fail with "Unknown tool: chart". Simply write the code block in your reply:
 \`\`\`chart
 { "type": "bar", "title": "Revenue by Quarter", "data": { "labels": ["Q1","Q2","Q3","Q4"], "datasets": [{ "data": [340, 520, 410, 680] }] } }
 \`\`\`
@@ -434,6 +434,7 @@ CRITICAL RULES — follow these exactly:
     let lastBatchSig = null;
     let sameToolStreak = 0;
     let adviceSent = false;
+    let accumulatedText = '';
 
     while (iterations < MAX) {
       if (this.cancelled) break;
@@ -449,12 +450,17 @@ CRITICAL RULES — follow these exactly:
       if (!response) break;
 
       const { text, toolCalls } = response;
-      if (text) this.onMessage({ role: 'assistant', content: text });
 
       if (!toolCalls || toolCalls.length === 0) {
-        if (text) this.history.push({ role: 'assistant', content: text });
+        const finalText = text ? (accumulatedText ? accumulatedText + '\n' + text : text) : accumulatedText;
+        if (finalText) {
+          this.onMessage({ role: 'assistant', content: finalText });
+          this.history.push({ role: 'assistant', content: finalText });
+        }
         break;
       }
+
+      if (text) accumulatedText += (accumulatedText ? '\n' : '') + text;
 
       this._pushAssistantWithTools(text, toolCalls, response.raw);
 
@@ -516,8 +522,13 @@ CRITICAL RULES — follow these exactly:
               toolResults.push(declined);
               this.onToolResult({ id: tc.id, name: tc.name, output: 'User declined.', success: false });
               continue;
-            }
-          }
+    }
+    // Flush any remaining accumulated text (e.g. loop maxed out without a tool-free turn)
+    if (accumulatedText) {
+      this.onMessage({ role: 'assistant', content: accumulatedText });
+      this.history.push({ role: 'assistant', content: accumulatedText });
+    }
+  }
 
           let result;
           if (tc.name === 'spawn_agents') {
