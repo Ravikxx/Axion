@@ -591,6 +591,39 @@ export function clearAutoMemory() {
   if (existsSync(AUTO_MEMORY_FILE)) unlinkSync(AUTO_MEMORY_FILE);
 }
 
+// ── Profiles (model+mode presets) ──────────────────────────────────────────────
+
+const PROFILES_DIR = join(DIR, 'profiles');
+
+export function listProfiles() {
+  try {
+    if (!existsSync(PROFILES_DIR)) return [];
+    return readdirSync(PROFILES_DIR).filter(f => f.endsWith('.json')).map(f => f.replace(/\.json$/, ''));
+  } catch { return []; }
+}
+
+export function saveProfile(name, data) {
+  if (!existsSync(PROFILES_DIR)) mkdirSync(PROFILES_DIR, { recursive: true });
+  const file = join(PROFILES_DIR, name.replace(/[^a-z0-9_-]/gi, '') + '.json');
+  writeFileSync(file, JSON.stringify(data, null, 2), 'utf8');
+  return file;
+}
+
+export function loadProfile(name) {
+  try {
+    const file = join(PROFILES_DIR, name.replace(/[^a-z0-9_-]/gi, '') + '.json');
+    if (!existsSync(file)) return null;
+    return JSON.parse(readFileSync(file, 'utf8'));
+  } catch { return null; }
+}
+
+export function deleteProfile(name) {
+  try {
+    const file = join(PROFILES_DIR, name.replace(/[^a-z0-9_-]/gi, '') + '.json');
+    if (existsSync(file)) unlinkSync(file);
+  } catch {}
+}
+
 export function listChats() {
   if (!existsSync(CHATS_DIR)) return [];
   return readdirSync(CHATS_DIR)

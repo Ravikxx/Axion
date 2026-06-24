@@ -30,6 +30,7 @@ import {
   getDonateOptOut, saveDonateOptOut, saveDonation,
   saveAutoMemory,
   getAxionKey, saveAxionKey,
+  saveProfile, loadProfile, listProfiles, deleteProfile,
 } from '../persist.js';
 import { COMMANDS } from './Suggestions.jsx';
 import { THEMES, setTheme, themeName, accent } from './theme.js';
@@ -94,6 +95,11 @@ const HELP_TEXT = `  Commands
   /run <cmd>                    run a shell command and feed output to the agent
   !<cmd>                        shorthand for /run  e.g. !git status
   /cost                         show session token usage and estimated cost
+  /stats                        show full session stats (duration, messages, tokens, cost)
+  /profile save <name>          save current model+mode as a named profile
+  /profile load <name>          restore a saved profile
+  /profile list                 list saved profiles
+  /profile delete <name>        delete a profile
   /pr [context]                 draft a PR title+body from recent commits
   /computer [on|off]            toggle computer use (screen control)  (alias: /cu)
   /vision  <model>              set vision model for computer use (saved)  e.g. claude · axion-vision (free)
@@ -344,6 +350,7 @@ export function App({
   const [thinking, setThinking]           = useState(false);
   const [thinkingWord, setThinkingWord]   = useState('baking');
   const [thinkingElapsed, setThinkingElapsed] = useState(0);
+  const sessionStartRef = useRef(Date.now());
   const thinkingStartRef = useRef(null);
   const [inputMode, setInputMode]         = useState('chat');
   const [onboardingStep, setOnboardingStep]   = useState(null); // null | 'pick' | 'key'
@@ -860,6 +867,30 @@ export function App({
           return true;
         }
 
+        case 'stats': {
+          const st = tokensRef.current;
+          const sWin = getContextWindow(model) * CTX_SCALE;
+          const sCtx = st.context || st.total;
+          const sPct = Math.round((sCtx / sWin) * 100);
+          const elapsed = Math.floor((Date.now() - sessionStartRef.current) / 1000);
+          const hrs = Math.floor(elapsed / 3600);
+          const mins = Math.floor((elapsed % 3600) / 60);
+          const secs = elapsed % 60;
+          const dur = hrs > 0 ? `${hrs}h ${mins}m ${secs}s` : mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
+          const msgCount = staticMessages.filter(m => m.type === 'user' || m.type === 'assistant').length;
+          pushStatic({ type: 'info', content:
+            `  Session stats\n` +
+            `  ──────────────────────────────\n` +
+            `  model     ${model}\n` +
+            `  mode      ${mode}\n` +
+            `  duration  ${dur}\n` +
+            `  messages  ${msgCount}\n` +
+            `  tokens    ${formatTokens(st.input) || 0} in · ${formatTokens(st.output) || 0} out · ${formatTokens(st.total) || 0} total\n` +
+            `  context   ${formatTokens(sCtx)} now · ${sPct}% of ${formatTokens(sWin)}\n` +
+            `  est. cost ${sessionCost > 0 ? formatCost(sessionCost) : '$0.00'}` });
+          return true;
+        }
+
         case 'model':
           if (!arg) {
             pushStatic({ type: 'info', content: `current: ${model}  available: ${Object.keys(MODELS).join(' · ')}` });
@@ -869,6 +900,34 @@ export function App({
             pushStatic({ type: 'info', content: `model → ${arg} (saved)` });
           }
           return true;
+
+        case 'profile': {
+          const [sub, ...profileArgs] = args;
+          const pName = profileArgs.join(' ');
+          if (sub === 'save' && pName) {
+            saveProfile(pName, { model, mode });
+            pushStatic({ type: 'info', content: `Profile saved: "${pName}" (${model}, ${mode})` });
+          } else if (sub === 'load' && pName) {
+            const p = loadProfile(pName);
+            if (!p) { pushStatic({ type: 'error', content: `No profile named "${pName}". /profile list` }); return true; }
+            setModel(p.model);
+            saveModel(p.model);
+            setMode(p.mode);
+            saveMode(p.mode);
+            agentRef.current?.setMode(p.mode);
+            pushStatic({ type: 'info', content: `Profile loaded: "${pName}" → ${p.model}, ${p.mode}` });
+          } else if (sub === 'delete' && pName) {
+            deleteProfile(pName);
+            pushStatic({ type: 'info', content: `Deleted profile "${pName}".` });
+          } else if (sub === 'list' || !sub) {
+            const list = listProfiles();
+            if (!list.length) { pushStatic({ type: 'info', content: 'No saved profiles. /profile save <name>' }); return true; }
+            pushStatic({ type: 'info', content: `Profiles:\n${list.map(n => `  ${n}`).join('\n')}` });
+          } else {
+            pushStatic({ type: 'error', content: 'usage: /profile save|load|delete|list [name]' });
+          }
+          return true;
+        }
 
         case 'skill-delete': {
           if (!arg) { pushStatic({ type: 'error', content: 'usage: /skill-delete <name>' }); return true; }
@@ -3397,7 +3456,7 @@ triggers: <comma-separated words that should activate it, include "${skillName.t
           <Text color="greenBright"><Spinner type="dots" /></Text>
           <Text color="greenBright">{thinkingWord}…</Text>
           <Text color="gray">{String(Math.floor(thinkingElapsed / 60)).padStart(2, '0')}:{String(thinkingElapsed % 60).padStart(2, '0')}</Text>
-          <Text color="gray">esc to interrupt</Text>
+          <Text color="red">⏹</Text><Text color="gray"> esc to stop</Text>
         </Box>
       )}
 

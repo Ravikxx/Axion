@@ -65,6 +65,8 @@ export const COMMANDS = [
   { cmd: 'mcp',             desc: 'browse|search|install|toggle|enable|disable|remove|tools|reload' },
   { cmd: 'contribute',      desc: 'share this session as training data  (skip | optout)' },
   { cmd: 'cost',            desc: 'show session token usage and estimated cost' },
+  { cmd: 'stats',           desc: 'show full session stats' },
+  { cmd: 'profile',         desc: 'save|load|list|delete <name>  model+mode profiles' },
   { cmd: 'clear',           desc: 'clear history' },
   { cmd: 'exit',            desc: 'quit' },
 ];
