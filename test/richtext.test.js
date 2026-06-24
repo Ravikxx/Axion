@@ -109,3 +109,38 @@ test('indented fence opener is recognised', () => {
   const blocks = parseBlocks('  ```\ncode\n  ```');
   assert.equal(blocks[0].type, 'code-block');
 });
+
+// ── Chart blocks ────────────────────────────────────────────────────────────────
+
+test('chart code block produces chart block', () => {
+  const blocks = parseBlocks('```chart\n{"type":"pie","data":{"datasets":[{"data":[1,2]}]}}\n```');
+  assert.equal(blocks.length, 1);
+  assert.equal(blocks[0].type, 'chart');
+  assert.equal(blocks[0].config.type, 'pie');
+});
+
+test('chart block parses datasets array', () => {
+  const blocks = parseBlocks('```chart\n{"type":"bar","data":{"labels":["A","B"],"datasets":[{"data":[3,7]}]}}\n```');
+  assert.equal(blocks[0].config.data.datasets[0].data[0], 3);
+  assert.equal(blocks[0].config.data.labels[0], 'A');
+});
+
+test('chart block with invalid JSON falls back to code-block', () => {
+  const blocks = parseBlocks('```chart\n{invalid json}\n```');
+  assert.equal(blocks[0].type, 'code-block');
+  assert.equal(blocks[0].text, '{invalid json}');
+});
+
+test('chart block with missing datasets field still parses as chart (chart block can handle at render)', () => {
+  const blocks = parseBlocks('```chart\n{"type":"line","data":{"labels":[]}}\n```');
+  assert.equal(blocks[0].type, 'chart');
+  assert.equal(blocks[0].config.type, 'line');
+});
+
+test('text before and after chart block', () => {
+  const blocks = parseBlocks('before\n```chart\n{"type":"pie","data":{"datasets":[{"data":[1]}]}}\n```\nafter');
+  assert.equal(blocks.length, 3);
+  assert.equal(blocks[0].type, 'line');
+  assert.equal(blocks[1].type, 'chart');
+  assert.equal(blocks[2].type, 'line');
+});

@@ -223,6 +223,8 @@ class ThinkStreamFilter {
 
 // ─────────────────────────────────────────────────────────────────────────────
 
+export { ThinkStreamFilter };
+
 export class Agent {
   constructor({ modelAlias, mode, label = 'main', onToolCall, onToolResult, onMessage, onTokens, onStreamChunk, onStreamEnd, onNotify }) {
     this.modelAlias   = modelAlias;
