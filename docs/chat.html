@@ -179,6 +179,7 @@
       font-size: 11px; font-weight: 700; letter-spacing: .05em;
       text-transform: uppercase; color: var(--muted); margin-bottom: 5px;
     }
+    .msg-time { font-weight: 400; text-transform: none; letter-spacing: 0; color: var(--muted2); margin-left: 8px; font-size: 10px; }
     .msg-text { font-size: 14.5px; line-height: 1.7; color: var(--text); word-wrap: break-word; }
     .msg-text > *:first-child { margin-top: 0; }
     .msg-text > *:last-child { margin-bottom: 0; }
@@ -197,7 +198,12 @@
       border-left: 3px solid var(--border2); padding-left: 14px;
       margin: 0 0 10px; color: var(--muted2);
     }
-    .msg-text.streaming::after {
+    .msg-text.streaming:empty::before {
+      content: 'Lumen is thinking...'; display: inline-block; color: var(--muted);
+      font-size: 13px; font-style: italic;
+    }
+    .msg-text.streaming:empty::after { content: none; }
+    .msg-text.streaming:not(:empty)::after {
       content: '▋'; display: inline-block; animation: blink .8s step-end infinite;
       color: var(--accent); margin-left: 1px;
     }
@@ -593,6 +599,24 @@
 
   let _chatFilter = ''
   function filterChats(q) { _chatFilter = q.toLowerCase(); renderChatList() }
+  /* ── Auto-scroll lock ─────────────────────────────────────────────────── */
+  /* ── Auto-scroll lock ─────────────────────────────────────────────────── */
+  let _userScrolledAway = false;
+  function isNearBottom(el) { return el.scrollHeight - el.scrollTop - el.clientHeight < 120; }
+  function scrollToBottom(el) { el.scrollTop = el.scrollHeight; _userScrolledAway = false; }
+  document.addEventListener('DOMContentLoaded', () => {
+    const el = document.getElementById('messages');
+    if (el) el.addEventListener('scroll', () => { if (!isNearBottom(el)) _userScrolledAway = true; });
+  });
+
+  function fmtTime(ts) {
+    const d = new Date(ts);
+    const now = new Date();
+    const sameDay = d.toDateString() === now.toDateString();
+    return sameDay ? d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      : d.toLocaleDateString([], { month: 'short', day: 'numeric' }) + ' ' + d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  }
+
   function renderChatList() {
     const list = document.getElementById('chat-list')
     const filtered = _chatFilter ? chats.filter(c => c.title.toLowerCase().includes(_chatFilter)) : chats
@@ -843,10 +867,11 @@
       const extraAction = m.role === 'user'
         ? `<button class="msg-action" onclick="editMessage(${idx})">Edit</button>`
         : `<button class="msg-action" onclick="regenerate(${idx})">Retry</button>`
+      const tsHtml = m.ts ? `<span class="msg-time">${fmtTime(m.ts)}</span>` : ''
       div.innerHTML = `
         ${avatar}
         <div class="msg-body">
-          <div class="msg-role">${m.role === 'user' ? 'You' : 'Lumen'}</div>
+          <div class="msg-role">${m.role === 'user' ? 'You' : 'Lumen'}${tsHtml}</div>
           <div class="msg-text">${bodyHtml}</div>
           <div class="msg-actions">
             <button class="msg-action" onclick="copyMsg(this, ${idx})">Copy</button>
@@ -934,7 +959,7 @@
       chats.push(c); currentId = c.id
       document.getElementById('topbar-title').textContent = c.title
     }
-    c.messages.push({ role: 'user', content })
+    c.messages.push({ role: 'user', content, ts: Date.now() })
     c.updated = Date.now()
     renderChatList(); renderMessages(); persistChat(c)
     await generateReply(c)
@@ -1006,7 +1031,7 @@
             if (data === '[DONE]') continue
             try {
               const delta = JSON.parse(data).choices?.[0]?.delta?.content
-              if (delta) { full += delta; live.textContent = full; messagesEl.scrollTop = messagesEl.scrollHeight }
+              if (delta) { full += delta; live.textContent = full; if (!_userScrolledAway) messagesEl.scrollTop = messagesEl.scrollHeight }
             } catch {}
           }
         }
@@ -1020,7 +1045,7 @@
     if (!failed) { live.innerHTML = full ? renderMarkdown(full) : '<p style="color:var(--muted)">(stopped)</p>'; initCharts() }
 
     if (!failed && full) {
-      c.messages.push({ role: 'assistant', content: full })
+      c.messages.push({ role: 'assistant', content: full, ts: Date.now() })
       c.updated = Date.now(); persistChat(c)
       renderChatList(); renderMessages()   // re-render with actions + markdown
     }
