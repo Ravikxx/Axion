@@ -419,6 +419,8 @@ export function App({
 
   const liveRef    = useRef([]);
   const addLive    = useCallback((msg) => {
+    const last = liveRef.current[liveRef.current.length - 1];
+    if (last && last.type === msg.type && last.content === msg.content) return;
     liveRef.current = [...liveRef.current, msg];
     setLiveMessages(liveRef.current);
   }, []);
