@@ -451,11 +451,15 @@ CRITICAL RULES — follow these exactly:
 
       const { text, toolCalls } = response;
 
-      // Strip draft chart blocks from accumulated — final text's chart supersedes
-      const noChartAccum = accumulatedText.replace(/```chart\n[\s\S]*?```/g, '').replace(/\n{3,}/g, '\n\n').trim();
-
       if (!toolCalls || toolCalls.length === 0) {
-        const finalText = text ? (noChartAccum ? noChartAccum + '\n' + text : text) : noChartAccum;
+        let finalText;
+        if (text) {
+          const cleanAccum = accumulatedText.replace(/```chart\n[\s\S]*?```/g, '').replace(/\n{3,}/g, '\n\n').trim();
+          finalText = cleanAccum ? cleanAccum + '\n' + text : text;
+        } else {
+          finalText = accumulatedText;
+        }
+        accumulatedText = '';
         if (finalText) {
           this.onMessage({ role: 'assistant', content: finalText });
           this.history.push({ role: 'assistant', content: finalText });

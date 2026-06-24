@@ -294,16 +294,16 @@ function ChartBlock({ config }) {
       }
       // Merge two sub-rows into half-block characters
       const merged = [];
-      const top = runs.slice(0, diam);
-      const bot = runs.slice(diam);
+      const topHalf = runs.slice(0, diam);
+      const botHalf = runs.slice(diam);
       for (let i = 0; i < diam; i++) {
-        const t = top[i], b = bot[i];
-        if (t && b) {
-          merged.push({ char: '█', color: b });
-        } else if (t && !b) {
-          merged.push({ char: '▀', color: t });
-        } else if (!t && b) {
-          merged.push({ char: '▄', color: b });
+        const sub0 = topHalf[i], sub1 = botHalf[i];
+        if (sub0 && sub1) {
+          merged.push({ char: '█', color: sub1 });
+        } else if (sub0 && !sub1) {
+          merged.push({ char: '▄', color: sub0 });
+        } else if (!sub0 && sub1) {
+          merged.push({ char: '▀', color: sub1 });
         } else {
           merged.push({ char: ' ', color: null });
         }
