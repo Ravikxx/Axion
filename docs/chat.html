@@ -647,12 +647,48 @@
 
   // Detect raw JSON that looks like a chart config (model forgot ```chart fence)
   function autoWrapChart(src) {
-    return src.replace(/\{[\s\S]*?"type"\s*:\s*"(?:pie|bar|doughnut|line)"[\s\S]*?"data"\s*:\s*\{[\s\S]*?"datasets"[\s\S]*?\}/g, (m) => {
-      try {
-        JSON.parse(m)
-        return '```chart\n' + m + '\n```'
-      } catch { return m }
-    })
+    let out = '', i = 0
+    while (i < src.length) {
+      const start = src.indexOf('{', i)
+      if (start === -1) { out += src.slice(i); break }
+      const head = src.slice(start, start + 120)
+      if (/"type"\s*:\s*"(pie|bar|doughnut|line)"/.test(head) && /"data"\s*:\s*\{/.test(head) && /"datasets"/.test(head)) {
+        out += src.slice(i, start)
+        let depth = 1, j = start + 1, inStr = false
+        while (j < src.length && depth > 0) {
+          const c = src[j++]
+          if (inStr) { if (c === '\\') j++; else if (c === '"') inStr = false }
+          else if (c === '"') inStr = true
+          else if (c === '{') depth++
+          else if (c === '}') depth--
+        }
+        const cand = src.slice(start, j)
+        try {
+          const cfg = JSON.parse(cand)
+          if (cfg.type && ['pie','bar','doughnut','line'].includes(cfg.type) && cfg.data?.datasets)
+            out += '```chart\n' + cand + '\n```'
+          else
+            out += cand
+        } catch { out += cand }
+        i = j
+      } else {
+        const next = src.indexOf('{', start + 1)
+        if (next === -1) { out += src.slice(i); break }
+        out += src.slice(i, next)
+        i = next
+      }
+    }
+    return out
+  }
+
+  // Try to parse cleaned JSON — if it looks like a chart, return chart HTML
+  function tryChartBlock(cleaned) {
+    try {
+      const cfg = JSON.parse(cleaned)
+      if (cfg.type && ['pie','bar','doughnut','line'].includes(cfg.type) && cfg.data?.datasets)
+        return `<div class="chart-wrap"><canvas data-chart='${escHtml(JSON.stringify(cfg))}'></canvas></div>`
+    } catch {}
+    return null
   }
 
   // Minimal, safe markdown: escapes first, then formats.
@@ -660,27 +696,32 @@
   // can't touch them, then restored at the end.
   const SENT = ''
   function renderMarkdown(src) {
-    src = autoWrapChart(src)
     const blocks = []
-    // fenced code blocks → sentinel placeholder on its own line
-    let text = src.replace(/```(\w*)\n?([\s\S]*?)```/g, (_, lang, code) => {
-      const i = blocks.length
-      const cleaned = code.replace(/\n$/, '')
-      if (lang === 'chart') {
-        try {
-          const cfg = JSON.parse(cleaned)
-          blocks.push(`<div class="chart-wrap"><canvas data-chart='${escHtml(JSON.stringify(cfg))}'></canvas></div>`)
-        } catch {
-          blocks.push(`<div class="code-block"><div class="code-head"><span>chart (invalid)</span></div><pre><code>${escHtml(cleaned)}</code></pre></div>`)
+    // 1. Extract all ``` blocks (including json/no-lang that may contain chart JSON)
+    function extractCodeBlocks(s) {
+      return s.replace(/```(\w*)\n?([\s\S]*?)```/g, (_, lang, code) => {
+        const i = blocks.length
+        const cleaned = code.replace(/\n$/, '')
+        if (lang === 'chart') {
+          try {
+            const cfg = JSON.parse(cleaned)
+            blocks.push(`<div class="chart-wrap"><canvas data-chart='${escHtml(JSON.stringify(cfg))}'></canvas></div>`)
+          } catch {
+            blocks.push(`<div class="code-block"><div class="code-head"><span>chart (invalid)</span></div><pre><code>${escHtml(cleaned)}</code></pre></div>`)
+          }
+        } else if (!lang || lang === 'json' || lang === 'text') {
+          const chart = tryChartBlock(cleaned)
+          if (chart) blocks.push(chart)
+          else blocks.push(`<div class="code-block"><div class="code-head"><span>${escHtml(lang || 'code')}</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div><pre><code>${escHtml(cleaned)}</code></pre></div>`)
+        } else {
+          blocks.push(`<div class="code-block"><div class="code-head"><span>${escHtml(lang)}</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div><pre><code>${escHtml(cleaned)}</code></pre></div>`)
         }
-      } else {
-        blocks.push(
-          `<div class="code-block"><div class="code-head"><span>${escHtml(lang || 'code')}</span>` +
-          `<button class="code-copy" onclick="copyCode(this)">Copy</button></div>` +
-          `<pre><code>${escHtml(cleaned)}</code></pre></div>`)
-      }
-      return `\n${SENT}${i}${SENT}\n`
-    })
+        return `\n${SENT}${i}${SENT}\n`
+      })
+    }
+    let text = extractCodeBlocks(src)
+    // 2. Auto-wrap raw JSON (model forgot ``` fence) and extract those blocks too
+    text = extractCodeBlocks(autoWrapChart(text))
 
     text = escHtml(text)
 
