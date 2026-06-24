@@ -869,7 +869,7 @@ CRITICAL RULES — follow these exactly:
     this._setContext(this._estimateTokens({ system: params.system, messages: params.messages, tools: params.tools }));
 
     const stream = client.messages.stream(params, { signal: this._abortCtrl?.signal });
-    let thinkBuf = '', inThink = false;
+    let thinkBuf = '', inThink = false, fullText = '';
 
     for await (const evt of stream) {
       if (evt.type === 'content_block_start') {
@@ -877,6 +877,7 @@ CRITICAL RULES — follow these exactly:
         if (inThink) thinkBuf = '';
       } else if (evt.type === 'content_block_delta') {
         if (evt.delta.type === 'text_delta' && evt.delta.text) {
+          fullText += evt.delta.text;
           this.onStreamChunk(evt.delta.text);
         } else if (evt.delta.type === 'thinking_delta' && evt.delta.thinking) {
           thinkBuf += evt.delta.thinking;
@@ -895,7 +896,7 @@ CRITICAL RULES — follow these exactly:
     this._setContext(exactCtx);
     this._addTokens(u.input_tokens, u.output_tokens);
     const toolCalls = (msg.content || []).filter((b) => b.type === 'tool_use').map((b) => ({ id: b.id, name: b.name, input: b.input }));
-    return { type: 'anthropic', text: '', toolCalls, raw: msg.content };
+    return { type: 'anthropic', text: fullText, toolCalls, raw: msg.content };
   }
 
   async _callOpenAI(client, model) {
@@ -903,9 +904,10 @@ CRITICAL RULES — follow these exactly:
     const maxTok     = this.thinking.enabled ? 16000 : 4096;
     const msgs       = [{ role: 'system', content: sysContent }, ...this._historyToOpenAI()];
 
+    let cleanText = '';
     const tcBufs = {};
     const filter = new ThinkStreamFilter(
-      (txt)     => this.onStreamChunk(txt),
+      (txt)     => { cleanText += txt; this.onStreamChunk(txt); },
       (thought) => this.onMessage({ role: 'thinking', content: thought })
     );
     let usage = null;
@@ -947,7 +949,7 @@ CRITICAL RULES — follow these exactly:
         try { input = JSON.parse(tc.args || '{}'); } catch {}
         return { id: tc.id || `tc-${i}`, name: tc.name, input };
       });
-      return { type: 'openai', text: '', toolCalls, raw: null };
+      return { type: 'openai', text: cleanText, toolCalls, raw: null };
 
     } catch (err) {
       if (this.cancelled) throw err; // handled (silently) by _callModel

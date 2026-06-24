@@ -512,28 +512,8 @@ export function App({
       },
       onStreamEnd: () => {
         if (streamTimerRef.current) { clearTimeout(streamTimerRef.current); streamTimerRef.current = null; }
-        const raw = streamBufRef.current;
         streamBufRef.current = '';
         setStreamContent(null);
-        // Fallback: extract <think> tags that weren't caught mid-stream
-        const thinkRe = /<think(?:ing)?>([\s\S]*?)<\/think(?:ing)?>/gi;
-        const thoughts = [];
-        let m;
-        while ((m = thinkRe.exec(raw)) !== null) {
-          if (m[1].trim()) thoughts.push(m[1].trim());
-        }
-        const content = thoughts.length
-          ? raw.replace(/<think(?:ing)?>[\s\S]*?<\/think(?:ing)?>/gi, '').trim()
-          : raw;
-        // Single atomic update so thinking always appears before assistant in the same render
-        const newMsgs = [
-          ...thoughts.map(t => ({ type: 'thinking', content: t })),
-          ...(content.trim() ? [{ type: 'assistant', content }] : []),
-        ];
-        if (newMsgs.length > 0) {
-          liveRef.current = [...liveRef.current, ...newMsgs];
-          setLiveMessages(liveRef.current);
-        }
       },
       onToolCall: ({ name, input, id }) => {
         const msg = { type: 'tool', id, name, input, output: null, success: null, pending: true };
