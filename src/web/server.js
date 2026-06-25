@@ -9,6 +9,7 @@ import { Agent } from '../agent/agent.js';
 import {
   MODELS, API_KEYS, setApiKey, CUSTOM_ENDPOINTS,
   DEFAULT_MODEL, DEFAULT_MODE, IMAGE_GEN_MODEL,
+  getContextWindow,
 } from '../config.js';
 import {
   getSavedModel, getSavedMode, getSavedApiKeys, getSavedCustomEndpoints,
@@ -19,6 +20,8 @@ import {
   getSavedImageModel, saveImageModel,
   saveAxionKey,
   exportSession, importSession,
+  getTodos, addTodo, toggleTodo, removeTodo,
+  listProfiles, saveProfile, loadProfile, deleteProfile,
 } from '../persist.js';
 import { generateImage } from '../agent/image.js';
 import { startScheduler } from '../scheduler.js';
@@ -126,6 +129,7 @@ function createSharedSession(defaultModel, defaultMode) {
   let lastUserMsg     = '';
   let tokens          = { total: 0, input: 0, output: 0 };
   let displayMessages = [];
+  const sessionStart  = Date.now();
 
   let currentChatName = null;
   let chatAutoNamed   = false;
@@ -244,6 +248,7 @@ function createSharedSession(defaultModel, defaultMode) {
           history: displayMessages,
           chats: listChats(),
           sessionTab,
+          chatName: currentChatName,
         });
         broadcastStatus();
         return;
@@ -408,17 +413,25 @@ function createSharedSession(defaultModel, defaultMode) {
     }
   }
 
-  // ── Auto-save chat with title derived from first user message ────────────────
+  // ── Auto-save chat with AI-chosen title from first assistant response ─────────
 
   function autoSaveChat() {
     const firstUser = displayMessages.find(m => m.type === 'user');
     if (!firstUser) return;
     if (!chatAutoNamed) {
-      const raw = firstUser.content.trim().replace(/\n+/g, ' ').replace(/[^\w\s]/g, '').trim();
+      let raw = '';
+      const firstAssistant = displayMessages.find(m => m.type === 'assistant');
+      if (firstAssistant?.content) {
+        raw = firstAssistant.content.trim().replace(/\n+/g, ' ').replace(/[^\w\s-]/g, '').trim();
+      }
+      if (!raw) {
+        raw = firstUser.content.trim().replace(/\n+/g, ' ').replace(/[^\w\s-]/g, '').trim();
+      }
       const words = raw.split(/\s+/).slice(0, 5).join(' ');
       const safe = (words.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '').slice(0, 40) || `chat-${Date.now()}`);
       currentChatName = safe;
       chatAutoNamed = true;
+      broadcast({ type: 'chat_name', name: safe });
     }
     if (currentChatName) {
       try {
@@ -590,6 +603,7 @@ function createSharedSession(defaultModel, defaultMode) {
         saveChat(arg, { model, mode, tokenCount: tokens.total, agentHistory: agent.history || [], displayMessages, tab: sessionTab || 'code' });
         currentChatName = arg; chatAutoNamed = true;
         info(`Chat saved as "${arg}".`);
+        broadcast({ type: 'chat_name', name: arg });
         broadcast({ type: 'chats_list', chats: listChats() });
         break;
 
@@ -617,6 +631,7 @@ function createSharedSession(defaultModel, defaultMode) {
         sessionTab = chat.tab || 'code';
         currentChatName = arg; chatAutoNamed = true; messageQueue = [];
         broadcast({ type: 'resume', model, mode, messages: displayMessages, tab: sessionTab });
+        broadcast({ type: 'chat_name', name: arg });
         broadcastStatus();
         break;
       }
@@ -716,6 +731,115 @@ function createSharedSession(defaultModel, defaultMode) {
         break;
       }
 
+      case 'todo': {
+        const [sub, ...todoRest] = args;
+        const todoText = todoRest.join(' ').trim();
+        if (!sub) {
+          const all = getTodos();
+          if (!all.length) { info('TODO list is empty.\n  /todo add <text>   add a task\n  /todo done <id>    mark complete\n  /todo list         show all\n  /todo clear        clear completed'); break; }
+          const pending = all.filter(t => !t.done);
+          const done = all.filter(t => t.done);
+          const lines = [`Pending: ${pending.length}  Done: ${done.length}  Total: ${all.length}`];
+          pending.forEach(t => lines.push(`  ☐ ${t.text}  [${t.id}]`));
+          if (done.length) lines.push(`  ☑ ${done.length} completed (use /todo list to see all)`);
+          info(lines.join('\n')); break;
+        }
+        if (sub === 'add') {
+          if (!todoText) { error('usage: /todo add <text>'); break; }
+          addTodo(todoText);
+          info(`✔ Added: "${todoText}"`); break;
+        }
+        if (sub === 'done') {
+          if (!todoText) { error('usage: /todo done <id>'); break; }
+          const toggled = toggleTodo(todoText);
+          if (!toggled) { error(`No TODO found with id "${todoText}". Use /todo to see ids.`); break; }
+          info(toggled.done ? `✔ Completed: "${toggled.text}"` : `↩ Reopened: "${toggled.text}"`); break;
+        }
+        if (sub === 'list') {
+          const all = getTodos();
+          if (!all.length) { info('TODO list is empty.'); break; }
+          const pending = all.filter(t => !t.done);
+          const done = all.filter(t => t.done);
+          const lines = [`── TODOs ──  Pending: ${pending.length}  Done: ${done.length}`];
+          pending.forEach(t => lines.push(`  ☐ ${t.text}  [${t.id}]`));
+          done.forEach(t => lines.push(`  ☑ ${t.text}  [${t.id}]`));
+          info(lines.join('\n')); break;
+        }
+        if (sub === 'clear') {
+          const all = getTodos();
+          const completed = all.filter(t => t.done);
+          completed.forEach(t => removeTodo(t.id));
+          info(`Cleared ${completed.length} completed task(s).`); break;
+        }
+        error(`Unknown subcommand: /todo ${sub}\nUsage: /todo add|done|list|clear`);
+        break;
+      }
+
+      case 'profile': {
+        const [sub, ...profileRest] = args;
+        const pName = profileRest.join(' ').trim();
+        if (sub === 'save' && pName) {
+          saveProfile(pName, { model, mode });
+          info(`Profile saved: "${pName}" (${model}, ${mode})`);
+        } else if (sub === 'load' && pName) {
+          const p = loadProfile(pName);
+          if (!p) { error(`No profile named "${pName}". Use /profile list`); break; }
+          model = p.model; agent.setModel(p.model); saveModel(p.model);
+          mode = p.mode; agent.setMode(p.mode); saveMode(p.mode);
+          info(`Profile loaded: "${pName}" → ${p.model}, ${p.mode}`);
+          broadcastStatus();
+        } else if (sub === 'delete' && pName) {
+          deleteProfile(pName);
+          info(`Deleted profile "${pName}".`);
+        } else if (sub === 'list' || !sub) {
+          const list = listProfiles();
+          if (!list.length) { info('No saved profiles. Use /profile save <name>'); break; }
+          info(`Profiles:\n${list.map(n => `  ${n}`).join('\n')}`);
+        } else {
+          error('usage: /profile save|load|delete|list [name]');
+        }
+        break;
+      }
+
+      case 'cost': {
+        const win = getContextWindow(model) * 0.85;
+        const ctxNow = tokens.context || tokens.total;
+        const pct = win > 0 ? Math.round((ctxNow / win) * 100) : 0;
+        const fmtTok = n => n >= 1000 ? `${(n/1000).toFixed(1)}k` : String(n||0);
+        info(
+          `  Session usage\n` +
+          `  ──────────────────────────────\n` +
+          `  model     ${model}\n` +
+          `  tokens    ${fmtTok(tokens.input)} in · ${fmtTok(tokens.output)} out · ${fmtTok(tokens.total)} total\n` +
+          `  context   ${fmtTok(ctxNow)} / ${fmtTok(win)} (${pct}%)`
+        );
+        break;
+      }
+
+      case 'stats': {
+        const elapsed = Math.floor((Date.now() - sessionStart) / 1000);
+        const hrs = Math.floor(elapsed / 3600);
+        const mins = Math.floor((elapsed % 3600) / 60);
+        const secs = elapsed % 60;
+        const dur = hrs > 0 ? `${hrs}h ${mins}m ${secs}s` : mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
+        const msgCount = displayMessages.filter(m => m.type === 'user' || m.type === 'assistant').length;
+        const sWin = getContextWindow(model) * 0.85;
+        const sCtx = tokens.context || tokens.total;
+        const sPct = sWin > 0 ? Math.round((sCtx / sWin) * 100) : 0;
+        const fmtTok = n => n >= 1000 ? `${(n/1000).toFixed(1)}k` : String(n||0);
+        info(
+          `  Session stats\n` +
+          `  ──────────────────────────────\n` +
+          `  model     ${model}\n` +
+          `  mode      ${mode}\n` +
+          `  duration  ${dur}\n` +
+          `  messages  ${msgCount}\n` +
+          `  tokens    ${fmtTok(tokens.input)} in · ${fmtTok(tokens.output)} out · ${fmtTok(tokens.total)} total\n` +
+          `  context   ${fmtTok(sCtx)} / ${fmtTok(sWin)} (${sPct}%)`
+        );
+        break;
+      }
+
       default: error(`unknown command /${cmd} — type /help`);
     }
   }
@@ -761,8 +885,13 @@ const HELP_TEXT = `Commands
 /save <name>                    save current chat
 /resume <name>                  resume a saved chat
 /remove-chat <name>             delete a saved chat
+/rename-chat <old> <new>        rename a saved chat
 /undo                           restore last overwritten file
-/clear                          clear history`;
+/clear                          clear history
+/todo [add|done|list|clear]     manage your TODO list
+/profile [save|load|delete|list] manage model+mode profiles
+/cost                           show session token usage
+/stats                          show session stats (tokens, duration, messages)`;
 
 // Run when invoked directly: node src/web/server.js
 import { pathToFileURL } from 'url';

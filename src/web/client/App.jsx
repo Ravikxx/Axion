@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 
 const MODELS_LIST = [
-  'veil', 'claude', 'claude-opus', 'claude-haiku',
+  'veil', 'lumen', 'claude', 'claude-opus', 'claude-haiku',
   'gpt', 'gpt-mini', 'gemini', 'gemini-2.5-pro',
   'groq', 'mistral', 'ollama', 'openrouter',
 ];
@@ -516,6 +516,7 @@ export default function App() {
   const [sessionTab, setSessionTab]       = useState(null); // null = new chat (tab unlocked)
   const [queuedCount, setQueuedCount]     = useState(0);
   const [showSettings, setShowSettings]   = useState(false);
+  const [chatName, setChatName]           = useState('');
   const [theme, setTheme]                 = useState(() => {
     try { return localStorage.getItem('axion-theme') || 'light'; } catch { return 'light'; }
   });
@@ -574,6 +575,11 @@ export default function App() {
           if (data.chats) setChats(data.chats);
           if (data.history?.length) setMessages(data.history.map(m => ({ ...m, _key: Math.random() })));
           if (data.sessionTab) { setSessionTab(data.sessionTab); setActiveTab(data.sessionTab); }
+          if (data.chatName) setChatName(data.chatName);
+          break;
+
+        case 'chat_name':
+          setChatName(data.name || '');
           break;
 
         case 'chats_list':
@@ -651,7 +657,7 @@ export default function App() {
 
         case 'clear':
           setMessages([]); setStreamContent(null); streamBufRef.current = ''; setQueuedCount(0);
-          setSessionTab(null);
+          setSessionTab(null); setChatName('');
           break;
 
         case 'resume':
@@ -850,7 +856,13 @@ export default function App() {
             <button className="sidebar-open-btn" onClick={() => setSidebarOpen(true)}>≡</button>
           )}
           <div className="topbar-title">
-            {showSettings ? '⚙ Settings' : activeTab === 'code' ? '⌨ Code' : '💬 Chat'}
+            {showSettings
+              ? '⚙ Settings'
+              : chatName
+                ? `Axion | ${chatName}`
+                : activeTab === 'code'
+                  ? '⌨ Code'
+                  : '💬 Chat'}
           </div>
           <div style={{ flex: 1 }} />
           <div className="topbar-badges">

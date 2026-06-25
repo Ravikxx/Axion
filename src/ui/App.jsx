@@ -352,6 +352,7 @@ export function App({
   const [thinkingElapsed, setThinkingElapsed] = useState(0);
   const sessionStartRef = useRef(Date.now());
   const thinkingStartRef = useRef(null);
+  const chatNamedRef = useRef(false);
   const [inputMode, setInputMode]         = useState('chat');
   const [onboardingStep, setOnboardingStep]   = useState(null); // null | 'pick' | 'key'
   const [onboardingChoice, setOnboardingChoice] = useState(null);
@@ -423,6 +424,11 @@ export function App({
   const discordQueueRef     = useRef([]);
   const donatePromptShownRef = useRef(false);
   const autoMemoryDoneRef   = useRef(false);
+
+  // Set initial terminal title
+  useEffect(() => {
+    process.stdout.write(`\x1b]2;Axion\x07`);
+  }, []);
 
   const liveRef    = useRef([]);
   const addLive    = useCallback((msg) => {
@@ -849,7 +855,9 @@ export function App({
           tokensRef.current = { total: 0, input: 0, output: 0 };
           compactWarnedRef.current = false;
           lastUserMsgRef.current = '';
+          chatNamedRef.current = false;
           clearLastSession(); // don't let --continue resurrect a cleared session
+          process.stdout.write(`\x1b]2;Axion\x07`);
           return true;
 
         case 'cost': {
@@ -1826,6 +1834,24 @@ triggers: <comma-separated words that should activate it, include "${skillName.t
           } else {
             pushStatic({ type: 'error', content: `No saved chat named "${arg}".` });
           }
+          return true;
+        }
+
+        case 'rename-chat': {
+          const [oldName, ...renameParts] = args;
+          const newName = renameParts.join(' ').trim();
+          if (!oldName || !newName) {
+            pushStatic({ type: 'error', content: 'usage: /rename-chat <oldname> <newname>' });
+            return true;
+          }
+          const chatToRename = loadChat(oldName);
+          if (!chatToRename) {
+            pushStatic({ type: 'error', content: `No saved chat named "${oldName}".` });
+            return true;
+          }
+          saveChat(newName, chatToRename);
+          deleteChat(oldName);
+          pushStatic({ type: 'info', content: `Chat renamed: "${oldName}" → "${newName}"` });
           return true;
         }
 
@@ -3277,6 +3303,18 @@ triggers: <comma-separated words that should activate it, include "${skillName.t
           discordOriginRef.current = false;
         }
         finalizeTurn();
+        // Name chat from first assistant response
+        if (!chatNamedRef.current) {
+          const hist = agentRef.current?.history || [];
+          const firstAsst = hist.find(m => m.role === 'assistant');
+          if (firstAsst?.content) {
+            const raw = String(firstAsst.content).trim().replace(/\n+/g, ' ').replace(/[^\w\s-]/g, '').trim();
+            const words = raw.split(/\s+/).slice(0, 5).join(' ');
+            const name = words.slice(0, 40) || 'Chat';
+            chatNamedRef.current = true;
+            process.stdout.write(`\x1b]2;Axion | ${name}\x07`);
+          }
+        }
         // Drain queued messages one at a time
         if (messageQueueRef.current.length) {
           const next = messageQueueRef.current.shift();
