@@ -1,0 +1,175 @@
+/* ── Mobile responsiveness for Axion docs ────────────────────────────────────── */
+/* Injected via build script into every HTML page */
+
+/* ── Hamburger nav (applied to all navs) ─────────────────────────────────────── */
+@media (max-width: 720px) {
+  /* Show hamburger button (injected by build script) */
+  .hamburger-nav {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 34px; height: 34px; border-radius: 7px; flex-shrink: 0;
+    border: 1px solid var(--border2, #2e2f3e);
+    background: var(--surface2, #1a1b24);
+    color: var(--text, #e8e9f0); cursor: pointer; font-size: 17px;
+    padding: 0; line-height: 1; margin-left: auto;
+    transition: background .12s;
+  }
+  .hamburger-nav:hover { background: var(--surface3, #23242f); }
+  .hamburger-nav:active { background: var(--border2, #2e2f3e); }
+
+  /* Nav links drawer (shown when open) */
+  .nav-links {
+    position: fixed; top: 52px; left: 0; right: 0; bottom: 0;
+    background: var(--surface, #12131a);
+    flex-direction: column; padding: 16px; gap: 4px !important;
+    display: none !important; z-index: 90;
+    overflow-y: auto;
+  }
+  .nav-links.open { display: flex !important; }
+  .nav-links .nav-link,
+  .nav-links a {
+    padding: 12px 14px !important; font-size: 15px !important;
+    border-radius: 8px; width: 100%;
+  }
+
+  /* Override for pages that hide nav links on mobile */
+  nav .nav-links { display: none !important; }
+  nav .nav-links.open { display: flex !important; }
+
+  /* Light-theme navs (models, lumen pages, etc.) */
+  nav a:not(.brand):not(.nav-logo):not(.nav-btn):not(.nav-btn-ghost):not(.btn-nav) {
+    display: none !important;
+  }
+  nav.nav-links-visible a:not(.brand):not(.nav-logo):not(.nav-btn):not(.nav-btn-ghost):not(.btn-nav) {
+    display: block !important;
+  }
+}
+
+/* ── Generic mobile layout ───────────────────────────────────────────────────── */
+@media (max-width: 720px) {
+  /* Reduce nav padding */
+  nav { padding: 0 16px !important; }
+
+  /* Stack all grids */
+  .docs-layout { grid-template-columns: 1fr !important; gap: 0 !important; padding: 0 16px !important; }
+  .docs-sidebar { display: none; }
+  .model-grid, .card-grid, .feature-grid, .features-grid,
+  .mcp-grid, .announcement-grid, .info-grid, .metric-grid,
+  .dashboard-grid, .keys-grid, .ecosystem {
+    grid-template-columns: 1fr !important;
+  }
+  .hero { grid-template-columns: 1fr !important; gap: 32px !important; }
+
+  /* Page header */
+  .page-header { padding: 32px 16px 24px !important; }
+  .page-header h1 { font-size: 26px !important; }
+
+  /* Tables: horizontal scroll */
+  table, .data-table, .compare-table {
+    display: block !important; width: 100% !important;
+    overflow-x: auto !important; -webkit-overflow-scrolling: touch;
+  }
+  table thead, .data-table thead { display: table-header-group; }
+  table tbody, .data-table tbody { display: table-row-group; }
+  table tr, .data-table tr { display: table-row; }
+  table th, .data-table th,
+  table td, .data-table td {
+    display: table-cell !important; white-space: nowrap;
+    padding: 8px 10px !important;
+  }
+
+  /* Code blocks: horizontal scroll */
+  pre, .code-block, .code-block pre {
+    overflow-x: auto !important; -webkit-overflow-scrolling: touch;
+    white-space: pre !important;
+  }
+  .code-block pre { font-size: 11.5px !important; padding: 10px 12px !important; }
+
+  /* Hero sections */
+  .hero { padding: 40px 16px 0 !important; }
+  .hero-text { padding-bottom: 0 !important; }
+  .hero h1 { font-size: clamp(26px, 6vw, 36px) !important; }
+  .hero-terminal { display: none !important; }
+
+  /* Stats row wrap */
+  .stats-row { flex-wrap: wrap !important; }
+  .stat-item {
+    border-right: none !important;
+    border-bottom: 1px solid var(--border, #23242f) !important;
+  }
+  .stat-item:last-child { border-bottom: none !important; }
+
+  /* Main content */
+  main, .main { padding: 20px 16px 40px !important; }
+  .content, .prose { padding: 0 16px !important; }
+
+  /* MCP specific */
+  #mcp-term { display: none !important; }
+  .mcp-cards { grid-template-columns: 1fr !important; }
+
+  /* Reduce gaps and font sizes */
+  .msg-wrap, .input-inner { max-width: 100% !important; }
+  .msg { gap: 10px !important; padding: 12px 0 !important; }
+  .msg-avatar { width: 26px !important; height: 26px !important; font-size: 10px !important; }
+  .msg-text { font-size: 14px !important; }
+  .topbar { padding: 0 12px !important; }
+  .topbar-title { font-size: 13px !important; }
+
+  /* All callout/warning/info blocks */
+  .callout, .warn, .info-box, .tip { padding: 12px !important; }
+
+  /* Buttons and CTAs */
+  .cta-section { padding: 32px 20px !important; }
+
+  /* Auth/dashboard */
+  .auth-card { padding: 24px 20px !important; border-radius: 12px !important; }
+
+  /* Playground */
+  .playground-layout { flex-direction: column !important; }
+  .playground-sidebar { width: 100% !important; position: static !important; height: auto !important; }
+
+  /* Admin dashboard */
+  .dashboard { padding: 16px !important; }
+
+  /* Footer */
+  footer { padding: 24px 16px !important; text-align: center !important; }
+  footer .footer-links { flex-direction: column !important; gap: 12px !important; }
+
+  /* Lumen pages */
+  .info-grid { grid-template-columns: 1fr !important; }
+  .runs-grid { grid-template-columns: 1fr !important; }
+  .scenario { padding: 16px !important; }
+  .chart-container { max-width: 100% !important; overflow-x: auto !important; }
+  .chart-container canvas { max-width: 100% !important; height: auto !important; }
+
+  /* Landing page specific */
+  .news-wrap { padding: 0 16px !important; }
+  .ecosystem-card { padding: 20px !important; }
+
+  /* Keys page */
+  .keys-form { flex-direction: column !important; }
+  .keys-table-wrap { overflow-x: auto !important; }
+
+  /* Form elements */
+  input, select, textarea { font-size: 16px !important; } /* prevent iOS zoom */
+}
+
+/* ── Extra small screens ────────────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  nav { height: auto !important; min-height: 48px !important; flex-wrap: wrap !important; }
+  .msg-wrap { padding: 0 12px !important; }
+  .msg-role { font-size: 10px !important; }
+  .topbar { height: 48px !important; }
+  .greeting-title { font-size: 18px !important; }
+  .greeting { padding: 24px 16px !important; }
+  .hero h1 { font-size: clamp(22px, 7vw, 28px) !important; }
+  .hero-eyebrow { font-size: 10px !important; }
+  .page-header h1 { font-size: 22px !important; }
+  .model-card { padding: 14px !important; }
+  .code-block { margin: 8px 0 !important; border-radius: 7px !important; }
+  .hamburger-nav { width: 30px !important; height: 30px !important; font-size: 15px !important; }
+}
+
+/* ── 404 page ────────────────────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .stars-container { display: none !important; }
+}

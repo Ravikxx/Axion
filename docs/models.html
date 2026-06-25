@@ -153,6 +153,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
   <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
   <link rel="stylesheet" href="/assets/profile.css">
+  <link rel="stylesheet" href="assets/mobile.css">
 </head>
 <body>
 
@@ -165,6 +166,7 @@
   <div class="nav-right">
     <a href="https://www.npmjs.com/package/axion-cli" class="btn-nav">Install Free →</a>
   </div>
+  <button class="hamburger-nav" onclick="toggleNav()" aria-label="Menu">☰</button>
 </nav>
 
 <div class="page-header">
@@ -398,5 +400,10 @@
 </footer>
 
 <script src="/assets/profile.js"></script>
+
+<script>
+function toggleNav(){document.querySelector(".nav-links")?.classList.toggle("open");document.querySelectorAll("nav a:not(.brand):not(.nav-logo):not(.nav-btn):not(.nav-btn-ghost):not(.btn-nav)").forEach(function(a){a.style.display=a.style.display==="block"?"":"block"});document.querySelector("nav")?.classList.toggle("nav-links-visible")}
+document.addEventListener("click",function(e){if(!e.target.closest("nav")&&!e.target.closest(".hamburger-nav")){document.querySelector(".nav-links")?.classList.remove("open");document.querySelectorAll("nav a:not(.brand):not(.nav-logo):not(.nav-btn):not(.nav-btn-ghost):not(.btn-nav)").forEach(function(a){a.style.display=""});document.querySelector("nav")?.classList.remove("nav-links-visible")}})
+</script>
 </body>
 </html>
