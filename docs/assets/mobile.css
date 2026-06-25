@@ -31,17 +31,16 @@
     border-radius: 8px; width: 100%;
   }
 
-  /* Override for pages that hide nav links on mobile */
+  /* Hide ALL nav links + buttons on mobile (only logo + hamburger visible) */
   nav .nav-links { display: none !important; }
-  nav .nav-links.open { display: flex !important; }
+  nav a:not(.brand):not(.nav-logo) { display: none !important; }
+  nav .nav-right { display: none !important; }
+  nav .hamburger-nav { margin-left: auto !important; }
 
-  /* Light-theme navs (models, lumen pages, etc.) */
-  nav a:not(.brand):not(.nav-logo):not(.nav-btn):not(.nav-btn-ghost):not(.btn-nav) {
-    display: none !important;
-  }
-  nav.nav-links-visible a:not(.brand):not(.nav-logo):not(.nav-btn):not(.nav-btn-ghost):not(.btn-nav) {
-    display: block !important;
-  }
+  /* When drawer is open (.nav-links-visible on <nav>), show everything */
+  nav.nav-links-visible .nav-links { display: flex !important; }
+  nav.nav-links-visible .nav-right { display: flex !important; }
+  nav.nav-links-visible a:not(.brand):not(.nav-logo) { display: block !important; }
 }
 
 /* ── Generic mobile layout ───────────────────────────────────────────────────── */

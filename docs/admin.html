@@ -725,8 +725,8 @@
 <script src="/assets/profile.js"></script>
 
 <script>
-function toggleNav(){document.querySelector(".nav-links")?.classList.toggle("open");document.querySelectorAll("nav a:not(.brand):not(.nav-logo):not(.nav-btn):not(.nav-btn-ghost):not(.btn-nav)").forEach(function(a){a.style.display=a.style.display==="block"?"":"block"});document.querySelector("nav")?.classList.toggle("nav-links-visible")}
-document.addEventListener("click",function(e){if(!e.target.closest("nav")&&!e.target.closest(".hamburger-nav")){document.querySelector(".nav-links")?.classList.remove("open");document.querySelectorAll("nav a:not(.brand):not(.nav-logo):not(.nav-btn):not(.nav-btn-ghost):not(.btn-nav)").forEach(function(a){a.style.display=""});document.querySelector("nav")?.classList.remove("nav-links-visible")}})
+function toggleNav(){document.querySelector("nav")?.classList.toggle("nav-links-visible")}
+document.addEventListener("click",function(e){if(!e.target.closest("nav"))document.querySelector("nav")?.classList.remove("nav-links-visible")})
 </script>
 </body>
 </html>
