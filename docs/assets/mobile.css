@@ -152,6 +152,29 @@
   input, select, textarea { font-size: 16px !important; } /* prevent iOS zoom */
 }
 
+/* ── Landing page hero buttons ─────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .hero-actions { flex-direction: column !important; align-items: stretch !important; }
+  .hero-actions .btn { text-align: center !important; justify-content: center !important; }
+  .hero-actions .btn-primary {
+    font-size: 12px !important; padding: 11px 14px !important;
+    word-break: keep-all !important; white-space: nowrap !important;
+  }
+  .hero-actions .btn-ghost { font-size: 12px !important; padding: 10px 14px !important; }
+}
+
+/* ── News banner ────────────────────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .news-banner { transform: none !important; margin-top: 16px !important; }
+  .news-text { font-size: 12px !important; }
+}
+
+/* ── Link chips ─────────────────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .link-row { gap: 6px !important; }
+  .link-chip { font-size: 12px !important; padding: 5px 10px !important; }
+}
+
 /* ── Extra small screens ────────────────────────────────────────────────────── */
 @media (max-width: 480px) {
   nav { height: auto !important; min-height: 48px !important; flex-wrap: wrap !important; }
