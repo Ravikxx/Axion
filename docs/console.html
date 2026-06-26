@@ -1,0 +1,152 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Console — Axion</title>
+  <link rel="stylesheet" href="https://unpkg.com/xterm@5.5.0/css/xterm.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0d0e13; --surface: #12131a; --surface2: #1a1b24;
+      --border: #23242f; --border2: #2e2f3e;
+      --text: #e8e9f0; --muted: #6b6d80; --muted2: #9899a8;
+      --accent: #e8602c; --accent-d: #c04c1f;
+      --green: #34d399; --red: #ef4444;
+    }
+    html,body{height:100%}
+    body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.5;font-size:14px;display:flex;flex-direction:column}
+    a{color:inherit;text-decoration:none}
+    nav{border-bottom:1px solid var(--border);background:var(--surface);padding:0 32px;display:flex;align-items:center;height:52px;gap:24px;position:sticky;top:0;z-index:100}
+    .nav-logo{font-weight:800;font-size:16px;display:flex;align-items:center;gap:8px}
+    .nav-logo span{color:var(--accent)}
+    .logo-dot{width:22px;height:22px;background:var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px}
+    .nav-links{display:flex;gap:4px;margin-left:16px}
+    .nav-link{padding:5px 10px;border-radius:5px;font-size:13px;color:var(--muted2);transition:color .12s,background .12s}
+    .nav-link:hover{color:var(--text);background:var(--surface2)}
+    .nav-right{margin-left:auto;display:flex;gap:8px;align-items:center}
+    .nav-btn{padding:6px 14px;border-radius:6px;font-size:13px;font-weight:600;background:var(--accent);color:#fff;border:none;cursor:pointer;transition:background .15s;text-decoration:none;display:inline-block}
+    .nav-btn:hover{background:var(--accent-d)}
+    .nav-btn-ghost{padding:6px 14px;border-radius:6px;font-size:13px;font-weight:500;background:none;color:var(--muted2);border:1px solid var(--border2);transition:all .12s;text-decoration:none;display:inline-block}
+    .nav-btn-ghost:hover{color:var(--text);border-color:var(--muted)}
+    .hamburger-nav{display:none}
+    main{flex:1;display:flex;flex-direction:column;padding:16px;min-height:0}
+    .connect-panel{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:24px;margin-bottom:16px;max-width:600px;width:100%;margin:0 auto}
+    .connect-panel h2{font-size:18px;margin-bottom:4px}
+    .connect-panel p{color:var(--muted2);font-size:13px;margin-bottom:16px}
+    .connect-row{display:flex;gap:8px}
+    .connect-row input{flex:1;padding:10px 14px;border-radius:8px;border:1px solid var(--border2);background:var(--surface2);color:var(--text);font-size:14px;font-family:"SF Mono","Fira Code",Consolas,monospace}
+    .connect-row input:focus{outline:none;border-color:var(--accent)}
+    .connect-row button{padding:10px 20px;border-radius:8px;border:none;font-size:13px;font-weight:600;cursor:pointer;transition:background .15s}
+    .btn-connect{background:var(--accent);color:#fff}
+    .btn-connect:hover{background:var(--accent-d)}
+    .btn-disconnect{background:var(--red);color:#fff}
+    .connect-status{font-size:12px;margin-top:8px;color:var(--muted)}
+    .connect-status.connected{color:var(--green)}
+    #terminal-wrap{flex:1;display:none;flex-direction:column;min-height:0;background:#1a1b2e;border-radius:10px;overflow:hidden;border:1px solid var(--border)}
+    #terminal-wrap.active{display:flex}
+    #terminal-wrap .xterm{height:100%;padding:8px}
+    #terminal-wrap .xterm-viewport{overflow-y:auto!important}
+    footer{padding:16px;text-align:center;color:var(--muted);font-size:12px;border-top:1px solid var(--border)}
+    @media(max-width:720px){
+      nav{padding:0 16px}
+      .nav-links{display:none}
+      .hamburger-nav{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:7px;flex-shrink:0;border:1px solid var(--border2);background:var(--surface2);color:var(--text);cursor:pointer;font-size:17px;padding:0;line-height:1;margin-left:auto}
+      .hamburger-nav:hover{background:var(--surface3,#23242f)}
+      nav.nav-links-visible .nav-links{display:flex;position:fixed;top:52px;left:0;right:0;bottom:0;background:var(--bg);flex-direction:column;padding:16px;gap:4px;z-index:90}
+      nav.nav-links-visible .nav-right{display:flex;flex-direction:column;gap:8px;padding:16px;position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);z-index:91}
+      .connect-panel{padding:16px}
+      .connect-row{flex-direction:column}
+      main{padding:12px}
+    }
+  </style>
+  <link rel="stylesheet" href="/assets/mobile.css">
+</head>
+<body>
+<nav>
+  <a href="/" class="nav-logo"><span class="logo-dot">⚛</span> <span>Axion</span></a>
+  <div class="nav-links">
+    <a href="/docs" class="nav-link">Docs</a>
+    <a href="/lumen" class="nav-link">Lumen</a>
+    <a href="/mcp" class="nav-link">MCP</a>
+    <a href="/chat" class="nav-link">Chat</a>
+    <a href="/playground" class="nav-link">Playground</a>
+  </div>
+  <div class="nav-right">
+    <a href="https://github.com/AxionLabsAI/axion" class="nav-btn-ghost">GitHub</a>
+    <a href="/keys" class="nav-btn">Get started</a>
+  </div>
+  <button class="hamburger-nav" onclick="toggleNav()" aria-label="Menu">☰</button>
+</nav>
+<main>
+  <div class="connect-panel" id="connectPanel">
+    <h2>⎔ Remote Console</h2>
+    <p>Connect to the axion-bridge WebSocket on your machine, exposed via Cloudflare Tunnel.</p>
+    <div class="connect-row">
+      <input id="wsUrl" type="text" placeholder="wss://example.trycloudflare.com" value="ws://localhost:3002" />
+      <button class="btn-connect" id="connectBtn" onclick="doConnect()">Connect</button>
+    </div>
+    <div class="connect-status" id="connectStatus">Auto-connecting...</div>
+    <div class="connect-status" id="autoRetry" style="font-size:11px;color:var(--muted);display:none">Retrying...</div>
+  </div>
+  <div id="terminal-wrap"></div>
+</main>
+<footer>
+  <p>Run <code>axion-bridge</code> on your machine, then <code>cloudflared tunnel --url http://localhost:3002</code></p>
+</footer>
+<script src="https://unpkg.com/xterm@5.5.0/lib/xterm.js"></script>
+<script>
+let term=null,ws=null,autoTimer=null;
+function toggleNav(){document.querySelector("nav")?.classList.toggle("nav-links-visible")}
+document.addEventListener("click",function(e){if(!e.target.closest("nav"))document.querySelector("nav")?.classList.remove("nav-links-visible")});
+function doConnect(){
+  if(ws&&ws.readyState===WebSocket.OPEN){disconnect();return}
+  const u=document.getElementById("wsUrl").value.trim();if(u)connect(u)
+}
+function connect(url){
+  clearTimeout(autoTimer);autoTimer=null;
+  const st=document.getElementById("connectStatus"),btn=document.getElementById("connectBtn"),panel=document.getElementById("connectPanel"),wrap=document.getElementById("terminal-wrap"),rt=document.getElementById("autoRetry")
+  st.textContent="Connecting...";st.className="connect-status"
+  if(st&&rt)rt.style.display="none"
+  try{ws=new WebSocket(url)}catch(e){st.textContent="Invalid URL: "+e.message;return}
+  ws.onopen=()=>{
+    st.textContent="Connected";st.className="connect-status connected";btn.textContent="Disconnect";btn.className="btn-disconnect"
+    panel.style.display="none";wrap.classList.add("active");initTerm();term.focus()
+  }
+  ws.onmessage=(e)=>{if(term)term.write(e.data)}
+  ws.onclose=()=>{if(term)term.write("\r\n\x1b[31m[disconnected]\x1b[0m\r\n");cleanup()}
+  ws.onerror=()=>{if(!term)st.textContent="Connection failed";st.className="connect-status";cleanup()}
+}
+function cleanup(){
+  const st=document.getElementById("connectStatus"),btn=document.getElementById("connectBtn"),panel=document.getElementById("connectPanel")
+  ws=null;btn.textContent="Connect";btn.className="btn-connect";panel.style.display="block"
+  if(st)st.className="connect-status"
+  autoRetry()
+}
+function disconnect(){if(ws){ws.close();ws=null}}
+function autoRetry(){
+  clearTimeout(autoTimer);
+  const rt=document.getElementById("autoRetry")
+  if(rt)rt.style.display="block"
+  autoTimer=setTimeout(()=>{const u=document.getElementById("wsUrl").value.trim();if(u&&!term)connect(u)},3000)
+}
+function initTerm(){
+  if(term){term.dispose();term=null}
+  const wrap=document.getElementById("terminal-wrap")
+  term=new Terminal({cursorBlink:true,cursorStyle:"bar",fontSize:14,fontFamily:'"Cascadia Code","Fira Code",Consolas,monospace',
+    theme:{background:"#1a1b2e",foreground:"#cdd6f4",cursor:"#f5e0dc",selectionBackground:"#585b70",
+      black:"#45475a",red:"#f38ba8",green:"#a6e3a1",yellow:"#f9e2af",blue:"#89b4fa",magenta:"#f5c2e7",cyan:"#94e2d5",white:"#bac2de",
+      brightBlack:"#585b70",brightRed:"#f38ba8",brightGreen:"#a6e3a1",brightYellow:"#f9e2af",brightBlue:"#89b4fa",brightMagenta:"#f5c2e7",brightCyan:"#94e2d5",brightWhite:"#a6adc8"}})
+  term.open(wrap)
+  term.onData((d)=>{if(ws&&ws.readyState===WebSocket.OPEN)ws.send(d)})
+}
+(function(){
+  const i=document.getElementById("wsUrl")
+  try{const s=localStorage.getItem("axion-console-url");if(s)i.value=s}catch{}
+  i.addEventListener("input",function(){try{localStorage.setItem("axion-console-url",this.value)}catch{}})
+  i.addEventListener("keydown",function(e){if(e.key==="Enter")doConnect()})
+  connect("ws://"+location.host)
+})()
+</script>
+</body>
+</html>

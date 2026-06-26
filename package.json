@@ -8,7 +8,8 @@
     "axion-serve": "src/web/server.js",
     "axion-blender": "mcp-servers/blender/index.js",
     "axion-discord": "src/discord-daemon.js",
-    "axion-collect": "src/collect-daemon.js"
+    "axion-collect": "src/collect-daemon.js",
+    "axion-bridge": "src/bridge.js"
   },
   "scripts": {
     "build": "node build.js",
@@ -47,6 +48,7 @@
   "files": [
     "dist/",
     "src/",
+    "docs/",
     "mcp-servers/",
     "build.js",
     "build-web.js"
