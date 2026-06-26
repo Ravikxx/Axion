@@ -145,7 +145,7 @@ function initTerm(){
   try{const s=localStorage.getItem("axion-console-url");if(s)i.value=s}catch{}
   i.addEventListener("input",function(){try{localStorage.setItem("axion-console-url",this.value)}catch{}})
   i.addEventListener("keydown",function(e){if(e.key==="Enter")doConnect()})
-  connect("ws://"+location.host)
+  connect((location.protocol==="https:"?"wss://":"ws://")+location.host)
 })()
 </script>
 </body>
