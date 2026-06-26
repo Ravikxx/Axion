@@ -94,7 +94,8 @@
 <footer>
   <p>Run <code>axion-bridge</code> on your machine, then <code>cloudflared tunnel --url http://localhost:3002</code></p>
 </footer>
-<script src="https://unpkg.com/xterm@5.5.0/lib/xterm.js"></script>
+<script>let xtermOk=true;function xtermFailed(){xtermOk=false}</script>
+<script src="https://unpkg.com/xterm@5.5.0/lib/xterm.js" onerror="xtermFailed()"></script>
 <script>
 let term=null,ws=null,autoTimer=null;
 function toggleNav(){document.querySelector("nav")?.classList.toggle("nav-links-visible")}
@@ -110,8 +111,10 @@ function connect(url){
   if(st&&rt)rt.style.display="none"
   try{ws=new WebSocket(url)}catch(e){st.textContent="Invalid URL: "+e.message;return}
   ws.onopen=()=>{
+    if(!xtermOk){st.textContent="xterm.js failed to load — check internet";st.className="connect-status";return}
     st.textContent="Connected";st.className="connect-status connected";btn.textContent="Disconnect";btn.className="btn-disconnect"
-    panel.style.display="none";wrap.classList.add("active");initTerm();term.focus()
+    if(!initTerm())return
+    panel.style.display="none";wrap.classList.add("active");term.focus()
   }
   ws.onmessage=(e)=>{if(term)term.write(e.data)}
   ws.onclose=()=>{if(term)term.write("\r\n\x1b[31m[disconnected]\x1b[0m\r\n");cleanup()}
@@ -120,8 +123,12 @@ function connect(url){
 function cleanup(){
   const st=document.getElementById("connectStatus"),btn=document.getElementById("connectBtn"),panel=document.getElementById("connectPanel")
   ws=null;btn.textContent="Connect";btn.className="btn-connect";panel.style.display="block"
-  if(st)st.className="connect-status"
+  if(st)st.className="connect-status";hideTerm()
   autoRetry()
+}
+function hideTerm(){
+  const wrap=document.getElementById("terminal-wrap")
+  wrap.classList.remove("active");if(term){term.dispose();term=null}
 }
 function disconnect(){if(ws){ws.close();ws=null}}
 function autoRetry(){
@@ -131,14 +138,18 @@ function autoRetry(){
   autoTimer=setTimeout(()=>{const u=document.getElementById("wsUrl").value.trim();if(u&&!term)connect(u)},3000)
 }
 function initTerm(){
-  if(term){term.dispose();term=null}
-  const wrap=document.getElementById("terminal-wrap")
-  term=new Terminal({cursorBlink:true,cursorStyle:"bar",fontSize:14,fontFamily:'"Cascadia Code","Fira Code",Consolas,monospace',
-    theme:{background:"#1a1b2e",foreground:"#cdd6f4",cursor:"#f5e0dc",selectionBackground:"#585b70",
-      black:"#45475a",red:"#f38ba8",green:"#a6e3a1",yellow:"#f9e2af",blue:"#89b4fa",magenta:"#f5c2e7",cyan:"#94e2d5",white:"#bac2de",
-      brightBlack:"#585b70",brightRed:"#f38ba8",brightGreen:"#a6e3a1",brightYellow:"#f9e2af",brightBlue:"#89b4fa",brightMagenta:"#f5c2e7",brightCyan:"#94e2d5",brightWhite:"#a6adc8"}})
-  term.open(wrap)
-  term.onData((d)=>{if(ws&&ws.readyState===WebSocket.OPEN)ws.send(d)})
+  try{
+    if(term){term.dispose();term=null}
+    if(typeof Terminal==="undefined")return false
+    const wrap=document.getElementById("terminal-wrap")
+    term=new Terminal({cursorBlink:true,cursorStyle:"bar",fontSize:14,fontFamily:'"Cascadia Code","Fira Code",Consolas,monospace',
+      theme:{background:"#1a1b2e",foreground:"#cdd6f4",cursor:"#f5e0dc",selectionBackground:"#585b70",
+        black:"#45475a",red:"#f38ba8",green:"#a6e3a1",yellow:"#f9e2af",blue:"#89b4fa",magenta:"#f5c2e7",cyan:"#94e2d5",white:"#bac2de",
+        brightBlack:"#585b70",brightRed:"#f38ba8",brightGreen:"#a6e3a1",brightYellow:"#f9e2af",brightBlue:"#89b4fa",brightMagenta:"#f5c2e7",brightCyan:"#94e2d5",brightWhite:"#a6adc8"}})
+    term.open(wrap)
+    term.onData((d)=>{if(ws&&ws.readyState===WebSocket.OPEN)ws.send(d)})
+    return true
+  }catch(e){console.error("xterm init failed",e);return false}
 }
 (function(){
   const i=document.getElementById("wsUrl")
