@@ -22,6 +22,7 @@ const server = createServer((req, res) => {
 });
 
 const wss = new WebSocketServer({ server });
+const shells = new Set();
 
 wss.on('connection', (ws, req) => {
   const params = new URL(req.url || '/', 'http://localhost').searchParams;
@@ -39,6 +40,7 @@ wss.on('connection', (ws, req) => {
     stdio: ['pipe', 'pipe', 'pipe'],
     env: { ...process.env, TERM: 'xterm-256color' },
   });
+  shells.add(proc);
 
   ws.on('message', (data) => {
     if (proc.stdin.writable) proc.stdin.write(data.toString());
@@ -52,6 +54,7 @@ wss.on('connection', (ws, req) => {
   });
 
   proc.on('exit', (code) => {
+    shells.delete(proc);
     ws.send(`\r\n\x1b[31m[process exited with code ${code}]\x1b[0m\r\n`);
     ws.close();
   });
@@ -76,6 +79,16 @@ for (const name of Object.keys(ifaces)) {
   }
   if (lanIp !== '127.0.0.1') break;
 }
+
+function shutdown() {
+  console.log('\n  shutting down...');
+  for (const proc of shells) proc.kill();
+  shells.clear();
+  wss.close();
+  server.close(() => process.exit(0));
+}
+process.on('SIGINT', shutdown);
+process.on('SIGTERM', shutdown);
 
 server.listen(PORT, () => {
   const localUrl = `http://localhost:${PORT}`;
