@@ -2,8 +2,9 @@
 import { createServer } from 'http';
 import { spawn } from 'child_process';
 import { readFileSync } from 'fs';
+import { networkInterfaces } from 'os';
 import { WebSocketServer } from 'ws';
-import { fileURLToPath } from 'url';
+import QRCode from 'qrcode';
 
 const PORT = Number(process.env.BRIDGE_PORT) || 3002;
 const TOKEN = process.env.BRIDGE_TOKEN || '';
@@ -23,7 +24,6 @@ const server = createServer((req, res) => {
 const wss = new WebSocketServer({ server });
 
 wss.on('connection', (ws, req) => {
-  // Token auth via query string or header
   const params = new URL(req.url || '/', 'http://localhost').searchParams;
   const token = params.get('token') || '';
   if (TOKEN && token !== TOKEN) {
@@ -65,8 +65,35 @@ wss.on('connection', (ws, req) => {
   ws.send(`\x1b[32m[axion bridge — ${shell.cmd} connected]\x1b[0m\r\n`);
 });
 
+const ifaces = networkInterfaces();
+let lanIp = '127.0.0.1';
+for (const name of Object.keys(ifaces)) {
+  for (const iface of ifaces[name] || []) {
+    if (iface.family === 'IPv4' && !iface.internal) {
+      lanIp = iface.address;
+      break;
+    }
+  }
+  if (lanIp !== '127.0.0.1') break;
+}
+
 server.listen(PORT, () => {
-  console.log(`axion bridge — WebSocket server on ws://localhost:${PORT}`);
-  if (TOKEN) console.log(`token auth enabled (BRIDGE_TOKEN)`);
-  console.log('Expose via:  cloudflared tunnel --url http://localhost:' + PORT);
+  const localUrl = `http://localhost:${PORT}`;
+  const lanUrl = `http://${lanIp}:${PORT}`;
+  const wsUrl = `ws://${lanIp}:${PORT}`;
+
+  console.log(`
+  ╔══════════════════════════════════════╗
+  ║         ⎔  axion bridge              ║
+  ╠══════════════════════════════════════╣
+  ║  Local:  ${localUrl.padEnd(28)}║
+  ║  LAN:    ${lanUrl.padEnd(28)}║
+  ╚══════════════════════════════════════╝`);
+
+  QRCode.toString(lanUrl, { type: 'terminal', small: true }, (err, qr) => {
+    if (!err) console.log(qr);
+  });
+
+  if (TOKEN) console.log(`  token auth enabled (BRIDGE_TOKEN)`);
+  console.log(`  Expose via:  cloudflared tunnel --url ${localUrl}\n`);
 });
