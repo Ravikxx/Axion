@@ -213,7 +213,7 @@ function Spinner() {
 
 // ── Sidebar ───────────────────────────────────────────────────────────────────
 
-function Sidebar({ open, chats, activeTab, sessionTab, onTabChange, onNewChat, onResume, onRefresh, onToggle, onDeleteChat, onRenameChat, onSettings }) {
+function Sidebar({ open, chats, activeTab, sessionTab, onTabChange, onNewChat, onResume, onRefresh, onToggle, onDeleteChat, onRenameChat, onSettings, consoleActive }) {
   const [renaming, setRenaming]       = useState(null); // { name, value }
   const [contextMenu, setContextMenu] = useState(null); // { x, y, name }
 
@@ -280,6 +280,13 @@ function Sidebar({ open, chats, activeTab, sessionTab, onTabChange, onNewChat, o
           title={sessionTab && activeTab !== 'code' ? 'Start a new chat to switch tabs' : 'Code mode'}
         >
           <span className="nav-icon">⌨</span> Code
+        </button>
+        <button
+          className={`sidebar-nav-item ${consoleActive ? 'active' : ''}`}
+          onClick={() => onTabChange('console')}
+          title="Open a system terminal (powershell)"
+        >
+          <span className="nav-icon">⎔</span> Console
         </button>
       </nav>
 
@@ -495,6 +502,78 @@ function SettingsPanel({ status, onClose, onSend }) {
       </div>
     </div>
   );
+}
+
+// ── Console Terminal Panel ─────────────────────────────────────────────────────
+
+function ConsolePanel({ wsRef }) {
+  const termRef = useRef(null);
+  const termInitRef = useRef(false);
+
+  useEffect(() => {
+    if (termInitRef.current) return;
+    termInitRef.current = true;
+
+    const term = new window.Terminal({
+      cursorBlink: true,
+      cursorStyle: 'bar',
+      fontSize: 14,
+      fontFamily: '"Cascadia Code", "Fira Code", Consolas, monospace',
+      theme: {
+        background: '#1e1e2e',
+        foreground: '#cdd6f4',
+        cursor: '#f5e0dc',
+        selectionBackground: '#585b70',
+        black: '#45475a',
+        red: '#f38ba8',
+        green: '#a6e3a1',
+        yellow: '#f9e2af',
+        blue: '#89b4fa',
+        magenta: '#f5c2e7',
+        cyan: '#94e2d5',
+        white: '#bac2de',
+        brightBlack: '#585b70',
+        brightRed: '#f38ba8',
+        brightGreen: '#a6e3a1',
+        brightYellow: '#f9e2af',
+        brightBlue: '#89b4fa',
+        brightMagenta: '#f5c2e7',
+        brightCyan: '#94e2d5',
+        brightWhite: '#a6adc8',
+      },
+    });
+
+    const el = termRef.current;
+    if (!el) return;
+    term.open(el);
+
+    // Connect terminal I/O via WebSocket
+    const ws = wsRef.current;
+    if (ws && ws.readyState === WebSocket.OPEN) {
+      ws.send(JSON.stringify({ type: 'terminal_start' }));
+    }
+
+    term.onData((data) => {
+      if (ws && ws.readyState === WebSocket.OPEN) {
+        ws.send(JSON.stringify({ type: 'terminal_input', data }));
+      }
+    });
+
+    const handler = (evt) => {
+      const d = JSON.parse(evt.data);
+      if (d.type === 'terminal_output') term.write(d.data);
+      if (d.type === 'terminal_end') term.write('\r\n\x1b[31m[process exited]\x1b[0m\r\n');
+    };
+    ws?.addEventListener('message', handler);
+
+    return () => {
+      ws?.removeEventListener('message', handler);
+      term.dispose();
+      termInitRef.current = false;
+    };
+  }, [wsRef]);
+
+  return <div ref={termRef} style={{ height: '100%', width: '100%' }} />;
 }
 
 // ── Main App ──────────────────────────────────────────────────────────────────
@@ -839,9 +918,9 @@ export default function App() {
         chats={chats}
         activeTab={activeTab}
         sessionTab={sessionTab}
-        onTabChange={tab => { if (!sessionTab) { setActiveTab(tab); setShowSettings(false); } }}
+        consoleActive={activeTab === 'console'}
+        onTabChange={tab => { setActiveTab(tab); setShowSettings(false); }}
         onNewChat={() => { sendWs({ type: 'submit', content: '/clear' }); setShowSettings(false); }}
-        onResume={name => { sendWs({ type: 'submit', content: `/resume ${name}` }); setShowSettings(false); }}
         onRefresh={() => sendWs({ type: 'list_chats' })}
         onToggle={() => setSidebarOpen(v => !v)}
         onDeleteChat={handleDeleteChat}
@@ -893,6 +972,19 @@ export default function App() {
             onClose={() => setShowSettings(false)}
             onSend={cmd => { sendCmd(cmd); }}
           />
+        ) : activeTab === 'console' ? (
+
+          /* ── Console / terminal ──────────────────────────────────────────── */
+          <div id="terminal-wrap" className="active" style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+            <div className="console-toolbar">
+              <span>⎔ Terminal</span>
+              <span className="console-status connected">● connected</span>
+            </div>
+            <div style={{ flex: 1, minHeight: 0 }}>
+              <ConsolePanel wsRef={wsRef} />
+            </div>
+          </div>
+
         ) : (
           <>
             {/* Messages */}

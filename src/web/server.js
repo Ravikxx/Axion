@@ -4,6 +4,7 @@ import { readFileSync, writeFileSync, unlinkSync, mkdirSync } from 'fs';
 import { join, dirname, basename } from 'path';
 import { homedir } from 'os';
 import { fileURLToPath } from 'url';
+import { spawn } from 'child_process';
 import { WebSocketServer } from 'ws';
 import { Agent } from '../agent/agent.js';
 import {
@@ -139,6 +140,10 @@ function createSharedSession(defaultModel, defaultMode) {
   let streamBuffer    = '';
   let uploadPaths     = []; // file paths uploaded in current session
 
+  // ── Terminal / console ────────────────────────────────────────────────────
+  let terminalProc    = null; // child_process spawn
+  let terminalBuf     = '';   // buffered output before WS is connected
+
   const MAX_GOAL_ITERS = 25;
   const THINKING_WORDS = ['baking','brewing','conjuring','weaving','crafting',
                           'simmering','forging','hatching','distilling','wrangling',
@@ -174,6 +179,50 @@ function createSharedSession(defaultModel, defaultMode) {
 
   function broadcastStatus() {
     broadcast({ type: 'status', model, mode, tokens, goal, extThinking, thinkingBudget });
+  }
+
+  // ── Terminal / console ────────────────────────────────────────────────────
+
+  function startTerminal(ws) {
+    if (terminalProc) {
+      // Flush buffered output to the requesting client
+      if (terminalBuf) {
+        sendTo(ws, { type: 'terminal_output', data: terminalBuf });
+      }
+      return;
+    }
+    const shell = process.platform === 'win32'
+      ? { cmd: 'powershell.exe', args: ['-NoLogo'] }
+      : { cmd: 'bash', args: ['--norc'] };
+    terminalBuf = '';
+    terminalProc = spawn(shell.cmd, shell.args, {
+      stdio: ['pipe', 'pipe', 'pipe'],
+      env: { ...process.env, TERM: 'xterm-256color' },
+    });
+    terminalProc.stdout.on('data', (chunk) => {
+      terminalBuf += chunk.toString();
+      broadcast({ type: 'terminal_output', data: chunk.toString() });
+    });
+    terminalProc.stderr.on('data', (chunk) => {
+      terminalBuf += chunk.toString();
+      broadcast({ type: 'terminal_output', data: chunk.toString() });
+    });
+    terminalProc.on('exit', () => {
+      terminalProc = null;
+      terminalBuf = '';
+      broadcast({ type: 'terminal_end' });
+    });
+    terminalProc.on('error', (err) => {
+      broadcast({ type: 'terminal_error', message: err.message });
+    });
+  }
+
+  function stopTerminal() {
+    if (terminalProc) {
+      terminalProc.kill();
+      terminalProc = null;
+      terminalBuf = '';
+    }
   }
 
   // ── Agent (shared across all clients) ──────────────────────────────────────
@@ -251,6 +300,22 @@ function createSharedSession(defaultModel, defaultMode) {
           chatName: currentChatName,
         });
         broadcastStatus();
+        return;
+      }
+
+      // ── Terminal / console ──────────────────────────────────────────────────
+      if (msg.type === 'terminal_start') {
+        startTerminal(ws);
+        return;
+      }
+      if (msg.type === 'terminal_input') {
+        if (terminalProc && terminalProc.stdin.writable) {
+          terminalProc.stdin.write(msg.data);
+        }
+        return;
+      }
+      if (msg.type === 'terminal_resize') {
+        // child_process.spawn doesn't support resize; upgrade to node-pty for this
         return;
       }
 
@@ -461,6 +526,7 @@ function createSharedSession(defaultModel, defaultMode) {
         lastUserMsg = ''; displayMessages = [];
         currentChatName = null; chatAutoNamed = false; sessionTab = null; messageQueue = [];
         uploadPaths = [];
+        stopTerminal();
         broadcast({ type: 'clear' });
         broadcast({ type: 'queue_update', count: 0 });
         broadcastStatus();

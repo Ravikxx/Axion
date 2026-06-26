@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Axion</title>
+  <link rel="stylesheet" href="https://unpkg.com/xterm@5.5.0/css/xterm.css" />
+  <script src="https://unpkg.com/xterm@5.5.0/lib/xterm.js"></script>
   <script>
     /* Apply saved theme before paint to avoid a flash */
     (function () {
@@ -613,6 +615,20 @@
       background: var(--bg3); padding: 1px 6px; border-radius: 4px;
       font-size: 12px; color: var(--warm1);
     }
+    /* ── Console / terminal tab ────────────────────────────────────────────── */
+    #terminal-wrap { display: none; height: 100%; }
+    #terminal-wrap.active { display: block; }
+    #terminal-wrap .xterm { height: 100%; padding: 8px; }
+    #terminal-wrap .xterm-viewport { overflow-y: auto !important; }
+    .console-toolbar {
+      display: flex; align-items: center; gap: 8px;
+      padding: 6px 12px; background: var(--sidebar-bg);
+      border-bottom: 1px solid var(--border);
+      font-size: 12px; color: var(--muted);
+    }
+    .console-toolbar .console-status { margin-left: auto; }
+    .console-toolbar .console-status.connected { color: var(--green, #22c55e); }
+    .console-toolbar .console-status.disconnected { color: var(--red, #ef4444); }
   </style>
 </head>
 <body>
