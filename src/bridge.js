@@ -10,11 +10,23 @@ const PORT = Number(process.env.BRIDGE_PORT) || 3002;
 const TOKEN = process.env.BRIDGE_TOKEN || '';
 
 const html = readFileSync(new URL('../docs/console.html', import.meta.url), 'utf-8');
+const xtermJs = readFileSync(new URL('../vendor/xterm.js', import.meta.url), 'utf-8');
+const xtermCss = readFileSync(new URL('../vendor/xterm.css', import.meta.url), 'utf-8');
 
 const server = createServer((req, res) => {
   if (req.url === '/health') {
     res.writeHead(200, { 'Content-Type': 'text/plain' });
     res.end('ok');
+    return;
+  }
+  if (req.url === '/xterm.js') {
+    res.writeHead(200, { 'Content-Type': 'application/javascript' });
+    res.end(xtermJs);
+    return;
+  }
+  if (req.url === '/xterm.css') {
+    res.writeHead(200, { 'Content-Type': 'text/css' });
+    res.end(xtermCss);
     return;
   }
   res.writeHead(200, { 'Content-Type': 'text/html' });

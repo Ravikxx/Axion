@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Console — Axion</title>
-  <link rel="stylesheet" href="https://unpkg.com/xterm@5.5.0/css/xterm.css" />
+  <link rel="stylesheet" href="/xterm.css" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -94,8 +94,7 @@
 <footer>
   <p>Run <code>axion-bridge</code> on your machine, then <code>cloudflared tunnel --url http://localhost:3002</code></p>
 </footer>
-<script>let xtermOk=true;function xtermFailed(){xtermOk=false}</script>
-<script src="https://unpkg.com/xterm@5.5.0/lib/xterm.js" onerror="xtermFailed()"></script>
+<script src="/xterm.js"></script>
 <script>
 let term=null,ws=null,autoTimer=null;
 function toggleNav(){document.querySelector("nav")?.classList.toggle("nav-links-visible")}
@@ -111,7 +110,6 @@ function connect(url){
   if(st&&rt)rt.style.display="none"
   try{ws=new WebSocket(url)}catch(e){st.textContent="Invalid URL: "+e.message;return}
   ws.onopen=()=>{
-    if(!xtermOk){st.textContent="xterm.js failed to load — check internet";st.className="connect-status";return}
     st.textContent="Connected";st.className="connect-status connected";btn.textContent="Disconnect";btn.className="btn-disconnect"
     if(!initTerm())return
     panel.style.display="none";wrap.classList.add("active");term.focus()

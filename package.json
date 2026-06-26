@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",
+    "@xterm/xterm": "^6.0.0",
     "chalk": "^5.3.0",
     "discord.js": "^14.26.4",
     "dotenv": "^16.4.5",
@@ -50,6 +51,7 @@
     "dist/",
     "src/",
     "docs/",
+    "vendor/",
     "mcp-servers/",
     "build.js",
     "build-web.js"
