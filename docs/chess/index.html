@@ -184,7 +184,7 @@ function CapturedPieces({ history }) {
 // ── Move history panel ────────────────────────────────────────────────────────
 function MoveHistory({ history }) {
   const endRef = useRef(null);
-  useEffect(() => { endRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [history]);
+  useEffect(() => { endRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, [history]);
   const pairs = [];
   for (let i = 0; i < history.length; i += 2) {
     pairs.push({ n: Math.floor(i / 2) + 1, w: history[i], b: history[i + 1] });
