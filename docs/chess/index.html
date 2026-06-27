@@ -23,7 +23,8 @@
   .sq.last-from{background:#aaa23a!important}
   .sq.last-to{background:#cdd16f!important}
   .sq.in-check{background:#e74c3c!important}
-  .board-wrap{display:grid;grid-template-columns:repeat(8,1fr);border:2px solid #3a3b4a;border-radius:4px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.5)}
+  .board-wrap{display:grid;grid-template-columns:repeat(8,1fr);border:2px solid #3a3b4a;border-radius:4px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.5);touch-action:none}
+  .sq{touch-action:none}
   input[type=range]{accent-color:#e8602c}
   ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:#1a1b24}::-webkit-scrollbar-thumb{background:#3a3b4a;border-radius:2px}
 </style>
@@ -183,14 +184,18 @@ function CapturedPieces({ history }) {
 
 // ── Move history panel ────────────────────────────────────────────────────────
 function MoveHistory({ history }) {
-  const endRef = useRef(null);
-  useEffect(() => { endRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, [history]);
+  const containerRef = useRef(null);
+  useEffect(() => {
+    if (containerRef.current) {
+      containerRef.current.scrollTop = containerRef.current.scrollHeight;
+    }
+  }, [history]);
   const pairs = [];
   for (let i = 0; i < history.length; i += 2) {
     pairs.push({ n: Math.floor(i / 2) + 1, w: history[i], b: history[i + 1] });
   }
   return (
-    <div className="overflow-y-auto max-h-48 text-xs font-mono space-y-0.5">
+    <div ref={containerRef} className="overflow-y-auto max-h-48 text-xs font-mono space-y-0.5">
       {pairs.length === 0 && <p className="text-[#6b6d80]">No moves yet</p>}
       {pairs.map(p => (
         <div key={p.n} className="flex gap-1">
@@ -199,7 +204,6 @@ function MoveHistory({ history }) {
           <span className="text-[#9899a8] w-16">{p.b?.san || ''}</span>
         </div>
       ))}
-      <div ref={endRef} />
     </div>
   );
 }
