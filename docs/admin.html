@@ -1,24 +1,13 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Axion Admin</title>
+  <link rel="stylesheet" href="/assets/theme-dark.css">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg: #0f0f11;
-      --surface: #18181c;
-      --border: #2a2a30;
-      --text: #e8e8f0;
-      --muted: #888;
-      --accent: #e8602c;
-      --accent-dim: #c04c1f;
-      --green: #34d399;
-      --red: #f87171;
-      --yellow: #fbbf24;
-    }
+
 
     body {
       background: var(--bg);
@@ -185,7 +174,7 @@
     }
     .badge-green { background: rgba(52,211,153,.15); color: var(--green); }
     .badge-red { background: rgba(248,113,113,.15); color: var(--red); }
-    .badge-owner { background: rgba(232,96,44,.15); color: var(--accent); }
+    .badge-owner { background: rgba(196,154,60,.15); color: var(--accent); }
 
     .empty-row td { text-align: center; color: var(--muted); padding: 32px; }
 
@@ -626,7 +615,7 @@
       const y = PAD_T + chartH - barH
 
       // Bar
-      ctx.fillStyle = d.count > 0 ? '#e8602c' : 'rgba(255,255,255,0.06)'
+      ctx.fillStyle = d.count > 0 ? '#c49a3c' : 'rgba(255,255,255,0.06)'
       const rx = 3
       const bx = x + barW * 0.15, bw = barW * 0.7
       ctx.beginPath()

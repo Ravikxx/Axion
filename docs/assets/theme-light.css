@@ -1,0 +1,19 @@
+/* Light theme — edit here to change the site color scheme */
+:root {
+  --bg:           #f4efe6;
+  --bg-card:      #faf7f2;
+  --border:       #e0d8cc;
+  --text:         #1a1209;
+  --text-muted:   #6b5e4e;
+  --accent:       #c49a3c;
+  --accent-light: #faf3e0;
+  --accent-lt:    #faf3e0;
+  --dark:         #1a1209;
+  --green:        #2d7a3a;
+  --green-light:  #e8f4ea;
+  --green-lt:     #e8f4ea;
+  --red:          #dc2626;
+  --red-light:    #fef2f2;
+  --veil:         #8b7355;
+  --lumen:        #c49a3c;
+}

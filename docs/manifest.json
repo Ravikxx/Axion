@@ -4,8 +4,8 @@
   "description": "Chat with Lumen, the free AI model by Axion Labs.",
   "start_url": "/chat",
   "display": "standalone",
-  "background_color": "#0d0e13",
-  "theme_color": "#e8602c",
+  "background_color": "#232323",
+  "theme_color": "#c49a3c",
   "icons": [
     { "src": "/assets/logo-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
     { "src": "/assets/logo-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }

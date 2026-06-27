@@ -1,27 +1,14 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>API Keys — Axion Labs</title>
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  <link rel="stylesheet" href="/assets/theme-dark.css">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg:      #0d0e13;
-      --surface: #12131a;
-      --surface2:#1a1b24;
-      --border:  #23242f;
-      --border2: #2e2f3e;
-      --text:    #e8e9f0;
-      --muted:   #6b6d80;
-      --muted2:  #9899a8;
-      --accent:  #e8602c;
-      --accent-d:#c04c1f;
-      --green:   #34d399;
-      --red:     #f87171;
-    }
+
 
     html, body { height: 100%; }
     body {
@@ -297,7 +284,7 @@
     }
     .key-reveal-warning {
       font-size: 12px; color: var(--accent);
-      background: rgba(232,96,44,.08); border: 1px solid rgba(232,96,44,.2);
+      background: rgba(196,154,60,.08); border: 1px solid rgba(196,154,60,.2);
       border-radius: 6px; padding: 9px 12px; margin-bottom: 10px;
     }
 
@@ -378,7 +365,7 @@
       font-size: 11px; font-weight: 600;
       background: var(--surface2); color: var(--muted2);
     }
-    .role-badge.owner { background: rgba(232,96,44,.12); color: var(--accent); }
+    .role-badge.owner { background: rgba(196,154,60,.12); color: var(--accent); }
 
     /* ── Danger zone ── */
     .danger-zone {
@@ -392,7 +379,7 @@
 
     /* ── Invite accept banner ── */
     .invite-banner {
-      background: rgba(232,96,44,.08); border: 1px solid rgba(232,96,44,.3);
+      background: rgba(196,154,60,.08); border: 1px solid rgba(196,154,60,.3);
       border-radius: 10px; padding: 16px 20px; margin-bottom: 20px;
       display: flex; align-items: center; justify-content: space-between; gap: 16px;
     }
@@ -1004,7 +991,7 @@
     const ctx = canvas.getContext('2d')
     ctx.scale(dpr, dpr)
 
-    const accent = '#e8602c'
+    const accent = '#c49a3c'
     const muted = '#6b6d80'
     const max = Math.max(...daily.map(d => d.count), 1)
     const barW = Math.floor((W - 28) / daily.length) - 3

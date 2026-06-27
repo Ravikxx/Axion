@@ -1,0 +1,20 @@
+/* Dark theme — edit here to change the site color scheme */
+:root {
+  --bg:        #232323;
+  --surface:   #2e2e2e;
+  --surface2:  #383838;
+  --surface3:  #424242;
+  --border:    #404040;
+  --border2:   #505050;
+  --text:      #e8e9f0;
+  --muted:     #8a8a9a;
+  --muted2:    #a0a0b0;
+  --accent:    #c49a3c;
+  --accent-d:  #a37e2e;
+  --accent-dim:#a37e2e;
+  --green:     #34d399;
+  --red:       #f87171;
+  --yellow:    #fbbf24;
+  --user-bg:   #2a2a3a;
+  --asst-bg:   #2e2e2e;
+}
