@@ -51,12 +51,12 @@ function sqName(col, row) { return FILES[col] + RANKS[row]; }
 // ── Groq AI ───────────────────────────────────────────────────────────────────
 async function groqMove(fen, history, strategy, difficulty, apiKey) {
   const diffDesc = difficulty <= 3
-    ? 'beginner — make occasional mistakes and blunders'
+    ? 'beginner — try to follow the strategy but make mistakes and blunders in execution. Pick suboptimal squares, move the wrong piece sometimes, but still attempt the strategic direction'
     : difficulty <= 6
-    ? 'intermediate — play solidly but not perfectly'
+    ? 'intermediate — follow the strategy with occasional inaccuracies'
     : difficulty <= 8
-    ? 'advanced — play accurately'
-    : 'expert — play at the highest level';
+    ? 'advanced — follow the strategy accurately'
+    : 'expert — execute the strategy precisely and at the highest level';
 
   const recentMoves = history.slice(-16).join(' ') || '(none)';
 
@@ -95,8 +95,8 @@ function applyRandomMove(chess) {
 async function getAiMove(chess, strategy, difficulty, apiKey) {
   if (!apiKey) return applyRandomMove(chess);
 
-  // Low difficulty: sometimes just random
-  const randChance = difficulty <= 3 ? 0.55 : difficulty <= 6 ? 0.25 : difficulty <= 8 ? 0.08 : 0;
+  // Only skip Groq (go random) when there's no strategy set AND difficulty is low
+  const randChance = strategy ? 0 : (difficulty <= 3 ? 0.55 : difficulty <= 6 ? 0.25 : difficulty <= 8 ? 0.08 : 0);
   if (Math.random() < randChance) return applyRandomMove(chess);
 
   const fen = chess.fen();
