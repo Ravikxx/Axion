@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
-import { Box, Text, Static, useApp } from 'ink';
+import { Box, Text, Static, useApp, useInput } from 'ink';
+import { dispatchClick } from './clickable.js';
 import { execSync, spawn } from 'child_process';
 import { existsSync, readFileSync, unlinkSync, statSync, readdirSync } from 'fs';
 import { join, resolve } from 'path';
@@ -363,6 +364,13 @@ export function App({
   const [tokens, setTokens]               = useState({ total: 0, input: 0, output: 0 });
   const [diffsExpanded, setDiffsExpanded] = useState(false);
   const [thinkingExpanded, setThinkingExpanded] = useState(true);
+
+  // Mouse click handling for per-item expand/collapse
+  useInput((input, key) => {
+    if (key.mouse && key.mouse.action === 'mousedown') {
+      dispatchClick(key.mouse.x, key.mouse.y);
+    }
+  }, { mouse: true });
 
   // Thinking timer
   useEffect(() => {

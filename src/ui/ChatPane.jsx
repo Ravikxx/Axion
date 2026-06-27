@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { Box, Text } from 'ink';
 import { ToolBlock } from './ToolBlock.jsx';
 import { RichText } from './RichText.jsx';
+import { registerClickable, unregisterClickable } from './clickable.js';
 
 function errorHint(content) {
   if (!content) return null;
@@ -21,6 +22,40 @@ function errorHint(content) {
 }
 
 export function MessageRow({ msg, expanded = false, thinkingExpanded = false }) {
+  const [localExpanded, setLocalExpanded] = useState(null);
+  const [localThinkingExpanded, setLocalThinkingExpanded] = useState(null);
+
+  const effectiveExpanded = localExpanded !== null ? localExpanded : expanded;
+  const effectiveThinkingExpanded = localThinkingExpanded !== null ? localThinkingExpanded : thinkingExpanded;
+
+  const thinkingRef = useRef(null);
+  const toolRef = useRef(null);
+
+  const toggleLocalExpanded = useCallback(() => {
+    setLocalExpanded(prev => prev === null ? !expanded : !prev);
+  }, [expanded]);
+
+  const toggleLocalThinking = useCallback(() => {
+    setLocalThinkingExpanded(prev => prev === null ? !thinkingExpanded : !prev);
+  }, [thinkingExpanded]);
+
+  useEffect(() => {
+    if (msg.type === 'thinking' && thinkingRef.current && !effectiveThinkingExpanded) {
+      const id = registerClickable(thinkingRef, toggleLocalThinking);
+      return () => unregisterClickable(id);
+    }
+  }, [msg.type, effectiveThinkingExpanded, toggleLocalThinking]);
+
+  useEffect(() => {
+    if (msg.type === 'tool' && toolRef.current) {
+      const hasDiff = msg.diff && msg.diff.length > 0;
+      if (hasDiff && !msg.pending && !effectiveExpanded) {
+        const id = registerClickable(toolRef, toggleLocalExpanded);
+        return () => unregisterClickable(id);
+      }
+    }
+  }, [msg.type, effectiveExpanded, msg.diff, msg.pending, toggleLocalExpanded]);
+
   switch (msg.type) {
     case 'user':
       return (
@@ -52,12 +87,11 @@ export function MessageRow({ msg, expanded = false, thinkingExpanded = false }) 
       const content   = msg.content || '';
       const charCount = content.length;
       const sizeLabel = charCount > 500 ? `${(charCount / 1000).toFixed(1)}k chars` : `${charCount} chars`;
-      // Expanded by default; Ctrl+T collapses. When collapsed show a one-line preview.
-      const collapsed = !thinkingExpanded;
+      const collapsed = !effectiveThinkingExpanded;
       const preview   = content.split('\n').map(l => l.trim()).find(l => l.length > 0) || '';
       const previewTrunc = preview.length > 80 ? preview.slice(0, 80) + '…' : preview;
       return (
-        <Box marginTop={1} flexDirection="column" paddingX={1} marginLeft={1}>
+        <Box ref={thinkingRef} marginTop={1} flexDirection="column" paddingX={1} marginLeft={1}>
           {/* Header row */}
           <Box gap={1}>
             <Text color="magenta">◈</Text>
@@ -65,7 +99,7 @@ export function MessageRow({ msg, expanded = false, thinkingExpanded = false }) 
             <Text color="gray">·</Text>
             <Text color="gray">{sizeLabel}</Text>
             <Text color="gray">·</Text>
-            <Text color="gray">{collapsed ? 'Ctrl+T to expand' : 'Ctrl+T to collapse'}</Text>
+            <Text color="gray">{collapsed ? 'Ctrl+T or click to expand' : 'Ctrl+T to collapse'}</Text>
           </Box>
           {/* Collapsed: one-line preview only */}
           {collapsed && previewTrunc && (
@@ -155,7 +189,7 @@ export function MessageRow({ msg, expanded = false, thinkingExpanded = false }) 
 
     case 'tool':
       return (
-        <Box marginTop={0}>
+        <Box ref={toolRef} marginTop={0}>
           <ToolBlock
             name={msg.name}
             input={msg.input}
@@ -163,7 +197,7 @@ export function MessageRow({ msg, expanded = false, thinkingExpanded = false }) 
             success={msg.success}
             pending={msg.pending}
             diff={msg.diff || null}
-            expanded={expanded}
+            expanded={effectiveExpanded}
           />
         </Box>
       );

@@ -50,7 +50,7 @@ export function ToolBlock({ name, input, output, success, pending, diff, expande
       {/* Expand hint when there's a diff */}
       {showDiff && !expanded && (
         <Box marginLeft={2}>
-          <Text color="gray">Ctrl+O to expand</Text>
+          <Text color="gray">Ctrl+O or click to expand</Text>
         </Box>
       )}
     </Box>
