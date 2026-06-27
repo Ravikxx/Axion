@@ -55,7 +55,21 @@ wss.on('connection', (ws, req) => {
   shells.add(proc);
 
   ws.on('message', (data) => {
-    if (proc.stdin.writable) proc.stdin.write(data.toString());
+    const str = data.toString();
+    // JSON envelope for resize or ping
+    if (str.startsWith('{')) {
+      try {
+        const msg = JSON.parse(str);
+        if (msg.type === 'resize') {
+          if (process.platform !== 'win32') {
+            try { process.kill(proc.pid, 'SIGWINCH'); } catch {}
+          }
+          return;
+        }
+        if (msg.type === 'ping') { ws.send('{"type":"pong"}'); return; }
+      } catch {}
+    }
+    if (proc.stdin.writable) proc.stdin.write(str);
   });
 
   proc.stdout.on('data', (chunk) => {

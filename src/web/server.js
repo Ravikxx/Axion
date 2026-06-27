@@ -87,6 +87,12 @@ export function start({ initialModel = getSavedModel() || DEFAULT_MODEL, initial
       return;
     }
 
+    // Chess trainer — standalone page
+    if (req.url === '/chess' || req.url === '/chess/') {
+      serveFile(res, join(__dirname, '../../docs/chess.html'), false);
+      return;
+    }
+
     const url = req.url === '/' ? '/index.html' : req.url;
     serveFile(res, join(DIST_DIR, url));
   });
