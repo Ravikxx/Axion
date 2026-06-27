@@ -33,6 +33,7 @@ export const MODELS = {
   veil:               'veil',
   lumen:              'lumen',
   'axion-vision':     'axion-vision',
+  opencode:           'opencode',
   glm:                'glm-5.2',
   'glm-5.2':          'glm-5.2',
   'glm-flash':        'glm-4.7-flash',
@@ -63,6 +64,7 @@ export const MODEL_PROVIDERS = {
   veil:               'veil',
   lumen:              'lumen',
   'axion-vision':     'axion-vision',
+  opencode:           'opencode',
   glm:                'zai',
   'glm-5.2':          'zai',
   'glm-flash':        'zai',
@@ -81,6 +83,7 @@ export const API_KEYS = {
   sketchfab:   process.env.SKETCHFAB_API_KEY,
   zai:         process.env.ZAI_API_KEY,
   veil:        process.env.VEIL_API_KEY,
+  opencode:    process.env.OPENCODE_API_KEY,
 };
 
 export const BASE_URLS = {
@@ -92,6 +95,7 @@ export const BASE_URLS = {
   veil:          'https://axionlabsai-minecraftai-chat.hf.space/v1',
   lumen:         'https://api.amplifiedsmp.org/v1',
   'axion-vision': 'https://axionlabsai-lumenvision.hf.space/v1',
+  opencode:      'https://api.opencode.ai/v1',
   zai:         'https://api.z.ai/api/paas/v4',
 };
 
@@ -109,7 +113,7 @@ export const IMAGE_GEN_MODEL = { current: process.env.AXION_IMAGE_MODEL || 'dall
 export function setApiKey(modelOrProvider, key) {
   const provider = MODEL_PROVIDERS[modelOrProvider] || modelOrProvider;
   if (!Object.prototype.hasOwnProperty.call(API_KEYS, provider)) {
-    throw new Error(`Unknown provider "${provider}". Valid: anthropic, openai, groq, mistral, gemini, openrouter, zai, tavily, sketchfab`);
+    throw new Error(`Unknown provider "${provider}". Valid: anthropic, openai, groq, mistral, gemini, openrouter, opencode, zai, tavily, sketchfab`);
   }
   API_KEYS[provider] = key;
   return provider;
