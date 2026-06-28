@@ -6,6 +6,7 @@ import { existsSync, readFileSync, unlinkSync, statSync, readdirSync } from 'fs'
 import { join, resolve } from 'path';
 import Spinner from 'ink-spinner';
 import { MessageRow } from './ChatPane.jsx';
+import { Sidebar } from './Sidebar.jsx';
 import { InputBox, YesNoPrompt, QuestionPrompt } from './Input.jsx';
 import { SuggestionBox, getTabCompletion } from './Suggestions.jsx';
 import { Agent } from '../agent/agent.js';
@@ -3130,10 +3131,11 @@ triggers: <comma-separated words that should activate it, include "${skillName.t
           { num: '2', alias: 'gpt',          provider: 'openai',    label: 'GPT-4o (OpenAI)',        url: 'platform.openai.com/api-keys' },
           { num: '3', alias: 'gemini-flash', provider: 'gemini',    label: 'Gemini Flash (Google)', url: 'aistudio.google.com/apikey' },
           { num: '4', alias: 'groq',         provider: 'groq',      label: 'Groq Llama (free tier)',url: 'console.groq.com/keys' },
+          { num: '5', alias: 'opencode',     provider: 'opencode',  label: 'Opencode',                url: 'opencode.ai' },
         ];
         if (onboardingStep === 'pick') {
           const n = input.trim();
-          if (n === '5' || /^skip/i.test(n)) {
+          if (n === '6' || /^skip/i.test(n)) {
             setModel('axion-vision');
             saveModel('axion-vision');
             setInputMode('chat');
@@ -3144,7 +3146,7 @@ triggers: <comma-separated words that should activate it, include "${skillName.t
           }
           const opt = OPTS.find(o => o.num === n);
           if (!opt) {
-            pushStatic({ type: 'info', content: 'Type a number 1–5 and press Enter.' });
+            pushStatic({ type: 'info', content: 'Type a number 1–6 and press Enter.' });
             return;
           }
           setOnboardingChoice(opt);
@@ -3260,7 +3262,7 @@ triggers: <comma-separated words that should activate it, include "${skillName.t
       const provider = MODEL_PROVIDERS[model];
       const noKeyModels = ['ollama', 'veil', 'lumen', 'axion-vision'];
       if (provider && !noKeyModels.includes(model) && !API_KEYS[provider]) {
-        pushStatic({ type: 'error', content: `No API key set for ${model}.\n\n  Quick start:\n    /api claude <key>    — Anthropic (claude.ai/settings)\n    /api gpt <key>       — OpenAI\n    /api gemini <key>    — Google AI Studio\n    /api groq <key>      — Groq (free, fast)\n\n  Or switch to a free model:\n    /model groq          — Llama 3.3 70B (free tier)\n    /model gemini-flash  — Gemini 2.0 Flash (generous free tier)` });
+        pushStatic({ type: 'error', content: `No API key set for ${model}.\n\n  Quick start:\n    /api claude <key>    — Anthropic (claude.ai/settings)\n    /api gpt <key>       — OpenAI\n    /api gemini <key>    — Google AI Studio\n    /api groq <key>      — Groq (free, fast)\n    /api opencode <key>  — Opencode\n\n  Or switch to a free model:\n    /model groq          — Llama 3.3 70B (free tier)\n    /model gemini-flash  — Gemini 2.0 Flash (generous free tier)` });
         return;
       }
 
@@ -3433,9 +3435,11 @@ triggers: <comma-separated words that should activate it, include "${skillName.t
     MCP.totalTools > 0    ? `⬡ ${MCP.totalTools} mcp` : null,
   ].filter(Boolean).join('  ') || '';
 
+  const showSidebar = (process.stdout.columns || 80) >= 100;
+
   return (
     <Box flexDirection="column">
-      {/* ── Finalized history ───────────────────────────────────────── */}
+      {/* ── Finalized history (full-width, committed to scrollback) ─── */}
       <Static items={staticMessages}>
         {(msg, i) =>
           msg.type === '_banner'
@@ -3444,164 +3448,175 @@ triggers: <comma-separated words that should activate it, include "${skillName.t
         }
       </Static>
 
-      {/* ── Live in-progress turn ───────────────────────────────────── */}
-      <Box flexDirection="column">
-        {liveMessages.map((msg, i) => (
-          <MessageRow key={i} msg={msg} expanded={diffsExpanded} thinkingExpanded={thinkingExpanded} />
-        ))}
-        {/* Streaming text — shown separately so it renders incrementally */}
-        {streamContent !== null && (
-          <MessageRow
-            msg={{ type: 'assistant', content: streamContent, streaming: true }}
-            expanded={diffsExpanded}
-            thinkingExpanded={thinkingExpanded}
+      {/* ── Live workspace: row layout with optional sidebar ────────── */}
+      <Box flexDirection="row">
+        {/* Main column */}
+        <Box flexDirection="column" flexGrow={1}>
+          {/* ── Live in-progress turn ─────────────────────────────── */}
+          <Box flexDirection="column">
+            {liveMessages.map((msg, i) => (
+              <MessageRow key={i} msg={msg} expanded={diffsExpanded} thinkingExpanded={thinkingExpanded} />
+            ))}
+            {/* Streaming text — shown separately so it renders incrementally */}
+            {streamContent !== null && (
+              <MessageRow
+                msg={{ type: 'assistant', content: streamContent, streaming: true }}
+                expanded={diffsExpanded}
+                thinkingExpanded={thinkingExpanded}
+              />
+            )}
+          </Box>
+
+          {/* ── Status bar ──────────────────────────────────────────── */}
+          <Box marginX={1} marginTop={1} justifyContent="space-between">
+            <Text>
+              <Text color={accent()} bold>⚛</Text>
+              <Text color="gray">  {CWD}  </Text>
+              <Text color={accent()}>{model}</Text>
+              <Text color="gray">  </Text>
+              <Text color={modeColor} bold>{MODE_ICONS[mode] || '·'}</Text>
+              <Text color={modeColor}> {modeLabel(mode)}</Text>
+              {tokStr && <Text color="gray">  {tokStr} tok</Text>}
+              {gauge  && <Text color={gauge.color}>  {gauge.bar} {Math.round(gauge.pct * 100)}%</Text>}
+              {sessionCostStr && <Text color="gray">  {sessionCostStr}</Text>}
+            </Text>
+            {hintRight ? <Text color="gray">{hintRight}</Text> : null}
+          </Box>
+
+          {/* ── Voice recording indicator ────────────────────────────── */}
+          {voiceActive && (
+            <Box marginX={2} gap={1}>
+              <Text color="red" bold>●</Text>
+              <Text color="white">Recording…  press Enter to stop and transcribe</Text>
+            </Box>
+          )}
+
+          {/* ── Thinking label (spinner + word on same line) ──────────── */}
+          {thinking && (
+            <Box marginX={2} gap={1}>
+              <Text color="greenBright"><Spinner type="dots" /></Text>
+              <Text color="greenBright">{thinkingWord}…</Text>
+              <Text color="gray">{String(Math.floor(thinkingElapsed / 60)).padStart(2, '0')}:{String(thinkingElapsed % 60).padStart(2, '0')}</Text>
+              <Text color="red">⏹</Text><Text color="gray"> esc to stop</Text>
+            </Box>
+          )}
+
+          {/* ── Onboarding wizard ─────────────────────────────────────── */}
+          {inputMode === 'onboarding' && onboardingStep === 'pick' && (
+            <Box marginX={2} marginTop={1} marginBottom={0} flexDirection="column" borderStyle="round" borderColor={accent()} paddingX={2} paddingY={0}>
+              <Text color={accent()} bold>Welcome to Axion — quick setup</Text>
+              <Text> </Text>
+              <Text color="gray">Pick a model. Type the number and press Enter:</Text>
+              <Text> </Text>
+              <Text><Text color={accent()} bold>  1  </Text><Text color="white" bold>Claude       </Text><Text color="gray">Anthropic   claude.ai/settings</Text></Text>
+              <Text><Text color={accent()} bold>  2  </Text><Text color="white" bold>GPT-4o       </Text><Text color="gray">OpenAI      platform.openai.com/api-keys</Text></Text>
+              <Text><Text color={accent()} bold>  3  </Text><Text color="white" bold>Gemini Flash </Text><Text color="gray">Google      aistudio.google.com/apikey</Text></Text>
+              <Text><Text color={accent()} bold>  4  </Text><Text color="white" bold>Groq Llama   </Text><Text color="gray">Free tier   console.groq.com/keys</Text></Text>
+              <Text><Text color={accent()} bold>  5  </Text><Text color="white" bold>Skip         </Text><Text color="gray">Use free model (no key needed)</Text></Text>
+            </Box>
+          )}
+          {inputMode === 'onboarding' && onboardingStep === 'key' && onboardingChoice && (
+            <Box marginX={2} marginTop={1} marginBottom={0} flexDirection="column" borderStyle="round" borderColor={accent()} paddingX={2} paddingY={0}>
+              <Text color={accent()} bold>Set your {onboardingChoice.label} API key</Text>
+              <Text> </Text>
+              <Text color="gray">Get one at <Text color="white">{onboardingChoice.url}</Text></Text>
+              <Text color="gray">Paste it below and press Enter, or just Enter to skip.</Text>
+            </Box>
+          )}
+
+          {/* ── Confirm prompts ───────────────────────────────────────── */}
+          {inputMode === 'confirm-tool' && pendingConfirm && (
+            <Box marginX={2} marginTop={0} gap={1}>
+              <Text color="yellow">?</Text>
+              <Text color="white">run</Text>
+              <Text color="cyan" bold>{pendingConfirm.name}</Text>
+              {pendingConfirm.label ? <Text color="gray">{pendingConfirm.label}</Text> : null}
+              <Text color="gray">(y/n/a — a = always allow)</Text>
+              <YesNoPrompt onAnswer={handleConfirmAnswer} />
+            </Box>
+          )}
+          {inputMode === 'confirm-plan' && (
+            <Box marginX={2} marginTop={0} gap={1}>
+              <Text color="yellow">?</Text>
+              <Text color="white">execute this plan?</Text>
+              <Text color="gray">(y/n)</Text>
+              <YesNoPrompt onAnswer={handleConfirmAnswer} />
+            </Box>
+          )}
+
+          {/* ── AI question prompt ────────────────────────────────────── */}
+          {inputMode === 'question' && pendingQuestion && (
+            <Box marginX={2} marginTop={0} marginBottom={0} flexDirection="column" borderStyle="round" borderColor="cyan" paddingX={2} paddingY={1}>
+              <QuestionPrompt
+                type={pendingQuestion.type}
+                question={pendingQuestion.question}
+                options={pendingQuestion.options}
+                onAnswer={(answer) => {
+                  const resolve = questionResolverRef.current;
+                  questionResolverRef.current = null;
+                  setPendingQuestion(null);
+                  setInputMode('chat');
+                  resolve(answer);
+                }}
+              />
+            </Box>
+          )}
+
+          {/* ── Command autocomplete ──────────────────────────────────── */}
+          {!thinking && inputMode === 'chat' && (
+            <SuggestionBox inputValue={inputValue} />
+          )}
+
+          {/* ── Hint bar ──────────────────────────────────────────────── */}
+          <Box marginX={2} justifyContent="space-between">
+            <Text color="gray">{hintLeft}</Text>
+            {systemOverride && <Text color="gray">sys: on</Text>}
+          </Box>
+
+          {/* ── Input ─────────────────────────────────────────────────── */}
+          <InputBox
+            onSubmit={handleSubmit}
+            disabled={inputMode !== 'chat' && inputMode !== 'oauth-paste' && inputMode !== 'onboarding' && inputMode !== 'question' && !voiceActive}
+            voiceActive={voiceActive}
+            placeholder={
+              voiceActive ? 'press Enter to stop recording…' :
+              inputMode === 'oauth-paste' ? 'Paste your token here and press Enter…' :
+              inputMode === 'onboarding' && onboardingStep === 'pick' ? 'Type 1–5 and press Enter…' :
+              inputMode === 'question' && pendingQuestion?.type === 'multiple_choice' ? 'Type a number and press Enter…' :
+              inputMode === 'question' ? 'Type your answer and press Enter…' :
+              inputMode === 'onboarding' && onboardingStep === 'key' ? 'Paste your API key and press Enter (or Enter to skip)…' :
+              goal ? `goal active (iter ${goalIteration}) — send message or /goal to cancel` :
+              thinking ? 'type to queue the next message…' :
+              'ask Axion something…  or type / for commands'
+            }
+            onChange={setInputValue}
+            tabCompletion={tabComplete}
+            onToggleExpand={() => setDiffsExpanded(v => !v)}
+            onToggleThinking={() => setThinkingExpanded(v => !v)}
+            onCycleMode={handleCycleMode}
+            onInterrupt={handleInterrupt}
+            interruptActive={thinking}
+          />
+        </Box>{/* end main column */}
+
+        {/* ── Sidebar ───────────────────────────────────────────────── */}
+        {showSidebar && (
+          <Sidebar
+            todos={todos}
+            model={model}
+            modeIcon={MODE_ICONS[mode] || '·'}
+            modeLabelStr={modeLabel(mode)}
+            modeColor={modeColor}
+            sessionCost={sessionCost}
+            includedFiles={includedFiles}
+            accent={accent()}
+            ctxUsed={ctxUsed}
+            ctxWindow={ctxWindow}
+            gauge={gauge}
+            mcpTools={MCP.totalTools}
           />
         )}
-      </Box>
-
-      {/* ── Status bar ─────────────────────────────────────────────── */}
-      <Box marginX={1} marginTop={1} justifyContent="space-between">
-        <Text>
-          <Text color={accent()} bold>⚛</Text>
-          <Text color="gray">  {CWD}  </Text>
-          <Text color={accent()}>{model}</Text>
-          <Text color="gray">  </Text>
-          <Text color={modeColor} bold>{MODE_ICONS[mode] || '·'}</Text>
-          <Text color={modeColor}> {modeLabel(mode)}</Text>
-          {tokStr && <Text color="gray">  {tokStr} tok</Text>}
-          {gauge  && <Text color={gauge.color}>  {gauge.bar} {Math.round(gauge.pct * 100)}%</Text>}
-          {sessionCostStr && <Text color="gray">  {sessionCostStr}</Text>}
-        </Text>
-        {hintRight ? <Text color="gray">{hintRight}</Text> : null}
-      </Box>
-
-      {/* ── TODO widget ──────────────────────────────────────────────── */}
-      {todos.filter(t => !t.done).length > 0 && (
-        <Box marginX={2} marginTop={1} flexDirection="column" borderStyle="round" borderColor={accent()} paddingX={2} paddingY={0}>
-          <Text bold color={accent()}>☑ TODO ({todos.filter(t => !t.done).length})</Text>
-          {todos.filter(t => !t.done).slice(0, 5).map((t, i) => (
-            <Text key={t.id} color="white">  ☐ {t.text}</Text>
-          ))}
-          {todos.filter(t => !t.done).length > 5 && (
-            <Text color="gray">  … and {todos.filter(t => !t.done).length - 5} more</Text>
-          )}
-        </Box>
-      )}
-
-      {/* ── Voice recording indicator ───────────────────────────────── */}
-      {voiceActive && (
-        <Box marginX={2} gap={1}>
-          <Text color="red" bold>●</Text>
-          <Text color="white">Recording…  press Enter to stop and transcribe</Text>
-        </Box>
-      )}
-
-      {/* ── Thinking label (spinner + word on same line) ────────────── */}
-      {thinking && (
-        <Box marginX={2} gap={1}>
-          <Text color="greenBright"><Spinner type="dots" /></Text>
-          <Text color="greenBright">{thinkingWord}…</Text>
-          <Text color="gray">{String(Math.floor(thinkingElapsed / 60)).padStart(2, '0')}:{String(thinkingElapsed % 60).padStart(2, '0')}</Text>
-          <Text color="red">⏹</Text><Text color="gray"> esc to stop</Text>
-        </Box>
-      )}
-
-      {/* ── Onboarding wizard ──────────────────────────────────────── */}
-      {inputMode === 'onboarding' && onboardingStep === 'pick' && (
-        <Box marginX={2} marginTop={1} marginBottom={0} flexDirection="column" borderStyle="round" borderColor={accent()} paddingX={2} paddingY={0}>
-          <Text color={accent()} bold>Welcome to Axion — quick setup</Text>
-          <Text> </Text>
-          <Text color="gray">Pick a model. Type the number and press Enter:</Text>
-          <Text> </Text>
-          <Text><Text color={accent()} bold>  1  </Text><Text color="white" bold>Claude       </Text><Text color="gray">Anthropic   claude.ai/settings</Text></Text>
-          <Text><Text color={accent()} bold>  2  </Text><Text color="white" bold>GPT-4o       </Text><Text color="gray">OpenAI      platform.openai.com/api-keys</Text></Text>
-          <Text><Text color={accent()} bold>  3  </Text><Text color="white" bold>Gemini Flash </Text><Text color="gray">Google      aistudio.google.com/apikey</Text></Text>
-          <Text><Text color={accent()} bold>  4  </Text><Text color="white" bold>Groq Llama   </Text><Text color="gray">Free tier   console.groq.com/keys</Text></Text>
-          <Text><Text color={accent()} bold>  5  </Text><Text color="white" bold>Skip         </Text><Text color="gray">Use free model (no key needed)</Text></Text>
-        </Box>
-      )}
-      {inputMode === 'onboarding' && onboardingStep === 'key' && onboardingChoice && (
-        <Box marginX={2} marginTop={1} marginBottom={0} flexDirection="column" borderStyle="round" borderColor={accent()} paddingX={2} paddingY={0}>
-          <Text color={accent()} bold>Set your {onboardingChoice.label} API key</Text>
-          <Text> </Text>
-          <Text color="gray">Get one at <Text color="white">{onboardingChoice.url}</Text></Text>
-          <Text color="gray">Paste it below and press Enter, or just Enter to skip.</Text>
-        </Box>
-      )}
-
-      {/* ── Confirm prompts ─────────────────────────────────────────── */}
-      {inputMode === 'confirm-tool' && pendingConfirm && (
-        <Box marginX={2} marginTop={0} gap={1}>
-          <Text color="yellow">?</Text>
-          <Text color="white">run</Text>
-          <Text color="cyan" bold>{pendingConfirm.name}</Text>
-          {pendingConfirm.label ? <Text color="gray">{pendingConfirm.label}</Text> : null}
-          <Text color="gray">(y/n/a — a = always allow)</Text>
-          <YesNoPrompt onAnswer={handleConfirmAnswer} />
-        </Box>
-      )}
-      {inputMode === 'confirm-plan' && (
-        <Box marginX={2} marginTop={0} gap={1}>
-          <Text color="yellow">?</Text>
-          <Text color="white">execute this plan?</Text>
-          <Text color="gray">(y/n)</Text>
-          <YesNoPrompt onAnswer={handleConfirmAnswer} />
-        </Box>
-      )}
-
-      {/* ── AI question prompt ──────────────────────────────────────── */}
-      {inputMode === 'question' && pendingQuestion && (
-        <Box marginX={2} marginTop={0} marginBottom={0} flexDirection="column" borderStyle="round" borderColor="cyan" paddingX={2} paddingY={1}>
-          <QuestionPrompt
-            type={pendingQuestion.type}
-            question={pendingQuestion.question}
-            options={pendingQuestion.options}
-            onAnswer={(answer) => {
-              const resolve = questionResolverRef.current;
-              questionResolverRef.current = null;
-              setPendingQuestion(null);
-              setInputMode('chat');
-              resolve(answer);
-            }}
-          />
-        </Box>
-      )}
-
-      {/* ── Command autocomplete ─────────────────────────────────────── */}
-      {!thinking && inputMode === 'chat' && (
-        <SuggestionBox inputValue={inputValue} />
-      )}
-
-      {/* ── Hint bar ────────────────────────────────────────────────── */}
-      <Box marginX={2} justifyContent="space-between">
-        <Text color="gray">{hintLeft}</Text>
-        {systemOverride && <Text color="gray">sys: on</Text>}
-      </Box>
-
-      {/* ── Input ───────────────────────────────────────────────────── */}
-      <InputBox
-        onSubmit={handleSubmit}
-        disabled={inputMode !== 'chat' && inputMode !== 'oauth-paste' && inputMode !== 'onboarding' && inputMode !== 'question' && !voiceActive}
-        voiceActive={voiceActive}
-        placeholder={
-          voiceActive ? 'press Enter to stop recording…' :
-          inputMode === 'oauth-paste' ? 'Paste your token here and press Enter…' :
-          inputMode === 'onboarding' && onboardingStep === 'pick' ? 'Type 1–5 and press Enter…' :
-          inputMode === 'question' && pendingQuestion?.type === 'multiple_choice' ? 'Type a number and press Enter…' :
-          inputMode === 'question' ? 'Type your answer and press Enter…' :
-          inputMode === 'onboarding' && onboardingStep === 'key' ? 'Paste your API key and press Enter (or Enter to skip)…' :
-          goal ? `goal active (iter ${goalIteration}) — send message or /goal to cancel` :
-          thinking ? 'type to queue the next message…' :
-          'ask Axion something…  or type / for commands'
-        }
-        onChange={setInputValue}
-        tabCompletion={tabComplete}
-        onToggleExpand={() => setDiffsExpanded(v => !v)}
-        onToggleThinking={() => setThinkingExpanded(v => !v)}
-        onCycleMode={handleCycleMode}
-        onInterrupt={handleInterrupt}
-        interruptActive={thinking}
-      />
+      </Box>{/* end row */}
     </Box>
   );
 }
