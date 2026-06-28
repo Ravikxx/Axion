@@ -6,6 +6,7 @@ import { getContextWindow } from '../config.js';
 import { getTodos } from '../persist.js';
 import { Sidebar } from './Sidebar.jsx';
 import { RichText } from './RichText.jsx';
+import { ToolBlock } from './ToolBlock.jsx';
 
 // ── Milestone 2: real agent wired into the OpenTUI shell ────────────────────────
 // Reuses the UI-agnostic Agent class (callbacks → message list). Row layout:
@@ -43,15 +44,15 @@ function MessageRow({ msg }) {
       );
     case 'tool':
       return (
-        <box style={{ flexDirection: 'column', marginTop: 1, paddingLeft: 1, paddingRight: 1 }}>
-          <text>
-            <span fg="cyan">{msg.pending ? '⚙ ' : (msg.success === false ? '✖ ' : '✔ ')}</span>
-            <span fg="cyan">{msg.name}</span>
-            {msg.pending ? <span fg="#888"> running…</span> : null}
-          </text>
-          {!msg.pending && msg.output ? (
-            <text><span fg="#888">{String(msg.output).split('\n').slice(0, 6).join('\n')}</span></text>
-          ) : null}
+        <box style={{ flexDirection: 'column', marginTop: 1 }}>
+          <ToolBlock
+            name={msg.name}
+            input={msg.input}
+            output={msg.output}
+            success={msg.success}
+            pending={msg.pending}
+            diff={msg.diff || null}
+          />
         </box>
       );
     case 'error':
