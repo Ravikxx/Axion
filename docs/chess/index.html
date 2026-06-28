@@ -25,7 +25,7 @@
   .sq.in-check{background:#e74c3c!important}
   .board-wrap{display:grid;grid-template-columns:repeat(8,1fr);border:2px solid #3a3b4a;border-radius:4px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.5);touch-action:none}
   .sq{touch-action:none}
-  input[type=range]{accent-color:#3dd68c}
+  input[type=range]{accent-color:#e8602c}
   ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:#1a1b24}::-webkit-scrollbar-thumb{background:#3a3b4a;border-radius:2px}
 </style>
 </head>
@@ -122,13 +122,13 @@ function ApiKeyModal({ onSave }) {
   return (
     <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
       <div className="bg-[#12131a] border border-[#2e2f3e] rounded-xl p-6 max-w-md w-full shadow-2xl">
-        <h2 className="text-xl font-bold mb-1 text-[#3dd68c]">⚛ Axion Chess Trainer</h2>
+        <h2 className="text-xl font-bold mb-1 text-[#e8602c]">⚛ Axion Chess Trainer</h2>
         <p className="text-sm text-[#9899a8] mb-4">
           Enter your <strong className="text-[#e8e9f0]">Groq API key</strong> to enable the AI opponent.
-          Free at <a href="https://console.groq.com" target="_blank" className="text-[#3dd68c] hover:underline">console.groq.com</a>.
+          Free at <a href="https://console.groq.com" target="_blank" className="text-[#e8602c] hover:underline">console.groq.com</a>.
         </p>
         <input
-          className="w-full px-3 py-2 rounded-lg bg-[#1a1b24] border border-[#3a3b4a] text-sm font-mono mb-3 focus:outline-none focus:border-[#3dd68c]"
+          className="w-full px-3 py-2 rounded-lg bg-[#1a1b24] border border-[#3a3b4a] text-sm font-mono mb-3 focus:outline-none focus:border-[#e8602c]"
           type="password"
           placeholder="gsk_..."
           value={key}
@@ -138,7 +138,7 @@ function ApiKeyModal({ onSave }) {
         />
         <div className="flex gap-2">
           <button
-            className="flex-1 py-2 rounded-lg bg-[#3dd68c] hover:bg-[#28a866] text-white font-semibold text-sm transition-colors"
+            className="flex-1 py-2 rounded-lg bg-[#e8602c] hover:bg-[#c04c1f] text-white font-semibold text-sm transition-colors"
             onClick={() => key && onSave(key)}
           >Save Key</button>
           <button
@@ -227,11 +227,11 @@ function BoardCoords({ flipped }) {
 // ── Status banner ─────────────────────────────────────────────────────────────
 function StatusBanner({ chess, thinking }) {
   if (thinking) return (
-    <div className="text-center py-1 text-sm text-[#3dd68c] animate-pulse">⚛ AI is thinking…</div>
+    <div className="text-center py-1 text-sm text-[#e8602c] animate-pulse">⚛ AI is thinking…</div>
   );
   if (chess.in_checkmate()) {
     const winner = chess.turn() === 'b' ? '🎉 You win!' : '💀 AI wins!';
-    return <div className="text-center py-1 text-sm font-bold text-[#3dd68c]">{winner} Checkmate.</div>;
+    return <div className="text-center py-1 text-sm font-bold text-[#e8602c]">{winner} Checkmate.</div>;
   }
   if (chess.in_stalemate()) return <div className="text-center py-1 text-sm text-[#9899a8]">Draw — Stalemate</div>;
   if (chess.in_draw()) return <div className="text-center py-1 text-sm text-[#9899a8]">Draw</div>;
@@ -363,12 +363,12 @@ function App() {
     <div className="min-h-screen flex flex-col">
       {/* Header */}
       <header className="border-b border-[#23242f] bg-[#12131a] px-4 py-3 flex items-center gap-3">
-        <div className="w-7 h-7 bg-[#3dd68c] rounded-lg flex items-center justify-center text-xs font-bold">⚛</div>
-        <span className="font-bold text-[#3dd68c]">Axion</span>
+        <div className="w-7 h-7 bg-[#e8602c] rounded-lg flex items-center justify-center text-xs font-bold">⚛</div>
+        <span className="font-bold text-[#e8602c]">Axion</span>
         <span className="text-[#6b6d80]">/</span>
         <span className="font-semibold">Chess Trainer</span>
         <div className="ml-auto flex gap-2">
-          <button onClick={newGame} className="px-3 py-1.5 rounded-lg bg-[#3dd68c] hover:bg-[#28a866] text-white text-xs font-semibold transition-colors">New Game</button>
+          <button onClick={newGame} className="px-3 py-1.5 rounded-lg bg-[#e8602c] hover:bg-[#c04c1f] text-white text-xs font-semibold transition-colors">New Game</button>
           <button onClick={undoMove} disabled={history.length < 2 || thinking} className="px-3 py-1.5 rounded-lg border border-[#3a3b4a] text-[#9899a8] hover:text-white text-xs transition-colors disabled:opacity-30">Undo</button>
           <button onClick={() => setFlipped(f => !f)} className="px-3 py-1.5 rounded-lg border border-[#3a3b4a] text-[#9899a8] hover:text-white text-xs transition-colors">Flip</button>
         </div>
@@ -428,7 +428,7 @@ function App() {
           <div className="bg-[#12131a] border border-[#23242f] rounded-xl p-4">
             <div className="flex justify-between items-center mb-2">
               <span className="text-sm font-semibold">Difficulty</span>
-              <span className="text-sm font-bold text-[#3dd68c]">{difficulty}/10</span>
+              <span className="text-sm font-bold text-[#e8602c]">{difficulty}/10</span>
             </div>
             <input type="range" min="1" max="10" value={difficulty}
               onChange={e => setDifficulty(Number(e.target.value))}
@@ -445,7 +445,7 @@ function App() {
               <button onClick={() => setStrategy('')} className="text-[10px] text-[#6b6d80] hover:text-[#9899a8]">Reset</button>
             </div>
             <textarea
-              className="w-full px-3 py-2 rounded-lg bg-[#1a1b24] border border-[#3a3b4a] text-sm resize-none focus:outline-none focus:border-[#3dd68c] text-[#e8e9f0] placeholder-[#6b6d80]"
+              className="w-full px-3 py-2 rounded-lg bg-[#1a1b24] border border-[#3a3b4a] text-sm resize-none focus:outline-none focus:border-[#e8602c] text-[#e8e9f0] placeholder-[#6b6d80]"
               rows={3}
               placeholder={'Try: "enclose my king from the sides"\n"play aggressive and sacrifice pieces"\n"control the center with pawns"'}
               value={strategy}

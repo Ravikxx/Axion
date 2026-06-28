@@ -5,7 +5,7 @@
   "start_url": "/chat",
   "display": "standalone",
   "background_color": "#0d0e13",
-  "theme_color": "#3dd68c",
+  "theme_color": "#e8602c",
   "icons": [
     { "src": "/assets/logo-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
     { "src": "/assets/logo-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }

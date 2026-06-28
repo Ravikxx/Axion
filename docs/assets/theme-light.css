@@ -5,9 +5,9 @@
   --border:       #e0d8cc;
   --text:         #1a1209;
   --text-muted:   #6b5e4e;
-  --accent:       #2d7a3a;
-  --accent-light: #e8f4ea;
-  --accent-lt:    #e8f4ea;
+  --accent:       #e8602c;
+  --accent-light: #fdf0ea;
+  --accent-lt:    #fdf0ea;
   --dark:         #1a1209;
   --green:        #2d7a3a;
   --green-light:  #e8f4ea;
@@ -15,5 +15,5 @@
   --red:          #dc2626;
   --red-light:    #fef2f2;
   --veil:         #8b7355;
-  --lumen:        #2d7a3a;
+  --lumen:        #e8602c;
 }
