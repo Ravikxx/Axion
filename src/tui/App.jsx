@@ -5,6 +5,7 @@ import { Agent } from '../agent/agent.js';
 import { getContextWindow } from '../config.js';
 import { getTodos } from '../persist.js';
 import { Sidebar } from './Sidebar.jsx';
+import { RichText } from './RichText.jsx';
 
 // ── Milestone 2: real agent wired into the OpenTUI shell ────────────────────────
 // Reuses the UI-agnostic Agent class (callbacks → message list). Row layout:
@@ -30,7 +31,7 @@ function MessageRow({ msg }) {
       return (
         <box style={{ flexDirection: 'column', marginTop: 1, paddingLeft: 1, paddingRight: 1 }}>
           <text><span fg={A}>✻ Axion</span></text>
-          {(msg.text || ' ').split('\n').map((l, i) => <text key={i}>{l}</text>)}
+          <RichText>{msg.text || ' '}</RichText>
         </box>
       );
     case 'thinking':
@@ -63,7 +64,7 @@ function MessageRow({ msg }) {
       return (
         <box style={{ flexDirection: 'column', marginTop: 1, paddingLeft: 1, paddingRight: 1 }}>
           <text><span fg="yellow">◈ Plan</span></text>
-          {(msg.text || '').split('\n').map((l, i) => <text key={i}>{l}</text>)}
+          <RichText>{msg.text || ' '}</RichText>
         </box>
       );
     case 'info':

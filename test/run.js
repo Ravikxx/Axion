@@ -11,7 +11,7 @@ mkdirSync('dist', { recursive: true });
 // (ReactCurrentOwner removed in React 19). These two suites import Ink components
 // (RichText, Suggestions) being ported to OpenTUI; re-enable with fresh tests
 // against the ports. TODO: remove this skip once the ports land.
-const SKIP_DURING_MIGRATION = new Set(['richtext.test.js', 'suggestions.test.js']);
+const SKIP_DURING_MIGRATION = new Set(['suggestions.test.js']);
 
 const testFiles = readdirSync('test')
   .filter((f) => f.endsWith('.test.js') && !SKIP_DURING_MIGRATION.has(f))
