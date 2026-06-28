@@ -127,8 +127,8 @@
     .topbar-title { font-size: 14px; font-weight: 600; }
     .model-badge {
       display: inline-flex; align-items: center; gap: 6px;
-      background: rgba(196,154,60,.12); color: var(--accent);
-      border: 1px solid rgba(196,154,60,.25);
+      background: rgba(61,214,140,.12); color: var(--accent);
+      border: 1px solid rgba(61,214,140,.25);
       border-radius: 20px; padding: 4px 11px; font-size: 12px; font-weight: 600;
     }
     .model-badge .dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; }
@@ -382,7 +382,7 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js" defer></script>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="theme-color" content="#c49a3c">
+  <meta name="theme-color" content="#3dd68c">
 </head>
 <body>
 
@@ -794,7 +794,7 @@
     document.querySelectorAll('.chart-wrap canvas[data-chart]').forEach(el => {
       try {
         const cfg = JSON.parse(el.dataset.chart)
-        const colors = ['#c49a3c','#34d399','#60a5fa','#f59e0b','#a78bfa','#f472b6','#14b8a6','#f97316']
+        const colors = ['#3dd68c','#34d399','#60a5fa','#f59e0b','#a78bfa','#f472b6','#14b8a6','#f97316']
         const defaults = {
           type: 'bar', data: { labels: [], datasets: [{ data: [] }] },
           options: {

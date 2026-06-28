@@ -284,7 +284,7 @@
     }
     .key-reveal-warning {
       font-size: 12px; color: var(--accent);
-      background: rgba(196,154,60,.08); border: 1px solid rgba(196,154,60,.2);
+      background: rgba(61,214,140,.08); border: 1px solid rgba(61,214,140,.2);
       border-radius: 6px; padding: 9px 12px; margin-bottom: 10px;
     }
 
@@ -365,7 +365,7 @@
       font-size: 11px; font-weight: 600;
       background: var(--surface2); color: var(--muted2);
     }
-    .role-badge.owner { background: rgba(196,154,60,.12); color: var(--accent); }
+    .role-badge.owner { background: rgba(61,214,140,.12); color: var(--accent); }
 
     /* ── Danger zone ── */
     .danger-zone {
@@ -379,7 +379,7 @@
 
     /* ── Invite accept banner ── */
     .invite-banner {
-      background: rgba(196,154,60,.08); border: 1px solid rgba(196,154,60,.3);
+      background: rgba(61,214,140,.08); border: 1px solid rgba(61,214,140,.3);
       border-radius: 10px; padding: 16px 20px; margin-bottom: 20px;
       display: flex; align-items: center; justify-content: space-between; gap: 16px;
     }
@@ -991,7 +991,7 @@
     const ctx = canvas.getContext('2d')
     ctx.scale(dpr, dpr)
 
-    const accent = '#c49a3c'
+    const accent = '#3dd68c'
     const muted = '#6b6d80'
     const max = Math.max(...daily.map(d => d.count), 1)
     const barW = Math.floor((W - 28) / daily.length) - 3

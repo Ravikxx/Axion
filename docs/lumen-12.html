@@ -154,7 +154,7 @@
       border-bottom: 1px solid var(--border);
     }
     .benchmark-table tr:last-child td { border-bottom: none; }
-    .benchmark-table tr:hover td { background: rgba(196,154,60,0.03); }
+    .benchmark-table tr:hover td { background: rgba(61,214,140,0.03); }
     .score-veil { color: var(--veil); font-weight: 600; }
     .score-lumen { color: var(--lumen); font-weight: 700; }
     .delta-badge {
@@ -192,7 +192,7 @@
 
     .callout {
       background: var(--accent-light);
-      border: 1px solid rgba(196,154,60,0.2);
+      border: 1px solid rgba(61,214,140,0.2);
       border-left: 4px solid var(--accent);
       border-radius: 8px;
       padding: 20px 24px;
@@ -240,10 +240,10 @@
 </head>
 <body>
 
-<div class="update-bar" style="background:#1a1209;border-bottom:1px solid rgba(196,154,60,0.3);padding:12px 32px;display:flex;align-items:center;gap:12px;font-size:13px;flex-wrap:wrap;">
+<div class="update-bar" style="background:#1a1209;border-bottom:1px solid rgba(61,214,140,0.3);padding:12px 32px;display:flex;align-items:center;gap:12px;font-size:13px;flex-wrap:wrap;">
   <span style="background:#2d7a3a;color:#fff;font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:3px 7px;border-radius:4px;flex-shrink:0;">Updated</span>
   <span style="color:#c9b99a;flex:1;min-width:0;"><strong style="color:#f4efe6;">Lumen 1.2.1 is live</strong> — catastrophic forgetting fixed (GSM8K 5%→12%), coding adjusted (HumanEval 80%→50%). Use 1.2 for coding, 1.2.1 for general use. <strong style="color:#f4efe6;">Lumen 1.3</strong> in development.</span>
-  <a href="/announcements" class="update-link" style="color:#c49a3c;text-decoration:none;font-weight:600;flex-shrink:0;">See announcements →</a>
+  <a href="/announcements" class="update-link" style="color:#3dd68c;text-decoration:none;font-weight:600;flex-shrink:0;">See announcements →</a>
 </div>
 
 <nav>
@@ -288,7 +288,7 @@
       Veil 1.1
     </div>
     <div class="legend-item">
-      <div class="legend-dot" style="background:#c49a3c"></div>
+      <div class="legend-dot" style="background:#3dd68c"></div>
       Lumen 1.2 <span class="win-tag">↑ wins</span>
     </div>
   </div>
@@ -413,7 +413,7 @@
 
 <script>
   const veilColor = 'rgba(139,115,85,0.75)';
-  const lumenColor = 'rgba(196,154,60,0.9)';
+  const lumenColor = 'rgba(61,214,140,0.9)';
   const gridColor = 'rgba(0,0,0,0.06)';
 
   const baseOpts = {
@@ -485,10 +485,10 @@
         {
           label: 'Lumen 1.2',
           data: [80.0, 91.4, 87.6, 88.2, 75.0],
-          backgroundColor: 'rgba(196,154,60,0.12)',
-          borderColor: 'rgba(196,154,60,0.85)',
+          backgroundColor: 'rgba(61,214,140,0.12)',
+          borderColor: 'rgba(61,214,140,0.85)',
           borderWidth: 2,
-          pointBackgroundColor: 'rgba(196,154,60,0.9)',
+          pointBackgroundColor: 'rgba(61,214,140,0.9)',
           pointRadius: 4,
         }
       ]
