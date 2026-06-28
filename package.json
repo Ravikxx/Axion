@@ -18,6 +18,7 @@
     "start": "node dist/axion.js",
     "dev": "node build.js && node dist/axion.js",
     "watch": "node watch.js",
+    "tui": "bun src/tui/main.jsx",
     "web": "node build-web.js && node src/web/server.js",
     "test": "node test/run.js",
     "sft-gen": "node tools/sft-gen.js",
@@ -25,7 +26,10 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",
+    "@opentui/core": "^0.4.2",
+    "@opentui/react": "^0.4.2",
     "@xterm/xterm": "^6.0.0",
+    "bun": "^1.3.14",
     "chalk": "^5.3.0",
     "discord.js": "^14.26.4",
     "dotenv": "^16.4.5",
@@ -35,8 +39,9 @@
     "node-fetch": "^3.3.2",
     "openai": "^4.77.0",
     "qrcode": "^1.5.4",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "react-reconciler": "^0.33.0",
     "ws": "^8.18.0"
   },
   "devDependencies": {
