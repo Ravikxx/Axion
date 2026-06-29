@@ -28,7 +28,7 @@ export function Welcome({ model = '—', mode = 'ask', cwd = process.cwd() }) {
           <text><span>  /model /mode</span><span fg="#888">   switch model · mode</span></text>
           <text><span>  /theme</span><span fg="#888">         change accent color</span></text>
           <text><span>  /clear</span><span fg="#888">         start a new conversation</span></text>
-          <text><span fg="#888">  PageUp/Down · wheel</span><span fg="#888">  scroll history</span></text>
+          <text><span>  PageUp/Down · wheel</span><span fg="#888">  scroll history</span></text>
         </box>
       </box>
     </box>
