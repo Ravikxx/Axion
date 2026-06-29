@@ -440,6 +440,30 @@ export const TOOL_DEFINITIONS = [
     },
   },
   {
+    name: 'ask_questions',
+    description: 'Ask the user several questions at once in a single interactive menu. Each question can be single-choice, multi-select (select all that apply), or free text, and may allow a custom typed answer. Prefer this over multiple separate ask_* calls when you need more than one piece of input.',
+    input_schema: {
+      type: 'object',
+      properties: {
+        questions: {
+          type: 'array',
+          description: 'The questions to ask, presented in order.',
+          items: {
+            type: 'object',
+            properties: {
+              question:     { type: 'string', description: 'The question text.' },
+              type:         { type: 'string', enum: ['choice', 'multi', 'text'], description: "'choice' = pick one; 'multi' = select all that apply; 'text' = free-form. Defaults to 'choice' when options are given, else 'text'." },
+              options:      { type: 'array', items: { type: 'string' }, description: 'Choices for choice/multi questions.' },
+              allow_custom: { type: 'boolean', description: 'Also offer a custom typed answer in addition to the options.' },
+            },
+            required: ['question'],
+          },
+        },
+      },
+      required: ['questions'],
+    },
+  },
+  {
     name: 'todo_add',
     description: 'Add a task to the TODO list. Use this to track work items, next steps, or things to remember for later.',
     input_schema: {
@@ -795,6 +819,11 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
         if (!askUser) return { success: false, output: 'User interaction is not available in this context.' };
         const cAns = await askUser({ type: 'confirm', question: input.question });
         return { success: true, output: cAns ? 'yes' : 'no' };
+      }
+      case 'ask_questions': {
+        if (!askUser) return { success: false, output: 'User interaction is not available in this context.' };
+        const fAns = await askUser({ type: 'form', questions: input.questions || [] });
+        return { success: true, output: fAns };
       }
 
       case 'speak': {

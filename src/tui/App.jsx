@@ -30,6 +30,7 @@ import { ToolBlock } from './ToolBlock.jsx';
 import { SuggestionBox } from './Suggestions.jsx';
 import { Welcome } from './Welcome.jsx';
 import { Thinking } from './Thinking.jsx';
+import { QuestionMenu } from './QuestionMenu.jsx';
 import { pickThinkingWord } from '../ui/thinkingWords.js';
 import { execSync, spawn } from 'child_process';
 import { existsSync, readFileSync, unlinkSync, writeSync } from 'fs';
@@ -50,6 +51,26 @@ import { executeTool } from '../agent/tools.js';
 // scrollable message pane + framed input on the left, workspace sidebar on right.
 // NOTE (preview): tool confirms / question prompts are auto-approved for now —
 // the real prompt UI is a later milestone. Shipped `axion` stays on Ink until parity.
+
+// Normalize the various ask_* tool payloads into a single QuestionMenu "form".
+function normalizeQuestionSpec(spec) {
+  const normQ = (q) => {
+    const t = (q.type === 'multi' || q.type === 'multiple' || q.type === 'select_all') ? 'multi'
+            : (q.type === 'text' || !q.options?.length) ? 'text'
+            : 'choice';
+    return {
+      question: q.question,
+      type: t,
+      options: q.options || [],
+      allowCustom: !!(q.allow_custom ?? q.allowCustom),
+      placeholder: q.placeholder,
+    };
+  };
+  if (spec?.type === 'form') return { questions: (spec.questions || []).map(normQ) };
+  if (spec?.type === 'multiple_choice') return { questions: [{ question: spec.question, type: 'choice', options: spec.options || [], allowCustom: !!spec.allow_custom }] };
+  if (spec?.type === 'confirm') return { questions: [{ question: spec.question, type: 'choice', options: ['Yes', 'No'] }] };
+  return { questions: [{ question: spec?.question, type: 'text', placeholder: spec?.placeholder }] };
+}
 
 const MODE_ICONS  = { ask: '?', plan: '◈', auto: '⚡', bypass: '⚡', decide: '🤖' };
 const MODE_COLORS = { ask: 'cyan', plan: 'yellow', auto: '#7ee787', bypass: '#7ee787', decide: '#c678dd' };
@@ -146,8 +167,7 @@ function Session({
   const [todos, setTodos] = useState(() => getTodos(todoScope));
   const [inputMode, setInputMode] = useState('chat'); // chat | confirm-tool | confirm-plan | question
   const [pendingConfirm, setPendingConfirm] = useState(null);
-  const [pendingQuestion, setPendingQuestion] = useState(null);
-  const [questionSel, setQuestionSel] = useState(0); // highlighted option in a multiple-choice ask
+  const [pendingForm, setPendingForm] = useState(null); // normalized question form for the menu
   const [expandedTools, setExpandedTools] = useState(() => new Set()); // message indices shown in full
   const [extThinking, setExtThinking] = useState(false);
   const [thinkingBudget, setThinkingBudget] = useState(10000);
@@ -165,6 +185,7 @@ function Session({
   const scrollRef = useRef(null);
   const confirmResolverRef = useRef(null);
   const questionResolverRef = useRef(null);
+  const questionSpecRef = useRef(null);
   const pendingAllowKeyRef = useRef(null);
   const lastUserTextRef = useRef('');
 
@@ -339,16 +360,8 @@ function Session({
       else if (ch === 'n' || key.name === 'escape') resolveConfirm(false);
       return;
     }
-    // Question prompt: ↑/↓ move the highlight, Enter/number picks (Enter is
-    // routed through the input's onSubmit → answerQuestion, which reads questionSel).
-    if (inputMode === 'question') {
-      const n = pendingQuestion?.options?.length || 0;
-      if (n > 0) {
-        if (key.name === 'up')   { setQuestionSel((s) => (s - 1 + n) % n); return; }
-        if (key.name === 'down') { setQuestionSel((s) => (s + 1) % n); return; }
-      }
-      return; // Enter handled via the input's onSubmit
-    }
+    // Question prompt is fully handled by <QuestionMenu> (its own useKeyboard).
+    if (inputMode === 'question') return;
 
     // Chat mode
     if (key.name === 'escape' && busy) { try { agentRef.current?.cancel(); } catch {} return; }
@@ -1435,10 +1448,10 @@ function Session({
       setInputMode('confirm-plan');
       confirmResolverRef.current = resolve;
     });
-    const askUser = (prompt) => new Promise((resolve) => {
+    const askUser = (spec) => new Promise((resolve) => {
       questionResolverRef.current = resolve;
-      setPendingQuestion(prompt);
-      setQuestionSel(0);
+      questionSpecRef.current = spec;
+      setPendingForm(normalizeQuestionSpec(spec));
       setInputMode('question');
     });
 
@@ -1450,35 +1463,35 @@ function Session({
 
   useEffect(() => { submitRef.current = submit; });
 
-  // Question prompt (ask_question / ask_multiple_choice): resolve with the typed
-  // answer, or for multiple choice the option matching the typed number.
-  const answerQuestion = useCallback((value) => {
+  // QuestionMenu finished — map the per-question answers back to what each tool
+  // expects: bool for confirm, a readable Q→A block for a multi-question form,
+  // a single string (multi-select joined by ', ') otherwise.
+  const completeQuestion = useCallback((answers) => {
+    const spec = questionSpecRef.current;
     const r = questionResolverRef.current;
     questionResolverRef.current = null;
-    const q = pendingQuestion;
-    setPendingQuestion(null);
+    setPendingForm(null);
     setInputMode('chat');
-    setInputSafe('');
-    let answer = value;
-    if (q?.options?.length) {
-      const n = parseInt(value, 10);
-      if (!isNaN(n) && n >= 1 && n <= q.options.length) answer = q.options[n - 1];
-      else if (!String(value).trim()) answer = q.options[questionSel]; // Enter on the highlight
+    const flat = (a) => (Array.isArray(a) ? a.join(', ') : (a ?? ''));
+    let result;
+    if (spec?.type === 'form') {
+      result = (spec.questions || []).map((q, i) => `${q.question} → ${flat(answers[i])}`).join('\n');
+    } else if (spec?.type === 'confirm') {
+      result = answers[0] === 'Yes';
+    } else {
+      result = flat(answers[0]);
     }
-    r?.(answer);
-  }, [pendingQuestion, questionSel, setInputSafe]);
+    r?.(result);
+  }, []);
 
-  // Mouse: clicking an option resolves the question with that exact choice.
-  const pickOption = useCallback((i) => {
-    const q = pendingQuestion;
-    if (!q?.options?.[i]) return;
+  const cancelQuestion = useCallback(() => {
     const r = questionResolverRef.current;
     questionResolverRef.current = null;
-    setPendingQuestion(null);
+    const wasConfirm = questionSpecRef.current?.type === 'confirm';
+    setPendingForm(null);
     setInputMode('chat');
-    setInputSafe('');
-    r?.(q.options[i]);
-  }, [pendingQuestion, setInputSafe]);
+    r?.(wasConfirm ? false : '');
+  }, []);
 
   const ctxWindow = getContextWindow(model) || 0;
   const ctxUsed = tokens.context || tokens.total || 0;
@@ -1518,46 +1531,26 @@ function Session({
             <text><span fg="#f0c674">? </span><span>execute this plan? </span><span fg="#888">(y / n)</span></text>
           </box>
         )}
-        {inputMode === 'question' && pendingQuestion && (
-          <box style={{ flexDirection: 'column', paddingLeft: 1 }}>
-            <text><span fg="cyan">{pendingQuestion.question || 'Answer:'}</span></text>
-            {(pendingQuestion.options || []).map((o, i) => {
-              const sel = i === questionSel;
-              return (
-                <box
-                  key={i}
-                  onMouseDown={() => pickOption(i)}
-                  onMouseOver={() => setQuestionSel(i)}
-                  style={{ flexDirection: 'row' }}
-                >
-                  <text>
-                    <span fg={sel ? A : '#666'}>{sel ? ' ▸ ' : '   '}</span>
-                    <span fg={sel ? A : '#888'}>{`${i + 1}. ${o}`}</span>
-                  </text>
-                </box>
-              );
-            })}
-            {pendingQuestion.options?.length ? (
-              <text><span fg="#666">{'   ↑/↓ or click · Enter confirm · or type a number / your own answer'}</span></text>
-            ) : null}
-          </box>
+        {inputMode === 'question' && pendingForm && (
+          <QuestionMenu form={pendingForm} isActive={isActive} onComplete={completeQuestion} onCancel={cancelQuestion} />
         )}
 
         {inputMode === 'chat' && input.startsWith('/') && <SuggestionBox inputValue={input} />}
+        {inputMode !== 'question' && (
         <box style={{ border: true, borderColor: inputMode === 'chat' ? A : '#f0c674', height: 3, paddingLeft: 1, paddingRight: 1 }}>
           <input
             value={input}
             onInput={setInputSafe}
-            onSubmit={inputMode === 'question' ? answerQuestion : submit}
+            onSubmit={submit}
             focused={isActive}
             placeholder={
               inputMode === 'confirm-tool' || inputMode === 'confirm-plan' ? 'press y / n …' :
-              inputMode === 'question' ? (pendingQuestion?.options?.length ? 'type the option number…' : 'type your answer…') :
               busy ? 'Axion is working…  (Esc to interrupt)' :
               'ask Axion something…  (Enter to send · / for commands · Ctrl+C twice to quit)'
             }
           />
         </box>
+        )}
       </box>
 
       <Sidebar
@@ -1587,17 +1580,19 @@ function TabBar({ tabs, activeId, accentColor, onSwitchTab, onNewTab, onCloseTab
     <box style={{ flexDirection: 'row', height: 1, backgroundColor: '#15161a', paddingLeft: 1 }}>
       {tabs.map((t, i) => {
         const on = t.id === activeId;
+        const bg = on ? '#2a2c33' : undefined;
         return (
-          <box
-            key={t.id}
-            onMouseDown={() => onSwitchTab?.(i)}
-            style={{ flexDirection: 'row', paddingLeft: 1, paddingRight: 1, backgroundColor: on ? '#2a2c33' : undefined }}
-          >
-            <text>
-              <span fg={on ? accentColor : '#666'}>{`${i + 1} `}</span>
-              <span fg={on ? '#ffffff' : '#888'}>{t.title || 'chat'}</span>
-              {t.busy ? <span fg="#f0c674"> ●</span> : null}
-            </text>
+          <box key={t.id} style={{ flexDirection: 'row', backgroundColor: bg }}>
+            <box onMouseDown={() => onSwitchTab?.(i)} style={{ flexDirection: 'row', paddingLeft: 1 }}>
+              <text>
+                <span fg={on ? accentColor : '#666'}>{`${i + 1} `}</span>
+                <span fg={on ? '#ffffff' : '#888'}>{t.title || 'chat'}</span>
+                {t.busy ? <span fg="#f0c674"> ●</span> : null}
+              </text>
+            </box>
+            <box onMouseDown={() => onCloseTab?.(t.id)} style={{ paddingLeft: 1, paddingRight: 1 }}>
+              <text><span fg={on ? '#aaaaaa' : '#555'}>✕</span></text>
+            </box>
           </box>
         );
       })}
@@ -1622,17 +1617,6 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
     setTabs((ts) => [...ts, { id, model: initialModel, mode: initialMode, resume: null, title: null }]);
     setActiveId(id);
   }, [initialModel, initialMode]);
-
-  const closeTab = useCallback((session) => {
-    setTabs((ts) => {
-      if (ts.length <= 1) { onExit(session); return ts; } // closing the last tab exits
-      const idx = ts.findIndex((t) => t.id === activeId);
-      const next = ts.filter((t) => t.id !== activeId);
-      const fallback = next[Math.max(0, idx - 1)] || next[0];
-      setActiveId(fallback.id);
-      return next;
-    });
-  }, [activeId, onExit]);
 
   const switchTab = useCallback((target) => {
     setTabs((ts) => {
@@ -1679,17 +1663,38 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
   const handleBusy = useCallback((tabId, busy) => {
     const s = busyTabsRef.current;
     const was = s.has(tabId);
+    if (was === busy) return; // no actual change — avoid a needless re-render loop
     if (busy) s.add(tabId); else s.delete(tabId);
-    setTabs((ts) => ts.map((t) => (t.id === tabId && t.busy !== busy) ? { ...t, busy } : t));
+    setTabs((ts) => {
+      const t = ts.find((x) => x.id === tabId);
+      if (!t || t.busy === busy) return ts; // same reference → React bails, no re-render
+      return ts.map((x) => (x.id === tabId ? { ...x, busy } : x));
+    });
     if (busy) startSpinner();
     else if (was) { if (s.size === 0) stopSpinner(); notifyDone(); } // a tab just finished
   }, [startSpinner, stopSpinner, notifyDone]);
 
   useEffect(() => () => { stopSpinner(); if (pingTimerRef.current) clearTimeout(pingTimerRef.current); }, [stopSpinner]);
 
+  // Remove a specific tab (the × button, or Ctrl+W for the active one). Closing
+  // the last tab exits. Clears the removed tab's busy state so the spinner stops.
+  const removeTab = useCallback((id, session) => {
+    busyTabsRef.current.delete(id);
+    if (busyTabsRef.current.size === 0) stopSpinner();
+    setTabs((ts) => {
+      if (ts.length <= 1) { onExit(session); return ts; }
+      const idx = ts.findIndex((t) => t.id === id);
+      if (idx === -1) return ts;
+      const next = ts.filter((t) => t.id !== id);
+      setActiveId((cur) => (cur === id ? (next[Math.max(0, idx - 1)] || next[0]).id : cur));
+      return next;
+    });
+  }, [onExit, stopSpinner]);
+  const closeTab = useCallback((session) => removeTab(activeId, session), [removeTab, activeId]);
+
   return (
     <box style={{ width, height, flexDirection: 'column' }}>
-      <TabBar tabs={tabs} activeId={activeId} accentColor={A} onSwitchTab={switchTab} onNewTab={newTab} onCloseTab={closeTab} />
+      <TabBar tabs={tabs} activeId={activeId} accentColor={A} onSwitchTab={switchTab} onNewTab={newTab} onCloseTab={removeTab} />
       <box style={{ flexGrow: 1, position: 'relative' }}>
         {tabs.map((t) => {
           const on = t.id === activeId;
