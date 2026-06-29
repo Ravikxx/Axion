@@ -138,7 +138,7 @@ export const CONTEXT_WINDOWS = {
 
 export function getContextWindow(modelAlias) {
   const id = MODELS[modelAlias] || modelAlias;
-  return CONTEXT_WINDOWS[id] || 128_000;
+  return CONTEXT_WINDOWS[id] || CONTEXT_WINDOWS[modelAlias] || CUSTOM_ENDPOINTS[modelAlias]?.context || 128_000;
 }
 
 // Fetch OpenRouter model list and populate CONTEXT_WINDOWS dynamically.
@@ -174,20 +174,15 @@ export async function fetchEndpointContextWindows() {
       if (!res.ok) continue;
       const json = await res.json();
       const models = json?.data || [];
+      let bestCtx = 0;
       for (const m of models) {
         const ctx = m.context_length || m.max_context_length || (m.metadata?.context_length);
         if (m.id && ctx) {
           CONTEXT_WINDOWS[m.id] = ctx;
+          if (ep.model && m.id === ep.model) bestCtx = ctx;
         }
       }
-      // Also map the endpoint model name
-      if (ep.model) {
-        const found = models.find(m => m.id === ep.model);
-        if (found) {
-          const ctx = found.context_length || found.max_context_length || (found.metadata?.context_length);
-          if (ctx) CONTEXT_WINDOWS[ep.model] = ctx;
-        }
-      }
+      if (bestCtx) CONTEXT_WINDOWS[name] = bestCtx;
     } catch {}
   }
 }

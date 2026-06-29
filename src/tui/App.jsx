@@ -1451,7 +1451,7 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
             value={input}
             onInput={setInputSafe}
             onSubmit={inputMode === 'question' ? answerQuestion : submit}
-            focused={inputMode === 'chat' || inputMode === 'question'}
+            focused={true}
             placeholder={
               inputMode === 'confirm-tool' || inputMode === 'confirm-plan' ? 'press y / n …' :
               inputMode === 'question' ? (pendingQuestion?.options?.length ? 'type the option number…' : 'type your answer…') :
