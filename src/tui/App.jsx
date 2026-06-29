@@ -117,7 +117,12 @@ function MessageRow({ msg, expanded = false }) {
   }
 }
 
-export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume = null, onExit = () => process.exit(0) }) {
+function Session({
+  initialModel = 'lumen', initialMode = 'ask', initialResume = null,
+  onExit = () => process.exit(0),
+  isActive = true,
+  onTitleChange, onNewTab, onCloseTab, onSwitchTab,
+}) {
   const { width, height } = useTerminalDimensions();
   const A = accent();
 
@@ -235,6 +240,7 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
   // Autosave the live session 1s after it settles (powers `axion -c` + exit summary).
   const autosaveTimer = useRef(null);
   useEffect(() => {
+    if (!isActive) return; // only the foreground tab owns the "last session" file
     const hist = agentRef.current?.history;
     if (!hist || hist.length === 0) return;
     if (autosaveTimer.current) clearTimeout(autosaveTimer.current);
@@ -242,7 +248,7 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
       try { autosaveSession(buildSession()); } catch {}
     }, 1000);
     return () => { if (autosaveTimer.current) clearTimeout(autosaveTimer.current); };
-  }, [messages, model, mode, buildSession]);
+  }, [messages, model, mode, buildSession, isActive]);
 
   // Refresh todos periodically (the agent can add them via tools).
   useEffect(() => {
@@ -273,7 +279,14 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
   }, []);
 
   useKeyboard((key) => {
+    if (!isActive) return; // only the foreground tab handles keys
     const ch = (key.name || '').toLowerCase();
+
+    // Tab management: Ctrl+T new tab, Ctrl+W close, Ctrl+Tab / Ctrl+1..9 switch.
+    if (key.ctrl && ch === 't') { onNewTab?.(); return; }
+    if (key.ctrl && ch === 'w') { onCloseTab?.(buildSession()); return; }
+    if (key.ctrl && key.name === 'tab') { onSwitchTab?.('next'); return; }
+    if (key.ctrl && /^[1-9]$/.test(key.name || '')) { onSwitchTab?.(parseInt(key.name, 10) - 1); return; }
 
     // Ctrl+Shift+C: copy last assistant response. Ctrl+C: double-tap to quit.
     if (key.ctrl && ch === 'c') {
@@ -1375,6 +1388,7 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
     setInputSafe('');
     if (text.startsWith('/')) { runCommand(text); return; }
     push({ type: 'user', text });
+    if (!lastUserTextRef.current) onTitleChange?.(text); // first prompt names the tab
     lastUserTextRef.current = text;
     setThinkingWord(pickThinkingWord());
     setBusy(true);
@@ -1433,7 +1447,7 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
   const ctxUsed = tokens.context || tokens.total || 0;
 
   return (
-    <box style={{ width, height, flexDirection: 'row' }}>
+    <box style={{ flexGrow: 1, flexDirection: 'row' }}>
       <box style={{ flexGrow: 1, flexDirection: 'column' }}>
         <Welcome model={model} mode={mode} />
         <scrollbox ref={scrollRef} style={{ flexGrow: 1 }} stickyScroll stickyStart="bottom">
@@ -1491,7 +1505,7 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
             value={input}
             onInput={setInputSafe}
             onSubmit={inputMode === 'question' ? answerQuestion : submit}
-            focused={true}
+            focused={isActive}
             placeholder={
               inputMode === 'confirm-tool' || inputMode === 'confirm-plan' ? 'press y / n …' :
               inputMode === 'question' ? (pendingQuestion?.options?.length ? 'type the option number…' : 'type your answer…') :
@@ -1512,6 +1526,108 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
         sessionCost={estimateCost(model, tokens.input || 0, tokens.output || 0) || 0}
         todos={todos}
       />
+    </box>
+  );
+}
+
+// ── Tabs ────────────────────────────────────────────────────────────────────────
+// Each tab is an independent <Session> with its own Agent, history, model, and
+// mode. All tabs stay mounted; inactive ones are `display:'none'` (zero layout)
+// so their agents keep running in the background. Only the active tab takes keys.
+
+let TAB_SEQ = 0;
+
+function TabBar({ tabs, activeId, accentColor }) {
+  return (
+    <box style={{ flexDirection: 'row', height: 1, backgroundColor: '#15161a', paddingLeft: 1 }}>
+      {tabs.map((t, i) => {
+        const on = t.id === activeId;
+        return (
+          <box key={t.id} style={{ flexDirection: 'row', paddingLeft: 1, paddingRight: 1, backgroundColor: on ? '#2a2c33' : undefined }}>
+            <text>
+              <span fg={on ? accentColor : '#666'}>{`${i + 1} `}</span>
+              <span fg={on ? '#ffffff' : '#888'}>{t.title || 'chat'}</span>
+              {t.busy ? <span fg="#f0c674"> ●</span> : null}
+            </text>
+          </box>
+        );
+      })}
+      <text><span fg="#555">{'  + Ctrl+T'}</span></text>
+    </box>
+  );
+}
+
+export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume = null, onExit = () => process.exit(0) }) {
+  const { width, height } = useTerminalDimensions();
+  const A = accent();
+  const firstId = useRef(++TAB_SEQ).current;
+  const [tabs, setTabs] = useState(() => [
+    { id: firstId, model: initialModel, mode: initialMode, resume: initialResume, title: initialResume?.name || null },
+  ]);
+  const [activeId, setActiveId] = useState(firstId);
+
+  const newTab = useCallback(() => {
+    const id = ++TAB_SEQ;
+    setTabs((ts) => [...ts, { id, model: initialModel, mode: initialMode, resume: null, title: null }]);
+    setActiveId(id);
+  }, [initialModel, initialMode]);
+
+  const closeTab = useCallback((session) => {
+    setTabs((ts) => {
+      if (ts.length <= 1) { onExit(session); return ts; } // closing the last tab exits
+      const idx = ts.findIndex((t) => t.id === activeId);
+      const next = ts.filter((t) => t.id !== activeId);
+      const fallback = next[Math.max(0, idx - 1)] || next[0];
+      setActiveId(fallback.id);
+      return next;
+    });
+  }, [activeId, onExit]);
+
+  const switchTab = useCallback((target) => {
+    setTabs((ts) => {
+      if (ts.length < 2) return ts;
+      const cur = ts.findIndex((t) => t.id === activeId);
+      const idx = target === 'next' ? (cur + 1) % ts.length : Math.min(Math.max(0, target), ts.length - 1);
+      setActiveId(ts[idx].id);
+      return ts;
+    });
+  }, [activeId]);
+
+  const setTitle = useCallback((id, title) => {
+    const t = String(title).replace(/\s+/g, ' ').trim().slice(0, 16);
+    setTabs((ts) => ts.map((x) => (x.id === id && !x.title) ? { ...x, title: t } : x));
+  }, []);
+
+  return (
+    <box style={{ width, height, flexDirection: 'column' }}>
+      {tabs.length > 1 && <TabBar tabs={tabs} activeId={activeId} accentColor={A} />}
+      <box style={{ flexGrow: 1, flexDirection: 'row' }}>
+        {tabs.map((t) => {
+          const on = t.id === activeId;
+          // Inactive tabs stay mounted (agents keep running) but take zero layout
+          // and don't paint. `display:'none'` is ignored by OpenTUI's React layer,
+          // so we collapse to 0×0 + visible:false instead.
+          return (
+            <box
+              key={t.id}
+              visible={on}
+              style={on ? { flexGrow: 1, flexDirection: 'row' } : { width: 0, height: 0, overflow: 'hidden' }}
+            >
+              <Session
+                initialModel={t.model}
+                initialMode={t.mode}
+                initialResume={t.resume}
+                isActive={on}
+                onExit={onExit}
+                onTitleChange={(title) => setTitle(t.id, title)}
+                onNewTab={newTab}
+                onCloseTab={closeTab}
+                onSwitchTab={switchTab}
+              />
+            </box>
+          );
+        })}
+      </box>
     </box>
   );
 }
