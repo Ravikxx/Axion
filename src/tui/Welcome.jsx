@@ -14,7 +14,7 @@ export function Welcome({ model = '—', mode = 'ask', cwd = process.cwd() }) {
       <ascii-font text="AXION" font="tiny" color={A} />
       <text><span fg="#888">by Axion Labs  ·  terminal AI coding agent</span></text>
       <text> </text>
-      <box style={{ flexDirection: 'row' }}>
+      <box style={{ flexDirection: 'row', width: 46 }}>
         {/* Status */}
         <box style={{ flexDirection: 'column', marginRight: 5 }}>
           <text><span fg="#888">model  </span><span fg={A}>{model}</span></text>
@@ -24,11 +24,13 @@ export function Welcome({ model = '—', mode = 'ask', cwd = process.cwd() }) {
         {/* Quick start */}
         <box style={{ flexDirection: 'column' }}>
           <text><span fg="#f0c674">Quick start</span></text>
-          <text><span>  /help</span><span fg="#888">          all commands</span></text>
-          <text><span>  /model /mode</span><span fg="#888">   switch model · mode</span></text>
-          <text><span>  /theme</span><span fg="#888">         change accent color</span></text>
-          <text><span>  /clear</span><span fg="#888">         start a new conversation</span></text>
+          <text><span>  /help</span><span fg="#888">         all commands</span></text>
+          <text><span>  /model /mode</span><span fg="#888">  switch model · mode</span></text>
+          <text><span>  /theme</span><span fg="#888">        change accent color</span></text>
+          <text><span>  /clear</span><span fg="#888">        start a new conversation</span></text>
           <text><span>  PageUp/Down · wheel</span><span fg="#888">  scroll history</span></text>
+          <text><span>  /copy</span><span fg="#888">         copy last response</span></text>
+          <text><span>  /copy-block &lt;n&gt;</span><span fg="#888">  copy code block</span></text>
         </box>
       </box>
     </box>
