@@ -11,6 +11,8 @@ import { RichText } from './RichText.jsx';
 import { ToolBlock } from './ToolBlock.jsx';
 import { SuggestionBox } from './Suggestions.jsx';
 import { Welcome } from './Welcome.jsx';
+import { Thinking } from './Thinking.jsx';
+import { pickThinkingWord } from '../ui/thinkingWords.js';
 
 // ── Milestone 2: real agent wired into the OpenTUI shell ────────────────────────
 // Reuses the UI-agnostic Agent class (callbacks → message list). Row layout:
@@ -98,6 +100,8 @@ export function App({ initialModel = 'lumen', initialMode = 'ask' }) {
   const [inputMode, setInputMode] = useState('chat'); // chat | confirm-tool | confirm-plan | question
   const [pendingConfirm, setPendingConfirm] = useState(null);
   const [pendingQuestion, setPendingQuestion] = useState(null);
+  const [thinkingWord, setThinkingWord] = useState('thinking');
+  const [thinkingElapsed, setThinkingElapsed] = useState(0);
 
   const agentRef  = useRef(null);
   const streamRef = useRef('');
@@ -159,6 +163,15 @@ export function App({ initialModel = 'lumen', initialMode = 'ask' }) {
     const id = setInterval(() => setTodos(getTodos()), 2000);
     return () => clearInterval(id);
   }, []);
+
+  // Thinking timer — counts up (seconds) while the agent is working.
+  useEffect(() => {
+    if (!busy) return;
+    setThinkingElapsed(0);
+    const start = Date.now();
+    const id = setInterval(() => setThinkingElapsed(Math.floor((Date.now() - start) / 1000)), 1000);
+    return () => clearInterval(id);
+  }, [busy]);
 
   // Ctrl+C exits (OpenTUI). Esc interrupts a running turn. Tab completes a slash
   // command. PageUp/Down + arrows scroll the message history (input keeps focus;
@@ -264,6 +277,7 @@ export function App({ initialModel = 'lumen', initialMode = 'ask' }) {
     setInputSafe('');
     if (text.startsWith('/')) { runCommand(text); return; }
     push({ type: 'user', text });
+    setThinkingWord(pickThinkingWord());
     setBusy(true);
 
     // Interactive confirmations: tool-confirm (y/n/a), plan-confirm (y/n),
@@ -328,6 +342,11 @@ export function App({ initialModel = 'lumen', initialMode = 'ask' }) {
             </box>
           )}
         </scrollbox>
+        {/* Thinking indicator */}
+        {busy && inputMode === 'chat' && (
+          <Thinking word={thinkingWord} elapsed={thinkingElapsed} tokens={tokens.total || 0} />
+        )}
+
         {/* Confirmation / question prompts */}
         {inputMode === 'confirm-tool' && pendingConfirm && (
           <box style={{ paddingLeft: 1 }}>

@@ -4,7 +4,7 @@
   "description": "Axion by Axion Labs — terminal AI coding agent",
   "type": "module",
   "bin": {
-    "axion": "dist/axion.js",
+    "axion": "src/tui/launch.js",
     "axion-serve": "src/web/server.js",
     "axion-blender": "mcp-servers/blender/index.js",
     "axion-discord": "src/discord-daemon.js",
