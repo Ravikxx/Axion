@@ -302,10 +302,11 @@ function Session({
     if (!isActive) return; // only the foreground tab handles keys
     const ch = (key.name || '').toLowerCase();
 
-    // Tab management: Ctrl+T new tab, Ctrl+W close, Ctrl+Tab / Ctrl+1..9 switch.
+    // Tab management: Ctrl+T new, Ctrl+W close, Shift+Tab cycle, Ctrl+1..9 jump.
+    // (Ctrl+Tab is intercepted by Windows Terminal, so Shift+Tab is the cycle key.)
     if (key.ctrl && ch === 't') { onNewTab?.(); return; }
     if (key.ctrl && ch === 'w') { onCloseTab?.(buildSession()); return; }
-    if (key.ctrl && key.name === 'tab') { onSwitchTab?.('next'); return; }
+    if (key.name === 'backtab' || (key.name === 'tab' && key.shift)) { onSwitchTab?.('next'); return; }
     if (key.ctrl && /^[1-9]$/.test(key.name || '')) { onSwitchTab?.(parseInt(key.name, 10) - 1); return; }
 
     // Ctrl+Shift+C: copy last assistant response. Ctrl+C: double-tap to quit.
@@ -1557,13 +1558,17 @@ function Session({
 
 let TAB_SEQ = 0;
 
-function TabBar({ tabs, activeId, accentColor }) {
+function TabBar({ tabs, activeId, accentColor, onSwitchTab, onNewTab, onCloseTab }) {
   return (
     <box style={{ flexDirection: 'row', height: 1, backgroundColor: '#15161a', paddingLeft: 1 }}>
       {tabs.map((t, i) => {
         const on = t.id === activeId;
         return (
-          <box key={t.id} style={{ flexDirection: 'row', paddingLeft: 1, paddingRight: 1, backgroundColor: on ? '#2a2c33' : undefined }}>
+          <box
+            key={t.id}
+            onMouseDown={() => onSwitchTab?.(i)}
+            style={{ flexDirection: 'row', paddingLeft: 1, paddingRight: 1, backgroundColor: on ? '#2a2c33' : undefined }}
+          >
             <text>
               <span fg={on ? accentColor : '#666'}>{`${i + 1} `}</span>
               <span fg={on ? '#ffffff' : '#888'}>{t.title || 'chat'}</span>
@@ -1572,7 +1577,9 @@ function TabBar({ tabs, activeId, accentColor }) {
           </box>
         );
       })}
-      <text><span fg="#555">{'  + Ctrl+T'}</span></text>
+      <box onMouseDown={() => onNewTab?.()} style={{ paddingLeft: 1, paddingRight: 1 }}>
+        <text><span fg={accentColor}>＋</span><span fg="#555"> new</span></text>
+      </box>
     </box>
   );
 }
@@ -1620,7 +1627,7 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
 
   return (
     <box style={{ width, height, flexDirection: 'column' }}>
-      {tabs.length > 1 && <TabBar tabs={tabs} activeId={activeId} accentColor={A} />}
+      <TabBar tabs={tabs} activeId={activeId} accentColor={A} onSwitchTab={switchTab} onNewTab={newTab} onCloseTab={closeTab} />
       <box style={{ flexGrow: 1, flexDirection: 'row' }}>
         {tabs.map((t) => {
           const on = t.id === activeId;
