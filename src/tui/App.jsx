@@ -3,7 +3,7 @@ import { useKeyboard, useTerminalDimensions } from '@opentui/react';
 import { accent, THEMES, setTheme, themeName } from '../ui/theme.js';
 import { Agent } from '../agent/agent.js';
 import { MODELS, getContextWindow, estimateCost } from '../config.js';
-import { getTodos, saveModel, saveMode, saveTheme, getAllowedTools, allowTool } from '../persist.js';
+import { getTodos, saveModel, saveMode, saveTheme, getAllowedTools, allowTool, autosaveSession } from '../persist.js';
 import { COMMANDS, getTabCompletion } from '../ui/commands.js';
 import { permissionKey, confirmLabel } from '../ui/toolPrompts.js';
 import { Sidebar } from './Sidebar.jsx';
@@ -85,7 +85,7 @@ function MessageRow({ msg }) {
   }
 }
 
-export function App({ initialModel = 'lumen', initialMode = 'ask' }) {
+export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume = null, onExit = () => process.exit(0) }) {
   const { width, height } = useTerminalDimensions();
   const A = accent();
 
@@ -155,8 +155,48 @@ export function App({ initialModel = 'lumen', initialMode = 'ask' }) {
       },
     });
     agentRef.current = agent;
+
+    // Resume: seed the agent history + message log from a saved/last session.
+    if (initialResume && Array.isArray(initialResume.agentHistory)) {
+      agent.history = initialResume.agentHistory;
+      agent.totalTokens = initialResume.tokenCount || 0;
+      const tok = { total: initialResume.tokenCount || 0, input: 0, output: initialResume.tokenCount || 0, context: 0 };
+      setTokens(tok);
+      const when = initialResume.savedAt ? new Date(initialResume.savedAt).toLocaleString() : 'earlier';
+      setMessages([
+        { type: 'info', text: `── continuing previous session (saved ${when}) ──` },
+        ...(initialResume.displayMessages || []),
+        { type: 'info', text: '── end of previous session — continuing from here ──' },
+      ]);
+    }
+
     return () => { try { agent.cancel(); } catch {} };
-  }, [initialModel, initialMode, push, flushStream]);
+  }, [initialModel, initialMode, push, flushStream]); // eslint-disable-line
+
+  // Build the serializable session for autosave / resume / exit summary.
+  const buildSession = useCallback(() => {
+    const displayMessages = messages.filter((m) => m.type !== 'info');
+    const inTok = tokens.input || 0, outTok = tokens.output || 0;
+    return {
+      model, mode,
+      tokenCount: tokens.total || 0,
+      cost: estimateCost(model, inTok, outTok) || 0,
+      agentHistory: agentRef.current?.history || [],
+      displayMessages,
+    };
+  }, [messages, model, mode, tokens]);
+
+  // Autosave the live session 1s after it settles (powers `axion -c` + exit summary).
+  const autosaveTimer = useRef(null);
+  useEffect(() => {
+    const hist = agentRef.current?.history;
+    if (!hist || hist.length === 0) return;
+    if (autosaveTimer.current) clearTimeout(autosaveTimer.current);
+    autosaveTimer.current = setTimeout(() => {
+      try { autosaveSession(buildSession()); } catch {}
+    }, 1000);
+    return () => { if (autosaveTimer.current) clearTimeout(autosaveTimer.current); };
+  }, [messages, model, mode, buildSession]);
 
   // Refresh todos periodically (the agent can add them via tools).
   useEffect(() => {
@@ -186,6 +226,9 @@ export function App({ initialModel = 'lumen', initialMode = 'ask' }) {
 
   useKeyboard((key) => {
     const ch = (key.name || '').toLowerCase();
+
+    // Ctrl+C exits with the session summary (OpenTUI's exitOnCtrlC is off).
+    if (key.ctrl && ch === 'c') { onExit(buildSession()); return; }
 
     // Tool-confirmation prompt: y = allow once, a = always allow, n/Esc = deny.
     if (inputMode === 'confirm-tool') {
@@ -224,8 +267,17 @@ export function App({ initialModel = 'lumen', initialMode = 'ask' }) {
     const c = (cmd || '').toLowerCase();
     switch (c) {
       case 'exit': case 'quit':
-        process.exit(0);
+        onExit(buildSession());
         return;
+      case 'stats': {
+        const inTok = tokens.input || 0, outTok = tokens.output || 0;
+        const cost = estimateCost(model, inTok, outTok) || 0;
+        const msgCount = messages.filter((m) => m.type === 'user' || m.type === 'assistant').length;
+        push({ type: 'info', text:
+          `Session stats\n  model     ${model}\n  mode      ${modeLabel(mode)}\n  messages  ${msgCount}` +
+          `\n  tokens    ${tokens.total || 0}  (in ${inTok} / out ${outTok})\n  est. cost ${cost ? '$' + cost.toFixed(4) : '$0.00'}` });
+        return;
+      }
       case 'clear':
         try { agentRef.current?.clearHistory(); } catch {}
         setMessages([{ type: 'info', text: 'Conversation cleared.' }]);
@@ -269,7 +321,7 @@ export function App({ initialModel = 'lumen', initialMode = 'ask' }) {
         push({ type: 'info', text: `/${c} isn't wired into the new UI yet — coming soon. (Full command set lives in the Ink version on master.)` });
         return;
     }
-  }, [model, mode, tokens, push]);
+  }, [model, mode, tokens, messages, push, onExit, buildSession]);
 
   const submit = useCallback((value) => {
     const text = (value || '').trim();
