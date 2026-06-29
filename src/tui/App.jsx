@@ -3,8 +3,9 @@ import { useKeyboard, useTerminalDimensions } from '@opentui/react';
 import { accent, THEMES, setTheme, themeName } from '../ui/theme.js';
 import { Agent } from '../agent/agent.js';
 import { MODELS, getContextWindow, estimateCost } from '../config.js';
-import { getTodos, saveModel, saveMode, saveTheme } from '../persist.js';
+import { getTodos, saveModel, saveMode, saveTheme, getAllowedTools, allowTool } from '../persist.js';
 import { COMMANDS, getTabCompletion } from '../ui/commands.js';
+import { permissionKey, confirmLabel } from '../ui/toolPrompts.js';
 import { Sidebar } from './Sidebar.jsx';
 import { RichText } from './RichText.jsx';
 import { ToolBlock } from './ToolBlock.jsx';
@@ -94,12 +95,18 @@ export function App({ initialModel = 'lumen', initialMode = 'ask' }) {
   const [busy, setBusy] = useState(false);
   const [tokens, setTokens] = useState({ total: 0, input: 0, output: 0, context: 0 });
   const [todos, setTodos] = useState(getTodos);
+  const [inputMode, setInputMode] = useState('chat'); // chat | confirm-tool | confirm-plan | question
+  const [pendingConfirm, setPendingConfirm] = useState(null);
+  const [pendingQuestion, setPendingQuestion] = useState(null);
 
   const agentRef  = useRef(null);
   const streamRef = useRef('');
   const flushTimer = useRef(null);
   const inputRef  = useRef('');
   const scrollRef = useRef(null);
+  const confirmResolverRef = useRef(null);
+  const questionResolverRef = useRef(null);
+  const pendingAllowKeyRef = useRef(null);
 
   const push = useCallback((msg) => setMessages((m) => [...m, msg]), []);
   const setInputSafe = useCallback((v) => { inputRef.current = v; setInput(v); }, []);
@@ -156,7 +163,32 @@ export function App({ initialModel = 'lumen', initialMode = 'ask' }) {
   // Ctrl+C exits (OpenTUI). Esc interrupts a running turn. Tab completes a slash
   // command. PageUp/Down + arrows scroll the message history (input keeps focus;
   // mouse wheel works natively). Scrolling up disengages sticky-to-bottom.
+  const resolveConfirm = useCallback((val) => {
+    const r = confirmResolverRef.current;
+    confirmResolverRef.current = null;
+    setPendingConfirm(null);
+    setInputMode('chat');
+    r?.(val);
+  }, []);
+
   useKeyboard((key) => {
+    const ch = (key.name || '').toLowerCase();
+
+    // Tool-confirmation prompt: y = allow once, a = always allow, n/Esc = deny.
+    if (inputMode === 'confirm-tool') {
+      if (ch === 'y' || key.name === 'return') resolveConfirm(true);
+      else if (ch === 'a') { try { allowTool(pendingAllowKeyRef.current); } catch {} resolveConfirm(true); }
+      else if (ch === 'n' || key.name === 'escape') resolveConfirm(false);
+      return;
+    }
+    if (inputMode === 'confirm-plan') {
+      if (ch === 'y' || key.name === 'return') resolveConfirm(true);
+      else if (ch === 'n' || key.name === 'escape') resolveConfirm(false);
+      return;
+    }
+    if (inputMode === 'question') return; // handled via the input's onSubmit
+
+    // Chat mode
     if (key.name === 'escape' && busy) { try { agentRef.current?.cancel(); } catch {} return; }
     if (key.name === 'tab' && inputRef.current.startsWith('/')) {
       const completed = getTabCompletion(inputRef.current);
@@ -234,16 +266,51 @@ export function App({ initialModel = 'lumen', initialMode = 'ask' }) {
     push({ type: 'user', text });
     setBusy(true);
 
-    // Preview: auto-approve confirmations; real prompt UI is a later milestone.
-    const askConfirm = () => Promise.resolve(true);
-    const askPlanConfirm = () => Promise.resolve(true);
-    const askUser = () => Promise.resolve('');
+    // Interactive confirmations: tool-confirm (y/n/a), plan-confirm (y/n),
+    // and free-form questions — each shows a prompt and awaits the user.
+    const askConfirm = (tc) => {
+      if (tc.name && tc.name.includes('sequentialthinking')) return Promise.resolve(true);
+      const key = permissionKey(tc.name, tc.input);
+      if (getAllowedTools().includes(key)) return Promise.resolve(true);
+      return new Promise((resolve) => {
+        pendingAllowKeyRef.current = key;
+        setPendingConfirm({ name: tc.name, label: confirmLabel(tc.name, tc.input) });
+        setInputMode('confirm-tool');
+        confirmResolverRef.current = resolve;
+      });
+    };
+    const askPlanConfirm = () => new Promise((resolve) => {
+      setInputMode('confirm-plan');
+      confirmResolverRef.current = resolve;
+    });
+    const askUser = (prompt) => new Promise((resolve) => {
+      questionResolverRef.current = resolve;
+      setPendingQuestion(prompt);
+      setInputMode('question');
+    });
 
     agentRef.current
       .run(text, { askConfirm, askPlanConfirm, askUser })
       .catch((err) => push({ type: 'error', text: err?.message || String(err) }))
       .finally(() => setBusy(false));
   }, [busy, push, runCommand, setInputSafe]);
+
+  // Question prompt (ask_question / ask_multiple_choice): resolve with the typed
+  // answer, or for multiple choice the option matching the typed number.
+  const answerQuestion = useCallback((value) => {
+    const r = questionResolverRef.current;
+    questionResolverRef.current = null;
+    const q = pendingQuestion;
+    setPendingQuestion(null);
+    setInputMode('chat');
+    setInputSafe('');
+    let answer = value;
+    if (q?.options?.length) {
+      const n = parseInt(value, 10);
+      if (!isNaN(n) && n >= 1 && n <= q.options.length) answer = q.options[n - 1];
+    }
+    r?.(answer);
+  }, [pendingQuestion, setInputSafe]);
 
   const ctxWindow = getContextWindow(model) || 0;
   const ctxUsed = tokens.context || tokens.total || 0;
@@ -261,14 +328,45 @@ export function App({ initialModel = 'lumen', initialMode = 'ask' }) {
             </box>
           )}
         </scrollbox>
-        {input.startsWith('/') && <SuggestionBox inputValue={input} />}
-        <box style={{ border: true, borderColor: A, height: 3, paddingLeft: 1, paddingRight: 1 }}>
+        {/* Confirmation / question prompts */}
+        {inputMode === 'confirm-tool' && pendingConfirm && (
+          <box style={{ paddingLeft: 1 }}>
+            <text>
+              <span fg="#f0c674">? </span>
+              <span>run </span>
+              <span fg="cyan">{pendingConfirm.name}</span>
+              {pendingConfirm.label ? <span fg="#888">{`  ${pendingConfirm.label}`}</span> : null}
+              <span fg="#888">{'   (y allow · a always · n deny)'}</span>
+            </text>
+          </box>
+        )}
+        {inputMode === 'confirm-plan' && (
+          <box style={{ paddingLeft: 1 }}>
+            <text><span fg="#f0c674">? </span><span>execute this plan? </span><span fg="#888">(y / n)</span></text>
+          </box>
+        )}
+        {inputMode === 'question' && pendingQuestion && (
+          <box style={{ flexDirection: 'column', paddingLeft: 1 }}>
+            <text><span fg="cyan">{pendingQuestion.question || 'Answer:'}</span></text>
+            {(pendingQuestion.options || []).map((o, i) => (
+              <text key={i}><span fg="#888">{`  ${i + 1}. ${o}`}</span></text>
+            ))}
+          </box>
+        )}
+
+        {inputMode === 'chat' && input.startsWith('/') && <SuggestionBox inputValue={input} />}
+        <box style={{ border: true, borderColor: inputMode === 'chat' ? A : '#f0c674', height: 3, paddingLeft: 1, paddingRight: 1 }}>
           <input
             value={input}
             onInput={setInputSafe}
-            onSubmit={submit}
-            focused
-            placeholder={busy ? 'Axion is working…  (Esc to interrupt)' : 'ask Axion something…  (Enter to send · / for commands · Ctrl+C to quit)'}
+            onSubmit={inputMode === 'question' ? answerQuestion : submit}
+            focused={inputMode === 'chat' || inputMode === 'question'}
+            placeholder={
+              inputMode === 'confirm-tool' || inputMode === 'confirm-plan' ? 'press y / n …' :
+              inputMode === 'question' ? (pendingQuestion?.options?.length ? 'type the option number…' : 'type your answer…') :
+              busy ? 'Axion is working…  (Esc to interrupt)' :
+              'ask Axion something…  (Enter to send · / for commands · Ctrl+C to quit)'
+            }
           />
         </box>
       </box>
