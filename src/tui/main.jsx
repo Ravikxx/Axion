@@ -23,34 +23,60 @@ function pickSession() {
     }
     let sel = 0;
     const render = () => {
-      process.stderr.write('\x1b[?25l\x1b[2J\x1b[H');
-      process.stderr.write('  Select a session (↑/↓ Enter Esc):\n\n');
+      process.stderr.write('\x1b[?25l\x1b[2J\x1b[H\x1b[?1000l\x1b[?1002l\x1b[?1006l');
+      process.stderr.write('  Select a session (↑/↓ Enter Esc  or  click):\n\n');
       chats.forEach((c, i) => {
         const pfx = i === sel ? ' ▸' : '  ';
         const dir = c.cwd ? String(c.cwd).split(/[\\/]/).pop() : '?';
         const date = c.savedAt ? new Date(c.savedAt).toLocaleString() : '';
-        process.stderr.write(`  ${pfx} \x1b[33m${c.name}\x1b[0m  \x1b[90m${dir}\x1b[0m  ${date}\n`);
+        const num = i < 9 ? `\x1b[90m${i + 1}\x1b[0m ` : '  ';
+        process.stderr.write(`  ${pfx} \x1b[33m${c.name}\x1b[0m  ${num}\x1b[90m${dir}\x1b[0m  ${date}\n`);
       });
     };
     const cleanup = () => {
       process.stdin.removeAllListeners('data');
       process.stdin.setRawMode(false);
       process.stdin.pause();
-      process.stderr.write('\x1b[?25h\x1b[2J\x1b[H');
+      process.stderr.write('\x1b[?25h\x1b[2J\x1b[H\x1b[?1000l\x1b[?1002l\x1b[?1006l');
     };
-    process.stdin.setRawMode(true);
-    process.stdin.resume();
+    try { process.stdin.setRawMode(true); process.stdin.resume(); } catch {}
+    // Enable SGR mouse mode for click support
+    process.stderr.write('\x1b[?1000h\x1b[?1002h\x1b[?1006h');
     render();
     process.stdin.on('data', (buf) => {
+      const s = buf.toString();
       const b = [...buf];
+      // SGR mouse click: ESC [ < M <x+32> <y+32>  or  ESC [ < Cb ; Cx ; Cy M
+      if (b[0] === 27 && b[1] === 91 && b[2] === 77) {
+        // X10 mouse encoding
+        const col = (b[3] || 0) - 32;
+        const row = (b[4] || 0) - 32 - 3; // offset for header rows
+        if (row >= 0 && row < chats.length) { sel = row; render(); }
+        return;
+      }
+      // SGR mouse: ESC [ < Cb ; Cx ; Cy M
+      const sgrM = s.match(/^\x1b\[<(\d+);(\d+);(\d+)[Mm]/);
+      if (sgrM) {
+        const row = parseInt(sgrM[3], 10) - 3;
+        if (row >= 0 && row < chats.length) { sel = row; render(); }
+        return;
+      }
+      // Arrow keys
       if (b[0] === 27 && b[1] === 91) {
         if (b[2] === 65) { sel = Math.max(0, sel - 1); render(); return; }
         if (b[2] === 66) { sel = Math.min(chats.length - 1, sel + 1); render(); return; }
       }
+      // Number keys 1-9
+      const n = parseInt(s, 10);
+      if (n >= 1 && n <= 9 && n <= chats.length) {
+        sel = n - 1; render(); return;
+      }
+      // Enter
       if (b[0] === 13 || b[0] === 10) {
         cleanup();
         resolve(chats[sel].name);
       }
+      // Esc
       if (b[0] === 27) {
         cleanup();
         process.exit(0);
@@ -76,15 +102,17 @@ const argv = minimist(process.argv.slice(2), {
 let resumeName = null;
 let initialResume = null;
 
-if (argv.resume) {
-  if (typeof argv.resume === 'string') {
-    resumeName = argv.resume;
-    initialResume = loadChat(resumeName);
-  } else {
-    // -r without arg → interactive picker
-    resumeName = await pickSession();
-    initialResume = loadChat(resumeName);
-  }
+// Detect bare -r/--resume (no argument) by checking raw args
+const rawArgs = process.argv.slice(2);
+const hasBareResume = rawArgs.some(a => a === '-r' || a === '--resume' || a === '-resume');
+const resumeVal = argv.resume;
+
+if (hasBareResume && (resumeVal === true || resumeVal === '' || typeof resumeVal !== 'string')) {
+  resumeName = await pickSession();
+  initialResume = loadChat(resumeName);
+} else if (typeof resumeVal === 'string' && resumeVal) {
+  resumeName = resumeVal;
+  initialResume = loadChat(resumeName);
 } else if (argv.continue) {
   initialResume = loadLastSession();
   resumeName = initialResume?.name || null;
