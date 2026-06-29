@@ -1406,8 +1406,8 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
   return (
     <box style={{ width, height, flexDirection: 'row' }}>
       <box style={{ flexGrow: 1, flexDirection: 'column' }}>
+        <Welcome model={model} mode={mode} />
         <scrollbox ref={scrollRef} style={{ flexGrow: 1 }} stickyScroll stickyStart="bottom">
-          <Welcome model={model} mode={mode} />
           {messages.map((msg, i) => <MessageRow key={i} msg={msg} />)}
           {streamText !== null && (
             <box style={{ flexDirection: 'column', marginTop: 1, paddingLeft: 1, paddingRight: 1 }}>
