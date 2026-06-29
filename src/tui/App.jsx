@@ -255,9 +255,11 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
     return () => clearInterval(id);
   }, [busy]);
 
-  // Ctrl+C exits (OpenTUI). Esc interrupts a running turn. Tab completes a slash
-  // command. PageUp/Down + arrows scroll the message history (input keeps focus;
+  // Ctrl+C double-tap exits. Ctrl+Shift+C is ignored (OS paste).
+  // Esc interrupts a running turn. Tab completes a slash command.
+  // PageUp/Down + arrows scroll the message history (input keeps focus;
   // mouse wheel works natively). Scrolling up disengages sticky-to-bottom.
+  const lastCtrlCRef = useRef(0);
   const resolveConfirm = useCallback((val) => {
     const r = confirmResolverRef.current;
     confirmResolverRef.current = null;
@@ -269,8 +271,15 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
   useKeyboard((key) => {
     const ch = (key.name || '').toLowerCase();
 
-    // Ctrl+C exits with the session summary (OpenTUI's exitOnCtrlC is off).
-    if (key.ctrl && ch === 'c') { onExit(buildSession()); return; }
+    // Ctrl+Shift+C: ignored (OS paste). Ctrl+C: double-tap to quit.
+    if (key.ctrl && ch === 'c') {
+      if (key.shift) return;
+      const now = Date.now();
+      if (now - lastCtrlCRef.current < 1000) { onExit(buildSession()); return; }
+      lastCtrlCRef.current = now;
+      push({ type: 'info', text: 'Press Ctrl+C again to quit' });
+      return;
+    }
 
     // Tool-confirmation prompt: y = allow once, a = always allow, n/Esc = deny.
     if (inputMode === 'confirm-tool') {
@@ -1429,7 +1438,7 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
               inputMode === 'confirm-tool' || inputMode === 'confirm-plan' ? 'press y / n …' :
               inputMode === 'question' ? (pendingQuestion?.options?.length ? 'type the option number…' : 'type your answer…') :
               busy ? 'Axion is working…  (Esc to interrupt)' :
-              'ask Axion something…  (Enter to send · / for commands · Ctrl+C to quit)'
+              'ask Axion something…  (Enter to send · / for commands · Ctrl+C twice to quit)'
             }
           />
         </box>
