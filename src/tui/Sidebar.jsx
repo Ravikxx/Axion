@@ -27,6 +27,7 @@ export function Sidebar({
       <text> </text>
       <text><span fg={A}>model</span></text>
       <text>{`  ${model}`}</text>
+      <text><span fg="#888">{`  ${(ctxWindow / 1000).toFixed(0)}k context`}</span></text>
 
       <text> </text>
       <text><span fg={A}>mode</span></text>

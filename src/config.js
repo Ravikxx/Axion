@@ -142,11 +142,10 @@ export function getContextWindow(modelAlias) {
 }
 
 // Fetch OpenRouter model list and populate CONTEXT_WINDOWS dynamically.
-// Called once at startup so getContextWindow() stays synchronous afterwards.
+// Works without an API key (just lower rate limits).
 export async function fetchOpenRouterContextWindows() {
-  const key = API_KEYS.openrouter;
-  if (!key) return;
   try {
+    const key = API_KEYS.openrouter;
     const res = await fetch('https://openrouter.ai/api/v1/models', {
       headers: key ? { Authorization: `Bearer ${key}` } : {},
       signal: AbortSignal.timeout(5000),
@@ -160,6 +159,37 @@ export async function fetchOpenRouterContextWindows() {
       }
     }
   } catch {}
+}
+
+// Try to fetch model metadata from OpenAI-compatible /v1/models endpoint.
+// Some providers (Ollama, etc.) return context info here.
+export async function fetchEndpointContextWindows() {
+  for (const [name, ep] of Object.entries(CUSTOM_ENDPOINTS)) {
+    if (ep.context) continue; // already manually set
+    try {
+      const res = await fetch(`${ep.baseURL.replace(/\/+$/, '')}/models`, {
+        headers: ep.apiKey && ep.apiKey !== 'no-key' ? { Authorization: `Bearer ${ep.apiKey}` } : {},
+        signal: AbortSignal.timeout(3000),
+      });
+      if (!res.ok) continue;
+      const json = await res.json();
+      const models = json?.data || [];
+      for (const m of models) {
+        const ctx = m.context_length || m.max_context_length || (m.metadata?.context_length);
+        if (m.id && ctx) {
+          CONTEXT_WINDOWS[m.id] = ctx;
+        }
+      }
+      // Also map the endpoint model name
+      if (ep.model) {
+        const found = models.find(m => m.id === ep.model);
+        if (found) {
+          const ctx = found.context_length || found.max_context_length || (found.metadata?.context_length);
+          if (ctx) CONTEXT_WINDOWS[ep.model] = ctx;
+        }
+      }
+    } catch {}
+  }
 }
 
 export const DEFAULT_MODEL = process.env.AXION_MODEL || 'claude';

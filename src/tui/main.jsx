@@ -9,7 +9,7 @@ import {
   getSavedModel, getSavedMode, getSavedApiKeys, getSavedCustomEndpoints,
   loadChat, loadLastSession, saveChat, listChats,
 } from '../persist.js';
-import { API_KEYS, CUSTOM_ENDPOINTS, DEFAULT_MODEL, DEFAULT_MODE, fetchOpenRouterContextWindows } from '../config.js';
+import { API_KEYS, CUSTOM_ENDPOINTS, DEFAULT_MODEL, DEFAULT_MODE, fetchOpenRouterContextWindows, fetchEndpointContextWindows } from '../config.js';
 import { accent } from '../ui/theme.js';
 import { sessionSummary } from './exitSummary.js';
 
@@ -95,8 +95,9 @@ for (const [name, ep] of Object.entries(savedEndpoints)) {
   if (ep?.baseURL) CUSTOM_ENDPOINTS[name] = ep;
 }
 
-// Pre-fetch OpenRouter model context windows (silent; no-op if no key or failure)
+// Pre-fetch context windows from OpenRouter and custom endpoints (silent)
 fetchOpenRouterContextWindows();
+fetchEndpointContextWindows();
 
 // ── Resume: -r/--resume <name> a saved chat, or -c/--continue the last session ──
 const argv = minimist(process.argv.slice(2), {
