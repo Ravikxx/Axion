@@ -3,9 +3,27 @@ import { useKeyboard, useTerminalDimensions } from '@opentui/react';
 import { accent, THEMES, setTheme, themeName } from '../ui/theme.js';
 import { Agent } from '../agent/agent.js';
 import { MODELS, getContextWindow, estimateCost } from '../config.js';
-import { getTodos, saveModel, saveMode, saveTheme, getAllowedTools, allowTool, autosaveSession, clearTodos } from '../persist.js';
+import {
+  getTodos, saveModel, saveMode, saveTheme, getAllowedTools, allowTool, autosaveSession, clearTodos,
+  getMemories, addMemory, removeMemory, addTodo, toggleTodo, removeTodo,
+  listChats, loadChat, deleteChat, saveChat, exportChat,
+  exportSession, importSession,
+  listProfiles, saveProfile, loadProfile, deleteProfile,
+  saveApiKey, saveCustomEndpoints, getAxionKey, saveAxionKey,
+  saveAdviserModel, saveVisionModel, saveImageModel,
+  getSkills, saveSkill, deleteSkill,
+  undoLastBackup, listCheckpoints, rewindCheckpoints,
+  getCompareModels, saveCompareModels, clearAllowedTools,
+  searchChats, saveDiscordToken, getDiscordToken,
+  undoStackSize, saveDiscordAutoStart,
+  saveMacro, loadMacro, listMacros, deleteMacro,
+  getLearnedInstructions, appendLearnedInstructions, clearLearnedInstructions,
+  getSchedules, saveSchedules, saveScheduleResult, getScheduleResults,
+  saveDonateOptOut, saveDonation,
+} from '../persist.js';
 import { COMMANDS, getTabCompletion } from '../ui/commands.js';
 import { permissionKey, confirmLabel } from '../ui/toolPrompts.js';
+import { copyToClipboard } from '../utils/clipboard.js';
 import { Sidebar } from './Sidebar.jsx';
 import { RichText } from './RichText.jsx';
 import { ToolBlock } from './ToolBlock.jsx';
@@ -13,6 +31,18 @@ import { SuggestionBox } from './Suggestions.jsx';
 import { Welcome } from './Welcome.jsx';
 import { Thinking } from './Thinking.jsx';
 import { pickThinkingWord } from '../ui/thinkingWords.js';
+import { execSync, spawn } from 'child_process';
+import { existsSync, readFileSync, unlinkSync } from 'fs';
+import { resolve, join } from 'path';
+import { homedir } from 'os';
+import { MACRO_STATE, captureScreen } from '../agent/computer.js';
+import { analyzeScreen } from '../agent/vision.js';
+import { MCP } from '../agent/mcp.js';
+import { MCP_MARKETPLACE, CATEGORIES, searchMarketplace, getMarketplaceEntry } from '../agent/mcp-marketplace.js';
+import { DISCORD_STATE, startDiscord, stopDiscord } from '../agent/discord.js';
+import { OAUTH_PROVIDERS, connectOAuth, listOAuthTokens, revokeOAuthToken } from '../oauth/oauth.js';
+import { parseSchedule } from '../scheduler.js';
+import { executeTool } from '../agent/tools.js';
 
 // ── Milestone 2: real agent wired into the OpenTUI shell ────────────────────────
 // Reuses the UI-agnostic Agent class (callbacks → message list). Row layout:
@@ -100,6 +130,12 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
   const [inputMode, setInputMode] = useState('chat'); // chat | confirm-tool | confirm-plan | question
   const [pendingConfirm, setPendingConfirm] = useState(null);
   const [pendingQuestion, setPendingQuestion] = useState(null);
+  const [extThinking, setExtThinking] = useState(false);
+  const [thinkingBudget, setThinkingBudget] = useState(10000);
+  const [systemOverride, setSystemOverride] = useState('');
+  const [includedFiles, setIncludedFiles] = useState([]);
+  const [goal, setGoal] = useState(null);
+  const [computerUse, setComputerUse] = useState(false);
   const [thinkingWord, setThinkingWord] = useState('thinking');
   const [thinkingElapsed, setThinkingElapsed] = useState(0);
 
@@ -111,6 +147,7 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
   const confirmResolverRef = useRef(null);
   const questionResolverRef = useRef(null);
   const pendingAllowKeyRef = useRef(null);
+  const lastUserTextRef = useRef('');
 
   const push = useCallback((msg) => setMessages((m) => [...m, msg]), []);
   const setInputSafe = useCallback((v) => { inputRef.current = v; setInput(v); }, []);
@@ -265,7 +302,7 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
   });
 
   // ── Slash commands (essential set; others report "coming soon") ─────────────────
-  const runCommand = useCallback((raw) => {
+  const runCommand = useCallback(async (raw) => {
     const [cmd, ...rest] = raw.slice(1).trim().split(/\s+/);
     const arg = rest.join(' ').trim();
     const c = (cmd || '').toLowerCase();
@@ -321,11 +358,956 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
         push({ type: 'info', text: `tokens: ${tokens.total || 0}  (in ${inTok} / out ${outTok}) · est. cost ${cost ? '$' + cost.toFixed(4) : '$0.00'}` });
         return;
       }
+      case 'thinking': {
+        const lower = arg.toLowerCase();
+        if (!arg) {
+          push({ type: 'info', text: `extended thinking: ${extThinking ? 'on (budget ' + (agentRef.current?.thinking?.budget || thinkingBudget) + ')' : 'off'}` });
+          return;
+        }
+        if (lower === 'off') { setExtThinking(false); agentRef.current?.setThinking(false); push({ type: 'info', text: 'extended thinking off' }); return; }
+        if (lower === 'on') { setExtThinking(true); agentRef.current?.setThinking(true, thinkingBudget); push({ type: 'info', text: `extended thinking on (budget ${thinkingBudget})` }); return; }
+        const budget = parseInt(arg, 10);
+        if (!isNaN(budget) && budget >= 1000) { setExtThinking(true); setThinkingBudget(budget); agentRef.current?.setThinking(true, budget); push({ type: 'info', text: `extended thinking on (budget ${budget})` }); return; }
+        push({ type: 'error', text: 'usage: /thinking [on|off|<tokens>]  e.g. /thinking 20000' });
+        return;
+      }
+      case 'system': {
+        if (!arg || arg === 'clear') { setSystemOverride(''); agentRef.current?.setSystemOverride(''); push({ type: 'info', text: 'system override cleared' }); return; }
+        setSystemOverride(arg); agentRef.current?.setSystemOverride(arg);
+        push({ type: 'info', text: `system override set: ${arg}` });
+        return;
+      }
+      case 'retry': {
+        const lastMsg = lastUserTextRef.current;
+        if (!lastMsg) { push({ type: 'info', text: 'Nothing to retry yet.' }); return; }
+        const h = agentRef.current?.history;
+        if (h) {
+          const lastUserIdx = [...h].reverse().findIndex((m) => m.role === 'user');
+          if (lastUserIdx !== -1) agentRef.current.history = h.slice(0, h.length - 1 - lastUserIdx);
+        }
+        push({ type: 'info', text: `↩ Retrying: "${lastMsg}"` });
+        push({ type: 'user', text: lastMsg });
+        setThinkingWord(pickThinkingWord());
+        setBusy(true);
+        agentRef.current
+          .run(lastMsg, {
+            askConfirm: () => Promise.resolve(true),
+            askPlanConfirm: () => Promise.resolve(true),
+            askUser: () => Promise.resolve(''),
+          })
+          .catch((err) => push({ type: 'error', text: err?.message || String(err) }))
+          .finally(() => setBusy(false));
+        return;
+      }
+      case 'compact':
+        if (!agentRef.current) { push({ type: 'error', text: 'Agent not initialized.' }); return; }
+        push({ type: 'info', text: 'Compacting agent history…' });
+        agentRef.current.compact().then(() => {
+          push({ type: 'info', text: 'History compacted.' });
+        }).catch((err) => push({ type: 'error', text: `Compact failed: ${err?.message || err}` }));
+        return;
+      case 'remember':
+        if (!arg) {
+          const mems = getMemories();
+          if (!mems.length) { push({ type: 'info', text: 'No memories saved. Use /remember <text> to add one.' }); return; }
+          push({ type: 'info', text: `Persistent notes (${mems.length}):\n${mems.map((m, i) => `  ${i + 1}. ${m.text}`).join('\n')}\n\nUse /forget <number> to remove one.` });
+          return;
+        }
+        addMemory(arg);
+        push({ type: 'info', text: `Remembered: "${arg}"` });
+        return;
+      case 'forget': {
+        const idx = parseInt(arg, 10) - 1;
+        if (isNaN(idx) || idx < 0) { push({ type: 'error', text: 'usage: /forget <number>  (use /remember to see numbered list)' }); return; }
+        const mems = getMemories();
+        if (idx >= mems.length) { push({ type: 'error', text: `No memory #${idx + 1}. Run /remember to see the list.` }); return; }
+        removeMemory(idx);
+        push({ type: 'info', text: `Forgotten: "${mems[idx].text}"` });
+        return;
+      }
+      case 'todo': {
+        const [sub, ...todoRest] = args;
+        const todoText = todoRest.join(' ').trim();
+        if (!sub) {
+          const all = getTodos();
+          if (!all.length) { push({ type: 'info', text: 'TODO list is empty.\n  /todo add <text>   add a task\n  /todo done <id>    mark complete\n  /todo list         show all\n  /todo clear        clear completed' }); return; }
+          const pending = all.filter(t => !t.done);
+          const done = all.filter(t => t.done);
+          push({ type: 'info', text: `Pending: ${pending.length}  Done: ${done.length}  Total: ${all.length}\n${pending.map(t => `  ☐ ${t.text}  [${t.id}]`).join('\n')}${done.length ? `\n  ☑ ${done.length} completed (use /todo list to see)` : ''}` });
+          return;
+        }
+        if (sub === 'add') {
+          if (!todoText) { push({ type: 'error', text: 'usage: /todo add <text>' }); return; }
+          addTodo(todoText); setTodos(getTodos());
+          push({ type: 'info', text: `✔ Added: "${todoText}"` });
+          return;
+        }
+        if (sub === 'done') {
+          if (!todoText) { push({ type: 'error', text: 'usage: /todo done <id>' }); return; }
+          const toggled = toggleTodo(todoText);
+          if (!toggled) { push({ type: 'error', text: `No TODO found with id "${todoText}". Use /todo to see ids.` }); return; }
+          setTodos(getTodos());
+          push({ type: 'info', text: toggled.done ? `✔ Completed: "${toggled.text}"` : `↩ Reopened: "${toggled.text}"` });
+          return;
+        }
+        if (sub === 'list') {
+          const all = getTodos();
+          if (!all.length) { push({ type: 'info', text: 'TODO list is empty.' }); return; }
+          const pending = all.filter(t => !t.done);
+          const done = all.filter(t => t.done);
+          push({ type: 'info', text: `── TODOs ──  Pending: ${pending.length}  Done: ${done.length}\n${pending.map(t => `  ☐ ${t.text}  [${t.id}]`).join('\n')}\n${done.map(t => `  ☑ ${t.text}  [${t.id}]`).join('\n')}` });
+          return;
+        }
+        if (sub === 'clear') {
+          const completed = getTodos().filter(t => t.done);
+          completed.forEach(t => removeTodo(t.id)); setTodos(getTodos());
+          push({ type: 'info', text: `Cleared ${completed.length} completed tasks.` });
+          return;
+        }
+        push({ type: 'error', text: `Unknown subcommand: /todo ${sub}\nUsage: /todo add|done|list|clear` });
+        return;
+      }
+      case 'copy': {
+        const lastAssistants = [...messages].reverse().filter((m) => m.type === 'assistant');
+        if (!lastAssistants.length) { push({ type: 'error', text: 'No assistant response to copy.' }); return; }
+        copyToClipboard(lastAssistants[0].text || '');
+        push({ type: 'info', text: '✔ copied last response to clipboard.' });
+        return;
+      }
+      case 'copy-block': {
+        const n = parseInt(arg, 10);
+        if (!arg || isNaN(n) || n < 1) { push({ type: 'error', text: 'usage: /copy-block <n>' }); return; }
+        const allMsgs = messages;
+        const lastAsst = [...allMsgs].reverse().find(m => m.type === 'assistant');
+        if (!lastAsst?.text) { push({ type: 'info', text: 'No AI response to copy from.' }); return; }
+        const blocks = []; const blockRe = /```(?:[^\n]*)?\n([\s\S]*?)```/g; let bm;
+        while ((bm = blockRe.exec(lastAsst.text)) !== null) blocks.push(bm[1]);
+        if (!blocks.length) { push({ type: 'info', text: 'No code blocks found in last response.' }); return; }
+        if (n > blocks.length) { push({ type: 'info', text: `Only ${blocks.length} code block(s) found. Use /copy-block 1–${blocks.length}.` }); return; }
+        copyToClipboard(blocks[n - 1]);
+        push({ type: 'info', text: `✔ Code block ${n}/${blocks.length} copied.` });
+        return;
+      }
+      case 'undo': {
+        const restored = undoLastBackup();
+        if (restored) { push({ type: 'info', text: `↩ Restored: ${restored}  (${undoStackSize()} more undo${undoStackSize() !== 1 ? 's' : ''} available)` }); }
+        else { push({ type: 'info', text: 'Nothing to undo.' }); }
+        return;
+      }
+      case 'rewind': {
+        if (!arg || arg === 'list') {
+          const cps = listCheckpoints();
+          if (!cps.length) { push({ type: 'info', text: 'No checkpoints yet — one is created each time the agent edits files in a turn.' }); return; }
+          const lines = cps.map((c, i) => `  ${i + 1}. ${new Date(c.ts).toLocaleTimeString()}  ${c.fileCount} file${c.fileCount !== 1 ? 's' : ''}  "${c.label}"`).join('\n');
+          push({ type: 'info', text: `Checkpoints (most recent first):\n${lines}\n\n/rewind <n> restores the last n turns' file changes` });
+          return;
+        }
+        const n = parseInt(arg, 10);
+        if (!Number.isInteger(n) || n < 1) { push({ type: 'error', text: 'usage: /rewind [list|<n>]' }); return; }
+        const { undone, restored, deleted } = rewindCheckpoints(n);
+        if (!undone) { push({ type: 'info', text: 'Nothing to rewind.' }); return; }
+        const parts = [];
+        if (restored?.length) parts.push(`restored: ${restored.map(p => p.replace(process.cwd() + '/', '')).join(', ')}`);
+        if (deleted?.length) parts.push(`deleted: ${deleted.map(p => p.replace(process.cwd() + '/', '')).join(', ')}`);
+        push({ type: 'info', text: `⏪ rewound ${undone} checkpoint${undone > 1 ? 's' : ''}${parts.length ? ' — ' + parts.join(' · ') : ' (no file changes)'}` });
+        return;
+      }
+      case 'models': {
+        const built = Object.entries(MODELS).map(([alias, id]) => `  ${alias.padEnd(22)} ${id}`).join('\n');
+        push({ type: 'info', text: `Available models:\n${built}` });
+        return;
+      }
+      case 'permissions': {
+        if (arg === 'clear') { clearAllowedTools(); push({ type: 'info', text: 'Cleared all always-allow permissions for this project.' }); return; }
+        const allowed = getAllowedTools();
+        if (!allowed.length) { push({ type: 'info', text: 'No always-allowed tools. Press "a" on any tool confirm to add one.\n/permissions clear to reset.' }); return; }
+        push({ type: 'info', text: `Always allowed:\n${allowed.map(k => `  • ${k}`).join('\n')}\n\n/permissions clear to reset` });
+        return;
+      }
+      case 'adviser':
+      case 'advisor': {
+        if (!arg) {
+          const current = agentRef.current?.adviserModel;
+          push({ type: 'info', text: current ? `Adviser model: ${current}` : 'Adviser model: auto (picks highest-capability available model)\n/adviser <model> to pin, /adviser off to disable' });
+          return;
+        }
+        if (arg === 'auto') { agentRef.current?.setAdviserModel(null); saveAdviserModel(null); push({ type: 'info', text: 'Adviser model set to auto.' }); return; }
+        if (arg === 'off') { agentRef.current?.setAdviserModel('off'); saveAdviserModel('off'); push({ type: 'info', text: 'Adviser disabled.' }); return; }
+        agentRef.current?.setAdviserModel(arg); saveAdviserModel(arg);
+        push({ type: 'info', text: `Adviser model → ${arg} (saved)` });
+        return;
+      }
+      case 'include': {
+        const [sub, ...incRest] = args;
+        if (!sub) {
+          if (!includedFiles.length) { push({ type: 'info', text: 'No files pinned. Usage: /include <file>' }); return; }
+          push({ type: 'info', text: `Pinned files (${includedFiles.length}):\n${includedFiles.map((f, i) => `  ${i + 1}. ${f.path}  (${f.content.length} chars)`).join('\n')}\n\nUse /include remove <file> or /include clear` });
+          return;
+        }
+        if (sub === 'clear') { setIncludedFiles([]); push({ type: 'info', text: 'All pinned files removed.' }); return; }
+        if (sub === 'remove') {
+          const target = incRest.join(' ');
+          if (!target) { push({ type: 'error', text: 'usage: /include remove <file>' }); return; }
+          setIncludedFiles(prev => prev.filter(f => f.path !== target));
+          push({ type: 'info', text: `Unpinned: ${target}` });
+          return;
+        }
+        const filePath = [sub, ...incRest].join(' ');
+        try {
+          const abs = resolve(process.cwd(), filePath);
+          if (!existsSync(abs)) throw new Error(`File not found: ${filePath}`);
+          const content = readFileSync(abs, 'utf8');
+          setIncludedFiles(prev => prev.some(f => f.path === filePath) ? prev : [...prev, { path: filePath, content }]);
+          push({ type: 'info', text: `Pinned: ${filePath}  (${content.length} chars)` });
+        } catch (err) { push({ type: 'error', text: `include failed: ${err.message}` }); }
+        return;
+      }
+      case 'run': {
+        if (!arg) { push({ type: 'error', text: 'usage: /run <shell command>' }); return; }
+        push({ type: 'info', text: `▶ ${arg}` });
+        try {
+          const output = execSync(arg, { encoding: 'utf8', cwd: process.cwd(), timeout: 30000, stdio: ['ignore', 'pipe', 'pipe'] }).trim();
+          push({ type: 'info', text: output || '(no output)' });
+          if (output) { submit(`Output of \`${arg}\`:\n\`\`\`\n${output.slice(0, 8000)}\n\`\`\``); }
+        } catch (err) {
+          const out = ((err.stdout || '') + (err.stderr || '')).trim();
+          push({ type: 'error', text: `exited ${err.status ?? '?'}: ${out || err.message}` });
+          if (out) { submit(`Command \`${arg}\` failed (exit ${err.status ?? '?'}):\n\`\`\`\n${out.slice(0, 8000)}\n\`\`\``); }
+        }
+        return;
+      }
+      case 'pr': {
+        try {
+          const log = execSync('git log @{u}..HEAD --oneline --no-decorate 2>nul || git log HEAD~5..HEAD --oneline --no-decorate', { encoding: 'utf8', cwd: process.cwd() }).trim();
+          const diff = execSync('git diff @{u}..HEAD --stat 2>nul || git diff HEAD~5..HEAD --stat', { encoding: 'utf8', cwd: process.cwd() }).trim();
+          if (!log) { push({ type: 'info', text: 'No commits ahead of upstream. Nothing to PR.' }); return; }
+          const prompt = arg
+            ? `Create a PR for these commits. Extra context: ${arg}\n\nCommits:\n${log}\n\nChanged files:\n${diff}\n\nRespond with ONLY:\nTITLE: <title>\nBODY:\n<markdown body>`
+            : `Create a PR for these commits.\n\nCommits:\n${log}\n\nChanged files:\n${diff}\n\nRespond with ONLY:\nTITLE: <title>\nBODY:\n<markdown body>`;
+          push({ type: 'info', text: `Drafting PR from ${log.split('\n').length} commit(s)…` });
+          submit(prompt);
+        } catch (err) { push({ type: 'error', text: `git error: ${err.message.split('\n')[0]}` }); }
+        return;
+      }
+      case 'review': {
+        let diff = '';
+        try {
+          diff = [execSync('git diff --cached', { cwd: process.cwd(), encoding: 'utf8', stdio: ['pipe','pipe','pipe'] }),
+                  execSync('git diff HEAD', { cwd: process.cwd(), encoding: 'utf8', stdio: ['pipe','pipe','pipe'] })].filter(Boolean).join('\n');
+        } catch { diff = ''; }
+        if (!diff.trim()) { push({ type: 'info', text: 'No changes to review.' }); return; }
+        push({ type: 'info', text: 'Reviewing diff…' });
+        const reviewPrompt = `Review this git diff. Be concise. One line per finding.\n\n\`\`\`diff\n${diff.slice(0, 12000)}\n\`\`\``;
+        agentRef.current?.askBtw(reviewPrompt).then((feedback) => {
+          push({ type: 'assistant', text: feedback });
+        }).catch((err) => push({ type: 'error', text: `review failed: ${err.message}` }));
+        return;
+      }
+      case 'btw': {
+        if (!arg) { push({ type: 'error', text: 'usage: /btw <question>' }); return; }
+        push({ type: 'user', text: `btw: ${arg}` });
+        setThinkingWord('checking');
+        agentRef.current?.askBtw(arg).then((answer) => {
+          push({ type: 'assistant', text: answer });
+        }).catch((err) => push({ type: 'error', text: `btw failed: ${err.message}` }));
+        return;
+      }
+      case 'export': {
+        if (!arg) { push({ type: 'error', text: 'usage: /export <filename>' }); return; }
+        try {
+          const outPath = exportChat(arg, messages.filter(m => m.type !== 'info'));
+          push({ type: 'info', text: `✔ Exported to ${outPath}` });
+        } catch (err) { push({ type: 'error', text: `Export failed: ${err.message}` }); }
+        return;
+      }
+      case 'export-session': {
+        if (!arg) { push({ type: 'error', text: 'usage: /export-session <path>' }); return; }
+        try {
+          const sessionData = { model, mode, agentHistory: agentRef.current?.history || [], displayMessages: messages, tokenCount: tokens.total, systemOverride };
+          const outPath = exportSession(arg, sessionData);
+          push({ type: 'info', text: `✔ Session exported to ${outPath}` });
+        } catch (err) { push({ type: 'error', text: `Export failed: ${err.message}` }); }
+        return;
+      }
+      case 'import-session': {
+        if (!arg) { push({ type: 'error', text: 'usage: /import-session <path>' }); return; }
+        try {
+          const data = importSession(arg);
+          if (!data) { push({ type: 'error', text: `Not a valid session file: ${arg}` }); return; }
+          if (data.model) { setModel(data.model); agentRef.current?.setModel(data.model); saveModel(data.model); }
+          if (data.mode) { setMode(data.mode); agentRef.current?.setMode(data.mode); saveMode(data.mode); }
+          if (data.agentHistory) agentRef.current.history = data.agentHistory;
+          if (data.systemOverride) { setSystemOverride(data.systemOverride); agentRef.current?.setSystemOverride(data.systemOverride); }
+          setTokens({ total: data.tokenCount || 0, input: 0, output: data.tokenCount || 0, context: 0 });
+          push({ type: 'info', text: `✔ Session imported: ${data.model || model} · ${data.mode || mode}` });
+        } catch (err) { push({ type: 'error', text: `Import failed: ${err.message}` }); }
+        return;
+      }
+      case 'save': {
+        if (!arg) { push({ type: 'error', text: 'usage: /save <chatname>' }); return; }
+        try {
+          saveChat(arg, { model, mode, tokenCount: tokens.total, agentHistory: agentRef.current?.history || [], displayMessages: messages.filter(m => m.type !== 'info') });
+          push({ type: 'info', text: `Chat saved as "${arg}".` });
+        } catch (err) { push({ type: 'error', text: `Save failed: ${err.message}` }); }
+        return;
+      }
+      case 'resume': {
+        if (!arg) {
+          const chats = listChats();
+          if (!chats.length) { push({ type: 'info', text: 'No saved chats. Use /save <chatname> to save one.' }); return; }
+          push({ type: 'info', text: `Saved chats:\n${chats.map(c => `  ${c.name.padEnd(20)} ${(c.model || '?').padEnd(14)} ${c.messages ?? '?'} msgs  ${c.savedAt ? new Date(c.savedAt).toLocaleString() : '?'}`).join('\n')}\n\nUse /resume <chatname> to load one.` });
+          return;
+        }
+        const chat = loadChat(arg);
+        if (!chat) { push({ type: 'error', text: `No saved chat named "${arg}". Run /resume to list all.` }); return; }
+        if (agentRef.current) { agentRef.current.history = chat.agentHistory || []; agentRef.current.totalTokens = chat.tokenCount || 0; }
+        setModel(chat.model || model); setMode(chat.mode || mode);
+        setTokens({ total: chat.tokenCount || 0, input: 0, output: chat.tokenCount || 0, context: 0 });
+        push({ type: 'info', text: `Resumed "${arg}" (saved ${chat.savedAt ? new Date(chat.savedAt).toLocaleString() : 'unknown'})` });
+        return;
+      }
+      case 'sessions': {
+        const chats = listChats();
+        if (!chats.length) { push({ type: 'info', text: 'No saved sessions.' }); return; }
+        push({ type: 'info', text: `Sessions:\n${chats.map(c => `  ${c.name.padEnd(20)} ${(c.model || '?').padEnd(14)} ${c.messages ?? '?'} msgs`).join('\n')}` });
+        return;
+      }
+      case 'remove-chat': {
+        if (!arg) { push({ type: 'error', text: 'usage: /remove-chat <name>' }); return; }
+        const existed = deleteChat(arg);
+        push({ type: existed ? 'info' : 'error', text: existed ? `Chat "${arg}" deleted.` : `No chat named "${arg}".` });
+        return;
+      }
+      case 'search-chats': {
+        if (!arg) { push({ type: 'error', text: 'usage: /search-chats <query>' }); return; }
+        try {
+          const results = searchChats(arg);
+          if (!results.length) { push({ type: 'info', text: `No chats found for "${arg}".` }); return; }
+          push({ type: 'info', text: `Chats matching "${arg}":\n${results.map(r => `  ${r.name} — ${r.matches} match(es)`).join('\n')}` });
+        } catch (err) { push({ type: 'error', text: `Search failed: ${err.message}` }); }
+        return;
+      }
+      case 'search': {
+        if (!arg) { push({ type: 'error', text: 'usage: /search <query>' }); return; }
+        const q = arg.toLowerCase();
+        const matches = messages.filter(m => (m.type === 'user' || m.type === 'assistant') && typeof m.text === 'string' && m.text.toLowerCase().includes(q));
+        if (!matches.length) { push({ type: 'info', text: `No messages found containing "${arg}".` }); return; }
+        push({ type: 'info', text: `${matches.length} match(es) for "${arg}":\n${matches.slice(-8).map(m => `  [${m.type}] ${m.text.trim().slice(0, 120).replace(/\n/g, ' ')}`).join('\n')}` });
+        return;
+      }
+      case 'history': {
+        if (!arg) { push({ type: 'error', text: 'usage: /history <query>' }); return; }
+        return runCommand(`/search ${arg}`);
+      }
+      case 'api': {
+        const [apiTarget, apiKey] = args;
+        if (!apiTarget || !apiKey) { push({ type: 'error', text: 'usage: /api <model> <key>' }); return; }
+        if (apiTarget === 'lumen' || apiTarget === 'axion') { return runCommand(`/axion-key ${apiKey}`); }
+        try {
+          const { setApiKey } = await import('../config.js');
+          const provider = setApiKey(apiTarget, apiKey);
+          saveApiKey(provider, apiKey);
+          push({ type: 'info', text: `API key set for ${provider} (saved)` });
+        } catch (err) { push({ type: 'error', text: err.message }); }
+        return;
+      }
+      case 'axion-key': {
+        const [keyArg] = args;
+        if (!keyArg) {
+          const existing = getAxionKey();
+          push({ type: 'info', text: existing ? `Axion API key: ${existing.slice(0, 14)}••••••••` : 'No Axion API key set. Lumen works without a key (50 req/day free).\n/axion-key <your-axion-sk-key> to set one.' });
+          return;
+        }
+        if (keyArg === 'remove') { saveAxionKey(null); push({ type: 'info', text: 'Axion API key removed. Lumen will use the free tier (50 req/day).' }); return; }
+        if (keyArg === 'test') {
+          const testKey = getAxionKey();
+          if (!testKey) { push({ type: 'error', text: 'No Axion key set.' }); return; }
+          push({ type: 'info', text: 'Testing key…' });
+          fetch('https://api.amplifiedsmp.org/v1/chat/completions', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${testKey}` },
+            body: JSON.stringify({ model: 'lumen', messages: [{ role: 'user', content: 'hi' }], max_tokens: 1 }),
+          }).then(async r => {
+            if (r.status === 200) push({ type: 'info', text: 'Key is valid. Lumen is reachable.' });
+            else if (r.status === 401) push({ type: 'error', text: 'Key rejected by server (401). Generate a fresh key at axion.amplifiedsmp.org/keys' });
+            else if (r.status === 429) push({ type: 'info', text: 'Key is valid but rate-limited.' });
+            else push({ type: 'error', text: `Unexpected response: HTTP ${r.status}` });
+          }).catch(e => push({ type: 'error', text: `Network error: ${e.message}` }));
+          return;
+        }
+        saveAxionKey(keyArg);
+        push({ type: 'info', text: `Axion API key saved (${keyArg.slice(0, 14)}••••••••). /axion-key test to verify.` });
+        return;
+      }
+      case 'endpoint': {
+        const { CUSTOM_ENDPOINTS } = await import('../config.js');
+        const [first, second, third, fourth] = args;
+        if (!first) {
+          const entries = Object.entries(CUSTOM_ENDPOINTS);
+          if (!entries.length) { push({ type: 'info', text: 'No custom endpoints saved.\n\n/endpoint <name> <url> [model] [key]\ne.g. /endpoint ollama http://localhost:11434/v1 llama3' }); return; }
+          push({ type: 'info', text: `Saved endpoints:\n${entries.map(([n, e]) => `  ${n.padEnd(16)} ${e.baseURL}  model: ${e.model}`).join('\n')}` });
+          return;
+        }
+        let epName, epURL, epModel, epKey;
+        if (first.startsWith('http')) { epName = 'other'; epURL = first; epModel = second; epKey = third; }
+        else { epName = first; epURL = second; epModel = third; epKey = fourth; }
+        if (!epURL) {
+          const ep = CUSTOM_ENDPOINTS[epName];
+          push({ type: 'info', text: ep ? `${epName}: ${ep.baseURL}\n  model: ${ep.model}  key: ${ep.apiKey && ep.apiKey !== 'no-key' ? '(set)' : 'none'}` : `No endpoint "${epName}".` });
+          return;
+        }
+        CUSTOM_ENDPOINTS[epName] = { baseURL: epURL, model: epModel || CUSTOM_ENDPOINTS[epName]?.model || epName, apiKey: epKey || CUSTOM_ENDPOINTS[epName]?.apiKey || 'no-key' };
+        saveCustomEndpoints({ ...CUSTOM_ENDPOINTS });
+        setModel(epName); saveModel(epName);
+        push({ type: 'info', text: `Endpoint "${epName}" saved → ${epURL}\nSwitched to "${epName}"` });
+        return;
+      }
+      case 'skills': {
+        const [skSub, ...skRest] = args;
+        if (skSub === 'delete' || skSub === 'remove') {
+          const target = skRest.join(' ');
+          if (!target) { push({ type: 'error', text: 'usage: /skills delete <name>' }); return; }
+          agentRef.current?.activeSkills?.delete(target.toLowerCase());
+          push(deleteSkill(target) ? { type: 'info', text: `Deleted skill "${target}".` } : { type: 'error', text: `No skill named "${target}".` });
+          return;
+        }
+        const skills = getSkills();
+        if (!skills.length) { push({ type: 'info', text: 'No skills yet.\n/skill-generator <name> <instructions> to create one.' }); return; }
+        const active = agentRef.current?.activeSkills || new Map();
+        push({ type: 'info', text: `Skills (● = active):\n${skills.map(s => `  ${active.has(s.name.toLowerCase()) ? '●' : ' '} ${s.name.padEnd(16)} ${s.description || ''}`).join('\n')}\n\n/skills delete <name> to remove` });
+        return;
+      }
+      case 'skill-generator':
+      case 'skill': {
+        const [skillName, ...instrParts] = args;
+        const instructions = instrParts.join(' ');
+        if (!skillName) { push({ type: 'error', text: 'usage: /skill-generator <name> <instructions>' }); return; }
+        push({ type: 'info', text: `Generating skill "${skillName}"…` });
+        const genPrompt = `Create a skill file for an AI assistant. Skill name: ${skillName}\nWhat it should do: ${instructions || '(infer)'}\n\nRespond with ONLY:\n---\nname: ${skillName.toLowerCase()}\ndescription: <one-line>\ntriggers: ${skillName.toLowerCase()}\n---\n\n<instructions>`;
+        agentRef.current?.askBtw(genPrompt).then(async (content) => {
+          let c = content.replace(/^```(?:md)?\n?/, '').replace(/\n?```$/, '').trim();
+          if (!c.startsWith('---')) { c = `---\nname: ${skillName.toLowerCase()}\ndescription: ${instructions || skillName}\ntriggers: ${skillName.toLowerCase()}\n---\n\n${c}`; }
+          const path = saveSkill(skillName, c);
+          push({ type: 'info', text: `✔ Skill saved → ${path.replace(process.env.HOME || process.env.USERPROFILE || '~', '~')}` });
+        }).catch((err) => push({ type: 'error', text: `skill generation failed: ${err.message}` }));
+        return;
+      }
+      case 'skill-delete': {
+        if (!arg) { push({ type: 'error', text: 'usage: /skill-delete <name>' }); return; }
+        agentRef.current?.activeSkills?.delete(arg.toLowerCase());
+        push(deleteSkill(arg) ? { type: 'info', text: `Deleted skill "${arg}".` } : { type: 'error', text: `No skill named "${arg}".` });
+        return;
+      }
+      case 'profile': {
+        const [prSub, ...prArgs] = args;
+        const pName = prArgs.join(' ');
+        if (prSub === 'save' && pName) { saveProfile(pName, { model, mode }); push({ type: 'info', text: `Profile saved: "${pName}" (${model}, ${mode})` }); return; }
+        if (prSub === 'load' && pName) {
+          const p = loadProfile(pName);
+          if (!p) { push({ type: 'error', text: `No profile "${pName}". /profile list` }); return; }
+          setModel(p.model); saveModel(p.model); setMode(p.mode); saveMode(p.mode); agentRef.current?.setMode(p.mode);
+          push({ type: 'info', text: `Profile loaded: "${pName}" → ${p.model}, ${p.mode}` });
+          return;
+        }
+        if (prSub === 'delete' && pName) { deleteProfile(pName); push({ type: 'info', text: `Deleted profile "${pName}".` }); return; }
+        if (prSub === 'list' || !prSub) {
+          const list = listProfiles();
+          push({ type: 'info', text: list.length ? `Profiles:\n${list.map(n => `  ${n}`).join('\n')}` : 'No saved profiles. /profile save <name>' });
+          return;
+        }
+        push({ type: 'error', text: 'usage: /profile save|load|delete|list [name]' });
+        return;
+      }
+      case 'compare': {
+        if (!arg) { push({ type: 'error', text: 'usage: /compare [model1,model2,...] <prompt>' }); return; }
+        const firstToken = args[0];
+        const isModelList = firstToken.includes(',') || MODELS[firstToken] != null;
+        let compareModels, comparePrompt;
+        if (isModelList) { compareModels = firstToken.split(',').map(s => s.trim()).filter(Boolean); comparePrompt = args.slice(1).join(' '); }
+        else { compareModels = getCompareModels() || ['claude', 'gpt', 'gemini']; comparePrompt = arg; }
+        if (!comparePrompt) { push({ type: 'error', text: 'prompt is required' }); return; }
+        push({ type: 'info', text: `Comparing: ${compareModels.join(' · ')}…` });
+        Promise.allSettled(compareModels.map(async (m) => {
+          const tmp = new Agent({ modelAlias: m, mode: 'auto', onToolCall: () => {}, onToolResult: () => {}, onMessage: () => {}, onTokens: () => {}, onStreamChunk: () => {}, onStreamEnd: () => {} });
+          return { model: m, answer: await tmp.askBtw(comparePrompt) };
+        })).then((results) => {
+          for (const r of results) {
+            if (r.status === 'fulfilled') push({ type: 'assistant', text: `[${r.value.model}]\n${r.value.answer}` });
+            else push({ type: 'error', text: `[${r.reason?.model || '?'}] ${r.reason?.message || String(r.reason)}` });
+          }
+        }).catch((err) => push({ type: 'error', text: `compare failed: ${err.message}` }));
+        return;
+      }
+      case 'compare-models': {
+        if (!arg) {
+          const saved = getCompareModels();
+          push({ type: 'info', text: saved ? `Compare models: ${saved.join(' · ')}` : 'Compare models: claude · gpt · gemini (defaults)' });
+          return;
+        }
+        if (arg === 'reset') { saveCompareModels(null); push({ type: 'info', text: 'Compare models reset to defaults.' }); return; }
+        const newModels = arg.split(',').map(s => s.trim()).filter(Boolean);
+        if (newModels.length < 2) { push({ type: 'error', text: 'Provide at least 2 comma-separated models.' }); return; }
+        saveCompareModels(newModels);
+        push({ type: 'info', text: `Compare models saved: ${newModels.join(' · ')}` });
+        return;
+      }
+      case 'goal': {
+        if (!arg) {
+          if (goal) { setGoal(null); push({ type: 'info', text: 'Goal cancelled.' }); }
+          else { push({ type: 'info', text: 'No active goal. Usage: /goal <description>' }); }
+          return;
+        }
+        setGoal(arg);
+        push({ type: 'info', text: `Goal set: "${arg}"\nAxion will work autonomously until this is achieved.` });
+        return;
+      }
+      case 'add': {
+        if (!arg) { push({ type: 'error', text: 'usage: /add <filepath>' }); return; }
+        try {
+          const abs = resolve(process.cwd(), arg);
+          if (!existsSync(abs)) throw new Error(`File not found: ${arg}`);
+          const content = readFileSync(abs, 'utf8');
+          submit(`Read the file ${arg}:\n\`\`\`\n${content.slice(0, 12000)}\n\`\`\``);
+        } catch (err) { push({ type: 'error', text: `add failed: ${err.message}` }); }
+        return;
+      }
+      case 'computer':
+      case 'cu': {
+        const turnOn = arg === 'on' || (!arg && !computerUse);
+        if (!turnOn) { setComputerUse(false); push({ type: 'info', text: 'Computer use off.' }); }
+        else { setComputerUse(true); push({ type: 'info', text: 'Computer use on.\n/vision <model> to set vision model.' }); }
+        return;
+      }
+      case 'vision': {
+        if (!arg) { push({ type: 'info', text: `Vision model: ${'(none set)'}\n/vision <model> e.g. /vision claude` }); return; }
+        saveVisionModel(arg);
+        push({ type: 'info', text: `Vision model → ${arg} (saved)\n/computer on to enable screen control.` });
+        return;
+      }
+      case 'img-gen': {
+        if (!arg) { push({ type: 'error', text: 'usage: /img-gen <prompt>' }); return; }
+        push({ type: 'info', text: 'Generating image…' });
+        const { generateImage } = await import('../agent/image.js').catch(() => ({ generateImage: null }));
+        if (!generateImage) { push({ type: 'error', text: 'Image generation module not available.' }); return; }
+        try {
+          const { filePath, revisedPrompt } = await generateImage(arg);
+          push({ type: 'info', text: `◈ Image generated${revisedPrompt !== arg ? '\nRevised prompt: ' + revisedPrompt : ''}\nSaved to: ${filePath}` });
+        } catch (err) { push({ type: 'error', text: `Image generation failed: ${err.message}` }); }
+        return;
+      }
+      case 'img-gen-model': {
+        if (!arg) { push({ type: 'info', text: `Image model: ${'(default)'}\n/usage: /img-gen-model <model>` }); return; }
+        saveImageModel(arg);
+        push({ type: 'info', text: `Image model → ${arg} (saved)` });
+        return;
+      }
+      case 'speak': {
+        if (!arg) { push({ type: 'error', text: 'usage: /speak <text>' }); return; }
+        const { speakText } = await import('../agent/voice.js').catch(() => ({ speakText: null }));
+        if (!speakText) { push({ type: 'error', text: 'TTS module not available.' }); return; }
+        try { await speakText(arg); push({ type: 'info', text: `🔊 "${arg}"` }); }
+        catch (err) { push({ type: 'error', text: `TTS failed: ${err.message}` }); }
+        return;
+      }
+      case 'login': {
+        const AXION_API = 'https://api.amplifiedsmp.org';
+        push({ type: 'info', text: 'Opening browser to authorize your Axion account…' });
+        try {
+          const res = await fetch(`${AXION_API}/auth/device`, { method: 'POST' });
+          if (!res.ok) throw new Error('Failed to start login flow');
+          const { device_code, expires_in } = await res.json();
+          const loginUrl = `https://axion.amplifiedsmp.org/keys#device=${device_code}`;
+          try { if (process.platform === 'win32') execSync(`start "" "${loginUrl}"`); else if (process.platform === 'darwin') execSync(`open "${loginUrl}"`); else execSync(`xdg-open "${loginUrl}"`); }
+          catch { push({ type: 'info', text: `Open this URL in your browser:\n${loginUrl}` }); }
+          push({ type: 'info', text: `Waiting for authorization… (expires in ${Math.floor(expires_in / 60)} min)` });
+          const deadline = Date.now() + expires_in * 1000;
+          const poll = async () => {
+            if (Date.now() > deadline) { push({ type: 'error', text: 'Login timed out.' }); return; }
+            try {
+              const pollRes = await fetch(`${AXION_API}/auth/device/poll?code=${device_code}`);
+              const data = await pollRes.json();
+              if (data.pending) { setTimeout(poll, 2500); return; }
+              if (data.token) {
+                const keyRes = await fetch(`${AXION_API}/dashboard/keys`, {
+                  method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${data.token}` },
+                  body: JSON.stringify({ label: `axion-cli (${new Date().toLocaleDateString()})` }),
+                });
+                const keyData = await keyRes.json();
+                if (keyData.key_value) { saveAxionKey(keyData.key_value); push({ type: 'info', text: `Logged in as ${data.email}\nAPI key created and saved.` }); }
+                else { push({ type: 'error', text: 'Authorized but could not create API key. Try /axion-key <key> manually.' }); }
+                return;
+              }
+              if (data.error) { push({ type: 'error', text: `Login failed: ${data.error}` }); return; }
+              setTimeout(poll, 2500);
+            } catch { setTimeout(poll, 2500); }
+          };
+          setTimeout(poll, 2500);
+        } catch (e) { push({ type: 'error', text: `Login failed: ${e.message}` }); }
+        return;
+      }
+      case 'ss': {
+        push({ type: 'info', text: 'Taking screenshot…' });
+        try {
+          const { base64, mediaType, width, height } = captureScreen();
+          const ssQuestion = arg || 'Describe what is currently on screen in detail.';
+          const description = await analyzeScreen({ base64, mediaType, question: ssQuestion, width, height });
+          push({ type: 'assistant', text: description });
+        } catch (err) { push({ type: 'error', text: `Screenshot failed: ${err.message}` }); }
+        return;
+      }
+      case 'macro': {
+        const [maSub, ...maArgs] = args;
+        const maName = maArgs[0];
+        if (maSub === 'record') {
+          if (!maName) { push({ type: 'error', text: 'usage: /macro record <name>' }); return; }
+          MACRO_STATE.recording = true; MACRO_STATE.name = maName; MACRO_STATE.steps = [];
+          push({ type: 'info', text: `Recording macro "${maName}"… do your actions, then /macro stop.` });
+          return;
+        }
+        if (maSub === 'stop') {
+          if (!MACRO_STATE.recording) { push({ type: 'info', text: 'No macro is being recorded.' }); return; }
+          MACRO_STATE.recording = false;
+          const recName = MACRO_STATE.name; const steps = [...MACRO_STATE.steps];
+          MACRO_STATE.name = null; MACRO_STATE.steps = [];
+          if (!steps.length) { push({ type: 'info', text: 'No steps recorded — macro not saved.' }); return; }
+          saveMacro(recName, steps);
+          push({ type: 'info', text: `Macro "${recName}" saved (${steps.length} step${steps.length !== 1 ? 's' : ''}).` });
+          return;
+        }
+        if (maSub === 'play') {
+          if (!maName) { push({ type: 'error', text: 'usage: /macro play <name>' }); return; }
+          const steps = loadMacro(maName);
+          if (!steps) { push({ type: 'error', text: `No macro named "${maName}".` }); return; }
+          push({ type: 'info', text: `Playing macro "${maName}" (${steps.length} steps)…` });
+          try {
+            for (const step of steps) {
+              const result = await executeTool(step.name, step.input, { askUser: () => Promise.resolve('') });
+              if (!result.success) { push({ type: 'error', text: `Macro step failed (${step.name}): ${result.output}` }); break; }
+            }
+            push({ type: 'info', text: `Macro "${maName}" complete.` });
+          } catch (err) { push({ type: 'error', text: `Macro failed: ${err.message}` }); }
+          return;
+        }
+        if (maSub === 'list') {
+          const macros = listMacros();
+          if (!macros.length) { push({ type: 'info', text: 'No macros saved.' }); return; }
+          push({ type: 'info', text: `Saved macros:\n${macros.map(m => `  ${(m.name || '?').padEnd(20)} ${m.steps ?? '?'} steps`).join('\n')}` });
+          return;
+        }
+        if (maSub === 'delete') {
+          if (!maName) { push({ type: 'error', text: 'usage: /macro delete <name>' }); return; }
+          push({ type: deleteMacro(maName) ? 'info' : 'error', text: deleteMacro(maName) ? `Macro "${maName}" deleted.` : `No macro "${maName}".` });
+          return;
+        }
+        push({ type: 'info', text: 'Macro: record|stop|play|list|delete' });
+        return;
+      }
+      case 'watch':
+      case 'watch-and-learn': {
+        const waSub = arg?.toLowerCase();
+        if (waSub === 'stop' || waSub === 'off') {
+          const learned = getLearnedInstructions();
+          if (learned) { push({ type: 'info', text: `Current learned preferences:\n${learned}` }); }
+          else { push({ type: 'info', text: 'No learned preferences yet.' }); }
+          return;
+        }
+        if (waSub === 'clear') { clearLearnedInstructions(); push({ type: 'info', text: 'Learned preferences cleared.' }); return; }
+        if (waSub === 'show') {
+          const learned = getLearnedInstructions();
+          push({ type: 'info', text: learned ? `Learned preferences:\n${learned}` : 'No learned preferences yet.' });
+          return;
+        }
+        push({ type: 'info', text: 'Watch: /watch stop|show|clear' });
+        return;
+      }
+      case 'discord': {
+        const [diSub, ...diRest] = args;
+        if (diSub === 'token') {
+          const token = diRest[0];
+          if (!token) { push({ type: 'error', text: 'usage: /discord token <BOT_TOKEN>' }); return; }
+          saveDiscordToken(token);
+          push({ type: 'info', text: '✔ Discord bot token saved. Run /discord start to connect.' });
+          return;
+        }
+        if (diSub === 'start') {
+          const token = getDiscordToken();
+          if (!token) { push({ type: 'error', text: 'No token saved. Run /discord token <BOT_TOKEN> first.' }); return; }
+          if (DISCORD_STATE.running) { push({ type: 'info', text: 'Discord bot already running.' }); return; }
+          push({ type: 'info', text: 'Connecting Discord bot…' });
+          try {
+            const handler = (msg) => { push({ type: 'user', text: `[Discord] ${msg}` }); };
+            await startDiscord(token, handler);
+            saveDiscordAutoStart(true);
+            push({ type: 'info', text: `✔ Discord bot connected as ${DISCORD_STATE.username}.` });
+          } catch (err) { push({ type: 'error', text: `Failed to connect: ${err.message}` }); }
+          return;
+        }
+        if (diSub === 'stop') {
+          if (!DISCORD_STATE.running) { push({ type: 'info', text: 'Discord bot is not running.' }); return; }
+          await stopDiscord();
+          saveDiscordAutoStart(false);
+          push({ type: 'info', text: '◈ Discord bot disconnected.' });
+          return;
+        }
+        if (!diSub || diSub === 'status') {
+          push({ type: 'info', text: DISCORD_STATE.running ? `Discord bot running as ${DISCORD_STATE.username}` : `Discord bot not running. ${getDiscordToken() ? 'Run /discord start' : 'Set token first with /discord token <TOKEN>'}` });
+          return;
+        }
+        push({ type: 'info', text: 'Discord: token|start|stop|status' });
+        return;
+      }
+      case 'oauth': {
+        const [oaSub, oaSvc] = args;
+        if (!oaSub || oaSub === 'list') {
+          const connected = listOAuthTokens();
+          if (!connected.length) { push({ type: 'info', text: 'No services connected.\n/oauth connect <github|google|notion|slack>' }); return; }
+          push({ type: 'info', text: `Connected services:\n${connected.map(t => `  ✔ ${t.service.padEnd(10)} connected ${new Date(t.connectedAt).toLocaleDateString()}`).join('\n')}` });
+          return;
+        }
+        if (oaSub === 'revoke') {
+          if (!oaSvc) { push({ type: 'error', text: 'usage: /oauth revoke <service>' }); return; }
+          push(revokeOAuthToken(oaSvc) ? { type: 'info', text: `✔ Disconnected ${oaSvc}` } : { type: 'error', text: `No connection for "${oaSvc}"` });
+          return;
+        }
+        if (oaSub === 'connect') {
+          if (!oaSvc) { push({ type: 'info', text: 'Available: github · google · notion · slack\n/oauth connect <service>' }); return; }
+          const cfg = OAUTH_PROVIDERS[oaSvc];
+          if (!cfg) { push({ type: 'error', text: `Unknown service "${oaSvc}".` }); return; }
+          push({ type: 'info', text: `Connecting ${cfg.label}…` });
+          try {
+            let token;
+            await connectOAuth(oaSvc, {
+              onStatus: (info) => {
+                if (info.authUrl) push({ type: 'info', text: `Open: ${info.authUrl}` });
+                if (info.user_code) push({ type: 'info', text: `Open ${info.verification_uri} and enter code: ${info.user_code}` });
+              },
+              onToken: (t) => { token = t; },
+            });
+            push({ type: 'info', text: `✔ ${cfg.label} connected!` });
+            if (cfg.mcpCommand && token) {
+              try { await MCP.addServer(oaSvc, { command: cfg.mcpCommand, args: cfg.mcpArgs, env: cfg.mcpEnv(token) }); }
+              catch (mcpErr) { push({ type: 'error', text: `Connected but MCP setup failed: ${mcpErr.message}` }); }
+            }
+          } catch (err) { push({ type: 'error', text: `OAuth failed: ${err.message}` }); }
+          return;
+        }
+        push({ type: 'info', text: 'OAuth: connect|list|revoke  Services: github · google · notion · slack' });
+        return;
+      }
+      case 'schedule': {
+        const [scSub, ...scRest] = args;
+        if (!scSub || scSub === 'list') {
+          const list = getSchedules();
+          if (!list.length) { push({ type: 'info', text: 'No scheduled tasks.\n/schedule add <name> "<schedule>" <prompt>' }); return; }
+          push({ type: 'info', text: `Scheduled tasks:\n${list.map(t => `  ${t.enabled ? '✔' : '✗'} ${t.name.padEnd(18)} ${t.schedule.padEnd(18)} ${t.lastRun ? `last ran ${new Date(t.lastRun).toLocaleString()}` : 'never run'}`).join('\n')}` });
+          return;
+        }
+        if (scSub === 'add') {
+          const name = scRest[0]; const rest = scRest.slice(1);
+          const restStr = rest.join(' ');
+          const qm = restStr.match(/^"([^"]+)"\s+([\s\S]+)$/) || restStr.match(/^'([^']+)'\s+([\s\S]+)$/);
+          let scheduleExpr = null, promptText = '';
+          if (qm) { scheduleExpr = qm[1].trim(); promptText = qm[2].trim(); }
+          else { for (let n = Math.min(3, rest.length - 1); n >= 1; n--) { const cand = rest.slice(0, n).join(' '); if (parseSchedule(cand)) { scheduleExpr = cand; promptText = rest.slice(n).join(' '); break; } } }
+          if (!name || !scheduleExpr || !promptText) { push({ type: 'error', text: 'usage: /schedule add <name> "<schedule>" <prompt>' }); return; }
+          if (!parseSchedule(scheduleExpr)) { push({ type: 'error', text: 'Invalid schedule.' }); return; }
+          const list = getSchedules();
+          if (list.find(t => t.name === name)) { push({ type: 'error', text: `Schedule "${name}" already exists.` }); return; }
+          list.push({ id: crypto.randomUUID?.() || `${Date.now()}`, name, schedule: scheduleExpr, prompt: promptText, model, enabled: true, lastRun: null, createdAt: new Date().toISOString() });
+          saveSchedules(list);
+          push({ type: 'info', text: `✔ Schedule "${name}" added — runs ${scheduleExpr}\n/schedule run ${name} to run now.` });
+          return;
+        }
+        if (scSub === 'remove' || scSub === 'delete') {
+          const name = scRest[0]; if (!name) { push({ type: 'error', text: 'usage: /schedule remove <name>' }); return; }
+          const list = getSchedules(); const updated = list.filter(t => t.name !== name);
+          if (updated.length === list.length) { push({ type: 'error', text: `No schedule "${name}".` }); return; }
+          saveSchedules(updated); push({ type: 'info', text: `✔ Schedule "${name}" removed` });
+          return;
+        }
+        if (scSub === 'enable' || scSub === 'disable') {
+          const name = scRest[0]; if (!name) { push({ type: 'error', text: `usage: /schedule ${scSub} <name>` }); return; }
+          const list = getSchedules(); const task = list.find(t => t.name === name);
+          if (!task) { push({ type: 'error', text: `No schedule "${name}".` }); return; }
+          task.enabled = scSub === 'enable'; saveSchedules(list);
+          push({ type: 'info', text: `✔ Schedule "${name}" ${scSub}d` });
+          return;
+        }
+        if (scSub === 'run') {
+          const name = scRest[0]; if (!name) { push({ type: 'error', text: 'usage: /schedule run <name>' }); return; }
+          const list = getSchedules(); const task = list.find(t => t.name === name);
+          if (!task) { push({ type: 'error', text: `No schedule "${name}".` }); return; }
+          push({ type: 'info', text: `Running "${name}"…` });
+          try {
+            const preLen = agentRef.current.history.length;
+            await agentRef.current.run(task.prompt, { askConfirm: () => Promise.resolve(true), askPlanConfirm: () => Promise.resolve(true), askUser: () => Promise.resolve('') });
+            const result = agentRef.current.history.slice(preLen).filter(m => m.role === 'assistant').map(m => typeof m.content === 'string' ? m.content : (m.content || []).filter(c => c.type === 'text').map(c => c.text).join('\n')).filter(Boolean).join('\n\n');
+            const saved = saveScheduleResult(task.name, result);
+            task.lastRun = new Date().toISOString(); saveSchedules(list);
+            push({ type: 'info', text: `✔ "${name}" complete — saved to ${saved}` });
+          } catch (err) { push({ type: 'error', text: `Failed: ${err.message}` }); }
+          return;
+        }
+        if (scSub === 'results') {
+          const name = scRest[0] || null;
+          const results = getScheduleResults(name);
+          if (!results.length) { push({ type: 'info', text: name ? `No results for "${name}"` : 'No schedule results yet' }); return; }
+          push({ type: 'info', text: `Schedule results${name ? ` for "${name}"` : ''}:\n${results.slice(0, 10).map(r => `  ${r.name}`).join('\n')}` });
+          return;
+        }
+        push({ type: 'info', text: 'Schedule: list|add|run|remove|enable|disable|results' });
+        return;
+      }
+      case 'web': {
+        const pidFile = join(homedir(), '.axion', 'web-server.pid');
+        if (args[0] === 'stop') {
+          const webPort = Number(process.env.AXION_WEB_PORT) || 3000;
+          if (!existsSync(pidFile)) {
+            try {
+              if (process.platform === 'win32') { const out = execSync(`netstat -ano -p TCP 2>nul | findstr :${webPort}`, { encoding: 'utf8', stdio: ['pipe','pipe','pipe'] }); const m = out.match(/\s+(\d+)\s*$/m); if (m) { execSync(`taskkill /F /PID ${m[1]}`, { stdio: 'ignore' }); push({ type: 'info', text: `Web server stopped (PID ${m[1]}).` }); } else { push({ type: 'info', text: 'No web server running.' }); } }
+              else { const pid = execSync(`lsof -ti tcp:${webPort}`, { encoding: 'utf8' }).trim(); if (pid) { process.kill(parseInt(pid, 10)); push({ type: 'info', text: `Web server stopped (PID ${pid}).` }); } else { push({ type: 'info', text: 'No web server running.' }); } }
+            } catch { push({ type: 'info', text: 'No web server running.' }); }
+            return;
+          }
+          try { const pid = parseInt(readFileSync(pidFile, 'utf8').trim(), 10); process.kill(pid); try { unlinkSync(pidFile); } catch {} push({ type: 'info', text: `Web server stopped (PID ${pid}).` }); }
+          catch (err) { try { unlinkSync(pidFile); } catch {} push({ type: 'error', text: `Failed: ${err.message}` }); }
+          return;
+        }
+        const port = parseInt(args[0], 10) || 3000;
+        try {
+          const child = spawn(process.execPath, ['axion-serve'], { detached: true, stdio: 'ignore', env: { ...process.env, AXION_WEB_PORT: String(port) }, cwd: process.cwd() });
+          child.unref();
+          const url = `http://localhost:${port}`;
+          push({ type: 'info', text: `◈ Web UI starting at ${url}…` });
+          try { if (process.platform === 'win32') spawn('cmd', ['/c', 'start', url], { detached: true, stdio: 'ignore' }).unref(); else if (process.platform === 'darwin') spawn('open', [url], { detached: true, stdio: 'ignore' }).unref(); else spawn('xdg-open', [url], { detached: true, stdio: 'ignore' }).unref(); } catch {}
+        } catch (err) { push({ type: 'error', text: `Failed: ${err.message}` }); }
+        return;
+      }
+      case 'blender': {
+        if (arg === 'setup') {
+          push({ type: 'info', text: 'Blender add-on setup:\n1. Open Blender\n2. Edit → Preferences → Add-ons → Install…\n3. Select axion_blender.py from mcp-servers/blender/\n4. Enable the add-on\n5. Run /blender connect' });
+          return;
+        }
+        push({ type: 'info', text: 'Connecting Blender MCP…' });
+        try {
+          const srv = await MCP.addServer('blender', { command: 'axion-blender', args: [] });
+          if (srv.ready) push({ type: 'info', text: `✔ Blender MCP connected — ${srv.tools.length} tools available.` });
+          else push({ type: 'error', text: `Blender MCP failed: ${srv.error}` });
+        } catch (err) { push({ type: 'error', text: `Connection failed: ${err.message}` }); }
+        return;
+      }
+      case 'mcp': {
+        const [mcSub, ...mcRest] = args;
+        if (!mcSub || mcSub === 'status') {
+          const status = MCP.getStatus();
+          if (!status.length) { push({ type: 'info', text: 'No MCP servers configured.\n/mcp browse | /mcp install <id> | /mcp add <name> <cmd>' }); return; }
+          push({ type: 'info', text: `MCP servers:\n${status.map(s => `  ${s.name.padEnd(20)} ${s.disabled ? '⏸ disabled' : s.ready ? `✔ ${s.toolCount} tools` : `✗ ${s.error || 'not ready'}`}`).join('\n')}` });
+          return;
+        }
+        if (mcSub === 'tools') {
+          const filterName = mcRest[0]; const status = MCP.getStatus().filter(s => !filterName || s.name === filterName);
+          if (!status.length) { push({ type: 'info', text: filterName ? `No server "${filterName}".` : 'No MCP servers.' }); return; }
+          push({ type: 'info', text: `MCP tools:\n${status.flatMap(s => [`  ${s.name}:`, ...(s.ready ? s.tools.map(t => `    mcp__${s.name}__${t}`) : [`    ${s.error}`])]).join('\n')}` });
+          return;
+        }
+        if (mcSub === 'add') {
+          const [name, command, ...cmdArgs] = mcRest;
+          if (!name || !command) { push({ type: 'error', text: 'usage: /mcp add <name> <command> [args]' }); return; }
+          push({ type: 'info', text: `Starting MCP server "${name}"…` });
+          try {
+            const srv = await MCP.addServer(name, { command, args: cmdArgs });
+            if (srv.ready) push({ type: 'info', text: `✔ MCP "${name}" connected — ${srv.tools.length} tools.` });
+            else push({ type: 'error', text: `MCP "${name}" failed: ${srv.error}` });
+          } catch (err) { push({ type: 'error', text: `MCP add failed: ${err.message}` }); }
+          return;
+        }
+        if (mcSub === 'remove') { const name = mcRest[0]; if (!name) { push({ type: 'error', text: 'usage: /mcp remove <name>' }); return; } push({ type: MCP.removeServer(name) ? 'info' : 'error', text: MCP.removeServer(name) ? `MCP "${name}" removed.` : `No server "${name}".` }); return; }
+        if (mcSub === 'reload') {
+          push({ type: 'info', text: 'Reloading MCP servers…' });
+          try { await MCP.reload(); const status = MCP.getStatus(); push({ type: 'info', text: `✔ MCP reload complete — ${status.filter(s => s.ready).length} connected${status.filter(s => !s.ready).length ? `, ${status.filter(s => !s.ready).length} failed` : ''}.` }); }
+          catch (err) { push({ type: 'error', text: `Reload failed: ${err.message}` }); }
+          return;
+        }
+        if (mcSub === 'disable') { const name = mcRest[0]; if (!name) { push({ type: 'error', text: 'usage: /mcp disable <name>' }); return; } push({ type: MCP.disableServer(name) ? 'info' : 'error', text: MCP.disableServer(name) ? `⏸ "${name}" disabled.` : `No server "${name}".` }); return; }
+        if (mcSub === 'enable') {
+          const name = mcRest[0]; if (!name) { push({ type: 'error', text: 'usage: /mcp enable <name>' }); return; }
+          push({ type: 'info', text: `Starting "${name}"…` });
+          try { const srv = await MCP.enableServer(name); if (srv?.ready) push({ type: 'info', text: `✔ "${name}" enabled — ${srv.tools.length} tools.` }); else push({ type: 'error', text: `"${name}" failed: ${srv?.error}` }); }
+          catch (err) { push({ type: 'error', text: `Enable failed: ${err.message}` }); }
+          return;
+        }
+        if (mcSub === 'toggle') {
+          const name = mcRest[0]; if (!name) { push({ type: 'error', text: 'usage: /mcp toggle <name>' }); return; }
+          const st = MCP.getStatus().find(s => s.name === name);
+          if (!st) { push({ type: 'error', text: `No server "${name}".` }); return; }
+          if (st.disabled) { return runCommand(`/mcp enable ${name}`); }
+          else { MCP.disableServer(name); push({ type: 'info', text: `⏸ "${name}" disabled.` }); }
+          return;
+        }
+        if (mcSub === 'browse' || mcSub === 'marketplace') {
+          const byCategory = {};
+          for (const entry of MCP_MARKETPLACE) {
+            if (!byCategory[entry.category]) byCategory[entry.category] = [];
+            byCategory[entry.category].push(entry);
+          }
+          const installed = new Set(MCP.getStatus().map(s => s.name));
+          const lines = [];
+          for (const [cat, entries] of Object.entries(byCategory)) {
+            lines.push(`\n  ${CATEGORIES[cat] || cat}`);
+            for (const e of entries) { lines.push(`    ${e.id.padEnd(22)} ${e.description}${installed.has(e.id) ? ' ✔' : ''}`); }
+          }
+          push({ type: 'info', text: `MCP Marketplace — ${MCP_MARKETPLACE.length} servers\n${lines.join('\n')}\n\n/mcp install <id>` });
+          return;
+        }
+        if (mcSub === 'search') {
+          const query = mcRest.join(' '); const results = searchMarketplace(query);
+          if (!results.length) { push({ type: 'info', text: `No results for "${query}".` }); return; }
+          const installed = new Set(MCP.getStatus().map(s => s.name));
+          push({ type: 'info', text: `Results for "${query}":\n${results.map(e => `  ${e.id.padEnd(22)} ${e.description}${installed.has(e.id) ? ' ✔' : ''}`).join('\n')}` });
+          return;
+        }
+        if (mcSub === 'install') {
+          const id = mcRest[0]; const extraArgs = mcRest.slice(1);
+          if (!id) { push({ type: 'error', text: 'usage: /mcp install <id>' }); return; }
+          const entry = getMarketplaceEntry(id);
+          if (!entry) { push({ type: 'error', text: `No marketplace entry "${id}".` }); return; }
+          let resolvedArgs = entry.args.map((a, i) => { if (a.startsWith('$') && extraArgs.length) return extraArgs.shift() || a; return a; });
+          push({ type: 'info', text: `Installing ${entry.name}…` });
+          try {
+            const srv = await MCP.addServer(id, { command: entry.command, args: resolvedArgs });
+            if (srv.ready) push({ type: 'info', text: `✔ ${entry.name} installed — ${srv.tools.length} tools.` });
+            else push({ type: 'error', text: `${entry.name} failed: ${srv.error}` });
+          } catch (err) { push({ type: 'error', text: `Install failed: ${err.message}` }); }
+          return;
+        }
+        push({ type: 'info', text: 'MCP: status|browse|search|install|add|enable|disable|toggle|remove|reload|tools' });
+        return;
+      }
+      case 'contribute': {
+        const coSub = args[0]?.toLowerCase();
+        if (coSub === 'skip') { push({ type: 'info', text: 'Contribution prompt dismissed for this session.' }); return; }
+        if (coSub === 'optout') {
+          if (args[1] === 'off') { saveDonateOptOut(false); push({ type: 'info', text: '✔ Contribution prompts re-enabled.' }); }
+          else { saveDonateOptOut(true); push({ type: 'info', text: '✔ Opted out. Run /contribute optout off to re-enable.' }); }
+          return;
+        }
+        const hist = agentRef.current?.history;
+        if (!hist || hist.length === 0) { push({ type: 'info', text: 'Nothing to contribute.' }); return; }
+        const payload = { donatedAt: new Date().toISOString(), turns: hist.length, history: hist };
+        push({ type: 'info', text: 'Contributing session…' });
+        const sendToCloud = () => {
+          fetch('https://axion-collect.axion-collect.workers.dev/collect', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
+          }).then(r => { if (r.ok) push({ type: 'info', text: '✔ Session contributed — thanks!' }); else { saveDonation(hist); push({ type: 'info', text: '✔ Saved locally.' }); } }).catch(() => { saveDonation(hist); push({ type: 'info', text: '✔ Saved locally.' }); });
+        };
+        sendToCloud();
+        return;
+      }
       default:
-        push({ type: 'info', text: `/${c} isn't wired into the new UI yet — coming soon. (Full command set lives in the Ink version on master.)` });
+        push({ type: 'info', text: `/${c} isn't wired into the new UI yet — coming soon.` });
         return;
     }
-  }, [model, mode, tokens, messages, push, onExit, buildSession]);
+  }, [model, mode, tokens, messages, push, onExit, buildSession, extThinking, thinkingBudget, systemOverride, goal, computerUse, includedFiles, submit]);
 
   const submit = useCallback((value) => {
     const text = (value || '').trim();
@@ -333,6 +1315,7 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
     setInputSafe('');
     if (text.startsWith('/')) { runCommand(text); return; }
     push({ type: 'user', text });
+    lastUserTextRef.current = text;
     setThinkingWord(pickThinkingWord());
     setBusy(true);
 
@@ -453,6 +1436,7 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
         modeColor={MODE_COLORS[mode] || 'cyan'}
         ctxUsed={ctxUsed}
         ctxWindow={ctxWindow}
+        sessionCost={estimateCost(model, tokens.input || 0, tokens.output || 0) || 0}
         todos={todos}
       />
     </box>

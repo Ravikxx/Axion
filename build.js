@@ -1,11 +1,12 @@
 #!/usr/bin/env node
 import { chmodSync, rmSync } from 'fs';
+import { resolve } from 'path';
 import { build } from 'esbuild';
 
 rmSync('dist', { recursive: true, force: true });
 
 await build({
-  entryPoints: ['src/index.js'],
+  entryPoints: [resolve('src/index.js')],
   bundle: true,
   outdir: 'dist',
   entryNames: 'axion',
@@ -20,7 +21,7 @@ await build({
   packages: 'external',
   alias: {
     // Ink's optional devtools file imports this at the top level — stub it out
-    'react-devtools-core': './src/stubs/react-devtools-core.js',
+    'react-devtools-core': resolve('src/stubs/react-devtools-core.js'),
   },
   banner: { js: '#!/usr/bin/env node' },
   logLevel: 'info',

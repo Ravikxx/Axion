@@ -55,6 +55,7 @@ test('resolveProvider returns provider for known aliases', () => {
   assert.equal(resolveProvider('groq'), 'groq');
   assert.equal(resolveProvider('mistral'), 'mistral');
   assert.equal(resolveProvider('ollama'), 'ollama');
+  assert.equal(resolveProvider('opencode'), 'opencode');
 });
 
 test('resolveProvider uses regex fallback', () => {

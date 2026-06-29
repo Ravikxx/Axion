@@ -21,6 +21,7 @@ export function resolveProvider(alias) {
   if (/^gemini/i.test(alias))                                              return 'gemini';
   if (/^(mistral|codestral|pixtral|magistral|open-mistral)/i.test(alias)) return 'mistral';
   if (/^(llama|mixtral|gemma|qwen|deepseek|whisper)/i.test(alias))        return 'groq';
+  if (/^opencode/i.test(alias))                                            return 'opencode';
 
   return 'openai';
 }
@@ -70,6 +71,12 @@ export function createClient(modelAlias) {
 
   if (provider === 'veil') {
     return { type: 'veil', client: new OpenAI({ apiKey: API_KEYS.veil || 'no-key', baseURL: BASE_URLS.veil }) };
+  }
+
+  if (provider === 'opencode') {
+    const key = API_KEYS.opencode;
+    if (!key) throw new Error('OPENCODE_API_KEY not set — use /api opencode <key>');
+    return { type: 'openai', client: new OpenAI({ apiKey: key, baseURL: BASE_URLS.opencode }) };
   }
 
   if (provider === 'lumen') {

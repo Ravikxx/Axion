@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 
 const MODELS_LIST = [
-  'veil', 'lumen', 'claude', 'claude-opus', 'claude-haiku',
+  'veil', 'lumen', 'opencode',
+  'claude', 'claude-opus', 'claude-haiku',
   'gpt', 'gpt-mini', 'gemini', 'gemini-2.5-pro',
   'groq', 'mistral', 'ollama', 'openrouter',
 ];
