@@ -400,13 +400,14 @@ const CHATS_DIR = join(DIR, 'chats');
 
 // Shared serializer — strips tool-call internals and diff arrays so saved
 // sessions stay small and JSON-safe. Used by both /save and session autosave.
-function serializeChat(name, { model, mode, tokenCount, agentHistory, displayMessages, tab = 'code' }) {
+function serializeChat(name, { model, mode, tokenCount, agentHistory, displayMessages, tab = 'code', cwd } = {}) {
   return {
     name,
     savedAt: new Date().toISOString(),
     model,
     mode,
     tab,
+    cwd: cwd || process.cwd(),
     tokenCount,
     // Strip tool-call internals from history — keep only user/assistant text
     agentHistory: agentHistory
@@ -631,7 +632,7 @@ export function listChats() {
     .map((f) => {
       try {
         const d = JSON.parse(readFileSync(join(CHATS_DIR, f), 'utf8'));
-        return { name: d.name, model: d.model, savedAt: d.savedAt, messages: d.displayMessages?.length ?? 0, tab: d.tab || 'code' };
+        return { name: d.name, model: d.model, savedAt: d.savedAt, messages: d.displayMessages?.length ?? 0, tab: d.tab || 'code', cwd: d.cwd || '' };
       } catch {
         return { name: f.slice(0, -5) };
       }

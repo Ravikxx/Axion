@@ -221,6 +221,7 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
     const inTok = tokens.input || 0, outTok = tokens.output || 0;
     return {
       model, mode,
+      cwd: process.cwd(),
       tokenCount: tokens.total || 0,
       cost: estimateCost(model, inTok, outTok) || 0,
       agentHistory: agentRef.current?.history || [],

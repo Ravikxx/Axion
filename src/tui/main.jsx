@@ -7,11 +7,57 @@ import minimist from 'minimist';
 import { App } from './App.jsx';
 import {
   getSavedModel, getSavedMode, getSavedApiKeys, getSavedCustomEndpoints,
-  loadChat, loadLastSession, saveChat,
+  loadChat, loadLastSession, saveChat, listChats,
 } from '../persist.js';
 import { API_KEYS, CUSTOM_ENDPOINTS, DEFAULT_MODEL, DEFAULT_MODE } from '../config.js';
 import { accent } from '../ui/theme.js';
 import { sessionSummary } from './exitSummary.js';
+
+// ── Interactive session picker ──────────────────────────────────────────────────
+function pickSession() {
+  return new Promise((resolve) => {
+    const chats = listChats();
+    if (!chats.length) {
+      process.stderr.write('\n  No saved sessions found.\n\n');
+      process.exit(1);
+    }
+    let sel = 0;
+    const render = () => {
+      process.stderr.write('\x1b[?25l\x1b[2J\x1b[H');
+      process.stderr.write('  Select a session (↑/↓ Enter Esc):\n\n');
+      chats.forEach((c, i) => {
+        const pfx = i === sel ? ' ▸' : '  ';
+        const dir = c.cwd ? String(c.cwd).split(/[\\/]/).pop() : '?';
+        const date = c.savedAt ? new Date(c.savedAt).toLocaleString() : '';
+        process.stderr.write(`  ${pfx} \x1b[33m${c.name}\x1b[0m  \x1b[90m${dir}\x1b[0m  ${date}\n`);
+      });
+    };
+    const cleanup = () => {
+      process.stdin.removeAllListeners('data');
+      process.stdin.setRawMode(false);
+      process.stdin.pause();
+      process.stderr.write('\x1b[?25h\x1b[2J\x1b[H');
+    };
+    process.stdin.setRawMode(true);
+    process.stdin.resume();
+    render();
+    process.stdin.on('data', (buf) => {
+      const b = [...buf];
+      if (b[0] === 27 && b[1] === 91) {
+        if (b[2] === 65) { sel = Math.max(0, sel - 1); render(); return; }
+        if (b[2] === 66) { sel = Math.min(chats.length - 1, sel + 1); render(); return; }
+      }
+      if (b[0] === 13 || b[0] === 10) {
+        cleanup();
+        resolve(chats[sel].name);
+      }
+      if (b[0] === 27) {
+        cleanup();
+        process.exit(0);
+      }
+    });
+  });
+}
 
 // ── Seed runtime config from saved settings (mirrors src/index.js) ──────────────
 const savedKeys = getSavedApiKeys();
@@ -27,20 +73,28 @@ for (const [name, ep] of Object.entries(savedEndpoints)) {
 const argv = minimist(process.argv.slice(2), {
   string: ['resume'], boolean: ['continue'], alias: { r: 'resume', c: 'continue' },
 });
+let resumeName = null;
 let initialResume = null;
-let sessionId = null;
-try {
-  if (argv.resume) {
-    initialResume = loadChat(argv.resume);
-    sessionId = argv.resume;
-  } else if (argv.continue) {
-    initialResume = loadLastSession();
-    sessionId = initialResume?.name || null;
+
+if (argv.resume) {
+  if (typeof argv.resume === 'string') {
+    resumeName = argv.resume;
+    initialResume = loadChat(resumeName);
+  } else {
+    // -r without arg → interactive picker
+    resumeName = await pickSession();
+    initialResume = loadChat(resumeName);
   }
-} catch {}
-if (!sessionId) {
-  sessionId = `ses_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 6)}`;
+} else if (argv.continue) {
+  initialResume = loadLastSession();
+  resumeName = initialResume?.name || null;
 }
+
+// Auto-cd to the session's saved directory
+if (initialResume?.cwd && initialResume.cwd !== process.cwd()) {
+  try { process.chdir(initialResume.cwd); } catch {}
+}
+const sessionId = resumeName || `ses_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 6)}`;
 
 const initialModel = initialResume?.model || getSavedModel() || DEFAULT_MODEL;
 const initialMode  = initialResume?.mode  || getSavedMode()  || DEFAULT_MODE;
