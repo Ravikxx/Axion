@@ -1,7 +1,7 @@
 import React from 'react';
 import { accent } from '../ui/theme.js';
 import { parseInline, parseBlocks, highlightLine } from '../ui/markdown.js';
-import { chartData, barRows, sparkline, pieRows } from '../ui/charts.js';
+import { chartData, barRows, sparkline, pieBraille } from '../ui/charts.js';
 
 // OpenTUI markdown renderer. Shares the parser with the Ink version; renders via
 // OpenTUI text/span/strong/em + box. Headings, bold/italic/inline-code, lists,
@@ -131,7 +131,7 @@ function ChartBlock({ config }) {
   }
 
   if (config.type === 'pie' || config.type === 'doughnut') {
-    const { rows, slices } = pieRows(values, labels, width, config.type === 'doughnut');
+    const { rows, slices } = pieBraille(values, labels, width, config.type === 'doughnut');
     return (
       <box style={{ flexDirection: 'column', paddingLeft: 1 }}>
         {Title}

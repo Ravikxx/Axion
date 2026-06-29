@@ -7,7 +7,9 @@ import { collapseDiff, diffStats } from '../utils/diff.js';
 
 const C = { ok: '#7ee787', fail: '#f85149', pending: '#f0c674', gray: '#888', add: '#7ee787', rem: '#f85149' };
 
-export function ToolBlock({ name, input, output, success, pending, diff, expanded = false }) {
+const COLLAPSE_LIMIT = 6; // tool blocks taller than this collapse to one line
+
+export function ToolBlock({ name, input, output, success, pending, diff, expanded = false, onToggle }) {
   if (name && name.includes('sequentialthinking')) {
     return <ThinkingStep input={input} pending={pending} />;
   }
@@ -20,26 +22,42 @@ export function ToolBlock({ name, input, output, success, pending, diff, expande
   const stats = hasDiff ? diffStats(diff) : null;
   const showDiff = hasDiff && !pending;
 
+  // How many lines would the body take? Collapse big blocks to a one-liner.
+  const bodyLines = pending ? 0
+    : hasDiff ? diff.length
+    : output ? String(output).split('\n').length : 0;
+  const collapsible = !pending && bodyLines > COLLAPSE_LIMIT;
+  const collapsed = collapsible && !expanded;
+  const chevron = collapsible ? (expanded ? '▾ ' : '▸ ') : '';
+
+  const header = (
+    <text>
+      {collapsible ? <span fg={C.gray}>{chevron}</span> : null}
+      <span fg={statusColor}>{dot} </span>
+      <span fg={A}>{name}</span>
+      {label ? <span fg={C.gray}>{`  ${label}`}</span> : null}
+      {pending ? <span fg={C.pending}>  running…</span> : null}
+      {showDiff && stats ? (
+        <span>
+          {stats.added > 0 ? <span fg={C.add}>{`  +${stats.added}`}</span> : null}
+          {stats.removed > 0 ? <span fg={C.rem}>{`  -${stats.removed}`}</span> : null}
+        </span>
+      ) : null}
+      {collapsed ? <span fg={C.gray}>{`   +${bodyLines} lines · click to expand`}</span> : null}
+    </text>
+  );
+
   return (
     <box style={{ flexDirection: 'column', marginLeft: 2, marginTop: 0 }}>
-      <text>
-        <span fg={statusColor}>{dot} </span>
-        <span fg={A}>{name}</span>
-        {label ? <span fg={C.gray}>{`  ${label}`}</span> : null}
-        {pending ? <span fg={C.pending}>  running…</span> : null}
-        {showDiff && stats ? (
-          <span>
-            {stats.added > 0 ? <span fg={C.add}>{`  +${stats.added}`}</span> : null}
-            {stats.removed > 0 ? <span fg={C.rem}>{`  -${stats.removed}`}</span> : null}
-          </span>
-        ) : null}
-      </text>
+      {collapsible
+        ? <box onMouseDown={() => onToggle?.()}>{header}</box>
+        : header}
 
-      {showDiff ? <DiffView diff={diff} expanded={expanded} /> : null}
+      {!collapsed && showDiff ? <DiffView diff={diff} expanded /> : null}
 
-      {!pending && output && !showDiff ? (
+      {!collapsed && !pending && output && !showDiff ? (
         <box style={{ flexDirection: 'column', marginLeft: 2 }}>
-          {formatOutput(output, name, expanded).split('\n').map((l, i) => (
+          {formatOutput(output, name, true).split('\n').map((l, i) => (
             <text key={i}><span fg={success === false ? C.fail : C.gray}>{l}</span></text>
           ))}
         </box>

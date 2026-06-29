@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { chartData, barRows, sparkline, pieRows, CHART_COLORS } from '../src/ui/charts.js';
+import { chartData, barRows, sparkline, pieRows, pieBraille, CHART_COLORS } from '../src/ui/charts.js';
 
 // ── chartData ─────────────────────────────────────────────────────────────────
 
@@ -59,6 +59,15 @@ test('pie produces a square grid of colored runs', () => {
     assert.ok(Array.isArray(row));
     for (const g of row) assert.equal(typeof g.text, 'string');
   }
+});
+
+test('pieBraille emits braille glyphs and the same slice legend', () => {
+  const { rows, slices } = pieBraille([50, 30, 20], ['X', 'Y', 'Z'], 50, false);
+  assert.ok(rows.length > 0);
+  assert.equal(slices.map((s) => s.pct).join(','), '50.0,30.0,20.0');
+  // at least one cell uses a braille glyph (U+2800..U+28FF)
+  const anyBraille = rows.some((row) => row.some((g) => [...g.text].some((ch) => ch.charCodeAt(0) >= 0x2800 && ch.charCodeAt(0) <= 0x28ff)));
+  assert.ok(anyBraille);
 });
 
 test('doughnut carves a hole the pie does not have', () => {

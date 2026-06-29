@@ -76,7 +76,7 @@ const MODE_ICONS  = { ask: '?', plan: '◈', auto: '⚡', bypass: '⚡', decide:
 const MODE_COLORS = { ask: 'cyan', plan: 'yellow', auto: '#7ee787', bypass: '#7ee787', decide: '#c678dd' };
 const modeLabel = (m) => (m === 'auto' ? 'bypass' : m === 'decide' ? 'decide-for-me' : m);
 
-function MessageRow({ msg, expanded = false }) {
+function MessageRow({ msg, expanded = false, onToggle }) {
   const A = accent();
   switch (msg.type) {
     case 'user':
@@ -93,13 +93,24 @@ function MessageRow({ msg, expanded = false }) {
           <RichText>{msg.text || ' '}</RichText>
         </box>
       );
-    case 'thinking':
+    case 'thinking': {
+      const lines = (msg.text || '').split('\n').filter((l) => l.trim());
+      const big = lines.length > 1 || (lines[0] || '').length > 100;
+      const shown = expanded || !big ? lines : lines.slice(0, 1);
       return (
         <box style={{ flexDirection: 'column', marginTop: 1, paddingLeft: 1, paddingRight: 1 }}>
-          <text><span fg="#a371f7">◈ thinking</span></text>
-          {(msg.text || '').split('\n').slice(0, 1).map((l, i) => <text key={i}><span fg="#a371f7">{l.slice(0, 100)}</span></text>)}
+          <box onMouseDown={() => big && onToggle?.()}>
+            <text>
+              <span fg="#a371f7">{big ? (expanded ? '▾ ' : '▸ ') : ''}◈ thinking</span>
+              {big && !expanded ? <span fg="#666">{'   click to expand'}</span> : null}
+            </text>
+          </box>
+          {shown.map((l, i) => (
+            <text key={i}><span fg="#a371f7">{expanded ? l : l.slice(0, 100)}</span></text>
+          ))}
         </box>
       );
+    }
     case 'tool':
       return (
         <box style={{ flexDirection: 'column', marginTop: 1 }}>
@@ -111,6 +122,7 @@ function MessageRow({ msg, expanded = false }) {
             pending={msg.pending}
             diff={msg.diff || null}
             expanded={expanded}
+            onToggle={onToggle}
           />
         </box>
       );
@@ -191,6 +203,9 @@ function Session({
 
   const push = useCallback((msg) => setMessages((m) => [...m, msg]), []);
   const setInputSafe = useCallback((v) => { inputRef.current = v; setInput(v); }, []);
+  const toggleExpand = useCallback((i) => {
+    setExpandedTools((prev) => { const n = new Set(prev); n.has(i) ? n.delete(i) : n.add(i); return n; });
+  }, []);
 
   // Throttled flush of streaming text to state.
   const flushStream = useCallback(() => {
@@ -365,17 +380,11 @@ function Session({
 
     // Chat mode
     if (key.name === 'escape' && busy) { try { agentRef.current?.cancel(); } catch {} return; }
-    // Ctrl+R: expand/collapse the most recent tool block (full diff / full output).
+    // Ctrl+R: expand/collapse the most recent tool or thinking block.
     if (key.ctrl && ch === 'r') {
       setMessages((m) => {
-        const ri = [...m].reverse().findIndex((x) => x.type === 'tool' && !x.pending);
-        if (ri === -1) return m;
-        const idx = m.length - 1 - ri;
-        setExpandedTools((prev) => {
-          const next = new Set(prev);
-          if (next.has(idx)) next.delete(idx); else next.add(idx);
-          return next;
-        });
+        const ri = [...m].reverse().findIndex((x) => (x.type === 'tool' && !x.pending) || x.type === 'thinking');
+        if (ri !== -1) toggleExpand(m.length - 1 - ri);
         return m;
       });
       return;
@@ -1501,7 +1510,7 @@ function Session({
       <box style={{ flexGrow: 1, flexDirection: 'column' }}>
         <Welcome model={model} mode={mode} />
         <scrollbox ref={scrollRef} style={{ flexGrow: 1 }} stickyScroll stickyStart="bottom">
-          {messages.map((msg, i) => <MessageRow key={i} msg={msg} expanded={expandedTools.has(i)} />)}
+          {messages.map((msg, i) => <MessageRow key={i} msg={msg} expanded={expandedTools.has(i)} onToggle={() => toggleExpand(i)} />)}
           {streamText !== null && (
             <box style={{ flexDirection: 'column', marginTop: 1, paddingLeft: 1, paddingRight: 1 }}>
               <text><span fg={A}>✻ Axion</span></text>
