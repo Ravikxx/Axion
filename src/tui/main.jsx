@@ -2,6 +2,7 @@
 // requires Bun's FFI). Launched in production via src/tui/launch.js.
 import { createCliRenderer } from '@opentui/core';
 import { createRoot } from '@opentui/react';
+import { writeSync } from 'fs';
 import minimist from 'minimist';
 import { App } from './App.jsx';
 import {
@@ -59,10 +60,14 @@ function exitWithSummary(session) {
     }
   } catch {}
   try { renderer.destroy?.(); } catch {}
+  // Leave the alt-screen and restore the cursor, then write the banner straight to
+  // fd 1 (writeSync bypasses OpenTUI's now-destroyed stdout wrapper, which would
+  // otherwise swallow the output).
+  try { writeSync(1, '\x1b[?1049l\x1b[?25h'); } catch {}
   if (hasContent) {
     try {
       const msgCount = (session.displayMessages || []).filter((m) => m.type === 'user' || m.type === 'assistant').length;
-      process.stdout.write(sessionSummary({
+      writeSync(1, sessionSummary({
         model: session.model, mode: session.mode, msgCount,
         tokens: session.tokenCount || 0, cost: session.cost || 0, sesId, accent: accent(),
       }));

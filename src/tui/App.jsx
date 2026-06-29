@@ -3,7 +3,7 @@ import { useKeyboard, useTerminalDimensions } from '@opentui/react';
 import { accent, THEMES, setTheme, themeName } from '../ui/theme.js';
 import { Agent } from '../agent/agent.js';
 import { MODELS, getContextWindow, estimateCost } from '../config.js';
-import { getTodos, saveModel, saveMode, saveTheme, getAllowedTools, allowTool, autosaveSession } from '../persist.js';
+import { getTodos, saveModel, saveMode, saveTheme, getAllowedTools, allowTool, autosaveSession, clearTodos } from '../persist.js';
 import { COMMANDS, getTabCompletion } from '../ui/commands.js';
 import { permissionKey, confirmLabel } from '../ui/toolPrompts.js';
 import { Sidebar } from './Sidebar.jsx';
@@ -168,6 +168,10 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
         ...(initialResume.displayMessages || []),
         { type: 'info', text: '── end of previous session — continuing from here ──' },
       ]);
+    } else {
+      // Fresh session — start with a clean todo list (todos persist on disk).
+      try { clearTodos(); } catch {}
+      setTodos([]);
     }
 
     return () => { try { agent.cancel(); } catch {} };

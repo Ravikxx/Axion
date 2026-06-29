@@ -767,3 +767,7 @@ export function removeTodo(id) {
   saveTodos(list);
   return true;
 }
+
+export function clearTodos() {
+  saveTodos([]);
+}
