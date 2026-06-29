@@ -141,6 +141,27 @@ export function getContextWindow(modelAlias) {
   return CONTEXT_WINDOWS[id] || 128_000;
 }
 
+// Fetch OpenRouter model list and populate CONTEXT_WINDOWS dynamically.
+// Called once at startup so getContextWindow() stays synchronous afterwards.
+export async function fetchOpenRouterContextWindows() {
+  const key = API_KEYS.openrouter;
+  if (!key) return;
+  try {
+    const res = await fetch('https://openrouter.ai/api/v1/models', {
+      headers: key ? { Authorization: `Bearer ${key}` } : {},
+      signal: AbortSignal.timeout(5000),
+    });
+    if (!res.ok) return;
+    const json = await res.json();
+    if (!json?.data) return;
+    for (const model of json.data) {
+      if (model.id && model.context_length) {
+        CONTEXT_WINDOWS[model.id] = model.context_length;
+      }
+    }
+  } catch {}
+}
+
 export const DEFAULT_MODEL = process.env.AXION_MODEL || 'claude';
 export const DEFAULT_MODE  = 'ask';
 
