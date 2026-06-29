@@ -48,7 +48,8 @@ Content you submit may be processed by these providers in accordance with their 
 
 - Conversation data is transmitted to third-party providers to generate responses
 - We store minimal data (rate-limit counters, chat history for your session) to operate the Service
-- We do not use your conversations for training purposes
+- We do not use your conversations for training **unless you explicitly opt in** with `/contribute`
+- If you use `/contribute`, your conversation history may be used to improve future models
 - API keys are stored securely and used only to authenticate with providers
 - See our [Privacy Policy](/privacy) for more details
 
