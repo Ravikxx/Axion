@@ -1628,17 +1628,20 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
   return (
     <box style={{ width, height, flexDirection: 'column' }}>
       <TabBar tabs={tabs} activeId={activeId} accentColor={A} onSwitchTab={switchTab} onNewTab={newTab} onCloseTab={closeTab} />
-      <box style={{ flexGrow: 1, flexDirection: 'row' }}>
+      <box style={{ flexGrow: 1, position: 'relative' }}>
         {tabs.map((t) => {
           const on = t.id === activeId;
-          // Inactive tabs stay mounted (agents keep running) but take zero layout
-          // and don't paint. `display:'none'` is ignored by OpenTUI's React layer,
-          // so we collapse to 0×0 + visible:false instead.
+          // All tabs stay mounted (background agents keep running). Inactive tabs
+          // are hidden via `visible`, NOT by resizing — OpenTUI doesn't reliably
+          // repaint a subtree that was collapsed to 0×0 and re-expanded (static
+          // text stays blank). So every pane is absolutely positioned at full
+          // size and overlaps; switching only toggles visibility (no resize →
+          // clean repaint). Explicit width/height keeps the inner flex laid out.
           return (
             <box
               key={t.id}
               visible={on}
-              style={on ? { flexGrow: 1, flexDirection: 'row' } : { width: 0, height: 0, overflow: 'hidden' }}
+              style={{ position: 'absolute', top: 0, left: 0, width, height: Math.max(0, height - 1), flexDirection: 'row' }}
             >
               <Session
                 initialModel={t.model}
