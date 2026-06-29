@@ -1,6 +1,7 @@
 import React from 'react';
 import { accent } from '../ui/theme.js';
 import { parseInline, parseBlocks, highlightLine } from '../ui/markdown.js';
+import { chartData, barRows, sparkline, pieRows } from '../ui/charts.js';
 
 // OpenTUI markdown renderer. Shares the parser with the Ink version; renders via
 // OpenTUI text/span/strong/em + box. Headings, bold/italic/inline-code, lists,
@@ -96,6 +97,69 @@ function CodeBlock({ lang, text }) {
   );
 }
 
+// Terminal charts from a ```chart fenced JSON block (Chart.js-style config).
+// Supports bar (default), pie/doughnut, line (sparkline), scatter, and radar.
+function ChartBlock({ config }) {
+  const width = Math.min(Math.max(((process.stdout.columns || 80) - 36), 24), 54);
+  const { labels, values } = chartData(config || {});
+  const title = config?.title;
+  const Title = title ? <text><span fg="#cc785c">{`${title}${config.type ? ` (${config.type})` : ''}`}</span></text> : null;
+  if (!values.length) return <text><span fg="#888">(empty chart)</span></text>;
+
+  if (config.type === 'line') {
+    const { line, points } = sparkline(values, labels, width);
+    return (
+      <box style={{ flexDirection: 'column', paddingLeft: 1 }}>
+        {Title}
+        <text><span fg="#60a5fa">{line}</span></text>
+        <text><span fg="#888">{points.map((p) => (p.label ? `${p.label}=${p.value}` : `${p.value}`)).join(', ')}</span></text>
+      </box>
+    );
+  }
+
+  if (config.type === 'scatter') {
+    const pts = values;
+    const isObj = pts[0] && typeof pts[0] === 'object' && 'x' in pts[0];
+    return (
+      <box style={{ flexDirection: 'column', paddingLeft: 1 }}>
+        {Title}
+        {pts.map((p, i) => (
+          <text key={i}><span fg="#888">{`(${isObj ? p.x : i}, ${isObj ? p.y : p})`}</span></text>
+        ))}
+      </box>
+    );
+  }
+
+  if (config.type === 'pie' || config.type === 'doughnut') {
+    const { rows, slices } = pieRows(values, labels, width, config.type === 'doughnut');
+    return (
+      <box style={{ flexDirection: 'column', paddingLeft: 1 }}>
+        {Title}
+        {rows.map((groups, ri) => (
+          <text key={ri}>{groups.map((g, gi) => (g.color ? <span key={gi} fg={g.color}>{g.text}</span> : <span key={gi}>{g.text}</span>))}</text>
+        ))}
+        {slices.map((s, i) => (
+          <text key={i}><span fg={s.color}>█</span><span fg="#888">{` ${s.label}${s.label ? ': ' : ''}${s.value} (${s.pct}%)`}</span></text>
+        ))}
+      </box>
+    );
+  }
+
+  // bar (default) + radar fall back to horizontal bars
+  const bars = barRows(values, labels, width);
+  return (
+    <box style={{ flexDirection: 'column', paddingLeft: 1 }}>
+      {Title}
+      {bars.map((b, i) => (
+        <text key={i}>
+          <span fg={b.color}>{`  ${b.bar}`}</span>
+          <span fg="#888">{` ${b.label ? `${b.label}=` : ''}${b.value}`}</span>
+        </text>
+      ))}
+    </box>
+  );
+}
+
 export function RichText({ children }) {
   const text = typeof children === 'string' ? children : String(children ?? '');
   const blocks = parseBlocks(text);
@@ -103,7 +167,7 @@ export function RichText({ children }) {
     <box style={{ flexDirection: 'column' }}>
       {blocks.map((block, i) => {
         if (block.type === 'code-block') return <CodeBlock key={i} lang={block.lang} text={block.text} />;
-        if (block.type === 'chart')      return <CodeBlock key={i} lang={block.config?.type || 'chart'} text={JSON.stringify(block.config, null, 2)} />;
+        if (block.type === 'chart')      return <ChartBlock key={i} config={block.config} />;
         return <Line key={i} text={block.text} />;
       })}
     </box>
