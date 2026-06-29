@@ -60,7 +60,7 @@ function MessageRow({ msg }) {
   switch (msg.type) {
     case 'user':
       return (
-        <box style={{ flexDirection: 'column', marginTop: 1, border: true, borderColor: '#444', paddingLeft: 1, paddingRight: 1 }}>
+        <box style={{ flexDirection: 'column', marginTop: 1, border: true, borderColor: '#444', backgroundColor: '#1e1f23', paddingLeft: 1, paddingRight: 1 }}>
           <text><span fg="#b08869">you</span></text>
           {(msg.text || ' ').split('\n').map((l, i) => <text key={i}>{l}</text>)}
         </box>
