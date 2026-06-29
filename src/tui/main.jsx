@@ -36,7 +36,15 @@ const initialModel = initialResume?.model || getSavedModel() || DEFAULT_MODEL;
 const initialMode  = initialResume?.mode  || getSavedMode()  || DEFAULT_MODE;
 
 // ── Renderer + graceful exit with session summary ───────────────────────────────
-const renderer = await createCliRenderer({ exitOnCtrlC: false });
+// If OpenTUI's renderer can't initialize (unsupported platform / terminal), exit
+// with code 87 so the Node launcher falls back to the plain readline UI.
+let renderer;
+try {
+  renderer = await createCliRenderer({ exitOnCtrlC: false });
+} catch (err) {
+  process.stderr.write(`OpenTUI renderer unavailable (${err?.message || err}); falling back.\n`);
+  process.exit(87);
+}
 
 let exited = false;
 function exitWithSummary(session) {
