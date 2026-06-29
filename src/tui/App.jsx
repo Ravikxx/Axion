@@ -9,6 +9,7 @@ import { Sidebar } from './Sidebar.jsx';
 import { RichText } from './RichText.jsx';
 import { ToolBlock } from './ToolBlock.jsx';
 import { SuggestionBox } from './Suggestions.jsx';
+import { Welcome } from './Welcome.jsx';
 
 // ── Milestone 2: real agent wired into the OpenTUI shell ────────────────────────
 // Reuses the UI-agnostic Agent class (callbacks → message list). Row layout:
@@ -87,9 +88,7 @@ export function App({ initialModel = 'lumen', initialMode = 'ask' }) {
 
   const [model, setModel] = useState(initialModel);
   const [mode, setMode]   = useState(initialMode);
-  const [messages, setMessages] = useState([
-    { type: 'info', text: 'Axion on OpenTUI — type a message and press Enter. Ctrl+C to quit.' },
-  ]);
+  const [messages, setMessages] = useState([]);
   const [streamText, setStreamText] = useState(null); // live streaming assistant text
   const [input, setInput] = useState('');
   const [busy, setBusy] = useState(false);
@@ -100,6 +99,7 @@ export function App({ initialModel = 'lumen', initialMode = 'ask' }) {
   const streamRef = useRef('');
   const flushTimer = useRef(null);
   const inputRef  = useRef('');
+  const scrollRef = useRef(null);
 
   const push = useCallback((msg) => setMessages((m) => [...m, msg]), []);
   const setInputSafe = useCallback((v) => { inputRef.current = v; setInput(v); }, []);
@@ -153,12 +153,22 @@ export function App({ initialModel = 'lumen', initialMode = 'ask' }) {
     return () => clearInterval(id);
   }, []);
 
-  // Ctrl+C exits (OpenTUI). Esc interrupts a running turn. Tab completes a slash command.
+  // Ctrl+C exits (OpenTUI). Esc interrupts a running turn. Tab completes a slash
+  // command. PageUp/Down + arrows scroll the message history (input keeps focus;
+  // mouse wheel works natively). Scrolling up disengages sticky-to-bottom.
   useKeyboard((key) => {
     if (key.name === 'escape' && busy) { try { agentRef.current?.cancel(); } catch {} return; }
     if (key.name === 'tab' && inputRef.current.startsWith('/')) {
       const completed = getTabCompletion(inputRef.current);
       if (completed) setInputSafe(completed);
+      return;
+    }
+    const sb = scrollRef.current;
+    if (sb && typeof sb.scrollBy === 'function') {
+      if (key.name === 'pageup')   { sb.scrollBy(-12); return; }
+      if (key.name === 'pagedown') { sb.scrollBy(12);  return; }
+      if (key.name === 'up')       { sb.scrollBy(-2);  return; }
+      if (key.name === 'down')     { sb.scrollBy(2);   return; }
     }
   });
 
@@ -241,7 +251,8 @@ export function App({ initialModel = 'lumen', initialMode = 'ask' }) {
   return (
     <box style={{ width, height, flexDirection: 'row' }}>
       <box style={{ flexGrow: 1, flexDirection: 'column' }}>
-        <scrollbox style={{ flexGrow: 1 }} focused stickyScroll stickyStart="bottom">
+        <scrollbox ref={scrollRef} style={{ flexGrow: 1 }} stickyScroll stickyStart="bottom">
+          <Welcome model={model} mode={mode} />
           {messages.map((msg, i) => <MessageRow key={i} msg={msg} />)}
           {streamText !== null && (
             <box style={{ flexDirection: 'column', marginTop: 1, paddingLeft: 1, paddingRight: 1 }}>

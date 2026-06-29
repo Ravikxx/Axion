@@ -22,7 +22,9 @@ export function Sidebar({
   const ctxPct = ctxWindow > 0 ? Math.min(100, Math.round((ctxUsed / ctxWindow) * 100)) : 0;
 
   return (
-    <box title="workspace" titleColor={A} style={{ width, border: true, borderColor: '#444', flexDirection: 'column', paddingLeft: 1, paddingRight: 1 }}>
+    <box style={{ width, backgroundColor: '#1a1b1f', flexDirection: 'column', paddingLeft: 2, paddingRight: 1, paddingTop: 1 }}>
+      <text><span fg={A}>✻ workspace</span></text>
+      <text> </text>
       <text><span fg={A}>model</span></text>
       <text>{`  ${model}`}</text>
 
