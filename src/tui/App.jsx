@@ -271,9 +271,13 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
   useKeyboard((key) => {
     const ch = (key.name || '').toLowerCase();
 
-    // Ctrl+Shift+C: ignored (OS paste). Ctrl+C: double-tap to quit.
+    // Ctrl+Shift+C: copy last assistant response. Ctrl+C: double-tap to quit.
     if (key.ctrl && ch === 'c') {
-      if (key.shift) return;
+      if (key.shift) {
+        const last = [...messages].reverse().find(m => m.type === 'assistant');
+        if (last?.text) { copyToClipboard(last.text); push({ type: 'info', text: '✔ copied last response.' }); }
+        return;
+      }
       const now = Date.now();
       if (now - lastCtrlCRef.current < 1000) { onExit(buildSession()); return; }
       lastCtrlCRef.current = now;
