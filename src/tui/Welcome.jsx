@@ -14,9 +14,9 @@ export function Welcome({ model = '—', mode = 'ask', cwd = process.cwd() }) {
       <ascii-font text="AXION" font="tiny" color={A} />
       <text><span fg="#888">by Axion Labs  ·  terminal AI coding agent</span></text>
       <text> </text>
-      <box style={{ flexDirection: 'row', width: 46 }}>
+      <box style={{ flexDirection: 'row', width: 64 }}>
         {/* Status */}
-        <box style={{ flexDirection: 'column', marginRight: 5 }}>
+        <box style={{ flexDirection: 'column', marginRight: 8 }}>
           <text><span fg="#888">model  </span><span fg={A}>{model}</span></text>
           <text><span fg="#888">mode   </span><span fg="#7ee787">{`${MODE_ICONS[mode] || '·'} ${modeLabel(mode)}`}</span></text>
           <text><span fg="#888">{`dir    ${dir}`}</span></text>
@@ -24,13 +24,23 @@ export function Welcome({ model = '—', mode = 'ask', cwd = process.cwd() }) {
         {/* Quick start */}
         <box style={{ flexDirection: 'column' }}>
           <text><span fg="#f0c674">Quick start</span></text>
-          <text><span>  /help</span><span fg="#888">         all commands</span></text>
-          <text><span>  /model /mode</span><span fg="#888">  switch model · mode</span></text>
-          <text><span>  /theme</span><span fg="#888">        change accent color</span></text>
-          <text><span>  /clear</span><span fg="#888">        start a new conversation</span></text>
+          <text><span>  /help</span><span fg="#888">            all commands</span></text>
+          <text><span>  /model /mode</span><span fg="#888">     switch model · mode</span></text>
+          <text><span>  /theme</span><span fg="#888">           change accent color</span></text>
+          <text><span>  /clear</span><span fg="#888">           start new conversation</span></text>
           <text><span>  PageUp/Down · wheel</span><span fg="#888">  scroll history</span></text>
-          <text><span>  /copy</span><span fg="#888">         copy last response</span></text>
-          <text><span>  /copy-block &lt;n&gt;</span><span fg="#888">  copy code block</span></text>
+          <text><span>  /copy</span><span fg="#888">            copy last response</span></text>
+          <text><span>  /copy-block &lt;n&gt;</span><span fg="#888">  copy a code block</span></text>
+        </box>
+        {/* Keys */}
+        <box style={{ flexDirection: 'column', marginLeft: 5 }}>
+          <text> </text>
+          <text><span fg="#888">Enter</span><span>  send message</span></text>
+          <text><span fg="#888">Esc</span><span>    interrupt agent</span></text>
+          <text><span fg="#888">Tab</span><span>   complete /command</span></text>
+          <text><span fg="#888">↑↓</span><span>    scroll history</span></text>
+          <text><span fg="#888">^C ×2</span><span> quit</span></text>
+          <text><span fg="#888">^⇧C</span><span>  copy response</span></text>
         </box>
       </box>
     </box>

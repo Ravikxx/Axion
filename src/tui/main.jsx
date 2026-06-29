@@ -28,10 +28,19 @@ const argv = minimist(process.argv.slice(2), {
   string: ['resume'], boolean: ['continue'], alias: { r: 'resume', c: 'continue' },
 });
 let initialResume = null;
+let sessionId = null;
 try {
-  if (argv.resume) initialResume = loadChat(argv.resume);
-  else if (argv.continue) initialResume = loadLastSession();
+  if (argv.resume) {
+    initialResume = loadChat(argv.resume);
+    sessionId = argv.resume;
+  } else if (argv.continue) {
+    initialResume = loadLastSession();
+    sessionId = initialResume?.name || null;
+  }
 } catch {}
+if (!sessionId) {
+  sessionId = `ses_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 6)}`;
+}
 
 const initialModel = initialResume?.model || getSavedModel() || DEFAULT_MODEL;
 const initialMode  = initialResume?.mode  || getSavedMode()  || DEFAULT_MODE;
@@ -51,25 +60,18 @@ let exited = false;
 function exitWithSummary(session) {
   if (exited) return;
   exited = true;
-  let sesId = null;
   const hasContent = session && Array.isArray(session.agentHistory) && session.agentHistory.length > 0;
   try {
-    if (hasContent) {
-      sesId = `ses_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 6)}`;
-      saveChat(sesId, session);
-    }
+    if (hasContent) saveChat(sessionId, session);
   } catch {}
   try { renderer.destroy?.(); } catch {}
-  // Leave the alt-screen and restore the cursor, then write the banner straight to
-  // fd 1 (writeSync bypasses OpenTUI's now-destroyed stdout wrapper, which would
-  // otherwise swallow the output).
   try { writeSync(1, '\x1b[?1049l\x1b[?25h'); } catch {}
   if (hasContent) {
     try {
       const msgCount = (session.displayMessages || []).filter((m) => m.type === 'user' || m.type === 'assistant').length;
       writeSync(1, sessionSummary({
         model: session.model, mode: session.mode, msgCount,
-        tokens: session.tokenCount || 0, cost: session.cost || 0, sesId, accent: accent(),
+        tokens: session.tokenCount || 0, cost: session.cost || 0, sesId: sessionId, accent: accent(),
       }));
     } catch {}
   }
