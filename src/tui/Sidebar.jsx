@@ -1,6 +1,8 @@
 import React from 'react';
 import { accent } from '../ui/theme.js';
 
+const fmtCtx = (n) => n >= 1_000_000 ? `${(n / 1_000_000).toFixed(1)}M` : `${(n / 1000).toFixed(0)}k`;
+
 // Right-hand workspace panel. Mirrors the data Axion already tracks:
 // model, mode, context usage, session cost, pinned files, MCP tools, todos.
 export function Sidebar({
@@ -27,7 +29,7 @@ export function Sidebar({
       <text> </text>
       <text><span fg={A}>model</span></text>
       <text>{`  ${model}`}</text>
-      <text><span fg="#888">{`  ${(ctxWindow / 1000).toFixed(0)}k context`}</span></text>
+      <text><span fg="#888">{`  ${fmtCtx(ctxWindow)} context`}</span></text>
 
       <text> </text>
       <text><span fg={A}>mode</span></text>
@@ -37,7 +39,7 @@ export function Sidebar({
         <>
           <text> </text>
           <text><span fg={A}>context</span></text>
-          <text><span fg="#888">{`  ${(ctxUsed / 1000).toFixed(1)}k / ${(ctxWindow / 1000).toFixed(0)}k · ${ctxPct}%`}</span></text>
+          <text><span fg="#888">{`  ${(ctxUsed / 1000).toFixed(1)}k / ${fmtCtx(ctxWindow)} · ${ctxPct}%`}</span></text>
         </>
       )}
 

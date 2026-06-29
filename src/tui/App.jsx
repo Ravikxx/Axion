@@ -351,13 +351,13 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
       case 'model': {
         if (!arg) {
           const ctx = getContextWindow(model);
-          push({ type: 'info', text: `current model: ${model}  ·  context: ${(ctx / 1000).toFixed(0)}k tokens` });
+          push({ type: 'info', text: `current model: ${model}  ·  context: ${ctx >= 1_000_000 ? (ctx / 1_000_000).toFixed(1) + 'M' : (ctx / 1000).toFixed(0) + 'k'} tokens` });
           return;
         }
         if (!MODELS[arg] && !arg.includes('/')) { push({ type: 'error', text: `Unknown model "${arg}". /models to list.` }); return; }
         setModel(arg); agentRef.current?.setModel(arg); try { saveModel(arg); } catch {}
         const ctx = getContextWindow(arg);
-        push({ type: 'info', text: `model → ${arg}  ·  context: ${(ctx / 1000).toFixed(0)}k tokens` });
+        push({ type: 'info', text: `model → ${arg}  ·  context: ${ctx >= 1_000_000 ? (ctx / 1_000_000).toFixed(1) + 'M' : (ctx / 1000).toFixed(0) + 'k'} tokens` });
         return;
       }
       case 'mode': {
@@ -379,7 +379,7 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
         const inTok = tokens.input || 0, outTok = tokens.output || 0;
         const ctx = getContextWindow(model);
         const cost = estimateCost(model, inTok, outTok);
-        push({ type: 'info', text: `tokens: ${tokens.total || 0}  (in ${inTok} / out ${outTok}) · context: ${(ctx / 1000).toFixed(0)}k · est. cost ${cost ? '$' + cost.toFixed(4) : '$0.00'}` });
+        push({ type: 'info', text: `tokens: ${tokens.total || 0}  (in ${inTok} / out ${outTok}) · context: ${ctx >= 1_000_000 ? (ctx / 1_000_000).toFixed(1) + 'M' : (ctx / 1000).toFixed(0) + 'k'} · est. cost ${cost ? '$' + cost.toFixed(4) : '$0.00'}` });
         return;
       }
       case 'thinking': {
@@ -769,7 +769,8 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
         if (!first) {
           const entries = Object.entries(CUSTOM_ENDPOINTS);
           if (!entries.length) { push({ type: 'info', text: 'No custom endpoints saved.\n\n/endpoint <name> <url> [model] [key] [context]\ne.g. /endpoint ollama http://localhost:11434/v1 llama3' }); return; }
-          push({ type: 'info', text: `Saved endpoints:\n${entries.map(([n, e]) => `  ${n.padEnd(16)} ${e.baseURL}  model: ${e.model}${e.context ? ' ctx: ' + (e.context / 1000).toFixed(0) + 'k' : ''}`).join('\n')}` });
+          const fmtCtx = (v) => v >= 1_000_000 ? (v / 1_000_000).toFixed(1) + 'M' : (v / 1000).toFixed(0) + 'k';
+          push({ type: 'info', text: `Saved endpoints:\n${entries.map(([n, e]) => `  ${n.padEnd(16)} ${e.baseURL}  model: ${e.model}${e.context ? ' ctx: ' + fmtCtx(e.context) : ''}`).join('\n')}` });
           return;
         }
         let epName, epURL, epModel, epKey, epCtx;
@@ -777,7 +778,8 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
         else { epName = first; epURL = second; epModel = third; epKey = fourth; epCtx = fifth; }
         if (!epURL) {
           const ep = CUSTOM_ENDPOINTS[epName];
-          push({ type: 'info', text: ep ? `${epName}: ${ep.baseURL}\n  model: ${ep.model}  key: ${ep.apiKey && ep.apiKey !== 'no-key' ? '(set)' : 'none'}${ep.context ? '  context: ' + (ep.context / 1000).toFixed(0) + 'k' : ''}` : `No endpoint "${epName}".` });
+          const fmtCtx = (v) => v >= 1_000_000 ? (v / 1_000_000).toFixed(1) + 'M' : (v / 1000).toFixed(0) + 'k';
+          push({ type: 'info', text: ep ? `${epName}: ${ep.baseURL}\n  model: ${ep.model}  key: ${ep.apiKey && ep.apiKey !== 'no-key' ? '(set)' : 'none'}${ep.context ? '  context: ' + fmtCtx(ep.context) : ''}` : `No endpoint "${epName}".` });
           return;
         }
         let context = CUSTOM_ENDPOINTS[epName]?.context || 0;
@@ -789,7 +791,7 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
         CUSTOM_ENDPOINTS[epName] = { baseURL: epURL, model: epModel || CUSTOM_ENDPOINTS[epName]?.model || epName, apiKey: epKey || CUSTOM_ENDPOINTS[epName]?.apiKey || 'no-key', context };
         saveCustomEndpoints({ ...CUSTOM_ENDPOINTS });
         setModel(epName); saveModel(epName);
-        const ctxInfo = context ? ` · context: ${(context / 1000).toFixed(0)}k` : '';
+        const ctxInfo = context ? ` · context: ${context >= 1_000_000 ? (context / 1_000_000).toFixed(1) + 'M' : (context / 1000).toFixed(0) + 'k'}` : '';
         push({ type: 'info', text: `Endpoint "${epName}" saved → ${epURL}\nSwitched to "${epName}"${ctxInfo}` });
         return;
       }
