@@ -40,7 +40,8 @@ import { analyzeScreen } from '../agent/vision.js';
 import { MCP } from '../agent/mcp.js';
 import { MCP_MARKETPLACE, CATEGORIES, searchMarketplace, getMarketplaceEntry } from '../agent/mcp-marketplace.js';
 import { DISCORD_STATE, startDiscord, stopDiscord } from '../agent/discord.js';
-import { OAUTH_PROVIDERS, connectOAuth, listOAuthTokens, revokeOAuthToken } from '../oauth/oauth.js';
+import { OAUTH_PROVIDERS } from '../oauth/providers.js';
+import { connectOAuth, listOAuthTokens, revokeOAuthToken } from '../oauth/oauth.js';
 import { parseSchedule } from '../scheduler.js';
 import { executeTool } from '../agent/tools.js';
 
@@ -300,6 +301,8 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
       if (key.name === 'down')     { sb.scrollBy(2);   return; }
     }
   });
+
+  const submitRef = useRef(null);
 
   // ── Slash commands (essential set; others report "coming soon") ─────────────────
   const runCommand = useCallback(async (raw) => {
@@ -568,11 +571,11 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
         try {
           const output = execSync(arg, { encoding: 'utf8', cwd: process.cwd(), timeout: 30000, stdio: ['ignore', 'pipe', 'pipe'] }).trim();
           push({ type: 'info', text: output || '(no output)' });
-          if (output) { submit(`Output of \`${arg}\`:\n\`\`\`\n${output.slice(0, 8000)}\n\`\`\``); }
+          if (output) { submitRef.current(`Output of \`${arg}\`:\n\`\`\`\n${output.slice(0, 8000)}\n\`\`\``); }
         } catch (err) {
           const out = ((err.stdout || '') + (err.stderr || '')).trim();
           push({ type: 'error', text: `exited ${err.status ?? '?'}: ${out || err.message}` });
-          if (out) { submit(`Command \`${arg}\` failed (exit ${err.status ?? '?'}):\n\`\`\`\n${out.slice(0, 8000)}\n\`\`\``); }
+          if (out) { submitRef.current(`Command \`${arg}\` failed (exit ${err.status ?? '?'}):\n\`\`\`\n${out.slice(0, 8000)}\n\`\`\``); }
         }
         return;
       }
@@ -585,7 +588,7 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
             ? `Create a PR for these commits. Extra context: ${arg}\n\nCommits:\n${log}\n\nChanged files:\n${diff}\n\nRespond with ONLY:\nTITLE: <title>\nBODY:\n<markdown body>`
             : `Create a PR for these commits.\n\nCommits:\n${log}\n\nChanged files:\n${diff}\n\nRespond with ONLY:\nTITLE: <title>\nBODY:\n<markdown body>`;
           push({ type: 'info', text: `Drafting PR from ${log.split('\n').length} commit(s)…` });
-          submit(prompt);
+          submitRef.current(prompt);
         } catch (err) { push({ type: 'error', text: `git error: ${err.message.split('\n')[0]}` }); }
         return;
       }
@@ -867,7 +870,7 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
           const abs = resolve(process.cwd(), arg);
           if (!existsSync(abs)) throw new Error(`File not found: ${arg}`);
           const content = readFileSync(abs, 'utf8');
-          submit(`Read the file ${arg}:\n\`\`\`\n${content.slice(0, 12000)}\n\`\`\``);
+          submitRef.current(`Read the file ${arg}:\n\`\`\`\n${content.slice(0, 12000)}\n\`\`\``);
         } catch (err) { push({ type: 'error', text: `add failed: ${err.message}` }); }
         return;
       }
@@ -1307,7 +1310,7 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
         push({ type: 'info', text: `/${c} isn't wired into the new UI yet — coming soon.` });
         return;
     }
-  }, [model, mode, tokens, messages, push, onExit, buildSession, extThinking, thinkingBudget, systemOverride, goal, computerUse, includedFiles, submit]);
+  }, [model, mode, tokens, messages, push, onExit, buildSession, extThinking, thinkingBudget, systemOverride, goal, computerUse, includedFiles]);
 
   const submit = useCallback((value) => {
     const text = (value || '').trim();
@@ -1347,6 +1350,8 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
       .catch((err) => push({ type: 'error', text: err?.message || String(err) }))
       .finally(() => setBusy(false));
   }, [busy, push, runCommand, setInputSafe]);
+
+  useEffect(() => { submitRef.current = submit; });
 
   // Question prompt (ask_question / ask_multiple_choice): resolve with the typed
   // answer, or for multiple choice the option matching the typed number.
