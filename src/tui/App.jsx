@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { useKeyboard, useTerminalDimensions } from '@opentui/react';
+import { useKeyboard, useTerminalDimensions, useRenderer } from '@opentui/react';
 import { accent, THEMES, setTheme, themeName } from '../ui/theme.js';
 import { Agent } from '../agent/agent.js';
 import { MODELS, getContextWindow, estimateCost } from '../config.js';
@@ -32,7 +32,7 @@ import { Welcome } from './Welcome.jsx';
 import { Thinking } from './Thinking.jsx';
 import { pickThinkingWord } from '../ui/thinkingWords.js';
 import { execSync, spawn } from 'child_process';
-import { existsSync, readFileSync, unlinkSync } from 'fs';
+import { existsSync, readFileSync, unlinkSync, writeSync } from 'fs';
 import { resolve, join } from 'path';
 import { homedir } from 'os';
 import { MACRO_STATE, captureScreen } from '../agent/computer.js';
@@ -121,7 +121,7 @@ function Session({
   initialModel = 'lumen', initialMode = 'ask', initialResume = null,
   onExit = () => process.exit(0),
   isActive = true,
-  onTitleChange, onNewTab, onCloseTab, onSwitchTab,
+  onTitleChange, onNewTab, onCloseTab, onSwitchTab, onBusyChange,
 }) {
   const { width, height } = useTerminalDimensions();
   const A = accent();
@@ -284,6 +284,10 @@ function Session({
     const id = setInterval(() => setThinkingElapsed(Math.floor((Date.now() - start) / 1000)), 1000);
     return () => clearInterval(id);
   }, [busy]);
+
+  // Report this tab's working/idle status up to the shell (drives the terminal
+  // title spinner + the desktop "done" ping, even for background tabs).
+  useEffect(() => { onBusyChange?.(busy); }, [busy, onBusyChange]);
 
   // Ctrl+C double-tap exits. Ctrl+Shift+C is ignored (OS paste).
   // Esc interrupts a running turn. Tab completes a slash command.
@@ -1464,6 +1468,18 @@ function Session({
     r?.(answer);
   }, [pendingQuestion, questionSel, setInputSafe]);
 
+  // Mouse: clicking an option resolves the question with that exact choice.
+  const pickOption = useCallback((i) => {
+    const q = pendingQuestion;
+    if (!q?.options?.[i]) return;
+    const r = questionResolverRef.current;
+    questionResolverRef.current = null;
+    setPendingQuestion(null);
+    setInputMode('chat');
+    setInputSafe('');
+    r?.(q.options[i]);
+  }, [pendingQuestion, setInputSafe]);
+
   const ctxWindow = getContextWindow(model) || 0;
   const ctxUsed = tokens.context || tokens.total || 0;
 
@@ -1508,14 +1524,21 @@ function Session({
             {(pendingQuestion.options || []).map((o, i) => {
               const sel = i === questionSel;
               return (
-                <text key={i}>
-                  <span fg={sel ? A : '#666'}>{sel ? ' ▸ ' : '   '}</span>
-                  <span fg={sel ? A : '#888'}>{`${i + 1}. ${o}`}</span>
-                </text>
+                <box
+                  key={i}
+                  onMouseDown={() => pickOption(i)}
+                  onMouseOver={() => setQuestionSel(i)}
+                  style={{ flexDirection: 'row' }}
+                >
+                  <text>
+                    <span fg={sel ? A : '#666'}>{sel ? ' ▸ ' : '   '}</span>
+                    <span fg={sel ? A : '#888'}>{`${i + 1}. ${o}`}</span>
+                  </text>
+                </box>
               );
             })}
             {pendingQuestion.options?.length ? (
-              <text><span fg="#666">{'   ↑/↓ select · Enter confirm · or type a number / your own answer'}</span></text>
+              <text><span fg="#666">{'   ↑/↓ or click · Enter confirm · or type a number / your own answer'}</span></text>
             ) : null}
           </box>
         )}
@@ -1557,6 +1580,7 @@ function Session({
 // so their agents keep running in the background. Only the active tab takes keys.
 
 let TAB_SEQ = 0;
+const SPIN_FRAMES = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'];
 
 function TabBar({ tabs, activeId, accentColor, onSwitchTab, onNewTab, onCloseTab }) {
   return (
@@ -1625,6 +1649,44 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
     setTabs((ts) => ts.map((x) => (x.id === id && !x.title) ? { ...x, title: t } : x));
   }, []);
 
+  // ── Terminal-title spinner + desktop "done" ping ───────────────────────────────
+  // While any tab's agent is working, the terminal/PowerShell tab title shows a
+  // spinner. When a tab finishes, we ping the desktop (OSC 9 toast + bell) and
+  // flash a 🔔 in the title. This works for background tabs too.
+  const renderer = useRenderer();
+  const busyTabsRef = useRef(new Set());
+  const spinnerRef = useRef(null);
+  const pingTimerRef = useRef(null);
+  const spinFrameRef = useRef(0);
+
+  const setTitleBar = useCallback((s) => { try { renderer?.setTerminalTitle?.(s); } catch {} }, [renderer]);
+  const stopSpinner = useCallback(() => { if (spinnerRef.current) { clearInterval(spinnerRef.current); spinnerRef.current = null; } }, []);
+  const startSpinner = useCallback(() => {
+    if (spinnerRef.current) return;
+    spinnerRef.current = setInterval(() => {
+      setTitleBar(`${SPIN_FRAMES[spinFrameRef.current++ % SPIN_FRAMES.length]} Axion — working…`);
+    }, 120);
+  }, [setTitleBar]);
+  const notifyDone = useCallback(() => {
+    // OSC 9 desktop toast (Windows Terminal / iTerm2) + terminal bell. No-op
+    // elsewhere; both are out-of-band control sequences, safe to interleave.
+    try { writeSync(1, `\x1b]9;Axion finished a task\x07\x07`); } catch {}
+    setTitleBar('🔔 Axion — done');
+    if (pingTimerRef.current) clearTimeout(pingTimerRef.current);
+    pingTimerRef.current = setTimeout(() => { if (busyTabsRef.current.size === 0) setTitleBar('Axion'); }, 5000);
+  }, [setTitleBar]);
+
+  const handleBusy = useCallback((tabId, busy) => {
+    const s = busyTabsRef.current;
+    const was = s.has(tabId);
+    if (busy) s.add(tabId); else s.delete(tabId);
+    setTabs((ts) => ts.map((t) => (t.id === tabId && t.busy !== busy) ? { ...t, busy } : t));
+    if (busy) startSpinner();
+    else if (was) { if (s.size === 0) stopSpinner(); notifyDone(); } // a tab just finished
+  }, [startSpinner, stopSpinner, notifyDone]);
+
+  useEffect(() => () => { stopSpinner(); if (pingTimerRef.current) clearTimeout(pingTimerRef.current); }, [stopSpinner]);
+
   return (
     <box style={{ width, height, flexDirection: 'column' }}>
       <TabBar tabs={tabs} activeId={activeId} accentColor={A} onSwitchTab={switchTab} onNewTab={newTab} onCloseTab={closeTab} />
@@ -1650,6 +1712,7 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
                 isActive={on}
                 onExit={onExit}
                 onTitleChange={(title) => setTitle(t.id, title)}
+                onBusyChange={(busy) => handleBusy(t.id, busy)}
                 onNewTab={newTab}
                 onCloseTab={closeTab}
                 onSwitchTab={switchTab}
