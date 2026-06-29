@@ -68,11 +68,11 @@ const THINKING_WORDS = [
   'asking the universe', 'loading…', 'buffering', 'crunching', 'questioning reality',
 ];
 
-const MODE_COLORS = { ask: 'cyan', plan: 'yellow', auto: 'greenBright', bypass: 'greenBright' };
+const MODE_COLORS = { ask: 'cyan', plan: 'yellow', auto: 'greenBright', bypass: 'greenBright', decide: 'magenta' };
 
 // Restore saved accent theme before first render
 setTheme(getSavedTheme() || 'ember');
-const CYCLE_MODES = ['ask', 'plan', 'auto']; // internal values; auto displays as 'bypass'
+const CYCLE_MODES = ['ask', 'plan', 'decide', 'auto']; // internal values; auto displays as 'bypass', decide as 'decide-for-me'
 const MAX_GOAL_ITERS = 25;
 
 const HELP_TEXT = `  Commands
@@ -81,7 +81,7 @@ const HELP_TEXT = `  Commands
   custom commands               .md files in ~/.axion/commands/ or ./.axion/commands/
                                 become /<filename> — $ARGUMENTS is replaced with args
   /model <name|id>              switch model (alias or raw ID)
-  /mode  <name>                 switch mode: ask · plan · bypass  (Ctrl+P to cycle)
+  /mode  <name>                 switch mode: ask · plan · decide-for-me · bypass  (Ctrl+P to cycle)
   /permissions [clear]          list/reset always-allowed tools (press "a" on confirms)
   /skills                       list skills — .md files that auto-inject when triggered
   /skill-delete <name>          remove a skill (alias: /skills delete <name>)
@@ -262,9 +262,9 @@ const CWD = shortCwd();
 
 // ── Welcome banner ────────────────────────────────────────────────────────────
 
-function modeLabel(mode) { return mode === 'auto' ? 'bypass' : mode; }
+function modeLabel(mode) { return mode === 'auto' ? 'bypass' : mode === 'decide' ? 'decide-for-me' : mode; }
 
-const MODE_ICONS = { ask: '?', plan: '◈', auto: '⚡', bypass: '⚡' };
+const MODE_ICONS = { ask: '?', plan: '◈', auto: '⚡', bypass: '⚡', decide: '🤖' };
 
 function WelcomeBanner({ model, mode }) {
   const modeColor   = MODE_COLORS[mode] || 'cyan';
@@ -1084,10 +1084,10 @@ triggers: <comma-separated words that should activate it, include "${skillName.t
         }
 
         case 'mode': {
-          // 'bypass' is the user-facing alias for 'auto'
-          const normalizedMode = arg === 'bypass' ? 'auto' : arg;
-          if (!['ask', 'plan', 'auto'].includes(normalizedMode)) {
-            pushStatic({ type: 'error', content: `unknown mode "${arg}" — use ask, plan, or bypass` });
+          // 'bypass' is the user-facing alias for 'auto', 'decide-for-me' for 'decide'
+          const normalizedMode = arg === 'bypass' ? 'auto' : arg === 'decide-for-me' ? 'decide' : arg;
+          if (!['ask', 'plan', 'decide', 'auto'].includes(normalizedMode)) {
+            pushStatic({ type: 'error', content: `unknown mode "${arg}" — use ask, plan, decide-for-me, or bypass` });
           } else {
             setMode(normalizedMode);
             saveMode(normalizedMode);

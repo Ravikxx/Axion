@@ -1,8 +1,8 @@
 import React from 'react';
 import { accent } from '../ui/theme.js';
 
-const MODE_ICONS = { ask: '?', plan: '◈', auto: '⚡', bypass: '⚡' };
-const modeLabel = (m) => (m === 'auto' ? 'bypass' : m);
+const MODE_ICONS = { ask: '?', plan: '◈', auto: '⚡', bypass: '⚡', decide: '🤖' };
+const modeLabel = (m) => (m === 'auto' ? 'bypass' : m === 'decide' ? 'decide-for-me' : m);
 
 export function Welcome({ model = '—', mode = 'ask', cwd = process.cwd() }) {
   const A = accent();

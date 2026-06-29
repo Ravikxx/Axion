@@ -39,7 +39,7 @@ export function ToolBlock({ name, input, output, success, pending, diff, expande
 
       {!pending && output && !showDiff ? (
         <box style={{ flexDirection: 'column', marginLeft: 2 }}>
-          {formatOutput(output, name).split('\n').map((l, i) => (
+          {formatOutput(output, name, expanded).split('\n').map((l, i) => (
             <text key={i}><span fg={success === false ? C.fail : C.gray}>{l}</span></text>
           ))}
         </box>
@@ -111,11 +111,11 @@ function formatLabel(name, input) {
   }
 }
 
-function formatOutput(output, name) {
+function formatOutput(output, name, expanded) {
   const lines = String(output).split('\n');
   const MAX = name === 'run_command' ? 20 : 12;
-  if (lines.length <= MAX) return String(output);
-  return lines.slice(0, MAX).join('\n') + `\n… ${lines.length - MAX} more lines`;
+  if (expanded || lines.length <= MAX) return String(output);
+  return lines.slice(0, MAX).join('\n') + `\n… ${lines.length - MAX} more lines  (Ctrl+R to expand)`;
 }
 
 function truncate(str, n) {

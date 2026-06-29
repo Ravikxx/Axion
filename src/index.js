@@ -245,7 +245,7 @@ const rawMode  = argv.mode  || axionrc.mode  || savedMode || DEFAULT_MODE;
 const modeArg  = rawMode === 'bypass' ? 'auto' : rawMode;
 
 if (!['ask', 'plan', 'auto'].includes(modeArg)) {
-  console.error(`Invalid mode: ${rawMode}. Must be: ask, plan, auto (or bypass)`);
+  console.error(`Invalid mode: ${rawMode}. Must be: ask, plan, decide-for-me, auto (or bypass)`);
   process.exit(1);
 }
 

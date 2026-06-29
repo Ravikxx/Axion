@@ -51,11 +51,11 @@ import { executeTool } from '../agent/tools.js';
 // NOTE (preview): tool confirms / question prompts are auto-approved for now —
 // the real prompt UI is a later milestone. Shipped `axion` stays on Ink until parity.
 
-const MODE_ICONS  = { ask: '?', plan: '◈', auto: '⚡', bypass: '⚡' };
-const MODE_COLORS = { ask: 'cyan', plan: 'yellow', auto: '#7ee787', bypass: '#7ee787' };
-const modeLabel = (m) => (m === 'auto' ? 'bypass' : m);
+const MODE_ICONS  = { ask: '?', plan: '◈', auto: '⚡', bypass: '⚡', decide: '🤖' };
+const MODE_COLORS = { ask: 'cyan', plan: 'yellow', auto: '#7ee787', bypass: '#7ee787', decide: '#c678dd' };
+const modeLabel = (m) => (m === 'auto' ? 'bypass' : m === 'decide' ? 'decide-for-me' : m);
 
-function MessageRow({ msg }) {
+function MessageRow({ msg, expanded = false }) {
   const A = accent();
   switch (msg.type) {
     case 'user':
@@ -89,6 +89,7 @@ function MessageRow({ msg }) {
             success={msg.success}
             pending={msg.pending}
             diff={msg.diff || null}
+            expanded={expanded}
           />
         </box>
       );
@@ -131,6 +132,8 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
   const [inputMode, setInputMode] = useState('chat'); // chat | confirm-tool | confirm-plan | question
   const [pendingConfirm, setPendingConfirm] = useState(null);
   const [pendingQuestion, setPendingQuestion] = useState(null);
+  const [questionSel, setQuestionSel] = useState(0); // highlighted option in a multiple-choice ask
+  const [expandedTools, setExpandedTools] = useState(() => new Set()); // message indices shown in full
   const [extThinking, setExtThinking] = useState(false);
   const [thinkingBudget, setThinkingBudget] = useState(10000);
   const [systemOverride, setSystemOverride] = useState('');
@@ -298,10 +301,34 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
       else if (ch === 'n' || key.name === 'escape') resolveConfirm(false);
       return;
     }
-    if (inputMode === 'question') return; // handled via the input's onSubmit
+    // Question prompt: ↑/↓ move the highlight, Enter/number picks (Enter is
+    // routed through the input's onSubmit → answerQuestion, which reads questionSel).
+    if (inputMode === 'question') {
+      const n = pendingQuestion?.options?.length || 0;
+      if (n > 0) {
+        if (key.name === 'up')   { setQuestionSel((s) => (s - 1 + n) % n); return; }
+        if (key.name === 'down') { setQuestionSel((s) => (s + 1) % n); return; }
+      }
+      return; // Enter handled via the input's onSubmit
+    }
 
     // Chat mode
     if (key.name === 'escape' && busy) { try { agentRef.current?.cancel(); } catch {} return; }
+    // Ctrl+R: expand/collapse the most recent tool block (full diff / full output).
+    if (key.ctrl && ch === 'r') {
+      setMessages((m) => {
+        const ri = [...m].reverse().findIndex((x) => x.type === 'tool' && !x.pending);
+        if (ri === -1) return m;
+        const idx = m.length - 1 - ri;
+        setExpandedTools((prev) => {
+          const next = new Set(prev);
+          if (next.has(idx)) next.delete(idx); else next.add(idx);
+          return next;
+        });
+        return m;
+      });
+      return;
+    }
     if (key.name === 'tab' && inputRef.current.startsWith('/')) {
       const completed = getTabCompletion(inputRef.current);
       if (completed) setInputSafe(completed);
@@ -362,8 +389,8 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
       }
       case 'mode': {
         if (!arg) { push({ type: 'info', text: `current mode: ${modeLabel(mode)}` }); return; }
-        if (!['ask', 'plan', 'auto', 'bypass'].includes(arg)) { push({ type: 'error', text: 'Mode must be ask | plan | bypass.' }); return; }
-        const norm = arg === 'bypass' ? 'auto' : arg;
+        if (!['ask', 'plan', 'auto', 'bypass', 'decide', 'decide-for-me'].includes(arg)) { push({ type: 'error', text: 'Mode must be ask | plan | bypass | decide-for-me.' }); return; }
+        const norm = arg === 'bypass' ? 'auto' : arg === 'decide-for-me' ? 'decide' : arg;
         setMode(norm); agentRef.current?.setMode(norm); try { saveMode(norm); } catch {}
         push({ type: 'info', text: `mode → ${modeLabel(norm)}` });
         return;
@@ -1372,6 +1399,7 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
     const askUser = (prompt) => new Promise((resolve) => {
       questionResolverRef.current = resolve;
       setPendingQuestion(prompt);
+      setQuestionSel(0);
       setInputMode('question');
     });
 
@@ -1396,9 +1424,10 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
     if (q?.options?.length) {
       const n = parseInt(value, 10);
       if (!isNaN(n) && n >= 1 && n <= q.options.length) answer = q.options[n - 1];
+      else if (!String(value).trim()) answer = q.options[questionSel]; // Enter on the highlight
     }
     r?.(answer);
-  }, [pendingQuestion, setInputSafe]);
+  }, [pendingQuestion, questionSel, setInputSafe]);
 
   const ctxWindow = getContextWindow(model) || 0;
   const ctxUsed = tokens.context || tokens.total || 0;
@@ -1408,7 +1437,7 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
       <box style={{ flexGrow: 1, flexDirection: 'column' }}>
         <Welcome model={model} mode={mode} />
         <scrollbox ref={scrollRef} style={{ flexGrow: 1 }} stickyScroll stickyStart="bottom">
-          {messages.map((msg, i) => <MessageRow key={i} msg={msg} />)}
+          {messages.map((msg, i) => <MessageRow key={i} msg={msg} expanded={expandedTools.has(i)} />)}
           {streamText !== null && (
             <box style={{ flexDirection: 'column', marginTop: 1, paddingLeft: 1, paddingRight: 1 }}>
               <text><span fg={A}>✻ Axion</span></text>
@@ -1441,9 +1470,18 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
         {inputMode === 'question' && pendingQuestion && (
           <box style={{ flexDirection: 'column', paddingLeft: 1 }}>
             <text><span fg="cyan">{pendingQuestion.question || 'Answer:'}</span></text>
-            {(pendingQuestion.options || []).map((o, i) => (
-              <text key={i}><span fg="#888">{`  ${i + 1}. ${o}`}</span></text>
-            ))}
+            {(pendingQuestion.options || []).map((o, i) => {
+              const sel = i === questionSel;
+              return (
+                <text key={i}>
+                  <span fg={sel ? A : '#666'}>{sel ? ' ▸ ' : '   '}</span>
+                  <span fg={sel ? A : '#888'}>{`${i + 1}. ${o}`}</span>
+                </text>
+              );
+            })}
+            {pendingQuestion.options?.length ? (
+              <text><span fg="#666">{'   ↑/↓ select · Enter confirm · or type a number / your own answer'}</span></text>
+            ) : null}
           </box>
         )}
 

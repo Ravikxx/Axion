@@ -6,7 +6,7 @@ import { getCustomCommands } from '../persist.js';
 export const COMMANDS = [
   { cmd: 'help',            desc: 'show all commands' },
   { cmd: 'model',           desc: '<name|id>  switch model' },
-  { cmd: 'mode',            desc: '<name>  ask · plan · bypass' },
+  { cmd: 'mode',            desc: '<name>  ask · plan · decide-for-me · bypass' },
   { cmd: 'theme',           desc: '[name]  switch accent color (no args = list)' },
   { cmd: 'permissions',     desc: '[clear]  list/reset always-allowed tools' },
   { cmd: 'skills',          desc: '[delete <name>]  list skills (auto-activate on triggers)' },
