@@ -226,10 +226,12 @@ class ThinkStreamFilter {
 export { ThinkStreamFilter };
 
 export class Agent {
-  constructor({ modelAlias, mode, label = 'main', onToolCall, onToolResult, onMessage, onTokens, onStreamChunk, onStreamEnd, onNotify }) {
+  constructor({ modelAlias, mode, label = 'main', todoScope = 'global', onToolCall, onToolResult, onMessage, onTokens, onStreamChunk, onStreamEnd, onNotify }) {
     this.modelAlias   = modelAlias;
     this.mode         = mode;
     this.label        = label;
+    // Scope key for the per-session TODO list (tab/chat isolation).
+    this.todoScope    = todoScope;
     this.history      = [];
     this.totalTokens  = 0;
     this.inputTokens  = 0;
@@ -506,7 +508,7 @@ CRITICAL RULES — follow these exactly:
               ? MCP.callTool(tc.name, tc.input)
               : PLUGINS.isPluginTool(tc.name)
                 ? PLUGINS.callTool(tc.name, tc.input)
-                : executeTool(tc.name, tc.input, { agentLabel: this.label, onNotify: this.onNotify, askUser })
+                : executeTool(tc.name, tc.input, { agentLabel: this.label, onNotify: this.onNotify, askUser, todoScope: this.todoScope })
           )
         );
         for (let i = 0; i < toolCalls.length; i++) {
@@ -565,7 +567,7 @@ CRITICAL RULES — follow these exactly:
           } else if (PLUGINS.isPluginTool(tc.name)) {
             result = await PLUGINS.callTool(tc.name, tc.input);
           } else {
-            result = await executeTool(tc.name, tc.input, { agentLabel: this.label, onNotify: this.onNotify, askUser });
+            result = await executeTool(tc.name, tc.input, { agentLabel: this.label, onNotify: this.onNotify, askUser, todoScope: this.todoScope });
           }
           toolResults.push({ id: tc.id, name: tc.name, ...result });
           this.onToolResult({ id: tc.id, name: tc.name, ...result });

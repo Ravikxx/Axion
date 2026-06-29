@@ -592,7 +592,7 @@ export const COMPUTER_TOOL_DEFINITIONS_OPENAI = COMPUTER_TOOL_DEFINITIONS.map((t
 
 const MACRO_RECORDABLE = new Set(['click_on', 'click_at', 'type_text', 'press_key', 'scroll', 'find_text']);
 
-export async function executeTool(name, input, { agentLabel = 'main', onNotify = () => {}, askUser = null } = {}) {
+export async function executeTool(name, input, { agentLabel = 'main', onNotify = () => {}, askUser = null, todoScope = 'global' } = {}) {
   // Log to active macro recording before executing
   if (MACRO_STATE.recording && MACRO_RECORDABLE.has(name)) {
     MACRO_STATE.steps.push({ name, input: { ...input } });
@@ -809,18 +809,18 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
 
       case 'todo_add': {
         const { addTodo } = await import('../persist.js');
-        const result = addTodo(input.text, { source: 'agent' });
+        const result = addTodo(input.text, { source: 'agent', scope: todoScope });
         const pending = result.list.filter(t => !t.done).length;
         return { success: true, output: `✔ Added: "${input.text}"  (${pending} pending, ${result.list.length} total)` };
       }
 
       case 'todo_done': {
         const { toggleTodo, getTodos } = await import('../persist.js');
-        const toggled = toggleTodo(input.id);
+        const toggled = toggleTodo(input.id, todoScope);
         if (!toggled) {
-          const all = getTodos();
+          const all = getTodos(todoScope);
           const fuzzy = all.find(t => t.text.toLowerCase().includes((input.id || '').toLowerCase()));
-          if (fuzzy) { const r = toggleTodo(fuzzy.id); return { success: true, output: `✔ Completed: "${r.text}" (matched by text, not id)` }; }
+          if (fuzzy) { const r = toggleTodo(fuzzy.id, todoScope); return { success: true, output: `✔ Completed: "${r.text}" (matched by text, not id)` }; }
           return { success: false, output: `No TODO found with id "${input.id}". Use todo_list to see ids.` };
         }
         return { success: true, output: toggled.done ? `✔ Completed: "${toggled.text}"` : `↩ Reopened: "${toggled.text}"` };
@@ -828,7 +828,7 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
 
       case 'todo_list': {
         const { getTodos } = await import('../persist.js');
-        const all = getTodos();
+        const all = getTodos(todoScope);
         if (!all.length) return { success: true, output: 'TODO list is empty.' };
         const pending = all.filter(t => !t.done);
         const done = all.filter(t => t.done);

@@ -5,7 +5,7 @@ import { Agent } from '../agent/agent.js';
 import { MODELS, getContextWindow, estimateCost } from '../config.js';
 import {
   getTodos, saveModel, saveMode, saveTheme, getAllowedTools, allowTool, autosaveSession, clearTodos,
-  getMemories, addMemory, removeMemory, addTodo, toggleTodo, removeTodo,
+  getMemories, addMemory, removeMemory, addTodo, toggleTodo, removeTodo, setTodosFor, dropTodoScope,
   listChats, loadChat, deleteChat, saveChat, exportChat,
   exportSession, importSession,
   listProfiles, saveProfile, loadProfile, deleteProfile,
@@ -126,6 +126,16 @@ function Session({
   const { width, height } = useTerminalDimensions();
   const A = accent();
 
+  // Per-session TODO scope: resumed chats key by name (stable across resumes),
+  // fresh tabs get a unique id so concurrent tabs keep separate lists.
+  const scopeRef = useRef();
+  if (scopeRef.current === undefined) {
+    scopeRef.current = initialResume?.name
+      ? `chat:${initialResume.name}`
+      : `tab:${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 6)}`;
+  }
+  const todoScope = scopeRef.current;
+
   const [model, setModel] = useState(initialModel);
   const [mode, setMode]   = useState(initialMode);
   const [messages, setMessages] = useState([]);
@@ -133,7 +143,7 @@ function Session({
   const [input, setInput] = useState('');
   const [busy, setBusy] = useState(false);
   const [tokens, setTokens] = useState({ total: 0, input: 0, output: 0, context: 0 });
-  const [todos, setTodos] = useState(getTodos);
+  const [todos, setTodos] = useState(() => getTodos(todoScope));
   const [inputMode, setInputMode] = useState('chat'); // chat | confirm-tool | confirm-plan | question
   const [pendingConfirm, setPendingConfirm] = useState(null);
   const [pendingQuestion, setPendingQuestion] = useState(null);
@@ -172,6 +182,7 @@ function Session({
     const agent = new Agent({
       modelAlias: initialModel,
       mode: initialMode,
+      todoScope,
       onTokens: (t) => setTokens(typeof t === 'object' ? t : { total: t, input: 0, output: t, context: t }),
       onStreamChunk: (chunk) => {
         streamRef.current += chunk;
@@ -214,14 +225,22 @@ function Session({
         ...(initialResume.displayMessages || []),
         { type: 'info', text: '── end of previous session — continuing from here ──' },
       ]);
+      // Restore this chat's saved todos into its scope.
+      try { setTodosFor(todoScope, initialResume.todos || []); } catch {}
+      setTodos(getTodos(todoScope));
     } else {
-      // Fresh session — start with a clean todo list (todos persist on disk).
-      try { clearTodos(); } catch {}
+      // Fresh tab — start with a clean, isolated todo list for this scope.
+      try { clearTodos(todoScope); } catch {}
       setTodos([]);
     }
 
     return () => { try { agent.cancel(); } catch {} };
   }, [initialModel, initialMode, push, flushStream]); // eslint-disable-line
+
+  // On unmount (tab closed / app exit), drop this scope's scratch todo list.
+  // Named-chat todos are already persisted inside the saved chat, so this only
+  // reclaims ephemeral per-tab lists; 'global' is left untouched by dropTodoScope.
+  useEffect(() => () => { try { dropTodoScope(todoScope); } catch {} }, [todoScope]);
 
   // Build the serializable session for autosave / resume / exit summary.
   const buildSession = useCallback(() => {
@@ -234,8 +253,9 @@ function Session({
       cost: estimateCost(model, inTok, outTok) || 0,
       agentHistory: agentRef.current?.history || [],
       displayMessages,
+      todos: getTodos(todoScope),
     };
-  }, [messages, model, mode, tokens]);
+  }, [messages, model, mode, tokens, todoScope]);
 
   // Autosave the live session 1s after it settles (powers `axion -c` + exit summary).
   const autosaveTimer = useRef(null);
@@ -250,11 +270,11 @@ function Session({
     return () => { if (autosaveTimer.current) clearTimeout(autosaveTimer.current); };
   }, [messages, model, mode, buildSession, isActive]);
 
-  // Refresh todos periodically (the agent can add them via tools).
+  // Refresh this scope's todos periodically (the agent can add them via tools).
   useEffect(() => {
-    const id = setInterval(() => setTodos(getTodos()), 2000);
+    const id = setInterval(() => setTodos(getTodos(todoScope)), 2000);
     return () => clearInterval(id);
-  }, []);
+  }, [todoScope]);
 
   // Thinking timer — counts up (seconds) while the agent is working.
   useEffect(() => {
@@ -493,7 +513,7 @@ function Session({
         const [sub, ...todoRest] = args;
         const todoText = todoRest.join(' ').trim();
         if (!sub) {
-          const all = getTodos();
+          const all = getTodos(todoScope);
           if (!all.length) { push({ type: 'info', text: 'TODO list is empty.\n  /todo add <text>   add a task\n  /todo done <id>    mark complete\n  /todo list         show all\n  /todo clear        clear completed' }); return; }
           const pending = all.filter(t => !t.done);
           const done = all.filter(t => t.done);
@@ -502,20 +522,20 @@ function Session({
         }
         if (sub === 'add') {
           if (!todoText) { push({ type: 'error', text: 'usage: /todo add <text>' }); return; }
-          addTodo(todoText); setTodos(getTodos());
+          addTodo(todoText, { scope: todoScope }); setTodos(getTodos(todoScope));
           push({ type: 'info', text: `✔ Added: "${todoText}"` });
           return;
         }
         if (sub === 'done') {
           if (!todoText) { push({ type: 'error', text: 'usage: /todo done <id>' }); return; }
-          const toggled = toggleTodo(todoText);
+          const toggled = toggleTodo(todoText, todoScope);
           if (!toggled) { push({ type: 'error', text: `No TODO found with id "${todoText}". Use /todo to see ids.` }); return; }
-          setTodos(getTodos());
+          setTodos(getTodos(todoScope));
           push({ type: 'info', text: toggled.done ? `✔ Completed: "${toggled.text}"` : `↩ Reopened: "${toggled.text}"` });
           return;
         }
         if (sub === 'list') {
-          const all = getTodos();
+          const all = getTodos(todoScope);
           if (!all.length) { push({ type: 'info', text: 'TODO list is empty.' }); return; }
           const pending = all.filter(t => !t.done);
           const done = all.filter(t => t.done);
@@ -523,8 +543,8 @@ function Session({
           return;
         }
         if (sub === 'clear') {
-          const completed = getTodos().filter(t => t.done);
-          completed.forEach(t => removeTodo(t.id)); setTodos(getTodos());
+          const completed = getTodos(todoScope).filter(t => t.done);
+          completed.forEach(t => removeTodo(t.id, todoScope)); setTodos(getTodos(todoScope));
           push({ type: 'info', text: `Cleared ${completed.length} completed tasks.` });
           return;
         }

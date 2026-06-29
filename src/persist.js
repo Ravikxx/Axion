@@ -724,51 +724,78 @@ export function searchChats(query) {
 
 const TODOS_FILE = join(DIR, 'todos.json');
 
-export function getTodos() {
+// Todos are scoped per session (tab/chat) so concurrent tabs don't share a list.
+// On-disk shape is { [scope]: TodoItem[] }. A legacy bare-array file is migrated
+// into the 'global' scope on first read.
+function readTodoMap() {
   try {
-    if (!existsSync(TODOS_FILE)) return [];
-    return JSON.parse(readFileSync(TODOS_FILE, 'utf8'));
+    if (!existsSync(TODOS_FILE)) return {};
+    const raw = JSON.parse(readFileSync(TODOS_FILE, 'utf8'));
+    if (Array.isArray(raw)) return { global: raw }; // migrate legacy flat list
+    return raw && typeof raw === 'object' ? raw : {};
   } catch (e) {
     console.error('[persist] Failed to load todos:', e?.message || e);
-    return [];
+    return {};
   }
 }
 
-function saveTodos(list) {
+function writeTodoMap(map) {
   try {
     if (!existsSync(DIR)) mkdirSync(DIR, { recursive: true });
-    writeFileSync(TODOS_FILE, JSON.stringify(list, null, 2), 'utf8');
+    writeFileSync(TODOS_FILE, JSON.stringify(map, null, 2), 'utf8');
   } catch (e) {
     console.error('[persist] Failed to save todos:', e?.message || e);
   }
 }
 
-export function addTodo(text, { source = 'user' } = {}) {
-  const list = getTodos();
+export function getTodos(scope = 'global') {
+  return readTodoMap()[scope] || [];
+}
+
+function saveTodos(list, scope = 'global') {
+  const map = readTodoMap();
+  map[scope] = list;
+  writeTodoMap(map);
+}
+
+// Replace a scope's list wholesale (used to seed a resumed chat's todos).
+export function setTodosFor(scope, list) {
+  saveTodos(Array.isArray(list) ? list : [], scope);
+}
+
+export function addTodo(text, { source = 'user', scope = 'global' } = {}) {
+  const list = getTodos(scope);
   const id = `todo_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 6)}`;
   list.push({ id, text, done: false, source, createdAt: new Date().toISOString() });
-  saveTodos(list);
+  saveTodos(list, scope);
   return { id, list };
 }
 
-export function toggleTodo(id) {
-  const list = getTodos();
+export function toggleTodo(id, scope = 'global') {
+  const list = getTodos(scope);
   const todo = list.find(t => t.id === id);
   if (!todo) return null;
   todo.done = !todo.done;
-  saveTodos(list);
+  saveTodos(list, scope);
   return todo;
 }
 
-export function removeTodo(id) {
-  const list = getTodos();
+export function removeTodo(id, scope = 'global') {
+  const list = getTodos(scope);
   const idx = list.findIndex(t => t.id === id);
   if (idx === -1) return false;
   list.splice(idx, 1);
-  saveTodos(list);
+  saveTodos(list, scope);
   return true;
 }
 
-export function clearTodos() {
-  saveTodos([]);
+export function clearTodos(scope = 'global') {
+  saveTodos([], scope);
+}
+
+// Drop a scope entirely (used when a tab closes) to avoid leaking dead lists.
+export function dropTodoScope(scope) {
+  if (!scope || scope === 'global') return;
+  const map = readTodoMap();
+  if (map[scope]) { delete map[scope]; writeTodoMap(map); }
 }
