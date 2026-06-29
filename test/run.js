@@ -7,14 +7,8 @@ import { join, resolve } from 'path';
 
 mkdirSync('dist', { recursive: true });
 
-// MIGRATION (opentui-ui): React was bumped 18→19 for OpenTUI, which breaks Ink 5
-// (ReactCurrentOwner removed in React 19). These two suites import Ink components
-// (RichText, Suggestions) being ported to OpenTUI; re-enable with fresh tests
-// against the ports. TODO: remove this skip once the ports land.
-const SKIP_DURING_MIGRATION = new Set(['suggestions.test.js']);
-
 const testFiles = readdirSync('test')
-  .filter((f) => f.endsWith('.test.js') && !SKIP_DURING_MIGRATION.has(f))
+  .filter((f) => f.endsWith('.test.js'))
   .sort()
   .map((f) => join('test', f));
 

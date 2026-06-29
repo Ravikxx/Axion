@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { getSuggestions, getTabCompletion, COMMANDS } from '../src/ui/Suggestions.jsx';
+import { getSuggestions, getTabCompletion, COMMANDS } from '../src/ui/commands.js';
 
 // ── getSuggestions ────────────────────────────────────────────────────────────
 

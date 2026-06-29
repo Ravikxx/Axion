@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useKeyboard, useTerminalDimensions } from '@opentui/react';
-import { accent } from '../ui/theme.js';
+import { accent, THEMES, setTheme, themeName } from '../ui/theme.js';
 import { Agent } from '../agent/agent.js';
-import { getContextWindow } from '../config.js';
-import { getTodos } from '../persist.js';
+import { MODELS, getContextWindow, estimateCost } from '../config.js';
+import { getTodos, saveModel, saveMode, saveTheme } from '../persist.js';
+import { COMMANDS, getTabCompletion } from '../ui/commands.js';
 import { Sidebar } from './Sidebar.jsx';
 import { RichText } from './RichText.jsx';
 import { ToolBlock } from './ToolBlock.jsx';
+import { SuggestionBox } from './Suggestions.jsx';
 
 // ── Milestone 2: real agent wired into the OpenTUI shell ────────────────────────
 // Reuses the UI-agnostic Agent class (callbacks → message list). Row layout:
@@ -83,8 +85,8 @@ export function App({ initialModel = 'lumen', initialMode = 'ask' }) {
   const { width, height } = useTerminalDimensions();
   const A = accent();
 
-  const [model] = useState(initialModel);
-  const [mode]  = useState(initialMode);
+  const [model, setModel] = useState(initialModel);
+  const [mode, setMode]   = useState(initialMode);
   const [messages, setMessages] = useState([
     { type: 'info', text: 'Axion on OpenTUI — type a message and press Enter. Ctrl+C to quit.' },
   ]);
@@ -97,8 +99,10 @@ export function App({ initialModel = 'lumen', initialMode = 'ask' }) {
   const agentRef  = useRef(null);
   const streamRef = useRef('');
   const flushTimer = useRef(null);
+  const inputRef  = useRef('');
 
   const push = useCallback((msg) => setMessages((m) => [...m, msg]), []);
+  const setInputSafe = useCallback((v) => { inputRef.current = v; setInput(v); }, []);
 
   // Throttled flush of streaming text to state.
   const flushStream = useCallback(() => {
@@ -149,15 +153,74 @@ export function App({ initialModel = 'lumen', initialMode = 'ask' }) {
     return () => clearInterval(id);
   }, []);
 
-  // Ctrl+C exits (OpenTUI). Esc interrupts a running turn.
+  // Ctrl+C exits (OpenTUI). Esc interrupts a running turn. Tab completes a slash command.
   useKeyboard((key) => {
-    if (key.name === 'escape' && busy) { try { agentRef.current?.cancel(); } catch {} }
+    if (key.name === 'escape' && busy) { try { agentRef.current?.cancel(); } catch {} return; }
+    if (key.name === 'tab' && inputRef.current.startsWith('/')) {
+      const completed = getTabCompletion(inputRef.current);
+      if (completed) setInputSafe(completed);
+    }
   });
+
+  // ── Slash commands (essential set; others report "coming soon") ─────────────────
+  const runCommand = useCallback((raw) => {
+    const [cmd, ...rest] = raw.slice(1).trim().split(/\s+/);
+    const arg = rest.join(' ').trim();
+    const c = (cmd || '').toLowerCase();
+    switch (c) {
+      case 'exit': case 'quit':
+        process.exit(0);
+        return;
+      case 'clear':
+        try { agentRef.current?.clearHistory(); } catch {}
+        setMessages([{ type: 'info', text: 'Conversation cleared.' }]);
+        setTokens({ total: 0, input: 0, output: 0, context: 0 });
+        return;
+      case 'help':
+        push({ type: 'info', text: 'Commands:\n' + COMMANDS.map((x) => `  /${x.cmd}  —  ${x.desc}`).join('\n') });
+        return;
+      case 'models':
+        push({ type: 'info', text: `Models: ${Object.keys(MODELS).join(' · ')}` });
+        return;
+      case 'model': {
+        if (!arg) { push({ type: 'info', text: `current model: ${model}` }); return; }
+        if (!MODELS[arg] && !arg.includes('/')) { push({ type: 'error', text: `Unknown model "${arg}". /models to list.` }); return; }
+        setModel(arg); agentRef.current?.setModel(arg); try { saveModel(arg); } catch {}
+        push({ type: 'info', text: `model → ${arg}` });
+        return;
+      }
+      case 'mode': {
+        if (!arg) { push({ type: 'info', text: `current mode: ${modeLabel(mode)}` }); return; }
+        if (!['ask', 'plan', 'auto', 'bypass'].includes(arg)) { push({ type: 'error', text: 'Mode must be ask | plan | bypass.' }); return; }
+        const norm = arg === 'bypass' ? 'auto' : arg;
+        setMode(norm); agentRef.current?.setMode(norm); try { saveMode(norm); } catch {}
+        push({ type: 'info', text: `mode → ${modeLabel(norm)}` });
+        return;
+      }
+      case 'theme': {
+        if (!arg) { push({ type: 'info', text: `themes: ${Object.keys(THEMES).join(' · ')}  (current: ${themeName()})` }); return; }
+        if (!setTheme(arg)) { push({ type: 'error', text: `Unknown theme "${arg}". Options: ${Object.keys(THEMES).join(', ')}` }); return; }
+        try { saveTheme(arg); } catch {}
+        push({ type: 'info', text: `theme → ${arg}` });
+        return;
+      }
+      case 'cost': {
+        const inTok = tokens.input || 0, outTok = tokens.output || 0;
+        const cost = estimateCost(model, inTok, outTok);
+        push({ type: 'info', text: `tokens: ${tokens.total || 0}  (in ${inTok} / out ${outTok}) · est. cost ${cost ? '$' + cost.toFixed(4) : '$0.00'}` });
+        return;
+      }
+      default:
+        push({ type: 'info', text: `/${c} isn't wired into the new UI yet — coming soon. (Full command set lives in the Ink version on master.)` });
+        return;
+    }
+  }, [model, mode, tokens, push]);
 
   const submit = useCallback((value) => {
     const text = (value || '').trim();
     if (!text || busy) return;
-    setInput('');
+    setInputSafe('');
+    if (text.startsWith('/')) { runCommand(text); return; }
     push({ type: 'user', text });
     setBusy(true);
 
@@ -170,7 +233,7 @@ export function App({ initialModel = 'lumen', initialMode = 'ask' }) {
       .run(text, { askConfirm, askPlanConfirm, askUser })
       .catch((err) => push({ type: 'error', text: err?.message || String(err) }))
       .finally(() => setBusy(false));
-  }, [busy, push]);
+  }, [busy, push, runCommand, setInputSafe]);
 
   const ctxWindow = getContextWindow(model) || 0;
   const ctxUsed = tokens.context || tokens.total || 0;
@@ -187,13 +250,14 @@ export function App({ initialModel = 'lumen', initialMode = 'ask' }) {
             </box>
           )}
         </scrollbox>
+        {input.startsWith('/') && <SuggestionBox inputValue={input} />}
         <box style={{ border: true, borderColor: A, height: 3, paddingLeft: 1, paddingRight: 1 }}>
           <input
             value={input}
-            onInput={setInput}
+            onInput={setInputSafe}
             onSubmit={submit}
             focused
-            placeholder={busy ? 'Axion is working…  (Esc to interrupt)' : 'ask Axion something…  (Enter to send · Ctrl+C to quit)'}
+            placeholder={busy ? 'Axion is working…  (Esc to interrupt)' : 'ask Axion something…  (Enter to send · / for commands · Ctrl+C to quit)'}
           />
         </box>
       </box>
