@@ -307,6 +307,7 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
   // ── Slash commands (essential set; others report "coming soon") ─────────────────
   const runCommand = useCallback(async (raw) => {
     const [cmd, ...rest] = raw.slice(1).trim().split(/\s+/);
+    const args = rest;
     const arg = rest.join(' ').trim();
     const c = (cmd || '').toLowerCase();
     switch (c) {
