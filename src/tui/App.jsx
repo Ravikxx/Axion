@@ -84,7 +84,7 @@ function ActionBtn({ label, color, onClick }) {
   );
 }
 
-function MessageRow({ msg, expanded = false, onToggle, index, onCopy, onEdit, onDelete }) {
+function MessageRow({ msg, expanded = false, onToggle, index, onCopy, onEdit, onDelete, onRetry }) {
   const A = accent();
   const [hovered, setHovered] = useState(false);
   switch (msg.type) {
@@ -125,6 +125,7 @@ function MessageRow({ msg, expanded = false, onToggle, index, onCopy, onEdit, on
             {hovered ? (
               <box style={{ flexDirection: 'row', marginLeft: 2 }}>
                 <ActionBtn label="⎘ copy" color={A} onClick={() => onCopy?.(index)} />
+                <ActionBtn label="↻ retry" color="#7ee787" onClick={() => onRetry?.(index)} />
               </box>
             ) : null}
           </box>
@@ -1557,19 +1558,15 @@ function Session({
     }
   }, [model, mode, tokens, messages, push, onExit, buildSession, extThinking, thinkingBudget, systemOverride, goal, computerUse, includedFiles]);
 
-  const submit = useCallback((value) => {
-    const text = (value || '').trim();
-    if (!text || busy) return;
-    setInputSafe('');
-    if (text.startsWith('/')) { runCommand(text); return; }
+  // Push a user message and run one agent turn with the interactive prompts
+  // (tool-confirm, plan-confirm, free-form questions). Shared by submit + retry.
+  const runAgentTurn = useCallback((text) => {
     push({ type: 'user', text });
     if (!lastUserTextRef.current) onTitleChange?.(text); // first prompt names the tab
     lastUserTextRef.current = text;
     setThinkingWord(pickThinkingWord());
     setBusy(true);
 
-    // Interactive confirmations: tool-confirm (y/n/a), plan-confirm (y/n),
-    // and free-form questions — each shows a prompt and awaits the user.
     const askConfirm = (tc) => {
       if (tc.name && tc.name.includes('sequentialthinking')) return Promise.resolve(true);
       const key = permissionKey(tc.name, tc.input);
@@ -1596,7 +1593,28 @@ function Session({
       .run(text, { askConfirm, askPlanConfirm, askUser })
       .catch((err) => push({ type: 'error', text: err?.message || String(err) }))
       .finally(() => setBusy(false));
-  }, [busy, push, runCommand, setInputSafe]);
+  }, [push, onTitleChange]);
+
+  const submit = useCallback((value) => {
+    const text = (value || '').trim();
+    if (!text || busy) return;
+    setInputSafe('');
+    if (text.startsWith('/')) { runCommand(text); return; }
+    runAgentTurn(text);
+  }, [busy, runCommand, setInputSafe, runAgentTurn]);
+
+  // Retry: regenerate the AI's answer to the prompt that produced this assistant
+  // message — roll back to before that user turn and re-run it.
+  const retryMessage = useCallback((i) => {
+    if (busy) return;
+    let u = -1;
+    for (let j = i; j >= 0; j--) if (messages[j]?.type === 'user') { u = j; break; }
+    if (u === -1) return;
+    const text = rollbackToUserMsg(u);
+    if (!text) return;
+    setMessages((m) => m.slice(0, u));
+    setTimeout(() => runAgentTurn(text), 0); // defer out of the click event
+  }, [busy, messages, rollbackToUserMsg, runAgentTurn]);
 
   useEffect(() => { submitRef.current = submit; });
 
@@ -1642,7 +1660,7 @@ function Session({
             <MessageRow
               key={i} msg={msg} index={i}
               expanded={expandedTools.has(i)} onToggle={() => toggleExpand(i)}
-              onCopy={copyMessage} onEdit={editMessage} onDelete={deleteFrom}
+              onCopy={copyMessage} onEdit={editMessage} onDelete={deleteFrom} onRetry={retryMessage}
             />
           ))}
           {streamText !== null && (
