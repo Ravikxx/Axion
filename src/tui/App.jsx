@@ -244,7 +244,12 @@ function Session({
   const push = useCallback((msg) => setMessages((m) => [...m, msg]), []);
   const setInputSafe = useCallback((v) => { inputRef.current = v; setInput(v); }, []);
   const toggleExpand = useCallback((i) => {
-    setExpandedTools((prev) => { const n = new Set(prev); n.has(i) ? n.delete(i) : n.add(i); return n; });
+    // Defer the re-render/relayout out of the native mouse/key event — running a
+    // big scrollbox relayout synchronously inside OpenTUI's FFI event dispatch
+    // can re-enter the native renderer and segfault Bun.
+    setTimeout(() => {
+      setExpandedTools((prev) => { const n = new Set(prev); n.has(i) ? n.delete(i) : n.add(i); return n; });
+    }, 0);
   }, []);
   const jumpToBottom = useCallback(() => {
     const el = scrollRef.current;
@@ -340,7 +345,11 @@ function Session({
     if (initialResume && Array.isArray(initialResume.agentHistory)) {
       agent.history = initialResume.agentHistory;
       agent.totalTokens = initialResume.tokenCount || 0;
-      const tok = { total: initialResume.tokenCount || 0, input: 0, output: initialResume.tokenCount || 0, context: 0 };
+      // Estimate context pressure from the loaded history (~4 chars/token); the
+      // next request replaces it with the exact input_tokens from the API.
+      const ctxEst = Math.round(JSON.stringify(agent.history || []).length / 4);
+      agent.contextTokens = ctxEst;
+      const tok = { total: initialResume.tokenCount || 0, input: 0, output: initialResume.tokenCount || 0, context: ctxEst };
       setTokens(tok);
       const when = initialResume.savedAt ? new Date(initialResume.savedAt).toLocaleString() : 'earlier';
       setMessages([
@@ -1621,7 +1630,7 @@ function Session({
   }, []);
 
   const ctxWindow = getContextWindow(model) || 0;
-  const ctxUsed = tokens.context || tokens.total || 0;
+  const ctxUsed = tokens.context || 0; // real context-window pressure, not cumulative billed tokens
 
   return (
     <box style={{ flexGrow: 1, flexDirection: 'row' }}>
@@ -1652,7 +1661,7 @@ function Session({
         )}
         {/* Thinking indicator */}
         {busy && inputMode === 'chat' && (
-          <Thinking word={thinkingWord} elapsed={thinkingElapsed} tokens={tokens.total || 0} />
+          <Thinking word={thinkingWord} elapsed={thinkingElapsed} tokens={tokens.context || 0} />
         )}
 
         {/* Confirmation / question prompts */}

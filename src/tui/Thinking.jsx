@@ -34,7 +34,7 @@ export function Thinking({ word = 'thinking', elapsed = 0, tokens = 0 }) {
         <span fg="#7ee787">{FRAMES[frame]} </span>
         <span fg="#7ee787">{word}…</span>
         <span fg="#888">{`   ${fmtElapsed(elapsed)}`}</span>
-        <span fg="#888">{`  ·  ${fmtTokens(tokens)} tokens`}</span>
+        <span fg="#888">{`  ·  ${fmtTokens(tokens)} ctx`}</span>
         <span fg="#666">{'  ·  Esc to stop'}</span>
       </text>
     </box>
