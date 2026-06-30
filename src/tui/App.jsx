@@ -2,14 +2,14 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useKeyboard, useTerminalDimensions, useRenderer } from '@opentui/react';
 import { accent, THEMES, setTheme, themeName } from '../ui/theme.js';
 import { Agent } from '../agent/agent.js';
-import { MODELS, getContextWindow, estimateCost } from '../config.js';
+import { MODELS, getContextWindow, estimateCost, API_KEYS } from '../config.js';
 import {
   getTodos, saveModel, saveMode, saveTheme, getAllowedTools, allowTool, autosaveSession, autosaveWorkspace, clearTodos,
   getMemories, addMemory, removeMemory, addTodo, toggleTodo, removeTodo, setTodosFor, dropTodoScope,
   listChats, loadChat, deleteChat, saveChat, exportChat,
   exportSession, importSession,
   listProfiles, saveProfile, loadProfile, deleteProfile,
-  saveApiKey, saveCustomEndpoints, getAxionKey, saveAxionKey,
+  saveApiKey, saveCustomEndpoints, getAxionKey, saveAxionKey, getSavedApiKeys,
   saveAdviserModel, saveVisionModel, saveImageModel,
   getSkills, saveSkill, deleteSkill,
   undoLastBackup, listCheckpoints, rewindCheckpoints,
@@ -72,6 +72,18 @@ function expandMentions(text) {
   }
   return blocks.length ? `${blocks.join('\n\n')}\n\n${text}` : text;
 }
+
+// Shown at most once per launch (and only when no key is configured).
+let onboardingDone = false;
+
+// First-run welcome: one smart text question (key type is detected on submit).
+const ONBOARDING_FORM = {
+  questions: [{
+    question: 'Welcome to Axion 👋  The free Lumen tier works right now. To use Claude or your own model, paste an API key (Anthropic sk-ant-…, OpenAI sk-…, or an Axion key). Leave blank to skip.',
+    type: 'text',
+    placeholder: 'paste an API key, or press Enter to skip',
+  }],
+};
 
 // Normalize the various ask_* tool payloads into a single QuestionMenu "form".
 function normalizeQuestionSpec(spec) {
@@ -403,6 +415,17 @@ function Session({
   // Named-chat todos are already persisted inside the saved chat, so this only
   // reclaims ephemeral per-tab lists; 'global' is left untouched by dropTodoScope.
   useEffect(() => () => { try { dropTodoScope(todoScope); } catch {} }, [todoScope]);
+
+  // First-run onboarding: once per launch, on a fresh session with no key set.
+  useEffect(() => {
+    if (onboardingDone || initialResume || !isActive) return;
+    onboardingDone = true;
+    const hasKey = getAxionKey() || Object.values(getSavedApiKeys()).some(Boolean) || Object.values(API_KEYS).some(Boolean);
+    if (hasKey) return;
+    questionSpecRef.current = { type: 'onboarding' };
+    setPendingForm(ONBOARDING_FORM);
+    setInputMode('question');
+  }, []); // eslint-disable-line
 
   // Build the serializable session for autosave / resume / exit summary.
   const buildSession = useCallback(() => {
@@ -1681,8 +1704,30 @@ function Session({
   // QuestionMenu finished — map the per-question answers back to what each tool
   // expects: bool for confirm, a readable Q→A block for a multi-question form,
   // a single string (multi-select joined by ', ') otherwise.
+  // Save whatever key the user pasted during onboarding (type detected by prefix).
+  const finishOnboarding = useCallback((key) => {
+    const k = (key || '').trim();
+    if (!k) { push({ type: 'info', text: 'You\'re on the free Lumen tier. Add a key anytime with /api or /axion-key.' }); return; }
+    if (k.startsWith('sk-ant-')) {
+      saveApiKey('anthropic', k); API_KEYS.anthropic = k;
+      setModel('claude'); agentRef.current?.setModel('claude'); try { saveModel('claude'); } catch {}
+      push({ type: 'info', text: '✔ Anthropic key saved — switched to Claude.' });
+    } else if (k.startsWith('sk-')) {
+      saveApiKey('openai', k); API_KEYS.openai = k;
+      push({ type: 'info', text: '✔ OpenAI key saved. Use /model to pick a GPT model.' });
+    } else {
+      saveAxionKey(k);
+      push({ type: 'info', text: '✔ Axion key saved.' });
+    }
+  }, [push]);
+
   const completeQuestion = useCallback((answers) => {
     const spec = questionSpecRef.current;
+    if (spec?.type === 'onboarding') {
+      setPendingForm(null); setInputMode('chat');
+      finishOnboarding(Array.isArray(answers[0]) ? answers[0][0] : answers[0]);
+      return;
+    }
     const r = questionResolverRef.current;
     questionResolverRef.current = null;
     setPendingForm(null);
@@ -1700,6 +1745,7 @@ function Session({
   }, []);
 
   const cancelQuestion = useCallback(() => {
+    if (questionSpecRef.current?.type === 'onboarding') { setPendingForm(null); setInputMode('chat'); return; }
     const r = questionResolverRef.current;
     questionResolverRef.current = null;
     const wasConfirm = questionSpecRef.current?.type === 'confirm';
