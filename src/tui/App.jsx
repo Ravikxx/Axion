@@ -78,11 +78,21 @@ const modeLabel = (m) => (m === 'auto' ? 'bypass' : m === 'decide' ? 'decide-for
 
 function MessageRow({ msg, expanded = false, onToggle }) {
   const A = accent();
+  const [hovered, setHovered] = useState(false);
   switch (msg.type) {
     case 'user':
       return (
-        <box style={{ flexDirection: 'column', marginTop: 1, border: true, borderColor: '#444', backgroundColor: '#1e1f23', paddingLeft: 1, paddingRight: 1 }}>
-          <text><span fg="#b08869">you</span></text>
+        <box
+          onMouseOver={() => setHovered(true)}
+          onMouseOut={() => setHovered(false)}
+          style={{
+            flexDirection: 'column', marginTop: 1, border: true,
+            borderColor: hovered ? A : '#444',
+            backgroundColor: hovered ? '#26282e' : '#1e1f23',
+            paddingLeft: 1, paddingRight: 1,
+          }}
+        >
+          <text><span fg="#b08869">you</span>{hovered ? <span fg="#666">{'   ·  hover'}</span> : null}</text>
           {(msg.text || ' ').split('\n').map((l, i) => <text key={i}>{l}</text>)}
         </box>
       );
