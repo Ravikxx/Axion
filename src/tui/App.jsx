@@ -244,7 +244,7 @@ function MessageRow({ msg, expanded = false, onToggle, index, onCopy, onEdit, on
 function Session({
   initialModel = 'lumen', initialMode = 'ask', initialResume = null,
   onExit = () => process.exit(0),
-  isActive = true,
+  isActive = true, initialPrompt = null,
   onTitleChange, onNewTab, onCloseTab, onSwitchTab, onBusyChange, onSnapshot,
 }) {
   const { width, height } = useTerminalDimensions();
@@ -1720,6 +1720,13 @@ function Session({
 
   useEffect(() => { submitRef.current = submit; });
 
+  // CLI initial prompt (`axion "do this"`): auto-send once on a fresh session.
+  useEffect(() => {
+    if (!initialPrompt || initialResume) return;
+    const t = setTimeout(() => submitRef.current?.(initialPrompt), 80);
+    return () => clearTimeout(t);
+  }, []); // eslint-disable-line
+
   // QuestionMenu finished — map the per-question answers back to what each tool
   // expects: bool for confirm, a readable Q→A block for a multi-question form,
   // a single string (multi-select joined by ', ') otherwise.
@@ -1910,7 +1917,7 @@ function TabBar({ tabs, activeId, accentColor, onSwitchTab, onNewTab, onCloseTab
   );
 }
 
-export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume = null, initialTabs = null, onExit = () => process.exit(0) }) {
+export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume = null, initialTabs = null, initialPrompt = null, onExit = () => process.exit(0) }) {
   const { width, height } = useTerminalDimensions();
   const A = accent();
   // Build the opening tab set: a restored multi-tab workspace, or a single tab.
@@ -1918,7 +1925,7 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
   if (!initialTabState.current) {
     initialTabState.current = (initialTabs && initialTabs.length)
       ? initialTabs.map((t) => ({ id: ++TAB_SEQ, model: t.model || initialModel, mode: t.mode || initialMode, resume: t, title: t.title || t.name || null, busy: false }))
-      : [{ id: ++TAB_SEQ, model: initialModel, mode: initialMode, resume: initialResume, title: initialResume?.name || null, busy: false }];
+      : [{ id: ++TAB_SEQ, model: initialModel, mode: initialMode, resume: initialResume, title: initialResume?.name || null, busy: false, initialPrompt }];
   }
   const [tabs, setTabs] = useState(initialTabState.current);
   const [activeId, setActiveId] = useState(initialTabState.current[0].id);
@@ -2050,6 +2057,7 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
                 isActive={on}
                 onExit={onExit}
                 onTitleChange={(title) => setTitle(t.id, title)}
+                initialPrompt={t.initialPrompt}
                 onBusyChange={(busy) => handleBusy(t.id, busy)}
                 onSnapshot={(snap, active) => handleSnapshot(t.id, snap, active)}
                 onNewTab={newTab}

@@ -101,8 +101,11 @@ fetchEndpointContextWindows();
 
 // ── Resume: -r/--resume <name> a saved chat, or -c/--continue the last session ──
 const argv = minimist(process.argv.slice(2), {
-  string: ['resume'], boolean: ['continue'], alias: { r: 'resume', c: 'continue' },
+  string: ['resume', 'model', 'mode'], boolean: ['continue'],
+  alias: { r: 'resume', c: 'continue', m: 'model', M: 'mode' },
 });
+const initialPrompt = (argv._ || []).join(' ').trim() || null;
+const cliMode = argv.mode ? (argv.mode === 'bypass' ? 'auto' : argv.mode === 'decide-for-me' ? 'decide' : argv.mode) : null;
 let resumeName = null;
 let initialResume = null;
 let initialTabs = null;
@@ -136,8 +139,8 @@ if (initialResume?.cwd && initialResume.cwd !== process.cwd()) {
 }
 const sessionId = resumeName || `ses_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 6)}`;
 
-const initialModel = initialResume?.model || getSavedModel() || DEFAULT_MODEL;
-const initialMode  = initialResume?.mode  || getSavedMode()  || DEFAULT_MODE;
+const initialModel = argv.model || initialResume?.model || getSavedModel() || DEFAULT_MODEL;
+const initialMode  = cliMode    || initialResume?.mode  || getSavedMode()  || DEFAULT_MODE;
 
 // ── Renderer + graceful exit with session summary ───────────────────────────────
 // If OpenTUI's renderer can't initialize (unsupported platform / terminal), exit
@@ -178,6 +181,7 @@ createRoot(renderer).render(
     initialMode={initialMode}
     initialResume={initialResume}
     initialTabs={initialTabs}
+    initialPrompt={initialPrompt}
     onExit={exitWithSummary}
   />
 );

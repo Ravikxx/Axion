@@ -14,6 +14,46 @@ const here = dirname(fileURLToPath(import.meta.url));
 const main = join(here, 'main.jsx');
 const fallback = join(here, 'fallback.js');
 const args = process.argv.slice(2);
+const has = (...flags) => args.some((a) => flags.includes(a));
+
+// ── Early-exit flags (handled here in Node, no Bun/renderer needed) ─────────────
+if (has('-v', '--version')) {
+  try {
+    const pkg = require('../../package.json');
+    console.log(pkg.version || '0.0.0');
+  } catch { console.log('unknown'); }
+  process.exit(0);
+}
+if (has('-h', '--help')) {
+  console.log(`
+Usage: axion [options] [prompt]
+
+  prompt              Send a message on startup
+
+Options:
+  -m, --model <name>  Model alias (claude, fable, gpt, gemini, lumen, …)
+  -M, --mode <name>   Mode: ask | plan | bypass | decide-for-me
+  -c, --continue      Resume the most recent session / workspace
+  -r, --resume [name] Resume a saved session (no name → interactive picker)
+      --doctor        Check dependencies, API keys, and environment
+      --update        Pull latest from GitHub and rebuild
+  -v, --version       Print version and exit
+  -h, --help          Show this help
+
+Pipe mode:
+  echo "refactor this" | axion          Read input from stdin
+  cat file.js | axion -M bypass         Pipe file content as prompt
+`.trim());
+  process.exit(0);
+}
+if (has('--doctor')) {
+  try { const { runDoctor } = await import('../doctor.js'); await runDoctor(); } catch (e) { console.error(e?.message || e); }
+  process.exit(0);
+}
+if (has('--update')) {
+  try { const { runUpdate } = await import('../update.js'); await runUpdate(); } catch (e) { console.error(e?.message || e); }
+  process.exit(0);
+}
 
 // Locate the Bun binary from the `bun` dependency; null if not present for this platform.
 function resolveBun() {
