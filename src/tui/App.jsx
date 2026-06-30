@@ -76,7 +76,15 @@ const MODE_ICONS  = { ask: '?', plan: '◈', auto: '⚡', bypass: '⚡', decide:
 const MODE_COLORS = { ask: 'cyan', plan: 'yellow', auto: '#7ee787', bypass: '#7ee787', decide: '#c678dd' };
 const modeLabel = (m) => (m === 'auto' ? 'bypass' : m === 'decide' ? 'decide-for-me' : m);
 
-function MessageRow({ msg, expanded = false, onToggle }) {
+function ActionBtn({ label, color, onClick }) {
+  return (
+    <box onMouseDown={() => onClick?.()} style={{ paddingLeft: 1, paddingRight: 1 }}>
+      <text><span fg={color}>{label}</span></text>
+    </box>
+  );
+}
+
+function MessageRow({ msg, expanded = false, onToggle, index, onCopy, onEdit, onDelete }) {
   const A = accent();
   const [hovered, setHovered] = useState(false);
   switch (msg.type) {
@@ -92,7 +100,16 @@ function MessageRow({ msg, expanded = false, onToggle }) {
             paddingLeft: 1, paddingRight: 1,
           }}
         >
-          <text><span fg="#b08869">you</span>{hovered ? <span fg="#666">{'   ·  hover'}</span> : null}</text>
+          <box style={{ flexDirection: 'row' }}>
+            <text><span fg="#b08869">you</span></text>
+            {hovered ? (
+              <box style={{ flexDirection: 'row', marginLeft: 2 }}>
+                <ActionBtn label="⎘ copy" color={A} onClick={() => onCopy?.(index)} />
+                <ActionBtn label="✎ edit" color="#7ee787" onClick={() => onEdit?.(index)} />
+                <ActionBtn label="✕ delete" color="#f85149" onClick={() => onDelete?.(index)} />
+              </box>
+            ) : null}
+          </box>
           {(msg.text || ' ').split('\n').map((l, i) => <text key={i}>{l}</text>)}
         </box>
       );
@@ -223,6 +240,44 @@ function Session({
     try { el.scrollTo(el.scrollHeight); } catch { try { el.scrollBy(el.scrollHeight || 9999); } catch {} }
     setAtBottom(true);
   }, []);
+
+  // ── Per-message actions (hover bar on your own messages) ──────────────────────
+  const copyMessage = useCallback((i) => {
+    const t = messages[i]?.text || '';
+    if (t) { copyToClipboard(t); push({ type: 'info', text: '✔ copied message to clipboard.' }); }
+  }, [messages, push]);
+
+  // Roll the agent history back to just before the user turn shown at display
+  // index `i` (the k-th user message ↔ the k-th real user turn in history; skips
+  // tool-result 'user' messages). Returns that message's text.
+  const rollbackToUserMsg = useCallback((i) => {
+    let k = 0;
+    for (let j = 0; j <= i; j++) if (messages[j]?.type === 'user') k++;
+    const h = agentRef.current?.history || [];
+    let count = 0, cut = h.length;
+    for (let j = 0; j < h.length; j++) {
+      const m = h[j];
+      const isTurn = m.role === 'user' && (typeof m.content === 'string' || (Array.isArray(m.content) && m.content.some((c) => c.type === 'text')));
+      if (isTurn) { count++; if (count === k) { cut = j; break; } }
+    }
+    if (agentRef.current) agentRef.current.history = h.slice(0, cut);
+    return messages[i]?.text || '';
+  }, [messages]);
+
+  const editMessage = useCallback((i) => {
+    if (busy) return;
+    const t = rollbackToUserMsg(i);
+    setMessages((m) => m.slice(0, i));
+    setInputSafe(t);
+  }, [busy, rollbackToUserMsg, setInputSafe]);
+
+  const deleteFrom = useCallback((i) => {
+    if (busy) return;
+    const removed = messages.length - i;
+    rollbackToUserMsg(i);
+    setMessages((m) => m.slice(0, i));
+    push({ type: 'info', text: `Removed this message and ${removed - 1} after it.` });
+  }, [busy, messages, rollbackToUserMsg, push]);
 
   // Throttled flush of streaming text to state.
   const flushStream = useCallback(() => {
@@ -1558,7 +1613,13 @@ function Session({
       <box style={{ flexGrow: 1, flexDirection: 'column' }}>
         <Welcome model={model} mode={mode} />
         <scrollbox ref={scrollRef} style={{ flexGrow: 1, flexShrink: 1, minHeight: 0 }} stickyScroll stickyStart="bottom">
-          {messages.map((msg, i) => <MessageRow key={i} msg={msg} expanded={expandedTools.has(i)} onToggle={() => toggleExpand(i)} />)}
+          {messages.map((msg, i) => (
+            <MessageRow
+              key={i} msg={msg} index={i}
+              expanded={expandedTools.has(i)} onToggle={() => toggleExpand(i)}
+              onCopy={copyMessage} onEdit={editMessage} onDelete={deleteFrom}
+            />
+          ))}
           {streamText !== null && (
             <box style={{ flexDirection: 'column', marginTop: 1, paddingLeft: 1, paddingRight: 1 }}>
               <text><span fg={A}>✻ Axion</span></text>
