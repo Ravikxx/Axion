@@ -91,7 +91,7 @@ export function ToolBlock({ name, input, output, success, pending, diff, expande
   );
 }
 
-function DiffView({ diff, expanded }) {
+export function DiffView({ diff, expanded }) {
   let lines = expanded ? diff : collapseDiff(diff, 2);
   let truncated = 0;
   if (lines.length > MAX_EXPAND) { truncated = lines.length - MAX_EXPAND; lines = lines.slice(0, MAX_EXPAND); }

@@ -26,11 +26,11 @@ import { permissionKey, confirmLabel } from '../ui/toolPrompts.js';
 import { copyToClipboard } from '../utils/clipboard.js';
 import { Sidebar } from './Sidebar.jsx';
 import { RichText } from './RichText.jsx';
-import { ToolBlock } from './ToolBlock.jsx';
+import { ToolBlock, DiffView } from './ToolBlock.jsx';
 import { SuggestionBox } from './Suggestions.jsx';
 import { FilePicker } from './FilePicker.jsx';
 import { listProjectFiles, fuzzyFilter } from '../utils/fileList.js';
-import { diffStats } from '../utils/diff.js';
+import { diffStats, diffLines } from '../utils/diff.js';
 import { Welcome } from './Welcome.jsx';
 import { Thinking } from './Thinking.jsx';
 import { QuestionMenu } from './QuestionMenu.jsx';
@@ -71,6 +71,25 @@ function expandMentions(text) {
     } catch {}
   }
   return blocks.length ? `${blocks.join('\n\n')}\n\n${text}` : text;
+}
+
+// Compute the diff a file-editing tool *would* produce, without applying it —
+// so the confirm prompt can show the change for accept/reject review.
+function previewDiff(tc) {
+  const { name, input } = tc || {};
+  if (!input?.path) return null;
+  try {
+    const abs = resolve(process.cwd(), input.path);
+    const old = existsSync(abs) ? readFileSync(abs, 'utf8') : '';
+    if (name === 'write_file')  return diffLines(old, input.content || '');
+    if (name === 'append_file') return diffLines(old, old + (input.content || ''));
+    if (name === 'delete_file') return diffLines(old, '');
+    if (name === 'patch_file' && input.find != null) {
+      const next = input.all ? old.split(input.find).join(input.replace ?? '') : old.replace(input.find, input.replace ?? '');
+      return diffLines(old, next);
+    }
+  } catch {}
+  return null;
 }
 
 // Shown at most once per launch (and only when no key is configured).
@@ -1656,7 +1675,7 @@ function Session({
       if (getAllowedTools().includes(key)) return Promise.resolve(true);
       return new Promise((resolve) => {
         pendingAllowKeyRef.current = key;
-        setPendingConfirm({ name: tc.name, label: confirmLabel(tc.name, tc.input) });
+        setPendingConfirm({ name: tc.name, label: confirmLabel(tc.name, tc.input), diff: previewDiff(tc) });
         setInputMode('confirm-tool');
         confirmResolverRef.current = resolve;
       });
@@ -1790,17 +1809,25 @@ function Session({
         )}
 
         {/* Confirmation / question prompts */}
-        {inputMode === 'confirm-tool' && pendingConfirm && (
-          <box style={{ paddingLeft: 1 }}>
-            <text>
-              <span fg="#f0c674">? </span>
-              <span>run </span>
-              <span fg="cyan">{pendingConfirm.name}</span>
-              {pendingConfirm.label ? <span fg="#888">{`  ${pendingConfirm.label}`}</span> : null}
-              <span fg="#888">{'   (y allow · a always · n deny)'}</span>
-            </text>
-          </box>
-        )}
+        {inputMode === 'confirm-tool' && pendingConfirm && (() => {
+          const d = pendingConfirm.diff;
+          const hasDiff = d && d.length > 0;
+          const s = hasDiff ? diffStats(d) : null;
+          const verb = hasDiff ? 'apply' : 'run';
+          return (
+            <box style={{ flexShrink: 0, flexDirection: 'column', paddingLeft: 1, paddingRight: 1, ...(hasDiff ? { backgroundColor: '#1a1b1f', border: true, borderColor: '#f0c674' } : {}) }}>
+              <text>
+                <span fg="#f0c674">? </span>
+                <span>{`${verb} `}</span>
+                <span fg="cyan">{pendingConfirm.name}</span>
+                {pendingConfirm.label ? <span fg="#888">{`  ${pendingConfirm.label}`}</span> : null}
+                {s ? <span>{s.added ? <span fg="#7ee787">{`  +${s.added}`}</span> : null}{s.removed ? <span fg="#f85149">{`  -${s.removed}`}</span> : null}</span> : null}
+              </text>
+              {hasDiff ? <DiffView diff={d} /> : null}
+              <text><span fg="#888">{hasDiff ? '   y accept · a always allow · n reject' : '   y allow · a always · n deny'}</span></text>
+            </box>
+          );
+        })()}
         {inputMode === 'confirm-plan' && (
           <box style={{ paddingLeft: 1 }}>
             <text><span fg="#f0c674">? </span><span>execute this plan? </span><span fg="#888">(y / n)</span></text>
