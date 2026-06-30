@@ -462,6 +462,34 @@ export function clearLastSession() {
   try { if (existsSync(LAST_SESSION_FILE)) unlinkSync(LAST_SESSION_FILE); } catch {}
 }
 
+// ── Workspace: every open tab, autosaved continuously ──────────────────────────
+// Lets `axion -c` reopen the whole multi-tab workspace, and protects background
+// tabs from being lost on a crash (which never reaches the exit handler).
+const WORKSPACE_FILE = join(DIR, 'workspace.json');
+
+export function autosaveWorkspace(tabs) {
+  try {
+    const list = (tabs || [])
+      .filter((t) => t && Array.isArray(t.agentHistory) && t.agentHistory.length > 0)
+      .map((t, i) => ({ ...serializeChat(t.name || `tab_${i + 1}`, t), title: t.title || null }));
+    if (!list.length) return; // never clobber a recovery file with an empty workspace
+    if (!existsSync(DIR)) mkdirSync(DIR, { recursive: true });
+    writeFileSync(WORKSPACE_FILE, JSON.stringify({ savedAt: new Date().toISOString(), tabs: list }, null, 2), 'utf8');
+  } catch {}
+}
+
+export function loadWorkspace() {
+  try {
+    if (!existsSync(WORKSPACE_FILE)) return null;
+    const ws = JSON.parse(readFileSync(WORKSPACE_FILE, 'utf8'));
+    return ws && Array.isArray(ws.tabs) && ws.tabs.length ? ws : null;
+  } catch { return null; }
+}
+
+export function clearWorkspace() {
+  try { if (existsSync(WORKSPACE_FILE)) unlinkSync(WORKSPACE_FILE); } catch {}
+}
+
 export function loadChat(name) {
   const file = join(CHATS_DIR, `${name}.json`);
   if (!existsSync(file)) return null;

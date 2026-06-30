@@ -4,7 +4,7 @@ import { accent, THEMES, setTheme, themeName } from '../ui/theme.js';
 import { Agent } from '../agent/agent.js';
 import { MODELS, getContextWindow, estimateCost } from '../config.js';
 import {
-  getTodos, saveModel, saveMode, saveTheme, getAllowedTools, allowTool, autosaveSession, clearTodos,
+  getTodos, saveModel, saveMode, saveTheme, getAllowedTools, allowTool, autosaveSession, autosaveWorkspace, clearTodos,
   getMemories, addMemory, removeMemory, addTodo, toggleTodo, removeTodo, setTodosFor, dropTodoScope,
   listChats, loadChat, deleteChat, saveChat, exportChat,
   exportSession, importSession,
@@ -192,7 +192,7 @@ function Session({
   initialModel = 'lumen', initialMode = 'ask', initialResume = null,
   onExit = () => process.exit(0),
   isActive = true,
-  onTitleChange, onNewTab, onCloseTab, onSwitchTab, onBusyChange,
+  onTitleChange, onNewTab, onCloseTab, onSwitchTab, onBusyChange, onSnapshot,
 }) {
   const { width, height } = useTerminalDimensions();
   const A = accent();
@@ -389,18 +389,19 @@ function Session({
     };
   }, [messages, model, mode, tokens, todoScope]);
 
-  // Autosave the live session 1s after it settles (powers `axion -c` + exit summary).
+  // Report this tab's session snapshot up to the shell 1s after it settles. The
+  // shell persists the active tab to the "last session" slot (for `axion -c`) and
+  // all tabs to the workspace file (so background tabs survive a crash/exit).
   const autosaveTimer = useRef(null);
   useEffect(() => {
-    if (!isActive) return; // only the foreground tab owns the "last session" file
     const hist = agentRef.current?.history;
     if (!hist || hist.length === 0) return;
     if (autosaveTimer.current) clearTimeout(autosaveTimer.current);
     autosaveTimer.current = setTimeout(() => {
-      try { autosaveSession(buildSession()); } catch {}
+      try { onSnapshot?.(buildSession(), isActive); } catch {}
     }, 1000);
     return () => { if (autosaveTimer.current) clearTimeout(autosaveTimer.current); };
-  }, [messages, model, mode, buildSession, isActive]);
+  }, [messages, model, mode, buildSession, isActive, onSnapshot]);
 
   // Refresh this scope's todos periodically (the agent can add them via tools).
   useEffect(() => {
@@ -1754,14 +1755,38 @@ function TabBar({ tabs, activeId, accentColor, onSwitchTab, onNewTab, onCloseTab
   );
 }
 
-export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume = null, onExit = () => process.exit(0) }) {
+export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume = null, initialTabs = null, onExit = () => process.exit(0) }) {
   const { width, height } = useTerminalDimensions();
   const A = accent();
-  const firstId = useRef(++TAB_SEQ).current;
-  const [tabs, setTabs] = useState(() => [
-    { id: firstId, model: initialModel, mode: initialMode, resume: initialResume, title: initialResume?.name || null },
-  ]);
-  const [activeId, setActiveId] = useState(firstId);
+  // Build the opening tab set: a restored multi-tab workspace, or a single tab.
+  const initialTabState = useRef(null);
+  if (!initialTabState.current) {
+    initialTabState.current = (initialTabs && initialTabs.length)
+      ? initialTabs.map((t) => ({ id: ++TAB_SEQ, model: t.model || initialModel, mode: t.mode || initialMode, resume: t, title: t.title || t.name || null, busy: false }))
+      : [{ id: ++TAB_SEQ, model: initialModel, mode: initialMode, resume: initialResume, title: initialResume?.name || null, busy: false }];
+  }
+  const [tabs, setTabs] = useState(initialTabState.current);
+  const [activeId, setActiveId] = useState(initialTabState.current[0].id);
+
+  // Keep a live ref to tabs + each tab's latest snapshot for workspace autosave.
+  const tabsRef = useRef(tabs); tabsRef.current = tabs;
+  const snapshotsRef = useRef(new Map());
+  const wsTimerRef = useRef(null);
+  const persistWorkspace = useCallback(() => {
+    if (wsTimerRef.current) clearTimeout(wsTimerRef.current);
+    wsTimerRef.current = setTimeout(() => {
+      const list = tabsRef.current.map((t) => {
+        const s = snapshotsRef.current.get(t.id);
+        return s ? { ...s, title: t.title, name: `tab_${t.id}` } : null;
+      }).filter(Boolean);
+      try { autosaveWorkspace(list); } catch {}
+    }, 800);
+  }, []);
+  const handleSnapshot = useCallback((tabId, snap, active) => {
+    snapshotsRef.current.set(tabId, snap);
+    if (active) { try { autosaveSession(snap); } catch {} }
+    persistWorkspace();
+  }, [persistWorkspace]);
 
   const newTab = useCallback(() => {
     const id = ++TAB_SEQ;
@@ -1831,6 +1856,7 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
   // the last tab exits. Clears the removed tab's busy state so the spinner stops.
   const removeTab = useCallback((id, session) => {
     busyTabsRef.current.delete(id);
+    snapshotsRef.current.delete(id);
     if (busyTabsRef.current.size === 0) stopSpinner();
     setTabs((ts) => {
       if (ts.length <= 1) { onExit(session); return ts; }
@@ -1840,7 +1866,8 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
       setActiveId((cur) => (cur === id ? (next[Math.max(0, idx - 1)] || next[0]).id : cur));
       return next;
     });
-  }, [onExit, stopSpinner]);
+    persistWorkspace();
+  }, [onExit, stopSpinner, persistWorkspace]);
   const closeTab = useCallback((session) => removeTab(activeId, session), [removeTab, activeId]);
 
   return (
@@ -1869,6 +1896,7 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
                 onExit={onExit}
                 onTitleChange={(title) => setTitle(t.id, title)}
                 onBusyChange={(busy) => handleBusy(t.id, busy)}
+                onSnapshot={(snap, active) => handleSnapshot(t.id, snap, active)}
                 onNewTab={newTab}
                 onCloseTab={closeTab}
                 onSwitchTab={switchTab}

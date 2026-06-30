@@ -7,7 +7,7 @@ import minimist from 'minimist';
 import { App } from './App.jsx';
 import {
   getSavedModel, getSavedMode, getSavedApiKeys, getSavedCustomEndpoints,
-  loadChat, loadLastSession, saveChat, listChats,
+  loadChat, loadLastSession, saveChat, listChats, loadWorkspace,
 } from '../persist.js';
 import { API_KEYS, CUSTOM_ENDPOINTS, DEFAULT_MODEL, DEFAULT_MODE, fetchOpenRouterContextWindows, fetchEndpointContextWindows } from '../config.js';
 import { accent } from '../ui/theme.js';
@@ -105,6 +105,7 @@ const argv = minimist(process.argv.slice(2), {
 });
 let resumeName = null;
 let initialResume = null;
+let initialTabs = null;
 
 // Detect bare -r/--resume (no argument) by checking raw args
 const rawArgs = process.argv.slice(2);
@@ -118,7 +119,14 @@ if (hasBareResume && (resumeVal === true || resumeVal === '' || typeof resumeVal
   resumeName = resumeVal;
   initialResume = loadChat(resumeName);
 } else if (argv.continue) {
-  initialResume = loadLastSession();
+  // Restore the whole workspace (all tabs) if there is one; else the last session.
+  const ws = loadWorkspace();
+  if (ws && ws.tabs.length) {
+    initialTabs = ws.tabs;
+    initialResume = ws.tabs[0];
+  } else {
+    initialResume = loadLastSession();
+  }
   resumeName = initialResume?.name || null;
 }
 
@@ -169,6 +177,7 @@ createRoot(renderer).render(
     initialModel={initialModel}
     initialMode={initialMode}
     initialResume={initialResume}
+    initialTabs={initialTabs}
     onExit={exitWithSummary}
   />
 );
