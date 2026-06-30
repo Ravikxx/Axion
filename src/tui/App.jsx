@@ -115,8 +115,19 @@ function MessageRow({ msg, expanded = false, onToggle, index, onCopy, onEdit, on
       );
     case 'assistant':
       return (
-        <box style={{ flexDirection: 'column', marginTop: 1, paddingLeft: 1, paddingRight: 1 }}>
-          <text><span fg={A}>✻ Axion</span></text>
+        <box
+          onMouseOver={() => setHovered(true)}
+          onMouseOut={() => setHovered(false)}
+          style={{ flexDirection: 'column', marginTop: 1, paddingLeft: 1, paddingRight: 1 }}
+        >
+          <box style={{ flexDirection: 'row' }}>
+            <text><span fg={A}>✻ Axion</span></text>
+            {hovered ? (
+              <box style={{ flexDirection: 'row', marginLeft: 2 }}>
+                <ActionBtn label="⎘ copy" color={A} onClick={() => onCopy?.(index)} />
+              </box>
+            ) : null}
+          </box>
           <RichText>{msg.text || ' '}</RichText>
         </box>
       );

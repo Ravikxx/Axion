@@ -67,7 +67,9 @@ export function ToolBlock({ name, input, output, success, pending, diff, expande
 }
 
 function DiffView({ diff, expanded }) {
-  const lines = expanded ? diff : collapseDiff(diff, 2);
+  let lines = expanded ? diff : collapseDiff(diff, 2);
+  let truncated = 0;
+  if (lines.length > MAX_EXPAND) { truncated = lines.length - MAX_EXPAND; lines = lines.slice(0, MAX_EXPAND); }
   const W = 4;
   return (
     <box style={{ flexDirection: 'column', marginLeft: 2 }}>
@@ -86,6 +88,7 @@ function DiffView({ diff, expanded }) {
           </text>
         );
       })}
+      {truncated > 0 ? <text><span fg={C.gray}>{`… ${truncated} more diff lines (too long to show in full)`}</span></text> : null}
     </box>
   );
 }
@@ -129,11 +132,19 @@ function formatLabel(name, input) {
   }
 }
 
+// Even when expanded, cap the rendered lines — rendering thousands of <text>
+// nodes at once can segfault OpenTUI's native renderer under Bun.
+const MAX_EXPAND = 300;
+
 function formatOutput(output, name, expanded) {
   const lines = String(output).split('\n');
-  const MAX = name === 'run_command' ? 20 : 12;
-  if (expanded || lines.length <= MAX) return String(output);
-  return lines.slice(0, MAX).join('\n') + `\n… ${lines.length - MAX} more lines  (Ctrl+R to expand)`;
+  const MAX = expanded ? MAX_EXPAND : (name === 'run_command' ? 20 : 12);
+  if (lines.length <= MAX) return String(output);
+  const more = lines.length - MAX;
+  const note = expanded
+    ? `\n… ${more} more lines (too long to show in full — read the file/range directly)`
+    : `\n… ${more} more lines  (Ctrl+R to expand)`;
+  return lines.slice(0, MAX).join('\n') + note;
 }
 
 function truncate(str, n) {
