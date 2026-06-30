@@ -28,12 +28,14 @@ import { Sidebar } from './Sidebar.jsx';
 import { RichText } from './RichText.jsx';
 import { ToolBlock } from './ToolBlock.jsx';
 import { SuggestionBox } from './Suggestions.jsx';
+import { FilePicker } from './FilePicker.jsx';
+import { listProjectFiles, fuzzyFilter } from '../utils/fileList.js';
 import { Welcome } from './Welcome.jsx';
 import { Thinking } from './Thinking.jsx';
 import { QuestionMenu } from './QuestionMenu.jsx';
 import { pickThinkingWord } from '../ui/thinkingWords.js';
 import { execSync, spawn } from 'child_process';
-import { existsSync, readFileSync, unlinkSync, writeSync } from 'fs';
+import { existsSync, readFileSync, unlinkSync, writeSync, statSync } from 'fs';
 import { resolve, join } from 'path';
 import { homedir } from 'os';
 import { MACRO_STATE, captureScreen } from '../agent/computer.js';
@@ -51,6 +53,24 @@ import { executeTool } from '../agent/tools.js';
 // scrollable message pane + framed input on the left, workspace sidebar on right.
 // NOTE (preview): tool confirms / question prompts are auto-approved for now —
 // the real prompt UI is a later milestone. Shipped `axion` stays on Ink until parity.
+
+// Expand `@path` file mentions: prepend each referenced file's contents to the
+// text sent to the agent (the displayed message keeps the bare @mention).
+function expandMentions(text) {
+  const mentions = [...new Set([...text.matchAll(/@([^\s@]+)/g)].map((m) => m[1]))];
+  if (!mentions.length) return text;
+  const blocks = [];
+  for (const p of mentions) {
+    try {
+      const abs = resolve(process.cwd(), p);
+      if (existsSync(abs) && statSync(abs).isFile()) {
+        const content = readFileSync(abs, 'utf8').slice(0, 100_000);
+        blocks.push(`Contents of \`${p}\`:\n\`\`\`\n${content}\n\`\`\``);
+      }
+    } catch {}
+  }
+  return blocks.length ? `${blocks.join('\n\n')}\n\n${text}` : text;
+}
 
 // Normalize the various ask_* tool payloads into a single QuestionMenu "form".
 function normalizeQuestionSpec(spec) {
@@ -225,6 +245,9 @@ function Session({
   const [thinkingBudget, setThinkingBudget] = useState(10000);
   const [systemOverride, setSystemOverride] = useState('');
   const [includedFiles, setIncludedFiles] = useState([]);
+  const [fileList, setFileList] = useState([]);     // project files, scanned lazily on first '@'
+  const [fileSel, setFileSel] = useState(0);        // highlighted file in the @-picker
+  const fileScannedRef = useRef(false);
   const [goal, setGoal] = useState(null);
   const [computerUse, setComputerUse] = useState(false);
   const [thinkingWord, setThinkingWord] = useState('thinking');
@@ -453,6 +476,28 @@ function Session({
     r?.(val);
   }, []);
 
+  // ── @file mentions ────────────────────────────────────────────────────────────
+  // Active when the input ends with `@<query>` (in chat mode, not a slash command).
+  const atMatch = (inputMode === 'chat' && !input.startsWith('/')) ? input.match(/(^|\s)@([^\s@]*)$/) : null;
+  const fileQuery = atMatch ? atMatch[2] : null;
+  const fileActive = fileQuery !== null;
+  const fileMatches = fileActive ? fuzzyFilter(fileList, fileQuery, 8) : [];
+
+  // Scan the project the first time '@' is used; reset highlight as the query changes.
+  useEffect(() => {
+    if (fileActive && !fileScannedRef.current) { fileScannedRef.current = true; try { setFileList(listProjectFiles()); } catch {} }
+  }, [fileActive]);
+  useEffect(() => { setFileSel(0); }, [fileQuery]);
+
+  // Replace the trailing `@<query>` with the chosen path, then re-focus the input.
+  const insertFile = useCallback((f) => {
+    if (!f) return;
+    const replaced = inputRef.current.replace(/(^|\s)@([^\s@]*)$/, (m, pre) => `${pre}@${f} `);
+    setInputSafe(replaced);
+    setFileSel(0);
+    setTimeout(() => { try { inputElRef.current?.focus?.(); } catch {} }, 0);
+  }, [setInputSafe]);
+
   useKeyboard((key) => {
     if (!isActive) return; // only the foreground tab handles keys
     const ch = (key.name || '').toLowerCase();
@@ -492,6 +537,14 @@ function Session({
     }
     // Question prompt is fully handled by <QuestionMenu> (its own useKeyboard).
     if (inputMode === 'question') return;
+
+    // @file picker: ↑/↓ move, Tab inserts (Enter inserts via the input's onSubmit).
+    if (fileActive && fileMatches.length) {
+      const n = fileMatches.length;
+      if (key.name === 'up')   { setFileSel((s) => (s - 1 + n) % n); return; }
+      if (key.name === 'down') { setFileSel((s) => (s + 1) % n); return; }
+      if (key.name === 'tab')  { insertFile(fileMatches[Math.min(fileSel, n - 1)]); return; }
+    }
 
     // Chat mode
     if (key.name === 'escape' && busy) { try { agentRef.current?.cancel(); } catch {} return; }
@@ -1560,10 +1613,11 @@ function Session({
 
   // Push a user message and run one agent turn with the interactive prompts
   // (tool-confirm, plan-confirm, free-form questions). Shared by submit + retry.
-  const runAgentTurn = useCallback((text) => {
-    push({ type: 'user', text });
-    if (!lastUserTextRef.current) onTitleChange?.(text); // first prompt names the tab
-    lastUserTextRef.current = text;
+  const runAgentTurn = useCallback((displayText, agentText) => {
+    const text = agentText ?? displayText;
+    push({ type: 'user', text: displayText });
+    if (!lastUserTextRef.current) onTitleChange?.(displayText); // first prompt names the tab
+    lastUserTextRef.current = displayText;
     setThinkingWord(pickThinkingWord());
     setBusy(true);
 
@@ -1600,7 +1654,7 @@ function Session({
     if (!text || busy) return;
     setInputSafe('');
     if (text.startsWith('/')) { runCommand(text); return; }
-    runAgentTurn(text);
+    runAgentTurn(text, expandMentions(text)); // @file mentions → file contents for the agent
   }, [busy, runCommand, setInputSafe, runAgentTurn]);
 
   // Retry: regenerate the AI's answer to the prompt that produced this assistant
@@ -1705,13 +1759,16 @@ function Session({
         )}
 
         {inputMode === 'chat' && input.startsWith('/') && <SuggestionBox inputValue={input} />}
+        {fileActive && fileMatches.length ? (
+          <FilePicker matches={fileMatches} selected={Math.min(fileSel, fileMatches.length - 1)} onPick={(i) => insertFile(fileMatches[i])} onHover={setFileSel} accentColor={A} />
+        ) : null}
         {inputMode !== 'question' && (
         <box style={{ flexShrink: 0, border: true, borderColor: inputMode === 'chat' ? A : '#f0c674', height: 3, paddingLeft: 1, paddingRight: 1 }}>
           <input
             ref={inputElRef}
             value={input}
             onInput={setInputSafe}
-            onSubmit={submit}
+            onSubmit={fileActive && fileMatches.length ? () => insertFile(fileMatches[Math.min(fileSel, fileMatches.length - 1)]) : submit}
             focused={isActive}
             placeholder={
               inputMode === 'confirm-tool' || inputMode === 'confirm-plan' ? 'press y / n …' :
