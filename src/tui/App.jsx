@@ -181,6 +181,7 @@ function Session({
   const [pendingConfirm, setPendingConfirm] = useState(null);
   const [pendingForm, setPendingForm] = useState(null); // normalized question form for the menu
   const [expandedTools, setExpandedTools] = useState(() => new Set()); // message indices shown in full
+  const [atBottom, setAtBottom] = useState(true); // scrollback pinned to bottom?
   const [extThinking, setExtThinking] = useState(false);
   const [thinkingBudget, setThinkingBudget] = useState(10000);
   const [systemOverride, setSystemOverride] = useState('');
@@ -205,6 +206,12 @@ function Session({
   const setInputSafe = useCallback((v) => { inputRef.current = v; setInput(v); }, []);
   const toggleExpand = useCallback((i) => {
     setExpandedTools((prev) => { const n = new Set(prev); n.has(i) ? n.delete(i) : n.add(i); return n; });
+  }, []);
+  const jumpToBottom = useCallback(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    try { el.scrollTo(el.scrollHeight); } catch { try { el.scrollBy(el.scrollHeight || 9999); } catch {} }
+    setAtBottom(true);
   }, []);
 
   // Throttled flush of streaming text to state.
@@ -311,6 +318,23 @@ function Session({
     const id = setInterval(() => setTodos(getTodos(todoScope)), 2000);
     return () => clearInterval(id);
   }, [todoScope]);
+
+  // Poll scroll position to show/hide the "jump to bottom" button. No scroll
+  // event in OpenTUI, so we sample scrollTop vs. the max scroll a few times/sec.
+  useEffect(() => {
+    if (!isActive) return;
+    const id = setInterval(() => {
+      const el = scrollRef.current;
+      if (!el) return;
+      try {
+        const vh = el.viewport?.height ?? el.height ?? 0;
+        const max = (el.scrollHeight || 0) - vh;
+        const bottom = max <= 1 || el.scrollTop >= max - 1;
+        setAtBottom((prev) => (prev === bottom ? prev : bottom));
+      } catch {}
+    }, 200);
+    return () => clearInterval(id);
+  }, [isActive]);
 
   // Thinking timer — counts up (seconds) while the agent is working.
   useEffect(() => {
@@ -1531,6 +1555,14 @@ function Session({
             </box>
           )}
         </scrollbox>
+        {/* Jump-to-bottom pill — only while scrolled up */}
+        {!atBottom && inputMode === 'chat' && (
+          <box style={{ flexShrink: 0, flexDirection: 'row', justifyContent: 'center' }}>
+            <box onMouseDown={jumpToBottom} style={{ backgroundColor: '#2a2c33', paddingLeft: 1, paddingRight: 1 }}>
+              <text><span fg={A}>{'↓ jump to bottom'}</span></text>
+            </box>
+          </box>
+        )}
         {/* Thinking indicator */}
         {busy && inputMode === 'chat' && (
           <Thinking word={thinkingWord} elapsed={thinkingElapsed} tokens={tokens.total || 0} />
