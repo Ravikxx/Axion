@@ -400,13 +400,14 @@ const CHATS_DIR = join(DIR, 'chats');
 
 // Shared serializer — strips tool-call internals and diff arrays so saved
 // sessions stay small and JSON-safe. Used by both /save and session autosave.
-function serializeChat(name, { model, mode, tokenCount, agentHistory, displayMessages, tab = 'code' }) {
+function serializeChat(name, { model, mode, tokenCount, agentHistory, displayMessages, tab = 'code', cwd } = {}) {
   return {
     name,
     savedAt: new Date().toISOString(),
     model,
     mode,
     tab,
+    cwd: cwd || process.cwd(),
     tokenCount,
     // Strip tool-call internals from history — keep only user/assistant text
     agentHistory: agentHistory
@@ -459,6 +460,34 @@ export function loadLastSession() {
 
 export function clearLastSession() {
   try { if (existsSync(LAST_SESSION_FILE)) unlinkSync(LAST_SESSION_FILE); } catch {}
+}
+
+// ── Workspace: every open tab, autosaved continuously ──────────────────────────
+// Lets `axion -c` reopen the whole multi-tab workspace, and protects background
+// tabs from being lost on a crash (which never reaches the exit handler).
+const WORKSPACE_FILE = join(DIR, 'workspace.json');
+
+export function autosaveWorkspace(tabs) {
+  try {
+    const list = (tabs || [])
+      .filter((t) => t && Array.isArray(t.agentHistory) && t.agentHistory.length > 0)
+      .map((t, i) => ({ ...serializeChat(t.name || `tab_${i + 1}`, t), title: t.title || null }));
+    if (!list.length) return; // never clobber a recovery file with an empty workspace
+    if (!existsSync(DIR)) mkdirSync(DIR, { recursive: true });
+    writeFileSync(WORKSPACE_FILE, JSON.stringify({ savedAt: new Date().toISOString(), tabs: list }, null, 2), 'utf8');
+  } catch {}
+}
+
+export function loadWorkspace() {
+  try {
+    if (!existsSync(WORKSPACE_FILE)) return null;
+    const ws = JSON.parse(readFileSync(WORKSPACE_FILE, 'utf8'));
+    return ws && Array.isArray(ws.tabs) && ws.tabs.length ? ws : null;
+  } catch { return null; }
+}
+
+export function clearWorkspace() {
+  try { if (existsSync(WORKSPACE_FILE)) unlinkSync(WORKSPACE_FILE); } catch {}
 }
 
 export function loadChat(name) {
@@ -631,7 +660,7 @@ export function listChats() {
     .map((f) => {
       try {
         const d = JSON.parse(readFileSync(join(CHATS_DIR, f), 'utf8'));
-        return { name: d.name, model: d.model, savedAt: d.savedAt, messages: d.displayMessages?.length ?? 0, tab: d.tab || 'code' };
+        return { name: d.name, model: d.model, savedAt: d.savedAt, messages: d.displayMessages?.length ?? 0, tab: d.tab || 'code', cwd: d.cwd || '' };
       } catch {
         return { name: f.slice(0, -5) };
       }
@@ -723,47 +752,78 @@ export function searchChats(query) {
 
 const TODOS_FILE = join(DIR, 'todos.json');
 
-export function getTodos() {
+// Todos are scoped per session (tab/chat) so concurrent tabs don't share a list.
+// On-disk shape is { [scope]: TodoItem[] }. A legacy bare-array file is migrated
+// into the 'global' scope on first read.
+function readTodoMap() {
   try {
-    if (!existsSync(TODOS_FILE)) return [];
-    return JSON.parse(readFileSync(TODOS_FILE, 'utf8'));
+    if (!existsSync(TODOS_FILE)) return {};
+    const raw = JSON.parse(readFileSync(TODOS_FILE, 'utf8'));
+    if (Array.isArray(raw)) return { global: raw }; // migrate legacy flat list
+    return raw && typeof raw === 'object' ? raw : {};
   } catch (e) {
     console.error('[persist] Failed to load todos:', e?.message || e);
-    return [];
+    return {};
   }
 }
 
-function saveTodos(list) {
+function writeTodoMap(map) {
   try {
     if (!existsSync(DIR)) mkdirSync(DIR, { recursive: true });
-    writeFileSync(TODOS_FILE, JSON.stringify(list, null, 2), 'utf8');
+    writeFileSync(TODOS_FILE, JSON.stringify(map, null, 2), 'utf8');
   } catch (e) {
     console.error('[persist] Failed to save todos:', e?.message || e);
   }
 }
 
-export function addTodo(text, { source = 'user' } = {}) {
-  const list = getTodos();
+export function getTodos(scope = 'global') {
+  return readTodoMap()[scope] || [];
+}
+
+function saveTodos(list, scope = 'global') {
+  const map = readTodoMap();
+  map[scope] = list;
+  writeTodoMap(map);
+}
+
+// Replace a scope's list wholesale (used to seed a resumed chat's todos).
+export function setTodosFor(scope, list) {
+  saveTodos(Array.isArray(list) ? list : [], scope);
+}
+
+export function addTodo(text, { source = 'user', scope = 'global' } = {}) {
+  const list = getTodos(scope);
   const id = `todo_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 6)}`;
   list.push({ id, text, done: false, source, createdAt: new Date().toISOString() });
-  saveTodos(list);
+  saveTodos(list, scope);
   return { id, list };
 }
 
-export function toggleTodo(id) {
-  const list = getTodos();
+export function toggleTodo(id, scope = 'global') {
+  const list = getTodos(scope);
   const todo = list.find(t => t.id === id);
   if (!todo) return null;
   todo.done = !todo.done;
-  saveTodos(list);
+  saveTodos(list, scope);
   return todo;
 }
 
-export function removeTodo(id) {
-  const list = getTodos();
+export function removeTodo(id, scope = 'global') {
+  const list = getTodos(scope);
   const idx = list.findIndex(t => t.id === id);
   if (idx === -1) return false;
   list.splice(idx, 1);
-  saveTodos(list);
+  saveTodos(list, scope);
   return true;
+}
+
+export function clearTodos(scope = 'global') {
+  saveTodos([], scope);
+}
+
+// Drop a scope entirely (used when a tab closes) to avoid leaking dead lists.
+export function dropTodoScope(scope) {
+  if (!scope || scope === 'global') return;
+  const map = readTodoMap();
+  if (map[scope]) { delete map[scope]; writeTodoMap(map); }
 }

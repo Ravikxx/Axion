@@ -38,6 +38,7 @@ function checkApiKeys() {
     { key: 'groq',       label: 'Groq' },
     { key: 'mistral',    label: 'Mistral' },
     { key: 'openrouter', label: 'OpenRouter' },
+    { key: 'opencode',   label: 'Opencode' },
     { key: 'tavily',     label: 'Tavily (web search)' },
   ];
   let anySet = false;

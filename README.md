@@ -6,13 +6,15 @@
 
 **Axion** is an open-source AI coding agent ecosystem built by Axion Labs. It includes a terminal CLI, a Chrome extension, a web UI, and an IDE integration — all sharing the same models, tools, and memory.
 
+> **v2.0** — the terminal UI is a modern, cell-rendered TUI (powered by [OpenTUI](https://github.com/sst/opentui)) with **tabs**, mouse support, inline diff review, `@file` mentions, terminal charts, and crash-safe session restore. It runs from source (no build step).
+
 ---
 
 ## What's included
 
 | Component | Description |
 |---|---|
-| **CLI** | Terminal agent — reads, writes, and runs code in any directory |
+| **CLI** | Modern terminal agent — tabs, mouse, inline diff review, `@file` mentions, charts; reads, writes, and runs code in any directory |
 | **Chrome Extension** | Browser sidebar — ask questions about pages, automate the web |
 | **Web UI** | Browser-based chat with the same agent (`/web`) |
 | **MCP Servers** | Connect Blender, GitHub, Notion, Slack, and more |
@@ -28,7 +30,7 @@
 ## Installation
 
 ### Requirements
-- [Node.js](https://nodejs.org) v18+
+- [Node.js](https://nodejs.org) v18+ (the [Bun](https://bun.sh) runtime the TUI needs is installed automatically as a dependency — no separate install)
 
 ### Install (recommended)
 
@@ -45,7 +47,7 @@ That's it. No cloning, no building — just install and run.
 git clone https://github.com/AxionLabsAI/axion.git
 cd axion
 npm install
-npm install -g .
+npm link        # the CLI runs from source — no build step
 ```
 
 ### First run
@@ -306,7 +308,7 @@ Switch with `/mode auto` or press `Ctrl+P` to cycle.
 /exit                              quit
 ```
 
-**Keyboard shortcuts:** `Ctrl+R` search history · `Ctrl+P` cycle mode · `Ctrl+T` toggle thinking · `Ctrl+O` expand tool output · `\` + `Enter` newline
+**Keyboard & mouse:** `Ctrl+T` new tab · `Ctrl+W` close tab · `Shift+Tab` switch tab · `Ctrl+1-9` jump to tab · `Ctrl+R` expand/collapse the last tool or thinking block · `Esc` interrupt · `Ctrl+C` twice to quit. Type `@` to mention a file; click tabs, the `+`/`✕` buttons, suggestions, and the copy/edit/retry actions that appear when you hover a message.
 
 ---
 
@@ -483,10 +485,11 @@ Deploy from `axion-vision-space/app.py` to a HuggingFace Space.
 
 ## Rebuilding after edits
 
+The CLI runs from source (no build step) — just relink:
+
 ```bash
-node build.js       # rebuild CLI
-node build-web.js   # rebuild web UI
-npm install -g .    # update global install
+npm link            # (or: npm install -g .) — update the global `axion`
+node build-web.js   # rebuild the web UI only if you changed it
 ```
 
 ---
@@ -497,7 +500,11 @@ npm install -g .    # update global install
 axion/
 ├── src/
 │   ├── agent/          # Agent loop, tools, models, MCP, OAuth APIs
-│   ├── ui/             # CLI React/Ink UI
+│   ├── tui/            # Terminal UI (OpenTUI + React, runs under Bun)
+│   │   ├── launch.js   # `axion` entry — re-execs the TUI under Bun, or falls back
+│   │   ├── main.jsx    # OpenTUI entry / arg parsing
+│   │   └── fallback.js # plain-Node readline UI (no Bun / piped input)
+│   ├── ui/             # Framework-free shared logic (markdown, charts, commands…)
 │   ├── web/            # Web server + React web client
 │   ├── oauth/          # OAuth providers + flow
 │   ├── config.js       # Models, providers, API keys
@@ -508,8 +515,7 @@ axion/
 ├── collect-worker/     # Cloudflare Worker for remote session collection
 ├── extension/          # Chrome extension
 ├── mcp-servers/        # Bundled MCP servers (Blender)
-├── build.js            # CLI bundler
-└── build-web.js        # Web UI bundler
+└── build-web.js        # Web UI bundler (the CLI itself needs no build)
 ```
 
 ---

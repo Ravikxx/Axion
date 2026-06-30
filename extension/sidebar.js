@@ -20,6 +20,7 @@ const PROVIDERS = {
   groq:       { baseURL: 'https://api.groq.com/openai/v1',                   format: 'openai' },
   mistral:    { baseURL: 'https://api.mistral.ai/v1',                        format: 'openai' },
   openrouter: { baseURL: 'https://openrouter.ai/api/v1',                     format: 'openai' },
+  opencode:   { baseURL: 'https://api.opencode.ai/v1',                       format: 'openai' },
   veil:       { baseURL: 'https://axionlabsai-minecraftai-chat.hf.space/v1', format: 'openai', noKey: true },
 };
 
@@ -34,6 +35,7 @@ const BUILTIN_MODELS = [
   { id: 'gemini-2.5-pro',            label: 'Gemini 2.5 Pro',    provider: 'gemini' },
   { id: 'llama-3.3-70b-versatile',   label: 'Llama 3.3 70B (Groq)', provider: 'groq' },
   { id: 'mistral-large-latest',      label: 'Mistral Large',     provider: 'mistral' },
+  { id: 'opencode',                  label: 'Opencode',          provider: 'opencode' },
 ];
 
 // ── State ─────────────────────────────────────────────────────────────────────

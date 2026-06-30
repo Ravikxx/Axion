@@ -1,10 +1,10 @@
 {
   "name": "axion-cli",
-  "version": "1.0.5",
+  "version": "2.0.0",
   "description": "Axion by Axion Labs — terminal AI coding agent",
   "type": "module",
   "bin": {
-    "axion": "dist/axion.js",
+    "axion": "src/tui/launch.js",
     "axion-serve": "src/web/server.js",
     "axion-blender": "mcp-servers/blender/index.js",
     "axion-discord": "src/discord-daemon.js",
@@ -12,12 +12,9 @@
     "axion-bridge": "src/bridge.js"
   },
   "scripts": {
-    "build": "node build.js",
     "build-web": "node build-web.js",
-    "prepack": "node build.js",
-    "start": "node dist/axion.js",
-    "dev": "node build.js && node dist/axion.js",
-    "watch": "node watch.js",
+    "start": "node src/tui/launch.js",
+    "tui": "bun src/tui/main.jsx",
     "web": "node build-web.js && node src/web/server.js",
     "test": "node test/run.js",
     "sft-gen": "node tools/sft-gen.js",
@@ -25,18 +22,20 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",
+    "@opentui/core": "^0.4.2",
+    "@opentui/react": "^0.4.2",
     "@xterm/xterm": "^6.0.0",
+    "bun": "^1.3.14",
     "chalk": "^5.3.0",
     "discord.js": "^14.26.4",
     "dotenv": "^16.4.5",
-    "ink": "^5.0.1",
-    "ink-spinner": "^5.0.0",
     "minimist": "^1.2.8",
     "node-fetch": "^3.3.2",
     "openai": "^4.77.0",
     "qrcode": "^1.5.4",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "react-reconciler": "^0.33.0",
     "ws": "^8.18.0"
   },
   "devDependencies": {
@@ -48,12 +47,10 @@
     "node": ">=18"
   },
   "files": [
-    "dist/",
     "src/",
     "docs/",
     "vendor/",
     "mcp-servers/",
-    "build.js",
     "build-web.js"
   ]
 }

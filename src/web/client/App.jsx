@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 
 const MODELS_LIST = [
-  'veil', 'lumen', 'claude', 'claude-opus', 'claude-haiku',
+  'veil', 'lumen', 'opencode',
+  'claude', 'claude-opus', 'claude-haiku',
   'gpt', 'gpt-mini', 'gemini', 'gemini-2.5-pro',
   'groq', 'mistral', 'ollama', 'openrouter',
 ];
@@ -438,14 +439,14 @@ function SettingsPanel({ status, onClose, onSend }) {
         <div className="settings-section">
           <div className="settings-section-title">Mode</div>
           <div className="settings-mode-row">
-            {['ask','plan','auto'].map(m => (
-              <button
-                key={m}
-                className={`settings-mode-btn ${mode === m ? 'active' : ''}`}
-                onClick={() => onSend(`/mode ${m}`)}
-              >
-                {m === 'auto' ? 'bypass' : m}
-              </button>
+            {['ask','plan','decide','auto'].map(m => (
+                <button
+                  key={m}
+                  className={`settings-mode-btn ${mode === m ? 'active' : ''}`}
+                  onClick={() => onSend(`/mode ${m}`)}
+                >
+                  {m === 'auto' ? 'bypass' : m === 'decide' ? 'decide-for-me' : m}
+                </button>
             ))}
           </div>
         </div>
@@ -888,10 +889,10 @@ export default function App() {
     : null;
 
   const currentMode = status?.mode || 'ask';
-  const displayMode = currentMode === 'auto' ? 'bypass' : currentMode;
+  const displayMode = currentMode === 'auto' ? 'bypass' : currentMode === 'decide' ? 'decide-for-me' : currentMode;
 
   const cycleMode = useCallback(() => {
-    const modes = ['ask','plan','auto'];
+    const modes = ['ask','plan','decide','auto'];
     const next  = modes[(modes.indexOf(currentMode) + 1) % modes.length];
     sendWs({ type: 'submit', content: `/mode ${next}` });
   }, [currentMode, sendWs]);
@@ -1072,7 +1073,7 @@ export default function App() {
                 )}
                 <div className="input-footer">
                   <div className="input-footer-left">
-                    <button className={`mode-badge mode-badge-${currentMode}`} onClick={cycleMode} title="Click to cycle: ask → plan → bypass">
+                    <button className={`mode-badge mode-badge-${currentMode}`} onClick={cycleMode} title="Click to cycle: ask → plan → decide-for-me → bypass">
                       {displayMode}
                     </button>
                     {tokStr && <span className="tok-count">{tokStr} tok</span>}

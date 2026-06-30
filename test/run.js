@@ -3,7 +3,7 @@
 import { build } from 'esbuild';
 import { spawnSync } from 'child_process';
 import { readdirSync, mkdirSync } from 'fs';
-import { join } from 'path';
+import { join, resolve } from 'path';
 
 mkdirSync('dist', { recursive: true });
 
@@ -14,10 +14,10 @@ const testFiles = readdirSync('test')
 
 const outfiles = [];
 for (const entry of testFiles) {
-  const base    = entry.replace(/^test\//, '').replace(/\.js$/, '');
+  const base    = entry.replace(/^test[\\/]/, '').replace(/\.js$/, '');
   const outfile = `dist/${base}.mjs`;
   await build({
-    entryPoints: [entry],
+    entryPoints: [resolve(entry)],
     bundle:   true,
     outfile,
     platform: 'node',
@@ -25,7 +25,7 @@ for (const entry of testFiles) {
     target:   'node18',
     jsx:      'automatic',
     packages: 'external',
-    alias: { 'react-devtools-core': './src/stubs/react-devtools-core.js' },
+    alias: { 'react-devtools-core': resolve('src/stubs/react-devtools-core.js') },
     logLevel: 'warning',
   });
   outfiles.push(outfile);

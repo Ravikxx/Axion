@@ -93,6 +93,8 @@ export function start({ initialModel = getSavedModel() || DEFAULT_MODEL, initial
       return;
     }
 
+
+
     const url = req.url === '/' ? '/index.html' : req.url;
     serveFile(res, join(DIST_DIR, url));
   });
@@ -544,9 +546,9 @@ function createSharedSession(defaultModel, defaultMode) {
         break;
 
       case 'mode': {
-        // 'bypass' is the user-facing alias for 'auto'
-        const nm = arg === 'bypass' ? 'auto' : arg;
-        if (!['ask','plan','auto'].includes(nm)) { error(`unknown mode "${arg}" — use ask, plan, or bypass`); }
+        // 'bypass' is the user-facing alias for 'auto', 'decide-for-me' for 'decide'
+        const nm = arg === 'bypass' ? 'auto' : arg === 'decide-for-me' ? 'decide' : arg;
+        if (!['ask','plan','decide','auto'].includes(nm)) { error(`unknown mode "${arg}" — use ask, plan, decide-for-me, or bypass`); }
         else { mode = nm; agent.setMode(nm); saveMode(nm); info(`mode → ${nm === 'auto' ? 'bypass' : nm} (saved)`); broadcastStatus(); }
         break;
       }
@@ -939,7 +941,7 @@ const HELP_TEXT = `Commands
 ──────────────────────────────────────────────────
 /help                           this screen
 /model <name|id>                switch model
-/mode  <name>                   ask · plan · bypass  (click mode in status bar to cycle)
+/mode  <name>                   ask · plan · decide-for-me · bypass  (click mode in status bar to cycle)
 /api   <model> <key>            set API key (saved)
 /endpoint <name> <url> [model] [key]  custom endpoint
 /thinking [on|off|<tokens>]     extended thinking

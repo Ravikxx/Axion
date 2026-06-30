@@ -138,7 +138,53 @@ export const CONTEXT_WINDOWS = {
 
 export function getContextWindow(modelAlias) {
   const id = MODELS[modelAlias] || modelAlias;
-  return CONTEXT_WINDOWS[id] || 128_000;
+  return CONTEXT_WINDOWS[id] || CONTEXT_WINDOWS[modelAlias] || CUSTOM_ENDPOINTS[modelAlias]?.context || 128_000;
+}
+
+// Fetch OpenRouter model list and populate CONTEXT_WINDOWS dynamically.
+// Works without an API key (just lower rate limits).
+export async function fetchOpenRouterContextWindows() {
+  try {
+    const key = API_KEYS.openrouter;
+    const res = await fetch('https://openrouter.ai/api/v1/models', {
+      headers: key ? { Authorization: `Bearer ${key}` } : {},
+      signal: AbortSignal.timeout(5000),
+    });
+    if (!res.ok) return;
+    const json = await res.json();
+    if (!json?.data) return;
+    for (const model of json.data) {
+      if (model.id && model.context_length) {
+        CONTEXT_WINDOWS[model.id] = model.context_length;
+      }
+    }
+  } catch {}
+}
+
+// Try to fetch model metadata from OpenAI-compatible /v1/models endpoint.
+// Some providers (Ollama, etc.) return context info here.
+export async function fetchEndpointContextWindows() {
+  for (const [name, ep] of Object.entries(CUSTOM_ENDPOINTS)) {
+    if (ep.context) continue; // already manually set
+    try {
+      const res = await fetch(`${ep.baseURL.replace(/\/+$/, '')}/models`, {
+        headers: ep.apiKey && ep.apiKey !== 'no-key' ? { Authorization: `Bearer ${ep.apiKey}` } : {},
+        signal: AbortSignal.timeout(3000),
+      });
+      if (!res.ok) continue;
+      const json = await res.json();
+      const models = json?.data || [];
+      let bestCtx = 0;
+      for (const m of models) {
+        const ctx = m.context_length || m.max_context_length || (m.metadata?.context_length);
+        if (m.id && ctx) {
+          CONTEXT_WINDOWS[m.id] = ctx;
+          if (ep.model && m.id === ep.model) bestCtx = ctx;
+        }
+      }
+      if (bestCtx) CONTEXT_WINDOWS[name] = bestCtx;
+    } catch {}
+  }
 }
 
 export const DEFAULT_MODEL = process.env.AXION_MODEL || 'claude';

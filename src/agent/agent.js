@@ -226,10 +226,12 @@ class ThinkStreamFilter {
 export { ThinkStreamFilter };
 
 export class Agent {
-  constructor({ modelAlias, mode, label = 'main', onToolCall, onToolResult, onMessage, onTokens, onStreamChunk, onStreamEnd, onNotify }) {
+  constructor({ modelAlias, mode, label = 'main', todoScope = 'global', onToolCall, onToolResult, onMessage, onTokens, onStreamChunk, onStreamEnd, onNotify }) {
     this.modelAlias   = modelAlias;
     this.mode         = mode;
     this.label        = label;
+    // Scope key for the per-session TODO list (tab/chat isolation).
+    this.todoScope    = todoScope;
     this.history      = [];
     this.totalTokens  = 0;
     this.inputTokens  = 0;
@@ -506,7 +508,7 @@ CRITICAL RULES — follow these exactly:
               ? MCP.callTool(tc.name, tc.input)
               : PLUGINS.isPluginTool(tc.name)
                 ? PLUGINS.callTool(tc.name, tc.input)
-                : executeTool(tc.name, tc.input, { agentLabel: this.label, onNotify: this.onNotify, askUser })
+                : executeTool(tc.name, tc.input, { agentLabel: this.label, onNotify: this.onNotify, askUser, todoScope: this.todoScope })
           )
         );
         for (let i = 0; i < toolCalls.length; i++) {
@@ -529,7 +531,25 @@ CRITICAL RULES — follow these exactly:
 
           this.onToolCall({ name: tc.name, input: tc.input, id: tc.id });
 
-          if (this.mode === 'ask' && askConfirm) {
+          if (this.mode === 'decide' && !Agent.PARALLEL_SAFE.has(tc.name)) {
+            const decision = await this._decideToolSafety(tc);
+            if (decision === 'deny') {
+              const denied = { id: tc.id, name: tc.name, output: 'AI safety check: denied.', success: false };
+              toolResults.push(denied);
+              this.onToolResult({ id: tc.id, name: tc.name, output: 'AI safety check: denied.', success: false });
+              continue;
+            }
+            if (decision === 'ask' && askConfirm) {
+              const approved = await askConfirm(tc);
+              if (!approved) {
+                const declined = { id: tc.id, name: tc.name, output: 'User declined.', success: false };
+                toolResults.push(declined);
+                this.onToolResult({ id: tc.id, name: tc.name, output: 'User declined.', success: false });
+                continue;
+              }
+            }
+            // 'safe' → fall through to execution
+          } else if (this.mode === 'ask' && askConfirm) {
             const approved = await askConfirm(tc);
             if (!approved) {
               const declined = { id: tc.id, name: tc.name, output: 'User declined.', success: false };
@@ -547,7 +567,7 @@ CRITICAL RULES — follow these exactly:
           } else if (PLUGINS.isPluginTool(tc.name)) {
             result = await PLUGINS.callTool(tc.name, tc.input);
           } else {
-            result = await executeTool(tc.name, tc.input, { agentLabel: this.label, onNotify: this.onNotify, askUser });
+            result = await executeTool(tc.name, tc.input, { agentLabel: this.label, onNotify: this.onNotify, askUser, todoScope: this.todoScope });
           }
           toolResults.push({ id: tc.id, name: tc.name, ...result });
           this.onToolResult({ id: tc.id, name: tc.name, ...result });
@@ -609,6 +629,51 @@ CRITICAL RULES — follow these exactly:
       this.onTokens({ total: this.totalTokens, input: this.inputTokens, output: this.outputTokens, context: this.contextTokens });
     }
     return summary;
+  }
+
+  // ── Decide-for-me: AI evaluates tool call safety ────────────────────────
+
+  async _decideToolSafety(tc) {
+    let client, type, model;
+    try { const r = createClient(this.modelAlias); client = r.client; type = r.type; model = resolveModel(this.modelAlias); } catch (e) { return 'ask'; }
+
+    const input = typeof tc.input === 'object' ? JSON.stringify(tc.input) : String(tc.input || '');
+    const prompt = `You are a safety monitor for an AI coding agent. A tool call was made:
+
+Tool: ${tc.name}
+Input: ${input}
+
+Reply with exactly one word:
+- "safe" — this tool call is harmless; run it without asking the user
+- "ask" — this tool call might be risky; ask the user for permission first
+- "deny" — this tool call is clearly dangerous or destructive; deny it silently
+
+One word only:`;
+
+    let result = '';
+    if (type === 'anthropic') {
+      const resp = await client.messages.create({
+        model, max_tokens: 10,
+        system: 'You are a concise safety monitor. Respond with a single word.',
+        messages: [{ role: 'user', content: prompt }],
+      });
+      result = resp.content[0]?.text?.trim().toLowerCase() || 'ask';
+      this._addTokens(resp.usage?.input_tokens, resp.usage?.output_tokens);
+    } else {
+      const resp = await client.chat.completions.create({
+        model, max_tokens: 10,
+        messages: [
+          { role: 'system', content: 'You are a concise safety monitor. Respond with a single word.' },
+          { role: 'user', content: prompt },
+        ],
+      });
+      result = resp.choices[0]?.message?.content?.trim().toLowerCase() || 'ask';
+      this._addTokens(resp.usage?.prompt_tokens, resp.usage?.completion_tokens);
+    }
+
+    if (result.startsWith('safe')) return 'safe';
+    if (result.startsWith('deny')) return 'deny';
+    return 'ask';
   }
 
   // ── BTW (one-shot side question) ──────────────────────────────────────────

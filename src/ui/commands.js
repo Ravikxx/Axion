@@ -1,12 +1,12 @@
-import React from 'react';
-import { Box, Text } from 'ink';
+// Framework-agnostic slash-command list + completion logic. Used by the OpenTUI
+// menu (src/tui/Suggestions.jsx) and unit-tested directly. No React/UI imports.
 import { readdirSync } from 'fs';
 import { getCustomCommands } from '../persist.js';
 
 export const COMMANDS = [
   { cmd: 'help',            desc: 'show all commands' },
   { cmd: 'model',           desc: '<name|id>  switch model' },
-  { cmd: 'mode',            desc: '<name>  ask · plan · bypass' },
+  { cmd: 'mode',            desc: '<name>  ask · plan · decide-for-me · bypass' },
   { cmd: 'theme',           desc: '[name]  switch accent color (no args = list)' },
   { cmd: 'permissions',     desc: '[clear]  list/reset always-allowed tools' },
   { cmd: 'skills',          desc: '[delete <name>]  list skills (auto-activate on triggers)' },
@@ -116,37 +116,4 @@ export function getTabCompletion(inputValue) {
   const typed = inputValue.slice(1).split(' ')[0];
   if (typed === top.cmd) return null;
   return `/${top.cmd} `;
-}
-
-export function SuggestionBox({ inputValue }) {
-  const matches = getSuggestions(inputValue);
-  if (!matches.length) return null;
-
-  const query = inputValue.slice(1).split(' ')[0];
-
-  return (
-    <Box
-      flexDirection="column"
-      marginX={2}
-      marginBottom={0}
-      borderStyle="round"
-      borderColor="gray"
-      paddingX={1}
-    >
-      {matches.slice(0, 6).map((s, i) => (
-        <Box key={s.cmd} gap={1}>
-          <Text color={i === 0 ? 'yellow' : 'gray'} bold={i === 0}>
-            {'/'}<Text color={i === 0 ? 'white' : 'gray'} bold={i === 0}>{s.cmd}</Text>
-          </Text>
-          <Text color="gray">{s.desc}</Text>
-          {i === 0 && matches.length > 1 && query !== s.cmd && (
-            <Text color="gray">  tab to complete</Text>
-          )}
-        </Box>
-      ))}
-      {matches.length > 6 && (
-        <Text color="gray">  … {matches.length - 6} more — keep typing to filter</Text>
-      )}
-    </Box>
-  );
 }
