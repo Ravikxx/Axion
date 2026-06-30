@@ -1,11 +1,29 @@
 import React from 'react';
 import { accent } from '../ui/theme.js';
 import { collapseDiff, diffStats } from '../utils/diff.js';
+import { highlightLine, langFromPath } from '../ui/markdown.js';
 
 // OpenTUI tool-call renderer: header (status + name + label + diff stats),
 // a colored unified diff for file writes, or truncated plain output otherwise.
 
 const C = { ok: '#7ee787', fail: '#f85149', pending: '#f0c674', gray: '#888', add: '#7ee787', rem: '#f85149' };
+const CODE_COLORS = { comment: '#6e7681', string: '#7ee787', keyword: '#d2a8ff', number: '#f0c674', fn: '#79c0ff', plain: undefined };
+const FILE_READ_TOOLS = new Set(['read_file', 'read_file_lines']);
+
+// One output line — syntax-highlighted when it's file content, else plain.
+function OutputLine({ line, lang, fail }) {
+  if (fail || !lang) return <text><span fg={fail ? C.fail : C.gray}>{line}</span></text>;
+  const m = line.match(/^(\s*\d+)\t(.*)$/); // read_file_lines "N\tcode" prefix
+  const prefix = m ? m[1] : '';
+  const code = m ? m[2] : line;
+  const toks = highlightLine(code, lang);
+  return (
+    <text>
+      {prefix ? <span fg="#555">{`${prefix} `}</span> : null}
+      {toks.map((t, i) => { const c = CODE_COLORS[t.type]; return c ? <span key={i} fg={c}>{t.text}</span> : <span key={i}>{t.text}</span>; })}
+    </text>
+  );
+}
 
 const COLLAPSE_LIMIT = 6; // tool blocks taller than this collapse to one line
 
@@ -58,7 +76,7 @@ export function ToolBlock({ name, input, output, success, pending, diff, expande
       {!collapsed && !pending && output && !showDiff ? (
         <box style={{ flexDirection: 'column', marginLeft: 2 }}>
           {formatOutput(output, name, true).split('\n').map((l, i) => (
-            <text key={i}><span fg={success === false ? C.fail : C.gray}>{l}</span></text>
+            <OutputLine key={i} line={l} fail={success === false} lang={FILE_READ_TOOLS.has(name) ? langFromPath(input?.path) : null} />
           ))}
         </box>
       ) : null}
@@ -116,6 +134,7 @@ function formatLabel(name, input) {
   if (!input) return '';
   switch (name) {
     case 'read_file':      return input.path || '';
+    case 'read_file_lines': return input.path ? `${input.path}:${input.start}-${input.end ?? ''}` : '';
     case 'write_file':     return input.path || '';
     case 'patch_file':     return input.path || '';
     case 'delete_file':    return input.path || '';

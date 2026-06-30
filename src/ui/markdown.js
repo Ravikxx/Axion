@@ -76,6 +76,21 @@ export const LANG_ALIASES = {
   postgres: 'sql', mysql: 'sql', sqlite: 'sql',
 };
 
+// Map a file path/extension to a highlighter language key (or null if unknown).
+const EXT_LANG = {
+  js: 'js', jsx: 'js', mjs: 'js', cjs: 'js', ts: 'js', tsx: 'js', json: 'js',
+  py: 'py', pyw: 'py',
+  sh: 'sh', bash: 'sh', zsh: 'sh',
+  rs: 'rs', go: 'go',
+  c: 'c', h: 'c', cpp: 'c', cc: 'c', cxx: 'c', hpp: 'c', cs: 'c', java: 'c', kt: 'c', swift: 'c',
+  sql: 'sql',
+};
+export function langFromPath(path) {
+  if (!path) return null;
+  const ext = String(path).split(/[\\/]/).pop().split('.').pop().toLowerCase();
+  return EXT_LANG[ext] || (KEYWORDS[ext] ? ext : null);
+}
+
 // Tokenize one line of code: comments, strings, keywords, numbers, function calls.
 export function highlightLine(line, lang) {
   const key  = LANG_ALIASES[lang] || lang;
