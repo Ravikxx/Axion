@@ -1,6 +1,5 @@
-// Framework-agnostic slash-command list + completion logic. Shared by the Ink
-// Suggestions (src/ui/Suggestions.jsx) and the OpenTUI menu (src/tui/Suggestions.jsx)
-// and unit-tested directly. No React/Ink/OpenTUI imports.
+// Framework-agnostic slash-command list + completion logic. Used by the OpenTUI
+// menu (src/tui/Suggestions.jsx) and unit-tested directly. No React/UI imports.
 import { readdirSync } from 'fs';
 import { getCustomCommands } from '../persist.js';
 

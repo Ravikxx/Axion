@@ -483,10 +483,11 @@ Deploy from `axion-vision-space/app.py` to a HuggingFace Space.
 
 ## Rebuilding after edits
 
+The CLI runs from source (no build step) — just relink:
+
 ```bash
-node build.js       # rebuild CLI
-node build-web.js   # rebuild web UI
-npm install -g .    # update global install
+npm link            # (or: npm install -g .) — update the global `axion`
+node build-web.js   # rebuild the web UI only if you changed it
 ```
 
 ---

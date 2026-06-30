@@ -1,6 +1,6 @@
-// Framework-agnostic markdown + syntax-highlighting parser shared by the Ink
-// RichText (src/ui/RichText.jsx) and the OpenTUI RichText (src/tui/RichText.jsx).
-// Pure functions only — no React/Ink/OpenTUI imports — so it's unit-testable.
+// Framework-agnostic markdown + syntax-highlighting parser used by the OpenTUI
+// RichText (src/tui/RichText.jsx). Pure functions only — no UI imports — so it's
+// unit-testable.
 
 // Parse inline markup within a single line of text.
 export function parseInline(text) {

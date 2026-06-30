@@ -85,7 +85,7 @@ function pickSession() {
   });
 }
 
-// ── Seed runtime config from saved settings (mirrors src/index.js) ──────────────
+// ── Seed runtime config from saved settings ─────────────────────────────────────
 const savedKeys = getSavedApiKeys();
 for (const [provider, key] of Object.entries(savedKeys)) {
   if (key && !API_KEYS[provider]) API_KEYS[provider] = key;
