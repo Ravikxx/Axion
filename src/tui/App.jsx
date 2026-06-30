@@ -297,6 +297,9 @@ function Session({
   const questionSpecRef = useRef(null);
   const pendingAllowKeyRef = useRef(null);
   const lastUserTextRef = useRef('');
+  const historyRef = useRef([]);   // every submitted line, oldest→newest
+  const draftRef = useRef('');      // in-progress text, saved when you start recalling
+  const [histPos, setHistPos] = useState(0); // 0 = live input; 1 = last sent; N = oldest
 
   const push = useCallback((msg) => setMessages((m) => [...m, msg]), []);
   const setInputSafe = useCallback((v) => { inputRef.current = v; setInput(v); }, []);
@@ -418,6 +421,8 @@ function Session({
         ...(initialResume.displayMessages || []),
         { type: 'info', text: '── end of previous session — continuing from here ──' },
       ]);
+      // Seed input history from the resumed conversation's user messages.
+      historyRef.current = (initialResume.displayMessages || []).filter((m) => m.type === 'user').map((m) => m.text);
       // Restore this chat's saved todos into its scope.
       try { setTodosFor(todoScope, initialResume.todos || []); } catch {}
       setTodos(getTodos(todoScope));
@@ -609,6 +614,24 @@ function Session({
       const completed = getTabCompletion(inputRef.current);
       if (completed) setInputSafe(completed);
       return;
+    }
+    // Up/Down recall input history (single-line input); the @-picker handled its
+    // own up/down earlier. No history yet → fall through to scrolling.
+    const hist = historyRef.current;
+    if ((key.name === 'up' || key.name === 'down') && hist.length) {
+      if (key.name === 'up') {
+        if (histPos === 0) draftRef.current = inputRef.current;
+        const next = Math.min(histPos + 1, hist.length);
+        setHistPos(next);
+        setInputSafe(hist[hist.length - next]);
+        return;
+      }
+      if (histPos > 0) { // down
+        const next = histPos - 1;
+        setHistPos(next);
+        setInputSafe(next === 0 ? draftRef.current : hist[hist.length - next]);
+        return;
+      }
     }
     const sb = scrollRef.current;
     if (sb && typeof sb.scrollBy === 'function') {
@@ -1700,6 +1723,9 @@ function Session({
   const submit = useCallback((value) => {
     const text = (value || '').trim();
     if (!text || busy) return;
+    const h = historyRef.current;
+    if (h[h.length - 1] !== text) h.push(text); // record, skip consecutive dupes
+    setHistPos(0);
     setInputSafe('');
     if (text.startsWith('/')) { runCommand(text); return; }
     runAgentTurn(text, expandMentions(text)); // @file mentions → file contents for the agent
@@ -1848,6 +1874,11 @@ function Session({
         {fileActive && fileMatches.length ? (
           <FilePicker matches={fileMatches} selected={Math.min(fileSel, fileMatches.length - 1)} onPick={(i) => insertFile(fileMatches[i])} onHover={setFileSel} accentColor={A} />
         ) : null}
+        {histPos > 0 && (
+          <box style={{ flexShrink: 0, paddingLeft: 1 }}>
+            <text><span fg="#666">{`history: ${histPos}/${historyRef.current.length}  (↑ older · ↓ newer)`}</span></text>
+          </box>
+        )}
         {inputMode !== 'question' && (
         <box style={{ flexShrink: 0, border: true, borderColor: inputMode === 'chat' ? A : '#f0c674', height: 3, paddingLeft: 1, paddingRight: 1 }}>
           <input
