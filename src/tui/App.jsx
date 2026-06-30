@@ -1522,7 +1522,7 @@ function Session({
     <box style={{ flexGrow: 1, flexDirection: 'row' }}>
       <box style={{ flexGrow: 1, flexDirection: 'column' }}>
         <Welcome model={model} mode={mode} />
-        <scrollbox ref={scrollRef} style={{ flexGrow: 1 }} stickyScroll stickyStart="bottom">
+        <scrollbox ref={scrollRef} style={{ flexGrow: 1, flexShrink: 1, minHeight: 0 }} stickyScroll stickyStart="bottom">
           {messages.map((msg, i) => <MessageRow key={i} msg={msg} expanded={expandedTools.has(i)} onToggle={() => toggleExpand(i)} />)}
           {streamText !== null && (
             <box style={{ flexDirection: 'column', marginTop: 1, paddingLeft: 1, paddingRight: 1 }}>
@@ -1559,7 +1559,7 @@ function Session({
 
         {inputMode === 'chat' && input.startsWith('/') && <SuggestionBox inputValue={input} />}
         {inputMode !== 'question' && (
-        <box style={{ border: true, borderColor: inputMode === 'chat' ? A : '#f0c674', height: 3, paddingLeft: 1, paddingRight: 1 }}>
+        <box style={{ flexShrink: 0, border: true, borderColor: inputMode === 'chat' ? A : '#f0c674', height: 3, paddingLeft: 1, paddingRight: 1 }}>
           <input
             value={input}
             onInput={setInputSafe}

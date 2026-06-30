@@ -8,7 +8,7 @@ export function SuggestionBox({ inputValue }) {
   const query = inputValue.slice(1).split(' ')[0];
 
   return (
-    <box style={{ flexDirection: 'column', border: true, borderColor: '#444', paddingLeft: 1, paddingRight: 1 }}>
+    <box style={{ flexShrink: 0, flexDirection: 'column', border: true, borderColor: '#444', paddingLeft: 1, paddingRight: 1 }}>
       {matches.slice(0, 6).map((s, i) => (
         <text key={s.cmd}>
           <span fg={i === 0 ? '#f0c674' : '#888'}>{`/${s.cmd}`}</span>
