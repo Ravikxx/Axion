@@ -10,6 +10,13 @@ const C = { ok: '#7ee787', fail: '#f85149', pending: '#f0c674', gray: '#888', ad
 const CODE_COLORS = { comment: '#6e7681', string: '#7ee787', keyword: '#d2a8ff', number: '#f0c674', fn: '#79c0ff', plain: undefined };
 const FILE_READ_TOOLS = new Set(['read_file', 'read_file_lines']);
 
+// Which highlighter language (if any) to use for a tool's output.
+function outputLang(name, input) {
+  if (FILE_READ_TOOLS.has(name)) return langFromPath(input?.path);
+  if (name === 'run_command') return 'sh'; // shell output — colors strings, numbers, paths
+  return null;
+}
+
 // One output line — syntax-highlighted when it's file content, else plain.
 function OutputLine({ line, lang, fail }) {
   if (fail || !lang) return <text><span fg={fail ? C.fail : C.gray}>{line}</span></text>;
@@ -76,7 +83,7 @@ export function ToolBlock({ name, input, output, success, pending, diff, expande
       {!collapsed && !pending && output && !showDiff ? (
         <box style={{ flexDirection: 'column', marginLeft: 2 }}>
           {formatOutput(output, name, true).split('\n').map((l, i) => (
-            <OutputLine key={i} line={l} fail={success === false} lang={FILE_READ_TOOLS.has(name) ? langFromPath(input?.path) : null} />
+            <OutputLine key={i} line={l} fail={success === false} lang={outputLang(name, input)} />
           ))}
         </box>
       ) : null}
