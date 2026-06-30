@@ -1836,7 +1836,7 @@ function Session({
           );
         })()}
         {inputMode === 'confirm-plan' && (
-          <box style={{ paddingLeft: 1 }}>
+          <box style={{ flexShrink: 0, paddingLeft: 1 }}>
             <text><span fg="#f0c674">? </span><span>execute this plan? </span><span fg="#888">(y / n)</span></text>
           </box>
         )}

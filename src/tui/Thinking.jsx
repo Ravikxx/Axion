@@ -29,7 +29,7 @@ export function Thinking({ word = 'thinking', elapsed = 0, tokens = 0 }) {
   }, []);
 
   return (
-    <box style={{ paddingLeft: 2, marginTop: 0 }}>
+    <box style={{ flexShrink: 0, paddingLeft: 2, marginTop: 0 }}>
       <text>
         <span fg="#7ee787">{FRAMES[frame]} </span>
         <span fg="#7ee787">{word}…</span>

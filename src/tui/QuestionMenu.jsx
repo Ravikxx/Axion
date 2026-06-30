@@ -97,7 +97,7 @@ export function QuestionMenu({ form, isActive = true, onComplete, onCancel }) {
   const stepLabel = questions.length > 1 ? `  (${idx + 1}/${questions.length})` : '';
 
   return (
-    <box style={{ flexDirection: 'column', backgroundColor: '#1a1b1f', border: true, borderColor: A, paddingLeft: 2, paddingRight: 2, paddingTop: 1, paddingBottom: 1, marginTop: 1 }}>
+    <box style={{ flexShrink: 0, flexDirection: 'column', backgroundColor: '#1a1b1f', border: true, borderColor: A, paddingLeft: 2, paddingRight: 2, paddingTop: 1, paddingBottom: 1, marginTop: 1 }}>
       <text>
         <span fg={A}>{'? '}</span>
         <span fg="#ffffff">{q.question || 'Answer:'}</span>
