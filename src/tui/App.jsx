@@ -432,9 +432,27 @@ function Session({
       case 'help':
         push({ type: 'info', text: 'Commands:\n' + COMMANDS.map((x) => `  /${x.cmd}  —  ${x.desc}`).join('\n') });
         return;
-      case 'models':
-        push({ type: 'info', text: `Models: ${Object.keys(MODELS).join(' · ')}` });
+      case 'models': {
+        const { CUSTOM_ENDPOINTS } = await import('../config.js');
+        const fmtCtx = (v) => (v >= 1_000_000 ? (v / 1_000_000).toFixed(1) + 'M' : (v / 1000).toFixed(0) + 'k');
+        const lines = ['Models:'];
+        for (const [alias, id] of Object.entries(MODELS)) {
+          const cur = alias === model ? '▸' : ' ';
+          lines.push(`${cur} ${alias.padEnd(20)} ${fmtCtx(getContextWindow(alias)).padStart(5)}  ${id}`);
+        }
+        const eps = Object.entries(CUSTOM_ENDPOINTS);
+        if (eps.length) {
+          lines.push('', 'Endpoints:');
+          for (const [name, e] of eps) {
+            const cur = name === model ? '▸' : ' ';
+            const ctx = e.context || getContextWindow(name);
+            lines.push(`${cur} ${name.padEnd(20)} ${fmtCtx(ctx).padStart(5)}  ${e.model || ''} @ ${e.baseURL}`);
+          }
+        }
+        lines.push('', 'Use /model <name> to switch  ·  /endpoint to add one.');
+        push({ type: 'info', text: lines.join('\n') });
         return;
+      }
       case 'model': {
         if (!arg) {
           const ctx = getContextWindow(model);
@@ -621,11 +639,6 @@ function Session({
         if (restored?.length) parts.push(`restored: ${restored.map(p => p.replace(process.cwd() + '/', '')).join(', ')}`);
         if (deleted?.length) parts.push(`deleted: ${deleted.map(p => p.replace(process.cwd() + '/', '')).join(', ')}`);
         push({ type: 'info', text: `⏪ rewound ${undone} checkpoint${undone > 1 ? 's' : ''}${parts.length ? ' — ' + parts.join(' · ') : ' (no file changes)'}` });
-        return;
-      }
-      case 'models': {
-        const built = Object.entries(MODELS).map(([alias, id]) => `  ${alias.padEnd(22)} ${id}`).join('\n');
-        push({ type: 'info', text: `Available models:\n${built}` });
         return;
       }
       case 'permissions': {
