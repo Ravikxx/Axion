@@ -13,6 +13,7 @@ export function Sidebar({
   ctxUsed = 0,
   ctxWindow = 0,
   sessionCost = 0,
+  diffTotals = { added: 0, removed: 0 },
   pinnedFiles = [],
   mcpTools = 0,
   todos = [],
@@ -48,6 +49,17 @@ export function Sidebar({
           <text> </text>
           <text><span fg={A}>cost</span></text>
           <text><span fg="#888">{`  $${sessionCost.toFixed(4)}`}</span></text>
+        </>
+      )}
+
+      {(diffTotals.added > 0 || diffTotals.removed > 0) && (
+        <>
+          <text> </text>
+          <text><span fg={A}>diff</span></text>
+          <text>
+            <span fg="#7ee787">{`  +${diffTotals.added}`}</span>
+            <span fg="#f85149">{`  -${diffTotals.removed}`}</span>
+          </text>
         </>
       )}
 

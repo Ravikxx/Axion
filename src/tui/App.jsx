@@ -30,6 +30,7 @@ import { ToolBlock } from './ToolBlock.jsx';
 import { SuggestionBox } from './Suggestions.jsx';
 import { FilePicker } from './FilePicker.jsx';
 import { listProjectFiles, fuzzyFilter } from '../utils/fileList.js';
+import { diffStats } from '../utils/diff.js';
 import { Welcome } from './Welcome.jsx';
 import { Thinking } from './Thinking.jsx';
 import { QuestionMenu } from './QuestionMenu.jsx';
@@ -241,6 +242,7 @@ function Session({
   const [pendingForm, setPendingForm] = useState(null); // normalized question form for the menu
   const [expandedTools, setExpandedTools] = useState(() => new Set()); // message indices shown in full
   const [atBottom, setAtBottom] = useState(true); // scrollback pinned to bottom?
+  const [diffTotals, setDiffTotals] = useState({ added: 0, removed: 0 }); // session edit stats
   const [extThinking, setExtThinking] = useState(false);
   const [thinkingBudget, setThinkingBudget] = useState(10000);
   const [systemOverride, setSystemOverride] = useState('');
@@ -347,6 +349,10 @@ function Session({
       },
       onToolCall: ({ name, input, id }) => push({ type: 'tool', id, name, input, pending: true }),
       onToolResult: ({ id, name, output, success, diff }) => {
+        if (diff && diff.length && success !== false) {
+          const s = diffStats(diff);
+          setDiffTotals((t) => ({ added: t.added + (s.added || 0), removed: t.removed + (s.removed || 0) }));
+        }
         setMessages((m) => {
           let ri = id != null ? m.findIndex((x) => x.type === 'tool' && x.id === id && x.pending) : -1;
           if (ri === -1) ri = m.findIndex((x) => x.type === 'tool' && x.name === name && x.pending);
@@ -1720,7 +1726,7 @@ function Session({
           {streamText !== null && (
             <box style={{ flexDirection: 'column', marginTop: 1, paddingLeft: 1, paddingRight: 1 }}>
               <text><span fg={A}>✻ Axion</span></text>
-              {(streamText || ' ').split('\n').map((l, i) => <text key={i}>{l}</text>)}
+              <RichText>{streamText || ' '}</RichText>
             </box>
           )}
         </scrollbox>
@@ -1788,6 +1794,7 @@ function Session({
         ctxUsed={ctxUsed}
         ctxWindow={ctxWindow}
         sessionCost={estimateCost(model, tokens.input || 0, tokens.output || 0) || 0}
+        diffTotals={diffTotals}
         todos={todos}
       />
     </box>
