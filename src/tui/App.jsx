@@ -483,7 +483,8 @@ function Session({
           push({ type: 'info', text: `current model: ${model}  ·  context: ${ctx >= 1_000_000 ? (ctx / 1_000_000).toFixed(1) + 'M' : (ctx / 1000).toFixed(0) + 'k'} tokens` });
           return;
         }
-        if (!MODELS[arg] && !arg.includes('/')) { push({ type: 'error', text: `Unknown model "${arg}". /models to list.` }); return; }
+        const { CUSTOM_ENDPOINTS } = await import('../config.js');
+        if (!MODELS[arg] && !CUSTOM_ENDPOINTS[arg] && !arg.includes('/')) { push({ type: 'error', text: `Unknown model "${arg}". /models to list.` }); return; }
         setModel(arg); agentRef.current?.setModel(arg); try { saveModel(arg); } catch {}
         const ctx = getContextWindow(arg);
         push({ type: 'info', text: `model → ${arg}  ·  context: ${ctx >= 1_000_000 ? (ctx / 1_000_000).toFixed(1) + 'M' : (ctx / 1000).toFixed(0) + 'k'} tokens` });
