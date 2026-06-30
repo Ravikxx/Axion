@@ -223,6 +223,7 @@ function Session({
   const flushTimer = useRef(null);
   const inputRef  = useRef('');
   const scrollRef = useRef(null);
+  const inputElRef = useRef(null);
   const confirmResolverRef = useRef(null);
   const questionResolverRef = useRef(null);
   const questionSpecRef = useRef(null);
@@ -269,6 +270,9 @@ function Session({
     const t = rollbackToUserMsg(i);
     setMessages((m) => m.slice(0, i));
     setInputSafe(t);
+    // OpenTUI focuses the clicked element's scrollbox after this handler returns,
+    // so defer re-focusing the input until the click cycle is done.
+    setTimeout(() => { try { inputElRef.current?.focus?.(); } catch {} }, 0);
   }, [busy, rollbackToUserMsg, setInputSafe]);
 
   const deleteFrom = useCallback((i) => {
@@ -1665,6 +1669,7 @@ function Session({
         {inputMode !== 'question' && (
         <box style={{ flexShrink: 0, border: true, borderColor: inputMode === 'chat' ? A : '#f0c674', height: 3, paddingLeft: 1, paddingRight: 1 }}>
           <input
+            ref={inputElRef}
             value={input}
             onInput={setInputSafe}
             onSubmit={submit}
