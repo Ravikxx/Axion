@@ -10,6 +10,12 @@ const C = { ok: '#7ee787', fail: '#f85149', pending: '#f0c674', gray: '#888', ad
 const CODE_COLORS = { comment: '#6e7681', string: '#7ee787', keyword: '#d2a8ff', number: '#f0c674', fn: '#79c0ff', plain: undefined };
 const FILE_READ_TOOLS = new Set(['read_file', 'read_file_lines']);
 
+// File-editing tools get a "Verb(path)" header (Update/Create/Delete/Move) —
+// write_file is "Create" when the diff has no removed/context lines (nothing
+// pre-existing was touched, i.e. a brand-new file) and "Update" otherwise.
+const FILE_EDIT_VERBS = { write_file: 'Update', patch_file: 'Update', delete_file: 'Delete', move_file: 'Move' };
+const DIFF_BG = { add: '#0d2818', rem: '#3a1414' };
+
 // Which highlighter language (if any) to use for a tool's output.
 function outputLang(name, input) {
   if (FILE_READ_TOOLS.has(name)) return langFromPath(input?.path);
@@ -46,6 +52,9 @@ export function ToolBlock({ name, input, output, success, pending, diff, expande
   const hasDiff = diff && diff.length > 0;
   const stats = hasDiff ? diffStats(diff) : null;
   const showDiff = hasDiff && !pending;
+  const isRead = FILE_READ_TOOLS.has(name);
+  const isNewFile = name === 'write_file' && hasDiff && diff.every((d) => d.type === 'add');
+  const editVerb = isNewFile ? 'Create' : FILE_EDIT_VERBS[name];
 
   // How many lines would the body take? Collapse big blocks to a one-liner.
   const bodyLines = pending ? 0
@@ -59,18 +68,26 @@ export function ToolBlock({ name, input, output, success, pending, diff, expande
     <text>
       {collapsible ? <span fg={C.gray}>{chevron}</span> : null}
       <span fg={statusColor}>{dot} </span>
-      <span fg={A}>{name}</span>
-      {label ? <span fg={C.gray}>{`  ${label}`}</span> : null}
+      {editVerb && label ? (
+        <span><span fg={A}>{editVerb}</span><span fg={C.gray}>{'('}</span><span fg={A}>{label}</span><span fg={C.gray}>{')'}</span></span>
+      ) : isRead ? (
+        <span><span fg={A}>{'Read 1 file'}</span>{label ? <span fg={C.gray}>{`  ${label}`}</span> : null}</span>
+      ) : (
+        <span><span fg={A}>{name}</span>{label ? <span fg={C.gray}>{`  ${label}`}</span> : null}</span>
+      )}
       {pending ? <span fg={C.pending}>  running…</span> : null}
-      {showDiff && stats ? (
-        <span>
-          {stats.added > 0 ? <span fg={C.add}>{`  +${stats.added}`}</span> : null}
-          {stats.removed > 0 ? <span fg={C.rem}>{`  -${stats.removed}`}</span> : null}
-        </span>
-      ) : null}
       {collapsed ? <span fg={C.gray}>{`   +${bodyLines} lines · click to expand`}</span> : null}
     </text>
   );
+
+  const changeSummary = showDiff && stats && (stats.added > 0 || stats.removed > 0) ? (
+    <text>
+      <span fg={C.gray}>{'  '}</span>
+      {stats.added > 0 ? <span fg={C.add}>{`Added ${stats.added} line${stats.added !== 1 ? 's' : ''}`}</span> : null}
+      {stats.added > 0 && stats.removed > 0 ? <span fg={C.gray}>{', '}</span> : null}
+      {stats.removed > 0 ? <span fg={C.rem}>{`removed ${stats.removed} line${stats.removed !== 1 ? 's' : ''}`}</span> : null}
+    </text>
+  ) : null;
 
   return (
     <box style={{ flexDirection: 'column', marginLeft: 2, marginTop: 0 }}>
@@ -78,6 +95,7 @@ export function ToolBlock({ name, input, output, success, pending, diff, expande
         ? <box onMouseDown={() => onToggle?.()}>{header}</box>
         : header}
 
+      {!collapsed && changeSummary}
       {!collapsed && showDiff ? <DiffView diff={diff} expanded /> : null}
 
       {!collapsed && !pending && output && !showDiff ? (
@@ -106,11 +124,14 @@ export function DiffView({ diff, expanded }) {
         const lineNoStr = String(lineNo).padStart(W, ' ');
         const prefix = type === 'add' ? '+' : type === 'remove' ? '-' : ' ';
         const color = type === 'add' ? C.add : type === 'remove' ? C.rem : C.gray;
+        const bg = DIFF_BG[type];
         return (
-          <text key={i}>
-            <span fg={C.gray}>{`${lineNoStr} `}</span>
-            <span fg={color}>{`${prefix} ${line}`}</span>
-          </text>
+          <box key={i} style={bg ? { backgroundColor: bg } : undefined}>
+            <text>
+              <span fg={C.gray}>{`${lineNoStr} `}</span>
+              <span fg={color}>{`${prefix} ${line}`}</span>
+            </text>
+          </box>
         );
       })}
       {truncated > 0 ? <text><span fg={C.gray}>{`… ${truncated} more diff lines (too long to show in full)`}</span></text> : null}
