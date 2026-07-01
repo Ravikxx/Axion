@@ -48,7 +48,7 @@ export function ToolBlock({ name, input, output, success, pending, diff, expande
   const A = accent();
   const label = formatLabel(name, input);
   const statusColor = pending ? C.pending : success === false ? C.fail : C.ok;
-  const dot = pending ? '◌' : success === false ? '✖' : '✔';
+  const dot = pending ? '◌' : '●'; // colored dot — green worked, red errored (statusColor carries the color)
   const hasDiff = diff && diff.length > 0;
   const stats = hasDiff ? diffStats(diff) : null;
   const showDiff = hasDiff && !pending;
