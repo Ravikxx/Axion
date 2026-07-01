@@ -827,3 +827,33 @@ export function dropTodoScope(scope) {
   const map = readTodoMap();
   if (map[scope]) { delete map[scope]; writeTodoMap(map); }
 }
+
+// ── Spend tracker (/cost) ────────────────────────────────────────────────────
+// One entry per completed agent turn: { ts, model, inputTokens, outputTokens, cost }.
+// Bounded so ~/.axion/cost-log.json doesn't grow forever.
+
+const COST_LOG_FILE = join(DIR, 'cost-log.json');
+const COST_LOG_MAX_ENTRIES = 5000;
+const COST_LOG_MAX_AGE_DAYS = 90;
+
+export function getCostLog() {
+  try {
+    if (!existsSync(COST_LOG_FILE)) return [];
+    const raw = JSON.parse(readFileSync(COST_LOG_FILE, 'utf8'));
+    return Array.isArray(raw) ? raw : [];
+  } catch { return []; }
+}
+
+export function appendCostLog(entry) {
+  try {
+    if (!existsSync(DIR)) mkdirSync(DIR, { recursive: true });
+    const cutoff = Date.now() - COST_LOG_MAX_AGE_DAYS * 24 * 60 * 60 * 1000;
+    const log = getCostLog()
+      .filter((e) => new Date(e.ts).getTime() >= cutoff)
+      .slice(-(COST_LOG_MAX_ENTRIES - 1));
+    log.push({ ts: new Date().toISOString(), ...entry });
+    writeFileSync(COST_LOG_FILE, JSON.stringify(log, null, 2), 'utf8');
+  } catch (e) {
+    console.error('[persist] Failed to save cost log:', e?.message || e);
+  }
+}

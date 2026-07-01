@@ -55,6 +55,7 @@ export const COMMANDS = [
   { cmd: 'search',          desc: '<query>  search current session messages' },
   { cmd: 'sessions',        desc: 'list all saved sessions with details' },
   { cmd: 'git',             desc: 'status|diff|commit <message>  direct git shortcuts (no LLM call)' },
+  { cmd: 'cost',            desc: 'spend today/this week/all-time, broken down by model' },
   { cmd: 'remove-chat',     desc: '<name>  delete a saved chat' },
   { cmd: 'compact',         desc: 'summarize & compress history' },
   { cmd: 'btw',             desc: '<question>  quick side question' },

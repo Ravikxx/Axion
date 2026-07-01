@@ -51,16 +51,19 @@ call (the agent already had git_status/git_diff/git_commit tools for
 natural-language use; this is the same actions but instant/free). Registered
 in `src/ui/commands.js` for /help and tab-complete.
 
-## 4. Spend tracker across sessions
-Persist cost per session over time; add a `/cost` command showing
-today/this-week/all-time spend, broken down by model.
-- Files: `src/persist.js` (needs a new persisted store, e.g. `costLog` array
-  of `{ ts, model, inputTokens, outputTokens, cost }`), `src/config.js`
-  (`estimateCost` already exists — reuse it), `src/ui/commands.js` (register
-  `/cost`), `src/tui/App.jsx` (Session already tracks `tokens` per turn —
-  hook into wherever it updates to append a costLog entry).
-- Keep the log bounded (e.g. last N entries or prune >90 days) so
-  `~/.axion/config.json` doesn't grow forever.
+## 4. Spend tracker across sessions — DONE
+`src/persist.js`: `getCostLog()`/`appendCostLog(entry)` — own file
+(`~/.axion/cost-log.json`, not the encrypted config blob), bounded to 5000
+entries / 90 days. `App.jsx`'s `runAgentTurn` logs a delta on each turn's
+`.finally()`: reads `agentRef.current.inputTokens`/`outputTokens` directly
+(NOT the `tokens`/`model` React state, which the memoized callback's closure
+could go stale on) and diffs against a `lastLoggedTokensRef` snapshot, so
+each entry is a per-turn delta rather than a cumulative re-log. `/cost`
+(registered in `src/ui/commands.js`) prints today/this-week/all-time spend
+broken down by model, priciest-first. Verified
+the log round-trips on disk and the time-bucket math directly (pure-function
+tests); cleaned up the test entry from the real `~/.axion/cost-log.json`
+afterward.
 
 ## Also done (user requests mid-stream, not in the original 5)
 - @-file mentions now rescan the project every time a *new* `@` mention
@@ -79,5 +82,6 @@ today/this-week/all-time spend, broken down by model.
   send_message/read_messages (multi-agent tools).
 
 ---
-Status as of last update: items 0, 1, 2, 3 done. Item 4 (spend tracker) is
-next up — the last of the original 5.
+Status as of last update: all 5 original items done, plus 2 mid-stream
+requests (@-file rescan, schedule_followup/bgtask ping). Nothing queued —
+check with the user for what's next.

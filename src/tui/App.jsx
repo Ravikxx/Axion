@@ -20,6 +20,7 @@ import {
   getLearnedInstructions, appendLearnedInstructions, clearLearnedInstructions,
   getSchedules, saveSchedules, saveScheduleResult, getScheduleResults,
   saveDonateOptOut, saveDonation,
+  getCostLog, appendCostLog,
 } from '../persist.js';
 import { COMMANDS, getTabCompletion } from '../ui/commands.js';
 import { permissionKey, confirmLabel } from '../ui/toolPrompts.js';
@@ -319,6 +320,7 @@ function Session({
   const questionSpecRef = useRef(null);
   const pendingAllowKeyRef = useRef(null);
   const lastUserTextRef = useRef('');
+  const lastLoggedTokensRef = useRef({ input: 0, output: 0 }); // for /cost delta logging
   const historyRef = useRef([]);   // every submitted line, oldest→newest
   const draftRef = useRef('');      // in-progress text, saved when you start recalling
   const [histPos, setHistPos] = useState(0); // 0 = live input; 1 = last sent; N = oldest
@@ -768,6 +770,34 @@ function Session({
         push({ type: 'info', text:
           `Session stats\n  model     ${model}\n  mode      ${modeLabel(mode)}\n  messages  ${msgCount}` +
           `\n  tokens    ${tokens.total || 0}  (in ${inTok} / out ${outTok})\n  est. cost ${cost ? '$' + cost.toFixed(4) : '$0.00'}` });
+        return;
+      }
+      case 'cost': {
+        const log = getCostLog();
+        if (!log.length) { push({ type: 'info', text: 'No spend logged yet — /cost tracks each completed turn as you go.' }); return; }
+        const now = Date.now();
+        const dayMs = 24 * 60 * 60 * 1000;
+        const since = (ms) => log.filter((e) => now - new Date(e.ts).getTime() <= ms);
+        const summarize = (entries) => {
+          const byModel = new Map();
+          let total = 0;
+          for (const e of entries) {
+            total += e.cost || 0;
+            const m = byModel.get(e.model) || { cost: 0, inputTokens: 0, outputTokens: 0 };
+            m.cost += e.cost || 0; m.inputTokens += e.inputTokens || 0; m.outputTokens += e.outputTokens || 0;
+            byModel.set(e.model, m);
+          }
+          return { total, byModel };
+        };
+        const fmt = ({ total, byModel }) => {
+          if (!byModel.size) return '  (none)';
+          const rows = [...byModel.entries()].sort((a, b) => b[1].cost - a[1].cost)
+            .map(([m, v]) => `    ${m.padEnd(20)} $${v.cost.toFixed(4)}  (${v.inputTokens + v.outputTokens} tok)`);
+          return `  $${total.toFixed(4)} total\n${rows.join('\n')}`;
+        };
+        push({ type: 'info', text:
+          `Spend\ntoday:\n${fmt(summarize(since(dayMs)))}\nthis week:\n${fmt(summarize(since(7 * dayMs)))}\n` +
+          `all-time (last 90 days):\n${fmt(summarize(log))}` });
         return;
       }
       case 'clear':
@@ -1848,7 +1878,22 @@ function Session({
     agentRef.current
       .run(text, { askConfirm, askPlanConfirm, askUser })
       .catch((err) => push({ type: 'error', text: err?.message || String(err) }))
-      .finally(() => setBusy(false));
+      .finally(() => {
+        setBusy(false);
+        // Log this turn's token delta for /cost — read straight off the Agent
+        // instance (always current) rather than the `model`/`tokens` state,
+        // which this callback's closure may have gone stale on.
+        try {
+          const a = agentRef.current;
+          const prev = lastLoggedTokensRef.current;
+          const dIn = Math.max(0, (a.inputTokens || 0) - prev.input);
+          const dOut = Math.max(0, (a.outputTokens || 0) - prev.output);
+          if (dIn || dOut) {
+            appendCostLog({ model: a.modelAlias, inputTokens: dIn, outputTokens: dOut, cost: estimateCost(a.modelAlias, dIn, dOut) || 0 });
+          }
+          lastLoggedTokensRef.current = { input: a.inputTokens || 0, output: a.outputTokens || 0 };
+        } catch {}
+      });
   }, [push, onTitleChange]);
 
   const submit = useCallback((value) => {
