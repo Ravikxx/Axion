@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="/assets/theme-light.css">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
+
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
@@ -219,6 +219,44 @@
   <div id="dynamicAnns"></div>
 
   <!-- MOST RECENT FIRST -->
+
+  <div class="announcement">
+    <div class="ann-meta">
+      <span class="ann-tag release">Release</span>
+      <span class="ann-date">July 1, 2026</span>
+    </div>
+    <h2>Axion 2.0 — A Whole New CLI Interface (now on 2.0.1)</h2>
+    <p>
+      Axion's terminal interface has been completely rebuilt from the ground up on <strong>OpenTUI</strong>,
+      replacing the old Ink-based UI. There's no build step anymore — Axion runs straight from source, and the
+      whole thing feels noticeably snappier.
+    </p>
+    <p style="margin-top:12px">What's different day-to-day:</p>
+    <ul style="margin-top:8px; margin-left:20px; color:var(--text-muted)">
+      <li><strong>Multiple tabs</strong> — run several conversations side by side, each with its own model, mode,
+        and history. Click a tab, hit the <code>+</code> to open a new one, or use Shift+Tab to cycle.</li>
+      <li><strong>A redesigned question menu</strong> — the agent's questions now render as a proper interactive
+        panel: multiple choice, select-all-that-apply, or type your own answer, chained across multiple questions
+        in one flow, navigable by mouse or keyboard.</li>
+      <li><strong>Ctrl+F transcript search</strong> — search the current conversation live, jump between matches.</li>
+      <li><strong><code>/resume</code></strong> now opens a fuzzy-searchable picker of your saved chats instead of
+        a static list, and opens your pick in a new tab.</li>
+      <li><strong>Live git status</strong> in the sidebar (branch, staged/unstaged counts), plus
+        <code>/git status|diff|commit</code> shortcuts that skip the LLM entirely.</li>
+      <li><strong><code>/cost</code></strong> — track spend today / this week / all-time, broken down by model.</li>
+      <li><strong>Inline diffs</strong> for file edits with accept/reject, syntax-highlighted file reads and shell
+        output, and a copy button on hover for any message.</li>
+      <li><strong>Update-available banner</strong> — Axion now tells you when a newer version is on npm and how
+        to grab it, and <code>axion --doctor</code> reports your current vs. latest version.</li>
+    </ul>
+    <p style="margin-top:12px">
+      Existing installs: <code>npm install -g @axion-labs-ai/quark-cli@latest</code> to get 2.0.1.
+    </p>
+    <div class="ann-footer">
+      <a class="ann-link" href="https://www.npmjs.com/package/@axion-labs-ai/quark-cli">npm install -g @axion-labs-ai/quark-cli →</a>
+      <a class="ann-link" href="https://github.com/AxionLabsAI/axion">GitHub →</a>
+    </div>
+  </div>
 
   <div class="announcement">
     <div class="ann-meta">
