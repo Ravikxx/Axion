@@ -14,6 +14,7 @@ export function Sidebar({
   ctxWindow = 0,
   sessionCost = 0,
   diffTotals = { added: 0, removed: 0 },
+  gitInfo = null,
   pinnedFiles = [],
   mcpTools = 0,
   todos = [],
@@ -60,6 +61,20 @@ export function Sidebar({
             <span fg="#7ee787">{`  +${diffTotals.added}`}</span>
             <span fg="#f85149">{`  -${diffTotals.removed}`}</span>
           </text>
+        </>
+      )}
+
+      {gitInfo && (
+        <>
+          <text> </text>
+          <text><span fg={A}>git</span></text>
+          <text><span fg="#888">{`  ${gitInfo.branch}`}</span></text>
+          {(gitInfo.staged > 0 || gitInfo.unstaged > 0) && (
+            <text>
+              {gitInfo.staged > 0 ? <span fg="#7ee787">{`  ${gitInfo.staged} staged`}</span> : null}
+              {gitInfo.unstaged > 0 ? <span fg="#f0c674">{`  ${gitInfo.unstaged} unstaged`}</span> : null}
+            </text>
+          )}
         </>
       )}
 

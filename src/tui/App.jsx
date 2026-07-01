@@ -35,6 +35,7 @@ import { Welcome } from './Welcome.jsx';
 import { checkForUpdate } from '../utils/updateCheck.js';
 import { SearchBar } from './SearchBar.jsx';
 import { ChatPicker } from './ChatPicker.jsx';
+import { readGitStatus } from '../utils/gitStatus.js';
 import { Thinking } from './Thinking.jsx';
 import { QuestionMenu } from './QuestionMenu.jsx';
 import { pickThinkingWord } from '../ui/thinkingWords.js';
@@ -556,6 +557,17 @@ function Session({
     return () => clearInterval(id);
   }, [todoScope]);
 
+  // Cheap live git status for the sidebar (branch, staged/unstaged counts).
+  // Only the foreground tab polls — background tabs would just waste cycles.
+  const [gitInfo, setGitInfo] = useState(null);
+  useEffect(() => {
+    if (!isActive) return;
+    const poll = () => setGitInfo(readGitStatus());
+    poll();
+    const id = setInterval(poll, 5000);
+    return () => clearInterval(id);
+  }, [isActive]);
+
   // Poll scroll position to show/hide the "jump to bottom" button. No scroll
   // event in OpenTUI, so we sample scrollTop vs. the max scroll a few times/sec.
   useEffect(() => {
@@ -766,6 +778,29 @@ function Session({
       case 'help':
         push({ type: 'info', text: 'Commands:\n' + COMMANDS.map((x) => `  /${x.cmd}  —  ${x.desc}`).join('\n') });
         return;
+      case 'git': {
+        // Direct git shortcuts — no LLM call, just runs git and prints the result.
+        // (The agent also has git_status/git_diff/git_commit tools for natural-language use.)
+        const sub = (args[0] || 'status').toLowerCase();
+        const cwd = process.cwd();
+        try {
+          if (sub === 'status') { push({ type: 'info', text: execSync('git status', { cwd, encoding: 'utf8' }) }); return; }
+          if (sub === 'diff') { push({ type: 'info', text: execSync('git diff', { cwd, encoding: 'utf8' }) || '(no changes)' }); return; }
+          if (sub === 'commit') {
+            const msg = args.slice(1).join(' ').trim();
+            if (!msg) { push({ type: 'error', text: 'usage: /git commit <message>' }); return; }
+            execSync('git add -A', { cwd, encoding: 'utf8' });
+            const out = execSync(`git commit -m ${JSON.stringify(msg)}`, { cwd, encoding: 'utf8' });
+            push({ type: 'info', text: out });
+            setGitInfo(readGitStatus(cwd));
+            return;
+          }
+          push({ type: 'error', text: 'usage: /git status | diff | commit <message>' });
+        } catch (err) {
+          push({ type: 'error', text: (err.stdout || err.stderr || err.message || String(err)).toString() });
+        }
+        return;
+      }
       case 'models': {
         const { CUSTOM_ENDPOINTS } = await import('../config.js');
         const fmtCtx = (v) => (v >= 1_000_000 ? (v / 1_000_000).toFixed(1) + 'M' : (v / 1000).toFixed(0) + 'k');
@@ -2052,6 +2087,7 @@ function Session({
         ctxWindow={ctxWindow}
         sessionCost={estimateCost(model, tokens.input || 0, tokens.output || 0) || 0}
         diffTotals={diffTotals}
+        gitInfo={gitInfo}
         todos={todos}
       />
     </box>

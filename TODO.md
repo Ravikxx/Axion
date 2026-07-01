@@ -40,15 +40,16 @@ this only replaces the old no-args text-listing behavior. Verified the
 fuzzy-match logic directly (pure-function test); full-TUI render still hangs
 in this sandbox (same unrelated environment issue as item 1).
 
-## 3. Git panel in the sidebar
-Live git status (branch, staged/unstaged file counts) in Sidebar.jsx, plus
-a `/git diff` or `/git commit` slash command.
-- Files: `src/tui/Sidebar.jsx` (already shows `diffTotals` — good model to
-  follow), `src/ui/commands.js` (slash command registry), `src/agent/tools.js`
-  (there may already be a git-aware tool — check before adding a new one).
-- Git status should poll cheaply (e.g. `git status --porcelain` + `git branch
-  --show-current` via child_process, on an interval or on tool-completion,
-  not on every render).
+## 3. Git panel in the sidebar — DONE
+`src/utils/gitStatus.js` (new — `readGitStatus(cwd)`, parses `git status
+--porcelain` for staged/unstaged counts + `git rev-parse --abbrev-ref HEAD`
+for branch; returns `null` outside a repo). Sidebar.jsx shows a `git` section
+(branch + counts) when non-null, following the same pattern as `diffTotals`.
+App.jsx polls it every 5s, foreground tab only. Also added `/git status|diff
+|commit <message>` — direct shortcuts that shell out to git without an LLM
+call (the agent already had git_status/git_diff/git_commit tools for
+natural-language use; this is the same actions but instant/free). Registered
+in `src/ui/commands.js` for /help and tab-complete.
 
 ## 4. Spend tracker across sessions
 Persist cost per session over time; add a `/cost` command showing
@@ -78,5 +79,5 @@ today/this-week/all-time spend, broken down by model.
   send_message/read_messages (multi-agent tools).
 
 ---
-Status as of last update: items 0, 1, 2 done. Item 3 (git panel in the
-sidebar) is next up.
+Status as of last update: items 0, 1, 2, 3 done. Item 4 (spend tracker) is
+next up — the last of the original 5.
