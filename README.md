@@ -35,7 +35,25 @@
 ### Install (recommended)
 
 ```bash
+curl -fsSL https://axion.amplifiedsmp.org/install.sh | sh
+```
+
+Or directly via npm:
+
+```bash
 npm install -g @axion-labs-ai/quark-cli
+```
+
+Or via Homebrew:
+
+```bash
+brew tap ravikxx/axion
+brew install axion
+```
+
+Then run:
+
+```bash
 axion
 ```
 
