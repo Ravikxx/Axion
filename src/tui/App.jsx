@@ -263,13 +263,15 @@ const MessageRow = React.memo(function MessageRow({ msg, expanded = false, onTog
       );
     case 'subagent-status': {
       const c = CHART_COLORS[(msg.index || 0) % CHART_COLORS.length];
-      const icon = { start: '▸', tool: '🔧', done: '✔', error: '✖' }[msg.status] || '·';
+      const icon = { start: '▸', tool: '🔧', done: '●', error: '●' }[msg.status] || '·';
       const verb = { start: 'started', tool: `using ${msg.text}`, done: `done (${msg.text})`, error: `error: ${msg.text}` }[msg.status] || msg.text;
+      const iconColor = msg.status === 'error' ? '#f85149' : msg.status === 'done' ? '#7ee787' : '#888';
       return (
         <box style={{ marginTop: 0, paddingLeft: 1, paddingRight: 1 }}>
           <text>
             <span fg={c}>{`◆ ${msg.label}  `}</span>
-            <span fg={msg.status === 'error' ? '#f85149' : '#888'}>{`${icon} ${verb}`}</span>
+            <span fg={iconColor}>{`${icon} `}</span>
+            <span fg={msg.status === 'error' ? '#f85149' : '#888'}>{verb}</span>
           </text>
         </box>
       );
