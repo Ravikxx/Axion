@@ -27,6 +27,7 @@ import { permissionKey, confirmLabel } from '../ui/toolPrompts.js';
 import { copyToClipboard } from '../utils/clipboard.js';
 import { Sidebar } from './Sidebar.jsx';
 import { RichText } from './RichText.jsx';
+import { CHART_COLORS } from '../ui/charts.js';
 import { ToolBlock, DiffView } from './ToolBlock.jsx';
 import { SuggestionBox } from './Suggestions.jsx';
 import { FilePicker } from './FilePicker.jsx';
@@ -252,6 +253,28 @@ function MessageRow({ msg, expanded = false, onToggle, index, onCopy, onEdit, on
           <text><span fg="#888">{msg.text}</span></text>
         </box>
       );
+    case 'subagent-status': {
+      const c = CHART_COLORS[(msg.index || 0) % CHART_COLORS.length];
+      const icon = { start: '▸', tool: '🔧', done: '✔', error: '✖' }[msg.status] || '·';
+      const verb = { start: 'started', tool: `using ${msg.text}`, done: `done (${msg.text})`, error: `error: ${msg.text}` }[msg.status] || msg.text;
+      return (
+        <box style={{ marginTop: 0, paddingLeft: 1, paddingRight: 1 }}>
+          <text>
+            <span fg={c}>{`◆ ${msg.label}  `}</span>
+            <span fg={msg.status === 'error' ? '#f85149' : '#888'}>{`${icon} ${verb}`}</span>
+          </text>
+        </box>
+      );
+    }
+    case 'subagent': {
+      const c = CHART_COLORS[(msg.index || 0) % CHART_COLORS.length];
+      return (
+        <box style={{ flexDirection: 'column', marginTop: 1, paddingLeft: 1, paddingRight: 1 }}>
+          <text><span fg={c}>{`◆ ${msg.label}`}</span></text>
+          <RichText>{msg.text || ' '}</RichText>
+        </box>
+      );
+    }
     default:
       return null;
   }
@@ -469,11 +492,13 @@ function Session({
           return copy;
         });
       },
-      onMessage: ({ role, content }) => {
+      onMessage: ({ role, content, label, status, task, index }) => {
         if (role === 'assistant')      push({ type: 'assistant', text: content });
         else if (role === 'thinking')  push({ type: 'thinking', text: content });
         else if (role === 'plan')      push({ type: 'plan', text: content });
         else if (role === 'error')     push({ type: 'error', text: content });
+        else if (role === 'sub-agent')        push({ type: 'subagent', label, text: content, index });
+        else if (role === 'sub-agent-status') push({ type: 'subagent-status', label, status, text: task, index });
       },
     });
     agentRef.current = agent;

@@ -813,8 +813,10 @@ One word only:`;
         const agentLabel = label || `agent-${i + 1}`;
 
         BUS.register(agentLabel);
+        this.onMessage({ role: 'sub-agent-status', label: agentLabel, status: 'start', task, index: i });
 
         let subStreamBuf = '';
+        let toolCount = 0;
         const sub = new Agent({
           modelAlias: modelToUse,
           label: agentLabel,
@@ -824,7 +826,10 @@ One word only:`;
               this.onMessage({ role: 'sub-agent', content, label: agentLabel });
             }
           },
-          onToolCall:    () => {},
+          onToolCall: ({ name }) => {
+            toolCount++;
+            this.onMessage({ role: 'sub-agent-status', label: agentLabel, status: 'tool', task: name, index: i });
+          },
           onToolResult:  () => {},
           onTokens: ({ total }) => this.onTokens({ total: this.totalTokens + total, input: this.inputTokens, output: this.outputTokens }),
           onStreamChunk: (chunk) => { subStreamBuf += chunk; },
@@ -853,8 +858,10 @@ One word only:`;
           const content = typeof lastMsg?.content === 'string'
             ? lastMsg.content
             : lastMsg?.content?.find?.((c) => c.type === 'text')?.text || '(completed)';
+          this.onMessage({ role: 'sub-agent-status', label: agentLabel, status: 'done', task: `${toolCount} tool call(s)`, index: i });
           return `[${agentLabel}]:\n${content}`;
         } catch (err) {
+          this.onMessage({ role: 'sub-agent-status', label: agentLabel, status: 'error', task: err.message, index: i });
           return `[${agentLabel}] ERROR: ${err.message}`;
         }
       })
