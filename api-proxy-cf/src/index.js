@@ -102,12 +102,25 @@ async function requireKey(c) {
 
 // ── Email ──────────────────────────────────────────────────────────────────
 
-async function sendEmail(resendKey, { to, subject, html }) {
-  return fetch('https://api.resend.com/emails', {
+async function sendEmail(resendKey, { to, subject, html, from, replyTo }) {
+  const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${resendKey}` },
-    body: JSON.stringify({ from: 'Axion Labs <noreply@amplifiedsmp.org>', to: [to], subject, html }),
+    body: JSON.stringify({
+      from: from || 'Axion Labs <noreply@amplifiedsmp.org>',
+      to: [to],
+      subject,
+      html,
+      ...(replyTo ? { reply_to: replyTo } : {}),
+    }),
   })
+  if (!res.ok) {
+    const body = await res.text().catch(() => '')
+    console.error(`[sendEmail] Resend API error ${res.status} sending to ${to}: ${body}`)
+  } else {
+    console.log(`[sendEmail] sent to ${to}`)
+  }
+  return res
 }
 
 function emailWrap(inner) {
@@ -867,45 +880,67 @@ app.post('/webhook/announce', async (c) => {
 
   if (c.env.RESEND_API_KEY) {
     c.executionCtx.waitUntil((async () => {
-      const [{ results: accountRecipients }, { results: subRecipients }] = await Promise.all([
-        c.env.DB.prepare(`
-          SELECT u.email, NULL as unsub_token FROM users u
-          LEFT JOIN email_prefs p ON p.user_id = u.id
-          WHERE u.verified = 1 AND (p.notify_announcements IS NULL OR p.notify_announcements = 1)
-          LIMIT 500
-        `).all(),
-        c.env.DB.prepare('SELECT email, unsub_token FROM subscribers WHERE active=1 LIMIT 500').all(),
-      ])
+      try {
+        const [{ results: accountRecipients }, { results: subRecipients }] = await Promise.all([
+          c.env.DB.prepare(`
+            SELECT u.email, NULL as unsub_token FROM users u
+            LEFT JOIN email_prefs p ON p.user_id = u.id
+            WHERE u.verified = 1 AND (p.notify_announcements IS NULL OR p.notify_announcements = 1)
+            LIMIT 500
+          `).all(),
+          c.env.DB.prepare('SELECT email, unsub_token FROM subscribers WHERE active=1 LIMIT 500').all(),
+        ])
 
-      const seen = new Set()
-      const all = []
-      for (const r of [...accountRecipients, ...subRecipients]) {
-        if (!seen.has(r.email)) { seen.add(r.email); all.push(r) }
-      }
+        const seen = new Set()
+        const all = []
+        for (const r of [...accountRecipients, ...subRecipients]) {
+          if (!seen.has(r.email)) { seen.add(r.email); all.push(r) }
+        }
+        console.log(`[announce] sending "${title.trim()}" to ${all.length} recipient(s): ${all.map(r => r.email).join(', ')}`)
 
-      const titleStr = title.trim()
-      const bodyStr = body.trim().replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
-      for (let i = 0; i < all.length; i += 10) {
-        await Promise.all(all.slice(i, i + 10).map(r => {
-          const unsubUrl = r.unsub_token
-            ? `https://api.amplifiedsmp.org/announcements/unsubscribe?token=${r.unsub_token}`
-            : `https://axion.amplifiedsmp.org/keys`
-          return sendEmail(c.env.RESEND_API_KEY, {
-            to: r.email,
-            subject: `Axion Labs: ${titleStr}`,
-            html: emailWrap(`
-              <h2 style="margin:0 0 8px;color:#e8e8f0">${titleStr}</h2>
-              <div style="color:#ccc;line-height:1.7;margin:0 0 24px;white-space:pre-wrap">${bodyStr}</div>
-              <a href="https://axion.amplifiedsmp.org/announcements" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">Read on site →</a>
-              <p style="color:#555;font-size:12px;margin-top:24px"><a href="${unsubUrl}" style="color:#666">Unsubscribe</a></p>
-            `),
-          })
-        }))
+        const titleStr = title.trim()
+        const bodyStr = body.trim().replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+        for (let i = 0; i < all.length; i += 10) {
+          await Promise.all(all.slice(i, i + 10).map(r => {
+            const unsubUrl = r.unsub_token
+              ? `https://api.amplifiedsmp.org/announcements/unsubscribe?token=${r.unsub_token}`
+              : `https://axion.amplifiedsmp.org/keys`
+            return sendEmail(c.env.RESEND_API_KEY, {
+              to: r.email,
+              subject: `Axion Labs: ${titleStr}`,
+              html: emailWrap(`
+                <h2 style="margin:0 0 8px;color:#e8e8f0">${titleStr}</h2>
+                <div style="color:#ccc;line-height:1.7;margin:0 0 24px;white-space:pre-wrap">${bodyStr}</div>
+                <a href="https://axion.amplifiedsmp.org/announcements" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">Read on site →</a>
+                <p style="color:#555;font-size:12px;margin-top:24px"><a href="${unsubUrl}" style="color:#666">Unsubscribe</a></p>
+              `),
+            })
+          }))
+        }
+      } catch (err) {
+        console.error(`[announce] background send failed: ${err?.stack || err}`)
       }
     })())
+  } else {
+    console.error('[announce] RESEND_API_KEY not set — skipping send entirely')
   }
 
   return json({ ok: true, id, recipients_queued: true })
+})
+
+// One-off transactional send (e.g. a personal welcome note to a specific
+// signup) — reuses the announce webhook's secret rather than a new one.
+app.post('/webhook/send-email', async (c) => {
+  const secret = c.req.header('X-Webhook-Secret')
+  if (!secret || secret !== c.env.ANNOUNCE_WEBHOOK_SECRET) return json({ error: 'Unauthorized' }, 401)
+  if (!c.env.RESEND_API_KEY) return json({ error: 'RESEND_API_KEY not set' }, 500)
+
+  const { to, subject, html, from, replyTo } = await c.req.json().catch(() => ({}))
+  if (!to || !subject || !html) return json({ error: 'to, subject, and html are required' }, 400)
+
+  const res = await sendEmail(c.env.RESEND_API_KEY, { to, subject, html, from, replyTo })
+  if (!res.ok) return json({ error: `Resend API error ${res.status}` }, 502)
+  return json({ ok: true })
 })
 
 // ── Admin: daily usage chart ───────────────────────────────────────────────
