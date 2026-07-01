@@ -2120,12 +2120,14 @@ function Session({
             // walk back from the run's last message to find where it started.
             const isCompletedTool = (m) => m && m.type === 'tool' && !m.pending;
             let runRecap = null;
+            let runFailed = false;
             if (isCompletedTool(msg) && !isCompletedTool(messages[i + 1])) {
               let start = i;
               while (start > 0 && isCompletedTool(messages[start - 1])) start--;
               if (i - start >= 1) { // ≥2 tool calls in the run
-                const summary = summarizeToolRun(messages.slice(start, i + 1));
-                if (summary) runRecap = summary;
+                const runMsgs = messages.slice(start, i + 1);
+                const summary = summarizeToolRun(runMsgs);
+                if (summary) { runRecap = summary; runFailed = runMsgs.some((m) => m.success === false); }
               }
             }
             return (
@@ -2139,7 +2141,10 @@ function Session({
                 </box>
                 {runRecap && (
                   <box style={{ paddingLeft: 1 }}>
-                    <text><span fg="#666">{`  ↳ ${runRecap}`}</span></text>
+                    <text>
+                      {runFailed ? <span fg="#f85149">{'△ '}</span> : null}
+                      <span fg={runFailed ? '#f85149' : '#666'}>{`  ↳ ${runRecap}`}</span>
+                    </text>
                   </box>
                 )}
               </box>
