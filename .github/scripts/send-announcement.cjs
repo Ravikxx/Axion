@@ -63,13 +63,23 @@ function parseAnnouncements(html) {
   return results
 }
 
-// ── Compare to previous commit ────────────────────────────────────────────
+// ── Compare to the pre-push state ─────────────────────────────────────────
+// COMPARE_REF defaults to HEAD~1 for local/manual runs, but the workflow sets
+// it to the push's actual "before" SHA — HEAD~1 alone is wrong whenever a
+// push bundles more than one commit (the new announcement can land in a
+// commit that isn't the very last one, invisible to a HEAD~1 diff).
+
+const compareRef = (process.env.COMPARE_REF || '').trim() || 'HEAD~1'
+// A brand-new branch's "before" SHA is all-zeros — nothing to compare against.
+const isZeroSha = /^0+$/.test(compareRef)
 
 let prevHtml = ''
-try {
-  prevHtml = execSync(`git show HEAD~1:${htmlFile}`, { encoding: 'utf8' })
-} catch {
-  // First commit or file didn't exist before — treat all as new
+if (!isZeroSha) {
+  try {
+    prevHtml = execSync(`git show ${compareRef}:${htmlFile}`, { encoding: 'utf8' })
+  } catch {
+    // Ref doesn't have this file yet (first commit that added it) — treat all as new
+  }
 }
 
 const hashOf = a => createHash('sha256').update(a.title + '|||' + a.body).digest('hex').slice(0, 16)
