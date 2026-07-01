@@ -50,6 +50,7 @@ import { OAUTH_PROVIDERS } from '../oauth/providers.js';
 import { connectOAuth, listOAuthTokens, revokeOAuthToken } from '../oauth/oauth.js';
 import { parseSchedule } from '../scheduler.js';
 import { executeTool } from '../agent/tools.js';
+import { BUS } from '../agent/bus.js';
 
 // ── Milestone 2: real agent wired into the OpenTUI shell ────────────────────────
 // Reuses the UI-agnostic Agent class (callbacks → message list). Row layout:
@@ -413,6 +414,7 @@ function Session({
       modelAlias: initialModel,
       mode: initialMode,
       todoScope,
+      label: todoScope, // per-tab BUS mailbox, so bgtask/follow-up pings land on the right tab
       onTokens: (t) => setTokens(typeof t === 'object' ? t : { total: t, input: 0, output: t, context: t }),
       onStreamChunk: (chunk) => {
         streamRef.current += chunk;
@@ -1787,6 +1789,27 @@ function Session({
     if (text.startsWith('/')) { runCommand(text); return; }
     runAgentTurn(text, expandMentions(text)); // @file mentions → file contents for the agent
   }, [busy, runCommand, setInputSafe, runAgentTurn]);
+
+  // Poll this tab's BUS mailbox (keyed by todoScope — see the Agent's `label`
+  // above) for background-task completions (run_command background=true) and
+  // schedule_followup fires. Desktop-pings either way; auto-continues the
+  // agent with the note if idle, otherwise just drops an info message since
+  // we can't run two turns at once.
+  useEffect(() => {
+    const id = setInterval(() => {
+      const msgs = BUS.read(todoScope);
+      if (!msgs.length) return;
+      for (const m of msgs) {
+        const title = m.content?.title || 'Axion';
+        const text = m.content?.text || '';
+        try { writeSync(1, `\x1b]9;${title.replace(/[\x00-\x1f]/g, ' ')}\x07\x07`); } catch {}
+        if (!text) continue;
+        if (!busy) runAgentTurn(text, text);
+        else push({ type: 'info', text });
+      }
+    }, 1000);
+    return () => clearInterval(id);
+  }, [busy, runAgentTurn, push, todoScope]);
 
   // Retry: regenerate the AI's answer to the prompt that produced this assistant
   // message — roll back to before that user turn and re-run it.

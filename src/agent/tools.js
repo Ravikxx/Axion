@@ -284,6 +284,18 @@ export const TOOL_DEFINITIONS = [
     },
   },
   {
+    name: 'schedule_followup',
+    description: 'Schedule a one-time reminder to check back on something after a delay, instead of blocking or polling in a loop. When it fires, your note is fed back into the conversation automatically (and pings the desktop) if you\'re idle; otherwise it queues until you\'re free. Good for "check if the build finished in 2 minutes" type follow-ups that aren\'t tied to a background task (those already auto-notify on completion — see run_command background=true).',
+    input_schema: {
+      type: 'object',
+      properties: {
+        seconds: { type: 'number', description: 'Delay in seconds before the follow-up fires (minimum 5).' },
+        note:    { type: 'string', description: 'What to check on or remind yourself about when this fires.' },
+      },
+      required: ['seconds', 'note'],
+    },
+  },
+  {
     name: 'git_status',
     description: 'Run git status.',
     input_schema: { type: 'object', properties: {}, required: [] },
@@ -947,7 +959,13 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
           };
           proc.stdout.on('data', append);
           proc.stderr.on('data', append);
-          proc.on('close', (code) => { task.exitCode = code; });
+          proc.on('close', (code) => {
+            task.exitCode = code;
+            BUS.send('bgtask', agentLabel, {
+              title: code === 0 ? '✔ Axion background task done' : '✖ Axion background task failed',
+              text: `[Background task ${id} finished, exit code ${code}] \`${input.command}\`\n${task.output.slice(-2000) || '(no output)'}`,
+            });
+          });
           proc.on('error', (err) => { task.output += `\n[spawn error] ${err.message}`; task.exitCode = -1; });
           BG_TASKS.set(id, task);
           return { success: true, output: `Started background task ${id}: \`${input.command}\`\nUse check_task with id "${id}" to read output.` };
@@ -994,6 +1012,15 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
         await new Promise(r => setTimeout(r, 250));
         const st = task.exitCode === null ? 'running' : `exited (${task.exitCode})`;
         return { success: true, output: `Input sent. [${st}]\n── output ──\n${task.output || '(no output yet)'}` };
+      }
+
+      case 'schedule_followup': {
+        const secs = Math.max(5, Number(input.seconds) || 60);
+        const note = String(input.note || '').slice(0, 500);
+        setTimeout(() => {
+          BUS.send('scheduler', agentLabel, { title: '⏰ Axion follow-up', text: `[Scheduled follow-up] ${note}` });
+        }, secs * 1000);
+        return { success: true, output: `Follow-up scheduled in ${secs}s: "${note}"` };
       }
 
       case 'git_status': {
