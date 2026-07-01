@@ -4,6 +4,7 @@ import { join, dirname } from 'path';
 import { homedir, platform } from 'os';
 import { fileURLToPath } from 'url';
 import { API_KEYS } from './config.js';
+import { getSavedCustomEndpoints } from './persist.js';
 
 const _doctorDir = dirname(fileURLToPath(import.meta.url));
 
@@ -219,6 +220,39 @@ async function checkMcp() {
   }
 }
 
+// GET /models on each saved custom endpoint — free (no completion tokens spent),
+// catches misconfigured baseURLs/model IDs (e.g. a model that 404s with
+// "No endpoints found") before they surface mid-conversation.
+async function pingEndpointModels(name, ep) {
+  const base = ep.baseURL.replace(/\/+$/, '');
+  const res = await fetch(`${base}/models`, {
+    headers: ep.apiKey && ep.apiKey !== 'no-key' ? { Authorization: `Bearer ${ep.apiKey}` } : {},
+    signal: AbortSignal.timeout(5000),
+  });
+  if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+  const json = await res.json();
+  const ids = (json?.data || []).map((m) => m.id).filter(Boolean);
+  if (ep.model && ids.length && !ids.includes(ep.model)) {
+    throw new Error(`model "${ep.model}" not found at this endpoint`);
+  }
+  return `reachable${ep.model ? ` — "${ep.model}" available` : ''}`;
+}
+
+async function checkEndpoints() {
+  head('Custom endpoints');
+  const endpoints = getSavedCustomEndpoints();
+  const names = Object.keys(endpoints);
+  if (!names.length) { warn('No custom endpoints configured — use /endpoint <name> <url>'); return; }
+
+  const results = await Promise.allSettled(names.map((name) => pingEndpointModels(name, endpoints[name])));
+  for (let i = 0; i < names.length; i++) {
+    const name = names[i];
+    const r = results[i];
+    if (r.status === 'fulfilled') ok(`${name} — ${r.value}`);
+    else fail(`${name} — ${r.reason?.message || 'unreachable'}  (${endpoints[name].baseURL})`);
+  }
+}
+
 function checkUpdates() {
   head('Updates');
   const rootDir = join(_doctorDir, '..');
@@ -252,6 +286,7 @@ export async function runDoctor() {
   checkComputerUse();
   checkWebServer();
   checkAxionDir();
+  await checkEndpoints();
   await checkMcp();
   checkUpdates();
   process.stdout.write('\n');
