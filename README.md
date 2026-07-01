@@ -35,7 +35,7 @@
 ### Install (recommended)
 
 ```bash
-npm install -g axion-cli
+npm install -g @axion-labs-ai/quark-cli
 axion
 ```
 
