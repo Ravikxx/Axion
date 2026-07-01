@@ -53,7 +53,7 @@ import { DISCORD_STATE, startDiscord, stopDiscord } from '../agent/discord.js';
 import { OAUTH_PROVIDERS } from '../oauth/providers.js';
 import { connectOAuth, listOAuthTokens, revokeOAuthToken } from '../oauth/oauth.js';
 import { parseSchedule } from '../scheduler.js';
-import { executeTool } from '../agent/tools.js';
+import { executeTool, getCwd, setCwd } from '../agent/tools.js';
 import { BUS } from '../agent/bus.js';
 
 // ── Milestone 2: real agent wired into the OpenTUI shell ────────────────────────
@@ -153,7 +153,15 @@ function messageSearchText(msg) {
   return msg.text || '';
 }
 
-function MessageRow({ msg, expanded = false, onToggle, index, onCopy, onEdit, onDelete, onRetry }) {
+// Memoized: without this, every poll tick (git status, BUS, todos, scroll
+// position) and every streamed token re-renders the ENTIRE transcript, since
+// they all call setState on Session and React re-runs messages.map(...) from
+// scratch. That's invisible with a few messages but gets steadily slower —
+// eventually feeling like a freeze — as the conversation grows. The custom
+// comparator ignores the callback props (onCopy/onEdit/... are fresh arrow
+// closures every render even though they call the same stable useCallback),
+// and only re-renders a row when its own msg/expanded/index actually change.
+const MessageRow = React.memo(function MessageRow({ msg, expanded = false, onToggle, index, onCopy, onEdit, onDelete, onRetry }) {
   const A = accent();
   const [hovered, setHovered] = useState(false);
   switch (msg.type) {
@@ -278,7 +286,7 @@ function MessageRow({ msg, expanded = false, onToggle, index, onCopy, onEdit, on
     default:
       return null;
   }
-}
+}, (prev, next) => prev.msg === next.msg && prev.expanded === next.expanded && prev.index === next.index);
 
 function Session({
   initialModel = 'lumen', initialMode = 'ask', initialResume = null,
@@ -321,6 +329,7 @@ function Session({
   const [chatQuery, setChatQuery] = useState('');
   const [chatSel, setChatSel] = useState(0);
   const [diffTotals, setDiffTotals] = useState({ added: 0, removed: 0 }); // session edit stats
+  const [cwdState, setCwdState] = useState(() => getCwd(todoScope)); // tab's working dir (change_working_dir/run_command `cd`)
   const [extThinking, setExtThinking] = useState(false);
   const [thinkingBudget, setThinkingBudget] = useState(10000);
   const [systemOverride, setSystemOverride] = useState('');
@@ -483,6 +492,10 @@ function Session({
           const s = diffStats(diff);
           setDiffTotals((t) => ({ added: t.added + (s.added || 0), removed: t.removed + (s.removed || 0) }));
         }
+        if (name === 'change_working_dir' || name === 'run_command') {
+          const c = getCwd(todoScope);
+          setCwdState((prev) => (prev === c ? prev : c));
+        }
         setMessages((m) => {
           let ri = id != null ? m.findIndex((x) => x.type === 'tool' && x.id === id && x.pending) : -1;
           if (ri === -1) ri = m.findIndex((x) => x.type === 'tool' && x.name === name && x.pending);
@@ -502,6 +515,13 @@ function Session({
       },
     });
     agentRef.current = agent;
+
+    // Restore this tab's working directory if the saved chat had one (falls
+    // back to the real process cwd otherwise, via getCwd's default).
+    if (initialResume?.cwd) {
+      setCwd(todoScope, initialResume.cwd);
+      setCwdState(initialResume.cwd);
+    }
 
     // Resume: seed the agent history + message log from a saved/last session.
     if (initialResume && Array.isArray(initialResume.agentHistory)) {
@@ -555,14 +575,14 @@ function Session({
     const inTok = tokens.input || 0, outTok = tokens.output || 0;
     return {
       model, mode,
-      cwd: process.cwd(),
+      cwd: cwdState,
       tokenCount: tokens.total || 0,
       cost: estimateCost(model, inTok, outTok) || 0,
       agentHistory: agentRef.current?.history || [],
       displayMessages,
       todos: getTodos(todoScope),
     };
-  }, [messages, model, mode, tokens, todoScope]);
+  }, [messages, model, mode, tokens, todoScope, cwdState]);
 
   // Report this tab's session snapshot up to the shell 1s after it settles. The
   // shell persists the active tab to the "last session" slot (for `axion -c`) and
@@ -579,8 +599,16 @@ function Session({
   }, [messages, model, mode, buildSession, isActive, onSnapshot]);
 
   // Refresh this scope's todos periodically (the agent can add them via tools).
+  // getTodos() returns a fresh array reference every call even when nothing
+  // changed, so skip the setState (and the resulting full Session re-render)
+  // unless the content actually differs — this poll runs forever, for every
+  // tab, so an unconditional update here was a steady background tax that
+  // got worse as the transcript grew.
   useEffect(() => {
-    const id = setInterval(() => setTodos(getTodos(todoScope)), 2000);
+    const id = setInterval(() => {
+      const next = getTodos(todoScope);
+      setTodos((prev) => (JSON.stringify(prev) === JSON.stringify(next) ? prev : next));
+    }, 2000);
     return () => clearInterval(id);
   }, [todoScope]);
 
@@ -589,11 +617,11 @@ function Session({
   const [gitInfo, setGitInfo] = useState(null);
   useEffect(() => {
     if (!isActive) return;
-    const poll = () => setGitInfo(readGitStatus());
+    const poll = () => setGitInfo(readGitStatus(cwdState));
     poll();
     const id = setInterval(poll, 5000);
     return () => clearInterval(id);
-  }, [isActive]);
+  }, [isActive, cwdState]);
 
   // Poll scroll position to show/hide the "jump to bottom" button. No scroll
   // event in OpenTUI, so we sample scrollTop vs. the max scroll a few times/sec.
@@ -837,7 +865,7 @@ function Session({
         // Direct git shortcuts — no LLM call, just runs git and prints the result.
         // (The agent also has git_status/git_diff/git_commit tools for natural-language use.)
         const sub = (args[0] || 'status').toLowerCase();
-        const cwd = process.cwd();
+        const cwd = cwdState;
         try {
           if (sub === 'status') { push({ type: 'info', text: execSync('git status', { cwd, encoding: 'utf8' }) }); return; }
           if (sub === 'diff') { push({ type: 'info', text: execSync('git diff', { cwd, encoding: 'utf8' }) || '(no changes)' }); return; }
@@ -1195,7 +1223,7 @@ function Session({
       case 'save': {
         if (!arg) { push({ type: 'error', text: 'usage: /save <chatname>' }); return; }
         try {
-          saveChat(arg, { model, mode, tokenCount: tokens.total, agentHistory: agentRef.current?.history || [], displayMessages: messages.filter(m => m.type !== 'info') });
+          saveChat(arg, { model, mode, tokenCount: tokens.total, agentHistory: agentRef.current?.history || [], displayMessages: messages.filter(m => m.type !== 'info'), cwd: cwdState });
           push({ type: 'info', text: `Chat saved as "${arg}".` });
         } catch (err) { push({ type: 'error', text: `Save failed: ${err.message}` }); }
         return;
@@ -1866,7 +1894,7 @@ function Session({
         push({ type: 'info', text: `/${c} isn't wired into the new UI yet — coming soon.` });
         return;
     }
-  }, [model, mode, tokens, messages, push, onExit, buildSession, extThinking, thinkingBudget, systemOverride, goal, computerUse, includedFiles]);
+  }, [model, mode, tokens, messages, push, onExit, buildSession, extThinking, thinkingBudget, systemOverride, goal, computerUse, includedFiles, cwdState]);
 
   // Push a user message and run one agent turn with the interactive prompts
   // (tool-confirm, plan-confirm, free-form questions). Shared by submit + retry.
@@ -2034,7 +2062,7 @@ function Session({
   return (
     <box style={{ flexGrow: 1, flexDirection: 'row' }}>
       <box style={{ flexGrow: 1, flexDirection: 'column' }}>
-        <Welcome model={model} mode={mode} updateInfo={updateInfo} />
+        <Welcome model={model} mode={mode} cwd={cwdState} updateInfo={updateInfo} />
         <scrollbox ref={scrollRef} style={{ flexGrow: 1, flexShrink: 1, minHeight: 0 }} stickyScroll stickyStart="bottom">
           {messages.map((msg, i) => {
             const isHit = searchOpen && searchMatches.length > 0 && i === searchMatches[searchIdx];

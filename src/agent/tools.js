@@ -21,35 +21,14 @@ process.on('exit', () => {
 
 import { join } from 'path';
 
-let cwd = process.cwd();
-
-function relPath(p) { return relative(cwd, resolve(cwd, p)) || '.'; }
-
-// Silently run formatter after a file write if project config is detected.
-function tryAutoFormat(absPath) {
-  const ext = extname(absPath).toLowerCase();
-  try {
-    const hasPrettier = ['.prettierrc', '.prettierrc.json', '.prettierrc.js',
-                         'prettier.config.js', 'prettier.config.mjs', 'prettier.config.cjs']
-                        .some(f => existsSync(join(cwd, f)));
-    if (hasPrettier && ['.js','.jsx','.ts','.tsx','.json','.css','.html','.md','.yaml','.yml'].includes(ext)) {
-      execSync(`npx prettier --write "${absPath}"`, { cwd, stdio: 'pipe', timeout: 15000 });
-      return ' (auto-formatted)';
-    }
-    if (ext === '.go') {
-      execSync(`gofmt -w "${absPath}"`, { cwd, stdio: 'pipe', timeout: 5000 });
-      return ' (gofmt)';
-    }
-    if (ext === '.py') {
-      const hasPyConf = existsSync(join(cwd, 'pyproject.toml')) || existsSync(join(cwd, '.black'));
-      if (hasPyConf) {
-        execSync(`python -m black "${absPath}" -q`, { cwd, stdio: 'pipe', timeout: 15000 });
-        return ' (black)';
-      }
-    }
-  } catch {} // formatter not installed or failed — silent skip
-  return '';
-}
+// Working directory is per-agent (keyed by agentLabel — each tab's top-level
+// agent gets its own label, see App.jsx), not a single process-wide value.
+// Previously this was one shared module-level `let cwd`, so change_working_dir
+// in one tab silently affected every other tab's file/git tools, and the UI
+// (Welcome banner, sidebar) had no way to read it since it lived only here.
+const CWD_BY_LABEL = new Map();
+export function getCwd(agentLabel = 'main') { return CWD_BY_LABEL.get(agentLabel) || process.cwd(); }
+export function setCwd(agentLabel, dir) { if (agentLabel) CWD_BY_LABEL.set(agentLabel, dir); }
 
 // ── Tool definitions ──────────────────────────────────────────────────────────
 
@@ -634,6 +613,35 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
     MACRO_STATE.steps.push({ name, input: { ...input } });
   }
 
+  let cwd = getCwd(agentLabel);
+  const relPath = (p) => relative(cwd, resolve(cwd, p)) || '.';
+
+  // Silently run formatter after a file write if project config is detected.
+  const tryAutoFormat = (absPath) => {
+    const ext = extname(absPath).toLowerCase();
+    try {
+      const hasPrettier = ['.prettierrc', '.prettierrc.json', '.prettierrc.js',
+                           'prettier.config.js', 'prettier.config.mjs', 'prettier.config.cjs']
+                          .some(f => existsSync(join(cwd, f)));
+      if (hasPrettier && ['.js','.jsx','.ts','.tsx','.json','.css','.html','.md','.yaml','.yml'].includes(ext)) {
+        execSync(`npx prettier --write "${absPath}"`, { cwd, stdio: 'pipe', timeout: 15000 });
+        return ' (auto-formatted)';
+      }
+      if (ext === '.go') {
+        execSync(`gofmt -w "${absPath}"`, { cwd, stdio: 'pipe', timeout: 5000 });
+        return ' (gofmt)';
+      }
+      if (ext === '.py') {
+        const hasPyConf = existsSync(join(cwd, 'pyproject.toml')) || existsSync(join(cwd, '.black'));
+        if (hasPyConf) {
+          execSync(`python -m black "${absPath}" -q`, { cwd, stdio: 'pipe', timeout: 15000 });
+          return ' (black)';
+        }
+      }
+    } catch {} // formatter not installed or failed — silent skip
+    return '';
+  };
+
   try {
     switch (name) {
 
@@ -891,6 +899,7 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
         if (!existsSync(target)) return { success: false, output: `No such directory: ${relPath(input.path)}` };
         if (!statSync(target).isDirectory()) return { success: false, output: `Not a directory: ${relPath(input.path)}` };
         cwd = target;
+        setCwd(agentLabel, cwd);
         return { success: true, output: `Working directory → ${cwd}` };
       }
 
@@ -948,6 +957,7 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
           const target = resolve(cwd, cdMatch[1].trim());
           if (!existsSync(target)) return { success: false, output: `cd: no such directory: ${target}` };
           cwd = target;
+          setCwd(agentLabel, cwd);
           return { success: true, output: `(cwd → ${cwd})` };
         }
         if (input.background) {
