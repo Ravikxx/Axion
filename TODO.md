@@ -26,16 +26,19 @@ enough in practice but not pixel-exact. Verified the matching logic directly
 (unrelated environment issue, not the feature) — worth a manual check in a
 real terminal if picking this up.
 
-## 2. Chat browser / fuzzy resume picker
-A picker like FilePicker but for saved chats (`listChats()` in persist.js),
-so `axion` can open a fuzzy list instead of requiring the exact `-r <name>`.
-- Files: `src/persist.js` (`listChats`, `loadChat`), `src/tui/main.jsx` (argv
-  parsing, where `-r`/`-c` currently require exact names), new picker UI
-  (reuse FilePicker.jsx's fuzzy-list rendering pattern, or fileList.js's
-  `fuzzyFilter` against chat names/dates instead of file paths).
-- Decide: is this a `/resume` slash command opened inside a running session
-  (spawns a new tab from the picked chat), or only a startup-time flag? Ask
-  the user before committing — affects whether it needs its own inputMode.
+## 2. Chat browser / fuzzy resume picker — DONE
+User chose: `/resume` (no args) inside a running session. Implemented
+`src/tui/ChatPicker.jsx` (new — owns its own filter `<input>`, unlike
+FilePicker which reads off the main input's `@query`) + wiring in App.jsx
+(`chatPickerOpen`/`chatPickerList`/`chatQuery`/`chatSel`, `chatMatches`
+useMemo using `fuzzyFilter` from fileList.js against chat names). Picking a
+chat calls `loadChat(name)` then `onNewTab?.(chat)` — opens it in a **new
+tab**, doesn't touch the current one. Had to extend the App-level `newTab`
+callback to accept an optional `resume` payload (previously always `null`).
+`/resume <name>` (exact name, loads into the *current* tab) is unchanged —
+this only replaces the old no-args text-listing behavior. Verified the
+fuzzy-match logic directly (pure-function test); full-TUI render still hangs
+in this sandbox (same unrelated environment issue as item 1).
 
 ## 3. Git panel in the sidebar
 Live git status (branch, staged/unstaged file counts) in Sidebar.jsx, plus
@@ -58,11 +61,22 @@ today/this-week/all-time spend, broken down by model.
 - Keep the log bounded (e.g. last N entries or prune >90 days) so
   `~/.axion/config.json` doesn't grow forever.
 
-## Also done (user request mid-stream, not in the original 5)
-@-file mentions now rescan the project every time a *new* `@` mention starts
-(`src/tui/App.jsx`, the `fileActive` useEffect), not just once at launch —
-catches files created mid-session. Removed the now-unused `fileScannedRef`.
+## Also done (user requests mid-stream, not in the original 5)
+- @-file mentions now rescan the project every time a *new* `@` mention
+  starts (`src/tui/App.jsx`, the `fileActive` useEffect), not just once at
+  launch — catches files created mid-session. Removed the now-unused
+  `fileScannedRef`.
+- `schedule_followup(seconds, note)` tool — agent requests a one-time
+  delayed check-in instead of polling. Background tasks (`run_command
+  background=true`) now also auto-notify on completion, no explicit call
+  needed. Both desktop-ping (OSC 9) and, if the tab is idle, auto-continue
+  the conversation with the result; if busy, post as an info message.
+  Routed per-tab via `src/agent/bus.js` (each tab's `Agent` now gets
+  `label: todoScope` instead of the default `'main'` — see `src/tui/App.jsx`
+  agent init and the new BUS-polling `useEffect`). This also fixed a latent
+  bug where every tab previously shared one `'main'` inbox for
+  send_message/read_messages (multi-agent tools).
 
 ---
-Status as of last update: items 0 and 1 done. Item 2 (chat browser / fuzzy
-resume picker) is next up.
+Status as of last update: items 0, 1, 2 done. Item 3 (git panel in the
+sidebar) is next up.

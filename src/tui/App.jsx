@@ -34,6 +34,7 @@ import { diffStats, diffLines } from '../utils/diff.js';
 import { Welcome } from './Welcome.jsx';
 import { checkForUpdate } from '../utils/updateCheck.js';
 import { SearchBar } from './SearchBar.jsx';
+import { ChatPicker } from './ChatPicker.jsx';
 import { Thinking } from './Thinking.jsx';
 import { QuestionMenu } from './QuestionMenu.jsx';
 import { pickThinkingWord } from '../ui/thinkingWords.js';
@@ -290,6 +291,10 @@ function Session({
   const [searchOpen, setSearchOpen] = useState(false); // Ctrl+F transcript search
   const [searchQuery, setSearchQuery] = useState('');
   const [searchIdx, setSearchIdx] = useState(0);
+  const [chatPickerOpen, setChatPickerOpen] = useState(false); // /resume fuzzy picker
+  const [chatPickerList, setChatPickerList] = useState([]);
+  const [chatQuery, setChatQuery] = useState('');
+  const [chatSel, setChatSel] = useState(0);
   const [diffTotals, setDiffTotals] = useState({ added: 0, removed: 0 }); // session edit stats
   const [extThinking, setExtThinking] = useState(false);
   const [thinkingBudget, setThinkingBudget] = useState(10000);
@@ -339,6 +344,27 @@ function Session({
   useEffect(() => { if (searchIdx >= searchMatches.length) setSearchIdx(0); }, [searchMatches, searchIdx]);
 
   const closeSearch = useCallback(() => { setSearchOpen(false); setSearchQuery(''); setSearchIdx(0); }, []);
+
+  // ── /resume fuzzy chat picker ────────────────────────────────────────────────
+  const chatMatches = useMemo(() => {
+    if (!chatPickerOpen) return [];
+    if (!chatQuery.trim()) return chatPickerList.slice(0, 8);
+    const names = fuzzyFilter(chatPickerList.map((c) => c.name), chatQuery, 8);
+    const byName = new Map(chatPickerList.map((c) => [c.name, c]));
+    return names.map((n) => byName.get(n)).filter(Boolean);
+  }, [chatPickerOpen, chatQuery, chatPickerList]);
+
+  useEffect(() => { if (chatSel >= chatMatches.length) setChatSel(0); }, [chatMatches, chatSel]);
+
+  const closeChatPicker = useCallback(() => { setChatPickerOpen(false); setChatQuery(''); setChatSel(0); }, []);
+
+  const pickChat = useCallback((c) => {
+    if (!c) return;
+    const chat = loadChat(c.name);
+    if (!chat) { push({ type: 'error', text: `No saved chat named "${c.name}".` }); closeChatPicker(); return; }
+    onNewTab?.(chat);
+    closeChatPicker();
+  }, [onNewTab, push, closeChatPicker]);
 
   // Scroll to the current match. Approximate (message index / total → scroll
   // fraction) since the scrollbox doesn't expose a per-child offset lookup.
@@ -633,6 +659,16 @@ function Session({
       if (key.name === 'up')   { setSearchIdx((i) => (searchMatches.length ? (i - 1 + searchMatches.length) % searchMatches.length : 0)); return; }
       if (key.name === 'down') { setSearchIdx((i) => (searchMatches.length ? (i + 1) % searchMatches.length : 0)); return; }
       return; // the <input> owns typing + Enter (Enter advances to the next match)
+    }
+
+    // /resume fuzzy chat picker: ↑/↓ move, Tab/Enter opens the pick in a new tab.
+    if (chatPickerOpen) {
+      if (key.name === 'escape') { closeChatPicker(); return; }
+      const n = chatMatches.length;
+      if (key.name === 'up')   { setChatSel((s) => (n ? (s - 1 + n) % n : 0)); return; }
+      if (key.name === 'down') { setChatSel((s) => (n ? (s + 1) % n : 0)); return; }
+      if (key.name === 'tab' || key.name === 'return') { pickChat(chatMatches[Math.min(chatSel, n - 1)]); return; }
+      return; // the <input> owns typing
     }
 
     // Tool-confirmation prompt: y = allow once, a = always allow, n/Esc = deny.
@@ -1076,9 +1112,10 @@ function Session({
       }
       case 'resume': {
         if (!arg) {
-          const chats = listChats();
-          if (!chats.length) { push({ type: 'info', text: 'No saved chats. Use /save <chatname> to save one.' }); return; }
-          push({ type: 'info', text: `Saved chats:\n${chats.map(c => `  ${c.name.padEnd(20)} ${(c.model || '?').padEnd(14)} ${c.messages ?? '?'} msgs  ${c.savedAt ? new Date(c.savedAt).toLocaleString() : '?'}`).join('\n')}\n\nUse /resume <chatname> to load one.` });
+          setChatPickerList(listChats());
+          setChatQuery('');
+          setChatSel(0);
+          setChatPickerOpen(true);
           return;
         }
         const chat = loadChat(arg);
@@ -1932,6 +1969,19 @@ function Session({
             accentColor={A}
           />
         )}
+        {chatPickerOpen && (
+          <ChatPicker
+            chats={chatMatches}
+            total={chatPickerList.length}
+            query={chatQuery}
+            onQuery={(v) => { setChatQuery(v); setChatSel(0); }}
+            selected={Math.min(chatSel, Math.max(0, chatMatches.length - 1))}
+            onPick={(i) => pickChat(chatMatches[i])}
+            onHover={setChatSel}
+            focused={isActive}
+            accentColor={A}
+          />
+        )}
         {/* Thinking indicator */}
         {busy && inputMode === 'chat' && (
           <Thinking word={thinkingWord} elapsed={thinkingElapsed} tokens={tokens.context || 0} />
@@ -1979,7 +2029,7 @@ function Session({
         <box style={{ flexShrink: 0, border: true, borderColor: inputMode === 'chat' ? A : '#f0c674', height: 3, paddingLeft: 1, paddingRight: 1 }}>
           <input
             ref={inputElRef}
-            focused={isActive && !searchOpen}
+            focused={isActive && !searchOpen && !chatPickerOpen}
             value={input}
             onInput={setInputSafe}
             onSubmit={fileActive && fileMatches.length ? () => insertFile(fileMatches[Math.min(fileSel, fileMatches.length - 1)]) : submit}
@@ -2083,9 +2133,12 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
     persistWorkspace();
   }, [persistWorkspace]);
 
-  const newTab = useCallback(() => {
+  const newTab = useCallback((resume = null) => {
     const id = ++TAB_SEQ;
-    setTabs((ts) => [...ts, { id, model: initialModel, mode: initialMode, resume: null, title: null }]);
+    setTabs((ts) => [...ts, {
+      id, model: resume?.model || initialModel, mode: resume?.mode || initialMode,
+      resume, title: resume?.name || null,
+    }]);
     setActiveId(id);
   }, [initialModel, initialMode]);
 
