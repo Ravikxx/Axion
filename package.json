@@ -1,7 +1,10 @@
 {
-  "name": "axion-cli",
+  "name": "@axion-labs-ai/quark-cli",
   "version": "2.0.0",
   "description": "Axion by Axion Labs — terminal AI coding agent",
+  "publishConfig": {
+    "access": "public"
+  },
   "type": "module",
   "bin": {
     "axion": "src/tui/launch.js",

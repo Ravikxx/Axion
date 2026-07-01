@@ -32,6 +32,7 @@ import { FilePicker } from './FilePicker.jsx';
 import { listProjectFiles, fuzzyFilter } from '../utils/fileList.js';
 import { diffStats, diffLines } from '../utils/diff.js';
 import { Welcome } from './Welcome.jsx';
+import { checkForUpdate } from '../utils/updateCheck.js';
 import { Thinking } from './Thinking.jsx';
 import { QuestionMenu } from './QuestionMenu.jsx';
 import { pickThinkingWord } from '../ui/thinkingWords.js';
@@ -246,6 +247,7 @@ function Session({
   onExit = () => process.exit(0),
   isActive = true, initialPrompt = null,
   onTitleChange, onNewTab, onCloseTab, onSwitchTab, onBusyChange, onSnapshot,
+  updateInfo = null,
 }) {
   const { width, height } = useTerminalDimensions();
   const A = accent();
@@ -1812,7 +1814,7 @@ function Session({
   return (
     <box style={{ flexGrow: 1, flexDirection: 'row' }}>
       <box style={{ flexGrow: 1, flexDirection: 'column' }}>
-        <Welcome model={model} mode={mode} />
+        <Welcome model={model} mode={mode} updateInfo={updateInfo} />
         <scrollbox ref={scrollRef} style={{ flexGrow: 1, flexShrink: 1, minHeight: 0 }} stickyScroll stickyStart="bottom">
           {messages.map((msg, i) => (
             <MessageRow
@@ -1961,6 +1963,12 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
   const [tabs, setTabs] = useState(initialTabState.current);
   const [activeId, setActiveId] = useState(initialTabState.current[0].id);
 
+  // One npm-registry version check per app launch, shared by every tab's banner.
+  const [updateInfo, setUpdateInfo] = useState(null);
+  useEffect(() => {
+    checkForUpdate().then((info) => { if (info.updateAvailable) setUpdateInfo(info); });
+  }, []);
+
   // Keep a live ref to tabs + each tab's latest snapshot for workspace autosave.
   const tabsRef = useRef(tabs); tabsRef.current = tabs;
   const snapshotsRef = useRef(new Map());
@@ -2094,6 +2102,7 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
                 onNewTab={newTab}
                 onCloseTab={closeTab}
                 onSwitchTab={switchTab}
+                updateInfo={updateInfo}
               />
             </box>
           );

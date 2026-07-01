@@ -5,6 +5,7 @@ import { homedir, platform } from 'os';
 import { fileURLToPath } from 'url';
 import { API_KEYS } from './config.js';
 import { getSavedCustomEndpoints } from './persist.js';
+import { checkForUpdate } from './utils/updateCheck.js';
 
 const _doctorDir = dirname(fileURLToPath(import.meta.url));
 
@@ -253,6 +254,14 @@ async function checkEndpoints() {
   }
 }
 
+async function checkNpmVersion() {
+  head('Version');
+  const { name, current, latest, updateAvailable } = await checkForUpdate();
+  if (!latest) { warn(`${name}@${current} — could not reach npm to check the latest version`); return; }
+  if (updateAvailable) warn(`${name}@${current} — ${latest} available  →  npm install -g ${name}@latest`);
+  else ok(`${name}@${current} — up to date (latest: ${latest})`);
+}
+
 function checkUpdates() {
   head('Updates');
   const rootDir = join(_doctorDir, '..');
@@ -280,6 +289,7 @@ function checkUpdates() {
 
 export async function runDoctor() {
   process.stdout.write('\n\x1b[1m◈ Axion Doctor\x1b[0m\n');
+  await checkNpmVersion();
   checkNode();
   checkApiKeys();
   checkGit();

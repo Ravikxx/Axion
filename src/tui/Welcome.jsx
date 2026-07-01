@@ -4,7 +4,7 @@ import { accent } from '../ui/theme.js';
 const MODE_ICONS = { ask: '?', plan: '◈', auto: '⚡', bypass: '⚡', decide: '🤖' };
 const modeLabel = (m) => (m === 'auto' ? 'bypass' : m === 'decide' ? 'decide-for-me' : m);
 
-export function Welcome({ model = '—', mode = 'ask', cwd = process.cwd() }) {
+export function Welcome({ model = '—', mode = 'ask', cwd = process.cwd(), updateInfo = null }) {
   const A = accent();
   const dir = String(cwd).split(/[\\/]/).pop() || cwd;
   return (
@@ -17,6 +17,14 @@ export function Welcome({ model = '—', mode = 'ask', cwd = process.cwd() }) {
         <span fg="#888">  dir  </span><span>{dir}</span>
         <span>{'  '}</span><span fg="#888">/help /model /theme /clear</span>
       </text>
+      {updateInfo?.updateAvailable && (
+        <text>
+          <span fg="#f0c674">{'⬆ update available  '}</span>
+          <span fg="#888">{`${updateInfo.current} → `}</span>
+          <span fg="#7ee787">{updateInfo.latest}</span>
+          <span fg="#888">{`   run: npm install -g ${updateInfo.name}@latest`}</span>
+        </text>
+      )}
     </box>
   );
 }
