@@ -614,10 +614,20 @@ function Session({
 
   // Cheap live git status for the sidebar (branch, staged/unstaged counts).
   // Only the foreground tab polls — background tabs would just waste cycles.
+  // A single failed tick (git briefly locked/slow — e.g. under an actively
+  // syncing OneDrive folder, or the event loop busy with the other pollers)
+  // shouldn't blank the panel; only clear it after a few misses in a row, so
+  // it stops flickering but still eventually hides if you really leave a repo.
   const [gitInfo, setGitInfo] = useState(null);
+  const gitMissesRef = useRef(0);
   useEffect(() => {
     if (!isActive) return;
-    const poll = () => setGitInfo(readGitStatus(cwdState));
+    const poll = () => {
+      const info = readGitStatus(cwdState);
+      if (info) { gitMissesRef.current = 0; setGitInfo(info); return; }
+      gitMissesRef.current++;
+      if (gitMissesRef.current >= 3) setGitInfo(null);
+    };
     poll();
     const id = setInterval(poll, 5000);
     return () => clearInterval(id);

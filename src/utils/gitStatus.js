@@ -4,8 +4,8 @@ import { execSync } from 'child_process';
 // a git repo (or if git isn't installed) so callers can just hide the panel.
 export function readGitStatus(cwd = process.cwd()) {
   try {
-    const branch = execSync('git rev-parse --abbrev-ref HEAD', { cwd, encoding: 'utf8', timeout: 2000, stdio: ['pipe', 'pipe', 'pipe'] }).trim();
-    const porcelain = execSync('git status --porcelain', { cwd, encoding: 'utf8', timeout: 2000, stdio: ['pipe', 'pipe', 'pipe'] });
+    const branch = execSync('git rev-parse --abbrev-ref HEAD', { cwd, encoding: 'utf8', timeout: 4000, stdio: ['pipe', 'pipe', 'pipe'] }).trim();
+    const porcelain = execSync('git status --porcelain', { cwd, encoding: 'utf8', timeout: 4000, stdio: ['pipe', 'pipe', 'pipe'] });
     let staged = 0, unstaged = 0;
     for (const line of porcelain.split('\n')) {
       if (!line) continue;
