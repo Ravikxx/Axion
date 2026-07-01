@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { useKeyboard, useTerminalDimensions, useRenderer } from '@opentui/react';
 import { accent, THEMES, setTheme, themeName } from '../ui/theme.js';
 import { Agent } from '../agent/agent.js';
@@ -33,6 +33,7 @@ import { listProjectFiles, fuzzyFilter } from '../utils/fileList.js';
 import { diffStats, diffLines } from '../utils/diff.js';
 import { Welcome } from './Welcome.jsx';
 import { checkForUpdate } from '../utils/updateCheck.js';
+import { SearchBar } from './SearchBar.jsx';
 import { Thinking } from './Thinking.jsx';
 import { QuestionMenu } from './QuestionMenu.jsx';
 import { pickThinkingWord } from '../ui/thinkingWords.js';
@@ -135,6 +136,16 @@ function ActionBtn({ label, color, onClick }) {
       <text><span fg={color}>{label}</span></text>
     </box>
   );
+}
+
+// Flat searchable text for a message, used by the Ctrl+F transcript search.
+function messageSearchText(msg) {
+  if (msg.type === 'tool') {
+    const input = typeof msg.input === 'string' ? msg.input : JSON.stringify(msg.input || {});
+    const output = typeof msg.output === 'string' ? msg.output : JSON.stringify(msg.output || '');
+    return [msg.name, msg.label, input, output].filter(Boolean).join(' ');
+  }
+  return msg.text || '';
 }
 
 function MessageRow({ msg, expanded = false, onToggle, index, onCopy, onEdit, onDelete, onRetry }) {
@@ -275,14 +286,16 @@ function Session({
   const [pendingForm, setPendingForm] = useState(null); // normalized question form for the menu
   const [expandedTools, setExpandedTools] = useState(() => new Set()); // message indices shown in full
   const [atBottom, setAtBottom] = useState(true); // scrollback pinned to bottom?
+  const [searchOpen, setSearchOpen] = useState(false); // Ctrl+F transcript search
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchIdx, setSearchIdx] = useState(0);
   const [diffTotals, setDiffTotals] = useState({ added: 0, removed: 0 }); // session edit stats
   const [extThinking, setExtThinking] = useState(false);
   const [thinkingBudget, setThinkingBudget] = useState(10000);
   const [systemOverride, setSystemOverride] = useState('');
   const [includedFiles, setIncludedFiles] = useState([]);
-  const [fileList, setFileList] = useState([]);     // project files, scanned lazily on first '@'
+  const [fileList, setFileList] = useState([]);     // project files, rescanned each time a new '@' mention starts
   const [fileSel, setFileSel] = useState(0);        // highlighted file in the @-picker
-  const fileScannedRef = useRef(false);
   const [goal, setGoal] = useState(null);
   const [computerUse, setComputerUse] = useState(false);
   const [thinkingWord, setThinkingWord] = useState('thinking');
@@ -313,6 +326,33 @@ function Session({
       setExpandedTools((prev) => { const n = new Set(prev); n.has(i) ? n.delete(i) : n.add(i); return n; });
     }, 0);
   }, []);
+  // ── Ctrl+F transcript search ─────────────────────────────────────────────────
+  const searchMatches = useMemo(() => {
+    if (!searchOpen || !searchQuery.trim()) return [];
+    const q = searchQuery.toLowerCase();
+    const idxs = [];
+    messages.forEach((m, i) => { if (messageSearchText(m).toLowerCase().includes(q)) idxs.push(i); });
+    return idxs;
+  }, [searchOpen, searchQuery, messages]);
+
+  useEffect(() => { if (searchIdx >= searchMatches.length) setSearchIdx(0); }, [searchMatches, searchIdx]);
+
+  const closeSearch = useCallback(() => { setSearchOpen(false); setSearchQuery(''); setSearchIdx(0); }, []);
+
+  // Scroll to the current match. Approximate (message index / total → scroll
+  // fraction) since the scrollbox doesn't expose a per-child offset lookup.
+  useEffect(() => {
+    if (!searchOpen || !searchMatches.length) return;
+    const el = scrollRef.current;
+    if (!el) return;
+    try {
+      const vh = el.viewport?.height ?? el.height ?? 0;
+      const max = Math.max(0, (el.scrollHeight || 0) - vh);
+      const frac = messages.length > 1 ? searchMatches[searchIdx] / (messages.length - 1) : 0;
+      el.scrollTo(Math.round(frac * max));
+    } catch {}
+  }, [searchIdx, searchMatches, searchOpen, messages.length]);
+
   const jumpToBottom = useCallback(() => {
     const el = scrollRef.current;
     if (!el) return;
@@ -538,9 +578,11 @@ function Session({
   const fileActive = fileQuery !== null;
   const fileMatches = fileActive ? fuzzyFilter(fileList, fileQuery, 8) : [];
 
-  // Scan the project the first time '@' is used; reset highlight as the query changes.
+  // Rescan the project each time a new '@' mention starts (catches files created
+  // mid-session); the effect only fires on the false→true edge, not per keystroke,
+  // since `fileActive` stays true for the whole mention while only the query text changes.
   useEffect(() => {
-    if (fileActive && !fileScannedRef.current) { fileScannedRef.current = true; try { setFileList(listProjectFiles()); } catch {} }
+    if (fileActive) { try { setFileList(listProjectFiles()); } catch {} }
   }, [fileActive]);
   useEffect(() => { setFileSel(0); }, [fileQuery]);
 
@@ -564,7 +606,13 @@ function Session({
     if (key.name === 'backtab' || (key.name === 'tab' && key.shift)) { onSwitchTab?.('next'); return; }
     if (key.ctrl && /^[1-9]$/.test(key.name || '')) { onSwitchTab?.(parseInt(key.name, 10) - 1); return; }
 
+    // Ctrl+F: toggle the transcript search bar (only makes sense mid-chat).
+    if (key.ctrl && ch === 'f' && (inputMode === 'chat' || searchOpen)) {
+      if (searchOpen) closeSearch(); else { setSearchOpen(true); setSearchQuery(''); setSearchIdx(0); }
+      return;
+    }
     // Ctrl+Shift+C: copy last assistant response. Ctrl+C: double-tap to quit.
+    // (Checked before the searchOpen gate below so quitting still works mid-search.)
     if (key.ctrl && ch === 'c') {
       if (key.shift) {
         const last = [...messages].reverse().find(m => m.type === 'assistant');
@@ -576,6 +624,13 @@ function Session({
       lastCtrlCRef.current = now;
       push({ type: 'info', text: 'Press Ctrl+C again to quit' });
       return;
+    }
+
+    if (searchOpen) {
+      if (key.name === 'escape') { closeSearch(); return; }
+      if (key.name === 'up')   { setSearchIdx((i) => (searchMatches.length ? (i - 1 + searchMatches.length) % searchMatches.length : 0)); return; }
+      if (key.name === 'down') { setSearchIdx((i) => (searchMatches.length ? (i + 1) % searchMatches.length : 0)); return; }
+      return; // the <input> owns typing + Enter (Enter advances to the next match)
     }
 
     // Tool-confirmation prompt: y = allow once, a = always allow, n/Esc = deny.
@@ -1816,13 +1871,18 @@ function Session({
       <box style={{ flexGrow: 1, flexDirection: 'column' }}>
         <Welcome model={model} mode={mode} updateInfo={updateInfo} />
         <scrollbox ref={scrollRef} style={{ flexGrow: 1, flexShrink: 1, minHeight: 0 }} stickyScroll stickyStart="bottom">
-          {messages.map((msg, i) => (
-            <MessageRow
-              key={i} msg={msg} index={i}
-              expanded={expandedTools.has(i)} onToggle={() => toggleExpand(i)}
-              onCopy={copyMessage} onEdit={editMessage} onDelete={deleteFrom} onRetry={retryMessage}
-            />
-          ))}
+          {messages.map((msg, i) => {
+            const isHit = searchOpen && searchMatches.length > 0 && i === searchMatches[searchIdx];
+            return (
+              <box key={i} style={isHit ? { flexDirection: 'column', border: true, borderColor: '#f0c674' } : { flexDirection: 'column' }}>
+                <MessageRow
+                  msg={msg} index={i}
+                  expanded={expandedTools.has(i)} onToggle={() => toggleExpand(i)}
+                  onCopy={copyMessage} onEdit={editMessage} onDelete={deleteFrom} onRetry={retryMessage}
+                />
+              </box>
+            );
+          })}
           {streamText !== null && (
             <box style={{ flexDirection: 'column', marginTop: 1, paddingLeft: 1, paddingRight: 1 }}>
               <text><span fg={A}>✻ Axion</span></text>
@@ -1837,6 +1897,17 @@ function Session({
               <text><span fg={A}>{'↓ jump to bottom'}</span></text>
             </box>
           </box>
+        )}
+        {searchOpen && (
+          <SearchBar
+            query={searchQuery}
+            onQuery={(v) => { setSearchQuery(v); setSearchIdx(0); }}
+            onSubmit={() => setSearchIdx((i) => (searchMatches.length ? (i + 1) % searchMatches.length : 0))}
+            matchCount={searchMatches.length}
+            current={searchMatches.length ? searchIdx + 1 : 0}
+            focused={isActive}
+            accentColor={A}
+          />
         )}
         {/* Thinking indicator */}
         {busy && inputMode === 'chat' && (
@@ -1885,10 +1956,10 @@ function Session({
         <box style={{ flexShrink: 0, border: true, borderColor: inputMode === 'chat' ? A : '#f0c674', height: 3, paddingLeft: 1, paddingRight: 1 }}>
           <input
             ref={inputElRef}
+            focused={isActive && !searchOpen}
             value={input}
             onInput={setInputSafe}
             onSubmit={fileActive && fileMatches.length ? () => insertFile(fileMatches[Math.min(fileSel, fileMatches.length - 1)]) : submit}
-            focused={isActive}
             placeholder={
               inputMode === 'confirm-tool' || inputMode === 'confirm-plan' ? 'press y / n …' :
               busy ? 'Axion is working…  (Esc to interrupt)' :
