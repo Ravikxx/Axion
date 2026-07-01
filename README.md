@@ -2,7 +2,7 @@
   <img src="docs/logo.svg" width="96" height="96" alt="Axion logo">
 </p>
 
-# ⚛ Axion
+# Axion
 
 **Axion** is an open-source AI coding agent ecosystem built by Axion Labs. It includes a terminal CLI, a Chrome extension, a web UI, and an IDE integration — all sharing the same models, tools, and memory.
 
