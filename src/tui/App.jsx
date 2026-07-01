@@ -144,6 +144,44 @@ function ActionBtn({ label, color, onClick }) {
 }
 
 // Flat searchable text for a message, used by the Ctrl+F transcript search.
+// Recap line for a run of ≥2 consecutive tool calls, e.g. "ran 2 shell
+// commands, created 1 file, committed a1b2c3d" — shown once after the run,
+// alongside (not instead of) each tool's own detailed block (diffs etc.).
+// Only counts successful calls; failed ones stay visible in their own block
+// so they aren't glossed over by the recap.
+function summarizeToolRun(toolMsgs) {
+  const counts = { shell: 0, created: 0, updated: 0, deleted: 0, moved: 0, read: 0 };
+  const commits = [];
+  const others = new Map();
+  for (const m of toolMsgs) {
+    if (m.success === false) continue;
+    const isNewFile = m.name === 'write_file' && m.diff?.length > 0 && m.diff.every((d) => d.type === 'add');
+    if (m.name === 'run_command') counts.shell++;
+    else if (m.name === 'write_file') isNewFile ? counts.created++ : counts.updated++;
+    else if (m.name === 'patch_file') counts.updated++;
+    else if (m.name === 'delete_file') counts.deleted++;
+    else if (m.name === 'move_file') counts.moved++;
+    else if (m.name === 'read_file' || m.name === 'read_file_lines') counts.read++;
+    else if (m.name === 'git_commit') {
+      const hash = String(m.output || '').match(/\[[\w./-]+\s+([0-9a-f]{6,})\]/);
+      commits.push(hash ? hash[1] : 'commit');
+    } else {
+      others.set(m.name, (others.get(m.name) || 0) + 1);
+    }
+  }
+  const plural = (n, s) => `${n} ${s}${n !== 1 ? 's' : ''}`;
+  const parts = [];
+  if (counts.shell)   parts.push(`ran ${plural(counts.shell, 'shell command')}`);
+  if (counts.created) parts.push(`created ${plural(counts.created, 'file')}`);
+  if (counts.updated) parts.push(`updated ${plural(counts.updated, 'file')}`);
+  if (counts.deleted) parts.push(`deleted ${plural(counts.deleted, 'file')}`);
+  if (counts.moved)   parts.push(`moved ${plural(counts.moved, 'file')}`);
+  if (counts.read)    parts.push(`read ${plural(counts.read, 'file')}`);
+  for (const c of commits) parts.push(`committed ${c}`);
+  for (const [toolName, n] of others) parts.push(`${toolName} ×${n}`);
+  return parts.join(', ');
+}
+
 function messageSearchText(msg) {
   if (msg.type === 'tool') {
     const input = typeof msg.input === 'string' ? msg.input : JSON.stringify(msg.input || {});
@@ -648,7 +686,7 @@ function Session({
         const bottom = max <= 1 || el.scrollTop >= max - 1;
         setAtBottom((prev) => (prev === bottom ? prev : bottom));
       } catch {}
-    }, 200);
+    }, 400);
     return () => clearInterval(id);
   }, [isActive]);
 
@@ -1989,7 +2027,7 @@ function Session({
         if (!busy) runAgentTurn(text, text);
         else push({ type: 'info', text });
       }
-    }, 1000);
+    }, 2000);
     return () => clearInterval(id);
   }, [busy, runAgentTurn, push, todoScope]);
 
@@ -2078,13 +2116,32 @@ function Session({
         <scrollbox ref={scrollRef} style={{ flexGrow: 1, flexShrink: 1, minHeight: 0 }} stickyScroll stickyStart="bottom">
           {messages.map((msg, i) => {
             const isHit = searchOpen && searchMatches.length > 0 && i === searchMatches[searchIdx];
+            // Recap line after a completed run of ≥2 consecutive tool calls —
+            // walk back from the run's last message to find where it started.
+            const isCompletedTool = (m) => m && m.type === 'tool' && !m.pending;
+            let runRecap = null;
+            if (isCompletedTool(msg) && !isCompletedTool(messages[i + 1])) {
+              let start = i;
+              while (start > 0 && isCompletedTool(messages[start - 1])) start--;
+              if (i - start >= 1) { // ≥2 tool calls in the run
+                const summary = summarizeToolRun(messages.slice(start, i + 1));
+                if (summary) runRecap = summary;
+              }
+            }
             return (
-              <box key={i} style={isHit ? { flexDirection: 'column', border: true, borderColor: '#f0c674' } : { flexDirection: 'column' }}>
-                <MessageRow
-                  msg={msg} index={i}
-                  expanded={expandedTools.has(i)} onToggle={() => toggleExpand(i)}
-                  onCopy={copyMessage} onEdit={editMessage} onDelete={deleteFrom} onRetry={retryMessage}
-                />
+              <box key={i} style={{ flexDirection: 'column' }}>
+                <box style={isHit ? { flexDirection: 'column', border: true, borderColor: '#f0c674' } : { flexDirection: 'column' }}>
+                  <MessageRow
+                    msg={msg} index={i}
+                    expanded={expandedTools.has(i)} onToggle={() => toggleExpand(i)}
+                    onCopy={copyMessage} onEdit={editMessage} onDelete={deleteFrom} onRetry={retryMessage}
+                  />
+                </box>
+                {runRecap && (
+                  <box style={{ paddingLeft: 1 }}>
+                    <text><span fg="#666">{`  ↳ ${runRecap}`}</span></text>
+                  </box>
+                )}
               </box>
             );
           })}
