@@ -5,7 +5,7 @@ import { createClient, resolveModel, resolveProvider } from './models.js';
 import {
   TOOL_DEFINITIONS, TOOL_DEFINITIONS_OPENAI,
   COMPUTER_TOOL_DEFINITIONS, COMPUTER_TOOL_DEFINITIONS_OPENAI,
-  executeTool, parseToolCallsFromText,
+  executeTool, parseToolCallsFromText, getCwd,
 } from './tools.js';
 import { API_KEYS } from '../config.js';
 import { BUS } from './bus.js';
@@ -16,11 +16,10 @@ import { GOOGLE_TOOL_DEFINITIONS, GOOGLE_TOOL_DEFINITIONS_OPENAI } from './googl
 import { getOAuthToken } from '../oauth/oauth.js';
 import { homedir } from 'os';
 
-// ── Project context (read once at startup) ────────────────────────────────────
+// ── Project context (built per working directory, cached) ────────────────────
 
-function buildProjectContext() {
+function buildProjectContext(cwd = process.cwd()) {
   const hints = [];
-  const cwd   = process.cwd();
 
   // AXION.md — persistent project instructions (like CLAUDE.md).
   // Global (~/.axion/AXION.md) first, then project root, then ./.axion/AXION.md.
@@ -63,10 +62,16 @@ function buildProjectContext() {
     if (readme) hints.push(`README: ${readme.replace(/\n+/g, ' ')}`);
   } catch {}
 
-  return hints.length ? `\n\nProject context (${process.cwd()}):\n${hints.map(h => `• ${h}`).join('\n')}` : '';
+  return hints.length ? `\n\nProject context (${cwd}):\n${hints.map(h => `• ${h}`).join('\n')}` : '';
 }
 
-const PROJECT_CONTEXT = buildProjectContext();
+// Project context depends on the agent's working directory (sub-agents and
+// trajectory generation can run elsewhere), so build it per-cwd, cached.
+const PROJECT_CONTEXT_CACHE = new Map();
+function getProjectContext(cwd) {
+  if (!PROJECT_CONTEXT_CACHE.has(cwd)) PROJECT_CONTEXT_CACHE.set(cwd, buildProjectContext(cwd));
+  return PROJECT_CONTEXT_CACHE.get(cwd);
+}
 
 // ── Vision — parse image paths from user messages ─────────────────────────────
 
@@ -118,7 +123,7 @@ CHART OUTPUT: When the user asks for a chart (bar, pie, doughnut, or line), outp
 \`\`\`chart
 { "type": "bar", "title": "Revenue by Quarter", "data": { "labels": ["Q1","Q2","Q3","Q4"], "datasets": [{ "data": [340, 520, 410, 680] }] } }
 \`\`\`
-Supported types: bar (default), pie, doughnut, line, scatter, radar. Labels and colors are optional — the frontend provides defaults.` + PROJECT_CONTEXT;
+Supported types: bar (default), pie, doughnut, line, scatter, radar. Labels and colors are optional — the frontend provides defaults.`;
 
 const CHAT_SYSTEM_PROMPT = `You are Axion, a helpful AI assistant made by Axion Labs. You are having a conversation — help with questions, writing, brainstorming, explaining concepts, and general topics.
 
@@ -339,7 +344,7 @@ export class Agent {
       return prompt;
     }
 
-    let prompt = SYSTEM_PROMPT;
+    let prompt = SYSTEM_PROMPT + getProjectContext(getCwd(this.label));
     const memories = getMemories();
     if (memories.length) {
       prompt += `\n\nUser's persistent notes (always remember these):\n${memories.map((m, i) => `${i + 1}. ${m.text}`).join('\n')}`;
