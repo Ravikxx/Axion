@@ -34,6 +34,7 @@ export const MODELS = {
   lumen:              'lumen',
   'axion-vision':     'axion-vision',
   opencode:           'opencode',
+  'big-pickle':       'big-pickle',
   glm:                'glm-5.2',
   'glm-5.2':          'glm-5.2',
   'glm-flash':        'glm-4.7-flash',
@@ -65,6 +66,7 @@ export const MODEL_PROVIDERS = {
   lumen:              'lumen',
   'axion-vision':     'axion-vision',
   opencode:           'opencode',
+  'big-pickle':       'opencode',
   glm:                'zai',
   'glm-5.2':          'zai',
   'glm-flash':        'zai',
@@ -95,7 +97,7 @@ export const BASE_URLS = {
   veil:          'https://axionlabsai-minecraftai-chat.hf.space/v1',
   lumen:         'https://api.amplifiedsmp.org/v1',
   'axion-vision': 'https://axionlabsai-lumenvision.hf.space/v1',
-  opencode:      'https://api.opencode.ai/v1',
+  opencode:      'https://opencode.ai/zen/v1',
   zai:         'https://api.z.ai/api/paas/v4',
 };
 
@@ -187,7 +189,7 @@ export async function fetchEndpointContextWindows() {
   }
 }
 
-export const DEFAULT_MODEL = process.env.AXION_MODEL || 'claude';
+export const DEFAULT_MODEL = process.env.AXION_MODEL || 'big-pickle';
 export const DEFAULT_MODE  = 'ask';
 
 // Cost per 1M tokens (input, output) in USD — used for rough estimates only

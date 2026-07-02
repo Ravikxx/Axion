@@ -1041,6 +1041,15 @@ One word only:`;
     let usage = null;
     let toolErrFallback = false;
 
+    // Some providers (DeepSeek-style reasoners, OpenCode Zen stealth models,
+    // OpenRouter unified reasoning) stream thoughts in delta.reasoning_content /
+    // delta.reasoning instead of <think> tags in delta.content.
+    let reasoningBuf = '';
+    const flushReasoning = () => {
+      if (reasoningBuf.trim()) this.onMessage({ role: 'thinking', content: reasoningBuf.trim() });
+      reasoningBuf = '';
+    };
+
     // Update context gauge immediately with a local estimate (refined below if
     // the provider returns usage — many free OpenRouter models don't).
     this._setContext(this._estimateTokens({ messages: msgs, tools: this._getToolListOpenAI() }));
@@ -1056,7 +1065,9 @@ One word only:`;
         if (chunk.usage) usage = chunk.usage;
         const delta = chunk.choices?.[0]?.delta;
         if (!delta) continue;
-        if (delta.content) filter.push(delta.content);
+        const rc = delta.reasoning_content ?? delta.reasoning;
+        if (typeof rc === 'string' && rc) reasoningBuf += rc;
+        if (delta.content) { flushReasoning(); filter.push(delta.content); }
         if (delta.tool_calls) {
           for (const tc of delta.tool_calls) {
             const i = tc.index ?? 0;
@@ -1068,6 +1079,7 @@ One word only:`;
         }
       }
 
+      flushReasoning();
       filter.flush();
       this.onStreamEnd();
       if (usage) { this._setContext(usage.prompt_tokens); this._addTokens(usage.prompt_tokens, usage.completion_tokens); }

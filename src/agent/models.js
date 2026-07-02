@@ -76,7 +76,13 @@ export function createClient(modelAlias) {
   if (provider === 'opencode') {
     const key = API_KEYS.opencode;
     if (!key) throw new Error('OPENCODE_API_KEY not set — use /api opencode <key>');
-    return { type: 'openai', client: new OpenAI({ apiKey: key, baseURL: BASE_URLS.opencode }) };
+    // OpenCode Zen authenticates via x-api-key and 401s on a Bearer header,
+    // so strip the SDK's default Authorization header.
+    return { type: 'openai', client: new OpenAI({
+      apiKey: key,
+      baseURL: BASE_URLS.opencode,
+      defaultHeaders: { Authorization: null, 'x-api-key': key },
+    }) };
   }
 
   if (provider === 'lumen') {
