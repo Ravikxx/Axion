@@ -574,7 +574,7 @@ CRITICAL RULES — follow these exactly:
 
           let result;
           if (tc.name === 'spawn_agents') {
-            result = await this._spawnAgents(tc.input?.agents || []);
+            result = await this._spawnAgents(tc.input?.agents || [], { askConfirm });
           } else if (MCP.isMcpTool(tc.name)) {
             result = await MCP.callTool(tc.name, tc.input);
           } else if (PLUGINS.isPluginTool(tc.name)) {
@@ -815,10 +815,24 @@ One word only:`;
 
   // ── Sub-agents ────────────────────────────────────────────────────────────
 
-  async _spawnAgents(agentDefs) {
+  async _spawnAgents(agentDefs, { askConfirm } = {}) {
     if (!agentDefs.length) return { success: false, output: 'No agents specified.' };
 
     this.onMessage({ role: 'assistant', content: `Spawning ${agentDefs.length} agent(s)…` });
+
+    // Sub-agents inherit the parent's permission mode — running them in 'auto'
+    // with blanket approval would let one approved spawn_agents call bypass
+    // every tool confirmation. Confirmations are serialized through the
+    // parent's askConfirm since the UI can only show one prompt at a time.
+    const subMode = this.mode === 'plan' ? 'auto' : this.mode;
+    let confirmChain = Promise.resolve();
+    const gatedConfirm = askConfirm
+      ? (tc) => {
+          const p = confirmChain.then(() => askConfirm(tc));
+          confirmChain = p.catch(() => {});
+          return p;
+        }
+      : () => Promise.resolve(true);
 
     const results = await Promise.all(
       agentDefs.map(async ({ model, task, label }, i) => {
@@ -833,7 +847,7 @@ One word only:`;
         const sub = new Agent({
           modelAlias: modelToUse,
           label: agentLabel,
-          mode: 'auto',
+          mode: subMode,
           onMessage: ({ role, content }) => {
             if (role === 'assistant' && content) {
               this.onMessage({ role: 'sub-agent', content, label: agentLabel });
@@ -857,7 +871,7 @@ One word only:`;
 
         try {
           await sub.run(task, {
-            askConfirm:     () => Promise.resolve(true),
+            askConfirm:     gatedConfirm,
             askPlanConfirm: () => Promise.resolve(true),
             askUser:        () => Promise.resolve('User interaction not available in sub-agent. Continue without user input.'),
           });

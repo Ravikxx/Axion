@@ -924,7 +924,9 @@ function Session({
     setBusy(true);
 
     const askConfirm = (tc) => {
-      if (tc.name && tc.name === 'sequentialthinking') return Promise.resolve(true);
+      // MCP tools are namespaced mcp__<server>__<tool>; pin both parts so a
+      // malicious server can't get auto-approved by naming a tool cleverly.
+      if (tc.name === 'mcp__sequential-thinking__sequentialthinking') return Promise.resolve(true);
       const key = permissionKey(tc.name, tc.input);
       if (getAllowedTools().includes(key)) return Promise.resolve(true);
       return new Promise((resolve) => {
@@ -1916,7 +1918,7 @@ function Session({
                   const m = lines[0].match(/(\d+)\s*$/m);
                   if (m) { execSync(`taskkill /F /PID ${m[1]}`, { stdio: 'ignore' }); push({ type: 'info', text: `Web server stopped (PID ${m[1]}).` }); } else { push({ type: 'info', text: 'No web server running.' }); }
                 } else { push({ type: 'info', text: 'No web server running.' }); }
-              else { const pid = execSync(`lsof -ti tcp:${webPort}`, { encoding: 'utf8' }).trim(); if (pid) { process.kill(parseInt(pid, 10)); push({ type: 'info', text: `Web server stopped (PID ${pid}).` }); } else { push({ type: 'info', text: 'No web server running.' }); } }
+              } else { const pid = execSync(`lsof -ti tcp:${webPort}`, { encoding: 'utf8' }).trim(); if (pid) { process.kill(parseInt(pid, 10)); push({ type: 'info', text: `Web server stopped (PID ${pid}).` }); } else { push({ type: 'info', text: 'No web server running.' }); } }
             } catch { push({ type: 'info', text: 'No web server running.' }); }
             return;
           }
