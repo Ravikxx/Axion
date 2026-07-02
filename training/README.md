@@ -65,10 +65,35 @@ free. Templates are cycled round-robin by sample index.
   ~45% agentic SWE, ~20% code instruct, ~25% general (Tulu/SmolTalk), ~10%
   tool calling, with this Axion-native data folded into the agentic slice.
 
+## Public-data reformatter
+
+`reformat-hf.mjs` streams public datasets through HF's free datasets-server
+API (no auth, no python) into the same JSONL schema:
+
+```
+node training/reformat-hf.mjs --source swe-smith --n 800   # real resolved SWE trajectories (avg ~60KB — long!)
+node training/reformat-hf.mjs --source hermes    --n 600   # function calling
+node training/reformat-hf.mjs --source tulu      --n 1500  # general chat (anti-forgetting)
+node training/reformat-hf.mjs --source magicoder --n 1200  # code instruct
+```
+
+Output appends to `training/data/<source>.jsonl`; each run prints the offset
+to resume from for more. `--max-chars` (default 120000) drops oversize
+trajectories. Notes per source:
+
+- **swe-smith**: only `resolved: true` trajectories are kept, with SWE-agent
+  tool schemas (bash / str_replace_editor / submit) attached per sample —
+  deliberately NOT remapped to Axion tools (fidelity + schema diversity).
+- **hermes**: `<tool_call>` XML is parsed into structured `tool_calls`.
+- **tulu / magicoder**: get Axion's real system prompt + full tool list, so
+  the model learns that plain answers are fine even when tools are offered.
+
+Target mix (~25-30k samples): ~45% agentic (swe-smith + Axion-native),
+~20% code instruct, ~25% general, ~10% tool calling.
+
 ## Next steps (not yet built)
 
-1. Reformatter: SWE-Gym/SWE-smith + Tulu → this JSONL schema.
-2. Qwen chat-template packer + Unsloth QLoRA notebook (Kaggle T4, 4-bit,
+1. Qwen chat-template packer + Unsloth QLoRA notebook (Kaggle T4, 4-bit,
    r=32, lr 2e-4, loss on assistant tokens only).
-3. Eval harness: base-vs-tuned on held-out task templates through this same
+2. Eval harness: base-vs-tuned on held-out task templates through this same
    generator with `--model lumen`.
