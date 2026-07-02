@@ -41,7 +41,22 @@ export function Sidebar({
         <>
           <text> </text>
           <text><span fg={A}>context</span></text>
-          <text><span fg="#888">{`  ${(ctxUsed / 1000).toFixed(1)}k / ${fmtCtx(ctxWindow)} · ${ctxPct}%`}</span></text>
+          {(() => {
+            // Colored usage bar: green → yellow (60%) → red (85%).
+            const barW = Math.max(10, width - 8);
+            const filled = Math.min(barW, Math.round((ctxPct / 100) * barW));
+            const barColor = ctxPct >= 85 ? '#f85149' : ctxPct >= 60 ? '#f0c674' : '#7ee787';
+            return (
+              <>
+                <text>
+                  <span fg={barColor}>{'  ' + '█'.repeat(filled)}</span>
+                  <span fg="#333">{'░'.repeat(barW - filled)}</span>
+                </text>
+                <text><span fg="#888">{`  ${(ctxUsed / 1000).toFixed(1)}k / ${fmtCtx(ctxWindow)} · `}</span><span fg={barColor}>{`${ctxPct}%`}</span></text>
+                {ctxPct >= 85 ? <text><span fg="#f85149">{'  ⚠ run /compact soon'}</span></text> : null}
+              </>
+            );
+          })()}
         </>
       )}
 

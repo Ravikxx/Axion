@@ -1020,9 +1020,38 @@ function Session({
         setMessages([{ type: 'info', text: 'Conversation cleared.' }]);
         setTokens({ total: 0, input: 0, output: 0, context: 0 });
         return;
-      case 'help':
-        push({ type: 'info', text: 'Commands:\n' + COMMANDS.map((x) => `  /${x.cmd}  —  ${x.desc}`).join('\n') });
+      case 'help': {
+        // Grouped view — same commands, readable instead of one 70-line wall.
+        const HELP_GROUPS = [
+          ['Session',           ['help', 'model', 'models', 'mode', 'theme', 'clear', 'compact', 'stats', 'cost', 'exit']],
+          ['Files & context',   ['include', 'add', 'run', 'search', 'history', 'undo', 'rewind']],
+          ['Chats',             ['save', 'resume', 'sessions', 'remove-chat', 'search-chats', 'export', 'export-session', 'import-session', 'copy', 'copy-block']],
+          ['Git',               ['git', 'pr', 'review']],
+          ['Keys & endpoints',  ['api', 'axion-key', 'login', 'endpoint']],
+          ['Agent behavior',    ['thinking', 'system', 'adviser', 'goal', 'retry', 'btw', 'compare', 'compare-models', 'remember', 'forget', 'todo', 'skills', 'skill-generator', 'skill-delete', 'profile', 'permissions', 'watch']],
+          ['Computer & media',  ['computer', 'cu', 'vision', 'ss', 'macro', 'speak', 'img-gen', 'img-gen-model']],
+          ['Integrations',      ['discord', 'oauth', 'schedule', 'web', 'blender', 'mcp', 'contribute']],
+        ];
+        const byName = new Map();
+        for (const x of COMMANDS) if (!byName.has(x.cmd)) byName.set(x.cmd, x.desc);
+        const pad = Math.max(...COMMANDS.map((x) => x.cmd.length)) + 1;
+        const lines = [];
+        const listed = new Set();
+        for (const [title, names] of HELP_GROUPS) {
+          const rows = names.filter((n) => byName.has(n));
+          if (!rows.length) continue;
+          lines.push(`── ${title} ──`);
+          for (const n of rows) { listed.add(n); lines.push(`  /${n.padEnd(pad)} ${byName.get(n)}`); }
+          lines.push('');
+        }
+        const leftovers = [...byName.keys()].filter((n) => !listed.has(n));
+        if (leftovers.length) {
+          lines.push('── Other ──');
+          for (const n of leftovers) lines.push(`  /${n.padEnd(pad)} ${byName.get(n)}`);
+        }
+        push({ type: 'info', text: lines.join('\n').trimEnd() });
         return;
+      }
       case 'git': {
         // Direct git shortcuts — no LLM call, just runs git and prints the result.
         // (The agent also has git_status/git_diff/git_commit tools for natural-language use.)
@@ -2187,6 +2216,12 @@ function Session({
 
   const ctxWindow = getContextWindow(model) || 0;
   const ctxUsed = tokens.context || 0; // real context-window pressure, not cumulative billed tokens
+  const ctxPct = ctxWindow > 0 ? Math.min(100, Math.round((ctxUsed / ctxWindow) * 100)) : 0;
+  const ctxPctColor = ctxPct >= 85 ? '#f85149' : ctxPct >= 60 ? '#f0c674' : '#7ee787';
+  const sessionCost = estimateCost(model, tokens.input || 0, tokens.output || 0) || 0;
+  // On narrow terminals the sidebar would crush the chat pane — hide it and
+  // show the compact status strip above the input instead.
+  const showSidebar = width >= 90;
 
   return (
     <box style={{ flexGrow: 1, flexDirection: 'row' }}>
@@ -2312,10 +2347,33 @@ function Session({
             <text><span fg="#666">{`history: ${histPos}/${historyRef.current.length}  (↑ older · ↓ newer)`}</span></text>
           </box>
         )}
+        {/* Compact status strip — replaces the sidebar on narrow terminals */}
+        {!showSidebar && (
+          <box style={{ flexShrink: 0, flexDirection: 'row', paddingLeft: 1 }}>
+            <text>
+              <span fg={A}>{model}</span>
+              <span fg="#555">{'  ·  '}</span>
+              <span fg={MODE_COLORS[mode] || 'cyan'}>{`${MODE_ICONS[mode] || '·'} ${modeLabel(mode)}`}</span>
+              {ctxUsed > 0 ? (
+                <span>
+                  <span fg="#555">{'  ·  '}</span>
+                  <span fg={ctxPctColor}>{`ctx ${ctxPct}%`}</span>
+                </span>
+              ) : null}
+              {sessionCost > 0 ? <span><span fg="#555">{'  ·  '}</span><span fg="#888">{`$${sessionCost.toFixed(4)}`}</span></span> : null}
+              {gitInfo?.branch ? <span><span fg="#555">{'  ·  '}</span><span fg="#888">{` ${gitInfo.branch}`}</span></span> : null}
+            </text>
+          </box>
+        )}
         {inputMode !== 'question' && (
-        <box style={{ flexShrink: 0, border: true, borderColor: inputMode === 'chat' ? A : '#f0c674', height: 3, paddingLeft: 1, paddingRight: 1 }}>
+        <box style={{ flexShrink: 0, flexDirection: 'row', border: true, borderColor: inputMode === 'chat' ? A : '#f0c674', height: 3, paddingLeft: 1, paddingRight: 1 }}>
+          {/* Mode chip — always-visible cue for ask/plan/bypass/decide */}
+          <box style={{ flexShrink: 0, marginRight: 1 }}>
+            <text><span fg={MODE_COLORS[mode] || 'cyan'}>{MODE_ICONS[mode] || '·'}</span></text>
+          </box>
           <input
             ref={inputElRef}
+            style={{ flexGrow: 1 }}
             focused={isActive && !searchOpen && !chatPickerOpen}
             value={input}
             onInput={setInputSafe}
@@ -2330,6 +2388,7 @@ function Session({
         )}
       </box>
 
+      {showSidebar && (
       <Sidebar
         model={model}
         modeIcon={MODE_ICONS[mode] || '·'}
@@ -2337,11 +2396,14 @@ function Session({
         modeColor={MODE_COLORS[mode] || 'cyan'}
         ctxUsed={ctxUsed}
         ctxWindow={ctxWindow}
-        sessionCost={estimateCost(model, tokens.input || 0, tokens.output || 0) || 0}
+        sessionCost={sessionCost}
         diffTotals={diffTotals}
         gitInfo={gitInfo}
         todos={todos}
+        pinnedFiles={includedFiles}
+        mcpTools={MCP.totalTools}
       />
+      )}
     </box>
   );
 }
