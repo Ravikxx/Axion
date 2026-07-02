@@ -2509,8 +2509,9 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
 
   // ── Terminal-title spinner + desktop "done" ping ───────────────────────────────
   // While any tab's agent is working, the terminal/PowerShell tab title shows a
-  // spinner. When a tab finishes, we ping the desktop (OSC 9 toast + bell) and
-  // flash a 🔔 in the title. This works for background tabs too.
+  // spinner. When a tab finishes, the terminal bell pings the PowerShell window
+  // (taskbar attention flash) and an OSC 9 desktop toast says "Axion is done!".
+  // No emoji in the title. Works for background tabs too.
   const renderer = useRenderer();
   const busyTabsRef = useRef(new Set());
   const spinnerRef = useRef(null);
@@ -2526,10 +2527,11 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
     }, 120);
   }, [setTitleBar]);
   const notifyDone = useCallback(() => {
-    // OSC 9 desktop toast (Windows Terminal / iTerm2) + terminal bell. No-op
-    // elsewhere; both are out-of-band control sequences, safe to interleave.
-    try { writeSync(1, `\x1b]9;Axion finished a task\x07\x07`); } catch {}
-    setTitleBar('🔔 Axion — done');
+    // OSC 9 desktop toast (Windows Terminal / iTerm2) + terminal bell (BEL —
+    // flashes the PowerShell window in the taskbar). No-op elsewhere; both are
+    // out-of-band control sequences, safe to interleave.
+    try { writeSync(1, `\x1b]9;Axion is done!\x07\x07`); } catch {}
+    setTitleBar('Axion — done');
     if (pingTimerRef.current) clearTimeout(pingTimerRef.current);
     pingTimerRef.current = setTimeout(() => { if (busyTabsRef.current.size === 0) setTitleBar('Axion'); }, 5000);
   }, [setTitleBar]);
