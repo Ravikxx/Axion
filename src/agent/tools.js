@@ -10,6 +10,36 @@ import { analyzeScreen, parseCoordinates } from './vision.js';
 import { executeGoogleTool, GOOGLE_TOOL_DEFINITIONS, GOOGLE_TOOL_DEFINITIONS_OPENAI } from './google.js';
 import { getOAuthToken } from '../oauth/oauth.js';
 
+// File-read tracking: agent must read a file before editing it.
+// Stored: absPath → { content, mtimeMs }
+const _readCache = new Map();
+
+// Track that a file was read. Call after a successful read_file of an existing file.
+function _trackRead(absPath) {
+  try {
+    const st = statSync(absPath);
+    _readCache.set(absPath, { content: readFileSync(absPath, 'utf8'), mtimeMs: st.mtimeMs });
+  } catch { /* path doesn't exist yet — don't track */ }
+}
+
+// Require that a file was read before modification. Returns null if ok, or an error object.
+function _requireRead(absPath) {
+  const cached = _readCache.get(absPath);
+  if (!cached) return { success: false, output: `❌ Cannot edit ${absPath} — file was never read. Use read_file first so the agent knows the current content.` };
+  try {
+    const curr = readFileSync(absPath, 'utf8');
+    const st = statSync(absPath);
+    if (st.mtimeMs !== cached.mtimeMs || curr !== cached.content) {
+      const diff = diffLines(cached.content, curr);
+      _readCache.set(absPath, { content: curr, mtimeMs: st.mtimeMs }); // update cache so follow-up works
+      return { success: false, output: `❌ File changed externally since read_file. Diff of external change:\n${diff}` };
+    }
+  } catch {
+    return { success: false, output: `❌ File ${absPath} was deleted since it was read.` };
+  }
+  return null;
+}
+
 // Background tasks started via run_command background=true
 const BG_TASKS = new Map();
 let _bgCounter = 0;
@@ -646,12 +676,18 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
     switch (name) {
 
       case 'read_file': {
-        const content = readFileSync(resolve(cwd, input.path), 'utf8');
+        const absPath = resolve(cwd, input.path);
+        const content = readFileSync(absPath, 'utf8');
+        _trackRead(absPath);
         return { success: true, output: content };
       }
 
       case 'write_file': {
         const absPath = resolve(cwd, input.path);
+        if (existsSync(absPath)) {
+          const err = _requireRead(absPath);
+          if (err) return err;
+        }
         let oldContent = '';
         try { oldContent = readFileSync(absPath, 'utf8'); } catch {}
         if (oldContent) backupFile(absPath, oldContent);
@@ -661,11 +697,16 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
         writeFileSync(absPath, input.content, 'utf8');
         const fmt  = tryAutoFormat(absPath);
         const diff = diffLines(oldContent, existsSync(absPath) ? readFileSync(absPath, 'utf8') : input.content);
+        _trackRead(absPath);
         return { success: true, output: `Written ${relPath(input.path)}${fmt}`, diff };
       }
 
       case 'patch_file': {
         const absPath = resolve(cwd, input.path);
+        {
+          const err = _requireRead(absPath);
+          if (err) return err;
+        }
         const oldContent = readFileSync(absPath, 'utf8');
         const count = (oldContent.split(input.find).length - 1);
         if (count === 0) return { success: false, output: `String not found in ${relPath(input.path)}` };
@@ -678,16 +719,22 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
         writeFileSync(absPath, newContent, 'utf8');
         const fmt  = tryAutoFormat(absPath);
         const diff = diffLines(oldContent, newContent);
+        _trackRead(absPath);
         return { success: true, output: `Patched ${relPath(input.path)} (${count} match${count > 1 ? 'es' : ''})${fmt}`, diff };
       }
 
       case 'delete_file': {
         const absPath = resolve(cwd, input.path);
         if (!existsSync(absPath)) return { success: false, output: `File not found: ${relPath(input.path)}` };
+        {
+          const err = _requireRead(absPath);
+          if (err) return err;
+        }
         const content = readFileSync(absPath, 'utf8');
         backupFile(absPath, content);
         recordFileChange(absPath, content);
         unlinkSync(absPath);
+        _readCache.delete(absPath);
         return { success: true, output: `Deleted ${relPath(input.path)} (backup kept — use /undo to restore)` };
       }
 
@@ -712,7 +759,9 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
         const parts = [];
         for (const p of paths) {
           try {
-            const content = readFileSync(resolve(cwd, p), 'utf8');
+            const absPath = resolve(cwd, p);
+            const content = readFileSync(absPath, 'utf8');
+            _trackRead(absPath);
             parts.push(`── ${relPath(p)} ──\n${content}`);
           } catch (e) {
             parts.push(`── ${relPath(p)} ──\n[error: ${e.code === 'ENOENT' ? 'not found' : e.message}]`);
@@ -789,12 +838,17 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
       case 'append_file': {
         const absPath = resolve(cwd, input.path);
         const existed = existsSync(absPath);
+        if (existed) {
+          const err = _requireRead(absPath);
+          if (err) return err;
+        }
         let oldContent = '';
         if (existed) { oldContent = readFileSync(absPath, 'utf8'); backupFile(absPath, oldContent); }
         recordFileChange(absPath, existed ? oldContent : null);
         const destDir = dirname(absPath);
         if (!existsSync(destDir)) mkdirSync(destDir, { recursive: true });
         appendFileSync(absPath, input.content, 'utf8');
+        _trackRead(absPath);
         return { success: true, output: `Appended ${input.content.length} chars to ${relPath(input.path)}${existed ? '' : ' (new file)'}` };
       }
 
@@ -818,6 +872,7 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
         const absPath = resolve(cwd, input.path);
         if (!existsSync(absPath)) return { success: false, output: `Not found: ${relPath(input.path)}` };
         const all = readFileSync(absPath, 'utf8').split('\n');
+        _trackRead(absPath);
         const start = Math.max(1, Math.floor(input.start) || 1);
         const end = input.end ? Math.min(all.length, Math.floor(input.end)) : all.length;
         if (start > all.length) return { success: false, output: `start ${start} is past end of file (${all.length} lines)` };
