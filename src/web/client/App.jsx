@@ -83,7 +83,7 @@ function DiffView({ diff }) {
 
 function ToolBlock({ name, input, output, success, pending, diff }) {
   const [open, setOpen] = useState(false);
-  const isThinking = name && name.includes('sequentialthinking');
+  const isThinking = name && name === 'sequentialthinking';
 
   if (isThinking) {
     const num = input?.thoughtNumber || '?', total = input?.totalThoughts || '?';

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import { useKeyboard, useTerminalDimensions, useRenderer } from '@opentui/react';
 import { accent, THEMES, setTheme, themeName } from '../ui/theme.js';
 import { Agent } from '../agent/agent.js';
-import { MODELS, getContextWindow, estimateCost, API_KEYS } from '../config.js';
+import { MODELS, CONTEXT_WINDOWS, getContextWindow, estimateCost, API_KEYS } from '../config.js';
 import {
   getTodos, saveModel, saveMode, saveTheme, getAllowedTools, allowTool, autosaveSession, autosaveWorkspace, clearTodos,
   getMemories, addMemory, removeMemory, addTodo, toggleTodo, removeTodo, setTodosFor, dropTodoScope,
@@ -41,7 +41,7 @@ import { readGitStatus } from '../utils/gitStatus.js';
 import { Thinking } from './Thinking.jsx';
 import { QuestionMenu } from './QuestionMenu.jsx';
 import { pickThinkingWord } from '../ui/thinkingWords.js';
-import { execSync, spawn } from 'child_process';
+import { execSync, execFileSync, spawn } from 'child_process';
 import { existsSync, readFileSync, unlinkSync, writeSync, statSync } from 'fs';
 import { resolve, join } from 'path';
 import { homedir } from 'os';
@@ -92,7 +92,7 @@ function previewDiff(tc) {
     if (name === 'append_file') return diffLines(old, old + (input.content || ''));
     if (name === 'delete_file') return diffLines(old, '');
     if (name === 'patch_file' && input.find != null) {
-      const next = input.all ? old.split(input.find).join(input.replace ?? '') : old.replace(input.find, input.replace ?? '');
+      const next = input.all ? old.split(input.find).join(input.replace ?? '') : old.replace(input.find, () => input.replace ?? '');
       return diffLines(old, next);
     }
   } catch {}
@@ -367,6 +367,8 @@ function Session({
   const [chatPickerOpen, setChatPickerOpen] = useState(false); // /resume fuzzy picker
   const [chatPickerList, setChatPickerList] = useState([]);
   const [chatQuery, setChatQuery] = useState('');
+  const selectionRef = useRef(null); // { startY, endY, messageCount } for copy-on-select
+  const renderedHeightsRef = useRef([]); // cumulative line count per message
   const [chatSel, setChatSel] = useState(0);
   const [diffTotals, setDiffTotals] = useState({ added: 0, removed: 0 }); // session edit stats
   const [cwdState, setCwdState] = useState(() => getCwd(todoScope)); // tab's working dir (change_working_dir/run_command `cd`)
@@ -690,6 +692,58 @@ function Session({
     return () => clearInterval(id);
   }, [isActive]);
 
+  // Update rendered line heights for copy-on-select mapping
+  useEffect(() => {
+    const w = Math.max(width, 40);
+    const heights = [];
+    for (const m of messages) {
+      const last = heights.length ? heights[heights.length - 1] : 0;
+      if (m.type === 'user') {
+        const lines = Math.max(1, Math.ceil((m.text || '').length / (w - 6)));
+        heights.push(last + lines + 1);
+      } else if (m.type === 'tool') {
+        heights.push(last + 3);
+      } else if (m.type === 'thinking') {
+        heights.push(last + 2);
+      } else {
+        const lines = Math.max(1, Math.ceil((m.text || '').length / (w - 6)));
+        heights.push(last + lines + 2);
+      }
+    }
+    renderedHeightsRef.current = heights;
+  }, [messages, width]);
+
+  // Copy-on-select: track mouse drag on the message area
+  const handleMouseDown = useCallback((evt) => {
+    if (evt.button !== 0) return;
+    selectionRef.current = { startY: evt.y, endY: evt.y };
+  }, []);
+  const handleMouseUp = useCallback((evt) => {
+    if (evt.button !== 0) return;
+    const sel = selectionRef.current;
+    if (!sel) return;
+    selectionRef.current = null;
+    const y1 = Math.min(sel.startY, evt.y);
+    const y2 = Math.max(sel.startY, evt.y);
+    if (y2 - y1 < 1) return; // not a drag
+    const heights = renderedHeightsRef.current;
+    if (!heights.length) return;
+    // Find which messages overlap the selection
+    let startIdx = -1, endIdx = -1;
+    for (let i = 0; i < heights.length; i++) {
+      const prev = i > 0 ? heights[i - 1] : 0;
+      const cur = heights[i];
+      if (startIdx < 0 && cur > y1) startIdx = i;
+      if (cur > y2) { endIdx = i; break; }
+    }
+    if (endIdx < 0) endIdx = heights.length - 1;
+    if (startIdx < 0 || startIdx > endIdx) return;
+    const selectedText = messages.slice(startIdx, endIdx + 1)
+      .map(m => m.type === 'user' ? `${m.text}` : m.type === 'tool' ? `[${m.name}]` : m.text || '')
+      .filter(Boolean).join('\n');
+    if (selectedText) { copyToClipboard(selectedText); push({ type: 'info', text: 'Copied!' }); }
+  }, [messages, push]);
+
   // Thinking timer — counts up (seconds) while the agent is working.
   useEffect(() => {
     if (!busy) return;
@@ -870,7 +924,7 @@ function Session({
     setBusy(true);
 
     const askConfirm = (tc) => {
-      if (tc.name && tc.name.includes('sequentialthinking')) return Promise.resolve(true);
+      if (tc.name && tc.name === 'sequentialthinking') return Promise.resolve(true);
       const key = permissionKey(tc.name, tc.input);
       if (getAllowedTools().includes(key)) return Promise.resolve(true);
       return new Promise((resolve) => {
@@ -979,7 +1033,7 @@ function Session({
             const msg = args.slice(1).join(' ').trim();
             if (!msg) { push({ type: 'error', text: 'usage: /git commit <message>' }); return; }
             execSync('git add -A', { cwd, encoding: 'utf8' });
-            const out = execSync(`git commit -m ${JSON.stringify(msg)}`, { cwd, encoding: 'utf8' });
+            const out = execFileSync('git', ['commit', '-m', msg], { cwd, encoding: 'utf8' });
             push({ type: 'info', text: out });
             setGitInfo(readGitStatus(cwd));
             return;
@@ -1267,8 +1321,7 @@ function Session({
       case 'review': {
         let diff = '';
         try {
-          diff = [execSync('git diff --cached', { cwd: process.cwd(), encoding: 'utf8', stdio: ['pipe','pipe','pipe'] }),
-                  execSync('git diff HEAD', { cwd: process.cwd(), encoding: 'utf8', stdio: ['pipe','pipe','pipe'] })].filter(Boolean).join('\n');
+          diff = execSync('git diff HEAD', { cwd: process.cwd(), encoding: 'utf8', stdio: ['pipe','pipe','pipe'] }) || '';
         } catch { diff = ''; }
         if (!diff.trim()) { push({ type: 'info', text: 'No changes to review.' }); return; }
         push({ type: 'info', text: 'Reviewing diff…' });
@@ -1601,8 +1654,10 @@ function Session({
           const res = await fetch(`${AXION_API}/auth/device`, { method: 'POST' });
           if (!res.ok) throw new Error('Failed to start login flow');
           const { device_code, expires_in } = await res.json();
-          const loginUrl = `https://axion.amplifiedsmp.org/keys#device=${device_code}`;
-          try { if (process.platform === 'win32') execSync(`start "" "${loginUrl}"`); else if (process.platform === 'darwin') execSync(`open "${loginUrl}"`); else execSync(`xdg-open "${loginUrl}"`); }
+          const deviceCode = String(device_code);
+          if (!/^[A-Za-z0-9_-]+$/.test(deviceCode)) { push({ type: 'error', text: 'Invalid device code from server.' }); return; }
+          const loginUrl = `https://axion.amplifiedsmp.org/keys#device=${deviceCode}`;
+          try { if (process.platform === 'win32') spawn('cmd', ['/c', 'start', '', loginUrl], { detached: true, stdio: 'ignore' }).unref(); else if (process.platform === 'darwin') spawn('open', [loginUrl], { detached: true, stdio: 'ignore' }).unref(); else spawn('xdg-open', [loginUrl], { detached: true, stdio: 'ignore' }).unref(); }
           catch { push({ type: 'info', text: `Open this URL in your browser:\n${loginUrl}` }); }
           push({ type: 'info', text: `Waiting for authorization… (expires in ${Math.floor(expires_in / 60)} min)` });
           const deadline = Date.now() + expires_in * 1000;
@@ -1681,7 +1736,8 @@ function Session({
         }
         if (maSub === 'delete') {
           if (!maName) { push({ type: 'error', text: 'usage: /macro delete <name>' }); return; }
-          push({ type: deleteMacro(maName) ? 'info' : 'error', text: deleteMacro(maName) ? `Macro "${maName}" deleted.` : `No macro "${maName}".` });
+          const success = deleteMacro(maName);
+          push({ type: success ? 'info' : 'error', text: success ? `Macro "${maName}" deleted.` : `No macro "${maName}".` });
           return;
         }
         push({ type: 'info', text: 'Macro: record|stop|play|list|delete' });
@@ -1850,7 +1906,16 @@ function Session({
           const webPort = Number(process.env.AXION_WEB_PORT) || 3000;
           if (!existsSync(pidFile)) {
             try {
-              if (process.platform === 'win32') { const out = execSync(`netstat -ano -p TCP 2>nul | findstr :${webPort}`, { encoding: 'utf8', stdio: ['pipe','pipe','pipe'] }); const m = out.match(/\s+(\d+)\s*$/m); if (m) { execSync(`taskkill /F /PID ${m[1]}`, { stdio: 'ignore' }); push({ type: 'info', text: `Web server stopped (PID ${m[1]}).` }); } else { push({ type: 'info', text: 'No web server running.' }); } }
+              if (process.platform === 'win32') {
+                const out = execSync('netstat -ano -p TCP', { encoding: 'utf8', stdio: ['pipe','pipe','pipe'] });
+                const lines = out.split(/\r?\n/).filter(l => {
+                  const parts = l.trim().split(/\s+/);
+                  return parts.length >= 5 && parts[1]?.endsWith(`:${webPort}`) && parts[3] === 'LISTENING';
+                });
+                if (lines.length) {
+                  const m = lines[0].match(/(\d+)\s*$/m);
+                  if (m) { execSync(`taskkill /F /PID ${m[1]}`, { stdio: 'ignore' }); push({ type: 'info', text: `Web server stopped (PID ${m[1]}).` }); } else { push({ type: 'info', text: 'No web server running.' }); }
+                } else { push({ type: 'info', text: 'No web server running.' }); }
               else { const pid = execSync(`lsof -ti tcp:${webPort}`, { encoding: 'utf8' }).trim(); if (pid) { process.kill(parseInt(pid, 10)); push({ type: 'info', text: `Web server stopped (PID ${pid}).` }); } else { push({ type: 'info', text: 'No web server running.' }); } }
             } catch { push({ type: 'info', text: 'No web server running.' }); }
             return;
@@ -1979,7 +2044,16 @@ function Session({
         }
         const hist = agentRef.current?.history;
         if (!hist || hist.length === 0) { push({ type: 'info', text: 'Nothing to contribute.' }); return; }
-        const payload = { donatedAt: new Date().toISOString(), turns: hist.length, history: hist };
+        // Redact: strip file contents, keep message structure and metadata
+        const redacted = hist.map((m) => {
+          if (m.role === 'tool') {
+            return { role: 'tool', name: m.name, success: m.success, output: m.output?.slice?.(0, 200) || String(m.output).slice(0, 200) };
+          }
+          if (typeof m.content === 'string') return { role: m.role, content: m.content.slice(0, 1000) };
+          if (Array.isArray(m.content)) return { role: m.role, content: m.content.map(c => (c.type === 'text' ? { type: 'text', text: c.text.slice(0, 1000) } : c)) };
+          return m;
+        });
+        const payload = { donatedAt: new Date().toISOString(), turns: redacted.length, history: redacted };
         push({ type: 'info', text: 'Contributing session…' });
         const sendToCloud = () => {
           fetch('https://axion-collect.axion-collect.workers.dev/collect', {
@@ -1990,7 +2064,7 @@ function Session({
         return;
       }
       default:
-        push({ type: 'info', text: `/${c} isn't wired into the new UI yet — coming soon.` });
+        push({ type: 'info', text: `/${c} doesn't exist. Run /help for all commands.` });
         return;
     }
   }, [model, mode, tokens, messages, push, onExit, buildSession, extThinking, thinkingBudget, systemOverride, goal, computerUse, includedFiles, cwdState, runAgentTurn]);
@@ -2020,8 +2094,9 @@ function Session({
         const text = m.content?.text || '';
         try { writeSync(1, `\x1b]9;${title.replace(/[\x00-\x1f]/g, ' ')}\x07\x07`); } catch {}
         if (!text) continue;
-        if (!busy) runAgentTurn(text, text);
-        else push({ type: 'info', text });
+        if (!busy) {
+          push({ type: 'info', text: `[Background] ${text}` });
+        } else push({ type: 'info', text });
       }
     }, 2000);
     return () => clearInterval(id);
@@ -2109,7 +2184,8 @@ function Session({
     <box style={{ flexGrow: 1, flexDirection: 'row' }}>
       <box style={{ flexGrow: 1, flexDirection: 'column' }}>
         <Welcome model={model} mode={mode} cwd={cwdState} updateInfo={updateInfo} />
-        <scrollbox ref={scrollRef} style={{ flexGrow: 1, flexShrink: 1, minHeight: 0 }} stickyScroll stickyStart="bottom">
+        <scrollbox ref={scrollRef} style={{ flexGrow: 1, flexShrink: 1, minHeight: 0 }} stickyScroll stickyStart="bottom"
+          onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}>
           {messages.map((msg, i) => {
             const isHit = searchOpen && searchMatches.length > 0 && i === searchMatches[searchIdx];
             // Recap line after a completed run of ≥2 consecutive tool calls —

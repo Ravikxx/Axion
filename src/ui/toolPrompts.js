@@ -4,8 +4,11 @@
 
 export function permissionKey(name, input) {
   if (name === 'run_command') {
-    const bin = (input?.command || '').trim().split(/\s+/)[0];
-    return bin ? `run_command:${bin}` : 'run_command';
+    const tokens = (input?.command || '').trim().split(/\s+/);
+    const bin = tokens[0];
+    if (!bin) return 'run_command';
+    // Include up to 2 tokens so git commit ≠ git push, etc.
+    return tokens.length >= 2 ? `run_command:${bin}:${tokens[1]}` : `run_command:${bin}`;
   }
   return name;
 }

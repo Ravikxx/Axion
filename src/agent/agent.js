@@ -559,6 +559,19 @@ CRITICAL RULES — follow these exactly:
           }
         }
 
+          // Validate required arguments before executing
+          const def = TOOL_DEFINITIONS.find(t => t.name === tc.name);
+          if (def?.input_schema?.required?.length) {
+            const missing = def.input_schema.required.filter(k => tc.input?.[k] == null);
+            if (missing.length) {
+              const errMsg = `Tool "${tc.name}" missing required arg(s): ${missing.join(', ')}. Provide them and try again.`;
+              const failed = { id: tc.id, name: tc.name, output: errMsg, success: false };
+              toolResults.push(failed);
+              this.onToolResult(failed);
+              continue;
+            }
+          }
+
           let result;
           if (tc.name === 'spawn_agents') {
             result = await this._spawnAgents(tc.input?.agents || []);
@@ -895,22 +908,38 @@ One word only:`;
 
   async _callModel() {
     this._abortCtrl = new AbortController();
-    try {
-      const { client, type } = createClient(this.modelAlias);
-      const model = resolveModel(this.modelAlias);
-      if (type === 'anthropic') return await this._callAnthropic(client, model);
-      if (type === 'veil')      return await this._callVeil(client, model);
-      return await this._callOpenAI(client, model);
-    } catch (err) {
-      if (this.cancelled || /abort/i.test(err?.name || '') || /abort/i.test(err?.message || '')) {
-        this.onStreamEnd();
+    const MAX_RETRIES = 2;
+    const RETRY_DELAY = 3000;
+    for (let attempt = 1; attempt <= MAX_RETRIES + 1; attempt++) {
+      try {
+        const { client, type } = createClient(this.modelAlias);
+        const model = resolveModel(this.modelAlias);
+        let resp;
+        if (type === 'anthropic') resp = await this._callAnthropic(client, model);
+        else if (type === 'veil') resp = await this._callVeil(client, model);
+        else resp = await this._callOpenAI(client, model);
+        // Patchy: model returned nothing useful — retry after delay
+        if (resp && !resp.text && (!resp.toolCalls || !resp.toolCalls.length) && attempt <= MAX_RETRIES) {
+          await this._sleep(RETRY_DELAY * attempt);
+          continue;
+        }
+        return resp;
+      } catch (err) {
+        if (this.cancelled || /abort/i.test(err?.name || '') || /abort/i.test(err?.message || '')) {
+          this.onStreamEnd();
+          return null;
+        }
+        if (attempt <= MAX_RETRIES) {
+          await this._sleep(RETRY_DELAY * attempt);
+          continue;
+        }
+        this.onMessage({ role: 'error', content: friendlyError(err, this.modelAlias) });
         return null;
+      } finally {
+        this._abortCtrl = null;
       }
-      this.onMessage({ role: 'error', content: friendlyError(err, this.modelAlias) });
-      return null;
-    } finally {
-      this._abortCtrl = null;
     }
+    return null;
   }
 
   _getToolList() {
@@ -1157,6 +1186,8 @@ One word only:`;
     this.totalTokens   = this.inputTokens + this.outputTokens;
     this.onTokens({ total: this.totalTokens, input: this.inputTokens, output: this.outputTokens, context: this.contextTokens });
   }
+
+  _sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 }
 
 function formatResetTime(isoStr) {

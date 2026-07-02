@@ -61,10 +61,11 @@ function pickSession() {
         if (row >= 0 && row < chats.length) { sel = row; render(); }
         return;
       }
-      // Arrow keys
+      // Arrow keys + any other CSI sequence
       if (b[0] === 27 && b[1] === 91) {
         if (b[2] === 65) { sel = Math.max(0, sel - 1); render(); return; }
         if (b[2] === 66) { sel = Math.min(chats.length - 1, sel + 1); render(); return; }
+        return; // any CSI sequence (arrows, F-keys, Home, End, etc.) — ignore
       }
       // Number keys 1-9
       const n = parseInt(s, 10);

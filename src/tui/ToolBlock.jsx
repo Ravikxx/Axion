@@ -41,7 +41,7 @@ function OutputLine({ line, lang, fail }) {
 const COLLAPSE_LIMIT = 6; // tool blocks taller than this collapse to one line
 
 export function ToolBlock({ name, input, output, success, pending, diff, expanded = false, onToggle }) {
-  if (name && name.includes('sequentialthinking')) {
+  if (name && name === 'sequentialthinking') {
     return <ThinkingStep input={input} pending={pending} />;
   }
 

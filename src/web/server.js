@@ -402,7 +402,7 @@ function createSharedSession(defaultModel, defaultMode) {
 
   async function runAgent(message) {
     const askConfirm = (tc) => {
-      if (tc.name && tc.name.includes('sequentialthinking')) return Promise.resolve(true);
+      if (tc.name && tc.name === 'sequentialthinking') return Promise.resolve(true);
       return new Promise((resolve) => {
         confirmResolver = resolve;
         broadcast({ type: 'confirm_request', kind: 'tool', tool: { name: tc.name, label: confirmLabel(tc.name, tc.input) } });
