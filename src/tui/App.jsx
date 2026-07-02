@@ -2527,10 +2527,30 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
     }, 120);
   }, [setTitleBar]);
   const notifyDone = useCallback(() => {
-    // OSC 9 desktop toast (Windows Terminal / iTerm2) + terminal bell (BEL —
-    // flashes the PowerShell window in the taskbar). No-op elsewhere; both are
-    // out-of-band control sequences, safe to interleave.
-    try { writeSync(1, `\x1b]9;Axion is done!\x07\x07`); } catch {}
+    // Terminal bell (BEL) — flashes the PowerShell window in the taskbar.
+    // On Windows, a real WinRT toast notification ("Axion is done!") fired via
+    // a detached PowerShell — shows regardless of focus, unlike OSC 9 which
+    // Windows Terminal only surfaces when unfocused. Other platforms keep the
+    // OSC 9 toast (iTerm2 etc.). All fire-and-forget; failures are silent.
+    try { writeSync(1, '\x07'); } catch {}
+    if (process.platform === 'win32') {
+      // Static script, no interpolated user input. PowerShell's registered
+      // AppUserModelID is borrowed so the toast shows without app registration.
+      const toastPs = `
+[Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] | Out-Null
+$t = [Windows.UI.Notifications.ToastNotificationManager]::GetTemplateContent([Windows.UI.Notifications.ToastTemplateType]::ToastText02)
+$x = $t.GetElementsByTagName('text')
+$x.Item(0).AppendChild($t.CreateTextNode('Axion')) | Out-Null
+$x.Item(1).AppendChild($t.CreateTextNode('Axion is done!')) | Out-Null
+$appId = '{1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}\\WindowsPowerShell\\v1.0\\powershell.exe'
+[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier($appId).Show([Windows.UI.Notifications.ToastNotification]::new($t))
+`;
+      try {
+        spawn('powershell.exe', ['-NoProfile', '-NonInteractive', '-WindowStyle', 'Hidden', '-Command', toastPs], { detached: true, stdio: 'ignore' }).unref();
+      } catch {}
+    } else {
+      try { writeSync(1, `\x1b]9;Axion is done!\x07`); } catch {}
+    }
     setTitleBar('Axion — done');
     if (pingTimerRef.current) clearTimeout(pingTimerRef.current);
     pingTimerRef.current = setTimeout(() => { if (busyTabsRef.current.size === 0) setTitleBar('Axion'); }, 5000);
