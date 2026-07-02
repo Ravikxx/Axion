@@ -856,6 +856,62 @@ function Session({
 
   const submitRef = useRef(null);
 
+  // Push a user message and run one agent turn with the interactive prompts
+  // (tool-confirm, plan-confirm, free-form questions). Shared by submit, /retry,
+  // and /schedule run — anything that skips these callbacks silently bypasses
+  // the mode's permission prompts. Returns the run promise (errors already
+  // pushed to the transcript) so callers can await completion.
+  const runAgentTurn = useCallback((displayText, agentText) => {
+    const text = agentText ?? displayText;
+    push({ type: 'user', text: displayText });
+    if (!lastUserTextRef.current) onTitleChange?.(displayText); // first prompt names the tab
+    lastUserTextRef.current = displayText;
+    setThinkingWord(pickThinkingWord());
+    setBusy(true);
+
+    const askConfirm = (tc) => {
+      if (tc.name && tc.name.includes('sequentialthinking')) return Promise.resolve(true);
+      const key = permissionKey(tc.name, tc.input);
+      if (getAllowedTools().includes(key)) return Promise.resolve(true);
+      return new Promise((resolve) => {
+        pendingAllowKeyRef.current = key;
+        setPendingConfirm({ name: tc.name, label: confirmLabel(tc.name, tc.input), diff: previewDiff(tc) });
+        setInputMode('confirm-tool');
+        confirmResolverRef.current = resolve;
+      });
+    };
+    const askPlanConfirm = () => new Promise((resolve) => {
+      setInputMode('confirm-plan');
+      confirmResolverRef.current = resolve;
+    });
+    const askUser = (spec) => new Promise((resolve) => {
+      questionResolverRef.current = resolve;
+      questionSpecRef.current = spec;
+      setPendingForm(normalizeQuestionSpec(spec));
+      setInputMode('question');
+    });
+
+    return agentRef.current
+      .run(text, { askConfirm, askPlanConfirm, askUser })
+      .catch((err) => push({ type: 'error', text: err?.message || String(err) }))
+      .finally(() => {
+        setBusy(false);
+        // Log this turn's token delta for /cost — read straight off the Agent
+        // instance (always current) rather than the `model`/`tokens` state,
+        // which this callback's closure may have gone stale on.
+        try {
+          const a = agentRef.current;
+          const prev = lastLoggedTokensRef.current;
+          const dIn = Math.max(0, (a.inputTokens || 0) - prev.input);
+          const dOut = Math.max(0, (a.outputTokens || 0) - prev.output);
+          if (dIn || dOut) {
+            appendCostLog({ model: a.modelAlias, inputTokens: dIn, outputTokens: dOut, cost: estimateCost(a.modelAlias, dIn, dOut) || 0 });
+          }
+          lastLoggedTokensRef.current = { input: a.inputTokens || 0, output: a.outputTokens || 0 };
+        } catch {}
+      });
+  }, [push, onTitleChange]);
+
   // ── Slash commands (essential set; others report "coming soon") ─────────────────
   const runCommand = useCallback(async (raw) => {
     const [cmd, ...rest] = raw.slice(1).trim().split(/\s+/);
@@ -1018,17 +1074,9 @@ function Session({
           if (lastUserIdx !== -1) agentRef.current.history = h.slice(0, h.length - 1 - lastUserIdx);
         }
         push({ type: 'info', text: `↩ Retrying: "${lastMsg}"` });
-        push({ type: 'user', text: lastMsg });
-        setThinkingWord(pickThinkingWord());
-        setBusy(true);
-        agentRef.current
-          .run(lastMsg, {
-            askConfirm: () => Promise.resolve(true),
-            askPlanConfirm: () => Promise.resolve(true),
-            askUser: () => Promise.resolve(''),
-          })
-          .catch((err) => push({ type: 'error', text: err?.message || String(err) }))
-          .finally(() => setBusy(false));
+        // Re-run through the shared turn path so tool/plan confirmations and
+        // questions still prompt — retrying must not bypass the mode's gates.
+        runAgentTurn(lastMsg);
         return;
       }
       case 'compact':
@@ -1777,7 +1825,8 @@ function Session({
           push({ type: 'info', text: `Running "${name}"…` });
           try {
             const preLen = agentRef.current.history.length;
-            await agentRef.current.run(task.prompt, { askConfirm: () => Promise.resolve(true), askPlanConfirm: () => Promise.resolve(true), askUser: () => Promise.resolve('') });
+            // Shared turn path: tool/plan confirmations still prompt per the mode.
+            await runAgentTurn(task.prompt);
             const result = agentRef.current.history.slice(preLen).filter(m => m.role === 'assistant').map(m => typeof m.content === 'string' ? m.content : (m.content || []).filter(c => c.type === 'text').map(c => c.text).join('\n')).filter(Boolean).join('\n\n');
             const saved = saveScheduleResult(task.name, result);
             task.lastRun = new Date().toISOString(); saveSchedules(list);
@@ -1944,60 +1993,7 @@ function Session({
         push({ type: 'info', text: `/${c} isn't wired into the new UI yet — coming soon.` });
         return;
     }
-  }, [model, mode, tokens, messages, push, onExit, buildSession, extThinking, thinkingBudget, systemOverride, goal, computerUse, includedFiles, cwdState]);
-
-  // Push a user message and run one agent turn with the interactive prompts
-  // (tool-confirm, plan-confirm, free-form questions). Shared by submit + retry.
-  const runAgentTurn = useCallback((displayText, agentText) => {
-    const text = agentText ?? displayText;
-    push({ type: 'user', text: displayText });
-    if (!lastUserTextRef.current) onTitleChange?.(displayText); // first prompt names the tab
-    lastUserTextRef.current = displayText;
-    setThinkingWord(pickThinkingWord());
-    setBusy(true);
-
-    const askConfirm = (tc) => {
-      if (tc.name && tc.name.includes('sequentialthinking')) return Promise.resolve(true);
-      const key = permissionKey(tc.name, tc.input);
-      if (getAllowedTools().includes(key)) return Promise.resolve(true);
-      return new Promise((resolve) => {
-        pendingAllowKeyRef.current = key;
-        setPendingConfirm({ name: tc.name, label: confirmLabel(tc.name, tc.input), diff: previewDiff(tc) });
-        setInputMode('confirm-tool');
-        confirmResolverRef.current = resolve;
-      });
-    };
-    const askPlanConfirm = () => new Promise((resolve) => {
-      setInputMode('confirm-plan');
-      confirmResolverRef.current = resolve;
-    });
-    const askUser = (spec) => new Promise((resolve) => {
-      questionResolverRef.current = resolve;
-      questionSpecRef.current = spec;
-      setPendingForm(normalizeQuestionSpec(spec));
-      setInputMode('question');
-    });
-
-    agentRef.current
-      .run(text, { askConfirm, askPlanConfirm, askUser })
-      .catch((err) => push({ type: 'error', text: err?.message || String(err) }))
-      .finally(() => {
-        setBusy(false);
-        // Log this turn's token delta for /cost — read straight off the Agent
-        // instance (always current) rather than the `model`/`tokens` state,
-        // which this callback's closure may have gone stale on.
-        try {
-          const a = agentRef.current;
-          const prev = lastLoggedTokensRef.current;
-          const dIn = Math.max(0, (a.inputTokens || 0) - prev.input);
-          const dOut = Math.max(0, (a.outputTokens || 0) - prev.output);
-          if (dIn || dOut) {
-            appendCostLog({ model: a.modelAlias, inputTokens: dIn, outputTokens: dOut, cost: estimateCost(a.modelAlias, dIn, dOut) || 0 });
-          }
-          lastLoggedTokensRef.current = { input: a.inputTokens || 0, output: a.outputTokens || 0 };
-        } catch {}
-      });
-  }, [push, onTitleChange]);
+  }, [model, mode, tokens, messages, push, onExit, buildSession, extThinking, thinkingBudget, systemOverride, goal, computerUse, includedFiles, cwdState, runAgentTurn]);
 
   const submit = useCallback((value) => {
     const text = (value || '').trim();
@@ -2411,11 +2407,15 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
   // Remove a specific tab (the × button, or Ctrl+W for the active one). Closing
   // the last tab exits. Clears the removed tab's busy state so the spinner stops.
   const removeTab = useCallback((id, session) => {
+    // The ✕ button passes no session (only Ctrl+W builds one), so fall back to
+    // the tab's last autosave snapshot — otherwise closing the final tab with
+    // the mouse would exit without saving the chat.
+    const snap = session ?? snapshotsRef.current.get(id) ?? null;
     busyTabsRef.current.delete(id);
     snapshotsRef.current.delete(id);
     if (busyTabsRef.current.size === 0) stopSpinner();
     setTabs((ts) => {
-      if (ts.length <= 1) { onExit(session); return ts; }
+      if (ts.length <= 1) { onExit(snap); return ts; }
       const idx = ts.findIndex((t) => t.id === id);
       if (idx === -1) return ts;
       const next = ts.filter((t) => t.id !== id);

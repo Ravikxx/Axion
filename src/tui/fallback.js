@@ -2,6 +2,7 @@
 // No Bun / OpenTUI — runs anywhere Node does. The launcher falls back to this when
 // Bun or OpenTUI's renderer isn't available, and for non-TTY / piped input.
 import readline from 'readline';
+import minimist from 'minimist';
 import { Agent } from '../agent/agent.js';
 import { getSavedModel, getSavedMode, getSavedApiKeys, getSavedCustomEndpoints } from '../persist.js';
 import { API_KEYS, CUSTOM_ENDPOINTS, DEFAULT_MODEL, DEFAULT_MODE } from '../config.js';
@@ -10,8 +11,14 @@ import { API_KEYS, CUSTOM_ENDPOINTS, DEFAULT_MODEL, DEFAULT_MODE } from '../conf
 for (const [p, k] of Object.entries(getSavedApiKeys())) { if (k && !API_KEYS[p]) API_KEYS[p] = k; }
 for (const [n, ep] of Object.entries(getSavedCustomEndpoints())) { if (ep?.baseURL) CUSTOM_ENDPOINTS[n] = ep; }
 
-const model = getSavedModel() || DEFAULT_MODEL;
-const mode  = getSavedMode()  || DEFAULT_MODE;
+// Same flag handling as main.jsx — the launcher forwards argv to this fallback.
+const argv = minimist(process.argv.slice(2), {
+  string: ['model', 'mode'],
+  alias: { m: 'model', M: 'mode' },
+});
+const cliMode = argv.mode ? (argv.mode === 'bypass' ? 'auto' : argv.mode === 'decide-for-me' ? 'decide' : argv.mode) : null;
+const model = argv.model || getSavedModel() || DEFAULT_MODEL;
+const mode  = cliMode    || getSavedMode()  || DEFAULT_MODE;
 
 const C = { accent: '\x1b[38;5;173m', dim: '\x1b[90m', red: '\x1b[31m', green: '\x1b[32m', reset: '\x1b[0m' };
 
@@ -34,9 +41,20 @@ if (!process.stdin.isTTY) {
   for await (const chunk of process.stdin) chunks.push(chunk);
   const input = Buffer.concat(chunks).toString('utf8').trim();
   if (input) {
+    // No terminal to prompt on, so tool confirmations can't be asked. Only
+    // auto-approve when the user explicitly opted into an unattended mode
+    // (bypass/decide-for-me); in ask/plan, deny each gated tool with a hint
+    // instead of silently granting piped input full shell/file access.
+    const unattended = mode === 'auto' || mode === 'decide';
+    const askConfirm = unattended
+      ? () => Promise.resolve(true)
+      : (tc) => {
+          process.stderr.write(`\n  ✗ ${tc?.name || 'tool'} denied (non-interactive ${mode} mode — pipe with -M bypass to allow tools)\n`);
+          return Promise.resolve(false);
+        };
     await agent.run(input, {
-      askConfirm: () => Promise.resolve(true),
-      askPlanConfirm: () => Promise.resolve(true),
+      askConfirm,
+      askPlanConfirm: () => Promise.resolve(unattended),
       askUser: () => Promise.resolve(''),
     }).catch((e) => process.stderr.write(`\n${e?.message || e}\n`));
     process.stdout.write('\n');
