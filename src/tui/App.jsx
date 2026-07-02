@@ -42,9 +42,10 @@ import { Thinking } from './Thinking.jsx';
 import { QuestionMenu } from './QuestionMenu.jsx';
 import { pickThinkingWord } from '../ui/thinkingWords.js';
 import { execSync, execFileSync, spawn } from 'child_process';
-import { existsSync, readFileSync, unlinkSync, writeSync, statSync } from 'fs';
+import { existsSync, readFileSync, unlinkSync, writeSync, statSync, copyFileSync, mkdirSync } from 'fs';
 import { resolve, join } from 'path';
 import { homedir } from 'os';
+import { fileURLToPath } from 'url';
 import { MACRO_STATE, captureScreen } from '../agent/computer.js';
 import { analyzeScreen } from '../agent/vision.js';
 import { MCP } from '../agent/mcp.js';
@@ -2534,15 +2535,32 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
     // OSC 9 toast (iTerm2 etc.). All fire-and-forget; failures are silent.
     try { writeSync(1, '\x07'); } catch {}
     if (process.platform === 'win32') {
-      // Static script, no interpolated user input. PowerShell's registered
-      // AppUserModelID is borrowed so the toast shows without app registration.
+      // Register a per-user AppUserModelID (HKCU, no admin) so the toast is
+      // attributed to "Axion" with the Axion logo instead of Windows
+      // PowerShell. The logo ships in docs/ (published with the npm package)
+      // and is copied once to ~/.axion so the registry points at a path that
+      // survives package updates. Only fixed strings and the homedir-derived
+      // logo path (single-quote doubled) reach the script — no user input.
+      let logoPs = '';
+      try {
+        const logoDst = join(homedir(), '.axion', 'axion-logo.png');
+        if (!existsSync(logoDst)) {
+          mkdirSync(join(homedir(), '.axion'), { recursive: true });
+          copyFileSync(fileURLToPath(new URL('../../docs/assets/logo-512.png', import.meta.url)), logoDst);
+        }
+        logoPs = `Set-ItemProperty -Path $reg -Name IconUri -Value '${logoDst.replace(/'/g, "''")}'`;
+      } catch {}
       const toastPs = `
+$appId = 'AxionLabs.Axion'
+$reg = "HKCU:\\Software\\Classes\\AppUserModelId\\$appId"
+if (-not (Test-Path $reg)) { New-Item -Path $reg -Force | Out-Null }
+Set-ItemProperty -Path $reg -Name DisplayName -Value 'Axion'
+${logoPs}
 [Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] | Out-Null
 $t = [Windows.UI.Notifications.ToastNotificationManager]::GetTemplateContent([Windows.UI.Notifications.ToastTemplateType]::ToastText02)
 $x = $t.GetElementsByTagName('text')
 $x.Item(0).AppendChild($t.CreateTextNode('Axion')) | Out-Null
 $x.Item(1).AppendChild($t.CreateTextNode('Axion is done!')) | Out-Null
-$appId = '{1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}\\WindowsPowerShell\\v1.0\\powershell.exe'
 [Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier($appId).Show([Windows.UI.Notifications.ToastNotification]::new($t))
 `;
       try {
