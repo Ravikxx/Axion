@@ -110,7 +110,7 @@ function ToolBlock({ name, input, output, success, pending, diff }) {
   }
 
   const statusClass = pending ? 'spin' : success ? 'ok' : 'err';
-  const statusIcon  = pending ? '…' : success ? '✔' : '✖';
+  const statusIcon  = pending ? '…' : success ? '●' : '●';
   const headerClass = `tool-header ${pending ? 'pending' : success ? 'success' : output ? 'failure' : ''}`;
   const inputSummary = input ? Object.values(input).map(v => String(v).slice(0, 80)).join('  ') : '';
 
@@ -195,7 +195,7 @@ function MessageRow({ msg }) {
     case 'tool':
       return <div className="msg"><ToolBlock {...msg} /></div>;
     case 'error':
-      return <div className="msg msg-error">✖ {msg.content}</div>;
+      return <div className="msg msg-error">● {msg.content}</div>;
     case 'info':
       return <div className="msg msg-info">{msg.content}</div>;
     default:

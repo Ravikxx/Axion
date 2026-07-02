@@ -27,12 +27,12 @@ const agent = new Agent({
   mode,
   onStreamChunk: (chunk) => process.stdout.write(chunk),
   onMessage: ({ role, content }) => {
-    if (role === 'error') process.stdout.write(`\n${C.red}✖ ${content}${C.reset}\n`);
+    if (role === 'error') process.stdout.write(`\n${C.red}● ${content}${C.reset}\n`);
     else if (role === 'thinking') { /* omit verbose thinking in compat mode */ }
     else if (role === 'plan') process.stdout.write(`\n${C.dim}${content}${C.reset}\n`);
   },
   onToolCall: ({ name }) => process.stdout.write(`\n${C.dim}  ⚙ ${name}…${C.reset}`),
-  onToolResult: ({ success }) => process.stdout.write(` ${success === false ? C.red + '✖' : C.green + '✔'}${C.reset}\n`),
+  onToolResult: ({ success }) => process.stdout.write(` ${success === false ? C.red + '●' : C.green + '●'}${C.reset}\n`),
 });
 
 // ── Non-TTY / pipe mode: read all stdin, run once, exit ─────────────────────────
@@ -49,7 +49,7 @@ if (!process.stdin.isTTY) {
     const askConfirm = unattended
       ? () => Promise.resolve(true)
       : (tc) => {
-          process.stderr.write(`\n  ✗ ${tc?.name || 'tool'} denied (non-interactive ${mode} mode — pipe with -M bypass to allow tools)\n`);
+          process.stderr.write(`\n  ● ${tc?.name || 'tool'} denied (non-interactive ${mode} mode — pipe with -M bypass to allow tools)\n`);
           return Promise.resolve(false);
         };
     await agent.run(input, {
@@ -84,7 +84,7 @@ while (running) {
       askUser: async (p) => ask(`${C.dim}  ${p?.question || 'answer'}: ${C.reset}`),
     });
   } catch (e) {
-    process.stdout.write(`\n${C.red}✖ ${e?.message || e}${C.reset}`);
+    process.stdout.write(`\n${C.red}● ${e?.message || e}${C.reset}`);
   }
   process.stdout.write('\n\n');
 }

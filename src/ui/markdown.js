@@ -19,7 +19,49 @@ export function parseInline(text) {
   return tokens;
 }
 
-// Split raw text into blocks before splitting by line (handles ``` fences).
+// Parse a markdown table from consecutive pipe-delimited lines starting at `start`.
+// Returns a table block or null.
+function parseTable(lines, start) {
+  const rawRows = [];
+  let i = start;
+  while (i < lines.length && /^\s*\|.*\|\s*$/.test(lines[i])) {
+    rawRows.push(lines[i]);
+    i++;
+  }
+  // Need at least header + separator rows
+  if (rawRows.length < 2) return null;
+
+  const splitRow = (r) => r.trim().replace(/^\||\|$/g, '').split('|').map((c) => c.trim());
+
+  const headers = splitRow(rawRows[0]);
+  const sep     = splitRow(rawRows[1]);
+
+  // Parse alignment from separator row (colons in the dash line)
+  const align = sep.map((cell) => {
+    const t = cell.trim();
+    const l = t.startsWith(':');
+    const r = t.endsWith(':');
+    if (l && r) return 'center';
+    if (r) return 'right';
+    return 'left';
+  });
+
+  const dataRows = rawRows.slice(2).map((r) => splitRow(r));
+
+  // Normalise column count (shorter rows padded with empty cells)
+  const numCols = Math.max(headers.length, ...dataRows.map((r) => r.length));
+  const pad     = (arr, n) => [...arr, ...Array(n).fill('')].slice(0, n);
+
+  return {
+    type: 'table',
+    headers: pad(headers, numCols),
+    rows: dataRows.map((r) => pad(r, numCols)),
+    align: pad(align, numCols),
+    _rowCount: rawRows.length,
+  };
+}
+
+// Split raw text into blocks before splitting by line (handles ``` fences + tables).
 export function parseBlocks(text) {
   const blocks = [];
   const lines = text.split('\n');
@@ -45,6 +87,16 @@ export function parseBlocks(text) {
       }
       i++;
       continue;
+    }
+
+    // Table detection: line starts/ends with a pipe (after trim).
+    if (/^\s*\|.*\|\s*$/.test(line)) {
+      const table = parseTable(lines, i);
+      if (table) {
+        blocks.push(table);
+        i += table._rowCount;
+        continue;
+      }
     }
 
     blocks.push({ type: 'line', text: line });

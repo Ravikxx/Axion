@@ -160,6 +160,70 @@ function ChartBlock({ config }) {
   );
 }
 
+// Strip markdown inline markers to get the visible display length of a cell.
+function displayLen(text) {
+  return text.replace(/\*\*(.+?)\*\*|\*(.+?)\*|`([^`\n]+)`/g, (_, b, i, c) => (b || i || c)).length;
+}
+
+function TableBlock({ headers, rows, align }) {
+  const numCols = headers.length;
+
+  // Compute max display width per column from the visible (marker-stripped) length.
+  const colWidths = Array(numCols).fill(0);
+  for (const row of [headers, ...rows]) {
+    for (let c = 0; c < numCols; c++) {
+      colWidths[c] = Math.max(colWidths[c], displayLen(row[c] || ''));
+    }
+  }
+
+  // Each cell gets 1-char left/right padding inside the box-drawing border.
+  const cellTotal = colWidths.map((w) => w + 2);
+  // Build a separator line between header and body with alignment colons.
+  const hdrSep = cellTotal.map((w, ci) => {
+    const a = align[ci] || 'left';
+    if (a === 'center') return '─'.repeat(Math.floor((w - 2) / 2)) + ':' + '─'.repeat(Math.ceil((w - 2) / 2));
+    if (a === 'right')  return '─'.repeat(w - 1) + ':';
+    return '─'.repeat(w);
+  });
+
+  // Render a single row's cells (header or data) with inline formatting.
+  const RowCells = ({ cells, force }) => {
+    const children = ['│'];
+    cells.forEach((cell, ci) => {
+      const visLen = displayLen(cell);
+      const w = colWidths[ci];
+      const a = align[ci] || 'left';
+      let leftSp, rightSp;
+      if (a === 'right')      { leftSp = 1 + w - visLen;  rightSp = 1; }
+      else if (a === 'center') { const e = w - visLen; leftSp = 1 + Math.floor(e / 2); rightSp = 1 + Math.ceil(e / 2); }
+      else                     { leftSp = 1;              rightSp = 1 + w - visLen; }
+      children.push(' '.repeat(leftSp));
+      children.push(<Inline key={`c${ci}`} tokens={parseInline(cell)} force={force} />);
+      children.push(' '.repeat(rightSp));
+      if (ci < cells.length - 1) children.push('│');
+    });
+    children.push('│');
+    return children;
+  };
+
+  return (
+    <box style={{ flexDirection: 'column', paddingLeft: 1, marginTop: 0 }}>
+      {/* Top border */}
+      <text>{'┌' + cellTotal.map((w) => '─'.repeat(w)).join('┬') + '┐'}</text>
+      {/* Header row (bold) */}
+      <text><RowCells cells={headers} force={{ bold: true }} /></text>
+      {/* Header/body separator */}
+      <text>{'├' + hdrSep.join('┼') + '┤'}</text>
+      {/* Data rows */}
+      {rows.map((row, ri) => (
+        <text key={ri}><RowCells cells={row} /></text>
+      ))}
+      {/* Bottom border */}
+      <text>{'└' + cellTotal.map((w) => '─'.repeat(w)).join('┴') + '┘'}</text>
+    </box>
+  );
+}
+
 export function RichText({ children }) {
   const text = typeof children === 'string' ? children : String(children ?? '');
   const blocks = parseBlocks(text);
@@ -168,6 +232,7 @@ export function RichText({ children }) {
       {blocks.map((block, i) => {
         if (block.type === 'code-block') return <CodeBlock key={i} lang={block.lang} text={block.text} />;
         if (block.type === 'chart')      return <ChartBlock key={i} config={block.config} />;
+        if (block.type === 'table')      return <TableBlock key={i} headers={block.headers} rows={block.rows} align={block.align} />;
         return <Line key={i} text={block.text} />;
       })}
     </box>

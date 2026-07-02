@@ -8,7 +8,7 @@ const rootDir = join(_dir, '..');
 
 function step(msg) { process.stdout.write(`\n\x1b[1m${msg}\x1b[0m\n`); }
 function ok(msg)   { process.stdout.write(`  \x1b[32m✓\x1b[0m  ${msg}\n`); }
-function fail(msg) { process.stdout.write(`  \x1b[31m✗\x1b[0m  ${msg}\n`); }
+function fail(msg) { process.stdout.write(`  \x1b[31m●\x1b[0m  ${msg}\n`); }
 
 function run(cmd, cwd) {
   execSync(cmd, { cwd, stdio: 'inherit' });

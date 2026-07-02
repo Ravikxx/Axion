@@ -779,7 +779,7 @@ function renderToolCall(name, id, input) {
 function resolveToolEl(wrap, success, output) {
   const icon = wrap.querySelector('.tool-icon');
   icon.className = `tool-icon ${success ? 'success' : 'error'}`;
-  icon.textContent = success ? '✔' : '✖';
+  icon.textContent = success ? '●' : '●';
   if (output) { const o = div('tool-output'); o.textContent = output; wrap.querySelector('.tool-body').appendChild(o); }
   scrollBottom();
 }

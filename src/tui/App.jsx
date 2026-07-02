@@ -284,7 +284,7 @@ const MessageRow = React.memo(function MessageRow({ msg, expanded = false, onTog
     case 'error':
       return (
         <box style={{ flexDirection: 'column', marginTop: 1, paddingLeft: 1, paddingRight: 1 }}>
-          <text><span fg="red">✖ {msg.text}</span></text>
+          <text><span fg="red">● {msg.text}</span></text>
         </box>
       );
     case 'plan':
@@ -468,7 +468,7 @@ function Session({
   // ── Per-message actions (hover bar on your own messages) ──────────────────────
   const copyMessage = useCallback((i) => {
     const t = messages[i]?.text || '';
-    if (t) { copyToClipboard(t); push({ type: 'info', text: '✔ copied message to clipboard.' }); }
+    if (t) { copyToClipboard(t); push({ type: 'info', text: '● copied message to clipboard.' }); }
   }, [messages, push]);
 
   // Roll the agent history back to just before the user turn shown at display
@@ -816,7 +816,7 @@ function Session({
     if (key.ctrl && ch === 'c') {
       if (key.shift) {
         const last = [...messages].reverse().find(m => m.type === 'assistant');
-        if (last?.text) { copyToClipboard(last.text); push({ type: 'info', text: '✔ copied last response.' }); }
+        if (last?.text) { copyToClipboard(last.text); push({ type: 'info', text: '● copied last response.' }); }
         return;
       }
       const now = Date.now();
@@ -1211,7 +1211,7 @@ function Session({
         if (sub === 'add') {
           if (!todoText) { push({ type: 'error', text: 'usage: /todo add <text>' }); return; }
           addTodo(todoText, { scope: todoScope }); setTodos(getTodos(todoScope));
-          push({ type: 'info', text: `✔ Added: "${todoText}"` });
+          push({ type: 'info', text: `● Added: "${todoText}"` });
           return;
         }
         if (sub === 'done') {
@@ -1219,7 +1219,7 @@ function Session({
           const toggled = toggleTodo(todoText, todoScope);
           if (!toggled) { push({ type: 'error', text: `No TODO found with id "${todoText}". Use /todo to see ids.` }); return; }
           setTodos(getTodos(todoScope));
-          push({ type: 'info', text: toggled.done ? `✔ Completed: "${toggled.text}"` : `↩ Reopened: "${toggled.text}"` });
+          push({ type: 'info', text: toggled.done ? `● Completed: "${toggled.text}"` : `↩ Reopened: "${toggled.text}"` });
           return;
         }
         if (sub === 'list') {
@@ -1243,7 +1243,7 @@ function Session({
         const lastAssistants = [...messages].reverse().filter((m) => m.type === 'assistant');
         if (!lastAssistants.length) { push({ type: 'error', text: 'No assistant response to copy.' }); return; }
         copyToClipboard(lastAssistants[0].text || '');
-        push({ type: 'info', text: '✔ copied last response to clipboard.' });
+        push({ type: 'info', text: '● copied last response to clipboard.' });
         return;
       }
       case 'copy-block': {
@@ -1257,7 +1257,7 @@ function Session({
         if (!blocks.length) { push({ type: 'info', text: 'No code blocks found in last response.' }); return; }
         if (n > blocks.length) { push({ type: 'info', text: `Only ${blocks.length} code block(s) found. Use /copy-block 1–${blocks.length}.` }); return; }
         copyToClipboard(blocks[n - 1]);
-        push({ type: 'info', text: `✔ Code block ${n}/${blocks.length} copied.` });
+        push({ type: 'info', text: `● Code block ${n}/${blocks.length} copied.` });
         return;
       }
       case 'undo': {
@@ -1382,7 +1382,7 @@ function Session({
         if (!arg) { push({ type: 'error', text: 'usage: /export <filename>' }); return; }
         try {
           const outPath = exportChat(arg, messages.filter(m => m.type !== 'info'));
-          push({ type: 'info', text: `✔ Exported to ${outPath}` });
+          push({ type: 'info', text: `● Exported to ${outPath}` });
         } catch (err) { push({ type: 'error', text: `Export failed: ${err.message}` }); }
         return;
       }
@@ -1391,7 +1391,7 @@ function Session({
         try {
           const sessionData = { model, mode, agentHistory: agentRef.current?.history || [], displayMessages: messages, tokenCount: tokens.total, systemOverride };
           const outPath = exportSession(arg, sessionData);
-          push({ type: 'info', text: `✔ Session exported to ${outPath}` });
+          push({ type: 'info', text: `● Session exported to ${outPath}` });
         } catch (err) { push({ type: 'error', text: `Export failed: ${err.message}` }); }
         return;
       }
@@ -1405,7 +1405,7 @@ function Session({
           if (data.agentHistory) agentRef.current.history = data.agentHistory;
           if (data.systemOverride) { setSystemOverride(data.systemOverride); agentRef.current?.setSystemOverride(data.systemOverride); }
           setTokens({ total: data.tokenCount || 0, input: 0, output: data.tokenCount || 0, context: 0 });
-          push({ type: 'info', text: `✔ Session imported: ${data.model || model} · ${data.mode || mode}` });
+          push({ type: 'info', text: `● Session imported: ${data.model || model} · ${data.mode || mode}` });
         } catch (err) { push({ type: 'error', text: `Import failed: ${err.message}` }); }
         return;
       }
@@ -1564,7 +1564,7 @@ function Session({
           let c = content.replace(/^```(?:md)?\n?/, '').replace(/\n?```$/, '').trim();
           if (!c.startsWith('---')) { c = `---\nname: ${skillName.toLowerCase()}\ndescription: ${instructions || skillName}\ntriggers: ${skillName.toLowerCase()}\n---\n\n${c}`; }
           const path = saveSkill(skillName, c);
-          push({ type: 'info', text: `✔ Skill saved → ${path.replace(process.env.HOME || process.env.USERPROFILE || '~', '~')}` });
+          push({ type: 'info', text: `● Skill saved → ${path.replace(process.env.HOME || process.env.USERPROFILE || '~', '~')}` });
         }).catch((err) => push({ type: 'error', text: `skill generation failed: ${err.message}` }));
         return;
       }
@@ -1805,7 +1805,7 @@ function Session({
           const token = diRest[0];
           if (!token) { push({ type: 'error', text: 'usage: /discord token <BOT_TOKEN>' }); return; }
           saveDiscordToken(token);
-          push({ type: 'info', text: '✔ Discord bot token saved. Run /discord start to connect.' });
+          push({ type: 'info', text: '● Discord bot token saved. Run /discord start to connect.' });
           return;
         }
         if (diSub === 'start') {
@@ -1817,7 +1817,7 @@ function Session({
             const handler = (msg) => { push({ type: 'user', text: `[Discord] ${msg}` }); };
             await startDiscord(token, handler);
             saveDiscordAutoStart(true);
-            push({ type: 'info', text: `✔ Discord bot connected as ${DISCORD_STATE.username}.` });
+            push({ type: 'info', text: `● Discord bot connected as ${DISCORD_STATE.username}.` });
           } catch (err) { push({ type: 'error', text: `Failed to connect: ${err.message}` }); }
           return;
         }
@@ -1840,12 +1840,12 @@ function Session({
         if (!oaSub || oaSub === 'list') {
           const connected = listOAuthTokens();
           if (!connected.length) { push({ type: 'info', text: 'No services connected.\n/oauth connect <github|google|notion|slack>' }); return; }
-          push({ type: 'info', text: `Connected services:\n${connected.map(t => `  ✔ ${t.service.padEnd(10)} connected ${new Date(t.connectedAt).toLocaleDateString()}`).join('\n')}` });
+          push({ type: 'info', text: `Connected services:\n${connected.map(t => `  ● ${t.service.padEnd(10)} connected ${new Date(t.connectedAt).toLocaleDateString()}`).join('\n')}` });
           return;
         }
         if (oaSub === 'revoke') {
           if (!oaSvc) { push({ type: 'error', text: 'usage: /oauth revoke <service>' }); return; }
-          push(revokeOAuthToken(oaSvc) ? { type: 'info', text: `✔ Disconnected ${oaSvc}` } : { type: 'error', text: `No connection for "${oaSvc}"` });
+          push(revokeOAuthToken(oaSvc) ? { type: 'info', text: `● Disconnected ${oaSvc}` } : { type: 'error', text: `No connection for "${oaSvc}"` });
           return;
         }
         if (oaSub === 'connect') {
@@ -1862,7 +1862,7 @@ function Session({
               },
               onToken: (t) => { token = t; },
             });
-            push({ type: 'info', text: `✔ ${cfg.label} connected!` });
+            push({ type: 'info', text: `● ${cfg.label} connected!` });
             if (cfg.mcpCommand && token) {
               try { await MCP.addServer(oaSvc, { command: cfg.mcpCommand, args: cfg.mcpArgs, env: cfg.mcpEnv(token) }); }
               catch (mcpErr) { push({ type: 'error', text: `Connected but MCP setup failed: ${mcpErr.message}` }); }
@@ -1878,7 +1878,7 @@ function Session({
         if (!scSub || scSub === 'list') {
           const list = getSchedules();
           if (!list.length) { push({ type: 'info', text: 'No scheduled tasks.\n/schedule add <name> "<schedule>" <prompt>' }); return; }
-          push({ type: 'info', text: `Scheduled tasks:\n${list.map(t => `  ${t.enabled ? '✔' : '✗'} ${t.name.padEnd(18)} ${t.schedule.padEnd(18)} ${t.lastRun ? `last ran ${new Date(t.lastRun).toLocaleString()}` : 'never run'}`).join('\n')}` });
+          push({ type: 'info', text: `Scheduled tasks:\n${list.map(t => `  ${t.enabled ? '●' : '●'} ${t.name.padEnd(18)} ${t.schedule.padEnd(18)} ${t.lastRun ? `last ran ${new Date(t.lastRun).toLocaleString()}` : 'never run'}`).join('\n')}` });
           return;
         }
         if (scSub === 'add') {
@@ -1894,14 +1894,14 @@ function Session({
           if (list.find(t => t.name === name)) { push({ type: 'error', text: `Schedule "${name}" already exists.` }); return; }
           list.push({ id: crypto.randomUUID?.() || `${Date.now()}`, name, schedule: scheduleExpr, prompt: promptText, model, enabled: true, lastRun: null, createdAt: new Date().toISOString() });
           saveSchedules(list);
-          push({ type: 'info', text: `✔ Schedule "${name}" added — runs ${scheduleExpr}\n/schedule run ${name} to run now.` });
+          push({ type: 'info', text: `● Schedule "${name}" added — runs ${scheduleExpr}\n/schedule run ${name} to run now.` });
           return;
         }
         if (scSub === 'remove' || scSub === 'delete') {
           const name = scRest[0]; if (!name) { push({ type: 'error', text: 'usage: /schedule remove <name>' }); return; }
           const list = getSchedules(); const updated = list.filter(t => t.name !== name);
           if (updated.length === list.length) { push({ type: 'error', text: `No schedule "${name}".` }); return; }
-          saveSchedules(updated); push({ type: 'info', text: `✔ Schedule "${name}" removed` });
+          saveSchedules(updated); push({ type: 'info', text: `● Schedule "${name}" removed` });
           return;
         }
         if (scSub === 'enable' || scSub === 'disable') {
@@ -1909,7 +1909,7 @@ function Session({
           const list = getSchedules(); const task = list.find(t => t.name === name);
           if (!task) { push({ type: 'error', text: `No schedule "${name}".` }); return; }
           task.enabled = scSub === 'enable'; saveSchedules(list);
-          push({ type: 'info', text: `✔ Schedule "${name}" ${scSub}d` });
+          push({ type: 'info', text: `● Schedule "${name}" ${scSub}d` });
           return;
         }
         if (scSub === 'run') {
@@ -1924,7 +1924,7 @@ function Session({
             const result = agentRef.current.history.slice(preLen).filter(m => m.role === 'assistant').map(m => typeof m.content === 'string' ? m.content : (m.content || []).filter(c => c.type === 'text').map(c => c.text).join('\n')).filter(Boolean).join('\n\n');
             const saved = saveScheduleResult(task.name, result);
             task.lastRun = new Date().toISOString(); saveSchedules(list);
-            push({ type: 'info', text: `✔ "${name}" complete — saved to ${saved}` });
+            push({ type: 'info', text: `● "${name}" complete — saved to ${saved}` });
           } catch (err) { push({ type: 'error', text: `Failed: ${err.message}` }); }
           return;
         }
@@ -1980,7 +1980,7 @@ function Session({
         push({ type: 'info', text: 'Connecting Blender MCP…' });
         try {
           const srv = await MCP.addServer('blender', { command: 'axion-blender', args: [] });
-          if (srv.ready) push({ type: 'info', text: `✔ Blender MCP connected — ${srv.tools.length} tools available.` });
+          if (srv.ready) push({ type: 'info', text: `● Blender MCP connected — ${srv.tools.length} tools available.` });
           else push({ type: 'error', text: `Blender MCP failed: ${srv.error}` });
         } catch (err) { push({ type: 'error', text: `Connection failed: ${err.message}` }); }
         return;
@@ -1990,7 +1990,7 @@ function Session({
         if (!mcSub || mcSub === 'status') {
           const status = MCP.getStatus();
           if (!status.length) { push({ type: 'info', text: 'No MCP servers configured.\n/mcp browse | /mcp install <id> | /mcp add <name> <cmd>' }); return; }
-          push({ type: 'info', text: `MCP servers:\n${status.map(s => `  ${s.name.padEnd(20)} ${s.disabled ? '⏸ disabled' : s.ready ? `✔ ${s.toolCount} tools` : `✗ ${s.error || 'not ready'}`}`).join('\n')}` });
+          push({ type: 'info', text: `MCP servers:\n${status.map(s => `  ${s.name.padEnd(20)} ${s.disabled ? '⏸ disabled' : s.ready ? `● ${s.toolCount} tools` : `● ${s.error || 'not ready'}`}`).join('\n')}` });
           return;
         }
         if (mcSub === 'tools') {
@@ -2005,7 +2005,7 @@ function Session({
           push({ type: 'info', text: `Starting MCP server "${name}"…` });
           try {
             const srv = await MCP.addServer(name, { command, args: cmdArgs });
-            if (srv.ready) push({ type: 'info', text: `✔ MCP "${name}" connected — ${srv.tools.length} tools.` });
+            if (srv.ready) push({ type: 'info', text: `● MCP "${name}" connected — ${srv.tools.length} tools.` });
             else push({ type: 'error', text: `MCP "${name}" failed: ${srv.error}` });
           } catch (err) { push({ type: 'error', text: `MCP add failed: ${err.message}` }); }
           return;
@@ -2013,7 +2013,7 @@ function Session({
         if (mcSub === 'remove') { const name = mcRest[0]; if (!name) { push({ type: 'error', text: 'usage: /mcp remove <name>' }); return; } push({ type: MCP.removeServer(name) ? 'info' : 'error', text: MCP.removeServer(name) ? `MCP "${name}" removed.` : `No server "${name}".` }); return; }
         if (mcSub === 'reload') {
           push({ type: 'info', text: 'Reloading MCP servers…' });
-          try { await MCP.reload(); const status = MCP.getStatus(); push({ type: 'info', text: `✔ MCP reload complete — ${status.filter(s => s.ready).length} connected${status.filter(s => !s.ready).length ? `, ${status.filter(s => !s.ready).length} failed` : ''}.` }); }
+          try { await MCP.reload(); const status = MCP.getStatus(); push({ type: 'info', text: `● MCP reload complete — ${status.filter(s => s.ready).length} connected${status.filter(s => !s.ready).length ? `, ${status.filter(s => !s.ready).length} failed` : ''}.` }); }
           catch (err) { push({ type: 'error', text: `Reload failed: ${err.message}` }); }
           return;
         }
@@ -2021,7 +2021,7 @@ function Session({
         if (mcSub === 'enable') {
           const name = mcRest[0]; if (!name) { push({ type: 'error', text: 'usage: /mcp enable <name>' }); return; }
           push({ type: 'info', text: `Starting "${name}"…` });
-          try { const srv = await MCP.enableServer(name); if (srv?.ready) push({ type: 'info', text: `✔ "${name}" enabled — ${srv.tools.length} tools.` }); else push({ type: 'error', text: `"${name}" failed: ${srv?.error}` }); }
+          try { const srv = await MCP.enableServer(name); if (srv?.ready) push({ type: 'info', text: `● "${name}" enabled — ${srv.tools.length} tools.` }); else push({ type: 'error', text: `"${name}" failed: ${srv?.error}` }); }
           catch (err) { push({ type: 'error', text: `Enable failed: ${err.message}` }); }
           return;
         }
@@ -2043,7 +2043,7 @@ function Session({
           const lines = [];
           for (const [cat, entries] of Object.entries(byCategory)) {
             lines.push(`\n  ${CATEGORIES[cat] || cat}`);
-            for (const e of entries) { lines.push(`    ${e.id.padEnd(22)} ${e.description}${installed.has(e.id) ? ' ✔' : ''}`); }
+            for (const e of entries) { lines.push(`    ${e.id.padEnd(22)} ${e.description}${installed.has(e.id) ? ' ●' : ''}`); }
           }
           push({ type: 'info', text: `MCP Marketplace — ${MCP_MARKETPLACE.length} servers\n${lines.join('\n')}\n\n/mcp install <id>` });
           return;
@@ -2052,7 +2052,7 @@ function Session({
           const query = mcRest.join(' '); const results = searchMarketplace(query);
           if (!results.length) { push({ type: 'info', text: `No results for "${query}".` }); return; }
           const installed = new Set(MCP.getStatus().map(s => s.name));
-          push({ type: 'info', text: `Results for "${query}":\n${results.map(e => `  ${e.id.padEnd(22)} ${e.description}${installed.has(e.id) ? ' ✔' : ''}`).join('\n')}` });
+          push({ type: 'info', text: `Results for "${query}":\n${results.map(e => `  ${e.id.padEnd(22)} ${e.description}${installed.has(e.id) ? ' ●' : ''}`).join('\n')}` });
           return;
         }
         if (mcSub === 'install') {
@@ -2064,7 +2064,7 @@ function Session({
           push({ type: 'info', text: `Installing ${entry.name}…` });
           try {
             const srv = await MCP.addServer(id, { command: entry.command, args: resolvedArgs });
-            if (srv.ready) push({ type: 'info', text: `✔ ${entry.name} installed — ${srv.tools.length} tools.` });
+            if (srv.ready) push({ type: 'info', text: `● ${entry.name} installed — ${srv.tools.length} tools.` });
             else push({ type: 'error', text: `${entry.name} failed: ${srv.error}` });
           } catch (err) { push({ type: 'error', text: `Install failed: ${err.message}` }); }
           return;
@@ -2076,8 +2076,8 @@ function Session({
         const coSub = args[0]?.toLowerCase();
         if (coSub === 'skip') { push({ type: 'info', text: 'Contribution prompt dismissed for this session.' }); return; }
         if (coSub === 'optout') {
-          if (args[1] === 'off') { saveDonateOptOut(false); push({ type: 'info', text: '✔ Contribution prompts re-enabled.' }); }
-          else { saveDonateOptOut(true); push({ type: 'info', text: '✔ Opted out. Run /contribute optout off to re-enable.' }); }
+          if (args[1] === 'off') { saveDonateOptOut(false); push({ type: 'info', text: '● Contribution prompts re-enabled.' }); }
+          else { saveDonateOptOut(true); push({ type: 'info', text: '● Opted out. Run /contribute optout off to re-enable.' }); }
           return;
         }
         const hist = agentRef.current?.history;
@@ -2096,7 +2096,7 @@ function Session({
         const sendToCloud = () => {
           fetch('https://axion-collect.axion-collect.workers.dev/collect', {
             method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
-          }).then(r => { if (r.ok) push({ type: 'info', text: '✔ Session contributed — thanks!' }); else { saveDonation(hist); push({ type: 'info', text: '✔ Saved locally.' }); } }).catch(() => { saveDonation(hist); push({ type: 'info', text: '✔ Saved locally.' }); });
+          }).then(r => { if (r.ok) push({ type: 'info', text: '● Session contributed — thanks!' }); else { saveDonation(hist); push({ type: 'info', text: '● Saved locally.' }); } }).catch(() => { saveDonation(hist); push({ type: 'info', text: '● Saved locally.' }); });
         };
         sendToCloud();
         return;
@@ -2172,13 +2172,13 @@ function Session({
     if (k.startsWith('sk-ant-')) {
       saveApiKey('anthropic', k); API_KEYS.anthropic = k;
       setModel('claude'); agentRef.current?.setModel('claude'); try { saveModel('claude'); } catch {}
-      push({ type: 'info', text: '✔ Anthropic key saved — switched to Claude.' });
+      push({ type: 'info', text: '● Anthropic key saved — switched to Claude.' });
     } else if (k.startsWith('sk-')) {
       saveApiKey('openai', k); API_KEYS.openai = k;
-      push({ type: 'info', text: '✔ OpenAI key saved. Use /model to pick a GPT model.' });
+      push({ type: 'info', text: '● OpenAI key saved. Use /model to pick a GPT model.' });
     } else {
       saveAxionKey(k);
-      push({ type: 'info', text: '✔ Axion key saved.' });
+      push({ type: 'info', text: '● Axion key saved.' });
     }
   }, [push]);
 

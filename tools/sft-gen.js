@@ -307,7 +307,7 @@ const mins    = Math.floor(elapsed / 60);
 const secs    = elapsed % 60;
 const dupes   = attempts - errors - generated;
 
-console.log(`✔ Done in ${mins}m ${secs}s`);
+console.log(`● Done in ${mins}m ${secs}s`);
 console.log(`  Generated:  ${generated.toLocaleString()} examples`);
 console.log(`  Attempts:   ${attempts.toLocaleString()}`);
 console.log(`  Duplicates: ${dupes.toLocaleString()} skipped`);

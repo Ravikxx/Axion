@@ -915,7 +915,7 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
         const { addTodo } = await import('../persist.js');
         const result = addTodo(input.text, { source: 'agent', scope: todoScope });
         const pending = result.list.filter(t => !t.done).length;
-        return { success: true, output: `✔ Added: "${input.text}"  (${pending} pending, ${result.list.length} total)` };
+        return { success: true, output: `● Added: "${input.text}"  (${pending} pending, ${result.list.length} total)` };
       }
 
       case 'todo_done': {
@@ -924,10 +924,10 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
         if (!toggled) {
           const all = getTodos(todoScope);
           const fuzzy = all.find(t => t.text.toLowerCase().includes((input.id || '').toLowerCase()));
-          if (fuzzy) { const r = toggleTodo(fuzzy.id, todoScope); return { success: true, output: `✔ Completed: "${r.text}" (matched by text, not id)` }; }
+          if (fuzzy) { const r = toggleTodo(fuzzy.id, todoScope); return { success: true, output: `● Completed: "${r.text}" (matched by text, not id)` }; }
           return { success: false, output: `No TODO found with id "${input.id}". Use todo_list to see ids.` };
         }
-        return { success: true, output: toggled.done ? `✔ Completed: "${toggled.text}"` : `↩ Reopened: "${toggled.text}"` };
+        return { success: true, output: toggled.done ? `● Completed: "${toggled.text}"` : `↩ Reopened: "${toggled.text}"` };
       }
 
       case 'todo_list': {
@@ -1037,7 +1037,7 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
           proc.on('close', (code) => {
             task.exitCode = code;
             BUS.send('bgtask', agentLabel, {
-              title: code === 0 ? '✔ Axion background task done' : '✖ Axion background task failed',
+              title: code === 0 ? '● Axion background task done' : '● Axion background task failed',
               text: `[Background task ${id} finished, exit code ${code}] \`${input.command}\`\n${task.output.slice(-2000) || '(no output)'}`,
             });
           });

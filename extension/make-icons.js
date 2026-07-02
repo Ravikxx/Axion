@@ -24,5 +24,5 @@ for (const { size, svg } of icons) {
     `convert -density 384 -background none "${svg}" -resize ${size}x${size} "${out}"`,
     { stdio: 'inherit' }
   );
-  console.log(`✔ icons/icon${size}.png`);
+  console.log(`● icons/icon${size}.png`);
 }

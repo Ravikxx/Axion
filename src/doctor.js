@@ -19,7 +19,7 @@ function which(bin) {
 
 function ok(msg)   { process.stdout.write(`  \x1b[32m✓\x1b[0m  ${msg}\n`); }
 function warn(msg) { process.stdout.write(`  \x1b[33m⚠\x1b[0m  ${msg}\n`); }
-function fail(msg) { process.stdout.write(`  \x1b[31m✗\x1b[0m  ${msg}\n`); }
+function fail(msg) { process.stdout.write(`  \x1b[31m●\x1b[0m  ${msg}\n`); }
 function head(msg) { process.stdout.write(`\n\x1b[1m${msg}\x1b[0m\n`); }
 
 // ── Checks ────────────────────────────────────────────────────────────────────

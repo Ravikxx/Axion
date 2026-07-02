@@ -252,9 +252,9 @@ function waitForCode(port) {
 
       res.writeHead(200, { 'Content-Type': 'text/html' });
       if (code) {
-        res.end('<html><body style="font-family:sans-serif;text-align:center;padding:60px"><h2>✔ Connected!</h2><p>You can close this tab and return to Axion.</p></body></html>');
+        res.end('<html><body style="font-family:sans-serif;text-align:center;padding:60px"><h2>● Connected!</h2><p>You can close this tab and return to Axion.</p></body></html>');
       } else {
-        res.end('<html><body style="font-family:sans-serif;text-align:center;padding:60px"><h2>✖ Authorization failed</h2><p>You can close this tab.</p></body></html>');
+        res.end('<html><body style="font-family:sans-serif;text-align:center;padding:60px"><h2>● Authorization failed</h2><p>You can close this tab.</p></body></html>');
       }
 
       clearTimeout(timeout);

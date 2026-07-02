@@ -334,7 +334,7 @@ async function main() {
       try {
         const result = await runScenario(scenario, i);
         results.push(result);
-        console.log(`${result.pass ? "PASS ✓" : "FAIL ✗"}  flags=${JSON.stringify(result.flags)}`);
+        console.log(`${result.pass ? "PASS ✓" : "FAIL ●"}  flags=${JSON.stringify(result.flags)}`);
         console.log(`  --- FULL RESPONSE ---`);
         console.log(result.response);
         console.log(`  --- END ---`);

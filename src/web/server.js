@@ -430,7 +430,7 @@ function createSharedSession(defaultModel, defaultMode) {
         const lastText = typeof last?.content === 'string' ? last.content
           : last?.content?.find?.((c) => c.type === 'text')?.text || '';
         if (lastText.includes('GOAL_COMPLETE')) {
-          pushDisplay({ type: 'info', content: '✔ Goal complete.' });
+          pushDisplay({ type: 'info', content: '● Goal complete.' });
           goal = null; goalActive = false; agent.setGoal(null);
           break;
         }
@@ -614,7 +614,7 @@ function createSharedSession(defaultModel, defaultMode) {
         if (!agent.history?.length) { info('Nothing to compact yet.'); break; }
         info('Compacting history…');
         broadcast({ type: 'thinking_start', word: 'compressing' });
-        try { const s = await agent.compact(); info(`✔ Compacted. Summary:\n${s}`); }
+        try { const s = await agent.compact(); info(`● Compacted. Summary:\n${s}`); }
         catch (err) { error(`Compact failed: ${err.message}`); }
         finally { broadcast({ type: 'thinking_end' }); }
         break;
@@ -631,7 +631,7 @@ function createSharedSession(defaultModel, defaultMode) {
         try {
           const sessionData = { model, mode, agentHistory: agent.history || [], displayMessages, tokenCount: tokens.total, tab: sessionTab || 'code', systemOverride };
           const outPath = exportSession(arg, sessionData);
-          info(`✔ Session exported to ${outPath}`);
+          info(`● Session exported to ${outPath}`);
         } catch (err) { error(`Export failed: ${err.message}`); }
         break;
       }
@@ -650,7 +650,7 @@ function createSharedSession(defaultModel, defaultMode) {
           displayMessages = data.displayMessages || [];
           broadcast({ type: 'resume', model, mode, messages: displayMessages, tab: sessionTab });
           broadcastStatus();
-          info(`✔ Session imported: ${data.model || model} · ${data.mode || mode} · ${displayMessages.length} messages`);
+          info(`● Session imported: ${data.model || model} · ${data.mode || mode} · ${displayMessages.length} messages`);
         } catch (err) { error(`Import failed: ${err.message}`); }
         break;
       }
@@ -821,13 +821,13 @@ function createSharedSession(defaultModel, defaultMode) {
         if (sub === 'add') {
           if (!todoText) { error('usage: /todo add <text>'); break; }
           addTodo(todoText);
-          info(`✔ Added: "${todoText}"`); break;
+          info(`● Added: "${todoText}"`); break;
         }
         if (sub === 'done') {
           if (!todoText) { error('usage: /todo done <id>'); break; }
           const toggled = toggleTodo(todoText);
           if (!toggled) { error(`No TODO found with id "${todoText}". Use /todo to see ids.`); break; }
-          info(toggled.done ? `✔ Completed: "${toggled.text}"` : `↩ Reopened: "${toggled.text}"`); break;
+          info(toggled.done ? `● Completed: "${toggled.text}"` : `↩ Reopened: "${toggled.text}"`); break;
         }
         if (sub === 'list') {
           const all = getTodos();

@@ -144,3 +144,52 @@ test('text before and after chart block', () => {
   assert.equal(blocks[1].type, 'chart');
   assert.equal(blocks[2].type, 'line');
 });
+
+// ── Table blocks ────────────────────────────────────────────────────────────────
+
+test('basic table with header and two rows', () => {
+  const blocks = parseBlocks('| Name | Age |\n| --- | --- |\n| Alice | 30 |\n| Bob | 25 |');
+  assert.equal(blocks.length, 1);
+  assert.equal(blocks[0].type, 'table');
+  assert.deepEqual(blocks[0].headers, ['Name', 'Age']);
+  assert.deepEqual(blocks[0].rows, [['Alice', '30'], ['Bob', '25']]);
+  assert.deepEqual(blocks[0].align, ['left', 'left']);
+});
+
+test('table with alignment', () => {
+  const blocks = parseBlocks('| Left | Center | Right |\n| :--- | :---: | ---: |\n| a | b | c |');
+  assert.equal(blocks[0].type, 'table');
+  assert.deepEqual(blocks[0].align, ['left', 'center', 'right']);
+});
+
+test('table with extra leading/trailing whitespace on rows', () => {
+  const blocks = parseBlocks('  | A | B |  \n  |---|---|  \n  | 1 | 2 |  ');
+  assert.equal(blocks.length, 1);
+  assert.equal(blocks[0].type, 'table');
+  assert.deepEqual(blocks[0].headers, ['A', 'B']);
+  assert.deepEqual(blocks[0].rows, [['1', '2']]);
+});
+
+test('table with uneven column count pads shorter rows', () => {
+  const blocks = parseBlocks('| A | B | C |\n| --- | --- | --- |\n| 1 | 2 |');
+  assert.equal(blocks[0].type, 'table');
+  assert.equal(blocks[0].headers.length, 3);
+  assert.equal(blocks[0].rows[0].length, 3);
+  assert.equal(blocks[0].rows[0][2], '');
+});
+
+test('non-table pipe lines remain as line blocks', () => {
+  const blocks = parseBlocks('just a | pipe in text');
+  assert.equal(blocks.length, 1);
+  assert.equal(blocks[0].type, 'line');
+});
+
+test('table between paragraphs', () => {
+  const blocks = parseBlocks('before\n| H1 | H2 |\n| -- | -- |\n| C1 | C2 |\nafter');
+  assert.equal(blocks.length, 3);
+  assert.equal(blocks[0].type, 'line');
+  assert.equal(blocks[1].type, 'table');
+  assert.equal(blocks[2].type, 'line');
+  assert.deepEqual(blocks[1].headers, ['H1', 'H2']);
+  assert.deepEqual(blocks[1].rows, [['C1', 'C2']]);
+});

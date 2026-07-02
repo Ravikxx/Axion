@@ -121,7 +121,7 @@ await startDiscord(token, async (msg) => {
   }
 });
 
-console.log(`✔ Bot ready. Listening for DMs…`);
+console.log(`● Bot ready. Listening for DMs…`);
 
 process.on('SIGINT',  async () => { const { stopDiscord } = await import('./agent/discord.js'); await stopDiscord(); process.exit(0); });
 process.on('SIGTERM', async () => { const { stopDiscord } = await import('./agent/discord.js'); await stopDiscord(); process.exit(0); });
