@@ -1081,11 +1081,17 @@ function Session({
         return;
       }
       case 'mode': {
-        if (!arg) { push({ type: 'info', text: `current mode: ${modeLabel(mode)}` }); return; }
+        const MODE_NOTES = {
+          ask:    'every tool call asks for confirmation',
+          plan:   'you approve the plan once, then it executes WITHOUT per-tool prompts',
+          auto:   'no confirmations at all',
+          decide: 'an AI judge triages each tool call; risky ones still ask you',
+        };
+        if (!arg) { push({ type: 'info', text: `current mode: ${modeLabel(mode)} — ${MODE_NOTES[mode] || ''}` }); return; }
         if (!['ask', 'plan', 'auto', 'bypass', 'decide', 'decide-for-me'].includes(arg)) { push({ type: 'error', text: 'Mode must be ask | plan | bypass | decide-for-me.' }); return; }
         const norm = arg === 'bypass' ? 'auto' : arg === 'decide-for-me' ? 'decide' : arg;
         setMode(norm); agentRef.current?.setMode(norm); try { saveMode(norm); } catch {}
-        push({ type: 'info', text: `mode → ${modeLabel(norm)}` });
+        push({ type: 'info', text: `mode → ${modeLabel(norm)} — ${MODE_NOTES[norm] || ''}` });
         return;
       }
       case 'theme': {

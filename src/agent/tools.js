@@ -1,5 +1,5 @@
 import { readFileSync, writeFileSync, readdirSync, statSync, existsSync, unlinkSync, renameSync, mkdirSync, appendFileSync, cpSync, rmSync } from 'fs';
-import { execSync, spawn } from 'child_process';
+import { execSync, execFileSync, spawn } from 'child_process';
 import { relative, resolve, dirname, basename, extname } from 'path';
 import { diffLines } from '../utils/diff.js';
 import { backupFile, recordFileChange } from '../persist.js';
@@ -264,7 +264,7 @@ export const TOOL_DEFINITIONS = [
   },
   {
     name: 'schedule_followup',
-    description: 'Schedule a one-time reminder to check back on something after a delay, instead of blocking or polling in a loop. When it fires, your note is fed back into the conversation automatically (and pings the desktop) if you\'re idle; otherwise it queues until you\'re free. Good for "check if the build finished in 2 minutes" type follow-ups that aren\'t tied to a background task (those already auto-notify on completion — see run_command background=true).',
+    description: 'Schedule a one-time reminder after a delay, instead of blocking or polling in a loop. When it fires, it pings the desktop and posts your note into the conversation as a notice for the user to act on — it does NOT automatically resume you. Good for "remind the user to check if the build finished in 2 minutes" type follow-ups that aren\'t tied to a background task (those already notify on completion — see run_command background=true).',
     input_schema: {
       type: 'object',
       properties: {
@@ -624,17 +624,17 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
                            'prettier.config.js', 'prettier.config.mjs', 'prettier.config.cjs']
                           .some(f => existsSync(join(cwd, f)));
       if (hasPrettier && ['.js','.jsx','.ts','.tsx','.json','.css','.html','.md','.yaml','.yml'].includes(ext)) {
-        execSync(`npx prettier --write "${absPath}"`, { cwd, stdio: 'pipe', timeout: 15000 });
+        execFileSync(process.platform === 'win32' ? 'npx.cmd' : 'npx', ['prettier', '--write', absPath], { cwd, stdio: 'pipe', timeout: 15000 });
         return ' (auto-formatted)';
       }
       if (ext === '.go') {
-        execSync(`gofmt -w "${absPath}"`, { cwd, stdio: 'pipe', timeout: 5000 });
+        execFileSync('gofmt', ['-w', absPath], { cwd, stdio: 'pipe', timeout: 5000 });
         return ' (gofmt)';
       }
       if (ext === '.py') {
         const hasPyConf = existsSync(join(cwd, 'pyproject.toml')) || existsSync(join(cwd, '.black'));
         if (hasPyConf) {
-          execSync(`python -m black "${absPath}" -q`, { cwd, stdio: 'pipe', timeout: 15000 });
+          execFileSync('python', ['-m', 'black', absPath, '-q'], { cwd, stdio: 'pipe', timeout: 15000 });
           return ' (black)';
         }
       }
@@ -931,6 +931,16 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
       }
 
       case 'fetch_url': {
+        // Block cloud instance-metadata endpoints (SSRF → credential theft).
+        // Localhost/private ranges stay reachable — fetching your own dev
+        // server is a core coding-agent use case.
+        try {
+          const host = new URL(input.url).hostname.toLowerCase().replace(/^\[|\]$/g, '');
+          if (host.startsWith('169.254.') || host === 'metadata.google.internal'
+              || host === '100.100.100.200' || host === 'fd00:ec2::254') {
+            return { success: false, output: `Blocked: ${host} is a cloud instance-metadata endpoint.` };
+          }
+        } catch { return { success: false, output: `Invalid URL: ${input.url}` }; }
         const res = await fetch(input.url, {
           headers: { 'User-Agent': 'Axion-CLI/1.0' },
           signal: AbortSignal.timeout(15000),
@@ -1050,7 +1060,7 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
 
       case 'git_commit': {
         execSync('git add -A', { cwd, encoding: 'utf8' });
-        const out = execSync(`git commit -m ${JSON.stringify(input.message)}`, { cwd, encoding: 'utf8' });
+        const out = execFileSync('git', ['commit', '-m', input.message], { cwd, encoding: 'utf8' });
         return { success: true, output: out };
       }
 

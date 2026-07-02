@@ -187,6 +187,12 @@ class McpManager {
 
   // Add a server at runtime and persist it
   async addServer(name, config) {
+    // Tool names are built as mcp__<server>__<tool> and parsed back at the
+    // first "__", so a server name containing "__" would misroute every call.
+    // The charset must also fit Anthropic's [a-zA-Z0-9_-] tool-name pattern.
+    if (!/^[A-Za-z0-9_-]{1,30}$/.test(name) || name.includes('__')) {
+      throw new Error(`Invalid MCP server name "${name}" — use 1-30 letters/digits/dashes (no "__").`);
+    }
     if (this._servers.has(name)) {
       this._servers.get(name).stop();
     }
@@ -237,11 +243,16 @@ class McpManager {
 
   getAnthropicTools() {
     const out = [];
+    const seen = new Set();
     for (const [srvName, srv] of this._servers) {
       if (!srv.ready) continue;
       for (const tool of srv.tools) {
-        // Anthropic names: max 64 chars, pattern [a-zA-Z0-9_-]
+        // Anthropic names: max 64 chars, pattern [a-zA-Z0-9_-]. Truncation can
+        // make two long names collide — skip duplicates instead of silently
+        // routing both to whichever tool parses out of the shared prefix.
         const name = `mcp__${srvName}__${tool.name}`.slice(0, 64);
+        if (seen.has(name)) continue;
+        seen.add(name);
         out.push({
           name,
           description: `[${srvName}] ${tool.description || tool.name}`,

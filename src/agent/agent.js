@@ -426,10 +426,20 @@ CRITICAL RULES — follow these exactly:
 
   // ── Agent loop ────────────────────────────────────────────────────────────
 
-  // Tools that are read-only and safe to execute concurrently
+  // Tools that are read-only and safe to execute concurrently.
+  // fetch_url is deliberately NOT here: it reaches the network with a
+  // model-chosen URL, so decide mode must evaluate it like any other tool.
   static PARALLEL_SAFE = new Set([
     'read_file', 'list_directory', 'git_status', 'git_diff',
-    'web_search', 'fetch_url', 'screenshot', 'screen_size',
+    'web_search', 'screenshot', 'screen_size',
+  ]);
+
+  // Clearly destructive tools: in decide mode a "safe" verdict from the AI
+  // judge is floored to "ask" — the judge sees model-authored input and is
+  // prompt-injectable, so it must never grant less friction than ask mode
+  // would for these. (write/patch are undoable via backups; these aren't.)
+  static DECIDE_ALWAYS_ASK = new Set([
+    'run_command', 'delete_file', 'replace_in_files', 'git_push',
   ]);
 
   async _agentLoop(askConfirm, askUser) {
@@ -532,7 +542,8 @@ CRITICAL RULES — follow these exactly:
           this.onToolCall({ name: tc.name, input: tc.input, id: tc.id });
 
           if (this.mode === 'decide' && !Agent.PARALLEL_SAFE.has(tc.name)) {
-            const decision = await this._decideToolSafety(tc);
+            let decision = await this._decideToolSafety(tc);
+            if (decision === 'safe' && Agent.DECIDE_ALWAYS_ASK.has(tc.name)) decision = 'ask';
             if (decision === 'deny') {
               const denied = { id: tc.id, name: tc.name, output: 'AI safety check: denied.', success: false };
               toolResults.push(denied);

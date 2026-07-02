@@ -581,14 +581,16 @@ for ($i = 0; $i -lt ${count}; $i++) {
 // Uses clipboard paste to avoid SendKeys encoding/escaping issues with special chars.
 export function typeText(text) {
   if (process.platform === 'win32') {
-    const json = JSON.stringify(text);
+    const txtPath = join(tmpdir(), `axion-type-${Date.now()}.txt`);
+    writeFileSync(txtPath, text, 'utf8');
+    const escapedPath = txtPath.replace(/\\/g, '\\\\');
     const script = `
 Add-Type -AssemblyName System.Windows.Forms
-[System.Windows.Forms.Clipboard]::SetText(${json})
+[System.Windows.Forms.Clipboard]::SetText([System.IO.File]::ReadAllText('${escapedPath}'))
 Start-Sleep -Milliseconds 150
 [System.Windows.Forms.SendKeys]::SendWait("^v")
 `;
-    runPowerShell(script, 8000);
+    try { runPowerShell(script, 8000); } finally { try { unlinkSync(txtPath); } catch {} }
 
   } else if (process.platform === 'darwin') {
     const escaped = text.replace(/'/g, "'\\''");
@@ -596,19 +598,19 @@ Start-Sleep -Milliseconds 150
 
   } else if (isWayland()) {
     // Wayland: wtype is the lightest option; ydotool type works too
-    const esc = text.replace(/\\/g, '\\\\').replace(/'/g, "'\\''");
+    const esc = text.replace(/'/g, "'\\''");
     if (which('wtype')) {
       execSync(`wtype -- '${esc}'`, { timeout: 10000 });
     } else if (which('ydotool')) {
-      const esc2 = text.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
-      execSync(`ydotool type --key-delay 0 -- "${esc2}"`, { timeout: 10000 });
+      const esc2 = text.replace(/'/g, "'\\''");
+      execSync(`ydotool type --key-delay 0 -- '${esc2}'`, { timeout: 10000 });
     } else {
       throw new Error('No Wayland keyboard tool found. Install wtype or ydotool:\n  sudo apt install wtype    (recommended)\n  sudo apt install ydotool  (requires ydotoold daemon)');
     }
 
   } else {
     // X11: prefer xdotool type; fall back to xclip clipboard paste
-    const escaped = text.replace(/\\/g, '\\\\').replace(/'/g, "'\\''");
+    const escaped = text.replace(/'/g, "'\\''");
     try {
       execSync(`xdotool type --clearmodifiers --delay 0 -- '${escaped}'`, { timeout: 10000 });
     } catch {
@@ -646,7 +648,7 @@ function sendKeysToMacOS(keys) {
       const close = keys.indexOf('}', i);
       const name  = close === -1 ? '' : keys.slice(i + 1, close).toUpperCase();
       const code  = MAC_KEY_CODES[name];
-      lines.push(code != null ? `key code ${code}${using}` : `keystroke "${name.toLowerCase()}"${using}`);
+      lines.push(code != null ? `key code ${code}${using}` : `keystroke "${name.toLowerCase().replace(/\\/g, '\\\\').replace(/"/g, '\\"')}"${using}`);
       mods.length = 0;
       i = close === -1 ? keys.length : close + 1;
       continue;
@@ -661,12 +663,14 @@ function sendKeysToMacOS(keys) {
 // Windows SendKeys format: ^c=Ctrl+C, %{F4}=Alt+F4, {ENTER}, {TAB}, {ESC}, {BACKSPACE}, +{TAB}=Shift+Tab
 export function pressKey(keys) {
   if (process.platform === 'win32') {
-    const json = JSON.stringify(keys);
+    const keysPath = join(tmpdir(), `axion-keys-${Date.now()}.txt`);
+    writeFileSync(keysPath, keys, 'utf8');
+    const escapedKeysPath = keysPath.replace(/\\/g, '\\\\');
     const script = `
 Add-Type -AssemblyName System.Windows.Forms
-[System.Windows.Forms.SendKeys]::SendWait(${json})
+[System.Windows.Forms.SendKeys]::SendWait([System.IO.File]::ReadAllText('${escapedKeysPath}'))
 `;
-    runPowerShell(script);
+    try { runPowerShell(script); } finally { try { unlinkSync(keysPath); } catch {} }
 
   } else if (process.platform === 'darwin') {
     const lines = sendKeysToMacOS(keys);
@@ -677,10 +681,14 @@ Add-Type -AssemblyName System.Windows.Forms
 
   } else if (isWayland()) {
     if (!which('ydotool')) throw new Error('ydotool not found — run: sudo apt install ydotool  (Wayland input tool, requires ydotoold daemon)');
-    execSync(`ydotool key ${sendKeysToX11(keys)}`, { timeout: 5000 });
+    const yk = sendKeysToX11(keys);
+    if (/[^A-Za-z0-9+_ ]/.test(yk)) throw new Error('Invalid keysym in pressKey');
+    execSync(`ydotool key ${yk}`, { timeout: 5000 });
 
   } else {
-    execSync(`xdotool key ${sendKeysToX11(keys)}`, { timeout: 5000 });
+    const xk = sendKeysToX11(keys);
+    if (/[^A-Za-z0-9+_ ]/.test(xk)) throw new Error('Invalid keysym in pressKey');
+    execSync(`xdotool key ${xk}`, { timeout: 5000 });
   }
 }
 
@@ -816,7 +824,8 @@ end tell
   if (process.platform !== 'win32') {
     // Linux: use xdotool to find a window matching the search term
     try {
-      const wid = execSync(`xdotool search --name "${searchTerm.replace(/"/g, '\\"')}" 2>/dev/null | head -1`, { encoding: 'utf8', timeout: 3000 }).trim();
+      const escapedSearch = searchTerm.replace(/'/g, "'\\''");
+      const wid = execSync(`xdotool search --name '${escapedSearch}' 2>/dev/null | head -1`, { encoding: 'utf8', timeout: 3000 }).trim();
       if (!wid) return null;
       const geo = execSync(`xdotool getwindowgeometry ${wid} 2>/dev/null`, { encoding: 'utf8', timeout: 2000 });
       const pos = geo.match(/Position:\s*(\d+),(\d+)/);
@@ -838,6 +847,10 @@ end tell
     .replace(/\s+/g, ' ').trim();
 
   const terms = [...new Set([searchTerm, core].filter(Boolean))];
+
+  const termsPath = join(tmpdir(), `axion-uia-terms-${Date.now()}.txt`);
+  writeFileSync(termsPath, terms.join('\n'), 'utf8');
+  const escapedTermsPath = termsPath.replace(/\\/g, '\\\\');
 
   const script = `
 Add-Type -AssemblyName UIAutomationClient,UIAutomationTypes
@@ -867,7 +880,7 @@ function TryFindPartial($name) {
   return $null
 }
 
-$searches = @(${terms.map(t => `"${t.replace(/"/g, '`"')}"`).join(',')})
+$searches = Get-Content '${escapedTermsPath}'
 foreach ($term in $searches) {
   $found = TryFind $term
   if ($found) { break }
@@ -904,7 +917,7 @@ if ($found) {
     if (/^INVOKED/i.test(out))  return { invoked: true,  name: (out.match(/\[(.+)\]/) || [])[1] };
     const m = out.match(/COORDS (\d+),(\d+)/);
     if (m) return { invoked: false, x: Number(m[1]), y: Number(m[2]), name: (out.match(/\[(.+)\]/) || [])[1] };
-  } catch {}
+  } catch {} finally { try { unlinkSync(termsPath); } catch {} }
   return null;
 }
 
