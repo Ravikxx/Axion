@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
-import { useKeyboard, useTerminalDimensions, useRenderer } from '@opentui/react';
+import { useKeyboard, useTerminalDimensions, useRenderer, useSelectionHandler } from '@opentui/react';
 import { accent, THEMES, setTheme, themeName } from '../ui/theme.js';
 import { Agent } from '../agent/agent.js';
 import { MODELS, CONTEXT_WINDOWS, getContextWindow, estimateCost, API_KEYS, VISION_MODEL, VIDEO_MODEL } from '../config.js';
@@ -380,8 +380,7 @@ function Session({
   const [chatPickerOpen, setChatPickerOpen] = useState(false); // /resume fuzzy picker
   const [chatPickerList, setChatPickerList] = useState([]);
   const [chatQuery, setChatQuery] = useState('');
-  const selectionRef = useRef(null); // { startY, endY, messageCount } for copy-on-select
-  const renderedHeightsRef = useRef([]); // cumulative line count per message
+  const selectedTextRef = useRef(''); // latest native (OpenTUI) mouse selection text
   const [chatSel, setChatSel] = useState(0);
   const [diffTotals, setDiffTotals] = useState({ added: 0, removed: 0 }); // session edit stats
   const [cwdState, setCwdState] = useState(() => getCwd(todoScope)); // tab's working dir (change_working_dir/run_command `cd`)
@@ -710,67 +709,23 @@ function Session({
     return () => clearInterval(id);
   }, [isActive]);
 
-  // Update rendered line heights for copy-on-select mapping
-  useEffect(() => {
-    const w = Math.max(width, 40);
-    const heights = [];
-    for (const m of messages) {
-      const last = heights.length ? heights[heights.length - 1] : 0;
-      if (m.type === 'user') {
-        const lines = Math.max(1, Math.ceil((m.text || '').length / (w - 6)));
-        heights.push(last + lines + 1);
-      } else if (m.type === 'tool') {
-        heights.push(last + 3);
-      } else if (m.type === 'thinking') {
-        heights.push(last + 2);
-      } else {
-        const lines = Math.max(1, Math.ceil((m.text || '').length / (w - 6)));
-        heights.push(last + lines + 2);
-      }
-    }
-    renderedHeightsRef.current = heights;
-  }, [messages, width]);
-
-  // Copy-on-select: track mouse drag on the message area.
-  // evt.y is an ABSOLUTE terminal row (OpenTUI dispatches raw hit-test coords),
-  // while renderedHeightsRef holds cumulative CONTENT rows. Convert by
-  // subtracting the viewport's on-screen top and adding the scroll offset —
-  // done at both ends of the drag so scrolling mid-drag stays anchored to the
-  // content the user actually saw.
-  const mouseYToContentY = useCallback((evt) => {
-    const el = scrollRef.current;
-    const vpTop = el?.viewport?.screenY ?? el?.screenY ?? 0;
-    return evt.y - vpTop + (el?.scrollTop ?? 0);
-  }, []);
+  // Copy-on-select, using OpenTUI's NATIVE terminal selection instead of
+  // estimating line heights (the old approach guessed wrapped-line counts from
+  // char length, so it copied the wrong messages once anything wrapped or a
+  // tool/thinking block threw the math off). The renderer fires "selection" as
+  // the user drags; we stash the real selected text and copy it on release.
+  const renderer = useRenderer();
+  useSelectionHandler((selection) => {
+    selectedTextRef.current = selection?.getSelectedText?.() || '';
+  });
   const handleMouseDown = useCallback((evt) => {
-    if (evt.button !== 0) return;
-    selectionRef.current = { startY: mouseYToContentY(evt) };
-  }, [mouseYToContentY]);
+    if (evt.button === 0) selectedTextRef.current = '';
+  }, []);
   const handleMouseUp = useCallback((evt) => {
     if (evt.button !== 0) return;
-    const sel = selectionRef.current;
-    if (!sel) return;
-    selectionRef.current = null;
-    const endY = mouseYToContentY(evt);
-    const cy1 = Math.min(sel.startY, endY);
-    const cy2 = Math.max(sel.startY, endY);
-    if (cy2 - cy1 < 1) return; // not a drag
-    const heights = renderedHeightsRef.current;
-    if (!heights.length) return;
-    // Find which messages overlap the selection
-    let startIdx = -1, endIdx = -1;
-    for (let i = 0; i < heights.length; i++) {
-      const cur = heights[i];
-      if (startIdx < 0 && cur > cy1) startIdx = i;
-      if (cur > cy2) { endIdx = i; break; }
-    }
-    if (endIdx < 0) endIdx = heights.length - 1;
-    if (startIdx < 0 || startIdx > endIdx) return;
-    const selectedText = messages.slice(startIdx, endIdx + 1)
-      .map(m => m.type === 'user' ? `${m.text}` : m.type === 'tool' ? `[${m.name}]` : m.text || '')
-      .filter(Boolean).join('\n');
-    if (selectedText) { copyToClipboard(selectedText); push({ type: 'info', text: 'Copied!' }); }
-  }, [messages, push, mouseYToContentY]);
+    const t = selectedTextRef.current;
+    if (t && t.trim()) { copyToClipboard(t); push({ type: 'info', text: '● copied selection.' }); }
+  }, [push]);
 
   // Thinking timer — counts up (seconds) while the agent is working.
   useEffect(() => {
@@ -838,10 +793,14 @@ function Session({
       if (searchOpen) closeSearch(); else { setSearchOpen(true); setSearchQuery(''); setSearchIdx(0); }
       return;
     }
-    // Ctrl+Shift+C: copy last assistant response. Ctrl+C: double-tap to quit.
-    // (Checked before the searchOpen gate below so quitting still works mid-search.)
+    // Ctrl+Shift+C: copy the highlighted selection (native OpenTUI selection);
+    // if nothing is selected, fall back to the last assistant response.
+    // Ctrl+C: double-tap to quit. (Checked before the searchOpen gate below so
+    // quitting still works mid-search.)
     if (key.ctrl && ch === 'c') {
       if (key.shift) {
+        const sel = selectedTextRef.current || renderer?.getSelection?.()?.getSelectedText?.() || '';
+        if (sel && sel.trim()) { copyToClipboard(sel); push({ type: 'info', text: '● copied selection.' }); return; }
         const last = [...messages].reverse().find(m => m.type === 'assistant');
         if (last?.text) { copyToClipboard(last.text); push({ type: 'info', text: '● copied last response.' }); }
         return;
