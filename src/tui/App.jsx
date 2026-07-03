@@ -283,8 +283,19 @@ const MessageRow = React.memo(function MessageRow({ msg, expanded = false, onTog
       );
     case 'error':
       return (
-        <box style={{ flexDirection: 'column', marginTop: 1, paddingLeft: 1, paddingRight: 1 }}>
-          <text><span fg="red">● {msg.text}</span></text>
+        <box
+          onMouseOver={() => setHovered(true)}
+          onMouseOut={() => setHovered(false)}
+          style={{ flexDirection: 'column', marginTop: 1, paddingLeft: 1, paddingRight: 1 }}
+        >
+          <box style={{ flexDirection: 'row' }}>
+            <text><span fg="red">● {msg.text}</span></text>
+            {hovered ? (
+              <box style={{ flexDirection: 'row', marginLeft: 2 }}>
+                <ActionBtn label="⎘ copy" color="#f85149" onClick={() => onCopy?.(index)} />
+              </box>
+            ) : null}
+          </box>
         </box>
       );
     case 'plan':
@@ -490,23 +501,27 @@ function Session({
     return messages[i]?.text || '';
   }, [messages]);
 
-  const editMessage = useCallback((i) => {
-    if (busy) return;
+  const editMessage = useCallback(async (i) => {
+    if (busyRef.current) {
+      try { agentRef.current?.cancel(); } catch {}
+      while (busyRef.current) { await new Promise(r => setTimeout(r, 30)); }
+    }
     const t = rollbackToUserMsg(i);
     setMessages((m) => m.slice(0, i));
     setInputSafe(t);
-    // OpenTUI focuses the clicked element's scrollbox after this handler returns,
-    // so defer re-focusing the input until the click cycle is done.
     setTimeout(() => { try { inputElRef.current?.focus?.(); } catch {} }, 0);
-  }, [busy, rollbackToUserMsg, setInputSafe]);
+  }, [rollbackToUserMsg, setInputSafe]);
 
-  const deleteFrom = useCallback((i) => {
-    if (busy) return;
+  const deleteFrom = useCallback(async (i) => {
+    if (busyRef.current) {
+      try { agentRef.current?.cancel(); } catch {}
+      while (busyRef.current) { await new Promise(r => setTimeout(r, 30)); }
+    }
     const removed = messages.length - i;
     rollbackToUserMsg(i);
     setMessages((m) => m.slice(0, i));
     push({ type: 'info', text: `Removed this message and ${removed - 1} after it.` });
-  }, [busy, messages, rollbackToUserMsg, push]);
+  }, [messages, rollbackToUserMsg, push]);
 
   // Throttled flush of streaming text to state.
   const flushStream = useCallback(() => {
@@ -716,28 +731,38 @@ function Session({
     renderedHeightsRef.current = heights;
   }, [messages, width]);
 
-  // Copy-on-select: track mouse drag on the message area
+  // Copy-on-select: track mouse drag on the message area.
+  // evt.y is an ABSOLUTE terminal row (OpenTUI dispatches raw hit-test coords),
+  // while renderedHeightsRef holds cumulative CONTENT rows. Convert by
+  // subtracting the viewport's on-screen top and adding the scroll offset —
+  // done at both ends of the drag so scrolling mid-drag stays anchored to the
+  // content the user actually saw.
+  const mouseYToContentY = useCallback((evt) => {
+    const el = scrollRef.current;
+    const vpTop = el?.viewport?.screenY ?? el?.screenY ?? 0;
+    return evt.y - vpTop + (el?.scrollTop ?? 0);
+  }, []);
   const handleMouseDown = useCallback((evt) => {
     if (evt.button !== 0) return;
-    selectionRef.current = { startY: evt.y, endY: evt.y };
-  }, []);
+    selectionRef.current = { startY: mouseYToContentY(evt) };
+  }, [mouseYToContentY]);
   const handleMouseUp = useCallback((evt) => {
     if (evt.button !== 0) return;
     const sel = selectionRef.current;
     if (!sel) return;
     selectionRef.current = null;
-    const y1 = Math.min(sel.startY, evt.y);
-    const y2 = Math.max(sel.startY, evt.y);
-    if (y2 - y1 < 1) return; // not a drag
+    const endY = mouseYToContentY(evt);
+    const cy1 = Math.min(sel.startY, endY);
+    const cy2 = Math.max(sel.startY, endY);
+    if (cy2 - cy1 < 1) return; // not a drag
     const heights = renderedHeightsRef.current;
     if (!heights.length) return;
     // Find which messages overlap the selection
     let startIdx = -1, endIdx = -1;
     for (let i = 0; i < heights.length; i++) {
-      const prev = i > 0 ? heights[i - 1] : 0;
       const cur = heights[i];
-      if (startIdx < 0 && cur > y1) startIdx = i;
-      if (cur > y2) { endIdx = i; break; }
+      if (startIdx < 0 && cur > cy1) startIdx = i;
+      if (cur > cy2) { endIdx = i; break; }
     }
     if (endIdx < 0) endIdx = heights.length - 1;
     if (startIdx < 0 || startIdx > endIdx) return;
@@ -745,7 +770,7 @@ function Session({
       .map(m => m.type === 'user' ? `${m.text}` : m.type === 'tool' ? `[${m.name}]` : m.text || '')
       .filter(Boolean).join('\n');
     if (selectedText) { copyToClipboard(selectedText); push({ type: 'info', text: 'Copied!' }); }
-  }, [messages, push]);
+  }, [messages, push, mouseYToContentY]);
 
   // Thinking timer — counts up (seconds) while the agent is working.
   useEffect(() => {
@@ -868,8 +893,8 @@ function Session({
       if (key.name === 'tab')  { insertFile(fileMatches[Math.min(fileSel, n - 1)]); return; }
     }
 
-    // Chat mode
-    if (key.name === 'escape' && busy) { try { agentRef.current?.cancel(); } catch {} return; }
+    // Chat mode — use busyRef for immediate reactivity (React busy state may lag)
+    if (key.name === 'escape' && (busy || busyRef.current)) { try { agentRef.current?.cancel(); } catch {} return; }
     // Ctrl+R: expand/collapse the most recent tool or thinking block.
     if (key.ctrl && ch === 'r') {
       setMessages((m) => {
@@ -1963,14 +1988,42 @@ function Session({
       }
       case 'resolve': {
         if (arg === 'setup') {
-          push({ type: 'info', text: 'DaVinci Resolve setup:\n1. Install DaVinci Resolve 18+ (free from blackmagicdesign.com)\n2. Open Resolve → Workspace → Scripts → Utility → resolve_bridge (starts bridge)\n3. Keep Resolve open, run /resolve status to verify the connection\n4. Requires Python 3.13 (the fusionscript.dll is built for 3.13)' });
+          push({ type: 'info', text: 'DaVinci Resolve setup:\n1. Install DaVinci Resolve 18+ (free from blackmagicdesign.com)\n2. Make sure Resolve is running\n3. Run /resolve status — auto-launches the bridge\n4. Requires Python 3.13 (detected automatically)' });
           return;
         }
-        push({ type: 'info', text: 'Connecting DaVinci Resolve MCP…' });
+        push({ type: 'info', text: 'Starting DaVinci Resolve bridge & connecting MCP…' });
+        // Auto-launch bridge via fuscript.exe if not already running
+        try {
+          const cp = require('child_process');
+          const net = require('net');
+          const path = require('path');
+          const isListening = (port) => new Promise((resolve) => {
+            const s = net.createConnection(port, '127.0.0.1', () => { s.end(); resolve(true); });
+            s.on('error', () => resolve(false));
+          });
+          if (!(await isListening(9876))) {
+            // Anchor to the axion package, not cwd — /resolve must work from any directory
+            const bp = fileURLToPath(new URL('../../mcp-servers/davinci-resolve/resolve_bridge.py', import.meta.url));
+            cp.spawn('E:\\fuscript.exe', [bp], {
+              stdio: 'ignore', detached: true, windowsHide: true,
+            }).unref();
+            let waited = 0;
+            while (waited < 30) {
+              if (await isListening(9876)) break;
+              await new Promise(r => setTimeout(r, 500));
+              waited++;
+            }
+            if (waited >= 30) { push({ type: 'error', text: 'Bridge failed to start. Is Resolve running?' }); return; }
+            push({ type: 'info', text: '● Bridge started via fuscript.exe' });
+          }
+        } catch (e) {
+          push({ type: 'error', text: `Bridge launch failed: ${e.message}` });
+          return;
+        }
         try {
           const srv = await MCP.addServer('davinci-resolve', {
             command: 'python3.13',
-            args: ['mcp-servers/davinci-resolve/resolve_server.py'],
+            args: ['-u', fileURLToPath(new URL('../../mcp-servers/davinci-resolve/resolve_server.py', import.meta.url))],
           });
           if (srv.ready) push({ type: 'info', text: `● DaVinci Resolve MCP connected — ${srv.tools.length} tools available.` });
           else push({ type: 'error', text: `DaVinci Resolve MCP failed: ${srv.error}` });
@@ -2139,8 +2192,11 @@ function Session({
 
   // Retry: regenerate the AI's answer to the prompt that produced this assistant
   // message — roll back to before that user turn and re-run it.
-  const retryMessage = useCallback((i) => {
-    if (busy) return;
+  const retryMessage = useCallback(async (i) => {
+    if (busyRef.current) {
+      try { agentRef.current?.cancel(); } catch {}
+      while (busyRef.current) { await new Promise(r => setTimeout(r, 30)); }
+    }
     let u = -1;
     for (let j = i; j >= 0; j--) if (messages[j]?.type === 'user') { u = j; break; }
     if (u === -1) return;
