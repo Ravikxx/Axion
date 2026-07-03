@@ -181,14 +181,11 @@ def _bridge_request(msg, timeout=25):
     return None
 
 def project_list():
+    # Real API: GetProjectsInCurrentFolder() -> {index: name}
     r = require_resolve()
     pm = r.GetProjectManager()
-    count = pm.GetProjectListCount()
-    projects = []
-    for i in range(count):
-        name = pm.GetProjectList()[i] if hasattr(pm, 'GetProjectList') else pm.GetProjectNameByIndex(i + 1)
-        projects.append(name)
-    return projects
+    projects = pm.GetProjectsInCurrentFolder() or {}
+    return sorted(v for v in projects.values() if v)
 
 def timeline_info(timeline=None):
     r = require_resolve()
@@ -198,10 +195,13 @@ def timeline_info(timeline=None):
     tl = timeline if timeline else proj.GetCurrentTimeline()
     if tl is None:
         raise RuntimeError('No timeline in current project')
+    start = tl.GetStartFrame()
+    end = tl.GetEndFrame()
     return {
         'name': tl.GetName(),
-        'duration': tl.GetDuration(),
+        'duration_frames': (end - start) if (start is not None and end is not None) else None,
         'start_timecode': tl.GetStartTimecode(),
+        'current_timecode': tl.GetCurrentTimecode(),
         'video_track_count': tl.GetTrackCount('video'),
         'audio_track_count': tl.GetTrackCount('audio'),
         'subtitle_track_count': tl.GetTrackCount('subtitle'),
@@ -266,7 +266,8 @@ def handle_save_project(args):
     proj = r.GetCurrentProject()
     if proj is None:
         return result_error('No project open')
-    if proj.SaveProject():
+    pm = r.GetProjectManager()
+    if pm.SaveProject():  # SaveProject lives on ProjectManager, not Project
         return result_text(f'Saved project: {proj.GetName()}')
     return result_error('Failed to save project')
 
@@ -278,8 +279,8 @@ def handle_project_info(args):
     info = {
         'name': proj.GetName(),
         'timeline_count': proj.GetTimelineCount(),
-        'render_job_count': proj.GetRenderJobCount(),
-        'render_preset_count': proj.GetRenderPresetCount(),
+        'render_job_count': len(proj.GetRenderJobList() or []),
+        'render_presets': proj.GetRenderPresetList() or [],
     }
     return result_text(json.dumps(info, indent=2))
 
@@ -300,7 +301,7 @@ def handle_import_media(args):
         if not os.path.isfile(abs_path):
             items.append({'path': p, 'status': 'not found'})
             continue
-        result = ms.AddItemToMediaPool(abs_path)
+        result = ms.AddItemListToMediaPool([abs_path])  # real API takes a list
         items.append({'path': p, 'status': 'imported' if result else 'failed'})
     return result_text(json.dumps(items, indent=2))
 
@@ -318,7 +319,7 @@ def handle_media_pool_list(args):
     for clip in items or []:
         result.append({
             'name': clip.GetName(),
-            'duration': clip.GetDuration(),
+            'duration': clip.GetClipProperty('Duration'),  # no GetDuration on MediaPoolItem
         })
     return result_text(json.dumps(result, indent=2))
 
@@ -397,40 +398,35 @@ def handle_add_clip_to_timeline(args):
     return result_error('Failed to add clip')
 
 def handle_add_transition(args):
-    clip_index = args.get('clip_index', 1)
-    duration = args.get('duration', 15)
-    transition_type = args.get('type', 'cross dissolve')
-    track_type = args.get('track_type', 'video')
-    track_index = args.get('track_index', 1)
-    r = require_resolve()
-    proj = r.GetCurrentProject()
-    if proj is None:
-        return result_error('No project open')
-    tl = proj.GetCurrentTimeline()
-    if tl is None:
-        return result_error('No timeline')
-    result = tl.AddTransition(clip_index, transition_type, duration, track_type, track_index)
-    if result:
-        return result_text(f'Added {transition_type} transition at clip {clip_index}')
-    return result_error('Failed to add transition')
+    # Resolve's scripting API has no way to add transitions programmatically.
+    return result_error(
+        "Resolve's scripting API does not support adding transitions programmatically. "
+        "Add it manually in the Edit page (drag from Effects Library), or set a default "
+        "transition and use the Edit page shortcuts."
+    )
 
 def handle_add_title(args):
     text = args.get('text', 'Title')
-    duration = args.get('duration', 100)
-    position = args.get('position', 1)
-    track_index = args.get('track_index', 1)
     r = require_resolve()
     proj = r.GetCurrentProject()
     if proj is None:
         return result_error('No project open')
-    mp = proj.GetMediaPool()
     tl = proj.GetCurrentTimeline()
     if tl is None:
         return result_error('No timeline')
-    result = mp.AddTitleToTimeline(text, duration, track_index, position)
-    if result:
-        return result_text(f'Added title "{text}" to timeline')
-    return result_error('Failed to add title')
+    # Real API: InsertFusionTitleIntoTimeline inserts at the playhead position.
+    item = tl.InsertFusionTitleIntoTimeline('Text+')
+    if not item:
+        return result_error('Failed to insert title (is the playhead over the timeline?)')
+    try:
+        comp = item.GetFusionCompByIndex(1)
+        tool = comp.FindTool('Template') if comp else None
+        if tool:
+            tool.SetInput('StyledText', text)
+            return result_text(f'Added Text+ title with text "{text}" at the playhead')
+    except Exception:
+        pass
+    return result_text('Added Text+ title at the playhead (set its text in the Inspector — automated text set failed)')
 
 def handle_render_presets(args):
     r = require_resolve()
@@ -441,7 +437,8 @@ def handle_render_presets(args):
     return result_text(json.dumps(presets, indent=2) if presets else '[]')
 
 def handle_add_render_job(args):
-    preset_index = args.get('preset_index', 1)
+    preset_name = args.get('preset_name', '')
+    preset_index = args.get('preset_index')
     render_path = args.get('render_path', '')
     r = require_resolve()
     proj = r.GetCurrentProject()
@@ -450,11 +447,20 @@ def handle_add_render_job(args):
     tl = proj.GetCurrentTimeline()
     if tl is None:
         return result_error('No timeline')
+    # Real API: AddRenderJob() takes no arguments; presets apply via LoadRenderPreset(name).
+    if not preset_name and preset_index is not None:
+        presets = proj.GetRenderPresetList() or []
+        idx = int(preset_index) - 1
+        if 0 <= idx < len(presets):
+            preset_name = presets[idx]
+    if preset_name:
+        if not proj.LoadRenderPreset(preset_name):
+            return result_error(f'Unknown render preset: {preset_name}')
     if render_path:
         proj.SetRenderSettings({'TargetDir': os.path.abspath(os.path.expanduser(render_path))})
-    job_id = proj.AddRenderJob(preset_index)
-    if job_id is not None:
-        return result_text(json.dumps({'job_id': job_id, 'preset_index': preset_index}))
+    job_id = proj.AddRenderJob()
+    if job_id:
+        return result_text(json.dumps({'job_id': job_id, 'preset': preset_name or '(current settings)'}))
     return result_error('Failed to add render job')
 
 def handle_start_render(args):
@@ -482,9 +488,9 @@ def handle_render_status(args):
     return result_text(json.dumps({'is_rendering': is_rendering}, indent=2))
 
 def handle_delete_clip(args):
-    clip_index = args.get('clip_index', 1)
+    clip_index = int(args.get('clip_index', 1))
     track_type = args.get('track_type', 'video')
-    track_index = args.get('track_index', 1)
+    track_index = int(args.get('track_index', 1))
     r = require_resolve()
     proj = r.GetCurrentProject()
     if proj is None:
@@ -492,10 +498,14 @@ def handle_delete_clip(args):
     tl = proj.GetCurrentTimeline()
     if tl is None:
         return result_error('No timeline')
-    result = tl.DeleteClips(clip_index, track_type, track_index)
-    if result:
+    # Real API: DeleteClips takes TimelineItem objects, not indices
+    items = tl.GetItemListInTrack(track_type, track_index) or []
+    if clip_index < 1 or clip_index > len(items):
+        return result_error(f'No clip at index {clip_index} on {track_type} track {track_index} ({len(items)} clips)')
+    target = items[clip_index - 1]
+    if tl.DeleteClips([target]):
         return result_text(f'Deleted clip at index {clip_index}')
-    return result_error(f'Failed to delete clip')
+    return result_error('Failed to delete clip')
 
 # ── Tool registry ────────────────────────────────────────────────────────
 
@@ -577,23 +587,14 @@ TOOLS = [
     },
     {
         'name': 'resolve_add_transition',
-        'description': 'Add a transition between clips on the timeline',
-        'inputSchema': {'type': 'object', 'properties': {
-            'clip_index': {'type': 'number', 'description': 'Starting clip index'},
-            'duration': {'type': 'number', 'description': 'Duration in frames'},
-            'type': {'type': 'string', 'description': 'Transition type (e.g. cross dissolve)'},
-            'track_type': {'type': 'string', 'enum': ['video', 'audio']},
-            'track_index': {'type': 'number'},
-        }},
+        'description': "NOT SUPPORTED: Resolve's scripting API cannot add transitions — this tool only returns manual instructions. Do not call it expecting a transition to be added.",
+        'inputSchema': {'type': 'object', 'properties': {}},
     },
     {
         'name': 'resolve_add_title',
-        'description': 'Add a text title/generator to the timeline',
+        'description': 'Insert a Text+ title at the playhead position on the current timeline',
         'inputSchema': {'type': 'object', 'properties': {
             'text': {'type': 'string', 'description': 'Title text'},
-            'duration': {'type': 'number', 'description': 'Duration in frames'},
-            'position': {'type': 'number'},
-            'track_index': {'type': 'number'},
         }},
     },
     {
@@ -603,9 +604,10 @@ TOOLS = [
     },
     {
         'name': 'resolve_add_render_job',
-        'description': 'Add a render job to the queue',
+        'description': 'Add a render job to the queue (optionally applying a render preset first)',
         'inputSchema': {'type': 'object', 'properties': {
-            'preset_index': {'type': 'number', 'description': 'Preset index (1-based)'},
+            'preset_name': {'type': 'string', 'description': 'Render preset name (see resolve_get_render_presets)'},
+            'preset_index': {'type': 'number', 'description': '1-based index into the preset list (alternative to preset_name)'},
             'render_path': {'type': 'string', 'description': 'Output directory'},
         }},
     },
@@ -613,14 +615,14 @@ TOOLS = [
         'name': 'resolve_start_render',
         'description': 'Start rendering queued jobs',
         'inputSchema': {'type': 'object', 'properties': {
-            'job_id': {'type': 'number'},
+            'job_id': {'type': 'string', 'description': 'Job id from resolve_add_render_job (omit to render all queued jobs)'},
         }},
     },
     {
         'name': 'resolve_render_status',
         'description': 'Check if rendering is in progress or get job status',
         'inputSchema': {'type': 'object', 'properties': {
-            'job_id': {'type': 'number'},
+            'job_id': {'type': 'string'},
         }},
     },
     {

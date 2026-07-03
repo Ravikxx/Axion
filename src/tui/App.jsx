@@ -2008,13 +2008,12 @@ function Session({
             // edition external hosts (fuscript) are blocked, so the only working
             // path is Workspace → Scripts → Utility → resolve_bridge inside Resolve.
             try {
+              // One location only — Resolve merges ProgramData + AppData script
+              // folders into the same menu, so two copies show a duplicate entry.
               const fsx = require('fs');
-              for (const util of [
-                'C:\\ProgramData\\Blackmagic Design\\DaVinci Resolve\\Fusion\\Scripts\\Utility',
-                path.join(process.env.APPDATA || '', 'Blackmagic Design', 'DaVinci Resolve', 'Support', 'Fusion', 'Scripts', 'Utility'),
-              ]) {
-                try { fsx.mkdirSync(util, { recursive: true }); fsx.copyFileSync(bp, path.join(util, 'resolve_bridge.py')); } catch {}
-              }
+              const util = 'C:\\ProgramData\\Blackmagic Design\\DaVinci Resolve\\Fusion\\Scripts\\Utility';
+              fsx.mkdirSync(util, { recursive: true });
+              fsx.copyFileSync(bp, path.join(util, 'resolve_bridge.py'));
             } catch {}
             // Try the external host — works on Studio with external scripting = Local.
             try {
