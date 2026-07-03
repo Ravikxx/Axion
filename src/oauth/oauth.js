@@ -155,6 +155,14 @@ export async function connectOAuth(service, { onStatus, onToken, pastedToken } =
   const cfg = OAUTH_PROVIDERS[service];
   if (!cfg) throw new Error(`Unknown service "${service}". Available: ${Object.keys(OAUTH_PROVIDERS).join(', ')}`);
 
+  // Fail fast when an app-based flow (device/redirect) has no client ID, rather
+  // than opening the browser onto the provider's cryptic "missing client_id"
+  // error page. Paste-token flows (Notion, Slack) don't need pre-registered apps.
+  if (cfg.tokenFlow !== 'paste' && !cfg.clientId) {
+    const U = service.toUpperCase();
+    throw new Error(`${cfg.label} OAuth isn't configured on this build — no client ID. Register an OAuth app and set AXION_${U}_CLIENT_ID and AXION_${U}_CLIENT_SECRET, or use a paste-token integration (notion, slack) instead.`);
+  }
+
   let tokenData;
 
   if (cfg.tokenFlow === 'paste') {

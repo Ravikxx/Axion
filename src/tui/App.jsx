@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import { useKeyboard, useTerminalDimensions, useRenderer } from '@opentui/react';
 import { accent, THEMES, setTheme, themeName } from '../ui/theme.js';
 import { Agent } from '../agent/agent.js';
-import { MODELS, CONTEXT_WINDOWS, getContextWindow, estimateCost, API_KEYS } from '../config.js';
+import { MODELS, CONTEXT_WINDOWS, getContextWindow, estimateCost, API_KEYS, VISION_MODEL } from '../config.js';
 import {
   getTodos, saveModel, saveMode, saveTheme, getAllowedTools, allowTool, autosaveSession, autosaveWorkspace, clearTodos,
   getMemories, addMemory, removeMemory, addTodo, toggleTodo, removeTodo, setTodosFor, dropTodoScope,
@@ -355,6 +355,7 @@ function Session({
   const [streamText, setStreamText] = useState(null); // live streaming assistant text
   const [input, setInput] = useState('');
   const [busy, setBusy] = useState(false);
+  const [queuedCount, setQueuedCount] = useState(0);
   const [tokens, setTokens] = useState({ total: 0, input: 0, output: 0, context: 0 });
   const [todos, setTodos] = useState(() => getTodos(todoScope));
   const [inputMode, setInputMode] = useState('chat'); // chat | confirm-tool | confirm-plan | question
@@ -385,6 +386,7 @@ function Session({
   const [thinkingElapsed, setThinkingElapsed] = useState(0);
 
   const agentRef  = useRef(null);
+  const busyRef   = useRef(false);
   const streamRef = useRef('');
   const flushTimer = useRef(null);
   const inputRef  = useRef('');
@@ -923,6 +925,7 @@ function Session({
     lastUserTextRef.current = displayText;
     setThinkingWord(pickThinkingWord());
     setBusy(true);
+    busyRef.current = true;
 
     const askConfirm = (tc) => {
       // MCP tools are namespaced mcp__<server>__<tool>; pin both parts so a
@@ -953,6 +956,8 @@ function Session({
       .catch((err) => push({ type: 'error', text: err?.message || String(err) }))
       .finally(() => {
         setBusy(false);
+        busyRef.current = false;
+        setQueuedCount(agentRef.current?.pendingMessages?.length || 0);
         // Log this turn's token delta for /cost — read straight off the Agent
         // instance (always current) rather than the `model`/`tokens` state,
         // which this callback's closure may have gone stale on.
@@ -1016,6 +1021,7 @@ function Session({
           `all-time (last 90 days):\n${fmt(summarize(log))}` });
         return;
       }
+      case 'new':
       case 'clear':
         try { agentRef.current?.clearHistory(); } catch {}
         setMessages([{ type: 'info', text: 'Conversation cleared.' }]);
@@ -1024,14 +1030,14 @@ function Session({
       case 'help': {
         // Grouped view — same commands, readable instead of one 70-line wall.
         const HELP_GROUPS = [
-          ['Session',           ['help', 'model', 'models', 'mode', 'theme', 'clear', 'compact', 'stats', 'cost', 'exit']],
+          ['Session',           ['help', 'model', 'models', 'mode', 'theme', 'new', 'clear', 'compact', 'stats', 'cost', 'exit']],
           ['Files & context',   ['include', 'add', 'run', 'search', 'history', 'undo', 'rewind']],
           ['Chats',             ['save', 'resume', 'sessions', 'remove-chat', 'search-chats', 'export', 'export-session', 'import-session', 'copy', 'copy-block']],
           ['Git',               ['git', 'pr', 'review']],
           ['Keys & endpoints',  ['api', 'axion-key', 'login', 'endpoint']],
           ['Agent behavior',    ['thinking', 'system', 'adviser', 'goal', 'retry', 'btw', 'compare', 'compare-models', 'remember', 'forget', 'todo', 'skills', 'skill-generator', 'skill-delete', 'profile', 'permissions', 'watch']],
           ['Computer & media',  ['computer', 'cu', 'vision', 'ss', 'macro', 'speak', 'img-gen', 'img-gen-model']],
-          ['Integrations',      ['discord', 'oauth', 'schedule', 'web', 'blender', 'mcp', 'contribute']],
+           ['Integrations',      ['discord', 'oauth', 'schedule', 'resolve', 'blender', 'mcp', 'contribute']],
         ];
         const byName = new Map();
         for (const x of COMMANDS) if (!byName.has(x.cmd)) byName.set(x.cmd, x.desc);
@@ -1655,7 +1661,8 @@ function Session({
         return;
       }
       case 'vision': {
-        if (!arg) { push({ type: 'info', text: `Vision model: ${'(none set)'}\n/vision <model> e.g. /vision claude` }); return; }
+        if (!arg) { push({ type: 'info', text: `Vision model: ${VISION_MODEL.current}\n/vision <model> e.g. /vision claude` }); return; }
+        VISION_MODEL.current = arg;
         saveVisionModel(arg);
         push({ type: 'info', text: `Vision model → ${arg} (saved)\n/computer on to enable screen control.` });
         return;
@@ -1836,7 +1843,10 @@ function Session({
         return;
       }
       case 'oauth': {
-        const [oaSub, oaSvc] = args;
+        // Service names/subcommands are case-insensitive — provider keys are
+        // lowercase, but the UI/docs show them capitalized (GitHub, Google).
+        const oaSub = (args[0] || '').toLowerCase();
+        const oaSvc = (args[1] || '').toLowerCase();
         if (!oaSub || oaSub === 'list') {
           const connected = listOAuthTokens();
           if (!connected.length) { push({ type: 'info', text: 'No services connected.\n/oauth connect <github|google|notion|slack>' }); return; }
@@ -1938,40 +1948,6 @@ function Session({
         push({ type: 'info', text: 'Schedule: list|add|run|remove|enable|disable|results' });
         return;
       }
-      case 'web': {
-        const pidFile = join(homedir(), '.axion', 'web-server.pid');
-        if (args[0] === 'stop') {
-          const webPort = Number(process.env.AXION_WEB_PORT) || 3000;
-          if (!existsSync(pidFile)) {
-            try {
-              if (process.platform === 'win32') {
-                const out = execSync('netstat -ano -p TCP', { encoding: 'utf8', stdio: ['pipe','pipe','pipe'] });
-                const lines = out.split(/\r?\n/).filter(l => {
-                  const parts = l.trim().split(/\s+/);
-                  return parts.length >= 5 && parts[1]?.endsWith(`:${webPort}`) && parts[3] === 'LISTENING';
-                });
-                if (lines.length) {
-                  const m = lines[0].match(/(\d+)\s*$/m);
-                  if (m) { execSync(`taskkill /F /PID ${m[1]}`, { stdio: 'ignore' }); push({ type: 'info', text: `Web server stopped (PID ${m[1]}).` }); } else { push({ type: 'info', text: 'No web server running.' }); }
-                } else { push({ type: 'info', text: 'No web server running.' }); }
-              } else { const pid = execSync(`lsof -ti tcp:${webPort}`, { encoding: 'utf8' }).trim(); if (pid) { process.kill(parseInt(pid, 10)); push({ type: 'info', text: `Web server stopped (PID ${pid}).` }); } else { push({ type: 'info', text: 'No web server running.' }); } }
-            } catch { push({ type: 'info', text: 'No web server running.' }); }
-            return;
-          }
-          try { const pid = parseInt(readFileSync(pidFile, 'utf8').trim(), 10); process.kill(pid); try { unlinkSync(pidFile); } catch {} push({ type: 'info', text: `Web server stopped (PID ${pid}).` }); }
-          catch (err) { try { unlinkSync(pidFile); } catch {} push({ type: 'error', text: `Failed: ${err.message}` }); }
-          return;
-        }
-        const port = parseInt(args[0], 10) || 3000;
-        try {
-          const child = spawn(process.execPath, ['axion-serve'], { detached: true, stdio: 'ignore', env: { ...process.env, AXION_WEB_PORT: String(port) }, cwd: process.cwd() });
-          child.unref();
-          const url = `http://localhost:${port}`;
-          push({ type: 'info', text: `◈ Web UI starting at ${url}…` });
-          try { if (process.platform === 'win32') spawn('cmd', ['/c', 'start', url], { detached: true, stdio: 'ignore' }).unref(); else if (process.platform === 'darwin') spawn('open', [url], { detached: true, stdio: 'ignore' }).unref(); else spawn('xdg-open', [url], { detached: true, stdio: 'ignore' }).unref(); } catch {}
-        } catch (err) { push({ type: 'error', text: `Failed: ${err.message}` }); }
-        return;
-      }
       case 'blender': {
         if (arg === 'setup') {
           push({ type: 'info', text: 'Blender add-on setup:\n1. Open Blender\n2. Edit → Preferences → Add-ons → Install…\n3. Select axion_blender.py from mcp-servers/blender/\n4. Enable the add-on\n5. Run /blender connect' });
@@ -1982,6 +1958,22 @@ function Session({
           const srv = await MCP.addServer('blender', { command: 'axion-blender', args: [] });
           if (srv.ready) push({ type: 'info', text: `● Blender MCP connected — ${srv.tools.length} tools available.` });
           else push({ type: 'error', text: `Blender MCP failed: ${srv.error}` });
+        } catch (err) { push({ type: 'error', text: `Connection failed: ${err.message}` }); }
+        return;
+      }
+      case 'resolve': {
+        if (arg === 'setup') {
+          push({ type: 'info', text: 'DaVinci Resolve setup:\n1. Install DaVinci Resolve 18+ (free from blackmagicdesign.com)\n2. Open Resolve → Workspace → Scripts → Utility → resolve_bridge (starts bridge)\n3. Keep Resolve open, run /resolve status to verify the connection\n4. Requires Python 3.13 (the fusionscript.dll is built for 3.13)' });
+          return;
+        }
+        push({ type: 'info', text: 'Connecting DaVinci Resolve MCP…' });
+        try {
+          const srv = await MCP.addServer('davinci-resolve', {
+            command: 'python3.13',
+            args: ['mcp-servers/davinci-resolve/resolve_server.py'],
+          });
+          if (srv.ready) push({ type: 'info', text: `● DaVinci Resolve MCP connected — ${srv.tools.length} tools available.` });
+          else push({ type: 'error', text: `DaVinci Resolve MCP failed: ${srv.error}` });
         } catch (err) { push({ type: 'error', text: `Connection failed: ${err.message}` }); }
         return;
       }
@@ -2109,7 +2101,12 @@ function Session({
 
   const submit = useCallback((value) => {
     const text = (value || '').trim();
-    if (!text || busy) return;
+    if (!text) return;
+    if (busyRef.current) {
+      agentRef.current?.queueMessage(text);
+      setQueuedCount((c) => c + 1);
+      return;
+    }
     const h = historyRef.current;
     if (h[h.length - 1] !== text) h.push(text); // record, skip consecutive dupes
     setHistPos(0);
@@ -2207,6 +2204,7 @@ function Session({
 
   const cancelQuestion = useCallback(() => {
     if (questionSpecRef.current?.type === 'onboarding') { setPendingForm(null); setInputMode('chat'); return; }
+    agentRef.current?.cancel();
     const r = questionResolverRef.current;
     questionResolverRef.current = null;
     const wasConfirm = questionSpecRef.current?.type === 'confirm';
@@ -2372,6 +2370,12 @@ function Session({
           <box style={{ flexShrink: 0, marginRight: 1 }}>
             <text><span fg={MODE_COLORS[mode] || 'cyan'}>{MODE_ICONS[mode] || '·'}</span></text>
           </box>
+          {/* Queue badge — shows count of messages queued while agent is busy */}
+          {queuedCount > 0 ? (
+            <box style={{ flexShrink: 0, marginRight: 1 }}>
+              <text><span fg="#e5c07b">● {queuedCount}</span></text>
+            </box>
+          ) : null}
           <input
             ref={inputElRef}
             style={{ flexGrow: 1 }}
