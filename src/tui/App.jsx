@@ -712,20 +712,22 @@ function Session({
   // Copy-on-select, using OpenTUI's NATIVE terminal selection instead of
   // estimating line heights (the old approach guessed wrapped-line counts from
   // char length, so it copied the wrong messages once anything wrapped or a
-  // tool/thinking block threw the math off). The renderer fires "selection" as
-  // the user drags; we stash the real selected text and copy it on release.
+  // tool/thinking block threw the math off).
+  //
+  // IMPORTANT timing: OpenTUI only emits the "selection" event from
+  // finishSelection() (drag release) — NOT during the drag — and on mouse-up it
+  // dispatches the element's onMouseUp *before* finishSelection(). So we must
+  // copy INSIDE this handler; reading a ref from onMouseUp runs one beat too
+  // early (the ref is still empty). Copying here == copy-on-release.
   const renderer = useRenderer();
   useSelectionHandler((selection) => {
-    selectedTextRef.current = selection?.getSelectedText?.() || '';
+    const t = selection?.getSelectedText?.() || '';
+    selectedTextRef.current = t; // also kept for the Ctrl+Shift+C fallback
+    if (t && t.trim()) {
+      try { copyToClipboard(t); push({ type: 'info', text: '● copied selection.' }); }
+      catch (e) { push({ type: 'error', text: `Copy failed: ${e?.message || e}` }); }
+    }
   });
-  const handleMouseDown = useCallback((evt) => {
-    if (evt.button === 0) selectedTextRef.current = '';
-  }, []);
-  const handleMouseUp = useCallback((evt) => {
-    if (evt.button !== 0) return;
-    const t = selectedTextRef.current;
-    if (t && t.trim()) { copyToClipboard(t); push({ type: 'info', text: '● copied selection.' }); }
-  }, [push]);
 
   // Thinking timer — counts up (seconds) while the agent is working.
   useEffect(() => {
@@ -2267,8 +2269,7 @@ function Session({
     <box style={{ flexGrow: 1, flexDirection: 'row' }}>
       <box style={{ flexGrow: 1, flexDirection: 'column' }}>
         <Welcome model={model} mode={mode} cwd={cwdState} updateInfo={updateInfo} />
-        <scrollbox ref={scrollRef} style={{ flexGrow: 1, flexShrink: 1, minHeight: 0 }} stickyScroll stickyStart="bottom"
-          onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}>
+        <scrollbox ref={scrollRef} style={{ flexGrow: 1, flexShrink: 1, minHeight: 0 }} stickyScroll stickyStart="bottom">
           {messages.map((msg, i) => {
             const isHit = searchOpen && searchMatches.length > 0 && i === searchMatches[searchIdx];
             // Recap line after a completed run of ≥2 consecutive tool calls —
