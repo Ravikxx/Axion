@@ -109,6 +109,13 @@ export function saveVisionModel(alias) {
   save(_cfg);
 }
 
+export function getSavedVideoModel() { return _cfg.videoModel || null; }
+
+export function saveVideoModel(alias) {
+  _cfg.videoModel = alias;
+  save(_cfg);
+}
+
 export function getSavedImageModel() { return _cfg.imageModel || null; }
 
 export function saveImageModel(alias) {

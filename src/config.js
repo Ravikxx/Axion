@@ -109,6 +109,11 @@ export const CUSTOM_ENDPOINTS = {};
 // Vision model for computer use — mutable object so imports stay live after /vision changes it.
 export const VISION_MODEL = { current: process.env.AXION_VISION_MODEL || 'axion-vision' };
 
+// Video-understanding model (processes actual video files). Mutable so /video
+// updates it live. Empty by default — the video-analysis fallback ladder
+// (video → vision → text-only LLM) treats "" as "no video model configured".
+export const VIDEO_MODEL = { current: process.env.AXION_VIDEO_MODEL || '' };
+
 // Image generation model — mutable so /img-gen-model changes it globally.
 export const IMAGE_GEN_MODEL = { current: process.env.AXION_IMAGE_MODEL || 'dall-e-3' };
 

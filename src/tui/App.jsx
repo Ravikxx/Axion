@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import { useKeyboard, useTerminalDimensions, useRenderer } from '@opentui/react';
 import { accent, THEMES, setTheme, themeName } from '../ui/theme.js';
 import { Agent } from '../agent/agent.js';
-import { MODELS, CONTEXT_WINDOWS, getContextWindow, estimateCost, API_KEYS, VISION_MODEL } from '../config.js';
+import { MODELS, CONTEXT_WINDOWS, getContextWindow, estimateCost, API_KEYS, VISION_MODEL, VIDEO_MODEL } from '../config.js';
 import {
   getTodos, saveModel, saveMode, saveTheme, getAllowedTools, allowTool, autosaveSession, autosaveWorkspace, clearTodos,
   getMemories, addMemory, removeMemory, addTodo, toggleTodo, removeTodo, setTodosFor, dropTodoScope,
@@ -10,7 +10,7 @@ import {
   exportSession, importSession,
   listProfiles, saveProfile, loadProfile, deleteProfile,
   saveApiKey, saveCustomEndpoints, getAxionKey, saveAxionKey, getSavedApiKeys,
-  saveAdviserModel, saveVisionModel, saveImageModel,
+  saveAdviserModel, saveVisionModel, saveVideoModel, saveImageModel,
   getSkills, saveSkill, deleteSkill,
   undoLastBackup, listCheckpoints, rewindCheckpoints,
   getCompareModels, saveCompareModels, clearAllowedTools,
@@ -1690,6 +1690,15 @@ function Session({
         VISION_MODEL.current = arg;
         saveVisionModel(arg);
         push({ type: 'info', text: `Vision model → ${arg} (saved)\n/computer on to enable screen control.` });
+        return;
+      }
+      case 'video': {
+        const cur = VIDEO_MODEL.current || '(none — falls back to the vision model, then text-only)';
+        if (!arg) { push({ type: 'info', text: `Video model: ${cur}\n/video <model> to set one (processes whole video files)\n/video off to clear` }); return; }
+        if (arg === 'off') { VIDEO_MODEL.current = ''; saveVideoModel(''); push({ type: 'info', text: 'Video model cleared — video analysis now falls back to the vision model.' }); return; }
+        VIDEO_MODEL.current = arg;
+        saveVideoModel(arg);
+        push({ type: 'info', text: `Video model → ${arg} (saved)` });
         return;
       }
       case 'img-gen': {

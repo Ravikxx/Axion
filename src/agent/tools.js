@@ -222,7 +222,7 @@ export const TOOL_DEFINITIONS = [
     },
   },
   {
-    name: 'find_files',
+    name: 'glob',
     description: 'Search for files matching a glob pattern (e.g. "**/*.ts", "src/**/*.jsx", "*.json"). Skips node_modules and .git.',
     input_schema: {
       type: 'object',
@@ -234,8 +234,33 @@ export const TOOL_DEFINITIONS = [
     },
   },
   {
-    name: 'grep_files',
+    name: 'find_files',
+    description: 'Alias for glob.',
+    input_schema: {
+      type: 'object',
+      properties: {
+        pattern: { type: 'string', description: 'Glob pattern to match file paths' },
+        path:    { type: 'string', description: 'Root directory to search from (default: cwd)' },
+      },
+      required: ['pattern'],
+    },
+  },
+  {
+    name: 'grep',
     description: 'Search file contents for a pattern. Returns matching lines with file path and line number. Skips node_modules, .git, and binary files.',
+    input_schema: {
+      type: 'object',
+      properties: {
+        pattern: { type: 'string', description: 'Regex or string to search for' },
+        path:    { type: 'string', description: 'Directory to search in (default: cwd)' },
+        include: { type: 'string', description: 'Glob pattern to filter which files to search (e.g. "*.ts")' },
+      },
+      required: ['pattern'],
+    },
+  },
+  {
+    name: 'grep_files',
+    description: 'Alias for grep.',
     input_schema: {
       type: 'object',
       properties: {
@@ -512,6 +537,30 @@ export const TOOL_DEFINITIONS = [
     input_schema: {
       type: 'object',
       properties: {},
+    },
+  },
+  {
+    name: 'ask_vision',
+    description: 'Send an image file to the configured vision model with a question and return the model\'s answer. The image must exist on disk. Use this to ask about diagrams, screenshots, UI mockups, or any image file.',
+    input_schema: {
+      type: 'object',
+      properties: {
+        path:     { type: 'string', description: 'Path to the image file (.png, .jpg, .jpeg, .gif, .webp).' },
+        question: { type: 'string', description: 'Question about the image content.' },
+      },
+      required: ['path', 'question'],
+    },
+  },
+  {
+    name: 'analyze_video',
+    description: "Send a video file to the configured video model and get back a text description of what happens in it (scenes, actions, timing, notable moments). Use this to understand footage before editing — e.g. before adding markers or titles on a DaVinci Resolve timeline. Falls back to a single sampled frame via the vision model if no video model is set. Keep clips short (≤~30s).",
+    input_schema: {
+      type: 'object',
+      properties: {
+        path:     { type: 'string', description: 'Path to the video file (.mp4, .mov, .webm, .mkv, .avi, .m4v).' },
+        question: { type: 'string', description: 'What to look for or ask about the video (optional; defaults to a general description).' },
+      },
+      required: ['path'],
     },
   },
   {
@@ -969,14 +1018,16 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
         return { success: true, output: annotated.join('\n') };
       }
 
-      case 'find_files': {
+      case 'find_files':
+      case 'glob': {
         const root = input.path ? resolve(cwd, input.path) : cwd;
         const matches = walkGlob(root, input.pattern);
         if (!matches.length) return { success: true, output: 'No files found.' };
         return { success: true, output: matches.slice(0, 200).join('\n') + (matches.length > 200 ? `\n… (${matches.length - 200} more)` : '') };
       }
 
-      case 'grep_files': {
+      case 'grep_files':
+      case 'grep': {
         const root = input.path ? resolve(cwd, input.path) : cwd;
         let re;
         try { re = new RegExp(input.pattern, 'i'); } catch { re = new RegExp(escapeRegex(input.pattern), 'i'); }
@@ -1207,6 +1258,46 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
           await new Promise((r) => setTimeout(r, POLL_MS));
         }
         return { success: false, output: `No message received within ${input.timeout_seconds || 60}s.` };
+      }
+
+      case 'ask_vision': {
+        const imgPath = resolve(cwd, input.path);
+        if (!existsSync(imgPath)) return { success: false, output: `File not found: ${relPath(input.path)}` };
+        const ext = extname(imgPath).toLowerCase();
+        const MEDIA_MAP = { '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.gif': 'image/gif', '.webp': 'image/webp' };
+        const mediaType = MEDIA_MAP[ext];
+        if (!mediaType) return { success: false, output: `Unsupported image format: ${ext}. Supported: png, jpg, jpeg, gif, webp.` };
+        const base64 = readFileSync(imgPath).toString('base64');
+        try {
+          const description = await analyzeScreen({ base64, mediaType, question: input.question });
+          return { success: true, output: description };
+        } catch (err) {
+          const msg = err.message || String(err);
+          return { success: false, output: `Vision model error: ${msg.slice(0, 800)}` };
+        }
+      }
+
+      case 'analyze_video': {
+        const isUrl = /^https?:\/\//i.test(input.path || '');
+        const vidPath = isUrl ? input.path : resolve(cwd, input.path);
+        if (!isUrl) {
+          if (!existsSync(vidPath)) return { success: false, output: `File not found: ${relPath(input.path)}` };
+          const ext = extname(vidPath).toLowerCase();
+          if (!['.mp4', '.mov', '.webm', '.mkv', '.avi', '.m4v'].includes(ext)) {
+            return { success: false, output: `Unsupported video format: ${ext}. Supported: mp4, mov, webm, mkv, avi, m4v.` };
+          }
+        }
+        try {
+          const { analyzeVideo } = await import('./video.js');
+          const { tier, model, text } = await analyzeVideo({ path: vidPath, question: input.question });
+          const note = tier === 'vision-frame' ? ' (analyzed a single sampled frame — no video model configured)' : '';
+          return { success: true, output: `[${model}${note}]\n${text}` };
+        } catch (err) {
+          if (err.code === 'NO_VISUAL') {
+            return { success: false, output: 'No video or vision model is configured. Set one with /video <model> (e.g. a Gemini or OpenRouter video model), or /vision <model> for frame-level fallback.' };
+          }
+          return { success: false, output: `Video analysis error: ${(err.message || String(err)).slice(0, 800)}` };
+        }
       }
 
       // ── Computer use ──────────────────────────────────────────────────────────

@@ -23,6 +23,7 @@ export const COMMANDS = [
   { cmd: 'computer',        desc: '[on|off]  toggle computer use (screen control)  (alias: /cu)' },
   { cmd: 'cu',              desc: '[on|off]  shortcut for /computer' },
   { cmd: 'vision',          desc: '<model>  set vision model for computer use' },
+  { cmd: 'video',           desc: '<model>  set video-understanding model (off to clear)' },
   { cmd: 'speak',           desc: '<text>  text-to-speech via OpenAI TTS' },
   { cmd: 'ss',              desc: '[question]  screenshot + describe screen' },
   { cmd: 'img-gen',         desc: '<prompt>  generate an image (OpenAI)' },
@@ -62,13 +63,14 @@ export const COMMANDS = [
   { cmd: 'discord',         desc: 'token|start|stop|status  Discord bot — DMs appear in CLI' },
   { cmd: 'oauth',           desc: 'connect|list|revoke  GitHub · Google · Notion · Slack' },
   { cmd: 'schedule',        desc: 'list|add|run|remove|enable|disable|results  scheduled tasks' },
-  { cmd: 'web',             desc: '[port|stop]  open/stop web UI in browser' },
+  { cmd: 'resolve',         desc: 'setup|status  DaVinci Resolve MCP integration' },
   { cmd: 'blender',         desc: 'setup|connect  Blender MCP integration' },
   { cmd: 'mcp',             desc: 'browse|search|install|toggle|enable|disable|remove|tools|reload' },
   { cmd: 'contribute',      desc: 'share this session as training data  (skip | optout)' },
   { cmd: 'stats',           desc: 'show full session stats' },
   { cmd: 'profile',         desc: 'save|load|list|delete <name>  model+mode profiles' },
   { cmd: 'clear',           desc: 'clear history' },
+  { cmd: 'new',             desc: 'alias for /clear' },
   { cmd: 'exit',            desc: 'quit' },
 ];
 
