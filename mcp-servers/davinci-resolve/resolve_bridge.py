@@ -382,6 +382,174 @@ def handle_delete_clip(args):
         return {"content": [{"type": "text", "text": f"Deleted clip {clip_index}" + (f' ("{name}")' if name else "")}]}
     return {"content": [{"type": "text", "text": "Failed to delete clip"}], "isError": True}
 
+# ── Inspection / markers / export (added tools) ──────────────────────────
+
+def _ok(text):
+    return {"content": [{"type": "text", "text": text}]}
+
+def _err(text):
+    return {"content": [{"type": "text", "text": text}], "isError": True}
+
+# Valid DaVinci Resolve marker colors (AddMarker rejects anything else).
+MARKER_COLORS = ["Blue", "Cyan", "Green", "Yellow", "Red", "Pink", "Purple",
+                 "Fuchsia", "Rose", "Lavender", "Sky", "Mint", "Lemon", "Sand",
+                 "Cocoa", "Cream"]
+
+def _timeline_item_dict(item, index):
+    # TimelineItem (unlike MediaPoolItem) DOES have GetStart/GetEnd/GetDuration.
+    d = {"index": index}
+    for key, meth in (("name", "GetName"), ("start", "GetStart"),
+                      ("end", "GetEnd"), ("duration", "GetDuration")):
+        try:
+            d[key] = getattr(item, meth)()
+        except Exception:
+            pass
+    return d
+
+def handle_list_timeline_clips(args):
+    r = require_resolve()
+    proj = r.GetCurrentProject()
+    if proj is None:
+        return _err("No project open")
+    tl = proj.GetCurrentTimeline()
+    if tl is None:
+        return _err("No timeline")
+    out = {"timeline": tl.GetName(), "video": {}, "audio": {}}
+    for ttype in ("video", "audio"):
+        for ti in range(1, (tl.GetTrackCount(ttype) or 0) + 1):
+            items = tl.GetItemListInTrack(ttype, ti) or []
+            out[ttype][f"track_{ti}"] = [_timeline_item_dict(it, i + 1) for i, it in enumerate(items)]
+    return _ok(json.dumps(out, indent=2))
+
+def handle_list_timelines(args):
+    r = require_resolve()
+    proj = r.GetCurrentProject()
+    if proj is None:
+        return _err("No project open")
+    cur = proj.GetCurrentTimeline()
+    cur_name = cur.GetName() if cur else None
+    out = []
+    for i in range(1, (proj.GetTimelineCount() or 0) + 1):
+        t = proj.GetTimelineByIndex(i)  # 1-based
+        if t:
+            nm = t.GetName()
+            out.append({"index": i, "name": nm, "current": nm == cur_name})
+    return _ok(json.dumps(out, indent=2) if out else "No timelines in this project.")
+
+def handle_set_current_timeline(args):
+    name = args.get("name")
+    index = args.get("index")
+    r = require_resolve()
+    proj = r.GetCurrentProject()
+    if proj is None:
+        return _err("No project open")
+    n = proj.GetTimelineCount() or 0
+    target = None
+    if index is not None:
+        idx = int(index)
+        if 1 <= idx <= n:
+            target = proj.GetTimelineByIndex(idx)
+    elif name:
+        for i in range(1, n + 1):
+            t = proj.GetTimelineByIndex(i)
+            if t and t.GetName() == name:
+                target = t
+                break
+    else:
+        return _err('Provide "name" or "index"')
+    if target is None:
+        return _err("Timeline not found (use resolve_list_timelines to see valid names/indices)")
+    if proj.SetCurrentTimeline(target):
+        return _ok(f"Switched to timeline: {target.GetName()}")
+    return _err("Failed to switch timeline")
+
+def handle_add_marker(args):
+    frame = int(args.get("frame", 0))
+    color = args.get("color", "Blue")
+    name = args.get("name", "")
+    note = args.get("note", "")
+    duration = max(1, int(args.get("duration", 1)))
+    custom = args.get("custom_data", "")
+    if color not in MARKER_COLORS:
+        return _err(f"Invalid marker color '{color}'. Valid: {', '.join(MARKER_COLORS)}")
+    r = require_resolve()
+    proj = r.GetCurrentProject()
+    if proj is None:
+        return _err("No project open")
+    tl = proj.GetCurrentTimeline()
+    if tl is None:
+        return _err("No timeline")
+    # AddMarker(frameId, color, name, note, duration, customData). frameId is
+    # relative to the timeline start; only ONE marker may exist per frame.
+    if tl.AddMarker(frame, color, name, note, duration, custom):
+        return _ok(f"Added {color} marker at frame {frame}" + (f': "{name}"' if name else ""))
+    return _err(f"Failed to add marker at frame {frame} (a marker may already exist there, or the frame is out of range)")
+
+def handle_list_markers(args):
+    r = require_resolve()
+    proj = r.GetCurrentProject()
+    if proj is None:
+        return _err("No project open")
+    tl = proj.GetCurrentTimeline()
+    if tl is None:
+        return _err("No timeline")
+    markers = tl.GetMarkers() or {}  # {frameId: {color, duration, note, name, customData}}
+    out = []
+    for frame in sorted(markers.keys()):
+        m = markers[frame]
+        out.append({"frame": frame, "color": m.get("color"), "name": m.get("name"),
+                    "note": m.get("note"), "duration": m.get("duration"),
+                    "custom_data": m.get("customData")})
+    return _ok(json.dumps(out, indent=2) if out else "No markers on this timeline.")
+
+def handle_export_timeline(args):
+    path = args.get("path", "")
+    fmt = (args.get("format") or "edl").lower()
+    if not path:
+        return _err('"path" is required')
+    r = require_resolve()
+    proj = r.GetCurrentProject()
+    if proj is None:
+        return _err("No project open")
+    tl = proj.GetCurrentTimeline()
+    if tl is None:
+        return _err("No timeline")
+    # Export type/subtype are CONSTANTS on the resolve object, and their exact
+    # set varies by build (FCPXML especially has many versioned names) — resolve
+    # them by name and pick the newest available.
+    def const(*names):
+        for nm in names:
+            v = getattr(r, nm, None)
+            if v is not None:
+                return v
+        return None
+    none_sub = const("EXPORT_NONE")
+    fmts = {
+        "edl":     (const("EXPORT_EDL"), none_sub),
+        "aaf":     (const("EXPORT_AAF"), const("EXPORT_AAF_NEW")),
+        "drt":     (const("EXPORT_DRT"), none_sub),
+        "otio":    (const("EXPORT_OTIO"), none_sub),
+        "fcp7xml": (const("EXPORT_FCP_7_XML"), none_sub),
+        "fcpxml":  (const("EXPORT_FCPXML_1_10", "EXPORT_FCPXML_1_9", "EXPORT_FCPXML_1_8",
+                          "EXPORT_FCPXML_1_7", "EXPORT_FCPXML_1_6", "EXPORT_FCPXML_1_5",
+                          "EXPORT_FCPXML_1_4", "EXPORT_FCPXML_1_3"), none_sub),
+        "csv":     (const("EXPORT_TEXT_CSV"), none_sub),
+        "tab":     (const("EXPORT_TEXT_TAB"), none_sub),
+    }
+    if fmt not in fmts:
+        return _err(f"Unknown format '{fmt}'. Valid: {', '.join(fmts.keys())}")
+    etype, esub = fmts[fmt]
+    if etype is None:
+        return _err(f"This Resolve build doesn't expose the '{fmt}' export constant")
+    abs_path = os.path.abspath(os.path.expanduser(path))
+    try:
+        done = tl.Export(abs_path, etype, esub) if esub is not None else tl.Export(abs_path, etype)
+    except Exception as e:
+        return _err(f"Export failed: {e}")
+    if done:
+        return _ok(f"Exported timeline to {abs_path} ({fmt})")
+    return _err("Export returned failure (is the output directory writable?)")
+
 # ── Tool registry ────────────────────────────────────────────────────────
 
 TOOLS = [
@@ -404,6 +572,12 @@ TOOLS = [
     {"name": "resolve_start_render", "description": "Start rendering queued jobs", "inputSchema": {"type": "object", "properties": {"job_id": {"type": "string", "description": "Job id returned by resolve_add_render_job (omit to render all queued jobs)"}}}},
     {"name": "resolve_render_status", "description": "Check if rendering is in progress or get job status", "inputSchema": {"type": "object", "properties": {"job_id": {"type": "string"}}}},
     {"name": "resolve_delete_clip", "description": "Delete a clip from the timeline", "inputSchema": {"type": "object", "properties": {"clip_index": {"type": "number"}, "track_type": {"type": "string", "enum": ["video", "audio"]}, "track_index": {"type": "number"}}}},
+    {"name": "resolve_list_timeline_clips", "description": "List every clip on the current timeline, per video/audio track, with name and start/end/duration frames. Use this to SEE the timeline before editing it.", "inputSchema": {"type": "object", "properties": {}}},
+    {"name": "resolve_list_timelines", "description": "List all timelines in the current project with their index and which one is current", "inputSchema": {"type": "object", "properties": {}}},
+    {"name": "resolve_set_current_timeline", "description": "Switch the active timeline by name or 1-based index", "inputSchema": {"type": "object", "properties": {"name": {"type": "string", "description": "Timeline name"}, "index": {"type": "number", "description": "1-based index (from resolve_list_timelines)"}}}},
+    {"name": "resolve_add_marker", "description": "Add a colored marker/note at a timeline frame (frame is relative to timeline start; one marker per frame)", "inputSchema": {"type": "object", "properties": {"frame": {"type": "number", "description": "Frame relative to timeline start (default 0)"}, "color": {"type": "string", "enum": MARKER_COLORS, "description": "Marker color (default Blue)"}, "name": {"type": "string", "description": "Short marker name"}, "note": {"type": "string", "description": "Longer note text"}, "duration": {"type": "number", "description": "Duration in frames (default 1)"}, "custom_data": {"type": "string", "description": "Optional machine-readable tag"}}}},
+    {"name": "resolve_list_markers", "description": "List all markers on the current timeline (frame, color, name, note, duration)", "inputSchema": {"type": "object", "properties": {}}},
+    {"name": "resolve_export_timeline", "description": "Export the current timeline to a file. Formats: edl, aaf, fcpxml, fcp7xml, drt, otio, csv, tab", "inputSchema": {"type": "object", "required": ["path"], "properties": {"path": {"type": "string", "description": "Output file path"}, "format": {"type": "string", "enum": ["edl", "aaf", "fcpxml", "fcp7xml", "drt", "otio", "csv", "tab"], "description": "Export format (default edl)"}}}},
 ]
 
 HANDLERS = {
@@ -426,6 +600,12 @@ HANDLERS = {
     "resolve_start_render": handle_start_render,
     "resolve_render_status": handle_render_status,
     "resolve_delete_clip": handle_delete_clip,
+    "resolve_list_timeline_clips": handle_list_timeline_clips,
+    "resolve_list_timelines": handle_list_timelines,
+    "resolve_set_current_timeline": handle_set_current_timeline,
+    "resolve_add_marker": handle_add_marker,
+    "resolve_list_markers": handle_list_markers,
+    "resolve_export_timeline": handle_export_timeline,
 }
 
 # ── TCP server ───────────────────────────────────────────────────────────
