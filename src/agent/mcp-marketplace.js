@@ -164,6 +164,16 @@ export const MCP_MARKETPLACE = [
     tags: ['demo', 'test', 'dev'],
   },
   {
+    id: 'ffmpeg',
+    name: 'FFmpeg',
+    description: 'Convert, probe, and manipulate media files with FFmpeg — transcode, trim, crop, resize, extract audio/video, overlay, concat, GIF, screenshots, metadata, speed, volume',
+    category: 'utility',
+    command: 'python3.13',
+    args: ['-u', PKG_SERVER('ffmpeg/ffmpeg_server.py')],
+    envNote: 'Requires ffmpeg installed on the system PATH',
+    tags: ['ffmpeg', 'video', 'audio', 'convert', 'media', 'transcode', 'gif', 'probe'],
+  },
+  {
     id: 'davinci-resolve',
     name: 'DaVinci Resolve',
     description: 'Control DaVinci Resolve — project management, timeline editing, media import, color grading, and rendering via the Resolve scripting API',

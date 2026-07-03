@@ -15,7 +15,7 @@ export function Welcome({ model = '—', mode = 'ask', cwd = process.cwd(), upda
         <span fg="#888">model  </span><span fg={A}>{model}</span>
         <span fg="#888">  mode  </span><span fg="#7ee787">{`${MODE_ICONS[mode] || '·'} ${modeLabel(mode)}`}</span>
         <span fg="#888">  dir  </span><span>{dir}</span>
-        <span>{'  '}</span><span fg="#888">/help /model /theme /clear</span>
+        <span>{'  '}</span><span fg="#888">/help /model /theme /new /clear</span>
       </text>
       {updateInfo?.updateAvailable && (
         <text>

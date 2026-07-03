@@ -254,6 +254,8 @@ export class Agent {
     this.computerUse  = false;
     // Adviser model — null means auto-pick
     this.adviserModel = null;
+    // Messages typed while busy — injected at the next tool result
+    this.pendingMessages = [];
     // Chat mode — simplified prompt, no tools
     this.chatMode = false;
     // Skills activated this session (name → skill); auto-triggered per message
@@ -296,6 +298,13 @@ export class Agent {
     this.activeSkills.clear();
     this.totalTokens = this.inputTokens = this.outputTokens = this.contextTokens = 0;
     this.onTokens({ total: 0, input: 0, output: 0, context: 0 });
+    this.pendingMessages = [];
+  }
+
+  // Queue a user message typed while the agent is busy. It will be injected
+  // alongside the next tool result so the model sees it without losing context.
+  queueMessage(text) {
+    this.pendingMessages.push(text);
   }
 
   // Activate any skill whose trigger words appear in the message.
@@ -437,6 +446,7 @@ CRITICAL RULES — follow these exactly:
   static PARALLEL_SAFE = new Set([
     'read_file', 'list_directory', 'git_status', 'git_diff',
     'web_search', 'screenshot', 'screen_size',
+    'grep', 'grep_files', 'glob', 'find_files',
   ]);
 
   // Clearly destructive tools: in decide mode a "safe" verdict from the AI
@@ -495,6 +505,14 @@ CRITICAL RULES — follow these exactly:
 
       this._pushAssistantWithTools(text, toolCalls, response.raw);
 
+      // Flush accumulated text to UI before running tools so the model's
+      // reasoning appears before (not after) the tool call blocks.
+      // (History already has the text via _pushAssistantWithTools above.)
+      if (accumulatedText) {
+        this.onMessage({ role: 'assistant', content: accumulatedText });
+        accumulatedText = '';
+      }
+
       // Stuck: same batch of tool calls back-to-back
       const batchSig = toolCalls.map(tc => tc.name + ':' + JSON.stringify(tc.input)).join('|');
       if (batchSig === lastBatchSig) {
@@ -520,7 +538,7 @@ CRITICAL RULES — follow these exactly:
         const settled = await Promise.allSettled(
           toolCalls.map(tc =>
             MCP.isMcpTool(tc.name)
-              ? MCP.callTool(tc.name, tc.input)
+              ? MCP.callTool(tc.name, tc.input, { signal: this._abortCtrl?.signal })
               : PLUGINS.isPluginTool(tc.name)
                 ? PLUGINS.callTool(tc.name, tc.input)
                 : executeTool(tc.name, tc.input, { agentLabel: this.label, onNotify: this.onNotify, askUser, todoScope: this.todoScope })
@@ -592,7 +610,13 @@ CRITICAL RULES — follow these exactly:
           if (tc.name === 'spawn_agents') {
             result = await this._spawnAgents(tc.input?.agents || [], { askConfirm });
           } else if (MCP.isMcpTool(tc.name)) {
-            result = await MCP.callTool(tc.name, tc.input);
+            try {
+              result = await MCP.callTool(tc.name, tc.input, { signal: this._abortCtrl?.signal });
+            } catch (e) {
+              if (this.cancelled) {
+                result = { output: 'Interrupted by user.', success: false };
+              } else { throw e; }
+            }
           } else if (PLUGINS.isPluginTool(tc.name)) {
             result = await PLUGINS.callTool(tc.name, tc.input);
           } else {
@@ -617,6 +641,11 @@ CRITICAL RULES — follow these exactly:
     if (accumulatedText) {
       this.onMessage({ role: 'assistant', content: accumulatedText });
       this.history.push({ role: 'assistant', content: accumulatedText });
+    }
+    // Flush any queued messages that were never injected (agent ended without tool calls)
+    const leftover = this.pendingMessages.splice(0);
+    for (const msg of leftover) {
+      this.history.push({ role: 'user', content: msg });
     }
   }
 
@@ -963,6 +992,7 @@ One word only:`;
           await this._sleep(RETRY_DELAY * attempt);
           continue;
         }
+        this.onStreamEnd();
         this.onMessage({ role: 'error', content: friendlyError(err, this.modelAlias) });
         return null;
       } finally {
@@ -1167,26 +1197,32 @@ One word only:`;
   }
 
   _pushToolResults(toolResults, responseType) {
+    const queued = this.pendingMessages.splice(0);
+
     if (resolveProvider(this.modelAlias) === 'anthropic') {
-      this.history.push({
-        role: 'user',
-        content: toolResults.map((r) => {
-          if (r.imageData && r.mimeType) {
-            return {
-              type: 'tool_result',
-              tool_use_id: r.id,
-              content: [
-                { type: 'text', text: r.output },
-                { type: 'image', source: { type: 'base64', media_type: r.mimeType, data: r.imageData } },
-              ],
-            };
-          }
-          return { type: 'tool_result', tool_use_id: r.id, content: r.output };
-        }),
+      const content = toolResults.map((r) => {
+        if (r.imageData && r.mimeType) {
+          return {
+            type: 'tool_result',
+            tool_use_id: r.id,
+            content: [
+              { type: 'text', text: r.output },
+              { type: 'image', source: { type: 'base64', media_type: r.mimeType, data: r.imageData } },
+            ],
+          };
+        }
+        return { type: 'tool_result', tool_use_id: r.id, content: r.output };
       });
+      for (const msg of queued) {
+        content.push({ type: 'text', text: `[User sent message (unrelated to tool call): ${msg}]` });
+      }
+      this.history.push({ role: 'user', content });
     } else {
       for (const r of toolResults) {
         this.history.push({ role: 'tool', tool_call_id: r.id, content: r.output });
+      }
+      for (const msg of queued) {
+        this.history.push({ role: 'user', content: `[User sent message (unrelated to tool call): ${msg}]` });
       }
       // OpenAI doesn't support images inside tool messages — inject as a follow-up user message
       const images = toolResults.filter((r) => r.imageData && r.mimeType);

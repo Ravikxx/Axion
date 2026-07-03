@@ -2,6 +2,7 @@
   "version": "1",
   "updated": "2026-06-20",
   "categories": {
+    "creative":      "Creative & Media",
     "core":          "Core",
     "dev":           "Development",
     "database":      "Databases",
@@ -160,6 +161,26 @@
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-everything"],
       "tags": ["demo", "test", "dev"]
+    },
+    {
+      "id": "ffmpeg",
+      "name": "FFmpeg",
+      "description": "Convert, probe, and manipulate media files with FFmpeg — transcode, trim, crop, resize, extract audio/video, overlay, concat, GIF, screenshots, metadata, speed, volume",
+      "category": "utility",
+      "command": "python3.13",
+      "args": ["-u", "mcp-servers/ffmpeg/ffmpeg_server.py"],
+      "envNote": "Requires ffmpeg installed on the system PATH",
+      "tags": ["ffmpeg", "video", "audio", "convert", "media", "transcode", "gif", "probe"]
+    },
+    {
+      "id": "davinci-resolve",
+      "name": "DaVinci Resolve",
+      "description": "Control DaVinci Resolve — project management, timeline editing, media import, color grading, and rendering via the Resolve scripting API",
+      "category": "creative",
+      "command": "python3.13",
+      "args": ["-u", "mcp-servers/davinci-resolve/resolve_server.py"],
+      "envNote": "Requires DaVinci Resolve 18+ running. Use /resolve setup for configuration help.",
+      "tags": ["video", "resolve", "color", "edit", "timeline", "render"]
     }
   ]
 }

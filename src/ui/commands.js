@@ -63,6 +63,7 @@ export const COMMANDS = [
   { cmd: 'discord',         desc: 'token|start|stop|status  Discord bot — DMs appear in CLI' },
   { cmd: 'oauth',           desc: 'connect|list|revoke  GitHub · Google · Notion · Slack' },
   { cmd: 'schedule',        desc: 'list|add|run|remove|enable|disable|results  scheduled tasks' },
+  { cmd: 'ffmpeg',          desc: 'start|status  FFmpeg MCP integration' },
   { cmd: 'resolve',         desc: 'setup|status  DaVinci Resolve MCP integration' },
   { cmd: 'blender',         desc: 'setup|connect  Blender MCP integration' },
   { cmd: 'mcp',             desc: 'browse|search|install|toggle|enable|disable|remove|tools|reload' },

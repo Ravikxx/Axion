@@ -8,17 +8,14 @@
   "type": "module",
   "bin": {
     "axion": "src/tui/launch.js",
-    "axion-serve": "src/web/server.js",
     "axion-blender": "mcp-servers/blender/index.js",
     "axion-discord": "src/discord-daemon.js",
     "axion-collect": "src/collect-daemon.js",
     "axion-bridge": "src/bridge.js"
   },
   "scripts": {
-    "build-web": "node build-web.js",
     "start": "node src/tui/launch.js",
     "tui": "bun src/tui/main.jsx",
-    "web": "node build-web.js && node src/web/server.js",
     "test": "node test/run.js",
     "sft-gen": "node tools/sft-gen.js",
     "sft-inspect": "node tools/sft-inspect.js"
@@ -53,7 +50,6 @@
     "src/",
     "docs/",
     "vendor/",
-    "mcp-servers/",
-    "build-web.js"
+    "mcp-servers/"
   ]
 }

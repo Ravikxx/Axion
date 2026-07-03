@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { existsSync, writeFileSync, unlinkSync, mkdirSync } from 'fs';
+import { existsSync, writeFileSync, unlinkSync, mkdirSync, readFileSync } from 'fs';
 import { join } from 'path';
 import { tmpdir } from 'os';
 import {
@@ -57,6 +57,30 @@ test('ask tools are present in TOOL_DEFINITIONS', () => {
   const names = new Set(TOOL_DEFINITIONS.map(t => t.name));
   for (const name of ASK_TOOL_NAMES) {
     assert.ok(names.has(name), `missing tool: ${name}`);
+  }
+});
+
+test('every TOOL_DEFINITION has a handler in executeTool', () => {
+  const src = readFileSync('src/agent/tools.js', 'utf8');
+  const cases = new Set([...src.matchAll(/case\s+'([^']+)':/g)].map(m => m[1]));
+  // spawn_agents is intercepted by agent.js before executeTool is called
+  const excluded = new Set(['spawn_agents']);
+  for (const t of TOOL_DEFINITIONS) {
+    if (excluded.has(t.name)) continue;
+    assert.ok(cases.has(t.name), `TOOL_DEFINITIONS has "${t.name}" but no case for it in executeTool`);
+  }
+});
+
+test('spawn_agents handler exists in agent.js', () => {
+  const src = readFileSync('src/agent/agent.js', 'utf8');
+  assert.ok(src.includes("tc.name === 'spawn_agents'"), 'spawn_agents handler not found in agent.js');
+});
+
+test('every COMPUTER_TOOL_DEFINITION has a handler in executeTool', () => {
+  const src = readFileSync('src/agent/tools.js', 'utf8');
+  const cases = new Set([...src.matchAll(/case\s+'([^']+)':/g)].map(m => m[1]));
+  for (const t of COMPUTER_TOOL_DEFINITIONS) {
+    assert.ok(cases.has(t.name), `COMPUTER_TOOL_DEFINITIONS has "${t.name}" but no case for it in executeTool`);
   }
 });
 

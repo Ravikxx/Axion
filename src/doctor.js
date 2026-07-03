@@ -145,14 +145,6 @@ function checkComputerUse() {
   }
 }
 
-function checkWebServer() {
-  head('Web server');
-  const pidFile = join(homedir(), '.axion', 'web-server.pid');
-  const port = Number(process.env.AXION_WEB_PORT) || 3000;
-  if (existsSync(pidFile)) ok(`PID file found — server likely running on port ${port}`);
-  else warn(`Web server not running — start with /web inside Axion`);
-}
-
 function checkAxionDir() {
   head('Config');
   const dir = join(homedir(), '.axion');
@@ -294,7 +286,6 @@ export async function runDoctor() {
   checkApiKeys();
   checkGit();
   checkComputerUse();
-  checkWebServer();
   checkAxionDir();
   await checkEndpoints();
   await checkMcp();

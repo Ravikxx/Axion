@@ -1,5 +1,12 @@
 import { createClient, resolveModel } from './models.js';
 import { VISION_MODEL } from '../config.js';
+import { getSavedVisionModel } from '../persist.js';
+
+// On first import, load any saved vision model so /vision <model> persists across restarts
+if (!process.env.AXION_VISION_MODEL) {
+  const saved = getSavedVisionModel();
+  if (saved) VISION_MODEL.current = saved;
+}
 
 // Coordinate extraction — accepts various formats the model might return:
 // "450,300"  "450, 300"  "(450, 300)"  "x=450, y=300"  "450 300"  "approximately 450, 300"

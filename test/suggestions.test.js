@@ -60,3 +60,19 @@ test('completes to first alphabetically matched command', () => {
   const expected = '/' + COMMANDS.find(c => c.cmd.startsWith('mo')).cmd + ' ';
   assert.equal(completion, expected);
 });
+
+// ── ALL commands integrity ─────────────────────────────────────────────────────
+
+test('every COMMAND has cmd and desc', () => {
+  for (const c of COMMANDS) {
+    assert.equal(typeof c.cmd, 'string', `missing cmd in ${JSON.stringify(c)}`);
+    assert.ok(c.cmd.length > 0, `empty cmd in ${JSON.stringify(c)}`);
+    assert.equal(typeof c.desc, 'string', `missing desc for /${c.cmd}`);
+    assert.ok(c.desc.length > 0, `empty desc for /${c.cmd}`);
+  }
+});
+
+test('COMMAND names are unique', () => {
+  const names = COMMANDS.map(c => c.cmd);
+  assert.equal(new Set(names).size, names.length, 'duplicate command names found');
+});
