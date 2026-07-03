@@ -1,6 +1,11 @@
 import { readFileSync, writeFileSync, unlinkSync, mkdirSync } from 'fs'
 import { join } from 'path'
 import { homedir } from 'os'
+import { fileURLToPath } from 'url'
+
+// Bundled MCP servers live inside the axion package — resolve them against
+// this file, not process.cwd(), so installs work from any launch directory.
+const PKG_SERVER = (rel) => fileURLToPath(new URL(`../../mcp-servers/${rel}`, import.meta.url))
 
 const CATALOG_URL = 'https://axion.amplifiedsmp.org/mcp-catalog.json'
 const CACHE_TTL   = 60 * 60 * 1000 // 1 hour
@@ -158,6 +163,16 @@ export const MCP_MARKETPLACE = [
     args: ['-y', '@modelcontextprotocol/server-everything'],
     tags: ['demo', 'test', 'dev'],
   },
+  {
+    id: 'davinci-resolve',
+    name: 'DaVinci Resolve',
+    description: 'Control DaVinci Resolve — project management, timeline editing, media import, color grading, and rendering via the Resolve scripting API',
+    category: 'creative',
+    command: 'python3.13',
+    args: ['-u', PKG_SERVER('davinci-resolve/resolve_server.py')],
+    envNote: 'Requires DaVinci Resolve 18+ running. Use /resolve setup for configuration help.',
+    tags: ['video', 'resolve', 'color', 'edit', 'timeline', 'render'],
+  },
 ]
 
 export const CATEGORIES = {
@@ -169,6 +184,7 @@ export const CATEGORIES = {
   communication: 'Communication',
   utility:       'Utilities',
   ai:            'AI & Reasoning',
+  creative:      'Creative',
 }
 
 // ── Remote catalog fetch ───────────────────────────────────────────────────

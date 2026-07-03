@@ -1,4 +1,4 @@
-import { spawn } from 'child_process';
+import { spawn, execSync } from 'child_process';
 import { existsSync, readFileSync, writeFileSync, mkdirSync } from 'fs';
 import { join } from 'path';
 import { homedir } from 'os';
@@ -84,11 +84,17 @@ class McpServer {
     });
 
     // MCP handshake
-    await this._request('initialize', {
-      protocolVersion: '2024-11-05',
-      capabilities:    { roots: { listChanged: false } },
-      clientInfo:      { name: 'axion', version: '1.0.0' },
-    });
+    try {
+      await this._request('initialize', {
+        protocolVersion: '2024-11-05',
+        capabilities:    { roots: { listChanged: false } },
+        clientInfo:      { name: 'axion', version: '1.0.0' },
+      });
+    } catch (e) {
+      const stderr = (this._stderrBuf || '').trim();
+      if (stderr) e.message += `\nServer stderr: ${stderr}`;
+      throw e;
+    }
     this._notify('notifications/initialized', {});
 
     // Discover tools (handle optional pagination cursor)
@@ -118,7 +124,7 @@ class McpServer {
     try { this.proc?.stdin?.write(line); } catch {}
   }
 
-  _request(method, params = {}, timeout = REQUEST_TIMEOUT) {
+  _request(method, params = {}, timeout = REQUEST_TIMEOUT, signal) {
     return new Promise((resolve, reject) => {
       const id    = ++this._id;
       const timer = setTimeout(() => {
@@ -127,6 +133,17 @@ class McpServer {
           reject(new Error(`Timeout waiting for "${method}" on MCP server "${this.name}"`));
         }
       }, timeout);
+
+      if (signal) {
+        if (signal.aborted) { reject(new Error('Aborted')); return; }
+        signal.addEventListener('abort', () => {
+          if (this._pending.has(id)) {
+            this._pending.delete(id);
+            clearTimeout(timer);
+            reject(new Error('Aborted'));
+          }
+        }, { once: true });
+      }
 
       this._pending.set(id, {
         resolve: (v) => { clearTimeout(timer); resolve(v); },
@@ -138,9 +155,10 @@ class McpServer {
     });
   }
 
-  async callTool(toolName, args) {
+  async callTool(toolName, args, opts) {
+    const signal = opts?.signal;
     const slowTool = /download|render/.test(toolName);
-    const result  = await this._request('tools/call', { name: toolName, arguments: args || {} }, slowTool ? REQUEST_TIMEOUT_DOWNLOAD : REQUEST_TIMEOUT);
+    const result  = await this._request('tools/call', { name: toolName, arguments: args || {} }, slowTool ? REQUEST_TIMEOUT_DOWNLOAD : REQUEST_TIMEOUT, signal);
     const content = result?.content || [];
     const imgBlock = content.find(b => b.type === 'image');
     const text    = content.filter(b => b.type === 'text').map(b => b.text).join('\n')
@@ -155,7 +173,15 @@ class McpServer {
   }
 
   stop() {
-    try { this.proc?.kill('SIGTERM'); } catch {}
+    if (!this.proc) return;
+    // On Windows the spawned process is a cmd.exe wrapper; killing it orphans
+    // the actual server child (python/node), which keeps running and can hold
+    // single-client resources (e.g. the Resolve bridge socket) hostage for
+    // every future connection. Kill the whole tree.
+    if (process.platform === 'win32' && this.proc.pid) {
+      try { execSync(`taskkill /pid ${this.proc.pid} /T /F`, { stdio: 'ignore', timeout: 5000 }); return; } catch {}
+    }
+    try { this.proc.kill('SIGTERM'); } catch {}
   }
 }
 
@@ -278,7 +304,7 @@ class McpManager {
     return typeof name === 'string' && name.startsWith('mcp__');
   }
 
-  async callTool(fullName, args) {
+  async callTool(fullName, args, opts) {
     // "mcp__github__create_issue" → server="github", tool="create_issue"
     const withoutPrefix = fullName.slice('mcp__'.length);
     const sep = withoutPrefix.indexOf('__');
@@ -288,7 +314,7 @@ class McpManager {
     const srv = this._servers.get(serverName);
     if (!srv)        throw new Error(`No MCP server named "${serverName}"`);
     if (!srv.ready)  throw new Error(`MCP server "${serverName}" not ready: ${srv.error}`);
-    return srv.callTool(toolName, args);
+    return srv.callTool(toolName, args, opts);
   }
 
   getStatus() {
