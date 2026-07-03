@@ -759,8 +759,29 @@ def send_conn(conn, msg):
 
 def main():
     r = get_resolve()
-    if r is not None:
-        print("Resolve connected: " + r.GetVersionString())
+    if r is None:
+        # No Resolve scripting handle in THIS launch context. This happens when
+        # the bridge is started anywhere other than Resolve's Scripts menu — e.g.
+        # the fuscript external host (blocked on the FREE edition) or the Fusion
+        # Scripts/Startup auto-run — neither of which receives Resolve's injected
+        # `resolve`/`bmd` globals. Such a bridge can only answer every tool call
+        # with "refused the scripting connection". Worse, because we bind with
+        # SO_EXCLUSIVEADDRUSE, it would squat port 9876 and block the WORKING
+        # menu-launched bridge from ever starting. So refuse to run: exit WITHOUT
+        # binding, leaving the port free for a bridge that can actually reach
+        # Resolve.
+        print("=" * 64)
+        print("Axion Resolve bridge: no scripting handle in this launch context —")
+        print("exiting so it can't occupy port 9876 and mask the real bridge.")
+        print("")
+        print("Start the bridge from INSIDE Resolve so it gets a live handle:")
+        print("  Workspace -> Scripts -> Utility -> resolve_bridge")
+        print("(FREE edition: this menu launch is the ONLY way that works.)")
+        print("STUDIO: Preferences -> System -> General -> 'External scripting")
+        print("  using' -> Local -> Save, then this host launch will work too.")
+        print("=" * 64)
+        return
+    print("Resolve connected: " + r.GetVersionString())
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     if sys.platform == "win32":
         # On Windows SO_REUSEADDR lets MULTIPLE bridges bind the same port and
