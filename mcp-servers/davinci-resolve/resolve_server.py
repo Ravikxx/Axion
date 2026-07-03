@@ -118,8 +118,9 @@ def _resolve_diagnose(msg):
         f'{msg}\n\n'
         f'Troubleshooting:\n'
         f'  1. Is Resolve running? (start it)\n'
-        f'  2. Open Resolve → Workspace → Scripts → Utility → resolve_bridge\n'
-        f'  3. Then try again — the bridge provides the scripting connection'
+        f'  2. Enable external scripting: Resolve -> Preferences (Ctrl+,) -> System -> General\n'
+        f'     -> "External scripting using" -> Local -> Save (no restart needed)\n'
+        f'  3. Run /resolve in Axion to (re)start the bridge, then retry'
     )
 
 def require_resolve():
@@ -724,6 +725,9 @@ def main():
             try:
                 result = handler(args)
                 send({'jsonrpc': '2.0', 'id': msg_id, 'result': result})
+            except RuntimeError as e:
+                # Expected operational errors — message only, no traceback noise
+                send({'jsonrpc': '2.0', 'id': msg_id, 'result': result_error(str(e))})
             except Exception as e:
                 tb = traceback.format_exc()
                 send({'jsonrpc': '2.0', 'id': msg_id, 'result': result_error(f'{e}\n{tb}')})

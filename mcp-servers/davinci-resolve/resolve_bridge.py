@@ -33,7 +33,12 @@ def get_resolve():
 def require_resolve():
     r = get_resolve()
     if r is None:
-        raise RuntimeError("Cannot get Resolve object from within Resolve — is this running inside Resolve?")
+        raise RuntimeError(
+            "DaVinci Resolve refused the scripting connection. Almost always this means "
+            "external scripting is disabled (the default).\n"
+            "Fix: in DaVinci Resolve open Preferences (Ctrl+,) -> System -> General -> "
+            "set 'External scripting using' to Local -> Save. No restart needed; just retry the tool."
+        )
     return r
 
 def project_list():
@@ -419,6 +424,9 @@ def handle_client(conn):
                 try:
                     result = handler(args)
                     send_conn(conn, {"jsonrpc": "2.0", "id": msg_id, "result": result})
+                except RuntimeError as e:
+                    # Expected operational errors (no project, scripting disabled…) — message only, no traceback noise
+                    send_conn(conn, {"jsonrpc": "2.0", "id": msg_id, "result": {"content": [{"type": "text", "text": str(e)}], "isError": True}})
                 except Exception as e:
                     send_conn(conn, {"jsonrpc": "2.0", "id": msg_id, "result": {"content": [{"type": "text", "text": f"{e}\n{traceback.format_exc()}"}], "isError": True}})
             elif msg_id is not None:
