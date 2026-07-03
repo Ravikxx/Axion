@@ -1988,7 +1988,7 @@ function Session({
       }
       case 'resolve': {
         if (arg === 'setup') {
-          push({ type: 'info', text: 'DaVinci Resolve setup:\n1. Install DaVinci Resolve 18+ (free from blackmagicdesign.com)\n2. Make sure Resolve is running\n3. Run /resolve status — auto-launches the bridge\n4. Requires Python 3.13 (detected automatically)' });
+          push({ type: 'info', text: 'DaVinci Resolve setup:\n1. Install DaVinci Resolve 18+ (free from blackmagicdesign.com)\n2. Make sure Resolve is running\n3. FREE edition: in Resolve run Workspace → Scripts → Utility → resolve_bridge (Axion installs it there)\n   STUDIO: Preferences → System → General → "External scripting using" → Local, then /resolve auto-launches it\n4. Run /resolve — connects the MCP server (requires Python 3.13, detected automatically)' });
           return;
         }
         push({ type: 'info', text: 'Starting DaVinci Resolve bridge & connecting MCP…' });
@@ -2004,17 +2004,35 @@ function Session({
           if (!(await isListening(9876))) {
             // Anchor to the axion package, not cwd — /resolve must work from any directory
             const bp = fileURLToPath(new URL('../../mcp-servers/davinci-resolve/resolve_bridge.py', import.meta.url));
-            cp.spawn('E:\\fuscript.exe', [bp], {
-              stdio: 'ignore', detached: true, windowsHide: true,
-            }).unref();
+            // Keep the bridge installed in Resolve's Scripts menu — on the FREE
+            // edition external hosts (fuscript) are blocked, so the only working
+            // path is Workspace → Scripts → Utility → resolve_bridge inside Resolve.
+            try {
+              const fsx = require('fs');
+              for (const util of [
+                'C:\\ProgramData\\Blackmagic Design\\DaVinci Resolve\\Fusion\\Scripts\\Utility',
+                path.join(process.env.APPDATA || '', 'Blackmagic Design', 'DaVinci Resolve', 'Support', 'Fusion', 'Scripts', 'Utility'),
+              ]) {
+                try { fsx.mkdirSync(util, { recursive: true }); fsx.copyFileSync(bp, path.join(util, 'resolve_bridge.py')); } catch {}
+              }
+            } catch {}
+            // Try the external host — works on Studio with external scripting = Local.
+            try {
+              cp.spawn('E:\\fuscript.exe', [bp], {
+                stdio: 'ignore', detached: true, windowsHide: true,
+              }).unref();
+            } catch {}
             let waited = 0;
             while (waited < 30) {
               if (await isListening(9876)) break;
               await new Promise(r => setTimeout(r, 500));
               waited++;
             }
-            if (waited >= 30) { push({ type: 'error', text: 'Bridge failed to start. Is Resolve running?' }); return; }
-            push({ type: 'info', text: '● Bridge started via fuscript.exe' });
+            if (waited >= 30) {
+              push({ type: 'error', text: 'Bridge not reachable. In DaVinci Resolve run: Workspace → Scripts → Utility → resolve_bridge\n(free Resolve blocks external scripting hosts — the bridge must be started from inside Resolve; Studio users can instead set Preferences → System → General → "External scripting using" → Local and re-run /resolve)' });
+              return;
+            }
+            push({ type: 'info', text: '● Bridge started' });
           }
         } catch (e) {
           push({ type: 'error', text: `Bridge launch failed: ${e.message}` });

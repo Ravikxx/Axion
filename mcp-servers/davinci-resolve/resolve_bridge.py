@@ -34,10 +34,12 @@ def require_resolve():
     r = get_resolve()
     if r is None:
         raise RuntimeError(
-            "DaVinci Resolve refused the scripting connection. Almost always this means "
-            "external scripting is disabled (the default).\n"
-            "Fix: in DaVinci Resolve open Preferences (Ctrl+,) -> System -> General -> "
-            "set 'External scripting using' to Local -> Save. No restart needed; just retry the tool."
+            "DaVinci Resolve refused the scripting connection.\n"
+            "- FREE Resolve blocks external scripting hosts entirely. Start this bridge from\n"
+            "  INSIDE Resolve instead: Workspace -> Scripts -> Utility -> resolve_bridge\n"
+            "  (then retry the tool).\n"
+            "- STUDIO: enable Preferences (Ctrl+,) -> System -> General ->\n"
+            "  'External scripting using' -> Local -> Save, then retry."
         )
     return r
 

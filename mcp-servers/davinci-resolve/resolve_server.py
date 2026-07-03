@@ -118,9 +118,10 @@ def _resolve_diagnose(msg):
         f'{msg}\n\n'
         f'Troubleshooting:\n'
         f'  1. Is Resolve running? (start it)\n'
-        f'  2. Enable external scripting: Resolve -> Preferences (Ctrl+,) -> System -> General\n'
-        f'     -> "External scripting using" -> Local -> Save (no restart needed)\n'
-        f'  3. Run /resolve in Axion to (re)start the bridge, then retry'
+        f'  2. FREE Resolve: start the bridge from inside Resolve —\n'
+        f'     Workspace -> Scripts -> Utility -> resolve_bridge, then retry\n'
+        f'  3. STUDIO: Preferences (Ctrl+,) -> System -> General ->\n'
+        f'     "External scripting using" -> Local -> Save, then run /resolve in Axion'
     )
 
 def require_resolve():
