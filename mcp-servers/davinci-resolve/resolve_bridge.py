@@ -550,6 +550,92 @@ def handle_export_timeline(args):
         return _ok(f"Exported timeline to {abs_path} ({fmt})")
     return _err("Export returned failure (is the output directory writable?)")
 
+def handle_open_page(args):
+    try:
+        r = require_resolve()
+        page = args.get('page', '')
+        valid = ['media', 'cut', 'edit', 'fusion', 'color', 'fairlight', 'deliver']
+        if page not in valid:
+            return _err(f"Invalid page '{page}'. Valid: {valid}")
+        if r.OpenPage(page):
+            return _ok(f"Opened {page} page")
+        return _err(f'Failed to open {page} page')
+    except RuntimeError as e:
+        return _err(str(e))
+    except Exception as e:
+        return _err(f'{e}\n{traceback.format_exc()}')
+
+def handle_get_project_setting(args):
+    try:
+        r = require_resolve()
+        proj = r.GetCurrentProject()
+        if proj is None:
+            return _err('No project open')
+        name = args.get('name', '')
+        val = proj.GetSetting(name)
+        if val is None:
+            return _err(f"Setting '{name}' not found")
+        if name == '':
+            return _ok(val)
+        return _ok(str(val))
+    except RuntimeError as e:
+        return _err(str(e))
+    except Exception as e:
+        return _err(f'{e}\n{traceback.format_exc()}')
+
+def handle_set_project_setting(args):
+    try:
+        r = require_resolve()
+        proj = r.GetCurrentProject()
+        if proj is None:
+            return _err('No project open')
+        name = args.get('name', '')
+        value = args.get('value', '')
+        if not name or not value:
+            return _err('Both "name" and "value" are required')
+        if proj.SetSetting(name, value):
+            return _ok(f'Set {name} = {value}')
+        return _err(f'Failed to set {name}')
+    except RuntimeError as e:
+        return _err(str(e))
+    except Exception as e:
+        return _err(f'{e}\n{traceback.format_exc()}')
+
+def handle_create_bin(args):
+    try:
+        r = require_resolve()
+        proj = r.GetCurrentProject()
+        if proj is None:
+            return _err('No project open')
+        name = args.get('name', '')
+        if not name:
+            return _err('"name" is required')
+        mp = proj.GetMediaPool()
+        root = mp.GetRootFolder()
+        if root is None:
+            return _err('No media pool root folder')
+        new_bin = mp.AddSubFolder(root, name)
+        if new_bin is None:
+            return _err(f'Failed to create bin "{name}"')
+        return _ok(f'Created bin "{name}"')
+    except RuntimeError as e:
+        return _err(str(e))
+    except Exception as e:
+        return _err(f'{e}\n{traceback.format_exc()}')
+
+def handle_clear_render_queue(args):
+    try:
+        r = require_resolve()
+        proj = r.GetCurrentProject()
+        if proj is None:
+            return _err('No project open')
+        proj.DeleteAllRenderJobs()
+        return _ok('Render queue cleared')
+    except RuntimeError as e:
+        return _err(str(e))
+    except Exception as e:
+        return _err(f'{e}\n{traceback.format_exc()}')
+
 # ── Tool registry ────────────────────────────────────────────────────────
 
 TOOLS = [
@@ -578,6 +664,11 @@ TOOLS = [
     {"name": "resolve_add_marker", "description": "Add a colored marker/note at a timeline frame (frame is relative to timeline start; one marker per frame)", "inputSchema": {"type": "object", "properties": {"frame": {"type": "number", "description": "Frame relative to timeline start (default 0)"}, "color": {"type": "string", "enum": MARKER_COLORS, "description": "Marker color (default Blue)"}, "name": {"type": "string", "description": "Short marker name"}, "note": {"type": "string", "description": "Longer note text"}, "duration": {"type": "number", "description": "Duration in frames (default 1)"}, "custom_data": {"type": "string", "description": "Optional machine-readable tag"}}}},
     {"name": "resolve_list_markers", "description": "List all markers on the current timeline (frame, color, name, note, duration)", "inputSchema": {"type": "object", "properties": {}}},
     {"name": "resolve_export_timeline", "description": "Export the current timeline to a file. Formats: edl, aaf, fcpxml, fcp7xml, drt, otio, csv, tab", "inputSchema": {"type": "object", "required": ["path"], "properties": {"path": {"type": "string", "description": "Output file path"}, "format": {"type": "string", "enum": ["edl", "aaf", "fcpxml", "fcp7xml", "drt", "otio", "csv", "tab"], "description": "Export format (default edl)"}}}},
+    {"name": "resolve_open_page", "description": "Switch the DaVinci Resolve UI to a specific page: media, cut, edit, fusion, color, fairlight, deliver", "inputSchema": {"type": "object", "required": ["page"], "properties": {"page": {"type": "string", "enum": ["media", "cut", "edit", "fusion", "color", "fairlight", "deliver"]}}}},
+    {"name": "resolve_get_project_setting", "description": "Get a project setting by name (omit name to list all)", "inputSchema": {"type": "object", "properties": {"name": {"type": "string", "description": "Setting name (omit to list all settings)"}}}},
+    {"name": "resolve_set_project_setting", "description": "Set a project setting", "inputSchema": {"type": "object", "required": ["name", "value"], "properties": {"name": {"type": "string", "description": "Setting name"}, "value": {"type": "string", "description": "Setting value"}}}},
+    {"name": "resolve_create_bin", "description": "Create a new bin in the media pool root folder", "inputSchema": {"type": "object", "required": ["name"], "properties": {"name": {"type": "string", "description": "Bin name"}}}},
+    {"name": "resolve_clear_render_queue", "description": "Delete all render jobs from the render queue", "inputSchema": {"type": "object", "properties": {}}},
 ]
 
 HANDLERS = {
@@ -606,6 +697,11 @@ HANDLERS = {
     "resolve_add_marker": handle_add_marker,
     "resolve_list_markers": handle_list_markers,
     "resolve_export_timeline": handle_export_timeline,
+    "resolve_open_page": handle_open_page,
+    "resolve_get_project_setting": handle_get_project_setting,
+    "resolve_set_project_setting": handle_set_project_setting,
+    "resolve_create_bin": handle_create_bin,
+    "resolve_clear_render_queue": handle_clear_render_queue,
 }
 
 # ── TCP server ───────────────────────────────────────────────────────────

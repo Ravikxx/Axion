@@ -617,6 +617,67 @@ def handle_list_markers(args):
                     'custom_data': m.get('customData')})
     return result_text(json.dumps(out, indent=2) if out else 'No markers on this timeline.')
 
+def handle_open_page(args):
+    r = require_resolve()
+    page = args.get('page', '')
+    valid = ['media', 'cut', 'edit', 'fusion', 'color', 'fairlight', 'deliver']
+    if page not in valid:
+        return result_error(f"Invalid page '{page}'. Valid: {valid}")
+    if r.OpenPage(page):
+        return result_text(f"Opened {page} page")
+    return result_error(f'Failed to open {page} page')
+
+def handle_get_project_setting(args):
+    r = require_resolve()
+    proj = r.GetCurrentProject()
+    if proj is None:
+        return result_error('No project open')
+    name = args.get('name', '')
+    val = proj.GetSetting(name)
+    if val is None:
+        return result_error(f"Setting '{name}' not found")
+    if name == '':
+        return result_text(val)
+    return result_text(str(val))
+
+def handle_set_project_setting(args):
+    r = require_resolve()
+    proj = r.GetCurrentProject()
+    if proj is None:
+        return result_error('No project open')
+    name = args.get('name', '')
+    value = args.get('value', '')
+    if not name or not value:
+        return result_error('Both "name" and "value" are required')
+    if proj.SetSetting(name, value):
+        return result_text(f'Set {name} = {value}')
+    return result_error(f'Failed to set {name}')
+
+def handle_create_bin(args):
+    r = require_resolve()
+    proj = r.GetCurrentProject()
+    if proj is None:
+        return result_error('No project open')
+    name = args.get('name', '')
+    if not name:
+        return result_error('"name" is required')
+    mp = proj.GetMediaPool()
+    root = mp.GetRootFolder()
+    if root is None:
+        return result_error('No media pool root folder')
+    new_bin = mp.AddSubFolder(root, name)
+    if new_bin is None:
+        return result_error(f'Failed to create bin "{name}"')
+    return result_text(f'Created bin "{name}"')
+
+def handle_clear_render_queue(args):
+    r = require_resolve()
+    proj = r.GetCurrentProject()
+    if proj is None:
+        return result_error('No project open')
+    proj.DeleteAllRenderJobs()
+    return result_text('Render queue cleared')
+
 def handle_export_timeline(args):
     path = args.get('path', '')
     fmt = (args.get('format') or 'edl').lower()
@@ -832,6 +893,40 @@ TOOLS = [
             'format': {'type': 'string', 'enum': ['edl', 'aaf', 'fcpxml', 'fcp7xml', 'drt', 'otio', 'csv', 'tab'], 'description': 'Export format (default edl)'},
         }},
     },
+    {
+        'name': 'resolve_open_page',
+        'description': 'Switch the DaVinci Resolve UI to a specific page: media, cut, edit, fusion, color, fairlight, deliver',
+        'inputSchema': {'type': 'object', 'required': ['page'], 'properties': {
+            'page': {'type': 'string', 'enum': ['media', 'cut', 'edit', 'fusion', 'color', 'fairlight', 'deliver']},
+        }},
+    },
+    {
+        'name': 'resolve_get_project_setting',
+        'description': 'Get a project setting by name (omit name to list all)',
+        'inputSchema': {'type': 'object', 'properties': {
+            'name': {'type': 'string', 'description': 'Setting name (omit to list all settings)'},
+        }},
+    },
+    {
+        'name': 'resolve_set_project_setting',
+        'description': 'Set a project setting',
+        'inputSchema': {'type': 'object', 'required': ['name', 'value'], 'properties': {
+            'name': {'type': 'string', 'description': 'Setting name'},
+            'value': {'type': 'string', 'description': 'Setting value'},
+        }},
+    },
+    {
+        'name': 'resolve_create_bin',
+        'description': 'Create a new bin in the media pool root folder',
+        'inputSchema': {'type': 'object', 'required': ['name'], 'properties': {
+            'name': {'type': 'string', 'description': 'Bin name'},
+        }},
+    },
+    {
+        'name': 'resolve_clear_render_queue',
+        'description': 'Delete all render jobs from the render queue',
+        'inputSchema': {'type': 'object', 'properties': {}},
+    },
 ]
 
 HANDLERS = {
@@ -860,6 +955,11 @@ HANDLERS = {
     'resolve_add_marker': handle_add_marker,
     'resolve_list_markers': handle_list_markers,
     'resolve_export_timeline': handle_export_timeline,
+    'resolve_open_page': handle_open_page,
+    'resolve_get_project_setting': handle_get_project_setting,
+    'resolve_set_project_setting': handle_set_project_setting,
+    'resolve_create_bin': handle_create_bin,
+    'resolve_clear_render_queue': handle_clear_render_queue,
 }
 
 # ── MCP stdio transport ──────────────────────────────────────────────────
