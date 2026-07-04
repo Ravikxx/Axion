@@ -31,9 +31,9 @@
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 16px;
-      padding: 40px;
+      padding: 40px 44px;
       width: 100%;
-      max-width: 400px;
+      max-width: 460px;
     }
 
     .auth-card h1 { font-size: 22px; margin-bottom: 4px; }
@@ -76,6 +76,18 @@
     .btn-sm:hover:not(:disabled) { background: var(--accent-dim); }
 
     .error-msg { color: var(--red); font-size: 13px; margin-top: 10px; text-align: center; }
+    .auth-toggle { margin-top: 14px; text-align: center; font-size: 12.5px; color: var(--muted); }
+    .auth-toggle a { color: var(--accent); cursor: pointer; font-weight: 600; }
+    .auth-toggle a:hover { text-decoration: underline; }
+    .tos-checkbox {
+      display: flex; align-items: center; gap: 8px;
+      margin-bottom: 4px; font-size: 12px; color: var(--muted);
+    }
+    .tos-checkbox input[type="checkbox"] {
+      width: 16px; height: 16px; accent-color: var(--accent); cursor: pointer; flex-shrink: 0;
+    }
+    .tos-checkbox label { cursor: pointer; user-select: none; }
+    .tos-checkbox a { color: var(--accent); text-decoration: underline; }
 
     .oauth-btn {
       display: flex;
@@ -246,8 +258,12 @@
 <!-- Auth gate -->
 <div id="auth-gate">
   <div class="auth-card">
-    <h1>Admin Panel</h1>
-    <p>Sign in with your Axion account to continue.</p>
+    <h1 id="auth-title">Admin Panel</h1>
+    <p id="auth-sub">Sign in with your Axion account to continue.</p>
+    <div class="field" id="name-field" style="display:none">
+      <label>Name</label>
+      <input type="text" id="login-name" placeholder="Your name" />
+    </div>
     <div class="field">
       <label>Email</label>
       <input type="email" id="login-email" placeholder="you@example.com" />
@@ -256,8 +272,17 @@
       <label>Password</label>
       <input type="password" id="login-password" placeholder="••••••••" />
     </div>
+    <div class="tos-checkbox" id="tos-field" style="display:none">
+      <input type="checkbox" id="login-tos">
+      <label for="login-tos">I agree to the <a href="/tos" target="_blank">Terms of Service</a> and <a href="/privacy" target="_blank">Privacy Policy</a></label>
+    </div>
     <button class="btn btn-primary" id="login-btn" onclick="doLogin()">Sign in</button>
     <div id="login-error" class="error-msg" style="display:none"></div>
+
+    <div class="auth-toggle">
+      <span id="auth-toggle-text">Don't have an account?</span>
+      <a onclick="toggleAuthMode()"> <span id="auth-toggle-link">Sign up</span></a>
+    </div>
 
     <div style="display:flex;align-items:center;gap:12px;margin:20px 0 4px">
       <div style="flex:1;height:1px;background:var(--border)"></div>
@@ -399,6 +424,21 @@
   let _token = null
 
   // ── Auth ──────────────────────────────────────────────────────────────────
+  let authMode = 'signin'
+
+  function toggleAuthMode() {
+    authMode = authMode === 'signin' ? 'signup' : 'signin'
+    const isSignup = authMode === 'signup'
+    document.getElementById('auth-title').textContent = isSignup ? 'Admin Panel' : 'Admin Panel'
+    document.getElementById('auth-sub').textContent = isSignup ? 'Create an account with admin access.' : 'Sign in with your Axion account to continue.'
+    document.getElementById('login-btn').textContent = isSignup ? 'Create account' : 'Sign in'
+    document.getElementById('auth-toggle-text').textContent = isSignup ? 'Already have an account?' : "Don't have an account?"
+    document.getElementById('auth-toggle-link').textContent = isSignup ? 'Sign in' : 'Sign up'
+    document.getElementById('name-field').style.display = isSignup ? '' : 'none'
+    document.getElementById('tos-field').style.display = isSignup ? '' : 'none'
+    if (isSignup) document.getElementById('login-tos').checked = false
+    document.getElementById('login-error').style.display = 'none'
+  }
 
   async function doLogin() {
     const email = document.getElementById('login-email').value.trim()
@@ -407,15 +447,53 @@
     const btn = document.getElementById('login-btn')
     errEl.style.display = 'none'
     btn.disabled = true
-    btn.textContent = 'Signing in…'
+    btn.textContent = authMode === 'signup' ? 'Creating account…' : 'Signing in…'
+
+    if (!email || !password) {
+      errEl.textContent = 'Please fill in all fields.'
+      errEl.style.display = 'block'
+      btn.disabled = false
+      btn.textContent = authMode === 'signin' ? 'Sign in' : 'Create account'
+      return
+    }
+    if (password.length < 8) {
+      errEl.textContent = 'Password must be at least 8 characters.'
+      errEl.style.display = 'block'
+      btn.disabled = false
+      btn.textContent = authMode === 'signin' ? 'Sign in' : 'Create account'
+      return
+    }
+    if (authMode === 'signup' && !document.getElementById('login-tos').checked) {
+      errEl.textContent = 'You must agree to the Terms of Service and Privacy Policy.'
+      errEl.style.display = 'block'
+      btn.disabled = false
+      btn.textContent = 'Create account'
+      return
+    }
 
     try {
-      const res = await fetch(`${API}/auth/login`, {
+      const endpoint = authMode === 'signin' ? '/auth/login' : '/auth/register'
+      const body = { email, password, turnstile: '' }
+      if (authMode === 'signup') body.name = document.getElementById('login-name')?.value || ''
+      const res = await fetch(`${API}${endpoint}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password, turnstile: '' }),
+        body: JSON.stringify(body),
       })
       const data = await res.json()
+
+      if (authMode === 'signup' && (res.ok || data.pending)) {
+        btn.disabled = false
+        btn.textContent = 'Create account'
+        document.getElementById('auth-gate').innerHTML = `
+          <div class="auth-card" style="text-align:center">
+            <div style="font-size:40px;margin-bottom:16px">📬</div>
+            <h1>Check your inbox</h1>
+            <p style="margin-bottom:0">We sent a verification link to <strong>${email}</strong>. Click it to activate your account.</p>
+          </div>`
+        return
+      }
+
       if (!res.ok || !data.token) {
         errEl.textContent = data.error || 'Login failed'
         errEl.style.display = 'block'
@@ -441,7 +519,7 @@
       errEl.style.display = 'block'
     } finally {
       btn.disabled = false
-      btn.textContent = 'Sign in'
+      btn.textContent = authMode === 'signin' ? 'Sign in' : 'Create account'
     }
   }
 

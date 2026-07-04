@@ -239,7 +239,7 @@
     }
     .auth-card {
       background: var(--surface); border: 1px solid var(--border2);
-      border-radius: 16px; padding: 40px; width: 100%; max-width: 400px;
+      border-radius: 16px; padding: 40px 44px; width: 100%; max-width: 460px;
     }
     .auth-logo { font-size: 24px; font-weight: 800; margin-bottom: 20px; }
     .auth-logo span { color: var(--accent); }
@@ -265,6 +265,18 @@
       color: var(--red); font-size: 13px; padding: 10px 14px;
       border-radius: 7px; margin-bottom: 14px; display: none;
     }
+    .auth-toggle { margin-top: 10px; text-align: center; font-size: 12.5px; color: var(--muted); }
+    .auth-toggle a { color: var(--accent); cursor: pointer; font-weight: 600; }
+    .auth-toggle a:hover { text-decoration: underline; }
+    .tos-checkbox {
+      display: flex; align-items: center; gap: 8px;
+      margin-bottom: 13px; font-size: 12px; color: var(--muted);
+    }
+    .tos-checkbox input[type="checkbox"] {
+      width: 16px; height: 16px; accent-color: var(--accent); cursor: pointer; flex-shrink: 0;
+    }
+    .tos-checkbox label { cursor: pointer; user-select: none; }
+    .tos-checkbox a { color: var(--accent); text-decoration: underline; }
     .oauth-divider { display: flex; align-items: center; gap: 10px; margin: 16px 0 12px; }
     .oauth-divider::before, .oauth-divider::after { content:''; flex:1; height:1px; background: var(--border2); }
     .oauth-divider span { font-size: 11px; color: var(--muted); }
@@ -325,11 +337,15 @@
 <div id="auth-overlay">
   <div class="auth-card">
     <div class="auth-logo"><img src="/assets/logo.png" alt="Axion" style="height:26px;width:auto;object-fit:contain;display:inline-block;vertical-align:-5px;margin-right:6px"><span>Axion</span></div>
-    <div class="auth-title">Playground</div>
-    <div class="auth-sub">Sign in to use your API key, or try the free tier without an account.</div>
+    <div class="auth-title" id="auth-title">Playground</div>
+    <div class="auth-sub" id="auth-sub">Sign in to use your API key, or try the free tier without an account.</div>
 
     <div class="auth-error" id="auth-error"></div>
 
+    <div class="field" id="name-field" style="display:none">
+      <label>Name</label>
+      <input type="text" id="input-name" placeholder="Your name" autocomplete="name">
+    </div>
     <div class="field">
       <label>Email</label>
       <input type="email" id="input-email" placeholder="you@example.com" autocomplete="email">
@@ -339,8 +355,18 @@
       <input type="password" id="input-password" placeholder="••••••••" autocomplete="current-password">
     </div>
 
+    <div class="tos-checkbox" id="tos-field" style="display:none">
+      <input type="checkbox" id="input-tos">
+      <label for="input-tos">I agree to the <a href="/tos" target="_blank">Terms of Service</a> and <a href="/privacy" target="_blank">Privacy Policy</a></label>
+    </div>
+
     <button class="btn-full btn-primary" id="auth-submit" onclick="doLogin()">Sign in</button>
     <button class="btn-full btn-skip" onclick="skipAuth()">Try without account (50 req/day)</button>
+
+    <div class="auth-toggle">
+      <span id="auth-toggle-text">Don't have an account?</span>
+      <a onclick="toggleAuthMode()"> <span id="auth-toggle-link">Sign up</span></a>
+    </div>
 
     <div class="oauth-divider"><span>or sign in with</span></div>
 
@@ -456,13 +482,13 @@
       <div class="empty-state" id="empty-state">
         <div class="empty-icon">💬</div>
         <div class="empty-title">Start a conversation</div>
-        <div class="empty-sub">Type a message below to chat with Lumen. Adjust the system prompt and parameters on the left.</div>
+        <div class="empty-sub">Type a message below to chat with our models. Adjust the system prompt and parameters on the left.</div>
       </div>
     </div>
 
     <div class="input-area">
       <div class="input-row">
-        <textarea class="input-box" id="user-input" placeholder="Message Lumen…" rows="1"
+        <textarea class="input-box" id="user-input" placeholder="Message…" rows="1"
           oninput="autoResize(this)" onkeydown="handleKey(event)"></textarea>
         <button class="send-btn" id="send-btn" onclick="sendMessage()" title="Send (Enter)">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -486,33 +512,63 @@
   let streaming = false
 
   // ── Auth ──────────────────────────────────────────────────────────────────
+  let authMode = 'signin'
 
   function showErr(msg) {
     const el = document.getElementById('auth-error')
-    el.textContent = msg; el.style.display = ''
+    el.textContent = msg; el.style.display = 'block'
+  }
+  function hideErr() { document.getElementById('auth-error').style.display = 'none' }
+
+  function toggleAuthMode() {
+    authMode = authMode === 'signin' ? 'signup' : 'signin'
+    const isSignup = authMode === 'signup'
+    document.getElementById('auth-sub').textContent = isSignup ? 'Create an account to use the full playground.' : 'Sign in to use your API key, or try the free tier without an account.'
+    document.getElementById('auth-submit').textContent = isSignup ? 'Create account' : 'Sign in'
+    document.getElementById('auth-toggle-text').textContent = isSignup ? 'Already have an account?' : "Don't have an account?"
+    document.getElementById('auth-toggle-link').textContent = isSignup ? 'Sign in' : 'Sign up'
+    document.getElementById('name-field').style.display = isSignup ? '' : 'none'
+    document.getElementById('tos-field').style.display = isSignup ? '' : 'none'
+    if (isSignup) document.getElementById('input-tos').checked = false
+    hideErr()
   }
 
   async function doLogin() {
     const email = document.getElementById('input-email').value.trim()
     const password = document.getElementById('input-password').value
+    hideErr()
     if (!email || !password) { showErr('Please fill in all fields.'); return }
+    if (password.length < 8) { showErr('Password must be at least 8 characters.'); return }
+    if (authMode === 'signup' && !document.getElementById('input-tos').checked) { showErr('You must agree to the Terms of Service and Privacy Policy.'); return }
     const btn = document.getElementById('auth-submit')
-    btn.disabled = true; btn.textContent = 'Signing in…'
+    btn.disabled = true; btn.textContent = authMode === 'signup' ? 'Creating account…' : 'Signing in…'
     try {
-      const res = await fetch(`${API}/auth/login`, {
+      const endpoint = authMode === 'signin' ? '/auth/login' : '/auth/register'
+      const body = { email, password, turnstile: '' }
+      if (authMode === 'signup') body.name = document.getElementById('input-name')?.value || ''
+      const res = await fetch(`${API}${endpoint}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password, turnstile: '' }),
+        body: JSON.stringify(body),
       })
       const data = await res.json()
-      if (!res.ok) { showErr(data.error || 'Login failed'); return }
+      if (!res.ok) { showErr(data.error || 'Something went wrong.'); return }
+      if (data.pending) {
+        document.getElementById('auth-overlay').innerHTML = `
+          <div class="auth-card" style="text-align:center">
+            <div style="font-size:40px;margin-bottom:16px">📬</div>
+            <div class="auth-title">Check your inbox</div>
+            <p class="auth-sub" style="margin-bottom:0">We sent a verification link to <strong>${email}</strong>. Click it to activate your account.</p>
+          </div>`
+        return
+      }
       sessionToken = data.token
       userEmail = data.email || email
       localStorage.setItem('axion_token', sessionToken)
       localStorage.setItem('axion_email', userEmail)
       showApp()
     } catch { showErr('Network error — try again.') }
-    finally { btn.disabled = false; btn.textContent = 'Sign in' }
+    finally { btn.disabled = false; btn.textContent = authMode === 'signin' ? 'Sign in' : 'Create account' }
   }
 
   function skipAuth() {
@@ -569,7 +625,7 @@
   function clearChat() {
     messages = []
     const container = document.getElementById('messages')
-    container.innerHTML = '<div class="empty-state" id="empty-state"><div class="empty-icon">💬</div><div class="empty-title">Start a conversation</div><div class="empty-sub">Type a message below to chat with Lumen. Adjust the system prompt and parameters on the left.</div></div>'
+    container.innerHTML = '<div class="empty-state" id="empty-state"><div class="empty-icon">💬</div><div class="empty-title">Start a conversation</div><div class="empty-sub">Type a message below to chat with our models. Adjust the system prompt and parameters on the left.</div></div>'
     document.getElementById('copy-btn').style.display = 'none'
   }
 
