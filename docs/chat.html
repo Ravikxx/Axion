@@ -290,11 +290,13 @@
     /* ── Auth overlay ── */
     #auth-overlay {
       position: fixed; inset: 0; z-index: 80; background: var(--bg);
-      display: flex; align-items: center; justify-content: center; padding: 24px;
+      display: flex; align-items: center; justify-content: center;
+      padding: 24px; overflow-y: auto;
     }
     .auth-card {
       background: var(--surface); border: 1px solid var(--border2);
-      border-radius: 16px; padding: 40px 44px; width: 100%; max-width: 460px;
+      border-radius: 16px; padding: 36px 46px; width: 100%; max-width: 500px;
+      margin: auto;
     }
     .auth-logo { font-size: 22px; font-weight: 800; margin-bottom: 18px; display: flex; align-items: center; gap: 8px; }
     .auth-logo img { height: 26px; width: auto; }
@@ -366,7 +368,7 @@
       .greeting-title { font-size: 20px; }
       .greeting-sub { font-size: 13px; }
       .suggestion { padding: 11px 13px; font-size: 12px; }
-      .auth-card { padding: 28px 24px; border-radius: 12px; }
+      .auth-card { padding: 24px 22px; border-radius: 12px; }
       .chat-item { padding: 12px 10px; min-height: 44px; }
       .chat-item-del { opacity: .6; padding: 6px 8px; }
       .sidebar-link { padding: 10px 10px; min-height: 40px; }
