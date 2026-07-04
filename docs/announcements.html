@@ -204,6 +204,10 @@
     <input type="email" id="subEmail" placeholder="you@example.com">
     <button onclick="subscribe()">Subscribe</button>
   </div>
+  <div style="display:flex;align-items:center;gap:6px;width:100%;margin-top:6px;font-size:12px;color:#8b7355">
+    <input type="checkbox" id="subTos" style="width:14px;height:14px;accent-color:var(--accent);cursor:pointer">
+    <label for="subTos" style="cursor:pointer">I agree to the <a href="/tos" style="color:var(--accent);text-decoration:underline" target="_blank">Terms</a> and <a href="/privacy" style="color:var(--accent);text-decoration:underline" target="_blank">Privacy Policy</a></label>
+  </div>
   <span class="sub-msg" id="subMsg"></span>
 </div>
 
@@ -612,6 +616,12 @@
     const email = document.getElementById('subEmail').value.trim()
     const msg = document.getElementById('subMsg')
     if (!email) return
+    if (!document.getElementById('subTos').checked) {
+      msg.style.display = 'inline'
+      msg.textContent = 'Please agree to the Terms and Privacy Policy.'
+      msg.style.color = '#f87171'
+      return
+    }
     try {
       const res = await fetch(`${API}/announcements/subscribe`, {
         method: 'POST',

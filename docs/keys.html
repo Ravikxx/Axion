@@ -53,6 +53,16 @@
     .auth-toggle a { color: var(--accent); cursor: pointer; font-weight: 600; }
     .auth-toggle a:hover { text-decoration: underline; }
 
+    .tos-checkbox {
+      display: flex; align-items: center; gap: 8px;
+      margin-bottom: 14px; font-size: 12px; color: var(--muted);
+    }
+    .tos-checkbox input[type="checkbox"] {
+      width: 16px; height: 16px; accent-color: var(--accent); cursor: pointer; flex-shrink: 0;
+    }
+    .tos-checkbox label { cursor: pointer; user-select: none; }
+    .tos-checkbox a { color: var(--accent); text-decoration: underline; }
+
     .auth-error {
       background: rgba(248,113,113,.1); border: 1px solid rgba(248,113,113,.25);
       color: var(--red); font-size: 13px; padding: 10px 14px;
@@ -424,6 +434,11 @@
 
     <div class="cf-turnstile" data-sitekey="0x4AAAAAADoVQKWELQ0qH97B" data-callback="onTurnstile" data-theme="dark" style="margin-bottom:12px"></div>
 
+    <div class="tos-checkbox" id="tos-field" style="display:none">
+      <input type="checkbox" id="input-tos">
+      <label for="input-tos">I agree to the <a href="/tos" target="_blank">Terms of Service</a> and <a href="/privacy" target="_blank">Privacy Policy</a></label>
+    </div>
+
     <button class="btn-full btn-primary-full" id="auth-submit" onclick="submitAuth()">Sign in</button>
 
     <div class="oauth-divider"><span>or</span></div>
@@ -694,6 +709,8 @@
     document.getElementById('auth-toggle-text').textContent = isSignup ? 'Already have an account?' : "Don't have an account?";
     document.getElementById('auth-toggle-link').textContent = isSignup ? 'Sign in' : 'Sign up';
     document.getElementById('name-field').style.display = isSignup ? '' : 'none';
+    document.getElementById('tos-field').style.display = isSignup ? '' : 'none';
+    if (isSignup) document.getElementById('input-tos').checked = false;
     hideAuthError();
   }
 
@@ -706,6 +723,7 @@
     hideAuthError();
     if (!email || !password) { showAuthError('Please fill in all fields.'); return; }
     if (password.length < 8) { showAuthError('Password must be at least 8 characters.'); return; }
+    if (authMode === 'signup' && !document.getElementById('input-tos').checked) { showAuthError('You must agree to the Terms of Service and Privacy Policy.'); return; }
     if (!_turnstileToken) { showAuthError('Security check not complete — please wait a moment.'); return; }
 
     const btn = document.getElementById('auth-submit');
