@@ -15,3 +15,10 @@ data-pipeline/
 **/__pycache__/
 *.pyc
 training/data/
+.aider*
+lumen-data/.venv/
+q/
+q.zip
+eval/
+extension.crx
+extension.pem
