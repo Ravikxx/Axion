@@ -838,7 +838,7 @@ app.post('/admin/waitlist/:id/reject', async (c) => {
 
 app.get('/announcements', async (c) => {
   const { results } = await c.env.DB.prepare(
-    'SELECT id, title, body, created_at FROM announcements ORDER BY created_at DESC LIMIT 50'
+    'SELECT id, title, body, link, created_at FROM announcements ORDER BY created_at DESC LIMIT 50'
   ).all()
   return json({ announcements: results })
 })
@@ -865,7 +865,7 @@ app.post('/webhook/announce', async (c) => {
   const secret = c.req.header('X-Webhook-Secret')
   if (!secret || secret !== c.env.ANNOUNCE_WEBHOOK_SECRET) return json({ error: 'Unauthorized' }, 401)
 
-  const { title, body, content_hash } = await c.req.json().catch(() => ({}))
+  const { title, body, link, content_hash } = await c.req.json().catch(() => ({}))
   if (!title?.trim() || !body?.trim()) return json({ error: 'title and body required' }, 400)
 
   // Idempotency: skip if this exact announcement was already sent
@@ -876,7 +876,7 @@ app.post('/webhook/announce', async (c) => {
 
   const id = content_hash || crypto.randomUUID()
   const now = Math.floor(Date.now() / 1000)
-  await c.env.DB.prepare('INSERT OR IGNORE INTO announcements (id, title, body, sent_at, created_at) VALUES (?,?,?,?,?)').bind(id, title.trim(), body.trim(), now, now).run()
+  await c.env.DB.prepare('INSERT OR IGNORE INTO announcements (id, title, body, link, sent_at, created_at) VALUES (?,?,?,?,?,?)').bind(id, title.trim(), body.trim(), link || null, now, now).run()
 
   if (c.env.RESEND_API_KEY) {
     c.executionCtx.waitUntil((async () => {
