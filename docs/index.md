@@ -1,4 +1,4 @@
-﻿<style>
+<style>
   .news-banner {
     background: linear-gradient(135deg, #1a1a1a 0%, #2d2010 100%);
     border-left: 4px solid #e8602c;
@@ -55,14 +55,19 @@
 
 Open-source AI coding agent ecosystem by Axion Labs.
 
-<a class="news-banner" href="/lumen-12">
+<a class="news-banner" href="/project-crucible">
   <span class="news-tag">New</span>
-  <span class="news-text"><strong>Lumen 1.2 is here</strong> — our most capable model yet, 2× smarter than Veil. See benchmarks →</span>
+  <span class="news-text"><strong>Project Crucible</strong> — TAME architecture R&D sprint: ternary MoE, MTP, GQA. See the day-3 status →</span>
+</a>
+
+<a class="news-banner" href="/lumen-125-safety">
+  <span class="news-tag">Release</span>
+  <span class="news-text"><strong>Lumen 1.2.5</strong> — safety-tested, free in the browser and CLI. See the full safety report →</span>
 </a>
 
 <div class="nav-links">
   <a href="https://github.com/AxionLabsAI/axion">GitHub Repository</a>
   <a href="/announcements">Announcements</a>
-  <a href="/lumen-12">Lumen 1.2 Release</a>
+  <a href="/lumen-125-safety">Lumen 1.2.5 Safety Report</a>
   <a href="/privacy">Privacy Policy</a>
 </div>
