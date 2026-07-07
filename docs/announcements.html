@@ -226,31 +226,6 @@
 
   <div class="announcement">
     <div class="ann-meta">
-      <span class="ann-tag notice">R&D Sprint</span>
-      <span class="ann-date">July 4, 2026</span>
-    </div>
-    <h2><a href="/project-crucible">Project Crucible — TAME Architecture R&D Sprint</a></h2>
-    <p>
-      We're kicking off <strong>Project Crucible</strong>, a 3-week sprint (July 4–27) to build
-      <strong>Crucible Axon</strong> — an efficient small-model architecture combining ternary
-      (1.58-bit) weights, MoTE-style mixture of experts, multi-token prediction, grouped query
-      attention, and aux-loss-free load balancing. Collectively nicknamed <strong>TAME</strong>
-      (Ternary Adaptive MoE).
-    </p>
-    <p style="margin-top:12px">
-      Despite officially starting today, in the first ~3 days we've already verified the full stack,
-      trained a <strong>14M parameter proof-of-concept</strong> on TinyStories producing coherent
-      multi-paragraph English, and built a second variant with GQA + aux-loss-free balancing — now
-      scaling toward the 300M target.
-    </p>
-    <div class="ann-footer">
-      <a class="ann-link" href="/project-crucible">Full details →</a>
-      <a class="ann-link" href="https://github.com/AxionLabsAI/axion">GitHub →</a>
-    </div>
-  </div>
-
-  <div class="announcement">
-    <div class="ann-meta">
       <span class="ann-tag notice">Notice</span>
       <span class="ann-date">July 6, 2026</span>
     </div>
@@ -649,8 +624,9 @@
             <span class="ann-tag release">Announcement</span>
             <span class="ann-date">${date}</span>
           </div>
-          <h2>${a.title.replace(/</g,'&lt;')}</h2>
+          <h2>${a.link ? `<a href="${a.link.replace(/"/g,'&quot;')}">${a.title.replace(/</g,'&lt;')}</a>` : a.title.replace(/</g,'&lt;')}</h2>
           <p style="white-space:pre-wrap">${body}</p>
+          ${a.link ? `<div class="ann-footer"><a class="ann-link" href="${a.link.replace(/"/g,'&quot;')}">Read more →</a></div>` : ''}
         </div>`
       }).join('')
     } catch {}
