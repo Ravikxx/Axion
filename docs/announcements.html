@@ -219,10 +219,8 @@
 
 <main>
 
-  <!-- Dynamic announcements from DB (injected here) -->
-  <div id="dynamicAnns"></div>
-
-  <div id="staticAnns">
+  <!-- Dynamic announcements from DB (replaces static fallback) -->
+  <div id="dynamicAnns">
   <!-- MOST RECENT FIRST -->
 
   <div class="announcement">
@@ -585,12 +583,12 @@
       <a class="ann-link" href="https://github.com/AxionLabsAI/axion">GitHub →</a>
     </div>
   </div>
-  </div>
 
   <!-- Placeholder — future announcements go above this comment -->
 
-  <div class="empty-future" id="emptyFuture">
+  <div class="empty-future">
     <p>More announcements coming soon. Follow us on <a href="https://github.com/AxionLabsAI/axion" style="color:var(--accent)">GitHub</a> for updates.</p>
+  </div>
   </div>
 
 </main>
@@ -617,10 +615,6 @@
       const res = await fetch(`${API}/announcements`)
       const { announcements } = await res.json()
       if (!announcements?.length) return
-      const el = document.getElementById('staticAnns')
-      if (el) el.style.display = 'none'
-      const ef = document.getElementById('emptyFuture')
-      if (ef) ef.style.display = 'none'
       const container = document.getElementById('dynamicAnns')
       container.innerHTML = announcements.map(a => {
         const date = new Date(a.created_at * 1000).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
