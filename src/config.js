@@ -157,6 +157,17 @@ export function getContextWindow(modelAlias) {
 // Populated by fetchProviderModels(). Keyed by provider name → array of { id, context_length }.
 export const PROVIDER_MODELS = {};
 
+// Fallback models shown when a provider's API key isn't set (so users can still
+// see and try known models even without configuring every key).
+const FALLBACK_MODELS = {
+  openai:     [{ id: 'gpt-4o', context_length: 128_000 }, { id: 'gpt-4o-mini', context_length: 128_000 }, { id: 'gpt-4.1', context_length: 1_000_000 }, { id: 'o3', context_length: 200_000 }, { id: 'o4-mini', context_length: 200_000 }],
+  anthropic:  [{ id: 'claude-sonnet-4-6', context_length: 200_000 }, { id: 'claude-opus-4-8', context_length: 200_000 }, { id: 'claude-haiku-4-5-20251001', context_length: 200_000 }, { id: 'claude-fable-5', context_length: 200_000 }],
+  groq:       [{ id: 'llama-3.3-70b-versatile', context_length: 128_000 }, { id: 'llama-3.1-8b-instant', context_length: 128_000 }, { id: 'deepseek-r1-distill-llama-70b', context_length: 128_000 }, { id: 'mixtral-8x7b-32768', context_length: 32_000 }],
+  mistral:    [{ id: 'mistral-large-latest', context_length: 128_000 }, { id: 'mistral-small-latest', context_length: 32_000 }, { id: 'codestral-latest', context_length: 256_000 }, { id: 'pixtral-large-latest', context_length: 128_000 }],
+  gemini:     [{ id: 'gemini-2.0-flash', context_length: 1_000_000 }, { id: 'gemini-2.5-pro-preview-05-06', context_length: 1_000_000 }, { id: 'gemini-2.5-flash', context_length: 1_000_000 }, { id: 'gemini-1.5-pro', context_length: 1_000_000 }],
+  zai:        [{ id: 'glm-5.2', context_length: 128_000 }, { id: 'glm-4.7-flash', context_length: 128_000 }, { id: 'glm-4.5-flash', context_length: 128_000 }],
+};
+
 // Fetch model lists from providers that support /v1/models (or equivalent).
 // Called at startup so the CLI automatically picks up new models without updates.
 const PROVIDER_MODEL_ENDPOINTS = [
@@ -170,22 +181,30 @@ const PROVIDER_MODEL_ENDPOINTS = [
 ];
 
 export async function fetchProviderModels() {
-  const results = await Promise.allSettled(
+  await Promise.allSettled(
     PROVIDER_MODEL_ENDPOINTS.map(async ({ provider, baseURL, needsKey, format }) => {
-      if (needsKey && !API_KEYS[needsKey]) return;
+      const hasKey = !needsKey || API_KEYS[needsKey];
       const headers = needsKey && API_KEYS[needsKey] ? { Authorization: `Bearer ${API_KEYS[needsKey]}` } : {};
-      const res = await fetch(baseURL, { headers, signal: AbortSignal.timeout(5000) });
-      if (!res.ok) return;
-      const json = await res.json();
-      const list = format === 'anthropic' ? json.data.filter(m => m.type === 'model') : json.data || [];
-      const models = list.map(m => ({
-        id: m.id,
-        context_length: m.context_length || m.max_context_length || (m.metadata?.context_length) || 0,
-      }));
-      if (models.length) PROVIDER_MODELS[provider] = models;
+      if (hasKey) {
+        try {
+          const res = await fetch(baseURL, { headers, signal: AbortSignal.timeout(5000) });
+          if (res.ok) {
+            const json = await res.json();
+            const list = format === 'anthropic' ? json.data.filter(m => m.type === 'model') : json.data || [];
+            const models = list.map(m => ({
+              id: m.id,
+              context_length: m.context_length || m.max_context_length || (m.metadata?.context_length) || 0,
+            }));
+            if (models.length) { PROVIDER_MODELS[provider] = models; return; }
+          }
+        } catch {}
+      }
+      // No key or fetch failed — use fallback list
+      if (FALLBACK_MODELS[provider]) {
+        PROVIDER_MODELS[provider] = FALLBACK_MODELS[provider];
+      }
     })
   );
-  // Ignore errors — each provider is best-effort
 }
 
 export async function fetchOpenRouterContextWindows() {
