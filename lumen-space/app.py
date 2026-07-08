@@ -155,8 +155,8 @@ def bot_respond(history, temperature, max_tokens):
 
 def model_status():
     if llm is not None:
-        return "<p class='status ready'>● Model ready</p>"
-    return "<p class='status loading'>● Loading model… (first boot takes a few minutes)</p>"
+        return "<p class='status ready'>\u25cf Model ready</p>"
+    return "<p class='status loading'>\u25cf Loading model\u2026 (first boot takes a few minutes)</p>"
 
 
 def do_add_memory(text):
@@ -310,19 +310,21 @@ with gr.Blocks(title="Lumen \u2014 Axion Labs", fill_height=True) as demo:
 
 
 # ── API routes mounted on Gradio's internal FastAPI ──────────────────────────
-# (These must come AFTER the `with gr.Blocks() as demo:` block so demo.app exists)
+# Gradio 6's SvelteKit proxy only forwards /gradio_api/* to the FastAPI
+# backend, so we prefix all custom routes accordingly.  Must come AFTER
+# the `with gr.Blocks() as demo:` block so demo.app exists.
 
-@demo.app.get("/health")
+@demo.app.get("/gradio_api/health")
 def health():
     return {"status": "ready" if llm is not None else "loading"}
 
 
-@demo.app.get("/v1/memories")
+@demo.app.get("/gradio_api/v1/memories")
 def api_list_memories():
     return {"memories": get_memories()}
 
 
-@demo.app.post("/v1/memories")
+@demo.app.post("/gradio_api/v1/memories")
 async def api_add_memory(request: Request):
     body = await request.json()
     text = (body.get("text") or "").strip()
@@ -332,14 +334,14 @@ async def api_add_memory(request: Request):
     return {"memories": updated}
 
 
-@demo.app.delete("/v1/memories/{index}")
+@demo.app.delete("/gradio_api/v1/memories/{index}")
 def api_delete_memory(index: int):
     if remove_memory_by_index(index):
         return {"memories": get_memories()}
     return JSONResponse({"error": "index out of range"}, status_code=404)
 
 
-@demo.app.post("/v1/chat/completions")
+@demo.app.post("/gradio_api/v1/chat/completions")
 async def chat_completions(request: Request):
     if llm is None:
         return JSONResponse({"error": "Model is still loading, try again in a moment."}, status_code=503)

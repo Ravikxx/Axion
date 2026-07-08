@@ -1,6 +1,6 @@
 # Terms of Service
 
-**Last updated: June 29, 2026**
+**Last updated: July 7, 2026**
 
 ## Overview
 
@@ -16,6 +16,7 @@ The Axion web chat and API provide access to AI models through a hosted backend 
 - Creating an account may be required for extended usage
 - You are responsible for maintaining the confidentiality of your API keys and account credentials
 - You must not share your free API key beyond its intended use
+- **One account per person.** Accounts detected sharing an IP address with another verified account may be suspended. If you believe this is an error, you may submit an appeal through the link emailed to you.
 
 ## Free tier
 
@@ -61,9 +62,9 @@ THE SERVICE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED
 
 Axion Labs shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of the Service.
 
-## Termination
+## Termination & suspension
 
-We reserve the right to suspend or terminate access to the Service at any time, without notice, for violation of these Terms or for any other reason.
+We reserve the right to suspend or terminate access to the Service at any time, for violation of these Terms or for any other reason. Suspended accounts may submit an appeal for review via the link provided in the suspension notice.
 
 ## Changes
 

@@ -1,6 +1,6 @@
 # Privacy Policy
 
-**Last updated: July 2, 2026**
+**Last updated: July 7, 2026**
 
 ## Overview
 
@@ -46,6 +46,7 @@ provider you've selected with `/model`:
 
 - **Third-party providers** (Anthropic, OpenAI, Google Gemini, Groq, Mistral, OpenRouter, and OpenCode) receive your requests directly, authenticated with the API key you supplied. Refer to each provider's own privacy policy for how they handle it.
 - **Lumen** (`/model lumen`) routes through Axion Labs' backend on **Cloudflare Workers** (`api.amplifiedsmp.org`), which handles authentication, the free tier, and usage tracking, and forwards the request to **Lumen inference running on Hugging Face**. The free tier is rate-limited (50 requests/day); an API key from [axion.amplifiedsmp.org/keys](https://axion.amplifiedsmp.org/keys) raises this to 1,000/month. Usage is counted per key.
+- **IP addresses** are collected during account registration and used to detect duplicate accounts sharing the same IP. If a duplicate IP is detected, the newest account is suspended and the user is offered an opportunity to appeal. IPs are stored in our Cloudflare D1 database and retained for the lifetime of the account.
 
 ### Voice transcription and text-to-speech
 

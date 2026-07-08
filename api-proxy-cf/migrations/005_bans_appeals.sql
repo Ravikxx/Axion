@@ -1,0 +1,17 @@
+-- Migration 005: Bans and Appeals (2026-07-07)
+
+ALTER TABLE users ADD COLUMN ip TEXT DEFAULT NULL;
+ALTER TABLE users ADD COLUMN banned INTEGER DEFAULT 0;
+ALTER TABLE users ADD COLUMN ban_reason TEXT DEFAULT NULL;
+
+CREATE TABLE IF NOT EXISTS appeals (
+  id TEXT PRIMARY KEY,
+  user_id TEXT NOT NULL REFERENCES users(id),
+  email TEXT NOT NULL,
+  reason TEXT DEFAULT NULL,
+  token TEXT UNIQUE NOT NULL,
+  status TEXT DEFAULT 'pending',
+  created_at INTEGER NOT NULL,
+  reviewed_at INTEGER DEFAULT NULL,
+  reviewed_by TEXT DEFAULT NULL
+);

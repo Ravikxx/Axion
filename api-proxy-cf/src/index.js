@@ -2,7 +2,7 @@ import { Hono } from 'hono'
 import { cors } from 'hono/cors'
 
 const app = new Hono()
-const HF_URL = 'https://axionlabsai-lumen.hf.space/v1/chat/completions'
+const HF_URL = 'https://axionlabsai-lumen.hf.space/gradio_api/v1/chat/completions'
 
 app.use('*', cors({ origin: '*', allowHeaders: ['Content-Type', 'Authorization'] }))
 
@@ -159,7 +159,7 @@ app.post('/auth/register', async (c) => {
   if (!validEmail(email)) return json({ error: 'Invalid email address' }, 400)
   if (password.length < 8) return json({ error: 'Password must be at least 8 characters' }, 400)
 
-  const existing = await c.env.DB.prepare('SELECT id, verified FROM users WHERE email=?').bind(email.toLowerCase()).first()
+  const existing = await c.env.DB.prepare('SELECT id, verified, banned FROM users WHERE email=?').bind(email.toLowerCase()).first()
   if (existing && existing.verified) return json({ error: 'Email already registered' }, 409)
 
   const id = existing?.id || crypto.randomUUID()
@@ -170,6 +170,42 @@ app.post('/auth/register', async (c) => {
     await c.env.DB.prepare('UPDATE users SET pw_hash=?, verify_token=? WHERE id=?').bind(pw_hash, verify_token, id).run()
   } else {
     await c.env.DB.prepare('INSERT INTO users (id, email, pw_hash, verify_token) VALUES (?,?,?,?)').bind(id, email.toLowerCase(), pw_hash, verify_token).run()
+  }
+
+  // Store the user's IP
+  await c.env.DB.prepare('UPDATE users SET ip=? WHERE id=?').bind(ip, id).run()
+
+  // Check for duplicate IP among verified users
+  const dupe = await c.env.DB.prepare(
+    'SELECT id, email FROM users WHERE ip=? AND verified=1 AND id!=? LIMIT 1'
+  ).bind(ip, id).first()
+
+  if (dupe) {
+    const reason = 'Duplicate IP: another verified account (' + dupe.email + ') shares this IP address.'
+    await c.env.DB.prepare('UPDATE users SET banned=1, ban_reason=? WHERE id=?').bind(reason, id).run()
+    const token = crypto.randomUUID()
+    const appealId = crypto.randomUUID()
+    const now = Math.floor(Date.now() / 1000)
+    await c.env.DB.prepare(
+      'INSERT INTO appeals (id, user_id, email, token, status, created_at) VALUES (?,?,?,?,?,?)'
+    ).bind(appealId, id, email.toLowerCase(), token, 'pending', now).run()
+
+    if (c.env.RESEND_API_KEY) {
+      const appealUrl = 'https://api.amplifiedsmp.org/appeal/' + token
+      c.executionCtx.waitUntil(sendEmail(c.env.RESEND_API_KEY, {
+        to: email.toLowerCase(),
+        subject: 'Your Axion account has been suspended',
+        html: emailWrap(`
+          <h2 style="margin:0 0 8px;color:#e8e8f0">Account suspended</h2>
+          <p style="color:#ccc;margin:0 0 16px">Your account was suspended because another verified account already exists from your IP address.</p>
+          <p style="color:#ccc;margin:0 0 24px">If you believe this is an error, click the link below to submit an appeal. We'll review your case.</p>
+          <a href="${appealUrl}" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">Submit appeal →</a>
+          <p style="color:#555;font-size:12px;margin-top:24px">Or paste this link: ${appealUrl}</p>
+        `),
+      }))
+    }
+
+    return json({ banned: true, message: 'Your account was suspended because another account already exists from your IP address. Check your email for an appeal link.' })
   }
 
   if (c.env.RESEND_API_KEY) {
@@ -207,22 +243,68 @@ const RETURN_DESTINATIONS = {
 }
 
 async function oauthFinish(c, { id_field, email, provider_id, return_to }) {
-  // Find by provider ID first, then fall back to email
+  const ip = c.req.header('CF-Connecting-IP') || 'unknown'
   let user = await c.env.DB.prepare(`SELECT * FROM users WHERE ${id_field}=?`).bind(provider_id).first()
   if (!user && email) {
     user = await c.env.DB.prepare('SELECT * FROM users WHERE email=?').bind(email.toLowerCase()).first()
   }
   if (user) {
+    const updateFields = [id_field, provider_id]
     if (!user[id_field]) {
-      await c.env.DB.prepare(`UPDATE users SET ${id_field}=?, verified=1 WHERE id=?`).bind(provider_id, user.id).run()
+      updateFields.push('verified', 1)
+    }
+    updateFields.push('ip', ip, user.id)
+    await c.env.DB.prepare(
+      `UPDATE users SET ${id_field}=?, verified=1, ip=? WHERE id=?`
+    ).bind(provider_id, ip, user.id).run()
+    if (user.banned) {
+      const token = await makeToken(user.id, c.env.TOKEN_SECRET)
+      const base = RETURN_DESTINATIONS[return_to] || RETURN_DESTINATIONS.keys
+      return new Response(null, {
+        status: 302,
+        headers: { Location: `${base}#verified=${encodeURIComponent(token)}&email=${encodeURIComponent(email || '')}&banned=1` },
+      })
     }
   } else {
     if (!email) return new Response('Could not get email from provider', { status: 400 })
     const uid = crypto.randomUUID()
     await c.env.DB.prepare(
-      `INSERT INTO users (id, email, pw_hash, verified, ${id_field}) VALUES (?,?,?,1,?)`
-    ).bind(uid, email.toLowerCase(), '', provider_id).run()
+      `INSERT INTO users (id, email, pw_hash, verified, ip, ${id_field}) VALUES (?,?,?,1,?,?)`
+    ).bind(uid, email.toLowerCase(), '', ip, provider_id).run()
     user = { id: uid }
+    const dupe = await c.env.DB.prepare(
+      'SELECT id, email FROM users WHERE ip=? AND verified=1 AND id!=? LIMIT 1'
+    ).bind(ip, uid).first()
+    if (dupe) {
+      const reason = 'Duplicate IP: another verified account (' + dupe.email + ') shares this IP address.'
+      await c.env.DB.prepare('UPDATE users SET banned=1, ban_reason=? WHERE id=?').bind(reason, uid).run()
+      const appealToken = crypto.randomUUID()
+      const appealId = crypto.randomUUID()
+      const now = Math.floor(Date.now() / 1000)
+      await c.env.DB.prepare(
+        'INSERT INTO appeals (id, user_id, email, token, status, created_at) VALUES (?,?,?,?,?,?)'
+      ).bind(appealId, uid, email.toLowerCase(), appealToken, 'pending', now).run()
+      if (c.env.RESEND_API_KEY) {
+        const appealUrl = 'https://api.amplifiedsmp.org/appeal/' + appealToken
+        c.executionCtx.waitUntil(sendEmail(c.env.RESEND_API_KEY, {
+          to: email.toLowerCase(),
+          subject: 'Your Axion account has been suspended',
+          html: emailWrap(`
+            <h2 style="margin:0 0 8px;color:#e8e8f0">Account suspended</h2>
+            <p style="color:#ccc;margin:0 0 16px">Your account was suspended because another verified account already exists from your IP address.</p>
+            <p style="color:#ccc;margin:0 0 24px">If you believe this is an error, click the link below to submit an appeal.</p>
+            <a href="${appealUrl}" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">Submit appeal →</a>
+            <p style="color:#555;font-size:12px;margin-top:24px">Or paste this link: ${appealUrl}</p>
+          `),
+        }))
+      }
+      const token = await makeToken(uid, c.env.TOKEN_SECRET)
+      const base = RETURN_DESTINATIONS[return_to] || RETURN_DESTINATIONS.keys
+      return new Response(null, {
+        status: 302,
+        headers: { Location: `${base}#verified=${encodeURIComponent(token)}&email=${encodeURIComponent(email || '')}&banned=1` },
+      })
+    }
   }
   const token = await makeToken(user.id, c.env.TOKEN_SECRET)
   const base = RETURN_DESTINATIONS[return_to] || RETURN_DESTINATIONS.keys
@@ -368,6 +450,7 @@ app.post('/auth/login', async (c) => {
   const pw_hash = await hashPw(password || '', c.env.PW_SALT)
   if (!user || user.pw_hash !== pw_hash) return json({ error: 'Invalid email or password' }, 401)
   if (!user.verified) return json({ error: 'Please verify your email before signing in.' }, 403)
+  if (user.banned) return json({ error: 'Your account has been suspended. Check your email for an appeal link.', banned: true }, 403)
   return json({ token: await makeToken(user.id, c.env.TOKEN_SECRET), email: user.email })
 })
 
@@ -1026,6 +1109,171 @@ app.get('/admin/invite/accept', async (c) => {
     status: 302,
     headers: { Location: `https://axion.amplifiedsmp.org/admin#invited=1` },
   })
+})
+
+// ── Appeals ────────────────────────────────────────────────────────────────
+
+app.get('/appeal/:token', async (c) => {
+  const token = c.req.param('token')
+  const appeal = await c.env.DB.prepare('SELECT * FROM appeals WHERE token=?').bind(token).first()
+  if (!appeal) return new Response('Appeal not found.', { status: 404, headers: { 'Content-Type': 'text/plain' } })
+
+  const user = await c.env.DB.prepare('SELECT * FROM users WHERE id=?').bind(appeal.user_id).first()
+
+  if (appeal.status !== 'pending') {
+    const msg = appeal.status === 'approved'
+      ? 'Your appeal was approved and your account has been reinstated.'
+      : 'Your appeal was reviewed and not approved at this time.'
+    return new Response(`<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Appeal — Axion Labs</title><style>
+body{font-family:system-ui,sans-serif;background:#110d08;color:#e8ddd0;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;padding:24px}
+.card{background:#1c1510;border:1px solid #2e2218;border-radius:16px;padding:36px 40px;max-width:480px;width:100%;text-align:center}
+.card h1{font-size:22px;margin:0 0 8px;color:#e8ddd0}
+.card p{color:#a08060;font-size:14px;line-height:1.6;margin:0 0 8px}
+.status{display:inline-block;padding:4px 14px;border-radius:99px;font-size:13px;font-weight:600;margin-bottom:16px}
+.status-approved{background:rgba(106,168,122,.15);color:#6aa87a}
+.status-rejected{background:rgba(200,100,80,.15);color:#c86450}
+.btn{display:inline-block;background:#cc785c;color:#fff;padding:10px 24px;border-radius:8px;text-decoration:none;font-size:14px;font-weight:600;margin-top:16px}
+</style></head><body>
+<div class="card"><div class="status status-${appeal.status}">${appeal.status === 'approved' ? 'Approved' : 'Not approved'}</div>
+<h1>${msg}</h1></div></body></html>`, { status: 200, headers: { 'Content-Type': 'text/html' } })
+  }
+
+  const banned = user?.banned
+  return new Response(`<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Submit appeal — Axion Labs</title><style>
+body{font-family:system-ui,sans-serif;background:#110d08;color:#e8ddd0;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;padding:24px}
+.card{background:#1c1510;border:1px solid #2e2218;border-radius:16px;padding:36px 40px;max-width:480px;width:100%}
+.card h1{font-size:22px;margin:0 0 4px;color:#e8ddd0}
+.card .sub{color:#a08060;font-size:14px;margin:0 0 20px;line-height:1.5}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:12px;color:#a08060;margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em}
+.field textarea{width:100%;background:#150f0a;border:1px solid #2e2218;border-radius:8px;padding:10px 14px;color:#e8ddd0;font-size:14px;outline:none;font-family:inherit;resize:vertical;min-height:120px;box-sizing:border-box}
+.field textarea:focus{border-color:#cc785c}
+.btn{background:#cc785c;color:#fff;border:none;padding:10px 20px;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600;width:100%}
+.btn:hover{background:#b8664a}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.msg{padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:16px;display:none}
+.msg.error{background:rgba(200,100,80,.1);color:#c86450;border:1px solid rgba(200,100,80,.2);display:block}
+.msg.success{background:rgba(106,168,122,.1);color:#6aa87a;border:1px solid rgba(106,168,122,.2);display:block}
+</style></head><body>
+<div class="card">
+<h1>Submit an appeal</h1>
+<p class="sub">Your account has been suspended. If you believe this was a mistake, tell us why and we'll review your case.</p>
+${!banned ? '<div class="msg success">Your account is no longer suspended. No further action needed.</div>' : ''}
+<div id="error-msg" class="msg error" style="display:none"></div>
+<div class="field"><label>Your appeal</label>
+<textarea id="reason" placeholder="Explain why your account should be reinstated..." ${!banned ? 'disabled' : ''}>${appeal.reason || ''}</textarea></div>
+<button class="btn" id="submit-btn" onclick="submitAppeal()" ${!banned || appeal.reason ? 'disabled' : ''}>${appeal.reason ? 'Appeal submitted — awaiting review' : 'Submit appeal'}</button>
+</div>
+<script>
+const TOKEN = '${token}'
+async function submitAppeal(){const r=document.getElementById('reason').value.trim();if(!r)return;const b=document.getElementById('submit-btn');const e=document.getElementById('error-msg');b.disabled=true;b.textContent='Submitting...';e.style.display='none'
+try{const res=await fetch('/appeal/'+TOKEN,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({reason:r})});const d=await res.json()
+if(!res.ok){e.textContent=d.error||'Failed to submit';e.style.display='block';b.disabled=false;b.textContent='Submit appeal';return}
+document.querySelector('.card').innerHTML='<div style="text-align:center;padding:20px 0"><div style="font-size:40px;margin-bottom:12px">\u2709\ufe0f</div><h1 style="margin:0 0 8px;color:#e8ddd0;font-size:20px">Appeal submitted</h1><p style="color:#a08060;font-size:14px;line-height:1.6;margin:0">We\'ll review your appeal and get back to you. You\'ll receive an email when a decision is made.</p></div>'}
+catch{location.reload()}}
+</script></body></html>`, { status: 200, headers: { 'Content-Type': 'text/html' } })
+})
+
+app.post('/appeal/:token', async (c) => {
+  const token = c.req.param('token')
+  const { reason } = await c.req.json().catch(() => ({}))
+  if (!reason || !reason.trim()) return json({ error: 'Please provide a reason for your appeal.' }, 400)
+
+  const appeal = await c.env.DB.prepare('SELECT * FROM appeals WHERE token=?').bind(token).first()
+  if (!appeal) return json({ error: 'Appeal not found.' }, 404)
+  if (appeal.status !== 'pending') return json({ error: 'This appeal has already been ' + appeal.status + '.' }, 400)
+  if (appeal.reason) return json({ error: 'You have already submitted this appeal.' }, 400)
+
+  await c.env.DB.prepare('UPDATE appeals SET reason=? WHERE token=?').bind(reason.trim(), token).run()
+
+  if (c.env.RESEND_API_KEY) {
+    c.executionCtx.waitUntil(sendEmail(c.env.RESEND_API_KEY, {
+      to: 'fearlessaviatorclan@gmail.com',
+      subject: '[Axion] New appeal from ' + appeal.email,
+      html: emailWrap(`
+        <h2 style="margin:0 0 8px;color:#e8e8f0">New appeal submitted</h2>
+        <p style="color:#ccc;margin:0 0 4px"><strong>Email:</strong> ${appeal.email}</p>
+        <p style="color:#ccc;margin:0 0 16px"><strong>Reason:</strong></p>
+        <div style="background:#0f0f11;border:1px solid #2a2a30;border-radius:8px;padding:14px 16px;color:#ccc;font-size:14px;line-height:1.6;white-space:pre-wrap;margin-bottom:20px">${reason.trim()}</div>
+        <a href="https://api.amplifiedsmp.org/admin" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">Review in admin panel →</a>
+      `),
+    }))
+  }
+
+  return json({ ok: true, message: 'Appeal submitted. You\'ll receive an email when a decision is made.' })
+})
+
+// ── Admin: appeals ─────────────────────────────────────────────────────────
+
+app.get('/admin/appeals', async (c) => {
+  const user = await requireAdmin(c)
+  if (!user) return json({ error: 'Forbidden' }, 403)
+
+  const { results } = await c.env.DB.prepare(
+    'SELECT a.id, a.email, a.reason, a.status, a.token, a.created_at, a.reviewed_at, a.reviewed_by, u.banned FROM appeals a JOIN users u ON u.id=a.user_id ORDER BY a.created_at DESC LIMIT 100'
+  ).all()
+  return json({ appeals: results })
+})
+
+app.post('/admin/appeals/:token/accept', async (c) => {
+  const user = await requireAdmin(c)
+  if (!user) return json({ error: 'Forbidden' }, 403)
+
+  const token = c.req.param('token')
+  const appeal = await c.env.DB.prepare('SELECT * FROM appeals WHERE token=?').bind(token).first()
+  if (!appeal) return json({ error: 'Appeal not found.' }, 404)
+  if (appeal.status !== 'pending') return json({ error: 'Appeal already ' + appeal.status }, 400)
+
+  const now = Math.floor(Date.now() / 1000)
+  await c.env.DB.prepare('UPDATE appeals SET status=?, reviewed_at=?, reviewed_by=? WHERE token=?')
+    .bind('approved', now, user.email, token).run()
+  await c.env.DB.prepare('UPDATE users SET banned=0 WHERE id=?').bind(appeal.user_id).run()
+
+  if (c.env.RESEND_API_KEY) {
+    c.executionCtx.waitUntil(sendEmail(c.env.RESEND_API_KEY, {
+      to: appeal.email,
+      subject: 'Your Axion appeal has been approved',
+      html: emailWrap(`
+        <h2 style="margin:0 0 8px;color:#e8e8f0">Appeal approved</h2>
+        <p style="color:#ccc;margin:0 0 24px">Your account has been reinstated. You can now sign in and use the service normally.</p>
+        <a href="https://axion.amplifiedsmp.org/keys" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">Sign in →</a>
+      `),
+    }))
+  }
+
+  return json({ ok: true })
+})
+
+app.post('/admin/appeals/:token/reject', async (c) => {
+  const user = await requireAdmin(c)
+  if (!user) return json({ error: 'Forbidden' }, 403)
+
+  const token = c.req.param('token')
+  const appeal = await c.env.DB.prepare('SELECT * FROM appeals WHERE token=?').bind(token).first()
+  if (!appeal) return json({ error: 'Appeal not found.' }, 404)
+  if (appeal.status !== 'pending') return json({ error: 'Appeal already ' + appeal.status }, 400)
+
+  const now = Math.floor(Date.now() / 1000)
+  await c.env.DB.prepare('UPDATE appeals SET status=?, reviewed_at=?, reviewed_by=? WHERE token=?')
+    .bind('rejected', now, user.email, token).run()
+
+  if (c.env.RESEND_API_KEY) {
+    c.executionCtx.waitUntil(sendEmail(c.env.RESEND_API_KEY, {
+      to: appeal.email,
+      subject: 'Your Axion appeal has been reviewed',
+      html: emailWrap(`
+        <h2 style="margin:0 0 8px;color:#e8e8f0">Appeal not approved</h2>
+        <p style="color:#ccc;margin:0 0 24px">After review, your appeal was not approved. Your account remains suspended. If you have additional information, please submit a new appeal.</p>
+        <p style="color:#555;font-size:12px">This decision was made by the Axion Labs team.</p>
+      `),
+    }))
+  }
+
+  return json({ ok: true })
 })
 
 // ── Dashboard: daily usage chart ──────────────────────────────────────────

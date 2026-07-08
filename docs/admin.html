@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="/assets/theme-dark.css">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
+
 
     body {
       background: var(--bg);
@@ -262,23 +262,25 @@
   <div class="auth-card">
     <h1 id="auth-title">Admin Panel</h1>
     <p id="auth-sub">Sign in with your Axion account to continue.</p>
+    <form id="auth-form" onsubmit="doLogin(); return false">
     <div class="field" id="name-field" style="display:none">
       <label>Name</label>
-      <input type="text" id="login-name" placeholder="Your name" />
+      <input type="text" id="login-name" placeholder="Your name" autocomplete="name" />
     </div>
     <div class="field">
       <label>Email</label>
-      <input type="email" id="login-email" placeholder="you@example.com" />
+      <input type="email" id="login-email" placeholder="you@example.com" autocomplete="email" />
     </div>
     <div class="field">
       <label>Password</label>
-      <input type="password" id="login-password" placeholder="••••••••" />
+      <input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password" />
     </div>
     <div class="tos-checkbox" id="tos-field" style="display:none">
       <input type="checkbox" id="login-tos">
       <label for="login-tos">I agree to the <a href="/tos" target="_blank">Terms of Service</a> and <a href="/privacy" target="_blank">Privacy Policy</a></label>
     </div>
-    <button class="btn btn-primary" id="login-btn" onclick="doLogin()">Sign in</button>
+    <button type="submit" class="btn btn-primary" id="login-btn">Sign in</button>
+    </form>
     <div id="login-error" class="error-msg" style="display:none"></div>
 
     <div class="auth-toggle">
@@ -417,6 +419,27 @@
         </table>
       </div>
     </section>
+
+    <!-- Appeals -->
+    <section>
+      <h2>Appeals <span id="appeals-count" style="font-size:13px;color:var(--muted);font-weight:400"></span></h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Email</th>
+              <th>Reason</th>
+              <th>Status</th>
+              <th>Submitted</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="appeals-body">
+            <tr class="empty-row"><td colspan="5">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
   </main>
 </div>
 
@@ -437,6 +460,7 @@
     document.getElementById('auth-toggle-text').textContent = isSignup ? 'Already have an account?' : "Don't have an account?"
     document.getElementById('auth-toggle-link').textContent = isSignup ? 'Sign in' : 'Sign up'
     document.getElementById('name-field').style.display = isSignup ? '' : 'none'
+    document.getElementById('login-password').setAttribute('autocomplete', isSignup ? 'new-password' : 'current-password')
     document.getElementById('tos-field').style.display = isSignup ? '' : 'none'
     if (isSignup) document.getElementById('login-tos').checked = false
     document.getElementById('login-error').style.display = 'none'
@@ -552,6 +576,7 @@
     loadStats()
     loadUsers()
     loadAllowlist()
+    loadAppeals()
     loadChart()
   }
 
@@ -727,6 +752,57 @@
     }
   }
 
+  // ── Appeals ────────────────────────────────────────────────────────────────
+
+  async function loadAppeals() {
+    const res = await apiFetch('/admin/appeals')
+    if (!res.ok) return
+    const { appeals } = await res.json()
+    const tbody = document.getElementById('appeals-body')
+    const count = document.getElementById('appeals-count')
+
+    if (!appeals || !appeals.length) {
+      tbody.innerHTML = '<tr class="empty-row"><td colspan="5">No appeals</td></tr>'
+      count.textContent = ''
+      return
+    }
+
+    const pending = appeals.filter(a => a.status === 'pending').length
+    count.textContent = pending ? `(${pending} pending)` : ''
+
+    tbody.innerHTML = appeals.map(a => `
+      <tr>
+        <td>${esc(a.email)}
+          ${!a.banned ? ' <span class="badge badge-green">unbanned</span>' : ''}
+        </td>
+        <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--muted);font-size:13px" title="${esc(a.reason || '')}">${esc(a.reason || '—')}</td>
+        <td>
+          ${a.status === 'pending' ? '<span class="badge" style="background:rgba(232,96,44,.12);color:#e8602c">Pending</span>' :
+            a.status === 'approved' ? '<span class="badge badge-green">Approved</span>' :
+            '<span class="badge badge-red">Rejected</span>'}
+        </td>
+        <td style="color:var(--muted);font-size:13px">${fmtDate(a.created_at)}</td>
+        <td>
+          ${a.status === 'pending'
+            ? `<button class="btn btn-sm" onclick="acceptAppeal('${esc(a.token)}')" style="margin-right:6px">Accept</button>
+               <button class="btn btn-danger" onclick="rejectAppeal('${esc(a.token)}')">Reject</button>`
+            : a.reviewed_by ? `<span style="color:var(--muted);font-size:12px">by ${esc(a.reviewed_by)}</span>` : ''}
+        </td>
+      </tr>`).join('')
+  }
+
+  async function acceptAppeal(token) {
+    if (!confirm('Reinstate this account?')) return
+    const res = await apiFetch(`/admin/appeals/${encodeURIComponent(token)}/accept`, { method: 'POST' })
+    if (res.ok) { loadAppeals() } else { const d = await res.json(); alert(d.error || 'Failed') }
+  }
+
+  async function rejectAppeal(token) {
+    if (!confirm('Reject this appeal?')) return
+    const res = await apiFetch(`/admin/appeals/${encodeURIComponent(token)}/reject`, { method: 'POST' })
+    if (res.ok) { loadAppeals() } else { const d = await res.json(); alert(d.error || 'Failed') }
+  }
+
   // ── Utils ─────────────────────────────────────────────────────────────────
 
   function fmt(n) {
@@ -784,18 +860,10 @@
     }
   }
 
-  // Enter key on password field
-  document.getElementById('login-password').addEventListener('keydown', e => {
-    if (e.key === 'Enter') doLogin()
-  })
 
   init()
 </script>
 <script src="/assets/profile.js"></script>
 
-<script>
-function toggleNav(){document.querySelector("nav")?.classList.toggle("nav-links-visible")}
-document.addEventListener("click",function(e){if(!e.target.closest("nav"))document.querySelector("nav")?.classList.remove("nav-links-visible")})
-</script>
 </body>
 </html>

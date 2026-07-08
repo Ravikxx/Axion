@@ -185,7 +185,7 @@
 
 <main>
 
-  <p class="last-updated">Last updated: July 2, 2026</p>
+  <p class="last-updated">Last updated: July 7, 2026</p>
 
   <div class="callout">
     <strong>Short version:</strong> Axion runs on your machine and most of what it does stays there. Some features send data off your device — to the AI providers you configure, the integrations you connect, and Axion Labs' hosted backend. Axion Labs does <strong>not</strong> run its own data-collecting servers: we host Lumen inference on <a href="https://huggingface.co/privacy">Hugging Face</a> and an auth/usage backend on <a href="https://www.cloudflare.com/privacypolicy/">Cloudflare Workers</a>. The sections below say precisely what is local and what is hosted.
@@ -226,6 +226,7 @@
     <ul>
       <li><strong>Third-party providers</strong> (Anthropic, OpenAI, Google Gemini, Groq, Mistral, OpenRouter, OpenCode) receive your requests directly, authenticated with the key you supplied. See each provider's own policy.</li>
       <li><strong>Lumen</strong> (<code>/model lumen</code>) routes through Axion Labs' backend on <strong>Cloudflare Workers</strong> (<code>api.amplifiedsmp.org</code>) — which handles auth, the free tier, and usage tracking — and forwards to <strong>Lumen inference on Hugging Face</strong>. The free tier allows 50 requests/day; a key from <a href="https://axion.amplifiedsmp.org/keys">axion.amplifiedsmp.org/keys</a> raises it to 1,000/month. Usage is counted per key.</li>
+      <li><strong>IP addresses</strong> are collected during account registration and used to detect duplicate accounts sharing the same IP. If a duplicate IP is detected, the newest account is suspended and offered an opportunity to appeal. IPs are stored in our Cloudflare D1 database and retained for the lifetime of the account.</li>
     </ul>
 
     <p style="margin-top:16px"><strong>Voice transcription &amp; text-to-speech.</strong></p>

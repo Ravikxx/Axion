@@ -77,3 +77,27 @@ Tests use `node:test` and `node:assert/strict`. Run via `test/run.js` (esbuild b
 ```sh
 node build.js    # ~50ms, outputs dist/axion.js
 ```
+
+## HF Space — API Route Fix (Gradio 6)
+
+Gradio 6's SvelteKit only proxies `/gradio_api/*` to the FastAPI backend.  All custom API routes in `lumen-space/app.py` are therefore prefixed with `/gradio_api/` (e.g. `@demo.app.post("/gradio_api/v1/chat/completions")`).
+
+The CF Worker `api-proxy-cf/src/index.js` targets `https://{space}.hf.space/gradio_api/v1/chat/completions` accordingly.
+
+### Test after GPU quota resets
+```sh
+curl -s https://axionlabsai-lumen.hf.space/gradio_api/health
+# → {"status":"ready"} or {"status":"loading"}
+
+curl -s -X POST https://axionlabsai-lumen.hf.space/gradio_api/v1/chat/completions \
+  -H 'Content-Type: application/json' \
+  -d '{"messages":[{"role":"user","content":"hi"}],"max_tokens":10}'
+# → should return JSON with choices, not 405 HTML
+
+# Also test via CF Worker (full stack):
+curl -s -X POST https://api.amplifiedsmp.org/v1/chat/completions \
+  -H 'Content-Type: application/json' \
+  -d '{"model":"lumen","messages":[{"role":"user","content":"hi"}]}'
+```
+
+If `/gradio_api/v1/chat/completions` still returns 405, the issue is that Gradio 6 SvelteKit does not proxy unknown `/gradio_api/*` routes.  Fallback: deploy via Docker Space with `gr.mount_gradio_app()` (but this loses zeroGPU).
