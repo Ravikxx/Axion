@@ -172,6 +172,7 @@ const PROVIDER_MODEL_ENDPOINTS = [
 export async function fetchProviderModels() {
   const results = await Promise.allSettled(
     PROVIDER_MODEL_ENDPOINTS.map(async ({ provider, baseURL, needsKey, format }) => {
+      if (needsKey && !API_KEYS[needsKey]) return;
       const headers = needsKey && API_KEYS[needsKey] ? { Authorization: `Bearer ${API_KEYS[needsKey]}` } : {};
       const res = await fetch(baseURL, { headers, signal: AbortSignal.timeout(5000) });
       if (!res.ok) return;
