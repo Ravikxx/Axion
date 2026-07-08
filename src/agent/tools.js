@@ -564,6 +564,18 @@ export const TOOL_DEFINITIONS = [
     },
   },
   {
+    name: 'analyze_audio',
+    description: "Send an audio file (or public URL) to the configured audio model and get back a text description — content, mood, tempo, instruments, voice, and anything notable. Use this to understand music or sound before editing, tagging, or building on it. Requires /audio-model to be set to an audio-capable model (e.g. gemini-flash, gpt-4o-audio-preview, or an OpenRouter audio model).",
+    input_schema: {
+      type: 'object',
+      properties: {
+        path:     { type: 'string', description: 'Path to the audio file (.mp3, .wav, .ogg, .flac, .aac, .m4a, .opus, .webm) or a public http(s) URL.' },
+        question: { type: 'string', description: 'What to listen for or ask about the audio (optional; defaults to a general description).' },
+      },
+      required: ['path'],
+    },
+  },
+  {
     name: 'speak',
     description: 'Speak text aloud using text-to-speech (OpenAI TTS). Use this to communicate information audibly to the user, such as alerts, confirmations, or when reading long text would be helpful.',
     input_schema: {
@@ -1297,6 +1309,28 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
             return { success: false, output: 'No video or vision model is configured. Set one with /video <model> (e.g. a Gemini or OpenRouter video model), or /vision <model> for frame-level fallback.' };
           }
           return { success: false, output: `Video analysis error: ${(err.message || String(err)).slice(0, 800)}` };
+        }
+      }
+
+      case 'analyze_audio': {
+        const isUrl = /^https?:\/\//i.test(input.path || '');
+        const audioPath = isUrl ? input.path : resolve(cwd, input.path);
+        if (!isUrl) {
+          if (!existsSync(audioPath)) return { success: false, output: `File not found: ${relPath(input.path)}` };
+          const ext = extname(audioPath).toLowerCase();
+          if (!['.mp3', '.wav', '.ogg', '.flac', '.aac', '.m4a', '.opus', '.webm'].includes(ext)) {
+            return { success: false, output: `Unsupported audio format: ${ext}. Supported: mp3, wav, ogg, flac, aac, m4a, opus, webm.` };
+          }
+        }
+        try {
+          const { analyzeAudio } = await import('./audio.js');
+          const { model, text } = await analyzeAudio({ path: audioPath, question: input.question });
+          return { success: true, output: `[${model}]\n${text}` };
+        } catch (err) {
+          if (err.code === 'NO_AUDIO') {
+            return { success: false, output: err.message };
+          }
+          return { success: false, output: `Audio analysis error: ${(err.message || String(err)).slice(0, 800)}` };
         }
       }
 

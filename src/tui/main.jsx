@@ -5,11 +5,12 @@ import { createRoot } from '@opentui/react';
 import { writeSync } from 'fs';
 import minimist from 'minimist';
 import { App } from './App.jsx';
+import { MCP } from '../agent/mcp.js';
 import {
   getSavedModel, getSavedMode, getSavedApiKeys, getSavedCustomEndpoints,
   loadChat, loadLastSession, saveChat, listChats, loadWorkspace,
 } from '../persist.js';
-import { API_KEYS, CUSTOM_ENDPOINTS, DEFAULT_MODEL, DEFAULT_MODE, fetchOpenRouterContextWindows, fetchEndpointContextWindows } from '../config.js';
+import { API_KEYS, CUSTOM_ENDPOINTS, DEFAULT_MODEL, DEFAULT_MODE, fetchOpenRouterContextWindows, fetchEndpointContextWindows, fetchProviderModels } from '../config.js';
 import { accent } from '../ui/theme.js';
 import { sessionSummary } from './exitSummary.js';
 
@@ -97,6 +98,7 @@ for (const [name, ep] of Object.entries(savedEndpoints)) {
 }
 
 // Pre-fetch context windows from OpenRouter and custom endpoints (silent)
+fetchProviderModels();
 fetchOpenRouterContextWindows();
 fetchEndpointContextWindows();
 
@@ -186,3 +188,8 @@ createRoot(renderer).render(
     onExit={exitWithSummary}
   />
 );
+
+// Fire-and-forget: reconnect persisted MCP servers in the background so their
+// tools are available without re-running /resolve etc. Never blocks the UI or
+// crashes boot if one server fails to start.
+MCP.init().catch(() => {});

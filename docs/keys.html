@@ -419,6 +419,7 @@
 
     <div class="auth-error" id="auth-error"></div>
 
+    <form id="auth-form" onsubmit="submitAuth(); return false">
     <div class="field" id="name-field" style="display:none">
       <label>Name</label>
       <input type="text" id="input-name" placeholder="Your name" autocomplete="name">
@@ -439,7 +440,8 @@
       <label for="input-tos">I agree to the <a href="/tos" target="_blank">Terms of Service</a> and <a href="/privacy" target="_blank">Privacy Policy</a></label>
     </div>
 
-    <button class="btn-full btn-primary-full" id="auth-submit" onclick="submitAuth()">Sign in</button>
+    <button type="submit" class="btn-full btn-primary-full" id="auth-submit">Sign in</button>
+    </form>
 
     <div class="oauth-divider"><span>or</span></div>
 
@@ -710,6 +712,7 @@
     document.getElementById('auth-toggle-link').textContent = isSignup ? 'Sign in' : 'Sign up';
     document.getElementById('name-field').style.display = isSignup ? '' : 'none';
     document.getElementById('tos-field').style.display = isSignup ? '' : 'none';
+    document.getElementById('input-password').setAttribute('autocomplete', isSignup ? 'new-password' : 'current-password');
     if (isSignup) document.getElementById('input-tos').checked = false;
     hideAuthError();
   }
@@ -978,7 +981,6 @@
   function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
   document.addEventListener('keydown', e => {
-    if (e.key === 'Enter' && document.getElementById('auth-screen').style.display !== 'none') submitAuth();
     if (e.key === 'Enter' && document.getElementById('new-key-modal').classList.contains('open') && document.getElementById('modal-step-1').style.display !== 'none') createKey();
   });
   document.getElementById('new-key-modal').addEventListener('click', function(e) { if (e.target === this) closeNewKeyModal(); });
@@ -1428,9 +1430,5 @@
 </script>
 <script src="/assets/profile.js"></script>
 
-<script>
-function toggleNav(){document.querySelector("nav")?.classList.toggle("nav-links-visible")}
-document.addEventListener("click",function(e){if(!e.target.closest("nav"))document.querySelector("nav")?.classList.remove("nav-links-visible")})
-</script>
 </body>
 </html>

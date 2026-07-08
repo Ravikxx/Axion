@@ -9,7 +9,9 @@ const PRECACHE = [
 
 self.addEventListener('install', e => {
   e.waitUntil(
-    caches.open(CACHE).then(c => c.addAll(PRECACHE)).then(() => self.skipWaiting())
+    caches.open(CACHE)
+      .then(c => Promise.allSettled(PRECACHE.map(url => c.add(url))))
+      .then(() => self.skipWaiting())
   )
 })
 

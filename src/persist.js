@@ -116,6 +116,13 @@ export function saveVideoModel(alias) {
   save(_cfg);
 }
 
+export function getSavedAudioModel() { return _cfg.audioModel || null; }
+
+export function saveAudioModel(alias) {
+  _cfg.audioModel = alias;
+  save(_cfg);
+}
+
 export function getSavedImageModel() { return _cfg.imageModel || null; }
 
 export function saveImageModel(alias) {

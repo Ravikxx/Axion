@@ -183,6 +183,36 @@ export const MCP_MARKETPLACE = [
     envNote: 'Requires DaVinci Resolve 18+ running. Use /resolve setup for configuration help.',
     tags: ['video', 'resolve', 'color', 'edit', 'timeline', 'render'],
   },
+  {
+    id: 'reaper',
+    name: 'Reaper',
+    description: 'Control Reaper DAW — project info, tracks, transport, BPM, markers, MIDI generation, and arbitrary action execution via the built-in web interface',
+    category: 'creative',
+    command: 'python3',
+    args: ['-u', PKG_SERVER('reaper/reaper_server.py')],
+    envNote: 'Requires Reaper running with the Web Interface enabled (Preferences → Control/OSC/web). Set REAPER_PORT if not 8080.',
+    tags: ['reaper', 'daw', 'music', 'midi', 'audio', 'production'],
+  },
+  {
+    id: 'unity',
+    name: 'Unity',
+    description: 'Control the Unity editor — scene info, list/select/create/delete GameObjects, set transforms, run menu commands, and enter/exit play mode via the AxionBridge editor script',
+    category: 'creative',
+    command: 'python3',
+    args: ['-u', PKG_SERVER('unity/unity_server.py')],
+    envNote: 'Requires the Unity editor open with AxionBridge.cs in an Editor/ folder. Run /unity setup for instructions.',
+    tags: ['unity', 'gamedev', 'editor', 'gameobject', 'scene', '3d'],
+  },
+  {
+    id: 'unreal',
+    name: 'Unreal Engine',
+    description: 'Control the Unreal editor — list/spawn/delete actors, set transforms, get/set properties, call Blueprint functions, and run console commands via the Remote Control API',
+    category: 'creative',
+    command: 'python3',
+    args: ['-u', PKG_SERVER('unreal/unreal_server.py')],
+    envNote: 'Requires the Unreal editor open with the Remote Control API plugin enabled. Set UNREAL_RC_PORT if not 30010.',
+    tags: ['unreal', 'gamedev', 'editor', 'actor', 'blueprint', '3d'],
+  },
 ]
 
 export const CATEGORIES = {

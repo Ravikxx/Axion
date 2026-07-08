@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import { useKeyboard, useTerminalDimensions, useRenderer, useSelectionHandler } from '@opentui/react';
 import { accent, THEMES, setTheme, themeName } from '../ui/theme.js';
 import { Agent } from '../agent/agent.js';
-import { MODELS, CONTEXT_WINDOWS, getContextWindow, estimateCost, API_KEYS, VISION_MODEL, VIDEO_MODEL } from '../config.js';
+import { MODELS, CONTEXT_WINDOWS, getContextWindow, estimateCost, API_KEYS, VISION_MODEL, VIDEO_MODEL, AUDIO_MODEL } from '../config.js';
 import {
   getTodos, saveModel, saveMode, saveTheme, getAllowedTools, allowTool, autosaveSession, autosaveWorkspace, clearTodos,
   getMemories, addMemory, removeMemory, addTodo, toggleTodo, removeTodo, setTodosFor, dropTodoScope,
@@ -10,7 +10,7 @@ import {
   exportSession, importSession,
   listProfiles, saveProfile, loadProfile, deleteProfile,
   saveApiKey, saveCustomEndpoints, getAxionKey, saveAxionKey, getSavedApiKeys,
-  saveAdviserModel, saveVisionModel, saveVideoModel, saveImageModel,
+  saveAdviserModel, saveVisionModel, saveVideoModel, saveAudioModel, saveImageModel,
   getSkills, saveSkill, deleteSkill,
   undoLastBackup, listCheckpoints, rewindCheckpoints,
   getCompareModels, saveCompareModels, clearAllowedTools,
@@ -1023,7 +1023,7 @@ function Session({
           ['Keys & endpoints',  ['api', 'axion-key', 'login', 'endpoint']],
           ['Agent behavior',    ['thinking', 'system', 'adviser', 'goal', 'retry', 'btw', 'compare', 'compare-models', 'remember', 'forget', 'todo', 'skills', 'skill-generator', 'skill-delete', 'profile', 'permissions', 'watch']],
           ['Computer & media',  ['computer', 'cu', 'vision', 'ss', 'macro', 'speak', 'img-gen', 'img-gen-model']],
-           ['Integrations',      ['discord', 'oauth', 'schedule', 'resolve', 'blender', 'mcp', 'contribute']],
+           ['Integrations',      ['discord', 'oauth', 'schedule', 'resolve', 'reaper', 'unity', 'unreal', 'blender', 'mcp', 'contribute']],
         ];
         const byName = new Map();
         for (const x of COMMANDS) if (!byName.has(x.cmd)) byName.set(x.cmd, x.desc);
@@ -1069,12 +1069,22 @@ function Session({
         return;
       }
       case 'models': {
-        const { CUSTOM_ENDPOINTS } = await import('../config.js');
-        const fmtCtx = (v) => (v >= 1_000_000 ? (v / 1_000_000).toFixed(1) + 'M' : (v / 1000).toFixed(0) + 'k');
+        const { CUSTOM_ENDPOINTS, PROVIDER_MODELS } = await import('../config.js');
+        const fmtCtx = (v) => v ? (v >= 1_000_000 ? (v / 1_000_000).toFixed(1) + 'M' : (v / 1000).toFixed(0) + 'k') : '?';
+        const seen = new Set(Object.keys(MODELS));
         const lines = ['Models:'];
         for (const [alias, id] of Object.entries(MODELS)) {
           const cur = alias === model ? '▸' : ' ';
           lines.push(`${cur} ${alias.padEnd(20)} ${fmtCtx(getContextWindow(alias)).padStart(5)}  ${id}`);
+        }
+        for (const models of Object.values(PROVIDER_MODELS)) {
+          for (const m of models) {
+            const short = m.id.includes('/') ? m.id.slice(m.id.lastIndexOf('/') + 1) : m.id;
+            if (seen.has(short)) continue;
+            seen.add(short);
+            const cur = short === model || m.id === model ? '▸' : ' ';
+            lines.push(`${cur} ${short.padEnd(20)} ${fmtCtx(m.context_length).padStart(5)}`);
+          }
         }
         const eps = Object.entries(CUSTOM_ENDPOINTS);
         if (eps.length) {
@@ -1095,8 +1105,9 @@ function Session({
           push({ type: 'info', text: `current model: ${model}  ·  context: ${ctx >= 1_000_000 ? (ctx / 1_000_000).toFixed(1) + 'M' : (ctx / 1000).toFixed(0) + 'k'} tokens` });
           return;
         }
-        const { CUSTOM_ENDPOINTS } = await import('../config.js');
-        if (!MODELS[arg] && !CUSTOM_ENDPOINTS[arg] && !arg.includes('/')) { push({ type: 'error', text: `Unknown model "${arg}". /models to list.` }); return; }
+        const { CUSTOM_ENDPOINTS, PROVIDER_MODELS } = await import('../config.js');
+        const inDynamic = Object.values(PROVIDER_MODELS).some(list => list.some(m => m.id === arg));
+        if (!MODELS[arg] && !CUSTOM_ENDPOINTS[arg] && !inDynamic && !arg.includes('/')) { push({ type: 'error', text: `Unknown model "${arg}". /models to list.` }); return; }
         setModel(arg); agentRef.current?.setModel(arg); try { saveModel(arg); } catch {}
         const ctx = getContextWindow(arg);
         push({ type: 'info', text: `model → ${arg}  ·  context: ${ctx >= 1_000_000 ? (ctx / 1_000_000).toFixed(1) + 'M' : (ctx / 1000).toFixed(0) + 'k'} tokens` });
@@ -1662,6 +1673,15 @@ function Session({
         push({ type: 'info', text: `Video model → ${arg} (saved)` });
         return;
       }
+      case 'audio-model': {
+        const cur = AUDIO_MODEL.current || '(none)';
+        if (!arg) { push({ type: 'info', text: `Audio model: ${cur}\n/audio-model <model> to set one (e.g. gemini-flash, gpt-4o-audio-preview, or an OpenRouter audio model)\n/audio-model off to clear` }); return; }
+        if (arg === 'off') { AUDIO_MODEL.current = ''; saveAudioModel(''); push({ type: 'info', text: 'Audio model cleared.' }); return; }
+        AUDIO_MODEL.current = arg;
+        saveAudioModel(arg);
+        push({ type: 'info', text: `Audio model → ${arg} (saved)` });
+        return;
+      }
       case 'img-gen': {
         if (!arg) { push({ type: 'error', text: 'usage: /img-gen <prompt>' }); return; }
         push({ type: 'info', text: 'Generating image…' });
@@ -2014,6 +2034,66 @@ function Session({
           });
           if (srv.ready) push({ type: 'info', text: `● DaVinci Resolve MCP connected — ${srv.tools.length} tools available.` });
           else push({ type: 'error', text: `DaVinci Resolve MCP failed: ${srv.error}` });
+        } catch (err) { push({ type: 'error', text: `Connection failed: ${err.message}` }); }
+        return;
+      }
+      case 'reaper': {
+        if (arg === 'setup') {
+          push({ type: 'info', text: 'Reaper setup:\n1. Install Reaper (reaper.fm — free evaluation)\n2. In Reaper: Preferences → Control/OSC/web → Web interface → Enable\n3. Default port is 8080. Set REAPER_PORT env var if yours differs.\n4. Run /reaper — connects the MCP server.' });
+          return;
+        }
+        push({ type: 'info', text: 'Connecting Reaper MCP…\n(Reaper must be running with the Web Interface enabled)' });
+        try {
+          const srv = await MCP.addServer('reaper', {
+            command: 'python3',
+            args: ['-u', fileURLToPath(new URL('../../mcp-servers/reaper/reaper_server.py', import.meta.url))],
+          });
+          if (srv.ready) push({ type: 'info', text: `● Reaper MCP connected — ${srv.tools.length} tools available.` });
+          else push({ type: 'error', text: `Reaper MCP failed: ${srv.error}` });
+        } catch (err) { push({ type: 'error', text: `Connection failed: ${err.message}` }); }
+        return;
+      }
+      case 'unity': {
+        if (arg === 'setup') {
+          push({ type: 'info', text: 'Unity setup:\n1. Open your Unity project in the editor\n2. Run /unity from inside the project directory — Axion copies AxionBridge.cs into Assets/Editor/ automatically\n   (or copy mcp-servers/unity/AxionBridge.cs there yourself)\n3. Unity compiles it and the console shows "[AxionBridge] listening on 127.0.0.1:9877"\n4. Run /unity — connects the MCP server. Set AXION_UNITY_PORT to change the port.' });
+          return;
+        }
+        // If cwd looks like a Unity project, install/refresh the bridge script.
+        try {
+          const fsx = require('fs');
+          const path = require('path');
+          if (fsx.existsSync(path.join(process.cwd(), 'Assets'))) {
+            const src = fileURLToPath(new URL('../../mcp-servers/unity/AxionBridge.cs', import.meta.url));
+            const dir = path.join(process.cwd(), 'Assets', 'Editor');
+            fsx.mkdirSync(dir, { recursive: true });
+            fsx.copyFileSync(src, path.join(dir, 'AxionBridge.cs'));
+            push({ type: 'info', text: '● Installed AxionBridge.cs → Assets/Editor/ (Unity recompiles it automatically)' });
+          }
+        } catch {}
+        push({ type: 'info', text: 'Connecting Unity MCP…\n(the Unity editor must be open with AxionBridge.cs compiled — see /unity setup)' });
+        try {
+          const srv = await MCP.addServer('unity', {
+            command: 'python3',
+            args: ['-u', fileURLToPath(new URL('../../mcp-servers/unity/unity_server.py', import.meta.url))],
+          });
+          if (srv.ready) push({ type: 'info', text: `● Unity MCP connected — ${srv.tools.length} tools available.` });
+          else push({ type: 'error', text: `Unity MCP failed: ${srv.error}` });
+        } catch (err) { push({ type: 'error', text: `Connection failed: ${err.message}` }); }
+        return;
+      }
+      case 'unreal': {
+        if (arg === 'setup') {
+          push({ type: 'info', text: 'Unreal Engine setup:\n1. Open your project in the Unreal editor\n2. Edit → Plugins → search "Remote Control API" → enable → restart the editor\n3. The Remote Control HTTP server starts automatically on localhost:30010\n   (set UNREAL_RC_PORT env var if yours differs)\n4. Run /unreal — connects the MCP server.' });
+          return;
+        }
+        push({ type: 'info', text: 'Connecting Unreal MCP…\n(the Unreal editor must be open with the Remote Control API plugin enabled — see /unreal setup)' });
+        try {
+          const srv = await MCP.addServer('unreal', {
+            command: 'python3',
+            args: ['-u', fileURLToPath(new URL('../../mcp-servers/unreal/unreal_server.py', import.meta.url))],
+          });
+          if (srv.ready) push({ type: 'info', text: `● Unreal MCP connected — ${srv.tools.length} tools available.` });
+          else push({ type: 'error', text: `Unreal MCP failed: ${srv.error}` });
         } catch (err) { push({ type: 'error', text: `Connection failed: ${err.message}` }); }
         return;
       }

@@ -24,7 +24,6 @@
     display: none !important; z-index: 90;
     overflow-y: auto;
   }
-  .nav-links.open { display: flex !important; }
   .nav-links .nav-link,
   .nav-links a {
     padding: 12px 14px !important; font-size: 15px !important;
@@ -50,7 +49,6 @@
 
   /* Stack all grids */
   .docs-layout { grid-template-columns: 1fr !important; gap: 0 !important; padding: 0 16px !important; }
-  .docs-sidebar { display: none; }
   .model-grid, .card-grid, .feature-grid, .features-grid,
   .mcp-grid, .announcement-grid, .info-grid, .metric-grid,
   .dashboard-grid, .keys-grid, .ecosystem {

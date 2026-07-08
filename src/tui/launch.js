@@ -3,7 +3,7 @@
 // via Node. This Node entry re-execs the TUI under the bundled Bun binary — and
 // falls back to a plain Node readline UI when Bun/OpenTUI isn't usable, so Axion
 // runs everywhere Node does (unsupported platforms, odd terminals, piped input).
-import { spawn } from 'child_process';
+import { spawn, execSync } from 'child_process';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import { existsSync } from 'fs';
@@ -55,13 +55,18 @@ if (has('--update')) {
   process.exit(0);
 }
 
-// Locate the Bun binary from the `bun` dependency; null if not present for this platform.
+// Locate the Bun binary from the `bun` dependency or system PATH.
 function resolveBun() {
   try {
     const pkgDir = dirname(require.resolve('bun/package.json'));
     const bin = join(pkgDir, 'bin', process.platform === 'win32' ? 'bun.exe' : 'bun');
     if (existsSync(bin)) return bin;
+    // npm package may have installed .exe (broken platform detection)
+    const alt = join(pkgDir, 'bin', 'bun.exe');
+    if (process.platform !== 'win32' && existsSync(alt)) return alt;
   } catch {}
+  // Fall back to system bun if available
+  try { return execSync('which bun', { encoding: 'utf8' }).trim(); } catch {}
   return null;
 }
 

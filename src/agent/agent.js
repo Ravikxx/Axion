@@ -137,6 +137,29 @@ CHART OUTPUT: When the user asks for a chart (bar, pie, doughnut, or line), outp
 \`\`\`
 Supported types: bar (default), pie, doughnut, line, scatter, radar. Labels and colors are optional — the frontend provides defaults.`;
 
+// Mode-specific behavior blocks appended to the system prompt. Keys are the
+// internal mode strings ('bypass' → 'auto', 'decide-for-me' → 'decide' — see
+// the /mode handler in src/tui/App.jsx). Copy must reinforce, not contradict,
+// the approval logic in _agentLoop/run.
+const MODE_PROMPTS = {
+  ask: `
+
+## Ask mode
+The user individually approves every tool call. Make each call count: state briefly why the next action is needed, prefer a few well-chosen calls over exploratory churn, and batch independent reads where possible. If the user declines a call, do not retry it or work around it — adjust your approach or ask what they'd prefer.`,
+  plan: `
+
+## Plan mode
+Work happens in two phases. In the planning phase, investigate freely with the read-only tools available (reading files, listing directories, searching) but change nothing — no file edits, no side-effecting commands — and finish by outputting a numbered, concrete plan. Once the user approves the plan, execution proceeds without per-step confirmations, so the plan must be complete enough to stand on its own. During execution, follow the approved plan faithfully; if you discover it no longer fits, stop and explain instead of improvising unapproved side effects.`,
+  decide: `
+
+## Decide-for-me mode
+Act autonomously with good judgment. An automated safety check reviews each tool call and escalates risky or destructive ones to the user — treat an escalation or denial as a real signal, never something to bypass by rephrasing or splitting the action. Pause on your own for anything irreversible the check might not catch.`,
+  auto: `
+
+## Bypass mode
+The user has granted full autonomy: no confirmations will be requested. Proceed directly without asking permission, but remain careful — avoid clearly destructive or irreversible actions (mass deletion, force-pushing, discarding uncommitted work, touching credentials) unless the task explicitly requires them, and say plainly what you changed when done.`,
+};
+
 const TOOL_FALLBACK_PROMPT_BASE = `
 You have access to the following tools. To use one, emit exactly this XML (one call per block):
 <tool_call>{"name": "TOOL_NAME", "input": {ARGS_JSON}}</tool_call>
@@ -379,6 +402,9 @@ CRITICAL RULES — follow these exactly:
 - Always call screenshot first to understand the current screen state.
 - After each click or action, call screenshot again to verify the result.`;
     }
+    if (MODE_PROMPTS[this.mode]) {
+      prompt += MODE_PROMPTS[this.mode];
+    }
     if (this.activeSkills.size) {
       prompt += this._skillsPrompt();
     }
@@ -396,23 +422,74 @@ CRITICAL RULES — follow these exactly:
 
   // ── Plan step ────────────────────────────────────────────────────────────
 
+  // Planning may investigate with read-only tools (PARALLEL_SAFE) before
+  // producing the plan — never anything that edits files or has side effects.
   async planStep(userMessage) {
     let client, type, model;
     try { const r = createClient(this.modelAlias); client = r.client; type = r.type; model = resolveModel(this.modelAlias); } catch (e) { return `[Error setting up model: ${friendlyError(e, this.modelAlias)}]`; }
-    const planPrompt = `The user asked: "${userMessage}"\n\nProduce a numbered list of every step you will take. Do NOT execute any tools yet — only output the plan.`;
-    const planHistory = [...this.history, { role: 'user', content: planPrompt }];
+    const planPrompt = `The user asked: "${userMessage}"\n\nInvestigate first if useful — you may use the read-only tools available (read files, list directories, search) — then produce a numbered list of every step you will take. Do NOT modify files or run side-effecting commands; only research, then output the plan.`;
 
-    let planText = '';
+    const readOnlyTools = type === 'anthropic'
+      ? this._getToolList().filter((t) => Agent.PARALLEL_SAFE.has(t.name))
+      : this._getToolListOpenAI().filter((t) => Agent.PARALLEL_SAFE.has(t.function?.name));
+
+    const runTool = async (name, input, id) => {
+      this.onToolCall({ name, input, id });
+      let result;
+      try {
+        result = await executeTool(name, input, { agentLabel: this.label, onNotify: this.onNotify, todoScope: this.todoScope });
+      } catch (e) {
+        result = { output: `Error: ${e?.message || e}`, success: false };
+      }
+      this.onToolResult({ id, name, ...result });
+      return result;
+    };
+
+    const MAX_RESEARCH = 8;
+
     if (type === 'anthropic') {
-      const resp = await client.messages.create({ model, max_tokens: 1024, system: this._getSystemPrompt(), messages: planHistory });
-      planText = resp.content.find((b) => b.type === 'text')?.text || '';
-      this._addTokens(resp.usage?.input_tokens, resp.usage?.output_tokens);
-    } else {
-      const resp = await client.chat.completions.create({ model, max_tokens: 1024, messages: [{ role: 'system', content: this._getSystemPrompt() }, ...planHistory] });
-      planText = resp.choices[0]?.message?.content || '';
-      this._addTokens(resp.usage?.prompt_tokens, resp.usage?.completion_tokens);
+      const planHistory = [...this.history, { role: 'user', content: planPrompt }];
+      for (let i = 0; i <= MAX_RESEARCH; i++) {
+        // Final iteration (or cancel): call without tools to force the plan text
+        const useTools = i < MAX_RESEARCH && !this.cancelled;
+        const resp = await client.messages.create({
+          model, max_tokens: 4096, system: this._getSystemPrompt(), messages: planHistory,
+          ...(useTools ? { tools: readOnlyTools } : {}),
+        });
+        this._addTokens(resp.usage?.input_tokens, resp.usage?.output_tokens);
+        const toolUses = resp.content.filter((b) => b.type === 'tool_use');
+        if (!useTools || !toolUses.length) return resp.content.find((b) => b.type === 'text')?.text || '';
+        planHistory.push({ role: 'assistant', content: resp.content });
+        const results = [];
+        for (const tu of toolUses) {
+          const result = await runTool(tu.name, tu.input, tu.id);
+          results.push({ type: 'tool_result', tool_use_id: tu.id, content: result.output });
+        }
+        planHistory.push({ role: 'user', content: results });
+      }
+      return '';
     }
-    return planText;
+
+    const planHistory = [...this._historyToOpenAI(), { role: 'user', content: planPrompt }];
+    for (let i = 0; i <= MAX_RESEARCH; i++) {
+      const useTools = i < MAX_RESEARCH && !this.cancelled;
+      const resp = await client.chat.completions.create({
+        model, max_tokens: 4096,
+        messages: [{ role: 'system', content: this._getSystemPrompt() }, ...planHistory],
+        ...(useTools ? { tools: readOnlyTools } : {}),
+      });
+      this._addTokens(resp.usage?.prompt_tokens, resp.usage?.completion_tokens);
+      const msg = resp.choices[0]?.message;
+      if (!useTools || !msg?.tool_calls?.length) return msg?.content || '';
+      planHistory.push(msg);
+      for (const tc of msg.tool_calls) {
+        let input = {};
+        try { input = JSON.parse(tc.function?.arguments || '{}'); } catch {}
+        const result = await runTool(tc.function?.name, input, tc.id);
+        planHistory.push({ role: 'tool', tool_call_id: tc.id, content: result.output });
+      }
+    }
+    return '';
   }
 
   // ── Main run ─────────────────────────────────────────────────────────────

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Console — Axion</title>
-  <link rel="stylesheet" href="/xterm.css" />
+  <link rel="stylesheet" href="/assets/xterm.css" />
   <link rel="stylesheet" href="/assets/theme-dark.css">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -58,7 +58,7 @@
 </head>
 <body>
 <nav>
-  <a href="/" class="nav-logo"><span class="logo-dot">⚛</span> <span>Axion</span></a>
+  <a href="/" class="nav-logo"><img src="/assets/logo.png" alt="Axion" style="height:22px;width:auto;object-fit:contain;display:inline-block;vertical-align:middle;margin-right:0"> <span>Axion</span></a>
   <div class="nav-links">
     <a href="/docs" class="nav-link">Docs</a>
     <a href="/lumen" class="nav-link">Lumen</a>
@@ -76,14 +76,16 @@
   <div class="connect-panel" id="connectPanel">
     <h2>⎔ Remote Console</h2>
     <p>Connect to the axion-bridge WebSocket on your machine, exposed via Cloudflare Tunnel.</p>
+    <form onsubmit="doConnect(); return false">
     <div class="connect-row">
       <input id="wsUrl" type="text" placeholder="wss://example.trycloudflare.com" value="ws://localhost:3002" />
-      <button class="btn-connect" id="connectBtn" onclick="doConnect()">Connect</button>
+      <button type="submit" class="btn-connect" id="connectBtn">Connect</button>
     </div>
     <div class="connect-row" style="margin-top:8px">
-      <input id="tokenInput" type="password" placeholder="Token (optional — only if BRIDGE_TOKEN is set)" style="flex:1;padding:8px 14px;border-radius:8px;border:1px solid var(--border2);background:var(--surface2);color:var(--text);font-size:13px;font-family:inherit" />
+      <input id="tokenInput" type="password" placeholder="Token (optional — only if BRIDGE_TOKEN is set)" autocomplete="off" style="flex:1;padding:8px 14px;border-radius:8px;border:1px solid var(--border2);background:var(--surface2);color:var(--text);font-size:13px;font-family:inherit" />
     </div>
-    <div class="connect-status" id="connectStatus">Auto-connecting...</div>
+    </form>
+    <div class="connect-status" id="connectStatus"></div>
     <div class="connect-status" id="autoRetry" style="font-size:11px;color:var(--muted);display:none">Retrying...</div>
   </div>
   <div id="terminal-wrap"></div>
@@ -91,7 +93,7 @@
 <footer>
   <p>Run <code>axion-bridge</code> on your machine, then <code>cloudflared tunnel --url http://localhost:3002</code></p>
 </footer>
-<script src="/xterm.js"></script>
+<script src="/assets/xterm.js"></script>
 <script>
 let term=null,ws=null,autoTimer=null,pingInterval=null;
 function toggleNav(){document.querySelector("nav")?.classList.toggle("nav-links-visible")}
@@ -167,9 +169,7 @@ function initTerm(){
   try{const s=localStorage.getItem("axion-console-token");if(s)t.value=s}catch{}
   i.addEventListener("input",function(){try{localStorage.setItem("axion-console-url",this.value)}catch{}})
   t.addEventListener("input",function(){try{localStorage.setItem("axion-console-token",this.value)}catch{}})
-  i.addEventListener("keydown",function(e){if(e.key==="Enter")doConnect()})
-  t.addEventListener("keydown",function(e){if(e.key==="Enter")doConnect()})
-  connect((location.protocol==="https:"?"wss://":"ws://")+location.host)
+  // no auto-connect; user initiates via the form
 })()
 </script>
 </body>

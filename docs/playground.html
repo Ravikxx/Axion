@@ -344,6 +344,7 @@
 
     <div class="auth-error" id="auth-error"></div>
 
+    <form id="auth-form" onsubmit="doLogin(); return false">
     <div class="field" id="name-field" style="display:none">
       <label>Name</label>
       <input type="text" id="input-name" placeholder="Your name" autocomplete="name">
@@ -362,7 +363,8 @@
       <label for="input-tos">I agree to the <a href="/tos" target="_blank">Terms of Service</a> and <a href="/privacy" target="_blank">Privacy Policy</a></label>
     </div>
 
-    <button class="btn-full btn-primary" id="auth-submit" onclick="doLogin()">Sign in</button>
+    <button type="submit" class="btn-full btn-primary" id="auth-submit">Sign in</button>
+    </form>
     <button class="btn-full btn-skip" onclick="skipAuth()">Try without account (50 req/day)</button>
 
     <div class="auth-toggle">
@@ -531,6 +533,7 @@
     document.getElementById('auth-toggle-link').textContent = isSignup ? 'Sign in' : 'Sign up'
     document.getElementById('name-field').style.display = isSignup ? '' : 'none'
     document.getElementById('tos-field').style.display = isSignup ? '' : 'none'
+    document.getElementById('input-password').setAttribute('autocomplete', isSignup ? 'new-password' : 'current-password')
     if (isSignup) document.getElementById('input-tos').checked = false
     hideErr()
   }
@@ -836,9 +839,6 @@
     } catch { sessionToken = null; localStorage.removeItem('axion_token') }
   })()
 
-  document.getElementById('input-password').addEventListener('keydown', e => {
-    if (e.key === 'Enter') doLogin()
-  })
 </script>
 <script src="/assets/profile.js"></script>
 </body>

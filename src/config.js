@@ -114,6 +114,10 @@ export const VISION_MODEL = { current: process.env.AXION_VISION_MODEL || 'axion-
 // (video → vision → text-only LLM) treats "" as "no video model configured".
 export const VIDEO_MODEL = { current: process.env.AXION_VIDEO_MODEL || '' };
 
+// Audio-understanding model (processes audio files). Mutable so /audio-model
+// updates it live. Empty by default — no fallback ladder (audio has no frame analog).
+export const AUDIO_MODEL = { current: process.env.AXION_AUDIO_MODEL || '' };
+
 // Image generation model — mutable so /img-gen-model changes it globally.
 export const IMAGE_GEN_MODEL = { current: process.env.AXION_IMAGE_MODEL || 'dall-e-3' };
 
@@ -148,8 +152,42 @@ export function getContextWindow(modelAlias) {
   return CONTEXT_WINDOWS[id] || CONTEXT_WINDOWS[modelAlias] || CUSTOM_ENDPOINTS[modelAlias]?.context || 128_000;
 }
 
-// Fetch OpenRouter model list and populate CONTEXT_WINDOWS dynamically.
-// Works without an API key (just lower rate limits).
+// ── Dynamic model discovery ──────────────────────────────────────────────────
+
+// Populated by fetchProviderModels(). Keyed by provider name → array of { id, context_length }.
+export const PROVIDER_MODELS = {};
+
+// Fetch model lists from providers that support /v1/models (or equivalent).
+// Called at startup so the CLI automatically picks up new models without updates.
+const PROVIDER_MODEL_ENDPOINTS = [
+  { provider: 'openai',     baseURL: 'https://api.openai.com/v1/models',                    needsKey: 'openai' },
+  { provider: 'anthropic',  baseURL: 'https://api.anthropic.com/v1/models',                 needsKey: 'anthropic', format: 'anthropic' },
+  { provider: 'groq',       baseURL: 'https://api.groq.com/openai/v1/models',               needsKey: 'groq' },
+  { provider: 'mistral',    baseURL: 'https://api.mistral.ai/v1/models',                     needsKey: 'mistral' },
+  { provider: 'gemini',     baseURL: 'https://generativelanguage.googleapis.com/v1beta/openai/models', needsKey: 'gemini' },
+  { provider: 'openrouter', baseURL: 'https://openrouter.ai/api/v1/models',                  needsKey: null }, // works without key
+  { provider: 'zai',        baseURL: 'https://api.z.ai/api/paas/v4/models',                 needsKey: 'zai' },
+];
+
+export async function fetchProviderModels() {
+  const results = await Promise.allSettled(
+    PROVIDER_MODEL_ENDPOINTS.map(async ({ provider, baseURL, needsKey, format }) => {
+      if (needsKey && !API_KEYS[needsKey]) return;
+      const headers = needsKey && API_KEYS[needsKey] ? { Authorization: `Bearer ${API_KEYS[needsKey]}` } : {};
+      const res = await fetch(baseURL, { headers, signal: AbortSignal.timeout(5000) });
+      if (!res.ok) return;
+      const json = await res.json();
+      const list = format === 'anthropic' ? json.data.filter(m => m.type === 'model') : json.data || [];
+      const models = list.map(m => ({
+        id: m.id,
+        context_length: m.context_length || m.max_context_length || (m.metadata?.context_length) || 0,
+      }));
+      if (models.length) PROVIDER_MODELS[provider] = models;
+    })
+  );
+  // Ignore errors — each provider is best-effort
+}
+
 export async function fetchOpenRouterContextWindows() {
   try {
     const key = API_KEYS.openrouter;

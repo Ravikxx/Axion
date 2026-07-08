@@ -12,6 +12,8 @@ const TOKEN = process.env.BRIDGE_TOKEN || '';
 const html = readFileSync(new URL('../docs/console.html', import.meta.url), 'utf-8');
 const xtermJs = readFileSync(new URL('../vendor/xterm.js', import.meta.url), 'utf-8');
 const xtermCss = readFileSync(new URL('../vendor/xterm.css', import.meta.url), 'utf-8');
+const themeCss = readFileSync(new URL('../docs/assets/theme-dark.css', import.meta.url), 'utf-8');
+const mobileCss = readFileSync(new URL('../docs/assets/mobile.css', import.meta.url), 'utf-8');
 
 const server = createServer((req, res) => {
   if (req.url === '/health') {
@@ -19,14 +21,24 @@ const server = createServer((req, res) => {
     res.end('ok');
     return;
   }
-  if (req.url === '/xterm.js') {
+  if (req.url === '/xterm.js' || req.url === '/assets/xterm.js') {
     res.writeHead(200, { 'Content-Type': 'application/javascript' });
     res.end(xtermJs);
     return;
   }
-  if (req.url === '/xterm.css') {
+  if (req.url === '/xterm.css' || req.url === '/assets/xterm.css') {
     res.writeHead(200, { 'Content-Type': 'text/css' });
     res.end(xtermCss);
+    return;
+  }
+  if (req.url === '/assets/theme-dark.css') {
+    res.writeHead(200, { 'Content-Type': 'text/css' });
+    res.end(themeCss);
+    return;
+  }
+  if (req.url === '/assets/mobile.css') {
+    res.writeHead(200, { 'Content-Type': 'text/css' });
+    res.end(mobileCss);
     return;
   }
   res.writeHead(200, { 'Content-Type': 'text/html' });

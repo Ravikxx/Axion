@@ -46,7 +46,7 @@ async function parseToken(token, secret) {
 }
 
 async function verifyTurnstile(token, secret, ip) {
-  if (!secret) return true // skip if not configured yet
+  if (!secret) return false // reject if not configured
   const res = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -86,7 +86,8 @@ async function requireAuth(c) {
   const payload = await parseToken(token, c.env.TOKEN_SECRET)
   if (!payload?.uid) return null
   const user = await c.env.DB.prepare('SELECT * FROM users WHERE id=?').bind(payload.uid).first()
-  return user || null
+  if (!user || user.banned) return null
+  return user
 }
 
 function validEmail(email) {
@@ -181,7 +182,7 @@ app.post('/auth/register', async (c) => {
   ).bind(ip, id).first()
 
   if (dupe) {
-    const reason = 'Duplicate IP: another verified account (' + dupe.email + ') shares this IP address.'
+    const reason = 'Duplicate IP: another verified account shares this IP address.'
     await c.env.DB.prepare('UPDATE users SET banned=1, ban_reason=? WHERE id=?').bind(reason, id).run()
     const token = crypto.randomUUID()
     const appealId = crypto.randomUUID()
@@ -267,16 +268,17 @@ async function oauthFinish(c, { id_field, email, provider_id, return_to }) {
     }
   } else {
     if (!email) return new Response('Could not get email from provider', { status: 400 })
-    const uid = crypto.randomUUID()
-    await c.env.DB.prepare(
-      `INSERT INTO users (id, email, pw_hash, verified, ip, ${id_field}) VALUES (?,?,?,1,?,?)`
-    ).bind(uid, email.toLowerCase(), '', ip, provider_id).run()
-    user = { id: uid }
-    const dupe = await c.env.DB.prepare(
-      'SELECT id, email FROM users WHERE ip=? AND verified=1 AND id!=? LIMIT 1'
-    ).bind(ip, uid).first()
-    if (dupe) {
-      const reason = 'Duplicate IP: another verified account (' + dupe.email + ') shares this IP address.'
+    // Check for existing verified users with this IP BEFORE creating the user
+    // to avoid a race condition where two concurrent OAuth logins ban each other.
+    const before = await c.env.DB.prepare(
+      'SELECT id, email FROM users WHERE ip=? AND verified=1 LIMIT 1'
+    ).bind(ip).first()
+    if (before) {
+      const uid = crypto.randomUUID()
+      const reason = 'Duplicate IP: another verified account shares this IP address.'
+      await c.env.DB.prepare(
+        `INSERT INTO users (id, email, pw_hash, verified, ip, ${id_field}) VALUES (?,?,?,1,?,?)`
+      ).bind(uid, email.toLowerCase(), '', ip, provider_id).run()
       await c.env.DB.prepare('UPDATE users SET banned=1, ban_reason=? WHERE id=?').bind(reason, uid).run()
       const appealToken = crypto.randomUUID()
       const appealId = crypto.randomUUID()
@@ -305,6 +307,11 @@ async function oauthFinish(c, { id_field, email, provider_id, return_to }) {
         headers: { Location: `${base}#verified=${encodeURIComponent(token)}&email=${encodeURIComponent(email || '')}&banned=1` },
       })
     }
+    const uid = crypto.randomUUID()
+    await c.env.DB.prepare(
+      `INSERT INTO users (id, email, pw_hash, verified, ip, ${id_field}) VALUES (?,?,?,1,?,?)`
+    ).bind(uid, email.toLowerCase(), '', ip, provider_id).run()
+    user = { id: uid }
   }
   const token = await makeToken(user.id, c.env.TOKEN_SECRET)
   const base = RETURN_DESTINATIONS[return_to] || RETURN_DESTINATIONS.keys
@@ -462,6 +469,11 @@ app.get('/dashboard/keys', async (c) => {
   const { results } = await c.env.DB.prepare(
     'SELECT id, label, key_value, created_at, last_used, requests, tokens, month_requests FROM api_keys WHERE user_id=? AND revoked=0 ORDER BY created_at DESC'
   ).bind(user.id).all()
+  for (const k of results) {
+    if (k.key_value && k.key_value.length > 14) {
+      k.key_value = k.key_value.slice(0, 10) + '...' + k.key_value.slice(-4)
+    }
+  }
   return json({ keys: results })
 })
 
@@ -582,15 +594,91 @@ function streamResponse(upstream) {
   })
 }
 
+// ── Safety triggers ──────────────────────────────────────────────────────────
+
+const SAFETY_TRIGGERS = [
+  {
+    name: 'sexual',
+    patterns: [
+      /\b(?:explicit\s+(?:sexual|content|adult|material)|sexual\s+(?:act|intercourse|content|explicit)|porn(?:ography)?\b|nsfw\b|sexua(l|ly)\s+(?:explicit|graphic|suggestive)|suck\s+(?:my|his|her|your)\s+(?:dick|cock|penis)|fuck\s+(?:me|her|him|you|my|his|your)\s*(?:hard|in|with|raw)?|blow\s*(?:job|me)|cum\s*(?:in|on|inside)|dick\s*(?:pic|pics|photo)|naked\s*(?:pics?|photos?|picture)|hentai|xxx\b)/i,
+    ],
+    instruction: "\n\n[System notice: The above request may involve content that falls outside our content guidelines. Please respond helpfully but decline to generate sexual, explicit, or adult content. Offer a constructive alternative instead.]",
+  },
+  {
+    name: 'violence',
+    patterns: [
+      /\b(?:how\s+to\s+(?:kill|murder|harm|torture|assault|stab|shoot)\s+(?:someone|a\s+\w+|people|him|her|them)|bomb\s+(?:making|recipe|instructions|tutorial)|make\s+(?:a\s+)?(?:bomb|explosive|weapon)\s*(?:at\s+home|instructions|tutorial)?|torture\s+(?:methods?|techniques?|someone|people)|mass\s+(?:shooting|murder|kill(?:ing)?)\s+(?:plan|how|guide|tutorial)|school\s+shoot(?:ing|er)\s+(?:plan|how|guide))/i,
+    ],
+    instruction: "\n\n[System notice: The above request appears to reference violent content that may violate our safety guidelines. Please respond helpfully while declining to provide instructions for violence, harm, or illegal activities. Offer a constructive alternative instead.]",
+  },
+  {
+    name: 'self_harm',
+    patterns: [
+      /\b(?:how\s+to\s+(?:commit\s+suicide|kill\s+myself|end\s+my\s+life|self.?harm)|suicide\s+(?:methods?|ways?|how|guide|note)|self.?harm\s+(?:methods?|ways?|how|techniques?)|cut\s+(?:myself|my\s+(?:wrist|arm|body))|hurt\s+myself|ending\s+(?:my\s+)?life|suicidal\s+thoughts?\s+(?:help|advice|how))/i,
+    ],
+    instruction: "\n\n[System notice: The above request mentions self-harm or suicide. Please respond with care and compassion. Provide crisis resources and encourage seeking professional help. Do not provide methods or instructions for self-harm.]",
+  },
+  {
+    name: 'illegal',
+    patterns: [
+      /\b(?:how\s+to\s+(?:hack|steal|rob|burgle|scam|fraud|traffick|launder\s+money|make\s+(?:fake|counterfeit)|manufacture\s+(?:drugs?|meth|cocaine|heroin|lsd|mdma))|buy\s+(?:illegal\s+)?(?:drugs?|weapons?|guns?|firearms?)\s+(?:online|without\s+prescription|dark\s+web)|credit\s+card\s+(?:fraud|cloning|steal|numbers?)|identity\s+theft\s+(?:how|guide|tutorial)|child\s+(?:porn|abuse|exploitation)\s+(?:how|generate|create|make)|cp\b(?:\s*(?:content|images?|videos?|material))?)/i,
+    ],
+    instruction: "\n\n[System notice: The above request appears to involve illegal activities. Please respond helpfully while declining to provide guidance or information about illegal acts. Offer a constructive alternative instead.]",
+  },
+  {
+    name: 'hate',
+    patterns: [
+      /\b(?:n[i1]gg[ae3]r|n[i1]gg[a4])\b/i,
+      /\b(?:racial\s+(?:slur|epithet|superiority|inferiority)|hate\s+(?:speech|crime|group|against)|white\s+supremac(?:y|ist)|nazi\s+(?:propaganda|ideology|symbols?)|genocide\s+(?:how|plan|guide|method)|ethnic\s+(?:cleansing|purification)|discriminat(?:ion|ory)\s+(?:against|based\s+on)\s+(?:race|religion|gender|sexual\s+orientation))/i,
+    ],
+    instruction: "\n\n[System notice: The above request may contain hateful or discriminatory content. Please respond respectfully and decline to generate content that promotes hatred, discrimination, or violence against any group. Offer a constructive alternative instead.]",
+  },
+  {
+    name: 'malicious_code',
+    patterns: [
+      /\b(?:how\s+to\s+(?:create|make|write|build)\s+(?:a\s+)?(?:virus|malware|ransomware|trojan|worm|spyware|keylogger|rootkit)|malicious\s+(?:code|script|software|program)|ransomware\s+(?:code|script|how|tutorial|source)|exploit\s+(?:code|script|how|tutorial|vulnerability)\s+(?:for\s+)?(?:hack|attack|crack)|bypass\s+(?:security|authentication|login|password)\s+(?:using|with)\s+(?:code|script|python|js|bash))/i,
+    ],
+    instruction: "\n\n[System notice: The above request appears to seek malicious code or hacking tools. Please respond helpfully while declining to provide code, instructions, or tools designed for malicious purposes. Offer educational alternatives about cybersecurity instead.]",
+  },
+]
+
+function applySafetyTriggers(body) {
+  if (!body.messages || !Array.isArray(body.messages)) return null
+  for (const t of SAFETY_TRIGGERS) {
+    let match = false
+    for (const msg of body.messages) {
+      if (typeof msg.content === 'string' && t.patterns.some(p => p.test(msg.content))) {
+        match = true
+        break
+      }
+    }
+    if (match) {
+      for (let i = body.messages.length - 1; i >= 0; i--) {
+        if (body.messages[i].role === 'user') {
+          body.messages[i].content += t.instruction
+          break
+        }
+      }
+      return t.name
+    }
+  }
+  return null
+}
+
 app.post('/v1/chat/completions', async (c) => {
   const ip = c.req.header('CF-Connecting-IP') || 'unknown'
   const auth = (c.req.header('Authorization') || '').replace(/^Bearer\s+/i, '').trim()
-  const body = await c.req.json()
+  const body = await c.req.json().catch(() => ({}))
+  if (!body.messages) return json({ error: { message: 'Invalid or missing request body', type: 'invalid_request_error' } }, 400)
 
   // ── Keyed request ──
   if (auth.startsWith('axion-sk-')) {
     const keyRow = await c.env.DB.prepare('SELECT * FROM api_keys WHERE key_value=? AND revoked=0').bind(auth).first()
     if (!keyRow) return json({ error: { message: 'Invalid or revoked API key', type: 'invalid_request_error' } }, 401)
+
+    // Check if the key owner is banned
+    const keyUser = await c.env.DB.prepare('SELECT banned FROM users WHERE id=?').bind(keyRow.user_id).first()
+    if (keyUser?.banned) return json({ error: { message: 'Your account has been suspended.', type: 'permission_error' } }, 403)
 
     // Scope check — if key has scopes, requested model must be in the list
     if (keyRow.scopes) {
@@ -622,6 +710,32 @@ app.post('/v1/chat/completions', async (c) => {
       return json({ error: { message: `Rate limit reached (${KEY_WINDOW_LIMIT} requests per 2 hours).`, type: 'rate_limit_error', reset_at, limit: KEY_WINDOW_LIMIT, used: winCount, window: true } }, 429)
     }
 
+    const trigger = applySafetyTriggers(body)
+    if (trigger === 'hate') {
+      const nKey = `nword:${keyRow.user_id}`
+      const nRow = await c.env.DB.prepare('SELECT count FROM rate_limits WHERE key=?').bind(nKey).first()
+      const nCount = (nRow?.count || 0) + 1
+      await c.env.DB.prepare('INSERT OR REPLACE INTO rate_limits (key, count, window_start) VALUES (?,?,0)').bind(nKey, nCount).run()
+      if (nCount >= 3) {
+        const reason = 'Racial slur detected (3 strikes).'
+        await c.env.DB.prepare('UPDATE users SET banned=1, ban_reason=? WHERE id=?').bind(reason, keyRow.user_id).run()
+        const userRow = await c.env.DB.prepare('SELECT email FROM users WHERE id=?').bind(keyRow.user_id).first()
+        if (userRow && c.env.RESEND_API_KEY) {
+          const appealToken = crypto.randomUUID()
+          const appealId = crypto.randomUUID()
+          const now = Math.floor(Date.now() / 1000)
+          await c.env.DB.prepare('INSERT INTO appeals (id, user_id, email, token, status, created_at) VALUES (?,?,?,?,?,?)')
+            .bind(appealId, keyRow.user_id, userRow.email, appealToken, 'pending', now).run()
+          const appealUrl = 'https://api.amplifiedsmp.org/appeal/' + appealToken
+          c.executionCtx.waitUntil(sendEmail(c.env.RESEND_API_KEY, {
+            to: userRow.email,
+            subject: 'Your Axion account has been suspended',
+            html: emailWrap(`<h2 style="margin:0 0 8px;color:#e8e8f0">Account suspended</h2><p style="color:#ccc;margin:0 0 16px">Your account was automatically suspended for violating our content policy.</p><a href="${appealUrl}" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">Submit appeal →</a>`),
+          }))
+        }
+        return json({ error: { message: 'Your account has been suspended for violating our content policy.', type: 'permission_error' } }, 403)
+      }
+    }
     const upstream = await proxyUpstream(body)
     if (!upstream.ok) return json({ error: { message: await upstream.text(), type: 'upstream_error' } }, upstream.status)
 
@@ -696,6 +810,7 @@ app.post('/v1/chat/completions', async (c) => {
     c.executionCtx.waitUntil(c.env.DB.prepare('INSERT OR REPLACE INTO rate_limits (key, count, window_start) VALUES (?,1,?)').bind(freeKey, today).run())
   }
 
+  applySafetyTriggers(body)
   const upstream = await proxyUpstream(body)
   if (!upstream.ok) return json({ error: { message: await upstream.text(), type: 'upstream_error' } }, upstream.status)
 
@@ -1174,7 +1289,7 @@ async function submitAppeal(){const r=document.getElementById('reason').value.tr
 try{const res=await fetch('/appeal/'+TOKEN,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({reason:r})});const d=await res.json()
 if(!res.ok){e.textContent=d.error||'Failed to submit';e.style.display='block';b.disabled=false;b.textContent='Submit appeal';return}
 document.querySelector('.card').innerHTML='<div style="text-align:center;padding:20px 0"><div style="font-size:40px;margin-bottom:12px">\u2709\ufe0f</div><h1 style="margin:0 0 8px;color:#e8ddd0;font-size:20px">Appeal submitted</h1><p style="color:#a08060;font-size:14px;line-height:1.6;margin:0">We\'ll review your appeal and get back to you. You\'ll receive an email when a decision is made.</p></div>'}
-catch{location.reload()}}
+catch(err){b.disabled=false;b.textContent='Submit appeal';e.textContent=err&&err.message?err.message:'Network error — try again';e.style.display='block'}}
 </script></body></html>`, { status: 200, headers: { 'Content-Type': 'text/html' } })
 })
 
@@ -1307,6 +1422,8 @@ app.get('/dashboard/daily', async (c) => {
 const DEVICE_TTL = 15 * 60 // 15 minutes
 
 app.post('/auth/device', async (c) => {
+  const ip = c.req.header('CF-Connecting-IP') || 'unknown'
+  if (!await checkRateLimit(c.env.DB, ip)) return json({ error: 'Too many attempts. Try again in 15 minutes.' }, 429)
   const code = crypto.randomUUID().replace(/-/g, '').slice(0, 24)
   const expires_at = Math.floor(Date.now() / 1000) + DEVICE_TTL
   await c.env.DB.prepare('INSERT INTO device_codes (code, expires_at) VALUES (?,?)').bind(code, expires_at).run()
@@ -1314,6 +1431,8 @@ app.post('/auth/device', async (c) => {
 })
 
 app.get('/auth/device/poll', async (c) => {
+  const ip = c.req.header('CF-Connecting-IP') || 'unknown'
+  if (!await checkRateLimit(c.env.DB, ip)) return json({ error: 'Too many attempts. Try again in 15 minutes.' }, 429)
   const code = c.req.query('code')
   if (!code) return json({ error: 'Missing code' }, 400)
 
@@ -1335,6 +1454,8 @@ app.get('/auth/device/poll', async (c) => {
 app.post('/auth/device/authorize', async (c) => {
   const user = await requireAuth(c)
   if (!user) return json({ error: 'Not authenticated' }, 401)
+  const ip = c.req.header('CF-Connecting-IP') || 'unknown'
+  if (!await checkRateLimit(c.env.DB, ip)) return json({ error: 'Too many attempts. Try again in 15 minutes.' }, 429)
   const { code } = await c.req.json().catch(() => ({}))
   if (!code) return json({ error: 'code required' }, 400)
 
@@ -1410,6 +1531,11 @@ app.get('/orgs/:id', async (c) => {
   ])
 
   if (!org) return json({ error: 'Not found' }, 404)
+  for (const k of keys.results) {
+    if (k.key_value && k.key_value.length > 14) {
+      k.key_value = k.key_value.slice(0, 10) + '...' + k.key_value.slice(-4)
+    }
+  }
   return json({ org, members: members.results, keys: keys.results, myRole: ctx.role })
 })
 
@@ -1445,6 +1571,19 @@ app.post('/orgs/:id/invite', async (c) => {
   const { email, role } = await c.req.json().catch(() => ({}))
   if (!email || !validEmail(email)) return json({ error: 'Invalid email' }, 400)
   const assignRole = role === 'owner' ? 'owner' : 'member'
+
+  // Rate limit: max 5 invites per 15 minutes per user
+  const rlKey = `invite:${ctx.user.id}`
+  const rlNow = Math.floor(Date.now() / 1000)
+  const rlRow = await c.env.DB.prepare('SELECT count, window_start FROM rate_limits WHERE key=?').bind(rlKey).first()
+  if (rlRow && rlNow - rlRow.window_start < 900 && rlRow.count >= 5) {
+    return json({ error: 'Too many invites. Try again later.' }, 429)
+  }
+  if (rlRow && rlNow - rlRow.window_start < 900) {
+    await c.env.DB.prepare('UPDATE rate_limits SET count=count+1 WHERE key=?').bind(rlKey).run()
+  } else {
+    await c.env.DB.prepare('INSERT OR REPLACE INTO rate_limits (key, count, window_start) VALUES (?,1,?)').bind(rlKey, rlNow).run()
+  }
 
   const token = crypto.randomUUID()
   const expires_at = Math.floor(Date.now() / 1000) + 7 * 24 * 60 * 60
@@ -1490,6 +1629,7 @@ app.post('/orgs/invite/accept', async (c) => {
 
   if (!invite) return json({ error: 'Invalid or already used invite' }, 400)
   if (invite.expires_at < Math.floor(Date.now() / 1000)) return json({ error: 'Invite expired' }, 400)
+  if (user.email !== invite.email) return json({ error: 'This invite was sent to a different email address.' }, 403)
 
   // Upsert — if already a member, upgrade role if invite is owner
   const existing = await c.env.DB.prepare(
