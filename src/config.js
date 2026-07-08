@@ -11,67 +11,59 @@ else if (existsSync(homeEnv)) config({ path: homeEnv });
 else config();
 
 export const MODELS = {
-  claude:             'claude-sonnet-4-6',
-  'claude-opus':      'claude-opus-4-8',
-  'claude-haiku':     'claude-haiku-4-5-20251001',
-  fable:              'claude-fable-5',
-  gpt:                'gpt-4o',
-  'gpt-mini':         'gpt-4o-mini',
-  'gpt-4o-mini':      'gpt-4o-mini',
-  groq:               'llama-3.3-70b-versatile',
-  'groq-fast':        'llama-3.1-8b-instant',
-  mistral:            'mistral-large-latest',
-  'mistral-small':    'mistral-small-latest',
-  gemini:             'gemini-2.0-flash',
-  'gemini-flash':     'gemini-2.0-flash',
-  'gemini-pro':       'gemini-1.5-pro',
-  'gemini-2.5-pro':   'gemini-2.5-pro-preview-05-06',
-  'gemini-2.5-flash': 'gemini-2.5-flash',
-  openrouter:         'meta-llama/llama-3.3-70b-instruct',
-  'or':               'meta-llama/llama-3.3-70b-instruct',
-  ollama:             'llama3',
-  veil:               'veil',
-  lumen:              'lumen',
-  'axion-vision':     'axion-vision',
-  opencode:           'opencode',
-  'big-pickle':       'big-pickle',
-  glm:                'glm-5.2',
-  'glm-5.2':          'glm-5.2',
-  'glm-flash':        'glm-4.7-flash',
-  'glm-4.7-flash':    'glm-4.7-flash',
-  'glm-4.5-flash':    'glm-4.5-flash',
+  claude:                 'claude-sonnet-4-6',
+  'claude-opus-4.8':      'claude-opus-4-8',
+  'claude-haiku-4.5':     'claude-haiku-4-5-20251001',
+  fable:                  'claude-fable-5',
+  gpt:                    'gpt-4o',
+  'gpt-mini':             'gpt-4o-mini',
+  groq:                   'llama-3.3-70b-versatile',
+  'groq-fast':            'llama-3.1-8b-instant',
+  mistral:                'mistral-large-latest',
+  'mistral-small':        'mistral-small-latest',
+  gemini:                 'gemini-2.0-flash',
+  'gemini-pro':           'gemini-1.5-pro',
+  'gemini-2.5-pro':       'gemini-2.5-pro-preview-05-06',
+  'gemini-2.5-flash':     'gemini-2.5-flash',
+  openrouter:             'meta-llama/llama-3.3-70b-instruct',
+  'or':                   'meta-llama/llama-3.3-70b-instruct',
+  ollama:                 'llama3',
+  veil:                   'veil',
+  lumen:                  'lumen',
+  'axion-vision':         'axion-vision',
+  opencode:               'opencode',
+  'big-pickle':           'big-pickle',
+  glm:                    'glm-5.2',
+  'glm-flash':            'glm-4.7-flash',
+  'glm-4.5-flash':        'glm-4.5-flash',
 };
 
 export const MODEL_PROVIDERS = {
-  claude:             'anthropic',
-  'claude-opus':      'anthropic',
-  'claude-haiku':     'anthropic',
-  fable:              'anthropic',
-  gpt:                'openai',
-  'gpt-mini':         'openai',
-  'gpt-4o-mini':      'openai',
-  groq:               'groq',
-  'groq-fast':        'groq',
-  mistral:            'mistral',
-  'mistral-small':    'mistral',
-  gemini:             'gemini',
-  'gemini-flash':     'gemini',
-  'gemini-pro':       'gemini',
-  'gemini-2.5-pro':   'gemini',
-  'gemini-2.5-flash': 'gemini',
-  openrouter:         'openrouter',
-  'or':               'openrouter',
-  ollama:             'ollama',
-  veil:               'veil',
-  lumen:              'lumen',
-  'axion-vision':     'axion-vision',
-  opencode:           'opencode',
-  'big-pickle':       'opencode',
-  glm:                'zai',
-  'glm-5.2':          'zai',
-  'glm-flash':        'zai',
-  'glm-4.7-flash':    'zai',
-  'glm-4.5-flash':    'zai',
+  claude:                 'anthropic',
+  'claude-opus-4.8':      'anthropic',
+  'claude-haiku-4.5':     'anthropic',
+  fable:                  'anthropic',
+  gpt:                    'openai',
+  'gpt-mini':             'openai',
+  groq:                   'groq',
+  'groq-fast':            'groq',
+  mistral:                'mistral',
+  'mistral-small':        'mistral',
+  gemini:                 'gemini',
+  'gemini-pro':           'gemini',
+  'gemini-2.5-pro':       'gemini',
+  'gemini-2.5-flash':     'gemini',
+  openrouter:             'openrouter',
+  'or':                   'openrouter',
+  ollama:                 'ollama',
+  veil:                   'veil',
+  lumen:                  'lumen',
+  'axion-vision':         'axion-vision',
+  opencode:               'opencode',
+  'big-pickle':           'opencode',
+  glm:                    'zai',
+  'glm-flash':            'zai',
+  'glm-4.5-flash':        'zai',
 };
 
 export const API_KEYS = {
@@ -191,10 +183,21 @@ export async function fetchProviderModels() {
           if (res.ok) {
             const json = await res.json();
             const list = format === 'anthropic' ? json.data.filter(m => m.type === 'model') : json.data || [];
-            const models = list.map(m => ({
+            let models = list.map(m => ({
               id: m.id,
               context_length: m.context_length || m.max_context_length || (m.metadata?.context_length) || 0,
             }));
+            // Only keep chat-capable models (Gemini API returns everything incl. TTS/image/video/robotics)
+            if (provider === 'gemini') {
+              models = models.filter(m => {
+                const id = m.id;
+                if (!id.startsWith('gemini-')) return false;
+                if (id.includes('tts') || id.includes('embedding') || id.includes('aqa') || id.includes('robotics') || id.includes('clip')) return false;
+                if (id.includes('live') || id.includes('realtime') || id.includes('omni') || id.includes('native-audio')) return false;
+                if (id.includes('computer-use') || id.includes('deep-research') || id.includes('customtools')) return false;
+                return true;
+              });
+            }
             if (models.length) { PROVIDER_MODELS[provider] = models; return; }
           }
         } catch {}

@@ -742,6 +742,18 @@ function Session({
   // title spinner + the desktop "done" ping, even for background tabs).
   useEffect(() => { onBusyChange?.(busy); }, [busy, onBusyChange]);
 
+  // Direct ESC detection on raw stdin (bypasses OpenTUI's StdinParser 20ms
+  // timeout which can miss bare ESC on Linux/Windows under load).
+  useEffect(() => {
+    const onData = (buf) => {
+      if (buf.length === 1 && buf[0] === 0x1b && busyRef.current) {
+        try { agentRef.current?.cancel(); } catch {}
+      }
+    };
+    process.stdin.on('data', onData);
+    return () => { process.stdin.off('data', onData); };
+  }, []);
+
   // Ctrl+C double-tap exits. Ctrl+Shift+C is ignored (OS paste).
   // Esc interrupts a running turn. Tab completes a slash command.
   // PageUp/Down + arrows scroll the message history (input keeps focus;
@@ -1071,20 +1083,39 @@ function Session({
       case 'models': {
         const { CUSTOM_ENDPOINTS, PROVIDER_MODELS } = await import('../config.js');
         const fmtCtx = (v) => v ? (v >= 1_000_000 ? (v / 1_000_000).toFixed(1) + 'M' : (v / 1000).toFixed(0) + 'k') : '?';
-        const seen = new Set(Object.keys(MODELS));
-        const lines = ['Models:'];
+        const resolved = new Set();
+        const shortNames = new Set();
+        const entries = [];
         for (const [alias, id] of Object.entries(MODELS)) {
-          const cur = alias === model ? '▸' : ' ';
-          lines.push(`${cur} ${alias.padEnd(20)} ${fmtCtx(getContextWindow(alias)).padStart(5)}  ${id}`);
+          resolved.add(id);
+          entries.push({
+            name: alias.replace(/-/g, ' '),
+            ctx: getContextWindow(alias),
+            isCurrent: alias === model || id === model,
+          });
         }
+        const skipModel = /tts|embed|aqa|robotics|clip|whisper|imagen|veo|lyria|guard|moderation|ocr|omni|realtime|computer-use|customtools|native-audio|deep-research|antigravity/i;
         for (const models of Object.values(PROVIDER_MODELS)) {
           for (const m of models) {
+            if (skipModel.test(m.id)) continue;
             const short = m.id.includes('/') ? m.id.slice(m.id.lastIndexOf('/') + 1) : m.id;
-            if (seen.has(short)) continue;
-            seen.add(short);
-            const cur = short === model || m.id === model ? '▸' : ' ';
-            lines.push(`${cur} ${short.padEnd(20)} ${fmtCtx(m.context_length).padStart(5)}`);
+            const dedupKey = short.replace(/:free$/i, '');
+            if (resolved.has(m.id) || resolved.has(dedupKey) || shortNames.has(dedupKey)) continue;
+            shortNames.add(dedupKey);
+            resolved.add(m.id);
+            entries.push({
+              name: short.replace(/-/g, ' '),
+              ctx: m.context_length,
+              isCurrent: short === model || m.id === model,
+            });
           }
+        }
+        entries.sort((a, b) => a.name.localeCompare(b.name));
+        const maxName = Math.min(32, Math.max(...entries.map(e => e.name.length)));
+        const lines = ['Models:'];
+        for (const { name, ctx, isCurrent } of entries) {
+          const padded = name.length <= maxName ? name.padEnd(maxName) : name.slice(0, maxName - 1) + '…';
+          lines.push(`${isCurrent ? '▸' : ' '} ${padded}  ${fmtCtx(ctx).padStart(5)}`);
         }
         const eps = Object.entries(CUSTOM_ENDPOINTS);
         if (eps.length) {

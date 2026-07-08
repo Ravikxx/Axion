@@ -927,7 +927,7 @@ One word only:`;
       return this.adviserModel;
     }
     // Auto-pick: highest capability model with a key that isn't the current one
-    const priority = ['claude-opus', 'claude', 'gpt', 'gpt-mini', 'groq'];
+    const priority = ['claude-opus-4.8', 'claude', 'gpt', 'gpt-mini', 'groq'];
     for (const m of priority) {
       if (m === this.modelAlias) continue;
       if (API_KEYS[resolveProvider(m)]) return m;
