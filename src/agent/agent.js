@@ -704,6 +704,7 @@ CRITICAL RULES — follow these exactly:
         }
       }
 
+      if (this.cancelled) break;
       this._pushToolResults(toolResults, response.type);
 
       // end_conversation tool — surface to UI and stop the loop
@@ -1112,6 +1113,7 @@ One word only:`;
     let thinkBuf = '', inThink = false, fullText = '';
 
     for await (const evt of stream) {
+      if (this.cancelled) { this.onStreamEnd(); return null; }
       if (evt.type === 'content_block_start') {
         inThink = evt.content_block?.type === 'thinking';
         if (inThink) thinkBuf = '';
@@ -1129,6 +1131,7 @@ One word only:`;
     }
 
     this.onStreamEnd();
+    if (this.cancelled) return null;
     const msg = await stream.getFinalMessage();
     const u = msg.usage || {};
     // True context = full input incl. cached tokens (exact, from the API).
@@ -1174,6 +1177,10 @@ One word only:`;
       }, { signal: this._abortCtrl?.signal });
 
       for await (const chunk of streamResp) {
+        if (this.cancelled) {
+          flushReasoning(); filter.flush(); this.onStreamEnd();
+          const err = new Error('cancelled'); err.name = 'AbortError'; throw err;
+        }
         if (chunk.usage) usage = chunk.usage;
         const delta = chunk.choices?.[0]?.delta;
         if (!delta) continue;
@@ -1194,6 +1201,7 @@ One word only:`;
       flushReasoning();
       filter.flush();
       this.onStreamEnd();
+      if (this.cancelled) { const err = new Error('cancelled'); err.name = 'AbortError'; throw err; }
       if (usage) { this._setContext(usage.prompt_tokens); this._addTokens(usage.prompt_tokens, usage.completion_tokens); }
 
       const toolCalls = Object.values(tcBufs).filter(tc => tc.name).map((tc, i) => {
