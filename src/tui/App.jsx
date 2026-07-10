@@ -1092,10 +1092,13 @@ function Session({
             name: alias.replace(/-/g, ' '),
             ctx: getContextWindow(alias),
             isCurrent: alias === model || id === model,
+            provider: null,
           });
         }
         const skipModel = /tts|embed|aqa|robotics|clip|whisper|imagen|veo|lyria|guard|moderation|ocr|omni|realtime|computer-use|customtools|native-audio|deep-research|antigravity/i;
-        for (const models of Object.values(PROVIDER_MODELS)) {
+        const MAX_PER_PROVIDER = 5;
+        for (const [provider, models] of Object.entries(PROVIDER_MODELS)) {
+          const candidates = [];
           for (const m of models) {
             if (skipModel.test(m.id)) continue;
             const short = m.id.includes('/') ? m.id.slice(m.id.lastIndexOf('/') + 1) : m.id;
@@ -1103,19 +1106,23 @@ function Session({
             if (resolved.has(m.id) || resolved.has(dedupKey) || shortNames.has(dedupKey)) continue;
             shortNames.add(dedupKey);
             resolved.add(m.id);
-            entries.push({
+            candidates.push({
               name: short.replace(/-/g, ' '),
-              ctx: m.context_length,
+              ctx: m.context_length || 0,
               isCurrent: short === model || m.id === model,
+              provider,
             });
           }
+          candidates.sort((a, b) => b.ctx - a.ctx);
+          entries.push(...candidates.slice(0, MAX_PER_PROVIDER));
         }
         entries.sort((a, b) => a.name.localeCompare(b.name));
         const maxName = Math.min(32, Math.max(...entries.map(e => e.name.length)));
         const lines = ['Models:'];
-        for (const { name, ctx, isCurrent } of entries) {
+        for (const { name, ctx, isCurrent, provider } of entries) {
           const padded = name.length <= maxName ? name.padEnd(maxName) : name.slice(0, maxName - 1) + '…';
-          lines.push(`${isCurrent ? '▸' : ' '} ${padded}  ${fmtCtx(ctx).padStart(5)}`);
+          const prov = provider ? ` \x1b[90m(${provider})\x1b[0m` : '';
+          lines.push(`${isCurrent ? '▸' : ' '} ${padded}  ${fmtCtx(ctx).padStart(5)}${prov}`);
         }
         const eps = Object.entries(CUSTOM_ENDPOINTS);
         if (eps.length) {
@@ -1543,11 +1550,22 @@ function Session({
       case 'endpoint': {
         const { CUSTOM_ENDPOINTS } = await import('../config.js');
         const [first, second, third, fourth, fifth] = args;
+        if (first === 'delete' || first === 'remove' || first === 'rm') {
+          const target = second;
+          if (!target) { push({ type: 'error', text: 'usage: /endpoint delete <name>' }); return; }
+          if (!CUSTOM_ENDPOINTS[target]) { push({ type: 'error', text: `No endpoint "${target}".` }); return; }
+          delete CUSTOM_ENDPOINTS[target];
+          delete CONTEXT_WINDOWS[target];
+          saveCustomEndpoints({ ...CUSTOM_ENDPOINTS });
+          if (model === target) { setModel('claude'); agentRef.current?.setModel('claude'); try { saveModel('claude'); } catch {} }
+          push({ type: 'info', text: `Deleted endpoint "${target}".${model === target ? ' Switched to "claude".' : ''}` });
+          return;
+        }
         if (!first) {
           const entries = Object.entries(CUSTOM_ENDPOINTS);
           if (!entries.length) { push({ type: 'info', text: 'No custom endpoints saved.\n\n/endpoint <name> <url> [model] [key] [context]\ne.g. /endpoint ollama http://localhost:11434/v1 llama3' }); return; }
           const fmtCtx = (v) => v >= 1_000_000 ? (v / 1_000_000).toFixed(1) + 'M' : (v / 1000).toFixed(0) + 'k';
-          push({ type: 'info', text: `Saved endpoints:\n${entries.map(([n, e]) => `  ${n.padEnd(16)} ${e.baseURL}  model: ${e.model}${e.context ? ' ctx: ' + fmtCtx(e.context) : ''}`).join('\n')}` });
+          push({ type: 'info', text: `Saved endpoints:\n${entries.map(([n, e]) => `  ${n.padEnd(16)} ${e.baseURL}  model: ${e.model}${e.context ? ' ctx: ' + fmtCtx(e.context) : ''}`).join('\n')}\n\n/endpoint delete <name> to remove one.` });
           return;
         }
         let epName, epURL, epModel, epKey, epCtx;
@@ -1567,7 +1585,7 @@ function Session({
         }
         CUSTOM_ENDPOINTS[epName] = { baseURL: epURL, model: epModel || CUSTOM_ENDPOINTS[epName]?.model || epName, apiKey: epKey || CUSTOM_ENDPOINTS[epName]?.apiKey || 'no-key', context };
         saveCustomEndpoints({ ...CUSTOM_ENDPOINTS });
-        setModel(epName); saveModel(epName);
+        setModel(epName); agentRef.current?.setModel(epName); try { saveModel(epName); } catch {}
         const ctxInfo = context ? ` · context: ${context >= 1_000_000 ? (context / 1_000_000).toFixed(1) + 'M' : (context / 1000).toFixed(0) + 'k'}` : '';
         push({ type: 'info', text: `Endpoint "${epName}" saved → ${epURL}\nSwitched to "${epName}"${ctxInfo}` });
         return;

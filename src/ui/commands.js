@@ -15,7 +15,7 @@ export const COMMANDS = [
   { cmd: 'api',             desc: '<model> <key>  set API key' },
   { cmd: 'axion-key',       desc: '[key|remove|test]  set/clear/verify Axion API key for Lumen' },
   { cmd: 'login',           desc: 'sign in to Axion Labs via browser (sets API key automatically)' },
-  { cmd: 'endpoint',        desc: '<name> <url> [model] [key]  add/list custom endpoints' },
+  { cmd: 'endpoint',        desc: '<name> <url> [model] [key]  add/list/delete custom endpoints' },
   { cmd: 'thinking',        desc: '[on|off|<tokens>]  toggle extended thinking' },
   { cmd: 'adviser',         desc: '[model|auto|off]  set adviser model' },
   { cmd: 'run',             desc: '<cmd>  run a shell command and feed output to the agent' },
