@@ -21,8 +21,10 @@ import { homedir } from 'os';
 function buildProjectContext(cwd = process.cwd()) {
   const hints = [];
 
-  // AXION.md — persistent project instructions (like CLAUDE.md).
-  // Global (~/.axion/AXION.md) first, then project root, then ./.axion/AXION.md.
+  // Persistent project instructions. AXION.md takes priority (global ~/.axion/AXION.md,
+  // then project root, then ./.axion/AXION.md). If no AXION.md is found anywhere, fall
+  // back to AGENTS.md, then CLAUDE.md, so projects using those conventions still get picked up.
+  let foundInstructions = false;
   for (const p of [
     resolve(homedir(), '.axion', 'AXION.md'),
     resolve(cwd, 'AXION.md'),
@@ -30,8 +32,17 @@ function buildProjectContext(cwd = process.cwd()) {
   ]) {
     try {
       const text = readFileSync(p, 'utf8').trim();
-      if (text) hints.push(`Instructions from ${p} (follow these):\n${text.slice(0, 8000)}`);
+      if (text) { hints.push(`Instructions from ${p} (follow these):\n${text.slice(0, 8000)}`); foundInstructions = true; }
     } catch {}
+  }
+  if (!foundInstructions) {
+    for (const name of ['AGENTS.md', 'CLAUDE.md']) {
+      const p = resolve(cwd, name);
+      try {
+        const text = readFileSync(p, 'utf8').trim();
+        if (text) { hints.push(`Instructions from ${p} (follow these):\n${text.slice(0, 8000)}`); foundInstructions = true; break; }
+      } catch {}
+    }
   }
 
   // package.json
