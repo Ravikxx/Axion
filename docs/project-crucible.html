@@ -240,8 +240,12 @@
   <div class="hero-date">July 4–27, 2026 · 3-Week Sprint</div>
   <div class="stat-row">
     <div class="stat">
-      <div class="stat-num">14M</div>
+      <div class="stat-num">14.5M</div>
       <div class="stat-label">PoC Parameters</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">102M</div>
+      <div class="stat-label">Chat Model (in progress)</div>
     </div>
     <div class="stat">
       <div class="stat-num">300M</div>
@@ -285,6 +289,10 @@
       <h4>Aux-Loss-Free Balancing</h4>
       <p>DeepSeek-V3-style per-expert bias that adjusts routing logits directly, with no auxiliary load-balancing loss term. This eliminates a known source of gradient interference in MoE training.</p>
     </div>
+    <div class="arch-card">
+      <h4>SubLN</h4>
+      <p>Sub-layer normalization adapted from Microsoft's BitDistill research, added to stabilize training at the larger Axon-Chat scale where ternary quantization noise compounds across more layers.</p>
+    </div>
   </div>
 
   <div class="accent-block">
@@ -309,12 +317,17 @@
     <div class="timeline-item">
       <div class="date">Day ~3</div>
       <h4>GQA + Aux-Loss-Free Variant Built</h4>
-      <p>A second variant swapping in Grouped Query Attention and aux-loss-free load balancing was built and validated against the first variant at identical step count for a controlled head-to-head comparison. The GQA/loss-free run is now complete.</p>
+      <p>A second variant swapping in Grouped Query Attention and aux-loss-free load balancing was built and validated against the first variant at identical step count for a controlled head-to-head comparison. Result: <strong>equivalent quality with ~600K fewer parameters and a 4× smaller KV cache</strong> — confirming the efficiency techniques hold up in practice, not just in theory.</p>
+    </div>
+    <div class="timeline-item">
+      <div class="date">In Progress</div>
+      <h4>Crucible Axon-Chat (102M) Training</h4>
+      <p>Training a larger conversational model on a mixed UltraChat + TinyChat dataset, using the full validated TAME stack plus SubLN and dual-GPU training support. Loss is dropping cleanly and outputs already show real structure — topically relevant responses, correct poem formatting, natural stopping points. Full results and samples coming once training wraps.</p>
     </div>
     <div class="timeline-item">
       <div class="date">Current</div>
       <h4>Scaling Toward 300M</h4>
-      <p>With both variants validated at 14M scale, we're preparing to train the full ~300M parameter target. This is where we'll see whether TAME's design principles hold at practical model sizes.</p>
+      <p>With the small-scale variants validated, we're exploring whether TAME's efficiency techniques can convert existing full-precision models to ternary via distillation — a path toward a ~300M target model without training fully from scratch.</p>
     </div>
   </div>
 
@@ -348,7 +361,7 @@
     </tr>
     <tr>
       <td><strong>Parameters</strong></td>
-      <td>~14M</td>
+      <td>~14.5M</td>
       <td>~300M</td>
     </tr>
     <tr>
@@ -384,7 +397,7 @@
   </table>
 
   <div class="accent-block">
-    <strong>What's next?</strong> Over the remaining 3 weeks we'll train the 300M variant, run controlled evaluations against comparable dense and MoE baselines, and open-source the model, training code, and full evaluation results. Follow along on <a href="https://github.com/AxionLabsAI/axion">GitHub</a>.
+    <strong>What's next?</strong> Crucible Axon-Chat (102M) is training now on a mixed UltraChat + TinyChat dataset. Beyond that, we're exploring whether TAME's efficiency techniques can convert existing full-precision models to ternary via distillation, aiming toward a ~300M target model — with the long-term goal of open-sourcing the architecture and tooling. Follow along on <a href="https://github.com/AxionLabsAI/axion">GitHub</a>.
   </div>
 
 </main>
