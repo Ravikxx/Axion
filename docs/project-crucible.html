@@ -60,6 +60,8 @@
       margin: 0 auto 36px;
     }
     .hero-date { font-size: 13px; color: #8b7355; }
+    .hero .light-word { font-weight: 400; color: #8b7355; }
+    .hero .last-updated { font-size: 12px; color: #8b7355; opacity: 0.8; margin-top: 20px; }
 
     .stat-row {
       display: flex;
@@ -90,9 +92,7 @@
       letter-spacing: -0.01em;
       margin-bottom: 8px;
     }
-    h2 .light { font-weight: 400; color: var(--text-muted); }
     .lead { color: var(--text-muted); font-size: 16px; margin-bottom: 48px; }
-    .last-updated { font-size: 12px; color: var(--text-muted); opacity: 0.7; margin-bottom: 8px; }
 
     h3 {
       font-size: 20px;
@@ -238,7 +238,7 @@
 <div class="hero">
   <div class="hero-badge">R&D Sprint</div>
   <h1>Project <span>Crucible</span></h1>
-  <p>Building <strong>TAME</strong> — Ternary Adaptive MoE — an efficient small-model architecture combining 1.58-bit weights, mixture of experts, multi-token prediction, and group query attention.</p>
+  <p>Building <span class="light-word">TAME</span> — Ternary Adaptive MoE — an efficient small-model architecture combining 1.58-bit weights, mixture of experts, multi-token prediction, and group query attention.</p>
   <div class="hero-date">July 4–27, 2026 · 3-Week Sprint</div>
   <div class="stat-row">
     <div class="stat">
@@ -258,6 +258,7 @@
       <div class="stat-label">Full Stack Verified</div>
     </div>
   </div>
+  <p class="last-updated">Last updated: July 9, 2026</p>
 </div>
 
 <main>
@@ -267,8 +268,7 @@
   <p class="lead">Axion Labs is kicking off a 3-week R&D sprint (July 4–27, 2026) to build <strong>"Crucible Axon"</strong> — an efficient small-model architecture for edge deployment and cost-sensitive inference. The architecture combines five recently proven techniques into a single, tightly integrated design.</p>
 
   <div class="section-title">Architecture</div>
-  <h2><span class="light">TAME</span> — Ternary Adaptive MoE</h2>
-  <p class="last-updated">Last updated: July 9, 2026</p>
+  <h2>TAME — Ternary Adaptive MoE</h2>
   <p class="lead">Nicknamed TAME, the architecture stacks five components designed to work together, not as isolated tricks.</p>
 
   <div class="arch-grid">
