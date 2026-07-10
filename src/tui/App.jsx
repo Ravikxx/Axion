@@ -410,6 +410,7 @@ function Session({
   const lastLoggedTokensRef = useRef({ input: 0, output: 0 }); // for /cost delta logging
   const historyRef = useRef([]);   // every submitted line, oldest→newest
   const draftRef = useRef('');      // in-progress text, saved when you start recalling
+  const pendingLocalCommandsRef = useRef([]); // slash commands run since the last agent turn, surfaced silently on the next message
   const [histPos, setHistPos] = useState(0); // 0 = live input; 1 = last sent; N = oldest
 
   const push = useCallback((msg) => setMessages((m) => [...m, msg]), []);
@@ -978,6 +979,8 @@ function Session({
     const args = rest;
     const arg = rest.join(' ').trim();
     const c = (cmd || '').toLowerCase();
+    const beforeLen = messages.length;
+    try {
     switch (c) {
       case 'exit': case 'quit':
         onExit(buildSession());
@@ -2266,6 +2269,15 @@ function Session({
         push({ type: 'info', text: `/${c} doesn't exist. Run /help for all commands.` });
         return;
     }
+    } finally {
+      setMessages((m) => {
+        const added = m.slice(beforeLen).filter((x) => x.type === 'info' || x.type === 'error');
+        if (added.length) {
+          pendingLocalCommandsRef.current.push({ cmd: raw, output: added.map((x) => x.text).filter(Boolean).join('\n') });
+        }
+        return m;
+      });
+    }
   }, [model, mode, tokens, messages, push, onExit, buildSession, extThinking, thinkingBudget, systemOverride, goal, computerUse, includedFiles, cwdState, runAgentTurn]);
 
   const submit = useCallback((value) => {
@@ -2281,7 +2293,14 @@ function Session({
     setHistPos(0);
     setInputSafe('');
     if (text.startsWith('/')) { runCommand(text); return; }
-    runAgentTurn(text, expandMentions(text)); // @file mentions → file contents for the agent
+    let agentText = expandMentions(text); // @file mentions → file contents for the agent
+    const pendingCmds = pendingLocalCommandsRef.current;
+    if (pendingCmds.length) {
+      const ctx = pendingCmds.map((p) => `Command: ${p.cmd}\nOutput: ${p.output}`).join('\n\n');
+      agentText = `<local-commands>\nThe user ran these CLI commands since your last turn. Don't mention, reference, or react to them unless the user explicitly asks about them.\n\n${ctx}\n</local-commands>\n\n${agentText}`;
+      pendingLocalCommandsRef.current = [];
+    }
+    runAgentTurn(text, agentText);
   }, [busy, runCommand, setInputSafe, runAgentTurn]);
 
   // Poll this tab's BUS mailbox (keyed by todoScope — see the Agent's `label`
