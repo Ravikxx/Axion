@@ -11,27 +11,27 @@
 
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      font-family: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
       background: var(--bg);
       color: var(--text);
       line-height: 1.6;
     }
 
     nav {
-      background: #1a1209;
+      background: #0a0b0f;
       padding: 0 32px;
       display: flex;
       align-items: center;
       height: 56px;
       gap: 24px;
     }
-    nav a { color: #c9b99a; text-decoration: none; font-size: 14px; transition: color 0.2s; }
-    nav a:hover { color: #f4efe6; }
-    nav a.brand { color: #f4efe6; font-weight: 600; font-size: 16px; margin-right: 16px; }
+    nav a { color: #9899a8; text-decoration: none; font-size: 14px; transition: color 0.2s; }
+    nav a:hover { color: #e8e9f0; }
+    nav a.brand { color: #e8e9f0; font-weight: 600; font-size: 16px; margin-right: 16px; }
 
     .hero {
-      background: linear-gradient(160deg, #1a1209 0%, #2d1f0e 60%, #3d2810 100%);
-      color: #f4efe6;
+      background: linear-gradient(160deg, #0a0b0f 0%, #181019 60%, #2a1712 100%);
+      color: #e8e9f0;
       padding: 80px 32px 72px;
       text-align: center;
     }
@@ -57,11 +57,11 @@
     .hero h1 span { color: var(--accent); }
     .hero p {
       font-size: 18px;
-      color: #c9b99a;
+      color: #9899a8;
       max-width: 560px;
       margin: 0 auto 36px;
     }
-    .hero-date { font-size: 13px; color: #8b7355; }
+    .hero-date { font-size: 13px; color: #7c7e92; }
 
     .stat-row {
       display: flex;
@@ -74,7 +74,7 @@
     }
     .stat { text-align: center; }
     .stat-num { font-size: 42px; font-weight: 700; color: var(--accent); line-height: 1; }
-    .stat-label { font-size: 13px; color: #8b7355; margin-top: 6px; }
+    .stat-label { font-size: 13px; color: #7c7e92; margin-top: 6px; }
 
     main { max-width: 960px; margin: 0 auto; padding: 64px 32px; }
 
@@ -202,15 +202,15 @@
     .callout strong { color: var(--accent); }
 
     footer {
-      background: #1a1209;
-      color: #6b5e4e;
+      background: #0a0b0f;
+      color: #6b6d80;
       text-align: center;
       padding: 32px;
       font-size: 13px;
       margin-top: 80px;
     }
-    footer a { color: #8b7355; text-decoration: none; }
-    footer a:hover { color: #c9b99a; }
+    footer a { color: #7c7e92; text-decoration: none; }
+    footer a:hover { color: #9899a8; }
 
     .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 
@@ -240,9 +240,9 @@
 </head>
 <body>
 
-<div class="update-bar" style="background:#1a1209;border-bottom:1px solid rgba(232,96,44,0.3);padding:12px 32px;display:flex;align-items:center;gap:12px;font-size:13px;flex-wrap:wrap;">
-  <span style="background:#2d7a3a;color:#fff;font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:3px 7px;border-radius:4px;flex-shrink:0;">Updated</span>
-  <span style="color:#c9b99a;flex:1;min-width:0;"><strong style="color:#f4efe6;">Lumen 1.2.1 is live</strong> — catastrophic forgetting fixed (GSM8K 5%→12%), coding adjusted (HumanEval 80%→50%). Use 1.2 for coding, 1.2.1 for general use. <strong style="color:#f4efe6;">Lumen 1.3</strong> in development.</span>
+<div class="update-bar" style="background:#0a0b0f;border-bottom:1px solid rgba(232,96,44,0.3);padding:12px 32px;display:flex;align-items:center;gap:12px;font-size:13px;flex-wrap:wrap;">
+  <span style="background:#34d399;color:#fff;font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:3px 7px;border-radius:4px;flex-shrink:0;">Updated</span>
+  <span style="color:#9899a8;flex:1;min-width:0;"><strong style="color:#e8e9f0;">Lumen 1.2.1 is live</strong> — catastrophic forgetting fixed (GSM8K 5%→12%), coding adjusted (HumanEval 80%→50%). Use 1.2 for coding, 1.2.1 for general use. <strong style="color:#e8e9f0;">Lumen 1.3</strong> in development.</span>
   <a href="/announcements" class="update-link" style="color:#e8602c;text-decoration:none;font-weight:600;flex-shrink:0;">See announcements →</a>
 </div>
 
@@ -284,7 +284,7 @@
 
   <div class="legend">
     <div class="legend-item">
-      <div class="legend-dot" style="background:#8b7355;opacity:0.7"></div>
+      <div class="legend-dot" style="background:#7c7e92;opacity:0.7"></div>
       Veil 1.1
     </div>
     <div class="legend-item">
@@ -427,12 +427,12 @@
       }
     },
     scales: {
-      x: { grid: { display: false }, border: { display: false }, ticks: { color: '#6b5e4e', font: { size: 12 } } },
+      x: { grid: { display: false }, border: { display: false }, ticks: { color: '#6b6d80', font: { size: 12 } } },
       y: {
         min: 0, max: 100,
         grid: { color: gridColor },
         border: { display: false },
-        ticks: { color: '#6b5e4e', font: { size: 12 }, callback: v => v + '%' }
+        ticks: { color: '#6b6d80', font: { size: 12 }, callback: v => v + '%' }
       }
     },
     animation: { duration: 900, easing: 'easeOutQuart' }
@@ -499,7 +499,7 @@
         legend: {
           display: true,
           position: 'bottom',
-          labels: { color: '#6b5e4e', font: { size: 12 }, usePointStyle: true, padding: 20 }
+          labels: { color: '#6b6d80', font: { size: 12 }, usePointStyle: true, padding: 20 }
         }
       },
       scales: {
@@ -508,7 +508,7 @@
           grid: { color: gridColor },
           angleLines: { color: gridColor },
           ticks: { display: false },
-          pointLabels: { color: '#6b5e4e', font: { size: 12 } }
+          pointLabels: { color: '#6b6d80', font: { size: 12 } }
         }
       },
       animation: { duration: 900 }
