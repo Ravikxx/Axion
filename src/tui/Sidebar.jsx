@@ -19,6 +19,7 @@ export function Sidebar({
   mcpTools = 0,
   todos = [],
   width = 30,
+  planPath = null,
 }) {
   const A = accent();
   const pending = todos.filter(t => !t.done);
@@ -36,6 +37,14 @@ export function Sidebar({
       <text> </text>
       <text><span fg={A}>mode</span></text>
       <text><span fg={modeColor}>{`  ${modeIcon} ${modeLabel}`}</span></text>
+
+      {planPath && (
+        <>
+          <text> </text>
+          <text><span fg={A}>plan</span></text>
+          <text><span fg="#888">{`  ${planPath.split(/[\\/]/).pop()}`}</span></text>
+        </>
+      )}
 
       {ctxUsed > 0 && (
         <>

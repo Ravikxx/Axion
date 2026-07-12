@@ -2,13 +2,24 @@ import { readFileSync, writeFileSync, readdirSync, statSync, existsSync, unlinkS
 import { execSync, execFileSync, spawn } from 'child_process';
 import { relative, resolve, dirname, basename, extname } from 'path';
 import { diffLines } from '../utils/diff.js';
-import { backupFile, recordFileChange } from '../persist.js';
+import { backupFile, recordFileChange, listSnapshots, snapshotChanges, snapshotDiff, previewRestore, restoreSnapshot, currentSnapshotId } from '../persist.js';
 import { API_KEYS } from '../config.js';
 import { BUS } from './bus.js';
 import { captureScreen, captureScreenAnnotated, uiaClickElement, mouseClick, typeText, pressKey, scrollAt, getScreenSize, ocrFindText, cropScreenRegion, MACRO_STATE } from './computer.js';
 import { analyzeScreen, parseCoordinates } from './vision.js';
 import { executeGoogleTool, GOOGLE_TOOL_DEFINITIONS, GOOGLE_TOOL_DEFINITIONS_OPENAI } from './google.js';
 import { getOAuthToken } from '../oauth/oauth.js';
+import {
+  goToDefinition, findReferences, hover, documentSymbol, workspaceSymbol, callHierarchy,
+} from '../services/lsp/manager.js';
+import { PLUGINS } from './plugins.js';
+import { ToolExecutionError } from '../utils/namedError.js';
+import { tryAutoFormat as runFormatter } from '../services/formatter/formatterEngine.js';
+import { parsePatch, validateHunk, applyHunk, contentFingerprint } from '../services/patches/patchParser.js';
+import { writeFile, writeIfUnchanged, readFileWithMeta, fingerprintFile } from '../services/files/fileMutation.js';
+import { detect as detectShell, buildShellArgs } from '../services/shell/detector.js';
+import { searchGlob, searchGrep, searchBackendInfo } from '../services/search/searchEngine.js';
+import { SHELL_CONFIG } from '../config.js';
 
 // File-read tracking: agent must read a file before editing it.
 // Stored: absPath → { content, mtimeMs }
@@ -387,14 +398,28 @@ export const TOOL_DEFINITIONS = [
   },
   {
     name: 'send_message',
-    description: 'Send a message to a DIFFERENT agent in a multi-agent session. Only use this when spawn_agents has created other agents and you need to communicate with them. NEVER send a message to yourself or to "main" when you are already the main agent — that is self-messaging and serves no purpose. For thinking/reasoning, use <think> tags instead.',
+    description: 'Send a message to another agent. Use to="*" to broadcast to all teammates in the team. Use a specific agent name for direct messaging. Supports structured messages via the message object (shutdown_request, plan_approval_response, task_assignment). For plain text, use the content string.',
     input_schema: {
       type: 'object',
       properties: {
-        to:      { type: 'string', description: 'Label of the target agent (must be a different agent, not yourself)' },
-        content: { type: 'string', description: 'Message content' },
+        to:      { type: 'string', description: 'Target agent name, or "*" to broadcast to all teammates' },
+        content: { type: 'string', description: 'Plain text message content (for simple messages)' },
+        summary: { type: 'string', description: '5-10 word summary shown as preview (optional)' },
+        message: {
+          type: 'object',
+          description: 'Structured message object for protocol messages (alternative to content string)',
+          properties: {
+            type: { type: 'string', enum: ['shutdown_request', 'shutdown_response', 'plan_approval_response', 'task_assignment'], description: 'Structured message type' },
+            reason:    { type: 'string', description: 'Reason for shutdown request/response' },
+            request_id:{ type: 'string', description: 'Request ID for responses' },
+            approve:   { type: 'boolean', description: 'Approval flag for responses' },
+            feedback:  { type: 'string', description: 'Feedback for plan rejection' },
+            task_id:   { type: 'string', description: 'Task ID for task assignment' },
+            subject:   { type: 'string', description: 'Task subject for task assignment' },
+          },
+        },
       },
-      required: ['to', 'content'],
+      required: ['to'],
     },
   },
   {
@@ -415,7 +440,7 @@ export const TOOL_DEFINITIONS = [
   },
   {
     name: 'spawn_agents',
-    description: 'Spin up multiple AI agents running in parallel. Each agent has full tool access. Agents can communicate: sender calls send_message(label, content), receiver calls wait_for_message() to block until a message arrives. Give each agent an explicit label.',
+    description: 'Spin up multiple AI agents running in parallel. Each agent has full tool access. Give each agent an explicit label and, when useful, a role — a specialist persona like "senior backend engineer focused on API design" or "QA tester hunting edge cases" — that shapes how it approaches the task. Agents can communicate: sender calls send_message(label, content), receiver calls wait_for_message() to block until a message arrives.',
     input_schema: {
       type: 'object',
       properties: {
@@ -427,12 +452,53 @@ export const TOOL_DEFINITIONS = [
               model: { type: 'string', description: 'Model alias (default: current model)' },
               task:  { type: 'string', description: 'Full task for this agent — be specific, it has no conversation context' },
               label: { type: 'string', description: 'Short label for this agent in output' },
+              role:  { type: 'string', description: 'Optional specialist role/persona for this agent, e.g. "security reviewer" or "frontend expert — React/TUI". Shapes its system prompt.' },
             },
             required: ['task'],
           },
         },
       },
       required: ['agents'],
+    },
+  },
+  {
+    name: 'team_create',
+    description: 'Create a new named team for multi-agent coordination. Teams provide persistent file-backed mailboxes for inter-agent communication. The creator becomes the team lead.',
+    input_schema: {
+      type: 'object',
+      properties: {
+        team_name:   { type: 'string', description: 'Name for the team' },
+        description: { type: 'string', description: 'Team purpose/description' },
+      },
+      required: ['team_name'],
+    },
+  },
+  {
+    name: 'team_delete',
+    description: 'Delete a team and all its mailbox data.',
+    input_schema: {
+      type: 'object',
+      properties: {
+        team_name: { type: 'string', description: 'Name of the team to delete' },
+      },
+      required: ['team_name'],
+    },
+  },
+  {
+    name: 'team_list',
+    description: 'List all existing teams and their members.',
+    input_schema: { type: 'object', properties: {}, required: [] },
+  },
+  {
+    name: 'team_join',
+    description: 'Join an existing team as a member. This agent will receive messages sent to the team.',
+    input_schema: {
+      type: 'object',
+      properties: {
+        team_name: { type: 'string', description: 'Name of the team to join' },
+        role:      { type: 'string', description: 'Optional role/persona for this agent in the team' },
+      },
+      required: ['team_name'],
     },
   },
   {
@@ -515,14 +581,16 @@ export const TOOL_DEFINITIONS = [
     input_schema: {
       type: 'object',
       properties: {
-        text: { type: 'string', description: 'The task description.' },
+        text:     { type: 'string', description: 'The task description.' },
+        priority: { type: 'string', enum: ['high', 'medium', 'low'], description: 'Task priority (default: medium).' },
+        status:   { type: 'string', enum: ['pending', 'in_progress', 'completed'], description: 'Initial status (default: pending).' },
       },
       required: ['text'],
     },
   },
   {
     name: 'todo_done',
-    description: 'Mark a TODO item as complete by its id.',
+    description: 'Toggle a TODO item between completed and pending. If it is pending or in_progress, mark it completed; if completed, reopen it.',
     input_schema: {
       type: 'object',
       properties: {
@@ -533,10 +601,33 @@ export const TOOL_DEFINITIONS = [
   },
   {
     name: 'todo_list',
-    description: 'List all TODO items. Shows pending tasks first, then completed ones.',
+    description: 'List all TODO items. Shows pending tasks first (sorted by priority), then in_progress, then completed.',
     input_schema: {
       type: 'object',
       properties: {},
+    },
+  },
+  {
+    name: 'todowrite',
+    description: 'Replace the entire TODO list atomically. Pass the full updated list — each item can have text, priority (high/medium/low), and status (pending/in_progress/completed). This is the preferred way for the agent to manage the task list, as it replaces the full state in one call.',
+    input_schema: {
+      type: 'object',
+      properties: {
+        todos: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              text:     { type: 'string', description: 'Task description.' },
+              priority: { type: 'string', enum: ['high', 'medium', 'low'], description: 'Priority (default: medium).' },
+              status:   { type: 'string', enum: ['pending', 'in_progress', 'completed'], description: 'Status (default: pending).' },
+            },
+            required: ['text'],
+          },
+          description: 'Full list of todo items.',
+        },
+      },
+      required: ['todos'],
     },
   },
   {
@@ -585,6 +676,154 @@ export const TOOL_DEFINITIONS = [
         voice: { type: 'string', enum: ['alloy', 'echo', 'fable', 'onyx', 'nova', 'shimmer'], description: 'Voice to use (default: alloy).' },
       },
       required: ['text'],
+    },
+  },
+  {
+    name: 'plan_read',
+    description: 'Read the current session plan file. Returns the full markdown content of the plan. Use this to check what the agreed plan says before working on a step.',
+    input_schema: { type: 'object', properties: {}, required: [] },
+  },
+  {
+    name: 'plan_write',
+    description: 'Write new content to the current session plan file. Use this to update the plan as you make progress — mark steps done, revise the approach, add notes. The plan persists across compaction and can be opened in an external editor.',
+    input_schema: {
+      type: 'object',
+      properties: {
+        content: { type: 'string', description: 'Full markdown content to write to the plan file.' },
+      },
+      required: ['content'],
+    },
+  },
+  {
+    name: 'plan_open',
+    description: 'Open the current session plan file in the user\'s external editor (VS Code, vim, etc.). The agent and user can collaboratively edit it — changes are picked up on the next tool call.',
+    input_schema: { type: 'object', properties: {}, required: [] },
+  },
+  {
+    name: 'wiki_read',
+    description: 'Read content from the project wiki. Without args, returns the wiki index (table of contents with all pages and sources). With a page title, returns that page\'s content.',
+    input_schema: {
+      type: 'object',
+      properties: {
+        page: { type: 'string', description: 'Optional page title to read. Omit to get the wiki index.' },
+      },
+      required: [],
+    },
+  },
+  {
+    name: 'wiki_write',
+    description: 'Write or update a wiki page. Creates a new page or overwrites an existing one. The content should be valid markdown. The wiki index is automatically rebuilt.',
+    input_schema: {
+      type: 'object',
+      properties: {
+        title:   { type: 'string', description: 'Page title (used as the filename slug).' },
+        content: { type: 'string', description: 'Markdown content for the page.' },
+      },
+      required: ['title', 'content'],
+    },
+  },
+  {
+    name: 'wiki_search',
+    description: 'Search all wiki pages, sources, and the index for a query string. Returns matching file paths, titles, and surrounding lines.',
+    input_schema: {
+      type: 'object',
+      properties: {
+        query: { type: 'string', description: 'Search query (case-insensitive).' },
+      },
+      required: ['query'],
+    },
+  },
+  {
+    name: 'snapshot_list',
+    description: 'List all available file-system snapshots for the current project. Each snapshot is a content-addressed point-in-time capture of all project files. Returns snapshot IDs, timestamps, and labels.',
+    input_schema: { type: 'object', properties: {}, required: [] },
+  },
+  {
+    name: 'snapshot_diff',
+    description: 'Show differences between two snapshots (pass two IDs), or between a snapshot and the current working tree (pass one ID). With full=true returns full unified diffs; otherwise returns per-file status (A/M/D/R).',
+    input_schema: {
+      type: 'object',
+      properties: {
+        from: { type: 'string', description: 'First snapshot ID (omit to diff HEAD vs working tree)' },
+        to:   { type: 'string', description: 'Second snapshot ID (omit to diff HEAD vs working tree)' },
+        full: { type: 'boolean', description: 'Show full unified diff instead of summary (default: false)' },
+      },
+      required: [],
+    },
+  },
+  {
+    name: 'snapshot_restore',
+    description: 'Restore files from a snapshot back to the working directory. If no files are specified, restores the full snapshot state (undo to that point). Files are backed up before being overwritten so you can undo the restore with /undo.',
+    input_schema: {
+      type: 'object',
+      properties: {
+        id:    { type: 'string', description: 'Snapshot ID to restore from (use snapshot_list to see available IDs)' },
+        files: { type: 'array', items: { type: 'string' }, description: 'Specific files to restore (default: all files in snapshot)' },
+      },
+      required: ['id'],
+    },
+  },
+  {
+    name: 'lsp',
+    description: 'Query language servers for deep code intelligence. Use this to understand code structure, find definitions, references, type information, and symbol hierarchies — without reading entire files. Requires a language server to be installed for the file\'s language (typescript-language-server for JS/TS, pyright for Python, gopls for Go, rust-analyzer for Rust, etc.).',
+    input_schema: {
+      type: 'object',
+      properties: {
+        operation: {
+          type: 'string',
+          enum: ['goToDefinition', 'findReferences', 'hover', 'documentSymbol', 'workspaceSymbol', 'callHierarchy'],
+          description: 'LSP operation to perform. For goToDefinition/findReferences/hover/callHierarchy, provide the file path and cursor position (line/col). For documentSymbol, provide only the file path. For workspaceSymbol, provide a query string.',
+        },
+        filePath:  { type: 'string', description: 'File path (relative or absolute). Required for all operations except workspaceSymbol.' },
+        line:      { type: 'number', description: 'Line number (1-indexed). Required for goToDefinition, findReferences, hover, callHierarchy.' },
+        col:       { type: 'number', description: 'Column number (1-indexed). Required for goToDefinition, findReferences, hover, callHierarchy.' },
+        query:     { type: 'string', description: 'Search query for workspaceSymbol. Required only for workspaceSymbol.' },
+      },
+      required: ['operation'],
+    },
+  },
+  {
+    name: 'agent_list',
+    description: 'List all named agents available in this Axion session, including their id, name, description, and mode. Use this to discover which agents can be selected with agent_select.',
+    input_schema: { type: 'object', properties: {}, required: [] },
+  },
+  {
+    name: 'agent_select',
+    description: 'Select the named agent to use for subsequent turns. Each agent has its own role, permissions, and optional model override. Switching agents changes the system prompt role and which tools are available.',
+    input_schema: {
+      type: 'object',
+      properties: {
+        agent_id: { type: 'string', description: 'Agent id (e.g. "build", "ask", "debug", "review", or a custom id from config)' },
+      },
+      required: ['agent_id'],
+    },
+  },
+  {
+    name: 'workspace_list',
+    description: 'List all named workspaces (separate project contexts). Each workspace has an id, name, and absolute path. Use this to see available projects, then use workspace_select to switch.',
+    input_schema: { type: 'object', properties: {}, required: [] },
+  },
+  {
+    name: 'workspace_select',
+    description: 'Switch the current workspace (project context). This changes the working directory and scopes subsequent file/command/git operations to the selected workspace\'s path. The selection persists across sessions.',
+    input_schema: {
+      type: 'object',
+      properties: {
+        workspace_id: { type: 'string', description: 'Workspace id (from workspace_list)' },
+      },
+      required: ['workspace_id'],
+    },
+  },
+  {
+    name: 'workspace_create',
+    description: 'Create a new named workspace pointing at a project directory. Useful for working on multiple projects simultaneously without cross-contamination.',
+    input_schema: {
+      type: 'object',
+      properties: {
+        name: { type: 'string', description: 'Human-readable workspace name' },
+        path: { type: 'string', description: 'Absolute path to the project directory' },
+      },
+      required: ['path'],
     },
   },
 ];
@@ -676,13 +915,13 @@ export const COMPUTER_TOOL_DEFINITIONS = [
     input_schema: { type: 'object', properties: {}, required: [] },
   },
   {
-    name: 'find_text',
-    description: 'Locate text on screen via OCR and return its pixel coordinates. Uses Windows OCR on Windows, Tesseract on macOS/Linux. More reliable than vision-based click_on for clearly visible text labels, buttons, or menu items.',
+    name: 'speak',
+    description: 'Speak text aloud using text-to-speech (OpenAI TTS). Use this to communicate information audibly to the user, such as alerts, confirmations, or when reading long text would be helpful.',
     input_schema: {
       type: 'object',
       properties: {
-        text:  { type: 'string', description: 'The text to search for on screen (case-insensitive partial match).' },
-        click: { type: 'boolean', description: 'If true, also click on the found text (default: false).' },
+        text: { type: 'string', description: 'The text to speak aloud.' },
+        voice: { type: 'string', enum: ['alloy', 'echo', 'fable', 'onyx', 'nova', 'shimmer'], description: 'Voice to use (default: alloy).' },
       },
       required: ['text'],
     },
@@ -707,31 +946,8 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
   let cwd = getCwd(agentLabel);
   const relPath = (p) => relative(cwd, resolve(cwd, p)) || '.';
 
-  // Silently run formatter after a file write if project config is detected.
-  const tryAutoFormat = (absPath) => {
-    const ext = extname(absPath).toLowerCase();
-    try {
-      const hasPrettier = ['.prettierrc', '.prettierrc.json', '.prettierrc.js',
-                           'prettier.config.js', 'prettier.config.mjs', 'prettier.config.cjs']
-                          .some(f => existsSync(join(cwd, f)));
-      if (hasPrettier && ['.js','.jsx','.ts','.tsx','.json','.css','.html','.md','.yaml','.yml'].includes(ext)) {
-        execFileSync(process.platform === 'win32' ? 'npx.cmd' : 'npx', ['prettier', '--write', absPath], { cwd, stdio: 'pipe', timeout: 15000 });
-        return ' (auto-formatted)';
-      }
-      if (ext === '.go') {
-        execFileSync('gofmt', ['-w', absPath], { cwd, stdio: 'pipe', timeout: 5000 });
-        return ' (gofmt)';
-      }
-      if (ext === '.py') {
-        const hasPyConf = existsSync(join(cwd, 'pyproject.toml')) || existsSync(join(cwd, '.black'));
-        if (hasPyConf) {
-          execFileSync('python', ['-m', 'black', absPath, '-q'], { cwd, stdio: 'pipe', timeout: 15000 });
-          return ' (black)';
-        }
-      }
-    } catch {} // formatter not installed or failed — silent skip
-    return '';
-  };
+  // Silently run formatter after a file write using config-driven formatter engine.
+  const tryAutoFormat = (absPath) => runFormatter(absPath, cwd);
 
   try {
     switch (name) {
@@ -768,20 +984,57 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
           const err = _requireRead(absPath);
           if (err) return err;
         }
-        const oldContent = readFileSync(absPath, 'utf8');
-        const count = (oldContent.split(input.find).length - 1);
-        if (count === 0) return { success: false, output: `String not found in ${relPath(input.path)}` };
-        backupFile(absPath, oldContent);
-        recordFileChange(absPath, oldContent);
-        // Use a function replacer to prevent JS from interpreting $& $1 $` $' etc. in the replacement string
-        const newContent = input.all
-          ? oldContent.split(input.find).join(input.replace)
-          : oldContent.replace(input.find, () => input.replace);
-        writeFileSync(absPath, newContent, 'utf8');
+
+        // Read file with metadata for concurrent-modification detection
+        const fileMeta = readFileWithMeta(absPath);
+        if (!fileMeta) return { success: false, output: `File not found: ${relPath(input.path)}` };
+
+        // Parse structured patch hunks
+        const hunks = parsePatch(input);
+        if (!hunks.length) return { success: false, output: 'No patch hunks to apply.' };
+
+        // Validate all hunks before applying (fail-fast)
+        const content = fileMeta.content;
+        for (const hunk of hunks) {
+          const validation = validateHunk(content, hunk);
+          if (!validation.valid) {
+            return { success: false, output: `${hunk.type} hunk failed: ${validation.error} in ${relPath(input.path)}` };
+          }
+        }
+
+        // Apply hunks sequentially, tracking total changes
+        let currentContent = content;
+        let totalMatches = 0;
+        const appliedHunks = [];
+
+        for (const hunk of hunks) {
+          const result = applyHunk(currentContent, hunk);
+          if (!result.applied) {
+            return { success: false, output: `Hunk failed: ${result.error} in ${relPath(input.path)}` };
+          }
+          currentContent = result.content;
+          totalMatches += result.count || 0;
+          appliedHunks.push(hunk.type);
+        }
+
+        // Write with concurrent-modification detection
+        const backup = fileMeta.content;
+        backupFile(absPath, backup);
+        recordFileChange(absPath, backup);
+
+        const writeResult = writeIfUnchanged(absPath, currentContent, fileMeta.fingerprint);
+        if (!writeResult.success) {
+          return { success: false, output: `Patch failed: ${writeResult.error}` };
+        }
+
         const fmt  = tryAutoFormat(absPath);
-        const diff = diffLines(oldContent, newContent);
+        const diff = diffLines(backup, currentContent);
         _trackRead(absPath);
-        return { success: true, output: `Patched ${relPath(input.path)} (${count} match${count > 1 ? 'es' : ''})${fmt}`, diff };
+
+        const hunkSummary = appliedHunks.length > 1
+          ? ` (${appliedHunks.length} hunks: ${appliedHunks.join(', ')})`
+          : '';
+        return { success: true, output: `Patched ${relPath(input.path)} (${totalMatches} match${totalMatches > 1 ? 'es' : ''})${hunkSummary}${fmt}`, diff };
       }
 
       case 'delete_file': {
@@ -834,7 +1087,7 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
       case 'replace_in_files': {
         if (!input.find) return { success: false, output: 'find string is required.' };
         const pattern = input.pattern || '**/*';
-        const matches = walkGlob(cwd, pattern);
+        const matches = await searchGlob({ cwd, pattern, limit: 2000 });
         if (!matches.length) return { success: false, output: `No files match pattern: ${pattern}` };
         const changed = [];
         let totalHits = 0;
@@ -972,11 +1225,128 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
         }
       }
 
+      case 'lsp': {
+        try {
+          const op = input.operation;
+          let result;
+          switch (op) {
+            case 'goToDefinition':
+              result = await goToDefinition(input.filePath, input.line, input.col);
+              break;
+            case 'findReferences':
+              result = await findReferences(input.filePath, input.line, input.col);
+              break;
+            case 'hover':
+              result = await hover(input.filePath, input.line, input.col);
+              break;
+            case 'documentSymbol':
+              result = await documentSymbol(input.filePath);
+              break;
+            case 'workspaceSymbol':
+              result = await workspaceSymbol(input.query);
+              break;
+            case 'callHierarchy':
+              result = await callHierarchy(input.filePath, input.line, input.col);
+              break;
+            default:
+              return { success: false, output: `Unknown LSP operation: ${op}. Supported: goToDefinition, findReferences, hover, documentSymbol, workspaceSymbol, callHierarchy.` };
+          }
+          return result;
+        } catch (err) {
+          return { success: false, output: `LSP error: ${err.message}` };
+        }
+      }
+
+      case 'agent_list': {
+        const { AgentRegistry } = require('./agentRegistry.js');
+        const agents = AgentRegistry.list();
+        if (!agents.length) return { success: true, output: 'No agents configured.' };
+        const lines = agents.map(a => `• ${a.id} — ${a.name}${a.description ? ` — ${a.description}` : ''} (mode: ${a.mode})`);
+        return { success: true, output: `Available agents:\n${lines.join('\n')}` };
+      }
+
+      case 'agent_select': {
+        const { AgentRegistry } = require('./agentRegistry.js');
+        const info = AgentRegistry.resolve(input.agent_id);
+        if (!info || info.id !== input.agent_id) {
+          return { success: false, output: `Unknown agent: ${input.agent_id}. Use agent_list to see available agents.` };
+        }
+        return { success: true, output: `Selected agent "${info.id}" (${info.name}). Subsequent turns will use this agent's role, model, and permissions. Switch takes effect on the next turn.` };
+      }
+
+      case 'workspace_list': {
+        const { listWorkspaces } = require('../services/workspaces/workspaceService.js');
+        const { getCurrentWorkspaceId } = require('../persist.js');
+        const wss = listWorkspaces();
+        if (!wss.length) return { success: true, output: 'No workspaces configured. Use workspace_create or the /workspace command.' };
+        const active = getCurrentWorkspaceId();
+        const lines = wss.map(w => `${w.id === active ? '* ' : '  '}${w.id} — ${w.name} (${w.path})`);
+        return { success: true, output: `Workspaces (* = active):\n${lines.join('\n')}` };
+      }
+
+      case 'workspace_select': {
+        const { switchWorkspace } = require('../services/workspaces/workspaceService.js');
+        try {
+          const ws = switchWorkspace(input.workspace_id);
+          setCwd(agentLabel, ws.path);
+          return { success: true, output: `Switched to workspace "${ws.id}" — ${ws.name} (${ws.path}). Working directory updated.` };
+        } catch (e) {
+          return { success: false, output: e.message };
+        }
+      }
+
+      case 'workspace_create': {
+        const { createWorkspace, activateForPath } = require('../services/workspaces/workspaceService.js');
+        const { resolve: pathResolve } = require('path');
+        const abs = pathResolve(cwd, input.path);
+        try {
+          const ws = createWorkspace({ name: input.name, path: abs });
+          return { success: true, output: `Created workspace "${ws.id}" — ${ws.name} (${ws.path}). Use workspace_select to switch to it.` };
+        } catch (e) {
+          return { success: false, output: e.message };
+        }
+      }
+
+      case 'snapshot_list': {
+        const snaps = listSnapshots(cwd);
+        if (!snaps.length) return { success: true, output: 'No snapshots for this project yet. Snapshots are created automatically before tool execution.' };
+        const lines = snaps.map(s => `${s.id.slice(0, 12)}  ${s.date.slice(0, 19).replace('T', ' ')}  ${s.message}`);
+        return { success: true, output: `Snapshots (newest first):\n${lines.join('\n')}\n\nUse snapshot_diff <id1> <id2> to compare, snapshot_restore <id> to restore.` };
+      }
+
+      case 'snapshot_diff': {
+        const from = input.from || 'HEAD';
+        const to = input.to || null;
+        if (to) {
+          const diff = snapshotDiff(cwd, from, to, input.full);
+          const summary = Array.isArray(diff) ? diff.map(d => `${d.status}  ${d.file}`).join('\n') : diff;
+          return { success: true, output: `Diff ${from.slice(0, 12)}..${to.slice(0, 12)}:\n${summary}` };
+        }
+        const changes = snapshotChanges(cwd, from);
+        if (!changes.length) return { success: true, output: 'No changes since that snapshot.' };
+        return { success: true, output: `Changes since ${from.slice(0, 12)}:\n${changes.map(c => `${c.status}  ${c.file}`).join('\n')}` };
+      }
+
+      case 'snapshot_restore': {
+        const result = restoreSnapshot(cwd, input.id, input.files);
+        if (result.failed.length) return { success: false, output: `Restore failed: ${result.failed.join(', ')}` };
+        const files = result.restored;
+        if (!files.length) return { success: false, output: 'No files to restore — snapshot may already match working tree.' };
+        const note = input.files ? ` (${input.files.length} files specified)` : ' (full snapshot)';
+        return { success: true, output: `Restored ${files.length} file(s) from snapshot ${input.id.slice(0, 12)}${note}:\n${files.join('\n')}` };
+      }
+
       case 'todo_add': {
         const { addTodo } = await import('../persist.js');
-        const result = addTodo(input.text, { source: 'agent', scope: todoScope });
-        const pending = result.list.filter(t => !t.done).length;
-        return { success: true, output: `● Added: "${input.text}"  (${pending} pending, ${result.list.length} total)` };
+        const result = addTodo(input.text, { source: 'agent', scope: todoScope, priority: input.priority });
+        if (input.status && input.status !== 'pending') {
+          const { updateTodo } = await import('../persist.js');
+          updateTodo(result.id, { status: input.status }, todoScope);
+        }
+        const all = result.list;
+        const pending = all.filter(t => t.status === 'pending').length;
+        const inProg = all.filter(t => t.status === 'in_progress').length;
+        return { success: true, output: `● Added: "${input.text}"  [${pending} pending, ${inProg} in-progress, ${all.length} total]` };
       }
 
       case 'todo_done': {
@@ -988,26 +1358,44 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
           if (fuzzy) { const r = toggleTodo(fuzzy.id, todoScope); return { success: true, output: `● Completed: "${r.text}" (matched by text, not id)` }; }
           return { success: false, output: `No TODO found with id "${input.id}". Use todo_list to see ids.` };
         }
-        return { success: true, output: toggled.done ? `● Completed: "${toggled.text}"` : `↩ Reopened: "${toggled.text}"` };
+        return { success: true, output: toggled.status === 'completed' ? `● Completed: "${toggled.text}"` : `↩ Reopened: "${toggled.text}"` };
       }
 
       case 'todo_list': {
         const { getTodos } = await import('../persist.js');
         const all = getTodos(todoScope);
         if (!all.length) return { success: true, output: 'TODO list is empty.' };
-        const pending = all.filter(t => !t.done);
-        const done = all.filter(t => t.done);
+        const pending   = all.filter(t => t.status === 'pending');
+        const inProgress = all.filter(t => t.status === 'in_progress');
+        const completed  = all.filter(t => t.status === 'completed');
         const lines = [];
+        const priorityIcon = { high: '🔴', medium: '🟡', low: '⚪' };
         if (pending.length) {
           lines.push(`── Pending (${pending.length}) ──`);
-          pending.forEach(t => lines.push(`  ☐ ${t.text}  [${t.id}]`));
+          pending.forEach(t => lines.push(`  ${priorityIcon[t.priority] || '🟡'} ☐ ${t.text}  [${t.id}]`));
         }
-        if (done.length) {
-          lines.push(`── Completed (${done.length}) ──`);
-          done.slice(-5).forEach(t => lines.push(`  ☑ ${t.text}`));
-          if (done.length > 5) lines.push(`  … and ${done.length - 5} more`);
+        if (inProgress.length) {
+          lines.push(`── In Progress (${inProgress.length}) ──`);
+          inProgress.forEach(t => lines.push(`  ${priorityIcon[t.priority] || '🟡'} ◉ ${t.text}  [${t.id}]`));
+        }
+        if (completed.length) {
+          lines.push(`── Completed (${completed.length}) ──`);
+          completed.slice(-5).forEach(t => lines.push(`  ☑ ${t.text}`));
+          if (completed.length > 5) lines.push(`  … and ${completed.length - 5} more`);
         }
         return { success: true, output: lines.join('\n') };
+      }
+
+      case 'todowrite': {
+        const { replaceTodos } = await import('../persist.js');
+        const { BUS } = await import('./bus.js');
+        const updated = replaceTodos(input.todos, todoScope);
+        const pending   = updated.filter(t => t.status === 'pending').length;
+        const inProgress = updated.filter(t => t.status === 'in_progress').length;
+        const completed  = updated.filter(t => t.status === 'completed').length;
+        // Publish event so UI can react
+        try { BUS.send('agent', 'main', { type: 'TodoUpdated', todos: updated, scope: todoScope }); } catch {}
+        return { success: true, output: `✓ Todo list updated: ${pending} pending, ${inProgress} in-progress, ${completed} completed (${updated.length} total)` };
       }
 
       case 'change_working_dir': {
@@ -1033,7 +1421,7 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
       case 'find_files':
       case 'glob': {
         const root = input.path ? resolve(cwd, input.path) : cwd;
-        const matches = walkGlob(root, input.pattern);
+        const matches = await searchGlob({ cwd: root, pattern: input.pattern || '*', limit: 500 });
         if (!matches.length) return { success: true, output: 'No files found.' };
         return { success: true, output: matches.slice(0, 200).join('\n') + (matches.length > 200 ? `\n… (${matches.length - 200} more)` : '') };
       }
@@ -1041,11 +1429,10 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
       case 'grep_files':
       case 'grep': {
         const root = input.path ? resolve(cwd, input.path) : cwd;
-        let re;
-        try { re = new RegExp(input.pattern, 'i'); } catch { re = new RegExp(escapeRegex(input.pattern), 'i'); }
-        const hits = grepWalk(root, re, input.include || null);
+        const hits = await searchGrep({ cwd: root, pattern: input.pattern, include: input.include || null, limit: 200 });
         if (!hits.length) return { success: true, output: 'No matches found.' };
-        return { success: true, output: hits.slice(0, 100).join('\n') + (hits.length > 100 ? `\n… (${hits.length - 100} more matches)` : '') };
+        const lines = hits.slice(0, 100).map((h) => `${h.path}:${h.line}: ${h.text}`);
+        return { success: true, output: lines.join('\n') + (hits.length > 100 ? `\n… (${hits.length - 100} more matches)` : '') };
       }
 
       case 'fetch_url': {
@@ -1088,9 +1475,17 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
           setCwd(agentLabel, cwd);
           return { success: true, output: `(cwd → ${cwd})` };
         }
+        // Plugin hook: shell.env — let plugins inject environment variables
+        let shellEnv = { ...process.env };
+        if (PLUGINS.hasHooks('shell.env')) {
+          const envCtx = await PLUGINS.dispatch('shell.env', { env: shellEnv, command: input.command, cwd });
+          if (envCtx.env) shellEnv = envCtx.env;
+        }
         if (input.background) {
           const id = `task-${++_bgCounter}`;
-          const proc = spawn(input.command, { cwd, shell: true, detached: false });
+          const shell = detectShell(SHELL_CONFIG.defaultShell);
+          const { shell: shellPath, args } = buildShellArgs(shell, input.command, cwd);
+          const proc = spawn(shellPath, args, { cwd, detached: false, env: shellEnv });
           const task = { id, command: input.command, proc, output: '', exitCode: null, startedAt: Date.now() };
           const append = (chunk) => {
             task.output = (task.output + chunk.toString()).slice(-20000); // keep last 20k chars
@@ -1109,7 +1504,9 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
           return { success: true, output: `Started background task ${id}: \`${input.command}\`\nUse check_task with id "${id}" to read output.` };
         }
         try {
-          const result = execSync(input.command, { cwd, encoding: 'utf8', timeout: 30000, stdio: ['pipe', 'pipe', 'pipe'] });
+          const shell = detectShell(SHELL_CONFIG.defaultShell);
+          const { shell: shellPath, args } = buildShellArgs(shell, input.command, cwd);
+          const result = execFileSync(shellPath, args, { cwd, encoding: 'utf8', timeout: 30000, stdio: ['pipe', 'pipe', 'pipe'], env: shellEnv });
           return { success: true, output: result || '(no output)' };
         } catch (err) {
           // execSync throws on non-zero exit — expose the actual stdout/stderr so the agent sees the failure reason
@@ -1239,6 +1636,93 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
       }
 
       case 'send_message': {
+        const { writeToMailbox, createShutdownRequestMessage, createShutdownApprovedMessage, createShutdownRejectedMessage, createPlanApprovalRequestMessage, createPlanApprovalResponseMessage, createTaskAssignmentMessage } = await import('../services/swarm/mailbox.js');
+        const { readTeamFile, getOtherMembers } = await import('../services/swarm/teamStore.js');
+
+        // Structured message via message object
+        if (input.message && typeof input.message === 'object') {
+          const msg = input.message;
+          const teamName = input._teamName || 'default';
+          let structured;
+          switch (msg.type) {
+            case 'shutdown_request':
+              structured = createShutdownRequestMessage({
+                requestId: msg.request_id || `shutdown-${Date.now()}`,
+                from: agentLabel,
+                reason: msg.reason,
+              });
+              break;
+            case 'shutdown_response':
+              if (msg.approve) {
+                structured = createShutdownApprovedMessage({
+                  requestId: msg.request_id,
+                  from: agentLabel,
+                });
+              } else {
+                structured = createShutdownRejectedMessage({
+                  requestId: msg.request_id,
+                  from: agentLabel,
+                  reason: msg.reason || 'Shutdown rejected',
+                });
+              }
+              break;
+            case 'plan_approval_response':
+              structured = createPlanApprovalResponseMessage({
+                requestId: msg.request_id,
+                approved: !!msg.approve,
+                feedback: msg.feedback,
+              });
+              break;
+            case 'task_assignment':
+              structured = createTaskAssignmentMessage({
+                taskId: msg.task_id || `task-${Date.now()}`,
+                subject: msg.subject || '',
+                description: msg.content || '',
+                assignedBy: agentLabel,
+              });
+              break;
+            default:
+              return { success: false, output: `Unknown structured message type: ${msg.type}` };
+          }
+          // Write structured message to mailbox
+          writeToMailbox(input.to, {
+            from: agentLabel,
+            text: JSON.stringify(structured),
+            timestamp: new Date().toISOString(),
+            color: input._teamColor || 'white',
+          }, teamName);
+          onNotify({ type: 'agent-msg', from: agentLabel, to: input.to, content: `[${msg.type}]` });
+          return { success: true, output: `Structured ${msg.type} sent to "${input.to}".` };
+        }
+
+        // Broadcast to all team members
+        if (input.to === '*') {
+          const teamName = input._teamName || 'default';
+          const teamFile = readTeamFile(teamName);
+          if (!teamFile) {
+            // Fallback: broadcast via BUS to all known agents
+            const agents = BUS.agents().filter(a => a !== agentLabel);
+            for (const a of agents) {
+              BUS.send(agentLabel, a, input.content);
+            }
+            onNotify({ type: 'agent-msg', from: agentLabel, to: '*', content: input.content });
+            return { success: true, output: `Broadcast via BUS to ${agents.length} agent(s): ${agents.join(', ')}` };
+          }
+          const recipients = getOtherMembers(teamName, agentLabel);
+          for (const name of recipients) {
+            writeToMailbox(name, {
+              from: agentLabel,
+              text: input.content,
+              summary: input.summary || input.content.slice(0, 80),
+              timestamp: new Date().toISOString(),
+              color: input._teamColor || 'white',
+            }, teamName);
+          }
+          onNotify({ type: 'agent-msg', from: agentLabel, to: '*', content: input.content });
+          return { success: true, output: `Broadcast to ${recipients.length} teammate(s): ${recipients.join(', ')}` };
+        }
+
+        // Direct message: try BUS first (same-process sub-agents), then mailbox
         BUS.send(agentLabel, input.to, input.content);
         onNotify({ type: 'agent-msg', from: agentLabel, to: input.to, content: input.content });
         return { success: true, output: `Message sent to "${input.to}".` };
@@ -1246,12 +1730,23 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
 
       case 'read_messages': {
         const msgs = BUS.read(agentLabel);
-        if (!msgs.length) return { success: true, output: 'No messages.' };
+        // Also check file-based mailbox
+        const { readUnreadMessages, markMessagesAsRead } = await import('../services/swarm/mailbox.js');
+        const mailboxMsgs = readUnreadMessages(agentLabel);
+        if (mailboxMsgs.length) markMessagesAsRead(agentLabel);
+
+        const allMsgs = [
+          ...msgs.map(m => `[${m.at}] from ${m.from}: ${m.content}`),
+          ...mailboxMsgs.map(m => `[${m.timestamp}] from ${m.from}: ${m.text}`),
+        ];
+        if (!allMsgs.length) return { success: true, output: 'No messages.' };
         for (const m of msgs) {
           onNotify({ type: 'agent-msg', from: m.from, to: agentLabel, content: m.content });
         }
-        const text = msgs.map((m) => `[${m.at}] from ${m.from}: ${m.content}`).join('\n');
-        return { success: true, output: text };
+        for (const m of mailboxMsgs) {
+          onNotify({ type: 'agent-msg', from: m.from, to: agentLabel, content: m.text });
+        }
+        return { success: true, output: allMsgs.join('\n') };
       }
 
       case 'wait_for_message': {
@@ -1267,9 +1762,60 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
             const text = msgs.map((m) => `[${m.at}] from ${m.from}: ${m.content}`).join('\n');
             return { success: true, output: text };
           }
+          // Also check file-based mailbox
+          const { readUnreadMessages, markMessagesAsRead } = await import('../services/swarm/mailbox.js');
+          const mailboxMsgs = readUnreadMessages(agentLabel);
+          if (mailboxMsgs.length) {
+            markMessagesAsRead(agentLabel);
+            for (const m of mailboxMsgs) {
+              onNotify({ type: 'agent-msg', from: m.from, to: agentLabel, content: m.text });
+            }
+            const text = mailboxMsgs.map((m) => `[${m.timestamp}] from ${m.from}: ${m.text}`).join('\n');
+            return { success: true, output: text };
+          }
           await new Promise((r) => setTimeout(r, POLL_MS));
         }
         return { success: false, output: `No message received within ${input.timeout_seconds || 60}s.` };
+      }
+
+      case 'team_create': {
+        const { createTeam } = await import('../services/swarm/teamStore.js');
+        try {
+          const teamFile = createTeam(input.team_name, agentLabel, input.description);
+          return { success: true, output: `Team "${input.team_name}" created. Lead: ${agentLabel}. Members: ${teamFile.members.map(m => m.name).join(', ')}.` };
+        } catch (err) {
+          return { success: false, output: err.message };
+        }
+      }
+
+      case 'team_delete': {
+        const { deleteTeam } = await import('../services/swarm/teamStore.js');
+        const ok = deleteTeam(input.team_name);
+        return ok
+          ? { success: true, output: `Team "${input.team_name}" deleted.` }
+          : { success: false, output: `Team "${input.team_name}" not found.` };
+      }
+
+      case 'team_list': {
+        const { listTeams, readTeamFile } = await import('../services/swarm/teamStore.js');
+        const teams = listTeams();
+        if (!teams.length) return { success: true, output: 'No teams exist yet.' };
+        const lines = teams.map(name => {
+          const tf = readTeamFile(name);
+          if (!tf) return `• ${name} (no config)`;
+          const members = tf.members.map(m => `  - ${m.name}${m.role ? ` (${m.role})` : ''}`).join('\n');
+          return `• ${name}${tf.description ? ` — ${tf.description}` : ''}\n  Lead: ${tf.leadAgentId}\n${members}`;
+        });
+        return { success: true, output: lines.join('\n\n') };
+      }
+
+      case 'team_join': {
+        const { addTeamMember, readTeamFile } = await import('../services/swarm/teamStore.js');
+        const teamFile = readTeamFile(input.team_name);
+        if (!teamFile) return { success: false, output: `Team "${input.team_name}" not found. Create it first with team_create.` };
+        const updated = addTeamMember(input.team_name, agentLabel, { role: input.role });
+        if (!updated) return { success: false, output: `Failed to join team "${input.team_name}".` };
+        return { success: true, output: `Joined team "${input.team_name}" as ${agentLabel}. Members: ${updated.members.map(m => m.name).join(', ')}.` };
       }
 
       case 'ask_vision': {
@@ -1431,6 +1977,95 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
         return { success: true, output: input.reason || 'Conversation ended.', terminate: true };
       }
 
+      case 'plan_read': {
+        const { getCurrentPlanPath, readPlanFile } = await import('../persist.js');
+        const p = getCurrentPlanPath();
+        if (!p) return { success: false, output: 'No active plan file. Start one with /plan create.' };
+        const text = readPlanFile(p);
+        if (text == null) return { success: false, output: 'Plan file not found or unreadable.' };
+        return { success: true, output: text };
+      }
+
+      case 'plan_write': {
+        const { getCurrentPlanPath, writePlanFile } = await import('../persist.js');
+        const p = getCurrentPlanPath();
+        if (!p) return { success: false, output: 'No active plan file. Start one with /plan create.' };
+        writePlanFile(p, input.content || '');
+        return { success: true, output: `Plan updated (${(input.content || '').length} chars written).` };
+      }
+
+      case 'plan_open': {
+        const { getCurrentPlanPath } = await import('../persist.js');
+        const p = getCurrentPlanPath();
+        if (!p) return { success: false, output: 'No active plan file. Start one with /plan create.' };
+        // Try common editors in order: $EDITOR, VS Code, cursor, vim, nano
+        const editor = process.env.EDITOR
+          || (existsSync('/usr/bin/code') ? 'code' : null)
+          || (existsSync('/usr/bin/cursor') ? 'cursor' : null)
+          || (existsSync('/usr/bin/vim') ? 'vim' : null)
+          || (existsSync('/usr/bin/nano') ? 'nano' : null)
+          || 'vi';
+        try {
+          execSync(`${editor} "${p}"`, { cwd, stdio: 'inherit', timeout: 0 });
+          return { success: true, output: `Opened plan file in ${editor}: ${p}` };
+        } catch (err) {
+          return { success: false, output: `Failed to open editor: ${err.message}` };
+        }
+      }
+
+      case 'wiki_read': {
+        const { wikiContent, wikiIsInitialized } = await import('../services/wiki/status.js');
+        const { readFileSync } = await import('fs');
+        const { getWikiRoot, pagePath } = await import('../services/wiki/paths.js');
+        const root = getWikiRoot(cwd);
+        if (!wikiIsInitialized(cwd)) return { success: false, output: 'Wiki not initialized yet. Use wiki_write to create the first page and automatically initialize it.' };
+        if (input.page) {
+          const p = pagePath(root, input.page);
+          try {
+            const content = readFileSync(p, 'utf8');
+            return { success: true, output: content };
+          } catch {
+            return { success: false, output: `Wiki page "${input.page}" not found. Use wiki_read without args to see all pages.` };
+          }
+        }
+        const index = wikiContent(cwd);
+        return { success: true, output: index || 'Wiki index is empty.' };
+      }
+
+      case 'wiki_write': {
+        const { getWikiRoot, pagePath, logPath } = await import('../services/wiki/paths.js');
+        const { writeFileSync, appendFileSync, existsSync, mkdirSync } = await import('fs');
+        const { buildIndex } = await import('../services/wiki/indexBuilder.js');
+        const root = getWikiRoot(cwd);
+        if (!existsSync(root)) mkdirSync(root, { recursive: true });
+        const dest = pagePath(root, input.title);
+        const dir = dirname(dest);
+        if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
+        const content = `# ${input.title}\n\n*Created ${new Date().toLocaleString()}*\n\n${input.content}`;
+        writeFileSync(dest, content, 'utf8');
+        if (!existsSync(logPath(root))) {
+          writeFileSync(logPath(root), `# Wiki Change Log\n\n`, 'utf8');
+        }
+        appendFileSync(logPath(root), `- ${new Date().toISOString()} — wrote page "${input.title}"\n`, 'utf8');
+        buildIndex(cwd);
+        return { success: true, output: `Wiki page "${input.title}" written to ${dest}. Index rebuilt.` };
+      }
+
+      case 'wiki_search': {
+        const { searchWiki } = await import('../services/wiki/status.js');
+        const { getWikiRoot } = await import('../services/wiki/paths.js');
+        const results = searchWiki(cwd, input.query);
+        if (!results.length) return { success: true, output: `No wiki results for "${input.query}".` };
+        const lines = [];
+        for (const r of results) {
+          lines.push(`## ${r.title}`);
+          for (const m of r.matches) {
+            lines.push(`  L${m.line}: ${m.text.slice(0, 200)}`);
+          }
+        }
+        return { success: true, output: `Wiki search results for "${input.query}":\n\n${lines.join('\n')}` };
+      }
+
       default: {
         // Google tools — only if connected
         if (name.startsWith('google_') && getOAuthToken('google')) {
@@ -1442,7 +2077,10 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
     }
   } catch (err) {
     const combined = [err.stdout, err.stderr].filter(Boolean).join('\n').trim();
-    return { success: false, output: combined || err.message || String(err) };
+    const message = combined || err.message || String(err);
+    // Wrap in ToolExecutionError for structured error data downstream
+    const toolErr = new ToolExecutionError({ tool: name, message });
+    return { success: false, output: message, error: toolErr };
   }
 }
 

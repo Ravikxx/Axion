@@ -2,6 +2,7 @@ import React from 'react';
 import { accent } from '../ui/theme.js';
 import { collapseDiff, diffStats } from '../utils/diff.js';
 import { highlightLine, langFromPath } from '../ui/markdown.js';
+import { collapseOutput } from './collapseOutput.js';
 
 // OpenTUI tool-call renderer: header (status + name + label + diff stats),
 // a colored unified diff for file writes, or truncated plain output otherwise.
@@ -184,14 +185,17 @@ function formatLabel(name, input) {
 const MAX_EXPAND = 300;
 
 function formatOutput(output, name, expanded) {
-  const lines = String(output).split('\n');
-  const MAX = expanded ? MAX_EXPAND : (name === 'run_command' ? 20 : 12);
-  if (lines.length <= MAX) return String(output);
-  const more = lines.length - MAX;
-  const note = expanded
-    ? `\n… ${more} more lines (too long to show in full — read the file/range directly)`
-    : `\n… ${more} more lines  (Ctrl+R to expand)`;
-  return lines.slice(0, MAX).join('\n') + note;
+  if (expanded) {
+    // Use configurable collapsing even in expanded mode
+    const { text } = collapseOutput(output, { maxLines: MAX_EXPAND, maxBytes: 64000 });
+    return text;
+  }
+  // Collapsed mode: use configurable limits
+  const { text } = collapseOutput(output, {
+    maxLines: name === 'run_command' ? 20 : 12,
+    maxBytes: name === 'run_command' ? 4000 : 2000,
+  });
+  return text;
 }
 
 function truncate(str, n) {

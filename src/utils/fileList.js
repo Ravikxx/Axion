@@ -1,5 +1,6 @@
 import { readdirSync } from 'fs';
 import { join, relative, sep } from 'path';
+import { searchFind } from '../services/search/searchEngine.js';
 
 const SKIP_DIRS = new Set([
   'node_modules', '.git', 'dist', 'build', '.next', '.cache', 'coverage',
@@ -39,7 +40,12 @@ function isSubsequence(hay, needle) {
 
 // Rank files against a query: exact basename hit > path substring > subsequence.
 // Empty query returns the first `limit` files (shallowest first).
+// When the search engine's `find` backend returns higher-quality ranked
+// results (ripgrep or fs adapter), prefer those; else fall back to the
+// in-memory ranker below.
 export function fuzzyFilter(files, query, limit = 8) {
+  const ranked = _trySearchEngine(query, limit);
+  if (ranked && ranked.length) return ranked;
   if (!query) {
     return [...files].sort((a, b) => a.split('/').length - b.split('/').length || a.length - b.length).slice(0, limit);
   }
@@ -58,4 +64,14 @@ export function fuzzyFilter(files, query, limit = 8) {
   }
   scored.sort((a, b) => b.score - a.score || a.f.length - b.f.length);
   return scored.slice(0, limit).map((s) => s.f);
+}
+
+function _trySearchEngine(query, limit) {
+  try {
+    const items = searchFind({ cwd: process.cwd(), query, type: 'file', limit });
+    if (!items || !items.length) return null;
+    return items.map((it) => it.path);
+  } catch {
+    return null;
+  }
 }

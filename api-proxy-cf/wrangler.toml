@@ -10,6 +10,14 @@ binding = "DB"
 database_name = "axion-db"
 database_id = "08b1ad36-8b1b-419d-8b3f-f93b04dd8723"
 
+[[durable_objects.bindings]]
+name = "BRIDGE"
+class_name = "BridgeRelay"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["BridgeRelay"]
+
 [[routes]]
 pattern = "api.amplifiedsmp.org/*"
 zone_name = "amplifiedsmp.org"

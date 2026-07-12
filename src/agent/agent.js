@@ -1,20 +1,41 @@
 import { readFileSync, existsSync } from 'fs';
 import { resolve, extname } from 'path';
 import { execSync } from 'child_process';
-import { createClient, resolveModel, resolveProvider } from './models.js';
+import { createClient, resolveModel, resolveProvider, getModelMaxTokensField, buildReasoningParams, applyTransportShim } from './models.js';
 import {
   TOOL_DEFINITIONS, TOOL_DEFINITIONS_OPENAI,
   COMPUTER_TOOL_DEFINITIONS, COMPUTER_TOOL_DEFINITIONS_OPENAI,
-  executeTool, parseToolCallsFromText, getCwd,
+  executeTool, parseToolCallsFromText, getCwd, setCwd,
 } from './tools.js';
-import { API_KEYS } from '../config.js';
+import { API_KEYS, CONTEXT_WINDOWS, MAX_TOOL_CONCURRENCY, CONTEXT_ZONES } from '../config.js';
+import { StreamingToolExecutor } from '../services/tools/toolExecutor.js';
+import { allConcurrentSafe } from '../services/tools/toolOrchestration.js';
+import { resolveNextFallback, isRateLimitError } from './providerFallback.js';
 import { BUS } from './bus.js';
-import { getMemories, getLearnedInstructions, getSkills, getAutoMemory } from '../persist.js';
+import { getMemories, getLearnedInstructions, getSkills, getAutoMemory, captureSnapshot, getCurrentPlanPath, readPlanFile } from '../persist.js';
+import { initWiki, wikiIsInitialized } from '../services/wiki/init.js';
+import { wikiContent } from '../services/wiki/status.js';
 import { MCP } from './mcp.js';
 import { PLUGINS } from './plugins.js';
 import { GOOGLE_TOOL_DEFINITIONS, GOOGLE_TOOL_DEFINITIONS_OPENAI } from './google.js';
 import { getOAuthToken } from '../oauth/oauth.js';
+import { ensureLspManager, closeLspManager, getLspManager } from '../services/lsp/manager.js';
 import { homedir } from 'os';
+import { NamedError, ProviderError } from '../utils/namedError.js';
+import { estimateTokens, estimateRequest, formatTokens, estimateCost } from '../utils/tokenEstimate.js';
+import { retry, isTransientError } from '../utils/retry.js';
+import { ToolFailureGuard } from './toolFailureGuard.js';
+import { startWatching, stopAll, onFileChange, FileWatcherEvent } from '../services/watcher/watcher.js';
+import { FILE_WATCHER } from '../config.js';
+import { parseTokenBudget, stripTokenBudget, createBudgetTracker, checkTokenBudget } from './tokenBudget.js';
+import { initAutoDream, executeAutoDream, isAutoDreamRunning } from '../services/autoDream/autoDream.js';
+
+// Initialise the auto-dream closure once per process. The gates (enabled /
+// time / session / lock) inside executeAutoDream decide whether anything
+// actually runs, so the init itself is unconditional and cheap.
+initAutoDream();
+import { AgentRegistry } from './agentRegistry.js';
+import { activeWorkspace, activeWorkspacePath, switchWorkspace, listWorkspaces } from '../services/workspaces/workspaceService.js';
 
 // ── Project context (built per working directory, cached) ────────────────────
 
@@ -265,10 +286,20 @@ class ThinkStreamFilter {
 export { ThinkStreamFilter };
 
 export class Agent {
-  constructor({ modelAlias, mode, label = 'main', todoScope = 'global', onToolCall, onToolResult, onMessage, onTokens, onStreamChunk, onStreamEnd, onNotify }) {
+  constructor({ modelAlias, mode, label = 'main', todoScope = 'global', onToolCall, onToolResult, onMessage, onTokens, onStreamChunk, onStreamEnd, onNotify, agentId, workspaceId }) {
     this.modelAlias   = modelAlias;
     this.mode         = mode;
     this.label        = label;
+    // Multi-Agent System: resolve a named agent (role, permissions, model
+    // override). Falls back to the default ("build") agent when unset.
+    this.agentId      = agentId || AgentRegistry.default().id;
+    this.agentInfo    = AgentRegistry.resolve(this.agentId);
+    if (this.agentInfo?.mode && !mode) this.mode = this.agentInfo.mode;
+    if (this.agentInfo?.model && !modelAlias) this.modelAlias = this.agentInfo.model;
+    // Multi-Workspace System: scope cwd to the active workspace's path when
+    // set. `workspaceId` (explicit) wins; otherwise the persisted active id.
+    this.workspaceId  = workspaceId || null;
+    this._applyWorkspace();
     // Scope key for the per-session TODO list (tab/chat isolation).
     this.todoScope    = todoScope;
     this.history      = [];
@@ -298,6 +329,14 @@ export class Agent {
     // Interrupt support — cancel() aborts the in-flight request and stops the loop
     this.cancelled  = false;
     this._abortCtrl = null;
+    // Tool failure loop guard — detects repeated failure patterns
+    this.failureGuard = new ToolFailureGuard();
+    // Token budget — when set (via "+500k" in the user's prompt), the agent
+    // keeps working autonomously until the budget is consumed.
+    this.tokenBudget = null;        // numeric budget target (e.g. 500000)
+    this.budgetTracker = null;      // createBudgetTracker() instance while active
+    this._budgetCompletion = null;  // last completion event emitted
+    this._budgetBaseline = 0;       // totalTokens baseline when budget started
 
     this.onToolCall    = onToolCall    || (() => {});
     this.onToolResult  = onToolResult  || (() => {});
@@ -308,11 +347,69 @@ export class Agent {
     this.onNotify      = onNotify      || ((n) => this.onMessage(n));
 
     BUS.register(label);
+
+    // LSP initialized lazily on first tool call — no startup cost
+    this._lspInitialized = false;
+    this._ensureLsp = () => {
+      if (!this._lspInitialized) {
+        this._lspInitialized = true;
+        ensureLspManager(getCwd(this.label));
+      }
+    };
+
+    // Wiki initialized lazily on first run
+    this._wikiInitialized = false;
+    this._ensureWiki = () => {
+      if (!this._wikiInitialized) {
+        this._wikiInitialized = true;
+        const projPath = getCwd(this.label);
+        if (projPath) initWiki(projPath);
+      }
+    };
+
+    // File watcher — started lazily on first prompt when enabled via AXION_FILE_WATCHER=1
+    this._watcherHandle = null;
+    this._ensureWatcher = () => {
+      if (this._watcherHandle || !FILE_WATCHER.enabled) return;
+      const cwd = getCwd(this.label);
+      if (!cwd) return;
+      this._watcherHandle = startWatching(cwd, {
+        debounceMs: FILE_WATCHER.debounceMs,
+        extraIgnore: FILE_WATCHER.extraIgnore,
+      });
+    };
   }
 
   setMode(mode)            { this.mode = mode; }
   setModel(alias)          { this.modelAlias = alias; }
   setSystemOverride(text)  { this.systemOverride = text; }
+
+  setAgent(agentId) {
+    this.agentId = agentId || AgentRegistry.default().id;
+    this.agentInfo = AgentRegistry.resolve(this.agentId);
+    if (this.agentInfo?.model) this.modelAlias = this.agentInfo.model;
+    if (this.agentInfo?.mode) this.mode = this.agentInfo.mode;
+    return this.agentInfo;
+  }
+
+  setWorkspace(workspaceId) {
+    this.workspaceId = workspaceId || null;
+    this._applyWorkspace();
+  }
+
+  _applyWorkspace() {
+    let ws = null;
+    if (this.workspaceId) {
+      try { ws = switchWorkspace(this.workspaceId); } catch { ws = null; }
+    } else {
+      // No explicit workspace — surface the persisted active one for the
+      // system prompt, but leave the agent's cwd alone so callers (App.jsx)
+      // keep controlling the initial working directory.
+      try { ws = activeWorkspace(); } catch {}
+    }
+    this.workspaceInfo = ws || null;
+    if (this.workspaceId && ws?.path) setCwd(this.label, ws.path);
+  }
   setChatMode(enabled)     { this.chatMode = !!enabled; }
   setThinking(enabled, budget = 10000) { this.thinking = { enabled, budget }; }
   setGoal(description)     { this.goal = description || null; }
@@ -325,13 +422,17 @@ export class Agent {
   cancel() {
     this.cancelled = true;
     try { this._abortCtrl?.abort(); } catch {}
+    // Propagate to any running sub-agents so Esc stops the whole fleet.
+    if (this._activeSubs) {
+      for (const sub of this._activeSubs) { try { sub.cancel(); } catch {} }
+    }
   }
 
   clearHistory() {
     this.history = [];
     this.activeSkills.clear();
     this.totalTokens = this.inputTokens = this.outputTokens = this.contextTokens = 0;
-    this.onTokens({ total: 0, input: 0, output: 0, context: 0 });
+    this.onTokens({ total: 0, input: 0, output: 0, context: 0, budget: 0, cost: 0 });
     this.pendingMessages = [];
   }
 
@@ -388,6 +489,20 @@ export class Agent {
     }
 
     let prompt = SYSTEM_PROMPT + getProjectContext(getCwd(this.label));
+
+    if (this.agentInfo?.roleDefinition) {
+      prompt += `\n\n## Agent role: ${this.agentInfo.name}${this.agentInfo.description ? ` — ${this.agentInfo.description}` : ''}\n${this.agentInfo.roleDefinition}`;
+    }
+    if (this.workspaceInfo) {
+      prompt += `\n\n## Workspace: ${this.workspaceInfo.name} (${this.workspaceInfo.path})`;
+    } else {
+      const wsList = (listWorkspaces && listWorkspaces()) || [];
+      if (wsList.length) {
+        prompt += `\n\n## Available workspaces\n` + wsList.map(w => `• ${w.id} — ${w.name} (${w.path})`).join('\n');
+        prompt += `\n\nUse the /workspace command (or workspace tool) to switch between projects.`;
+      }
+    }
+
     const memories = getMemories();
     if (memories.length) {
       prompt += `\n\nUser's persistent notes (always remember these):\n${memories.map((m, i) => `${i + 1}. ${m.text}`).join('\n')}`;
@@ -425,9 +540,48 @@ CRITICAL RULES — follow these exactly:
     if (this._thinkReminder && !this.thinking.enabled) {
       prompt += `\n\nIMPORTANT: The user has asked you to think or reason. You MUST use <think>...</think> tags to show your reasoning before responding. Write your thoughts as plain text inside the tags — do not call any tools inside a <think> block.`;
     }
-    if (MCP.getStatus().some(s => s.name === 'sequential-thinking' && s.ready)) {
+      if (MCP.getStatus().some(s => s.name === 'sequential-thinking' && s.ready)) {
       prompt += `\n\nSEQUENTIAL THINKING: You have the sequentialthinking tool. Use it silently and immediately before any non-trivial response — do NOT announce that you're going to think, do NOT ask permission, just call it. Never say "let me think" or "I'll use sequential thinking" — simply invoke the tool and then respond. Only skip it for one-word/trivial answers.`;
     }
+    const lspStatus = getLspManager()?.getStatus();
+    if (lspStatus?.length) {
+      prompt += `\n\nLSP CODE INTELLIGENCE: Language servers are active for ${lspStatus.map(s => s.languages.join(', ')).join(', ')}. Use the lsp tool with operations: goToDefinition (find where a symbol is defined), findReferences (find all usages), hover (get type info and docs), documentSymbol (list all symbols in a file), workspaceSymbol (search symbols across project), callHierarchy (see callers/callees).`;
+    }
+    const planPath = getCurrentPlanPath();
+    if (planPath) {
+      const planContent = readPlanFile(planPath);
+      if (planContent) {
+        prompt += `\n\n## Active Plan\nPath: ${planPath}\n\n${planContent.slice(0, 4000)}`;
+        prompt += `\n\nYou have plan_read, plan_write, and plan_open tools to interact with this plan file. Update it as you make progress.`;
+      }
+    }
+
+    const wikiText = wikiContent(getCwd(this.label));
+    if (wikiText) {
+      prompt += `\n\n## Project Wiki\n\n${wikiText.slice(0, 3000)}`;
+      prompt += `\n\nYou have wiki_read, wiki_write, and wiki_search tools to read, write, and search the project wiki.`;
+    }
+
+    // Team context — show available teams and members for multi-agent coordination
+    try {
+      const { listTeams, readTeamFile } = require('../services/swarm/teamStore.js');
+      const teams = listTeams();
+      if (teams.length) {
+        prompt += `\n\n## Available Teams\n`;
+        for (const name of teams) {
+          const tf = readTeamFile(name);
+          if (tf) {
+            const members = tf.members.map(m => `  • ${m.name}${m.role ? ` (${m.role})` : ''}${m.name === tf.leadAgentId ? ' [lead]' : ''}`).join('\n');
+            prompt += `\n### ${name}${tf.description ? ` — ${tf.description}` : ''}\nLead: ${tf.leadAgentId}\nMembers:\n${members}`;
+          }
+        }
+        prompt += `\n\nUse send_message(to="*") to broadcast to all teammates, or send_message(to="name") for direct messaging. Use team_create, team_join, team_list, team_delete to manage teams.`;
+      }
+    } catch { /* team services not available */ }
+
+    // Plugin hook: chat.system.transform — let plugins rewrite the system prompt
+    // Note: this is async but _getSystemPrompt is sync. We cache the result and
+    // resolve it before the model call. See _resolveSystemPromptForModel.
     return prompt;
   }
 
@@ -441,8 +595,8 @@ CRITICAL RULES — follow these exactly:
     const planPrompt = `The user asked: "${userMessage}"\n\nInvestigate first if useful — you may use the read-only tools available (read files, list directories, search) — then produce a numbered list of every step you will take. Do NOT modify files or run side-effecting commands; only research, then output the plan.`;
 
     const readOnlyTools = type === 'anthropic'
-      ? this._getToolList().filter((t) => Agent.PARALLEL_SAFE.has(t.name))
-      : this._getToolListOpenAI().filter((t) => Agent.PARALLEL_SAFE.has(t.function?.name));
+      ? (await this._getToolList()).filter((t) => Agent.PARALLEL_SAFE.has(t.name))
+      : (await this._getToolListOpenAI()).filter((t) => Agent.PARALLEL_SAFE.has(t.function?.name));
 
     const runTool = async (name, input, id) => {
       this.onToolCall({ name, input, id });
@@ -510,6 +664,27 @@ CRITICAL RULES — follow these exactly:
     this._activateSkills(userMessage);
     // Set think reminder if the user's message asks for reasoning
     this._thinkReminder = /\bthink(?:ing)?\b|\breason(?:ing)?\b|\bconsider\b|\breflect\b|\bponder\b/i.test(userMessage);
+
+    // Token budget — detect "+500k", "+2m", or "use 2M tokens" in the user's
+    // prompt. Strip the budget syntax (the budget is for the system, not the
+    // model) and materialize a tracker that drives autonomous continuation.
+    const budget = parseTokenBudget(userMessage);
+    if (budget && this.label === 'main') {
+      const cleaned = stripTokenBudget(userMessage);
+      userMessage = cleaned || userMessage;
+      this.tokenBudget = budget;
+      this.budgetTracker = createBudgetTracker();
+      this._budgetCompletion = null;
+      this._budgetBaseline = this.totalTokens;
+      this.onMessage({ role: 'notify', content: `[Token budget set to ${new Intl.NumberFormat('en-US').format(budget)} tokens — agent will work until ~90% is consumed]` });
+    } else if (this.budgetTracker && !this.cancelled) {
+      // Resume existing tracker if the user keeps prompting under budget
+    } else {
+      this.tokenBudget = null;
+      this.budgetTracker = null;
+      this._budgetCompletion = null;
+    }
+
     this.history.push({ role: 'user', content: buildUserContent(userMessage) });
 
     if (this.mode === 'plan') {
@@ -524,6 +699,21 @@ CRITICAL RULES — follow these exactly:
     }
 
     await this._agentLoop(askConfirm, askUser);
+
+    // Auto-dream post-sampling hook: fire-and-forget background memory
+    // consolidation. Never blocks the user's next turn; failures are logged
+    // silently so consolidation issues can't break the conversation loop.
+    if (isAutoDreamRunning()) {
+      executeAutoDream({
+        onStatus: (s) => {
+          if (s?.status === 'done' && s.summary) {
+            this.onMessage({ role: 'notify', content: `[dream] ${s.summary}` });
+          } else if (s?.status === 'failed') {
+            this.onMessage({ role: 'notify', content: `[dream] consolidation failed: ${s.error || 'unknown error'}` });
+          }
+        },
+      });
+    }
   }
 
   // ── Agent loop ────────────────────────────────────────────────────────────
@@ -553,6 +743,9 @@ CRITICAL RULES — follow these exactly:
     let adviceSent = false;
     let accumulatedText = '';
 
+    // Start file watcher on first agent loop if enabled
+    this._ensureWatcher();
+
     while (iterations < MAX) {
       if (this.cancelled) break;
       iterations++;
@@ -561,6 +754,24 @@ CRITICAL RULES — follow these exactly:
       if (iterations === 10 && !adviceSent) {
         adviceSent = true;
         await this._getAdvice('The agent has been iterating for a long time without finishing.');
+      }
+
+      // Plugin hook: chat.message — let plugins modify the history before model call
+      const historyBefore = this.history.length;
+      const hookResult = await PLUGINS.dispatch('chat.message', { messages: this.history });
+      if (hookResult.cancelled) break;
+      if (hookResult.messages !== this.history) this.history = hookResult.messages;
+
+      // Auto-compact: if estimated context exceeds 80% of the model's limit,
+      // trigger compaction before the model call to avoid hitting the ceiling
+      const contextLimit = CONTEXT_WINDOWS[resolveModel(this.modelAlias)] || 128_000;
+      const compactThreshold = Math.floor(contextLimit * 0.8);
+      if (this.contextTokens > compactThreshold && this.history.length > 4) {
+        const summary = await this.compact();
+        if (summary) {
+          this.onMessage({ role: 'notify', content: `[Context at ${formatTokens(this.contextTokens)}/${formatTokens(contextLimit)} — auto-compacted]` });
+          continue;
+        }
       }
 
       const response = await this._callModel();
@@ -578,9 +789,34 @@ CRITICAL RULES — follow these exactly:
         }
         accumulatedText = '';
         if (finalText) {
+          // Plugin hook: text.complete — let plugins post-process final text
+          finalText = await this._resolveTextComplete(finalText);
           this.onMessage({ role: 'assistant', content: finalText });
           this.history.push({ role: 'assistant', content: finalText });
         }
+
+        // Token budget: if the user asked the agent to consume ~N tokens, treat
+        // this stop as a continuation point — nudge the model to keep working
+        // unless the budget is met or returns are diminishing.
+        if (this.tokenBudget && this.budgetTracker && this.label === 'main' && !this.cancelled) {
+          const decision = checkTokenBudget(
+            this.budgetTracker, this.label !== 'main',
+            this.tokenBudget, this.totalTokens - (this._budgetBaseline || 0),
+          );
+          if (decision.action === 'continue') {
+            this.history.push({ role: 'user', content: decision.nudgeMessage });
+            continue;
+          }
+          this._budgetCompletion = decision.completionEvent;
+          if (decision.completionEvent) {
+            const ev = decision.completionEvent;
+            const tag = ev.diminishingReturns ? ' (diminishing returns)' : '';
+            this.onMessage({ role: 'notify', content: `[Token budget reached: ${ev.pct}% (${new Intl.NumberFormat('en-US').format(ev.turnTokens)}/${new Intl.NumberFormat('en-US').format(ev.budget)})${tag}]` });
+            this.tokenBudget = null;
+            this.budgetTracker = null;
+          }
+        }
+
         break;
       }
 
@@ -614,108 +850,112 @@ CRITICAL RULES — follow these exactly:
         sameToolStreak = 0;
       }
 
-      // Parallel execution: run all read-only tools concurrently when not in ask mode
-      const canParallel = this.mode !== 'ask' &&
-        toolCalls.length > 1 &&
-        toolCalls.every(tc => Agent.PARALLEL_SAFE.has(tc.name));
+      // Capture a snapshot before executing tools so the user can undo
+      const projPath = getCwd(this.label);
+      if (projPath) captureSnapshot(projPath, `before tools: ${toolCalls.map(t => t.name).join(', ')}`);
 
-      const toolResults = [];
+      // ── Concurrent Tool Execution Engine ──────────────────────────────────
+      // Tools are partitioned into batches: consecutive read-only tools run in
+      // parallel, write/exclusive tools run one-at-a-time.  The executor handles
+      // concurrency control, result ordering, and sibling abort on failure.
 
-      if (canParallel) {
-        toolCalls.forEach(tc => this.onToolCall({ name: tc.name, input: tc.input, id: tc.id }));
-        const settled = await Promise.allSettled(
-          toolCalls.map(tc =>
-            MCP.isMcpTool(tc.name)
-              ? MCP.callTool(tc.name, tc.input, { signal: this._abortCtrl?.signal })
-              : PLUGINS.isPluginTool(tc.name)
-                ? PLUGINS.callTool(tc.name, tc.input)
-                : executeTool(tc.name, tc.input, { agentLabel: this.label, onNotify: this.onNotify, askUser, todoScope: this.todoScope })
-          )
-        );
-        for (let i = 0; i < toolCalls.length; i++) {
-          const tc = toolCalls[i];
-          const r  = settled[i];
-          const result = r.status === 'fulfilled'
-            ? r.value
-            : { output: r.reason?.message || 'Tool error', success: false };
-          toolResults.push({ id: tc.id, name: tc.name, ...result });
-          this.onToolResult({ id: tc.id, name: tc.name, ...result });
-        }
-      } else {
-        for (const tc of toolCalls) {
-          if (this.cancelled) {
-            const skipped = { id: tc.id, name: tc.name, output: 'Interrupted by user.', success: false };
-            toolResults.push(skipped);
-            this.onToolResult(skipped);
-            continue;
-          }
+      const executor = new StreamingToolExecutor({
+        maxConcurrency: MAX_TOOL_CONCURRENCY,
+        isCancelled: () => this.cancelled,
+        onToolCall: (info) => this.onToolCall(info),
+        onToolResult: (info) => this.onToolResult(info),
 
-          this.onToolCall({ name: tc.name, input: tc.input, id: tc.id });
+        executeFn: async (name, input, { signal } = {}) => {
+          const tc = { name, input };
 
-          if (this.mode === 'decide' && !Agent.PARALLEL_SAFE.has(tc.name)) {
+          // ── Permission checks (decide / ask mode) ──────────────────────
+          if (this.mode === 'decide' && !Agent.PARALLEL_SAFE.has(name)) {
             let decision = await this._decideToolSafety(tc);
-            if (decision === 'safe' && Agent.DECIDE_ALWAYS_ASK.has(tc.name)) decision = 'ask';
-            if (decision === 'deny') {
-              const denied = { id: tc.id, name: tc.name, output: 'AI safety check: denied.', success: false };
-              toolResults.push(denied);
-              this.onToolResult({ id: tc.id, name: tc.name, output: 'AI safety check: denied.', success: false });
-              continue;
-            }
+            const permCtx = await PLUGINS.dispatch('permission.ask', { tool: name, input, decision });
+            if (permCtx.cancelled) return { output: 'Permission hook cancelled.', success: false };
+            decision = permCtx.decision;
+            if (decision === 'safe' && Agent.DECIDE_ALWAYS_ASK.has(name)) decision = 'ask';
+            if (decision === 'deny') return { output: 'AI safety check: denied.', success: false };
             if (decision === 'ask' && askConfirm) {
               const approved = await askConfirm(tc);
-              if (!approved) {
-                const declined = { id: tc.id, name: tc.name, output: 'User declined.', success: false };
-                toolResults.push(declined);
-                this.onToolResult({ id: tc.id, name: tc.name, output: 'User declined.', success: false });
-                continue;
-              }
+              if (!approved) return { output: 'User declined.', success: false };
             }
-            // 'safe' → fall through to execution
           } else if (this.mode === 'ask' && askConfirm) {
             const approved = await askConfirm(tc);
-            if (!approved) {
-              const declined = { id: tc.id, name: tc.name, output: 'User declined.', success: false };
-              toolResults.push(declined);
-              this.onToolResult({ id: tc.id, name: tc.name, output: 'User declined.', success: false });
-              continue;
+            if (!approved) return { output: 'User declined.', success: false };
           }
-        }
 
-          // Validate required arguments before executing
-          const def = TOOL_DEFINITIONS.find(t => t.name === tc.name);
+          // ── Validate required arguments ────────────────────────────────
+          const def = TOOL_DEFINITIONS.find(t => t.name === name);
           if (def?.input_schema?.required?.length) {
-            const missing = def.input_schema.required.filter(k => tc.input?.[k] == null);
+            const missing = def.input_schema.required.filter(k => input?.[k] == null);
             if (missing.length) {
-              const errMsg = `Tool "${tc.name}" missing required arg(s): ${missing.join(', ')}. Provide them and try again.`;
-              const failed = { id: tc.id, name: tc.name, output: errMsg, success: false };
-              toolResults.push(failed);
-              this.onToolResult(failed);
-              continue;
+              return { output: `Tool "${name}" missing required arg(s): ${missing.join(', ')}. Provide them and try again.`, success: false };
             }
           }
 
+          // ── Execute the tool (special-case routing) ────────────────────
           let result;
-          if (tc.name === 'spawn_agents') {
-            result = await this._spawnAgents(tc.input?.agents || [], { askConfirm });
-          } else if (MCP.isMcpTool(tc.name)) {
+          if (name === 'spawn_agents') {
+            result = await this._spawnAgents(input?.agents || [], { askConfirm });
+          } else if (MCP.isMcpTool(name)) {
             try {
-              result = await MCP.callTool(tc.name, tc.input, { signal: this._abortCtrl?.signal });
+              const beforeCtx = await PLUGINS.dispatch('tool.execute.before', { tool: name, input, agentLabel: this.label });
+              if (beforeCtx.cancelled) {
+                result = { output: 'Tool cancelled by plugin hook.', success: false };
+              } else {
+                try {
+                  result = await MCP.callTool(name, beforeCtx.input, { signal: this._abortCtrl?.signal });
+                } catch (e) {
+                  if (this.cancelled) { result = { output: 'Interrupted by user.', success: false }; }
+                  else { throw e; }
+                }
+                const afterCtx = await PLUGINS.dispatch('tool.execute.after', { tool: name, input: beforeCtx.input, result, agentLabel: this.label });
+                result = afterCtx.result || result;
+              }
             } catch (e) {
-              if (this.cancelled) {
-                result = { output: 'Interrupted by user.', success: false };
-              } else { throw e; }
+              if (this.cancelled) { result = { output: 'Interrupted by user.', success: false }; }
+              else { throw e; }
             }
-          } else if (PLUGINS.isPluginTool(tc.name)) {
-            result = await PLUGINS.callTool(tc.name, tc.input);
+          } else if (PLUGINS.isPluginTool(name)) {
+            result = await PLUGINS.callTool(name, input);
           } else {
-            result = await executeTool(tc.name, tc.input, { agentLabel: this.label, onNotify: this.onNotify, askUser, todoScope: this.todoScope });
+            const beforeCtx = await PLUGINS.dispatch('tool.execute.before', { tool: name, input, agentLabel: this.label });
+            if (beforeCtx.cancelled) {
+              result = { output: 'Tool cancelled by plugin hook.', success: false };
+            } else {
+              result = await executeTool(name, beforeCtx.input, { agentLabel: this.label, onNotify: this.onNotify, askUser, todoScope: this.todoScope });
+              const afterCtx = await PLUGINS.dispatch('tool.execute.after', { tool: name, input: beforeCtx.input, result, agentLabel: this.label });
+              result = afterCtx.result || result;
+            }
           }
-          toolResults.push({ id: tc.id, name: tc.name, ...result });
-          this.onToolResult({ id: tc.id, name: tc.name, ...result });
-        }
-      }
+
+          return result;
+        },
+      });
+
+      const toolResults = await executor.execute(toolCalls, this._abortCtrl?.signal);
 
       if (this.cancelled) break;
+
+      // Tool failure loop guard — check all results for repeated failure patterns
+      let guardTripped = false;
+      for (const tr of toolResults) {
+        if (tr.success === false) {
+          const tcMatch = toolCalls.find(t => t.id === tr.id);
+          const check = this.failureGuard.recordFailure(tr.name, tcMatch?.input || {}, tr.output);
+          if (check?.tripped) {
+            this.onMessage({ role: 'notify', content: `[Tool Failure Guard] ${check.message}` });
+            guardTripped = true;
+            break;
+          }
+        } else {
+          const tcMatch = toolCalls.find(t => t.id === tr.id);
+          this.failureGuard.recordSuccess(tr.name, tcMatch?.input || {});
+        }
+      }
+      if (guardTripped) break;
+
       this._pushToolResults(toolResults, response.type);
 
       // end_conversation tool — surface to UI and stop the loop
@@ -926,8 +1166,10 @@ One word only:`;
         this.onMessage({ role: 'adviser', content: advice });
         this.history.push({ role: 'user', content: `[Adviser (${adviser})]: ${advice}` });
       }
-    } catch {
-      // Don't crash the main loop if adviser fails
+    } catch (err) {
+      // Don't crash the main loop if the adviser fails — but tell the user,
+      // otherwise a broken /adviser model or endpoint fails silently forever.
+      this.onMessage({ role: 'adviser', content: `⚠ adviser (${adviser}) failed: ${err?.message || err}` });
     }
   }
 
@@ -952,8 +1194,6 @@ One word only:`;
   async _spawnAgents(agentDefs, { askConfirm } = {}) {
     if (!agentDefs.length) return { success: false, output: 'No agents specified.' };
 
-    this.onMessage({ role: 'assistant', content: `Spawning ${agentDefs.length} agent(s)…` });
-
     // Sub-agents inherit the parent's permission mode — running them in 'auto'
     // with blanket approval would let one approved spawn_agents call bypass
     // every tool confirmation. Confirmations are serialized through the
@@ -968,13 +1208,55 @@ One word only:`;
         }
       : () => Promise.resolve(true);
 
+    // Dedupe labels so two agents named "worker" don't share a BUS mailbox.
+    const usedLabels = new Set();
+    const uniqueLabel = (base) => {
+      let l = base, n = 2;
+      while (usedLabels.has(l)) l = `${base}-${n++}`;
+      usedLabels.add(l);
+      return l;
+    };
+
+    // Create a team for this spawn batch so agents can communicate via mailboxes
+    let teamName = null;
+    try {
+      const { createTeam, addTeamMember } = await import('../services/swarm/teamStore.js');
+      teamName = `batch-${Date.now().toString(36)}`;
+      createTeam(teamName, this.label, `Auto-created for spawn_agents batch`);
+      // Add each sub-agent to the team as they're spawned (below in the map)
+    } catch { /* team services not available — fall back to BUS-only */ }
+
+    // Token totals per sub-agent, summed so parallel agents don't clobber
+    // each other's counts (last-writer-wins would undercount).
+    const subTokens = agentDefs.map(() => 0);
+    const emitTokens = () => {
+      const subTotal = subTokens.reduce((a, b) => a + b, 0);
+      this.onTokens({ total: this.totalTokens + subTotal, input: this.inputTokens, output: this.outputTokens });
+    };
+
+    this._activeSubs = this._activeSubs || new Set();
+
     const results = await Promise.all(
-      agentDefs.map(async ({ model, task, label }, i) => {
+      agentDefs.map(async ({ model, task, label, role }, i) => {
         const modelToUse = model || this.modelAlias;
-        const agentLabel = label || `agent-${i + 1}`;
+        const agentLabel = uniqueLabel(label || `agent-${i + 1}`);
+        const runId = `sa_${Date.now().toString(36)}_${i}`;
 
         BUS.register(agentLabel);
-        this.onMessage({ role: 'sub-agent-status', label: agentLabel, status: 'start', task, index: i });
+
+        // Full transcript of this sub-agent's run — streamed to the UI so it
+        // can render a read-only chat view per agent.
+        const transcript = [{ kind: 'task', text: task, role: role || null }];
+        const emitRun = (status, extra = {}) => {
+          this.onMessage({
+            role: 'sub-agent-run',
+            id: runId, label: agentLabel, task, agentRole: role || null,
+            status, index: i,
+            transcript: transcript.map((e) => ({ ...e })),
+            ...extra,
+          });
+        };
+        emitRun('start');
 
         let subStreamBuf = '';
         let toolCount = 0;
@@ -982,27 +1264,50 @@ One word only:`;
           modelAlias: modelToUse,
           label: agentLabel,
           mode: subMode,
-          onMessage: ({ role, content }) => {
-            if (role === 'assistant' && content) {
-              this.onMessage({ role: 'sub-agent', content, label: agentLabel });
+          onMessage: ({ role: r, content }) => {
+            if (r === 'assistant' && content) {
+              transcript.push({ kind: 'assistant', text: content });
+              emitRun('update', { toolCount });
+            } else if (r === 'thinking' && content) {
+              transcript.push({ kind: 'thinking', text: content });
+              emitRun('update', { toolCount });
             }
           },
-          onToolCall: ({ name }) => {
+          onToolCall: ({ name, input, id }) => {
             toolCount++;
-            this.onMessage({ role: 'sub-agent-status', label: agentLabel, status: 'tool', task: name, index: i });
+            transcript.push({ kind: 'tool', id, name, input, pending: true });
+            emitRun('update', { toolCount, lastTool: name });
           },
-          onToolResult:  () => {},
-          onTokens: ({ total }) => this.onTokens({ total: this.totalTokens + total, input: this.inputTokens, output: this.outputTokens }),
+          onToolResult: ({ id, name, output, success }) => {
+            let e = id != null ? transcript.find((t) => t.kind === 'tool' && t.id === id && t.pending) : null;
+            if (!e) e = transcript.find((t) => t.kind === 'tool' && t.name === name && t.pending);
+            if (e) { e.output = output; e.success = success; e.pending = false; }
+            emitRun('update', { toolCount, lastTool: name });
+          },
+          onTokens: ({ total }) => { subTokens[i] = total; emitTokens(); },
           onStreamChunk: (chunk) => { subStreamBuf += chunk; },
           onStreamEnd:   () => {
             if (subStreamBuf.trim()) {
-              this.onMessage({ role: 'sub-agent', content: subStreamBuf, label: agentLabel });
+              transcript.push({ kind: 'assistant', text: subStreamBuf });
               subStreamBuf = '';
+              emitRun('update', { toolCount });
             }
           },
           onNotify: (n) => this.onMessage(n),
         });
+        // Role — an opencode-style persona/specialty prepended to the system
+        // prompt so the sub-agent behaves as that specialist.
+        if (role) sub.setSystemOverride(`You are acting as: ${role}. Stay within this role for the whole task.`);
 
+        // Register sub-agent in the team (if team was created)
+        if (teamName) {
+          try {
+            const { addTeamMember } = await import('../services/swarm/teamStore.js');
+            addTeamMember(teamName, agentLabel, { role: role || 'worker', model: modelToUse });
+          } catch { /* ignore */ }
+        }
+
+        this._activeSubs.add(sub);
         try {
           await sub.run(task, {
             askConfirm:     gatedConfirm,
@@ -1019,11 +1324,18 @@ One word only:`;
           const content = typeof lastMsg?.content === 'string'
             ? lastMsg.content
             : lastMsg?.content?.find?.((c) => c.type === 'text')?.text || '(completed)';
-          this.onMessage({ role: 'sub-agent-status', label: agentLabel, status: 'done', task: `${toolCount} tool call(s)`, index: i });
+          // The final text usually already streamed into the transcript as an
+          // assistant entry — only add a result entry when it didn't.
+          const lastAssistant = [...transcript].reverse().find((e) => e.kind === 'assistant');
+          if (!lastAssistant || lastAssistant.text !== content) transcript.push({ kind: 'result', text: content });
+          emitRun(this.cancelled ? 'error' : 'done', { toolCount, result: content });
           return `[${agentLabel}]:\n${content}`;
         } catch (err) {
-          this.onMessage({ role: 'sub-agent-status', label: agentLabel, status: 'error', task: err.message, index: i });
+          transcript.push({ kind: 'result', text: `ERROR: ${err.message}` });
+          emitRun('error', { toolCount, result: err.message });
           return `[${agentLabel}] ERROR: ${err.message}`;
+        } finally {
+          this._activeSubs.delete(sub);
         }
       })
     );
@@ -1054,68 +1366,169 @@ One word only:`;
 
   // ── Model calls ───────────────────────────────────────────────────────────
 
+  // Plugin hook: resolve system prompt through chat.system.transform
+  async _resolveSystemPrompt() {
+    let prompt = this._getSystemPrompt();
+    if (PLUGINS.hasHooks('chat.system.transform')) {
+      const ctx = await PLUGINS.dispatch('chat.system.transform', { prompt });
+      if (ctx.prompt) prompt = ctx.prompt;
+    }
+    return prompt;
+  }
+
+  // Plugin hook: resolve message history through chat.messages.transform
+  async _resolveHistory() {
+    let messages = this.history;
+    if (PLUGINS.hasHooks('chat.messages.transform')) {
+      const ctx = await PLUGINS.dispatch('chat.messages.transform', { messages });
+      if (ctx.messages) messages = ctx.messages;
+    }
+    // Context partitioning: when history is large, partition into priority zones
+    // and drop background messages that exceed their token budget.
+    if (messages.length > 12) {
+      const { partitionContext, getAllPartitionedMessages } = require('../agent/contextPartitioning.js');
+      const ctxWindow = CONTEXT_WINDOWS[resolveModel(this.modelAlias)] || 128_000;
+      const partitioned = partitionContext(messages, { contextWindow: ctxWindow, zones: CONTEXT_ZONES });
+      if (!partitioned.canFitInWindow) {
+        messages = getAllPartitionedMessages(partitioned);
+      }
+    }
+    return messages;
+  }
+
+  // Plugin hook: resolve LLM params through chat.params
+  async _resolveParams(params) {
+    if (PLUGINS.hasHooks('chat.params')) {
+      const ctx = await PLUGINS.dispatch('chat.params', { params });
+      if (ctx.params) return ctx.params;
+    }
+    return params;
+  }
+
+  // Plugin hook: resolve headers through chat.headers
+  async _resolveHeaders(headers) {
+    if (PLUGINS.hasHooks('chat.headers')) {
+      const ctx = await PLUGINS.dispatch('chat.headers', { headers: { ...headers } });
+      if (ctx.headers) return ctx.headers;
+    }
+    return headers;
+  }
+
+  // Plugin hook: post-process text through text.complete
+  async _resolveTextComplete(text) {
+    if (!text || !PLUGINS.hasHooks('text.complete')) return text;
+    const ctx = await PLUGINS.dispatch('text.complete', { text });
+    return ctx.text || text;
+  }
+
   async _callModel() {
     this._abortCtrl = new AbortController();
-    const MAX_RETRIES = 2;
-    const RETRY_DELAY = 3000;
-    for (let attempt = 1; attempt <= MAX_RETRIES + 1; attempt++) {
+    const maxFallbackAttempts = 3;
+    let lastError = null;
+    let triedModels = new Set();
+
+    for (let fallbackRound = 0; fallbackRound <= maxFallbackAttempts; fallbackRound++) {
       try {
-        const { client, type } = createClient(this.modelAlias);
-        const model = resolveModel(this.modelAlias);
-        let resp;
-        if (type === 'anthropic') resp = await this._callAnthropic(client, model);
-        else if (type === 'veil') resp = await this._callVeil(client, model);
-        else resp = await this._callOpenAI(client, model);
-        // Patchy: model returned nothing useful — retry after delay
-        if (resp && !resp.text && (!resp.toolCalls || !resp.toolCalls.length) && attempt <= MAX_RETRIES) {
-          await this._sleep(RETRY_DELAY * attempt);
-          continue;
-        }
+        const resp = await retry(async () => {
+          const { client, type } = createClient(this.modelAlias);
+          const model = resolveModel(this.modelAlias);
+          let r;
+          if (type === 'anthropic') r = await this._callAnthropic(client, model);
+          else if (type === 'veil') r = await this._callVeil(client, model);
+          else r = await this._callOpenAI(client, model);
+          if (r && !r.text && (!r.toolCalls || !r.toolCalls.length)) {
+            throw new Error('Model returned empty response — retrying');
+          }
+          return r;
+        }, {
+          attempts: 3,
+          delay: 1000,
+          factor: 2,
+          maxDelay: 8000,
+          retryIf: (err) => {
+            if (this.cancelled || /abort/i.test(err?.name || '') || /abort/i.test(err?.message || '')) return false;
+            return isTransientError(err) || /empty response/i.test(err?.message || '');
+          },
+          onRetry: ({ attempt, delay }) => {
+            this.onNotify?.({
+              role: 'notify',
+              content: `[Retry ${attempt}/3 in ${(delay / 1000).toFixed(1)}s after transient error]`,
+            });
+          },
+        });
         return resp;
       } catch (err) {
+        lastError = err;
         if (this.cancelled || /abort/i.test(err?.name || '') || /abort/i.test(err?.message || '')) {
           this.onStreamEnd();
           return null;
         }
-        if (attempt <= MAX_RETRIES) {
-          await this._sleep(RETRY_DELAY * attempt);
-          continue;
+        // Try provider fallback on rate-limit errors (only if not already tried)
+        if (isRateLimitError(err) && !triedModels.has(this.modelAlias)) {
+          triedModels.add(this.modelAlias);
+          const nextModel = resolveNextFallback(this.modelAlias);
+          if (nextModel) {
+            this.onNotify?.({
+              role: 'notify',
+              content: `[Rate limited — falling back to ${nextModel}]`,
+            });
+            this.modelAlias = nextModel;
+            continue; // retry with the new model
+          }
         }
+        // No more fallbacks — show error
         this.onStreamEnd();
         this.onMessage({ role: 'error', content: friendlyError(err, this.modelAlias) });
         return null;
-      } finally {
-        this._abortCtrl = null;
       }
     }
+    // Exhausted all fallback attempts
+    this.onStreamEnd();
+    this.onMessage({ role: 'error', content: friendlyError(lastError, this.modelAlias) });
     return null;
   }
 
-  _getToolList() {
+  async _getToolList() {
     const base = this.computerUse
       ? [...TOOL_DEFINITIONS, ...COMPUTER_TOOL_DEFINITIONS]
       : TOOL_DEFINITIONS;
     const google = getOAuthToken('google') ? GOOGLE_TOOL_DEFINITIONS : [];
-    return [...base, ...google, ...MCP.getAnthropicTools(), ...PLUGINS.getAnthropicTools()];
+    this._ensureLsp();
+    let tools = [...base, ...google, ...MCP.getAnthropicTools(), ...PLUGINS.getAnthropicTools()];
+    // Plugin hook: tool.definition — let plugins modify tool list before LLM call
+    tools = await PLUGINS.applyToolDefinitionHooks(tools);
+    // Multi-Agent System: filter tools by the active agent's permission ruleset
+    tools = AgentRegistry.filterTools(tools, this.agentInfo);
+    return tools;
   }
 
-  _getToolListOpenAI() {
+  async _getToolListOpenAI() {
     const base = this.computerUse
       ? [...TOOL_DEFINITIONS_OPENAI, ...COMPUTER_TOOL_DEFINITIONS_OPENAI]
       : TOOL_DEFINITIONS_OPENAI;
     const google = getOAuthToken('google') ? GOOGLE_TOOL_DEFINITIONS_OPENAI : [];
-    return [...base, ...google, ...MCP.getOpenAITools(), ...PLUGINS.getOpenAITools()];
+    let tools = [...base, ...google, ...MCP.getOpenAITools(), ...PLUGINS.getOpenAITools()];
+    // Plugin hook: tool.definition — let plugins modify tool list before LLM call
+    tools = await PLUGINS.applyToolDefinitionHooks(tools);
+    // Multi-Agent System: filter tools by the active agent's permission ruleset
+    tools = AgentRegistry.filterTools(tools, this.agentInfo);
+    return tools;
   }
 
   async _callAnthropic(client, model) {
-    const params = {
+    const systemPrompt = await this._resolveSystemPrompt();
+    const messages = await this._resolveHistory();
+    const toolList = await this._getToolList();
+    let params = {
       model,
       max_tokens: this.thinking.enabled ? Math.max(this.thinking.budget * 2, 16000) : 8192,
-      system: this._getSystemPrompt(),
-      messages: this.history,
-      tools: this._getToolList(),
+      system: systemPrompt,
+      messages,
+      tools: toolList,
     };
     if (this.thinking.enabled) params.thinking = { type: 'enabled', budget_tokens: this.thinking.budget };
+    params = await this._resolveParams(params);
+    applyTransportShim(params, this.modelAlias);
 
     // Update context gauge immediately with a local estimate (refined below).
     this._setContext(this._estimateTokens({ system: params.system, messages: params.messages, tools: params.tools }));
@@ -1154,9 +1567,11 @@ One word only:`;
   }
 
   async _callOpenAI(client, model) {
-    const sysContent = this._getSystemPrompt() + (this.thinking.enabled ? this._getThinkingInjection() : '');
+    const systemPrompt = await this._resolveSystemPrompt();
+    const messages = await this._resolveHistory();
+    const sysContent = systemPrompt + (this.thinking.enabled ? this._getThinkingInjection() : '');
     const maxTok     = this.thinking.enabled ? 16000 : 4096;
-    const msgs       = [{ role: 'system', content: sysContent }, ...this._historyToOpenAI()];
+    const msgs       = [{ role: 'system', content: sysContent }, ...this._historyToOpenAIFrom(messages)];
 
     let cleanText = '';
     const tcBufs = {};
@@ -1178,14 +1593,32 @@ One word only:`;
 
     // Update context gauge immediately with a local estimate (refined below if
     // the provider returns usage — many free OpenRouter models don't).
-    this._setContext(this._estimateTokens({ messages: msgs, tools: this._getToolListOpenAI() }));
+    const openaiToolList = await this._getToolListOpenAI();
+    this._setContext(this._estimateTokens({ messages: msgs, tools: openaiToolList }));
+
+    // Per-model reasoning metadata and transport shim
+    const maxTokField = getModelMaxTokensField(this.modelAlias);
+    const reasoningParams = buildReasoningParams(this.modelAlias, this.thinking.enabled, 'medium');
+
+    const body = {
+      model, messages: msgs, tools: openaiToolList,
+      tool_choice: 'auto', stream: true,
+      stream_options: { include_usage: true },
+    };
+    body[maxTokField] = maxTok;
+    if (Object.keys(reasoningParams).length) Object.assign(body, reasoningParams);
+    applyTransportShim(body, this.modelAlias);
+    // Plugin hook: chat.params — let plugins modify the full request body
+    const finalBody = await this._resolveParams(body);
+    // Plugin hook: chat.headers — let plugins inject extra HTTP headers
+    const extraHeaders = await this._resolveHeaders({});
+    const hasHeaders = Object.keys(extraHeaders).length > 0;
 
     try {
-      const streamResp = await client.chat.completions.create({
-        model, messages: msgs, tools: this._getToolListOpenAI(),
-        tool_choice: 'auto', max_tokens: maxTok, stream: true,
-        stream_options: { include_usage: true },
-      }, { signal: this._abortCtrl?.signal });
+      const streamResp = await client.chat.completions.create(finalBody, {
+        signal: this._abortCtrl?.signal,
+        ...(hasHeaders ? { headers: extraHeaders } : {}),
+      });
 
       for await (const chunk of streamResp) {
         if (this.cancelled) {
@@ -1236,7 +1669,11 @@ One word only:`;
 
     // Non-streaming fallback for tool-call failures (some providers)
     const fallbackMsgs = msgs.map((m, i) => i === 0 ? { ...m, content: m.content + getToolFallbackPrompt(this.computerUse) } : m);
-    const resp = await client.chat.completions.create({ model, messages: fallbackMsgs, max_tokens: maxTok });
+    const fallbackBody = { model, messages: fallbackMsgs };
+    fallbackBody[maxTokField] = maxTok;
+    if (Object.keys(reasoningParams).length) Object.assign(fallbackBody, reasoningParams);
+    applyTransportShim(fallbackBody, this.modelAlias);
+    const resp = await client.chat.completions.create(fallbackBody);
     const raw  = resp.choices[0]?.message?.content || '';
     this._setContext(resp.usage?.prompt_tokens);
     this._addTokens(resp.usage?.prompt_tokens, resp.usage?.completion_tokens);
@@ -1257,8 +1694,12 @@ One word only:`;
   // ── History helpers ───────────────────────────────────────────────────────
 
   _historyToOpenAI() {
+    return this._historyToOpenAIFrom(this.history);
+  }
+
+  _historyToOpenAIFrom(history) {
     const out = [];
-    for (const msg of this.history) {
+    for (const msg of history) {
       if (msg.role === 'user') {
         if (Array.isArray(msg.content)) {
           // Convert Anthropic image blocks to OpenAI format
@@ -1334,11 +1775,11 @@ One word only:`;
     }
   }
 
-  // Rough local token estimate from a request payload (chars / 4).
+  // Rough local token estimate from a request payload.
   // Used so the context gauge updates immediately and still works when a
   // provider returns no usage data (common with free OpenRouter models).
   _estimateTokens(payload) {
-    try { return Math.round(JSON.stringify(payload).length / 4); } catch { return 0; }
+    try { return estimateRequest(payload); } catch { return 0; }
   }
 
   // Set the current context-window usage = size of the next request's input.
@@ -1347,7 +1788,9 @@ One word only:`;
   _setContext(tokens) {
     if (tokens > 0) {
       this.contextTokens = tokens;
-      this.onTokens({ total: this.totalTokens, input: this.inputTokens, output: this.outputTokens, context: this.contextTokens });
+      const budget = CONTEXT_WINDOWS[resolveModel(this.modelAlias)] || 128_000;
+      const cost = estimateCost(this.inputTokens, this.outputTokens);
+      this.onTokens({ total: this.totalTokens, input: this.inputTokens, output: this.outputTokens, context: this.contextTokens, budget, cost });
     }
   }
 
@@ -1358,7 +1801,9 @@ One word only:`;
     this.inputTokens  += (inTok  || 0);
     this.outputTokens += (outTok || 0);
     this.totalTokens   = this.inputTokens + this.outputTokens;
-    this.onTokens({ total: this.totalTokens, input: this.inputTokens, output: this.outputTokens, context: this.contextTokens });
+    const budget = CONTEXT_WINDOWS[resolveModel(this.modelAlias)] || 128_000;
+    const cost = estimateCost(this.inputTokens, this.outputTokens);
+    this.onTokens({ total: this.totalTokens, input: this.inputTokens, output: this.outputTokens, context: this.contextTokens, budget, cost });
   }
 
   _sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
@@ -1378,6 +1823,24 @@ function formatResetTime(isoStr) {
 }
 
 function friendlyError(err, modelAlias) {
+  // Fast path: ProviderError carries structured data — use it directly
+  if (NamedError.hasName(err, 'ProviderError')) {
+    const { provider, message } = err.data;
+    const providerLabel = provider || modelAlias;
+    // Still apply status-based classification if the error carried a status
+    const status = err.data.status ?? err?.status ?? err?.response?.status;
+    if (status === 401) {
+      if (modelAlias === 'other') return `Auth failed for custom endpoint. Use /endpoint <url> <model> <key> to set the API key.`;
+      if (modelAlias === 'lumen') return `Invalid or revoked Axion API key. Use /axion-key <your-key> to set it, or /axion-key remove to use the free tier.\n→ Get a key at axion.amplifiedsmp.org/keys`;
+      return `Invalid API key for "${modelAlias}". Use /api ${modelAlias} <your-key> to set it.`;
+    }
+    if (status === 429) return `Rate limited by "${providerLabel}". Wait a moment and try again.`;
+    if (status === 404) return `Model not found: "${modelAlias}". Try /model <name> to switch.`;
+    if (status === 403) return `Access denied for "${modelAlias}". Check that your API key has the right permissions.`;
+    if (status === 500 || status === 503) return `The "${providerLabel}" API returned a server error (${status}). Try again in a moment.`;
+    return message || `Provider error (${providerLabel})`;
+  }
+
   const status = err?.status ?? err?.response?.status;
   const msg    = err?.message || String(err);
   const errObj = err?.error || {};

@@ -9,6 +9,7 @@ import { MCP } from '../agent/mcp.js';
 import {
   getSavedModel, getSavedMode, getSavedApiKeys, getSavedCustomEndpoints,
   loadChat, loadLastSession, saveChat, listChats, loadWorkspace,
+  getPinnedSessions,
 } from '../persist.js';
 import { API_KEYS, CUSTOM_ENDPOINTS, DEFAULT_MODEL, DEFAULT_MODE, fetchOpenRouterContextWindows, fetchEndpointContextWindows, fetchProviderModels } from '../config.js';
 import { accent } from '../ui/theme.js';
@@ -22,16 +23,26 @@ function pickSession() {
       process.stderr.write('\n  No saved sessions found.\n\n');
       process.exit(1);
     }
+    // Sort: pinned first (in pinned order), then unpinned by date
+    const pinned = getPinnedSessions();
+    const pinnedSet = new Set(pinned);
+    const pinnedChats = pinned
+      .map(name => chats.find(c => c.name === name))
+      .filter(Boolean);
+    const unpinnedChats = chats.filter(c => !pinnedSet.has(c.name));
+    const sorted = [...pinnedChats, ...unpinnedChats];
     let sel = 0;
     const render = () => {
       process.stderr.write('\x1b[?25l\x1b[2J\x1b[H\x1b[?1000l\x1b[?1002l\x1b[?1006l');
       process.stderr.write('  Select a session (↑/↓ Enter Esc  or  click):\n\n');
-      chats.forEach((c, i) => {
+      sorted.forEach((c, i) => {
         const pfx = i === sel ? ' ▸' : '  ';
+        const pin = pinnedSet.has(c.name) ? ' \x1b[35m📌\x1b[0m' : '';
         const dir = c.cwd ? String(c.cwd).split(/[\\/]/).pop() : '?';
         const date = c.savedAt ? new Date(c.savedAt).toLocaleString() : '';
-        const num = i < 9 ? `\x1b[90m${i + 1}\x1b[0m ` : '  ';
-        process.stderr.write(`  ${pfx} \x1b[33m${c.name}\x1b[0m  ${num}\x1b[90m${dir}\x1b[0m  ${date}\n`);
+        const slotIdx = pinned.indexOf(c.name);
+        const slotLabel = slotIdx >= 0 && slotIdx < 9 ? `\x1b[90m${slotIdx + 1}\x1b[0m ` : (i < 9 ? `\x1b[90m${i + 1}\x1b[0m ` : '  ');
+        process.stderr.write(`  ${pfx} \x1b[33m${c.name}\x1b[0m${pin}  ${slotLabel}\x1b[90m${dir}\x1b[0m  ${date}\n`);
       });
     };
     const cleanup = () => {
@@ -52,31 +63,31 @@ function pickSession() {
         // X10 mouse encoding
         const col = (b[3] || 0) - 32;
         const row = (b[4] || 0) - 32 - 3; // offset for header rows
-        if (row >= 0 && row < chats.length) { sel = row; render(); }
+        if (row >= 0 && row < sorted.length) { sel = row; render(); }
         return;
       }
       // SGR mouse: ESC [ < Cb ; Cx ; Cy M
       const sgrM = s.match(/^\x1b\[<(\d+);(\d+);(\d+)[Mm]/);
       if (sgrM) {
         const row = parseInt(sgrM[3], 10) - 3;
-        if (row >= 0 && row < chats.length) { sel = row; render(); }
+        if (row >= 0 && row < sorted.length) { sel = row; render(); }
         return;
       }
       // Arrow keys + any other CSI sequence
       if (b[0] === 27 && b[1] === 91) {
         if (b[2] === 65) { sel = Math.max(0, sel - 1); render(); return; }
-        if (b[2] === 66) { sel = Math.min(chats.length - 1, sel + 1); render(); return; }
+        if (b[2] === 66) { sel = Math.min(sorted.length - 1, sel + 1); render(); return; }
         return; // any CSI sequence (arrows, F-keys, Home, End, etc.) — ignore
       }
       // Number keys 1-9
       const n = parseInt(s, 10);
-      if (n >= 1 && n <= 9 && n <= chats.length) {
+      if (n >= 1 && n <= 9 && n <= sorted.length) {
         sel = n - 1; render(); return;
       }
       // Enter
       if (b[0] === 13 || b[0] === 10) {
         cleanup();
-        resolve(chats[sel].name);
+        resolve(sorted[sel].name);
       }
       // Esc
       if (b[0] === 27) {

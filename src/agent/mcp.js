@@ -1,7 +1,8 @@
 import { spawn, execSync } from 'child_process';
-import { existsSync, readFileSync, writeFileSync, mkdirSync } from 'fs';
+import { existsSync, readFileSync } from 'fs';
 import { join } from 'path';
 import { homedir } from 'os';
+import { writeJsonAtomic } from '../tui/persistence.js';
 
 const DIR         = join(homedir(), '.axion');
 const CONFIG_FILE = join(DIR, 'mcp.json');
@@ -17,8 +18,7 @@ export function getMcpConfig() {
 }
 
 export function saveMcpConfig(cfg) {
-  if (!existsSync(DIR)) mkdirSync(DIR, { recursive: true });
-  writeFileSync(CONFIG_FILE, JSON.stringify(cfg, null, 2), 'utf8');
+  writeJsonAtomic(CONFIG_FILE, cfg);
 }
 
 // ── Single MCP server connection ──────────────────────────────────────────────

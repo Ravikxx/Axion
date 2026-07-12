@@ -461,6 +461,22 @@ app.post('/auth/login', async (c) => {
   return json({ token: await makeToken(user.id, c.env.TOKEN_SECRET), email: user.email })
 })
 
+// Native-app login: same checks as /auth/login minus the Turnstile browser
+// challenge, which native apps can't render. Brute force stays bounded by the
+// shared per-IP auth rate limit (10 attempts / 15 min).
+app.post('/auth/login/app', async (c) => {
+  const ip = c.req.header('CF-Connecting-IP') || 'unknown'
+  if (!await checkRateLimit(c.env.DB, ip)) return json({ error: 'Too many attempts. Try again in 15 minutes.' }, 429)
+
+  const { email, password } = await c.req.json().catch(() => ({}))
+  const user = await c.env.DB.prepare('SELECT * FROM users WHERE email=?').bind((email || '').toLowerCase()).first()
+  const pw_hash = await hashPw(password || '', c.env.PW_SALT)
+  if (!user || !user.pw_hash || user.pw_hash !== pw_hash) return json({ error: 'Invalid email or password' }, 401)
+  if (!user.verified) return json({ error: 'Please verify your email before signing in.' }, 403)
+  if (user.banned) return json({ error: 'Your account has been suspended. Check your email for an appeal link.', banned: true }, 403)
+  return json({ token: await makeToken(user.id, c.env.TOKEN_SECRET), email: user.email })
+})
+
 // ── Dashboard ──────────────────────────────────────────────────────────────
 
 app.get('/dashboard/keys', async (c) => {
@@ -825,7 +841,34 @@ app.get('/v1/models', async (c) => {
   })
 })
 
-app.get('/health', (c) => json({ ok: true, model: 'lumen-1.2.5' }))
+// `ok` means the API itself is up; `model_up` means the model behind it
+// actually answered a 1-token probe. Probes are cached for 2 minutes so
+// website page loads don't hammer the upstream.
+app.get('/health', async (c) => {
+  const cache = caches.default
+  const cacheKey = new Request('https://health.internal/model-probe')
+  let model_up
+  const cached = await cache.match(cacheKey)
+  if (cached) {
+    model_up = (await cached.json()).model_up
+  } else {
+    try {
+      const res = await fetch(HF_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ model: 'lumen', messages: [{ role: 'user', content: 'ping' }], max_tokens: 1, stream: false }),
+        signal: AbortSignal.timeout(6000),
+      })
+      model_up = res.ok
+    } catch {
+      model_up = false
+    }
+    c.executionCtx.waitUntil(cache.put(cacheKey, new Response(JSON.stringify({ model_up }), {
+      headers: { 'Content-Type': 'application/json', 'Cache-Control': 'max-age=120' },
+    })))
+  }
+  return json({ ok: true, model: 'lumen-1.2.5', model_up })
+})
 
 // ── Admin panel ────────────────────────────────────────────────────────────
 
@@ -1681,5 +1724,92 @@ app.post('/orgs/:id/keys', async (c) => {
   ).bind(id, ctx.user.id, orgId, key_value, label || 'Team Key').run()
   return json({ id, key_value, label: label || 'Team Key', org_id: orgId }, 201)
 })
+
+// ── CLI <-> mobile app bridge relay ─────────────────────────────────────────
+//
+// Lets the Axion CLI (running on a desktop) and the Axion mobile app pair up
+// through this worker instead of requiring the phone to be on the same LAN.
+// One Durable Object instance per user id holds the live CLI socket and
+// relays terminal I/O to any attached app sockets. Auth accepts either an
+// axion-sk- API key (what the CLI already stores) or a session token (what
+// the app stores after device-flow login) — same account, either credential.
+
+async function resolveBridgeUser(c) {
+  const auth = (c.req.header('Authorization') || '').replace(/^Bearer\s+/i, '').trim()
+  if (!auth) return null
+  if (auth.startsWith('axion-sk-')) {
+    const keyRow = await c.env.DB.prepare('SELECT user_id FROM api_keys WHERE key_value=? AND revoked=0').bind(auth).first()
+    return keyRow ? keyRow.user_id : null
+  }
+  const payload = await parseToken(auth, c.env.TOKEN_SECRET)
+  return payload?.uid || null
+}
+
+app.get('/bridge/ws', async (c) => {
+  const upgrade = c.req.header('Upgrade') || ''
+  if (upgrade.toLowerCase() !== 'websocket') return json({ error: 'Expected websocket upgrade' }, 426)
+
+  const userId = await resolveBridgeUser(c)
+  if (!userId) return json({ error: 'Not authenticated' }, 401)
+
+  const role = c.req.query('role') === 'cli' ? 'cli' : 'app'
+  const id = c.env.BRIDGE.idFromName(userId)
+  const stub = c.env.BRIDGE.get(id)
+
+  const url = new URL(c.req.url)
+  url.searchParams.set('role', role)
+  return stub.fetch(new Request(url, c.req.raw))
+})
+
+export class BridgeRelay {
+  constructor(state, env) {
+    this.state = state
+    this.cli = null
+    this.apps = new Set()
+  }
+
+  async fetch(request) {
+    const url = new URL(request.url)
+    const role = url.searchParams.get('role') === 'cli' ? 'cli' : 'app'
+
+    const pair = new WebSocketPair()
+    const [client, server] = Object.values(pair)
+    server.accept()
+
+    if (role === 'cli') {
+      // Only one active CLI session per account — a new connection replaces
+      // the old one (e.g. CLI restarted) rather than stacking up.
+      if (this.cli) { try { this.cli.close(4000, 'replaced by new connection') } catch {} }
+      this.cli = server
+      this.broadcastStatus(true)
+
+      server.addEventListener('message', (ev) => this.relayToApps(ev.data))
+      const onGone = () => { if (this.cli === server) { this.cli = null; this.broadcastStatus(false) } }
+      server.addEventListener('close', onGone)
+      server.addEventListener('error', onGone)
+    } else {
+      this.apps.add(server)
+      try { server.send(JSON.stringify({ type: 'status', connected: !!this.cli })) } catch {}
+
+      server.addEventListener('message', (ev) => {
+        if (this.cli) { try { this.cli.send(ev.data) } catch {} }
+      })
+      const onGone = () => { this.apps.delete(server) }
+      server.addEventListener('close', onGone)
+      server.addEventListener('error', onGone)
+    }
+
+    return new Response(null, { status: 101, webSocket: client })
+  }
+
+  relayToApps(data) {
+    for (const app of this.apps) { try { app.send(data) } catch {} }
+  }
+
+  broadcastStatus(connected) {
+    const msg = JSON.stringify({ type: 'status', connected })
+    for (const app of this.apps) { try { app.send(msg) } catch {} }
+  }
+}
 
 export default app

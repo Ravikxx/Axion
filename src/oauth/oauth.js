@@ -1,10 +1,11 @@
-import { existsSync, readFileSync, writeFileSync, mkdirSync } from 'fs';
+import { existsSync, readFileSync } from 'fs';
 import { join } from 'path';
 import { homedir } from 'os';
 import { createServer } from 'http';
 import { execSync } from 'child_process';
 import { OAUTH_PROVIDERS } from './providers.js';
 import { encryptJSON, decryptJSON } from '../utils/crypto.js';
+import { writeJsonAtomic } from '../tui/persistence.js';
 
 const DIR        = join(homedir(), '.axion');
 const TOKEN_FILE = join(DIR, 'oauth.json');
@@ -22,9 +23,8 @@ function loadTokens() {
 }
 
 function saveTokens(tokens) {
-  if (!existsSync(DIR)) mkdirSync(DIR, { recursive: true });
   const encrypted = encryptJSON(tokens, TOKEN_SECRET_KEYS);
-  writeFileSync(TOKEN_FILE, JSON.stringify(encrypted, null, 2), 'utf8');
+  writeJsonAtomic(TOKEN_FILE, encrypted);
 }
 
 export function getOAuthToken(service) {

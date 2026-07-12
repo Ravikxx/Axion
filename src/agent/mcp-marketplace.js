@@ -1,7 +1,8 @@
-import { readFileSync, writeFileSync, unlinkSync, mkdirSync } from 'fs'
+import { readFileSync, unlinkSync } from 'fs'
 import { join } from 'path'
 import { homedir } from 'os'
 import { fileURLToPath } from 'url'
+import { writeJsonAtomic } from '../tui/persistence.js'
 
 // Bundled MCP servers live inside the axion package — resolve them against
 // this file, not process.cwd(), so installs work from any launch directory.
@@ -258,8 +259,7 @@ async function loadRemoteCatalog() {
 
     // Persist to disk cache
     try {
-      mkdirSync(join(homedir(), '.axion'), { recursive: true })
-      writeFileSync(cachePath(), JSON.stringify({ fetched_at: Date.now(), servers: data.servers }))
+      writeJsonAtomic(cachePath(), { fetched_at: Date.now(), servers: data.servers })
     } catch { /* ignore write failure */ }
   } catch { /* keep local list on any error */ }
 }

@@ -1,7 +1,10 @@
-import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync, unlinkSync } from 'fs';
-import { join, resolve } from 'path';
+import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync, unlinkSync, renameSync } from 'fs';
+import { join, resolve, dirname } from 'path';
 import { homedir } from 'os';
 import { encryptJSON, decryptJSON } from './utils/crypto.js';
+import { execSync } from 'child_process';
+import { createHash, randomUUID } from 'crypto';
+import { writeJsonAtomic, writeTextAtomic } from './tui/persistence.js';
 
 const DIR  = join(homedir(), '.axion');
 const FILE = join(DIR, 'config.json');
@@ -25,7 +28,7 @@ function save(data) {
     const onDisk = load();
     const merged = { ...onDisk, ...data };
     const encrypted = encryptJSON(merged, SECRET_KEYS);
-    writeFileSync(FILE, JSON.stringify(encrypted, null, 2), 'utf8');
+    writeJsonAtomic(FILE, encrypted);
   } catch (e) {
     console.error('[persist] Failed to save config:', e?.message || e);
   }
@@ -183,7 +186,7 @@ export function saveDonation(history) {
   const ts       = new Date().toISOString().replace(/[:.]/g, '-');
   const file     = join(DONATIONS_DIR, `${ts}.json`);
   const messages = toTrainingFormat(history);
-  writeFileSync(file, JSON.stringify({ messages, meta: { donatedAt: new Date().toISOString(), source: 'axion' } }, null, 2), 'utf8');
+  writeJsonAtomic(file, { messages, meta: { donatedAt: new Date().toISOString(), source: 'axion' } });
   return file;
 }
 
@@ -202,7 +205,7 @@ export function addMemory(text) {
   const list = getMemories();
   list.push({ text, addedAt: new Date().toISOString() });
   if (!existsSync(DIR)) mkdirSync(DIR, { recursive: true });
-  writeFileSync(MEMORY_FILE, JSON.stringify(list, null, 2), 'utf8');
+  writeJsonAtomic(MEMORY_FILE, list);
   return list;
 }
 
@@ -210,8 +213,91 @@ export function removeMemory(index) {
   const list = getMemories();
   if (index < 0 || index >= list.length) return false;
   list.splice(index, 1);
-  writeFileSync(MEMORY_FILE, JSON.stringify(list, null, 2), 'utf8');
+  writeJsonAtomic(MEMORY_FILE, list);
   return true;
+}
+
+// ── Session-Committed Plan Files (durable plan mode) ──────────────────────────
+
+const PLANS_DIR = join(DIR, 'plans');
+let _currentPlanPath = null;
+
+// Deterministic word-slug from a counter so consecutive calls give different slugs.
+let _slugCounter = 0;
+function generatePlanSlug() {
+  try {
+    const words = [
+      'amber', 'blue', 'coral', 'dusk', 'ember', 'frost', 'glade', 'haze',
+      'ivory', 'jade', 'kiwi', 'lilac', 'mauve', 'night', 'ocean', 'pine',
+      'quartz', 'raven', 'stone', 'tide', 'umber', 'vale', 'wisp', 'xeno',
+      'yarn', 'zinc', 'acorn', 'birch', 'cliff', 'delta', 'elm', 'fjord',
+    ];
+    const a = words[(_slugCounter >> 0) % words.length];
+    const b = words[(_slugCounter >> 1 | Date.now() % 10) % words.length];
+    _slugCounter++;
+    return `${a}-${b}`;
+  } catch {
+    return `plan-${Date.now().toString(36)}`;
+  }
+}
+
+export function getPlanDir() {
+  if (!existsSync(PLANS_DIR)) mkdirSync(PLANS_DIR, { recursive: true });
+  return PLANS_DIR;
+}
+
+export function getCurrentPlanPath() {
+  return _currentPlanPath || _cfg.currentPlanPath || null;
+}
+
+export function setCurrentPlanPath(absPath) {
+  _currentPlanPath = absPath;
+  _cfg.currentPlanPath = absPath;
+  save(_cfg);
+}
+
+export function clearCurrentPlanPath() {
+  _currentPlanPath = null;
+  delete _cfg.currentPlanPath;
+  save(_cfg);
+}
+
+export function createPlanFile(content = '') {
+  const dir = getPlanDir();
+  let slug = generatePlanSlug();
+  let attempts = 0;
+  while (existsSync(join(dir, `${slug}.md`)) && attempts < 50) {
+    slug = generatePlanSlug();
+    attempts++;
+  }
+  const path = join(dir, `${slug}.md`);
+  const header = `# Plan: ${slug}\n\n*Created ${new Date().toLocaleString()}*\n\n`;
+  writeTextAtomic(path, header + (content || ''));
+  setCurrentPlanPath(path);
+  return path;
+}
+
+export function readPlanFile(path) {
+  try {
+    if (!existsSync(path)) return null;
+    return readFileSync(path, 'utf8');
+  } catch {
+    return null;
+  }
+}
+
+export function writePlanFile(path, content) {
+  writeTextAtomic(path, content);
+}
+
+export function listPlanFiles() {
+  try {
+    if (!existsSync(PLANS_DIR)) return [];
+    return readdirSync(PLANS_DIR)
+      .filter(f => f.endsWith('.md'))
+      .sort()
+      .reverse();
+  } catch { return []; }
 }
 
 // ── Undo (file backup stack) ──────────────────────────────────────────────────
@@ -226,7 +312,7 @@ export function backupFile(originalPath, content) {
     const ts   = Date.now();
     const name = originalPath.replace(/[^a-zA-Z0-9.-]/g, '_').slice(-60);
     const dest = join(BACKUPS_DIR, `${ts}-${name}`);
-    writeFileSync(dest, content, 'utf8');
+    writeTextAtomic(dest, content);
     _undoStack.push({ originalPath, backupPath: dest });
     // Prune oldest backup if over cap
     if (_undoStack.length > MAX_BACKUPS) {
@@ -241,7 +327,7 @@ export function undoLastBackup() {
   const { originalPath, backupPath } = _undoStack.pop();
   try {
     const content = readFileSync(backupPath, 'utf8');
-    writeFileSync(originalPath, content, 'utf8');
+    writeTextAtomic(originalPath, content);
     unlinkSync(backupPath);
     return originalPath;
   } catch (err) {
@@ -298,10 +384,9 @@ export function getSkills() {
 }
 
 export function saveSkill(name, content) {
-  if (!existsSync(SKILLS_DIR)) mkdirSync(SKILLS_DIR, { recursive: true });
   const slug = name.toLowerCase().replace(/[^a-z0-9-]+/g, '-').replace(/^-|-$/g, '');
   const path = join(SKILLS_DIR, `${slug}.md`);
-  writeFileSync(path, content, 'utf8');
+  writeTextAtomic(path, content);
   return path;
 }
 
@@ -332,6 +417,50 @@ export function allowTool(key) {
 export function clearAllowedTools() {
   if (_cfg.allowedTools) delete _cfg.allowedTools[currentDirectoryKey()];
   save(_cfg);
+}
+
+// ── Credential Database (persistent, encrypted credential storage) ────────────
+// Integrations: provider names like 'anthropic', 'openai', 'gemini', etc.
+
+const CREDENTIALS_FILE = join(DIR, 'credentials.json');
+
+function readCredentialStore() {
+  try {
+    if (!existsSync(CREDENTIALS_FILE)) return [];
+    const raw = JSON.parse(readFileSync(CREDENTIALS_FILE, 'utf8'));
+    return Array.isArray(raw) ? raw : [];
+  } catch { return []; }
+}
+
+function writeCredentialStore(entries) {
+  writeJsonAtomic(CREDENTIALS_FILE, entries);
+}
+
+export function getCredentials(integration) {
+  return readCredentialStore().filter(c => c.integration === integration);
+}
+
+export function saveCredential(integration, value, label = 'default') {
+  const store = readCredentialStore();
+  const existing = store.findIndex(c => c.integration === integration && c.label === label);
+  const entry = {
+    id: `cred_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 6)}`,
+    integration, label, value,
+    createdAt: new Date().toISOString(),
+  };
+  if (existing >= 0) { entry.createdAt = store[existing].createdAt; store[existing] = entry; }
+  else store.push(entry);
+  writeCredentialStore(store);
+  return entry;
+}
+
+export function removeCredential(id) {
+  const store = readCredentialStore();
+  const idx = store.findIndex(c => c.id === id);
+  if (idx === -1) return false;
+  store.splice(idx, 1);
+  writeCredentialStore(store);
+  return true;
 }
 
 // ── Custom slash commands ─────────────────────────────────────────────────────
@@ -397,7 +526,7 @@ export function rewindCheckpoints(count = 1) {
   while (undone < count && _checkpoints.length) {
     const c = _checkpoints.pop();
     for (const [path, content] of c.files) {
-      try { writeFileSync(path, content, 'utf8'); restored.add(path); } catch {}
+      try { writeTextAtomic(path, content); restored.add(path); } catch {}
     }
     for (const path of c.created) {
       try { unlinkSync(path); deleted.add(path); restored.delete(path); } catch {}
@@ -449,8 +578,7 @@ function serializeChat(name, { model, mode, tokenCount, agentHistory, displayMes
 }
 
 export function saveChat(name, payload) {
-  if (!existsSync(CHATS_DIR)) mkdirSync(CHATS_DIR, { recursive: true });
-  writeFileSync(join(CHATS_DIR, `${name}.json`), JSON.stringify(serializeChat(name, payload), null, 2), 'utf8');
+  writeJsonAtomic(join(CHATS_DIR, `${name}.json`), serializeChat(name, payload));
 }
 
 // ── Session autosave (axion --continue) ────────────────────────────────────────
@@ -460,8 +588,7 @@ const LAST_SESSION_FILE = join(DIR, 'last-session.json');
 
 export function autosaveSession(payload) {
   try {
-    if (!existsSync(DIR)) mkdirSync(DIR, { recursive: true });
-    writeFileSync(LAST_SESSION_FILE, JSON.stringify(serializeChat('__last__', payload), null, 2), 'utf8');
+    writeJsonAtomic(LAST_SESSION_FILE, serializeChat('__last__', payload));
   } catch {}
 }
 
@@ -476,6 +603,20 @@ export function clearLastSession() {
   try { if (existsSync(LAST_SESSION_FILE)) unlinkSync(LAST_SESSION_FILE); } catch {}
 }
 
+// ── Multi-Workspace System (typed workspace registry) ─────────────────────────
+// Active workspace id is stored in config.json; the full registry of named
+// workspaces lives in ~/.axion/workspaces.json (see src/services/workspaces/).
+// The legacy workspace.json (tab-layout autosave) below is unrelated and kept
+// intact — this is an additive, separate concept.
+
+export function getCurrentWorkspaceId() { return _cfg.currentWorkspaceId || null; }
+
+export function setCurrentWorkspaceId(id) {
+  if (id) _cfg.currentWorkspaceId = id;
+  else delete _cfg.currentWorkspaceId;
+  save(_cfg);
+}
+
 // ── Workspace: every open tab, autosaved continuously ──────────────────────────
 // Lets `axion -c` reopen the whole multi-tab workspace, and protects background
 // tabs from being lost on a crash (which never reaches the exit handler).
@@ -486,9 +627,8 @@ export function autosaveWorkspace(tabs) {
     const list = (tabs || [])
       .filter((t) => t && Array.isArray(t.agentHistory) && t.agentHistory.length > 0)
       .map((t, i) => ({ ...serializeChat(t.name || `tab_${i + 1}`, t), title: t.title || null }));
-    if (!list.length) return; // never clobber a recovery file with an empty workspace
-    if (!existsSync(DIR)) mkdirSync(DIR, { recursive: true });
-    writeFileSync(WORKSPACE_FILE, JSON.stringify({ savedAt: new Date().toISOString(), tabs: list }, null, 2), 'utf8');
+    if (!list.length) return;
+    writeJsonAtomic(WORKSPACE_FILE, { savedAt: new Date().toISOString(), tabs: list });
   } catch {}
 }
 
@@ -519,7 +659,7 @@ export function deleteChat(name) {
 
 export function exportSession(filePath, sessionData) {
   const outPath = filePath.endsWith('.axion-session.json') ? filePath : `${filePath}.axion-session.json`;
-  writeFileSync(outPath, JSON.stringify({ ...sessionData, __axion: true, exportedAt: new Date().toISOString() }, null, 2), 'utf8');
+  writeJsonAtomic(outPath, { ...sessionData, __axion: true, exportedAt: new Date().toISOString() });
   return outPath;
 }
 
@@ -552,7 +692,7 @@ export function exportChat(filename, messages) {
     }
   }
   const outPath = join(process.cwd(), filename.endsWith('.md') ? filename : `${filename}.md`);
-  writeFileSync(outPath, lines.join('\n'), 'utf8');
+  writeTextAtomic(outPath, lines.join('\n'));
   return outPath;
 }
 
@@ -561,9 +701,7 @@ export function exportChat(filename, messages) {
 const MACROS_DIR = join(DIR, 'macros');
 
 export function saveMacro(name, steps) {
-  if (!existsSync(MACROS_DIR)) mkdirSync(MACROS_DIR, { recursive: true });
-  const data = { name, savedAt: new Date().toISOString(), steps };
-  writeFileSync(join(MACROS_DIR, `${name}.json`), JSON.stringify(data, null, 2), 'utf8');
+  writeJsonAtomic(join(MACROS_DIR, `${name}.json`), { name, savedAt: new Date().toISOString(), steps });
 }
 
 export function loadMacro(name) {
@@ -607,7 +745,7 @@ export function appendLearnedInstructions(text) {
   const existing = getLearnedInstructions();
   const separator = existing ? '\n\n---\n\n' : '';
   const stamped   = `*Learned ${new Date().toLocaleString()}*\n\n${text.trim()}`;
-  writeFileSync(LEARNED_FILE, existing + separator + stamped, 'utf8');
+  writeTextAtomic(LEARNED_FILE, existing + separator + stamped);
 }
 
 export function clearLearnedInstructions() {
@@ -626,8 +764,7 @@ export function getAutoMemory() {
 }
 
 export function saveAutoMemory(text) {
-  if (!existsSync(DIR)) mkdirSync(DIR, { recursive: true });
-  writeFileSync(AUTO_MEMORY_FILE, text.trim(), 'utf8');
+  writeTextAtomic(AUTO_MEMORY_FILE, text.trim());
 }
 
 export function clearAutoMemory() {
@@ -646,9 +783,8 @@ export function listProfiles() {
 }
 
 export function saveProfile(name, data) {
-  if (!existsSync(PROFILES_DIR)) mkdirSync(PROFILES_DIR, { recursive: true });
   const file = join(PROFILES_DIR, name.replace(/[^a-z0-9_-]/gi, '') + '.json');
-  writeFileSync(file, JSON.stringify(data, null, 2), 'utf8');
+  writeJsonAtomic(file, data);
   return file;
 }
 
@@ -682,6 +818,83 @@ export function listChats() {
     .sort((a, b) => (b.savedAt || '').localeCompare(a.savedAt || ''));
 }
 
+// ── Session Pinning & Quick-Switch Slots ──────────────────────────────────────
+// Pinned sessions persist in ~/.axion/pinned-sessions.json
+// Quick-switch slots are the first 9 pinned sessions (Alt+1 through Alt+9).
+
+const PINNED_FILE = join(DIR, 'pinned-sessions.json');
+
+function readPinned() {
+  try {
+    if (!existsSync(PINNED_FILE)) return [];
+    const raw = JSON.parse(readFileSync(PINNED_FILE, 'utf8'));
+    return Array.isArray(raw) ? raw.filter(s => typeof s === 'string') : [];
+  } catch { return []; }
+}
+
+function writePinned(list) {
+  try { writeJsonAtomic(PINNED_FILE, list); } catch {}
+}
+
+/**
+ * Get the list of pinned session names (ordered, max determines slots).
+ * @returns {string[]}
+ */
+export function getPinnedSessions() {
+  return readPinned();
+}
+
+/**
+ * Check if a session is pinned.
+ * @param {string} name
+ * @returns {boolean}
+ */
+export function isSessionPinned(name) {
+  return readPinned().includes(name);
+}
+
+/**
+ * Toggle pin state of a session. Returns the new pinned list.
+ * @param {string} name
+ * @returns {string[]}
+ */
+export function togglePinSession(name) {
+  const list = readPinned();
+  const idx = list.indexOf(name);
+  if (idx === -1) list.push(name);
+  else list.splice(idx, 1);
+  writePinned(list);
+  return list;
+}
+
+/**
+ * Get quick-switch slots: the first 9 pinned sessions that still exist on disk.
+ * Index 0 = Alt+1, index 8 = Alt+9.
+ * @returns {{ slot: number, name: string }[]}
+ */
+export function getQuickSwitchSlots() {
+  const pinned = readPinned();
+  const existing = new Set(
+    readdirSync(CHATS_DIR)
+      .filter(f => f.endsWith('.json'))
+      .map(f => f.slice(0, -5))
+  );
+  return pinned
+    .filter(name => existing.has(name))
+    .slice(0, 9)
+    .map((name, i) => ({ slot: i + 1, name }));
+}
+
+/**
+ * Prune a session from pins and slots when it's deleted.
+ * @param {string} name
+ */
+export function prunePinnedSession(name) {
+  const list = readPinned();
+  const filtered = list.filter(n => n !== name);
+  if (filtered.length !== list.length) writePinned(filtered);
+}
+
 // ── Input history ─────────────────────────────────────────────────────────────
 
 const INPUT_HISTORY_FILE = join(DIR, 'input-history');
@@ -698,11 +911,10 @@ export function loadInputHistory() {
 
 export function appendInputHistory(entry) {
   try {
-    if (!existsSync(DIR)) mkdirSync(DIR, { recursive: true });
     const lines = loadInputHistory().filter((l) => l !== entry);
     lines.push(entry);
     const capped = lines.slice(-MAX_INPUT_HISTORY);
-    writeFileSync(INPUT_HISTORY_FILE, capped.join('\n') + '\n', 'utf8');
+    writeTextAtomic(INPUT_HISTORY_FILE, capped.join('\n') + '\n');
   } catch {}
 }
 
@@ -719,8 +931,7 @@ export function getSchedules() {
 }
 
 export function saveSchedules(list) {
-  if (!existsSync(DIR)) mkdirSync(DIR, { recursive: true });
-  writeFileSync(SCHEDULES_FILE, JSON.stringify(list, null, 2), 'utf8');
+  writeJsonAtomic(SCHEDULES_FILE, list);
 }
 
 export function saveScheduleResult(name, content) {
@@ -728,7 +939,7 @@ export function saveScheduleResult(name, content) {
   const safe = name.replace(/[^a-zA-Z0-9_-]/g, '_');
   const ts   = new Date().toISOString().replace(/[:.]/g, '-');
   const file = join(RESULTS_DIR, `${safe}-${ts}.md`);
-  writeFileSync(file, content, 'utf8');
+  writeTextAtomic(file, content);
   return file;
 }
 
@@ -769,12 +980,42 @@ const TODOS_FILE = join(DIR, 'todos.json');
 // Todos are scoped per session (tab/chat) so concurrent tabs don't share a list.
 // On-disk shape is { [scope]: TodoItem[] }. A legacy bare-array file is migrated
 // into the 'global' scope on first read.
+//
+// TodoItem shape (v2):
+//   { id, text, done, source, createdAt,
+//     priority: 'high'|'medium'|'low',    // default 'medium'
+//     status: 'pending'|'in_progress'|'completed',  // default 'pending'
+//     position: number }                   // sort order
+
+const VALID_PRIORITIES = new Set(['high', 'medium', 'low']);
+const VALID_STATUSES   = new Set(['pending', 'in_progress', 'completed']);
+
+function normalizeTodo(item) {
+  if (!item || typeof item !== 'object') return item;
+  // Migrate legacy `done: true` → `status: 'completed'`
+  if (item.done && item.status !== 'completed') item.status = 'completed';
+  if (!VALID_STATUSES.has(item.status)) {
+    item.status = item.done ? 'completed' : 'pending';
+  }
+  if (!VALID_PRIORITIES.has(item.priority)) item.priority = 'medium';
+  if (typeof item.position !== 'number') item.position = 0;
+  return item;
+}
+
 function readTodoMap() {
   try {
     if (!existsSync(TODOS_FILE)) return {};
     const raw = JSON.parse(readFileSync(TODOS_FILE, 'utf8'));
-    if (Array.isArray(raw)) return { global: raw }; // migrate legacy flat list
-    return raw && typeof raw === 'object' ? raw : {};
+    let map = Array.isArray(raw) ? { global: raw } : raw;
+    if (map && typeof map === 'object') {
+      // Normalize all items on read
+      for (const scope of Object.keys(map)) {
+        if (Array.isArray(map[scope])) {
+          map[scope] = map[scope].map(normalizeTodo);
+        }
+      }
+    }
+    return map || {};
   } catch (e) {
     console.error('[persist] Failed to load todos:', e?.message || e);
     return {};
@@ -783,15 +1024,16 @@ function readTodoMap() {
 
 function writeTodoMap(map) {
   try {
-    if (!existsSync(DIR)) mkdirSync(DIR, { recursive: true });
-    writeFileSync(TODOS_FILE, JSON.stringify(map, null, 2), 'utf8');
+    writeJsonAtomic(TODOS_FILE, map);
   } catch (e) {
     console.error('[persist] Failed to save todos:', e?.message || e);
   }
 }
 
 export function getTodos(scope = 'global') {
-  return readTodoMap()[scope] || [];
+  const list = readTodoMap()[scope] || [];
+  // Sort by position, then creation time
+  return list.sort((a, b) => (a.position ?? 0) - (b.position ?? 0));
 }
 
 function saveTodos(list, scope = 'global') {
@@ -802,13 +1044,54 @@ function saveTodos(list, scope = 'global') {
 
 // Replace a scope's list wholesale (used to seed a resumed chat's todos).
 export function setTodosFor(scope, list) {
-  saveTodos(Array.isArray(list) ? list : [], scope);
+  saveTodos(Array.isArray(list) ? list.map(normalizeTodo) : [], scope);
 }
 
-export function addTodo(text, { source = 'user', scope = 'global' } = {}) {
+/**
+ * Atomically replace the full todo list for a scope (used by todowrite tool).
+ * Each item is normalized (priority/status defaults applied).
+ * Returns the updated list.
+ */
+export function replaceTodos(list, scope = 'global') {
+  const normalized = (Array.isArray(list) ? list : []).map((item, idx) => {
+    const n = normalizeTodo(item);
+    n.position = idx;
+    return n;
+  });
+  saveTodos(normalized, scope);
+  return normalized;
+}
+
+/**
+ * Update specific fields of a todo by id (partial update).
+ * Returns the updated item or null if not found.
+ */
+export function updateTodo(id, fields, scope = 'global') {
+  const list = getTodos(scope);
+  const todo = list.find(t => t.id === id);
+  if (!todo) return null;
+  if (fields.text !== undefined)     todo.text     = fields.text;
+  if (fields.priority !== undefined && VALID_PRIORITIES.has(fields.priority)) todo.priority = fields.priority;
+  if (fields.status !== undefined && VALID_STATUSES.has(fields.status)) {
+    todo.status = fields.status;
+    todo.done   = fields.status === 'completed';
+  }
+  if (fields.position !== undefined) todo.position = fields.position;
+  saveTodos(list, scope);
+  return todo;
+}
+
+export function addTodo(text, { source = 'user', scope = 'global', priority = 'medium' } = {}) {
   const list = getTodos(scope);
   const id = `todo_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 6)}`;
-  list.push({ id, text, done: false, source, createdAt: new Date().toISOString() });
+  const maxPos = list.reduce((max, t) => Math.max(max, t.position ?? 0), 0);
+  list.push({
+    id, text, done: false, source,
+    priority: VALID_PRIORITIES.has(priority) ? priority : 'medium',
+    status: 'pending',
+    position: maxPos + 1,
+    createdAt: new Date().toISOString(),
+  });
   saveTodos(list, scope);
   return { id, list };
 }
@@ -817,7 +1100,14 @@ export function toggleTodo(id, scope = 'global') {
   const list = getTodos(scope);
   const todo = list.find(t => t.id === id);
   if (!todo) return null;
-  todo.done = !todo.done;
+  // Toggle: pending → completed, in_progress → completed, completed → pending
+  if (todo.status === 'completed') {
+    todo.status = 'pending';
+    todo.done = false;
+  } else {
+    todo.status = 'completed';
+    todo.done = true;
+  }
   saveTodos(list, scope);
   return todo;
 }
@@ -866,8 +1156,202 @@ export function appendCostLog(entry) {
       .filter((e) => new Date(e.ts).getTime() >= cutoff)
       .slice(-(COST_LOG_MAX_ENTRIES - 1));
     log.push({ ts: new Date().toISOString(), ...entry });
-    writeFileSync(COST_LOG_FILE, JSON.stringify(log, null, 2), 'utf8');
+    writeJsonAtomic(COST_LOG_FILE, log);
   } catch (e) {
     console.error('[persist] Failed to save cost log:', e?.message || e);
   }
+}
+
+// ── Content-Addressed Snapshot/Undo System ──────────────────────────────────
+// Uses a dedicated git repo per project under ~/.axion/snapshots/<project-hash>/
+// Each capture produces a stable commit hash (content-addressed ID).
+// Supports per-file diffs, selective restore, and preview-before-restore.
+// Respects the project's .gitignore rules automatically via git's --work-tree.
+
+const SNAPSHOTS_DIR = join(DIR, 'snapshots');
+
+function _snapshotRepoPath(projectPath) {
+  const hash = createHash('sha256').update(resolve(projectPath)).digest('hex').slice(0, 16);
+  return join(SNAPSHOTS_DIR, hash);
+}
+
+function _ensureSnapshotRepo(projectPath) {
+  const repoPath = _snapshotRepoPath(projectPath);
+  if (!existsSync(join(repoPath, '.git'))) {
+    mkdirSync(repoPath, { recursive: true });
+    execSync('git init', { cwd: repoPath, stdio: 'pipe', encoding: 'utf8' });
+    execSync('git config user.email "axion@snapshot"', { cwd: repoPath, stdio: 'pipe', encoding: 'utf8' });
+    execSync('git config user.name "Axion Snapshot"', { cwd: repoPath, stdio: 'pipe', encoding: 'utf8' });
+    execSync('git config commit.gpgsign false', { cwd: repoPath, stdio: 'pipe', encoding: 'utf8' });
+  }
+  return repoPath;
+}
+
+function _snapGit(args, projectPath, repoPath) {
+  const gitDir = join(repoPath, '.git');
+  const escapedArgs = args.map(a => `"${a.replace(/"/g, '\\"')}"`).join(' ');
+  return execSync(`git --git-dir="${gitDir}" --work-tree="${projectPath}" ${escapedArgs}`, {
+    encoding: 'utf8',
+    stdio: 'pipe',
+    timeout: 30000,
+  }).trim();
+}
+
+// Capture the current state of a project directory.
+// Returns a stable snapshot ID (git commit hash), or null on failure.
+export function captureSnapshot(projectPath, label = '') {
+  try {
+    const repoPath = _ensureSnapshotRepo(projectPath);
+    const absPath = resolve(projectPath);
+    if (!existsSync(absPath)) return null;
+
+    _snapGit(['add', '-A', '--ignore-errors'], absPath, repoPath);
+
+    const status = execSync(`git --git-dir="${join(repoPath, '.git')}" status --porcelain`, {
+      cwd: repoPath, encoding: 'utf8', stdio: 'pipe',
+    }).trim();
+    if (!status) return null;
+
+    const msg = label ? `snapshot: ${label}` : `snapshot ${new Date().toISOString()}`;
+    _snapGit(['commit', '-m', msg], absPath, repoPath);
+    return execSync(`git --git-dir="${join(repoPath, '.git')}" rev-parse HEAD`, {
+      cwd: repoPath, encoding: 'utf8', stdio: 'pipe',
+    }).trim();
+  } catch (e) {
+    console.error('[snapshot] capture failed:', e?.message || e);
+    return null;
+  }
+}
+
+// List all snapshots for a project, newest first.
+export function listSnapshots(projectPath) {
+  try {
+    const repoPath = _snapshotRepoPath(projectPath);
+    if (!existsSync(join(repoPath, '.git'))) return [];
+    const log = execSync(
+      `git --git-dir="${join(repoPath, '.git')}" log --oneline --format="%H|%ct|%s" --max-count=50`,
+      { cwd: repoPath, encoding: 'utf8', stdio: 'pipe' },
+    ).trim();
+    if (!log) return [];
+    return log.split('\n').filter(Boolean).map(line => {
+      const [id, ts, ...msgParts] = line.split('|');
+      return { id, date: new Date(parseInt(ts) * 1000).toISOString(), message: msgParts.join('|') };
+    });
+  } catch { return []; }
+}
+
+// Get the list of changed files between two snapshots (or a snapshot and working tree).
+// Returns [{status, file}] where status is A/M/D/R.
+export function snapshotChanges(projectPath, ref = 'HEAD') {
+  try {
+    const repoPath = _snapshotRepoPath(projectPath);
+    if (!existsSync(join(repoPath, '.git'))) return [];
+    const out = execSync(
+      `git --git-dir="${join(repoPath, '.git')}" diff --name-status HEAD~1..${ref} 2>/dev/null || ` +
+      `git --git-dir="${join(repoPath, '.git')}" diff --name-status --root ${ref} 2>/dev/null || ` +
+      `git --git-dir="${join(repoPath, '.git')}" show --name-status --format="" ${ref}`,
+      { cwd: repoPath, encoding: 'utf8', stdio: 'pipe' },
+    ).trim();
+    if (!out) return [];
+    return out.split('\n').filter(Boolean).map(line => {
+      const [status, ...pathParts] = line.split('\t');
+      return { status: status.trim(), file: pathParts.join('\t') };
+    });
+  } catch { return []; }
+}
+
+// Compute a structured per-file diff between two snapshots.
+// Returns [{file, status, diff}] or full unified diff string if full=true.
+export function snapshotDiff(projectPath, snapId1, snapId2 = 'HEAD', full = false) {
+  try {
+    const repoPath = _snapshotRepoPath(projectPath);
+    if (!existsSync(join(repoPath, '.git'))) return [];
+    const gitDir = join(repoPath, '.git');
+    if (full) {
+      const out = execSync(
+        `git --git-dir="${gitDir}" diff ${snapId1}..${snapId2}`,
+        { encoding: 'utf8', stdio: 'pipe' },
+      ).trim();
+      return out || '(no differences)';
+    }
+    const lines = execSync(
+      `git --git-dir="${gitDir}" diff --name-status ${snapId1}..${snapId2}`,
+      { encoding: 'utf8', stdio: 'pipe' },
+    ).trim().split('\n').filter(Boolean);
+    return lines.map(line => {
+      const [status, ...pathParts] = line.split('\t');
+      return { status: status.trim(), file: pathParts.join('\t') };
+    });
+  } catch (e) {
+    console.error('[snapshot] diff failed:', e?.message || e);
+    return [];
+  }
+}
+
+// Preview restoring files from a snapshot to the working directory without
+// actually modifying anything. Returns [{file, status}] showing what would change.
+export function previewRestore(projectPath, snapId, files = []) {
+  try {
+    const repoPath = _snapshotRepoPath(projectPath);
+    if (!existsSync(join(repoPath, '.git'))) return [];
+    const gitDir = join(repoPath, '.git');
+    const absPath = resolve(projectPath);
+    const fileArgs = files.length ? '-- ' + files.map(f => `"${f.replace(/"/g, '\\"')}"`).join(' ') : '';
+    const out = execSync(
+      `git --git-dir="${gitDir}" --work-tree="${absPath}" diff --name-status ${snapId} ${fileArgs}`,
+      { encoding: 'utf8', stdio: 'pipe' },
+    ).trim();
+    if (!out) return [];
+    return out.split('\n').filter(Boolean).map(line => {
+      const [status, ...pathParts] = line.split('\t');
+      return { status: status.trim(), file: pathParts.join('\t') };
+    });
+  } catch { return []; }
+}
+
+// Restore files from a snapshot back to the working directory.
+// If files is empty, restores all tracked files (full checkout of snapshot state).
+// Returns { restored: string[], failed: string[] }.
+export function restoreSnapshot(projectPath, snapId, files = []) {
+  try {
+    const repoPath = _snapshotRepoPath(projectPath);
+    if (!existsSync(join(repoPath, '.git'))) return { restored: [], failed: ['Snapshot repo not found'] };
+    const gitDir = join(repoPath, '.git');
+    const absPath = resolve(projectPath);
+
+    // Backup current files before overwriting
+    const changes = previewRestore(projectPath, snapId, files);
+    for (const c of changes) {
+      try {
+        const f = resolve(absPath, c.file);
+        if (existsSync(f)) {
+          const content = readFileSync(f, 'utf8');
+          backupFile(f, content);
+          recordFileChange(f, content);
+        }
+      } catch {}
+    }
+
+    const fileArgs = files.length ? '-- ' + files.map(f => `"${f.replace(/"/g, '\\"')}"`).join(' ') : '.';
+    const out = execSync(
+      `git --git-dir="${gitDir}" --work-tree="${absPath}" checkout ${snapId} ${fileArgs}`,
+      { encoding: 'utf8', stdio: 'pipe', timeout: 30000 },
+    ).trim();
+    const restored = changes.map(c => c.file);
+    return { restored, failed: [] };
+  } catch (e) {
+    return { restored: [], failed: [e?.message || 'checkout failed'] };
+  }
+}
+
+// Get the current snapshot HEAD id, if any.
+export function currentSnapshotId(projectPath) {
+  try {
+    const repoPath = _snapshotRepoPath(projectPath);
+    if (!existsSync(join(repoPath, '.git'))) return null;
+    return execSync(
+      `git --git-dir="${join(repoPath, '.git')}" rev-parse HEAD`,
+      { cwd: repoPath, encoding: 'utf8', stdio: 'pipe' },
+    ).trim() || null;
+  } catch { return null; }
 }

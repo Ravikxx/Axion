@@ -20,5 +20,10 @@ lumen-data/.venv/
 q/
 q.zip
 eval/
+opencodeAX/
+openclaudeAX/
 extension.crx
 extension.pem
+ModelReport.md
+session-*.md
+.claude/settings.json

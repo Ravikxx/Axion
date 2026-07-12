@@ -73,7 +73,10 @@ test('every TOOL_DEFINITION has a handler in executeTool', () => {
 
 test('spawn_agents handler exists in agent.js', () => {
   const src = readFileSync('src/agent/agent.js', 'utf8');
-  assert.ok(src.includes("tc.name === 'spawn_agents'"), 'spawn_agents handler not found in agent.js');
+  assert.ok(
+    src.includes("tc.name === 'spawn_agents'") || src.includes("name === 'spawn_agents'"),
+    'spawn_agents handler not found in agent.js',
+  );
 });
 
 test('every COMPUTER_TOOL_DEFINITION has a handler in executeTool', () => {

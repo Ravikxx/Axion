@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
-import { useKeyboard, useTerminalDimensions, useRenderer, useSelectionHandler } from '@opentui/react';
+import { useKeyboard, useTerminalDimensions, useRenderer, useSelectionHandler, usePaste } from '@opentui/react';
 import { accent, THEMES, setTheme, themeName } from '../ui/theme.js';
 import { Agent } from '../agent/agent.js';
 import { MODELS, CONTEXT_WINDOWS, getContextWindow, estimateCost, API_KEYS, VISION_MODEL, VIDEO_MODEL, AUDIO_MODEL } from '../config.js';
@@ -21,6 +21,9 @@ import {
   getSchedules, saveSchedules, saveScheduleResult, getScheduleResults,
   saveDonateOptOut, saveDonation,
   getCostLog, appendCostLog,
+  createPlanFile, getCurrentPlanPath, readPlanFile, writePlanFile, clearCurrentPlanPath, listPlanFiles,
+  togglePinSession, getPinnedSessions, getQuickSwitchSlots,
+  listSnapshots, snapshotDiff,
 } from '../persist.js';
 import { COMMANDS, getTabCompletion } from '../ui/commands.js';
 import { permissionKey, confirmLabel } from '../ui/toolPrompts.js';
@@ -37,12 +40,21 @@ import { Welcome } from './Welcome.jsx';
 import { checkForUpdate } from '../utils/updateCheck.js';
 import { SearchBar } from './SearchBar.jsx';
 import { ChatPicker } from './ChatPicker.jsx';
+import { VirtualMessageList } from './VirtualMessageList.jsx';
+import { MessageSelector } from './messageSelector.js';
+import { extractSearchText, computeMatches, warmSearchIndex } from './transcriptSearch.js';
 import { readGitStatus } from '../utils/gitStatus.js';
 import { Thinking } from './Thinking.jsx';
 import { QuestionMenu } from './QuestionMenu.jsx';
 import { pickThinkingWord } from '../ui/thinkingWords.js';
+import { getThinkingMode, setThinkingMode, cycleThinkingMode, shouldShowThinking } from './context/thinkingMode.js';
+import { isCustomCommand, resolveCommand } from '../services/commands/commandRegistry.js';
+import { buildCommandCatalog } from '../ui/commands.js';
+import { createKeymap, fuzzyRankCommands } from './keymap.js';
+import { CommandPalette } from './command-palette.js';
 import { execSync, execFileSync, spawn } from 'child_process';
-import { existsSync, readFileSync, unlinkSync, writeSync, statSync, copyFileSync, mkdirSync } from 'fs';
+import { existsSync, readFileSync, writeFileSync, unlinkSync, writeSync, statSync, copyFileSync, mkdirSync } from 'fs';
+import { dirname } from 'path';
 import { resolve, join } from 'path';
 import { homedir } from 'os';
 import { fileURLToPath } from 'url';
@@ -56,6 +68,13 @@ import { connectOAuth, listOAuthTokens, revokeOAuthToken } from '../oauth/oauth.
 import { parseSchedule } from '../scheduler.js';
 import { executeTool, getCwd, setCwd } from '../agent/tools.js';
 import { BUS } from '../agent/bus.js';
+import { pushStash, popStash, getAllStashes, deleteStash } from './promptStash.js';
+import { pushHistory, loadHistory } from './promptHistory.js';
+import { StashDialog } from './dialog-stash.js';
+import { parseExportArgs, inferExportFormatFromFilename, ensureExportFilenameExtension, resolveExportFilepath } from '../services/export/exportFormats.js';
+import { renderMessagesForExport } from '../services/export/exportRenderer.js';
+import { renderContextBreakdown } from './contextViz.js';
+import { renderDiffViewer } from './diff-viewer/diffViewer.js';
 
 // ── Milestone 2: real agent wired into the OpenTUI shell ────────────────────────
 // Reuses the UI-agnostic Agent class (callbacks → message list). Row layout:
@@ -189,8 +208,11 @@ function messageSearchText(msg) {
     const output = typeof msg.output === 'string' ? msg.output : JSON.stringify(msg.output || '');
     return [msg.name, msg.label, input, output].filter(Boolean).join(' ');
   }
+  if (msg.type === 'subagent-run') return [msg.label, msg.role, msg.task, msg.result].filter(Boolean).join(' ');
   return msg.text || '';
 }
+
+const truncStr = (s, n) => (s && s.length > n ? s.slice(0, n) + '…' : s || '');
 
 // Memoized: without this, every poll tick (git status, BUS, todos, scroll
 // position) and every streamed token re-renders the ENTIRE transcript, since
@@ -200,7 +222,7 @@ function messageSearchText(msg) {
 // comparator ignores the callback props (onCopy/onEdit/... are fresh arrow
 // closures every render even though they call the same stable useCallback),
 // and only re-renders a row when its own msg/expanded/index actually change.
-const MessageRow = React.memo(function MessageRow({ msg, expanded = false, onToggle, index, onCopy, onEdit, onDelete, onRetry }) {
+const MessageRow = React.memo(function MessageRow({ msg, expanded = false, onToggle, index, onCopy, onEdit, onDelete, onRetry, onOpen }) {
   const A = accent();
   const [hovered, setHovered] = useState(false);
   switch (msg.type) {
@@ -226,7 +248,21 @@ const MessageRow = React.memo(function MessageRow({ msg, expanded = false, onTog
               </box>
             ) : null}
           </box>
-          {(msg.text || ' ').split('\n').map((l, i) => <text key={i}>{l}</text>)}
+          {(() => {
+            // Preserve pasted formatting, but cap rendered lines — thousands of
+            // <text> nodes at once can segfault OpenTUI's native renderer.
+            const lines = (msg.text || ' ').split('\n');
+            const MAX_USER_LINES = 200;
+            const shown = lines.length > MAX_USER_LINES ? lines.slice(0, MAX_USER_LINES) : lines;
+            return (
+              <>
+                {shown.map((l, i) => <text key={i}>{l}</text>)}
+                {lines.length > MAX_USER_LINES ? (
+                  <text><span fg="#888">{`… +${lines.length - MAX_USER_LINES} more lines (sent to the agent in full)`}</span></text>
+                ) : null}
+              </>
+            );
+          })()}
         </box>
       );
     case 'assistant':
@@ -249,6 +285,7 @@ const MessageRow = React.memo(function MessageRow({ msg, expanded = false, onTog
         </box>
       );
     case 'thinking': {
+      if (!shouldShowThinking()) return null;
       const lines = (msg.text || '').split('\n').filter((l) => l.trim());
       const big = lines.length > 1 || (lines[0] || '').length > 100;
       const shown = expanded || !big ? lines : lines.slice(0, 1);
@@ -311,6 +348,41 @@ const MessageRow = React.memo(function MessageRow({ msg, expanded = false, onTog
           <text><span fg="#888">{msg.text}</span></text>
         </box>
       );
+    case 'adviser':
+      return (
+        <box style={{ flexDirection: 'column', marginTop: 1, paddingLeft: 1, paddingRight: 1 }}>
+          <text><span fg="#79c0ff">◇ adviser</span></text>
+          <RichText>{msg.text || ' '}</RichText>
+        </box>
+      );
+    case 'subagent-run': {
+      // One sub-agent spawned by spawn_agents, rendered like a tool call.
+      // Clicking opens the read-only chat view of the agent's transcript.
+      const c = CHART_COLORS[(msg.index || 0) % CHART_COLORS.length];
+      const running = msg.status === 'running' || msg.status === 'start';
+      const dot = running ? '◌' : '●';
+      const dotColor = running ? '#f0c674' : msg.status === 'error' ? '#f85149' : '#7ee787';
+      const tools = msg.toolCount ? `${msg.toolCount} tool call${msg.toolCount !== 1 ? 's' : ''}` : '';
+      const statusText = running
+        ? `running…${msg.lastTool ? ` (${msg.lastTool})` : ''}`
+        : msg.status === 'error' ? `failed${msg.result ? `: ${truncStr(msg.result, 60)}` : ''}` : 'done';
+      return (
+        <box style={{ flexDirection: 'column', marginTop: 1, marginLeft: 2 }} onMouseDown={() => onOpen?.(index)}>
+          <text>
+            <span fg={dotColor}>{dot} </span>
+            <span fg={A}>agent</span>
+            <span fg={c}>{`  @${msg.label}`}</span>
+            {msg.role ? <span fg="#c678dd">{`  [${truncStr(msg.role, 40)}]`}</span> : null}
+            <span fg="#888">{`  ${truncStr(msg.task || '', 56)}`}</span>
+          </text>
+          <text>
+            <span fg={msg.status === 'error' ? '#f85149' : '#888'}>{`    ${statusText}`}</span>
+            {tools ? <span fg="#888">{` · ${tools}`}</span> : null}
+            <span fg="#555">{' · click to view'}</span>
+          </text>
+        </box>
+      );
+    }
     case 'subagent-status': {
       const c = CHART_COLORS[(msg.index || 0) % CHART_COLORS.length];
       const icon = { start: '▸', tool: '🔧', done: '●', error: '●' }[msg.status] || '·';
@@ -339,6 +411,75 @@ const MessageRow = React.memo(function MessageRow({ msg, expanded = false, onTog
       return null;
   }
 }, (prev, next) => prev.msg === next.msg && prev.expanded === next.expanded && prev.index === next.index);
+
+// Read-only chat view of one sub-agent's run — opened by clicking its
+// spawn block in the transcript. Looks like a regular chat (task → assistant
+// text → tool calls → final answer) but has no input; only the main agent
+// can be messaged.
+function SubagentView({ msg, onClose, scrollRef }) {
+  const c = CHART_COLORS[(msg.index || 0) % CHART_COLORS.length];
+  const entries = msg.transcript || [];
+  const running = msg.status === 'running' || msg.status === 'start';
+  return (
+    <box style={{ flexGrow: 1, flexShrink: 1, minHeight: 0, flexDirection: 'column' }}>
+      <box onMouseDown={() => onClose?.()} style={{ flexShrink: 0, paddingLeft: 1, paddingRight: 1, backgroundColor: '#1a1b1f' }}>
+        <text>
+          <span fg={c}>{`◆ ${msg.label}`}</span>
+          {msg.role ? <span fg="#c678dd">{`  ${truncStr(msg.role, 48)}`}</span> : null}
+          <span fg={running ? '#f0c674' : msg.status === 'error' ? '#f85149' : '#7ee787'}>{`  ·  ${running ? 'running…' : msg.status}`}</span>
+          <span fg="#666">{'   read-only · Esc or click here to close'}</span>
+        </text>
+      </box>
+      <scrollbox ref={scrollRef} style={{ flexGrow: 1, flexShrink: 1, minHeight: 0 }} stickyScroll stickyStart="bottom">
+        {entries.map((e, i) => {
+          switch (e.kind) {
+            case 'task':
+              return (
+                <box key={i} style={{ flexDirection: 'column', marginTop: 1, paddingLeft: 1, paddingRight: 1 }}>
+                  <text><span fg="#888">▶ task from main agent</span>{e.role ? <span fg="#c678dd">{`   role: ${truncStr(e.role, 60)}`}</span> : null}</text>
+                  {(e.text || ' ').split('\n').map((l, j) => <text key={j}>{l}</text>)}
+                </box>
+              );
+            case 'thinking':
+              if (!shouldShowThinking()) return null;
+              return (
+                <box key={i} style={{ flexDirection: 'column', marginTop: 1, paddingLeft: 1, paddingRight: 1 }}>
+                  <text><span fg="#a371f7">◈ thinking</span></text>
+                  {(e.text || '').split('\n').filter((l) => l.trim()).slice(0, 8).map((l, j) => (
+                    <text key={j}><span fg="#a371f7">{l.slice(0, 140)}</span></text>
+                  ))}
+                </box>
+              );
+            case 'tool':
+              return (
+                <box key={i} style={{ flexDirection: 'column', marginTop: 1 }}>
+                  <ToolBlock name={e.name} input={e.input} output={e.output} success={e.success} pending={e.pending} expanded={false} />
+                </box>
+              );
+            case 'assistant':
+            case 'result':
+              return (
+                <box key={i} style={{ flexDirection: 'column', marginTop: 1, paddingLeft: 1, paddingRight: 1 }}>
+                  <text><span fg={c}>{e.kind === 'result' ? `◆ ${msg.label} — final answer` : `◆ ${msg.label}`}</span></text>
+                  <RichText>{e.text || ' '}</RichText>
+                </box>
+              );
+            default:
+              return null;
+          }
+        })}
+        {running && (
+          <box style={{ marginTop: 1, paddingLeft: 1 }}>
+            <text><span fg="#f0c674">{`◌ ${msg.label} is working…`}</span>{msg.lastTool ? <span fg="#888">{`  (${msg.lastTool})`}</span> : null}</text>
+          </box>
+        )}
+      </scrollbox>
+      <box style={{ flexShrink: 0, paddingLeft: 1 }}>
+        <text><span fg="#666">{'sub-agents can\'t be messaged directly — type below to talk to the main agent'}</span></text>
+      </box>
+    </box>
+  );
+}
 
 function Session({
   initialModel = 'lumen', initialMode = 'ask', initialResume = null,
@@ -373,6 +514,7 @@ function Session({
   const [pendingConfirm, setPendingConfirm] = useState(null);
   const [pendingForm, setPendingForm] = useState(null); // normalized question form for the menu
   const [expandedTools, setExpandedTools] = useState(() => new Set()); // message indices shown in full
+  const [subViewIdx, setSubViewIdx] = useState(null); // subagent transcript viewer — message index or null
   const [atBottom, setAtBottom] = useState(true); // scrollback pinned to bottom?
   const [searchOpen, setSearchOpen] = useState(false); // Ctrl+F transcript search
   const [searchQuery, setSearchQuery] = useState('');
@@ -380,12 +522,20 @@ function Session({
   const [chatPickerOpen, setChatPickerOpen] = useState(false); // /resume fuzzy picker
   const [chatPickerList, setChatPickerList] = useState([]);
   const [chatQuery, setChatQuery] = useState('');
+  const [stashOpen, setStashOpen] = useState(false);
+  const [stashList, setStashList] = useState([]);
+  const [stashSel, setStashSel] = useState(0);
+  const [paletteOpen, setPaletteOpen] = useState(false); // command palette (Ctrl+Shift+P)
+  const [paletteQuery, setPaletteQuery] = useState('');
+  const [paletteSel, setPaletteSel] = useState(0);
   const selectedTextRef = useRef(''); // latest native (OpenTUI) mouse selection text
   const [chatSel, setChatSel] = useState(0);
+  const [msgSelectorOpen, setMsgSelectorOpen] = useState(false); // Ctrl+P message picker
   const [diffTotals, setDiffTotals] = useState({ added: 0, removed: 0 }); // session edit stats
   const [cwdState, setCwdState] = useState(() => getCwd(todoScope)); // tab's working dir (change_working_dir/run_command `cd`)
   const [extThinking, setExtThinking] = useState(false);
   const [thinkingBudget, setThinkingBudget] = useState(10000);
+  const [thinkingDisplayMode, setThinkingDisplayModeState] = useState(() => getThinkingMode());
   const [systemOverride, setSystemOverride] = useState('');
   const [includedFiles, setIncludedFiles] = useState([]);
   const [fileList, setFileList] = useState([]);     // project files, rescanned each time a new '@' mention starts
@@ -402,6 +552,7 @@ function Session({
   const inputRef  = useRef('');
   const scrollRef = useRef(null);
   const inputElRef = useRef(null);
+  const subViewScrollRef = useRef(null);
   const confirmResolverRef = useRef(null);
   const questionResolverRef = useRef(null);
   const questionSpecRef = useRef(null);
@@ -423,13 +574,15 @@ function Session({
       setExpandedTools((prev) => { const n = new Set(prev); n.has(i) ? n.delete(i) : n.add(i); return n; });
     }, 0);
   }, []);
-  // ── Ctrl+F transcript search ─────────────────────────────────────────────────
+  // Open/close the read-only subagent transcript viewer. Deferred out of the
+  // native mouse event for the same OpenTUI re-entrancy reason as toggleExpand.
+  const openSubagent = useCallback((i) => { setTimeout(() => setSubViewIdx(i), 0); }, []);
+  const closeSubagent = useCallback(() => { setTimeout(() => setSubViewIdx(null), 0); }, []);
+  // ── Ctrl+F transcript search (uses cached text extraction) ──────────────
   const searchMatches = useMemo(() => {
     if (!searchOpen || !searchQuery.trim()) return [];
-    const q = searchQuery.toLowerCase();
-    const idxs = [];
-    messages.forEach((m, i) => { if (messageSearchText(m).toLowerCase().includes(q)) idxs.push(i); });
-    return idxs;
+    const { matches } = computeMatches(messages, searchQuery, extractSearchText);
+    return matches;
   }, [searchOpen, searchQuery, messages]);
 
   useEffect(() => { if (searchIdx >= searchMatches.length) setSearchIdx(0); }, [searchMatches, searchIdx]);
@@ -546,7 +699,12 @@ function Session({
         streamRef.current = '';
         setStreamText(null);
       },
-      onToolCall: ({ name, input, id }) => push({ type: 'tool', id, name, input, pending: true }),
+      onToolCall: ({ name, input, id }) => {
+        // spawn_agents renders as one block PER sub-agent (via sub-agent-run
+        // events below), not as a single aggregate tool call.
+        if (name === 'spawn_agents') return;
+        push({ type: 'tool', id, name, input, pending: true });
+      },
       onToolResult: ({ id, name, output, success, diff }) => {
         if (diff && diff.length && success !== false) {
           const s = diffStats(diff);
@@ -565,13 +723,37 @@ function Session({
           return copy;
         });
       },
-      onMessage: ({ role, content, label, status, task, index }) => {
+      onMessage: (m) => {
+        const { role, content, label, status, task, index } = m;
         if (role === 'assistant')      push({ type: 'assistant', text: content });
         else if (role === 'thinking')  push({ type: 'thinking', text: content });
         else if (role === 'plan')      push({ type: 'plan', text: content });
         else if (role === 'error')     push({ type: 'error', text: content });
+        else if (role === 'adviser')   push({ type: 'adviser', text: content });
         else if (role === 'sub-agent')        push({ type: 'subagent', label, text: content, index });
         else if (role === 'sub-agent-status') push({ type: 'subagent-status', label, status, text: task, index });
+        else if (role === 'sub-agent-run') {
+          // One live block per spawned sub-agent — 'start' creates it, later
+          // events update it in place (keyed by run id).
+          if (status === 'start') {
+            push({ type: 'subagent-run', id: m.id, label, task, role: m.agentRole, status: 'running', toolCount: 0, transcript: m.transcript || [], index });
+          } else {
+            setMessages((msgs) => {
+              const ri = msgs.findIndex((x) => x.type === 'subagent-run' && x.id === m.id);
+              if (ri === -1) return msgs;
+              const copy = msgs.slice();
+              copy[ri] = {
+                ...copy[ri],
+                status: status === 'update' ? 'running' : status,
+                toolCount: m.toolCount ?? copy[ri].toolCount,
+                lastTool: m.lastTool ?? copy[ri].lastTool,
+                transcript: m.transcript || copy[ri].transcript,
+                result: m.result ?? copy[ri].result,
+              };
+              return copy;
+            });
+          }
+        }
       },
     });
     agentRef.current = agent;
@@ -608,6 +790,9 @@ function Session({
       // Fresh tab — start with a clean, isolated todo list for this scope.
       try { clearTodos(todoScope); } catch {}
       setTodos([]);
+      // Load cross-session prompt history from disk
+      const hist = loadHistory();
+      if (hist.length) historyRef.current = hist;
     }
 
     return () => { try { agent.cancel(); } catch {} };
@@ -796,6 +981,22 @@ function Session({
     if (!isActive) return; // only the foreground tab handles keys
     const ch = (key.name || '').toLowerCase();
 
+    // Command palette: when no sub-dialog is open and the input isn't a
+    // confirm/plan prompt, route the key through the keymap engine. Only
+    // palette.show (Ctrl+Shift+P) is bound globally, so nothing else is
+    // shadowed; an unresolved leader completion falls through untouched.
+    if (paletteOpen) {
+      if (key.name === 'escape') { closePalette(); return; }
+      const n = fuzzyRankCommands(paletteCommands, paletteQuery).length;
+      if (key.name === 'up')   { setPaletteSel((s) => (n ? (s - 1 + n) % n : 0)); return; }
+      if (key.name === 'down') { setPaletteSel((s) => (n ? (s + 1) % n : 0)); return; }
+      if (key.name === 'return' || key.name === 'tab') { pickPalette(paletteSel); return; }
+      return; // the palette <input> owns typing
+    }
+    if (inputMode === 'chat' && !searchOpen && !chatPickerOpen && !stashOpen && !msgSelectorOpen && !busy) {
+      if (keymapRef.current?.handleKey(key)) return;
+    }
+
     // Tab management: Ctrl+T new, Ctrl+W close, Shift+Tab cycle, Ctrl+1..9 jump.
     // (Ctrl+Tab is intercepted by Windows Terminal, so Shift+Tab is the cycle key.)
     if (key.ctrl && ch === 't') { onNewTab?.(); return; }
@@ -803,9 +1004,27 @@ function Session({
     if (key.name === 'backtab' || (key.name === 'tab' && key.shift)) { onSwitchTab?.('next'); return; }
     if (key.ctrl && /^[1-9]$/.test(key.name || '')) { onSwitchTab?.(parseInt(key.name, 10) - 1); return; }
 
+    // Subagent transcript viewer: Esc closes, arrows/page keys scroll it.
+    // Other keys fall through so you can keep typing to the main agent.
+    if (subViewIdx != null) {
+      if (key.name === 'escape') { setSubViewIdx(null); return; }
+      const sv = subViewScrollRef.current;
+      if (sv) {
+        if (key.name === 'pageup')   { sv.scrollBy(-12); return; }
+        if (key.name === 'pagedown') { sv.scrollBy(12);  return; }
+        if (key.name === 'up')       { sv.scrollBy(-2);  return; }
+        if (key.name === 'down')     { sv.scrollBy(2);   return; }
+      }
+    }
+
     // Ctrl+F: toggle the transcript search bar (only makes sense mid-chat).
     if (key.ctrl && ch === 'f' && (inputMode === 'chat' || searchOpen)) {
       if (searchOpen) closeSearch(); else { setSearchOpen(true); setSearchQuery(''); setSearchIdx(0); }
+      return;
+    }
+    // Ctrl+P: open message selector dialog for quick navigation.
+    if (key.ctrl && ch === 'p' && inputMode === 'chat' && !searchOpen && !chatPickerOpen && !stashOpen) {
+      setMsgSelectorOpen(true);
       return;
     }
     // Ctrl+Shift+C: copy the highlighted selection (native OpenTUI selection);
@@ -844,6 +1063,33 @@ function Session({
       return; // the <input> owns typing
     }
 
+    // Stash dialog: ↑/↓ navigate, Enter restore, Del delete, Esc close.
+    if (stashOpen) {
+      if (key.name === 'escape') { setStashOpen(false); return; }
+      const n = stashList.length;
+      if (key.name === 'up')   { setStashSel((s) => (n ? (s - 1 + n) % n : 0)); return; }
+      if (key.name === 'down') { setStashSel((s) => (n ? (s + 1) % n : 0)); return; }
+      if (key.name === 'return' || key.name === 'tab') {
+        const entry = stashList[Math.min(stashSel, n - 1)];
+        if (entry) { setInputSafe(entry.text); setStashOpen(false); }
+        return;
+      }
+      if (key.name === 'backspace' || key.name === 'delete') {
+        deleteStash(stashSel);
+        const updated = getAllStashes();
+        setStashList(updated);
+        setStashSel((s) => Math.min(s, Math.max(0, updated.length - 1)));
+        return;
+      }
+      return;
+    }
+
+    // Message selector dialog (Ctrl+P): ↑/↓ navigate, Enter jumps, Esc closes.
+    if (msgSelectorOpen) {
+      if (key.name === 'escape') { setMsgSelectorOpen(false); return; }
+      return; // MessageSelector handles its own keyboard via onKey prop
+    }
+
     // Tool-confirmation prompt: y = allow once, a = always allow, n/Esc = deny.
     if (inputMode === 'confirm-tool') {
       if (ch === 'y' || key.name === 'return') resolveConfirm(true);
@@ -869,6 +1115,30 @@ function Session({
 
     // Chat mode — use busyRef for immediate reactivity (React busy state may lag)
     if (key.name === 'escape' && (busy || busyRef.current)) { try { agentRef.current?.cancel(); } catch {} return; }
+    // Ctrl+S: stash the current prompt. Ctrl+Shift+S: pop the most recent stash.
+    if (key.ctrl && ch === 's') {
+      if (key.shift) {
+        const popped = popStash();
+        if (popped) { setInputSafe(popped.text); push({ type: 'info', text: '● Restored stashed prompt.' }); }
+        else push({ type: 'info', text: 'Stash is empty.' });
+      } else {
+        if (inputRef.current.trim()) {
+          pushStash(inputRef.current);
+          setInputSafe('');
+          push({ type: 'info', text: '● Prompt stashed (Ctrl+Shift+S to restore).' });
+          setStashList(getAllStashes());
+          setStashSel(0);
+        } else push({ type: 'info', text: 'Nothing to stash — type something first.' });
+      }
+      return;
+    }
+    // Ctrl+D: open stash dialog to browse/restore/delete stashed prompts.
+    if (key.ctrl && ch === 'd') {
+      setStashList(getAllStashes());
+      setStashSel(0);
+      setStashOpen((prev) => !prev);
+      return;
+    }
     // Ctrl+R: expand/collapse the most recent tool or thinking block.
     if (key.ctrl && ch === 'r') {
       setMessages((m) => {
@@ -911,6 +1181,56 @@ function Session({
   });
 
   const submitRef = useRef(null);
+
+  // ── Paste interception ──────────────────────────────────────────────────────
+  // OpenTUI's single-line input strips newlines and (by default) caps length,
+  // so big/multi-line pastes get mangled. Intercept the global paste event
+  // before the input sees it: stash the full text and insert a short
+  // "[pasted text #N +X lines]" token instead. Tokens are expanded back to the
+  // original text (formatting intact) when the message is submitted.
+  const pasteStashRef = useRef(new Map()); // token → original pasted text
+  const pasteSeqRef = useRef(0);
+
+  const expandPastedTokens = useCallback((text) => {
+    let out = text;
+    for (const [token, full] of pasteStashRef.current) {
+      if (out.includes(token)) out = out.split(token).join(full);
+    }
+    return out;
+  }, []);
+
+  // Paste tokens are atomic: backspacing/deleting into one leaves a remnant
+  // that no longer matches its stash entry (so it would never expand and
+  // would be sent as literal junk) — detect any broken remnant on each edit
+  // and remove the whole thing in one go. The stash entry is kept so the
+  // intact token still expands when recalled from prompt history.
+  const cleanBrokenPasteTokens = useCallback((v) => {
+    if (!v.includes('[pasted text #')) return v;
+    return v.replace(/\[pasted text #\d+[^\[\]]*\]?/g, (m) =>
+      pasteStashRef.current.has(m) ? m : ''
+    );
+  }, []);
+
+  usePaste((e) => {
+    if (!isActive) return; // only the foreground tab
+    // Don't hijack pastes aimed at the search bar, pickers, or prompts.
+    if (inputMode !== 'chat' || searchOpen || chatPickerOpen || stashOpen) return;
+    let text = '';
+    try { text = new TextDecoder().decode(e.bytes); } catch { return; }
+    text = text.replace(/\r\n?/g, '\n');
+    const lineCount = text.replace(/\n+$/, '').split('\n').length;
+    // Small single-line pastes go into the input natively.
+    if (lineCount <= 1 && text.length <= 800) return;
+    e.preventDefault();
+    e.stopPropagation();
+    const n = ++pasteSeqRef.current;
+    const token = lineCount > 1
+      ? `[pasted text #${n} +${lineCount} lines]`
+      : `[pasted text #${n} ${(text.length / 1000).toFixed(1)}k chars]`;
+    pasteStashRef.current.set(token, text);
+    const cur = inputRef.current;
+    setInputSafe(cur + (cur && !cur.endsWith(' ') ? ' ' : '') + token + ' ');
+  });
 
   // Push a user message and run one agent turn with the interactive prompts
   // (tool-confirm, plan-confirm, free-form questions). Shared by submit, /retry,
@@ -992,6 +1312,25 @@ function Session({
         push({ type: 'info', text:
           `Session stats\n  model     ${model}\n  mode      ${modeLabel(mode)}\n  messages  ${msgCount}` +
           `\n  tokens    ${tokens.total || 0}  (in ${inTok} / out ${outTok})\n  est. cost ${cost ? '$' + cost.toFixed(4) : '$0.00'}` });
+        return;
+      }
+      case 'context': {
+        const budget = getContextWindow(model) || 128_000;
+        const mems = getMemories();
+        const skills = getSkills();
+        const wiki = (await import('../services/wiki/status.js')).wikiContent(process.cwd());
+        const { text: ctxText } = await renderContextBreakdown({
+          systemPrompt: '(Axion system prompt — see agent.js)',
+          toolDefinitions: [],
+          messages: agentRef.current?.history || [],
+          memoryFiles: mems.map(m => ({ name: 'memory', content: m })),
+          activeSkills: skills,
+          mcpToolCount: 0,
+          wikiContent: wiki,
+          modelBudget: budget,
+          autoCompactEnabled: true,
+        });
+        push({ type: 'info', text: ctxText });
         return;
       }
       case 'cost': {
@@ -1175,10 +1514,134 @@ function Session({
         push({ type: 'info', text: `theme → ${arg}` });
         return;
       }
+      case 'plan': {
+        const [sub, ...planRest] = args;
+        if (!sub) {
+          const planPath = getCurrentPlanPath();
+          if (planPath) {
+            const content = readPlanFile(planPath);
+            push({ type: 'info', text: `Current plan: ${planPath}\n\n${content || '(empty)'}` });
+          } else {
+            push({ type: 'info', text: 'No active plan file.\n  /plan create           — create a new plan file\n  /plan open             — open plan in external editor\n  /plan read             — show current plan\n  /plan write <content>  — write plan content\n  /plan list             — list all plan files\n  /plan clear            — detach from current plan' });
+          }
+          return;
+        }
+        if (sub === 'create') {
+          setCurrentPlanPath(null);
+          clearCurrentPlanPath();
+          const path = createPlanFile(planRest.join(' ') || '');
+          push({ type: 'info', text: `Plan created: ${path}` });
+          return;
+        }
+        if (sub === 'open') {
+          const planPath = getCurrentPlanPath();
+          if (!planPath) { push({ type: 'error', text: 'No active plan file. Use /plan create first.' }); return; }
+          const editor = process.env.EDITOR || 'vi';
+          try {
+            execSync(`${editor} "${planPath}"`, { cwd: process.cwd(), stdio: 'inherit', timeout: 0 });
+            push({ type: 'info', text: `Plan file closed: ${planPath}` });
+          } catch (err) {
+            push({ type: 'error', text: `Editor failed: ${err.message}` });
+          }
+          return;
+        }
+        if (sub === 'read') {
+          const planPath = getCurrentPlanPath();
+          if (!planPath) { push({ type: 'error', text: 'No active plan file. Use /plan create first.' }); return; }
+          const content = readPlanFile(planPath);
+          push({ type: 'info', text: content || '(empty plan file)' });
+          return;
+        }
+        if (sub === 'write') {
+          const planPath = getCurrentPlanPath();
+          if (!planPath) { push({ type: 'error', text: 'No active plan file. Use /plan create first.' }); return; }
+          writePlanFile(planPath, planRest.join(' '));
+          push({ type: 'info', text: `Plan written (${planRest.join(' ').length} chars).` });
+          return;
+        }
+        if (sub === 'list') {
+          const files = listPlanFiles();
+          const planDir = join(homedir(), '.axion', 'plans');
+          if (!files.length) { push({ type: 'info', text: 'No plan files yet.' }); return; }
+          push({ type: 'info', text: `Plan files (${planDir}):\n${files.map(f => `  ${f}`).join('\n')}` });
+          return;
+        }
+        if (sub === 'clear') {
+          clearCurrentPlanPath();
+          push({ type: 'info', text: 'Detached from current plan file.' });
+          return;
+        }
+        push({ type: 'error', text: `Unknown subcommand: /plan ${sub}\nUsage: /plan create|open|read|write|list|clear` });
+        return;
+      }
+      case 'agent': {
+        const { AgentRegistry } = await import('../agent/agentRegistry.js');
+        const [sub] = args;
+        if (!sub || sub === 'list') {
+          const agents = AgentRegistry.list();
+          const cur = agentRef.current?.agentId || 'build';
+          const lines = agents.map(a => `${a.id === cur ? '*' : ' '} ${a.id} — ${a.name}${a.description ? ` — ${a.description}` : ''} (mode: ${a.mode})`);
+          push({ type: 'info', text: `Agents (* = active):\n${lines.join('\n')}\n\nUse /agent <id> to switch.` });
+          return;
+        }
+        const info = AgentRegistry.get(sub);
+        if (!info) { push({ type: 'error', text: `Unknown agent "${sub}". /agent list` }); return; }
+        agentRef.current?.setAgent(sub);
+        if (info.model) { setModel(info.model); try { saveModel(info.model); } catch {} }
+        push({ type: 'info', text: `agent → ${info.id} — ${info.name}${info.roleDefinition ? `\nrole: ${info.roleDefinition.slice(0, 200)}` : ''}` });
+        return;
+      }
+      case 'workspace': {
+        const [sub, ...wsRest] = args;
+        if (!sub || sub === 'list') {
+          const { listWorkspaces } = await import('../services/workspaces/workspaceService.js');
+          const { getCurrentWorkspaceId } = await import('../persist.js');
+          const wss = listWorkspaces();
+          if (!wss.length) { push({ type: 'info', text: 'No workspaces yet.\n/workspace create <name> <path>\n/workspace switch <id>' }); return; }
+          const active = getCurrentWorkspaceId();
+          const lines = wss.map(w => `${w.id === active ? '*' : ' '} ${w.id} — ${w.name} (${w.path})`);
+          push({ type: 'info', text: `Workspaces:\n${lines.join('\n')}` });
+          return;
+        }
+        if (sub === 'create') {
+          const name = wsRest[0];
+          const path = wsRest[1] || (name ? name : '');
+          if (!path) { push({ type: 'error', text: 'Usage: /workspace create <name> <abs-path>' }); return; }
+          const { createWorkspace } = await import('../services/workspaces/workspaceService.js');
+          try {
+            const ws = createWorkspace({ name: name || path.split('/').filter(Boolean).pop() || 'workspace', path: resolve(process.cwd(), path) });
+            push({ type: 'info', text: `Created workspace "${ws.id}" — ${ws.name} (${ws.path})` });
+          } catch (e) { push({ type: 'error', text: e.message }); }
+          return;
+        }
+        if (sub === 'switch') {
+          const id = wsRest[0];
+          if (!id) { push({ type: 'error', text: 'Usage: /workspace switch <id>' }); return; }
+          const { switchWorkspace } = await import('../services/workspaces/workspaceService.js');
+          try {
+            const ws = switchWorkspace(id);
+            if (agentRef.current) { setCwd(agentRef.current.label, ws.path); agentRef.current.setWorkspace(ws.id); }
+            setCwdState(ws.path);
+            push({ type: 'info', text: `workspace → ${ws.id} — ${ws.name} (${ws.path})` });
+          } catch (e) { push({ type: 'error', text: e.message }); }
+          return;
+        }
+        if (sub === 'remove') {
+          const id = wsRest[0];
+          if (!id) { push({ type: 'error', text: 'Usage: /workspace remove <id>' }); return; }
+          const { removeWorkspace } = await import('../services/workspaces/workspaceService.js');
+          const ok = removeWorkspace(id);
+          push({ type: 'info', text: ok ? `Removed workspace ${id}.` : `No workspace "${id}".` });
+          return;
+        }
+        push({ type: 'error', text: `Unknown /workspace subcommand: ${sub}` });
+        return;
+      }
       case 'cost': {
         const inTok = tokens.input || 0, outTok = tokens.output || 0;
         const ctx = getContextWindow(model);
         const cost = estimateCost(model, inTok, outTok);
+        push({ type: 'info', text: `tokens: ${tokens.total || 0}  (in ${inTok} / out ${outTok}) · context: ${ctx >= 1_000_000 ? (ctx / 1_000_000).toFixed(1) + 'M' : (ctx / 1000).toFixed(0) + 'k'} · est. cost ${cost ? '$' + cost.toFixed(4) : '$0.00'}` });
         push({ type: 'info', text: `tokens: ${tokens.total || 0}  (in ${inTok} / out ${outTok}) · context: ${ctx >= 1_000_000 ? (ctx / 1_000_000).toFixed(1) + 'M' : (ctx / 1000).toFixed(0) + 'k'} · est. cost ${cost ? '$' + cost.toFixed(4) : '$0.00'}` });
         return;
       }
@@ -1193,6 +1656,26 @@ function Session({
         const budget = parseInt(arg, 10);
         if (!isNaN(budget) && budget >= 1000) { setExtThinking(true); setThinkingBudget(budget); agentRef.current?.setThinking(true, budget); push({ type: 'info', text: `extended thinking on (budget ${budget})` }); return; }
         push({ type: 'error', text: 'usage: /thinking [on|off|<tokens>]  e.g. /thinking 20000' });
+        return;
+      }
+      case 'think-display': {
+        const lower = (arg || '').toLowerCase();
+        if (!arg) {
+          const mode = getThinkingMode();
+          push({ type: 'info', text: `thinking display: ${mode} (thinking blocks are ${mode === 'show' ? 'visible' : 'hidden'})` });
+          return;
+        }
+        if (lower === 'show' || lower === 'on' || lower === 'visible') {
+          setThinkingMode('show'); setThinkingDisplayModeState('show');
+          push({ type: 'info', text: 'thinking blocks: visible' }); return;
+        }
+        if (lower === 'hide' || lower === 'off' || lower === 'hidden') {
+          setThinkingMode('hide'); setThinkingDisplayModeState('hide');
+          push({ type: 'info', text: 'thinking blocks: hidden' }); return;
+        }
+        const newMode = cycleThinkingMode();
+        setThinkingDisplayModeState(newMode);
+        push({ type: 'info', text: `thinking display: ${newMode}` });
         return;
       }
       case 'system': {
@@ -1222,6 +1705,24 @@ function Session({
           push({ type: 'info', text: 'History compacted.' });
         }).catch((err) => push({ type: 'error', text: `Compact failed: ${err?.message || err}` }));
         return;
+      case 'dream': {
+        // Manual memory consolidation trigger — bypasses the time/session gates
+        // but still honours the lock (so two /dream runs can't race).
+        const ad = await import('../services/autoDream/autoDream.js').catch(() => null);
+        const ll = ad ? await import('../services/autoDream/consolidationLock.js').catch(() => null) : null;
+        const ms = await import('../services/memories/memoryStore.js').catch(() => null);
+        if (!ad || !ll || !ms) { push({ type: 'error', text: 'Auto-dream subsystem unavailable.' }); return; }
+        push({ type: 'info', text: 'Consolidating recent sessions into memory…' });
+        try {
+          ll.recordConsolidation();
+          const files = ms.listMemoryFiles();
+          ms.rebuildIndex();
+          push({ type: 'info', text: `Dream complete — ${files.length} memory file(s) in ${ms.getMemoriesDir()}.` });
+        } catch (e) {
+          push({ type: 'error', text: `Dream failed: ${e?.message || e}` });
+        }
+        return;
+      }
       case 'remember':
         if (!arg) {
           const mems = getMemories();
@@ -1337,15 +1838,44 @@ function Session({
       }
       case 'adviser':
       case 'advisor': {
+        const { CUSTOM_ENDPOINTS } = await import('../config.js');
+        const { resolveProvider } = await import('../agent/models.js');
         if (!arg) {
           const current = agentRef.current?.adviserModel;
-          push({ type: 'info', text: current ? `Adviser model: ${current}` : 'Adviser model: auto (picks highest-capability available model)\n/adviser <model> to pin, /adviser off to disable' });
+          const eps = Object.keys(CUSTOM_ENDPOINTS);
+          push({ type: 'info', text:
+            `Adviser model: ${current || 'auto (picks highest-capability available model)'}\n\n` +
+            '/adviser <model>               any model alias or full model id\n' +
+            '/adviser <endpoint-name>       a saved /endpoint\n' +
+            '/adviser <url> <model> [key]   any OpenAI-compatible endpoint\n' +
+            '/adviser auto · /adviser off' +
+            (eps.length ? `\n\nSaved endpoints: ${eps.join(', ')}` : '') });
           return;
         }
         if (arg === 'auto') { agentRef.current?.setAdviserModel(null); saveAdviserModel(null); push({ type: 'info', text: 'Adviser model set to auto.' }); return; }
         if (arg === 'off') { agentRef.current?.setAdviserModel('off'); saveAdviserModel('off'); push({ type: 'info', text: 'Adviser disabled.' }); return; }
-        agentRef.current?.setAdviserModel(arg); saveAdviserModel(arg);
-        push({ type: 'info', text: `Adviser model → ${arg} (saved)` });
+        // URL form: /adviser <url> <model-id> [api-key] — registers the
+        // endpoint under the name "adviser" and pins the adviser to it.
+        if (/^https?:\/\//i.test(args[0])) {
+          const [epURL, epModel, epKey] = args;
+          if (!epModel) { push({ type: 'error', text: 'usage: /adviser <url> <model-id> [api-key]\ne.g. /adviser http://localhost:11434/v1 llama3' }); return; }
+          CUSTOM_ENDPOINTS['adviser'] = { baseURL: epURL, model: epModel, apiKey: epKey || 'no-key', context: CUSTOM_ENDPOINTS['adviser']?.context || 0 };
+          saveCustomEndpoints({ ...CUSTOM_ENDPOINTS });
+          agentRef.current?.setAdviserModel('adviser'); saveAdviserModel('adviser');
+          push({ type: 'info', text: `Adviser → ${epModel} @ ${epURL}\n(saved as endpoint "adviser" — also usable via /model adviser)` });
+          return;
+        }
+        // Alias, saved endpoint name, or raw model id
+        const target = args[0];
+        const known = !!(MODELS[target] || MODELS[target.toLowerCase()] || CUSTOM_ENDPOINTS[target]);
+        const provider = resolveProvider(target);
+        const noKeyNeeded = ['custom', 'ollama', 'lumen', 'axion-vision', 'veil'].includes(provider);
+        const hasKey = noKeyNeeded || !!API_KEYS[provider];
+        agentRef.current?.setAdviserModel(target); saveAdviserModel(target);
+        const note = !hasKey
+          ? `\n⚠ no API key for provider "${provider}" — set one with /api ${provider} <key>, or the adviser will fail`
+          : !known ? `\n(not a known alias — will be sent as a raw model id to ${provider})` : '';
+        push({ type: 'info', text: `Adviser model → ${target} (saved)${note}` });
         return;
       }
       case 'include': {
@@ -1413,6 +1943,36 @@ function Session({
         }).catch((err) => push({ type: 'error', text: `review failed: ${err.message}` }));
         return;
       }
+      case 'diff': {
+        const sub = (args[0] || 'working').toLowerCase();
+        const mode = sub === 'branch' || sub === 'main' ? 'branch'
+          : sub === 'last-turn' || sub === 'last' || sub === 'turn' ? 'last-turn'
+          : 'working-tree';
+        const lastTurnProvider = () => {
+          try {
+            const snaps = listSnapshots(cwdState);
+            if (!snaps || snaps.length < 2) return [];
+            const prev = snaps[1].id;
+            const curr = snaps[0].id;
+            const changed = snapshotDiff(cwdState, prev, curr, false);
+            const out = [];
+            for (const c of changed) {
+              const status = c.status === 'A' ? 'added' : c.status === 'D' ? 'deleted' : 'modified';
+              out.push({ path: c.file, added: 0, removed: 0, status, patch: '' });
+            }
+            return out;
+          } catch { return []; }
+        };
+        const { text: diffText, fileCount, source } = renderDiffViewer({
+          cwd: cwdState,
+          mode,
+          width: width || 100,
+          lastTurnProvider,
+        });
+        push({ type: 'info', text: diffText });
+        if (!fileCount) push({ type: 'info', text: `Tip: try /diff branch (vs default branch) or /diff last-turn (recent snapshot diff).` });
+        return;
+      }
       case 'btw': {
         if (!arg) { push({ type: 'error', text: 'usage: /btw <question>' }); return; }
         push({ type: 'user', text: `btw: ${arg}` });
@@ -1423,10 +1983,28 @@ function Session({
         return;
       }
       case 'export': {
-        if (!arg) { push({ type: 'error', text: 'usage: /export <filename>' }); return; }
+        const parsedExport = parseExportArgs(arg || '');
+        if (parsedExport.error) { push({ type: 'error', text: parsedExport.error }); return; }
+        const fmt = parsedExport.format
+          || (parsedExport.filename ? inferExportFormatFromFilename(parsedExport.filename) : null)
+          || 'markdown';
+        const exportMsgs = messages.filter(m => m.type !== 'info');
+        const content = renderMessagesForExport(exportMsgs, { format: fmt });
+        // Clipboard mode: `/export --format md` with no filename, or `/export clipboard`
+        if (!parsedExport.filename) {
+          try {
+            copyToClipboard(content);
+            push({ type: 'info', text: `● Copied ${fmt} export (${content.length} chars) to clipboard` });
+          } catch (err) { push({ type: 'error', text: `Clipboard export failed: ${err.message}` }); }
+          return;
+        }
         try {
-          const outPath = exportChat(arg, messages.filter(m => m.type !== 'info'));
-          push({ type: 'info', text: `● Exported to ${outPath}` });
+          const finalName = ensureExportFilenameExtension(parsedExport.filename, fmt, { preserveMarkdownExtension: parsedExport.format === undefined });
+          const outPath = resolveExportFilepath(process.cwd(), finalName);
+          const dir = dirname(outPath);
+          if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
+          writeFileSync(outPath, content, 'utf8');
+          push({ type: 'info', text: `● Exported (${fmt}) to ${outPath}` });
         } catch (err) { push({ type: 'error', text: `Export failed: ${err.message}` }); }
         return;
       }
@@ -2266,6 +2844,10 @@ function Session({
         return;
       }
       default:
+        if (isCustomCommand(c)) {
+          const prompt = resolveCommand(c, args, cwdState);
+          if (prompt) { submitRef.current(prompt); return; }
+        }
         push({ type: 'info', text: `/${c} doesn't exist. Run /help for all commands.` });
         return;
     }
@@ -2281,15 +2863,22 @@ function Session({
   }, [model, mode, tokens, messages, push, onExit, buildSession, extThinking, thinkingBudget, systemOverride, goal, computerUse, includedFiles, cwdState, runAgentTurn]);
 
   const submit = useCallback((value) => {
-    const text = (value || '').trim();
-    if (!text) return;
+    const raw = (value || '').trim();
+    if (!raw) return;
+    // Expand "[pasted text #N …]" tokens back to the original pasted content —
+    // the sent message shows (and the agent receives) the text as it was
+    // copied, line breaks intact. Prompt history keeps the short token form.
+    const text = expandPastedTokens(raw);
     if (busyRef.current) {
       agentRef.current?.queueMessage(text);
       setQueuedCount((c) => c + 1);
       return;
     }
     const h = historyRef.current;
-    if (h[h.length - 1] !== text) h.push(text); // record, skip consecutive dupes
+    if (h[h.length - 1] !== raw) {
+      h.push(raw);
+      pushHistory(raw);
+    }
     setHistPos(0);
     setInputSafe('');
     if (text.startsWith('/')) { runCommand(text); return; }
@@ -2301,7 +2890,41 @@ function Session({
       pendingLocalCommandsRef.current = [];
     }
     runAgentTurn(text, agentText);
-  }, [busy, runCommand, setInputSafe, runAgentTurn]);
+  }, [busy, runCommand, setInputSafe, runAgentTurn, expandPastedTokens]);
+
+  // ── Command palette + keymap engine ────────────────────────────────────────────
+  // The palette is opened with Ctrl+Shift+P (the leader key trigger registered
+  // on the keymap below). The catalog merges built-in slash commands with any
+  // user-defined custom commands; picking one dispatches it through the same
+  // runCommand pipeline as typing the slash form.
+  const paletteCommands = useMemo(
+    () => buildCommandCatalog({ onSelect: (name) => { setPaletteOpen(false); setPaletteQuery(''); setPaletteSel(0); runCommand(`/${name}`); } }),
+    [runCommand],
+  );
+  const keymapRef = useRef(null);
+  if (!keymapRef.current) keymapRef.current = createKeymap({ leader: 'ctrl+k', leaderTimeoutMs: 800 });
+  useEffect(() => {
+    const km = keymapRef.current;
+    // Register every catalog command so the keymap can dispatch bindings, plus
+    // a dedicated palette-open command bound to Ctrl+Shift+P (VS Code style).
+    const offs = paletteCommands.map((c) => km.registerCommand(c));
+    const openPalette = km.registerCommand({
+      name: 'palette.show',
+      description: 'Open command palette',
+      category: 'System',
+      keybinding: 'ctrl+shift+p',
+      onSelect: () => { setPaletteOpen(true); setPaletteQuery(''); setPaletteSel(0); },
+    });
+    return () => { offs.forEach((off) => off?.()); openPalette(); };
+  }, [paletteCommands]);
+  const closePalette = useCallback(() => { setPaletteOpen(false); setPaletteQuery(''); setPaletteSel(0); }, []);
+  const pickPalette = useCallback((i) => {
+    const matches = fuzzyRankCommands(paletteCommands, paletteQuery);
+    const c = matches[Math.min(i, matches.length - 1)];
+    if (!c) { closePalette(); return; }
+    closePalette();
+    runCommand(`/${c.slashName || c.name}`);
+  }, [paletteCommands, paletteQuery, runCommand, closePalette]);
 
   // Poll this tab's BUS mailbox (keyed by todoScope — see the Agent's `label`
   // above) for background-task completions (run_command background=true) and
@@ -2417,43 +3040,55 @@ function Session({
     <box style={{ flexGrow: 1, flexDirection: 'row' }}>
       <box style={{ flexGrow: 1, flexDirection: 'column' }}>
         <Welcome model={model} mode={mode} cwd={cwdState} updateInfo={updateInfo} />
+        {subViewIdx != null && messages[subViewIdx]?.type === 'subagent-run' ? (
+          <SubagentView msg={messages[subViewIdx]} onClose={closeSubagent} scrollRef={subViewScrollRef} />
+        ) : (
         <scrollbox ref={scrollRef} style={{ flexGrow: 1, flexShrink: 1, minHeight: 0 }} stickyScroll stickyStart="bottom">
-          {messages.map((msg, i) => {
-            const isHit = searchOpen && searchMatches.length > 0 && i === searchMatches[searchIdx];
-            // Recap line after a completed run of ≥2 consecutive tool calls —
-            // walk back from the run's last message to find where it started.
-            const isCompletedTool = (m) => m && m.type === 'tool' && !m.pending;
-            let runRecap = null;
-            let runFailed = false;
-            if (isCompletedTool(msg) && !isCompletedTool(messages[i + 1])) {
-              let start = i;
-              while (start > 0 && isCompletedTool(messages[start - 1])) start--;
-              if (i - start >= 1) { // ≥2 tool calls in the run
-                const runMsgs = messages.slice(start, i + 1);
-                const summary = summarizeToolRun(runMsgs);
-                if (summary) { runRecap = summary; runFailed = runMsgs.some((m) => m.success === false); }
+          <VirtualMessageList
+            messages={messages}
+            scrollRef={scrollRef}
+            columns={width}
+            itemKey={(m, i) => `${i}-${m.type}-${m.name || ''}`}
+            renderItem={(msg, i) => {
+              const isHit = searchOpen && searchMatches.length > 0 && i === searchMatches[searchIdx];
+              // Recap line after a completed run of ≥2 consecutive tool calls
+              const isCompletedTool = (m) => m && m.type === 'tool' && !m.pending;
+              let runRecap = null;
+              let runFailed = false;
+              if (isCompletedTool(msg) && !isCompletedTool(messages[i + 1])) {
+                let start = i;
+                while (start > 0 && isCompletedTool(messages[start - 1])) start--;
+                if (i - start >= 1) {
+                  const runMsgs = messages.slice(start, i + 1);
+                  const summary = summarizeToolRun(runMsgs);
+                  if (summary) { runRecap = summary; runFailed = runMsgs.some((m) => m.success === false); }
+                }
               }
-            }
-            return (
-              <box key={i} style={{ flexDirection: 'column' }}>
-                <box style={isHit ? { flexDirection: 'column', border: true, borderColor: '#f0c674' } : { flexDirection: 'column' }}>
-                  <MessageRow
-                    msg={msg} index={i}
-                    expanded={expandedTools.has(i)} onToggle={() => toggleExpand(i)}
-                    onCopy={copyMessage} onEdit={editMessage} onDelete={deleteFrom} onRetry={retryMessage}
-                  />
-                </box>
-                {runRecap && (
-                  <box style={{ paddingLeft: 1 }}>
-                    <text>
-                      {runFailed ? <span fg="#f85149">{'△ '}</span> : null}
-                      <span fg={runFailed ? '#f85149' : '#666'}>{`  ↳ ${runRecap}`}</span>
-                    </text>
+              return (
+                <box style={{ flexDirection: 'column' }}>
+                  <box style={isHit ? { flexDirection: 'column', border: true, borderColor: '#f0c674' } : { flexDirection: 'column' }}>
+                    <MessageRow
+                      msg={msg} index={i}
+                      expanded={expandedTools.has(i)} onToggle={() => toggleExpand(i)}
+                      onCopy={copyMessage} onEdit={editMessage} onDelete={deleteFrom} onRetry={retryMessage}
+                      onOpen={openSubagent}
+                    />
                   </box>
-                )}
-              </box>
-            );
-          })}
+                  {runRecap && (
+                    <box style={{ paddingLeft: 1 }}>
+                      <text>
+                        {runFailed ? <span fg="#f85149">{'△ '}</span> : null}
+                        <span fg={runFailed ? '#f85149' : '#666'}>{`  ↳ ${runRecap}`}</span>
+                      </text>
+                    </box>
+                  )}
+                </box>
+              );
+            }}
+            onSearchMatchesChange={(count, current) => {
+              // Update search display from virtual list
+            }}
+          />
           {streamText !== null && (
             <box style={{ flexDirection: 'column', marginTop: 1, paddingLeft: 1, paddingRight: 1 }}>
               <text><span fg={A}>✻ Axion</span></text>
@@ -2461,6 +3096,7 @@ function Session({
             </box>
           )}
         </scrollbox>
+        )}
         {/* Jump-to-bottom pill — only while scrolled up */}
         {!atBottom && inputMode === 'chat' && (
           <box style={{ flexShrink: 0, flexDirection: 'row', justifyContent: 'center' }}>
@@ -2489,6 +3125,50 @@ function Session({
             selected={Math.min(chatSel, Math.max(0, chatMatches.length - 1))}
             onPick={(i) => pickChat(chatMatches[i])}
             onHover={setChatSel}
+            focused={isActive}
+            accentColor={A}
+          />
+        )}
+        {stashOpen && (
+          <StashDialog
+            stashes={stashList}
+            selected={Math.min(stashSel, Math.max(0, stashList.length - 1))}
+            accentColor={A}
+            onSelect={setStashSel}
+            onRestore={(entry) => { setInputSafe(entry.text); setStashOpen(false); }}
+            onDelete={(i) => { deleteStash(i); setStashList(getAllStashes()); setStashSel((s) => Math.min(s, Math.max(0, stashList.length - 2))); }}
+            onClose={() => setStashOpen(false)}
+          />
+        )}
+        {msgSelectorOpen && (
+          <MessageSelector
+            messages={messages}
+            onSelect={(msg, idx) => {
+              setMsgSelectorOpen(false);
+              // Scroll to the selected message
+              const el = scrollRef.current;
+              if (el) {
+                try {
+                  const vh = el.viewport?.height ?? el.height ?? 0;
+                  const max = Math.max(0, (el.scrollHeight || 0) - vh);
+                  const frac = messages.length > 1 ? idx / (messages.length - 1) : 0;
+                  el.scrollTo(Math.round(frac * max));
+                } catch {}
+              }
+            }}
+            onClose={() => setMsgSelectorOpen(false)}
+            accentColor={A}
+          />
+        )}
+        {paletteOpen && (
+          <CommandPalette
+            commands={paletteCommands}
+            total={paletteCommands.length}
+            query={paletteQuery}
+            onQuery={(v) => { setPaletteQuery(v); setPaletteSel(0); }}
+            selected={Math.min(paletteSel, Math.max(0, fuzzyRankCommands(paletteCommands, paletteQuery).length - 1))}
+            onPick={(i) => pickPalette(i)}
+            onHover={setPaletteSel}
             focused={isActive}
             accentColor={A}
           />
@@ -2569,14 +3249,15 @@ function Session({
           <input
             ref={inputElRef}
             style={{ flexGrow: 1 }}
-            focused={isActive && !searchOpen && !chatPickerOpen}
+            maxLength={1_000_000}
+            focused={isActive && !searchOpen && !chatPickerOpen && !paletteOpen}
             value={input}
-            onInput={setInputSafe}
+            onInput={(v) => setInputSafe(cleanBrokenPasteTokens(v))}
             onSubmit={fileActive && fileMatches.length ? () => insertFile(fileMatches[Math.min(fileSel, fileMatches.length - 1)]) : submit}
             placeholder={
               inputMode === 'confirm-tool' || inputMode === 'confirm-plan' ? 'press y / n …' :
               busy ? 'Axion is working…  (Esc to interrupt)' :
-              'ask Axion something…  (Enter to send · / for commands · Ctrl+C twice to quit)'
+              'ask Axion something…  (Enter to send · / for commands · Ctrl+S stash · Ctrl+C twice to quit)'
             }
           />
         </box>
@@ -2597,6 +3278,7 @@ function Session({
         todos={todos}
         pinnedFiles={includedFiles}
         mcpTools={MCP.totalTools}
+        planPath={getCurrentPlanPath()}
       />
       )}
     </box>

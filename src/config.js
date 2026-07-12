@@ -122,6 +122,28 @@ export const VIDEO_MODEL = { current: process.env.AXION_VIDEO_MODEL || '' };
 // updates it live. Empty by default — no fallback ladder (audio has no frame analog).
 export const AUDIO_MODEL = { current: process.env.AXION_AUDIO_MODEL || '' };
 
+// ── File Watcher config ───────────────────────────────────────────────────────
+export const FILE_WATCHER = {
+  enabled:    process.env.AXION_FILE_WATCHER === '1' || process.env.AXION_FILE_WATCHER === 'true',
+  debounceMs: parseInt(process.env.AXION_WATCHER_DEBOUNCE_MS || '200', 10),
+  extraIgnore: (process.env.AXION_WATCHER_IGNORE || '').split(',').filter(Boolean),
+};
+
+// ── Shell config ──────────────────────────────────────────────────────────────
+export const SHELL_CONFIG = {
+  defaultShell: process.env.AXION_SHELL || process.env.SHELL || '',
+};
+
+// ── Search engine config ─────────────────────────────────────────────────────
+// Controls the ripgrep/fs search backend used by glob/grep/find tools.
+// backend: 'auto' (default — use rg when available), 'ripgrep', or 'fs'.
+export const SEARCH_CONFIG = {
+  backend:        process.env.AXION_SEARCH_BACKEND || 'auto',
+  maxResults:     parseInt(process.env.AXION_SEARCH_MAX_RESULTS || '500', 10) || 500,
+  includeHidden:  process.env.AXION_SEARCH_HIDDEN === '1' || process.env.AXION_SEARCH_HIDDEN === 'true',
+  excludeGit:     process.env.AXION_SEARCH_INCLUDE_GIT !== '1' && process.env.AXION_SEARCH_INCLUDE_GIT !== 'true',
+};
+
 // Image generation model — mutable so /img-gen-model changes it globally.
 export const IMAGE_GEN_MODEL = { current: process.env.AXION_IMAGE_MODEL || 'dall-e-3' };
 
@@ -275,6 +297,32 @@ export async function fetchEndpointContextWindows() {
 export const DEFAULT_MODEL = process.env.AXION_MODEL || 'big-pickle';
 export const DEFAULT_MODE  = 'ask';
 
+// ── Multi-Agent System — named agents with configurable permissions ──────────
+// A map of agent id → { name, description, mode, model, color, hidden,
+// roleDefinition, permissions: { allowedTools, deniedTools } }. Built-in
+// agents (build, ask, debug, review) are always available; entries here
+// override a built-in with the same id, or add a new named agent. Settable via
+// AXION_AGENTS env var (JSON string) or directly in code.
+export const AGENTS = (() => {
+  try {
+    if (process.env.AXION_AGENTS) return JSON.parse(process.env.AXION_AGENTS);
+  } catch {}
+  return {};
+})();
+
+// Maximum number of concurrent tool executions per batch.
+// Read-only tools are grouped and run in parallel up to this limit.
+export const MAX_TOOL_CONCURRENCY = parseInt(process.env.AXION_MAX_TOOL_CONCURRENCY, 10) || 10;
+
+// Ordered list of model aliases for automatic rate-limit fallback.
+// When the active model hits 429, Axion tries the next model in this list.
+// Set via AXION_FALLBACK_CHAIN env var (comma-separated) or directly in config.
+export function getProviderFallbackChain() {
+  const env = process.env.AXION_FALLBACK_CHAIN;
+  if (env) return env.split(',').map((s) => s.trim()).filter(Boolean);
+  return [];
+}
+
 // Cost per 1M tokens (input, output) in USD — used for rough estimates only
 export const TOKEN_COSTS = {
   'claude-sonnet-4-6':            { in: 3,     out: 15   },
@@ -290,9 +338,95 @@ export const TOKEN_COSTS = {
   'mistral-large-latest':         { in: 3,     out: 9    },
 };
 
+// ── Per-model reasoning/thinking metadata and transport shim config ──────
+//
+// Each entry maps a wire model ID to its reasoning capabilities. `mode` is:
+//   'levels'  → supports reasoning_effort levels (low/medium/high/…)
+//   'toggle'  → supports on/off thinking (Anthropic native)
+//   'always-on' → model always reasons (e.g. DeepSeek R1)
+//   'none'    → no reasoning support, strip any reasoning fields
+// `wireFormat` controls how thinking is serialized on the wire:
+//   'reasoning_effort'  → OpenAI-style { reasoning_effort: "medium" }
+//   'deepseek_compatible' → { reasoning_effort: "max" }
+//   'zai_compatible'    → { thinking: { type: "enabled", budget_tokens: N } }
+//   'thinking_type'     → Anthropic native { thinking: { type: "enabled", budget_tokens: N } }
+//   'none'              → no thinking field
+// `maxTokensField` is 'max_tokens' or 'max_completion_tokens' (o-series use the latter).
+// `stripFields` lists body fields this model/provider cannot accept.
+export const REASONING_CONFIGS = {
+  'gpt-4o':                          { mode: 'levels', efforts: ['low', 'medium', 'high'], wireFormat: 'reasoning_effort', maxTokensField: 'max_tokens' },
+  'gpt-4o-mini':                     { mode: 'levels', efforts: ['low', 'medium', 'high'], wireFormat: 'reasoning_effort', maxTokensField: 'max_tokens' },
+  'gpt-4.1':                         { mode: 'levels', efforts: ['low', 'medium', 'high'], wireFormat: 'reasoning_effort', maxTokensField: 'max_completion_tokens' },
+  'o3':                              { mode: 'levels', efforts: ['low', 'medium', 'high'], wireFormat: 'reasoning_effort', maxTokensField: 'max_completion_tokens' },
+  'o4-mini':                         { mode: 'levels', efforts: ['low', 'medium', 'high'], wireFormat: 'reasoning_effort', maxTokensField: 'max_completion_tokens' },
+  'gpt-5.6-sol':                     { mode: 'levels', efforts: ['low', 'medium', 'high'], wireFormat: 'reasoning_effort', maxTokensField: 'max_completion_tokens' },
+  'gpt-5.6-terra':                   { mode: 'levels', efforts: ['low', 'medium', 'high'], wireFormat: 'reasoning_effort', maxTokensField: 'max_completion_tokens' },
+  'gpt-5.6-luna':                    { mode: 'levels', efforts: ['low', 'medium', 'high'], wireFormat: 'reasoning_effort', maxTokensField: 'max_completion_tokens' },
+  'gpt-5.6-sol-pro':                 { mode: 'levels', efforts: ['low', 'medium', 'high'], wireFormat: 'reasoning_effort', maxTokensField: 'max_completion_tokens' },
+  'gpt-5.6-terra-pro':               { mode: 'levels', efforts: ['low', 'medium', 'high'], wireFormat: 'reasoning_effort', maxTokensField: 'max_completion_tokens' },
+  'gpt-5.6-luna-pro':                { mode: 'levels', efforts: ['low', 'medium', 'high'], wireFormat: 'reasoning_effort', maxTokensField: 'max_completion_tokens' },
+  'claude-sonnet-4-6':               { mode: 'toggle', efforts: [], wireFormat: 'thinking_type', maxTokensField: 'max_tokens' },
+  'claude-opus-4-8':                 { mode: 'toggle', efforts: [], wireFormat: 'thinking_type', maxTokensField: 'max_tokens' },
+  'claude-haiku-4-5-20251001':       { mode: 'toggle', efforts: [], wireFormat: 'thinking_type', maxTokensField: 'max_tokens' },
+  'claude-fable-5':                  { mode: 'toggle', efforts: [], wireFormat: 'thinking_type', maxTokensField: 'max_tokens' },
+  'llama-3.3-70b-versatile':         { mode: 'none', efforts: [], wireFormat: 'none', maxTokensField: 'max_tokens', stripFields: ['reasoning_effort', 'store'] },
+  'llama-3.1-8b-instant':            { mode: 'none', efforts: [], wireFormat: 'none', maxTokensField: 'max_tokens', stripFields: ['reasoning_effort', 'store'] },
+  'mistral-large-latest':            { mode: 'none', efforts: [], wireFormat: 'none', maxTokensField: 'max_tokens', stripFields: ['store'] },
+  'mistral-small-latest':            { mode: 'none', efforts: [], wireFormat: 'none', maxTokensField: 'max_tokens', stripFields: ['store'] },
+  'gemini-2.0-flash':                { mode: 'none', efforts: [], wireFormat: 'none', maxTokensField: 'max_tokens' },
+  'gemini-2.5-pro-preview-05-06':    { mode: 'none', efforts: [], wireFormat: 'none', maxTokensField: 'max_tokens' },
+  'gemini-2.5-flash':                { mode: 'none', efforts: [], wireFormat: 'none', maxTokensField: 'max_tokens' },
+  'deepseek-r1-distill-llama-70b':   { mode: 'levels', efforts: ['low', 'medium', 'high', 'xhigh', 'max'], wireFormat: 'deepseek_compatible', maxTokensField: 'max_tokens' },
+  'glm-5.2':                         { mode: 'levels', efforts: ['low', 'medium', 'high'], wireFormat: 'zai_compatible', maxTokensField: 'max_tokens' },
+  'glm-4.7-flash':                   { mode: 'levels', efforts: ['low', 'medium', 'high'], wireFormat: 'zai_compatible', maxTokensField: 'max_tokens' },
+  'glm-4.5-flash':                   { mode: 'levels', efforts: ['low', 'medium', 'high'], wireFormat: 'zai_compatible', maxTokensField: 'max_tokens' },
+};
+
+// Provider-level body-field strip lists applied to all models under that provider.
+export const PROVIDER_STRIP_FIELDS = {
+  groq:    ['reasoning_effort', 'store'],
+  mistral: ['store'],
+};
+
+// ── File formatter configuration ──────────────────────────────────────────
+//
+// Each rule maps file extensions to a formatter command. The `{file}` placeholder
+// is replaced with the absolute file path before execution. Set `disabled: true`
+// to disable all formatting, or per-rule `disabled` to skip a specific formatter.
+//
+// Defaults mirror the hardcoded logic in the original tryAutoFormat:
+//   - prettier for JS/TS/JSON/CSS/HTML/MD/YAML
+//   - black for Python
+//   - gofmt for Go
+export const FORMATTERS = {
+  disabled: false,
+  rules: [
+    { extensions: ['.js', '.jsx', '.ts', '.tsx', '.json', '.css', '.html', '.md', '.yaml', '.yml'], command: ['npx', 'prettier', '--write', '{file}'] },
+    { extensions: ['.py'], command: ['python', '-m', 'black', '-q', '{file}'] },
+    { extensions: ['.go'], command: ['gofmt', '-w', '{file}'] },
+  ],
+};
+
 export function estimateCost(modelAlias, inputTokens, outputTokens) {
   const id   = MODELS[modelAlias] || modelAlias;
   const cost = TOKEN_COSTS[id];
   if (!cost) return null;
   return (inputTokens / 1_000_000) * cost.in + (outputTokens / 1_000_000) * cost.out;
 }
+
+// ── Context partitioning zones ────────────────────────────────────────────
+//
+// Per-zone token budgets and retention policies for the context partitioning
+// system. Override via CONTEXT_ZONES env var (JSON array) or AXION.md config.
+// Retention policies: keep_all | prune_oldest | prune_least_important
+export const CONTEXT_ZONES = (() => {
+  try {
+    if (process.env.CONTEXT_ZONES) return JSON.parse(process.env.CONTEXT_ZONES);
+  } catch {}
+  return [
+    { name: 'system',     maxTokens: 8000,  retentionPolicy: 'keep_all',              priority: 1 },
+    { name: 'background', maxTokens: 10000, retentionPolicy: 'prune_oldest',         priority: 2 },
+    { name: 'important',  maxTokens: 30000, retentionPolicy: 'prune_least_important', priority: 3 },
+    { name: 'recent',     maxTokens: 50000, retentionPolicy: 'keep_all',              priority: 4 },
+  ];
+})();

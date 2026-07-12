@@ -3,6 +3,17 @@
 ## Read first: standing instructions
 Before starting any task, read `STANDING-INSTRUCTIONS.md` in the repo root and obey it. It defines the working procedure for every answer — intent reading, verification, self-attack, and the final gate run before sending. It is not optional.
 
+## Commands
+```sh
+npm start          # run the TUI (node src/tui/launch.js)
+npm run tui        # run the TUI directly under bun (bun src/tui/main.jsx)
+npm test           # node test/run.js — esbuild-compiles test/*.test.js to dist/*.mjs, runs node --test
+npm run sft-gen    # tools/sft-gen.js — generate SFT data
+npm run sft-inspect
+node test/lumen-safety.js   # Lumen safety checks, not part of npm test
+```
+There is no separate build step; `dist/` only holds compiled test bundles.
+
 ## Critical: Do NOT delete directories or files
 - Never run `rmdir`, `rm -rf`, or any destructive command on existing project directories.
 - Never delete, move, or modify a directory unless explicitly asked and confirmed.
@@ -74,17 +85,8 @@ Previously `onStreamEnd` created per-iteration assistant messages. When the agen
 ## Chart System Prompt
 Both `SYSTEM_PROMPT` and `CHAT_SYSTEM_PROMPT` in `agent.js` include chart output instructions. The web chat also sends a system message with chart hint in the request body.
 
-## Test Commands
-```sh
-npm test
-node test/lumen-safety.js
-```
-Tests use `node:test` and `node:assert/strict`. Run via `test/run.js` (esbuild bundle then `node --test`).
-
-## Build
-```sh
-node build.js    # ~50ms, outputs dist/axion.js
-```
+## Tests
+Tests use `node:test` and `node:assert/strict`. See Commands above for how they run.
 
 ## HF Space — API Route Fix (Gradio 6)
 

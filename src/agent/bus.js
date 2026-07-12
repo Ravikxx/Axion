@@ -37,4 +37,14 @@ class AgentBus {
   }
 }
 
+// ── File Watcher Event Types ──────────────────────────────────────────────────
+// Agents can subscribe via BUS.read('watcher') for any file change event.
+// Message shape: { type, file, event, at }
+export const FileWatcherEvents = {
+  CREATED: 'FileWatcher:Created',
+  CHANGED: 'FileWatcher:Changed',
+  DELETED: 'FileWatcher:Deleted',
+  ERROR:   'FileWatcher:Error',
+};
+
 export const BUS = new AgentBus();
