@@ -60,6 +60,24 @@ function parseGitDiffNames(cwd, diffText) {
   return files;
 }
 
+// `git diff` only reports tracked files — merge in untracked (new) files
+// from porcelain status so they show up alongside tracked changes.
+function mergeUntrackedFiles(cwd, files) {
+  const seen = new Set(files.map((f) => f.file));
+  const status = git(cwd, ['status', '--porcelain']);
+  const merged = [...files];
+  for (const line of status.split('\n')) {
+    if (!line) continue;
+    const code = line[0].trim() || line[1];
+    if (code !== '?') continue;
+    const path = line.slice(3);
+    if (seen.has(path)) continue;
+    merged.push({ file: path, patch: '', additions: 0, deletions: 0, status: 'added' });
+    seen.add(path);
+  }
+  return merged;
+}
+
 function parsePatchHunks(diffText) {
   const patches = [];
   let currentFile = null;
@@ -110,7 +128,7 @@ function loadDiff(cwd, mode, lastTurnProvider) {
   // working-tree (default)
   const diffText = git(cwd, ['diff', `--unified=${CONTEXT_LINES}`]);
   const patches = parsePatchHunks(diffText);
-  const files = parseGitDiffNames(cwd, diffText);
+  const files = mergeUntrackedFiles(cwd, parseGitDiffNames(cwd, diffText));
   return mergePatchesIntoFiles(files, patches);
 }
 
