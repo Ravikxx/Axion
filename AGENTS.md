@@ -1,5 +1,13 @@
 # Axion — Agent Conventions
 
+## Read first: standing instructions
+Before starting any task, read `STANDING-INSTRUCTIONS.md` in the repo root and obey it. It defines the working procedure for every answer — intent reading, verification, self-attack, and the final gate run before sending. It is not optional.
+
+## Critical: Do NOT delete directories or files
+- Never run `rmdir`, `rm -rf`, or any destructive command on existing project directories.
+- Never delete, move, or modify a directory unless explicitly asked and confirmed.
+- `opencodeAX/` and `openclaudeAX/` are gitignored — do not touch them unless asked.
+
 ## Chart Code Blocks
 
 Models can render charts by outputting a ` ```chart ` fenced code block with Chart.js-compatible JSON:
