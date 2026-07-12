@@ -525,7 +525,8 @@
   fetch('https://api.amplifiedsmp.org/health')
     .then((r) => r.json())
     .then((d) => {
-      const up = !!d.ok
+      // `ok` is just the API worker; `model_up` is a real probe of the model.
+      const up = !!(d.ok && d.model_up)
       statusLed.className = 'led ' + (up ? 'live' : 'down')
       chatLed.className = 'led ' + (up ? 'live' : 'down')
       statusText.textContent = up ? 'Lumen is live right now' : 'Lumen is migrating — back soon'
