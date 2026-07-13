@@ -1,4 +1,4 @@
-dataset_pipeline/
+dataset_pipeline/data/
 node_modules/
 .env
 .env.local
