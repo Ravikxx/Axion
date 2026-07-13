@@ -23,8 +23,11 @@ function genKey() {
 
 const TOKEN_TTL = 7 * 24 * 60 * 60 * 1000 // 7 days
 
-async function makeToken(uid, secret) {
-  const payload = btoa(JSON.stringify({ uid, exp: Date.now() + TOKEN_TTL }))
+// `v` pins the token to the user's token_version at mint time so a password
+// reset (which bumps token_version) invalidates every session token issued
+// before it, even though tokens themselves are stateless/unrevocable by id.
+async function makeToken(uid, secret, version = 0) {
+  const payload = btoa(JSON.stringify({ uid, v: version, exp: Date.now() + TOKEN_TTL }))
   const key = await crypto.subtle.importKey('raw', new TextEncoder().encode(secret), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign'])
   const sig = await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(payload))
   return `${payload}.${btoa(String.fromCharCode(...new Uint8Array(sig)))}`
@@ -87,6 +90,9 @@ async function requireAuth(c) {
   if (!payload?.uid) return null
   const user = await c.env.DB.prepare('SELECT * FROM users WHERE id=?').bind(payload.uid).first()
   if (!user || user.banned) return null
+  // Token minted before the user's last password reset — reject even though
+  // the signature and expiry are otherwise valid.
+  if ((payload.v || 0) !== (user.token_version || 0)) return null
   return user
 }
 
@@ -226,7 +232,7 @@ app.get('/auth/verify', async (c) => {
   await c.env.DB.prepare('UPDATE users SET verified=1, verify_token=NULL WHERE id=?').bind(user.id).run()
 
   // Redirect to dashboard with session token in URL hash (read by JS, never sent to server)
-  const sessionToken = await makeToken(user.id, c.env.TOKEN_SECRET)
+  const sessionToken = await makeToken(user.id, c.env.TOKEN_SECRET, user.token_version || 0)
   return new Response(null, {
     status: 302,
     headers: { Location: `https://axion.amplifiedsmp.org/keys#verified=${encodeURIComponent(sessionToken)}&email=${encodeURIComponent(user.email)}` },
@@ -259,7 +265,7 @@ async function oauthFinish(c, { id_field, email, provider_id, return_to }) {
       `UPDATE users SET ${id_field}=?, verified=1, ip=? WHERE id=?`
     ).bind(provider_id, ip, user.id).run()
     if (user.banned) {
-      const token = await makeToken(user.id, c.env.TOKEN_SECRET)
+      const token = await makeToken(user.id, c.env.TOKEN_SECRET, user.token_version || 0)
       const base = RETURN_DESTINATIONS[return_to] || RETURN_DESTINATIONS.keys
       return new Response(null, {
         status: 302,
@@ -300,7 +306,7 @@ async function oauthFinish(c, { id_field, email, provider_id, return_to }) {
           `),
         }))
       }
-      const token = await makeToken(uid, c.env.TOKEN_SECRET)
+      const token = await makeToken(uid, c.env.TOKEN_SECRET, 0)
       const base = RETURN_DESTINATIONS[return_to] || RETURN_DESTINATIONS.keys
       return new Response(null, {
         status: 302,
@@ -313,7 +319,7 @@ async function oauthFinish(c, { id_field, email, provider_id, return_to }) {
     ).bind(uid, email.toLowerCase(), '', ip, provider_id).run()
     user = { id: uid }
   }
-  const token = await makeToken(user.id, c.env.TOKEN_SECRET)
+  const token = await makeToken(user.id, c.env.TOKEN_SECRET, user.token_version || 0)
   const base = RETURN_DESTINATIONS[return_to] || RETURN_DESTINATIONS.keys
   return new Response(null, {
     status: 302,
@@ -458,7 +464,78 @@ app.post('/auth/login', async (c) => {
   if (!user || user.pw_hash !== pw_hash) return json({ error: 'Invalid email or password' }, 401)
   if (!user.verified) return json({ error: 'Please verify your email before signing in.' }, 403)
   if (user.banned) return json({ error: 'Your account has been suspended. Check your email for an appeal link.', banned: true }, 403)
-  return json({ token: await makeToken(user.id, c.env.TOKEN_SECRET), email: user.email })
+  return json({ token: await makeToken(user.id, c.env.TOKEN_SECRET, user.token_version || 0), email: user.email })
+})
+
+const RESET_TOKEN_TTL = 60 * 60 // 1 hour, in seconds (reset_token_expires is epoch seconds)
+
+async function sendPasswordResetEmail(email, token, resendKey) {
+  const link = `https://axion.amplifiedsmp.org/keys#reset=${token}`
+  await sendEmail(resendKey, {
+    to: email,
+    subject: 'Reset your Axion password',
+    html: emailWrap(`
+      <h2 style="margin:0 0 8px;color:#e8e8f0">Reset your password</h2>
+      <p style="color:#ccc;margin:0 0 24px">Click the button below to choose a new password for your Axion account.</p>
+      <a href="${link}" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">Reset password →</a>
+      <p style="color:#555;font-size:12px;margin-top:24px">This link expires in 1 hour and can only be used once. If you didn't request this, ignore this email — your password won't change.</p>
+    `),
+  })
+}
+
+// Always responds with the same generic message regardless of whether the
+// email is registered, so this endpoint can't be used to enumerate accounts.
+app.post('/auth/forgot-password', async (c) => {
+  const ip = c.req.header('CF-Connecting-IP') || 'unknown'
+  if (!await checkRateLimit(c.env.DB, ip)) return json({ error: 'Too many attempts. Try again in 15 minutes.' }, 429)
+
+  const { email, turnstile } = await c.req.json().catch(() => ({}))
+  if (!await verifyTurnstile(turnstile, c.env.TURNSTILE_SECRET, ip)) return json({ error: 'Security check failed. Please try again.' }, 403)
+
+  const generic = { ok: true, message: 'If an account exists with that email, a reset link has been sent.' }
+  if (!email || !validEmail(email)) return json(generic)
+
+  const user = await c.env.DB.prepare('SELECT id, email, banned FROM users WHERE email=?').bind(email.toLowerCase()).first()
+  // Banned accounts go through the appeal flow, not password reset — a reset
+  // link would let a suspended user regain access without review.
+  if (!user || user.banned) return json(generic)
+
+  const reset_token = crypto.randomUUID()
+  const reset_token_expires = Math.floor(Date.now() / 1000) + RESET_TOKEN_TTL
+  await c.env.DB.prepare('UPDATE users SET reset_token=?, reset_token_expires=? WHERE id=?')
+    .bind(reset_token, reset_token_expires, user.id).run()
+
+  if (c.env.RESEND_API_KEY) {
+    c.executionCtx.waitUntil(sendPasswordResetEmail(user.email, reset_token, c.env.RESEND_API_KEY))
+  }
+
+  return json(generic)
+})
+
+app.post('/auth/reset-password', async (c) => {
+  const ip = c.req.header('CF-Connecting-IP') || 'unknown'
+  if (!await checkRateLimit(c.env.DB, ip)) return json({ error: 'Too many attempts. Try again in 15 minutes.' }, 429)
+
+  const { token, password } = await c.req.json().catch(() => ({}))
+  if (!token) return json({ error: 'Missing reset token' }, 400)
+  if (!password || password.length < 8) return json({ error: 'Password must be at least 8 characters' }, 400)
+
+  const user = await c.env.DB.prepare('SELECT * FROM users WHERE reset_token=?').bind(token).first()
+  if (!user) return json({ error: 'This reset link is invalid or has already been used.' }, 400)
+  if (!user.reset_token_expires || user.reset_token_expires < Math.floor(Date.now() / 1000)) {
+    return json({ error: 'This reset link has expired. Request a new one.' }, 400)
+  }
+
+  const pw_hash = await hashPw(password, c.env.PW_SALT)
+  // token_version+1 invalidates every session token issued before this
+  // reset (see makeToken/requireAuth) — anyone who had a live session,
+  // including an attacker who reset the password after taking the account,
+  // gets signed out everywhere.
+  await c.env.DB.prepare(
+    'UPDATE users SET pw_hash=?, reset_token=NULL, reset_token_expires=NULL, token_version=token_version+1 WHERE id=?'
+  ).bind(pw_hash, user.id).run()
+
+  return json({ ok: true, message: 'Password updated. Sign in with your new password.' })
 })
 
 // Native-app login: same checks as /auth/login minus the Turnstile browser
@@ -474,7 +551,7 @@ app.post('/auth/login/app', async (c) => {
   if (!user || !user.pw_hash || user.pw_hash !== pw_hash) return json({ error: 'Invalid email or password' }, 401)
   if (!user.verified) return json({ error: 'Please verify your email before signing in.' }, 403)
   if (user.banned) return json({ error: 'Your account has been suspended. Check your email for an appeal link.', banned: true }, 403)
-  return json({ token: await makeToken(user.id, c.env.TOKEN_SECRET), email: user.email })
+  return json({ token: await makeToken(user.id, c.env.TOKEN_SECRET, user.token_version || 0), email: user.email })
 })
 
 // ── Dashboard ──────────────────────────────────────────────────────────────
@@ -1020,7 +1097,7 @@ app.get('/waitlist/accept', async (c) => {
 
   await c.env.DB.prepare("UPDATE waitlist SET status='accepted', invite_token=NULL WHERE id=?").bind(entry.id).run()
 
-  const sessionToken = await makeToken(user.id, c.env.TOKEN_SECRET)
+  const sessionToken = await makeToken(user.id, c.env.TOKEN_SECRET, user.token_version || 0)
   return new Response(null, {
     status: 302,
     headers: { Location: `https://axion.amplifiedsmp.org/keys#verified=${encodeURIComponent(sessionToken)}&email=${encodeURIComponent(entry.email)}` },
@@ -1490,7 +1567,7 @@ app.get('/auth/device/poll', async (c) => {
   // Clean up
   c.executionCtx.waitUntil(c.env.DB.prepare('DELETE FROM device_codes WHERE code=?').bind(code).run())
 
-  const token = await makeToken(user.id, c.env.TOKEN_SECRET)
+  const token = await makeToken(user.id, c.env.TOKEN_SECRET, user.token_version || 0)
   return json({ token, email: user.email })
 })
 

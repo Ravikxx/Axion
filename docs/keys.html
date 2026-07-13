@@ -20,7 +20,7 @@
     a { color: inherit; text-decoration: none; }
 
     /* ── Auth gate (full screen, no sidebar) ── */
-    #auth-screen {
+    #auth-screen, .overlay-screen {
       position: fixed; inset: 0; z-index: 100;
       background: var(--bg);
       display: flex; align-items: center; justify-content: center; padding: 24px;
@@ -432,6 +432,9 @@
       <label>Password</label>
       <input type="password" id="input-password" placeholder="••••••••" autocomplete="current-password">
     </div>
+    <div class="auth-toggle" id="forgot-password-row" style="margin-top:-6px;margin-bottom:14px;text-align:right">
+      <a onclick="showForgotPassword()">Forgot password?</a>
+    </div>
 
     <div class="cf-turnstile" data-sitekey="0x4AAAAAADoVQKWELQ0qH97B" data-callback="onTurnstile" data-theme="dark" style="margin-bottom:12px"></div>
 
@@ -462,6 +465,68 @@
       <span id="auth-toggle-text">Don't have an account?</span>
       <a onclick="toggleAuthMode()"> <span id="auth-toggle-link">Sign up</span></a>
     </div>
+  </div>
+</div>
+
+<!-- Forgot password screen -->
+<div id="forgot-password-screen" class="overlay-screen" style="display:none">
+  <div class="auth-card">
+    <div id="forgot-form-wrap">
+      <div class="auth-logo"><img src="/assets/logo.png" alt="Axion" style="height:26px;width:auto;object-fit:contain;display:inline-block;vertical-align:-5px;margin-right:6px"><span>Axion</span></div>
+      <div class="auth-title">Reset your password</div>
+      <div class="auth-sub">Enter your email and we'll send you a link to reset it.</div>
+
+      <div class="auth-error" id="forgot-error"></div>
+
+      <form id="forgot-form" onsubmit="submitForgotPassword(); return false">
+        <div class="field">
+          <label>Email</label>
+          <input type="email" id="forgot-email" placeholder="you@example.com" autocomplete="email">
+        </div>
+
+        <div id="forgot-turnstile" style="margin-bottom:12px"></div>
+
+        <button type="submit" class="btn-full btn-primary-full" id="forgot-submit">Send reset link</button>
+      </form>
+
+      <div class="auth-toggle">
+        <a onclick="backToSignIn()">Back to sign in</a>
+      </div>
+    </div>
+
+    <div id="forgot-success-wrap" style="display:none;text-align:center">
+      <div class="auth-logo"><img src="/assets/logo.png" alt="Axion" style="height:26px;width:auto;object-fit:contain;display:inline-block;vertical-align:-5px;margin-right:6px"><span>Axion</span></div>
+      <div style="font-size:40px;margin:20px 0 16px">📬</div>
+      <div class="auth-title" style="margin-top:0">Check your inbox</div>
+      <p class="auth-sub" id="forgot-success-text"></p>
+      <div class="auth-toggle">
+        <a onclick="backToSignIn()">Back to sign in</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Reset password screen (opened via a #reset=TOKEN link from the email) -->
+<div id="reset-password-screen" class="overlay-screen" style="display:none">
+  <div class="auth-card">
+    <div class="auth-logo"><img src="/assets/logo.png" alt="Axion" style="height:26px;width:auto;object-fit:contain;display:inline-block;vertical-align:-5px;margin-right:6px"><span>Axion</span></div>
+    <div class="auth-title">Choose a new password</div>
+    <div class="auth-sub">Enter a new password for your account.</div>
+
+    <div class="auth-error" id="reset-error"></div>
+
+    <form id="reset-form" onsubmit="submitResetPassword(); return false">
+      <div class="field">
+        <label>New password</label>
+        <input type="password" id="reset-password" placeholder="••••••••" autocomplete="new-password">
+      </div>
+      <div class="field">
+        <label>Confirm password</label>
+        <input type="password" id="reset-password-confirm" placeholder="••••••••" autocomplete="new-password">
+      </div>
+
+      <button type="submit" class="btn-full btn-primary-full" id="reset-submit">Update password</button>
+    </form>
   </div>
 </div>
 
@@ -694,6 +759,9 @@
   const API = 'https://api.amplifiedsmp.org';
   let _turnstileToken = null;
   function onTurnstile(token) { _turnstileToken = token; }
+  let _turnstileTokenForgot = null;
+  function onForgotTurnstile(token) { _turnstileTokenForgot = token; }
+  let _resetToken = null;
   let authMode = 'signin';
   let currentUser = null;
   let sessionToken = localStorage.getItem('axion_token') || null;
@@ -712,6 +780,7 @@
     document.getElementById('auth-toggle-link').textContent = isSignup ? 'Sign in' : 'Sign up';
     document.getElementById('name-field').style.display = isSignup ? '' : 'none';
     document.getElementById('tos-field').style.display = isSignup ? '' : 'none';
+    document.getElementById('forgot-password-row').style.display = isSignup ? 'none' : '';
     document.getElementById('input-password').setAttribute('autocomplete', isSignup ? 'new-password' : 'current-password');
     if (isSignup) document.getElementById('input-tos').checked = false;
     hideAuthError();
@@ -719,6 +788,113 @@
 
   function showAuthError(msg) { const el = document.getElementById('auth-error'); el.textContent = msg; el.style.display = ''; }
   function hideAuthError() { document.getElementById('auth-error').style.display = 'none'; }
+
+  // ── Forgot / reset password ──────────────────────────────────────────────
+
+  let _forgotTurnstileWidgetId = null;
+  function showForgotPassword() {
+    document.getElementById('auth-screen').style.display = 'none';
+    document.getElementById('forgot-password-screen').style.display = 'flex';
+    document.getElementById('forgot-form-wrap').style.display = '';
+    document.getElementById('forgot-success-wrap').style.display = 'none';
+    hideForgotError();
+    // Rendered on demand (rather than the usual auto-render `.cf-turnstile`
+    // class) because this container starts as display:none — Turnstile
+    // sizes itself off the container at scan time, so a widget auto-rendered
+    // while hidden can end up 0×0 and never fire its callback.
+    if (_forgotTurnstileWidgetId !== null) return;
+    const render = () => {
+      if (!window.turnstile) { setTimeout(render, 100); return; }
+      _forgotTurnstileWidgetId = window.turnstile.render('#forgot-turnstile', {
+        sitekey: '0x4AAAAAADoVQKWELQ0qH97B', callback: onForgotTurnstile, theme: 'dark',
+      });
+    };
+    render();
+  }
+
+  function backToSignIn() {
+    document.getElementById('forgot-password-screen').style.display = 'none';
+    document.getElementById('reset-password-screen').style.display = 'none';
+    document.getElementById('auth-screen').style.display = 'flex';
+    if (authMode !== 'signin') toggleAuthMode();
+  }
+
+  function showResetPassword(token) {
+    _resetToken = token;
+    document.getElementById('auth-screen').style.display = 'none';
+    document.getElementById('forgot-password-screen').style.display = 'none';
+    document.getElementById('reset-password-screen').style.display = 'flex';
+    hideResetError();
+  }
+
+  function showForgotError(msg) { const el = document.getElementById('forgot-error'); el.textContent = msg; el.style.display = ''; }
+  function hideForgotError() { document.getElementById('forgot-error').style.display = 'none'; }
+  function showResetError(msg) { const el = document.getElementById('reset-error'); el.textContent = msg; el.style.display = ''; }
+  function hideResetError() { document.getElementById('reset-error').style.display = 'none'; }
+
+  async function submitForgotPassword() {
+    const email = document.getElementById('forgot-email').value.trim();
+    hideForgotError();
+    if (!email) { showForgotError('Please enter your email.'); return; }
+    if (!_turnstileTokenForgot) { showForgotError('Security check not complete — please wait a moment.'); return; }
+
+    const btn = document.getElementById('forgot-submit');
+    btn.textContent = 'Sending…'; btn.disabled = true;
+    try {
+      const res = await fetch(API + '/auth/forgot-password', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, turnstile: _turnstileTokenForgot }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Something went wrong.');
+      document.getElementById('forgot-success-text').innerHTML =
+        `If an account exists for <strong>${email}</strong>, we've sent a link to reset your password. It expires in 1 hour.`;
+      document.getElementById('forgot-form-wrap').style.display = 'none';
+      document.getElementById('forgot-success-wrap').style.display = '';
+      document.getElementById('forgot-email').value = '';
+      _turnstileTokenForgot = null;
+      if (window.turnstile && _forgotTurnstileWidgetId !== null) window.turnstile.reset(_forgotTurnstileWidgetId);
+    } catch (err) {
+      showForgotError(err.message || 'Something went wrong. Try again.');
+      _turnstileTokenForgot = null;
+      if (window.turnstile && _forgotTurnstileWidgetId !== null) window.turnstile.reset(_forgotTurnstileWidgetId);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Send reset link';
+    }
+  }
+
+  async function submitResetPassword() {
+    const password = document.getElementById('reset-password').value;
+    const confirm = document.getElementById('reset-password-confirm').value;
+    hideResetError();
+    if (!password || password.length < 8) { showResetError('Password must be at least 8 characters.'); return; }
+    if (password !== confirm) { showResetError('Passwords don\'t match.'); return; }
+    if (!_resetToken) { showResetError('This reset link is missing its token — use the link from your email.'); return; }
+
+    const btn = document.getElementById('reset-submit');
+    btn.textContent = 'Updating…'; btn.disabled = true;
+    try {
+      const res = await fetch(API + '/auth/reset-password', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: _resetToken, password }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Something went wrong.');
+      _resetToken = null;
+      document.getElementById('reset-password-screen').querySelector('.auth-card').innerHTML = `
+        <div class="auth-logo"><img src="/assets/logo.png" alt="Axion" style="height:26px;width:auto;object-fit:contain;display:inline-block;vertical-align:-5px;margin-right:6px"><span>Axion</span></div>
+        <div style="font-size:40px;margin:20px 0 16px">✅</div>
+        <div class="auth-title" style="margin-top:0">Password updated</div>
+        <p class="auth-sub">You've been signed out everywhere for security. Sign in with your new password.</p>
+        <button class="btn-full btn-primary-full" onclick="backToSignIn()">Back to sign in</button>`;
+    } catch (err) {
+      showResetError(err.message || 'Something went wrong. Try again.');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Update password';
+    }
+  }
 
   async function submitAuth() {
     const email = document.getElementById('input-email').value.trim();
@@ -1361,6 +1537,14 @@
   (async function init() {
     const hash = window.location.hash.slice(1);
     const params = new URLSearchParams(hash);
+
+    // Password reset link from email — #reset=TOKEN
+    const resetToken = params.get('reset');
+    if (resetToken) {
+      history.replaceState(null, '', window.location.pathname);
+      showResetPassword(resetToken);
+      return;
+    }
 
     // OAuth return with session token
     if (params.get('verified')) {
