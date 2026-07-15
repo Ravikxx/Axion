@@ -440,13 +440,18 @@ axion-discord --model claude
 
 ## Chrome Extension
 
-1. Open `chrome://extensions`
-2. Enable **Developer mode**
-3. Click **Load unpacked**
-4. Select the `extension/` folder from this repo
+The extension now lives in its own repository:
+[Ravikxx/Axion-Chrome-Extension](https://github.com/Ravikxx/Axion-Chrome-Extension).
+
+1. Clone or download the extension repository
+2. Open `chrome://extensions`
+3. Enable **Developer mode**
+4. Click **Load unpacked** and select the extension repository's root folder
 5. Click the Axion icon or press `Alt+Shift+A`
 
-The extension sidebar lets you ask about the current page, run browser automation, take screenshots, and chat using any supported model — no API key required if using Veil. Links in AI responses are clickable and open in a new tab.
+The extension sidebar lets you ask about the current page, run browser automation, take screenshots, and chat using any supported model — no API key required if using Veil. Links in AI responses are clickable and open in a new tab. Axion asks for one-time approval before clicking, typing, selecting options, navigating, or sending a screenshot to a model.
+
+To import API keys and custom endpoints from the CLI, run `/web`, copy the short-lived **extension import token** printed in the terminal, then paste it into the extension's Settings panel. The import endpoint accepts only the exact session token, disables caching, and the extension refuses to send that token anywhere except a loopback address.
 
 ---
 
@@ -531,7 +536,6 @@ axion/
 │   ├── discord-daemon.js  # axion-discord standalone bot
 │   └── collect-daemon.js  # axion-collect local dataset daemon
 ├── collect-worker/     # Cloudflare Worker for remote session collection
-├── extension/          # Chrome extension
 ├── mcp-servers/        # Bundled MCP servers (Blender)
 └── build-web.js        # Web UI bundler (the CLI itself needs no build)
 ```
