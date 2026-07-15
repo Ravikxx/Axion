@@ -201,7 +201,7 @@
     }
 
     /* ── Model family ── */
-    .family { display: grid; grid-template-columns: 1.25fr 1fr 1fr; gap: 14px; }
+    .family { display: grid; grid-template-columns: 1.25fr 1fr; gap: 14px; }
     .model-card {
       background: var(--surface); border: 1px solid var(--border2);
       border-radius: 13px; padding: 26px; position: relative; overflow: hidden;
@@ -392,7 +392,7 @@
   <section class="reveal">
     <p class="section-tag">the models</p>
     <h2 class="section-heading">The Axion model family</h2>
-    <p class="section-lead">Built, safety-tested, and hosted by us. Use them in the browser or the API — and switch anytime in the CLI with <code>/model lumen</code>.</p>
+    <p class="section-lead">Built, safety-tested, and hosted by us. Use them in the browser or the API.</p>
 
     <div class="family">
       <div class="model-card star">
@@ -408,26 +408,16 @@
       </div>
 
       <div class="model-card">
-        <span class="model-status down"><span class="led down"></span> back after migration</span>
+        <span class="model-status down"><span class="led down"></span> migrating · back soon</span>
         <p class="model-name">Veil 1.1</p>
         <p class="model-desc">Our first and fastest model — a fine-tuned Llama 3.1 3B for quick general chat.</p>
         <div class="model-facts">
           <div class="fact"><div class="n">3B</div><div class="l">parameters</div></div>
           <div class="fact"><div class="n">Free</div><div class="l">no key required</div></div>
         </div>
-        <a class="model-link" href="/announcements">migration status →</a>
+        <a class="model-link" href="/models">model details →</a>
       </div>
 
-      <div class="model-card">
-        <span class="model-status soon"><span class="led"></span> in the lab</span>
-        <p class="model-name">TAME</p>
-        <p class="model-desc">Our next architecture: Ternary Adaptive MoE — 1.58-bit weights, mixture of experts, and multi-token prediction, built from scratch.</p>
-        <div class="model-facts">
-          <div class="fact"><div class="n">300M</div><div class="l">target parameters</div></div>
-          <div class="fact"><div class="n">1.58-bit</div><div class="l">ternary weights</div></div>
-        </div>
-        <a class="model-link" href="/project-crucible">follow Project Crucible →</a>
-      </div>
     </div>
   </section>
 
