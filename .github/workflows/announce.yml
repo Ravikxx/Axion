@@ -14,6 +14,10 @@ on:
 
 jobs:
   announce:
+    # Content corrections should still publish to Pages without re-emailing an
+    # existing announcement. Manual dispatches always run so a missed send can
+    # still be recovered deliberately.
+    if: "${{ github.event_name == 'workflow_dispatch' || !contains(github.event.head_commit.message, '[skip announcement email]') }}"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
