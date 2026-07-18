@@ -13,7 +13,7 @@ import { getSavedApiKeys, getSavedCustomEndpoints, getSavedModel } from '../pers
 import { createExtensionImportResponse } from './extensionImport.js';
 
 const __dir    = dirname(fileURLToPath(import.meta.url));
-const DOCS_DIR = join(__dir, '../../docs/assets');
+const ASSETS_DIR = join(__dir, '../assets');
 const PORT     = parseInt(process.env.PORT || '3000', 10);
 const TOKEN    = process.env.AXION_WEB_TOKEN || '';
 const EXTENSION_IMPORT_TOKEN = process.env.AXION_EXTENSION_IMPORT_TOKEN
@@ -191,10 +191,10 @@ const server = createServer(async (req, res) => {
     res.writeHead(405); res.end(); return;
   }
 
-  // ── Docs assets (icons) ────────────────────────────────────────────────────
+  // ── Runtime assets (icons) ─────────────────────────────────────────────────
   if (path.startsWith('/assets/')) {
     const file = path.slice('/assets/'.length);
-    const abs  = join(DOCS_DIR, file);
+    const abs  = join(ASSETS_DIR, file);
     if (existsSync(abs)) {
       serveFile(res, abs, MIME[extname(abs)] || 'application/octet-stream');
       return;

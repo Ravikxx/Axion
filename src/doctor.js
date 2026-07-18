@@ -1,4 +1,4 @@
-import { execSync, spawn } from 'child_process';
+import { execFileSync, execSync, spawn } from 'child_process';
 import { existsSync, readFileSync } from 'fs';
 import { join, dirname } from 'path';
 import { homedir, platform } from 'os';
@@ -14,7 +14,8 @@ const os = platform();
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
 function which(bin) {
-  try { execSync(`which ${bin}`, { stdio: 'ignore', timeout: 2000 }); return true; } catch { return false; }
+  const locator = os === 'win32' ? 'where.exe' : 'which';
+  try { execFileSync(locator, [bin], { stdio: 'ignore', timeout: 2000 }); return true; } catch { return false; }
 }
 
 function ok(msg)   { process.stdout.write(`  \x1b[32m✓\x1b[0m  ${msg}\n`); }

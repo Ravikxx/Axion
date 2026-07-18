@@ -328,6 +328,9 @@ export class Agent {
     this.onSkillActivated = null; // optional UI callback (skillName) => void
     // Interrupt support — cancel() aborts the in-flight request and stops the loop
     this.cancelled  = false;
+    // Set only for the turn that invokes end_conversation. A later user message
+    // starts a completely fresh conversation and resets this flag in run().
+    this.terminated = false;
     this._abortCtrl = null;
     // Tool failure loop guard — detects repeated failure patterns
     this.failureGuard = new ToolFailureGuard();
@@ -434,6 +437,11 @@ export class Agent {
     this.totalTokens = this.inputTokens = this.outputTokens = this.contextTokens = 0;
     this.onTokens({ total: 0, input: 0, output: 0, context: 0, budget: 0, cost: 0 });
     this.pendingMessages = [];
+    this.tokenBudget = null;
+    this.budgetTracker = null;
+    this._budgetCompletion = null;
+    this._budgetBaseline = 0;
+    this._thinkReminder = false;
   }
 
   // Queue a user message typed while the agent is busy. It will be injected
@@ -661,6 +669,7 @@ CRITICAL RULES — follow these exactly:
 
   async run(userMessage, { askConfirm, askPlanConfirm, askUser } = {}) {
     this.cancelled = false;
+    this.terminated = false;
     this._activateSkills(userMessage);
     // Set think reminder if the user's message asks for reasoning
     this._thinkReminder = /\bthink(?:ing)?\b|\breason(?:ing)?\b|\bconsider\b|\breflect\b|\bponder\b/i.test(userMessage);
@@ -700,6 +709,10 @@ CRITICAL RULES — follow these exactly:
 
     await this._agentLoop(askConfirm, askUser);
 
+    // end_conversation deliberately leaves no transcript for post-turn hooks
+    // to inspect or persist.
+    if (this.terminated) return;
+
     // Auto-dream post-sampling hook: fire-and-forget background memory
     // consolidation. Never blocks the user's next turn; failures are logged
     // silently so consolidation issues can't break the conversation loop.
@@ -725,6 +738,8 @@ CRITICAL RULES — follow these exactly:
     'read_file', 'list_directory', 'git_status', 'git_diff',
     'web_search', 'screenshot', 'screen_size',
     'grep', 'grep_files', 'glob', 'find_files',
+    'chrome_status', 'chrome_tabs', 'chrome_read_page', 'chrome_screenshot',
+    'chrome_find', 'chrome_html', 'chrome_value',
   ]);
 
   // Clearly destructive tools: in decide mode a "safe" verdict from the AI
@@ -924,7 +939,7 @@ CRITICAL RULES — follow these exactly:
             if (beforeCtx.cancelled) {
               result = { output: 'Tool cancelled by plugin hook.', success: false };
             } else {
-              result = await executeTool(name, beforeCtx.input, { agentLabel: this.label, onNotify: this.onNotify, askUser, todoScope: this.todoScope });
+              result = await executeTool(name, beforeCtx.input, { agentLabel: this.label, onNotify: this.onNotify, askUser, todoScope: this.todoScope, signal });
               const afterCtx = await PLUGINS.dispatch('tool.execute.after', { tool: name, input: beforeCtx.input, result, agentLabel: this.label });
               result = afterCtx.result || result;
             }
@@ -961,9 +976,13 @@ CRITICAL RULES — follow these exactly:
       // end_conversation tool — surface to UI and stop the loop
       const termination = toolResults.find(r => r.terminate);
       if (termination) {
+        // Clear every conversation-scoped value, including messages typed while
+        // tools were running. Return immediately so the post-loop flush below
+        // cannot add the assistant draft or queued messages back into history.
+        this.clearHistory();
         this.terminated = true;
-        this.onMessage({ role: 'session-ended', content: termination.output });
-        break;
+        this.onMessage({ role: 'session-ended', content: 'Conversation ended. Type a message to start a new conversation.' });
+        return;
       }
     }
     // Flush any remaining accumulated text (e.g. loop maxed out without a tool-free turn)

@@ -2,6 +2,7 @@ import React from 'react';
 import { accent } from '../ui/theme.js';
 import { parseInline, parseBlocks, highlightLine } from '../ui/markdown.js';
 import { chartData, barRows, sparkline, pieBraille } from '../ui/charts.js';
+import { ellipsize, fitTableColumnWidths, maxTableColumns } from './layout.js';
 
 // OpenTUI markdown renderer. Shares the parser with the Ink version; renders via
 // OpenTUI text/span/strong/em + box. Headings, bold/italic/inline-code, lists,
@@ -165,22 +166,36 @@ function displayLen(text) {
   return text.replace(/\*\*(.+?)\*\*|\*(.+?)\*|`([^`\n]+)`/g, (_, b, i, c) => (b || i || c)).length;
 }
 
-function TableBlock({ headers, rows, align }) {
-  const numCols = headers.length;
+function displayText(text) {
+  return text.replace(/\*\*(.+?)\*\*|\*(.+?)\*|`([^`\n]+)`/g, (_, b, i, c) => (b || i || c));
+}
+
+function fitCell(text, width) {
+  return displayLen(text) <= width ? text : ellipsize(displayText(text), width);
+}
+
+function TableBlock({ headers, rows, align, maxWidth }) {
+  const numCols = Math.min(headers.length, maxTableColumns(maxWidth));
+  const hiddenCols = headers.length - numCols;
+  const tableHeaders = headers.slice(0, numCols);
+  const tableRows = rows.map((row) => row.slice(0, numCols));
+  const tableAlign = align.slice(0, numCols);
+  if (hiddenCols > 0) tableHeaders[numCols - 1] = `${tableHeaders[numCols - 1] || ''} …`;
 
   // Compute max display width per column from the visible (marker-stripped) length.
-  const colWidths = Array(numCols).fill(0);
-  for (const row of [headers, ...rows]) {
+  const intrinsicWidths = Array(numCols).fill(0);
+  for (const row of [tableHeaders, ...tableRows]) {
     for (let c = 0; c < numCols; c++) {
-      colWidths[c] = Math.max(colWidths[c], displayLen(row[c] || ''));
+      intrinsicWidths[c] = Math.max(intrinsicWidths[c], displayLen(row[c] || ''));
     }
   }
+  const colWidths = fitTableColumnWidths(intrinsicWidths, maxWidth);
 
   // Each cell gets 1-char left/right padding inside the box-drawing border.
   const cellTotal = colWidths.map((w) => w + 2);
   // Build a separator line between header and body with alignment colons.
   const hdrSep = cellTotal.map((w, ci) => {
-    const a = align[ci] || 'left';
+    const a = tableAlign[ci] || 'left';
     if (a === 'center') return '─'.repeat(Math.floor((w - 2) / 2)) + ':' + '─'.repeat(Math.ceil((w - 2) / 2));
     if (a === 'right')  return '─'.repeat(w - 1) + ':';
     return '─'.repeat(w);
@@ -189,10 +204,11 @@ function TableBlock({ headers, rows, align }) {
   // Render a single row's cells (header or data) with inline formatting.
   const RowCells = ({ cells, force }) => {
     const children = ['│'];
-    cells.forEach((cell, ci) => {
+    cells.forEach((rawCell, ci) => {
+      const cell = fitCell(rawCell || '', colWidths[ci]);
       const visLen = displayLen(cell);
       const w = colWidths[ci];
-      const a = align[ci] || 'left';
+      const a = tableAlign[ci] || 'left';
       let leftSp, rightSp;
       if (a === 'right')      { leftSp = 1 + w - visLen;  rightSp = 1; }
       else if (a === 'center') { const e = w - visLen; leftSp = 1 + Math.floor(e / 2); rightSp = 1 + Math.ceil(e / 2); }
@@ -211,11 +227,11 @@ function TableBlock({ headers, rows, align }) {
       {/* Top border */}
       <text>{'┌' + cellTotal.map((w) => '─'.repeat(w)).join('┬') + '┐'}</text>
       {/* Header row (bold) */}
-      <text><RowCells cells={headers} force={{ bold: true }} /></text>
+      <text><RowCells cells={tableHeaders} force={{ bold: true }} /></text>
       {/* Header/body separator */}
       <text>{'├' + hdrSep.join('┼') + '┤'}</text>
       {/* Data rows */}
-      {rows.map((row, ri) => (
+      {tableRows.map((row, ri) => (
         <text key={ri}><RowCells cells={row} /></text>
       ))}
       {/* Bottom border */}
@@ -224,7 +240,7 @@ function TableBlock({ headers, rows, align }) {
   );
 }
 
-export function RichText({ children }) {
+export function RichText({ children, maxWidth = Math.max(20, (process.stdout.columns || 80) - 4) }) {
   const text = typeof children === 'string' ? children : String(children ?? '');
   const blocks = parseBlocks(text);
   return (
@@ -232,7 +248,7 @@ export function RichText({ children }) {
       {blocks.map((block, i) => {
         if (block.type === 'code-block') return <CodeBlock key={i} lang={block.lang} text={block.text} />;
         if (block.type === 'chart')      return <ChartBlock key={i} config={block.config} />;
-        if (block.type === 'table')      return <TableBlock key={i} headers={block.headers} rows={block.rows} align={block.align} />;
+        if (block.type === 'table')      return <TableBlock key={i} headers={block.headers} rows={block.rows} align={block.align} maxWidth={maxWidth} />;
         return <Line key={i} text={block.text} />;
       })}
     </box>

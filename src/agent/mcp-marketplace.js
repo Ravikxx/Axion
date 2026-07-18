@@ -12,7 +12,7 @@ const CATALOG_URL = 'https://axion.amplifiedsmp.org/mcp-catalog.json'
 const CACHE_TTL   = 60 * 60 * 1000 // 1 hour
 
 // ── Local fallback catalog ─────────────────────────────────────────────────
-// Kept in sync with docs/mcp-catalog.json. Used when the remote fetch fails.
+// Kept in sync with the Website repository's mcp-catalog.json. Used when the remote fetch fails.
 
 export const MCP_MARKETPLACE = [
   {

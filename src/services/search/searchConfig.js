@@ -11,7 +11,11 @@ import { ripgrepAvailable } from './ripgrepAdapter.js';
 export { SEARCH_CONFIG };
 
 export function resolveBackend() {
-  if (SEARCH_CONFIG.backend === 'fs') return 'fs';
-  if (SEARCH_CONFIG.backend === 'ripgrep') return 'ripgrep';
+  // Read the env override at call time as well as startup. This keeps the
+  // service deterministic for long-lived/plugin processes that intentionally
+  // switch backends after the config module has loaded.
+  const backend = process.env.AXION_SEARCH_BACKEND || SEARCH_CONFIG.backend;
+  if (backend === 'fs') return 'fs';
+  if (backend === 'ripgrep') return 'ripgrep';
   return ripgrepAvailable() ? 'ripgrep' : 'fs';
 }

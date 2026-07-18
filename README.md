@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/logo.svg" width="96" height="96" alt="Axion logo">
+  <img src="src/assets/logo.svg" width="96" height="96" alt="Axion logo">
 </p>
 
 # Axion
