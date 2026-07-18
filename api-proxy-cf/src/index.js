@@ -332,18 +332,84 @@ async function oauthFinish(c, { id_field, email, provider_id, return_to }) {
 function encodeState(return_to) { return btoa(JSON.stringify({ return_to: return_to || '' })) }
 function decodeState(state) { try { return JSON.parse(atob(state || '')).return_to || '' } catch { return '' } }
 
+// State for /auth/link/:provider — round-trips through the OAuth provider
+// unchanged, so the existing sign-in callbacks can tell a link request
+// (mode:'link') apart from a normal sign-in and route accordingly, without
+// needing a second redirect_uri registered with each provider.
+function encodeLinkState(uid, returnUrl) { return btoa(JSON.stringify({ mode: 'link', uid, return: returnUrl || '' })) }
+function decodeLinkState(state) {
+  try {
+    const data = JSON.parse(atob(state || ''))
+    return (data.mode === 'link' && data.uid) ? data : null
+  } catch { return null }
+}
+
+// Only redirect back to our own frontend after linking — an attacker-supplied
+// `return` could otherwise be used to bounce the OAuth flow to an arbitrary
+// site.
+function sanitizeReturn(url) {
+  try {
+    const u = new URL(url)
+    if (u.origin === 'https://axion.amplifiedsmp.org') return u.toString()
+  } catch {}
+  return RETURN_DESTINATIONS.home
+}
+
+const OAUTH_ID_FIELD = { google: 'google_id', github: 'github_id', discord: 'discord_id' }
+
+function buildAuthorizeUrl(provider, env, state) {
+  if (provider === 'google') {
+    const params = new URLSearchParams({
+      client_id: env.GOOGLE_CLIENT_ID,
+      redirect_uri: 'https://api.amplifiedsmp.org/auth/google/callback',
+      response_type: 'code',
+      scope: 'openid email profile',
+      prompt: 'select_account',
+      state,
+    })
+    return `https://accounts.google.com/o/oauth2/v2/auth?${params}`
+  }
+  if (provider === 'github') {
+    const params = new URLSearchParams({
+      client_id: env.GITHUB_CLIENT_ID,
+      redirect_uri: 'https://api.amplifiedsmp.org/auth/github/callback',
+      scope: 'user:email',
+      state,
+    })
+    return `https://github.com/login/oauth/authorize?${params}`
+  }
+  if (provider === 'discord') {
+    const params = new URLSearchParams({
+      client_id: env.DISCORD_CLIENT_ID,
+      redirect_uri: 'https://api.amplifiedsmp.org/auth/discord/callback',
+      response_type: 'code',
+      scope: 'identify email',
+      state,
+    })
+    return `https://discord.com/oauth2/authorize?${params}`
+  }
+  return null
+}
+
+// Links an already-authenticated account to a provider identity instead of
+// minting a new session. Refuses to steal a provider identity that's already
+// linked to a different account.
+async function oauthLink(c, { id_field, provider, provider_id, uid, return: returnUrl }) {
+  const target = returnUrl || RETURN_DESTINATIONS.home
+  const existing = await c.env.DB.prepare(`SELECT id FROM users WHERE ${id_field}=? AND id!=?`).bind(provider_id, uid).first()
+  if (existing) {
+    const msg = `This ${provider} account is already linked to a different Axion account.`
+    return new Response(null, { status: 302, headers: { Location: `${target}#link_error=${encodeURIComponent(msg)}` } })
+  }
+  await c.env.DB.prepare(`UPDATE users SET ${id_field}=? WHERE id=?`).bind(provider_id, uid).run()
+  return new Response(null, { status: 302, headers: { Location: `${target}#linked=${provider}` } })
+}
+
 app.get('/auth/google', (c) => {
-  const params = new URLSearchParams({
-    client_id: c.env.GOOGLE_CLIENT_ID,
-    redirect_uri: 'https://api.amplifiedsmp.org/auth/google/callback',
-    response_type: 'code',
-    scope: 'openid email profile',
-    prompt: 'select_account',
-    state: encodeState(c.req.query('return_to')),
-  })
+  const state = encodeState(c.req.query('return_to'))
   return new Response(null, {
     status: 302,
-    headers: { Location: `https://accounts.google.com/o/oauth2/v2/auth?${params}` },
+    headers: { Location: buildAuthorizeUrl('google', c.env, state) },
   })
 })
 
@@ -372,19 +438,17 @@ app.get('/auth/google/callback', async (c) => {
   const gUser = await userRes.json()
   if (!gUser.email) return new Response('Could not get email from Google', { status: 400 })
 
+  const linkState = decodeLinkState(c.req.query('state'))
+  if (linkState) return oauthLink(c, { id_field: 'google_id', provider: 'google', provider_id: gUser.id, ...linkState })
+
   return oauthFinish(c, { id_field: 'google_id', email: gUser.email, provider_id: gUser.id, return_to })
 })
 
 // ── GitHub OAuth ───────────────────────────────────────────────────────────
 
 app.get('/auth/github', (c) => {
-  const params = new URLSearchParams({
-    client_id: c.env.GITHUB_CLIENT_ID,
-    redirect_uri: 'https://api.amplifiedsmp.org/auth/github/callback',
-    scope: 'user:email',
-    state: encodeState(c.req.query('return_to')),
-  })
-  return new Response(null, { status: 302, headers: { Location: `https://github.com/login/oauth/authorize?${params}` } })
+  const state = encodeState(c.req.query('return_to'))
+  return new Response(null, { status: 302, headers: { Location: buildAuthorizeUrl('github', c.env, state) } })
 })
 
 app.get('/auth/github/callback', async (c) => {
@@ -409,20 +473,17 @@ app.get('/auth/github/callback', async (c) => {
   const primary = emails.find(e => e.primary && e.verified)
   const email = primary?.email || profile.email
 
+  const linkState = decodeLinkState(c.req.query('state'))
+  if (linkState) return oauthLink(c, { id_field: 'github_id', provider: 'github', provider_id: String(profile.id), ...linkState })
+
   return oauthFinish(c, { id_field: 'github_id', email, provider_id: String(profile.id), return_to })
 })
 
 // ── Discord OAuth ──────────────────────────────────────────────────────────
 
 app.get('/auth/discord', (c) => {
-  const params = new URLSearchParams({
-    client_id: c.env.DISCORD_CLIENT_ID,
-    redirect_uri: 'https://api.amplifiedsmp.org/auth/discord/callback',
-    response_type: 'code',
-    scope: 'identify email',
-    state: encodeState(c.req.query('return_to')),
-  })
-  return new Response(null, { status: 302, headers: { Location: `https://discord.com/oauth2/authorize?${params}` } })
+  const state = encodeState(c.req.query('return_to'))
+  return new Response(null, { status: 302, headers: { Location: buildAuthorizeUrl('discord', c.env, state) } })
 })
 
 app.get('/auth/discord/callback', async (c) => {
@@ -450,7 +511,44 @@ app.get('/auth/discord/callback', async (c) => {
   const dUser = await userRes.json()
   if (!dUser.verified) return new Response('Discord email not verified', { status: 400 })
 
+  const linkState = decodeLinkState(c.req.query('state'))
+  if (linkState) return oauthLink(c, { id_field: 'discord_id', provider: 'discord', provider_id: dUser.id, ...linkState })
+
   return oauthFinish(c, { id_field: 'discord_id', email: dUser.email, provider_id: dUser.id, return_to })
+})
+
+// ── Link/unlink OAuth providers (authenticated) ─────────────────────────────
+//
+// Same redirect flow as /auth/google, /auth/github, /auth/discord above, but
+// attaches the provider to the already-authenticated account (via the shared
+// callbacks + link-mode state) instead of starting a new session.
+
+app.get('/auth/link/:provider', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  const provider = c.req.param('provider')
+  if (!OAUTH_ID_FIELD[provider]) return json({ error: 'Unknown provider' }, 400)
+
+  const state = encodeLinkState(user.id, sanitizeReturn(c.req.query('return')))
+  return new Response(null, { status: 302, headers: { Location: buildAuthorizeUrl(provider, c.env, state) } })
+})
+
+app.delete('/auth/link/:provider', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  const provider = c.req.param('provider')
+  const idField = OAUTH_ID_FIELD[provider]
+  if (!idField) return json({ error: 'Unknown provider' }, 400)
+  if (!user[idField]) return json({ error: `No ${provider} account is linked.` }, 400)
+
+  const hasPassword = !!user.pw_hash
+  const linkedCount = Object.values(OAUTH_ID_FIELD).filter(f => user[f]).length
+  if (!hasPassword && linkedCount <= 1) {
+    return json({ error: `Can't unlink ${provider} — it's your only way to sign in. Set a password or link another provider first.` }, 400)
+  }
+
+  await c.env.DB.prepare(`UPDATE users SET ${idField}=NULL WHERE id=?`).bind(user.id).run()
+  return json({ ok: true })
 })
 
 app.post('/auth/login', async (c) => {
@@ -594,6 +692,87 @@ app.delete('/dashboard/keys/:id', async (c) => {
   if (!user) return json({ error: 'Not authenticated' }, 401)
   const result = await c.env.DB.prepare('UPDATE api_keys SET revoked=1 WHERE id=? AND user_id=?').bind(c.req.param('id'), user.id).run()
   if (result.meta.changes === 0) return json({ error: 'Key not found' }, 404)
+  return json({ ok: true })
+})
+
+// ── Account settings ─────────────────────────────────────────────────────
+
+// Same reset-token flow as /auth/forgot-password (same email, same token
+// generation/expiry), minus the Turnstile check and email lookup — the
+// caller is already authenticated, so we know the account.
+app.post('/dashboard/change-password/request', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+
+  const ip = c.req.header('CF-Connecting-IP') || 'unknown'
+  if (!await checkRateLimit(c.env.DB, ip)) return json({ error: 'Too many attempts. Try again in 15 minutes.' }, 429)
+
+  const reset_token = crypto.randomUUID()
+  const reset_token_expires = Math.floor(Date.now() / 1000) + RESET_TOKEN_TTL
+  await c.env.DB.prepare('UPDATE users SET reset_token=?, reset_token_expires=? WHERE id=?')
+    .bind(reset_token, reset_token_expires, user.id).run()
+
+  if (c.env.RESEND_API_KEY) {
+    c.executionCtx.waitUntil(sendPasswordResetEmail(user.email, reset_token, c.env.RESEND_API_KEY))
+  }
+
+  return json({ ok: true, message: 'Check your email for a link to change your password.' })
+})
+
+app.get('/dashboard/account', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  return json({
+    connected: {
+      google: !!user.google_id,
+      github: !!user.github_id,
+      discord: !!user.discord_id,
+    },
+  })
+})
+
+// Permanently deletes the account and everything that references it: API
+// keys (and their usage history), chat history, appeals, device codes, and
+// org memberships. Orgs the user owns are deleted outright — since orgs
+// only track a single owner_id and there's no ownership-transfer flow,
+// leaving them around would orphan them. Orgs the user merely belongs to
+// are untouched aside from removing their membership row.
+app.delete('/dashboard/account', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  const uid = user.id
+
+  const ownedOrgs = await c.env.DB.prepare('SELECT id FROM orgs WHERE owner_id=?').bind(uid).all()
+  const ownedOrgIds = ownedOrgs.results.map(o => o.id)
+
+  const keyIds = new Set()
+  const ownKeys = await c.env.DB.prepare('SELECT id FROM api_keys WHERE user_id=?').bind(uid).all()
+  for (const k of ownKeys.results) keyIds.add(k.id)
+  for (const orgId of ownedOrgIds) {
+    const orgKeys = await c.env.DB.prepare('SELECT id FROM api_keys WHERE org_id=?').bind(orgId).all()
+    for (const k of orgKeys.results) keyIds.add(k.id)
+  }
+  for (const keyId of keyIds) {
+    await c.env.DB.prepare('DELETE FROM usage_daily WHERE key_id=?').bind(keyId).run()
+  }
+
+  for (const orgId of ownedOrgIds) {
+    await c.env.DB.prepare('DELETE FROM api_keys WHERE org_id=?').bind(orgId).run()
+    await c.env.DB.prepare('DELETE FROM org_invites WHERE org_id=?').bind(orgId).run()
+    await c.env.DB.prepare('DELETE FROM org_members WHERE org_id=?').bind(orgId).run()
+    await c.env.DB.prepare('DELETE FROM orgs WHERE id=?').bind(orgId).run()
+  }
+
+  await c.env.DB.prepare('DELETE FROM api_keys WHERE user_id=?').bind(uid).run()
+  await c.env.DB.prepare('DELETE FROM org_members WHERE user_id=?').bind(uid).run()
+  await c.env.DB.prepare('DELETE FROM chats WHERE user_id=?').bind(uid).run()
+  await c.env.DB.prepare('DELETE FROM appeals WHERE user_id=?').bind(uid).run()
+  await c.env.DB.prepare('DELETE FROM device_codes WHERE user_id=?').bind(uid).run()
+  await c.env.DB.prepare('DELETE FROM email_prefs WHERE user_id=?').bind(uid).run()
+  await c.env.DB.prepare('DELETE FROM rate_limits WHERE key IN (?, ?)').bind(`nword:${uid}`, `invite:${uid}`).run()
+  await c.env.DB.prepare('DELETE FROM admin_allowlist WHERE email=?').bind(user.email).run()
+  await c.env.DB.prepare('DELETE FROM users WHERE id=?').bind(uid).run()
+
   return json({ ok: true })
 })
 
