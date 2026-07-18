@@ -2,18 +2,22 @@
 // Run: node src/web/server.js   (or PORT=3001 node src/web/server.js)
 // Auth: set AXION_WEB_TOKEN to require a Bearer token for /api/* routes.
 import { createServer } from 'http';
+import { randomBytes } from 'crypto';
 import { readFileSync, existsSync } from 'fs';
 import { join, extname } from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import { createClient, resolveModel } from '../agent/models.js';
 import { API_KEYS, MODELS, CUSTOM_ENDPOINTS } from '../config.js';
-import { getSavedApiKeys, getSavedCustomEndpoints } from '../persist.js';
+import { getSavedApiKeys, getSavedCustomEndpoints, getSavedModel } from '../persist.js';
+import { createExtensionImportResponse } from './extensionImport.js';
 
 const __dir    = dirname(fileURLToPath(import.meta.url));
-const DOCS_DIR = join(__dir, '../../docs/assets');
+const ASSETS_DIR = join(__dir, '../assets');
 const PORT     = parseInt(process.env.PORT || '3000', 10);
 const TOKEN    = process.env.AXION_WEB_TOKEN || '';
+const EXTENSION_IMPORT_TOKEN = process.env.AXION_EXTENSION_IMPORT_TOKEN
+  || randomBytes(24).toString('base64url');
 
 // Seed API keys and custom endpoints from ~/.axion/config.json
 const savedKeys = getSavedApiKeys();
@@ -24,6 +28,7 @@ const savedEndpoints = getSavedCustomEndpoints();
 for (const [name, ep] of Object.entries(savedEndpoints)) {
   if (ep?.baseURL) CUSTOM_ENDPOINTS[name] = ep;
 }
+const savedModel = getSavedModel();
 
 const MIME = {
   '.html':        'text/html; charset=utf-8',
@@ -102,6 +107,22 @@ const server = createServer(async (req, res) => {
   const url  = new URL(req.url || '/', `http://localhost:${PORT}`);
   const path = url.pathname;
 
+  // Secret export is deliberately separate from normal web API auth. The
+  // short-lived token is printed locally when /web starts and never cached.
+  if (req.method === 'POST' && path === '/api/extension-config') {
+    const result = createExtensionImportResponse({
+      providedToken: String(req.headers['x-axion-import-token'] || ''),
+      expectedToken: EXTENSION_IMPORT_TOKEN,
+      apiKeys: savedKeys,
+      customEndpoints: savedEndpoints,
+      model: savedModel,
+    });
+    addSecurityHeaders(res);
+    for (const [name, value] of Object.entries(result.headers)) res.setHeader(name, value);
+    json(res, result.status, result.body);
+    return;
+  }
+
   // ── GET /api/models — return model aliases the server can use ──────────────
   if (req.method === 'GET' && path === '/api/models') {
     if (!checkAuth(req, res)) return;
@@ -170,10 +191,10 @@ const server = createServer(async (req, res) => {
     res.writeHead(405); res.end(); return;
   }
 
-  // ── Docs assets (icons) ────────────────────────────────────────────────────
+  // ── Runtime assets (icons) ─────────────────────────────────────────────────
   if (path.startsWith('/assets/')) {
     const file = path.slice('/assets/'.length);
-    const abs  = join(DOCS_DIR, file);
+    const abs  = join(ASSETS_DIR, file);
     if (existsSync(abs)) {
       serveFile(res, abs, MIME[extname(abs)] || 'application/octet-stream');
       return;
@@ -192,8 +213,12 @@ const server = createServer(async (req, res) => {
 });
 
 server.listen(PORT, () => {
-  process.stdout.write(`Axion PWA  →  http://localhost:${PORT}\n`);
+  const address = server.address();
+  const listeningPort = typeof address === 'object' && address ? address.port : PORT;
+  process.stdout.write(`Axion PWA  →  http://localhost:${listeningPort}\n`);
   process.stdout.write(TOKEN
     ? 'Auth: AXION_WEB_TOKEN set — include as Bearer token.\n'
     : 'Auth: none (set AXION_WEB_TOKEN to protect LAN access).\n');
+  process.stdout.write(`Extension import token: ${EXTENSION_IMPORT_TOKEN}\n`);
+  process.stdout.write('Paste this token into the Chrome extension; it expires when /web stops.\n');
 });

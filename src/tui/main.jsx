@@ -14,6 +14,8 @@ import {
 import { API_KEYS, CUSTOM_ENDPOINTS, DEFAULT_MODEL, DEFAULT_MODE, fetchOpenRouterContextWindows, fetchEndpointContextWindows, fetchProviderModels } from '../config.js';
 import { accent } from '../ui/theme.js';
 import { sessionSummary } from './exitSummary.js';
+import { decodeSessionMouse } from './sessionPickerInput.js';
+import { installFatalHandlers } from './runtimeLifecycle.js';
 
 // ── Interactive session picker ──────────────────────────────────────────────────
 function pickSession() {
@@ -51,6 +53,13 @@ function pickSession() {
       process.stdin.pause();
       process.stderr.write('\x1b[?25h\x1b[2J\x1b[H\x1b[?1000l\x1b[?1002l\x1b[?1006l');
     };
+    const choose = (row) => {
+      if (row < 0 || row >= sorted.length) return false;
+      sel = row;
+      cleanup();
+      resolve(sorted[sel].name);
+      return true;
+    };
     try { process.stdin.setRawMode(true); process.stdin.resume(); } catch {}
     // Enable SGR mouse mode for click support
     process.stderr.write('\x1b[?1000h\x1b[?1002h\x1b[?1006h');
@@ -58,19 +67,9 @@ function pickSession() {
     process.stdin.on('data', (buf) => {
       const s = buf.toString();
       const b = [...buf];
-      // SGR mouse click: ESC [ < M <x+32> <y+32>  or  ESC [ < Cb ; Cx ; Cy M
-      if (b[0] === 27 && b[1] === 91 && b[2] === 77) {
-        // X10 mouse encoding
-        const col = (b[3] || 0) - 32;
-        const row = (b[4] || 0) - 32 - 3; // offset for header rows
-        if (row >= 0 && row < sorted.length) { sel = row; render(); }
-        return;
-      }
-      // SGR mouse: ESC [ < Cb ; Cx ; Cy M
-      const sgrM = s.match(/^\x1b\[<(\d+);(\d+);(\d+)[Mm]/);
-      if (sgrM) {
-        const row = parseInt(sgrM[3], 10) - 3;
-        if (row >= 0 && row < sorted.length) { sel = row; render(); }
+      const mouse = decodeSessionMouse(buf);
+      if (mouse.handled) {
+        if (mouse.row != null) choose(mouse.row);
         return;
       }
       // Arrow keys + any other CSI sequence
@@ -86,8 +85,7 @@ function pickSession() {
       }
       // Enter
       if (b[0] === 13 || b[0] === 10) {
-        cleanup();
-        resolve(sorted[sel].name);
+        choose(sel);
       }
       // Esc
       if (b[0] === 27) {
@@ -168,9 +166,11 @@ try {
 }
 
 let exited = false;
+let removeFatalHandlers = () => {};
 function exitWithSummary(session) {
   if (exited) return;
   exited = true;
+  removeFatalHandlers();
   const hasContent = session && Array.isArray(session.agentHistory) && session.agentHistory.length > 0;
   try {
     if (hasContent) saveChat(sessionId, session);
@@ -188,6 +188,15 @@ function exitWithSummary(session) {
   }
   process.exit(0);
 }
+
+removeFatalHandlers = installFatalHandlers({
+  onFatal: ({ message }) => {
+    try { MCP.stopAll(); } catch {}
+    try { renderer.destroy?.(); } catch {}
+    try { writeSync(1, '\x1b[?1000l\x1b[?1002l\x1b[?1006l\x1b[?1049l\x1b[?25h'); } catch {}
+    try { process.stderr.write(`\n${message}\nYour latest autosave can be resumed with axion --continue.\n`); } catch {}
+  },
+});
 
 createRoot(renderer).render(
   <App

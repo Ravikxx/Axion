@@ -23,6 +23,7 @@ export const COMMANDS = [
   { cmd: 'pr',              desc: '[context]  draft a PR title+body from recent commits' },
   { cmd: 'computer',        desc: '[on|off]  toggle computer use (screen control)  (alias: /cu)' },
   { cmd: 'cu',              desc: '[on|off]  shortcut for /computer' },
+  { cmd: 'extension',       desc: '[status|pair]  connect the Axion Chrome Extension' },
   { cmd: 'vision',          desc: '<model>  set vision model for computer use' },
   { cmd: 'video',           desc: '<model>  set video-understanding model (off to clear)' },
   { cmd: 'audio-model',    desc: '<model>  set audio-analysis model (off to clear)' },

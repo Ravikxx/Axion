@@ -4,7 +4,7 @@ import { accent, THEMES, setTheme, themeName } from '../ui/theme.js';
 import { Agent } from '../agent/agent.js';
 import { MODELS, CONTEXT_WINDOWS, getContextWindow, estimateCost, API_KEYS, VISION_MODEL, VIDEO_MODEL, AUDIO_MODEL } from '../config.js';
 import {
-  getTodos, saveModel, saveMode, saveTheme, getAllowedTools, allowTool, autosaveSession, autosaveWorkspace, clearTodos,
+  getTodos, saveModel, saveMode, getSavedTheme, saveTheme, getAllowedTools, allowTool, autosaveSession, autosaveWorkspace, clearLastSession, clearWorkspace, clearTodos,
   getMemories, addMemory, removeMemory, addTodo, toggleTodo, removeTodo, setTodosFor, dropTodoScope,
   listChats, loadChat, deleteChat, saveChat, exportChat,
   exportSession, importSession,
@@ -41,6 +41,7 @@ import { checkForUpdate } from '../utils/updateCheck.js';
 import { SearchBar } from './SearchBar.jsx';
 import { ChatPicker } from './ChatPicker.jsx';
 import { VirtualMessageList } from './VirtualMessageList.jsx';
+import { ellipsize, visibleTabWindow } from './layout.js';
 import { MessageSelector } from './messageSelector.js';
 import { extractSearchText, computeMatches, warmSearchIndex } from './transcriptSearch.js';
 import { readGitStatus } from '../utils/gitStatus.js';
@@ -75,6 +76,14 @@ import { parseExportArgs, inferExportFormatFromFilename, ensureExportFilenameExt
 import { renderMessagesForExport } from '../services/export/exportRenderer.js';
 import { renderContextBreakdown } from './contextViz.js';
 import { renderDiffViewer } from './diff-viewer/diffViewer.js';
+import { BROWSER_EXTENSION, getBrowserExtensionPairing } from '../agent/browserExtension.js';
+
+// Restore the persisted accent before the first render so every component,
+// including the tab bar and welcome screen, starts with the selected theme.
+try {
+  const savedTheme = getSavedTheme();
+  if (savedTheme) setTheme(savedTheme);
+} catch {}
 
 // ── Milestone 2: real agent wired into the OpenTUI shell ────────────────────────
 // Reuses the UI-agnostic Agent class (callbacks → message list). Row layout:
@@ -222,7 +231,7 @@ const truncStr = (s, n) => (s && s.length > n ? s.slice(0, n) + '…' : s || '')
 // comparator ignores the callback props (onCopy/onEdit/... are fresh arrow
 // closures every render even though they call the same stable useCallback),
 // and only re-renders a row when its own msg/expanded/index actually change.
-const MessageRow = React.memo(function MessageRow({ msg, expanded = false, onToggle, index, onCopy, onEdit, onDelete, onRetry, onOpen }) {
+const MessageRow = React.memo(function MessageRow({ msg, expanded = false, onToggle, index, columns, onCopy, onEdit, onDelete, onRetry, onOpen }) {
   const A = accent();
   const [hovered, setHovered] = useState(false);
   switch (msg.type) {
@@ -281,7 +290,7 @@ const MessageRow = React.memo(function MessageRow({ msg, expanded = false, onTog
               </box>
             ) : null}
           </box>
-          <RichText>{msg.text || ' '}</RichText>
+          <RichText maxWidth={columns}>{msg.text || ' '}</RichText>
         </box>
       );
     case 'thinking': {
@@ -293,12 +302,12 @@ const MessageRow = React.memo(function MessageRow({ msg, expanded = false, onTog
         <box style={{ flexDirection: 'column', marginTop: 1, paddingLeft: 1, paddingRight: 1 }}>
           <box onMouseDown={() => big && onToggle?.()}>
             <text>
-              <span fg="#a371f7">{big ? (expanded ? '▾ ' : '▸ ') : ''}◈ thinking</span>
+              <span fg="#888">{big ? (expanded ? '▾ ' : '▸ ') : ''}◈ thinking</span>
               {big && !expanded ? <span fg="#666">{'   click to expand'}</span> : null}
             </text>
           </box>
           {shown.map((l, i) => (
-            <text key={i}><span fg="#a371f7">{expanded ? l : l.slice(0, 100)}</span></text>
+            <text key={i}><span fg="#888">{expanded ? l : l.slice(0, 100)}</span></text>
           ))}
         </box>
       );
@@ -339,7 +348,7 @@ const MessageRow = React.memo(function MessageRow({ msg, expanded = false, onTog
       return (
         <box style={{ flexDirection: 'column', marginTop: 1, paddingLeft: 1, paddingRight: 1 }}>
           <text><span fg="yellow">◈ Plan</span></text>
-          <RichText>{msg.text || ' '}</RichText>
+          <RichText maxWidth={columns}>{msg.text || ' '}</RichText>
         </box>
       );
     case 'info':
@@ -352,7 +361,7 @@ const MessageRow = React.memo(function MessageRow({ msg, expanded = false, onTog
       return (
         <box style={{ flexDirection: 'column', marginTop: 1, paddingLeft: 1, paddingRight: 1 }}>
           <text><span fg="#79c0ff">◇ adviser</span></text>
-          <RichText>{msg.text || ' '}</RichText>
+          <RichText maxWidth={columns}>{msg.text || ' '}</RichText>
         </box>
       );
     case 'subagent-run': {
@@ -403,14 +412,14 @@ const MessageRow = React.memo(function MessageRow({ msg, expanded = false, onTog
       return (
         <box style={{ flexDirection: 'column', marginTop: 1, paddingLeft: 1, paddingRight: 1 }}>
           <text><span fg={c}>{`◆ ${msg.label}`}</span></text>
-          <RichText>{msg.text || ' '}</RichText>
+          <RichText maxWidth={columns}>{msg.text || ' '}</RichText>
         </box>
       );
     }
     default:
       return null;
   }
-}, (prev, next) => prev.msg === next.msg && prev.expanded === next.expanded && prev.index === next.index);
+}, (prev, next) => prev.msg === next.msg && prev.expanded === next.expanded && prev.index === next.index && prev.columns === next.columns);
 
 // Read-only chat view of one sub-agent's run — opened by clicking its
 // spawn block in the transcript. Looks like a regular chat (task → assistant
@@ -444,9 +453,9 @@ function SubagentView({ msg, onClose, scrollRef }) {
               if (!shouldShowThinking()) return null;
               return (
                 <box key={i} style={{ flexDirection: 'column', marginTop: 1, paddingLeft: 1, paddingRight: 1 }}>
-                  <text><span fg="#a371f7">◈ thinking</span></text>
+                  <text><span fg="#888">◈ thinking</span></text>
                   {(e.text || '').split('\n').filter((l) => l.trim()).slice(0, 8).map((l, j) => (
-                    <text key={j}><span fg="#a371f7">{l.slice(0, 140)}</span></text>
+                    <text key={j}><span fg="#888">{l.slice(0, 140)}</span></text>
                   ))}
                 </box>
               );
@@ -485,7 +494,7 @@ function Session({
   initialModel = 'lumen', initialMode = 'ask', initialResume = null,
   onExit = () => process.exit(0),
   isActive = true, initialPrompt = null,
-  onTitleChange, onNewTab, onCloseTab, onSwitchTab, onBusyChange, onSnapshot,
+  onTitleChange, onNewTab, onCloseTab, onSwitchTab, onBusyChange, onSnapshot, onSessionEnded,
   updateInfo = null,
 }) {
   const { width, height } = useTerminalDimensions();
@@ -551,7 +560,10 @@ function Session({
   const flushTimer = useRef(null);
   const inputRef  = useRef('');
   const scrollRef = useRef(null);
+  const transcriptJumpRef = useRef(null);
   const inputElRef = useRef(null);
+  const onSessionEndedRef = useRef(onSessionEnded);
+  onSessionEndedRef.current = onSessionEnded;
   const subViewScrollRef = useRef(null);
   const confirmResolverRef = useRef(null);
   const questionResolverRef = useRef(null);
@@ -610,18 +622,10 @@ function Session({
     closeChatPicker();
   }, [onNewTab, push, closeChatPicker]);
 
-  // Scroll to the current match. Approximate (message index / total → scroll
-  // fraction) since the scrollbox doesn't expose a per-child offset lookup.
+  // Scroll to the current match using the virtual list's measured item offsets.
   useEffect(() => {
     if (!searchOpen || !searchMatches.length) return;
-    const el = scrollRef.current;
-    if (!el) return;
-    try {
-      const vh = el.viewport?.height ?? el.height ?? 0;
-      const max = Math.max(0, (el.scrollHeight || 0) - vh);
-      const frac = messages.length > 1 ? searchMatches[searchIdx] / (messages.length - 1) : 0;
-      el.scrollTo(Math.round(frac * max));
-    } catch {}
+    transcriptJumpRef.current?.jumpToIndex?.(searchMatches[searchIdx]);
   }, [searchIdx, searchMatches, searchOpen, messages.length]);
 
   const jumpToBottom = useCallback(() => {
@@ -730,6 +734,14 @@ function Session({
         else if (role === 'plan')      push({ type: 'plan', text: content });
         else if (role === 'error')     push({ type: 'error', text: content });
         else if (role === 'adviser')   push({ type: 'adviser', text: content });
+        else if (role === 'session-ended') {
+          if (flushTimer.current) { clearTimeout(flushTimer.current); flushTimer.current = null; }
+          streamRef.current = '';
+          setStreamText(null);
+          setMessages([{ type: 'info', text: content || 'Conversation ended. Type a message to start a new conversation.' }]);
+          setTokens({ total: 0, input: 0, output: 0, context: 0 });
+          onSessionEndedRef.current?.();
+        }
         else if (role === 'sub-agent')        push({ type: 'subagent', label, text: content, index });
         else if (role === 'sub-agent-status') push({ type: 'subagent-status', label, status, text: task, index });
         else if (role === 'sub-agent-run') {
@@ -1637,14 +1649,6 @@ function Session({
         push({ type: 'error', text: `Unknown /workspace subcommand: ${sub}` });
         return;
       }
-      case 'cost': {
-        const inTok = tokens.input || 0, outTok = tokens.output || 0;
-        const ctx = getContextWindow(model);
-        const cost = estimateCost(model, inTok, outTok);
-        push({ type: 'info', text: `tokens: ${tokens.total || 0}  (in ${inTok} / out ${outTok}) · context: ${ctx >= 1_000_000 ? (ctx / 1_000_000).toFixed(1) + 'M' : (ctx / 1000).toFixed(0) + 'k'} · est. cost ${cost ? '$' + cost.toFixed(4) : '$0.00'}` });
-        push({ type: 'info', text: `tokens: ${tokens.total || 0}  (in ${inTok} / out ${outTok}) · context: ${ctx >= 1_000_000 ? (ctx / 1_000_000).toFixed(1) + 'M' : (ctx / 1000).toFixed(0) + 'k'} · est. cost ${cost ? '$' + cost.toFixed(4) : '$0.00'}` });
-        return;
-      }
       case 'thinking': {
         const lower = arg.toLowerCase();
         if (!arg) {
@@ -2285,6 +2289,29 @@ function Session({
         const turnOn = arg === 'on' || (!arg && !computerUse);
         if (!turnOn) { setComputerUse(false); push({ type: 'info', text: 'Computer use off.' }); }
         else { setComputerUse(true); push({ type: 'info', text: 'Computer use on.\n/vision <model> to set vision model.' }); }
+        return;
+      }
+      case 'extension': {
+        const action = (args[0] || 'status').toLowerCase();
+        if (action === 'pair') {
+          const pairing = getBrowserExtensionPairing();
+          await BROWSER_EXTENSION.start();
+          let copied = false;
+          try { copyToClipboard(pairing.token); copied = true; } catch {}
+          push({ type: 'info', text:
+            `Axion Extension pairing\n  address  ws://${pairing.host}:${pairing.port}\n  token    ${pairing.token}` +
+            `\n\n${copied ? 'Token copied to clipboard.' : 'Copy the token above.'} Paste it into Extension → Settings → Connect to Axion.` });
+          return;
+        }
+        if (action !== 'status') {
+          push({ type: 'error', text: 'Usage: /extension [status|pair]' });
+          return;
+        }
+        const status = await BROWSER_EXTENSION.status();
+        push({ type: 'info', text:
+          `Axion Extension\n  status  ${status.connected ? 'connected' : 'waiting for extension'}\n  port    ${status.port}` +
+          `\n  tools   ${status.capabilities?.length ? status.capabilities.join(', ') : 'not reported'}` +
+          `\n\nRun /extension pair to copy the pairing token.` });
         return;
       }
       case 'vision': {
@@ -3035,6 +3062,7 @@ function Session({
   // On narrow terminals the sidebar would crush the chat pane — hide it and
   // show the compact status strip above the input instead.
   const showSidebar = width >= 90;
+  const transcriptColumns = Math.max(20, width - (showSidebar ? 34 : 4));
 
   return (
     <box style={{ flexGrow: 1, flexDirection: 'row' }}>
@@ -3047,7 +3075,8 @@ function Session({
           <VirtualMessageList
             messages={messages}
             scrollRef={scrollRef}
-            columns={width}
+            jumpRef={transcriptJumpRef}
+            columns={transcriptColumns}
             itemKey={(m, i) => `${i}-${m.type}-${m.name || ''}`}
             renderItem={(msg, i) => {
               const isHit = searchOpen && searchMatches.length > 0 && i === searchMatches[searchIdx];
@@ -3069,6 +3098,7 @@ function Session({
                   <box style={isHit ? { flexDirection: 'column', border: true, borderColor: '#f0c674' } : { flexDirection: 'column' }}>
                     <MessageRow
                       msg={msg} index={i}
+                      columns={transcriptColumns}
                       expanded={expandedTools.has(i)} onToggle={() => toggleExpand(i)}
                       onCopy={copyMessage} onEdit={editMessage} onDelete={deleteFrom} onRetry={retryMessage}
                       onOpen={openSubagent}
@@ -3092,7 +3122,7 @@ function Session({
           {streamText !== null && (
             <box style={{ flexDirection: 'column', marginTop: 1, paddingLeft: 1, paddingRight: 1 }}>
               <text><span fg={A}>✻ Axion</span></text>
-              <RichText>{streamText || ' '}</RichText>
+              <RichText maxWidth={transcriptColumns}>{streamText || ' '}</RichText>
             </box>
           )}
         </scrollbox>
@@ -3145,16 +3175,7 @@ function Session({
             messages={messages}
             onSelect={(msg, idx) => {
               setMsgSelectorOpen(false);
-              // Scroll to the selected message
-              const el = scrollRef.current;
-              if (el) {
-                try {
-                  const vh = el.viewport?.height ?? el.height ?? 0;
-                  const max = Math.max(0, (el.scrollHeight || 0) - vh);
-                  const frac = messages.length > 1 ? idx / (messages.length - 1) : 0;
-                  el.scrollTo(Math.round(frac * max));
-                } catch {}
-              }
+              transcriptJumpRef.current?.jumpToIndex?.(idx);
             }}
             onClose={() => setMsgSelectorOpen(false)}
             accentColor={A}
@@ -3293,10 +3314,15 @@ function Session({
 let TAB_SEQ = 0;
 const SPIN_FRAMES = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'];
 
-function TabBar({ tabs, activeId, accentColor, onSwitchTab, onNewTab, onCloseTab }) {
+function TabBar({ tabs, activeId, width, accentColor, onSwitchTab, onNewTab, onCloseTab }) {
+  const activeIndex = Math.max(0, tabs.findIndex((t) => t.id === activeId));
+  const { start, end, titleWidth } = visibleTabWindow(tabs.length, activeIndex, width);
+  const visibleTabs = tabs.slice(start, end);
   return (
     <box style={{ flexDirection: 'row', height: 1, backgroundColor: '#15161a', paddingLeft: 1 }}>
-      {tabs.map((t, i) => {
+      {start > 0 ? <text><span fg="#555">…</span></text> : null}
+      {visibleTabs.map((t, localIndex) => {
+        const i = start + localIndex;
         const on = t.id === activeId;
         const bg = on ? '#2a2c33' : undefined;
         return (
@@ -3304,7 +3330,7 @@ function TabBar({ tabs, activeId, accentColor, onSwitchTab, onNewTab, onCloseTab
             <box onMouseDown={() => onSwitchTab?.(i)} style={{ flexDirection: 'row', paddingLeft: 1 }}>
               <text>
                 <span fg={on ? accentColor : '#666'}>{`${i + 1} `}</span>
-                <span fg={on ? '#ffffff' : '#888'}>{t.title || 'chat'}</span>
+                <span fg={on ? '#ffffff' : '#888'}>{ellipsize(t.title || 'chat', titleWidth)}</span>
                 {t.busy ? <span fg="#f0c674"> ●</span> : null}
               </text>
             </box>
@@ -3314,6 +3340,7 @@ function TabBar({ tabs, activeId, accentColor, onSwitchTab, onNewTab, onCloseTab
           </box>
         );
       })}
+      {end < tabs.length ? <text><span fg="#555">…</span></text> : null}
       <box onMouseDown={() => onNewTab?.()} style={{ paddingLeft: 1, paddingRight: 1 }}>
         <text><span fg={accentColor}>＋</span><span fg="#555"> new</span></text>
       </box>
@@ -3333,6 +3360,7 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
   }
   const [tabs, setTabs] = useState(initialTabState.current);
   const [activeId, setActiveId] = useState(initialTabState.current[0].id);
+  const activeIdRef = useRef(activeId); activeIdRef.current = activeId;
 
   // One npm-registry version check per app launch, shared by every tab's banner.
   const [updateInfo, setUpdateInfo] = useState(null);
@@ -3342,7 +3370,9 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
 
   // Keep a live ref to tabs + each tab's latest snapshot for workspace autosave.
   const tabsRef = useRef(tabs); tabsRef.current = tabs;
-  const snapshotsRef = useRef(new Map());
+  const snapshotsRef = useRef(new Map(
+    initialTabState.current.filter((t) => t.resume).map((t) => [t.id, t.resume]),
+  ));
   const wsTimerRef = useRef(null);
   const persistWorkspace = useCallback(() => {
     if (wsTimerRef.current) clearTimeout(wsTimerRef.current);
@@ -3351,12 +3381,22 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
         const s = snapshotsRef.current.get(t.id);
         return s ? { ...s, title: t.title, name: `tab_${t.id}` } : null;
       }).filter(Boolean);
-      try { autosaveWorkspace(list); } catch {}
+      try {
+        if (list.length) autosaveWorkspace(list);
+        else clearWorkspace();
+      } catch {}
     }, 800);
   }, []);
   const handleSnapshot = useCallback((tabId, snap, active) => {
     snapshotsRef.current.set(tabId, snap);
     if (active) { try { autosaveSession(snap); } catch {} }
+    persistWorkspace();
+  }, [persistWorkspace]);
+  const handleSessionEnded = useCallback((tabId) => {
+    snapshotsRef.current.delete(tabId);
+    if (activeIdRef.current === tabId) {
+      try { clearLastSession(); } catch {}
+    }
     persistWorkspace();
   }, [persistWorkspace]);
 
@@ -3413,7 +3453,7 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
     if (process.platform === 'win32') {
       // Register a per-user AppUserModelID (HKCU, no admin) so the toast is
       // attributed to "Axion" with the Axion logo instead of Windows
-      // PowerShell. The logo ships in docs/ (published with the npm package)
+      // PowerShell. The logo ships in src/assets/ with the npm package
       // and is copied once to ~/.axion so the registry points at a path that
       // survives package updates. Only fixed strings and the homedir-derived
       // logo path (single-quote doubled) reach the script — no user input.
@@ -3422,7 +3462,7 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
         const logoDst = join(homedir(), '.axion', 'axion-logo.png');
         if (!existsSync(logoDst)) {
           mkdirSync(join(homedir(), '.axion'), { recursive: true });
-          copyFileSync(fileURLToPath(new URL('../../docs/assets/logo-512.png', import.meta.url)), logoDst);
+          copyFileSync(fileURLToPath(new URL('../assets/logo-512.png', import.meta.url)), logoDst);
         }
         logoPs = `Set-ItemProperty -Path $reg -Name IconUri -Value '${logoDst.replace(/'/g, "''")}'`;
       } catch {}
@@ -3490,7 +3530,7 @@ $x.Item(1).AppendChild($t.CreateTextNode('Axion is done!')) | Out-Null
 
   return (
     <box style={{ width, height, flexDirection: 'column' }}>
-      <TabBar tabs={tabs} activeId={activeId} accentColor={A} onSwitchTab={switchTab} onNewTab={newTab} onCloseTab={removeTab} />
+      <TabBar tabs={tabs} activeId={activeId} width={width} accentColor={A} onSwitchTab={switchTab} onNewTab={newTab} onCloseTab={removeTab} />
       <box style={{ flexGrow: 1, position: 'relative' }}>
         {tabs.map((t) => {
           const on = t.id === activeId;
@@ -3516,6 +3556,7 @@ $x.Item(1).AppendChild($t.CreateTextNode('Axion is done!')) | Out-Null
                 initialPrompt={t.initialPrompt}
                 onBusyChange={(busy) => handleBusy(t.id, busy)}
                 onSnapshot={(snap, active) => handleSnapshot(t.id, snap, active)}
+                onSessionEnded={() => handleSessionEnded(t.id)}
                 onNewTab={newTab}
                 onCloseTab={closeTab}
                 onSwitchTab={switchTab}

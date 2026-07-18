@@ -34,6 +34,13 @@ const TOOL_META = {
   wiki_search:       { concurrencySafe: true, readOnly: true },
   screenshot:        { concurrencySafe: true, readOnly: true },
   screen_size:       { concurrencySafe: true, readOnly: true },
+  chrome_status:     { concurrencySafe: true, readOnly: true },
+  chrome_tabs:       { concurrencySafe: true, readOnly: true },
+  chrome_read_page:  { concurrencySafe: true, readOnly: true },
+  chrome_screenshot: { concurrencySafe: true, readOnly: true },
+  chrome_find:       { concurrencySafe: true, readOnly: true },
+  chrome_html:       { concurrencySafe: true, readOnly: true },
+  chrome_value:      { concurrencySafe: true, readOnly: true },
 
   // Write / side-effecting tools: exclusive (one at a time)
   write_file:        { concurrencySafe: false, readOnly: false },
@@ -54,6 +61,11 @@ const TOOL_META = {
   todo_add:          { concurrencySafe: false, readOnly: false },
   todo_done:         { concurrencySafe: false, readOnly: false },
   todowrite:         { concurrencySafe: false, readOnly: false },
+  chrome_click:      { concurrencySafe: false, readOnly: false },
+  chrome_type:       { concurrencySafe: false, readOnly: false },
+  chrome_scroll:     { concurrencySafe: false, readOnly: false },
+  chrome_navigate:   { concurrencySafe: false, readOnly: false },
+  chrome_select:     { concurrencySafe: false, readOnly: false },
 
   // Interactive tools: exclusive (require user input)
   ask_question:      { concurrencySafe: false, readOnly: false },
