@@ -855,10 +855,22 @@ app.get('/dashboard/account', async (c) => {
       balance_usd: microdollarsToUsd(Math.max(0, usage.credit_balance || 0)),
     },
     usage: {
+      monthly_included_used_microdollars: Math.max(0, usage.included_month_cost || 0),
+      monthly_included_limit_microdollars: monthlyBudget,
       monthly_included_used_usd: microdollarsToUsd(usage.included_month_cost),
       monthly_included_limit_usd: microdollarsToUsd(monthlyBudget),
+      monthly_reset_at: nextMonthISO(month),
+      window_included_used_microdollars: Math.max(0, usage.included_window_cost || 0),
+      window_included_limit_microdollars: windowBudget,
       window_included_used_usd: microdollarsToUsd(usage.included_window_cost),
       window_included_limit_usd: microdollarsToUsd(windowBudget),
+      window_reset_at: nextWindowISO(windowStart),
+    },
+    metering: {
+      unit: 'microdollar',
+      usd_per_microdollar: 0.000001,
+      input_per_million_tokens_usd: LUMEN_INPUT_PER_M_USD,
+      output_per_million_tokens_usd: LUMEN_OUTPUT_PER_M_USD,
     },
   })
 })
