@@ -3,7 +3,7 @@
 // suggestions. Mirrors openclaudeAX/src/utils/analyzeContext.ts (1437 lines)
 // in a lean form suitable for Axion's runtime.
 
-import { estimateTokens } from '../../utils/tokenEstimate.js';
+import { estimateTokens } from '../utils/tokenEstimate.js';
 
 // Fixed overhead the API deducts for the tools preamble. Subtract it once
 // from the per-tool total to avoid double-counting the shared header.
