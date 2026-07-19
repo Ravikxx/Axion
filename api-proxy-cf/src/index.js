@@ -12,9 +12,9 @@ import {
   microdollarsToUsd,
   redeemCreditCode,
 } from './billing.js'
+import { probeLumenHealth, proxyLumenRequest } from './lumen-upstream.js'
 
 const app = new Hono()
-const HF_URL = 'https://axionlabsai-lumen.hf.space/gradio_api/v1/chat/completions'
 const WEB_ORIGIN = 'https://axion.amplifiedsmp.org'
 
 app.use('*', cors({
@@ -1157,25 +1157,21 @@ function currentMonth() {
   return `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, '0')}`
 }
 
-function nextMonthISO() {
-  const d = new Date()
-  return new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + 1, 1)).toISOString()
+function nextMonthISO(month = currentMonth()) {
+  const [year, oneBasedMonth] = month.split('-').map(Number)
+  return new Date(Date.UTC(year, oneBasedMonth, 1)).toISOString()
 }
 
 function currentWindowISO() {
   return new Date(Math.floor(Date.now() / KEY_WINDOW_MS) * KEY_WINDOW_MS).toISOString()
 }
 
-function nextWindowISO() {
-  return new Date((Math.floor(Date.now() / KEY_WINDOW_MS) + 1) * KEY_WINDOW_MS).toISOString()
+function nextWindowISO(windowStart = currentWindowISO()) {
+  return new Date(new Date(windowStart).getTime() + KEY_WINDOW_MS).toISOString()
 }
 
 async function proxyUpstream(body) {
-  return fetch(HF_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ ...body, model: 'lumen' }),
-  })
+  return proxyLumenRequest(body)
 }
 
 function streamResponse(upstream) {
@@ -1189,16 +1185,19 @@ function streamResponse(upstream) {
 // Same as streamResponse, but tees the body so the client gets the untouched
 // stream immediately while a second copy is read in the background to
 // accumulate the assistant's output text for cost tracking — SSE parsing
-// never blocks or delays what's forwarded to the client. Returns the client
-// Response plus a promise for the accumulated text; the caller is
+// never blocks or delays what's forwarded to the client. Also harvests the
+// upstream's real `usage` object when the final chunk carries one, so billing
+// can use exact token counts instead of character estimates. Returns the
+// client Response plus a promise for {outText, usage}; the caller is
 // responsible for registering that promise with waitUntil.
 function streamResponseTracked(upstream) {
   const [clientBody, trackBody] = upstream.body.tee()
   const client = new Response(clientBody, {
     headers: { 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-cache', 'Access-Control-Allow-Origin': '*' },
   })
-  const outTextPromise = (async () => {
+  const trackedPromise = (async () => {
     let outText = ''
+    let usage = null
     try {
       const reader = trackBody.getReader()
       const decoder = new TextDecoder()
@@ -1215,17 +1214,19 @@ function streamResponseTracked(upstream) {
           const payload = trimmed.slice(5).trim()
           if (payload === '[DONE]') continue
           try {
-            const delta = JSON.parse(payload).choices?.[0]?.delta?.content
+            const parsed = JSON.parse(payload)
+            const delta = parsed.choices?.[0]?.delta?.content
             if (typeof delta === 'string') outText += delta
+            if (typeof parsed.usage?.prompt_tokens === 'number') usage = parsed.usage
           } catch {}
         }
       }
     } catch (e) {
       console.error('[streamResponseTracked] tee read failed:', e.message)
     }
-    return outText
+    return { outText, usage }
   })()
-  return { client, outTextPromise }
+  return { client, trackedPromise }
 }
 
 // ── Safety triggers ──────────────────────────────────────────────────────────
@@ -1305,18 +1306,30 @@ app.post('/v1/chat/completions', async (c) => {
   const body = await c.req.json().catch(() => ({}))
   if (!body.messages) return json({ error: { message: 'Invalid or missing request body', type: 'invalid_request_error' } }, 400)
 
-  // ── Keyed request ──
+  // ── Account-billed request (API key or signed-in session) ──
+  // Website chat/playground traffic authenticates with a signed session
+  // token rather than an axion-sk- key; it must hit the same account
+  // budgets and charging as keyed traffic, never the anonymous free tier.
+  let keyRow = null
+  let billedUser = null
   if (auth.startsWith('axion-sk-')) {
-    const keyRow = await c.env.DB.prepare('SELECT * FROM api_keys WHERE key_value=? AND revoked=0').bind(auth).first()
+    keyRow = await c.env.DB.prepare('SELECT * FROM api_keys WHERE key_value=? AND revoked=0').bind(auth).first()
     if (!keyRow) return json({ error: { message: 'Invalid or revoked API key', type: 'invalid_request_error' } }, 401)
 
     // Check if the key owner is banned, and pull their plan for rate limits
-    const keyUser = await c.env.DB.prepare('SELECT * FROM users WHERE id=?').bind(keyRow.user_id).first()
-    if (keyUser?.banned) return json({ error: { message: 'Your account has been suspended.', type: 'permission_error' } }, 403)
-    const { monthlyBudget: planMonthlyBudget, windowBudget: planWindowBudget } = limitsForPlan(keyUser?.plan)
+    billedUser = await c.env.DB.prepare('SELECT * FROM users WHERE id=?').bind(keyRow.user_id).first()
+    if (!billedUser) return json({ error: { message: 'Invalid or revoked API key', type: 'invalid_request_error' } }, 401)
+    if (billedUser.banned) return json({ error: { message: 'Your account has been suspended.', type: 'permission_error' } }, 403)
+  } else if (auth) {
+    billedUser = await requireAuth(c)
+    if (!billedUser) return json({ error: { message: 'Invalid or expired credentials', type: 'invalid_request_error' } }, 401)
+  }
+
+  if (billedUser) {
+    const { monthlyBudget: planMonthlyBudget, windowBudget: planWindowBudget } = limitsForPlan(billedUser.plan)
 
     // Scope check — if key has scopes, requested model must be in the list
-    if (keyRow.scopes) {
+    if (keyRow?.scopes) {
       const allowed = JSON.parse(keyRow.scopes)
       const requested = (body.model || '').toLowerCase()
       if (!allowed.some(s => s.toLowerCase() === requested)) {
@@ -1329,8 +1342,8 @@ app.post('/v1/chat/completions', async (c) => {
     // cards); month_cost is what's actually gated on.
     const month = currentMonth()
     const accountWindowStart = currentWindowISO()
-    const accountUsage = await ensureUsagePeriods(c.env.DB, keyRow.user_id, month, accountWindowStart)
-    if (keyRow.month_start !== month) {
+    const accountUsage = await ensureUsagePeriods(c.env.DB, billedUser.id, month, accountWindowStart)
+    if (keyRow && keyRow.month_start !== month) {
       await c.env.DB.prepare('UPDATE api_keys SET month_requests=0, month_cost=0, month_start=? WHERE id=?').bind(month, keyRow.id).run()
       keyRow.month_requests = 0
       keyRow.month_cost = 0
@@ -1340,7 +1353,7 @@ app.post('/v1/chat/completions', async (c) => {
       return json({ error: {
         message: 'Monthly included usage reached and no API credits remain.',
         type: 'rate_limit_error',
-        reset_at: nextMonthISO(),
+        reset_at: nextMonthISO(month),
         limit_usd: microdollarsToUsd(planMonthlyBudget),
         used_usd: microdollarsToUsd(accountUsage.included_month_cost),
         credit_balance_usd: microdollarsToUsd(Math.max(0, accountUsage.credit_balance || 0)),
@@ -1353,7 +1366,7 @@ app.post('/v1/chat/completions', async (c) => {
       return json({ error: {
         message: 'Two-hour included usage reached and no API credits remain.',
         type: 'rate_limit_error',
-        reset_at: nextWindowISO(),
+        reset_at: nextWindowISO(accountWindowStart),
         limit_usd: microdollarsToUsd(planWindowBudget),
         used_usd: microdollarsToUsd(accountUsage.included_window_cost),
         credit_balance_usd: microdollarsToUsd(Math.max(0, accountUsage.credit_balance || 0)),
@@ -1363,23 +1376,22 @@ app.post('/v1/chat/completions', async (c) => {
 
     const trigger = applySafetyTriggers(body)
     if (trigger === 'hate') {
-      const nKey = `nword:${keyRow.user_id}`
+      const nKey = `nword:${billedUser.id}`
       const nRow = await c.env.DB.prepare('SELECT count FROM rate_limits WHERE key=?').bind(nKey).first()
       const nCount = (nRow?.count || 0) + 1
       await c.env.DB.prepare('INSERT OR REPLACE INTO rate_limits (key, count, window_start) VALUES (?,?,0)').bind(nKey, nCount).run()
       if (nCount >= 3) {
         const reason = 'Racial slur detected (3 strikes).'
-        await c.env.DB.prepare('UPDATE users SET banned=1, ban_reason=? WHERE id=?').bind(reason, keyRow.user_id).run()
-        const userRow = await c.env.DB.prepare('SELECT email FROM users WHERE id=?').bind(keyRow.user_id).first()
-        if (userRow && c.env.RESEND_API_KEY) {
+        await c.env.DB.prepare('UPDATE users SET banned=1, ban_reason=? WHERE id=?').bind(reason, billedUser.id).run()
+        if (c.env.RESEND_API_KEY) {
           const appealToken = crypto.randomUUID()
           const appealId = crypto.randomUUID()
           const now = Math.floor(Date.now() / 1000)
           await c.env.DB.prepare('INSERT INTO appeals (id, user_id, email, token, status, created_at) VALUES (?,?,?,?,?,?)')
-            .bind(appealId, keyRow.user_id, userRow.email, appealToken, 'pending', now).run()
+            .bind(appealId, billedUser.id, billedUser.email, appealToken, 'pending', now).run()
           const appealUrl = 'https://api.amplifiedsmp.org/appeal/' + appealToken
           c.executionCtx.waitUntil(sendEmail(c.env.RESEND_API_KEY, {
-            to: userRow.email,
+            to: billedUser.email,
             subject: 'Your Axion account has been suspended',
             html: emailWrap(`<h2 style="margin:0 0 8px;color:#e8e8f0">Account suspended</h2><p style="color:#ccc;margin:0 0 16px">Your account was automatically suspended for violating our content policy.</p><a href="${appealUrl}" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">Submit appeal →</a>`),
           }))
@@ -1403,14 +1415,14 @@ app.post('/v1/chat/completions', async (c) => {
       const totalTokens = inputTokens + outputTokens
       const chargedUsage = await chargeAccountUsage(
         c.env.DB,
-        keyRow.user_id,
+        billedUser.id,
         cost,
         planMonthlyBudget,
         planWindowBudget,
         month,
         accountWindowStart,
       )
-      await Promise.all([
+      if (keyRow) await Promise.all([
         c.env.DB.prepare(
           "UPDATE api_keys SET last_used=strftime('%s','now'), requests=requests+1, month_requests=month_requests+1, tokens=tokens+?, month_cost=month_cost+? WHERE id=?"
         ).bind(totalTokens, cost, keyRow.id).run(),
@@ -1425,11 +1437,11 @@ app.post('/v1/chat/completions', async (c) => {
         const claimed = await c.env.DB.prepare(
           `UPDATE users SET usage_limit_notified=?
            WHERE id=? AND included_month_cost>=? AND COALESCE(usage_limit_notified,'')<>?`
-        ).bind(month, keyRow.user_id, notifyThreshold, month).run()
+        ).bind(month, billedUser.id, notifyThreshold, month).run()
         if (!claimed.meta?.changes) return
         const [limitUser, prefs] = await Promise.all([
-          c.env.DB.prepare('SELECT email FROM users WHERE id=?').bind(keyRow.user_id).first(),
-          c.env.DB.prepare('SELECT notify_limit FROM email_prefs WHERE user_id=?').bind(keyRow.user_id).first(),
+          c.env.DB.prepare('SELECT email FROM users WHERE id=?').bind(billedUser.id).first(),
+          c.env.DB.prepare('SELECT notify_limit FROM email_prefs WHERE user_id=?').bind(billedUser.id).first(),
         ])
         if (limitUser && prefs?.notify_limit !== 0) {
           const usedUsd = (newMonthCost / 1_000_000).toFixed(2)
@@ -1439,7 +1451,7 @@ app.post('/v1/chat/completions', async (c) => {
             subject: `You've used 80% of your $${budgetUsd} monthly Axion usage`,
             html: emailWrap(`
               <h2 style="margin:0 0 8px;color:#e8e8f0">Usage alert</h2>
-              <p style="color:#888;margin:0 0 16px">Your API key <strong style="color:#e8e8f0">${keyRow.label}</strong> has used <strong style="color:#e8602c">$${usedUsd} / $${budgetUsd}</strong> this month (80%).</p>
+              <p style="color:#888;margin:0 0 16px">Your account${keyRow ? ` (API key <strong style="color:#e8e8f0">${keyRow.label}</strong>)` : ''} has used <strong style="color:#e8602c">$${usedUsd} / $${budgetUsd}</strong> this month (80%).</p>
               <p style="color:#888;margin:0 0 24px">Your usage resets on the 1st of next month. If you need more, reply to this email.</p>
               <a href="https://axion.amplifiedsmp.org/keys" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">View usage →</a>
               <p style="color:#555;font-size:12px;margin-top:24px">To turn off these alerts, visit your <a href="https://axion.amplifiedsmp.org/keys" style="color:#e8602c">account settings</a>.</p>
@@ -1450,9 +1462,16 @@ app.post('/v1/chat/completions', async (c) => {
     }
 
     if (body.stream) {
-      const inputTokens = estimateTokensFromChars(reqText)
-      const { client, outTextPromise } = streamResponseTracked(upstream)
-      c.executionCtx.waitUntil(outTextPromise.then(outText => recordUsage(inputTokens, estimateTokensFromChars(outText))))
+      const { client, trackedPromise } = streamResponseTracked(upstream)
+      c.executionCtx.waitUntil(trackedPromise.then(({ outText, usage }) => {
+        const inputTokens = typeof usage?.prompt_tokens === 'number'
+          ? usage.prompt_tokens
+          : estimateTokensFromChars(reqText)
+        const outputTokens = typeof usage?.completion_tokens === 'number'
+          ? usage.completion_tokens
+          : estimateTokensFromChars(outText)
+        return recordUsage(inputTokens, outputTokens)
+      }))
       return client
     }
 
@@ -1511,24 +1530,18 @@ app.get('/v1/models', async (c) => {
 })
 
 // `ok` means the API itself is up; `model_up` means the model behind it
-// actually answered a 1-token probe. Probes are cached for 2 minutes so
+// reports its model as loaded. Probes are cached for 2 minutes so
 // website page loads don't hammer the upstream.
 app.get('/health', async (c) => {
   const cache = caches.default
-  const cacheKey = new Request('https://health.internal/model-probe')
+  const cacheKey = new Request('https://health.internal/model-probe-v2')
   let model_up
   const cached = await cache.match(cacheKey)
   if (cached) {
     model_up = (await cached.json()).model_up
   } else {
     try {
-      const res = await fetch(HF_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ model: 'lumen', messages: [{ role: 'user', content: 'ping' }], max_tokens: 1, stream: false }),
-        signal: AbortSignal.timeout(6000),
-      })
-      model_up = res.ok
+      model_up = await probeLumenHealth(fetch, 6000)
     } catch {
       model_up = false
     }

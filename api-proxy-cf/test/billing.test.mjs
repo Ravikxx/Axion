@@ -552,3 +552,156 @@ test('account deletion removes audits, rate limits, and every key in an owned or
   assert.equal(db.prepare("SELECT COUNT(*) AS count FROM rate_limits WHERE key LIKE '%:member'").first().count, 0)
   assert.equal(db.prepare("SELECT COUNT(*) AS count FROM rate_limits WHERE key='free:unrelated-ip'").first().count, 1)
 })
+
+// ── /v1/chat/completions account billing ────────────────────────────────────
+
+const WINDOW_MS = 2 * 60 * 60 * 1000
+
+function currentPeriods() {
+  return {
+    month: new Date().toISOString().slice(0, 7),
+    windowStart: new Date(Math.floor(Date.now() / WINDOW_MS) * WINDOW_MS).toISOString(),
+  }
+}
+
+function lumenFetchStub(usage, content = 'Hello from Lumen') {
+  const completePayload = JSON.stringify([{
+    ok: true,
+    response: {
+      id: 'chatcmpl-test',
+      model: 'lumen',
+      choices: [{ index: 0, message: { role: 'assistant', content }, finish_reason: 'stop' }],
+      usage,
+    },
+  }])
+  return async (url) => {
+    if (String(url).includes('/call/v2/openai_chat')) {
+      return new Response(JSON.stringify({ event_id: 'evt_test1' }), {
+        status: 200, headers: { 'Content-Type': 'application/json' },
+      })
+    }
+    return new Response(`event: complete\ndata: ${completePayload}\n\n`, {
+      status: 200, headers: { 'Content-Type': 'text/event-stream' },
+    })
+  }
+}
+
+function executionCtx() {
+  const pending = []
+  return {
+    ctx: { waitUntil: promise => pending.push(promise), passThroughOnException() {} },
+    settle: () => Promise.all(pending),
+  }
+}
+
+test('session-authenticated completions are charged to the account, not the free tier', async () => {
+  const db = new D1TestDatabase()
+  const secret = 'session-billing-secret'
+  addUser(db, 'member')
+  const token = await sessionToken('member', secret)
+  const env = { DB: db, TOKEN_SECRET: secret }
+  const realFetch = globalThis.fetch
+  globalThis.fetch = lumenFetchStub({ prompt_tokens: 1000, completion_tokens: 2000, total_tokens: 3000 })
+  try {
+    const { ctx, settle } = executionCtx()
+    const response = await app.request('/v1/chat/completions', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ model: 'lumen', messages: [{ role: 'user', content: 'hi' }] }),
+    }, env, ctx)
+    assert.equal(response.status, 200)
+    const data = await response.json()
+    assert.equal(data.choices[0].message.content, 'Hello from Lumen')
+    await settle()
+
+    // 1000 in × $0.15/M + 2000 out × $0.50/M = 150 + 1000 = 1150 microdollars
+    const user = db.prepare('SELECT included_month_cost, included_window_cost, credit_balance FROM users WHERE id=?')
+      .bind('member').first()
+    assert.equal(user.included_month_cost, 1150)
+    assert.equal(user.included_window_cost, 1150)
+    assert.equal(user.credit_balance, 0)
+    // Free per-IP tier untouched — this was billed traffic.
+    assert.equal(db.prepare("SELECT COUNT(*) AS count FROM rate_limits WHERE key LIKE 'free:%'").first().count, 0)
+  } finally {
+    globalThis.fetch = realFetch
+  }
+})
+
+test('an invalid session token is rejected instead of falling through to the free tier', async () => {
+  const db = new D1TestDatabase()
+  const env = { DB: db, TOKEN_SECRET: 'right-secret' }
+  const token = await sessionToken('member', 'wrong-secret')
+  const { ctx } = executionCtx()
+  const response = await app.request('/v1/chat/completions', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ messages: [{ role: 'user', content: 'hi' }] }),
+  }, env, ctx)
+  assert.equal(response.status, 401)
+})
+
+test('exhausted allowances draw down credits and then block with 429', async () => {
+  const db = new D1TestDatabase()
+  const secret = 'credit-drawdown-secret'
+  addUser(db, 'member')
+  const { month, windowStart } = currentPeriods()
+  db.prepare(
+    'UPDATE users SET included_month_cost=500000, usage_month=?, included_window_cost=50000, usage_window=?, credit_balance=1000 WHERE id=?'
+  ).bind(month, windowStart, 'member').run()
+  const token = await sessionToken('member', secret)
+  const env = { DB: db, TOKEN_SECRET: secret }
+  const realFetch = globalThis.fetch
+  globalThis.fetch = lumenFetchStub({ prompt_tokens: 1000, completion_tokens: 2000, total_tokens: 3000 })
+  try {
+    const { ctx, settle } = executionCtx()
+    const okResponse = await app.request('/v1/chat/completions', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: [{ role: 'user', content: 'hi' }] }),
+    }, env, ctx)
+    assert.equal(okResponse.status, 200)
+    await settle()
+
+    const user = db.prepare('SELECT included_month_cost, included_window_cost, credit_balance FROM users WHERE id=?')
+      .bind('member').first()
+    assert.equal(user.included_month_cost, 500000)
+    assert.equal(user.included_window_cost, 50000)
+    assert.equal(user.credit_balance, 1000 - 1150)
+
+    const blocked = await app.request('/v1/chat/completions', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: [{ role: 'user', content: 'hi again' }] }),
+    }, env, executionCtx().ctx)
+    assert.equal(blocked.status, 429)
+  } finally {
+    globalThis.fetch = realFetch
+  }
+})
+
+test('streamed completions bill with the upstream usage object, not char estimates', async () => {
+  const db = new D1TestDatabase()
+  const secret = 'stream-billing-secret'
+  addUser(db, 'member')
+  const token = await sessionToken('member', secret)
+  const env = { DB: db, TOKEN_SECRET: secret }
+  const realFetch = globalThis.fetch
+  globalThis.fetch = lumenFetchStub({ prompt_tokens: 400, completion_tokens: 600, total_tokens: 1000 })
+  try {
+    const { ctx, settle } = executionCtx()
+    const response = await app.request('/v1/chat/completions', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ stream: true, messages: [{ role: 'user', content: 'hi' }] }),
+    }, env, ctx)
+    assert.equal(response.status, 200)
+    await response.text() // drain the client copy of the stream
+    await settle()
+
+    // 400 × $0.15/M + 600 × $0.50/M = 60 + 300 = 360 microdollars
+    const user = db.prepare('SELECT included_month_cost FROM users WHERE id=?').bind('member').first()
+    assert.equal(user.included_month_cost, 360)
+  } finally {
+    globalThis.fetch = realFetch
+  }
+})
