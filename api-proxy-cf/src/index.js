@@ -3,8 +3,13 @@ import { cors } from 'hono/cors'
 
 const app = new Hono()
 const HF_URL = 'https://axionlabsai-lumen.hf.space/gradio_api/v1/chat/completions'
+const WEB_ORIGIN = 'https://axion.amplifiedsmp.org'
 
-app.use('*', cors({ origin: '*', allowHeaders: ['Content-Type', 'Authorization'] }))
+app.use('*', cors({
+  origin: WEB_ORIGIN,
+  credentials: true,
+  allowHeaders: ['Content-Type', 'Authorization'],
+}))
 
 // ── Helpers ────────────────────────────────────────────────────────────────
 
@@ -22,12 +27,25 @@ function genKey() {
 }
 
 const TOKEN_TTL = 7 * 24 * 60 * 60 * 1000 // 7 days
+const SESSION_COOKIE_TTL = 30 * 24 * 60 * 60 * 1000 // 30 days
+const SESSION_COOKIE = 'axion_session'
 
 // `v` pins the token to the user's token_version at mint time so a password
 // reset (which bumps token_version) invalidates every session token issued
 // before it, even though tokens themselves are stateless/unrevocable by id.
-async function makeToken(uid, secret, version = 0) {
-  const payload = btoa(JSON.stringify({ uid, v: version, exp: Date.now() + TOKEN_TTL }))
+async function makeToken(uid, secret, version = 0, ttlMs = TOKEN_TTL) {
+  const payload = btoa(JSON.stringify({ uid, v: version, exp: Date.now() + ttlMs }))
+  const key = await crypto.subtle.importKey('raw', new TextEncoder().encode(secret), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign'])
+  const sig = await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(payload))
+  return `${payload}.${btoa(String.fromCharCode(...new Uint8Array(sig)))}`
+}
+
+// Generic signed-payload helper reused for the OAuth "link intent" state —
+// same HMAC scheme as makeToken but for an arbitrary object, verified with
+// the existing parseToken (it only cares about a `.`-delimited payload+sig
+// and an `exp` field, not the `uid`/`v` shape specifically).
+async function signState(obj, secret) {
+  const payload = btoa(JSON.stringify(obj))
   const key = await crypto.subtle.importKey('raw', new TextEncoder().encode(secret), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign'])
   const sig = await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(payload))
   return `${payload}.${btoa(String.fromCharCode(...new Uint8Array(sig)))}`
@@ -105,6 +123,59 @@ async function requireKey(c) {
   const key = auth.replace(/^Bearer\s+/i, '').trim()
   if (!key.startsWith('axion-sk-')) return null
   return c.env.DB.prepare('SELECT * FROM api_keys WHERE key_value=? AND revoked=0').bind(key).first()
+}
+
+// ── Session cookie ───────────────────────────────────────────────────────
+// A parallel, longer-lived identity channel for requests that can't carry an
+// Authorization header — namely GET /auth/link/:provider, which is a
+// top-level browser navigation, not a fetch. Set on every successful
+// browser-facing login (password, OAuth callback, email verify) as a
+// Domain=.amplifiedsmp.org cookie so it's sent on both same-site XHR (with
+// credentials:'include', already wired into the frontend's login/register
+// calls) and top-level cross-subdomain navigations (SameSite=Lax allows
+// top-level GET navigations regardless of site).
+
+function getCookieValue(c, name) {
+  const header = c.req.header('Cookie') || ''
+  const match = header.match(new RegExp('(?:^|; )' + name + '=([^;]*)'))
+  return match ? decodeURIComponent(match[1]) : null
+}
+
+function sessionCookieHeader(token) {
+  return `${SESSION_COOKIE}=${token}; Domain=.amplifiedsmp.org; Path=/; Max-Age=${SESSION_COOKIE_TTL / 1000}; HttpOnly; Secure; SameSite=Lax`
+}
+
+function clearSessionCookieHeader() {
+  return `${SESSION_COOKIE}=; Domain=.amplifiedsmp.org; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Lax`
+}
+
+async function sessionUserFromCookie(c) {
+  const token = getCookieValue(c, SESSION_COOKIE)
+  if (!token) return null
+  const payload = await parseToken(token, c.env.TOKEN_SECRET)
+  if (!payload?.uid) return null
+  const user = await c.env.DB.prepare('SELECT * FROM users WHERE id=?').bind(payload.uid).first()
+  if (!user || user.banned) return null
+  if ((payload.v || 0) !== (user.token_version || 0)) return null
+  return user
+}
+
+// 3 requests per account per 15 minutes — distinct from the per-IP
+// checkRateLimit above, so an account can't be spammed regardless of how
+// many IPs the request comes from (and vice versa, an IP can't spam many
+// accounts beyond the per-IP cap either — both checks apply).
+async function checkAccountRateLimit(db, uid, action, limit = 3) {
+  const key = `${action}:${uid}`
+  const window = 15 * 60
+  const now = Math.floor(Date.now() / 1000)
+  const row = await db.prepare('SELECT count, window_start FROM rate_limits WHERE key=?').bind(key).first()
+  if (row && now - row.window_start < window) {
+    if (row.count >= limit) return false
+    await db.prepare('UPDATE rate_limits SET count=count+1 WHERE key=?').bind(key).run()
+  } else {
+    await db.prepare('INSERT OR REPLACE INTO rate_limits (key, count, window_start) VALUES (?,1,?)').bind(key, now).run()
+  }
+  return true
 }
 
 // ── Email ──────────────────────────────────────────────────────────────────
@@ -233,10 +304,12 @@ app.get('/auth/verify', async (c) => {
 
   // Redirect to dashboard with session token in URL hash (read by JS, never sent to server)
   const sessionToken = await makeToken(user.id, c.env.TOKEN_SECRET, user.token_version || 0)
-  return new Response(null, {
+  const res = new Response(null, {
     status: 302,
     headers: { Location: `https://axion.amplifiedsmp.org/keys#verified=${encodeURIComponent(sessionToken)}&email=${encodeURIComponent(user.email)}` },
   })
+  res.headers.set('Set-Cookie', sessionCookieHeader(await makeToken(user.id, c.env.TOKEN_SECRET, user.token_version || 0, SESSION_COOKIE_TTL)))
+  return res
 })
 
 // ── OAuth shared helper ────────────────────────────────────────────────────
@@ -321,11 +394,111 @@ async function oauthFinish(c, { id_field, email, provider_id, return_to }) {
   }
   const token = await makeToken(user.id, c.env.TOKEN_SECRET, user.token_version || 0)
   const base = RETURN_DESTINATIONS[return_to] || RETURN_DESTINATIONS.keys
-  return new Response(null, {
+  const res = new Response(null, {
     status: 302,
     headers: { Location: `${base}#verified=${encodeURIComponent(token)}&email=${encodeURIComponent(email || '')}` },
   })
+  res.headers.set('Set-Cookie', sessionCookieHeader(await makeToken(user.id, c.env.TOKEN_SECRET, user.token_version || 0, SESSION_COOKIE_TTL)))
+  return res
 }
+
+// ── Account linking (settings page "Connect" button) ──────────────────────
+// GET /auth/link/:provider is a top-level browser navigation from
+// settings.html, not a fetch — it can carry no Authorization header. Identity
+// is proven via the session cookie instead, and the OAuth `state` param
+// carries a signed "link intent" (uid + provider + return url) that survives
+// the round trip to the provider and back so the callback knows who to link
+// to without trusting anything the browser sends at that point.
+
+const PROVIDER_META = {
+  google:  { idField: 'google_id' },
+  github:  { idField: 'github_id' },
+  discord: { idField: 'discord_id' },
+}
+
+function allowedReturn(url) {
+  try {
+    const u = new URL(url)
+    if (u.origin === WEB_ORIGIN) return url
+  } catch {}
+  return `${WEB_ORIGIN}/settings.html`
+}
+
+async function oauthLinkFinish(c, { id_field, provider, provider_id, state }) {
+  if (!state?.uid) {
+    return new Response('This link request expired or is invalid. Go back to Settings and try again.', { status: 400, headers: { 'Content-Type': 'text/plain' } })
+  }
+  const target = await c.env.DB.prepare('SELECT * FROM users WHERE id=?').bind(state.uid).first()
+  if (!target || target.banned) {
+    return new Response('Could not complete linking — please sign in again and retry.', { status: 401, headers: { 'Content-Type': 'text/plain' } })
+  }
+  const existing = await c.env.DB.prepare(`SELECT id FROM users WHERE ${id_field}=?`).bind(provider_id).first()
+  if (existing && existing.id !== target.id) {
+    return new Response(`This ${provider} account is already linked to a different Axion account.`, { status: 409, headers: { 'Content-Type': 'text/plain' } })
+  }
+  await c.env.DB.prepare(`UPDATE users SET ${id_field}=? WHERE id=?`).bind(provider_id, target.id).run()
+  return new Response(null, { status: 302, headers: { Location: allowedReturn(state.return) } })
+}
+
+app.get('/auth/link/:provider', async (c) => {
+  const provider = c.req.param('provider')
+  const meta = PROVIDER_META[provider]
+  if (!meta) return new Response('Unknown provider', { status: 400 })
+
+  const user = await sessionUserFromCookie(c)
+  if (!user) {
+    return new Response("You need to be signed in to connect an account. Go back, sign in, then try again.", { status: 401, headers: { 'Content-Type': 'text/plain' } })
+  }
+
+  const returnUrl = allowedReturn(c.req.query('return') || '')
+  const state = await signState({ action: 'link', uid: user.id, provider, return: returnUrl, exp: Date.now() + 10 * 60 * 1000 }, c.env.TOKEN_SECRET)
+
+  if (provider === 'google') {
+    const params = new URLSearchParams({
+      client_id: c.env.GOOGLE_CLIENT_ID,
+      redirect_uri: 'https://api.amplifiedsmp.org/auth/google/callback',
+      response_type: 'code',
+      scope: 'openid email profile',
+      prompt: 'select_account',
+      state,
+    })
+    return new Response(null, { status: 302, headers: { Location: `https://accounts.google.com/o/oauth2/v2/auth?${params}` } })
+  }
+  if (provider === 'github') {
+    const params = new URLSearchParams({
+      client_id: c.env.GITHUB_CLIENT_ID,
+      redirect_uri: 'https://api.amplifiedsmp.org/auth/github/callback',
+      scope: 'user:email',
+      state,
+    })
+    return new Response(null, { status: 302, headers: { Location: `https://github.com/login/oauth/authorize?${params}` } })
+  }
+  const params = new URLSearchParams({
+    client_id: c.env.DISCORD_CLIENT_ID,
+    redirect_uri: 'https://api.amplifiedsmp.org/auth/discord/callback',
+    response_type: 'code',
+    scope: 'identify email',
+    state,
+  })
+  return new Response(null, { status: 302, headers: { Location: `https://discord.com/oauth2/authorize?${params}` } })
+})
+
+app.delete('/auth/link/:provider', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  const meta = PROVIDER_META[c.req.param('provider')]
+  if (!meta) return json({ error: 'Unknown provider' }, 400)
+  if (!user[meta.idField]) return json({ error: 'That account is not connected' }, 400)
+
+  const otherFields = Object.values(PROVIDER_META).map(m => m.idField).filter(f => f !== meta.idField)
+  const hasOtherAuth = !!user.pw_hash || otherFields.some(f => !!user[f])
+  if (!hasOtherAuth) {
+    return json({ error: 'This is your only sign-in method — set a password or connect another provider before disconnecting this one.' }, 409)
+  }
+
+  await c.env.DB.prepare(`UPDATE users SET ${meta.idField}=NULL WHERE id=?`).bind(user.id).run()
+  return json({ ok: true })
+})
 
 // ── Google OAuth ───────────────────────────────────────────────────────────
 
@@ -372,6 +545,10 @@ app.get('/auth/google/callback', async (c) => {
   const gUser = await userRes.json()
   if (!gUser.email) return new Response('Could not get email from Google', { status: 400 })
 
+  const linkState = await parseToken(c.req.query('state'), c.env.TOKEN_SECRET)
+  if (linkState?.action === 'link') {
+    return oauthLinkFinish(c, { id_field: 'google_id', provider: 'google', provider_id: gUser.id, state: linkState })
+  }
   return oauthFinish(c, { id_field: 'google_id', email: gUser.email, provider_id: gUser.id, return_to })
 })
 
@@ -409,6 +586,10 @@ app.get('/auth/github/callback', async (c) => {
   const primary = emails.find(e => e.primary && e.verified)
   const email = primary?.email || profile.email
 
+  const linkState = await parseToken(c.req.query('state'), c.env.TOKEN_SECRET)
+  if (linkState?.action === 'link') {
+    return oauthLinkFinish(c, { id_field: 'github_id', provider: 'github', provider_id: String(profile.id), state: linkState })
+  }
   return oauthFinish(c, { id_field: 'github_id', email, provider_id: String(profile.id), return_to })
 })
 
@@ -450,6 +631,10 @@ app.get('/auth/discord/callback', async (c) => {
   const dUser = await userRes.json()
   if (!dUser.verified) return new Response('Discord email not verified', { status: 400 })
 
+  const linkState = await parseToken(c.req.query('state'), c.env.TOKEN_SECRET)
+  if (linkState?.action === 'link') {
+    return oauthLinkFinish(c, { id_field: 'discord_id', provider: 'discord', provider_id: dUser.id, state: linkState })
+  }
   return oauthFinish(c, { id_field: 'discord_id', email: dUser.email, provider_id: dUser.id, return_to })
 })
 
@@ -464,7 +649,21 @@ app.post('/auth/login', async (c) => {
   if (!user || user.pw_hash !== pw_hash) return json({ error: 'Invalid email or password' }, 401)
   if (!user.verified) return json({ error: 'Please verify your email before signing in.' }, 403)
   if (user.banned) return json({ error: 'Your account has been suspended. Check your email for an appeal link.', banned: true }, 403)
-  return json({ token: await makeToken(user.id, c.env.TOKEN_SECRET, user.token_version || 0), email: user.email })
+  const res = json({ token: await makeToken(user.id, c.env.TOKEN_SECRET, user.token_version || 0), email: user.email })
+  res.headers.set('Set-Cookie', sessionCookieHeader(await makeToken(user.id, c.env.TOKEN_SECRET, user.token_version || 0, SESSION_COOKIE_TTL)))
+  return res
+})
+
+// Reads the session cookie set at login and mints a fresh short-lived Bearer
+// token from it — lets a page with an empty localStorage (new tab, cleared
+// storage) silently restore a session, and doubles as the identity check
+// GET /auth/link/:provider itself relies on (same cookie, same verification).
+app.get('/auth/session', async (c) => {
+  const user = await sessionUserFromCookie(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  const res = json({ token: await makeToken(user.id, c.env.TOKEN_SECRET, user.token_version || 0), email: user.email })
+  res.headers.set('Set-Cookie', sessionCookieHeader(await makeToken(user.id, c.env.TOKEN_SECRET, user.token_version || 0, SESSION_COOKIE_TTL)))
+  return res
 })
 
 const RESET_TOKEN_TTL = 60 * 60 // 1 hour, in seconds (reset_token_expires is epoch seconds)
@@ -595,6 +794,86 @@ app.delete('/dashboard/keys/:id', async (c) => {
   const result = await c.env.DB.prepare('UPDATE api_keys SET revoked=1 WHERE id=? AND user_id=?').bind(c.req.param('id'), user.id).run()
   if (result.meta.changes === 0) return json({ error: 'Key not found' }, 404)
   return json({ ok: true })
+})
+
+// Authenticated shortcut for the same reset-password flow /auth/forgot-password
+// uses — same reset_token/reset_token_expires columns, same email, same
+// single-use + 1hr-TTL semantics — just triggered by a proven Bearer token
+// instead of an email address + Turnstile, since identity is already known.
+app.post('/dashboard/change-password/request', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  if (!await checkAccountRateLimit(c.env.DB, user.id, 'pwreset-req')) {
+    return json({ error: 'Too many requests. Try again in 15 minutes.' }, 429)
+  }
+
+  const reset_token = crypto.randomUUID()
+  const reset_token_expires = Math.floor(Date.now() / 1000) + RESET_TOKEN_TTL
+  await c.env.DB.prepare('UPDATE users SET reset_token=?, reset_token_expires=? WHERE id=?')
+    .bind(reset_token, reset_token_expires, user.id).run()
+
+  if (c.env.RESEND_API_KEY) {
+    c.executionCtx.waitUntil(sendPasswordResetEmail(user.email, reset_token, c.env.RESEND_API_KEY))
+  }
+  return json({ ok: true })
+})
+
+app.get('/dashboard/account', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  return json({
+    connected: {
+      google: !!user.google_id,
+      github: !!user.github_id,
+      discord: !!user.discord_id,
+    },
+  })
+})
+
+// Hard-deletes the account (not a soft delete) so an old Bearer token can't
+// keep working against a row that's still technically there — requireAuth's
+// `SELECT * FROM users WHERE id=?` simply finds nothing and 401s. Child rows
+// are cleaned up first since D1/SQLite don't enforce FK constraints by
+// default and would otherwise leave orphaned data behind.
+app.delete('/dashboard/account', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  if (!await checkAccountRateLimit(c.env.DB, user.id, 'acct-delete', 5)) {
+    return json({ error: 'Too many requests. Try again in 15 minutes.' }, 429)
+  }
+
+  // D1 enforces the FK constraints declared in schema.sql/migrations (api_keys,
+  // email_prefs, device_codes, org_members, orgs.owner_id, appeals all
+  // REFERENCES users(id) with no ON DELETE CASCADE) — every referencing row
+  // has to be gone before the users row itself can go, hence the full
+  // child-tables-first cleanup rather than the softer "revoke, don't delete"
+  // api_keys handles elsewhere (DELETE /dashboard/keys/:id): a revoked-but-
+  // still-present row still blocks deleting its parent user.
+  const db = c.env.DB
+  const ownedOrgIds = (await db.prepare('SELECT id FROM orgs WHERE owner_id=?').bind(user.id).all()).results.map(r => r.id)
+
+  const stmts = []
+  for (const orgId of ownedOrgIds) {
+    stmts.push(db.prepare('DELETE FROM org_invites WHERE org_id=?').bind(orgId))
+    stmts.push(db.prepare('DELETE FROM org_members WHERE org_id=?').bind(orgId))
+  }
+  if (ownedOrgIds.length) {
+    stmts.push(db.prepare('DELETE FROM orgs WHERE owner_id=?').bind(user.id))
+  }
+  stmts.push(
+    db.prepare('DELETE FROM org_members WHERE user_id=?').bind(user.id),
+    db.prepare('DELETE FROM api_keys WHERE user_id=?').bind(user.id),
+    db.prepare('DELETE FROM chats WHERE user_id=?').bind(user.id),
+    db.prepare('DELETE FROM email_prefs WHERE user_id=?').bind(user.id),
+    db.prepare('DELETE FROM device_codes WHERE user_id=?').bind(user.id),
+    db.prepare('DELETE FROM appeals WHERE user_id=?').bind(user.id),
+    db.prepare('DELETE FROM users WHERE id=?').bind(user.id),
+  )
+  await db.batch(stmts)
+
+  const res = json({ ok: true })
+  res.headers.set('Set-Cookie', clearSessionCookieHeader())
+  return res
 })
 
 // ── Chat sync (web chat app) ────────────────────────────────────────────────
