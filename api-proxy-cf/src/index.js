@@ -883,6 +883,102 @@ app.delete('/dashboard/account', async (c) => {
   return res
 })
 
+// ── Billing (Square) ────────────────────────────────────────────────────────
+// The "Axion Pro" subscription plan variation in the Square catalog — see
+// the Monthly variation under plan LQIOMJA3CQPO2EPLORLAHASG. A Quarterly
+// variation also exists in Square (XW3UTLEQKQ6VDNORQO6XTZIS) but Square's
+// API won't let it be deleted once created; it's simply never referenced
+// here, so it's permanently unreachable from checkout.
+const SQUARE_PLAN_VARIATION_ID = 'YEXEI6A4P4NTO73GCAJANOGJ'
+const SQUARE_ITEM_VARIATION_ID = '5NSUWXYLVOOXSZXZB7SY6XPQ' // "Regular" $7/mo, backs the plan above
+const SQUARE_API = 'https://connect.squareup.com/v2'
+const SQUARE_WEBHOOK_URL = 'https://api.amplifiedsmp.org/webhooks/square'
+
+function squareApi(env, path, opts = {}) {
+  return fetch(`${SQUARE_API}${path}`, {
+    ...opts,
+    headers: {
+      'Authorization': `Bearer ${env.SQUARE_ACCESS_TOKEN}`,
+      'Square-Version': '2024-01-18',
+      'Content-Type': 'application/json',
+      ...(opts.headers || {}),
+    },
+  })
+}
+
+// Square signs webhook bodies as base64(HMAC-SHA256(notification_url + raw_body, signature_key)).
+async function verifySquareSignature(rawBody, signatureHeader, signatureKey) {
+  if (!signatureHeader || !signatureKey) return false
+  const key = await crypto.subtle.importKey('raw', new TextEncoder().encode(signatureKey), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign'])
+  const sig = await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(SQUARE_WEBHOOK_URL + rawBody))
+  const expected = btoa(String.fromCharCode(...new Uint8Array(sig)))
+  // Constant-time compare — this is a signature check, not a plain equality.
+  if (expected.length !== signatureHeader.length) return false
+  let diff = 0
+  for (let i = 0; i < expected.length; i++) diff |= expected.charCodeAt(i) ^ signatureHeader.charCodeAt(i)
+  return diff === 0
+}
+
+// Mints a Square-hosted checkout page for the Axion Pro subscription. Square
+// collects the card, creates the Customer + Card + Subscription itself once
+// payment succeeds — nothing here touches card data. The buyer is matched
+// back to their Axion account by email in the webhook handler below, same
+// pattern already used for OAuth account matching (oauthFinish).
+app.post('/billing/checkout', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  if (user.plan === 'pro') return json({ error: 'Already on Pro' }, 400)
+
+  const res = await squareApi(c.env, '/online-checkout/payment-links', {
+    method: 'POST',
+    body: JSON.stringify({
+      idempotency_key: crypto.randomUUID(),
+      checkout_options: {
+        subscription_plan_id: SQUARE_PLAN_VARIATION_ID,
+        redirect_url: 'https://axion.amplifiedsmp.org/settings.html',
+      },
+      order: {
+        location_id: c.env.SQUARE_LOCATION_ID,
+        line_items: [{ quantity: '1', catalog_object_id: SQUARE_ITEM_VARIATION_ID }],
+      },
+      pre_populated_data: { buyer_email: user.email },
+    }),
+  })
+  const data = await res.json().catch(() => ({}))
+  if (!res.ok || !data.payment_link?.url) {
+    console.error('[billing/checkout] Square error:', JSON.stringify(data))
+    return json({ error: 'Could not start checkout right now.' }, 502)
+  }
+  return json({ url: data.payment_link.url })
+})
+
+app.post('/webhooks/square', async (c) => {
+  const rawBody = await c.req.text()
+  const signature = c.req.header('x-square-hmacsha256-signature')
+  if (!await verifySquareSignature(rawBody, signature, c.env.SQUARE_WEBHOOK_SIGNATURE_KEY)) {
+    return json({ error: 'Invalid signature' }, 401)
+  }
+
+  const event = JSON.parse(rawBody)
+  const subscription = event?.data?.object?.subscription
+  if (!subscription?.customer_id) return json({ ok: true }) // not a subscription event we care about
+
+  const custRes = await squareApi(c.env, `/customers/${subscription.customer_id}`)
+  const custData = await custRes.json().catch(() => ({}))
+  const email = custData.customer?.email_address
+  if (!email) return json({ ok: true })
+
+  const user = await c.env.DB.prepare('SELECT id FROM users WHERE email=?').bind(email.toLowerCase()).first()
+  if (!user) return json({ ok: true }) // no matching Axion account — nothing to do
+
+  const active = subscription.status === 'ACTIVE'
+  await c.env.DB.prepare(
+    'UPDATE users SET plan=?, plan_updated_at=strftime(\'%s\',\'now\'), square_customer_id=?, square_subscription_id=? WHERE id=?'
+  ).bind(active ? 'pro' : 'free', subscription.customer_id, subscription.id, user.id).run()
+
+  return json({ ok: true })
+})
+
 // ── Chat sync (web chat app) ────────────────────────────────────────────────
 
 app.get('/chats', async (c) => {
