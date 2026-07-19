@@ -759,7 +759,7 @@ app.get('/dashboard/keys', async (c) => {
   const user = await requireAuth(c)
   if (!user) return json({ error: 'Not authenticated' }, 401)
   const { results } = await c.env.DB.prepare(
-    'SELECT id, label, key_value, created_at, last_used, requests, tokens, month_requests FROM api_keys WHERE user_id=? AND revoked=0 ORDER BY created_at DESC'
+    'SELECT id, label, key_value, created_at, last_used, requests, tokens, month_requests, month_cost FROM api_keys WHERE user_id=? AND revoked=0 ORDER BY created_at DESC'
   ).bind(user.id).all()
   for (const k of results) {
     if (k.key_value && k.key_value.length > 14) {
@@ -1030,17 +1030,40 @@ app.delete('/chats/:id', async (c) => {
 
 // ── OpenAI-compatible proxy ────────────────────────────────────────────────
 
-const FREE_DAILY_LIMIT  = 50    // keyless requests per IP per day
-const KEY_MONTHLY_LIMIT = 1000  // keyed requests per month, free plan
-const KEY_WINDOW_LIMIT  = 40    // keyed requests per 2-hour window, free plan
-const PRO_MONTHLY_LIMIT = 10000 // 10x, pro plan
-const PRO_WINDOW_LIMIT  = 400   // 10x, pro plan
+const FREE_DAILY_LIMIT  = 50    // keyless requests per IP per day (unauthenticated anti-abuse gate, stays request-based)
 const FREE_KEY_CAP      = 3     // max non-revoked API keys, free plan (pro is uncapped)
+
+// Lumen pricing — also the unit the pay-as-you-go credits feature will use.
+const LUMEN_INPUT_PER_M_USD  = 0.15
+const LUMEN_OUTPUT_PER_M_USD = 0.50
+
+// Usage budgets, denominated in microdollars (1,000,000 = $1) rather than raw
+// request or token counts. Request counts are a bad proxy for cost (a 5-token
+// reply and an 8,000-token document dump both count as "1 request"), and raw
+// token counts ignore that input/output tokens are priced differently — cost
+// is the one unit that's actually meaningful for both the limiter and future
+// purchased credits.
+const FREE_MONTHLY_BUDGET = 500_000   // $0.50/mo
+const PRO_MONTHLY_BUDGET  = 5_000_000 // $5.00/mo, 10x
+const FREE_WINDOW_BUDGET  = 50_000    // $0.05 / 2hr
+const PRO_WINDOW_BUDGET   = 500_000   // $0.50 / 2hr, 10x
 
 function limitsForPlan(plan) {
   return plan === 'pro'
-    ? { monthly: PRO_MONTHLY_LIMIT, window: PRO_WINDOW_LIMIT }
-    : { monthly: KEY_MONTHLY_LIMIT, window: KEY_WINDOW_LIMIT }
+    ? { monthlyBudget: PRO_MONTHLY_BUDGET, windowBudget: PRO_WINDOW_BUDGET }
+    : { monthlyBudget: FREE_MONTHLY_BUDGET, windowBudget: FREE_WINDOW_BUDGET }
+}
+
+function requestCostMicrodollars(inputTokens, outputTokens) {
+  return Math.round(inputTokens * LUMEN_INPUT_PER_M_USD + outputTokens * LUMEN_OUTPUT_PER_M_USD)
+}
+
+// ~4 chars/token — the standard rough heuristic (same one the CLI uses
+// client-side in utils/tokenEstimate.js). Only used when the upstream
+// response doesn't report real usage, or for streaming where we're
+// accumulating text ourselves rather than getting a token count directly.
+function estimateTokensFromChars(text) {
+  return Math.ceil((text || '').length / 4)
 }
 const KEY_WINDOW_MS     = 2 * 60 * 60 * 1000
 
@@ -1076,6 +1099,48 @@ function streamResponse(upstream) {
   return new Response(readable, {
     headers: { 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-cache', 'Access-Control-Allow-Origin': '*' },
   })
+}
+
+// Same as streamResponse, but tees the body so the client gets the untouched
+// stream immediately while a second copy is read in the background to
+// accumulate the assistant's output text for cost tracking — SSE parsing
+// never blocks or delays what's forwarded to the client. Returns the client
+// Response plus a promise for the accumulated text; the caller is
+// responsible for registering that promise with waitUntil.
+function streamResponseTracked(upstream) {
+  const [clientBody, trackBody] = upstream.body.tee()
+  const client = new Response(clientBody, {
+    headers: { 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-cache', 'Access-Control-Allow-Origin': '*' },
+  })
+  const outTextPromise = (async () => {
+    let outText = ''
+    try {
+      const reader = trackBody.getReader()
+      const decoder = new TextDecoder()
+      let buf = ''
+      while (true) {
+        const { done, value } = await reader.read()
+        if (done) break
+        buf += decoder.decode(value, { stream: true })
+        const lines = buf.split('\n')
+        buf = lines.pop()
+        for (const line of lines) {
+          const trimmed = line.trim()
+          if (!trimmed.startsWith('data:')) continue
+          const payload = trimmed.slice(5).trim()
+          if (payload === '[DONE]') continue
+          try {
+            const delta = JSON.parse(payload).choices?.[0]?.delta?.content
+            if (typeof delta === 'string') outText += delta
+          } catch {}
+        }
+      }
+    } catch (e) {
+      console.error('[streamResponseTracked] tee read failed:', e.message)
+    }
+    return outText
+  })()
+  return { client, outTextPromise }
 }
 
 // ── Safety triggers ──────────────────────────────────────────────────────────
@@ -1163,7 +1228,7 @@ app.post('/v1/chat/completions', async (c) => {
     // Check if the key owner is banned, and pull their plan for rate limits
     const keyUser = await c.env.DB.prepare('SELECT banned, plan FROM users WHERE id=?').bind(keyRow.user_id).first()
     if (keyUser?.banned) return json({ error: { message: 'Your account has been suspended.', type: 'permission_error' } }, 403)
-    const { monthly: planMonthlyLimit, window: planWindowLimit } = limitsForPlan(keyUser?.plan)
+    const { monthlyBudget: planMonthlyBudget, windowBudget: planWindowBudget } = limitsForPlan(keyUser?.plan)
 
     // Scope check — if key has scopes, requested model must be in the list
     if (keyRow.scopes) {
@@ -1174,25 +1239,31 @@ app.post('/v1/chat/completions', async (c) => {
       }
     }
 
-    // Monthly limit — reset counter when month rolls over
+    // Monthly budget — reset counters when month rolls over. request/
+    // month_requests still increment for display purposes (dashboard stat
+    // cards); month_cost is what's actually gated on.
     const month = currentMonth()
     if (keyRow.month_start !== month) {
-      await c.env.DB.prepare('UPDATE api_keys SET month_requests=0, month_start=? WHERE id=?').bind(month, keyRow.id).run()
+      await c.env.DB.prepare('UPDATE api_keys SET month_requests=0, month_cost=0, month_start=? WHERE id=?').bind(month, keyRow.id).run()
       keyRow.month_requests = 0
+      keyRow.month_cost = 0
     }
-    if (keyRow.month_requests >= planMonthlyLimit) {
+    if (keyRow.month_cost >= planMonthlyBudget) {
       const reset_at = nextMonthISO()
-      return json({ error: { message: `Monthly limit of ${planMonthlyLimit} requests reached.`, type: 'rate_limit_error', reset_at, limit: planMonthlyLimit, used: keyRow.month_requests } }, 429)
+      const budgetUsd = (planMonthlyBudget / 1_000_000).toFixed(2)
+      return json({ error: { message: `Monthly usage budget of $${budgetUsd} reached.`, type: 'rate_limit_error', reset_at, limit_usd: Number(budgetUsd), used_usd: Number((keyRow.month_cost / 1_000_000).toFixed(4)) } }, 429)
     }
 
-    // 2-hour window limit
+    // 2-hour window budget — `count` in rate_limits holds accumulated
+    // microdollars for this key's window, not a request count.
     const winKey = `win:${keyRow.id}`
     const winStart = currentWindowISO()
     const winRow = await c.env.DB.prepare('SELECT count, window_start FROM rate_limits WHERE key=?').bind(winKey).first()
     const winCount = (winRow && winRow.window_start === winStart) ? winRow.count : 0
-    if (winCount >= planWindowLimit) {
+    if (winCount >= planWindowBudget) {
       const reset_at = nextWindowISO()
-      return json({ error: { message: `Rate limit reached (${planWindowLimit} requests per 2 hours).`, type: 'rate_limit_error', reset_at, limit: planWindowLimit, used: winCount, window: true } }, 429)
+      const budgetUsd = (planWindowBudget / 1_000_000).toFixed(2)
+      return json({ error: { message: `Rate limit reached ($${budgetUsd} per 2 hours).`, type: 'rate_limit_error', reset_at, limit_usd: Number(budgetUsd), used_usd: Number((winCount / 1_000_000).toFixed(4)), window: true } }, 429)
     }
 
     const trigger = applySafetyTriggers(body)
@@ -1225,47 +1296,71 @@ app.post('/v1/chat/completions', async (c) => {
     if (!upstream.ok) return json({ error: { message: await upstream.text(), type: 'upstream_error' } }, upstream.status)
 
     const today = new Date().toISOString().slice(0, 10)
-    const track = () => Promise.all([
-      c.env.DB.prepare(
-        "UPDATE api_keys SET last_used=strftime('%s','now'), requests=requests+1, month_requests=month_requests+1 WHERE id=?"
-      ).bind(keyRow.id).run(),
-      c.env.DB.prepare(
-        'INSERT INTO usage_daily (key_id, date, count) VALUES (?,?,1) ON CONFLICT (key_id, date) DO UPDATE SET count=count+1'
-      ).bind(keyRow.id, today).run(),
-      winRow && winRow.window_start === winStart
-        ? c.env.DB.prepare('UPDATE rate_limits SET count=count+1 WHERE key=?').bind(winKey).run()
-        : c.env.DB.prepare('INSERT OR REPLACE INTO rate_limits (key, count, window_start) VALUES (?,1,?)').bind(winKey, winStart).run(),
-    ])
+    const reqText = (body.messages || []).map(m => typeof m.content === 'string' ? m.content : JSON.stringify(m.content || '')).join(' ')
 
-    // 80% usage warning — fire once per month when threshold is crossed
-    const newMonthCount = keyRow.month_requests + 1
-    const notifyThreshold = Math.floor(planMonthlyLimit * 0.8)
-    if (newMonthCount === notifyThreshold && keyRow.limit_notified !== month && c.env.RESEND_API_KEY) {
-      c.executionCtx.waitUntil((async () => {
+    // Records actual usage after a completion finishes: updates the request/
+    // token/cost counters, and fires the 80%-of-budget email the first time
+    // a request's cost crosses the threshold (can't be an exact-match check
+    // like the old request-count version — cost jumps by a variable amount
+    // per request, so it can skip right over an exact target).
+    async function recordUsage(inputTokens, outputTokens) {
+      const cost = requestCostMicrodollars(inputTokens, outputTokens)
+      const totalTokens = inputTokens + outputTokens
+      await Promise.all([
+        c.env.DB.prepare(
+          "UPDATE api_keys SET last_used=strftime('%s','now'), requests=requests+1, month_requests=month_requests+1, tokens=tokens+?, month_cost=month_cost+? WHERE id=?"
+        ).bind(totalTokens, cost, keyRow.id).run(),
+        c.env.DB.prepare(
+          'INSERT INTO usage_daily (key_id, date, count) VALUES (?,?,1) ON CONFLICT (key_id, date) DO UPDATE SET count=count+1'
+        ).bind(keyRow.id, today).run(),
+        winRow && winRow.window_start === winStart
+          ? c.env.DB.prepare('UPDATE rate_limits SET count=count+? WHERE key=?').bind(cost, winKey).run()
+          : c.env.DB.prepare('INSERT OR REPLACE INTO rate_limits (key, count, window_start) VALUES (?,?,?)').bind(winKey, cost, winStart).run(),
+      ])
+
+      const newMonthCost = keyRow.month_cost + cost
+      const notifyThreshold = Math.floor(planMonthlyBudget * 0.8)
+      if (keyRow.month_cost < notifyThreshold && newMonthCost >= notifyThreshold && keyRow.limit_notified !== month && c.env.RESEND_API_KEY) {
         const [limitUser, prefs] = await Promise.all([
           c.env.DB.prepare('SELECT email FROM users WHERE id=?').bind(keyRow.user_id).first(),
           c.env.DB.prepare('SELECT notify_limit FROM email_prefs WHERE user_id=?').bind(keyRow.user_id).first(),
         ])
         if (limitUser && prefs?.notify_limit !== 0) {
+          const usedUsd = (newMonthCost / 1_000_000).toFixed(2)
+          const budgetUsd = (planMonthlyBudget / 1_000_000).toFixed(2)
           await sendEmail(c.env.RESEND_API_KEY, {
             to: limitUser.email,
-            subject: `You've used ${notifyThreshold} of your ${planMonthlyLimit} monthly Axion requests`,
+            subject: `You've used 80% of your $${budgetUsd} monthly Axion usage`,
             html: emailWrap(`
               <h2 style="margin:0 0 8px;color:#e8e8f0">Usage alert</h2>
-              <p style="color:#888;margin:0 0 16px">Your API key <strong style="color:#e8e8f0">${keyRow.label}</strong> has used <strong style="color:#e8602c">${notifyThreshold} / ${planMonthlyLimit}</strong> requests this month (80%).</p>
-              <p style="color:#888;margin:0 0 24px">Your limit resets on the 1st of next month. If you need more, reply to this email.</p>
+              <p style="color:#888;margin:0 0 16px">Your API key <strong style="color:#e8e8f0">${keyRow.label}</strong> has used <strong style="color:#e8602c">$${usedUsd} / $${budgetUsd}</strong> this month (80%).</p>
+              <p style="color:#888;margin:0 0 24px">Your usage resets on the 1st of next month. If you need more, reply to this email.</p>
               <a href="https://axion.amplifiedsmp.org/keys" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">View usage →</a>
               <p style="color:#555;font-size:12px;margin-top:24px">To turn off these alerts, visit your <a href="https://axion.amplifiedsmp.org/keys" style="color:#e8602c">account settings</a>.</p>
             `),
           })
           await c.env.DB.prepare('UPDATE api_keys SET limit_notified=? WHERE id=?').bind(month, keyRow.id).run()
         }
-      })())
+      }
     }
 
-    if (body.stream) { c.executionCtx.waitUntil(track()); return streamResponse(upstream) }
+    if (body.stream) {
+      const inputTokens = estimateTokensFromChars(reqText)
+      const { client, outTextPromise } = streamResponseTracked(upstream)
+      c.executionCtx.waitUntil(outTextPromise.then(outText => recordUsage(inputTokens, estimateTokensFromChars(outText))))
+      return client
+    }
+
     const data = await upstream.json()
-    c.executionCtx.waitUntil(track())
+    let inputTokens, outputTokens
+    if (data.usage && typeof data.usage.prompt_tokens === 'number') {
+      inputTokens = data.usage.prompt_tokens
+      outputTokens = data.usage.completion_tokens ?? 0
+    } else {
+      inputTokens = estimateTokensFromChars(reqText)
+      outputTokens = estimateTokensFromChars(data.choices?.[0]?.message?.content || '')
+    }
+    c.executionCtx.waitUntil(recordUsage(inputTokens, outputTokens))
     return json(data)
   }
 
