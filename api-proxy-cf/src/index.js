@@ -1562,13 +1562,105 @@ app.get('/admin/users', async (c) => {
   if (!user) return json({ error: 'Forbidden' }, 403)
 
   const { results } = await c.env.DB.prepare(
-    `SELECT u.id, u.email, u.verified, u.created_at,
+    `SELECT u.id, u.email, u.verified, u.created_at, u.plan,
+     u.credit_balance, u.included_month_cost, u.usage_month,
+     u.included_window_cost, u.usage_window,
      COUNT(k.id) as key_count, COALESCE(SUM(k.requests),0) as total_requests
      FROM users u LEFT JOIN api_keys k ON k.user_id=u.id AND k.revoked=0
      GROUP BY u.id ORDER BY u.created_at DESC LIMIT 100`
   ).all()
 
-  return json({ users: results })
+  const month = currentMonth()
+  const windowStart = currentWindowISO()
+  const users = results.map((row) => {
+    const { monthlyBudget, windowBudget } = limitsForPlan(row.plan)
+    const monthlyUsed = row.usage_month === month ? row.included_month_cost : 0
+    const windowUsed = row.usage_window === windowStart ? row.included_window_cost : 0
+    return {
+      ...row,
+      plan: row.plan === 'pro' ? 'pro' : 'free',
+      credit_balance: Math.max(0, row.credit_balance || 0),
+      included_month_cost: monthlyUsed,
+      included_window_cost: windowUsed,
+      monthly_limit: monthlyBudget,
+      window_limit: windowBudget,
+      credit_balance_usd: microdollarsToUsd(Math.max(0, row.credit_balance || 0)),
+      monthly_used_usd: microdollarsToUsd(monthlyUsed),
+      window_used_usd: microdollarsToUsd(windowUsed),
+      monthly_limit_usd: microdollarsToUsd(monthlyBudget),
+      window_limit_usd: microdollarsToUsd(windowBudget),
+    }
+  })
+
+  return json({ users })
+})
+
+const MAX_ADMIN_ACCOUNT_VALUE = 10_000_000_000 // $10,000
+
+function validAdminAccountValue(value) {
+  return Number.isSafeInteger(value) && value >= 0 && value <= MAX_ADMIN_ACCOUNT_VALUE
+}
+
+app.put('/admin/users/:id/account-testing', async (c) => {
+  const admin = await requireAdmin(c)
+  if (!admin) return json({ error: 'Forbidden' }, 403)
+
+  const targetId = c.req.param('id')
+  const body = await c.req.json().catch(() => ({}))
+  const { plan, included_month_cost, included_window_cost, credit_balance } = body
+  if (!['free', 'pro'].includes(plan)) return json({ error: 'Plan must be free or pro' }, 400)
+  if (![included_month_cost, included_window_cost, credit_balance].every(validAdminAccountValue)) {
+    return json({ error: 'Usage and credit values must be whole microdollar amounts from $0 to $10,000' }, 400)
+  }
+
+  const previous = await c.env.DB.prepare(
+    `SELECT id, email, plan, credit_balance, included_month_cost, included_window_cost
+     FROM users WHERE id=?`
+  ).bind(targetId).first()
+  if (!previous) return json({ error: 'User not found' }, 404)
+
+  const month = currentMonth()
+  const windowStart = currentWindowISO()
+  const editId = crypto.randomUUID()
+  const changedAt = Math.floor(Date.now() / 1000)
+  await c.env.DB.batch([
+    c.env.DB.prepare(
+      `UPDATE users SET plan=?, plan_updated_at=?, credit_balance=?,
+       included_month_cost=?, usage_month=?, included_window_cost=?, usage_window=?,
+       usage_limit_notified=NULL WHERE id=?`
+    ).bind(plan, changedAt, credit_balance, included_month_cost, month,
+      included_window_cost, windowStart, targetId),
+    c.env.DB.prepare(
+      `INSERT INTO admin_account_edits
+       (id, user_id, admin_email, previous_plan, new_plan,
+        previous_month_cost, new_month_cost, previous_window_cost, new_window_cost,
+        previous_credit_balance, new_credit_balance, created_at)
+       VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`
+    ).bind(editId, targetId, admin.email, previous.plan || 'free', plan,
+      previous.included_month_cost || 0, included_month_cost,
+      previous.included_window_cost || 0, included_window_cost,
+      previous.credit_balance || 0, credit_balance, changedAt),
+  ])
+
+  const { monthlyBudget, windowBudget } = limitsForPlan(plan)
+  return json({
+    ok: true,
+    user: {
+      id: targetId,
+      email: previous.email,
+      plan,
+      credit_balance,
+      included_month_cost,
+      included_window_cost,
+      monthly_limit: monthlyBudget,
+      window_limit: windowBudget,
+      blocked_without_credits: !canStartUsage({
+        credit_balance,
+        included_month_cost,
+        included_window_cost,
+      }, monthlyBudget, windowBudget),
+    },
+  })
 })
 
 app.get('/admin/allowlist', async (c) => {

@@ -41,6 +41,7 @@ class D1TestDatabase {
         banned INTEGER NOT NULL DEFAULT 0,
         token_version INTEGER NOT NULL DEFAULT 0,
         plan TEXT NOT NULL DEFAULT 'free',
+        plan_updated_at INTEGER,
         google_id TEXT,
         github_id TEXT,
         discord_id TEXT,
@@ -49,7 +50,8 @@ class D1TestDatabase {
         usage_month TEXT NOT NULL DEFAULT '',
         included_window_cost INTEGER NOT NULL DEFAULT 0,
         usage_window TEXT NOT NULL DEFAULT '',
-        usage_limit_notified TEXT DEFAULT NULL
+        usage_limit_notified TEXT DEFAULT NULL,
+        created_at INTEGER NOT NULL DEFAULT (strftime('%s','now'))
       );
       CREATE TABLE credit_codes (
         id TEXT PRIMARY KEY,
@@ -87,6 +89,26 @@ class D1TestDatabase {
         email TEXT PRIMARY KEY,
         added_by TEXT NOT NULL DEFAULT '',
         added_at INTEGER NOT NULL DEFAULT (strftime('%s','now'))
+      );
+      CREATE TABLE api_keys (
+        id TEXT PRIMARY KEY,
+        user_id TEXT NOT NULL REFERENCES users(id),
+        requests INTEGER NOT NULL DEFAULT 0,
+        revoked INTEGER NOT NULL DEFAULT 0
+      );
+      CREATE TABLE admin_account_edits (
+        id TEXT PRIMARY KEY,
+        user_id TEXT NOT NULL REFERENCES users(id),
+        admin_email TEXT NOT NULL,
+        previous_plan TEXT NOT NULL,
+        new_plan TEXT NOT NULL,
+        previous_month_cost INTEGER NOT NULL,
+        new_month_cost INTEGER NOT NULL,
+        previous_window_cost INTEGER NOT NULL,
+        new_window_cost INTEGER NOT NULL,
+        previous_credit_balance INTEGER NOT NULL,
+        new_credit_balance INTEGER NOT NULL,
+        created_at INTEGER NOT NULL
       );
     `)
   }
@@ -299,4 +321,68 @@ test('authenticated admin creation and user redemption routes work end to end', 
     headers: { Authorization: `Bearer ${adminToken}` },
   }, env)
   assert.equal(disableResponse.status, 200)
+})
+
+test('admin account testing overrides enforce plan limits without rewriting request history', async () => {
+  const db = new D1TestDatabase()
+  const secret = 'account-testing-secret'
+  addUser(db, 'admin')
+  addUser(db, 'member')
+  db.prepare('INSERT INTO admin_allowlist (email, added_by) VALUES (?,?)')
+    .bind('admin@example.com', 'test')
+    .run()
+  db.prepare('INSERT INTO api_keys (id, user_id, requests) VALUES (?,?,?)')
+    .bind('key-1', 'member', 1234)
+    .run()
+  const adminToken = await sessionToken('admin', secret)
+  const memberToken = await sessionToken('member', secret)
+  const env = { DB: db, TOKEN_SECRET: secret }
+  const headers = { Authorization: `Bearer ${adminToken}`, 'Content-Type': 'application/json' }
+
+  const denied = await app.request('/admin/users/member/account-testing', {
+    method: 'PUT',
+    headers: { Authorization: `Bearer ${memberToken}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ plan: 'pro', included_month_cost: 0, included_window_cost: 0, credit_balance: 0 }),
+  }, env)
+  assert.equal(denied.status, 403)
+
+  const invalid = await app.request('/admin/users/member/account-testing', {
+    method: 'PUT', headers,
+    body: JSON.stringify({ plan: 'paid', included_month_cost: -1, included_window_cost: 0, credit_balance: 0 }),
+  }, env)
+  assert.equal(invalid.status, 400)
+
+  const atLimit = await app.request('/admin/users/member/account-testing', {
+    method: 'PUT', headers,
+    body: JSON.stringify({
+      plan: 'pro',
+      included_month_cost: 5_000_000,
+      included_window_cost: 500_000,
+      credit_balance: 0,
+    }),
+  }, env)
+  assert.equal(atLimit.status, 200)
+  const atLimitBody = await atLimit.json()
+  assert.equal(atLimitBody.user.plan, 'pro')
+  assert.equal(atLimitBody.user.blocked_without_credits, true)
+  assert.equal(db.prepare('SELECT requests FROM api_keys WHERE id=?').bind('key-1').first().requests, 1234)
+  assert.equal(db.prepare('SELECT COUNT(*) AS count FROM admin_account_edits').first().count, 1)
+
+  const listResponse = await app.request('/admin/users', {
+    headers: { Authorization: `Bearer ${adminToken}` },
+  }, env)
+  assert.equal(listResponse.status, 200)
+  const listed = (await listResponse.json()).users.find(user => user.id === 'member')
+  assert.equal(listed.plan, 'pro')
+  assert.equal(listed.monthly_used_usd, 5)
+  assert.equal(listed.window_used_usd, 0.5)
+  assert.equal(listed.total_requests, 1234)
+
+  const reset = await app.request('/admin/users/member/account-testing', {
+    method: 'PUT', headers,
+    body: JSON.stringify({ plan: 'free', included_month_cost: 0, included_window_cost: 0, credit_balance: 0 }),
+  }, env)
+  assert.equal(reset.status, 200)
+  assert.equal((await reset.json()).user.blocked_without_credits, false)
+  assert.equal(db.prepare('SELECT COUNT(*) AS count FROM admin_account_edits').first().count, 2)
 })
