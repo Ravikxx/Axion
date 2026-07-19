@@ -93,6 +93,7 @@ class D1TestDatabase {
       CREATE TABLE api_keys (
         id TEXT PRIMARY KEY,
         user_id TEXT NOT NULL REFERENCES users(id),
+        org_id TEXT REFERENCES orgs(id),
         requests INTEGER NOT NULL DEFAULT 0,
         revoked INTEGER NOT NULL DEFAULT 0
       );
@@ -110,6 +111,16 @@ class D1TestDatabase {
         new_credit_balance INTEGER NOT NULL,
         created_at INTEGER NOT NULL
       );
+      CREATE TABLE orgs (id TEXT PRIMARY KEY, owner_id TEXT NOT NULL REFERENCES users(id));
+      CREATE TABLE org_invites (id TEXT PRIMARY KEY, org_id TEXT NOT NULL REFERENCES orgs(id));
+      CREATE TABLE org_members (
+        org_id TEXT NOT NULL REFERENCES orgs(id),
+        user_id TEXT NOT NULL REFERENCES users(id)
+      );
+      CREATE TABLE chats (id TEXT PRIMARY KEY, user_id TEXT NOT NULL REFERENCES users(id));
+      CREATE TABLE email_prefs (user_id TEXT PRIMARY KEY REFERENCES users(id));
+      CREATE TABLE device_codes (code TEXT PRIMARY KEY, user_id TEXT REFERENCES users(id));
+      CREATE TABLE appeals (id TEXT PRIMARY KEY, user_id TEXT NOT NULL REFERENCES users(id));
     `)
   }
 
@@ -422,4 +433,41 @@ test('admin account testing overrides enforce plan limits without rewriting requ
   assert.equal(reset.status, 200)
   assert.equal((await reset.json()).user.blocked_without_credits, false)
   assert.equal(db.prepare('SELECT COUNT(*) AS count FROM admin_account_edits').first().count, 2)
+})
+
+test('account deletion removes audits, rate limits, and every key in an owned organization', async () => {
+  const db = new D1TestDatabase()
+  const secret = 'delete-account-secret'
+  addUser(db, 'member')
+  addUser(db, 'teammate')
+  db.prepare('INSERT INTO orgs (id, owner_id) VALUES (?,?)').bind('owned-org', 'member').run()
+  db.prepare('INSERT INTO org_members (org_id, user_id) VALUES (?,?)').bind('owned-org', 'member').run()
+  db.prepare('INSERT INTO org_members (org_id, user_id) VALUES (?,?)').bind('owned-org', 'teammate').run()
+  db.prepare('INSERT INTO api_keys (id, user_id, org_id) VALUES (?,?,?)').bind('teammate-key', 'teammate', 'owned-org').run()
+  db.prepare(
+    `INSERT INTO admin_account_edits
+     (id, user_id, admin_email, previous_plan, new_plan,
+      previous_month_cost, new_month_cost, previous_window_cost, new_window_cost,
+      previous_credit_balance, new_credit_balance, created_at)
+     VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`
+  ).bind('edit-1', 'member', 'admin@example.com', 'free', 'pro', 0, 1, 0, 1, 0, 0, 1).run()
+  db.prepare('INSERT INTO rate_limits (key, count, window_start) VALUES (?,?,?)')
+    .bind('credit-redeem:member', 2, 1).run()
+  db.prepare('INSERT INTO rate_limits (key, count, window_start) VALUES (?,?,?)')
+    .bind('free:unrelated-ip', 3, 1).run()
+
+  const token = await sessionToken('member', secret)
+  const response = await app.request('/dashboard/account', {
+    method: 'DELETE',
+    headers: { Authorization: `Bearer ${token}` },
+  }, { DB: db, TOKEN_SECRET: secret })
+
+  assert.equal(response.status, 200)
+  assert.equal(db.prepare('SELECT COUNT(*) AS count FROM users WHERE id=?').bind('member').first().count, 0)
+  assert.equal(db.prepare('SELECT COUNT(*) AS count FROM users WHERE id=?').bind('teammate').first().count, 1)
+  assert.equal(db.prepare('SELECT COUNT(*) AS count FROM orgs WHERE id=?').bind('owned-org').first().count, 0)
+  assert.equal(db.prepare('SELECT COUNT(*) AS count FROM api_keys WHERE id=?').bind('teammate-key').first().count, 0)
+  assert.equal(db.prepare('SELECT COUNT(*) AS count FROM admin_account_edits WHERE user_id=?').bind('member').first().count, 0)
+  assert.equal(db.prepare("SELECT COUNT(*) AS count FROM rate_limits WHERE key LIKE '%:member'").first().count, 0)
+  assert.equal(db.prepare("SELECT COUNT(*) AS count FROM rate_limits WHERE key='free:unrelated-ip'").first().count, 1)
 })

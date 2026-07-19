@@ -298,7 +298,7 @@
   <section>
     <p class="section-tag">Usage</p>
     <h2>Three ways to use Lumen</h2>
-    <p class="lead">Browser chat, CLI, or direct API — all free, all pointing at the same model.</p>
+    <p class="lead">Browser chat, CLI, or the Axion API — all pointing at the same model. Keyless API access is limited; accounts use included allowances and optional credits.</p>
 
     <div class="use-tabs">
       <a class="use-card" href="/lumen">
@@ -311,10 +311,10 @@
         <div class="use-title">Axion CLI</div>
         <div class="use-desc">Use Lumen inside the terminal agent with <code style="font-family:monospace;font-size:11px">/model lumen</code>.</div>
       </a>
-      <a class="use-card" href="https://huggingface.co/spaces/AxionLabsAI/Lumen">
+      <a class="use-card" href="/docs#axion-api">
         <div class="use-icon">🔌</div>
         <div class="use-title">API</div>
-        <div class="use-desc">OpenAI-compatible endpoint. Point any client at the HF Space URL.</div>
+        <div class="use-desc">Use the OpenAI-compatible Axion endpoint, with or without an Axion API key.</div>
       </a>
     </div>
 
@@ -323,7 +323,7 @@
       <span class="prompt">$ </span>axion --model lumen<br>
       <br>
       <span class="comment"># API — OpenAI-compatible</span><br>
-      <span class="prompt">$ </span>curl https://axionlabsai-lumen.hf.space/v1/chat/completions \<br>
+      <span class="prompt">$ </span>curl https://api.amplifiedsmp.org/v1/chat/completions \<br>
       &nbsp;&nbsp;-H "Content-Type: application/json" \<br>
       &nbsp;&nbsp;-d '{"model":"lumen","messages":[{"role":"user","content":"Hello"}]}'
     </div>

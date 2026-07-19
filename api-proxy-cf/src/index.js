@@ -887,6 +887,7 @@ app.delete('/dashboard/account', async (c) => {
 
   const stmts = []
   for (const orgId of ownedOrgIds) {
+    stmts.push(db.prepare('DELETE FROM api_keys WHERE org_id=?').bind(orgId))
     stmts.push(db.prepare('DELETE FROM org_invites WHERE org_id=?').bind(orgId))
     stmts.push(db.prepare('DELETE FROM org_members WHERE org_id=?').bind(orgId))
   }
@@ -896,11 +897,13 @@ app.delete('/dashboard/account', async (c) => {
   stmts.push(
     db.prepare('DELETE FROM org_members WHERE user_id=?').bind(user.id),
     db.prepare('DELETE FROM credit_redemptions WHERE user_id=?').bind(user.id),
+    db.prepare('DELETE FROM admin_account_edits WHERE user_id=?').bind(user.id),
     db.prepare('DELETE FROM api_keys WHERE user_id=?').bind(user.id),
     db.prepare('DELETE FROM chats WHERE user_id=?').bind(user.id),
     db.prepare('DELETE FROM email_prefs WHERE user_id=?').bind(user.id),
     db.prepare('DELETE FROM device_codes WHERE user_id=?').bind(user.id),
     db.prepare('DELETE FROM appeals WHERE user_id=?').bind(user.id),
+    db.prepare('DELETE FROM rate_limits WHERE key LIKE ?').bind(`%:${user.id}`),
     db.prepare('DELETE FROM users WHERE id=?').bind(user.id),
   )
   await db.batch(stmts)
@@ -1842,7 +1845,7 @@ app.post('/admin/waitlist/:id/approve', async (c) => {
       subject: "You're in — your Axion invite is ready",
       html: emailWrap(`
         <h2 style="margin:0 0 8px;color:#e8e8f0">You're approved!</h2>
-        <p style="color:#888;margin:0 0 24px">Your Axion Labs early access is ready. Click below to activate your account and get your free API key (1,000 requests/month).</p>
+        <p style="color:#888;margin:0 0 24px">Your Axion Labs early access is ready. Click below to activate your account and get account-based included usage and redeemable API credits.</p>
         <a href="${link}" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">Activate account →</a>
         <p style="color:#555;font-size:12px;margin-top:24px">This link expires in 7 days.</p>
       `),

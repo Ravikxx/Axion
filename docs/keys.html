@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -601,8 +601,8 @@
           <tr>
             <th>Key</th>
             <th>Last Used</th>
-            <th>This Month</th>
-            <th>Limit</th>
+            <th>Requests this month</th>
+            <th>Allowance</th>
             <th></th>
           </tr>
         </thead>
@@ -614,7 +614,7 @@
     </div>
 
     <div class="usage-section" id="usage-section" style="display:none">
-      <h3>Usage this month</h3>
+      <h3>Account usage</h3>
       <div id="usage-bars"></div>
     </div>
 
@@ -766,6 +766,7 @@
   let currentUser = null;
   let sessionToken = localStorage.getItem('axion_token') || null;
   let keys = [];
+  let accountState = null;
   let revokeTarget = null;
 
   // ── Auth ──────────────────────────────────────────────────────────────────
@@ -952,7 +953,7 @@
   }
 
   function logout() {
-    currentUser = null; keys = []; sessionToken = null;
+    currentUser = null; keys = []; accountState = null; sessionToken = null;
     currentOrg = null; orgs = [];
     localStorage.removeItem('axion_token'); localStorage.removeItem('axion_email');
     document.getElementById('sidebar').style.display = 'none';
@@ -987,12 +988,13 @@
 
   async function loadKeys() {
     try {
-      const [keysRes, statsRes] = await Promise.all([
+      const [keysRes, accountRes] = await Promise.all([
         fetch(API + '/dashboard/keys', { headers: { Authorization: `Bearer ${sessionToken}` } }),
-        fetch(API + '/dashboard/stats', { headers: { Authorization: `Bearer ${sessionToken}` } }),
+        fetch(API + '/dashboard/account', { headers: { Authorization: `Bearer ${sessionToken}` } }),
       ]);
       if (!keysRes.ok) throw new Error('Session expired');
       const keysData = await keysRes.json();
+      accountState = accountRes.ok ? await accountRes.json() : null;
       keys = (keysData.keys || []).map(k => ({
         id: k.id,
         name: k.label,
@@ -1006,7 +1008,7 @@
       renderUsage();
     } catch (e) {
       if (e.message === 'Session expired') { logout(); return; }
-      keys = []; renderKeys(); renderUsage();
+      keys = []; accountState = null; renderKeys(); renderUsage();
     }
   }
 
@@ -1035,9 +1037,6 @@
       return;
     }
     tbody.innerHTML = keys.map((k, i) => {
-      const pct = Math.min((k.usageMonth / 1000) * 100, 100);
-      const barColor = pct > 90 ? 'var(--red)' : pct > 70 ? '#fbbf24' : 'var(--accent)';
-      const badgeClass = pct > 90 ? 'badge-over' : pct > 70 ? 'badge-warn' : 'badge-limit';
       return `
       <tr data-name="${escHtml(k.name.toLowerCase())}">
         <td>
@@ -1047,11 +1046,10 @@
         <td class="key-date">${relativeTime(k.lastUsed)}</td>
         <td>
           <div class="usage-pill">
-            <div class="usage-bar-mini"><div class="usage-bar-mini-fill" style="width:${pct}%;background:${barColor}"></div></div>
-            ${k.usageMonth.toLocaleString()} / 1,000 mo
+            ${k.usageMonth.toLocaleString()} request${k.usageMonth === 1 ? '' : 's'}
           </div>
         </td>
-        <td><span class="badge ${badgeClass}">${pct > 90 ? 'Near limit' : '1k/mo · 40/2h'}</span></td>
+        <td><span class="badge badge-limit">${currentOrg ? 'Team-wide' : 'Account-wide'}</span></td>
         <td>
           <div class="key-actions">
             <button class="btn-icon" onclick="copyPrefix(${i})" id="copy-btn-${i}">Copy</button>
@@ -1065,20 +1063,30 @@
 
   function renderUsage() {
     const usageSection = document.getElementById('usage-section');
-    if (keys.length === 0) { usageSection.style.display = 'none'; return; }
+    if (!accountState || currentOrg) { usageSection.style.display = 'none'; return; }
     usageSection.style.display = '';
-    document.getElementById('usage-bars').innerHTML = keys.map(k => {
-      const pct = Math.min((k.usageMonth / 1000) * 100, 100);
+    const monthlyUsed = Number(accountState.usage?.monthly_included_used_usd) || 0;
+    const monthlyLimit = Number(accountState.usage?.monthly_included_limit_usd) || 0;
+    const windowUsed = Number(accountState.usage?.window_included_used_usd) || 0;
+    const windowLimit = Number(accountState.usage?.window_included_limit_usd) || 0;
+    const creditBalance = Number(accountState.credits?.balance_usd) || 0;
+    const formatUsd = value => '$' + Number(value || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 3 });
+    const usageBar = (label, used, limit) => {
+      const pct = limit > 0 ? Math.min((used / limit) * 100, 100) : 0;
       const color = pct > 90 ? 'var(--red)' : pct > 70 ? '#fbbf24' : 'var(--accent)';
       return `
         <div class="usage-bar-item">
           <div class="usage-bar-label">
-            <span>${escHtml(k.name)}</span>
-            <span>${k.usageMonth.toLocaleString()} / 1,000 req/mo</span>
+            <span>${label}</span>
+            <span>${formatUsd(used)} / ${formatUsd(limit)}</span>
           </div>
           <div class="usage-bar-track"><div class="usage-bar-fill" style="width:${pct}%;background:${color}"></div></div>
         </div>`;
-    }).join('');
+    };
+    document.getElementById('usage-bars').innerHTML =
+      usageBar(`${accountState.plan === 'pro' ? 'Pro' : 'Free'} monthly allowance`, monthlyUsed, monthlyLimit) +
+      usageBar('Rolling two-hour allowance', windowUsed, windowLimit) +
+      `<div class="usage-bar-item"><div class="usage-bar-label"><span>Redeemable credits</span><span>${formatUsd(creditBalance)}</span></div></div>`;
   }
 
   // ── New key modal ─────────────────────────────────────────────────────────
