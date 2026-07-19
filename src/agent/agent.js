@@ -1852,9 +1852,10 @@ function friendlyError(err, modelAlias) {
   }
   if (status === 429 || /rate.?limit|quota/i.test(msg)) {
     const resetStr = errObj.reset_at ? ` Resets ${formatResetTime(errObj.reset_at)}.` : '';
-    if (errObj.free_tier) return `Lumen free tier limit reached (50 req/day).${resetStr} Get a key at axion.amplifiedsmp.org/keys for 1,000/month.`;
-    if (errObj.window)    return `Lumen rate limit reached (40 req/2h).${resetStr}`;
-    if (/monthly/i.test(msg)) return `Lumen monthly limit reached (1,000/month).${resetStr}`;
+    const limitStr = Number.isFinite(Number(errObj.limit_usd)) ? ` ($${Number(errObj.limit_usd).toFixed(2)} included usage)` : '';
+    if (errObj.free_tier) return `Lumen keyless limit reached (50 requests/day).${resetStr} Get a key at axion.amplifiedsmp.org/keys for account-based included usage and redeemable API credits.`;
+    if (errObj.window)    return `Lumen two-hour allowance reached${limitStr} and no API credits remain.${resetStr}`;
+    if (/monthly/i.test(msg)) return `Lumen monthly allowance reached${limitStr} and no API credits remain.${resetStr}`;
     return `Rate limited by "${modelAlias}".${resetStr || ' Wait a moment and try again.'}`;
   }
   if (status === 404 || /model.*not.*found|no.*model/i.test(msg)) {

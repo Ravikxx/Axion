@@ -1,101 +1,95 @@
 # Privacy Policy
 
-**Last updated: July 7, 2026**
+**Last updated: July 19, 2026**
 
 ## Overview
 
-Axion is an open-source AI coding agent that runs on your machine. Most of what
-Axion does happens locally, but some features send data to remote services — the
-AI providers you configure, the integrations you connect, and Axion Labs' own
-hosted backend (for Lumen and usage tracking). This policy explains exactly what
-stays local and what leaves your device.
+Axion is an open-source AI coding agent with local software and hosted services. Most CLI work happens on your machine, while model inference, accounts, web chat, usage tracking, billing, email, vision, and connected integrations may send data to remote services. This policy explains what stays local, what Axion Labs stores, and which providers process data.
 
-**Axion Labs does not operate its own data-collecting servers.** We run two hosted
-pieces of infrastructure: Lumen model inference on [Hugging Face](https://huggingface.co/privacy),
-and an API/auth/usage-tracking backend on [Cloudflare Workers](https://www.cloudflare.com/privacypolicy/).
-Neither logs your prompts as a product feature. Everything else routes either to
-providers you choose or nowhere at all.
+Axion Labs operates a hosted API, authentication, usage, billing, email-preference, and chat backend on Cloudflare. Lumen and the default vision model run on Hugging Face infrastructure. Axion does not use your conversations for model training unless you explicitly opt in with `/contribute`.
 
 ## Local-only features
 
-These never leave your device.
+These stay on your device unless their output is included in a prompt or sent through a hosted feature.
 
-- **Reading, editing, and running code** — the core agent loop operates on your local filesystem. File contents are only sent onward as part of a prompt to the AI model you've selected (see Hosted features).
-- **Integration tokens** — stored locally in `~/.axion/oauth.json` and sent only to the respective service's own API, never to Axion Labs. What each connection can reach, and only when you ask:
-  - **GitHub** (`/oauth connect github`) — your repositories, issues, and pull requests (scope `repo read:org read:user`).
-  - **Google** (`/oauth connect google`) — Google Drive (list, read, search files) and Google Calendar (list, create, delete events). Axion does **not** request Gmail or email access.
-  - **Notion** (`/oauth connect notion`) — the pages and databases you share with the integration token you paste in.
-  - **Slack** (`/oauth connect slack`) — the channels and messages available to the bot token you paste in.
-  - These connections run as local MCP servers (GitHub, Notion, Slack) or direct API calls (Google). Anything they retrieve becomes part of your prompt context and is then sent to the AI model you selected (see Hosted features).
-- **Voice recording** — your microphone is captured to a temporary `.wav` file on your machine via ffmpeg. (Transcription of that audio is a hosted feature — see below.)
-- **Session memory** — cross-session memory, learned preferences, and notes are stored in `~/.axion/` on your device.
-- **API keys** — keys you supply for third-party providers are stored locally and sent only to that provider.
-- **Local models** — if you use Ollama, inference runs entirely on your machine.
-- **Chrome extension ↔ CLI bridge** — the browser extension talks to your local Axion CLI over `127.0.0.1` (localhost); that channel never touches the network.
+- **Reading, editing, and running code** — the core agent operates on your local filesystem. File contents leave your device only when included as context for the AI model you selected.
+- **Integration tokens** — stored in `~/.axion/oauth.json` and sent to the corresponding service API, not to Axion Labs. Connected data may become prompt context and then be sent to your selected model provider.
+  - **GitHub** — repositories, issues, and pull requests available to the granted scopes.
+  - **Google** — Google Drive and Google Calendar data available to the granted scopes. Axion does not request Gmail access.
+  - **Notion** — pages and databases shared with the integration.
+  - **Slack** — channels and messages available to the bot token.
+- **Voice recording** — recorded to a temporary `.wav` file locally before any hosted transcription.
+- **Session memory** — local CLI memory, preferences, and notes are stored under `~/.axion/`.
+- **Third-party provider keys** — keys you configure are stored locally and sent to the provider they belong to.
+- **Local models** — Ollama inference runs on your machine.
+- **Extension-to-CLI bridge** — the Chrome extension talks to the local CLI over `127.0.0.1`. That local bridge itself does not contact Axion Labs.
+
+## Axion Labs hosted account and service data
+
+Axion's Cloudflare-hosted backend stores and processes data needed to run accounts and hosted features, including:
+
+- account identifiers, email address, password hash or linked OAuth identifier, verification and reset state, registration IP address, suspension state, and appeal records;
+- Axion-issued API keys and their status, request counts, token counts, calculated usage cost, allowance windows, and rate-limit records;
+- plan and subscription status, credit balances, credit-code redemptions, and Square customer or subscription identifiers;
+- signed-in web chat history and chat metadata used to sync conversations across sessions;
+- email and announcement preferences, organization membership and invitations, and CLI device-login codes;
+- administrative test changes to plan, allowance usage, or credit balances, including who made the change and when.
+
+Axion does not store your full payment-card number. Square processes payment details. Announcement subscriptions can exist separately from an Axion account, so deleting an account does not by itself unsubscribe a separately registered announcement email.
 
 ## Hosted features
 
-These send data off your device. In every case the data goes either to a provider
-you chose or to Axion Labs' hosted backend — described precisely below.
-
 ### AI model inference
 
-Whatever you send to the agent — your prompt, and the file contents, command
-output, or page text it includes as context — is transmitted to the model
-provider you've selected with `/model`:
+Your prompt and any file contents, command output, page text, or other context included with it are transmitted to the selected model provider.
 
-- **Third-party providers** (Anthropic, OpenAI, Google Gemini, Groq, Mistral, OpenRouter, and OpenCode) receive your requests directly, authenticated with the API key you supplied. Refer to each provider's own privacy policy for how they handle it.
-- **Lumen** (`/model lumen`) routes through Axion Labs' backend on **Cloudflare Workers** (`api.amplifiedsmp.org`), which handles authentication, the free tier, and usage tracking, and forwards the request to **Lumen inference running on Hugging Face**. The free tier is rate-limited (50 requests/day); an API key from [axion.amplifiedsmp.org/keys](https://axion.amplifiedsmp.org/keys) raises this to 1,000/month. Usage is counted per key.
-- **IP addresses** are collected during account registration and used to detect duplicate accounts sharing the same IP. If a duplicate IP is detected, the newest account is suspended and the user is offered an opportunity to appeal. IPs are stored in our Cloudflare D1 database and retained for the lifetime of the account.
+- **Third-party providers** such as Anthropic, OpenAI, Google Gemini, Groq, Mistral, OpenRouter, and OpenCode receive requests directly when you configure and select them.
+- **Lumen** routes through Axion Labs' Cloudflare backend at `api.amplifiedsmp.org` and then to Lumen inference on Hugging Face. Keyless access is limited to 50 requests per day per IP address. Signed-in usage is tracked account-wide as token-based cost against the Free or Pro allowance and any redeemed credits; per-key request and token totals are also recorded.
+- **IP addresses** are collected during registration and used for duplicate-account and abuse detection. Registration IPs are kept with the account; operational rate-limit records expire according to their configured windows.
 
 ### Voice transcription and text-to-speech
 
-- **Transcription** — after recording locally, the audio file is uploaded to a cloud Whisper API to be transcribed: **OpenAI** (`whisper-1`) if you have an OpenAI key, otherwise **Groq** (`whisper-large-v3-turbo`). Your spoken audio leaves your device. Transcription is unavailable without one of those keys.
-- **Text-to-speech** (`/speak`) — the text to be spoken is sent to **OpenAI's** TTS API. Temporary audio files are deleted after playback.
+- **Transcription** uploads locally recorded audio to OpenAI (`whisper-1`) when an OpenAI key is configured, or Groq (`whisper-large-v3-turbo`) otherwise. Transcription is unavailable without a supported provider key.
+- **Text-to-speech** sends the text to OpenAI's TTS API. Temporary local audio is deleted after playback.
 
 ### Screen vision
 
-When you use screen vision or computer-use features, Axion captures a screenshot
-and sends the image to a vision model for description. By default this is
-Axion Labs' **`axion-vision` model, hosted on Hugging Face**
-(`axionlabsai-lumenvision.hf.space`). If you point vision at another provider with
-`/vision`, screenshots go there instead. Either way, images of your screen leave
-your device when these features are active.
+Screen-vision and computer-use features capture a screenshot and send it to a vision model. The default is Axion Labs' `axion-vision` model hosted on Hugging Face. If you configure another vision provider, the screenshot goes to that provider instead.
 
-### Browser control (Chrome extension)
+### Browser control
 
-The Axion Chrome extension requests broad browser permissions (`<all_urls>`,
-scripting, tabs) so the agent can read page content, click elements, and fill
-forms on your instruction. That page data is sent **directly from your browser to
-the AI provider you've configured** in the extension (using keys stored in the
-browser's local storage) — it is not routed through Axion Labs' servers, unless
-you select Lumen, in which case it follows the Lumen path above (Cloudflare →
-Hugging Face). The extension only acts on pages when you engage it.
+The Chrome extension requests broad browser permissions so it can read pages, click elements, fill forms, and capture the visible tab when you direct it. In standalone extension chat, page data sent for model reasoning goes to the provider configured in the extension. When the authenticated local bridge is enabled, Axion Desktop can request page reads and actions over a loopback WebSocket; returned page data may then become prompt context sent by Desktop to its configured model provider. If Lumen is selected in either flow, the request follows the Cloudflare-to-Hugging-Face path described above. Provider keys and the bridge pairing token are stored in extension-owned Chrome storage.
+
+### Email and payments
+
+- **Resend** processes account verification, password-reset, invitation, and announcement emails.
+- **Square** processes Pro checkout and payment information. Axion receives and stores the customer or subscription identifiers and status needed to manage access.
 
 ### Training-data contributions (`/contribute`)
 
-Contributing is opt-in — nothing is sent unless you type `/contribute` yourself.
-When you do:
+Contributing is opt-in. Nothing is submitted merely because a contribution prompt appears.
 
-- The session is **redacted first**: file contents are stripped, message text is truncated (roughly 1,000 characters per message, 200 per tool result), and only the message structure and metadata remain.
-- The redacted session is then **uploaded to Axion Labs' collection endpoint on Cloudflare Workers** (`axion-collect...workers.dev`).
-- If that upload fails (e.g. you're offline), the session is instead saved locally to `~/.axion/donations/` as a fallback. Files saved there stay on your disk until you delete them; they are not uploaded automatically later.
-- A contribution prompt may appear after long or difficult sessions, but the prompt alone sends nothing — only the `/contribute` command does.
-- Run `/contribute optout` to disable the prompts permanently, or `/contribute skip` to dismiss it for the current session.
+- The session is redacted first: file contents are stripped and message or tool text is truncated, leaving limited structure, text excerpts, and metadata.
+- The redacted session is uploaded to Axion Labs' collection endpoint on Cloudflare Workers.
+- If the upload fails, the session is stored locally under `~/.axion/donations/` and is not uploaded automatically later.
+- Use `/contribute optout` to disable contribution prompts or `/contribute skip` to dismiss the current prompt.
 
 ## Third-party privacy policies
 
-- Hugging Face (Lumen & vision inference): https://huggingface.co/privacy
-- Cloudflare (API backend & contribution endpoint): https://www.cloudflare.com/privacypolicy/
-- Your configured AI providers (Anthropic, OpenAI, Google, Groq, Mistral, OpenRouter, OpenCode): see each provider's policy
-- Connected integrations (GitHub, Google, Notion, Slack): see each service's policy
+- Hugging Face (Lumen and vision inference): https://huggingface.co/privacy
+- Cloudflare (hosted backend and contribution endpoint): https://www.cloudflare.com/policies/privacy/
+- Square (payments and subscriptions): https://squareup.com/us/en/legal/general/privacy
+- Resend (transactional and announcement email): https://resend.com/legal/privacy-policy
+- Your configured AI providers and connected integrations: see each provider's privacy policy.
 
 ## Your control
 
-- Disconnect any OAuth service with `/oauth revoke <service>`, or delete `~/.axion/oauth.json`.
-- Use your own provider keys (or a local model via Ollama) to keep inference off Axion Labs' backend entirely.
-- Opt out of contribution prompts with `/contribute optout`, and delete any local files in `~/.axion/donations/` yourself.
-- Axion is open source — audit exactly what it does at [github.com/AxionLabsAI/axion](https://github.com/AxionLabsAI/axion).
+- Delete individual signed-in web chats from the chat interface, or delete your account and linked account data from Settings.
+- Use the unsubscribe link in an announcement email to remove a separate announcement subscription.
+- Disconnect an OAuth service with `/oauth revoke <service>`, or delete `~/.axion/oauth.json`.
+- Use your own provider keys or a local model through Ollama to keep inference off Axion Labs' model endpoint.
+- Opt out of contribution prompts with `/contribute optout`, and delete local files under `~/.axion/donations/` yourself.
+- Axion is open source — review the code at [github.com/AxionLabsAI/axion](https://github.com/AxionLabsAI/axion).
 
 ## Contact
 

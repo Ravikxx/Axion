@@ -440,13 +440,21 @@ axion-discord --model claude
 
 ## Chrome Extension
 
+The Chrome extension is maintained in its own repository: [Ravikxx/Axion-Chrome-Extension](https://github.com/Ravikxx/Axion-Chrome-Extension).
+
 1. Open `chrome://extensions`
 2. Enable **Developer mode**
 3. Click **Load unpacked**
-4. Select the `extension/` folder from this repo
+4. Clone or download the extension repository and select its root folder
 5. Click the Axion icon or press `Alt+Shift+A`
 
-The extension sidebar lets you ask about the current page, run browser automation, take screenshots, and chat using any supported model — no API key required if using Veil. Links in AI responses are clickable and open in a new tab.
+The extension sidebar lets you ask about the current page, run browser automation, take screenshots, and chat using any supported model. To import the CLI's saved provider configuration into the extension, start the local web surface and paste its short-lived import URL and token into the extension settings:
+
+```text
+/web
+```
+
+Axion Desktop can also pair with the extension for browser tools through the authenticated loopback connection shown in Desktop settings.
 
 ---
 
@@ -507,7 +515,6 @@ The CLI runs from source (no build step) — just relink:
 
 ```bash
 npm link            # (or: npm install -g .) — update the global `axion`
-node build-web.js   # rebuild the web UI only if you changed it
 ```
 
 ---
@@ -531,9 +538,8 @@ axion/
 │   ├── discord-daemon.js  # axion-discord standalone bot
 │   └── collect-daemon.js  # axion-collect local dataset daemon
 ├── collect-worker/     # Cloudflare Worker for remote session collection
-├── extension/          # Chrome extension
 ├── mcp-servers/        # Bundled MCP servers (Blender)
-└── build-web.js        # Web UI bundler (the CLI itself needs no build)
+└── docs/               # Static assets used by local web surfaces
 ```
 
 ---

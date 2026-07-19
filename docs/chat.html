@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -552,7 +552,7 @@
     try { await fetch(`${API}/chats/${id}`, { method: 'DELETE', headers: authHeaders() }) } catch {}
   }
   // Use the account's API key for completions so chat counts against the
-  // signed-in user's 1,000/mo quota (not the free per-IP tier). Auto-create one.
+  // signed-in user's account-wide allowance (not the keyless per-IP tier). Auto-create one.
   async function ensureApiKey() {
     try {
       const res = await fetch(`${API}/dashboard/keys`, { headers: authHeaders() })
