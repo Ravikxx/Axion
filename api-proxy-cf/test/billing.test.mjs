@@ -481,6 +481,41 @@ test('admin can exhaust its own included allowance while keeping one cent of ext
   )
 })
 
+test('account dashboard exposes exact metered microdollars without losing small usage', async () => {
+  const db = new D1TestDatabase()
+  const secret = 'exact-usage-secret'
+  addUser(db, 'exact-user')
+  const now = new Date()
+  const month = `${now.getUTCFullYear()}-${String(now.getUTCMonth() + 1).padStart(2, '0')}`
+  const windowMs = 2 * 60 * 60 * 1000
+  const windowStart = new Date(Math.floor(Date.now() / windowMs) * windowMs).toISOString()
+  db.prepare(
+    `UPDATE users SET credit_balance=?, included_month_cost=?, usage_month=?,
+                      included_window_cost=?, usage_window=? WHERE id=?`
+  ).bind(806, 194, month, 194, windowStart, 'exact-user').run()
+
+  const token = await sessionToken('exact-user', secret)
+  const response = await app.request('/dashboard/account', {
+    headers: { Authorization: `Bearer ${token}` },
+  }, { DB: db, TOKEN_SECRET: secret })
+  const body = await response.json()
+
+  assert.equal(response.status, 200)
+  assert.equal(body.credits.balance_microdollars, 806)
+  assert.equal(body.credits.balance_usd, 0.0008)
+  assert.equal(body.usage.monthly_included_used_microdollars, 194)
+  assert.equal(body.usage.monthly_included_limit_microdollars, 500_000)
+  assert.equal(body.usage.monthly_included_used_usd, 0.0002)
+  assert.equal(body.usage.window_included_used_microdollars, 194)
+  assert.equal(body.usage.window_included_limit_microdollars, 50_000)
+  assert.deepEqual(body.metering, {
+    unit: 'microdollar',
+    usd_per_microdollar: 0.000001,
+    input_per_million_tokens_usd: 0.15,
+    output_per_million_tokens_usd: 0.5,
+  })
+})
+
 test('account deletion removes audits, rate limits, and every key in an owned organization', async () => {
   const db = new D1TestDatabase()
   const secret = 'delete-account-secret'
