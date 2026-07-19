@@ -207,53 +207,80 @@ export async function deactivateCreditCode(db, id) {
   return db.prepare('UPDATE credit_codes SET active=0 WHERE id=?').bind(id).run()
 }
 
-export function splitUsageCost(cost, includedMonthCost, includedWindowCost, monthlyBudget, windowBudget) {
-  const safeCost = Math.max(0, Math.round(Number(cost) || 0))
-  const monthRemaining = Math.max(0, monthlyBudget - (Number(includedMonthCost) || 0))
-  const windowRemaining = Math.max(0, windowBudget - (Number(includedWindowCost) || 0))
-  const included = Math.min(safeCost, monthRemaining, windowRemaining)
-  return { included, credits: safeCost - included, monthRemaining, windowRemaining }
-}
+// Both included-usage periods are lazy-start: usage_week/usage_window store
+// the ISO timestamp the period actually began (empty = never started), not
+// a calendar-month label or a clock-grid bucket id. That means the account
+// is never "mid-reset" on a clock nobody actioned — a period only exists,
+// and only counts down, once the account's own usage created it. A period
+// that has fully elapsed since its recorded start reads back as reset
+// (cost 0, not started) without any write; only chargeAccountUsage, which
+// runs after a real chargeable request, ever starts or advances one.
+export const WEEK_MS = 7 * 24 * 60 * 60 * 1000
+export const WINDOW_MS = 2 * 60 * 60 * 1000
 
-export async function ensureUsagePeriods(db, userId, month, windowStart) {
-  await db.prepare(
-    `UPDATE users SET
-       included_month_cost=CASE WHEN usage_month=? THEN included_month_cost ELSE 0 END,
-       usage_month=?,
-       included_window_cost=CASE WHEN usage_window=? THEN included_window_cost ELSE 0 END,
-       usage_window=?
-     WHERE id=?`
-  ).bind(month, month, windowStart, windowStart, userId).run()
-  return db.prepare(
-    `SELECT credit_balance, included_month_cost, included_window_cost,
-            usage_month, usage_window, usage_limit_notified
+// Exported so callers that already have a batch of raw rows (e.g. the admin
+// user list) can compute effective usage per-row without a DB round trip per
+// user — the same expiry math readAccountUsage/chargeAccountUsage use.
+export function periodStatus(startIso, storedCost, durationMs, nowMs = Date.now()) {
+  const startMs = startIso ? Date.parse(startIso) : NaN
+  if (!Number.isFinite(startMs) || nowMs - startMs >= durationMs) {
+    return { active: false, cost: 0, resetAt: null }
+  }
+  return { active: true, cost: Math.max(0, Number(storedCost) || 0), resetAt: new Date(startMs + durationMs).toISOString() }
+}
+const resolvePeriod = periodStatus
+
+export async function readAccountUsage(db, userId, nowMs = Date.now()) {
+  const row = await db.prepare(
+    `SELECT credit_balance, included_week_cost, usage_week, included_window_cost, usage_window, usage_limit_notified
      FROM users WHERE id=?`
   ).bind(userId).first()
+  if (!row) return null
+  const week = resolvePeriod(row.usage_week, row.included_week_cost, WEEK_MS, nowMs)
+  const win = resolvePeriod(row.usage_window, row.included_window_cost, WINDOW_MS, nowMs)
+  return {
+    credit_balance: Math.max(0, row.credit_balance || 0),
+    included_week_cost: week.cost,
+    week_started: week.active,
+    week_reset_at: week.resetAt,
+    included_window_cost: win.cost,
+    window_started: win.active,
+    window_reset_at: win.resetAt,
+    usage_limit_notified: row.usage_limit_notified,
+  }
 }
 
-export function canStartUsage(usage, monthlyBudget, windowBudget) {
-  const split = splitUsageCost(1, usage?.included_month_cost, usage?.included_window_cost, monthlyBudget, windowBudget)
-  return split.included > 0 || (usage?.credit_balance || 0) > 0
+export function canStartUsage(usage, weeklyBudget, windowBudget) {
+  const weekRemaining = Math.max(0, weeklyBudget - (usage?.included_week_cost || 0))
+  const windowRemaining = Math.max(0, windowBudget - (usage?.included_window_cost || 0))
+  return Math.min(weekRemaining, windowRemaining) > 0 || (usage?.credit_balance || 0) > 0
 }
 
-export async function chargeAccountUsage(db, userId, cost, monthlyBudget, windowBudget, month, windowStart) {
-  await ensureUsagePeriods(db, userId, month, windowStart)
-  const amount = Math.max(0, Math.round(Number(cost) || 0))
-  await db.prepare(
-    `UPDATE users SET
-       included_month_cost=included_month_cost + MIN(?, MAX(0, ?-included_month_cost), MAX(0, ?-included_window_cost)),
-       included_window_cost=included_window_cost + MIN(?, MAX(0, ?-included_month_cost), MAX(0, ?-included_window_cost)),
-       credit_balance=credit_balance - (?-MIN(?, MAX(0, ?-included_month_cost), MAX(0, ?-included_window_cost)))
-     WHERE id=?`
-  ).bind(
-    amount, monthlyBudget, windowBudget,
-    amount, monthlyBudget, windowBudget,
-    amount, amount, monthlyBudget, windowBudget,
-    userId,
-  ).run()
-  return db.prepare(
-    'SELECT credit_balance, included_month_cost, included_window_cost, usage_limit_notified FROM users WHERE id=?'
+export async function chargeAccountUsage(db, userId, cost, weeklyBudget, windowBudget, nowMs = Date.now()) {
+  const row = await db.prepare(
+    `SELECT credit_balance, included_week_cost, usage_week, included_window_cost, usage_window, usage_limit_notified
+     FROM users WHERE id=?`
   ).bind(userId).first()
+  const week = resolvePeriod(row.usage_week, row.included_week_cost, WEEK_MS, nowMs)
+  const win = resolvePeriod(row.usage_window, row.included_window_cost, WINDOW_MS, nowMs)
+  const amount = Math.max(0, Math.round(Number(cost) || 0))
+  const included = Math.min(amount, Math.max(0, weeklyBudget - week.cost), Math.max(0, windowBudget - win.cost))
+  const newWeekCost = week.cost + included
+  const newWindowCost = win.cost + included
+  const newCreditBalance = (row.credit_balance || 0) - (amount - included)
+  const newWeekStart = week.active ? row.usage_week : new Date(nowMs).toISOString()
+  const newWindowStart = win.active ? row.usage_window : new Date(nowMs).toISOString()
+  await db.prepare(
+    `UPDATE users SET usage_week=?, included_week_cost=?, usage_window=?, included_window_cost=?, credit_balance=?
+     WHERE id=?`
+  ).bind(newWeekStart, newWeekCost, newWindowStart, newWindowCost, newCreditBalance, userId).run()
+  return {
+    credit_balance: newCreditBalance,
+    included_week_cost: newWeekCost,
+    usage_week: newWeekStart,
+    included_window_cost: newWindowCost,
+    usage_limit_notified: row.usage_limit_notified,
+  }
 }
 
 export function microdollarsToUsd(value) {
