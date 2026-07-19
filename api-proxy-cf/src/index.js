@@ -781,6 +781,12 @@ app.get('/dashboard/stats', async (c) => {
 app.post('/dashboard/keys', async (c) => {
   const user = await requireAuth(c)
   if (!user) return json({ error: 'Not authenticated' }, 401)
+  if (user.plan !== 'pro') {
+    const { count } = await c.env.DB.prepare('SELECT COUNT(*) as count FROM api_keys WHERE user_id=? AND revoked=0').bind(user.id).first()
+    if (count >= FREE_KEY_CAP) {
+      return json({ error: `Free plan is limited to ${FREE_KEY_CAP} API keys. Upgrade to Pro for unlimited keys, or revoke one first.` }, 403)
+    }
+  }
   const { label } = await c.req.json().catch(() => ({}))
   const id = crypto.randomUUID()
   const key_value = genKey()
@@ -827,6 +833,7 @@ app.get('/dashboard/account', async (c) => {
       github: !!user.github_id,
       discord: !!user.discord_id,
     },
+    plan: user.plan || 'free',
   })
 })
 
@@ -928,8 +935,17 @@ app.delete('/chats/:id', async (c) => {
 // ── OpenAI-compatible proxy ────────────────────────────────────────────────
 
 const FREE_DAILY_LIMIT  = 50    // keyless requests per IP per day
-const KEY_MONTHLY_LIMIT = 1000  // keyed requests per month
-const KEY_WINDOW_LIMIT  = 40    // keyed requests per 2-hour window
+const KEY_MONTHLY_LIMIT = 1000  // keyed requests per month, free plan
+const KEY_WINDOW_LIMIT  = 40    // keyed requests per 2-hour window, free plan
+const PRO_MONTHLY_LIMIT = 10000 // 10x, pro plan
+const PRO_WINDOW_LIMIT  = 400   // 10x, pro plan
+const FREE_KEY_CAP      = 3     // max non-revoked API keys, free plan (pro is uncapped)
+
+function limitsForPlan(plan) {
+  return plan === 'pro'
+    ? { monthly: PRO_MONTHLY_LIMIT, window: PRO_WINDOW_LIMIT }
+    : { monthly: KEY_MONTHLY_LIMIT, window: KEY_WINDOW_LIMIT }
+}
 const KEY_WINDOW_MS     = 2 * 60 * 60 * 1000
 
 function currentMonth() {
@@ -1048,9 +1064,10 @@ app.post('/v1/chat/completions', async (c) => {
     const keyRow = await c.env.DB.prepare('SELECT * FROM api_keys WHERE key_value=? AND revoked=0').bind(auth).first()
     if (!keyRow) return json({ error: { message: 'Invalid or revoked API key', type: 'invalid_request_error' } }, 401)
 
-    // Check if the key owner is banned
-    const keyUser = await c.env.DB.prepare('SELECT banned FROM users WHERE id=?').bind(keyRow.user_id).first()
+    // Check if the key owner is banned, and pull their plan for rate limits
+    const keyUser = await c.env.DB.prepare('SELECT banned, plan FROM users WHERE id=?').bind(keyRow.user_id).first()
     if (keyUser?.banned) return json({ error: { message: 'Your account has been suspended.', type: 'permission_error' } }, 403)
+    const { monthly: planMonthlyLimit, window: planWindowLimit } = limitsForPlan(keyUser?.plan)
 
     // Scope check — if key has scopes, requested model must be in the list
     if (keyRow.scopes) {
@@ -1067,9 +1084,9 @@ app.post('/v1/chat/completions', async (c) => {
       await c.env.DB.prepare('UPDATE api_keys SET month_requests=0, month_start=? WHERE id=?').bind(month, keyRow.id).run()
       keyRow.month_requests = 0
     }
-    if (keyRow.month_requests >= KEY_MONTHLY_LIMIT) {
+    if (keyRow.month_requests >= planMonthlyLimit) {
       const reset_at = nextMonthISO()
-      return json({ error: { message: `Monthly limit of ${KEY_MONTHLY_LIMIT} requests reached.`, type: 'rate_limit_error', reset_at, limit: KEY_MONTHLY_LIMIT, used: keyRow.month_requests } }, 429)
+      return json({ error: { message: `Monthly limit of ${planMonthlyLimit} requests reached.`, type: 'rate_limit_error', reset_at, limit: planMonthlyLimit, used: keyRow.month_requests } }, 429)
     }
 
     // 2-hour window limit
@@ -1077,9 +1094,9 @@ app.post('/v1/chat/completions', async (c) => {
     const winStart = currentWindowISO()
     const winRow = await c.env.DB.prepare('SELECT count, window_start FROM rate_limits WHERE key=?').bind(winKey).first()
     const winCount = (winRow && winRow.window_start === winStart) ? winRow.count : 0
-    if (winCount >= KEY_WINDOW_LIMIT) {
+    if (winCount >= planWindowLimit) {
       const reset_at = nextWindowISO()
-      return json({ error: { message: `Rate limit reached (${KEY_WINDOW_LIMIT} requests per 2 hours).`, type: 'rate_limit_error', reset_at, limit: KEY_WINDOW_LIMIT, used: winCount, window: true } }, 429)
+      return json({ error: { message: `Rate limit reached (${planWindowLimit} requests per 2 hours).`, type: 'rate_limit_error', reset_at, limit: planWindowLimit, used: winCount, window: true } }, 429)
     }
 
     const trigger = applySafetyTriggers(body)
@@ -1126,7 +1143,7 @@ app.post('/v1/chat/completions', async (c) => {
 
     // 80% usage warning — fire once per month when threshold is crossed
     const newMonthCount = keyRow.month_requests + 1
-    const notifyThreshold = Math.floor(KEY_MONTHLY_LIMIT * 0.8)
+    const notifyThreshold = Math.floor(planMonthlyLimit * 0.8)
     if (newMonthCount === notifyThreshold && keyRow.limit_notified !== month && c.env.RESEND_API_KEY) {
       c.executionCtx.waitUntil((async () => {
         const [limitUser, prefs] = await Promise.all([
@@ -1136,10 +1153,10 @@ app.post('/v1/chat/completions', async (c) => {
         if (limitUser && prefs?.notify_limit !== 0) {
           await sendEmail(c.env.RESEND_API_KEY, {
             to: limitUser.email,
-            subject: `You've used ${notifyThreshold} of your ${KEY_MONTHLY_LIMIT} monthly Axion requests`,
+            subject: `You've used ${notifyThreshold} of your ${planMonthlyLimit} monthly Axion requests`,
             html: emailWrap(`
               <h2 style="margin:0 0 8px;color:#e8e8f0">Usage alert</h2>
-              <p style="color:#888;margin:0 0 16px">Your API key <strong style="color:#e8e8f0">${keyRow.label}</strong> has used <strong style="color:#e8602c">${notifyThreshold} / ${KEY_MONTHLY_LIMIT}</strong> requests this month (80%).</p>
+              <p style="color:#888;margin:0 0 16px">Your API key <strong style="color:#e8e8f0">${keyRow.label}</strong> has used <strong style="color:#e8602c">${notifyThreshold} / ${planMonthlyLimit}</strong> requests this month (80%).</p>
               <p style="color:#888;margin:0 0 24px">Your limit resets on the 1st of next month. If you need more, reply to this email.</p>
               <a href="https://axion.amplifiedsmp.org/keys" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">View usage →</a>
               <p style="color:#555;font-size:12px;margin-top:24px">To turn off these alerts, visit your <a href="https://axion.amplifiedsmp.org/keys" style="color:#e8602c">account settings</a>.</p>
