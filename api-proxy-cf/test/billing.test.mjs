@@ -200,7 +200,7 @@ test('competing redemptions cannot overrun a one-use code', async () => {
   assert.equal(db.prepare('SELECT redemption_count FROM credit_codes').first().redemption_count, 1)
 })
 
-test('a compact variable code accepts exact cents and can be reused without a global cap', async () => {
+test('a compact variable code accepts exact mills and can be reused without a global cap', async () => {
   const db = new D1TestDatabase()
   addUser(db, 'u1')
   const created = await createCreditCode(db, 'admin@example.com', {
@@ -217,11 +217,19 @@ test('a compact variable code accepts exact cents and can be reused without a gl
     redeemCreditCode(db, 'u1', created.code),
     error => error instanceof CreditCodeError && error.code === 'amount_required',
   )
-  const first = await redeemCreditCode(db, 'u1', created.code, 123)
-  const second = await redeemCreditCode(db, 'u1', created.code, 456)
-  assert.equal(first.granted_microdollars, 1_230_000)
-  assert.equal(second.granted_microdollars, 4_560_000)
-  assert.equal(second.balance_microdollars, 5_790_000)
+  await assert.rejects(
+    redeemCreditCode(db, 'u1', created.code, 999),
+    error => error instanceof CreditCodeError && error.code === 'amount_required',
+  )
+  await assert.rejects(
+    redeemCreditCode(db, 'u1', created.code, 1_500),
+    error => error instanceof CreditCodeError && error.code === 'amount_required',
+  )
+  const first = await redeemCreditCode(db, 'u1', created.code, 1_000)
+  const second = await redeemCreditCode(db, 'u1', created.code, 456_000)
+  assert.equal(first.granted_microdollars, 1_000)
+  assert.equal(second.granted_microdollars, 456_000)
+  assert.equal(second.balance_microdollars, 457_000)
   assert.equal(db.prepare('SELECT COUNT(*) AS count FROM credit_redemptions').first().count, 2)
   assert.equal(db.prepare('SELECT redemption_count FROM credit_codes').first().redemption_count, 2)
 })
@@ -315,6 +323,35 @@ test('authenticated admin creation and user redemption routes work end to end', 
   assert.equal(balance.balance_usd, 3.75)
   assert.equal(balance.redemptions.length, 1)
   assert.equal(balance.redemptions[0].note, 'Route test')
+
+  const variableResponse = await app.request('/admin/credit-codes', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${adminToken}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      variable_amount: true,
+      allow_repeat: true,
+      unlimited_redemptions: true,
+      note: 'Mill route test',
+    }),
+  }, env)
+  assert.equal(variableResponse.status, 201)
+  const variable = await variableResponse.json()
+
+  const millResponse = await app.request('/billing/credits/redeem', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${memberToken}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ code: variable.code, credit_microdollars: 1_000 }),
+  }, env)
+  assert.equal(millResponse.status, 200)
+  assert.equal((await millResponse.json()).granted_usd, 0.001)
+
+  const legacyCentResponse = await app.request('/billing/credits/redeem', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${memberToken}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ code: variable.code, credit_cents: 1 }),
+  }, env)
+  assert.equal(legacyCentResponse.status, 200)
+  assert.equal((await legacyCentResponse.json()).granted_usd, 0.01)
 
   const disableResponse = await app.request(`/admin/credit-codes/${created.id}`, {
     method: 'DELETE',

@@ -1,4 +1,5 @@
 export const MICRODOLLARS_PER_CENT = 10_000
+export const MIN_VARIABLE_CREDIT_MICRODOLLARS = 1_000 // $0.001
 export const MAX_CREDIT_CENTS = 1_000_000 // $10,000 guardrail against an accidental admin entry
 export const MAX_CODE_REDEMPTIONS = 10_000
 
@@ -124,7 +125,7 @@ export async function createCreditCode(db, createdBy, input = {}) {
   throw new Error('Could not generate a unique credit code.')
 }
 
-export async function redeemCreditCode(db, userId, rawCode, requestedCreditCents = null) {
+export async function redeemCreditCode(db, userId, rawCode, requestedCreditMicrodollars = null) {
   const codeHash = await hashCreditCode(rawCode)
   const code = await db.prepare(
     `SELECT id, credit_microdollars, variable_amount, max_credit_microdollars,
@@ -133,15 +134,17 @@ export async function redeemCreditCode(db, userId, rawCode, requestedCreditCents
   if (!code) throw new CreditCodeError('Invalid, expired, or fully redeemed code.')
   let grantedMicrodollars = code.credit_microdollars
   if (code.variable_amount) {
-    const cents = Number(requestedCreditCents)
-    if (!Number.isInteger(cents) || cents < 1
-        || cents * MICRODOLLARS_PER_CENT > code.max_credit_microdollars) {
+    const requested = Number(requestedCreditMicrodollars)
+    if (!Number.isSafeInteger(requested)
+        || requested < MIN_VARIABLE_CREDIT_MICRODOLLARS
+        || requested % MIN_VARIABLE_CREDIT_MICRODOLLARS !== 0
+        || requested > code.max_credit_microdollars) {
       throw new CreditCodeError(
-        `Choose an amount from $0.01 to $${(code.max_credit_microdollars / 1_000_000).toFixed(2)}.`,
+        `Choose an amount from $0.001 to $${(code.max_credit_microdollars / 1_000_000).toFixed(2)}, in $0.001 increments.`,
         'amount_required',
       )
     }
-    grantedMicrodollars = cents * MICRODOLLARS_PER_CENT
+    grantedMicrodollars = requested
   }
 
   const redemptionId = crypto.randomUUID()

@@ -1000,9 +1000,16 @@ app.post('/billing/credits/redeem', async (c) => {
   if (!await checkAccountRateLimit(c.env.DB, user.id, 'credit-redeem', 10)) {
     return json({ error: 'Too many attempts. Try again in 15 minutes.' }, 429)
   }
-  const { code, credit_cents: creditCents } = await c.req.json().catch(() => ({}))
+  const {
+    code,
+    credit_microdollars: creditMicrodollars,
+    credit_cents: legacyCreditCents,
+  } = await c.req.json().catch(() => ({}))
+  const requestedMicrodollars = creditMicrodollars == null && legacyCreditCents != null
+    ? Number(legacyCreditCents) * 10_000
+    : creditMicrodollars
   try {
-    const redeemed = await redeemCreditCode(c.env.DB, user.id, code, creditCents)
+    const redeemed = await redeemCreditCode(c.env.DB, user.id, code, requestedMicrodollars)
     return json({
       ok: true,
       granted_usd: microdollarsToUsd(redeemed.granted_microdollars),
