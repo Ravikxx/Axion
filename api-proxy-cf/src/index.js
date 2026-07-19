@@ -1,5 +1,17 @@
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
+import {
+  CreditCodeError,
+  buildSquareCheckoutPayload,
+  canStartUsage,
+  chargeAccountUsage,
+  createCreditCode,
+  deactivateCreditCode,
+  ensureUsagePeriods,
+  listCreditCodes,
+  microdollarsToUsd,
+  redeemCreditCode,
+} from './billing.js'
 
 const app = new Hono()
 const HF_URL = 'https://axionlabsai-lumen.hf.space/gradio_api/v1/chat/completions'
@@ -827,6 +839,10 @@ app.post('/dashboard/change-password/request', async (c) => {
 app.get('/dashboard/account', async (c) => {
   const user = await requireAuth(c)
   if (!user) return json({ error: 'Not authenticated' }, 401)
+  const month = currentMonth()
+  const windowStart = currentWindowISO()
+  const usage = await ensureUsagePeriods(c.env.DB, user.id, month, windowStart)
+  const { monthlyBudget, windowBudget } = limitsForPlan(user.plan)
   return json({
     connected: {
       google: !!user.google_id,
@@ -834,6 +850,16 @@ app.get('/dashboard/account', async (c) => {
       discord: !!user.discord_id,
     },
     plan: user.plan || 'free',
+    credits: {
+      balance_microdollars: Math.max(0, usage.credit_balance || 0),
+      balance_usd: microdollarsToUsd(Math.max(0, usage.credit_balance || 0)),
+    },
+    usage: {
+      monthly_included_used_usd: microdollarsToUsd(usage.included_month_cost),
+      monthly_included_limit_usd: microdollarsToUsd(monthlyBudget),
+      window_included_used_usd: microdollarsToUsd(usage.included_window_cost),
+      window_included_limit_usd: microdollarsToUsd(windowBudget),
+    },
   })
 })
 
@@ -869,6 +895,7 @@ app.delete('/dashboard/account', async (c) => {
   }
   stmts.push(
     db.prepare('DELETE FROM org_members WHERE user_id=?').bind(user.id),
+    db.prepare('DELETE FROM credit_redemptions WHERE user_id=?').bind(user.id),
     db.prepare('DELETE FROM api_keys WHERE user_id=?').bind(user.id),
     db.prepare('DELETE FROM chats WHERE user_id=?').bind(user.id),
     db.prepare('DELETE FROM email_prefs WHERE user_id=?').bind(user.id),
@@ -931,18 +958,14 @@ app.post('/billing/checkout', async (c) => {
 
   const res = await squareApi(c.env, '/online-checkout/payment-links', {
     method: 'POST',
-    body: JSON.stringify({
-      idempotency_key: crypto.randomUUID(),
-      checkout_options: {
-        subscription_plan_id: SQUARE_PLAN_VARIATION_ID,
-        redirect_url: 'https://axion.amplifiedsmp.org/settings.html',
-      },
-      order: {
-        location_id: c.env.SQUARE_LOCATION_ID,
-        line_items: [{ quantity: '1', catalog_object_id: SQUARE_ITEM_VARIATION_ID }],
-      },
-      pre_populated_data: { buyer_email: user.email },
-    }),
+    body: JSON.stringify(buildSquareCheckoutPayload({
+      idempotencyKey: crypto.randomUUID(),
+      locationId: c.env.SQUARE_LOCATION_ID,
+      planVariationId: SQUARE_PLAN_VARIATION_ID,
+      itemVariationId: SQUARE_ITEM_VARIATION_ID,
+      buyerEmail: user.email,
+      redirectUrl: 'https://axion.amplifiedsmp.org/settings.html',
+    })),
   })
   const data = await res.json().catch(() => ({}))
   if (!res.ok || !data.payment_link?.url) {
@@ -950,6 +973,46 @@ app.post('/billing/checkout', async (c) => {
     return json({ error: 'Could not start checkout right now.' }, 502)
   }
   return json({ url: data.payment_link.url })
+})
+
+app.get('/billing/credits', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  const balance = await c.env.DB.prepare('SELECT credit_balance FROM users WHERE id=?').bind(user.id).first()
+  const { results } = await c.env.DB.prepare(
+    `SELECT r.credit_microdollars, r.redeemed_at, cc.code_hint, cc.note
+     FROM credit_redemptions r JOIN credit_codes cc ON cc.id=r.code_id
+     WHERE r.user_id=? ORDER BY r.redeemed_at DESC LIMIT 20`
+  ).bind(user.id).all()
+  return json({
+    balance_microdollars: Math.max(0, balance?.credit_balance || 0),
+    balance_usd: microdollarsToUsd(Math.max(0, balance?.credit_balance || 0)),
+    redemptions: results.map(row => ({
+      ...row,
+      credit_usd: microdollarsToUsd(row.credit_microdollars),
+    })),
+  })
+})
+
+app.post('/billing/credits/redeem', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  if (!await checkAccountRateLimit(c.env.DB, user.id, 'credit-redeem', 10)) {
+    return json({ error: 'Too many attempts. Try again in 15 minutes.' }, 429)
+  }
+  const { code, credit_cents: creditCents } = await c.req.json().catch(() => ({}))
+  try {
+    const redeemed = await redeemCreditCode(c.env.DB, user.id, code, creditCents)
+    return json({
+      ok: true,
+      granted_usd: microdollarsToUsd(redeemed.granted_microdollars),
+      balance_usd: microdollarsToUsd(Math.max(0, redeemed.balance_microdollars)),
+    })
+  } catch (error) {
+    if (error instanceof CreditCodeError) return json({ error: error.message, code: error.code }, 400)
+    console.error('[billing/credits/redeem]', error)
+    return json({ error: 'Could not redeem this code right now.' }, 500)
+  }
 })
 
 app.post('/webhooks/square', async (c) => {
@@ -1226,7 +1289,7 @@ app.post('/v1/chat/completions', async (c) => {
     if (!keyRow) return json({ error: { message: 'Invalid or revoked API key', type: 'invalid_request_error' } }, 401)
 
     // Check if the key owner is banned, and pull their plan for rate limits
-    const keyUser = await c.env.DB.prepare('SELECT banned, plan FROM users WHERE id=?').bind(keyRow.user_id).first()
+    const keyUser = await c.env.DB.prepare('SELECT * FROM users WHERE id=?').bind(keyRow.user_id).first()
     if (keyUser?.banned) return json({ error: { message: 'Your account has been suspended.', type: 'permission_error' } }, 403)
     const { monthlyBudget: planMonthlyBudget, windowBudget: planWindowBudget } = limitsForPlan(keyUser?.plan)
 
@@ -1243,27 +1306,37 @@ app.post('/v1/chat/completions', async (c) => {
     // month_requests still increment for display purposes (dashboard stat
     // cards); month_cost is what's actually gated on.
     const month = currentMonth()
+    const accountWindowStart = currentWindowISO()
+    const accountUsage = await ensureUsagePeriods(c.env.DB, keyRow.user_id, month, accountWindowStart)
     if (keyRow.month_start !== month) {
       await c.env.DB.prepare('UPDATE api_keys SET month_requests=0, month_cost=0, month_start=? WHERE id=?').bind(month, keyRow.id).run()
       keyRow.month_requests = 0
       keyRow.month_cost = 0
     }
-    if (keyRow.month_cost >= planMonthlyBudget) {
-      const reset_at = nextMonthISO()
-      const budgetUsd = (planMonthlyBudget / 1_000_000).toFixed(2)
-      return json({ error: { message: `Monthly usage budget of $${budgetUsd} reached.`, type: 'rate_limit_error', reset_at, limit_usd: Number(budgetUsd), used_usd: Number((keyRow.month_cost / 1_000_000).toFixed(4)) } }, 429)
+    if (!canStartUsage(accountUsage, planMonthlyBudget, planWindowBudget)
+        && accountUsage.included_month_cost >= planMonthlyBudget) {
+      return json({ error: {
+        message: 'Monthly included usage reached and no API credits remain.',
+        type: 'rate_limit_error',
+        reset_at: nextMonthISO(),
+        limit_usd: microdollarsToUsd(planMonthlyBudget),
+        used_usd: microdollarsToUsd(accountUsage.included_month_cost),
+        credit_balance_usd: microdollarsToUsd(Math.max(0, accountUsage.credit_balance || 0)),
+      } }, 429)
     }
 
-    // 2-hour window budget — `count` in rate_limits holds accumulated
-    // microdollars for this key's window, not a request count.
-    const winKey = `win:${keyRow.id}`
-    const winStart = currentWindowISO()
-    const winRow = await c.env.DB.prepare('SELECT count, window_start FROM rate_limits WHERE key=?').bind(winKey).first()
-    const winCount = (winRow && winRow.window_start === winStart) ? winRow.count : 0
-    if (winCount >= planWindowBudget) {
-      const reset_at = nextWindowISO()
-      const budgetUsd = (planWindowBudget / 1_000_000).toFixed(2)
-      return json({ error: { message: `Rate limit reached ($${budgetUsd} per 2 hours).`, type: 'rate_limit_error', reset_at, limit_usd: Number(budgetUsd), used_usd: Number((winCount / 1_000_000).toFixed(4)), window: true } }, 429)
+    // The two-hour included allowance is account-wide. Once either included
+    // allowance is exhausted, a positive credit balance keeps requests open.
+    if (!canStartUsage(accountUsage, planMonthlyBudget, planWindowBudget)) {
+      return json({ error: {
+        message: 'Two-hour included usage reached and no API credits remain.',
+        type: 'rate_limit_error',
+        reset_at: nextWindowISO(),
+        limit_usd: microdollarsToUsd(planWindowBudget),
+        used_usd: microdollarsToUsd(accountUsage.included_window_cost),
+        credit_balance_usd: microdollarsToUsd(Math.max(0, accountUsage.credit_balance || 0)),
+        window: true,
+      } }, 429)
     }
 
     const trigger = applySafetyTriggers(body)
@@ -1306,6 +1379,15 @@ app.post('/v1/chat/completions', async (c) => {
     async function recordUsage(inputTokens, outputTokens) {
       const cost = requestCostMicrodollars(inputTokens, outputTokens)
       const totalTokens = inputTokens + outputTokens
+      const chargedUsage = await chargeAccountUsage(
+        c.env.DB,
+        keyRow.user_id,
+        cost,
+        planMonthlyBudget,
+        planWindowBudget,
+        month,
+        accountWindowStart,
+      )
       await Promise.all([
         c.env.DB.prepare(
           "UPDATE api_keys SET last_used=strftime('%s','now'), requests=requests+1, month_requests=month_requests+1, tokens=tokens+?, month_cost=month_cost+? WHERE id=?"
@@ -1313,14 +1395,16 @@ app.post('/v1/chat/completions', async (c) => {
         c.env.DB.prepare(
           'INSERT INTO usage_daily (key_id, date, count) VALUES (?,?,1) ON CONFLICT (key_id, date) DO UPDATE SET count=count+1'
         ).bind(keyRow.id, today).run(),
-        winRow && winRow.window_start === winStart
-          ? c.env.DB.prepare('UPDATE rate_limits SET count=count+? WHERE key=?').bind(cost, winKey).run()
-          : c.env.DB.prepare('INSERT OR REPLACE INTO rate_limits (key, count, window_start) VALUES (?,?,?)').bind(winKey, cost, winStart).run(),
       ])
 
-      const newMonthCost = keyRow.month_cost + cost
+      const newMonthCost = chargedUsage.included_month_cost
       const notifyThreshold = Math.floor(planMonthlyBudget * 0.8)
-      if (keyRow.month_cost < notifyThreshold && newMonthCost >= notifyThreshold && keyRow.limit_notified !== month && c.env.RESEND_API_KEY) {
+      if (newMonthCost >= notifyThreshold && chargedUsage.usage_limit_notified !== month && c.env.RESEND_API_KEY) {
+        const claimed = await c.env.DB.prepare(
+          `UPDATE users SET usage_limit_notified=?
+           WHERE id=? AND included_month_cost>=? AND COALESCE(usage_limit_notified,'')<>?`
+        ).bind(month, keyRow.user_id, notifyThreshold, month).run()
+        if (!claimed.meta?.changes) return
         const [limitUser, prefs] = await Promise.all([
           c.env.DB.prepare('SELECT email FROM users WHERE id=?').bind(keyRow.user_id).first(),
           c.env.DB.prepare('SELECT notify_limit FROM email_prefs WHERE user_id=?').bind(keyRow.user_id).first(),
@@ -1339,7 +1423,6 @@ app.post('/v1/chat/completions', async (c) => {
               <p style="color:#555;font-size:12px;margin-top:24px">To turn off these alerts, visit your <a href="https://axion.amplifiedsmp.org/keys" style="color:#e8602c">account settings</a>.</p>
             `),
           })
-          await c.env.DB.prepare('UPDATE api_keys SET limit_notified=? WHERE id=?').bind(month, keyRow.id).run()
         }
       }
     }
@@ -1376,7 +1459,7 @@ app.post('/v1/chat/completions', async (c) => {
       tomorrow.setUTCHours(0, 0, 0, 0)
       return json({
         error: {
-          message: `Free tier limit of ${FREE_DAILY_LIMIT} requests/day reached. Get an API key at https://axion.amplifiedsmp.org/keys for 1,000/month + 40/2h.`,
+          message: `Free tier limit of ${FREE_DAILY_LIMIT} requests/day reached. Get an API key at https://axion.amplifiedsmp.org/keys for account-based usage limits and redeemable API credits.`,
           type: 'rate_limit_error',
           reset_at: tomorrow.toISOString(),
           limit: FREE_DAILY_LIMIT,
@@ -1514,6 +1597,44 @@ app.delete('/admin/allowlist/:email', async (c) => {
 })
 
 // ── Scopes: update allowed models for a key ────────────────────────────────
+
+app.get('/admin/credit-codes', async (c) => {
+  const user = await requireAdmin(c)
+  if (!user) return json({ error: 'Forbidden' }, 403)
+  const codes = await listCreditCodes(c.env.DB)
+  return json({
+    codes: codes.map(code => ({
+      ...code,
+      credit_usd: microdollarsToUsd(code.credit_microdollars),
+    })),
+  })
+})
+
+app.post('/admin/credit-codes', async (c) => {
+  const user = await requireAdmin(c)
+  if (!user) return json({ error: 'Forbidden' }, 403)
+  const input = await c.req.json().catch(() => ({}))
+  try {
+    const created = await createCreditCode(c.env.DB, user.email, input)
+    return json({
+      ...created,
+      credit_usd: microdollarsToUsd(created.credit_microdollars),
+      warning: 'This plaintext code is shown only once.',
+    }, 201)
+  } catch (error) {
+    if (error instanceof CreditCodeError) return json({ error: error.message, code: error.code }, 400)
+    console.error('[admin/credit-codes]', error)
+    return json({ error: 'Could not create a credit code.' }, 500)
+  }
+})
+
+app.delete('/admin/credit-codes/:id', async (c) => {
+  const user = await requireAdmin(c)
+  if (!user) return json({ error: 'Forbidden' }, 403)
+  const result = await deactivateCreditCode(c.env.DB, c.req.param('id'))
+  if (!result.meta?.changes) return json({ error: 'Code not found' }, 404)
+  return json({ ok: true })
+})
 
 app.put('/dashboard/keys/:id/scopes', async (c) => {
   const user = await requireAuth(c)
