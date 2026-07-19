@@ -7,10 +7,13 @@ import {
   chargeAccountUsage,
   createCreditCode,
   deactivateCreditCode,
-  ensureUsagePeriods,
+  readAccountUsage,
   listCreditCodes,
   microdollarsToUsd,
+  periodStatus,
   redeemCreditCode,
+  WEEK_MS,
+  WINDOW_MS,
 } from './billing.js'
 import { probeLumenHealth, proxyLumenRequest } from './lumen-upstream.js'
 
@@ -839,10 +842,8 @@ app.post('/dashboard/change-password/request', async (c) => {
 app.get('/dashboard/account', async (c) => {
   const user = await requireAuth(c)
   if (!user) return json({ error: 'Not authenticated' }, 401)
-  const month = currentMonth()
-  const windowStart = currentWindowISO()
-  const usage = await ensureUsagePeriods(c.env.DB, user.id, month, windowStart)
-  const { monthlyBudget, windowBudget } = limitsForPlan(user.plan)
+  const usage = await readAccountUsage(c.env.DB, user.id)
+  const { weeklyBudget, windowBudget } = limitsForPlan(user.plan)
   return json({
     connected: {
       google: !!user.google_id,
@@ -855,16 +856,18 @@ app.get('/dashboard/account', async (c) => {
       balance_usd: microdollarsToUsd(Math.max(0, usage.credit_balance || 0)),
     },
     usage: {
-      monthly_included_used_microdollars: Math.max(0, usage.included_month_cost || 0),
-      monthly_included_limit_microdollars: monthlyBudget,
-      monthly_included_used_usd: microdollarsToUsd(usage.included_month_cost),
-      monthly_included_limit_usd: microdollarsToUsd(monthlyBudget),
-      monthly_reset_at: nextMonthISO(month),
-      window_included_used_microdollars: Math.max(0, usage.included_window_cost || 0),
+      weekly_included_used_microdollars: usage.included_week_cost,
+      weekly_included_limit_microdollars: weeklyBudget,
+      weekly_included_used_usd: microdollarsToUsd(usage.included_week_cost),
+      weekly_included_limit_usd: microdollarsToUsd(weeklyBudget),
+      weekly_started: usage.week_started,
+      weekly_reset_at: usage.week_reset_at,
+      window_included_used_microdollars: usage.included_window_cost,
       window_included_limit_microdollars: windowBudget,
       window_included_used_usd: microdollarsToUsd(usage.included_window_cost),
       window_included_limit_usd: microdollarsToUsd(windowBudget),
-      window_reset_at: nextWindowISO(windowStart),
+      window_started: usage.window_started,
+      window_reset_at: usage.window_reset_at,
     },
     metering: {
       unit: 'microdollar',
@@ -1128,15 +1131,19 @@ const LUMEN_OUTPUT_PER_M_USD = 0.50
 // token counts ignore that input/output tokens are priced differently — cost
 // is the one unit that's actually meaningful for both the limiter and future
 // purchased credits.
-const FREE_MONTHLY_BUDGET = 500_000   // $0.50/mo
-const PRO_MONTHLY_BUDGET  = 5_000_000 // $5.00/mo, 10x
-const FREE_WINDOW_BUDGET  = 50_000    // $0.05 / 2hr
-const PRO_WINDOW_BUDGET   = 500_000   // $0.50 / 2hr, 10x
+//
+// Weekly figures are the former monthly budget ÷4 (a weekly cadence has ~4.3
+// billing periods per month, but 4 keeps the numbers clean): $0.50/mo →
+// $0.125/wk free, $5.00/mo → $1.25/wk pro.
+const FREE_WEEKLY_BUDGET = 125_000    // $0.125/wk
+const PRO_WEEKLY_BUDGET  = 1_250_000  // $1.25/wk, 10x
+const FREE_WINDOW_BUDGET = 50_000     // $0.05 / 2hr
+const PRO_WINDOW_BUDGET  = 500_000    // $0.50 / 2hr, 10x
 
 function limitsForPlan(plan) {
   return plan === 'pro'
-    ? { monthlyBudget: PRO_MONTHLY_BUDGET, windowBudget: PRO_WINDOW_BUDGET }
-    : { monthlyBudget: FREE_MONTHLY_BUDGET, windowBudget: FREE_WINDOW_BUDGET }
+    ? { weeklyBudget: PRO_WEEKLY_BUDGET, windowBudget: PRO_WINDOW_BUDGET }
+    : { weeklyBudget: FREE_WEEKLY_BUDGET, windowBudget: FREE_WINDOW_BUDGET }
 }
 
 function requestCostMicrodollars(inputTokens, outputTokens) {
@@ -1150,26 +1157,6 @@ function requestCostMicrodollars(inputTokens, outputTokens) {
 function estimateTokensFromChars(text) {
   return Math.ceil((text || '').length / 4)
 }
-const KEY_WINDOW_MS     = 2 * 60 * 60 * 1000
-
-function currentMonth() {
-  const d = new Date()
-  return `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, '0')}`
-}
-
-function nextMonthISO(month = currentMonth()) {
-  const [year, oneBasedMonth] = month.split('-').map(Number)
-  return new Date(Date.UTC(year, oneBasedMonth, 1)).toISOString()
-}
-
-function currentWindowISO() {
-  return new Date(Math.floor(Date.now() / KEY_WINDOW_MS) * KEY_WINDOW_MS).toISOString()
-}
-
-function nextWindowISO(windowStart = currentWindowISO()) {
-  return new Date(new Date(windowStart).getTime() + KEY_WINDOW_MS).toISOString()
-}
-
 async function proxyUpstream(body) {
   return proxyLumenRequest(body)
 }
@@ -1326,7 +1313,7 @@ app.post('/v1/chat/completions', async (c) => {
   }
 
   if (billedUser) {
-    const { monthlyBudget: planMonthlyBudget, windowBudget: planWindowBudget } = limitsForPlan(billedUser.plan)
+    const { weeklyBudget: planWeeklyBudget, windowBudget: planWindowBudget } = limitsForPlan(billedUser.plan)
 
     // Scope check — if key has scopes, requested model must be in the list
     if (keyRow?.scopes) {
@@ -1337,36 +1324,35 @@ app.post('/v1/chat/completions', async (c) => {
       }
     }
 
-    // Monthly budget — reset counters when month rolls over. request/
-    // month_requests still increment for display purposes (dashboard stat
-    // cards); month_cost is what's actually gated on.
-    const month = currentMonth()
-    const accountWindowStart = currentWindowISO()
-    const accountUsage = await ensureUsagePeriods(c.env.DB, billedUser.id, month, accountWindowStart)
-    if (keyRow && keyRow.month_start !== month) {
-      await c.env.DB.prepare('UPDATE api_keys SET month_requests=0, month_cost=0, month_start=? WHERE id=?').bind(month, keyRow.id).run()
+    // Calendar month for the api_keys display counters only (month_requests/
+    // month_cost — informational dashboard stats, not a gate). The actual
+    // weekly/window budgets below are lazy-start, not calendar-aligned.
+    const calendarMonth = new Date().toISOString().slice(0, 7)
+    const accountUsage = await readAccountUsage(c.env.DB, billedUser.id)
+    if (keyRow && keyRow.month_start !== calendarMonth) {
+      await c.env.DB.prepare('UPDATE api_keys SET month_requests=0, month_cost=0, month_start=? WHERE id=?').bind(calendarMonth, keyRow.id).run()
       keyRow.month_requests = 0
       keyRow.month_cost = 0
     }
-    if (!canStartUsage(accountUsage, planMonthlyBudget, planWindowBudget)
-        && accountUsage.included_month_cost >= planMonthlyBudget) {
+    if (!canStartUsage(accountUsage, planWeeklyBudget, planWindowBudget)
+        && accountUsage.included_week_cost >= planWeeklyBudget) {
       return json({ error: {
-        message: 'Monthly included usage reached and no API credits remain.',
+        message: 'Weekly included usage reached and no API credits remain.',
         type: 'rate_limit_error',
-        reset_at: nextMonthISO(month),
-        limit_usd: microdollarsToUsd(planMonthlyBudget),
-        used_usd: microdollarsToUsd(accountUsage.included_month_cost),
+        reset_at: accountUsage.week_reset_at,
+        limit_usd: microdollarsToUsd(planWeeklyBudget),
+        used_usd: microdollarsToUsd(accountUsage.included_week_cost),
         credit_balance_usd: microdollarsToUsd(Math.max(0, accountUsage.credit_balance || 0)),
       } }, 429)
     }
 
     // The two-hour included allowance is account-wide. Once either included
     // allowance is exhausted, a positive credit balance keeps requests open.
-    if (!canStartUsage(accountUsage, planMonthlyBudget, planWindowBudget)) {
+    if (!canStartUsage(accountUsage, planWeeklyBudget, planWindowBudget)) {
       return json({ error: {
         message: 'Two-hour included usage reached and no API credits remain.',
         type: 'rate_limit_error',
-        reset_at: nextWindowISO(accountWindowStart),
+        reset_at: accountUsage.window_reset_at,
         limit_usd: microdollarsToUsd(planWindowBudget),
         used_usd: microdollarsToUsd(accountUsage.included_window_cost),
         credit_balance_usd: microdollarsToUsd(Math.max(0, accountUsage.credit_balance || 0)),
@@ -1417,10 +1403,8 @@ app.post('/v1/chat/completions', async (c) => {
         c.env.DB,
         billedUser.id,
         cost,
-        planMonthlyBudget,
+        planWeeklyBudget,
         planWindowBudget,
-        month,
-        accountWindowStart,
       )
       if (keyRow) await Promise.all([
         c.env.DB.prepare(
@@ -1431,28 +1415,33 @@ app.post('/v1/chat/completions', async (c) => {
         ).bind(keyRow.id, today).run(),
       ])
 
-      const newMonthCost = chargedUsage.included_month_cost
-      const notifyThreshold = Math.floor(planMonthlyBudget * 0.8)
-      if (newMonthCost >= notifyThreshold && chargedUsage.usage_limit_notified !== month && c.env.RESEND_API_KEY) {
+      const newWeekCost = chargedUsage.included_week_cost
+      const notifyThreshold = Math.floor(planWeeklyBudget * 0.8)
+      // Dedupe key is the week's own start timestamp (not a calendar label —
+      // periods are lazy-start and per-account), so a fresh week can notify
+      // again even though the column value looks similar to a prior one.
+      if (newWeekCost >= notifyThreshold && chargedUsage.usage_limit_notified !== chargedUsage.usage_week && c.env.RESEND_API_KEY) {
         const claimed = await c.env.DB.prepare(
           `UPDATE users SET usage_limit_notified=?
-           WHERE id=? AND included_month_cost>=? AND COALESCE(usage_limit_notified,'')<>?`
-        ).bind(month, billedUser.id, notifyThreshold, month).run()
+           WHERE id=? AND included_week_cost>=? AND COALESCE(usage_limit_notified,'')<>?`
+        ).bind(chargedUsage.usage_week, billedUser.id, notifyThreshold, chargedUsage.usage_week).run()
         if (!claimed.meta?.changes) return
         const [limitUser, prefs] = await Promise.all([
           c.env.DB.prepare('SELECT email FROM users WHERE id=?').bind(billedUser.id).first(),
           c.env.DB.prepare('SELECT notify_limit FROM email_prefs WHERE user_id=?').bind(billedUser.id).first(),
         ])
         if (limitUser && prefs?.notify_limit !== 0) {
-          const usedUsd = (newMonthCost / 1_000_000).toFixed(2)
-          const budgetUsd = (planMonthlyBudget / 1_000_000).toFixed(2)
+          const usedUsd = (newWeekCost / 1_000_000).toFixed(2)
+          const budgetUsd = (planWeeklyBudget / 1_000_000).toFixed(2)
+          const resetAt = new Date(new Date(chargedUsage.usage_week).getTime() + WEEK_MS)
+          const resetLabel = resetAt.toLocaleDateString('en-US', { month: 'long', day: 'numeric', timeZone: 'UTC' })
           await sendEmail(c.env.RESEND_API_KEY, {
             to: limitUser.email,
-            subject: `You've used 80% of your $${budgetUsd} monthly Axion usage`,
+            subject: `You've used 80% of your $${budgetUsd} weekly Axion usage`,
             html: emailWrap(`
               <h2 style="margin:0 0 8px;color:#e8e8f0">Usage alert</h2>
-              <p style="color:#888;margin:0 0 16px">Your account${keyRow ? ` (API key <strong style="color:#e8e8f0">${keyRow.label}</strong>)` : ''} has used <strong style="color:#e8602c">$${usedUsd} / $${budgetUsd}</strong> this month (80%).</p>
-              <p style="color:#888;margin:0 0 24px">Your usage resets on the 1st of next month. If you need more, reply to this email.</p>
+              <p style="color:#888;margin:0 0 16px">Your account${keyRow ? ` (API key <strong style="color:#e8e8f0">${keyRow.label}</strong>)` : ''} has used <strong style="color:#e8602c">$${usedUsd} / $${budgetUsd}</strong> this week (80%).</p>
+              <p style="color:#888;margin:0 0 24px">Your usage resets ${resetLabel}. If you need more, reply to this email.</p>
               <a href="https://axion.amplifiedsmp.org/keys" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">View usage →</a>
               <p style="color:#555;font-size:12px;margin-top:24px">To turn off these alerts, visit your <a href="https://axion.amplifiedsmp.org/keys" style="color:#e8602c">account settings</a>.</p>
             `),
@@ -1598,7 +1587,7 @@ app.get('/admin/users', async (c) => {
 
   const { results } = await c.env.DB.prepare(
     `SELECT u.id, u.email, u.verified, u.created_at, u.plan,
-     u.credit_balance, u.included_month_cost, u.usage_month,
+     u.credit_balance, u.included_week_cost, u.usage_week,
      u.included_window_cost, u.usage_window,
      COUNT(k.id) as key_count, COALESCE(SUM(k.requests),0) as total_requests
      FROM users u LEFT JOIN api_keys k ON k.user_id=u.id AND k.revoked=0
@@ -1606,24 +1595,22 @@ app.get('/admin/users', async (c) => {
      ORDER BY CASE WHEN u.id=? THEN 0 ELSE 1 END, u.created_at DESC LIMIT 100`
   ).bind(user.id).all()
 
-  const month = currentMonth()
-  const windowStart = currentWindowISO()
   const users = results.map((row) => {
-    const { monthlyBudget, windowBudget } = limitsForPlan(row.plan)
-    const monthlyUsed = row.usage_month === month ? row.included_month_cost : 0
-    const windowUsed = row.usage_window === windowStart ? row.included_window_cost : 0
+    const { weeklyBudget, windowBudget } = limitsForPlan(row.plan)
+    const week = periodStatus(row.usage_week, row.included_week_cost, WEEK_MS)
+    const win = periodStatus(row.usage_window, row.included_window_cost, WINDOW_MS)
     return {
       ...row,
       plan: row.plan === 'pro' ? 'pro' : 'free',
       credit_balance: Math.max(0, row.credit_balance || 0),
-      included_month_cost: monthlyUsed,
-      included_window_cost: windowUsed,
-      monthly_limit: monthlyBudget,
+      included_week_cost: week.cost,
+      included_window_cost: win.cost,
+      weekly_limit: weeklyBudget,
       window_limit: windowBudget,
       credit_balance_usd: microdollarsToUsd(Math.max(0, row.credit_balance || 0)),
-      monthly_used_usd: microdollarsToUsd(monthlyUsed),
-      window_used_usd: microdollarsToUsd(windowUsed),
-      monthly_limit_usd: microdollarsToUsd(monthlyBudget),
+      weekly_used_usd: microdollarsToUsd(week.cost),
+      window_used_usd: microdollarsToUsd(win.cost),
+      weekly_limit_usd: microdollarsToUsd(weeklyBudget),
       window_limit_usd: microdollarsToUsd(windowBudget),
     }
   })
@@ -1643,42 +1630,46 @@ app.put('/admin/users/:id/account-testing', async (c) => {
 
   const targetId = c.req.param('id')
   const body = await c.req.json().catch(() => ({}))
-  const { plan, included_month_cost, included_window_cost, credit_balance } = body
+  const { plan, included_week_cost, included_window_cost, credit_balance } = body
   if (!['free', 'pro'].includes(plan)) return json({ error: 'Plan must be free or pro' }, 400)
-  if (![included_month_cost, included_window_cost, credit_balance].every(validAdminAccountValue)) {
+  if (![included_week_cost, included_window_cost, credit_balance].every(validAdminAccountValue)) {
     return json({ error: 'Usage and credit values must be whole microdollar amounts from $0 to $10,000' }, 400)
   }
 
   const previous = await c.env.DB.prepare(
-    `SELECT id, email, plan, credit_balance, included_month_cost, included_window_cost
+    `SELECT id, email, plan, credit_balance, included_week_cost, included_window_cost
      FROM users WHERE id=?`
   ).bind(targetId).first()
   if (!previous) return json({ error: 'User not found' }, 404)
 
-  const month = currentMonth()
-  const windowStart = currentWindowISO()
   const editId = crypto.randomUUID()
   const changedAt = Math.floor(Date.now() / 1000)
+  const nowIso = new Date(changedAt * 1000).toISOString()
+  // An override with cost 0 reads as "not started" (matches how a real,
+  // never-touched period looks); a nonzero override starts a fresh
+  // full-duration period right now, as if the admin's edit were a charge.
+  const weekStart = included_week_cost > 0 ? nowIso : ''
+  const windowStart = included_window_cost > 0 ? nowIso : ''
   await c.env.DB.batch([
     c.env.DB.prepare(
       `UPDATE users SET plan=?, plan_updated_at=?, credit_balance=?,
-       included_month_cost=?, usage_month=?, included_window_cost=?, usage_window=?,
+       included_week_cost=?, usage_week=?, included_window_cost=?, usage_window=?,
        usage_limit_notified=NULL WHERE id=?`
-    ).bind(plan, changedAt, credit_balance, included_month_cost, month,
+    ).bind(plan, changedAt, credit_balance, included_week_cost, weekStart,
       included_window_cost, windowStart, targetId),
     c.env.DB.prepare(
       `INSERT INTO admin_account_edits
        (id, user_id, admin_email, previous_plan, new_plan,
-        previous_month_cost, new_month_cost, previous_window_cost, new_window_cost,
+        previous_week_cost, new_week_cost, previous_window_cost, new_window_cost,
         previous_credit_balance, new_credit_balance, created_at)
        VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`
     ).bind(editId, targetId, admin.email, previous.plan || 'free', plan,
-      previous.included_month_cost || 0, included_month_cost,
+      previous.included_week_cost || 0, included_week_cost,
       previous.included_window_cost || 0, included_window_cost,
       previous.credit_balance || 0, credit_balance, changedAt),
   ])
 
-  const { monthlyBudget, windowBudget } = limitsForPlan(plan)
+  const { weeklyBudget, windowBudget } = limitsForPlan(plan)
   return json({
     ok: true,
     user: {
@@ -1686,15 +1677,15 @@ app.put('/admin/users/:id/account-testing', async (c) => {
       email: previous.email,
       plan,
       credit_balance,
-      included_month_cost,
+      included_week_cost,
       included_window_cost,
-      monthly_limit: monthlyBudget,
+      weekly_limit: weeklyBudget,
       window_limit: windowBudget,
       blocked_without_credits: !canStartUsage({
         credit_balance,
-        included_month_cost,
+        included_week_cost,
         included_window_cost,
-      }, monthlyBudget, windowBudget),
+      }, weeklyBudget, windowBudget),
     },
   })
 })

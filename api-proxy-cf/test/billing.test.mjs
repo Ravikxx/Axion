@@ -8,7 +8,10 @@ import {
   chargeAccountUsage,
   createCreditCode,
   normalizeCreditCode,
+  readAccountUsage,
   redeemCreditCode,
+  WEEK_MS,
+  WINDOW_MS,
 } from '../src/billing.js'
 import app from '../src/index.js'
 
@@ -46,8 +49,8 @@ class D1TestDatabase {
         github_id TEXT,
         discord_id TEXT,
         credit_balance INTEGER NOT NULL DEFAULT 0,
-        included_month_cost INTEGER NOT NULL DEFAULT 0,
-        usage_month TEXT NOT NULL DEFAULT '',
+        included_week_cost INTEGER NOT NULL DEFAULT 0,
+        usage_week TEXT NOT NULL DEFAULT '',
         included_window_cost INTEGER NOT NULL DEFAULT 0,
         usage_window TEXT NOT NULL DEFAULT '',
         usage_limit_notified TEXT DEFAULT NULL,
@@ -103,8 +106,8 @@ class D1TestDatabase {
         admin_email TEXT NOT NULL,
         previous_plan TEXT NOT NULL,
         new_plan TEXT NOT NULL,
-        previous_month_cost INTEGER NOT NULL,
-        new_month_cost INTEGER NOT NULL,
+        previous_week_cost INTEGER NOT NULL,
+        new_week_cost INTEGER NOT NULL,
         previous_window_cost INTEGER NOT NULL,
         new_window_cost INTEGER NOT NULL,
         previous_credit_balance INTEGER NOT NULL,
@@ -245,34 +248,75 @@ test('a compact variable code accepts exact mills and can be reused without a gl
   assert.equal(db.prepare('SELECT redemption_count FROM credit_codes').first().redemption_count, 2)
 })
 
-test('included usage is consumed before credits and resets by account period', async () => {
+test('included usage is consumed before credits, and each period starts fresh on the account\'s own first use after it elapses', async () => {
   const db = new D1TestDatabase()
   addUser(db, 'u1')
   db.prepare('UPDATE users SET credit_balance=? WHERE id=?').bind(100_000, 'u1').run()
 
-  let usage = await chargeAccountUsage(db, 'u1', 30_000, 500_000, 50_000, '2026-07', 'window-a')
-  assert.equal(usage.included_month_cost, 30_000)
+  const t0 = Date.parse('2026-07-01T00:00:00.000Z')
+  let usage = await chargeAccountUsage(db, 'u1', 30_000, 500_000, 50_000, t0)
+  assert.equal(usage.included_week_cost, 30_000)
   assert.equal(usage.included_window_cost, 30_000)
   assert.equal(usage.credit_balance, 100_000)
+  assert.equal(usage.usage_week, new Date(t0).toISOString())
 
-  usage = await chargeAccountUsage(db, 'u1', 30_000, 500_000, 50_000, '2026-07', 'window-a')
-  assert.equal(usage.included_month_cost, 50_000)
+  usage = await chargeAccountUsage(db, 'u1', 30_000, 500_000, 50_000, t0 + 1_000)
+  assert.equal(usage.included_week_cost, 50_000) // capped by the smaller window budget
   assert.equal(usage.included_window_cost, 50_000)
   assert.equal(usage.credit_balance, 90_000)
 
-  usage = await chargeAccountUsage(db, 'u1', 100_000, 500_000, 50_000, '2026-07', 'window-a')
+  usage = await chargeAccountUsage(db, 'u1', 100_000, 500_000, 50_000, t0 + 2_000)
   assert.equal(usage.credit_balance, -10_000)
   assert.equal(canStartUsage(usage, 500_000, 50_000), false)
 
-  usage = await chargeAccountUsage(db, 'u1', 10_000, 500_000, 50_000, '2026-07', 'window-b')
-  assert.equal(usage.included_month_cost, 60_000)
+  // Window has fully elapsed (2h+) but the week hasn't — window alone resets.
+  const afterWindow = t0 + WINDOW_MS + 1_000
+  usage = await chargeAccountUsage(db, 'u1', 10_000, 500_000, 50_000, afterWindow)
+  assert.equal(usage.included_week_cost, 60_000)
   assert.equal(usage.included_window_cost, 10_000)
   assert.equal(usage.credit_balance, -10_000)
   assert.equal(canStartUsage(usage, 500_000, 50_000), true)
 
-  usage = await chargeAccountUsage(db, 'u1', 5_000, 500_000, 50_000, '2026-08', 'window-c')
-  assert.equal(usage.included_month_cost, 5_000)
+  // Week has now also fully elapsed (7d+ since t0) — both start fresh from this charge.
+  const afterWeek = t0 + WEEK_MS + 1_000
+  usage = await chargeAccountUsage(db, 'u1', 5_000, 500_000, 50_000, afterWeek)
+  assert.equal(usage.included_week_cost, 5_000)
   assert.equal(usage.included_window_cost, 5_000)
+  assert.equal(usage.usage_week, new Date(afterWeek).toISOString())
+})
+
+test('a fresh account shows periods as not started, with no reset countdown, until first use', async () => {
+  const db = new D1TestDatabase()
+  const secret = 'not-started-secret'
+  addUser(db, 'fresh')
+  const token = await sessionToken('fresh', secret)
+  const response = await app.request('/dashboard/account', {
+    headers: { Authorization: `Bearer ${token}` },
+  }, { DB: db, TOKEN_SECRET: secret })
+  const body = await response.json()
+
+  assert.equal(body.usage.weekly_included_used_microdollars, 0)
+  assert.equal(body.usage.weekly_started, false)
+  assert.equal(body.usage.weekly_reset_at, null)
+  assert.equal(body.usage.window_included_used_microdollars, 0)
+  assert.equal(body.usage.window_started, false)
+  assert.equal(body.usage.window_reset_at, null)
+})
+
+test('an elapsed period reads back as reset without writing to the database', async () => {
+  const db = new D1TestDatabase()
+  addUser(db, 'u1')
+  const longAgo = new Date(Date.now() - 8 * 24 * 60 * 60 * 1000).toISOString() // 8 days ago, past the 7-day week
+  db.prepare('UPDATE users SET included_week_cost=?, usage_week=? WHERE id=?').bind(99_000, longAgo, 'u1').run()
+
+  const usage = await readAccountUsage(db, 'u1')
+  assert.equal(usage.included_week_cost, 0)
+  assert.equal(usage.week_started, false)
+  assert.equal(usage.week_reset_at, null)
+
+  const raw = db.prepare('SELECT included_week_cost, usage_week FROM users WHERE id=?').bind('u1').first()
+  assert.equal(raw.included_week_cost, 99_000) // a read never mutates — only a charge starts a new period
+  assert.equal(raw.usage_week, longAgo)
 })
 
 test('Square checkout explicitly enables Marketing coupon entry', () => {
@@ -390,13 +434,13 @@ test('admin account testing overrides enforce plan limits without rewriting requ
   const denied = await app.request('/admin/users/member/account-testing', {
     method: 'PUT',
     headers: { Authorization: `Bearer ${memberToken}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ plan: 'pro', included_month_cost: 0, included_window_cost: 0, credit_balance: 0 }),
+    body: JSON.stringify({ plan: 'pro', included_week_cost: 0, included_window_cost: 0, credit_balance: 0 }),
   }, env)
   assert.equal(denied.status, 403)
 
   const invalid = await app.request('/admin/users/member/account-testing', {
     method: 'PUT', headers,
-    body: JSON.stringify({ plan: 'paid', included_month_cost: -1, included_window_cost: 0, credit_balance: 0 }),
+    body: JSON.stringify({ plan: 'paid', included_week_cost: -1, included_window_cost: 0, credit_balance: 0 }),
   }, env)
   assert.equal(invalid.status, 400)
 
@@ -404,7 +448,7 @@ test('admin account testing overrides enforce plan limits without rewriting requ
     method: 'PUT', headers,
     body: JSON.stringify({
       plan: 'pro',
-      included_month_cost: 5_000_000,
+      included_week_cost: 1_250_000,
       included_window_cost: 500_000,
       credit_balance: 0,
     }),
@@ -422,13 +466,13 @@ test('admin account testing overrides enforce plan limits without rewriting requ
   assert.equal(listResponse.status, 200)
   const listed = (await listResponse.json()).users.find(user => user.id === 'member')
   assert.equal(listed.plan, 'pro')
-  assert.equal(listed.monthly_used_usd, 5)
+  assert.equal(listed.weekly_used_usd, 1.25)
   assert.equal(listed.window_used_usd, 0.5)
   assert.equal(listed.total_requests, 1234)
 
   const reset = await app.request('/admin/users/member/account-testing', {
     method: 'PUT', headers,
-    body: JSON.stringify({ plan: 'free', included_month_cost: 0, included_window_cost: 0, credit_balance: 0 }),
+    body: JSON.stringify({ plan: 'free', included_week_cost: 0, included_window_cost: 0, credit_balance: 0 }),
   }, env)
   assert.equal(reset.status, 200)
   assert.equal((await reset.json()).user.blocked_without_credits, false)
@@ -449,7 +493,7 @@ test('admin can exhaust its own included allowance while keeping one cent of ext
     headers: { Authorization: `Bearer ${adminToken}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({
       plan: 'pro',
-      included_month_cost: 5_000_000,
+      included_week_cost: 1_250_000,
       included_window_cost: 500_000,
       credit_balance: 10_000,
     }),
@@ -469,10 +513,10 @@ test('admin can exhaust its own included allowance while keeping one cent of ext
   assert.equal(usersBody.users[0].id, 'admin')
 
   const account = db.prepare(
-    'SELECT plan, included_month_cost, included_window_cost, credit_balance FROM users WHERE id=?'
+    'SELECT plan, included_week_cost, included_window_cost, credit_balance FROM users WHERE id=?'
   ).bind('admin').first()
   assert.equal(account.plan, 'pro')
-  assert.equal(account.included_month_cost, 5_000_000)
+  assert.equal(account.included_week_cost, 1_250_000)
   assert.equal(account.included_window_cost, 500_000)
   assert.equal(account.credit_balance, 10_000)
   assert.equal(
@@ -485,14 +529,11 @@ test('account dashboard exposes exact metered microdollars without losing small 
   const db = new D1TestDatabase()
   const secret = 'exact-usage-secret'
   addUser(db, 'exact-user')
-  const now = new Date()
-  const month = `${now.getUTCFullYear()}-${String(now.getUTCMonth() + 1).padStart(2, '0')}`
-  const windowMs = 2 * 60 * 60 * 1000
-  const windowStart = new Date(Math.floor(Date.now() / windowMs) * windowMs).toISOString()
+  const startedAt = new Date(Date.now() - 1_000).toISOString() // active, well within both durations
   db.prepare(
-    `UPDATE users SET credit_balance=?, included_month_cost=?, usage_month=?,
+    `UPDATE users SET credit_balance=?, included_week_cost=?, usage_week=?,
                       included_window_cost=?, usage_window=? WHERE id=?`
-  ).bind(806, 194, month, 194, windowStart, 'exact-user').run()
+  ).bind(806, 194, startedAt, 194, startedAt, 'exact-user').run()
 
   const token = await sessionToken('exact-user', secret)
   const response = await app.request('/dashboard/account', {
@@ -503,11 +544,13 @@ test('account dashboard exposes exact metered microdollars without losing small 
   assert.equal(response.status, 200)
   assert.equal(body.credits.balance_microdollars, 806)
   assert.equal(body.credits.balance_usd, 0.0008)
-  assert.equal(body.usage.monthly_included_used_microdollars, 194)
-  assert.equal(body.usage.monthly_included_limit_microdollars, 500_000)
-  assert.equal(body.usage.monthly_included_used_usd, 0.0002)
+  assert.equal(body.usage.weekly_included_used_microdollars, 194)
+  assert.equal(body.usage.weekly_included_limit_microdollars, 125_000)
+  assert.equal(body.usage.weekly_included_used_usd, 0.0002)
+  assert.equal(body.usage.weekly_started, true)
   assert.equal(body.usage.window_included_used_microdollars, 194)
   assert.equal(body.usage.window_included_limit_microdollars, 50_000)
+  assert.equal(body.usage.window_started, true)
   assert.deepEqual(body.metering, {
     unit: 'microdollar',
     usd_per_microdollar: 0.000001,
@@ -528,7 +571,7 @@ test('account deletion removes audits, rate limits, and every key in an owned or
   db.prepare(
     `INSERT INTO admin_account_edits
      (id, user_id, admin_email, previous_plan, new_plan,
-      previous_month_cost, new_month_cost, previous_window_cost, new_window_cost,
+      previous_week_cost, new_week_cost, previous_window_cost, new_window_cost,
       previous_credit_balance, new_credit_balance, created_at)
      VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`
   ).bind('edit-1', 'member', 'admin@example.com', 'free', 'pro', 0, 1, 0, 1, 0, 0, 1).run()
@@ -554,15 +597,6 @@ test('account deletion removes audits, rate limits, and every key in an owned or
 })
 
 // ── /v1/chat/completions account billing ────────────────────────────────────
-
-const WINDOW_MS = 2 * 60 * 60 * 1000
-
-function currentPeriods() {
-  return {
-    month: new Date().toISOString().slice(0, 7),
-    windowStart: new Date(Math.floor(Date.now() / WINDOW_MS) * WINDOW_MS).toISOString(),
-  }
-}
 
 function lumenFetchStub(usage, content = 'Hello from Lumen') {
   const completePayload = JSON.stringify([{
@@ -615,9 +649,9 @@ test('session-authenticated completions are charged to the account, not the free
     await settle()
 
     // 1000 in × $0.15/M + 2000 out × $0.50/M = 150 + 1000 = 1150 microdollars
-    const user = db.prepare('SELECT included_month_cost, included_window_cost, credit_balance FROM users WHERE id=?')
+    const user = db.prepare('SELECT included_week_cost, included_window_cost, credit_balance FROM users WHERE id=?')
       .bind('member').first()
-    assert.equal(user.included_month_cost, 1150)
+    assert.equal(user.included_week_cost, 1150)
     assert.equal(user.included_window_cost, 1150)
     assert.equal(user.credit_balance, 0)
     // Free per-IP tier untouched — this was billed traffic.
@@ -644,10 +678,10 @@ test('exhausted allowances draw down credits and then block with 429', async () 
   const db = new D1TestDatabase()
   const secret = 'credit-drawdown-secret'
   addUser(db, 'member')
-  const { month, windowStart } = currentPeriods()
+  const activeStart = new Date(Date.now() - 1_000).toISOString() // active period, already at cap
   db.prepare(
-    'UPDATE users SET included_month_cost=500000, usage_month=?, included_window_cost=50000, usage_window=?, credit_balance=1000 WHERE id=?'
-  ).bind(month, windowStart, 'member').run()
+    'UPDATE users SET included_week_cost=125000, usage_week=?, included_window_cost=50000, usage_window=?, credit_balance=1000 WHERE id=?'
+  ).bind(activeStart, activeStart, 'member').run()
   const token = await sessionToken('member', secret)
   const env = { DB: db, TOKEN_SECRET: secret }
   const realFetch = globalThis.fetch
@@ -662,9 +696,9 @@ test('exhausted allowances draw down credits and then block with 429', async () 
     assert.equal(okResponse.status, 200)
     await settle()
 
-    const user = db.prepare('SELECT included_month_cost, included_window_cost, credit_balance FROM users WHERE id=?')
+    const user = db.prepare('SELECT included_week_cost, included_window_cost, credit_balance FROM users WHERE id=?')
       .bind('member').first()
-    assert.equal(user.included_month_cost, 500000)
+    assert.equal(user.included_week_cost, 125000)
     assert.equal(user.included_window_cost, 50000)
     assert.equal(user.credit_balance, 1000 - 1150)
 
@@ -699,8 +733,8 @@ test('streamed completions bill with the upstream usage object, not char estimat
     await settle()
 
     // 400 × $0.15/M + 600 × $0.50/M = 60 + 300 = 360 microdollars
-    const user = db.prepare('SELECT included_month_cost FROM users WHERE id=?').bind('member').first()
-    assert.equal(user.included_month_cost, 360)
+    const user = db.prepare('SELECT included_week_cost FROM users WHERE id=?').bind('member').first()
+    assert.equal(user.included_week_cost, 360)
   } finally {
     globalThis.fetch = realFetch
   }

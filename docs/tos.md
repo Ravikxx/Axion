@@ -20,8 +20,8 @@ The Service provides access to AI models and developer tools. Lumen requests are
 ## Usage, plans, and billing
 
 - Without an API key, Lumen is limited to 50 requests per day per IP address.
-- A Free account includes an account-wide $0.50 monthly usage allowance and a $0.05 allowance per rolling two-hour window, with up to three active API keys.
-- Pro costs $7 per month through Square and includes an account-wide $5 monthly usage allowance and a $0.50 allowance per rolling two-hour window, with unlimited active API keys.
+- A Free account includes an account-wide $0.125 weekly usage allowance and a $0.05 allowance per rolling two-hour window, with up to three active API keys. Both allowances are lazy-start: a period doesn't begin, or count down toward reset, until your account's first chargeable request after the previous one has fully elapsed.
+- Pro costs $7 per month through Square and includes an account-wide $1.25 weekly usage allowance and a $0.50 allowance per rolling two-hour window, with unlimited active API keys.
 - Included usage is measured from input and output tokens. The current accounting rates are $0.15 per million input tokens and $0.50 per million output tokens.
 - Redeemable API credits are used after the included allowance. Credit balances and USD usage values are service accounting units, have no cash value, and cannot be withdrawn. Variable-value administrative credit codes may be redeemed in $0.001 increments.
 - Square processes checkout and card details. Axion stores the identifiers and subscription status needed to provide the plan, but does not receive or store your full card number.
