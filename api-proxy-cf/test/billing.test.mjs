@@ -435,6 +435,52 @@ test('admin account testing overrides enforce plan limits without rewriting requ
   assert.equal(db.prepare('SELECT COUNT(*) AS count FROM admin_account_edits').first().count, 2)
 })
 
+test('admin can exhaust its own included allowance while keeping one cent of extra credits', async () => {
+  const db = new D1TestDatabase()
+  const secret = 'self-account-testing-secret'
+  addUser(db, 'admin')
+  db.prepare('INSERT INTO admin_allowlist (email, added_by) VALUES (?,?)')
+    .bind('admin@example.com', 'test')
+    .run()
+  const adminToken = await sessionToken('admin', secret)
+
+  const response = await app.request('/admin/users/admin/account-testing', {
+    method: 'PUT',
+    headers: { Authorization: `Bearer ${adminToken}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      plan: 'pro',
+      included_month_cost: 5_000_000,
+      included_window_cost: 500_000,
+      credit_balance: 10_000,
+    }),
+  }, { DB: db, TOKEN_SECRET: secret })
+
+  assert.equal(response.status, 200)
+  const body = await response.json()
+  assert.equal(body.user.plan, 'pro')
+  assert.equal(body.user.blocked_without_credits, false)
+
+  const usersResponse = await app.request('/admin/users', {
+    headers: { Authorization: `Bearer ${adminToken}` },
+  }, { DB: db, TOKEN_SECRET: secret })
+  assert.equal(usersResponse.status, 200)
+  const usersBody = await usersResponse.json()
+  assert.equal(usersBody.current_user_id, 'admin')
+  assert.equal(usersBody.users[0].id, 'admin')
+
+  const account = db.prepare(
+    'SELECT plan, included_month_cost, included_window_cost, credit_balance FROM users WHERE id=?'
+  ).bind('admin').first()
+  assert.equal(account.plan, 'pro')
+  assert.equal(account.included_month_cost, 5_000_000)
+  assert.equal(account.included_window_cost, 500_000)
+  assert.equal(account.credit_balance, 10_000)
+  assert.equal(
+    db.prepare('SELECT COUNT(*) AS count FROM admin_account_edits WHERE user_id=?').bind('admin').first().count,
+    1,
+  )
+})
+
 test('account deletion removes audits, rate limits, and every key in an owned organization', async () => {
   const db = new D1TestDatabase()
   const secret = 'delete-account-secret'

@@ -157,7 +157,7 @@
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 12px;
-      overflow: hidden;
+      overflow-x: auto;
     }
 
     table { width: 100%; border-collapse: collapse; }
@@ -246,6 +246,63 @@
     .invite-msg { font-size: 13px; margin-bottom: 12px; padding: 10px 14px; border-radius: 8px; }
     .invite-msg.success { background: rgba(52,211,153,.1); color: var(--green); }
     .invite-msg.error { background: rgba(248,113,113,.1); color: var(--red); }
+
+    /* ── Account testing editor ── */
+    .account-email { font-weight: 600; }
+    .account-meta { color: var(--muted); font-size: 11px; margin-top: 2px; }
+    .usage-value { white-space: nowrap; font-variant-numeric: tabular-nums; }
+    .usage-value small { color: var(--muted); }
+    .account-row-actions { display: flex; gap: 7px; flex-wrap: wrap; min-width: 220px; }
+    .accounts-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 14px; }
+    .accounts-heading h2 { margin-bottom: 4px; }
+    .accounts-heading p { color: var(--muted); font-size: 13px; }
+    .plan-action { border-color: rgba(184,162,125,.45); color: var(--accent); }
+    .plan-action:hover { background: rgba(184,162,125,.1); }
+    .account-dialog {
+      width: min(560px, calc(100vw - 32px)); max-height: calc(100vh - 32px);
+      margin: auto; padding: 0; color: var(--text); background: var(--surface);
+      border: 1px solid var(--border); border-radius: 16px; box-shadow: 0 24px 80px rgba(0,0,0,.55);
+    }
+    .account-dialog::backdrop { background: rgba(0,0,0,.72); backdrop-filter: blur(3px); }
+    .account-dialog-inner { padding: 26px; overflow-y: auto; }
+    .account-dialog-head { display: flex; justify-content: space-between; gap: 16px; margin-bottom: 4px; }
+    .account-dialog-head h2 { margin: 0; }
+    .dialog-close { background: none; color: var(--muted); border: 0; cursor: pointer; font-size: 22px; line-height: 1; }
+    .dialog-close:hover { color: var(--text); }
+    .account-dialog-email { color: var(--muted); margin-bottom: 18px; overflow-wrap: anywhere; }
+    .account-warning {
+      padding: 11px 13px; margin-bottom: 18px; border-radius: 8px;
+      color: var(--muted); background: rgba(255,255,255,.035); border: 1px solid var(--border); font-size: 12px;
+    }
+    .account-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .account-plan-field, .account-credit-field { grid-column: 1 / -1; }
+    .account-field label { display: block; color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .04em; margin-bottom: 5px; }
+    .account-field input {
+      width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
+      padding: 10px 11px; color: var(--text); font: inherit; outline: none;
+    }
+    .account-field input:focus { border-color: var(--accent); }
+    .plan-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .plan-option {
+      display: flex; flex-direction: column; align-items: flex-start; gap: 3px;
+      padding: 12px 13px; color: var(--text); background: var(--bg);
+      border: 1px solid var(--border); border-radius: 9px; cursor: pointer; text-align: left;
+    }
+    .plan-option:hover { border-color: var(--muted); }
+    .plan-option.is-selected { border-color: var(--accent); background: rgba(184,162,125,.1); }
+    .plan-option strong { font-size: 13px; }
+    .plan-option span { color: var(--muted); font-size: 11px; }
+    .field-hint { color: var(--muted); font-size: 11px; margin-top: 4px; }
+    .account-actions { display: flex; justify-content: space-between; gap: 12px; margin-top: 22px; flex-wrap: wrap; }
+    .account-actions-left, .account-actions-right { display: flex; gap: 8px; flex-wrap: wrap; }
+    .account-save { width: auto; margin: 0; }
+    @media (max-width: 620px) {
+      main { padding: 24px 16px; }
+      .account-fields, .plan-options { grid-template-columns: 1fr; }
+      .accounts-heading { flex-direction: column; align-items: stretch; }
+      .account-actions, .account-actions-left, .account-actions-right { width: 100%; }
+      .account-actions button { flex: 1; }
+    }
 
     /* ── Loading ── */
     .loading { color: var(--muted); padding: 24px; text-align: center; }
@@ -373,20 +430,25 @@
 
     <!-- Users -->
     <section>
-      <h2>Users</h2>
+      <div class="accounts-heading">
+        <div><h2>Accounts</h2><p>Change an account's plan, included allowance remaining, and extra usage credits for live limit testing.</p></div>
+        <button class="btn-outline" id="edit-my-account" type="button" onclick="openAccountEditor(_currentAdminUserId)" disabled>Edit my account</button>
+      </div>
       <div class="table-wrap">
-        <table>
+        <table style="min-width:920px">
           <thead>
             <tr>
-              <th>Email</th>
-              <th>Verified</th>
-              <th>Keys</th>
-              <th>Total Req</th>
-              <th>Joined</th>
+              <th>Account</th>
+              <th>Plan</th>
+              <th>Monthly left</th>
+              <th>2-hour left</th>
+              <th>Credits</th>
+              <th>Total requests</th>
+              <th></th>
             </tr>
           </thead>
           <tbody id="users-body">
-            <tr class="empty-row"><td colspan="5">Loading…</td></tr>
+            <tr class="empty-row"><td colspan="7">Loading…</td></tr>
           </tbody>
         </table>
       </div>
@@ -443,10 +505,70 @@
   </main>
 </div>
 
+<dialog class="account-dialog" id="account-editor" aria-labelledby="account-editor-title">
+  <div class="account-dialog-inner">
+    <div class="account-dialog-head">
+      <h2 id="account-editor-title">Edit account limits</h2>
+      <button class="dialog-close" type="button" onclick="closeAccountEditor()" aria-label="Close">×</button>
+    </div>
+    <div class="account-dialog-email" id="account-editor-email"></div>
+    <div class="account-warning">
+      Changes apply to live API enforcement. Switching the testing plan does not create or cancel a Square subscription, and these controls do not rewrite request history.
+    </div>
+    <div id="account-editor-msg" class="invite-msg" style="display:none"></div>
+    <div class="account-fields">
+      <div class="account-field account-plan-field">
+        <label>Account plan</label>
+        <input id="account-plan" type="hidden" value="free">
+        <div class="plan-options" role="group" aria-label="Account plan">
+          <button class="plan-option" id="account-plan-free" type="button" onclick="setAccountPlan('free')">
+            <strong>Free</strong><span>$0.50 monthly · $0.05 per two hours</span>
+          </button>
+          <button class="plan-option" id="account-plan-pro" type="button" onclick="setAccountPlan('pro')">
+            <strong>Pro</strong><span>$5.00 monthly · $0.50 per two hours</span>
+          </button>
+        </div>
+      </div>
+      <div class="account-field account-credit-field">
+        <label for="account-credits">Extra usage credits (USD)</label>
+        <input id="account-credits" type="number" min="0" max="10000" step="0.000001">
+        <div class="field-hint">Keep this at $0.01 to leave exactly one cent of extra usage.</div>
+      </div>
+      <div class="account-field">
+        <label for="account-month-remaining">Monthly allowance remaining (USD)</label>
+        <input id="account-month-remaining" type="number" min="0" step="0.000001">
+        <div class="field-hint" id="account-month-hint"></div>
+      </div>
+      <div class="account-field">
+        <label for="account-window-remaining">Current 2-hour allowance remaining (USD)</label>
+        <input id="account-window-remaining" type="number" min="0" step="0.000001">
+        <div class="field-hint" id="account-window-hint"></div>
+      </div>
+    </div>
+    <div class="account-actions">
+      <div class="account-actions-left">
+        <button class="btn-outline" type="button" onclick="setNoAllowanceLeft()">Set allowance left to $0</button>
+        <button class="btn-outline" type="button" onclick="restoreFullAllowance()">Restore full allowance</button>
+      </div>
+      <div class="account-actions-right">
+        <button class="btn-outline" type="button" onclick="closeAccountEditor()">Cancel</button>
+        <button class="btn btn-primary account-save" id="account-save" type="button" onclick="saveAccountOverride()">Save account changes</button>
+      </div>
+    </div>
+  </div>
+</dialog>
+
 <script>
   const API = 'https://api.amplifiedsmp.org'
   const OWNER = 'fearlessaviatorclan@gmail.com'
   let _token = null
+  let _adminUsers = []
+  let _editingUserId = null
+  let _currentAdminUserId = null
+  const ACCOUNT_LIMITS = {
+    free: { monthly: 500000, window: 50000 },
+    pro: { monthly: 5000000, window: 500000 },
+  }
 
   // ── Auth ──────────────────────────────────────────────────────────────────
   let authMode = 'signin'
@@ -606,20 +728,174 @@
   async function loadUsers() {
     const res = await apiFetch('/admin/users')
     if (!res.ok) return
-    const { users } = await res.json()
+    const { users, current_user_id } = await res.json()
+    _adminUsers = users || []
+    _currentAdminUserId = current_user_id || null
+    document.getElementById('edit-my-account').disabled = !_currentAdminUserId
     const tbody = document.getElementById('users-body')
     if (!users || !users.length) {
-      tbody.innerHTML = '<tr class="empty-row"><td colspan="5">No users yet</td></tr>'
+      tbody.innerHTML = '<tr class="empty-row"><td colspan="7">No users yet</td></tr>'
       return
     }
     tbody.innerHTML = users.map(u => `
       <tr>
-        <td>${esc(u.email)}</td>
-        <td>${u.verified ? '<span class="badge badge-green">Verified</span>' : '<span class="badge badge-red">Unverified</span>'}</td>
-        <td>${u.key_count}</td>
+        <td>
+          <div class="account-email">${esc(u.email)}</div>
+          <div class="account-meta">${u.verified ? 'Verified' : 'Unverified'} · ${fmt(u.key_count)} key${Number(u.key_count) === 1 ? '' : 's'}</div>
+        </td>
+        <td><span class="badge ${u.plan === 'pro' ? 'badge-green' : 'badge-owner'}">${u.plan === 'pro' ? 'Pro' : 'Free'}</span></td>
+        <td class="usage-value">${formatUsdMicro(allowanceRemaining(u.monthly_limit, u.included_month_cost))} <small>/ ${formatUsdMicro(u.monthly_limit)}</small></td>
+        <td class="usage-value">${formatUsdMicro(allowanceRemaining(u.window_limit, u.included_window_cost))} <small>/ ${formatUsdMicro(u.window_limit)}</small></td>
+        <td class="usage-value">${formatUsdMicro(u.credit_balance)}</td>
         <td>${fmt(u.total_requests)}</td>
-        <td style="color:var(--muted)">${fmtDate(u.created_at)}</td>
+        <td><div class="account-row-actions">
+          <button class="btn-outline" type="button" onclick="openAccountEditor('${u.id}')">Edit usage</button>
+          <button class="btn-outline plan-action" type="button" onclick="openAccountEditor('${u.id}', '${u.plan === 'pro' ? 'free' : 'pro'}')">${u.plan === 'pro' ? 'Switch to Free' : 'Upgrade to Pro'}</button>
+        </div></td>
       </tr>`).join('')
+  }
+
+  function allowanceRemaining(limit, used) {
+    return Math.max(0, (Number(limit) || 0) - (Number(used) || 0))
+  }
+
+  function usageFromRemaining(limit, remaining) {
+    const safeLimit = Math.max(0, Number(limit) || 0)
+    const safeRemaining = Math.min(safeLimit, Math.max(0, Number(remaining) || 0))
+    return safeLimit - safeRemaining
+  }
+
+  function formatUsdMicro(value) {
+    return `$${((Number(value) || 0) / 1000000).toFixed(2)}`
+  }
+
+  function microToInput(value) {
+    return ((Number(value) || 0) / 1000000).toFixed(6).replace(/\.?0+$/, '') || '0'
+  }
+
+  function inputToMicro(id) {
+    const value = Number(document.getElementById(id).value)
+    if (!Number.isFinite(value) || value < 0 || value > 10000) return null
+    return Math.round(value * 1000000)
+  }
+
+  function openAccountEditor(id, requestedPlan = null) {
+    const user = _adminUsers.find(item => item.id === id)
+    if (!user) return
+    _editingUserId = id
+    const currentPlan = user.plan === 'pro' ? 'pro' : 'free'
+    const selectedPlan = requestedPlan === 'pro' || requestedPlan === 'free' ? requestedPlan : currentPlan
+    const selectedLimits = ACCOUNT_LIMITS[selectedPlan]
+    document.getElementById('account-editor-email').textContent = user.email
+    document.getElementById('account-plan').value = selectedPlan
+    document.getElementById('account-credits').value = microToInput(user.credit_balance)
+    document.getElementById('account-month-remaining').value = microToInput(allowanceRemaining(selectedLimits.monthly, user.included_month_cost))
+    document.getElementById('account-window-remaining').value = microToInput(allowanceRemaining(selectedLimits.window, user.included_window_cost))
+    document.getElementById('account-editor-msg').style.display = 'none'
+    syncAccountLimits()
+    document.getElementById('account-editor').showModal()
+  }
+
+  function closeAccountEditor() {
+    document.getElementById('account-editor').close()
+    _editingUserId = null
+  }
+
+  function setAccountPlan(plan) {
+    if (!ACCOUNT_LIMITS[plan]) return
+    const planInput = document.getElementById('account-plan')
+    const previousPlan = ACCOUNT_LIMITS[planInput.value] ? planInput.value : plan
+    const previousLimits = ACCOUNT_LIMITS[previousPlan]
+    const currentMonthRemaining = inputToMicro('account-month-remaining')
+    const currentWindowRemaining = inputToMicro('account-window-remaining')
+    const monthUsed = usageFromRemaining(previousLimits.monthly, currentMonthRemaining)
+    const windowUsed = usageFromRemaining(previousLimits.window, currentWindowRemaining)
+    const nextLimits = ACCOUNT_LIMITS[plan]
+
+    planInput.value = plan
+    document.getElementById('account-month-remaining').value = microToInput(allowanceRemaining(nextLimits.monthly, monthUsed))
+    document.getElementById('account-window-remaining').value = microToInput(allowanceRemaining(nextLimits.window, windowUsed))
+    syncAccountLimits()
+  }
+
+  function syncAccountLimits() {
+    const plan = document.getElementById('account-plan').value
+    const limits = ACCOUNT_LIMITS[plan]
+    for (const value of ['free', 'pro']) {
+      const button = document.getElementById(`account-plan-${value}`)
+      const selected = value === plan
+      button.classList.toggle('is-selected', selected)
+      button.setAttribute('aria-pressed', String(selected))
+    }
+    document.getElementById('account-month-remaining').max = microToInput(limits.monthly)
+    document.getElementById('account-window-remaining').max = microToInput(limits.window)
+    document.getElementById('account-month-hint').textContent = `Enter how much of the ${formatUsdMicro(limits.monthly)} monthly allowance should still be available.`
+    document.getElementById('account-window-hint').textContent = `Enter how much of the ${formatUsdMicro(limits.window)} two-hour allowance should still be available.`
+  }
+
+  function setNoAllowanceLeft() {
+    document.getElementById('account-month-remaining').value = '0'
+    document.getElementById('account-window-remaining').value = '0'
+  }
+
+  function restoreFullAllowance() {
+    const limits = ACCOUNT_LIMITS[document.getElementById('account-plan').value]
+    document.getElementById('account-month-remaining').value = microToInput(limits.monthly)
+    document.getElementById('account-window-remaining').value = microToInput(limits.window)
+  }
+
+  function showAccountMsg(text, type) {
+    const el = document.getElementById('account-editor-msg')
+    el.textContent = text
+    el.className = `invite-msg ${type}`
+    el.style.display = 'block'
+  }
+
+  async function saveAccountOverride() {
+    const user = _adminUsers.find(item => item.id === _editingUserId)
+    if (!user) return
+    const plan = document.getElementById('account-plan').value
+    const limits = ACCOUNT_LIMITS[plan]
+    const monthly_remaining = inputToMicro('account-month-remaining')
+    const window_remaining = inputToMicro('account-window-remaining')
+    const credit_balance = inputToMicro('account-credits')
+    if ([monthly_remaining, window_remaining, credit_balance].includes(null)) {
+      showAccountMsg('Enter dollar values from $0 to $10,000.', 'error')
+      return
+    }
+    if (monthly_remaining > limits.monthly || window_remaining > limits.window) {
+      showAccountMsg(`Remaining allowance cannot exceed the ${plan === 'pro' ? 'Pro' : 'Free'} plan limits.`, 'error')
+      return
+    }
+    const included_month_cost = usageFromRemaining(limits.monthly, monthly_remaining)
+    const included_window_cost = usageFromRemaining(limits.window, window_remaining)
+    const summary = `${user.email}\nPlan: ${plan === 'pro' ? 'Pro' : 'Free'}\nMonthly allowance left: ${formatUsdMicro(monthly_remaining)}\n2-hour allowance left: ${formatUsdMicro(window_remaining)}\nExtra usage credits: ${formatUsdMicro(credit_balance)}`
+    if (!confirm(`Apply these live account changes?\n\n${summary}\n\nThis does not change Square billing or request history.`)) return
+
+    const btn = document.getElementById('account-save')
+    btn.disabled = true
+    btn.textContent = 'Saving…'
+    try {
+      const res = await apiFetch(`/admin/users/${encodeURIComponent(user.id)}/account-testing`, {
+        method: 'PUT',
+        body: JSON.stringify({ plan, included_month_cost, included_window_cost, credit_balance }),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || 'Unable to update account')
+      await loadUsers()
+      const allowanceExhausted = monthly_remaining === 0 || window_remaining === 0
+      const state = data.user.blocked_without_credits
+        ? ' Requests are now blocked.'
+        : allowanceExhausted && credit_balance > 0
+          ? ' Included allowance is exhausted; requests will use extra credits.'
+          : ''
+      showAccountMsg(`Saved.${state}`, 'success')
+    } catch (error) {
+      showAccountMsg(error.message || 'Unable to update account.', 'error')
+    } finally {
+      btn.disabled = false
+      btn.textContent = 'Save account changes'
+    }
   }
 
   async function loadAllowlist() {
