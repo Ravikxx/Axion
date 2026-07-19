@@ -1577,8 +1577,9 @@ app.get('/admin/users', async (c) => {
      u.included_window_cost, u.usage_window,
      COUNT(k.id) as key_count, COALESCE(SUM(k.requests),0) as total_requests
      FROM users u LEFT JOIN api_keys k ON k.user_id=u.id AND k.revoked=0
-     GROUP BY u.id ORDER BY u.created_at DESC LIMIT 100`
-  ).all()
+     GROUP BY u.id
+     ORDER BY CASE WHEN u.id=? THEN 0 ELSE 1 END, u.created_at DESC LIMIT 100`
+  ).bind(user.id).all()
 
   const month = currentMonth()
   const windowStart = currentWindowISO()
@@ -1602,7 +1603,7 @@ app.get('/admin/users', async (c) => {
     }
   })
 
-  return json({ users })
+  return json({ users, current_user_id: user.id })
 })
 
 const MAX_ADMIN_ACCOUNT_VALUE = 10_000_000_000 // $10,000
