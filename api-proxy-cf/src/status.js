@@ -1,15 +1,31 @@
 import { probeLumenHealth } from './lumen-upstream.js'
 
 export const SERVICES = [
-  { key: 'lumen', label: 'Lumen API' },
+  { key: 'axion_api', label: 'Axion API' },
+  { key: 'lumen', label: 'Lumen model' },
   { key: 'website', label: 'Axion website' },
 ]
+
+// Real check cadence — used to turn a day's down-check count into an
+// approximate downtime duration for the status page's day popover.
+export const CHECK_INTERVAL_MINUTES = 5
 
 const FAIL_THRESHOLD = 2 // consecutive failing checks before opening an incident
 const RECOVER_THRESHOLD = 2 // consecutive healthy checks before auto-resolving
 
 function labelFor(service) {
   return SERVICES.find((s) => s.key === service)?.label || service
+}
+
+async function checkAxionApi(env, fetchImpl) {
+  try {
+    const res = await fetchImpl('https://api.amplifiedsmp.org/v1/models', { method: 'GET' })
+    return res.ok
+      ? { service: 'axion_api', status: 'up', detail: '' }
+      : { service: 'axion_api', status: 'down', detail: `HTTP ${res.status}` }
+  } catch (err) {
+    return { service: 'axion_api', status: 'down', detail: String((err && err.message) || err) }
+  }
 }
 
 async function checkLumen(env, fetchImpl) {
@@ -121,7 +137,11 @@ async function evaluateIncident(env, result, nowIso) {
 
 export async function runStatusChecks(env, fetchImpl = fetch) {
   const nowIso = new Date().toISOString()
-  const results = await Promise.all([checkLumen(env, fetchImpl), checkWebsite(env, fetchImpl)])
+  const results = await Promise.all([
+    checkAxionApi(env, fetchImpl),
+    checkLumen(env, fetchImpl),
+    checkWebsite(env, fetchImpl),
+  ])
 
   await env.DB.batch(
     results.map((r) =>
@@ -183,10 +203,11 @@ export async function getStatusSnapshot(env) {
   const services = SERVICES.map(({ key, label }) => {
     const days = dayKeys.map((day) => {
       const row = byServiceDay[key]?.[day]
-      if (!row || row.total === 0) return { date: day, status: 'no_data' }
-      if (row.down_count === 0) return { date: day, status: 'operational' }
-      if (row.down_count === row.total) return { date: day, status: 'down' }
-      return { date: day, status: 'degraded' }
+      if (!row || row.total === 0) return { date: day, status: 'no_data', down_minutes: 0 }
+      const downMinutes = row.down_count * CHECK_INTERVAL_MINUTES
+      if (row.down_count === 0) return { date: day, status: 'operational', down_minutes: 0 }
+      if (row.down_count === row.total) return { date: day, status: 'down', down_minutes: downMinutes }
+      return { date: day, status: 'degraded', down_minutes: downMinutes }
     })
 
     const totals = totalsByService[key] || { up: 0, total: 0 }
@@ -207,7 +228,7 @@ export async function getStatusSnapshot(env) {
     "SELECT * FROM status_incidents WHERE status != 'resolved' ORDER BY created_at DESC"
   ).all()
   const { results: recentIncidents } = await env.DB.prepare(
-    'SELECT * FROM status_incidents ORDER BY created_at DESC LIMIT 15'
+    'SELECT * FROM status_incidents ORDER BY created_at DESC LIMIT 30'
   ).all()
 
   const allIncidentIds = [...new Set([...openIncidents, ...recentIncidents].map((i) => i.id))]

@@ -57,11 +57,13 @@ function makeEnv() {
   return { DB: new D1TestDatabase(), RUNPOD_ENDPOINT_ID: 'ep', RUNPOD_API_KEY: 'key' }
 }
 
-// fetchImpl stub: controls whether the Lumen (RunPod) health check and the
-// website reachability check each report healthy.
-function fetchStub({ lumenUp = true, websiteUp = true } = {}) {
+// fetchImpl stub: controls whether the Axion API worker, the Lumen (RunPod)
+// health check, and the website reachability check each report healthy.
+function fetchStub({ axionApiUp = true, lumenUp = true, websiteUp = true } = {}) {
   return async (url) => {
-    if (String(url).includes('runpod.ai')) return { ok: lumenUp }
+    const s = String(url)
+    if (s.includes('runpod.ai')) return { ok: lumenUp }
+    if (s.includes('api.amplifiedsmp.org')) return { ok: axionApiUp }
     return { ok: websiteUp }
   }
 }
@@ -70,7 +72,7 @@ test('runStatusChecks records a check row per service', async () => {
   const env = makeEnv()
   await runStatusChecks(env, fetchStub())
   const rows = env.DB.prepare('SELECT * FROM status_checks').all().results
-  assert.equal(rows.length, 2)
+  assert.equal(rows.length, 3)
   assert.ok(rows.every((r) => r.status === 'up'))
 })
 
@@ -139,6 +141,7 @@ test('getStatusSnapshot buckets checks by day and computes uptime', async () => 
   assert.equal(lumen.days.length, 30)
   const todayBucket = lumen.days.find((d) => d.date === today)
   assert.equal(todayBucket.status, 'degraded')
+  assert.equal(todayBucket.down_minutes, 5, '1 down check * 5-minute cadence')
   assert.equal(lumen.uptime_pct, 75)
   assert.equal(lumen.status, 'down', 'latest lumen check was down')
   assert.equal(website.status, 'operational')
