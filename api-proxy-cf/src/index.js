@@ -16,6 +16,7 @@ import {
   WINDOW_MS,
 } from './billing.js'
 import { probeLumenHealth, proxyLumenRequest } from './lumen-upstream.js'
+import { runStatusChecks, getStatusSnapshot } from './status.js'
 
 const app = new Hono()
 const WEB_ORIGIN = 'https://axion.amplifiedsmp.org'
@@ -1541,6 +1542,23 @@ app.get('/health', async (c) => {
   return json({ ok: true, model: 'lumen-1.2.5', model_up })
 })
 
+// Public status page data: current per-service state, a 30-day uptime
+// history, and the incident timeline. Cached briefly so page loads don't
+// hammer D1 — the underlying data only changes every 5 minutes anyway
+// (the scheduled health check cadence).
+app.get('/status/api', async (c) => {
+  const cache = caches.default
+  const cacheKey = new Request('https://status.internal/snapshot-v1')
+  const cached = await cache.match(cacheKey)
+  if (cached) return cached
+
+  const snapshot = await getStatusSnapshot(c.env)
+  const res = json(snapshot)
+  res.headers.set('Cache-Control', 'max-age=60')
+  c.executionCtx.waitUntil(cache.put(cacheKey, res.clone()))
+  return res
+})
+
 // ── Admin panel ────────────────────────────────────────────────────────────
 
 async function requireAdmin(c) {
@@ -2238,6 +2256,76 @@ app.post('/admin/appeals/:token/reject', async (c) => {
   return json({ ok: true })
 })
 
+// ── Admin: status page incidents ──────────────────────────────────────────
+
+app.get('/admin/status/incidents', async (c) => {
+  const user = await requireAdmin(c)
+  if (!user) return json({ error: 'Forbidden' }, 403)
+
+  const { results: incidents } = await c.env.DB.prepare(
+    'SELECT * FROM status_incidents ORDER BY created_at DESC LIMIT 50'
+  ).all()
+  const ids = incidents.map((i) => i.id)
+  let updatesByIncident = {}
+  if (ids.length) {
+    const placeholders = ids.map(() => '?').join(',')
+    const { results: updates } = await c.env.DB.prepare(
+      `SELECT * FROM status_incident_updates WHERE incident_id IN (${placeholders}) ORDER BY created_at DESC`
+    ).bind(...ids).all()
+    for (const u of updates) {
+      updatesByIncident[u.incident_id] ||= []
+      updatesByIncident[u.incident_id].push(u)
+    }
+  }
+
+  return json({ incidents: incidents.map((i) => ({ ...i, updates: updatesByIncident[i.id] || [] })) })
+})
+
+app.post('/admin/status/incidents', async (c) => {
+  const user = await requireAdmin(c)
+  if (!user) return json({ error: 'Forbidden' }, 403)
+
+  const { service, title, status, body } = await c.req.json()
+  if (!service || !title || !body) return json({ error: 'service, title, and body are required' }, 400)
+  const validStatus = ['investigating', 'identified', 'monitoring', 'resolved'].includes(status) ? status : 'investigating'
+
+  const id = crypto.randomUUID()
+  const nowIso = new Date().toISOString()
+  await c.env.DB.batch([
+    c.env.DB.prepare(
+      'INSERT INTO status_incidents (id, service, title, status, created_at, updated_at, auto_created) VALUES (?,?,?,?,?,?,0)'
+    ).bind(id, service, title, validStatus, nowIso, nowIso),
+    c.env.DB.prepare(
+      'INSERT INTO status_incident_updates (id, incident_id, status, body, created_at) VALUES (?,?,?,?,?)'
+    ).bind(crypto.randomUUID(), id, validStatus, body, nowIso),
+  ])
+
+  return json({ ok: true, id })
+})
+
+app.post('/admin/status/incidents/:id/updates', async (c) => {
+  const user = await requireAdmin(c)
+  if (!user) return json({ error: 'Forbidden' }, 403)
+
+  const id = c.req.param('id')
+  const incident = await c.env.DB.prepare('SELECT * FROM status_incidents WHERE id=?').bind(id).first()
+  if (!incident) return json({ error: 'Incident not found' }, 404)
+
+  const { status, body } = await c.req.json()
+  if (!body) return json({ error: 'body is required' }, 400)
+  const validStatus = ['investigating', 'identified', 'monitoring', 'resolved'].includes(status) ? status : incident.status
+
+  const nowIso = new Date().toISOString()
+  await c.env.DB.batch([
+    c.env.DB.prepare('UPDATE status_incidents SET status=?, updated_at=? WHERE id=?').bind(validStatus, nowIso, id),
+    c.env.DB.prepare(
+      'INSERT INTO status_incident_updates (id, incident_id, status, body, created_at) VALUES (?,?,?,?,?)'
+    ).bind(crypto.randomUUID(), id, validStatus, body, nowIso),
+  ])
+
+  return json({ ok: true })
+})
+
 // ── Dashboard: daily usage chart ──────────────────────────────────────────
 
 app.get('/dashboard/daily', async (c) => {
@@ -2614,6 +2702,10 @@ export class BridgeRelay {
     const msg = JSON.stringify({ type: 'status', connected })
     for (const app of this.apps) { try { app.send(msg) } catch {} }
   }
+}
+
+app.scheduled = async (event, env, ctx) => {
+  ctx.waitUntil(runStatusChecks(env))
 }
 
 export default app

@@ -21,3 +21,6 @@ new_sqlite_classes = ["BridgeRelay"]
 [[routes]]
 pattern = "api.amplifiedsmp.org/*"
 zone_name = "amplifiedsmp.org"
+
+[triggers]
+crons = ["*/5 * * * *"]
