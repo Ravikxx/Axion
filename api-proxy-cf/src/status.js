@@ -108,13 +108,15 @@ async function evaluateIncident(env, result, nowIso) {
           'INSERT INTO status_incident_updates (id, incident_id, status, body, created_at) VALUES (?,?,?,?,?)'
         ).bind(crypto.randomUUID(), id, 'investigating', body, nowIso),
       ])
+      const editLink = `https://axion.amplifiedsmp.org/admin#incident-${id}`
       await alertAdmin(env, {
         subject: `[Axion Status] ${title}`,
         html: emailWrap(`
           <h2 style="margin:0 0 8px;color:#fff">${title}</h2>
           <p style="color:#b8b8c8;line-height:1.6">${body}</p>
           <p style="color:#b8b8c8;line-height:1.6">Checked at ${nowIso}.</p>
-          <p style="color:#b8b8c8;line-height:1.6">A draft incident is now live on the status page, marked "investigating" with an auto-generated description. Update it with what's actually wrong from the admin panel.</p>
+          <p style="color:#b8b8c8;line-height:1.6">A draft incident is now live on the status page, marked "investigating" with an auto-generated description.</p>
+          <p style="margin:20px 0"><a href="${editLink}" style="color:#fff;background:#8a7a5c;padding:10px 18px;border-radius:8px;text-decoration:none;font-weight:600;display:inline-block">Write what's actually wrong →</a></p>
         `),
       })
     }
@@ -129,12 +131,14 @@ async function evaluateIncident(env, result, nowIso) {
           'INSERT INTO status_incident_updates (id, incident_id, status, body, created_at) VALUES (?,?,?,?,?)'
         ).bind(crypto.randomUUID(), existing.id, 'resolved', body, nowIso),
       ])
+      const editLink = `https://axion.amplifiedsmp.org/admin#incident-${existing.id}`
       await alertAdmin(env, {
         subject: `[Axion Status] Resolved: ${existing.title}`,
         html: emailWrap(`
           <h2 style="margin:0 0 8px;color:#fff">Resolved: ${existing.title}</h2>
           <p style="color:#b8b8c8;line-height:1.6">${body}</p>
           <p style="color:#b8b8c8;line-height:1.6">Recovered as of ${nowIso}. The status page has been updated automatically.</p>
+          <p style="margin:20px 0"><a href="${editLink}" style="color:#fff;background:#8a7a5c;padding:10px 18px;border-radius:8px;text-decoration:none;font-weight:600;display:inline-block">Review on the admin panel →</a></p>
         `),
       })
     }
