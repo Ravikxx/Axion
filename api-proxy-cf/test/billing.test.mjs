@@ -598,25 +598,24 @@ test('account deletion removes audits, rate limits, and every key in an owned or
 
 // ── /v1/chat/completions account billing ────────────────────────────────────
 
+// Stands in for RunPod's vLLM OpenAI-compatible endpoint.
 function lumenFetchStub(usage, content = 'Hello from Lumen') {
-  const completePayload = JSON.stringify([{
-    ok: true,
-    response: {
-      id: 'chatcmpl-test',
-      model: 'lumen',
-      choices: [{ index: 0, message: { role: 'assistant', content }, finish_reason: 'stop' }],
-      usage,
-    },
-  }])
-  return async (url) => {
-    if (String(url).includes('/call/v2/openai_chat')) {
-      return new Response(JSON.stringify({ event_id: 'evt_test1' }), {
-        status: 200, headers: { 'Content-Type': 'application/json' },
+  return async (url, options) => {
+    const requested = JSON.parse(options.body)
+    if (!requested.stream) {
+      return Response.json({
+        id: 'chatcmpl-test',
+        model: 'lumen',
+        choices: [{ index: 0, message: { role: 'assistant', content }, finish_reason: 'stop' }],
+        usage,
       })
     }
-    return new Response(`event: complete\ndata: ${completePayload}\n\n`, {
-      status: 200, headers: { 'Content-Type': 'text/event-stream' },
-    })
+    const chunks = [
+      `data: ${JSON.stringify({ choices: [{ delta: { content } }] })}\n\n`,
+      `data: ${JSON.stringify({ choices: [{ delta: {}, finish_reason: 'stop' }], usage })}\n\n`,
+      'data: [DONE]\n\n',
+    ]
+    return new Response(chunks.join(''), { headers: { 'Content-Type': 'text/event-stream' } })
   }
 }
 
@@ -633,7 +632,7 @@ test('session-authenticated completions are charged to the account, not the free
   const secret = 'session-billing-secret'
   addUser(db, 'member')
   const token = await sessionToken('member', secret)
-  const env = { DB: db, TOKEN_SECRET: secret }
+  const env = { DB: db, TOKEN_SECRET: secret, RUNPOD_ENDPOINT_ID: 'ep-test', RUNPOD_API_KEY: 'rp-test-key' }
   const realFetch = globalThis.fetch
   globalThis.fetch = lumenFetchStub({ prompt_tokens: 1000, completion_tokens: 2000, total_tokens: 3000 })
   try {
@@ -683,7 +682,7 @@ test('exhausted allowances draw down credits and then block with 429', async () 
     'UPDATE users SET included_week_cost=125000, usage_week=?, included_window_cost=50000, usage_window=?, credit_balance=1000 WHERE id=?'
   ).bind(activeStart, activeStart, 'member').run()
   const token = await sessionToken('member', secret)
-  const env = { DB: db, TOKEN_SECRET: secret }
+  const env = { DB: db, TOKEN_SECRET: secret, RUNPOD_ENDPOINT_ID: 'ep-test', RUNPOD_API_KEY: 'rp-test-key' }
   const realFetch = globalThis.fetch
   globalThis.fetch = lumenFetchStub({ prompt_tokens: 1000, completion_tokens: 2000, total_tokens: 3000 })
   try {
@@ -718,7 +717,7 @@ test('streamed completions bill with the upstream usage object, not char estimat
   const secret = 'stream-billing-secret'
   addUser(db, 'member')
   const token = await sessionToken('member', secret)
-  const env = { DB: db, TOKEN_SECRET: secret }
+  const env = { DB: db, TOKEN_SECRET: secret, RUNPOD_ENDPOINT_ID: 'ep-test', RUNPOD_API_KEY: 'rp-test-key' }
   const realFetch = globalThis.fetch
   globalThis.fetch = lumenFetchStub({ prompt_tokens: 400, completion_tokens: 600, total_tokens: 1000 })
   try {
