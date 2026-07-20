@@ -2705,7 +2705,7 @@ export class BridgeRelay {
 }
 
 app.scheduled = async (event, env, ctx) => {
-  ctx.waitUntil(runStatusChecks(env))
+  ctx.waitUntil(runStatusChecks(env, fetch, (req) => app.fetch(req, env, ctx)))
 }
 
 export default app

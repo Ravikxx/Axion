@@ -17,9 +17,15 @@ function labelFor(service) {
   return SERVICES.find((s) => s.key === service)?.label || service
 }
 
-async function checkAxionApi(env, fetchImpl) {
+// Deliberately does NOT fetch our own public URL — a Worker making a real
+// network round-trip back to its own zone is a known Cloudflare anti-pattern
+// that can transiently 522 even when the route is perfectly healthy (this
+// is what caused a false "down" incident the first time this shipped).
+// Instead this calls the route handler in-process via the same `appFetch`
+// the request would normally go through, with no network hop at all.
+async function checkAxionApi(env, appFetch) {
   try {
-    const res = await fetchImpl('https://api.amplifiedsmp.org/v1/models', { method: 'GET' })
+    const res = await appFetch(new Request('https://api.amplifiedsmp.org/v1/models'))
     return res.ok
       ? { service: 'axion_api', status: 'up', detail: '' }
       : { service: 'axion_api', status: 'down', detail: `HTTP ${res.status}` }
@@ -135,10 +141,10 @@ async function evaluateIncident(env, result, nowIso) {
   }
 }
 
-export async function runStatusChecks(env, fetchImpl = fetch) {
+export async function runStatusChecks(env, fetchImpl = fetch, appFetch = fetchImpl) {
   const nowIso = new Date().toISOString()
   const results = await Promise.all([
-    checkAxionApi(env, fetchImpl),
+    checkAxionApi(env, appFetch),
     checkLumen(env, fetchImpl),
     checkWebsite(env, fetchImpl),
   ])
