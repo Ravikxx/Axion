@@ -17,8 +17,17 @@ function errorResponse(message, status = 502) {
   })
 }
 
+// vLLM only recognizes a request's `model` field if it matches the model it
+// was actually launched with — it has no concept of a friendly alias, so
+// requests using the public "lumen" name 404 with "The model `lumen` does
+// not exist." unless translated to the real served name first. Rewritten
+// back to "lumen" in the response so the public API contract (documented
+// everywhere as model: "lumen") stays consistent end to end regardless of
+// which underlying HF repo is actually running.
+const SERVED_MODEL_NAME = 'AxionLabsAI/Lumen-1.2.5'
+
 export async function proxyLumenRequest(body, env, fetchImpl = fetch) {
-  const requestBody = { ...body, model: 'lumen' }
+  const requestBody = { ...body, model: SERVED_MODEL_NAME }
   if (requestBody.stream) {
     requestBody.stream_options = { ...requestBody.stream_options, include_usage: true }
   }
@@ -42,7 +51,15 @@ export async function proxyLumenRequest(body, env, fetchImpl = fetch) {
   }
 
   if (body.stream) {
-    return new Response(upstream.body, {
+    const decoder = new TextDecoder()
+    const encoder = new TextEncoder()
+    const rewrite = new TransformStream({
+      transform(chunk, controller) {
+        const text = decoder.decode(chunk, { stream: true })
+        controller.enqueue(encoder.encode(text.replaceAll(`"model":"${SERVED_MODEL_NAME}"`, '"model":"lumen"')))
+      },
+    })
+    return new Response(upstream.body.pipeThrough(rewrite), {
       status: 200,
       headers: {
         'Content-Type': 'text/event-stream; charset=utf-8',
@@ -52,7 +69,8 @@ export async function proxyLumenRequest(body, env, fetchImpl = fetch) {
   }
 
   const data = await upstream.text()
-  return new Response(data, {
+  const rewritten = data.replaceAll(`"model":"${SERVED_MODEL_NAME}"`, '"model":"lumen"')
+  return new Response(rewritten, {
     status: 200,
     headers: { 'Content-Type': 'application/json; charset=utf-8' },
   })
