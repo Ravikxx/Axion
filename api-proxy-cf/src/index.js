@@ -1543,19 +1543,16 @@ app.get('/health', async (c) => {
 })
 
 // Public status page data: current per-service state, a 30-day uptime
-// history, and the incident timeline. Cached briefly so page loads don't
-// hammer D1 — the underlying data only changes every 5 minutes anyway
-// (the scheduled health check cadence).
+// history, and the incident timeline. Deliberately uncached (both at the
+// edge and the client) — a stale copy here reads as us hiding or being
+// slow to reflect a real incident, which is worse than the extra D1 reads
+// at this endpoint's traffic level.
 app.get('/status/api', async (c) => {
-  const cache = caches.default
-  const cacheKey = new Request('https://status.internal/snapshot-v1')
-  const cached = await cache.match(cacheKey)
-  if (cached) return cached
-
   const snapshot = await getStatusSnapshot(c.env)
   const res = json(snapshot)
-  res.headers.set('Cache-Control', 'max-age=60')
-  c.executionCtx.waitUntil(cache.put(cacheKey, res.clone()))
+  res.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate')
+  res.headers.set('CDN-Cache-Control', 'no-store')
+  res.headers.set('Cloudflare-CDN-Cache-Control', 'no-store')
   return res
 })
 
