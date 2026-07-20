@@ -1157,8 +1157,8 @@ function requestCostMicrodollars(inputTokens, outputTokens) {
 function estimateTokensFromChars(text) {
   return Math.ceil((text || '').length / 4)
 }
-async function proxyUpstream(body) {
-  return proxyLumenRequest(body)
+async function proxyUpstream(body, env) {
+  return proxyLumenRequest(body, env)
 }
 
 function streamResponse(upstream) {
@@ -1385,7 +1385,7 @@ app.post('/v1/chat/completions', async (c) => {
         return json({ error: { message: 'Your account has been suspended for violating our content policy.', type: 'permission_error' } }, 403)
       }
     }
-    const upstream = await proxyUpstream(body)
+    const upstream = await proxyUpstream(body, c.env)
     if (!upstream.ok) return json({ error: { message: await upstream.text(), type: 'upstream_error' } }, upstream.status)
 
     const today = new Date().toISOString().slice(0, 10)
@@ -1504,7 +1504,7 @@ app.post('/v1/chat/completions', async (c) => {
   }
 
   applySafetyTriggers(body)
-  const upstream = await proxyUpstream(body)
+  const upstream = await proxyUpstream(body, c.env)
   if (!upstream.ok) return json({ error: { message: await upstream.text(), type: 'upstream_error' } }, upstream.status)
 
   if (body.stream) return streamResponse(upstream)
@@ -1530,7 +1530,7 @@ app.get('/health', async (c) => {
     model_up = (await cached.json()).model_up
   } else {
     try {
-      model_up = await probeLumenHealth(fetch, 6000)
+      model_up = await probeLumenHealth(c.env, fetch, 6000)
     } catch {
       model_up = false
     }
