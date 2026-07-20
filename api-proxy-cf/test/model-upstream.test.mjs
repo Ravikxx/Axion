@@ -9,11 +9,13 @@ import {
 
 const env = { RUNPOD_ENDPOINT_ID: 'ep-test', RUNPOD_API_KEY: 'rp-test-key' }
 
+const SERVED_MODEL_NAME = 'AxionLabsAI/Lumen-1.2.5'
+
 const completion = {
   id: 'chatcmpl-test',
   object: 'chat.completion',
   created: 123,
-  model: 'lumen',
+  model: SERVED_MODEL_NAME,
   choices: [{ index: 0, message: { role: 'assistant', content: 'Hello!' }, finish_reason: 'stop' }],
   usage: { prompt_tokens: 3, completion_tokens: 2, total_tokens: 5 },
 }
@@ -23,7 +25,7 @@ test('resolves the RunPod OpenAI-compatible chat and health URLs', () => {
   assert.equal(LUMEN_UPSTREAM_URLS.health(env), 'https://api.runpod.ai/v2/ep-test/health')
 })
 
-test('sends the RunPod bearer token and forces model: lumen', async () => {
+test('sends the real served model name (vLLM has no alias for "lumen"), rewrites it back in the response', async () => {
   let seen
   const fetchImpl = async (url, options) => {
     seen = { url, options }
@@ -32,27 +34,31 @@ test('sends the RunPod bearer token and forces model: lumen', async () => {
 
   const response = await proxyLumenRequest({ messages: [{ role: 'user', content: 'Hi' }] }, env, fetchImpl)
   assert.equal(response.status, 200)
-  assert.deepEqual(await response.json(), completion)
+  assert.equal((await response.json()).model, 'lumen')
   assert.equal(seen.url, 'https://api.runpod.ai/v2/ep-test/openai/v1/chat/completions')
   assert.equal(seen.options.headers.Authorization, 'Bearer rp-test-key')
 
   const sent = JSON.parse(seen.options.body)
-  assert.equal(sent.model, 'lumen')
+  assert.equal(sent.model, SERVED_MODEL_NAME)
 })
 
-test('asks vLLM for real usage in the final chunk when streaming', async () => {
+test('asks vLLM for real usage in the final chunk when streaming, and rewrites the model name in every chunk', async () => {
   let seen
   const fetchImpl = async (url, options) => {
     seen = { url, options }
-    return new Response('data: {"choices":[{"delta":{"content":"Hi"}}]}\n\ndata: [DONE]\n\n', {
-      headers: { 'Content-Type': 'text/event-stream' },
-    })
+    return new Response(
+      `data: {"choices":[{"delta":{"content":"Hi"}}],"model":"${SERVED_MODEL_NAME}"}\n\ndata: [DONE]\n\n`,
+      { headers: { 'Content-Type': 'text/event-stream' } },
+    )
   }
 
   const response = await proxyLumenRequest({ stream: true, messages: [{ role: 'user', content: 'Hi' }] }, env, fetchImpl)
   assert.equal(response.status, 200)
   assert.equal(response.headers.get('Content-Type'), 'text/event-stream; charset=utf-8')
-  assert.match(await response.text(), /"content":"Hi"/)
+  const text = await response.text()
+  assert.match(text, /"content":"Hi"/)
+  assert.match(text, /"model":"lumen"/)
+  assert.doesNotMatch(text, new RegExp(SERVED_MODEL_NAME.replace('/', '\\/')))
 
   const sent = JSON.parse(seen.options.body)
   assert.equal(sent.stream, true)
