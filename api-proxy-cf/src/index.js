@@ -21,6 +21,7 @@ import { probeLumenHealth, proxyLumenRequest } from './lumen-upstream.js'
 import { runCode } from './sandbox.js'
 import { runStatusChecks, getStatusSnapshot } from './status.js'
 import { logMessageExchange } from './auditLog.js'
+import { reviewPendingMessages } from './messageReview.js'
 
 const app = new Hono()
 const WEB_ORIGIN = 'https://axion.amplifiedsmp.org'
@@ -2939,7 +2940,32 @@ export class BridgeRelay {
   }
 }
 
+// One digest email per review run (not one per flagged row) to every admin —
+// admin_allowlist is already the "who has admin dashboard access" list, and
+// doubles as the review-alert distribution list.
+async function notifyAdminsOfFlaggedMessages(env, flagged) {
+  if (!env.RESEND_API_KEY) return
+  const { results: admins } = await env.DB.prepare('SELECT email FROM admin_allowlist').all()
+  if (!admins.length) return
+  const rows = flagged.map(f => `<li style="margin-bottom:8px"><strong>message_log #${f.id}</strong> — auth: ${f.authType}${f.userId ? `, user: ${f.userId}` : ''}, ip: ${f.ip}<br><span style="color:#e8602c">${f.notes}</span></li>`).join('')
+  await Promise.all(admins.map(a => sendEmail(env.RESEND_API_KEY, {
+    to: a.email,
+    subject: `${flagged.length} message${flagged.length === 1 ? '' : 's'} flagged for review`,
+    html: emailWrap(`
+      <h2 style="margin:0 0 8px;color:#e8e8f0">Automated safety review flagged ${flagged.length} exchange${flagged.length === 1 ? '' : 's'}</h2>
+      <p style="color:#888;margin:0 0 16px">These need a human look — the automated classifier could not confirm they're safe.</p>
+      <ul style="color:#ccc;padding-left:18px">${rows}</ul>
+    `),
+  })))
+}
+
 app.scheduled = async (event, env, ctx) => {
+  if (event.cron === '0 * * * *') {
+    ctx.waitUntil(reviewPendingMessages(env, fetch).then(({ flagged }) => {
+      if (flagged.length) return notifyAdminsOfFlaggedMessages(env, flagged)
+    }))
+    return
+  }
   ctx.waitUntil(runStatusChecks(env, fetch, (req) => app.fetch(req, env, ctx)))
 }
 

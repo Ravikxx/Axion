@@ -23,4 +23,4 @@ pattern = "api.amplifiedsmp.org/*"
 zone_name = "amplifiedsmp.org"
 
 [triggers]
-crons = ["*/5 * * * *"]
+crons = ["*/5 * * * *", "0 * * * *"]
