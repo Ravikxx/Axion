@@ -145,6 +145,57 @@ async function ensureOutputDir(env, sandboxId, fetchImpl) {
   }
 }
 
+// Daytona's code-run spins up a brand-new interpreter every call — even
+// reusing the same sandbox, plain variables don't survive to the next call
+// (confirmed live: a bare `hello = 73` in one call, then `print(hello + 4)`
+// in a separate call, raises NameError). Faked here instead of accepting
+// that limitation: every Python run is wrapped with a preamble that
+// restores any previously pickled globals, and a coda that pickles
+// whatever's left in globals() back to disk afterward — confirmed live
+// this round-trips correctly across two separate code-run calls. Only
+// picklable values survive (numbers, strings, lists, dicts, etc.); anything
+// else (open files, modules, most objects) is silently dropped, and a
+// module-scope name starting with "__axion_" would collide with the
+// plumbing's own vars, though that's an unlikely name for real code to use.
+// JavaScript doesn't get this: top-level `let`/`var` in a Node script isn't
+// reachable off any single inspectable object the way Python's globals()
+// is, so there's no equivalent hook without asking the model to explicitly
+// write to `global.x` — not attempted here.
+const PY_STATE_PATH = '/home/daytona/.axion_state.pkl'
+const PY_STATE_PRESERVE = ['__axion_pickle', '__axion_os', '__axion_state_path', '__axion_f', '__axion_skip', '__axion_state', '__axion_k', '__axion_v']
+
+function wrapPythonForState(code) {
+  const preamble = [
+    'import pickle as __axion_pickle',
+    'import os as __axion_os',
+    `__axion_state_path = ${JSON.stringify(PY_STATE_PATH)}`,
+    'if __axion_os.path.exists(__axion_state_path):',
+    '    try:',
+    '        with open(__axion_state_path, "rb") as __axion_f:',
+    '            globals().update(__axion_pickle.load(__axion_f))',
+    '    except Exception:',
+    '        pass',
+  ].join('\n')
+  const coda = [
+    'try:',
+    `    __axion_skip = set(${JSON.stringify(PY_STATE_PRESERVE)})`,
+    '    __axion_state = {}',
+    '    for __axion_k, __axion_v in list(globals().items()):',
+    '        if __axion_k.startswith("__") or __axion_k in __axion_skip:',
+    '            continue',
+    '        try:',
+    '            __axion_pickle.dumps(__axion_v)',
+    '            __axion_state[__axion_k] = __axion_v',
+    '        except Exception:',
+    '            continue',
+    '    with open(__axion_state_path, "wb") as __axion_f:',
+    '        __axion_pickle.dump(__axion_state, __axion_f)',
+    'except Exception:',
+    '    pass',
+  ].join('\n')
+  return `${preamble}\n${code}\n${coda}`
+}
+
 // New/changed files since `before` — a plain re-list-and-diff by name+size+
 // modTime, not filesystem watching, since Daytona's API doesn't offer that.
 async function collectNewArtifacts(env, sandboxId, before, fetchImpl) {
@@ -182,11 +233,13 @@ export async function runCode(env, code, { networkAccess, timeoutMs, language = 
     // Listing failures shouldn't block execution — worst case we miss diffing artifacts this round.
   }
 
+  const wrappedCode = language === 'python' ? wrapPythonForState(code) : code
+
   try {
     const res = await fetchImpl(`${TOOLBOX_BASE}/${resolvedId}/process/code-run`, {
       method: 'POST',
       headers: authHeaders(env, { 'Content-Type': 'application/json' }),
-      body: JSON.stringify({ code, language, timeout: timeoutSeconds }),
+      body: JSON.stringify({ code: wrappedCode, language, timeout: timeoutSeconds }),
     })
     const data = await res.json().catch(() => ({}))
 

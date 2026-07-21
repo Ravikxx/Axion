@@ -156,6 +156,21 @@ test('a new file appearing in the output dir after the run comes back as a downl
   assert.equal(Buffer.from(result.artifacts[0].dataBase64, 'base64').toString(), 'artifact-bytes')
 })
 
+test('python code is wrapped with a state-restore preamble and a state-save coda; other languages are sent unwrapped', async () => {
+  const stub = fetchStub({ codeRunResponse: { exitCode: 0, result: '' } })
+  await runCode(env, 'x = 1', { networkAccess: false, timeoutMs: 10_000, language: 'python' }, stub.fn)
+  const pyRunCall = stub.calls.find(c => c.url.includes('/process/code-run'))
+  const pySent = JSON.parse(pyRunCall.options.body).code
+  assert.match(pySent, /import pickle as __axion_pickle/, 'must prepend the state-restore preamble')
+  assert.match(pySent, /__axion_pickle\.dump\(__axion_state, __axion_f\)/, 'must append the state-save coda')
+  assert.match(pySent, /\nx = 1\n/, 'the original code must appear verbatim, unindented, between preamble and coda')
+
+  const stub2 = fetchStub({ sandboxId: 'sb-js', codeRunResponse: { exitCode: 0, result: '' } })
+  await runCode(env, 'let x = 1', { networkAccess: false, timeoutMs: 10_000, language: 'javascript' }, stub2.fn)
+  const jsRunCall = stub2.calls.find(c => c.url.includes('/process/code-run'))
+  assert.equal(JSON.parse(jsRunCall.options.body).code, 'let x = 1', 'javascript is sent as-is — no persistence wrapper')
+})
+
 test('the output dir is created (idempotently) before every run, since the model cannot be trusted to mkdir it itself', async () => {
   const stub = fetchStub({ codeRunResponse: { exitCode: 0, result: 'ok\n' } })
   await runCode(env, 'print("ok")', { networkAccess: false, timeoutMs: 10_000 }, stub.fn)
