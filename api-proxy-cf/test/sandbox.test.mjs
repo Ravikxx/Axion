@@ -32,6 +32,9 @@ function fetchStub({
         state = startWakesTo
         return Response.json({ id: sandboxId, state })
       }
+      if (url.startsWith(`https://proxy.app.daytona.io/toolbox/${sandboxId}/files/folder?path=`) && options.method === 'POST') {
+        return new Response(null, { status: 201 })
+      }
       if (url.startsWith(`https://proxy.app.daytona.io/toolbox/${sandboxId}/files?path=`)) {
         filesListCalls += 1
         // First call is the pre-run listing (empty), second is post-run — the
@@ -151,6 +154,14 @@ test('a new file appearing in the output dir after the run comes back as a downl
   assert.equal(result.artifacts[0].name, 'plot.png')
   assert.equal(result.artifacts[0].mimeType, 'image/png')
   assert.equal(Buffer.from(result.artifacts[0].dataBase64, 'base64').toString(), 'artifact-bytes')
+})
+
+test('the output dir is created (idempotently) before every run, since the model cannot be trusted to mkdir it itself', async () => {
+  const stub = fetchStub({ codeRunResponse: { exitCode: 0, result: 'ok\n' } })
+  await runCode(env, 'print("ok")', { networkAccess: false, timeoutMs: 10_000 }, stub.fn)
+  const mkdirCall = stub.calls.find(c => c.url.includes('/files/folder?path='))
+  assert.ok(mkdirCall, 'must call the folder-create endpoint before running code')
+  assert.equal(mkdirCall.options.method, 'POST')
 })
 
 test('a language other than python/javascript is not asserted by sandbox.js itself (route layer is responsible for validating that)', async () => {

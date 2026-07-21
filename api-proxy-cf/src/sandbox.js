@@ -129,6 +129,22 @@ async function downloadArtifact(env, sandboxId, file, fetchImpl) {
   return { name: file.name, mimeType: mimeFor(file.name), dataBase64: btoa(binary), size: file.size }
 }
 
+// The model is told to save output under OUTPUT_DIR, but can't be trusted
+// to remember to mkdir it first — confirmed live it forgets and gets a
+// FileNotFoundError. Idempotent (201 whether it already existed or not,
+// verified live), so it's cheap to call unconditionally before every run
+// rather than only on a freshly created sandbox.
+async function ensureOutputDir(env, sandboxId, fetchImpl) {
+  try {
+    await fetchImpl(`${TOOLBOX_BASE}/${sandboxId}/files/folder?path=${encodeURIComponent(OUTPUT_DIR)}`, {
+      method: 'POST',
+      headers: authHeaders(env),
+    })
+  } catch {
+    // Best-effort — if this fails the model's own os.makedirs/mkdirSync fallback (still mentioned in the tool description) can still save the run.
+  }
+}
+
 // New/changed files since `before` — a plain re-list-and-diff by name+size+
 // modTime, not filesystem watching, since Daytona's API doesn't offer that.
 async function collectNewArtifacts(env, sandboxId, before, fetchImpl) {
@@ -156,6 +172,8 @@ export async function runCode(env, code, { networkAccess, timeoutMs, language = 
   } catch (err) {
     return { ...empty, error: String(err?.message || err) }
   }
+
+  await ensureOutputDir(env, resolvedId, fetchImpl)
 
   let before = []
   try {

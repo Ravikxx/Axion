@@ -85,6 +85,9 @@ function daytonaFetchStub(sandboxId = 'sb-route-test') {
     if (url === `https://app.daytona.io/api/sandbox/${sandboxId}` && !options?.method) {
       return Response.json({ id: sandboxId, state: 'started' })
     }
+    if (url.includes('/files/folder?path=') && options.method === 'POST') {
+      return new Response(null, { status: 201 })
+    }
     if (url.includes('/files?path=')) {
       return Response.json([])
     }
