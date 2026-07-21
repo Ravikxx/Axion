@@ -29,11 +29,109 @@ app.use('*', cors({
 
 // ── Helpers ────────────────────────────────────────────────────────────────
 
+// Constant-time string compare for secrets (webhook signatures, password
+// hashes) — a plain `===`/`!==` short-circuits on the first differing byte,
+// which leaks a timing signal proportional to how many leading bytes match.
+// Requires equal length up front (a length mismatch is safe to reveal
+// immediately; it can only ever come from a malformed/garbage input, never
+// from a partially-correct guess).
+function timingSafeEqualStr(a, b) {
+  if (typeof a !== 'string' || typeof b !== 'string' || a.length !== b.length) return false
+  let diff = 0
+  for (let i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i)
+  return diff === 0
+}
+
+function bytesToHex(bytes) {
+  return Array.from(bytes).map(b => b.toString(16).padStart(2, '0')).join('')
+}
+
+function hexToBytes(hex) {
+  const bytes = new Uint8Array(hex.length / 2)
+  for (let i = 0; i < bytes.length; i++) bytes[i] = parseInt(hex.substr(i * 2, 2), 16)
+  return bytes
+}
+
+// ── Password hashing ─────────────────────────────────────────────────────
+// Current scheme: PBKDF2-HMAC-SHA256 with a random per-user salt, stored as
+// `pbkdf2$<iterations>$<saltHex>$<hashHex>`. 210,000 iterations matches the
+// 2023 OWASP minimum recommendation for PBKDF2-HMAC-SHA256; the project runs
+// on Workers Paid (required for the BridgeRelay Durable Object), which has a
+// 30s CPU budget per request, so this costs a negligible slice of that.
+//
+// Legacy scheme (every hash created before this change): SHA-256 of
+// password + a single global salt (env.PW_SALT) shared by every account —
+// no per-user salt at all, and a fast, GPU-friendly hash, i.e. cheap to
+// crack en masse from a leaked dump. Old hashes are plain 64-char hex with
+// no `$`, so the two formats are trivially distinguishable and never
+// collide. Rather than force every account through a password reset, a
+// legacy hash is verified as before and then transparently upgraded to the
+// new scheme (see upgradeLegacyPasswordHash) the next time that account
+// logs in successfully — verification always has the real plaintext
+// password on hand at that moment, which is the only time an upgrade is
+// possible without discarding the old hash and locking everyone out.
+const PBKDF2_ITERATIONS = 210_000
+
+function isModernPasswordHash(stored) {
+  return typeof stored === 'string' && stored.startsWith('pbkdf2$')
+}
+
+async function pbkdf2Hex(password, saltBytes, iterations) {
+  const keyMaterial = await crypto.subtle.importKey('raw', new TextEncoder().encode(password), 'PBKDF2', false, ['deriveBits'])
+  const bits = await crypto.subtle.deriveBits(
+    { name: 'PBKDF2', hash: 'SHA-256', salt: saltBytes, iterations },
+    keyMaterial,
+    256,
+  )
+  return bytesToHex(new Uint8Array(bits))
+}
+
+async function hashPasswordModern(password, iterations = PBKDF2_ITERATIONS) {
+  const saltBytes = crypto.getRandomValues(new Uint8Array(16))
+  const hashHex = await pbkdf2Hex(password, saltBytes, iterations)
+  return `pbkdf2$${iterations}$${bytesToHex(saltBytes)}$${hashHex}`
+}
+
+async function verifyPasswordModern(password, stored) {
+  const parts = stored.split('$')
+  if (parts.length !== 4) return false
+  const iterations = Number(parts[1])
+  if (!Number.isInteger(iterations) || iterations <= 0) return false
+  const candidate = await pbkdf2Hex(password, hexToBytes(parts[2]), iterations)
+  return timingSafeEqualStr(candidate, parts[3])
+}
+
+// Legacy verify only — never used to mint new hashes.
 async function hashPw(password, salt) {
   const enc = new TextEncoder()
   const data = enc.encode(password + (salt || 'axion'))
   const buf = await crypto.subtle.digest('SHA-256', data)
-  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('')
+  return bytesToHex(new Uint8Array(buf))
+}
+
+// Fixed, unsecret salt used only to burn roughly the same CPU time as a real
+// PBKDF2 verify when no matching account exists — otherwise a nonexistent
+// email would fail near-instantly while a real one takes ~tens of ms,
+// letting an attacker enumerate registered emails purely from response
+// timing on the login endpoints.
+const DUMMY_PBKDF2_SALT = hexToBytes('00'.repeat(16))
+
+// Verifies `password` against whichever scheme `storedHash` is in — `salt`
+// is only used for the legacy-scheme fallback (env.PW_SALT). Returns
+// `{ valid, upgradedHash }` — `upgradedHash` is set only when a legacy hash
+// just verified successfully, so the caller can persist the upgrade (the
+// plaintext password is only ever available at this exact moment).
+async function verifyPassword(password, storedHash, salt) {
+  if (!storedHash) {
+    await pbkdf2Hex(password || '', DUMMY_PBKDF2_SALT, PBKDF2_ITERATIONS) // normalize timing, no real check
+    return { valid: false }
+  }
+  if (isModernPasswordHash(storedHash)) {
+    return { valid: await verifyPasswordModern(password || '', storedHash) }
+  }
+  const legacyHash = await hashPw(password || '', salt)
+  const valid = timingSafeEqualStr(legacyHash, storedHash)
+  return valid ? { valid: true, upgradedHash: await hashPasswordModern(password || '') } : { valid: false }
 }
 
 function genKey() {
@@ -266,7 +364,7 @@ app.post('/auth/register', async (c) => {
   if (existing && existing.verified) return json({ error: 'Email already registered' }, 409)
 
   const id = existing?.id || crypto.randomUUID()
-  const pw_hash = await hashPw(password, c.env.PW_SALT)
+  const pw_hash = await hashPasswordModern(password)
   const verify_token = crypto.randomUUID()
 
   if (existing) {
@@ -676,10 +774,11 @@ app.post('/auth/login', async (c) => {
   const { email, password, turnstile } = await c.req.json().catch(() => ({}))
   if (!await verifyTurnstile(turnstile, c.env.TURNSTILE_SECRET, ip)) return json({ error: 'Security check failed. Please try again.' }, 403)
   const user = await c.env.DB.prepare('SELECT * FROM users WHERE email=?').bind((email || '').toLowerCase()).first()
-  const pw_hash = await hashPw(password || '', c.env.PW_SALT)
-  if (!user || user.pw_hash !== pw_hash) return json({ error: 'Invalid email or password' }, 401)
+  const { valid, upgradedHash } = await verifyPassword(password || '', user?.pw_hash, c.env.PW_SALT)
+  if (!user || !valid) return json({ error: 'Invalid email or password' }, 401)
   if (!user.verified) return json({ error: 'Please verify your email before signing in.' }, 403)
   if (user.banned) return json({ error: 'Your account has been suspended. Check your email for an appeal link.', banned: true }, 403)
+  if (upgradedHash) c.executionCtx.waitUntil(c.env.DB.prepare('UPDATE users SET pw_hash=? WHERE id=?').bind(upgradedHash, user.id).run())
   const res = json({ token: await makeToken(user.id, c.env.TOKEN_SECRET, user.token_version || 0), email: user.email })
   res.headers.set('Set-Cookie', sessionCookieHeader(await makeToken(user.id, c.env.TOKEN_SECRET, user.token_version || 0, SESSION_COOKIE_TTL)))
   return res
@@ -756,7 +855,7 @@ app.post('/auth/reset-password', async (c) => {
     return json({ error: 'This reset link has expired. Request a new one.' }, 400)
   }
 
-  const pw_hash = await hashPw(password, c.env.PW_SALT)
+  const pw_hash = await hashPasswordModern(password)
   // token_version+1 invalidates every session token issued before this
   // reset (see makeToken/requireAuth) — anyone who had a live session,
   // including an attacker who reset the password after taking the account,
@@ -777,10 +876,11 @@ app.post('/auth/login/app', async (c) => {
 
   const { email, password } = await c.req.json().catch(() => ({}))
   const user = await c.env.DB.prepare('SELECT * FROM users WHERE email=?').bind((email || '').toLowerCase()).first()
-  const pw_hash = await hashPw(password || '', c.env.PW_SALT)
-  if (!user || !user.pw_hash || user.pw_hash !== pw_hash) return json({ error: 'Invalid email or password' }, 401)
+  const { valid, upgradedHash } = await verifyPassword(password || '', user?.pw_hash, c.env.PW_SALT)
+  if (!user || !user.pw_hash || !valid) return json({ error: 'Invalid email or password' }, 401)
   if (!user.verified) return json({ error: 'Please verify your email before signing in.' }, 403)
   if (user.banned) return json({ error: 'Your account has been suspended. Check your email for an appeal link.', banned: true }, 403)
+  if (upgradedHash) c.executionCtx.waitUntil(c.env.DB.prepare('UPDATE users SET pw_hash=? WHERE id=?').bind(upgradedHash, user.id).run())
   return json({ token: await makeToken(user.id, c.env.TOKEN_SECRET, user.token_version || 0), email: user.email })
 })
 
@@ -973,11 +1073,7 @@ async function verifySquareSignature(rawBody, signatureHeader, signatureKey) {
   const key = await crypto.subtle.importKey('raw', new TextEncoder().encode(signatureKey), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign'])
   const sig = await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(SQUARE_WEBHOOK_URL + rawBody))
   const expected = btoa(String.fromCharCode(...new Uint8Array(sig)))
-  // Constant-time compare — this is a signature check, not a plain equality.
-  if (expected.length !== signatureHeader.length) return false
-  let diff = 0
-  for (let i = 0; i < expected.length; i++) diff |= expected.charCodeAt(i) ^ signatureHeader.charCodeAt(i)
-  return diff === 0
+  return timingSafeEqualStr(expected, signatureHeader)
 }
 
 // Mints a Square-hosted checkout page for the Axion Pro subscription. Square
@@ -1938,7 +2034,7 @@ app.get('/announcements/unsubscribe', async (c) => {
 // Called by GitHub Actions when announcements.html is updated — secret-protected, no login needed
 app.post('/webhook/announce', async (c) => {
   const secret = c.req.header('X-Webhook-Secret')
-  if (!secret || secret !== c.env.ANNOUNCE_WEBHOOK_SECRET) return json({ error: 'Unauthorized' }, 401)
+  if (!secret || !c.env.ANNOUNCE_WEBHOOK_SECRET || !timingSafeEqualStr(secret, c.env.ANNOUNCE_WEBHOOK_SECRET)) return json({ error: 'Unauthorized' }, 401)
 
   const { title, body, link, content_hash } = await c.req.json().catch(() => ({}))
   if (!title?.trim() || !body?.trim()) return json({ error: 'title and body required' }, 400)
@@ -2007,7 +2103,7 @@ app.post('/webhook/announce', async (c) => {
 // signup) — reuses the announce webhook's secret rather than a new one.
 app.post('/webhook/send-email', async (c) => {
   const secret = c.req.header('X-Webhook-Secret')
-  if (!secret || secret !== c.env.ANNOUNCE_WEBHOOK_SECRET) return json({ error: 'Unauthorized' }, 401)
+  if (!secret || !c.env.ANNOUNCE_WEBHOOK_SECRET || !timingSafeEqualStr(secret, c.env.ANNOUNCE_WEBHOOK_SECRET)) return json({ error: 'Unauthorized' }, 401)
   if (!c.env.RESEND_API_KEY) return json({ error: 'RESEND_API_KEY not set' }, 500)
 
   const { to, subject, html, from, replyTo } = await c.req.json().catch(() => ({}))
