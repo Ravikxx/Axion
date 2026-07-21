@@ -203,7 +203,7 @@ test('hitting the weekly cap returns 200 with cap_exceeded:true instead of a har
   const db = new D1TestDatabase()
   const secret = 'sandbox-route-secret'
   const nowIso = new Date().toISOString()
-  addUser(db, 'capped', { sandbox_week_count: 10, sandbox_week_start: nowIso }) // free cap is 10/week
+  addUser(db, 'capped', { sandbox_week_count: 500, sandbox_week_start: nowIso }) // free cap is 500/week
   const token = await sessionToken('capped', secret)
   const env = { DB: db, TOKEN_SECRET: secret, DAYTONA_API_KEY: 'dtn-test' }
 

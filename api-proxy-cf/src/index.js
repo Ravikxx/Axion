@@ -1265,9 +1265,12 @@ function limitsForPlan(plan) {
 // placed alongside it for discoverability, but only ever called from the
 // /v1/sandbox/execute route, not the chat completions path.
 // Network access is on for both plans (explicit product decision) — Pro
-// only differs on timeout and weekly cap.
-const FREE_SANDBOX_WEEKLY_CAP = 10
-const PRO_SANDBOX_WEEKLY_CAP  = 100    // placeholder — easy to tune later
+// only differs on timeout and weekly cap. Pro's cap is Infinity, not a
+// large number — readSandboxUsage/chargeSandboxUsage still track its count
+// for visibility, but `count >= Infinity` is never true, so it's a real
+// unlimited, not a high ceiling that could theoretically be hit.
+const FREE_SANDBOX_WEEKLY_CAP = 500
+const PRO_SANDBOX_WEEKLY_CAP  = Infinity
 const SANDBOX_BASE_TIMEOUT_MS = 10_000
 const SANDBOX_PRO_TIMEOUT_BONUS_MS = 10_000
 
