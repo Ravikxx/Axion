@@ -283,6 +283,33 @@ export async function chargeAccountUsage(db, userId, cost, weeklyBudget, windowB
   }
 }
 
+// Sandbox tool-call usage: a pure count-per-week gate (not a dollar cost),
+// reusing periodStatus's lazy-start shape — "cost" there is just a number,
+// and a count fits that contract exactly. Unlike chargeAccountUsage there's
+// no credit_balance escape hatch: hitting the weekly cap is a hard stop
+// until the lazy-start week itself elapses.
+export async function readSandboxUsage(db, userId, nowMs = Date.now()) {
+  const row = await db.prepare(
+    'SELECT sandbox_week_count, sandbox_week_start FROM users WHERE id=?'
+  ).bind(userId).first()
+  if (!row) return null
+  const week = resolvePeriod(row.sandbox_week_start, row.sandbox_week_count, WEEK_MS, nowMs)
+  return { count: week.cost, week_started: week.active, week_reset_at: week.resetAt }
+}
+
+export async function chargeSandboxUsage(db, userId, nowMs = Date.now()) {
+  const row = await db.prepare(
+    'SELECT sandbox_week_count, sandbox_week_start FROM users WHERE id=?'
+  ).bind(userId).first()
+  const week = resolvePeriod(row.sandbox_week_start, row.sandbox_week_count, WEEK_MS, nowMs)
+  const newCount = week.cost + 1
+  const newWeekStart = week.active ? row.sandbox_week_start : new Date(nowMs).toISOString()
+  await db.prepare(
+    'UPDATE users SET sandbox_week_count=?, sandbox_week_start=? WHERE id=?'
+  ).bind(newCount, newWeekStart, userId).run()
+  return { count: newCount, week_start: newWeekStart }
+}
+
 export function microdollarsToUsd(value) {
   return Number(((Number(value) || 0) / 1_000_000).toFixed(4))
 }

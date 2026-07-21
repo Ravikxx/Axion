@@ -6,9 +6,11 @@ import {
   buildSquareCheckoutPayload,
   canStartUsage,
   chargeAccountUsage,
+  chargeSandboxUsage,
   createCreditCode,
   normalizeCreditCode,
   readAccountUsage,
+  readSandboxUsage,
   redeemCreditCode,
   WEEK_MS,
   WINDOW_MS,
@@ -54,6 +56,9 @@ class D1TestDatabase {
         included_window_cost INTEGER NOT NULL DEFAULT 0,
         usage_window TEXT NOT NULL DEFAULT '',
         usage_limit_notified TEXT DEFAULT NULL,
+        sandbox_week_count INTEGER NOT NULL DEFAULT 0,
+        sandbox_week_start TEXT NOT NULL DEFAULT '',
+        sandbox_mode TEXT NOT NULL DEFAULT 'ask',
         created_at INTEGER NOT NULL DEFAULT (strftime('%s','now'))
       );
       CREATE TABLE credit_codes (
@@ -327,6 +332,50 @@ test('an elapsed period reads back as reset without writing to the database', as
   const raw = db.prepare('SELECT included_week_cost, usage_week FROM users WHERE id=?').bind('u1').first()
   assert.equal(raw.included_week_cost, 99_000) // a read never mutates — only a charge starts a new period
   assert.equal(raw.usage_week, longAgo)
+})
+
+test('sandbox usage: lazy-start from empty, increments, then resets after the week elapses', async () => {
+  const db = new D1TestDatabase()
+  addUser(db, 'u1')
+
+  let usage = await readSandboxUsage(db, 'u1')
+  assert.equal(usage.count, 0)
+  assert.equal(usage.week_started, false)
+  assert.equal(usage.week_reset_at, null)
+
+  const t0 = Date.parse('2026-07-01T00:00:00.000Z')
+  let charged = await chargeSandboxUsage(db, 'u1', t0)
+  assert.equal(charged.count, 1)
+  assert.equal(charged.week_start, new Date(t0).toISOString())
+
+  charged = await chargeSandboxUsage(db, 'u1', t0 + 1_000)
+  assert.equal(charged.count, 2)
+  assert.equal(charged.week_start, new Date(t0).toISOString(), 'still the same lazy-start period')
+
+  usage = await readSandboxUsage(db, 'u1', t0 + 2_000)
+  assert.equal(usage.count, 2)
+  assert.equal(usage.week_started, true)
+
+  // Week has fully elapsed — next charge starts a brand new period at count 1.
+  const afterWeek = t0 + WEEK_MS + 1_000
+  charged = await chargeSandboxUsage(db, 'u1', afterWeek)
+  assert.equal(charged.count, 1)
+  assert.equal(charged.week_start, new Date(afterWeek).toISOString())
+})
+
+test('sandbox usage: an elapsed period reads back as reset without writing to the database', async () => {
+  const db = new D1TestDatabase()
+  addUser(db, 'u1')
+  const longAgo = new Date(Date.now() - 8 * 24 * 60 * 60 * 1000).toISOString()
+  db.prepare('UPDATE users SET sandbox_week_count=?, sandbox_week_start=? WHERE id=?').bind(7, longAgo, 'u1').run()
+
+  const usage = await readSandboxUsage(db, 'u1')
+  assert.equal(usage.count, 0)
+  assert.equal(usage.week_started, false)
+
+  const raw = db.prepare('SELECT sandbox_week_count, sandbox_week_start FROM users WHERE id=?').bind('u1').first()
+  assert.equal(raw.sandbox_week_count, 7, 'a read never mutates — only a charge starts a new period')
+  assert.equal(raw.sandbox_week_start, longAgo)
 })
 
 test('Square checkout explicitly enables Marketing coupon entry', () => {
