@@ -2,6 +2,7 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 
 import {
+  LUMEN_SYSTEM_PROMPT,
   LUMEN_UPSTREAM_URLS,
   probeLumenHealth,
   proxyLumenRequest,
@@ -40,6 +41,28 @@ test('sends the real served model name (vLLM has no alias for "lumen"), rewrites
 
   const sent = JSON.parse(seen.options.body)
   assert.equal(sent.model, SERVED_MODEL_NAME)
+})
+
+test('prepends the baseline safety system prompt to every request, ahead of the caller\'s own messages', async () => {
+  let seen
+  const fetchImpl = async (url, options) => { seen = { url, options }; return Response.json(completion) }
+
+  await proxyLumenRequest({ messages: [{ role: 'user', content: 'Hi' }] }, env, fetchImpl)
+  const sent = JSON.parse(seen.options.body)
+  assert.equal(sent.messages[0].role, 'system')
+  assert.equal(sent.messages[0].content, LUMEN_SYSTEM_PROMPT)
+  assert.equal(sent.messages[1].content, 'Hi')
+})
+
+test('still includes the baseline system prompt even if the caller also sent their own', async () => {
+  let seen
+  const fetchImpl = async (url, options) => { seen = { url, options }; return Response.json(completion) }
+
+  await proxyLumenRequest({ messages: [{ role: 'system', content: 'caller system' }, { role: 'user', content: 'Hi' }] }, env, fetchImpl)
+  const sent = JSON.parse(seen.options.body)
+  assert.equal(sent.messages.length, 3)
+  assert.equal(sent.messages[0].content, LUMEN_SYSTEM_PROMPT)
+  assert.equal(sent.messages[1].content, 'caller system')
 })
 
 test('asks vLLM for real usage in the final chunk when streaming, and rewrites the model name in every chunk', async () => {

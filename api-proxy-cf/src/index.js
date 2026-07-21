@@ -5,9 +5,11 @@ import {
   buildSquareCheckoutPayload,
   canStartUsage,
   chargeAccountUsage,
+  chargeSandboxUsage,
   createCreditCode,
   deactivateCreditCode,
   readAccountUsage,
+  readSandboxUsage,
   listCreditCodes,
   microdollarsToUsd,
   periodStatus,
@@ -16,6 +18,7 @@ import {
   WINDOW_MS,
 } from './billing.js'
 import { probeLumenHealth, proxyLumenRequest } from './lumen-upstream.js'
+import { runPythonDisposable } from './sandbox.js'
 import { runStatusChecks, getStatusSnapshot } from './status.js'
 
 const app = new Hono()
@@ -1258,6 +1261,20 @@ function limitsForPlan(plan) {
     : { weeklyBudget: FREE_WEEKLY_BUDGET, windowBudget: FREE_WINDOW_BUDGET }
 }
 
+// Sandbox tool-call config, gated by plan the same way limitsForPlan is —
+// placed alongside it for discoverability, but only ever called from the
+// /v1/sandbox/execute route, not the chat completions path.
+const FREE_SANDBOX_WEEKLY_CAP = 10
+const PRO_SANDBOX_WEEKLY_CAP  = 100    // placeholder — easy to tune later
+const SANDBOX_BASE_TIMEOUT_MS = 10_000
+const SANDBOX_PRO_TIMEOUT_BONUS_MS = 10_000
+
+function sandboxConfigForPlan(plan) {
+  return plan === 'pro'
+    ? { networkAccess: true, timeoutMs: SANDBOX_BASE_TIMEOUT_MS + SANDBOX_PRO_TIMEOUT_BONUS_MS, weeklyCap: PRO_SANDBOX_WEEKLY_CAP }
+    : { networkAccess: false, timeoutMs: SANDBOX_BASE_TIMEOUT_MS, weeklyCap: FREE_SANDBOX_WEEKLY_CAP }
+}
+
 function requestCostMicrodollars(inputTokens, outputTokens) {
   return Math.round(inputTokens * LUMEN_INPUT_PER_M_USD + outputTokens * LUMEN_OUTPUT_PER_M_USD)
 }
@@ -1398,6 +1415,56 @@ function applySafetyTriggers(body) {
   }
   return null
 }
+
+// Executes a Lumen-requested Python tool call in a disposable Daytona
+// sandbox. Gated to any request with a resolved billedUser (session token
+// or API key) — deliberately excludes the fully anonymous free/keyless
+// tier, since real compute execution is a different abuse risk than text
+// generation. Mirrors /v1/chat/completions's own billedUser resolution
+// (duplicated rather than extracted — small enough, and only two call
+// sites so far).
+app.post('/v1/sandbox/execute', async (c) => {
+  const auth = (c.req.header('Authorization') || '').replace(/^Bearer\s+/i, '').trim()
+  const body = await c.req.json().catch(() => ({}))
+  if (typeof body.code !== 'string') return json({ error: { message: 'Missing "code" string', type: 'invalid_request_error' } }, 400)
+
+  let billedUser = null
+  if (auth.startsWith('axion-sk-')) {
+    const keyRow = await c.env.DB.prepare('SELECT * FROM api_keys WHERE key_value=? AND revoked=0').bind(auth).first()
+    if (!keyRow) return json({ error: { message: 'Invalid or revoked API key', type: 'invalid_request_error' } }, 401)
+    billedUser = await c.env.DB.prepare('SELECT * FROM users WHERE id=?').bind(keyRow.user_id).first()
+    if (!billedUser) return json({ error: { message: 'Invalid or revoked API key', type: 'invalid_request_error' } }, 401)
+  } else if (auth) {
+    billedUser = await requireAuth(c)
+    if (!billedUser) return json({ error: { message: 'Invalid or expired credentials', type: 'invalid_request_error' } }, 401)
+  }
+  if (!billedUser) return json({ error: { message: 'Sandbox execution requires a signed-in account or API key.', type: 'permission_error' } }, 403)
+  if (billedUser.banned) return json({ error: { message: 'Your account has been suspended.', type: 'permission_error' } }, 403)
+
+  const cfg = sandboxConfigForPlan(billedUser.plan)
+  const usage = await readSandboxUsage(c.env.DB, billedUser.id)
+
+  if (usage.count >= cfg.weeklyCap) {
+    return json({
+      stdout: '', stderr: '', exit_code: null, artifacts: [],
+      cap_exceeded: true,
+      reset_at: usage.week_reset_at,
+      message: `Weekly sandbox execution limit reached (${cfg.weeklyCap}/week). Resets ${usage.week_reset_at || 'soon'}.`,
+    })
+  }
+
+  const result = await runPythonDisposable(c.env, body.code, cfg)
+  await chargeSandboxUsage(c.env.DB, billedUser.id)
+
+  return json({
+    stdout: result.stdout,
+    stderr: result.stderr,
+    exit_code: result.exitCode,
+    artifacts: result.artifacts,
+    timed_out: result.timedOut,
+    ...(result.error ? { error: result.error } : {}),
+  })
+})
 
 app.post('/v1/chat/completions', async (c) => {
   const ip = c.req.header('CF-Connecting-IP') || 'unknown'
@@ -1898,16 +1965,19 @@ app.get('/dashboard/prefs', async (c) => {
   const user = await requireAuth(c)
   if (!user) return json({ error: 'Not authenticated' }, 401)
   const prefs = await c.env.DB.prepare('SELECT * FROM email_prefs WHERE user_id=?').bind(user.id).first()
-  return json({ notify_limit: 1, notify_announcements: 1, ...prefs })
+  return json({ notify_limit: 1, notify_announcements: 1, ...prefs, sandbox_mode: user.sandbox_mode || 'ask' })
 })
 
 app.put('/dashboard/prefs', async (c) => {
   const user = await requireAuth(c)
   if (!user) return json({ error: 'Not authenticated' }, 401)
-  const { notify_limit, notify_announcements } = await c.req.json().catch(() => ({}))
+  const { notify_limit, notify_announcements, sandbox_mode } = await c.req.json().catch(() => ({}))
   await c.env.DB.prepare(
     'INSERT INTO email_prefs (user_id, notify_limit, notify_announcements) VALUES (?,?,?) ON CONFLICT (user_id) DO UPDATE SET notify_limit=excluded.notify_limit, notify_announcements=excluded.notify_announcements'
   ).bind(user.id, notify_limit ? 1 : 0, notify_announcements ? 1 : 0).run()
+  if (sandbox_mode === 'ask' || sandbox_mode === 'auto') {
+    await c.env.DB.prepare('UPDATE users SET sandbox_mode=? WHERE id=?').bind(sandbox_mode, user.id).run()
+  }
   return json({ ok: true })
 })
 

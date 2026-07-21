@@ -26,8 +26,25 @@ function errorResponse(message, status = 502) {
 // which underlying HF repo is actually running.
 const SERVED_MODEL_NAME = 'AxionLabsAI/Lumen-1.2.5'
 
+// Baseline safety/behavior system prompt sent with every Lumen request,
+// regardless of caller (web chat, playground, API keys, CLI). Lumen's own
+// DPO safety fine-tuning is the primary safety layer; this — plus the
+// keyword-triggered notices in index.js's applySafetyTriggers — is a
+// runtime layer on top of that, so behavior isn't resting solely on
+// regex patterns matching before anything is said at all.
+export const LUMEN_SYSTEM_PROMPT = `You are Lumen, an AI assistant made by Axion Labs. You're helpful, direct, and honest.
+- Answer questions clearly and concisely. Don't over-explain.
+- If you don't know something, say so — don't guess and present it as fact.
+- Refuse requests that would help harm people, violate someone's privacy, or carry out illegal activity — including sexual content involving minors, instructions for creating weapons or explosives, and malicious code meant to attack or compromise systems.
+- Don't generate hateful or discriminatory content targeting people based on race, religion, gender, or similar traits.
+- If someone expresses thoughts of self-harm or suicide, respond with care, encourage them to seek support (e.g. a crisis line), and don't provide methods or instructions for self-harm.
+- When you decline a request, say so briefly and offer a constructive alternative where one exists, rather than lecturing.`
+
 export async function proxyLumenRequest(body, env, fetchImpl = fetch) {
-  const requestBody = { ...body, model: SERVED_MODEL_NAME }
+  const messages = Array.isArray(body.messages)
+    ? [{ role: 'system', content: LUMEN_SYSTEM_PROMPT }, ...body.messages]
+    : body.messages
+  const requestBody = { ...body, model: SERVED_MODEL_NAME, messages }
   if (requestBody.stream) {
     requestBody.stream_options = { ...requestBody.stream_options, include_usage: true }
   }
