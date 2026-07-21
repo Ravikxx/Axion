@@ -217,6 +217,15 @@ async function sendEmail(resendKey, { to, subject, html, from, replyTo }) {
   return res
 }
 
+// Minimal HTML-escaping for user-controlled strings (email addresses, appeal
+// reasons, etc.) interpolated into server-rendered HTML or HTML emails —
+// without this, an attacker-chosen registration email or appeal reason can
+// break out of its containing tag.
+function escHtml(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+}
+
 function emailWrap(inner) {
   return `<div style="font-family:system-ui,sans-serif;max-width:480px;margin:0 auto;padding:32px;background:#0f0f11;color:#e8e8f0">${inner}</div>`
 }
@@ -560,6 +569,12 @@ app.get('/auth/google/callback', async (c) => {
   })
   const gUser = await userRes.json()
   if (!gUser.email) return new Response('Could not get email from Google', { status: 400 })
+  // Google's userinfo endpoint can return an email Google itself hasn't
+  // verified ownership of (e.g. an unverified Workspace-domain address).
+  // GitHub and Discord below both gate on their equivalent verified flag —
+  // skipping it here would let an attacker sign in/link as any email
+  // address they can put on a Google account without proving they own it.
+  if (gUser.verified_email === false) return new Response('Google email not verified', { status: 400 })
 
   const linkState = await parseToken(c.req.query('state'), c.env.TOKEN_SECRET)
   if (linkState?.action === 'link') {
@@ -2142,7 +2157,7 @@ body{font-family:system-ui,sans-serif;background:#110d08;color:#e8ddd0;display:f
 ${!banned ? '<div class="msg success">Your account is no longer suspended. No further action needed.</div>' : ''}
 <div id="error-msg" class="msg error" style="display:none"></div>
 <div class="field"><label>Your appeal</label>
-<textarea id="reason" placeholder="Explain why your account should be reinstated..." ${!banned ? 'disabled' : ''}>${appeal.reason || ''}</textarea></div>
+<textarea id="reason" placeholder="Explain why your account should be reinstated..." ${!banned ? 'disabled' : ''}>${escHtml(appeal.reason || '')}</textarea></div>
 <button class="btn" id="submit-btn" onclick="submitAppeal()" ${!banned || appeal.reason ? 'disabled' : ''}>${appeal.reason ? 'Appeal submitted — awaiting review' : 'Submit appeal'}</button>
 </div>
 <script>
@@ -2173,9 +2188,9 @@ app.post('/appeal/:token', async (c) => {
       subject: '[Axion] New appeal from ' + appeal.email,
       html: emailWrap(`
         <h2 style="margin:0 0 8px;color:#e8e8f0">New appeal submitted</h2>
-        <p style="color:#ccc;margin:0 0 4px"><strong>Email:</strong> ${appeal.email}</p>
+        <p style="color:#ccc;margin:0 0 4px"><strong>Email:</strong> ${escHtml(appeal.email)}</p>
         <p style="color:#ccc;margin:0 0 16px"><strong>Reason:</strong></p>
-        <div style="background:#0f0f11;border:1px solid #2a2a30;border-radius:8px;padding:14px 16px;color:#ccc;font-size:14px;line-height:1.6;white-space:pre-wrap;margin-bottom:20px">${reason.trim()}</div>
+        <div style="background:#0f0f11;border:1px solid #2a2a30;border-radius:8px;padding:14px 16px;color:#ccc;font-size:14px;line-height:1.6;white-space:pre-wrap;margin-bottom:20px">${escHtml(reason.trim())}</div>
         <a href="https://api.amplifiedsmp.org/admin" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">Review in admin panel →</a>
       `),
     }))
@@ -2502,6 +2517,13 @@ app.post('/orgs/:id/invite', async (c) => {
   const orgId = c.req.param('id')
   const { email, role } = await c.req.json().catch(() => ({}))
   if (!email || !validEmail(email)) return json({ error: 'Invalid email' }, 400)
+  // Granting 'owner' is itself an owner-level action — a regular member
+  // inviting an accomplice (or a second account of their own) with
+  // role:'owner' would otherwise hand out full org control (rename, delete,
+  // remove members, invite more owners) despite only being a member.
+  if (role === 'owner' && ctx.role !== 'owner') {
+    return json({ error: 'Only an owner can invite a new owner.' }, 403)
+  }
   const assignRole = role === 'owner' ? 'owner' : 'member'
 
   // Rate limit: max 5 invites per 15 minutes per user

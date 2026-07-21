@@ -114,11 +114,21 @@ class D1TestDatabase {
         new_credit_balance INTEGER NOT NULL,
         created_at INTEGER NOT NULL
       );
-      CREATE TABLE orgs (id TEXT PRIMARY KEY, owner_id TEXT NOT NULL REFERENCES users(id));
-      CREATE TABLE org_invites (id TEXT PRIMARY KEY, org_id TEXT NOT NULL REFERENCES orgs(id));
+      CREATE TABLE orgs (id TEXT PRIMARY KEY, name TEXT NOT NULL DEFAULT '', owner_id TEXT NOT NULL REFERENCES users(id), created_at INTEGER NOT NULL DEFAULT (strftime('%s','now')));
+      CREATE TABLE org_invites (
+        token TEXT PRIMARY KEY,
+        org_id TEXT NOT NULL REFERENCES orgs(id),
+        email TEXT NOT NULL,
+        role TEXT NOT NULL DEFAULT 'member',
+        invited_by TEXT NOT NULL DEFAULT '',
+        expires_at INTEGER NOT NULL,
+        used INTEGER NOT NULL DEFAULT 0
+      );
       CREATE TABLE org_members (
         org_id TEXT NOT NULL REFERENCES orgs(id),
-        user_id TEXT NOT NULL REFERENCES users(id)
+        user_id TEXT NOT NULL REFERENCES users(id),
+        role TEXT NOT NULL DEFAULT 'member',
+        joined_at INTEGER NOT NULL DEFAULT (strftime('%s','now'))
       );
       CREATE TABLE chats (id TEXT PRIMARY KEY, user_id TEXT NOT NULL REFERENCES users(id));
       CREATE TABLE email_prefs (user_id TEXT PRIMARY KEY REFERENCES users(id));
@@ -737,4 +747,47 @@ test('streamed completions bill with the upstream usage object, not char estimat
   } finally {
     globalThis.fetch = realFetch
   }
+})
+
+test('a regular org member cannot invite a new member with the owner role', async () => {
+  const db = new D1TestDatabase()
+  const secret = 'org-invite-secret'
+  addUser(db, 'owner')
+  addUser(db, 'member')
+  db.prepare('INSERT INTO orgs (id, name, owner_id) VALUES (?,?,?)').bind('org1', 'Team', 'owner').run()
+  db.prepare('INSERT INTO org_members (org_id, user_id, role) VALUES (?,?,?)').bind('org1', 'owner', 'owner').run()
+  db.prepare('INSERT INTO org_members (org_id, user_id, role) VALUES (?,?,?)').bind('org1', 'member', 'member').run()
+
+  const env = { DB: db, TOKEN_SECRET: secret }
+  const memberToken = await sessionToken('member', secret)
+
+  // A plain member trying to grant 'owner' to an accomplice must be rejected...
+  const escalate = await app.request('/orgs/org1/invite', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${memberToken}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email: 'accomplice@example.com', role: 'owner' }),
+  }, env)
+  assert.equal(escalate.status, 403)
+  assert.equal(db.prepare('SELECT COUNT(*) AS count FROM org_invites').first().count, 0)
+
+  // ...but the same member inviting as a regular member still works.
+  const normalInvite = await app.request('/orgs/org1/invite', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${memberToken}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email: 'newperson@example.com' }),
+  }, env)
+  assert.equal(normalInvite.status, 200)
+  const invite = db.prepare('SELECT role FROM org_invites WHERE email=?').bind('newperson@example.com').first()
+  assert.equal(invite.role, 'member')
+
+  // The actual owner can still grant the owner role.
+  const ownerToken = await sessionToken('owner', secret)
+  const ownerInvite = await app.request('/orgs/org1/invite', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${ownerToken}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email: 'co-owner@example.com', role: 'owner' }),
+  }, env)
+  assert.equal(ownerInvite.status, 200)
+  const coOwnerInvite = db.prepare('SELECT role FROM org_invites WHERE email=?').bind('co-owner@example.com').first()
+  assert.equal(coOwnerInvite.role, 'owner')
 })
