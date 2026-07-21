@@ -1292,22 +1292,23 @@ async function proxyUpstream(body, env) {
   return proxyLumenRequest(body, env)
 }
 
-function streamResponse(upstream) {
-  const { readable, writable } = new TransformStream()
-  upstream.body.pipeTo(writable)
-  return new Response(readable, {
-    headers: { 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-cache', 'Access-Control-Allow-Origin': '*' },
-  })
-}
-
-// Same as streamResponse, but tees the body so the client gets the untouched
-// stream immediately while a second copy is read in the background to
-// accumulate the assistant's output text for cost tracking — SSE parsing
-// never blocks or delays what's forwarded to the client. Also harvests the
-// upstream's real `usage` object when the final chunk carries one, so billing
-// can use exact token counts instead of character estimates. Returns the
-// client Response plus a promise for {outText, usage}; the caller is
-// responsible for registering that promise with waitUntil.
+// Tees the body so the client gets the untouched stream immediately, while
+// a second copy is read in the background (registered with waitUntil by the
+// caller) to accumulate the assistant's output text for cost tracking and
+// harvest the upstream's real `usage` object when the final chunk carries
+// one. Returns the client Response plus a promise for {outText, usage}.
+//
+// This matters beyond billing: every caller MUST tee like this rather than
+// a raw pipeTo(). A plain pipeTo propagates a client disconnect (closed tab,
+// a Stop button, a timed-out test script) straight through to cancel the
+// upstream RunPod fetch — and a request genuinely cancelled mid-generation
+// on RunPod's managed vLLM worker image has been observed to leave that
+// worker permanently wedged (the scheduler still counts it as "busy" but it
+// never processes anything again). Because the background reader here keeps
+// draining the tee'd copy independently of whether the client is still
+// listening, the upstream fetch always runs to completion — so stopping a
+// bad generation from the client side is always safe: it just stops
+// updating the UI, it never tells RunPod to abort.
 function streamResponseTracked(upstream) {
   const [clientBody, trackBody] = upstream.body.tee()
   const client = new Response(clientBody, {
@@ -1704,7 +1705,11 @@ app.post('/v1/chat/completions', async (c) => {
   const upstream = await proxyUpstream(body, c.env)
   if (!upstream.ok) return json({ error: { message: await upstream.text(), type: 'upstream_error' } }, upstream.status)
 
-  if (body.stream) return streamResponse(upstream)
+  if (body.stream) {
+    const { client, trackedPromise } = streamResponseTracked(upstream)
+    c.executionCtx.waitUntil(trackedPromise)
+    return client
+  }
   return json(await upstream.json())
 })
 
