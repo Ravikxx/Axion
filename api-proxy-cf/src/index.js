@@ -18,7 +18,7 @@ import {
   WINDOW_MS,
 } from './billing.js'
 import { probeLumenHealth, proxyLumenRequest } from './lumen-upstream.js'
-import { runPythonDisposable } from './sandbox.js'
+import { runCode } from './sandbox.js'
 import { runStatusChecks, getStatusSnapshot } from './status.js'
 
 const app = new Hono()
@@ -1264,6 +1264,8 @@ function limitsForPlan(plan) {
 // Sandbox tool-call config, gated by plan the same way limitsForPlan is —
 // placed alongside it for discoverability, but only ever called from the
 // /v1/sandbox/execute route, not the chat completions path.
+// Network access is on for both plans (explicit product decision) — Pro
+// only differs on timeout and weekly cap.
 const FREE_SANDBOX_WEEKLY_CAP = 10
 const PRO_SANDBOX_WEEKLY_CAP  = 100    // placeholder — easy to tune later
 const SANDBOX_BASE_TIMEOUT_MS = 10_000
@@ -1272,7 +1274,7 @@ const SANDBOX_PRO_TIMEOUT_BONUS_MS = 10_000
 function sandboxConfigForPlan(plan) {
   return plan === 'pro'
     ? { networkAccess: true, timeoutMs: SANDBOX_BASE_TIMEOUT_MS + SANDBOX_PRO_TIMEOUT_BONUS_MS, weeklyCap: PRO_SANDBOX_WEEKLY_CAP }
-    : { networkAccess: false, timeoutMs: SANDBOX_BASE_TIMEOUT_MS, weeklyCap: FREE_SANDBOX_WEEKLY_CAP }
+    : { networkAccess: true, timeoutMs: SANDBOX_BASE_TIMEOUT_MS, weeklyCap: FREE_SANDBOX_WEEKLY_CAP }
 }
 
 function requestCostMicrodollars(inputTokens, outputTokens) {
@@ -1416,17 +1418,24 @@ function applySafetyTriggers(body) {
   return null
 }
 
-// Executes a Lumen-requested Python tool call in a disposable Daytona
-// sandbox. Gated to any request with a resolved billedUser (session token
-// or API key) — deliberately excludes the fully anonymous free/keyless
-// tier, since real compute execution is a different abuse risk than text
-// generation. Mirrors /v1/chat/completions's own billedUser resolution
-// (duplicated rather than extracted — small enough, and only two call
-// sites so far).
+const SANDBOX_LANGUAGES = new Set(['python', 'javascript'])
+
+// Executes a Lumen-requested tool call in a Daytona sandbox. Gated to any
+// request with a resolved billedUser (session token or API key) —
+// deliberately excludes the fully anonymous free/keyless tier, since real
+// compute execution is a different abuse risk than text generation. Mirrors
+// /v1/chat/completions's own billedUser resolution (duplicated rather than
+// extracted — small enough, and only two call sites so far).
+//
+// When `chat_id` is given and owned by this user, the sandbox tied to that
+// conversation is reused (or created and saved) so state persists across
+// tool calls in the same chat. Without a chat_id (e.g. API-key/CLI callers
+// with no stored conversation) each call gets a fresh, one-off sandbox.
 app.post('/v1/sandbox/execute', async (c) => {
   const auth = (c.req.header('Authorization') || '').replace(/^Bearer\s+/i, '').trim()
   const body = await c.req.json().catch(() => ({}))
   if (typeof body.code !== 'string') return json({ error: { message: 'Missing "code" string', type: 'invalid_request_error' } }, 400)
+  const language = SANDBOX_LANGUAGES.has(body.language) ? body.language : 'python'
 
   let billedUser = null
   if (auth.startsWith('axion-sk-')) {
@@ -1453,8 +1462,17 @@ app.post('/v1/sandbox/execute', async (c) => {
     })
   }
 
-  const result = await runPythonDisposable(c.env, body.code, cfg)
+  let chatRow = null
+  if (typeof body.chat_id === 'string' && body.chat_id) {
+    chatRow = await c.env.DB.prepare('SELECT id, sandbox_id FROM chats WHERE id=? AND user_id=?').bind(body.chat_id, billedUser.id).first()
+  }
+
+  const result = await runCode(c.env, body.code, { ...cfg, language, sandboxId: chatRow?.sandbox_id || null })
   await chargeSandboxUsage(c.env.DB, billedUser.id)
+
+  if (chatRow && result.sandboxId && result.sandboxId !== chatRow.sandbox_id) {
+    await c.env.DB.prepare('UPDATE chats SET sandbox_id=? WHERE id=?').bind(result.sandboxId, chatRow.id).run()
+  }
 
   return json({
     stdout: result.stdout,

@@ -41,9 +41,25 @@ class D1TestDatabase {
         key_value TEXT UNIQUE NOT NULL,
         revoked INTEGER NOT NULL DEFAULT 0
       );
+      CREATE TABLE chats (
+        id TEXT PRIMARY KEY,
+        user_id TEXT NOT NULL,
+        title TEXT NOT NULL DEFAULT '',
+        messages TEXT NOT NULL DEFAULT '[]',
+        updated INTEGER NOT NULL DEFAULT 0,
+        created INTEGER NOT NULL DEFAULT 0,
+        sandbox_id TEXT
+      );
     `)
   }
   prepare(sql) { return new Statement(this.database, sql) }
+}
+
+function addChat(db, id, userId, overrides = {}) {
+  db.prepare('INSERT INTO chats (id, user_id) VALUES (?,?)').bind(id, userId).run()
+  for (const [col, val] of Object.entries(overrides)) {
+    db.prepare(`UPDATE chats SET ${col}=? WHERE id=?`).bind(val, id).run()
+  }
 }
 
 function addUser(db, id, overrides = {}) {
@@ -61,18 +77,21 @@ async function sessionToken(uid, secret) {
   return `${payload}.${sigB64}`
 }
 
-function daytonaFetchStub() {
+function daytonaFetchStub(sandboxId = 'sb-route-test') {
   return async (url, options) => {
     if (url === 'https://app.daytona.io/api/sandbox' && options.method === 'POST') {
-      return Response.json({ id: 'sb-route-test', state: 'started' })
+      return Response.json({ id: sandboxId, state: 'started' })
+    }
+    if (url === `https://app.daytona.io/api/sandbox/${sandboxId}` && !options?.method) {
+      return Response.json({ id: sandboxId, state: 'started' })
+    }
+    if (url.includes('/files?path=')) {
+      return Response.json([])
     }
     if (url.includes('/process/code-run')) {
       return Response.json({ exitCode: 0, result: '2\n' })
     }
-    if (options.method === 'DELETE') {
-      return Response.json({ id: 'sb-route-test', state: 'destroying' })
-    }
-    throw new Error(`unexpected fetch in route test: ${url}`)
+    throw new Error(`unexpected fetch in route test: ${url} ${options?.method || 'GET'}`)
   }
 }
 
@@ -138,6 +157,43 @@ test('a successful execution runs the sandbox and increments the weekly count', 
 
   const row = db.prepare('SELECT sandbox_week_count FROM users WHERE id=?').bind('member').first()
   assert.equal(row.sandbox_week_count, 1)
+})
+
+test('a chat_id reuses the same sandbox across calls and saves the sandbox_id on the chat row', async () => {
+  const db = new D1TestDatabase()
+  const secret = 'sandbox-route-secret'
+  addUser(db, 'member2')
+  addChat(db, 'chat-1', 'member2')
+  const token = await sessionToken('member2', secret)
+  const env = { DB: db, TOKEN_SECRET: secret, DAYTONA_API_KEY: 'dtn-test' }
+
+  const realFetch = globalThis.fetch
+  const createCalls = []
+  globalThis.fetch = async (url, options) => {
+    if (url === 'https://app.daytona.io/api/sandbox' && options.method === 'POST') createCalls.push(url)
+    return daytonaFetchStub('sb-chat-1')(url, options)
+  }
+  try {
+    const first = await app.request('/v1/sandbox/execute', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code: 'x = 1', chat_id: 'chat-1' }),
+    }, env)
+    assert.equal(first.status, 200)
+
+    const row = db.prepare('SELECT sandbox_id FROM chats WHERE id=?').bind('chat-1').first()
+    assert.equal(row.sandbox_id, 'sb-chat-1')
+
+    const second = await app.request('/v1/sandbox/execute', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code: 'print(x)', chat_id: 'chat-1' }),
+    }, env)
+    assert.equal(second.status, 200)
+  } finally {
+    globalThis.fetch = realFetch
+  }
+  assert.equal(createCalls.length, 1, 'the second call must reuse the sandbox, not create a new one')
 })
 
 test('hitting the weekly cap returns 200 with cap_exceeded:true instead of a hard error, and does not call Daytona', async () => {
