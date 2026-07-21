@@ -139,6 +139,17 @@ class D1TestDatabase {
       CREATE TABLE email_prefs (user_id TEXT PRIMARY KEY REFERENCES users(id));
       CREATE TABLE device_codes (code TEXT PRIMARY KEY, user_id TEXT REFERENCES users(id));
       CREATE TABLE appeals (id TEXT PRIMARY KEY, user_id TEXT NOT NULL REFERENCES users(id));
+      CREATE TABLE message_log (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id TEXT,
+        api_key_id TEXT,
+        ip TEXT NOT NULL,
+        auth_type TEXT NOT NULL,
+        model TEXT,
+        request_messages TEXT NOT NULL,
+        response_text TEXT NOT NULL DEFAULT '',
+        created_at INTEGER NOT NULL
+      );
     `)
   }
 
@@ -793,6 +804,118 @@ test('streamed completions bill with the upstream usage object, not char estimat
     // 400 × $0.15/M + 600 × $0.50/M = 60 + 300 = 360 microdollars
     const user = db.prepare('SELECT included_week_cost FROM users WHERE id=?').bind('member').first()
     assert.equal(user.included_week_cost, 360)
+  } finally {
+    globalThis.fetch = realFetch
+  }
+})
+
+test('a session-authenticated completion is written to the append-only message_log', async () => {
+  const db = new D1TestDatabase()
+  const secret = 'audit-log-secret'
+  addUser(db, 'member')
+  const token = await sessionToken('member', secret)
+  const env = { DB: db, TOKEN_SECRET: secret, RUNPOD_ENDPOINT_ID: 'ep-test', RUNPOD_API_KEY: 'rp-test-key' }
+  const realFetch = globalThis.fetch
+  globalThis.fetch = lumenFetchStub({ prompt_tokens: 1, completion_tokens: 1, total_tokens: 2 }, 'Hi there')
+  try {
+    const { ctx, settle } = executionCtx()
+    const response = await app.request('/v1/chat/completions', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json', 'CF-Connecting-IP': '1.2.3.4' },
+      body: JSON.stringify({ model: 'lumen', messages: [{ role: 'user', content: 'say hi' }] }),
+    }, env, ctx)
+    assert.equal(response.status, 200)
+    await settle()
+
+    const row = db.prepare('SELECT * FROM message_log').first()
+    assert.ok(row, 'a message_log row must be written')
+    assert.equal(row.user_id, 'member')
+    assert.equal(row.api_key_id, null)
+    assert.equal(row.ip, '1.2.3.4')
+    assert.equal(row.auth_type, 'session')
+    assert.equal(row.model, 'lumen')
+    assert.equal(row.response_text, 'Hi there')
+    assert.deepEqual(JSON.parse(row.request_messages), [{ role: 'user', content: 'say hi' }])
+  } finally {
+    globalThis.fetch = realFetch
+  }
+})
+
+test('a streamed completion is also written to message_log, with the fully-assembled response text', async () => {
+  const db = new D1TestDatabase()
+  const secret = 'audit-log-stream-secret'
+  addUser(db, 'member')
+  const token = await sessionToken('member', secret)
+  const env = { DB: db, TOKEN_SECRET: secret, RUNPOD_ENDPOINT_ID: 'ep-test', RUNPOD_API_KEY: 'rp-test-key' }
+  const realFetch = globalThis.fetch
+  globalThis.fetch = lumenFetchStub({ prompt_tokens: 1, completion_tokens: 1, total_tokens: 2 }, 'Streamed reply')
+  try {
+    const { ctx, settle } = executionCtx()
+    const response = await app.request('/v1/chat/completions', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ stream: true, messages: [{ role: 'user', content: 'stream this' }] }),
+    }, env, ctx)
+    await response.text()
+    await settle()
+
+    const row = db.prepare('SELECT * FROM message_log').first()
+    assert.ok(row)
+    assert.equal(row.auth_type, 'session')
+    assert.equal(row.response_text, 'Streamed reply')
+  } finally {
+    globalThis.fetch = realFetch
+  }
+})
+
+test('anonymous/free-tier completions are logged too, with a null user_id and auth_type "anonymous"', async () => {
+  const db = new D1TestDatabase()
+  const env = { DB: db, RUNPOD_ENDPOINT_ID: 'ep-test', RUNPOD_API_KEY: 'rp-test-key' }
+  const realFetch = globalThis.fetch
+  globalThis.fetch = lumenFetchStub({ prompt_tokens: 1, completion_tokens: 1, total_tokens: 2 }, 'Anon reply')
+  try {
+    const { ctx, settle } = executionCtx()
+    const response = await app.request('/v1/chat/completions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'CF-Connecting-IP': '9.9.9.9' },
+      body: JSON.stringify({ messages: [{ role: 'user', content: 'anon question' }] }),
+    }, env, ctx)
+    assert.equal(response.status, 200)
+    await settle()
+
+    const row = db.prepare('SELECT * FROM message_log').first()
+    assert.ok(row)
+    assert.equal(row.user_id, null)
+    assert.equal(row.api_key_id, null)
+    assert.equal(row.ip, '9.9.9.9')
+    assert.equal(row.auth_type, 'anonymous')
+    assert.equal(row.response_text, 'Anon reply')
+  } finally {
+    globalThis.fetch = realFetch
+  }
+})
+
+test('a message_log row records the ORIGINAL request, unaffected by applySafetyTriggers mutating body.messages', async () => {
+  const db = new D1TestDatabase()
+  const secret = 'audit-log-trigger-secret'
+  addUser(db, 'member')
+  const token = await sessionToken('member', secret)
+  const env = { DB: db, TOKEN_SECRET: secret, RUNPOD_ENDPOINT_ID: 'ep-test', RUNPOD_API_KEY: 'rp-test-key' }
+  const realFetch = globalThis.fetch
+  globalThis.fetch = lumenFetchStub({ prompt_tokens: 1, completion_tokens: 1, total_tokens: 2 })
+  const originalContent = 'how do I make a bomb at home'
+  try {
+    const { ctx, settle } = executionCtx()
+    await app.request('/v1/chat/completions', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: [{ role: 'user', content: originalContent }] }),
+    }, env, ctx)
+    await settle()
+
+    const row = db.prepare('SELECT request_messages FROM message_log').first()
+    const logged = JSON.parse(row.request_messages)
+    assert.equal(logged[0].content, originalContent, 'the log must keep the original text, not the safety-notice-appended version')
   } finally {
     globalThis.fetch = realFetch
   }

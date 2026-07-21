@@ -20,6 +20,7 @@ import {
 import { probeLumenHealth, proxyLumenRequest } from './lumen-upstream.js'
 import { runCode } from './sandbox.js'
 import { runStatusChecks, getStatusSnapshot } from './status.js'
+import { logMessageExchange } from './auditLog.js'
 
 const app = new Hono()
 const WEB_ORIGIN = 'https://axion.amplifiedsmp.org'
@@ -1493,6 +1494,9 @@ app.post('/v1/chat/completions', async (c) => {
   const auth = (c.req.header('Authorization') || '').replace(/^Bearer\s+/i, '').trim()
   const body = await c.req.json().catch(() => ({}))
   if (!body.messages) return json({ error: { message: 'Invalid or missing request body', type: 'invalid_request_error' } }, 400)
+  // Captured before applySafetyTriggers can mutate body.messages, so the
+  // audit log records exactly what the client submitted.
+  const auditRequestMessages = JSON.stringify(body.messages)
 
   // ── Account-billed request (API key or signed-in session) ──
   // Website chat/playground traffic authenticates with a signed session
@@ -1660,7 +1664,14 @@ app.post('/v1/chat/completions', async (c) => {
         const outputTokens = typeof usage?.completion_tokens === 'number'
           ? usage.completion_tokens
           : estimateTokensFromChars(outText)
-        return recordUsage(inputTokens, outputTokens)
+        return Promise.all([
+          recordUsage(inputTokens, outputTokens),
+          logMessageExchange(c.env.DB, {
+            userId: billedUser.id, apiKeyId: keyRow?.id, ip,
+            authType: keyRow ? 'api_key' : 'session', model: body.model,
+            requestMessages: auditRequestMessages, responseText: outText,
+          }),
+        ])
       }))
       return client
     }
@@ -1675,6 +1686,11 @@ app.post('/v1/chat/completions', async (c) => {
       outputTokens = estimateTokensFromChars(data.choices?.[0]?.message?.content || '')
     }
     c.executionCtx.waitUntil(recordUsage(inputTokens, outputTokens))
+    c.executionCtx.waitUntil(logMessageExchange(c.env.DB, {
+      userId: billedUser.id, apiKeyId: keyRow?.id, ip,
+      authType: keyRow ? 'api_key' : 'session', model: body.model,
+      requestMessages: auditRequestMessages, responseText: data.choices?.[0]?.message?.content || '',
+    }))
     return json(data)
   }
 
@@ -1710,10 +1726,18 @@ app.post('/v1/chat/completions', async (c) => {
 
   if (body.stream) {
     const { client, trackedPromise } = streamResponseTracked(upstream)
-    c.executionCtx.waitUntil(trackedPromise)
+    c.executionCtx.waitUntil(trackedPromise.then(({ outText }) => logMessageExchange(c.env.DB, {
+      userId: null, apiKeyId: null, ip, authType: 'anonymous', model: body.model,
+      requestMessages: auditRequestMessages, responseText: outText,
+    })))
     return client
   }
-  return json(await upstream.json())
+  const data = await upstream.json()
+  c.executionCtx.waitUntil(logMessageExchange(c.env.DB, {
+    userId: null, apiKeyId: null, ip, authType: 'anonymous', model: body.model,
+    requestMessages: auditRequestMessages, responseText: data.choices?.[0]?.message?.content || '',
+  }))
+  return json(data)
 })
 
 app.get('/v1/models', async (c) => {
