@@ -791,3 +791,67 @@ test('a regular org member cannot invite a new member with the owner role', asyn
   const coOwnerInvite = db.prepare('SELECT role FROM org_invites WHERE email=?').bind('co-owner@example.com').first()
   assert.equal(coOwnerInvite.role, 'owner')
 })
+
+test('a legacy (global-salt SHA-256) password hash still verifies and is transparently upgraded on login', async () => {
+  const db = new D1TestDatabase()
+  const secret = 'legacy-pw-secret'
+  const salt = 'legacy-salt'
+  addUser(db, 'legacyuser')
+
+  // Reproduce exactly what the old, pre-fix hashPw(password, salt) produced —
+  // SHA-256 of password + a single global salt, no per-user salt at all.
+  async function legacyHash(password) {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(password + salt))
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('')
+  }
+  const oldHash = await legacyHash('correct horse battery staple')
+  db.prepare('UPDATE users SET pw_hash=? WHERE id=?').bind(oldHash, 'legacyuser').run()
+
+  const env = { DB: db, TOKEN_SECRET: secret, PW_SALT: salt }
+
+  // Wrong password against a legacy hash is rejected, and the hash is left untouched.
+  const bad = await app.request('/auth/login/app', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email: 'legacyuser@example.com', password: 'wrong password' }),
+  }, env)
+  assert.equal(bad.status, 401)
+  assert.equal(db.prepare('SELECT pw_hash FROM users WHERE id=?').bind('legacyuser').first().pw_hash, oldHash)
+
+  // The correct password against the legacy hash succeeds...
+  const { ctx, settle } = executionCtx()
+  const ok = await app.request('/auth/login/app', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email: 'legacyuser@example.com', password: 'correct horse battery staple' }),
+  }, env, ctx)
+  assert.equal(ok.status, 200)
+  assert.ok((await ok.json()).token)
+  await settle() // the upgrade write happens in waitUntil, off the response path
+
+  // ...and the stored hash is transparently upgraded to the modern,
+  // per-user-salted PBKDF2 scheme — no forced reset, no downtime.
+  const upgraded = db.prepare('SELECT pw_hash FROM users WHERE id=?').bind('legacyuser').first().pw_hash
+  assert.match(upgraded, /^pbkdf2\$\d+\$[0-9a-f]{32}\$[0-9a-f]{64}$/)
+  assert.notEqual(upgraded, oldHash)
+
+  // A later login verifies directly against the modern hash — it doesn't
+  // even need PW_SALT anymore.
+  const again = await app.request('/auth/login/app', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email: 'legacyuser@example.com', password: 'correct horse battery staple' }),
+  }, { DB: db, TOKEN_SECRET: secret })
+  assert.equal(again.status, 200)
+})
+
+test('login timing is normalized for a nonexistent account (no early return before hashing)', async () => {
+  const db = new D1TestDatabase()
+  const env = { DB: db, TOKEN_SECRET: 'secret', PW_SALT: 'salt' }
+  const res = await app.request('/auth/login/app', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email: 'nobody@example.com', password: 'whatever' }),
+  }, env)
+  assert.equal(res.status, 401)
+})
