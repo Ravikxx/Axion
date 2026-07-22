@@ -13,3 +13,6 @@
   revisiting if traffic grows enough for RunPod cost to matter, or if RunPod reliability becomes a recurring
   problem and this doubles as a fallback. The user has a more ambitious idea building on this — ask before
   starting, don't assume the scope above is the final shape.
+
+- **Own STT and maybe TTS model** — train an in-house speech-to-text model, and possibly text-to-speech
+  too. Not relevant right now (noted mid-Lumen-1.3 work) — no scope/plan yet, just a future idea to revisit.
