@@ -47,8 +47,8 @@ function addLogRow(db, { userId = null, ip = '1.2.3.4', authType = 'anonymous', 
     .bind(userId, ip, authType, JSON.stringify(requestMessages), responseText, Date.now()).run()
 }
 
-function reviewDecision(status = 'safe', findings = []) {
-  return { status, findings }
+function reviewDecision(findings = []) {
+  return { findings }
 }
 
 function mistralFetchStub(decision, inspect) {
@@ -59,7 +59,28 @@ function mistralFetchStub(decision, inspect) {
     assert.equal(body.model, 'mistral-large-2512')
     assert.equal(body.temperature, 0)
     assert.equal(body.safe_prompt, false)
-    assert.deepEqual(body.response_format, { type: 'json_object' })
+    assert.equal(body.response_format.type, 'json_schema')
+    assert.equal(body.response_format.json_schema.name, 'axion_safety_review')
+    assert.deepEqual(
+      body.response_format.json_schema.schema.properties.findings.items.properties.source.enum,
+      ['user', 'assistant'],
+    )
+    assert.deepEqual(
+      body.response_format.json_schema.schema.properties.findings.items.properties.category.enum,
+      [
+        'sexual',
+        'hate_and_discrimination',
+        'violence_and_threats',
+        'dangerous_and_criminal_content',
+        'self_harm',
+        'malicious_code',
+      ],
+    )
+    assert.equal(body.response_format.json_schema.schema.additionalProperties, false)
+    assert.equal(
+      body.response_format.json_schema.schema.properties.findings.items.additionalProperties,
+      false,
+    )
     assert.equal(body.messages.length, 2)
     assert.equal(body.messages[0].role, 'system')
     assert.match(body.messages[0].content, /Judge the user and assistant independently/)
@@ -105,7 +126,7 @@ test('policy findings are attributed independently to the user and assistant', a
 
   const result = await reviewPendingMessages(
     envFor(db),
-    mistralFetchStub(reviewDecision('flagged', [
+    mistralFetchStub(reviewDecision([
       {
         source: 'user',
         category: 'dangerous_and_criminal_content',
@@ -172,7 +193,63 @@ test('an invalid moderation response becomes a review error', async () => {
 
   assert.equal(result.flagged.length, 0)
   assert.equal(result.errors.length, 1)
-  assert.match(result.errors[0].notes, /invalid decision/)
+  assert.match(result.errors[0].notes, /response content was not text/)
+})
+
+test('an invalid finding records a bounded diagnostic without copying model content', async () => {
+  const db = new D1TestDatabase()
+  addLogRow(db, { requestMessages: [{ role: 'user', content: 'hi' }], responseText: 'hello' })
+
+  const result = await reviewPendingMessages(
+    envFor(db),
+    async () => Response.json({
+      choices: [{
+        finish_reason: 'stop',
+        message: {
+          role: 'assistant',
+          content: JSON.stringify({
+            findings: [{
+              source: 'user',
+              category: 'unexpected_category',
+              reason: 'sensitive model-generated explanation',
+            }],
+          }),
+        },
+      }],
+    }),
+    10,
+  )
+
+  assert.equal(result.flagged.length, 0)
+  assert.equal(result.errors.length, 1)
+  assert.match(result.errors[0].notes, /invalid category; finish_reason=stop/)
+  assert.doesNotMatch(result.errors[0].notes, /sensitive model-generated explanation/)
+})
+
+test('text chunks in a structured response are parsed like plain text content', async () => {
+  const db = new D1TestDatabase()
+  addLogRow(db, { requestMessages: [{ role: 'user', content: 'hi' }], responseText: 'hello' })
+
+  const result = await reviewPendingMessages(
+    envFor(db),
+    async () => Response.json({
+      choices: [{
+        message: {
+          role: 'assistant',
+          content: [
+            { type: 'text', text: '{"findings":' },
+            { type: 'text', text: '[]}' },
+          ],
+        },
+      }],
+    }),
+    10,
+  )
+
+  assert.equal(result.reviewedCount, 1)
+  assert.equal(result.flagged.length, 0)
+  assert.equal(result.errors.length, 0)
+  assert.equal(db.prepare('SELECT review_status FROM message_log WHERE id=1').first().review_status, 'safe')
 })
 
 test('only pending rows are selected and batchSize caps each run', async () => {
@@ -210,7 +287,7 @@ test('overlapping review runs only claim and report each row once', async () => 
       choices: [{
         message: {
           role: 'assistant',
-          content: JSON.stringify(reviewDecision('flagged', [{
+          content: JSON.stringify(reviewDecision([{
             source: 'user',
             category: 'dangerous_and_criminal_content',
             reason: 'Requests instructions for a crime.',
@@ -244,7 +321,7 @@ test('test framing does not excuse a direct harmful request while a refusal stay
   let systemPrompt
   const result = await reviewPendingMessages(
     envFor(db),
-    mistralFetchStub(reviewDecision('flagged', [{
+    mistralFetchStub(reviewDecision([{
       source: 'user',
       category: 'dangerous_and_criminal_content',
       reason: 'Directly requests instructions for committing and concealing a robbery.',
