@@ -1819,6 +1819,19 @@ app.get('/admin/check', async (c) => {
   return json({ admin: true, email: user.email })
 })
 
+app.post('/admin/message-review/run', async (c) => {
+  const user = await requireAdmin(c)
+  if (!user) return json({ error: 'Forbidden' }, 403)
+
+  const { reviewedCount, flagged, errors } = await runMessageReview(c.env)
+  return json({
+    ok: true,
+    reviewed_count: reviewedCount,
+    flagged_count: flagged.length,
+    error_count: errors.length,
+  })
+})
+
 app.get('/admin/stats', async (c) => {
   const user = await requireAdmin(c)
   if (!user) return json({ error: 'Forbidden' }, 403)
@@ -2994,14 +3007,18 @@ async function notifyAdminsOfReviewErrors(env, errors) {
   })))
 }
 
+async function runMessageReview(env) {
+  const result = await reviewPendingMessages(env, fetch)
+  const notifications = []
+  if (result.flagged.length) notifications.push(notifyAdminsOfFlaggedMessages(env, result.flagged))
+  if (result.errors.length) notifications.push(notifyAdminsOfReviewErrors(env, result.errors))
+  await Promise.all(notifications)
+  return result
+}
+
 app.scheduled = async (event, env, ctx) => {
   if (event.cron === '0 * * * *') {
-    ctx.waitUntil(reviewPendingMessages(env, fetch).then(({ flagged, errors }) => {
-      const notifications = []
-      if (flagged.length) notifications.push(notifyAdminsOfFlaggedMessages(env, flagged))
-      if (errors.length) notifications.push(notifyAdminsOfReviewErrors(env, errors))
-      return Promise.all(notifications)
-    }))
+    ctx.waitUntil(runMessageReview(env))
     return
   }
   ctx.waitUntil(runStatusChecks(env, fetch, (req) => app.fetch(req, env, ctx)))

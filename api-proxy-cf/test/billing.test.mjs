@@ -148,7 +148,10 @@ class D1TestDatabase {
         model TEXT,
         request_messages TEXT NOT NULL,
         response_text TEXT NOT NULL DEFAULT '',
-        created_at INTEGER NOT NULL
+        created_at INTEGER NOT NULL,
+        review_status TEXT NOT NULL DEFAULT 'pending',
+        reviewed_at INTEGER,
+        review_notes TEXT
       );
     `)
   }
@@ -483,6 +486,48 @@ test('authenticated admin creation and user redemption routes work end to end', 
     headers: { Authorization: `Bearer ${adminToken}` },
   }, env)
   assert.equal(disableResponse.status, 200)
+})
+
+test('only an authenticated admin can manually run pending message review', async () => {
+  const db = new D1TestDatabase()
+  const secret = 'message-review-route-secret'
+  addUser(db, 'admin')
+  addUser(db, 'member')
+  db.prepare('INSERT INTO admin_allowlist (email, added_by) VALUES (?,?)')
+    .bind('admin@example.com', 'test')
+    .run()
+  db.prepare(
+    'INSERT INTO message_log (user_id, ip, auth_type, request_messages, response_text, created_at) VALUES (?,?,?,?,?,?)'
+  ).bind(
+    'member',
+    '127.0.0.1',
+    'session',
+    JSON.stringify([{ role: 'user', content: 'route test' }]),
+    'route test response',
+    Date.now(),
+  ).run()
+
+  const memberToken = await sessionToken('member', secret)
+  const denied = await app.request('/admin/message-review/run', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${memberToken}` },
+  }, { DB: db, TOKEN_SECRET: secret })
+  assert.equal(denied.status, 403)
+  assert.equal(db.prepare("SELECT review_status FROM message_log WHERE id=1").first().review_status, 'pending')
+
+  const adminToken = await sessionToken('admin', secret)
+  const allowed = await app.request('/admin/message-review/run', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${adminToken}` },
+  }, { DB: db, TOKEN_SECRET: secret })
+  assert.equal(allowed.status, 200)
+  assert.deepEqual(await allowed.json(), {
+    ok: true,
+    reviewed_count: 1,
+    flagged_count: 0,
+    error_count: 1,
+  })
+  assert.equal(db.prepare("SELECT review_status FROM message_log WHERE id=1").first().review_status, 'error')
 })
 
 test('admin account testing overrides enforce plan limits without rewriting request history', async () => {
