@@ -23,6 +23,17 @@ import { runStatusChecks, getStatusSnapshot } from './status.js'
 import { assistantMessageForReview, logMessageExchange } from './auditLog.js'
 import { reviewPendingMessages } from './messageReview.js'
 import { avatarUrlForUser, installAvatarRoutes } from './avatar.js'
+import {
+  ModerationAdminError,
+  banAccountFromModeration,
+  completeModerationRun,
+  createModerationRun,
+  failModerationRun,
+  getAccountModerationHistory,
+  getModerationRun,
+  listModerationRuns,
+  setModerationDecision,
+} from './moderationAdmin.js'
 
 const app = new Hono()
 const WEB_ORIGIN = 'https://axion.amplifiedsmp.org'
@@ -1823,13 +1834,114 @@ app.post('/admin/message-review/run', async (c) => {
   const user = await requireAdmin(c)
   if (!user) return json({ error: 'Forbidden' }, 403)
 
-  const { reviewedCount, flagged, errors } = await runMessageReview(c.env)
+  const { runId, reviewedCount, flagged, errors } = await runMessageReview(c.env, {
+    trigger: 'manual',
+    startedBy: user.email,
+  })
   return json({
     ok: true,
+    run_id: runId,
+    details_url: `${WEB_ORIGIN}/admin-moderation?run=${encodeURIComponent(runId)}`,
     reviewed_count: reviewedCount,
     flagged_count: flagged.length,
     error_count: errors.length,
   })
+})
+
+function moderationAdminError(error) {
+  if (error instanceof ModerationAdminError) {
+    return json({ error: error.message }, error.status)
+  }
+  console.error('[admin/moderation]', error)
+  return json({ error: 'The moderation action could not be completed.' }, 500)
+}
+
+app.get('/admin/moderation/runs', async (c) => {
+  const user = await requireAdmin(c)
+  if (!user) return json({ error: 'Forbidden' }, 403)
+  const runs = await listModerationRuns(c.env.DB, c.req.query('limit'))
+  return json({ runs })
+})
+
+app.get('/admin/moderation/runs/:id', async (c) => {
+  const user = await requireAdmin(c)
+  if (!user) return json({ error: 'Forbidden' }, 403)
+  try {
+    return json(await getModerationRun(c.env.DB, c.req.param('id')))
+  } catch (error) {
+    return moderationAdminError(error)
+  }
+})
+
+app.get('/admin/moderation/accounts/:id', async (c) => {
+  const user = await requireAdmin(c)
+  if (!user) return json({ error: 'Forbidden' }, 403)
+  try {
+    return json(await getAccountModerationHistory(c.env.DB, c.req.param('id')))
+  } catch (error) {
+    return moderationAdminError(error)
+  }
+})
+
+app.post('/admin/moderation/messages/:id/decision', async (c) => {
+  const user = await requireAdmin(c)
+  if (!user) return json({ error: 'Forbidden' }, 403)
+  const messageId = Number(c.req.param('id'))
+  if (!Number.isSafeInteger(messageId) || messageId < 1) {
+    return json({ error: 'Invalid message ID.' }, 400)
+  }
+  const body = await c.req.json().catch(() => ({}))
+  try {
+    const item = await setModerationDecision(c.env.DB, {
+      messageId,
+      decision: body.decision,
+      adminEmail: user.email,
+    })
+    return json({ ok: true, item })
+  } catch (error) {
+    return moderationAdminError(error)
+  }
+})
+
+app.post('/admin/moderation/messages/:id/ban', async (c) => {
+  const user = await requireAdmin(c)
+  if (!user) return json({ error: 'Forbidden' }, 403)
+  const messageId = Number(c.req.param('id'))
+  if (!Number.isSafeInteger(messageId) || messageId < 1) {
+    return json({ error: 'Invalid message ID.' }, 400)
+  }
+
+  try {
+    const banned = await banAccountFromModeration(c.env.DB, {
+      messageId,
+      adminId: user.id,
+      adminEmail: user.email,
+    })
+    if (c.env.RESEND_API_KEY) {
+      const appealUrl = `https://api.amplifiedsmp.org/appeal/${banned.appeal_token}`
+      c.executionCtx.waitUntil(sendEmail(c.env.RESEND_API_KEY, {
+        to: banned.email,
+        subject: 'Your Axion account has been suspended',
+        html: emailWrap(`
+          <h2 style="margin:0 0 8px;color:#e8e8f0">Account suspended</h2>
+          <p style="color:#ccc;margin:0 0 16px">An Axion administrator confirmed a safety-policy violation and suspended your account.</p>
+          <p style="color:#ccc;margin:0 0 24px">If you believe this decision is incorrect, use the link below to submit an appeal.</p>
+          <a href="${appealUrl}" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">Submit appeal â†’</a>
+        `),
+      }))
+    }
+    return json({
+      ok: true,
+      account: {
+        user_id: banned.user_id,
+        email: banned.email,
+        banned: true,
+        ban_reason: banned.reason,
+      },
+    })
+  } catch (error) {
+    return moderationAdminError(error)
+  }
 })
 
 app.get('/admin/stats', async (c) => {
@@ -2975,10 +3087,11 @@ export class BridgeRelay {
 // One digest email per review run (not one per flagged row) to every admin —
 // admin_allowlist is already the "who has admin dashboard access" list, and
 // doubles as the review-alert distribution list.
-async function notifyAdminsOfFlaggedMessages(env, flagged) {
+async function notifyAdminsOfFlaggedMessages(env, runId, flagged) {
   if (!env.RESEND_API_KEY) return
   const { results: admins } = await env.DB.prepare('SELECT email FROM admin_allowlist').all()
   if (!admins.length) return
+  const runUrl = `${WEB_ORIGIN}/admin-moderation?run=${encodeURIComponent(runId)}`
   const rows = flagged.map(f => `<li style="margin-bottom:8px"><strong>message_log #${f.id}</strong> — auth: ${f.authType}${f.userId ? `, user: ${f.userId}` : ''}, ip: ${f.ip}<br><span style="color:#e8602c">${f.notes}</span></li>`).join('')
   await Promise.all(admins.map(a => sendEmail(env.RESEND_API_KEY, {
     to: a.email,
@@ -2987,14 +3100,16 @@ async function notifyAdminsOfFlaggedMessages(env, flagged) {
       <h2 style="margin:0 0 8px;color:#e8e8f0">Automated safety review flagged ${flagged.length} exchange${flagged.length === 1 ? '' : 's'}</h2>
       <p style="color:#888;margin:0 0 16px">Axion's Mistral-powered safety reviewer identified policy categories that need a human decision.</p>
       <ul style="color:#ccc;padding-left:18px">${rows}</ul>
+      <a href="${runUrl}" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">Review this run â†’</a>
     `),
   })))
 }
 
-async function notifyAdminsOfReviewErrors(env, errors) {
+async function notifyAdminsOfReviewErrors(env, runId, errors) {
   if (!env.RESEND_API_KEY) return
   const { results: admins } = await env.DB.prepare('SELECT email FROM admin_allowlist').all()
   if (!admins.length) return
+  const runUrl = `${WEB_ORIGIN}/admin-moderation?run=${encodeURIComponent(runId)}`
   const rows = errors.map(error => `<li style="margin-bottom:8px"><strong>message_log #${error.id}</strong> — auth: ${error.authType}${error.userId ? `, user: ${error.userId}` : ''}, ip: ${error.ip}<br><span style="color:#e8b15c">${error.notes}</span></li>`).join('')
   await Promise.all(admins.map(admin => sendEmail(env.RESEND_API_KEY, {
     to: admin.email,
@@ -3003,22 +3118,34 @@ async function notifyAdminsOfReviewErrors(env, errors) {
       <h2 style="margin:0 0 8px;color:#e8e8f0">Safety review system issue</h2>
       <p style="color:#888;margin:0 0 16px">These exchanges were not classified. This is an operational failure, not evidence of user misconduct.</p>
       <ul style="color:#ccc;padding-left:18px">${rows}</ul>
+      <a href="${runUrl}" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">Inspect this run â†’</a>
     `),
   })))
 }
 
-async function runMessageReview(env) {
-  const result = await reviewPendingMessages(env, fetch)
-  const notifications = []
-  if (result.flagged.length) notifications.push(notifyAdminsOfFlaggedMessages(env, result.flagged))
-  if (result.errors.length) notifications.push(notifyAdminsOfReviewErrors(env, result.errors))
-  await Promise.all(notifications)
-  return result
+async function runMessageReview(env, { trigger = 'scheduled', startedBy = null } = {}) {
+  const run = await createModerationRun(env.DB, { trigger, startedBy })
+  try {
+    const result = await reviewPendingMessages(env, fetch, 15, run.id)
+    await completeModerationRun(env.DB, run.id, result)
+    const notifications = []
+    if (result.flagged.length) {
+      notifications.push(notifyAdminsOfFlaggedMessages(env, run.id, result.flagged))
+    }
+    if (result.errors.length) {
+      notifications.push(notifyAdminsOfReviewErrors(env, run.id, result.errors))
+    }
+    await Promise.all(notifications)
+    return { ...result, runId: run.id }
+  } catch (error) {
+    await failModerationRun(env.DB, run.id, error)
+    throw error
+  }
 }
 
 app.scheduled = async (event, env, ctx) => {
   if (event.cron === '0 * * * *') {
-    ctx.waitUntil(runMessageReview(env))
+    ctx.waitUntil(runMessageReview(env, { trigger: 'scheduled' }))
     return
   }
   ctx.waitUntil(runStatusChecks(env, fetch, (req) => app.fetch(req, env, ctx)))

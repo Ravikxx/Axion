@@ -232,7 +232,7 @@ async function classifyExchange(env, reviewInput, fetchImpl) {
   }
 }
 
-export async function reviewPendingMessages(env, fetchImpl = fetch, batchSize = 15) {
+export async function reviewPendingMessages(env, fetchImpl = fetch, batchSize = 15, runId = null) {
   const { results: pending } = await env.DB.prepare(
     'SELECT id, user_id, ip, auth_type, request_messages, response_text FROM message_log WHERE review_status=? ORDER BY id ASC LIMIT ?'
   ).bind('pending', batchSize).all()
@@ -244,8 +244,19 @@ export async function reviewPendingMessages(env, fetchImpl = fetch, batchSize = 
     const reviewInput = exchangeForReview(row.request_messages, row.response_text)
     const { status, notes } = await classifyExchange(env, reviewInput, fetchImpl)
     const update = await env.DB.prepare(
-      'UPDATE message_log SET review_status=?, reviewed_at=?, review_notes=? WHERE id=? AND review_status=?'
-    ).bind(status, Date.now(), notes, row.id, 'pending').run()
+      `UPDATE message_log
+       SET review_status=?, reviewed_at=?, review_notes=?, review_run_id=?,
+         human_review_status=?, human_reviewed_at=NULL, human_reviewed_by=NULL
+       WHERE id=? AND review_status=?`
+    ).bind(
+      status,
+      Date.now(),
+      notes,
+      runId,
+      status === 'flagged' ? 'pending' : null,
+      row.id,
+      'pending',
+    ).run()
     if (!update.meta?.changes) continue
 
     reviewedCount += 1
