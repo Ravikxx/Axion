@@ -7,6 +7,8 @@ CREATE TABLE IF NOT EXISTS users (
   google_id    TEXT,
   github_id    TEXT,
   discord_id   TEXT,
+  avatar_key   TEXT,
+  avatar_updated_at INTEGER,
   created_at   INTEGER DEFAULT (strftime('%s','now'))
 );
 

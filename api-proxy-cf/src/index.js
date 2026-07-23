@@ -22,6 +22,7 @@ import { runCode } from './sandbox.js'
 import { runStatusChecks, getStatusSnapshot } from './status.js'
 import { logMessageExchange } from './auditLog.js'
 import { reviewPendingMessages } from './messageReview.js'
+import { avatarUrlForUser, installAvatarRoutes } from './avatar.js'
 
 const app = new Hono()
 const WEB_ORIGIN = 'https://axion.amplifiedsmp.org'
@@ -971,6 +972,7 @@ app.get('/dashboard/account', async (c) => {
       github: !!user.github_id,
       discord: !!user.discord_id,
     },
+    avatar_url: avatarUrlForUser(c.req.url, user),
     plan: user.plan || 'free',
     credits: {
       balance_microdollars: Math.max(0, usage.credit_balance || 0),
@@ -999,6 +1001,8 @@ app.get('/dashboard/account', async (c) => {
   })
 })
 
+installAvatarRoutes(app, { requireAuth, checkAccountRateLimit, json })
+
 // Hard-deletes the account (not a soft delete) so an old Bearer token can't
 // keep working against a row that's still technically there — requireAuth's
 // `SELECT * FROM users WHERE id=?` simply finds nothing and 401s. Child rows
@@ -1019,6 +1023,7 @@ app.delete('/dashboard/account', async (c) => {
   // api_keys handles elsewhere (DELETE /dashboard/keys/:id): a revoked-but-
   // still-present row still blocks deleting its parent user.
   const db = c.env.DB
+  if (user.avatar_key && c.env.AVATARS) await c.env.AVATARS.delete(user.avatar_key)
   const ownedOrgIds = (await db.prepare('SELECT id FROM orgs WHERE owner_id=?').bind(user.id).all()).results.map(r => r.id)
 
   const stmts = []
