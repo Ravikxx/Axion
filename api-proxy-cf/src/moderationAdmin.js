@@ -21,6 +21,7 @@ function serializeItem(row) {
     user_id: row.user_id,
     email: row.email,
     account_banned: Boolean(row.account_banned),
+    account_protected: Boolean(row.account_protected),
     ban_reason: row.ban_reason,
     api_key_id: row.api_key_id,
     ip: row.ip,
@@ -43,6 +44,9 @@ function serializeItem(row) {
 const ITEM_SELECT = `
   SELECT ml.id, ml.review_run_id, ml.user_id, u.email,
     u.banned AS account_banned, u.ban_reason,
+    CASE WHEN u.email IS NULL THEN 0 ELSE EXISTS(
+      SELECT 1 FROM admin_allowlist protected WHERE protected.email=u.email
+    ) END AS account_protected,
     ml.api_key_id, ml.ip, ml.auth_type, ml.model,
     ml.request_messages, ml.response_text, ml.created_at,
     ml.review_status, ml.review_notes,

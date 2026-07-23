@@ -645,6 +645,7 @@ test('moderation decisions attach to account history and an admin ban creates on
   assert.equal(historyBody.account.flagged_count, 1)
   assert.equal(historyBody.account.confirmed_count, 1)
   assert.equal(historyBody.account.dismissed_count, 0)
+  assert.equal(historyBody.items[0].account_protected, false)
   assert.equal(historyBody.items[0].request_messages[0].content, 'unsafe request')
 
   const banned = await app.request('/admin/moderation/messages/1/ban', {
@@ -723,6 +724,11 @@ test('moderation bans cannot target the acting admin or another allowlisted admi
     headers: { Authorization: `Bearer ${token}` },
   }, env)
   assert.equal(otherAdminBan.status, 409)
+  const protectedHistory = await app.request('/admin/moderation/accounts/admin', {
+    headers: { Authorization: `Bearer ${token}` },
+  }, env)
+  assert.equal(protectedHistory.status, 200)
+  assert.equal((await protectedHistory.json()).items[0].account_protected, true)
   assert.equal(db.prepare('SELECT SUM(banned) AS count FROM users').first().count, 0)
   assert.equal(db.prepare('SELECT COUNT(*) AS count FROM appeals').first().count, 0)
 })
