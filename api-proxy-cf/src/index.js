@@ -2985,7 +2985,7 @@ async function notifyAdminsOfFlaggedMessages(env, flagged) {
     subject: `${flagged.length} message${flagged.length === 1 ? '' : 's'} flagged for review`,
     html: emailWrap(`
       <h2 style="margin:0 0 8px;color:#e8e8f0">Automated safety review flagged ${flagged.length} exchange${flagged.length === 1 ? '' : 's'}</h2>
-      <p style="color:#888;margin:0 0 16px">Mistral's moderation service identified policy categories that need a human decision.</p>
+      <p style="color:#888;margin:0 0 16px">Axion's Mistral-powered safety reviewer identified policy categories that need a human decision.</p>
       <ul style="color:#ccc;padding-left:18px">${rows}</ul>
     `),
   })))
