@@ -116,7 +116,7 @@ async function evaluateIncident(env, result, nowIso) {
           <p style="color:#b8b8c8;line-height:1.6">${body}</p>
           <p style="color:#b8b8c8;line-height:1.6">Checked at ${nowIso}.</p>
           <p style="color:#b8b8c8;line-height:1.6">A draft incident is now live on the status page, marked "investigating" with an auto-generated description.</p>
-          <p style="margin:20px 0"><a href="${editLink}" style="color:#fff;background:#8a7a5c;padding:10px 18px;border-radius:8px;text-decoration:none;font-weight:600;display:inline-block">Write what's actually wrong →</a></p>
+          <p style="margin:20px 0"><a href="${editLink}" style="color:#fff;background:#8a7a5c;padding:10px 18px;border-radius:8px;text-decoration:none;font-weight:600;display:inline-block">Write what's actually wrong &rarr;</a></p>
         `),
       })
     }
@@ -138,7 +138,7 @@ async function evaluateIncident(env, result, nowIso) {
           <h2 style="margin:0 0 8px;color:#fff">Resolved: ${existing.title}</h2>
           <p style="color:#b8b8c8;line-height:1.6">${body}</p>
           <p style="color:#b8b8c8;line-height:1.6">Recovered as of ${nowIso}. The status page has been updated automatically.</p>
-          <p style="margin:20px 0"><a href="${editLink}" style="color:#fff;background:#8a7a5c;padding:10px 18px;border-radius:8px;text-decoration:none;font-weight:600;display:inline-block">Review on the admin panel →</a></p>
+          <p style="margin:20px 0"><a href="${editLink}" style="color:#fff;background:#8a7a5c;padding:10px 18px;border-radius:8px;text-decoration:none;font-weight:600;display:inline-block">Review on the admin panel &rarr;</a></p>
         `),
       })
     }

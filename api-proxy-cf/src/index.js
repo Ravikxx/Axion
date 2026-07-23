@@ -358,7 +358,7 @@ async function sendVerificationEmail(email, token, resendKey) {
         <div style="font-family:system-ui,sans-serif;max-width:480px;margin:0 auto;padding:32px">
           <h2 style="margin:0 0 8px">Verify your email</h2>
           <p style="color:#555;margin:0 0 24px">Click the button below to activate your Axion Labs account and start using the API.</p>
-          <a href="${link}" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">Verify email →</a>
+          <a href="${link}" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">Verify email &rarr;</a>
           <p style="color:#999;font-size:12px;margin-top:24px">Link expires in 24 hours. If you didn't sign up, ignore this email.</p>
         </div>`,
     }),
@@ -417,7 +417,7 @@ app.post('/auth/register', async (c) => {
           <h2 style="margin:0 0 8px;color:#e8e8f0">Account suspended</h2>
           <p style="color:#ccc;margin:0 0 16px">Your account was suspended because another verified account already exists from your IP address.</p>
           <p style="color:#ccc;margin:0 0 24px">If you believe this is an error, click the link below to submit an appeal. We'll review your case.</p>
-          <a href="${appealUrl}" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">Submit appeal →</a>
+          <a href="${appealUrl}" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">Submit appeal &rarr;</a>
           <p style="color:#555;font-size:12px;margin-top:24px">Or paste this link: ${appealUrl}</p>
         `),
       }))
@@ -514,7 +514,7 @@ async function oauthFinish(c, { id_field, email, provider_id, return_to }) {
             <h2 style="margin:0 0 8px;color:#e8e8f0">Account suspended</h2>
             <p style="color:#ccc;margin:0 0 16px">Your account was suspended because another verified account already exists from your IP address.</p>
             <p style="color:#ccc;margin:0 0 24px">If you believe this is an error, click the link below to submit an appeal.</p>
-            <a href="${appealUrl}" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">Submit appeal →</a>
+            <a href="${appealUrl}" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">Submit appeal &rarr;</a>
             <p style="color:#555;font-size:12px;margin-top:24px">Or paste this link: ${appealUrl}</p>
           `),
         }))
@@ -823,7 +823,7 @@ async function sendPasswordResetEmail(email, token, resendKey) {
     html: emailWrap(`
       <h2 style="margin:0 0 8px;color:#e8e8f0">Reset your password</h2>
       <p style="color:#ccc;margin:0 0 24px">Click the button below to choose a new password for your Axion account.</p>
-      <a href="${link}" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">Reset password →</a>
+      <a href="${link}" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">Reset password &rarr;</a>
       <p style="color:#555;font-size:12px;margin-top:24px">This link expires in 1 hour and can only be used once. If you didn't request this, ignore this email — your password won't change.</p>
     `),
   })
@@ -1611,7 +1611,7 @@ app.post('/v1/chat/completions', async (c) => {
           c.executionCtx.waitUntil(sendEmail(c.env.RESEND_API_KEY, {
             to: billedUser.email,
             subject: 'Your Axion account has been suspended',
-            html: emailWrap(`<h2 style="margin:0 0 8px;color:#e8e8f0">Account suspended</h2><p style="color:#ccc;margin:0 0 16px">Your account was automatically suspended for violating our content policy.</p><a href="${appealUrl}" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">Submit appeal →</a>`),
+            html: emailWrap(`<h2 style="margin:0 0 8px;color:#e8e8f0">Account suspended</h2><p style="color:#ccc;margin:0 0 16px">Your account was automatically suspended for violating our content policy.</p><a href="${appealUrl}" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">Submit appeal &rarr;</a>`),
           }))
         }
         return json({ error: { message: 'Your account has been suspended for violating our content policy.', type: 'permission_error' } }, 403)
@@ -1674,7 +1674,7 @@ app.post('/v1/chat/completions', async (c) => {
               <h2 style="margin:0 0 8px;color:#e8e8f0">Usage alert</h2>
               <p style="color:#888;margin:0 0 16px">Your account${keyRow ? ` (API key <strong style="color:#e8e8f0">${keyRow.label}</strong>)` : ''} has used <strong style="color:#e8602c">$${usedUsd} / $${budgetUsd}</strong> this week (80%).</p>
               <p style="color:#888;margin:0 0 24px">Your usage resets ${resetLabel}. If you need more, reply to this email.</p>
-              <a href="https://axion.amplifiedsmp.org/keys" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">View usage →</a>
+              <a href="https://axion.amplifiedsmp.org/keys" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">View usage &rarr;</a>
               <p style="color:#555;font-size:12px;margin-top:24px">To turn off these alerts, visit your <a href="https://axion.amplifiedsmp.org/keys" style="color:#e8602c">account settings</a>.</p>
             `),
           })
@@ -1926,7 +1926,7 @@ app.post('/admin/moderation/messages/:id/ban', async (c) => {
           <h2 style="margin:0 0 8px;color:#e8e8f0">Account suspended</h2>
           <p style="color:#ccc;margin:0 0 16px">An Axion administrator confirmed a safety-policy violation and suspended your account.</p>
           <p style="color:#ccc;margin:0 0 24px">If you believe this decision is incorrect, use the link below to submit an appeal.</p>
-          <a href="${appealUrl}" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">Submit appeal â†’</a>
+          <a href="${appealUrl}" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">Submit appeal &rarr;</a>
         `),
       }))
     }
@@ -2254,7 +2254,7 @@ app.post('/admin/waitlist/:id/approve', async (c) => {
       html: emailWrap(`
         <h2 style="margin:0 0 8px;color:#e8e8f0">You're approved!</h2>
         <p style="color:#888;margin:0 0 24px">Your Axion Labs early access is ready. Click below to activate your account and get account-based included usage and redeemable API credits.</p>
-        <a href="${link}" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">Activate account →</a>
+        <a href="${link}" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">Activate account &rarr;</a>
         <p style="color:#555;font-size:12px;margin-top:24px">This link expires in 7 days.</p>
       `),
     }))
@@ -2347,7 +2347,7 @@ app.post('/webhook/announce', async (c) => {
               html: emailWrap(`
                 <h2 style="margin:0 0 8px;color:#e8e8f0">${titleStr}</h2>
                 <div style="color:#ccc;line-height:1.7;margin:0 0 24px;white-space:pre-wrap">${bodyStr}</div>
-                <a href="https://axion.amplifiedsmp.org/announcements" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">Read on site →</a>
+                <a href="https://axion.amplifiedsmp.org/announcements" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">Read on site &rarr;</a>
                 <p style="color:#555;font-size:12px;margin-top:24px"><a href="${unsubUrl}" style="color:#666">Unsubscribe</a></p>
               `),
             })
@@ -2432,7 +2432,7 @@ app.post('/admin/invite', async (c) => {
         html: `<div style="font-family:system-ui,sans-serif;max-width:480px;margin:0 auto;padding:32px;background:#0f0f11;color:#e8e8f0">
           <h2 style="margin:0 0 8px;color:#e8e8f0">You've been invited</h2>
           <p style="color:#888;margin:0 0 24px">${user.email} has invited you to become an admin on Axion Labs.</p>
-          <a href="${link}" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">Accept invitation →</a>
+          <a href="${link}" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">Accept invitation &rarr;</a>
           <p style="color:#666;font-size:12px;margin-top:24px">This link expires in 7 days. If you didn't expect this, you can safely ignore it.</p>
         </div>`,
       }),
@@ -2552,7 +2552,7 @@ app.post('/appeal/:token', async (c) => {
         <p style="color:#ccc;margin:0 0 4px"><strong>Email:</strong> ${escHtml(appeal.email)}</p>
         <p style="color:#ccc;margin:0 0 16px"><strong>Reason:</strong></p>
         <div style="background:#0f0f11;border:1px solid #2a2a30;border-radius:8px;padding:14px 16px;color:#ccc;font-size:14px;line-height:1.6;white-space:pre-wrap;margin-bottom:20px">${escHtml(reason.trim())}</div>
-        <a href="https://api.amplifiedsmp.org/admin" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">Review in admin panel →</a>
+        <a href="https://api.amplifiedsmp.org/admin" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">Review in admin panel &rarr;</a>
       `),
     }))
   }
@@ -2593,7 +2593,7 @@ app.post('/admin/appeals/:token/accept', async (c) => {
       html: emailWrap(`
         <h2 style="margin:0 0 8px;color:#e8e8f0">Appeal approved</h2>
         <p style="color:#ccc;margin:0 0 24px">Your account has been reinstated. You can now sign in and use the service normally.</p>
-        <a href="https://axion.amplifiedsmp.org/keys" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">Sign in →</a>
+        <a href="https://axion.amplifiedsmp.org/keys" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">Sign in &rarr;</a>
       `),
     }))
   }
@@ -2921,7 +2921,7 @@ app.post('/orgs/:id/invite', async (c) => {
         html: `<div style="font-family:system-ui,sans-serif;max-width:480px;margin:0 auto;padding:32px;background:#0f0f11;color:#e8e8f0">
           <h2 style="margin:0 0 8px;color:#e8e8f0">You've been invited</h2>
           <p style="color:#888;margin:0 0 24px">${ctx.user.email} invited you to join <strong style="color:#e8e8f0">${org?.name || 'a team'}</strong> on Axion Labs.</p>
-          <a href="${link}" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">Accept invitation →</a>
+          <a href="${link}" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">Accept invitation &rarr;</a>
           <p style="color:#666;font-size:12px;margin-top:24px">Expires in 7 days. You'll need to sign in or create an Axion account to accept.</p>
         </div>`,
       }),
@@ -3100,7 +3100,7 @@ async function notifyAdminsOfFlaggedMessages(env, runId, flagged) {
       <h2 style="margin:0 0 8px;color:#e8e8f0">Automated safety review flagged ${flagged.length} exchange${flagged.length === 1 ? '' : 's'}</h2>
       <p style="color:#888;margin:0 0 16px">Axion's Mistral-powered safety reviewer identified policy categories that need a human decision.</p>
       <ul style="color:#ccc;padding-left:18px">${rows}</ul>
-      <a href="${runUrl}" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">Review this run â†’</a>
+      <a href="${runUrl}" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">Review this run &rarr;</a>
     `),
   })))
 }
@@ -3118,7 +3118,7 @@ async function notifyAdminsOfReviewErrors(env, runId, errors) {
       <h2 style="margin:0 0 8px;color:#e8e8f0">Safety review system issue</h2>
       <p style="color:#888;margin:0 0 16px">These exchanges were not classified. This is an operational failure, not evidence of user misconduct.</p>
       <ul style="color:#ccc;padding-left:18px">${rows}</ul>
-      <a href="${runUrl}" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">Inspect this run â†’</a>
+      <a href="${runUrl}" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">Inspect this run &rarr;</a>
     `),
   })))
 }
