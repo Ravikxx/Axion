@@ -10,6 +10,10 @@ binding = "DB"
 database_name = "axion-db"
 database_id = "08b1ad36-8b1b-419d-8b3f-f93b04dd8723"
 
+[[r2_buckets]]
+binding = "AVATARS"
+bucket_name = "axion-profile-pictures"
+
 [[durable_objects.bindings]]
 name = "BRIDGE"
 class_name = "BridgeRelay"
