@@ -868,6 +868,83 @@ test('a streamed completion is also written to message_log, with the fully-assem
   }
 })
 
+test('a non-streamed tool call is preserved in message_log for safety review', async () => {
+  const db = new D1TestDatabase()
+  const secret = 'audit-log-tool-secret'
+  addUser(db, 'member')
+  const token = await sessionToken('member', secret)
+  const env = { DB: db, TOKEN_SECRET: secret, RUNPOD_ENDPOINT_ID: 'ep-test', RUNPOD_API_KEY: 'rp-test-key' }
+  const realFetch = globalThis.fetch
+  globalThis.fetch = async () => Response.json({
+    id: 'chatcmpl-tool-test',
+    model: 'lumen',
+    choices: [{
+      index: 0,
+      message: {
+        role: 'assistant',
+        content: null,
+        tool_calls: [{
+          id: 'call-python',
+          type: 'function',
+          function: { name: 'python', arguments: '{"code":"print(\\"hi\\")"}' },
+        }],
+      },
+      finish_reason: 'tool_calls',
+    }],
+    usage: { prompt_tokens: 1, completion_tokens: 1, total_tokens: 2 },
+  })
+
+  try {
+    const { ctx, settle } = executionCtx()
+    const response = await app.request('/v1/chat/completions', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ model: 'lumen', messages: [{ role: 'user', content: 'run print hi' }] }),
+    }, env, ctx)
+    assert.equal(response.status, 200)
+    await settle()
+
+    const row = db.prepare('SELECT response_text FROM message_log').first()
+    assert.equal(row.response_text, '[Tool call: python {"code":"print(\\"hi\\")"}]')
+  } finally {
+    globalThis.fetch = realFetch
+  }
+})
+
+test('streamed tool-call deltas are assembled before message_log review', async () => {
+  const db = new D1TestDatabase()
+  const secret = 'audit-log-stream-tool-secret'
+  addUser(db, 'member')
+  const token = await sessionToken('member', secret)
+  const env = { DB: db, TOKEN_SECRET: secret, RUNPOD_ENDPOINT_ID: 'ep-test', RUNPOD_API_KEY: 'rp-test-key' }
+  const realFetch = globalThis.fetch
+  globalThis.fetch = async () => {
+    const chunks = [
+      `data: ${JSON.stringify({ choices: [{ delta: { tool_calls: [{ index: 0, id: 'call-python', type: 'function', function: { name: 'python', arguments: '{"code":"print(' } }] } }] })}\n\n`,
+      `data: ${JSON.stringify({ choices: [{ delta: { tool_calls: [{ index: 0, function: { arguments: '\\"hi\\")"}' } }] } }] })}\n\n`,
+      `data: ${JSON.stringify({ choices: [{ delta: {}, finish_reason: 'tool_calls' }], usage: { prompt_tokens: 1, completion_tokens: 1, total_tokens: 2 } })}\n\n`,
+      'data: [DONE]\n\n',
+    ]
+    return new Response(chunks.join(''), { headers: { 'Content-Type': 'text/event-stream' } })
+  }
+
+  try {
+    const { ctx, settle } = executionCtx()
+    const response = await app.request('/v1/chat/completions', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ model: 'lumen', stream: true, messages: [{ role: 'user', content: 'run print hi' }] }),
+    }, env, ctx)
+    await response.text()
+    await settle()
+
+    const row = db.prepare('SELECT response_text FROM message_log').first()
+    assert.equal(row.response_text, '[Tool call: python {"code":"print(\\"hi\\")"}]')
+  } finally {
+    globalThis.fetch = realFetch
+  }
+})
+
 test('anonymous/free-tier completions are logged too, with a null user_id and auth_type "anonymous"', async () => {
   const db = new D1TestDatabase()
   const env = { DB: db, RUNPOD_ENDPOINT_ID: 'ep-test', RUNPOD_API_KEY: 'rp-test-key' }
