@@ -44,6 +44,7 @@ class D1TestDatabase {
         pw_hash TEXT NOT NULL DEFAULT '',
         verified INTEGER NOT NULL DEFAULT 1,
         banned INTEGER NOT NULL DEFAULT 0,
+        ban_reason TEXT,
         token_version INTEGER NOT NULL DEFAULT 0,
         plan TEXT NOT NULL DEFAULT 'free',
         plan_updated_at INTEGER,
@@ -138,7 +139,29 @@ class D1TestDatabase {
       CREATE TABLE chats (id TEXT PRIMARY KEY, user_id TEXT NOT NULL REFERENCES users(id));
       CREATE TABLE email_prefs (user_id TEXT PRIMARY KEY REFERENCES users(id));
       CREATE TABLE device_codes (code TEXT PRIMARY KEY, user_id TEXT REFERENCES users(id));
-      CREATE TABLE appeals (id TEXT PRIMARY KEY, user_id TEXT NOT NULL REFERENCES users(id));
+      CREATE TABLE appeals (
+        id TEXT PRIMARY KEY,
+        user_id TEXT NOT NULL REFERENCES users(id),
+        email TEXT NOT NULL,
+        reason TEXT,
+        token TEXT UNIQUE NOT NULL,
+        status TEXT NOT NULL DEFAULT 'pending',
+        created_at INTEGER NOT NULL,
+        reviewed_at INTEGER,
+        reviewed_by TEXT
+      );
+      CREATE TABLE moderation_runs (
+        id TEXT PRIMARY KEY,
+        trigger TEXT NOT NULL,
+        started_by TEXT,
+        status TEXT NOT NULL DEFAULT 'running',
+        started_at INTEGER NOT NULL,
+        completed_at INTEGER,
+        reviewed_count INTEGER NOT NULL DEFAULT 0,
+        flagged_count INTEGER NOT NULL DEFAULT 0,
+        error_count INTEGER NOT NULL DEFAULT 0,
+        failure_notes TEXT
+      );
       CREATE TABLE message_log (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         user_id TEXT,
@@ -151,7 +174,11 @@ class D1TestDatabase {
         created_at INTEGER NOT NULL,
         review_status TEXT NOT NULL DEFAULT 'pending',
         reviewed_at INTEGER,
-        review_notes TEXT
+        review_notes TEXT,
+        review_run_id TEXT REFERENCES moderation_runs(id),
+        human_review_status TEXT,
+        human_reviewed_at INTEGER,
+        human_reviewed_by TEXT
       );
     `)
   }
@@ -521,13 +548,222 @@ test('only an authenticated admin can manually run pending message review', asyn
     headers: { Authorization: `Bearer ${adminToken}` },
   }, { DB: db, TOKEN_SECRET: secret })
   assert.equal(allowed.status, 200)
-  assert.deepEqual(await allowed.json(), {
-    ok: true,
-    reviewed_count: 1,
-    flagged_count: 0,
-    error_count: 1,
-  })
-  assert.equal(db.prepare("SELECT review_status FROM message_log WHERE id=1").first().review_status, 'error')
+  const runResult = await allowed.json()
+  assert.equal(runResult.ok, true)
+  assert.equal(runResult.reviewed_count, 1)
+  assert.equal(runResult.flagged_count, 0)
+  assert.equal(runResult.error_count, 1)
+  assert.match(runResult.run_id, /^[0-9a-f-]{36}$/)
+  assert.equal(
+    runResult.details_url,
+    `https://axion.amplifiedsmp.org/admin-moderation?run=${runResult.run_id}`,
+  )
+  const message = db.prepare(
+    'SELECT review_status, review_run_id FROM message_log WHERE id=1'
+  ).first()
+  assert.equal(message.review_status, 'error')
+  assert.equal(message.review_run_id, runResult.run_id)
+  const run = db.prepare('SELECT * FROM moderation_runs WHERE id=?').bind(runResult.run_id).first()
+  assert.equal(run.trigger, 'manual')
+  assert.equal(run.started_by, 'admin@example.com')
+  assert.equal(run.status, 'completed')
+  assert.equal(run.reviewed_count, 1)
+  assert.equal(run.error_count, 1)
+
+  const details = await app.request(`/admin/moderation/runs/${runResult.run_id}`, {
+    headers: { Authorization: `Bearer ${adminToken}` },
+  }, { DB: db, TOKEN_SECRET: secret })
+  assert.equal(details.status, 200)
+  const detailsBody = await details.json()
+  assert.equal(detailsBody.run.id, runResult.run_id)
+  assert.equal(detailsBody.items.length, 1)
+  assert.equal(detailsBody.items[0].email, 'member@example.com')
+  assert.equal(detailsBody.items[0].request_messages[0].content, 'route test')
+  assert.equal(detailsBody.items[0].response_text, 'route test response')
+})
+
+test('moderation decisions attach to account history and an admin ban creates one appeal', async () => {
+  const db = new D1TestDatabase()
+  const secret = 'moderation-actions-secret'
+  addUser(db, 'admin')
+  addUser(db, 'member')
+  db.prepare('INSERT INTO admin_allowlist (email, added_by) VALUES (?,?)')
+    .bind('admin@example.com', 'test')
+    .run()
+  db.prepare(
+    `INSERT INTO message_log
+     (user_id, ip, auth_type, model, request_messages, response_text, created_at,
+      review_status, reviewed_at, review_notes, human_review_status)
+     VALUES (?,?,?,?,?,?,?,?,?,?,?)`
+  ).bind(
+    'member',
+    '203.0.113.10',
+    'session',
+    'lumen',
+    JSON.stringify([{ role: 'user', content: 'unsafe request' }]),
+    'safe refusal',
+    Date.now(),
+    'flagged',
+    Date.now(),
+    'user message: dangerous or criminal content',
+    'pending',
+  ).run()
+
+  const adminToken = await sessionToken('admin', secret)
+  const memberToken = await sessionToken('member', secret)
+  const env = { DB: db, TOKEN_SECRET: secret }
+
+  const denied = await app.request('/admin/moderation/messages/1/decision', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${memberToken}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ decision: 'dismissed' }),
+  }, env)
+  assert.equal(denied.status, 403)
+
+  const dismissed = await app.request('/admin/moderation/messages/1/decision', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${adminToken}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ decision: 'dismissed' }),
+  }, env)
+  assert.equal(dismissed.status, 200)
+  assert.equal((await dismissed.json()).item.human_review_status, 'dismissed')
+
+  const confirmed = await app.request('/admin/moderation/messages/1/decision', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${adminToken}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ decision: 'confirmed' }),
+  }, env)
+  assert.equal(confirmed.status, 200)
+  assert.equal((await confirmed.json()).item.human_review_status, 'confirmed')
+
+  const history = await app.request('/admin/moderation/accounts/member', {
+    headers: { Authorization: `Bearer ${adminToken}` },
+  }, env)
+  assert.equal(history.status, 200)
+  const historyBody = await history.json()
+  assert.equal(historyBody.account.email, 'member@example.com')
+  assert.equal(historyBody.account.flagged_count, 1)
+  assert.equal(historyBody.account.confirmed_count, 1)
+  assert.equal(historyBody.account.dismissed_count, 0)
+  assert.equal(historyBody.items[0].request_messages[0].content, 'unsafe request')
+
+  const banned = await app.request('/admin/moderation/messages/1/ban', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${adminToken}` },
+  }, env)
+  assert.equal(banned.status, 200)
+  const bannedBody = await banned.json()
+  assert.equal(bannedBody.account.user_id, 'member')
+  assert.equal(bannedBody.account.banned, true)
+  assert.match(bannedBody.account.ban_reason, /message_log #1/)
+
+  const member = db.prepare(
+    'SELECT banned, ban_reason, token_version FROM users WHERE id=?'
+  ).bind('member').first()
+  assert.equal(member.banned, 1)
+  assert.match(member.ban_reason, /message_log #1/)
+  assert.equal(member.token_version, 1)
+  assert.equal(
+    db.prepare('SELECT COUNT(*) AS count FROM appeals WHERE user_id=?').bind('member').first().count,
+    1,
+  )
+  assert.equal(
+    db.prepare('SELECT human_review_status FROM message_log WHERE id=1').first().human_review_status,
+    'confirmed',
+  )
+
+  const duplicateBan = await app.request('/admin/moderation/messages/1/ban', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${adminToken}` },
+  }, env)
+  assert.equal(duplicateBan.status, 409)
+  assert.equal(
+    db.prepare('SELECT COUNT(*) AS count FROM appeals WHERE user_id=?').bind('member').first().count,
+    1,
+  )
+})
+
+test('moderation bans cannot target the acting admin or another allowlisted admin', async () => {
+  const db = new D1TestDatabase()
+  const secret = 'moderation-protected-admin-secret'
+  addUser(db, 'admin')
+  addUser(db, 'other-admin')
+  db.prepare('INSERT INTO admin_allowlist (email, added_by) VALUES (?,?)')
+    .bind('admin@example.com', 'test').run()
+  db.prepare('INSERT INTO admin_allowlist (email, added_by) VALUES (?,?)')
+    .bind('other-admin@example.com', 'test').run()
+  for (const userId of ['admin', 'other-admin']) {
+    db.prepare(
+      `INSERT INTO message_log
+       (user_id, ip, auth_type, request_messages, response_text, created_at,
+        review_status, review_notes)
+       VALUES (?,?,?,?,?,?,?,?)`
+    ).bind(
+      userId,
+      '203.0.113.11',
+      'session',
+      JSON.stringify([{ role: 'user', content: 'flagged' }]),
+      'response',
+      Date.now(),
+      'flagged',
+      'automated finding',
+    ).run()
+  }
+
+  const token = await sessionToken('admin', secret)
+  const env = { DB: db, TOKEN_SECRET: secret }
+  const selfBan = await app.request('/admin/moderation/messages/1/ban', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}` },
+  }, env)
+  assert.equal(selfBan.status, 409)
+
+  const otherAdminBan = await app.request('/admin/moderation/messages/2/ban', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}` },
+  }, env)
+  assert.equal(otherAdminBan.status, 409)
+  assert.equal(db.prepare('SELECT SUM(banned) AS count FROM users').first().count, 0)
+  assert.equal(db.prepare('SELECT COUNT(*) AS count FROM appeals').first().count, 0)
+})
+
+test('concurrent moderation bans create only one appeal', async () => {
+  const db = new D1TestDatabase()
+  const secret = 'moderation-concurrent-ban-secret'
+  addUser(db, 'admin')
+  addUser(db, 'member')
+  db.prepare('INSERT INTO admin_allowlist (email, added_by) VALUES (?,?)')
+    .bind('admin@example.com', 'test').run()
+  db.prepare(
+    `INSERT INTO message_log
+     (user_id, ip, auth_type, request_messages, response_text, created_at,
+      review_status, review_notes)
+     VALUES (?,?,?,?,?,?,?,?)`
+  ).bind(
+    'member',
+    '203.0.113.12',
+    'session',
+    JSON.stringify([{ role: 'user', content: 'flagged' }]),
+    'response',
+    Date.now(),
+    'flagged',
+    'automated finding',
+  ).run()
+
+  const token = await sessionToken('admin', secret)
+  const env = { DB: db, TOKEN_SECRET: secret }
+  const request = () => app.request('/admin/moderation/messages/1/ban', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}` },
+  }, env)
+  const responses = await Promise.all([request(), request()])
+
+  assert.deepEqual(responses.map(response => response.status).sort(), [200, 409])
+  assert.equal(db.prepare('SELECT token_version FROM users WHERE id=?').bind('member').first().token_version, 1)
+  assert.equal(
+    db.prepare('SELECT COUNT(*) AS count FROM appeals WHERE user_id=?').bind('member').first().count,
+    1,
+  )
 })
 
 test('admin account testing overrides enforce plan limits without rewriting request history', async () => {

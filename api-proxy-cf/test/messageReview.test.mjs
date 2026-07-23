@@ -35,7 +35,11 @@ class D1TestDatabase {
         created_at INTEGER NOT NULL,
         review_status TEXT NOT NULL DEFAULT 'pending',
         reviewed_at INTEGER,
-        review_notes TEXT
+        review_notes TEXT,
+        review_run_id TEXT,
+        human_review_status TEXT,
+        human_reviewed_at INTEGER,
+        human_reviewed_by TEXT
       );
     `)
   }
@@ -327,6 +331,7 @@ test('test framing does not excuse a direct harmful request while a refusal stay
       reason: 'Directly requests instructions for committing and concealing a robbery.',
     }]), body => { systemPrompt = body.messages[0].content }),
     10,
+    'run-bank-test',
   )
 
   assert.match(systemPrompt, /claims to be a test/)
@@ -334,6 +339,11 @@ test('test framing does not excuse a direct harmful request while a refusal stay
   assert.equal(result.flagged.length, 1)
   assert.match(result.flagged[0].notes, /^user message:/)
   assert.doesNotMatch(result.flagged[0].notes, /assistant reply:/)
+  const row = db.prepare(
+    'SELECT review_run_id, human_review_status FROM message_log WHERE id=1'
+  ).first()
+  assert.equal(row.review_run_id, 'run-bank-test')
+  assert.equal(row.human_review_status, 'pending')
 })
 
 test('review receives recent role-labeled context plus explicit target user and assistant sections', async () => {
