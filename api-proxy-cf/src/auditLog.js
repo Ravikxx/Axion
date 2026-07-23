@@ -6,6 +6,33 @@
 //
 // Logging failures must never break the actual chat response — this is
 // always best-effort from the caller's perspective.
+function compactToolArguments(value) {
+  if (value == null) return ''
+  const text = typeof value === 'string' ? value : JSON.stringify(value)
+  return text.length > 4000 ? `${text.slice(0, 4000)}…` : text
+}
+
+export function assistantMessageForReview(message) {
+  if (!message || typeof message !== 'object') return ''
+  const parts = []
+  if (typeof message.content === 'string' && message.content.trim()) parts.push(message.content)
+
+  const toolCalls = Array.isArray(message.tool_calls) ? message.tool_calls : []
+  for (const call of toolCalls) {
+    const name = call?.function?.name || call?.name || 'unknown_tool'
+    const args = compactToolArguments(call?.function?.arguments ?? call?.arguments)
+    parts.push(`[Tool call: ${name}${args ? ` ${args}` : ''}]`)
+  }
+
+  if (message.function_call && !toolCalls.length) {
+    const name = message.function_call.name || 'unknown_tool'
+    const args = compactToolArguments(message.function_call.arguments)
+    parts.push(`[Function call: ${name}${args ? ` ${args}` : ''}]`)
+  }
+
+  return parts.join('\n\n')
+}
+
 export async function logMessageExchange(db, { userId, apiKeyId, ip, authType, model, requestMessages, responseText }) {
   try {
     await db.prepare(

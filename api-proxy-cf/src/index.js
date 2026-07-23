@@ -20,7 +20,7 @@ import {
 import { probeLumenHealth, proxyLumenRequest } from './lumen-upstream.js'
 import { runCode } from './sandbox.js'
 import { runStatusChecks, getStatusSnapshot } from './status.js'
-import { logMessageExchange } from './auditLog.js'
+import { assistantMessageForReview, logMessageExchange } from './auditLog.js'
 import { reviewPendingMessages } from './messageReview.js'
 import { avatarUrlForUser, installAvatarRoutes } from './avatar.js'
 
@@ -1326,6 +1326,7 @@ function streamResponseTracked(upstream) {
   })
   const trackedPromise = (async () => {
     let outText = ''
+    const toolCalls = []
     let usage = null
     try {
       const reader = trackBody.getReader()
@@ -1346,6 +1347,15 @@ function streamResponseTracked(upstream) {
             const parsed = JSON.parse(payload)
             const delta = parsed.choices?.[0]?.delta?.content
             if (typeof delta === 'string') outText += delta
+            for (const callDelta of parsed.choices?.[0]?.delta?.tool_calls || []) {
+              const index = Number.isInteger(callDelta.index) ? callDelta.index : 0
+              const call = toolCalls[index] || { id: '', type: 'function', function: { name: '', arguments: '' } }
+              if (callDelta.id) call.id = callDelta.id
+              if (callDelta.type) call.type = callDelta.type
+              if (callDelta.function?.name) call.function.name = callDelta.function.name
+              if (typeof callDelta.function?.arguments === 'string') call.function.arguments += callDelta.function.arguments
+              toolCalls[index] = call
+            }
             if (typeof parsed.usage?.prompt_tokens === 'number') usage = parsed.usage
           } catch {}
         }
@@ -1353,7 +1363,7 @@ function streamResponseTracked(upstream) {
     } catch (e) {
       console.error('[streamResponseTracked] tee read failed:', e.message)
     }
-    return { outText, usage }
+    return { outText, toolCalls: toolCalls.filter(Boolean), usage }
   })()
   return { client, trackedPromise }
 }
@@ -1663,7 +1673,7 @@ app.post('/v1/chat/completions', async (c) => {
 
     if (body.stream) {
       const { client, trackedPromise } = streamResponseTracked(upstream)
-      c.executionCtx.waitUntil(trackedPromise.then(({ outText, usage }) => {
+      c.executionCtx.waitUntil(trackedPromise.then(({ outText, toolCalls, usage }) => {
         const inputTokens = typeof usage?.prompt_tokens === 'number'
           ? usage.prompt_tokens
           : estimateTokensFromChars(reqText)
@@ -1675,7 +1685,8 @@ app.post('/v1/chat/completions', async (c) => {
           logMessageExchange(c.env.DB, {
             userId: billedUser.id, apiKeyId: keyRow?.id, ip,
             authType: keyRow ? 'api_key' : 'session', model: body.model,
-            requestMessages: auditRequestMessages, responseText: outText,
+            requestMessages: auditRequestMessages,
+            responseText: assistantMessageForReview({ content: outText, tool_calls: toolCalls }),
           }),
         ])
       }))
@@ -1695,7 +1706,8 @@ app.post('/v1/chat/completions', async (c) => {
     c.executionCtx.waitUntil(logMessageExchange(c.env.DB, {
       userId: billedUser.id, apiKeyId: keyRow?.id, ip,
       authType: keyRow ? 'api_key' : 'session', model: body.model,
-      requestMessages: auditRequestMessages, responseText: data.choices?.[0]?.message?.content || '',
+      requestMessages: auditRequestMessages,
+      responseText: assistantMessageForReview(data.choices?.[0]?.message),
     }))
     return json(data)
   }
@@ -1732,16 +1744,18 @@ app.post('/v1/chat/completions', async (c) => {
 
   if (body.stream) {
     const { client, trackedPromise } = streamResponseTracked(upstream)
-    c.executionCtx.waitUntil(trackedPromise.then(({ outText }) => logMessageExchange(c.env.DB, {
+    c.executionCtx.waitUntil(trackedPromise.then(({ outText, toolCalls }) => logMessageExchange(c.env.DB, {
       userId: null, apiKeyId: null, ip, authType: 'anonymous', model: body.model,
-      requestMessages: auditRequestMessages, responseText: outText,
+      requestMessages: auditRequestMessages,
+      responseText: assistantMessageForReview({ content: outText, tool_calls: toolCalls }),
     })))
     return client
   }
   const data = await upstream.json()
   c.executionCtx.waitUntil(logMessageExchange(c.env.DB, {
     userId: null, apiKeyId: null, ip, authType: 'anonymous', model: body.model,
-    requestMessages: auditRequestMessages, responseText: data.choices?.[0]?.message?.content || '',
+    requestMessages: auditRequestMessages,
+    responseText: assistantMessageForReview(data.choices?.[0]?.message),
   }))
   return json(data)
 })
@@ -2958,7 +2972,23 @@ async function notifyAdminsOfFlaggedMessages(env, flagged) {
     subject: `${flagged.length} message${flagged.length === 1 ? '' : 's'} flagged for review`,
     html: emailWrap(`
       <h2 style="margin:0 0 8px;color:#e8e8f0">Automated safety review flagged ${flagged.length} exchange${flagged.length === 1 ? '' : 's'}</h2>
-      <p style="color:#888;margin:0 0 16px">These need a human look — the automated classifier could not confirm they're safe.</p>
+      <p style="color:#888;margin:0 0 16px">Mistral's moderation service identified policy categories that need a human decision.</p>
+      <ul style="color:#ccc;padding-left:18px">${rows}</ul>
+    `),
+  })))
+}
+
+async function notifyAdminsOfReviewErrors(env, errors) {
+  if (!env.RESEND_API_KEY) return
+  const { results: admins } = await env.DB.prepare('SELECT email FROM admin_allowlist').all()
+  if (!admins.length) return
+  const rows = errors.map(error => `<li style="margin-bottom:8px"><strong>message_log #${error.id}</strong> — auth: ${error.authType}${error.userId ? `, user: ${error.userId}` : ''}, ip: ${error.ip}<br><span style="color:#e8b15c">${error.notes}</span></li>`).join('')
+  await Promise.all(admins.map(admin => sendEmail(env.RESEND_API_KEY, {
+    to: admin.email,
+    subject: `${errors.length} safety review system error${errors.length === 1 ? '' : 's'}`,
+    html: emailWrap(`
+      <h2 style="margin:0 0 8px;color:#e8e8f0">Safety review system issue</h2>
+      <p style="color:#888;margin:0 0 16px">These exchanges were not classified. This is an operational failure, not evidence of user misconduct.</p>
       <ul style="color:#ccc;padding-left:18px">${rows}</ul>
     `),
   })))
@@ -2966,8 +2996,11 @@ async function notifyAdminsOfFlaggedMessages(env, flagged) {
 
 app.scheduled = async (event, env, ctx) => {
   if (event.cron === '0 * * * *') {
-    ctx.waitUntil(reviewPendingMessages(env, fetch).then(({ flagged }) => {
-      if (flagged.length) return notifyAdminsOfFlaggedMessages(env, flagged)
+    ctx.waitUntil(reviewPendingMessages(env, fetch).then(({ flagged, errors }) => {
+      const notifications = []
+      if (flagged.length) notifications.push(notifyAdminsOfFlaggedMessages(env, flagged))
+      if (errors.length) notifications.push(notifyAdminsOfReviewErrors(env, errors))
+      return Promise.all(notifications)
     }))
     return
   }
