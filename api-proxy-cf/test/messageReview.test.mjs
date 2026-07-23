@@ -192,6 +192,39 @@ test('only pending rows are selected and batchSize caps each run', async () => {
   assert.equal(db.prepare("SELECT COUNT(*) AS c FROM message_log WHERE review_status='pending'").first().c, 1)
 })
 
+test('overlapping review runs only claim and report each row once', async () => {
+  const db = new D1TestDatabase()
+  addLogRow(db, {
+    requestMessages: [{ role: 'user', content: 'dangerous request' }],
+    responseText: 'unsafe answer',
+  })
+
+  let fetchCount = 0
+  let releaseFetches
+  const bothFetchesStarted = new Promise(resolve => { releaseFetches = resolve })
+  const fetchImpl = async () => {
+    fetchCount += 1
+    if (fetchCount === 2) releaseFetches()
+    await bothFetchesStarted
+    return Response.json({
+      results: [
+        moderationResult({ dangerous_and_criminal_content: true }),
+        moderationResult(),
+      ],
+    })
+  }
+
+  const results = await Promise.all([
+    reviewPendingMessages(envFor(db), fetchImpl, 10),
+    reviewPendingMessages(envFor(db), fetchImpl, 10),
+  ])
+
+  assert.equal(fetchCount, 2)
+  assert.equal(results.reduce((sum, result) => sum + result.reviewedCount, 0), 1)
+  assert.equal(results.reduce((sum, result) => sum + result.flagged.length, 0), 1)
+  assert.equal(db.prepare('SELECT review_status FROM message_log WHERE id=1').first().review_status, 'flagged')
+})
+
 test('moderation receives the last user message and the stored assistant representation', async () => {
   const db = new D1TestDatabase()
   addLogRow(db, {

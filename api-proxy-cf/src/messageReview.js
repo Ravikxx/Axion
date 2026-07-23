@@ -104,16 +104,20 @@ export async function reviewPendingMessages(env, fetchImpl = fetch, batchSize = 
 
   const flagged = []
   const errors = []
+  let reviewedCount = 0
   for (const row of pending) {
     const userMessage = lastUserMessage(row.request_messages)
     const { status, notes } = await classifyExchange(env, userMessage, row.response_text, fetchImpl)
-    await env.DB.prepare('UPDATE message_log SET review_status=?, reviewed_at=?, review_notes=? WHERE id=?')
-      .bind(status, Date.now(), notes, row.id).run()
+    const update = await env.DB.prepare(
+      'UPDATE message_log SET review_status=?, reviewed_at=?, review_notes=? WHERE id=? AND review_status=?'
+    ).bind(status, Date.now(), notes, row.id, 'pending').run()
+    if (!update.meta?.changes) continue
 
+    reviewedCount += 1
     const item = { id: row.id, userId: row.user_id, ip: row.ip, authType: row.auth_type, notes }
     if (status === 'flagged') flagged.push(item)
     if (status === 'error') errors.push(item)
   }
 
-  return { reviewedCount: pending.length, flagged, errors }
+  return { reviewedCount, flagged, errors }
 }
