@@ -62,9 +62,9 @@ test('message retention removes routine rows after 30 days and active findings a
 
   const deleted = await purgeExpiredMessageLogs(db, now)
 
-  assert.equal(deleted, 5)
+  assert.equal(deleted, 6)
   assert.deepEqual(
     db.prepare('SELECT id FROM message_log ORDER BY id').all().results.map(row => row.id),
-    [4, 7, 8],
+    [4, 8],
   )
 })

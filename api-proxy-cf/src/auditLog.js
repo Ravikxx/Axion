@@ -70,8 +70,13 @@ export async function purgeExpiredMessageLogs(db, now = Date.now()) {
     db.prepare(
       `DELETE FROM message_log
        WHERE created_at < ?
-         AND review_status='flagged'
-         AND human_review_status IN ('pending','confirmed')`
+         AND (
+           review_status='pending'
+           OR (
+             review_status='flagged'
+             AND human_review_status IN ('pending','confirmed')
+           )
+         )`
     ).bind(reviewCutoff),
   ])
   return results.reduce((count, result) => count + Number(result.meta?.changes || 0), 0)
