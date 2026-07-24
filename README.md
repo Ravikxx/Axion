@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/logo.svg" width="96" height="96" alt="Axion logo">
+  <img src="assets/logo.svg" width="96" height="96" alt="Axion logo">
 </p>
 
 # Axion
@@ -7,6 +7,9 @@
 **Axion** is an open-source AI coding agent ecosystem built by Axion Labs. It includes a terminal CLI, a Chrome extension, a web UI, and an IDE integration — all sharing the same models, tools, and memory.
 
 > **v2.0** — the terminal UI is a modern, cell-rendered TUI (powered by [OpenTUI](https://github.com/sst/opentui)) with **tabs**, mouse support, inline diff review, `@file` mentions, terminal charts, and crash-safe session restore. It runs from source (no build step).
+
+The deployed public website is maintained separately in
+[Ravikxx/Axion-Website](https://github.com/Ravikxx/Axion-Website).
 
 ---
 
@@ -539,7 +542,7 @@ axion/
 │   └── collect-daemon.js  # axion-collect local dataset daemon
 ├── collect-worker/     # Cloudflare Worker for remote session collection
 ├── mcp-servers/        # Bundled MCP servers (Blender)
-└── docs/               # Static assets used by local web surfaces
+└── assets/             # Repository documentation assets
 ```
 
 ---
