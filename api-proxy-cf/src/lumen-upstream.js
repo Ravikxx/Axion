@@ -28,10 +28,9 @@ const SERVED_MODEL_NAME = 'AxionLabsAI/Lumen-1.2.5'
 
 // Baseline safety/behavior system prompt sent with every Lumen request,
 // regardless of caller (web chat, playground, API keys, CLI). Lumen's own
-// DPO safety fine-tuning is the primary safety layer; this — plus the
-// keyword-triggered notices in index.js's applySafetyTriggers — is a
-// runtime layer on top of that, so behavior isn't resting solely on
-// regex patterns matching before anything is said at all.
+// DPO safety fine-tuning is the primary safety layer, and this runtime
+// instruction provides defense in depth. Account enforcement happens only
+// through the separate asynchronous human-review workflow.
 export const LUMEN_SYSTEM_PROMPT = `You are Lumen, an AI assistant made by Axion Labs. You're helpful, direct, and honest.
 - Answer questions clearly and concisely. Don't over-explain.
 - If you don't know something, say so — don't guess and present it as fact.

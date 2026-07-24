@@ -936,6 +936,38 @@ test('account deletion removes audits, rate limits, and every key in an owned or
     .bind('credit-redeem:member', 2, 1).run()
   db.prepare('INSERT INTO rate_limits (key, count, window_start) VALUES (?,?,?)')
     .bind('free:unrelated-ip', 3, 1).run()
+  db.prepare(
+    `INSERT INTO message_log
+     (user_id, api_key_id, ip, auth_type, request_messages, response_text, created_at,
+      review_status, human_review_status)
+     VALUES (?,?,?,?,?,?,?,?,?)`
+  ).bind(
+    'member',
+    null,
+    '203.0.113.10',
+    'session',
+    JSON.stringify([{ role: 'user', content: 'routine account message' }]),
+    'routine response',
+    Date.now(),
+    'safe',
+    null,
+  ).run()
+  db.prepare(
+    `INSERT INTO message_log
+     (user_id, api_key_id, ip, auth_type, request_messages, response_text, created_at,
+      review_status, human_review_status)
+     VALUES (?,?,?,?,?,?,?,?,?)`
+  ).bind(
+    'member',
+    null,
+    '203.0.113.10',
+    'session',
+    JSON.stringify([{ role: 'user', content: 'pending review message' }]),
+    'pending review response',
+    Date.now(),
+    'flagged',
+    'pending',
+  ).run()
 
   const token = await sessionToken('member', secret)
   const response = await app.request('/dashboard/account', {
@@ -951,6 +983,16 @@ test('account deletion removes audits, rate limits, and every key in an owned or
   assert.equal(db.prepare('SELECT COUNT(*) AS count FROM admin_account_edits WHERE user_id=?').bind('member').first().count, 0)
   assert.equal(db.prepare("SELECT COUNT(*) AS count FROM rate_limits WHERE key LIKE '%:member'").first().count, 0)
   assert.equal(db.prepare("SELECT COUNT(*) AS count FROM rate_limits WHERE key='free:unrelated-ip'").first().count, 1)
+  const retainedLogs = db.prepare('SELECT * FROM message_log ORDER BY id').all().results
+  assert.equal(retainedLogs.length, 2)
+  assert.equal(retainedLogs[0].user_id, null)
+  assert.equal(retainedLogs[0].ip, 'deleted')
+  assert.equal(retainedLogs[0].request_messages, '[]')
+  assert.equal(retainedLogs[0].response_text, '[redacted after account deletion]')
+  assert.equal(retainedLogs[1].user_id, null)
+  assert.equal(retainedLogs[1].ip, 'deleted')
+  assert.match(retainedLogs[1].request_messages, /pending review message/)
+  assert.equal(retainedLogs[1].response_text, 'pending review response')
 })
 
 // ── /v1/chat/completions account billing ────────────────────────────────────
@@ -1259,7 +1301,7 @@ test('anonymous/free-tier completions are logged too, with a null user_id and au
   }
 })
 
-test('a message_log row records the ORIGINAL request, unaffected by applySafetyTriggers mutating body.messages', async () => {
+test('a message_log row records the original request without modifying it', async () => {
   const db = new D1TestDatabase()
   const secret = 'audit-log-trigger-secret'
   addUser(db, 'member')
@@ -1279,7 +1321,36 @@ test('a message_log row records the ORIGINAL request, unaffected by applySafetyT
 
     const row = db.prepare('SELECT request_messages FROM message_log').first()
     const logged = JSON.parse(row.request_messages)
-    assert.equal(logged[0].content, originalContent, 'the log must keep the original text, not the safety-notice-appended version')
+    assert.equal(logged[0].content, originalContent)
+  } finally {
+    globalThis.fetch = realFetch
+  }
+})
+
+test('message content never creates automatic safety strikes or bans', async () => {
+  const db = new D1TestDatabase()
+  const secret = 'human-review-only-secret'
+  addUser(db, 'member')
+  const token = await sessionToken('member', secret)
+  const env = { DB: db, TOKEN_SECRET: secret, RUNPOD_ENDPOINT_ID: 'ep-test', RUNPOD_API_KEY: 'rp-test-key' }
+  const realFetch = globalThis.fetch
+  globalThis.fetch = lumenFetchStub({ prompt_tokens: 1, completion_tokens: 1, total_tokens: 2 })
+  try {
+    for (let attempt = 0; attempt < 3; attempt++) {
+      const { ctx, settle } = executionCtx()
+      const response = await app.request('/v1/chat/completions', {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: [{ role: 'user', content: 'racial slur test' }] }),
+      }, env, ctx)
+      assert.equal(response.status, 200)
+      await settle()
+    }
+    assert.equal(db.prepare('SELECT banned FROM users WHERE id=?').bind('member').first().banned, 0)
+    assert.equal(
+      db.prepare("SELECT COUNT(*) AS count FROM rate_limits WHERE key LIKE 'nword:%'").first().count,
+      0,
+    )
   } finally {
     globalThis.fetch = realFetch
   }

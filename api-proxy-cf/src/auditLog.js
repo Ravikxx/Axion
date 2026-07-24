@@ -1,11 +1,14 @@
-// Append-only record of every chat completion exchange — separate from the
+// Server-side record of every chat completion exchange — separate from the
 // `chats` table, which is a mutable reflection of what a user's own web UI
-// currently shows (editing or deleting a message there removes it). This
-// exists so a real "what did this account actually send" record survives
-// regardless of what the client later does, for abuse/legal response.
+// currently shows. Rows are retained only for the review windows below and
+// account deletion redacts routine content before unlinking identity.
 //
 // Logging failures must never break the actual chat response — this is
 // always best-effort from the caller's perspective.
+const DAY_MS = 24 * 60 * 60 * 1000
+export const ROUTINE_MESSAGE_RETENTION_MS = 30 * DAY_MS
+export const REVIEW_MESSAGE_RETENTION_MS = 365 * DAY_MS
+
 function compactToolArguments(value) {
   if (value == null) return ''
   const text = typeof value === 'string' ? value : JSON.stringify(value)
@@ -50,4 +53,26 @@ export async function logMessageExchange(db, { userId, apiKeyId, ip, authType, m
   } catch (err) {
     console.error('[auditLog] failed to write message_log row:', err?.message || err)
   }
+}
+
+export async function purgeExpiredMessageLogs(db, now = Date.now()) {
+  const routineCutoff = now - ROUTINE_MESSAGE_RETENTION_MS
+  const reviewCutoff = now - REVIEW_MESSAGE_RETENTION_MS
+  const results = await db.batch([
+    db.prepare(
+      `DELETE FROM message_log
+       WHERE created_at < ?
+         AND (
+           review_status IN ('safe','error')
+           OR (review_status='flagged' AND human_review_status='dismissed')
+         )`
+    ).bind(routineCutoff),
+    db.prepare(
+      `DELETE FROM message_log
+       WHERE created_at < ?
+         AND review_status='flagged'
+         AND human_review_status IN ('pending','confirmed')`
+    ).bind(reviewCutoff),
+  ])
+  return results.reduce((count, result) => count + Number(result.meta?.changes || 0), 0)
 }

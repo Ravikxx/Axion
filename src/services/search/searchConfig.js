@@ -11,7 +11,8 @@ import { ripgrepAvailable } from './ripgrepAdapter.js';
 export { SEARCH_CONFIG };
 
 export function resolveBackend() {
-  if (SEARCH_CONFIG.backend === 'fs') return 'fs';
-  if (SEARCH_CONFIG.backend === 'ripgrep') return 'ripgrep';
+  const configured = process.env.AXION_SEARCH_BACKEND || SEARCH_CONFIG.backend;
+  if (configured === 'fs') return 'fs';
+  if (configured === 'ripgrep') return 'ripgrep';
   return ripgrepAvailable() ? 'ripgrep' : 'fs';
 }

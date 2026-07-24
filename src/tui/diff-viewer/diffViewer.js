@@ -111,11 +111,10 @@ function loadDiff(cwd, mode, lastTurnProvider) {
     if (!data || !data.length) return [];
     return data.map((d) => ({
       file: d.path,
-      patch: '',
       additions: d.added ?? 0,
       deletions: d.removed ?? 0,
       status: d.status || 'modified',
-      patch: d.patch,
+      patch: d.patch || '',
     }));
   }
   if (mode === 'branch') {
