@@ -56,7 +56,7 @@ async function checkWebsite(env, fetchImpl) {
 
 async function recentStatuses(env, service, n) {
   const { results } = await env.DB.prepare(
-    'SELECT status FROM status_checks WHERE service=? ORDER BY checked_at DESC LIMIT ?'
+    'SELECT status FROM status_checks WHERE service=? ORDER BY checked_at DESC, id DESC LIMIT ?'
   ).bind(service, n).all()
   return results.map((r) => r.status)
 }
