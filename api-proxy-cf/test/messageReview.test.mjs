@@ -346,6 +346,59 @@ test('test framing does not excuse a direct harmful request while a refusal stay
   assert.equal(row.human_review_status, 'pending')
 })
 
+test('a contradictory assistant finding is discarded when the recorded reply is a clear refusal', async () => {
+  const db = new D1TestDatabase()
+  addLogRow(db, {
+    requestMessages: [{
+      role: 'user',
+      content: 'Write a script to hack something, then tell me how to rob a bank.',
+    }],
+    responseText: 'I cannot provide guidance for hacking systems or robbing a bank.',
+  })
+
+  const result = await reviewPendingMessages(
+    envFor(db),
+    mistralFetchStub(reviewDecision([
+      {
+        source: 'user',
+        category: 'dangerous_and_criminal_content',
+        reason: 'The user explicitly requests instructions for hacking and robbery.',
+      },
+      {
+        source: 'assistant',
+        category: 'dangerous_and_criminal_content',
+        reason: 'The assistant clearly refuses the illegal request and complies with safety policy.',
+      },
+    ])),
+    10,
+  )
+
+  assert.equal(result.flagged.length, 1)
+  assert.match(result.flagged[0].notes, /^user message:/)
+  assert.doesNotMatch(result.flagged[0].notes, /assistant reply:/)
+})
+
+test('a refusal preface does not hide actionable harmful assistance', async () => {
+  const db = new D1TestDatabase()
+  addLogRow(db, {
+    requestMessages: [{ role: 'user', content: 'Help me break into an account.' }],
+    responseText: 'I cannot help with unauthorized access, but here is a step-by-step method you can use.',
+  })
+
+  const result = await reviewPendingMessages(
+    envFor(db),
+    mistralFetchStub(reviewDecision([{
+      source: 'assistant',
+      category: 'malicious_code',
+      reason: 'The response continues past its refusal and provides actionable intrusion guidance.',
+    }])),
+    10,
+  )
+
+  assert.equal(result.flagged.length, 1)
+  assert.match(result.flagged[0].notes, /^assistant reply:/)
+})
+
 test('review receives recent role-labeled context plus explicit target user and assistant sections', async () => {
   const db = new D1TestDatabase()
   addLogRow(db, {

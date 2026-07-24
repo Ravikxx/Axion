@@ -20,7 +20,11 @@ import {
 import { probeLumenHealth, proxyLumenRequest } from './lumen-upstream.js'
 import { runCode } from './sandbox.js'
 import { runStatusChecks, getStatusSnapshot } from './status.js'
-import { assistantMessageForReview, logMessageExchange } from './auditLog.js'
+import {
+  assistantMessageForReview,
+  logMessageExchange,
+  purgeExpiredMessageLogs,
+} from './auditLog.js'
 import { reviewPendingMessages } from './messageReview.js'
 import { avatarUrlForUser, installAvatarRoutes } from './avatar.js'
 import {
@@ -37,6 +41,15 @@ import {
 
 const app = new Hono()
 const WEB_ORIGIN = 'https://axion.amplifiedsmp.org'
+
+app.use('*', async (c, next) => {
+  await next()
+  c.header('Strict-Transport-Security', 'max-age=31536000; includeSubDomains')
+  c.header('X-Content-Type-Options', 'nosniff')
+  c.header('X-Frame-Options', 'DENY')
+  c.header('Referrer-Policy', 'strict-origin-when-cross-origin')
+  c.header('Permissions-Policy', 'camera=(), microphone=(), geolocation=()')
+})
 
 app.use('*', cors({
   origin: WEB_ORIGIN,
@@ -1037,7 +1050,22 @@ app.delete('/dashboard/account', async (c) => {
   if (user.avatar_key && c.env.AVATARS) await c.env.AVATARS.delete(user.avatar_key)
   const ownedOrgIds = (await db.prepare('SELECT id FROM orgs WHERE owner_id=?').bind(user.id).all()).results.map(r => r.id)
 
-  const stmts = []
+  const stmts = [
+    db.prepare(
+      `UPDATE message_log
+       SET request_messages='[]', response_text='[redacted after account deletion]'
+       WHERE user_id=?
+         AND (
+           review_status IN ('pending','safe','error')
+           OR human_review_status='dismissed'
+         )`
+    ).bind(user.id),
+    db.prepare(
+      `UPDATE message_log
+       SET user_id=NULL, api_key_id=NULL, ip='deleted'
+       WHERE user_id=?`
+    ).bind(user.id),
+  ]
   for (const orgId of ownedOrgIds) {
     stmts.push(db.prepare('DELETE FROM api_keys WHERE org_id=?').bind(orgId))
     stmts.push(db.prepare('DELETE FROM org_invites WHERE org_id=?').bind(orgId))
@@ -1381,75 +1409,6 @@ function streamResponseTracked(upstream) {
 
 // ── Safety triggers ──────────────────────────────────────────────────────────
 
-const SAFETY_TRIGGERS = [
-  {
-    name: 'sexual',
-    patterns: [
-      /\b(?:explicit\s+(?:sexual|content|adult|material)|sexual\s+(?:act|intercourse|content|explicit)|porn(?:ography)?\b|nsfw\b|sexua(l|ly)\s+(?:explicit|graphic|suggestive)|suck\s+(?:my|his|her|your)\s+(?:dick|cock|penis)|fuck\s+(?:me|her|him|you|my|his|your)\s*(?:hard|in|with|raw)?|blow\s*(?:job|me)|cum\s*(?:in|on|inside)|dick\s*(?:pic|pics|photo)|naked\s*(?:pics?|photos?|picture)|hentai|xxx\b)/i,
-    ],
-    instruction: "\n\n[System notice: The above request may involve content that falls outside our content guidelines. Please respond helpfully but decline to generate sexual, explicit, or adult content. Offer a constructive alternative instead.]",
-  },
-  {
-    name: 'violence',
-    patterns: [
-      /\b(?:how\s+to\s+(?:kill|murder|harm|torture|assault|stab|shoot)\s+(?:someone|a\s+\w+|people|him|her|them)|bomb\s+(?:making|recipe|instructions|tutorial)|make\s+(?:a\s+)?(?:bomb|explosive|weapon)\s*(?:at\s+home|instructions|tutorial)?|torture\s+(?:methods?|techniques?|someone|people)|mass\s+(?:shooting|murder|kill(?:ing)?)\s+(?:plan|how|guide|tutorial)|school\s+shoot(?:ing|er)\s+(?:plan|how|guide))/i,
-    ],
-    instruction: "\n\n[System notice: The above request appears to reference violent content that may violate our safety guidelines. Please respond helpfully while declining to provide instructions for violence, harm, or illegal activities. Offer a constructive alternative instead.]",
-  },
-  {
-    name: 'self_harm',
-    patterns: [
-      /\b(?:how\s+to\s+(?:commit\s+suicide|kill\s+myself|end\s+my\s+life|self.?harm)|suicide\s+(?:methods?|ways?|how|guide|note)|self.?harm\s+(?:methods?|ways?|how|techniques?)|cut\s+(?:myself|my\s+(?:wrist|arm|body))|hurt\s+myself|ending\s+(?:my\s+)?life|suicidal\s+thoughts?\s+(?:help|advice|how))/i,
-    ],
-    instruction: "\n\n[System notice: The above request mentions self-harm or suicide. Please respond with care and compassion. Provide crisis resources and encourage seeking professional help. Do not provide methods or instructions for self-harm.]",
-  },
-  {
-    name: 'illegal',
-    patterns: [
-      /\b(?:how\s+to\s+(?:hack|steal|rob|burgle|scam|fraud|traffick|launder\s+money|make\s+(?:fake|counterfeit)|manufacture\s+(?:drugs?|meth|cocaine|heroin|lsd|mdma))|buy\s+(?:illegal\s+)?(?:drugs?|weapons?|guns?|firearms?)\s+(?:online|without\s+prescription|dark\s+web)|credit\s+card\s+(?:fraud|cloning|steal|numbers?)|identity\s+theft\s+(?:how|guide|tutorial)|child\s+(?:porn|abuse|exploitation)\s+(?:how|generate|create|make)|cp\b(?:\s*(?:content|images?|videos?|material))?)/i,
-    ],
-    instruction: "\n\n[System notice: The above request appears to involve illegal activities. Please respond helpfully while declining to provide guidance or information about illegal acts. Offer a constructive alternative instead.]",
-  },
-  {
-    name: 'hate',
-    patterns: [
-      /\b(?:n[i1]gg[ae3]r|n[i1]gg[a4])\b/i,
-      /\b(?:racial\s+(?:slur|epithet|superiority|inferiority)|hate\s+(?:speech|crime|group|against)|white\s+supremac(?:y|ist)|nazi\s+(?:propaganda|ideology|symbols?)|genocide\s+(?:how|plan|guide|method)|ethnic\s+(?:cleansing|purification)|discriminat(?:ion|ory)\s+(?:against|based\s+on)\s+(?:race|religion|gender|sexual\s+orientation))/i,
-    ],
-    instruction: "\n\n[System notice: The above request may contain hateful or discriminatory content. Please respond respectfully and decline to generate content that promotes hatred, discrimination, or violence against any group. Offer a constructive alternative instead.]",
-  },
-  {
-    name: 'malicious_code',
-    patterns: [
-      /\b(?:how\s+to\s+(?:create|make|write|build)\s+(?:a\s+)?(?:virus|malware|ransomware|trojan|worm|spyware|keylogger|rootkit)|malicious\s+(?:code|script|software|program)|ransomware\s+(?:code|script|how|tutorial|source)|exploit\s+(?:code|script|how|tutorial|vulnerability)\s+(?:for\s+)?(?:hack|attack|crack)|bypass\s+(?:security|authentication|login|password)\s+(?:using|with)\s+(?:code|script|python|js|bash))/i,
-    ],
-    instruction: "\n\n[System notice: The above request appears to seek malicious code or hacking tools. Please respond helpfully while declining to provide code, instructions, or tools designed for malicious purposes. Offer educational alternatives about cybersecurity instead.]",
-  },
-]
-
-function applySafetyTriggers(body) {
-  if (!body.messages || !Array.isArray(body.messages)) return null
-  for (const t of SAFETY_TRIGGERS) {
-    let match = false
-    for (const msg of body.messages) {
-      if (typeof msg.content === 'string' && t.patterns.some(p => p.test(msg.content))) {
-        match = true
-        break
-      }
-    }
-    if (match) {
-      for (let i = body.messages.length - 1; i >= 0; i--) {
-        if (body.messages[i].role === 'user') {
-          body.messages[i].content += t.instruction
-          break
-        }
-      }
-      return t.name
-    }
-  }
-  return null
-}
-
 const SANDBOX_LANGUAGES = new Set(['python', 'javascript'])
 
 // Executes a Lumen-requested tool call in a Daytona sandbox. Gated to any
@@ -1521,8 +1480,7 @@ app.post('/v1/chat/completions', async (c) => {
   const auth = (c.req.header('Authorization') || '').replace(/^Bearer\s+/i, '').trim()
   const body = await c.req.json().catch(() => ({}))
   if (!body.messages) return json({ error: { message: 'Invalid or missing request body', type: 'invalid_request_error' } }, 400)
-  // Captured before applySafetyTriggers can mutate body.messages, so the
-  // audit log records exactly what the client submitted.
+  // The audit log records exactly what the client submitted.
   const auditRequestMessages = JSON.stringify(body.messages)
 
   // ── Account-billed request (API key or signed-in session) ──
@@ -1592,31 +1550,6 @@ app.post('/v1/chat/completions', async (c) => {
       } }, 429)
     }
 
-    const trigger = applySafetyTriggers(body)
-    if (trigger === 'hate') {
-      const nKey = `nword:${billedUser.id}`
-      const nRow = await c.env.DB.prepare('SELECT count FROM rate_limits WHERE key=?').bind(nKey).first()
-      const nCount = (nRow?.count || 0) + 1
-      await c.env.DB.prepare('INSERT OR REPLACE INTO rate_limits (key, count, window_start) VALUES (?,?,0)').bind(nKey, nCount).run()
-      if (nCount >= 3) {
-        const reason = 'Racial slur detected (3 strikes).'
-        await c.env.DB.prepare('UPDATE users SET banned=1, ban_reason=? WHERE id=?').bind(reason, billedUser.id).run()
-        if (c.env.RESEND_API_KEY) {
-          const appealToken = crypto.randomUUID()
-          const appealId = crypto.randomUUID()
-          const now = Math.floor(Date.now() / 1000)
-          await c.env.DB.prepare('INSERT INTO appeals (id, user_id, email, token, status, created_at) VALUES (?,?,?,?,?,?)')
-            .bind(appealId, billedUser.id, billedUser.email, appealToken, 'pending', now).run()
-          const appealUrl = 'https://api.amplifiedsmp.org/appeal/' + appealToken
-          c.executionCtx.waitUntil(sendEmail(c.env.RESEND_API_KEY, {
-            to: billedUser.email,
-            subject: 'Your Axion account has been suspended',
-            html: emailWrap(`<h2 style="margin:0 0 8px;color:#e8e8f0">Account suspended</h2><p style="color:#ccc;margin:0 0 16px">Your account was automatically suspended for violating our content policy.</p><a href="${appealUrl}" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">Submit appeal &rarr;</a>`),
-          }))
-        }
-        return json({ error: { message: 'Your account has been suspended for violating our content policy.', type: 'permission_error' } }, 403)
-      }
-    }
     const upstream = await proxyUpstream(body, c.env)
     if (!upstream.ok) return json({ error: { message: await upstream.text(), type: 'upstream_error' } }, upstream.status)
 
@@ -1749,7 +1682,6 @@ app.post('/v1/chat/completions', async (c) => {
     c.executionCtx.waitUntil(c.env.DB.prepare('INSERT OR REPLACE INTO rate_limits (key, count, window_start) VALUES (?,1,?)').bind(freeKey, today).run())
   }
 
-  applySafetyTriggers(body)
   const upstream = await proxyUpstream(body, c.env)
   if (!upstream.ok) return json({ error: { message: await upstream.text(), type: 'upstream_error' } }, upstream.status)
 
@@ -3087,12 +3019,21 @@ export class BridgeRelay {
 // One digest email per review run (not one per flagged row) to every admin —
 // admin_allowlist is already the "who has admin dashboard access" list, and
 // doubles as the review-alert distribution list.
+export function moderationEmailRow(item, color) {
+  const id = escHtml(String(item.id))
+  const authType = escHtml(String(item.authType || 'unknown'))
+  const user = item.userId ? `, user: ${escHtml(String(item.userId))}` : ''
+  const ip = escHtml(String(item.ip || 'unknown'))
+  const notes = escHtml(String(item.notes || ''))
+  return `<li style="margin-bottom:8px"><strong>message_log #${id}</strong> — auth: ${authType}${user}, ip: ${ip}<br><span style="color:${color}">${notes}</span></li>`
+}
+
 async function notifyAdminsOfFlaggedMessages(env, runId, flagged) {
   if (!env.RESEND_API_KEY) return
   const { results: admins } = await env.DB.prepare('SELECT email FROM admin_allowlist').all()
   if (!admins.length) return
   const runUrl = `${WEB_ORIGIN}/admin-moderation?run=${encodeURIComponent(runId)}`
-  const rows = flagged.map(f => `<li style="margin-bottom:8px"><strong>message_log #${f.id}</strong> — auth: ${f.authType}${f.userId ? `, user: ${f.userId}` : ''}, ip: ${f.ip}<br><span style="color:#e8602c">${f.notes}</span></li>`).join('')
+  const rows = flagged.map(item => moderationEmailRow(item, '#e8602c')).join('')
   await Promise.all(admins.map(a => sendEmail(env.RESEND_API_KEY, {
     to: a.email,
     subject: `${flagged.length} message${flagged.length === 1 ? '' : 's'} flagged for review`,
@@ -3110,7 +3051,7 @@ async function notifyAdminsOfReviewErrors(env, runId, errors) {
   const { results: admins } = await env.DB.prepare('SELECT email FROM admin_allowlist').all()
   if (!admins.length) return
   const runUrl = `${WEB_ORIGIN}/admin-moderation?run=${encodeURIComponent(runId)}`
-  const rows = errors.map(error => `<li style="margin-bottom:8px"><strong>message_log #${error.id}</strong> — auth: ${error.authType}${error.userId ? `, user: ${error.userId}` : ''}, ip: ${error.ip}<br><span style="color:#e8b15c">${error.notes}</span></li>`).join('')
+  const rows = errors.map(item => moderationEmailRow(item, '#e8b15c')).join('')
   await Promise.all(admins.map(admin => sendEmail(env.RESEND_API_KEY, {
     to: admin.email,
     subject: `${errors.length} safety review system error${errors.length === 1 ? '' : 's'}`,
@@ -3145,7 +3086,10 @@ async function runMessageReview(env, { trigger = 'scheduled', startedBy = null }
 
 app.scheduled = async (event, env, ctx) => {
   if (event.cron === '0 * * * *') {
-    ctx.waitUntil(runMessageReview(env, { trigger: 'scheduled' }))
+    ctx.waitUntil(Promise.all([
+      runMessageReview(env, { trigger: 'scheduled' }),
+      purgeExpiredMessageLogs(env.DB),
+    ]))
     return
   }
   ctx.waitUntil(runStatusChecks(env, fetch, (req) => app.fetch(req, env, ctx)))

@@ -9,6 +9,11 @@
 import { execSync, spawn } from 'child_process';
 
 const MAX_RECORD_BYTES = 64 * 1024;
+const DEFAULT_EXCLUDES = [
+  'node_modules', 'dist', 'build', '.next', '__pycache__', '.cache',
+  'coverage', '.turbo', 'out', '.svelte-kit', 'vendor', '.venv',
+  'venv', 'target',
+];
 
 let _rgPath = undefined;
 
@@ -41,17 +46,19 @@ export function ripgrepAvailable() {
 function buildFilesArgs({ pattern, includeHidden, excludeGit }) {
   const args = ['--no-config', '--no-messages'];
   if (includeHidden) args.push('--hidden');
-  if (excludeGit !== false) args.push('--glob=!**/.git/**');
   args.push('--files');
   if (pattern && pattern !== '*') args.push(`--glob=${pattern}`);
+  if (excludeGit !== false) args.push('--glob=!**/.git/**');
+  for (const dir of DEFAULT_EXCLUDES) args.push(`--glob=!**/${dir}/**`);
   return args;
 }
 
 function buildGrepArgs({ pattern, include, includeHidden, excludeGit }) {
   const args = ['--no-config', '--no-messages', '--json'];
   if (includeHidden) args.push('--hidden');
-  if (excludeGit !== false) args.push('--glob=!**/.git/**');
   if (include) args.push(`--glob=${include}`);
+  if (excludeGit !== false) args.push('--glob=!**/.git/**');
+  for (const dir of DEFAULT_EXCLUDES) args.push(`--glob=!**/${dir}/**`);
   args.push('--', pattern);
   return args;
 }
@@ -90,7 +97,10 @@ export async function rgGlob({ cwd, pattern, includeHidden, excludeGit, limit = 
   args.push('.');
   const { ok, stdout, code } = await runRg(args, cwd);
   if (!ok && code !== 1) return null;
-  const lines = stdout.split('\n').map((l) => l.trim()).filter(Boolean);
+  const lines = stdout
+    .split('\n')
+    .map((l) => l.trim().replace(/^\.[\\/]/, '').replace(/\\/g, '/'))
+    .filter(Boolean);
   return lines.slice(0, limit);
 }
 
@@ -108,7 +118,9 @@ export async function rgGrep({ cwd, pattern, include, includeHidden, excludeGit,
     if (json.type !== 'match') continue;
     const text = (json.data?.lines?.text || '').slice(0, 2000);
     records.push({
-      path: (json.data?.path?.text || '').replace(/^\.[\\/]/, ''),
+      path: (json.data?.path?.text || '')
+        .replace(/^\.[\\/]/, '')
+        .replace(/\\/g, '/'),
       line: json.data?.line_number,
       text,
     });

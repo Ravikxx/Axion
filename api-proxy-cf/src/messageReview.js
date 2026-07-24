@@ -62,7 +62,7 @@ FLAG a target when it requests, meaningfully enables, endorses, threatens, or co
 
 A direct harmful request remains flaggable when it claims to be a test, hypothetical, fictional, educational, roleplay, or authorized. Do not let those labels erase the actual requested capability.
 
-Do not flag benign discussion, news, prevention, recovery, high-level safety education, or a clear refusal that provides no actionable harmful detail. Judge the user and assistant independently: a harmful user request can be flagged while a safe assistant refusal remains unflagged.
+Do not flag benign discussion, news, prevention, recovery, high-level safety education, or a clear refusal that provides no actionable harmful detail. Judge the user and assistant independently: a harmful user request can be flagged while a safe assistant refusal remains unflagged. Never create an assistant finding merely because its reply repeats or names the harmful topic while refusing it.
 
 If neither target violates the policy, return {"findings":[]}. Do not add prose outside the JSON object.`
 
@@ -158,7 +158,20 @@ function responseContentText(content) {
   return text.join('')
 }
 
-function parseDecision(data) {
+function isClearNonActionableRefusal(text) {
+  const value = String(text || '').trim()
+  if (!value || value.length > 800) return false
+  if (!/\b(?:i\s+(?:cannot|can't|won't|will not|must refuse|am unable)|i'm unable|i cannot help|i can't help)\b/i.test(value)) {
+    return false
+  }
+  if (/```|(?:^|\n)\s*(?:\d+[.)]|[-*])\s+/m.test(value)) return false
+  if (/\b(?:but|however|although|that said)\b[\s\S]{0,160}\b(?:first|step|use|run|execute|you can|you should|here(?:'s| is)|try)\b/i.test(value)) {
+    return false
+  }
+  return true
+}
+
+function parseDecision(data, assistantResponse = '') {
   const content = responseContentText(data?.choices?.[0]?.message?.content)
   if (content == null) return decisionError('response content was not text', data)
 
@@ -180,6 +193,9 @@ function parseDecision(data) {
     if (!source) return decisionError('a finding had an invalid source', data)
     if (!label) return decisionError('a finding had an invalid category', data)
     if (!reason) return decisionError('a finding had an empty reason', data)
+    if (finding.source === 'assistant' && isClearNonActionableRefusal(assistantResponse)) {
+      continue
+    }
     findings.push({
       source,
       label,
@@ -193,7 +209,7 @@ function parseDecision(data) {
   }
 }
 
-async function classifyExchange(env, reviewInput, fetchImpl) {
+async function classifyExchange(env, reviewInput, fetchImpl, assistantResponse = '') {
   if (!env.MISTRAL_API_KEY) {
     return { status: 'error', notes: 'Mistral safety review is not configured.' }
   }
@@ -226,7 +242,7 @@ async function classifyExchange(env, reviewInput, fetchImpl) {
     }
 
     const data = await response.json()
-    return parseDecision(data)
+    return parseDecision(data, assistantResponse)
   } catch (err) {
     return { status: 'error', notes: `Mistral safety review error (${err?.message || err}).` }
   }
@@ -242,7 +258,12 @@ export async function reviewPendingMessages(env, fetchImpl = fetch, batchSize = 
   let reviewedCount = 0
   for (const row of pending) {
     const reviewInput = exchangeForReview(row.request_messages, row.response_text)
-    const { status, notes } = await classifyExchange(env, reviewInput, fetchImpl)
+    const { status, notes } = await classifyExchange(
+      env,
+      reviewInput,
+      fetchImpl,
+      row.response_text,
+    )
     const update = await env.DB.prepare(
       `UPDATE message_log
        SET review_status=?, reviewed_at=?, review_notes=?, review_run_id=?,
