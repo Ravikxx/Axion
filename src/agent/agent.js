@@ -1831,7 +1831,7 @@ function friendlyError(err, modelAlias) {
     const status = err.data.status ?? err?.status ?? err?.response?.status;
     if (status === 401) {
       if (modelAlias === 'other') return `Auth failed for custom endpoint. Use /endpoint <url> <model> <key> to set the API key.`;
-      if (modelAlias === 'lumen') return `Invalid or revoked Axion API key. Use /axion-key <your-key> to set it, or /axion-key remove to use the free tier.\n→ Get a key at axion.amplifiedsmp.org/keys`;
+      if (modelAlias === 'lumen') return `Invalid or revoked Axion API key. Use /login or /axion-key <your-key> to authenticate.\n→ Sign up or get a key at axion.amplifiedsmp.org/keys`;
       return `Invalid API key for "${modelAlias}". Use /api ${modelAlias} <your-key> to set it.`;
     }
     if (status === 429) return `Rate limited by "${providerLabel}". Wait a moment and try again.`;
@@ -1847,13 +1847,12 @@ function friendlyError(err, modelAlias) {
 
   if (status === 401 || /unauthorized|invalid.*key|api.?key/i.test(msg)) {
     if (modelAlias === 'other') return `Auth failed for custom endpoint. Use /endpoint <url> <model> <key> to set the API key.`;
-    if (modelAlias === 'lumen') return `Invalid or revoked Axion API key. Use /axion-key <your-key> to set it, or /axion-key remove to use the free tier.\n→ Get a key at axion.amplifiedsmp.org/keys`;
+    if (modelAlias === 'lumen') return `Invalid or revoked Axion API key. Use /login or /axion-key <your-key> to authenticate.\n→ Sign up or get a key at axion.amplifiedsmp.org/keys`;
     return `Invalid API key for "${modelAlias}". Use /api ${modelAlias} <your-key> to set it.`;
   }
   if (status === 429 || /rate.?limit|quota/i.test(msg)) {
     const resetStr = errObj.reset_at ? ` Resets ${formatResetTime(errObj.reset_at)}.` : '';
     const limitStr = Number.isFinite(Number(errObj.limit_usd)) ? ` ($${Number(errObj.limit_usd).toFixed(2)} included usage)` : '';
-    if (errObj.free_tier) return `Lumen keyless limit reached (50 requests/day).${resetStr} Get a key at axion.amplifiedsmp.org/keys for account-based included usage and redeemable API credits.`;
     if (errObj.window)    return `Lumen two-hour allowance reached${limitStr} and no API credits remain.${resetStr}`;
     if (/weekly/i.test(msg)) return `Lumen weekly allowance reached${limitStr} and no API credits remain.${resetStr}`;
     return `Rate limited by "${modelAlias}".${resetStr || ' Wait a moment and try again.'}`;

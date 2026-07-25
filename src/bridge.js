@@ -131,15 +131,17 @@ function attachShell(ws) {
 //               {type:'chat_start'} {type:'chat_done'} {type:'chat_error',message}
 //               {type:'term',data} (shell output) {type:'tokens',...}
 
-// Providers usable without a per-provider API key.
-const KEYLESS_PROVIDERS = new Set(['lumen', 'veil', 'ollama', 'axion-vision', 'custom']);
+// Local/custom providers can be used without a hosted-provider key. Axion
+// hosted models require the account key created by /login or /axion-key.
+const KEYLESS_PROVIDERS = new Set(['ollama', 'custom']);
+const AXION_ACCOUNT_PROVIDERS = new Set(['lumen', 'veil', 'axion-vision']);
 
 function availableModels() {
   const current = getSavedModel() || 'lumen';
   const out = [];
   for (const alias of Object.keys(MODELS)) {
     const provider = resolveProvider(alias);
-    if (KEYLESS_PROVIDERS.has(provider) || API_KEYS[provider]) {
+    if (KEYLESS_PROVIDERS.has(provider) || API_KEYS[provider] || (AXION_ACCOUNT_PROVIDERS.has(provider) && getAxionKey())) {
       out.push({ id: alias, provider });
     }
   }

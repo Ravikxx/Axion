@@ -125,7 +125,7 @@ let onboardingDone = false;
 // First-run welcome: one smart text question (key type is detected on submit).
 const ONBOARDING_FORM = {
   questions: [{
-    question: 'Welcome to Axion 👋  The free Lumen tier works right now. To use Claude or your own model, paste an API key (Anthropic sk-ant-…, OpenAI sk-…, or an Axion key). Leave blank to skip.',
+    question: 'Welcome to Axion 👋  Lumen requires a free Axion account. Paste an Axion API key, or an Anthropic/OpenAI key for those providers. Leave blank to sign in later with /login.',
     type: 'text',
     placeholder: 'paste an API key, or press Enter to skip',
   }],
@@ -1869,8 +1869,9 @@ function Session({
         const target = args[0];
         const known = !!(MODELS[target] || MODELS[target.toLowerCase()] || CUSTOM_ENDPOINTS[target]);
         const provider = resolveProvider(target);
-        const noKeyNeeded = ['custom', 'ollama', 'lumen', 'axion-vision', 'veil'].includes(provider);
-        const hasKey = noKeyNeeded || !!API_KEYS[provider];
+        const noKeyNeeded = ['custom', 'ollama'].includes(provider);
+        const axionHosted = ['lumen', 'axion-vision', 'veil'].includes(provider);
+        const hasKey = noKeyNeeded || !!API_KEYS[provider] || (axionHosted && !!getAxionKey());
         agentRef.current?.setAdviserModel(target); saveAdviserModel(target);
         const note = !hasKey
           ? `\n⚠ no API key for provider "${provider}" — set one with /api ${provider} <key>, or the adviser will fail`
@@ -2104,10 +2105,10 @@ function Session({
         const [keyArg] = args;
         if (!keyArg) {
           const existing = getAxionKey();
-          push({ type: 'info', text: existing ? `Axion API key: ${existing.slice(0, 14)}••••••••` : 'No Axion API key set. Lumen works without a key (50 req/day free).\n/axion-key <your-axion-sk-key> to set one.' });
+          push({ type: 'info', text: existing ? `Axion API key: ${existing.slice(0, 14)}••••••••` : 'No Axion API key set. Lumen requires a free Axion account.\nUse /login, or /axion-key <your-axion-sk-key>.' });
           return;
         }
-        if (keyArg === 'remove') { saveAxionKey(null); push({ type: 'info', text: 'Axion API key removed. Lumen will use the free tier (50 req/day).' }); return; }
+        if (keyArg === 'remove') { saveAxionKey(null); push({ type: 'info', text: 'Axion API key removed. Lumen is unavailable until you use /login or set another Axion key.' }); return; }
         if (keyArg === 'test') {
           const testKey = getAxionKey();
           if (!testKey) { push({ type: 'error', text: 'No Axion key set.' }); return; }
@@ -2979,7 +2980,7 @@ function Session({
   // Save whatever key the user pasted during onboarding (type detected by prefix).
   const finishOnboarding = useCallback((key) => {
     const k = (key || '').trim();
-    if (!k) { push({ type: 'info', text: 'You\'re on the free Lumen tier. Add a key anytime with /api or /axion-key.' }); return; }
+    if (!k) { push({ type: 'info', text: 'No key saved. Use /login for a free Axion account before using Lumen, or add another provider with /api.' }); return; }
     if (k.startsWith('sk-ant-')) {
       saveApiKey('anthropic', k); API_KEYS.anthropic = k;
       setModel('claude'); agentRef.current?.setModel('claude'); try { saveModel('claude'); } catch {}

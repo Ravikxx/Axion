@@ -121,7 +121,14 @@ export function createClient(modelAlias) {
   }
 
   if (provider === 'veil') {
-    return { type: 'veil', client: new OpenAI({ apiKey: API_KEYS.veil || 'no-key', baseURL: BASE_URLS.veil }) };
+    const axionKey = getAxionKey();
+    if (!axionKey) {
+      throw new ProviderError({
+        provider: 'veil',
+        message: 'Axion-hosted models require an Axion account and API key — use /login, or set a key with /axion-key <your-key>.',
+      });
+    }
+    return { type: 'veil', client: new OpenAI({ apiKey: axionKey, baseURL: BASE_URLS.veil }) };
   }
 
   if (provider === 'opencode') {
@@ -138,11 +145,24 @@ export function createClient(modelAlias) {
 
   if (provider === 'lumen') {
     const axionKey = getAxionKey();
-    return { type: 'openai', client: new OpenAI({ apiKey: axionKey || 'no-key', baseURL: BASE_URLS.lumen }) };
+    if (!axionKey) {
+      throw new ProviderError({
+        provider: 'lumen',
+        message: 'Lumen requires an Axion account and API key — use /login, or set a key with /axion-key <your-key>.',
+      });
+    }
+    return { type: 'openai', client: new OpenAI({ apiKey: axionKey, baseURL: BASE_URLS.lumen }) };
   }
 
   if (provider === 'axion-vision') {
-    return { type: 'openai', client: new OpenAI({ apiKey: 'no-key', baseURL: BASE_URLS['axion-vision'] }) };
+    const axionKey = getAxionKey();
+    if (!axionKey) {
+      throw new ProviderError({
+        provider: 'axion-vision',
+        message: 'Axion Vision requires an Axion account and API key — use /login, or set a key with /axion-key <your-key>.',
+      });
+    }
+    return { type: 'openai', client: new OpenAI({ apiKey: axionKey, baseURL: BASE_URLS['axion-vision'] }) };
   }
 
   if (provider === 'zai') {

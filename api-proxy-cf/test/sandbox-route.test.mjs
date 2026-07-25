@@ -98,15 +98,18 @@ function daytonaFetchStub(sandboxId = 'sb-route-test') {
   }
 }
 
-test('anonymous requests (no auth header at all) are rejected with 403', async () => {
+test('anonymous requests (no auth header at all) require signup and are rejected with 401', async () => {
   const db = new D1TestDatabase()
   const response = await app.request('/v1/sandbox/execute', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ code: 'print(1)' }),
   }, { DB: db })
-  assert.equal(response.status, 403)
-  assert.match((await response.json()).error.message, /signed-in account or API key/)
+  assert.equal(response.status, 401)
+  const body = await response.json()
+  assert.equal(body.error.type, 'authentication_error')
+  assert.equal(body.error.signup_required, true)
+  assert.equal(body.error.signup_url, 'https://axion.amplifiedsmp.org/chat')
 })
 
 test('a banned session-token account is rejected (requireAuth already filters banned users to null, same as /v1/chat/completions — so this is a 401, not a 403)', async () => {
