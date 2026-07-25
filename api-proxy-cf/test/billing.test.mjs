@@ -1026,7 +1026,7 @@ function executionCtx() {
   }
 }
 
-test('session-authenticated completions are charged to the account, not the free tier', async () => {
+test('session-authenticated completions are charged to the account', async () => {
   const db = new D1TestDatabase()
   const secret = 'session-billing-secret'
   addUser(db, 'member')
@@ -1059,7 +1059,7 @@ test('session-authenticated completions are charged to the account, not the free
   }
 })
 
-test('an invalid session token is rejected instead of falling through to the free tier', async () => {
+test('an invalid session token is rejected', async () => {
   const db = new D1TestDatabase()
   const env = { DB: db, TOKEN_SECRET: 'right-secret' }
   const token = await sessionToken('member', 'wrong-secret')
@@ -1274,28 +1274,38 @@ test('streamed tool-call deltas are assembled before message_log review', async 
   }
 })
 
-test('anonymous/free-tier completions are logged too, with a null user_id and auth_type "anonymous"', async () => {
+test('chat completions require an account and never call the model for anonymous requests', async () => {
   const db = new D1TestDatabase()
   const env = { DB: db, RUNPOD_ENDPOINT_ID: 'ep-test', RUNPOD_API_KEY: 'rp-test-key' }
   const realFetch = globalThis.fetch
-  globalThis.fetch = lumenFetchStub({ prompt_tokens: 1, completion_tokens: 1, total_tokens: 2 }, 'Anon reply')
+  let upstreamCalls = 0
+  globalThis.fetch = async () => {
+    upstreamCalls++
+    throw new Error('anonymous request reached the model upstream')
+  }
   try {
-    const { ctx, settle } = executionCtx()
     const response = await app.request('/v1/chat/completions', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'CF-Connecting-IP': '9.9.9.9' },
       body: JSON.stringify({ messages: [{ role: 'user', content: 'anon question' }] }),
-    }, env, ctx)
-    assert.equal(response.status, 200)
-    await settle()
+    }, env)
+    assert.equal(response.status, 401)
+    const body = await response.json()
+    assert.equal(body.error.type, 'authentication_error')
+    assert.equal(body.error.signup_required, true)
+    assert.equal(body.error.signup_url, 'https://axion.amplifiedsmp.org/chat')
+    assert.equal(upstreamCalls, 0)
+    assert.equal(db.prepare('SELECT COUNT(*) AS count FROM message_log').first().count, 0)
+    assert.equal(db.prepare("SELECT COUNT(*) AS count FROM rate_limits WHERE key LIKE 'free:%'").first().count, 0)
 
-    const row = db.prepare('SELECT * FROM message_log').first()
-    assert.ok(row)
-    assert.equal(row.user_id, null)
-    assert.equal(row.api_key_id, null)
-    assert.equal(row.ip, '9.9.9.9')
-    assert.equal(row.auth_type, 'anonymous')
-    assert.equal(row.response_text, 'Anon reply')
+    const malformedResponse = await app.request('/v1/chat/completions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({}),
+    }, env)
+    assert.equal(malformedResponse.status, 401)
+    assert.equal((await malformedResponse.json()).error.signup_required, true)
+    assert.equal(upstreamCalls, 0)
   } finally {
     globalThis.fetch = realFetch
   }

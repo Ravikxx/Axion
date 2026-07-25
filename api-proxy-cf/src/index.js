@@ -245,6 +245,17 @@ function json(data, status = 200) {
   })
 }
 
+function signupRequiredResponse() {
+  return json({
+    error: {
+      message: 'An Axion account is required. Sign up or sign in, then use your session or an Axion API key.',
+      type: 'authentication_error',
+      signup_required: true,
+      signup_url: 'https://axion.amplifiedsmp.org/chat',
+    },
+  }, 401)
+}
+
 async function requireAuth(c) {
   const auth = c.req.header('Authorization') || ''
   const token = auth.replace(/^Bearer\s+/i, '').trim()
@@ -1279,7 +1290,6 @@ app.delete('/chats/:id', async (c) => {
 
 // ── OpenAI-compatible proxy ────────────────────────────────────────────────
 
-const FREE_DAILY_LIMIT  = 50    // keyless requests per IP per day (unauthenticated anti-abuse gate, stays request-based)
 const FREE_KEY_CAP      = 3     // max non-revoked API keys, free plan (pro is uncapped)
 
 // Lumen pricing — also the unit the pay-as-you-go credits feature will use.
@@ -1413,8 +1423,7 @@ const SANDBOX_LANGUAGES = new Set(['python', 'javascript'])
 
 // Executes a Lumen-requested tool call in a Daytona sandbox. Gated to any
 // request with a resolved billedUser (session token or API key) —
-// deliberately excludes the fully anonymous free/keyless tier, since real
-// compute execution is a different abuse risk than text generation. Mirrors
+// all hosted model and compute access requires an account. Mirrors
 // /v1/chat/completions's own billedUser resolution (duplicated rather than
 // extracted — small enough, and only two call sites so far).
 //
@@ -1424,9 +1433,6 @@ const SANDBOX_LANGUAGES = new Set(['python', 'javascript'])
 // with no stored conversation) each call gets a fresh, one-off sandbox.
 app.post('/v1/sandbox/execute', async (c) => {
   const auth = (c.req.header('Authorization') || '').replace(/^Bearer\s+/i, '').trim()
-  const body = await c.req.json().catch(() => ({}))
-  if (typeof body.code !== 'string') return json({ error: { message: 'Missing "code" string', type: 'invalid_request_error' } }, 400)
-  const language = SANDBOX_LANGUAGES.has(body.language) ? body.language : 'python'
 
   let billedUser = null
   if (auth.startsWith('axion-sk-')) {
@@ -1438,8 +1444,12 @@ app.post('/v1/sandbox/execute', async (c) => {
     billedUser = await requireAuth(c)
     if (!billedUser) return json({ error: { message: 'Invalid or expired credentials', type: 'invalid_request_error' } }, 401)
   }
-  if (!billedUser) return json({ error: { message: 'Sandbox execution requires a signed-in account or API key.', type: 'permission_error' } }, 403)
+  if (!billedUser) return signupRequiredResponse()
   if (billedUser.banned) return json({ error: { message: 'Your account has been suspended.', type: 'permission_error' } }, 403)
+
+  const body = await c.req.json().catch(() => ({}))
+  if (typeof body.code !== 'string') return json({ error: { message: 'Missing "code" string', type: 'invalid_request_error' } }, 400)
+  const language = SANDBOX_LANGUAGES.has(body.language) ? body.language : 'python'
 
   const cfg = sandboxConfigForPlan(billedUser.plan)
   const usage = await readSandboxUsage(c.env.DB, billedUser.id)
@@ -1478,15 +1488,11 @@ app.post('/v1/sandbox/execute', async (c) => {
 app.post('/v1/chat/completions', async (c) => {
   const ip = c.req.header('CF-Connecting-IP') || 'unknown'
   const auth = (c.req.header('Authorization') || '').replace(/^Bearer\s+/i, '').trim()
-  const body = await c.req.json().catch(() => ({}))
-  if (!body.messages) return json({ error: { message: 'Invalid or missing request body', type: 'invalid_request_error' } }, 400)
-  // The audit log records exactly what the client submitted.
-  const auditRequestMessages = JSON.stringify(body.messages)
 
   // ── Account-billed request (API key or signed-in session) ──
   // Website chat/playground traffic authenticates with a signed session
   // token rather than an axion-sk- key; it must hit the same account
-  // budgets and charging as keyed traffic, never the anonymous free tier.
+  // budgets and charging as keyed traffic.
   let keyRow = null
   let billedUser = null
   if (auth.startsWith('axion-sk-')) {
@@ -1501,6 +1507,13 @@ app.post('/v1/chat/completions', async (c) => {
     billedUser = await requireAuth(c)
     if (!billedUser) return json({ error: { message: 'Invalid or expired credentials', type: 'invalid_request_error' } }, 401)
   }
+
+  if (!billedUser) return signupRequiredResponse()
+
+  const body = await c.req.json().catch(() => ({}))
+  if (!body.messages) return json({ error: { message: 'Invalid or missing request body', type: 'invalid_request_error' } }, 400)
+  // The audit log records exactly what the client submitted.
+  const auditRequestMessages = JSON.stringify(body.messages)
 
   if (billedUser) {
     const { weeklyBudget: planWeeklyBudget, windowBudget: planWindowBudget } = limitsForPlan(billedUser.plan)
@@ -1656,51 +1669,6 @@ app.post('/v1/chat/completions', async (c) => {
     return json(data)
   }
 
-  // ── Free keyless request ──
-  const freeKey = `free:${ip}`
-  const today = new Date().toISOString().slice(0, 10)
-  const row = await c.env.DB.prepare('SELECT count, window_start FROM rate_limits WHERE key=?').bind(freeKey).first()
-
-  if (row && row.window_start === today) {
-    if (row.count >= FREE_DAILY_LIMIT) {
-      const tomorrow = new Date()
-      tomorrow.setUTCDate(tomorrow.getUTCDate() + 1)
-      tomorrow.setUTCHours(0, 0, 0, 0)
-      return json({
-        error: {
-          message: `Free tier limit of ${FREE_DAILY_LIMIT} requests/day reached. Get an API key at https://axion.amplifiedsmp.org/keys for account-based usage limits and redeemable API credits.`,
-          type: 'rate_limit_error',
-          reset_at: tomorrow.toISOString(),
-          limit: FREE_DAILY_LIMIT,
-          used: row.count,
-          free_tier: true,
-        }
-      }, 429)
-    }
-    c.executionCtx.waitUntil(c.env.DB.prepare('UPDATE rate_limits SET count=count+1 WHERE key=?').bind(freeKey).run())
-  } else {
-    c.executionCtx.waitUntil(c.env.DB.prepare('INSERT OR REPLACE INTO rate_limits (key, count, window_start) VALUES (?,1,?)').bind(freeKey, today).run())
-  }
-
-  const upstream = await proxyUpstream(body, c.env)
-  if (!upstream.ok) return json({ error: { message: await upstream.text(), type: 'upstream_error' } }, upstream.status)
-
-  if (body.stream) {
-    const { client, trackedPromise } = streamResponseTracked(upstream)
-    c.executionCtx.waitUntil(trackedPromise.then(({ outText, toolCalls }) => logMessageExchange(c.env.DB, {
-      userId: null, apiKeyId: null, ip, authType: 'anonymous', model: body.model,
-      requestMessages: auditRequestMessages,
-      responseText: assistantMessageForReview({ content: outText, tool_calls: toolCalls }),
-    })))
-    return client
-  }
-  const data = await upstream.json()
-  c.executionCtx.waitUntil(logMessageExchange(c.env.DB, {
-    userId: null, apiKeyId: null, ip, authType: 'anonymous', model: body.model,
-    requestMessages: auditRequestMessages,
-    responseText: assistantMessageForReview(data.choices?.[0]?.message),
-  }))
-  return json(data)
 })
 
 app.get('/v1/models', async (c) => {

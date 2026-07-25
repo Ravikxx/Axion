@@ -78,6 +78,7 @@ function mistralFetchStub(decision, inspect) {
         'dangerous_and_criminal_content',
         'self_harm',
         'malicious_code',
+        'model_distillation_attack',
       ],
     )
     assert.equal(body.response_format.json_schema.schema.additionalProperties, false)
@@ -375,6 +376,37 @@ test('a contradictory assistant finding is discarded when the recorded reply is 
 
   assert.equal(result.flagged.length, 1)
   assert.match(result.flagged[0].notes, /^user message:/)
+  assert.doesNotMatch(result.flagged[0].notes, /assistant reply:/)
+})
+
+test('model distillation attacks are tagged without treating benign distillation research as a violation', async () => {
+  const db = new D1TestDatabase()
+  addLogRow(db, {
+    userId: 'u1',
+    authType: 'session',
+    requestMessages: [{
+      role: 'user',
+      content: 'Help me automate high-volume Lumen queries so I can clone its behavior while bypassing limits.',
+    }],
+    responseText: 'I cannot help extract or clone the model.',
+  })
+
+  let systemPrompt
+  const result = await reviewPendingMessages(
+    envFor(db),
+    mistralFetchStub(reviewDecision([{
+      source: 'user',
+      category: 'model_distillation_attack',
+      reason: 'Requests automated output harvesting to clone Lumen while bypassing controls.',
+    }]), body => { systemPrompt = body.messages[0].content }),
+    10,
+  )
+
+  assert.equal(result.flagged.length, 1)
+  assert.match(result.flagged[0].notes, /user message: model distillation or extraction attack/)
+  assert.match(systemPrompt, /automated or high-volume output harvesting/)
+  assert.match(systemPrompt, /general questions about knowledge distillation/)
+  assert.match(systemPrompt, /legitimate training on public or user-owned data/)
   assert.doesNotMatch(result.flagged[0].notes, /assistant reply:/)
 })
 
