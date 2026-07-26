@@ -476,6 +476,107 @@ app.get('/auth/verify', async (c) => {
   return res
 })
 
+// ── Desktop app sign-in (authorization code + PKCE) ────────────────────────
+//
+// The desktop app cannot keep a client secret — anyone can unpack the binary —
+// so it proves it originated the request with PKCE (RFC 7636) instead:
+//
+//   1. App generates a random `code_verifier`, sends only
+//      BASE64URL(SHA-256(verifier)) to the browser as `code_challenge`.
+//   2. User approves in the browser; POST /auth/desktop/approve issues a
+//      single-use code bound to that challenge.
+//   3. Browser hands the code back to the app via the axion:// handler.
+//   4. App redeems it at POST /auth/desktop/token with the raw verifier.
+//
+// A hostile app registered for axion:// can intercept step 3, but cannot
+// complete step 4: it never saw the verifier, and the code is bound to the
+// challenge. See RFC 8252 §8.1 for why this matters on desktop specifically.
+
+const DESKTOP_CODE_TTL = 5 * 60 * 1000 // authorization codes are short-lived by design
+
+function base64UrlEncode(bytes) {
+  return btoa(String.fromCharCode(...new Uint8Array(bytes)))
+    .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '')
+}
+
+async function sha256Base64Url(text) {
+  const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text))
+  return base64UrlEncode(digest)
+}
+
+// Issues an authorization code for the signed-in user. Called by the consent
+// page in the browser *after* the user clicks Approve — never by the desktop
+// app, which has no session at this point.
+app.post('/auth/desktop/approve', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Unauthorized' }, 401)
+
+  const body = await c.req.json().catch(() => ({}))
+  const challenge = String(body.code_challenge || '')
+  const method = String(body.code_challenge_method || 'S256')
+
+  // S256 only. The `plain` method offers no protection when the challenge
+  // travels through the same channel as the code.
+  if (method !== 'S256') return json({ error: 'code_challenge_method must be S256' }, 400)
+  // 43 chars is the BASE64URL length of a SHA-256 digest; anything else is not
+  // a well-formed challenge.
+  if (!/^[A-Za-z0-9\-_]{43}$/.test(challenge)) return json({ error: 'Malformed code_challenge' }, 400)
+
+  const code = bytesToHex(crypto.getRandomValues(new Uint8Array(32)))
+  const now = Date.now()
+  await c.env.DB.prepare(
+    'INSERT INTO desktop_auth_codes (code, user_id, code_challenge, created_at, expires_at) VALUES (?,?,?,?,?)'
+  ).bind(code, user.id, challenge, now, now + DESKTOP_CODE_TTL).run()
+
+  return json({ code, expires_in: Math.floor(DESKTOP_CODE_TTL / 1000) })
+})
+
+// Redeems an authorization code for a session token. Unauthenticated by
+// necessity — the whole point is that the app has no credential yet — so it is
+// rate limited per IP and every failure returns the same generic error, so a
+// caller cannot distinguish "no such code" from "wrong verifier".
+app.post('/auth/desktop/token', async (c) => {
+  const ip = c.req.header('CF-Connecting-IP') || 'unknown'
+  if (!await checkRateLimit(c.env.DB, ip)) return json({ error: 'Too many requests' }, 429)
+
+  const body = await c.req.json().catch(() => ({}))
+  const code = String(body.code || '')
+  const verifier = String(body.code_verifier || '')
+  const invalid = () => json({ error: 'Invalid or expired authorization code' }, 400)
+
+  // RFC 7636 §4.1 bounds the verifier at 43–128 unreserved characters.
+  if (!/^[A-Za-z0-9\-._~]{43,128}$/.test(verifier)) return invalid()
+  if (!/^[a-f0-9]{64}$/.test(code)) return invalid()
+
+  const row = await c.env.DB.prepare('SELECT * FROM desktop_auth_codes WHERE code=?').bind(code).first()
+  if (!row) return invalid()
+  if (row.redeemed_at) return invalid()
+  if (row.expires_at < Date.now()) return invalid()
+
+  const expected = await sha256Base64Url(verifier)
+  if (!timingSafeEqualStr(expected, row.code_challenge)) return invalid()
+
+  // Mark redeemed before minting, and only if it is still unredeemed, so two
+  // concurrent redemptions cannot both succeed.
+  const claim = await c.env.DB.prepare(
+    'UPDATE desktop_auth_codes SET redeemed_at=? WHERE code=? AND redeemed_at IS NULL'
+  ).bind(Date.now(), code).run()
+  if (!claim.meta?.changes) return invalid()
+
+  const user = await c.env.DB.prepare('SELECT * FROM users WHERE id=?').bind(row.user_id).first()
+  if (!user || user.banned) return invalid()
+
+  const token = await makeToken(user.id, c.env.TOKEN_SECRET, user.token_version || 0)
+  return json({ token, email: user.email, plan: user.plan || 'free' })
+})
+
+async function purgeExpiredDesktopAuthCodes(db) {
+  // Redeemed rows are kept briefly so a retried redemption still fails as
+  // "invalid" rather than vanishing into a foreign-key error, then dropped.
+  const cutoff = Date.now() - DESKTOP_CODE_TTL
+  await db.prepare('DELETE FROM desktop_auth_codes WHERE expires_at < ?').bind(cutoff).run()
+}
+
 // ── OAuth shared helper ────────────────────────────────────────────────────
 
 const RETURN_DESTINATIONS = {
@@ -484,6 +585,9 @@ const RETURN_DESTINATIONS = {
   keys:       'https://axion.amplifiedsmp.org/keys',
   playground: 'https://axion.amplifiedsmp.org/playground',
   chat:       'https://axion.amplifiedsmp.org/chat',
+  // The consent page preserves the PKCE challenge across an OAuth round-trip
+  // in sessionStorage, so this destination needs no query parameters.
+  desktop:    'https://axion.amplifiedsmp.org/desktop-auth',
 }
 
 async function oauthFinish(c, { id_field, email, provider_id, return_to }) {
@@ -3057,6 +3161,7 @@ app.scheduled = async (event, env, ctx) => {
     ctx.waitUntil(Promise.all([
       runMessageReview(env, { trigger: 'scheduled' }),
       purgeExpiredMessageLogs(env.DB),
+      purgeExpiredDesktopAuthCodes(env.DB),
     ]))
     return
   }
