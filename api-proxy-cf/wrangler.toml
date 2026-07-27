@@ -18,9 +18,17 @@ bucket_name = "axion-profile-pictures"
 name = "BRIDGE"
 class_name = "BridgeRelay"
 
+[[durable_objects.bindings]]
+name = "CHAT_GENERATIONS"
+class_name = "ChatGeneration"
+
 [[migrations]]
 tag = "v1"
 new_sqlite_classes = ["BridgeRelay"]
+
+[[migrations]]
+tag = "v2"
+new_sqlite_classes = ["ChatGeneration"]
 
 [[routes]]
 pattern = "api.amplifiedsmp.org/*"

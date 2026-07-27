@@ -26,6 +26,7 @@ import {
   purgeExpiredMessageLogs,
 } from './auditLog.js'
 import { reviewPendingMessages } from './messageReview.js'
+export { ChatGeneration } from './chatGeneration.js'
 import { avatarUrlForUser, installAvatarRoutes } from './avatar.js'
 import {
   ModerationAdminError,
@@ -1343,27 +1344,116 @@ app.post('/webhooks/square', async (c) => {
   return json({ ok: true })
 })
 
-// ── Chat sync (web chat app) ────────────────────────────────────────────────
+// ── Chat sync + server-owned generations (web chat app) ────────────────────
+
+const WEB_CHAT_CHART_HINT = {
+  role: 'system',
+  content: 'You can render charts. Output chart data in a ```chart code block with JSON like {"type":"bar","title":"...","data":{"labels":["A","B"],"datasets":[{"data":[1,2]}]}}. Types: bar, pie, doughnut, line.',
+}
+const ACTIVE_GENERATION_STATUSES = new Set(['queued', 'running'])
+const CHAT_JOB_TOKEN_TTL = 60 * 60 * 1000
+
+function generationFromRow(row) {
+  if (!row?.generation_id) return null
+  return {
+    id: row.generation_id,
+    status: row.generation_status,
+    error: row.generation_error || null,
+    created: row.generation_created || null,
+    started: row.generation_started || null,
+    completed: row.generation_completed || null,
+  }
+}
+
+function webChatMessages(messages) {
+  return messages
+    .filter(message => ['user', 'assistant', 'tool'].includes(message?.role))
+    .map(message => {
+      const out = {
+        role: message.role,
+        content: message.tool_calls?.length ? (message.content || null) : (message.content ?? ''),
+      }
+      if (Array.isArray(message.tool_calls) && message.tool_calls.length) out.tool_calls = message.tool_calls
+      if (message.tool_call_id) out.tool_call_id = message.tool_call_id
+      return out
+    })
+}
+
+function webChatTools(tools) {
+  if (!Array.isArray(tools)) return undefined
+  const runCode = tools.find(tool => tool?.type === 'function' && tool?.function?.name === 'run_code')
+  if (!runCode) return undefined
+  return [{
+    type: 'function',
+    function: {
+      name: 'run_code',
+      description: String(runCode.function.description || '').slice(0, 12_000),
+      parameters: {
+        type: 'object',
+        properties: {
+          code: { type: 'string', description: 'Code to execute.' },
+          language: { type: 'string', enum: ['python', 'javascript'] },
+        },
+        required: ['code'],
+      },
+    },
+  }]
+}
 
 app.get('/chats', async (c) => {
   const user = await requireAuth(c)
   if (!user) return json({ error: 'Not authenticated' }, 401)
   const { results } = await c.env.DB.prepare(
-    'SELECT id, title, updated FROM chats WHERE user_id=? ORDER BY updated DESC LIMIT 500'
+    `SELECT chats.id, chats.title, chats.updated,
+            generations.id AS generation_id,
+            generations.status AS generation_status,
+            generations.error AS generation_error,
+            generations.created AS generation_created,
+            generations.started AS generation_started,
+            generations.completed AS generation_completed
+     FROM chats
+     LEFT JOIN chat_generations AS generations
+       ON generations.id = chats.active_generation_id
+     WHERE chats.user_id=?
+     ORDER BY chats.updated DESC
+     LIMIT 500`
   ).bind(user.id).all()
-  return json({ chats: results })
+  return json({
+    chats: results.map(row => ({
+      id: row.id,
+      title: row.title,
+      updated: row.updated,
+      generation: generationFromRow(row),
+    })),
+  })
 })
 
 app.get('/chats/:id', async (c) => {
   const user = await requireAuth(c)
   if (!user) return json({ error: 'Not authenticated' }, 401)
   const row = await c.env.DB.prepare(
-    'SELECT id, title, messages, updated FROM chats WHERE id=? AND user_id=?'
+    `SELECT chats.id, chats.title, chats.messages, chats.updated,
+            generations.id AS generation_id,
+            generations.status AS generation_status,
+            generations.error AS generation_error,
+            generations.created AS generation_created,
+            generations.started AS generation_started,
+            generations.completed AS generation_completed
+     FROM chats
+     LEFT JOIN chat_generations AS generations
+       ON generations.id = chats.active_generation_id
+     WHERE chats.id=? AND chats.user_id=?`
   ).bind(c.req.param('id'), user.id).first()
   if (!row) return json({ error: 'Not found' }, 404)
   let messages = []
   try { messages = JSON.parse(row.messages || '[]') } catch {}
-  return json({ id: row.id, title: row.title, messages, updated: row.updated })
+  return json({
+    id: row.id,
+    title: row.title,
+    messages,
+    updated: row.updated,
+    generation: generationFromRow(row),
+  })
 })
 
 app.put('/chats/:id', async (c) => {
@@ -1382,6 +1472,131 @@ app.put('/chats/:id', async (c) => {
      WHERE chats.user_id = excluded.user_id`
   ).bind(id, user.id, (title || 'New chat').slice(0, 200), msgJson, ts, ts).run()
   return json({ ok: true, id, updated: ts })
+})
+
+app.post('/chats/:id/generations', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+
+  const chatId = c.req.param('id')
+  const request = await c.req.json().catch(() => ({}))
+  const row = await c.env.DB.prepare(
+    `SELECT chats.messages, chats.active_generation_id,
+            generations.status AS generation_status
+     FROM chats
+     LEFT JOIN chat_generations AS generations
+       ON generations.id = chats.active_generation_id
+     WHERE chats.id=? AND chats.user_id=?`
+  ).bind(chatId, user.id).first()
+  if (!row) return json({ error: 'Chat not found' }, 404)
+
+  if (row.active_generation_id && ACTIVE_GENERATION_STATUSES.has(row.generation_status)) {
+    return json({
+      error: 'This chat already has a reply in progress.',
+      generation: { id: row.active_generation_id, status: row.generation_status },
+    }, 409)
+  }
+
+  let messages
+  try { messages = JSON.parse(row.messages || '[]') } catch { messages = null }
+  if (!Array.isArray(messages) || !messages.length) {
+    return json({ error: 'The chat has no messages to answer.' }, 400)
+  }
+  if (!['user', 'tool'].includes(messages[messages.length - 1]?.role)) {
+    return json({ error: 'The chat does not end with a user or tool message.' }, 409)
+  }
+
+  const model = typeof request.model === 'string' && request.model
+    ? request.model.slice(0, 100)
+    : 'lumen'
+  const tools = webChatTools(request.tools)
+  const requestBody = {
+    model,
+    messages: [WEB_CHAT_CHART_HINT, ...webChatMessages(messages)],
+    ...(tools ? { tools } : {}),
+  }
+  const id = `gen-${crypto.randomUUID()}`
+  const created = Date.now()
+  const token = await makeToken(
+    user.id,
+    c.env.TOKEN_SECRET,
+    user.token_version || 0,
+    CHAT_JOB_TOKEN_TTL,
+  )
+
+  await c.env.DB.batch([
+    c.env.DB.prepare(
+      `INSERT INTO chat_generations (id, chat_id, user_id, status, model, created)
+       VALUES (?,?,?,?,?,?)`
+    ).bind(id, chatId, user.id, 'queued', model, created),
+    c.env.DB.prepare(
+      'UPDATE chats SET active_generation_id=? WHERE id=? AND user_id=?'
+    ).bind(id, chatId, user.id),
+  ])
+
+  try {
+    const objectId = c.env.CHAT_GENERATIONS.idFromName(id)
+    const stub = c.env.CHAT_GENERATIONS.get(objectId)
+    const started = await stub.fetch('https://chat-generation.internal/start', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        id,
+        chatId,
+        userId: user.id,
+        token,
+        requestBody,
+      }),
+    })
+    if (!started.ok) throw new Error(`Generation worker returned HTTP ${started.status}`)
+  } catch (error) {
+    const detail = String(error?.message || error || 'Could not start generation').slice(0, 1000)
+    await c.env.DB.prepare(
+      "UPDATE chat_generations SET status='failed', error=?, completed=? WHERE id=? AND user_id=?"
+    ).bind(detail, Date.now(), id, user.id).run()
+    return json({ error: 'Could not start the server-side reply.', detail }, 500)
+  }
+
+  return json({
+    generation: {
+      id,
+      status: 'queued',
+      error: null,
+      created,
+      started: null,
+      completed: null,
+    },
+  }, 202)
+})
+
+// Live view of a server-owned generation, as Server-Sent Events.
+//
+// The browser reads the reply from here instead of calling the model itself —
+// one generation, one model call, however many tabs are watching. Attaching
+// late replays everything so far, so switching chats or reopening the tab shows
+// the whole reply rather than the tail of it.
+//
+// EventSource cannot send an Authorization header, so the client reads this
+// with fetch() and parses the stream itself, exactly as the chat page already
+// does for /v1/chat/completions.
+app.get('/chats/:id/generations/:generationId/stream', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+
+  const chatId = c.req.param('id')
+  const generationId = c.req.param('generationId')
+
+  // Ownership is checked here, not in the Durable Object: the object is
+  // addressed by generation id alone, so anyone who learned an id could
+  // otherwise read somebody else's reply.
+  const row = await c.env.DB.prepare(
+    'SELECT status, error FROM chat_generations WHERE id=? AND chat_id=? AND user_id=?'
+  ).bind(generationId, chatId, user.id).first()
+  if (!row) return json({ error: 'Generation not found' }, 404)
+
+  const objectId = c.env.CHAT_GENERATIONS.idFromName(generationId)
+  const stub = c.env.CHAT_GENERATIONS.get(objectId)
+  return stub.fetch('https://chat-generation.internal/stream')
 })
 
 app.delete('/chats/:id', async (c) => {
