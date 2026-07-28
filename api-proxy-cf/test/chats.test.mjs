@@ -35,7 +35,9 @@ class D1TestDatabase {
         title TEXT NOT NULL DEFAULT 'New chat',
         updated INTEGER NOT NULL DEFAULT 0,
         created INTEGER NOT NULL DEFAULT 0,
-        active_generation_id TEXT
+        active_generation_id TEXT,
+        pinned INTEGER NOT NULL DEFAULT 0,
+        pinned_at INTEGER
       );
       CREATE TABLE messages (
         id TEXT PRIMARY KEY,
@@ -196,4 +198,59 @@ test('PUT never touches existing messages, only title/updated', async () => {
   assert.equal(chat.title, 'New title')
   const messages = db.prepare('SELECT content FROM messages WHERE chat_id=?').bind('chat-1').all()
   assert.deepEqual(messages.results.map(r => r.content), ['Keep me'])
+})
+
+test('pinning a chat sets pinned_at, unpinning clears it, GET reflects both', async () => {
+  const { db, env, headers } = await setup()
+  db.prepare('INSERT INTO chats (id, user_id, title, updated, created) VALUES (?,?,?,?,?)')
+    .bind('chat-1', 'user-1', 'Test', 1, 1).run()
+
+  const pin = await app.request('/chats/chat-1/pin', {
+    method: 'PUT', headers, body: JSON.stringify({ pinned: true }),
+  }, env)
+  assert.equal(pin.status, 200)
+  const pinBody = await pin.json()
+  assert.equal(pinBody.pinned, true)
+  assert.ok(pinBody.pinned_at)
+
+  const get = await app.request('/chats/chat-1', { headers }, env)
+  const getBody = await get.json()
+  assert.equal(getBody.pinned, true)
+  assert.equal(getBody.pinned_at, pinBody.pinned_at)
+
+  const unpin = await app.request('/chats/chat-1/pin', {
+    method: 'PUT', headers, body: JSON.stringify({ pinned: false }),
+  }, env)
+  const unpinBody = await unpin.json()
+  assert.equal(unpinBody.pinned, false)
+  assert.equal(unpinBody.pinned_at, null)
+
+  const chat = db.prepare('SELECT pinned, pinned_at FROM chats WHERE id=?').bind('chat-1').first()
+  assert.equal(chat.pinned, 0)
+  assert.equal(chat.pinned_at, null)
+})
+
+test('pinning a chat owned by another user is rejected', async () => {
+  const { db, env, headers } = await setup()
+  db.prepare('INSERT INTO chats (id, user_id, title, updated, created) VALUES (?,?,?,?,?)')
+    .bind('chat-2', 'user-2', 'Not yours', 1, 1).run()
+
+  const res = await app.request('/chats/chat-2/pin', {
+    method: 'PUT', headers, body: JSON.stringify({ pinned: true }),
+  }, env)
+  assert.equal(res.status, 404)
+})
+
+test('pinning does not touch title, updated, or messages', async () => {
+  const { db, env, headers } = await setup()
+  db.prepare('INSERT INTO chats (id, user_id, title, updated, created) VALUES (?,?,?,?,?)')
+    .bind('chat-1', 'user-1', 'Untouched title', 1, 1).run()
+
+  await app.request('/chats/chat-1/pin', {
+    method: 'PUT', headers, body: JSON.stringify({ pinned: true }),
+  }, env)
+
+  const chat = db.prepare('SELECT title, updated FROM chats WHERE id=?').bind('chat-1').first()
+  assert.equal(chat.title, 'Untouched title')
+  assert.equal(chat.updated, 1)
 })

@@ -39,7 +39,9 @@ class D1TestDatabase {
         title TEXT NOT NULL DEFAULT 'New chat',
         updated INTEGER NOT NULL DEFAULT 0,
         created INTEGER NOT NULL DEFAULT 0,
-        active_generation_id TEXT
+        active_generation_id TEXT,
+        pinned INTEGER NOT NULL DEFAULT 0,
+        pinned_at INTEGER
       );
       CREATE TABLE messages (
         id TEXT PRIMARY KEY,
