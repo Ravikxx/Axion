@@ -42,7 +42,15 @@ class D1TestDatabase {
         draft_updated_at INTEGER,
         branched_from_chat_id TEXT,
         branched_from_seq INTEGER,
-        deleted_at INTEGER
+        deleted_at INTEGER,
+        project_id TEXT
+      );
+      CREATE TABLE projects (
+        id TEXT PRIMARY KEY,
+        user_id TEXT NOT NULL,
+        name TEXT NOT NULL,
+        created INTEGER NOT NULL,
+        updated INTEGER NOT NULL
       );
       CREATE TABLE messages (
         id TEXT PRIMARY KEY,
@@ -527,4 +535,117 @@ test('trash and restore only operate on the requesting user\'s own chats', async
 
   const trash = await app.request('/chats/trash', { headers }, env)
   assert.deepEqual((await trash.json()).chats, [])
+})
+
+test('POST /projects creates a project, GET /projects lists it with a chat_count', async () => {
+  const { env, headers } = await setup()
+  const create = await app.request('/projects', {
+    method: 'POST', headers, body: JSON.stringify({ name: 'Research' }),
+  }, env)
+  assert.equal(create.status, 200)
+  const created = await create.json()
+  assert.equal(created.name, 'Research')
+  assert.equal(created.chat_count, 0)
+
+  const list = await app.request('/projects', { headers }, env)
+  const body = await list.json()
+  assert.equal(body.projects.length, 1)
+  assert.equal(body.projects[0].id, created.id)
+  assert.equal(body.projects[0].chat_count, 0)
+})
+
+test('creating a project with an empty name is rejected', async () => {
+  const { env, headers } = await setup()
+  const res = await app.request('/projects', {
+    method: 'POST', headers, body: JSON.stringify({ name: '   ' }),
+  }, env)
+  assert.equal(res.status, 400)
+})
+
+test('PUT /projects/:id renames a project; renaming another user\'s project 404s', async () => {
+  const { db, env, headers } = await setup()
+  db.prepare('INSERT INTO projects (id, user_id, name, created, updated) VALUES (?,?,?,?,?)')
+    .bind('proj-1', 'user-1', 'Old name', 1, 1).run()
+  db.prepare('INSERT INTO projects (id, user_id, name, created, updated) VALUES (?,?,?,?,?)')
+    .bind('proj-2', 'user-2', 'Not yours', 1, 1).run()
+
+  const ok = await app.request('/projects/proj-1', {
+    method: 'PUT', headers, body: JSON.stringify({ name: 'New name' }),
+  }, env)
+  assert.equal(ok.status, 200)
+  assert.equal(db.prepare('SELECT name FROM projects WHERE id=?').bind('proj-1').first().name, 'New name')
+
+  const forbidden = await app.request('/projects/proj-2', {
+    method: 'PUT', headers, body: JSON.stringify({ name: 'Hijacked' }),
+  }, env)
+  assert.equal(forbidden.status, 404)
+})
+
+test('DELETE /projects/:id removes the project and unfiles its chats without deleting them', async () => {
+  const { db, env, headers } = await setup()
+  db.prepare('INSERT INTO projects (id, user_id, name, created, updated) VALUES (?,?,?,?,?)')
+    .bind('proj-1', 'user-1', 'Research', 1, 1).run()
+  db.prepare('INSERT INTO chats (id, user_id, title, updated, created, project_id) VALUES (?,?,?,?,?,?)')
+    .bind('chat-1', 'user-1', 'In project', 1, 1, 'proj-1').run()
+
+  const res = await app.request('/projects/proj-1', { method: 'DELETE', headers }, env)
+  assert.equal(res.status, 200)
+  assert.equal(db.prepare('SELECT COUNT(*) AS n FROM projects WHERE id=?').bind('proj-1').first().n, 0)
+  const chat = db.prepare('SELECT project_id FROM chats WHERE id=?').bind('chat-1').first()
+  assert.equal(chat.project_id, null)
+})
+
+test('PUT /chats/:id/project assigns a chat to a project and GET /projects/:id/chats lists it', async () => {
+  const { db, env, headers } = await setup()
+  db.prepare('INSERT INTO projects (id, user_id, name, created, updated) VALUES (?,?,?,?,?)')
+    .bind('proj-1', 'user-1', 'Research', 1, 1).run()
+  db.prepare('INSERT INTO chats (id, user_id, title, updated, created) VALUES (?,?,?,?,?)')
+    .bind('chat-1', 'user-1', 'Unfiled', 1, 1).run()
+
+  const assign = await app.request('/chats/chat-1/project', {
+    method: 'PUT', headers, body: JSON.stringify({ project_id: 'proj-1' }),
+  }, env)
+  assert.equal(assign.status, 200)
+
+  const chats = await app.request('/projects/proj-1/chats', { headers }, env)
+  assert.equal(chats.status, 200)
+  const body = await chats.json()
+  assert.equal(body.chats.length, 1)
+  assert.equal(body.chats[0].id, 'chat-1')
+
+  const list = await app.request('/projects', { headers }, env)
+  assert.equal((await list.json()).projects[0].chat_count, 1)
+
+  const unassign = await app.request('/chats/chat-1/project', {
+    method: 'PUT', headers, body: JSON.stringify({ project_id: null }),
+  }, env)
+  assert.equal(unassign.status, 200)
+  assert.equal(db.prepare('SELECT project_id FROM chats WHERE id=?').bind('chat-1').first().project_id, null)
+})
+
+test('assigning a chat to a nonexistent project 404s, and to another user\'s project 404s', async () => {
+  const { db, env, headers } = await setup()
+  db.prepare('INSERT INTO chats (id, user_id, title, updated, created) VALUES (?,?,?,?,?)')
+    .bind('chat-1', 'user-1', 'Unfiled', 1, 1).run()
+  db.prepare('INSERT INTO projects (id, user_id, name, created, updated) VALUES (?,?,?,?,?)')
+    .bind('proj-2', 'user-2', 'Not yours', 1, 1).run()
+
+  const missing = await app.request('/chats/chat-1/project', {
+    method: 'PUT', headers, body: JSON.stringify({ project_id: 'nope' }),
+  }, env)
+  assert.equal(missing.status, 404)
+
+  const otherUsers = await app.request('/chats/chat-1/project', {
+    method: 'PUT', headers, body: JSON.stringify({ project_id: 'proj-2' }),
+  }, env)
+  assert.equal(otherUsers.status, 404)
+})
+
+test('GET /projects/:id/chats 404s for a project that is not yours', async () => {
+  const { db, env, headers } = await setup()
+  db.prepare('INSERT INTO projects (id, user_id, name, created, updated) VALUES (?,?,?,?,?)')
+    .bind('proj-2', 'user-2', 'Not yours', 1, 1).run()
+
+  const res = await app.request('/projects/proj-2/chats', { headers }, env)
+  assert.equal(res.status, 404)
 })
