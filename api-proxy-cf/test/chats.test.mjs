@@ -41,7 +41,8 @@ class D1TestDatabase {
         draft TEXT,
         draft_updated_at INTEGER,
         branched_from_chat_id TEXT,
-        branched_from_seq INTEGER
+        branched_from_seq INTEGER,
+        deleted_at INTEGER
       );
       CREATE TABLE messages (
         id TEXT PRIMARY KEY,
@@ -421,4 +422,109 @@ test('branching from a seq past the end of the conversation is rejected, not sil
     method: 'POST', headers, body: JSON.stringify({ from_seq: 99 }),
   }, env)
   assert.equal(res.status, 400)
+})
+
+test('DELETE soft-deletes: it disappears from the list and appears in trash, but the row survives', async () => {
+  const { db, env, headers } = await setup()
+  db.prepare('INSERT INTO chats (id, user_id, title, updated, created) VALUES (?,?,?,?,?)')
+    .bind('chat-1', 'user-1', 'Test', 1, 1).run()
+
+  const del = await app.request('/chats/chat-1', { method: 'DELETE', headers }, env)
+  assert.equal(del.status, 200)
+
+  const list = await app.request('/chats', { headers }, env)
+  assert.deepEqual((await list.json()).chats.map(c => c.id), [])
+
+  const trash = await app.request('/chats/trash', { headers }, env)
+  const trashBody = await trash.json()
+  assert.equal(trashBody.chats.length, 1)
+  assert.equal(trashBody.chats[0].id, 'chat-1')
+  assert.ok(trashBody.chats[0].deleted_at)
+
+  assert.equal(db.prepare('SELECT COUNT(*) AS n FROM chats WHERE id=?').bind('chat-1').first().n, 1)
+})
+
+test('deleting an already-trashed chat 404s instead of refreshing deleted_at', async () => {
+  const { db, env, headers } = await setup()
+  db.prepare('INSERT INTO chats (id, user_id, title, updated, created, deleted_at) VALUES (?,?,?,?,?,?)')
+    .bind('chat-1', 'user-1', 'Test', 1, 1, 5).run()
+
+  const res = await app.request('/chats/chat-1', { method: 'DELETE', headers }, env)
+  assert.equal(res.status, 404)
+  assert.equal(db.prepare('SELECT deleted_at FROM chats WHERE id=?').bind('chat-1').first().deleted_at, 5)
+})
+
+test('restore clears deleted_at and the chat reappears in the active list', async () => {
+  const { db, env, headers } = await setup()
+  db.prepare('INSERT INTO chats (id, user_id, title, updated, created, deleted_at) VALUES (?,?,?,?,?,?)')
+    .bind('chat-1', 'user-1', 'Test', 1, 1, Date.now()).run()
+
+  const res = await app.request('/chats/chat-1/restore', { method: 'POST', headers }, env)
+  assert.equal(res.status, 200)
+
+  const chat = db.prepare('SELECT deleted_at FROM chats WHERE id=?').bind('chat-1').first()
+  assert.equal(chat.deleted_at, null)
+  const list = await app.request('/chats', { headers }, env)
+  assert.deepEqual((await list.json()).chats.map(c => c.id), ['chat-1'])
+})
+
+test('restoring a chat that is not in trash 404s', async () => {
+  const { db, env, headers } = await setup()
+  db.prepare('INSERT INTO chats (id, user_id, title, updated, created) VALUES (?,?,?,?,?)')
+    .bind('chat-1', 'user-1', 'Test', 1, 1).run()
+
+  const res = await app.request('/chats/chat-1/restore', { method: 'POST', headers }, env)
+  assert.equal(res.status, 404)
+})
+
+test('permanent delete removes the chat and its messages, but only if already trashed', async () => {
+  const { db, env, headers } = await setup()
+  db.prepare('INSERT INTO chats (id, user_id, title, updated, created) VALUES (?,?,?,?,?)')
+    .bind('chat-1', 'user-1', 'Test', 1, 1).run()
+  seedMessages(db, 'chat-1', 'user-1', [['user', 'one']])
+
+  const tooEarly = await app.request('/chats/chat-1/permanent', { method: 'DELETE', headers }, env)
+  assert.equal(tooEarly.status, 404)
+  assert.equal(db.prepare('SELECT COUNT(*) AS n FROM chats WHERE id=?').bind('chat-1').first().n, 1)
+
+  await app.request('/chats/chat-1', { method: 'DELETE', headers }, env)
+  const res = await app.request('/chats/chat-1/permanent', { method: 'DELETE', headers }, env)
+  assert.equal(res.status, 200)
+  assert.equal(db.prepare('SELECT COUNT(*) AS n FROM chats WHERE id=?').bind('chat-1').first().n, 0)
+  assert.equal(db.prepare('SELECT COUNT(*) AS n FROM messages WHERE chat_id=?').bind('chat-1').first().n, 0)
+})
+
+test('Empty Trash permanently removes every trashed chat and its messages, and only those', async () => {
+  const { db, env, headers } = await setup()
+  db.prepare('INSERT INTO chats (id, user_id, title, updated, created, deleted_at) VALUES (?,?,?,?,?,?)')
+    .bind('chat-1', 'user-1', 'Trashed one', 1, 1, 5).run()
+  seedMessages(db, 'chat-1', 'user-1', [['user', 'one']])
+  db.prepare('INSERT INTO chats (id, user_id, title, updated, created, deleted_at) VALUES (?,?,?,?,?,?)')
+    .bind('chat-2', 'user-1', 'Trashed two', 1, 1, 6).run()
+  db.prepare('INSERT INTO chats (id, user_id, title, updated, created) VALUES (?,?,?,?,?)')
+    .bind('chat-3', 'user-1', 'Still active', 1, 1).run()
+
+  const res = await app.request('/chats/trash', { method: 'DELETE', headers }, env)
+  assert.equal(res.status, 200)
+  assert.equal((await res.json()).count, 2)
+
+  const remaining = db.prepare('SELECT id FROM chats ORDER BY id').all().results
+  assert.deepEqual(remaining.map(r => r.id), ['chat-3'])
+  assert.equal(db.prepare('SELECT COUNT(*) AS n FROM messages WHERE chat_id=?').bind('chat-1').first().n, 0)
+})
+
+test('trash and restore only operate on the requesting user\'s own chats', async () => {
+  const { db, env, headers } = await setup()
+  db.prepare('INSERT INTO chats (id, user_id, title, updated, created, deleted_at) VALUES (?,?,?,?,?,?)')
+    .bind('chat-2', 'user-2', 'Not yours', 1, 1, 5).run()
+
+  const del = await app.request('/chats/chat-2', { method: 'DELETE', headers }, env)
+  assert.equal(del.status, 404)
+  const restore = await app.request('/chats/chat-2/restore', { method: 'POST', headers }, env)
+  assert.equal(restore.status, 404)
+  const permanent = await app.request('/chats/chat-2/permanent', { method: 'DELETE', headers }, env)
+  assert.equal(permanent.status, 404)
+
+  const trash = await app.request('/chats/trash', { headers }, env)
+  assert.deepEqual((await trash.json()).chats, [])
 })
