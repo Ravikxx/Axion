@@ -1205,6 +1205,7 @@ app.delete('/dashboard/account', async (c) => {
     db.prepare('DELETE FROM artifacts WHERE user_id=?').bind(user.id),
     db.prepare('DELETE FROM user_settings WHERE user_id=?').bind(user.id),
     db.prepare('DELETE FROM shares WHERE owner_user_id=?').bind(user.id),
+    db.prepare('DELETE FROM scheduled_definitions WHERE user_id=?').bind(user.id),
     db.prepare('DELETE FROM email_prefs WHERE user_id=?').bind(user.id),
     db.prepare('DELETE FROM device_codes WHERE user_id=?').bind(user.id),
     db.prepare('DELETE FROM appeals WHERE user_id=?').bind(user.id),
@@ -1446,6 +1447,119 @@ function webChatTools(tools) {
     },
   }]
 }
+
+// A loose cron-shape check (5 whitespace-separated fields, each restricted
+// to digits/*/-/,//), not a full parser — this table only stores the
+// definition. Actually computing next_run_at from the expression and
+// running it belongs to a future execution engine.
+const CRON_FIELD = /^[0-9*/,-]+$/
+function isValidCron(expr) {
+  if (typeof expr !== 'string') return false
+  const fields = expr.trim().split(/\s+/)
+  return fields.length === 5 && fields.every(f => CRON_FIELD.test(f))
+}
+
+app.get('/scheduled', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  const { results } = await c.env.DB.prepare(
+    `SELECT id, project_id, chat_id, name, prompt, schedule, enabled, next_run_at, last_run_at, created, updated
+     FROM scheduled_definitions WHERE user_id=? ORDER BY updated DESC LIMIT 500`
+  ).bind(user.id).all()
+  return json({ scheduled: results.map(row => ({ ...row, enabled: !!row.enabled })) })
+})
+
+app.post('/scheduled', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  const body = await c.req.json().catch(() => ({}))
+  const name = String(body?.name || '').trim().slice(0, 200)
+  const prompt = String(body?.prompt || '').trim().slice(0, 10_000)
+  if (!name) return json({ error: 'name is required' }, 400)
+  if (!prompt) return json({ error: 'prompt is required' }, 400)
+  if (!isValidCron(body?.schedule)) return json({ error: 'Invalid schedule' }, 400)
+  const enabled = body?.enabled !== false
+  const projectId = body?.project_id ? String(body.project_id) : null
+  const chatId = body?.chat_id ? String(body.chat_id) : null
+  if (projectId) {
+    const project = await c.env.DB.prepare('SELECT id FROM projects WHERE id=? AND user_id=?').bind(projectId, user.id).first()
+    if (!project) return json({ error: 'Project not found' }, 404)
+  }
+  if (chatId) {
+    const chat = await c.env.DB.prepare('SELECT id FROM chats WHERE id=? AND user_id=?').bind(chatId, user.id).first()
+    if (!chat) return json({ error: 'Chat not found' }, 404)
+  }
+  const id = crypto.randomUUID()
+  const now = Date.now()
+  await c.env.DB.prepare(
+    `INSERT INTO scheduled_definitions (id, user_id, project_id, chat_id, name, prompt, schedule, enabled, created, updated)
+     VALUES (?,?,?,?,?,?,?,?,?,?)`
+  ).bind(id, user.id, projectId, chatId, name, prompt, body.schedule.trim(), enabled ? 1 : 0, now, now).run()
+  return json({
+    id, project_id: projectId, chat_id: chatId, name, prompt, schedule: body.schedule.trim(), enabled,
+    next_run_at: null, last_run_at: null, created: now, updated: now,
+  })
+})
+
+app.get('/scheduled/:id', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  const row = await c.env.DB.prepare(
+    `SELECT id, project_id, chat_id, name, prompt, schedule, enabled, next_run_at, last_run_at, created, updated
+     FROM scheduled_definitions WHERE id=? AND user_id=?`
+  ).bind(c.req.param('id'), user.id).first()
+  if (!row) return json({ error: 'Not found' }, 404)
+  return json({ ...row, enabled: !!row.enabled })
+})
+
+app.put('/scheduled/:id', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  const existing = await c.env.DB.prepare(
+    'SELECT id FROM scheduled_definitions WHERE id=? AND user_id=?'
+  ).bind(c.req.param('id'), user.id).first()
+  if (!existing) return json({ error: 'Not found' }, 404)
+  const body = await c.req.json().catch(() => ({}))
+
+  const sets = []
+  const values = []
+  if (typeof body?.name === 'string') {
+    const name = body.name.trim().slice(0, 200)
+    if (!name) return json({ error: 'name cannot be empty' }, 400)
+    sets.push('name=?'); values.push(name)
+  }
+  if (typeof body?.prompt === 'string') {
+    const prompt = body.prompt.trim().slice(0, 10_000)
+    if (!prompt) return json({ error: 'prompt cannot be empty' }, 400)
+    sets.push('prompt=?'); values.push(prompt)
+  }
+  if (body?.schedule !== undefined) {
+    if (!isValidCron(body.schedule)) return json({ error: 'Invalid schedule' }, 400)
+    sets.push('schedule=?'); values.push(body.schedule.trim())
+  }
+  if (typeof body?.enabled === 'boolean') {
+    sets.push('enabled=?'); values.push(body.enabled ? 1 : 0)
+  }
+  if (!sets.length) return json({ error: 'Nothing to update' }, 400)
+
+  const now = Date.now()
+  sets.push('updated=?'); values.push(now)
+  values.push(c.req.param('id'), user.id)
+  await c.env.DB.prepare(
+    `UPDATE scheduled_definitions SET ${sets.join(', ')} WHERE id=? AND user_id=?`
+  ).bind(...values).run()
+  return json({ ok: true, updated: now })
+})
+
+app.delete('/scheduled/:id', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  const result = await c.env.DB.prepare(
+    'DELETE FROM scheduled_definitions WHERE id=? AND user_id=?'
+  ).bind(c.req.param('id'), user.id).run()
+  if (result.meta.changes === 0) return json({ error: 'Not found' }, 404)
+  return json({ ok: true })
+})
 
 // Cloud-authoritative preferences, so they follow the account across
 // devices/windows instead of living in one client's localStorage. No row

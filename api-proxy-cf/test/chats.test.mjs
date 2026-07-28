@@ -89,6 +89,20 @@ class D1TestDatabase {
         updated INTEGER NOT NULL
       );
       CREATE UNIQUE INDEX idx_shares_resource ON shares (resource_type, resource_id);
+      CREATE TABLE scheduled_definitions (
+        id TEXT PRIMARY KEY,
+        user_id TEXT NOT NULL,
+        project_id TEXT,
+        chat_id TEXT,
+        name TEXT NOT NULL,
+        prompt TEXT NOT NULL,
+        schedule TEXT NOT NULL,
+        enabled INTEGER NOT NULL DEFAULT 1,
+        next_run_at INTEGER,
+        last_run_at INTEGER,
+        created INTEGER NOT NULL,
+        updated INTEGER NOT NULL
+      );
       CREATE TABLE messages (
         id TEXT PRIMARY KEY,
         chat_id TEXT NOT NULL,
@@ -1131,4 +1145,132 @@ test('sharing, checking status, or revoking an artifact that is not yours 404s',
   assert.equal(status.status, 404)
   const revoke = await app.request('/artifacts/art-2/share', { method: 'DELETE', headers }, env)
   assert.equal(revoke.status, 404)
+})
+
+test('POST /scheduled creates a definition; GET /scheduled lists it', async () => {
+  const { env, headers } = await setup()
+  const create = await app.request('/scheduled', {
+    method: 'POST', headers, body: JSON.stringify({ name: 'Daily digest', prompt: 'Summarize today', schedule: '0 9 * * *' }),
+  }, env)
+  assert.equal(create.status, 200)
+  const created = await create.json()
+  assert.equal(created.name, 'Daily digest')
+  assert.equal(created.enabled, true)
+  assert.equal(created.next_run_at, null)
+
+  const list = await app.request('/scheduled', { headers }, env)
+  const body = await list.json()
+  assert.equal(body.scheduled.length, 1)
+  assert.equal(body.scheduled[0].id, created.id)
+})
+
+test('POST /scheduled rejects a malformed schedule, empty name, or empty prompt', async () => {
+  const { env, headers } = await setup()
+  const badSchedule = await app.request('/scheduled', {
+    method: 'POST', headers, body: JSON.stringify({ name: 'X', prompt: 'Y', schedule: 'not a cron' }),
+  }, env)
+  assert.equal(badSchedule.status, 400)
+
+  const tooFewFields = await app.request('/scheduled', {
+    method: 'POST', headers, body: JSON.stringify({ name: 'X', prompt: 'Y', schedule: '* * *' }),
+  }, env)
+  assert.equal(tooFewFields.status, 400)
+
+  const noName = await app.request('/scheduled', {
+    method: 'POST', headers, body: JSON.stringify({ name: '  ', prompt: 'Y', schedule: '0 9 * * *' }),
+  }, env)
+  assert.equal(noName.status, 400)
+
+  const noPrompt = await app.request('/scheduled', {
+    method: 'POST', headers, body: JSON.stringify({ name: 'X', prompt: '  ', schedule: '0 9 * * *' }),
+  }, env)
+  assert.equal(noPrompt.status, 400)
+})
+
+test('GET /scheduled/:id returns a single definition; PUT updates fields not given are left untouched', async () => {
+  const { env, headers } = await setup()
+  const create = await app.request('/scheduled', {
+    method: 'POST', headers, body: JSON.stringify({ name: 'Daily digest', prompt: 'Summarize today', schedule: '0 9 * * *' }),
+  }, env)
+  const { id } = await create.json()
+
+  const get = await app.request(`/scheduled/${id}`, { headers }, env)
+  assert.equal(get.status, 200)
+  assert.equal((await get.json()).name, 'Daily digest')
+
+  const rename = await app.request(`/scheduled/${id}`, {
+    method: 'PUT', headers, body: JSON.stringify({ name: 'Morning digest' }),
+  }, env)
+  assert.equal(rename.status, 200)
+
+  const after = await app.request(`/scheduled/${id}`, { headers }, env)
+  const body = await after.json()
+  assert.equal(body.name, 'Morning digest')
+  assert.equal(body.prompt, 'Summarize today')
+  assert.equal(body.schedule, '0 9 * * *')
+})
+
+test('PUT /scheduled/:id can disable a definition and rejects an empty body or a bad schedule', async () => {
+  const { env, headers } = await setup()
+  const create = await app.request('/scheduled', {
+    method: 'POST', headers, body: JSON.stringify({ name: 'X', prompt: 'Y', schedule: '0 9 * * *' }),
+  }, env)
+  const { id } = await create.json()
+
+  const disable = await app.request(`/scheduled/${id}`, { method: 'PUT', headers, body: JSON.stringify({ enabled: false }) }, env)
+  assert.equal(disable.status, 200)
+  assert.equal((await (await app.request(`/scheduled/${id}`, { headers }, env)).json()).enabled, false)
+
+  const empty = await app.request(`/scheduled/${id}`, { method: 'PUT', headers, body: JSON.stringify({}) }, env)
+  assert.equal(empty.status, 400)
+
+  const badSchedule = await app.request(`/scheduled/${id}`, { method: 'PUT', headers, body: JSON.stringify({ schedule: 'nope' }) }, env)
+  assert.equal(badSchedule.status, 400)
+})
+
+test('DELETE /scheduled/:id removes the definition', async () => {
+  const { db, env, headers } = await setup()
+  const create = await app.request('/scheduled', {
+    method: 'POST', headers, body: JSON.stringify({ name: 'X', prompt: 'Y', schedule: '0 9 * * *' }),
+  }, env)
+  const { id } = await create.json()
+
+  const del = await app.request(`/scheduled/${id}`, { method: 'DELETE', headers }, env)
+  assert.equal(del.status, 200)
+  assert.equal(db.prepare('SELECT COUNT(*) AS n FROM scheduled_definitions WHERE id=?').bind(id).first().n, 0)
+})
+
+test('creating a scheduled definition under a project or chat that is not yours 404s', async () => {
+  const { db, env, headers } = await setup()
+  db.prepare('INSERT INTO projects (id, user_id, name, created, updated) VALUES (?,?,?,?,?)')
+    .bind('proj-2', 'user-2', 'Not yours', 1, 1).run()
+  db.prepare('INSERT INTO chats (id, user_id, title, updated, created) VALUES (?,?,?,?,?)')
+    .bind('chat-2', 'user-2', 'Not yours', 1, 1).run()
+
+  const viaProject = await app.request('/scheduled', {
+    method: 'POST', headers, body: JSON.stringify({ name: 'X', prompt: 'Y', schedule: '0 9 * * *', project_id: 'proj-2' }),
+  }, env)
+  assert.equal(viaProject.status, 404)
+
+  const viaChat = await app.request('/scheduled', {
+    method: 'POST', headers, body: JSON.stringify({ name: 'X', prompt: 'Y', schedule: '0 9 * * *', chat_id: 'chat-2' }),
+  }, env)
+  assert.equal(viaChat.status, 404)
+})
+
+test('scheduled definitions only expose themselves to their owner', async () => {
+  const { db, env, headers } = await setup()
+  db.prepare(
+    `INSERT INTO scheduled_definitions (id, user_id, name, prompt, schedule, enabled, created, updated)
+     VALUES (?,?,?,?,?,?,?,?)`
+  ).bind('sched-2', 'user-2', 'Not yours', 'Y', '0 9 * * *', 1, 1, 1).run()
+
+  const get = await app.request('/scheduled/sched-2', { headers }, env)
+  assert.equal(get.status, 404)
+  const put = await app.request('/scheduled/sched-2', { method: 'PUT', headers, body: JSON.stringify({ name: 'Hijack' }) }, env)
+  assert.equal(put.status, 404)
+  const del = await app.request('/scheduled/sched-2', { method: 'DELETE', headers }, env)
+  assert.equal(del.status, 404)
+  const list = await app.request('/scheduled', { headers }, env)
+  assert.deepEqual((await list.json()).scheduled, [])
 })
