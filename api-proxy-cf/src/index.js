@@ -1473,6 +1473,7 @@ app.get('/chats/:id', async (c) => {
   if (!user) return json({ error: 'Not authenticated' }, 401)
   const row = await c.env.DB.prepare(
     `SELECT chats.id, chats.title, chats.updated, chats.pinned, chats.pinned_at,
+            chats.draft, chats.draft_updated_at,
             generations.id AS generation_id,
             generations.status AS generation_status,
             generations.error AS generation_error,
@@ -1493,6 +1494,8 @@ app.get('/chats/:id', async (c) => {
     updated: row.updated,
     pinned: !!row.pinned,
     pinned_at: row.pinned_at || null,
+    draft: row.draft || '',
+    draft_updated_at: row.draft_updated_at || null,
     generation: generationFromRow(row),
   })
 })
@@ -1510,6 +1513,23 @@ app.put('/chats/:id/pin', async (c) => {
   ).bind(pinned ? 1 : 0, pinnedAt, id, user.id).run()
   if (result.meta.changes === 0) return json({ error: 'Chat not found' }, 404)
   return json({ ok: true, pinned: !!pinned, pinned_at: pinnedAt })
+})
+
+// The unsent composer text for this chat. Also independent of title/updated —
+// saving a draft while typing must never touch `updated`, or an unsent draft
+// would reorder the chat list as if the conversation had actually moved.
+app.put('/chats/:id/draft', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  const id = c.req.param('id')
+  const { content } = await c.req.json().catch(() => ({}))
+  const draft = typeof content === 'string' ? content.slice(0, 50_000) : ''
+  const ts = Date.now()
+  const result = await c.env.DB.prepare(
+    'UPDATE chats SET draft=?, draft_updated_at=? WHERE id=? AND user_id=?'
+  ).bind(draft || null, draft ? ts : null, id, user.id).run()
+  if (result.meta.changes === 0) return json({ error: 'Chat not found' }, 404)
+  return json({ ok: true, draft_updated_at: draft ? ts : null })
 })
 
 // Chat metadata only (title). Messages are managed one row at a time through

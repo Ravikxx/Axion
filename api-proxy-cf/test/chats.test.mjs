@@ -37,7 +37,9 @@ class D1TestDatabase {
         created INTEGER NOT NULL DEFAULT 0,
         active_generation_id TEXT,
         pinned INTEGER NOT NULL DEFAULT 0,
-        pinned_at INTEGER
+        pinned_at INTEGER,
+        draft TEXT,
+        draft_updated_at INTEGER
       );
       CREATE TABLE messages (
         id TEXT PRIMARY KEY,
@@ -253,4 +255,76 @@ test('pinning does not touch title, updated, or messages', async () => {
   const chat = db.prepare('SELECT title, updated FROM chats WHERE id=?').bind('chat-1').first()
   assert.equal(chat.title, 'Untouched title')
   assert.equal(chat.updated, 1)
+})
+
+test('saving a draft persists it and GET returns it; clearing it drops draft_updated_at', async () => {
+  const { db, env, headers } = await setup()
+  db.prepare('INSERT INTO chats (id, user_id, title, updated, created) VALUES (?,?,?,?,?)')
+    .bind('chat-1', 'user-1', 'Test', 1, 1).run()
+
+  const save = await app.request('/chats/chat-1/draft', {
+    method: 'PUT', headers, body: JSON.stringify({ content: 'unsent text' }),
+  }, env)
+  assert.equal(save.status, 200)
+  const saveBody = await save.json()
+  assert.ok(saveBody.draft_updated_at)
+
+  const get = await app.request('/chats/chat-1', { headers }, env)
+  const getBody = await get.json()
+  assert.equal(getBody.draft, 'unsent text')
+  assert.equal(getBody.draft_updated_at, saveBody.draft_updated_at)
+
+  const clear = await app.request('/chats/chat-1/draft', {
+    method: 'PUT', headers, body: JSON.stringify({ content: '' }),
+  }, env)
+  const clearBody = await clear.json()
+  assert.equal(clearBody.draft_updated_at, null)
+
+  const chat = db.prepare('SELECT draft, draft_updated_at FROM chats WHERE id=?').bind('chat-1').first()
+  assert.equal(chat.draft, null)
+  assert.equal(chat.draft_updated_at, null)
+})
+
+test('saving a draft does not touch title, updated, pinned, or messages', async () => {
+  const { db, env, headers } = await setup()
+  db.prepare('INSERT INTO chats (id, user_id, title, updated, created, pinned) VALUES (?,?,?,?,?,?)')
+    .bind('chat-1', 'user-1', 'Untouched title', 1, 1, 1).run()
+  db.prepare('INSERT INTO messages (id, chat_id, user_id, seq, role, content, created_at) VALUES (?,?,?,?,?,?,?)')
+    .bind('chat-1-1', 'chat-1', 'user-1', 1, 'user', 'Keep me', 1).run()
+
+  await app.request('/chats/chat-1/draft', {
+    method: 'PUT', headers, body: JSON.stringify({ content: 'a draft' }),
+  }, env)
+
+  const chat = db.prepare('SELECT title, updated, pinned FROM chats WHERE id=?').bind('chat-1').first()
+  assert.equal(chat.title, 'Untouched title')
+  assert.equal(chat.updated, 1)
+  assert.equal(chat.pinned, 1)
+  const messages = db.prepare('SELECT content FROM messages WHERE chat_id=?').bind('chat-1').all()
+  assert.deepEqual(messages.results.map(r => r.content), ['Keep me'])
+})
+
+test('saving a draft for a chat owned by another user is rejected', async () => {
+  const { db, env, headers } = await setup()
+  db.prepare('INSERT INTO chats (id, user_id, title, updated, created) VALUES (?,?,?,?,?)')
+    .bind('chat-2', 'user-2', 'Not yours', 1, 1).run()
+
+  const res = await app.request('/chats/chat-2/draft', {
+    method: 'PUT', headers, body: JSON.stringify({ content: 'nope' }),
+  }, env)
+  assert.equal(res.status, 404)
+})
+
+test('a draft longer than the cap is truncated, not rejected', async () => {
+  const { db, env, headers } = await setup()
+  db.prepare('INSERT INTO chats (id, user_id, title, updated, created) VALUES (?,?,?,?,?)')
+    .bind('chat-1', 'user-1', 'Test', 1, 1).run()
+
+  const huge = 'x'.repeat(60_000)
+  const res = await app.request('/chats/chat-1/draft', {
+    method: 'PUT', headers, body: JSON.stringify({ content: huge }),
+  }, env)
+  assert.equal(res.status, 200)
+  const chat = db.prepare('SELECT draft FROM chats WHERE id=?').bind('chat-1').first()
+  assert.equal(chat.draft.length, 50_000)
 })
