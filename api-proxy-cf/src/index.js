@@ -1195,6 +1195,10 @@ app.delete('/dashboard/account', async (c) => {
     db.prepare('DELETE FROM credit_redemptions WHERE user_id=?').bind(user.id),
     db.prepare('DELETE FROM admin_account_edits WHERE user_id=?').bind(user.id),
     db.prepare('DELETE FROM api_keys WHERE user_id=?').bind(user.id),
+    // messages before chats: messages has no ON DELETE CASCADE, so deleting
+    // chats first would orphan its rows — unreachable through the API, but
+    // never purged, which defeats the point of an account-deletion request.
+    db.prepare('DELETE FROM messages WHERE user_id=?').bind(user.id),
     db.prepare('DELETE FROM chats WHERE user_id=?').bind(user.id),
     db.prepare('DELETE FROM email_prefs WHERE user_id=?').bind(user.id),
     db.prepare('DELETE FROM device_codes WHERE user_id=?').bind(user.id),
@@ -1453,7 +1457,7 @@ app.get('/chats', async (c) => {
      FROM chats
      LEFT JOIN chat_generations AS generations
        ON generations.id = chats.active_generation_id
-     WHERE chats.user_id=?
+     WHERE chats.user_id=? AND chats.deleted_at IS NULL
      ORDER BY chats.updated DESC
      LIMIT 500`
   ).bind(user.id).all()
@@ -1469,6 +1473,34 @@ app.get('/chats', async (c) => {
       generation: generationFromRow(row),
     })),
   })
+})
+
+// Registered ahead of GET /chats/:id so "trash" is never captured as an :id.
+app.get('/chats/trash', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  const { results } = await c.env.DB.prepare(
+    `SELECT id, title, updated, deleted_at FROM chats
+     WHERE user_id=? AND deleted_at IS NOT NULL
+     ORDER BY deleted_at DESC
+     LIMIT 500`
+  ).bind(user.id).all()
+  return json({ chats: results })
+})
+
+// Empty Trash. Also ahead of DELETE /chats/:id for the same reason.
+app.delete('/chats/trash', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  const { results } = await c.env.DB.prepare(
+    'SELECT id FROM chats WHERE user_id=? AND deleted_at IS NOT NULL'
+  ).bind(user.id).all()
+  if (!results.length) return json({ ok: true, count: 0 })
+  await c.env.DB.batch([
+    ...results.map(row => c.env.DB.prepare('DELETE FROM messages WHERE chat_id=?').bind(row.id)),
+    c.env.DB.prepare('DELETE FROM chats WHERE user_id=? AND deleted_at IS NOT NULL').bind(user.id),
+  ])
+  return json({ ok: true, count: results.length })
 })
 
 app.get('/chats/:id', async (c) => {
@@ -1771,13 +1803,60 @@ app.get('/chats/:id/generations/:generationId/stream', async (c) => {
   return stub.fetch('https://chat-generation.internal/stream')
 })
 
+// Soft delete: moves the chat to Trash rather than removing it. Restore with
+// POST /chats/:id/restore, or DELETE /chats/:id/permanent to actually remove it.
 app.delete('/chats/:id', async (c) => {
   const user = await requireAuth(c)
   if (!user) return json({ error: 'Not authenticated' }, 401)
-  const result = await c.env.DB.prepare('DELETE FROM chats WHERE id=? AND user_id=?').bind(c.req.param('id'), user.id).run()
+  const result = await c.env.DB.prepare(
+    'UPDATE chats SET deleted_at=? WHERE id=? AND user_id=? AND deleted_at IS NULL'
+  ).bind(Date.now(), c.req.param('id'), user.id).run()
   if (result.meta.changes === 0) return json({ error: 'Not found' }, 404)
   return json({ ok: true })
 })
+
+app.post('/chats/:id/restore', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  const result = await c.env.DB.prepare(
+    'UPDATE chats SET deleted_at=NULL WHERE id=? AND user_id=? AND deleted_at IS NOT NULL'
+  ).bind(c.req.param('id'), user.id).run()
+  if (result.meta.changes === 0) return json({ error: 'Not in trash' }, 404)
+  return json({ ok: true })
+})
+
+// Requires the chat to already be trashed — permanent deletion is reached
+// through Trash, not as a shortcut around it.
+app.delete('/chats/:id/permanent', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  const id = c.req.param('id')
+  const chat = await c.env.DB.prepare(
+    'SELECT id FROM chats WHERE id=? AND user_id=? AND deleted_at IS NOT NULL'
+  ).bind(id, user.id).first()
+  if (!chat) return json({ error: 'Not in trash' }, 404)
+  await c.env.DB.batch([
+    c.env.DB.prepare('DELETE FROM messages WHERE chat_id=?').bind(id),
+    c.env.DB.prepare('DELETE FROM chats WHERE id=? AND user_id=?').bind(id, user.id),
+  ])
+  return json({ ok: true })
+})
+
+const TRASH_RETENTION_MS = 30 * 24 * 60 * 60 * 1000
+
+// Called hourly. A chat past the 30-day retention window is purged the same
+// way DELETE /chats/:id/permanent does it, just without a request behind it.
+async function purgeExpiredTrashedChats(db) {
+  const cutoff = Date.now() - TRASH_RETENTION_MS
+  const { results } = await db.prepare(
+    'SELECT id FROM chats WHERE deleted_at IS NOT NULL AND deleted_at < ?'
+  ).bind(cutoff).all()
+  if (!results.length) return
+  await db.batch([
+    ...results.map(row => db.prepare('DELETE FROM messages WHERE chat_id=?').bind(row.id)),
+    db.prepare('DELETE FROM chats WHERE deleted_at IS NOT NULL AND deleted_at < ?').bind(cutoff),
+  ])
+}
 
 // ── OpenAI-compatible proxy ────────────────────────────────────────────────
 
@@ -3549,6 +3628,7 @@ app.scheduled = async (event, env, ctx) => {
       runMessageReview(env, { trigger: 'scheduled' }),
       purgeExpiredMessageLogs(env.DB),
       purgeExpiredDesktopAuthCodes(env.DB),
+      purgeExpiredTrashedChats(env.DB),
     ]))
     return
   }

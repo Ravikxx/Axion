@@ -45,7 +45,8 @@ class D1TestDatabase {
         draft TEXT,
         draft_updated_at INTEGER,
         branched_from_chat_id TEXT,
-        branched_from_seq INTEGER
+        branched_from_seq INTEGER,
+        deleted_at INTEGER
       );
       CREATE TABLE messages (
         id TEXT PRIMARY KEY,
