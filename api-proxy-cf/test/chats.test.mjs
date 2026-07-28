@@ -70,6 +70,12 @@ class D1TestDatabase {
         content TEXT,
         created INTEGER NOT NULL
       );
+      CREATE TABLE user_settings (
+        user_id TEXT PRIMARY KEY,
+        selected_model TEXT,
+        onboarding_completed_at INTEGER,
+        updated INTEGER NOT NULL
+      );
       CREATE TABLE messages (
         id TEXT PRIMARY KEY,
         chat_id TEXT NOT NULL,
@@ -790,4 +796,50 @@ test('artifacts only expose themselves to their owner', async () => {
   assert.equal(del.status, 404)
   const list = await app.request('/artifacts', { headers }, env)
   assert.deepEqual((await list.json()).artifacts, [])
+})
+
+test('GET /settings returns defaults when no row exists yet', async () => {
+  const { env, headers } = await setup()
+  const res = await app.request('/settings', { headers }, env)
+  assert.equal(res.status, 200)
+  assert.deepEqual(await res.json(), { selected_model: null, onboarding_completed_at: null, updated: null })
+})
+
+test('PUT /settings creates the row on first write and GET reflects it', async () => {
+  const { env, headers } = await setup()
+  const put = await app.request('/settings', {
+    method: 'PUT', headers, body: JSON.stringify({ selected_model: 'lumen-pro' }),
+  }, env)
+  assert.equal(put.status, 200)
+  const body = await put.json()
+  assert.equal(body.selected_model, 'lumen-pro')
+  assert.equal(body.onboarding_completed_at, null)
+
+  const get = await app.request('/settings', { headers }, env)
+  assert.equal((await get.json()).selected_model, 'lumen-pro')
+})
+
+test('PUT /settings with only onboarding_completed does not clobber a previously set model', async () => {
+  const { env, headers } = await setup()
+  await app.request('/settings', { method: 'PUT', headers, body: JSON.stringify({ selected_model: 'lumen-pro' }) }, env)
+  const res = await app.request('/settings', {
+    method: 'PUT', headers, body: JSON.stringify({ onboarding_completed: true }),
+  }, env)
+  const body = await res.json()
+  assert.equal(body.selected_model, 'lumen-pro')
+  assert.ok(body.onboarding_completed_at)
+})
+
+test('PUT /settings with an empty body is rejected', async () => {
+  const { env, headers } = await setup()
+  const res = await app.request('/settings', { method: 'PUT', headers, body: JSON.stringify({}) }, env)
+  assert.equal(res.status, 400)
+})
+
+test('settings are scoped per user', async () => {
+  const { db, env, headers } = await setup()
+  db.prepare('INSERT INTO user_settings (user_id, selected_model, updated) VALUES (?,?,?)')
+    .bind('user-2', 'not-yours', 1).run()
+  const res = await app.request('/settings', { headers }, env)
+  assert.equal((await res.json()).selected_model, null)
 })
