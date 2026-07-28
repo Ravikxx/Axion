@@ -1442,7 +1442,7 @@ app.get('/chats', async (c) => {
   const user = await requireAuth(c)
   if (!user) return json({ error: 'Not authenticated' }, 401)
   const { results } = await c.env.DB.prepare(
-    `SELECT chats.id, chats.title, chats.updated,
+    `SELECT chats.id, chats.title, chats.updated, chats.pinned, chats.pinned_at,
             generations.id AS generation_id,
             generations.status AS generation_status,
             generations.error AS generation_error,
@@ -1461,6 +1461,8 @@ app.get('/chats', async (c) => {
       id: row.id,
       title: row.title,
       updated: row.updated,
+      pinned: !!row.pinned,
+      pinned_at: row.pinned_at || null,
       generation: generationFromRow(row),
     })),
   })
@@ -1470,7 +1472,7 @@ app.get('/chats/:id', async (c) => {
   const user = await requireAuth(c)
   if (!user) return json({ error: 'Not authenticated' }, 401)
   const row = await c.env.DB.prepare(
-    `SELECT chats.id, chats.title, chats.updated,
+    `SELECT chats.id, chats.title, chats.updated, chats.pinned, chats.pinned_at,
             generations.id AS generation_id,
             generations.status AS generation_status,
             generations.error AS generation_error,
@@ -1489,8 +1491,25 @@ app.get('/chats/:id', async (c) => {
     title: row.title,
     messages,
     updated: row.updated,
+    pinned: !!row.pinned,
+    pinned_at: row.pinned_at || null,
     generation: generationFromRow(row),
   })
+})
+
+// Pin state is independent of title/updated so toggling it never races the
+// autosave that persists a rename or touches the conversation.
+app.put('/chats/:id/pin', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  const id = c.req.param('id')
+  const { pinned } = await c.req.json().catch(() => ({}))
+  const pinnedAt = pinned ? Date.now() : null
+  const result = await c.env.DB.prepare(
+    'UPDATE chats SET pinned=?, pinned_at=? WHERE id=? AND user_id=?'
+  ).bind(pinned ? 1 : 0, pinnedAt, id, user.id).run()
+  if (result.meta.changes === 0) return json({ error: 'Chat not found' }, 404)
+  return json({ ok: true, pinned: !!pinned, pinned_at: pinnedAt })
 })
 
 // Chat metadata only (title). Messages are managed one row at a time through
