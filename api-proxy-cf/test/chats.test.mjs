@@ -52,6 +52,24 @@ class D1TestDatabase {
         created INTEGER NOT NULL,
         updated INTEGER NOT NULL
       );
+      CREATE TABLE artifacts (
+        id TEXT PRIMARY KEY,
+        user_id TEXT NOT NULL,
+        project_id TEXT,
+        chat_id TEXT,
+        title TEXT NOT NULL,
+        kind TEXT NOT NULL DEFAULT 'text',
+        language TEXT,
+        latest_revision_id TEXT,
+        created INTEGER NOT NULL,
+        updated INTEGER NOT NULL
+      );
+      CREATE TABLE artifact_revisions (
+        id TEXT PRIMARY KEY,
+        artifact_id TEXT NOT NULL,
+        content TEXT,
+        created INTEGER NOT NULL
+      );
       CREATE TABLE messages (
         id TEXT PRIMARY KEY,
         chat_id TEXT NOT NULL,
@@ -648,4 +666,128 @@ test('GET /projects/:id/chats 404s for a project that is not yours', async () =>
 
   const res = await app.request('/projects/proj-2/chats', { headers }, env)
   assert.equal(res.status, 404)
+})
+
+test('POST /artifacts creates an artifact with a first revision; GET /artifacts lists it without content', async () => {
+  const { env, headers } = await setup()
+  const create = await app.request('/artifacts', {
+    method: 'POST', headers, body: JSON.stringify({ title: 'Notes', kind: 'markdown', content: '# Hi' }),
+  }, env)
+  assert.equal(create.status, 200)
+  const created = await create.json()
+  assert.equal(created.title, 'Notes')
+  assert.equal(created.kind, 'markdown')
+  assert.equal(created.content, '# Hi')
+
+  const list = await app.request('/artifacts', { headers }, env)
+  const body = await list.json()
+  assert.equal(body.artifacts.length, 1)
+  assert.equal(body.artifacts[0].id, created.id)
+  assert.equal(body.artifacts[0].content, undefined)
+})
+
+test('an unrecognized kind falls back to text; content over the size limit is rejected with 413', async () => {
+  const { env, headers } = await setup()
+  const create = await app.request('/artifacts', {
+    method: 'POST', headers, body: JSON.stringify({ title: 'X', kind: 'nonsense', content: 'hi' }),
+  }, env)
+  assert.equal((await create.json()).kind, 'text')
+
+  const tooBig = await app.request('/artifacts', {
+    method: 'POST', headers, body: JSON.stringify({ title: 'Big', content: 'x'.repeat(500_001) }),
+  }, env)
+  assert.equal(tooBig.status, 413)
+})
+
+test('GET /artifacts/:id returns the latest content plus a revision list, newest first', async () => {
+  const { db, env, headers } = await setup()
+  const create = await app.request('/artifacts', {
+    method: 'POST', headers, body: JSON.stringify({ title: 'Doc', content: 'v1' }),
+  }, env)
+  const { id } = await create.json()
+
+  await app.request(`/artifacts/${id}`, {
+    method: 'PUT', headers, body: JSON.stringify({ content: 'v2' }),
+  }, env)
+
+  const res = await app.request(`/artifacts/${id}`, { headers }, env)
+  const body = await res.json()
+  assert.equal(body.content, 'v2')
+  assert.equal(body.revisions.length, 2)
+  assert.ok(body.revisions[0].created >= body.revisions[1].created)
+})
+
+test('PUT /artifacts/:id with only a title does not create a new revision', async () => {
+  const { db, env, headers } = await setup()
+  const create = await app.request('/artifacts', {
+    method: 'POST', headers, body: JSON.stringify({ title: 'Doc', content: 'v1' }),
+  }, env)
+  const { id } = await create.json()
+
+  const rename = await app.request(`/artifacts/${id}`, {
+    method: 'PUT', headers, body: JSON.stringify({ title: 'Renamed' }),
+  }, env)
+  assert.equal(rename.status, 200)
+
+  const count = db.prepare('SELECT COUNT(*) AS n FROM artifact_revisions WHERE artifact_id=?').bind(id).first().n
+  assert.equal(count, 1)
+  assert.equal(db.prepare('SELECT title FROM artifacts WHERE id=?').bind(id).first().title, 'Renamed')
+})
+
+test('PUT /artifacts/:id with no title and no content is rejected', async () => {
+  const { env, headers } = await setup()
+  const create = await app.request('/artifacts', {
+    method: 'POST', headers, body: JSON.stringify({ title: 'Doc', content: 'v1' }),
+  }, env)
+  const { id } = await create.json()
+
+  const res = await app.request(`/artifacts/${id}`, { method: 'PUT', headers, body: JSON.stringify({}) }, env)
+  assert.equal(res.status, 400)
+})
+
+test('DELETE /artifacts/:id removes the artifact and all of its revisions', async () => {
+  const { db, env, headers } = await setup()
+  const create = await app.request('/artifacts', {
+    method: 'POST', headers, body: JSON.stringify({ title: 'Doc', content: 'v1' }),
+  }, env)
+  const { id } = await create.json()
+  await app.request(`/artifacts/${id}`, { method: 'PUT', headers, body: JSON.stringify({ content: 'v2' }) }, env)
+
+  const del = await app.request(`/artifacts/${id}`, { method: 'DELETE', headers }, env)
+  assert.equal(del.status, 200)
+  assert.equal(db.prepare('SELECT COUNT(*) AS n FROM artifacts WHERE id=?').bind(id).first().n, 0)
+  assert.equal(db.prepare('SELECT COUNT(*) AS n FROM artifact_revisions WHERE artifact_id=?').bind(id).first().n, 0)
+})
+
+test('creating an artifact under a project or chat that is not yours 404s', async () => {
+  const { db, env, headers } = await setup()
+  db.prepare('INSERT INTO projects (id, user_id, name, created, updated) VALUES (?,?,?,?,?)')
+    .bind('proj-2', 'user-2', 'Not yours', 1, 1).run()
+  db.prepare('INSERT INTO chats (id, user_id, title, updated, created) VALUES (?,?,?,?,?)')
+    .bind('chat-2', 'user-2', 'Not yours', 1, 1).run()
+
+  const viaProject = await app.request('/artifacts', {
+    method: 'POST', headers, body: JSON.stringify({ title: 'X', content: 'y', project_id: 'proj-2' }),
+  }, env)
+  assert.equal(viaProject.status, 404)
+
+  const viaChat = await app.request('/artifacts', {
+    method: 'POST', headers, body: JSON.stringify({ title: 'X', content: 'y', chat_id: 'chat-2' }),
+  }, env)
+  assert.equal(viaChat.status, 404)
+})
+
+test('artifacts only expose themselves to their owner', async () => {
+  const { db, env, headers } = await setup()
+  db.prepare('INSERT INTO artifacts (id, user_id, title, kind, latest_revision_id, created, updated) VALUES (?,?,?,?,?,?,?)')
+    .bind('art-2', 'user-2', 'Not yours', 'text', null, 1, 1).run()
+
+  const get = await app.request('/artifacts/art-2', { headers }, env)
+  assert.equal(get.status, 404)
+  const put = await app.request('/artifacts/art-2', { method: 'PUT', headers, body: JSON.stringify({ title: 'Hijack' }) }, env)
+  assert.equal(put.status, 404)
+  const del = await app.request('/artifacts/art-2', { method: 'DELETE', headers }, env)
+  assert.equal(del.status, 404)
+  const list = await app.request('/artifacts', { headers }, env)
+  assert.deepEqual((await list.json()).artifacts, [])
 })

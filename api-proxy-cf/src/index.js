@@ -1201,6 +1201,8 @@ app.delete('/dashboard/account', async (c) => {
     db.prepare('DELETE FROM messages WHERE user_id=?').bind(user.id),
     db.prepare('DELETE FROM chats WHERE user_id=?').bind(user.id),
     db.prepare('DELETE FROM projects WHERE user_id=?').bind(user.id),
+    db.prepare('DELETE FROM artifact_revisions WHERE artifact_id IN (SELECT id FROM artifacts WHERE user_id=?)').bind(user.id),
+    db.prepare('DELETE FROM artifacts WHERE user_id=?').bind(user.id),
     db.prepare('DELETE FROM email_prefs WHERE user_id=?').bind(user.id),
     db.prepare('DELETE FROM device_codes WHERE user_id=?').bind(user.id),
     db.prepare('DELETE FROM appeals WHERE user_id=?').bind(user.id),
@@ -1442,6 +1444,147 @@ function webChatTools(tools) {
     },
   }]
 }
+
+const ARTIFACT_KINDS = new Set(['text', 'code', 'markdown'])
+const ARTIFACT_CONTENT_LIMIT = 500_000
+
+// Artifacts are a persistent library of Axion-created outputs (documents,
+// code previews, generated files). Each edit creates a new revision rather
+// than overwriting content in place; the artifact row just tracks which
+// revision is current so listing doesn't require pulling revision content.
+app.get('/artifacts', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  const { results } = await c.env.DB.prepare(
+    `SELECT id, project_id, chat_id, title, kind, language, created, updated
+     FROM artifacts WHERE user_id=? ORDER BY updated DESC LIMIT 500`
+  ).bind(user.id).all()
+  return json({ artifacts: results })
+})
+
+app.post('/artifacts', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  const body = await c.req.json().catch(() => ({}))
+  const title = String(body?.title || '').trim().slice(0, 200) || 'Untitled'
+  const kind = ARTIFACT_KINDS.has(body?.kind) ? body.kind : 'text'
+  const language = kind === 'code' && body?.language ? String(body.language).slice(0, 50) : null
+  const content = typeof body?.content === 'string' ? body.content : ''
+  if (content.length > ARTIFACT_CONTENT_LIMIT) return json({ error: 'Content too large' }, 413)
+  const projectId = body?.project_id ? String(body.project_id) : null
+  const chatId = body?.chat_id ? String(body.chat_id) : null
+  if (projectId) {
+    const project = await c.env.DB.prepare('SELECT id FROM projects WHERE id=? AND user_id=?').bind(projectId, user.id).first()
+    if (!project) return json({ error: 'Project not found' }, 404)
+  }
+  if (chatId) {
+    const chat = await c.env.DB.prepare('SELECT id FROM chats WHERE id=? AND user_id=?').bind(chatId, user.id).first()
+    if (!chat) return json({ error: 'Chat not found' }, 404)
+  }
+  const id = crypto.randomUUID()
+  const revisionId = crypto.randomUUID()
+  const now = Date.now()
+  await c.env.DB.batch([
+    c.env.DB.prepare('INSERT INTO artifact_revisions (id, artifact_id, content, created) VALUES (?,?,?,?)')
+      .bind(revisionId, id, content, now),
+    c.env.DB.prepare(
+      `INSERT INTO artifacts (id, user_id, project_id, chat_id, title, kind, language, latest_revision_id, created, updated)
+       VALUES (?,?,?,?,?,?,?,?,?,?)`
+    ).bind(id, user.id, projectId, chatId, title, kind, language, revisionId, now, now),
+  ])
+  return json({ id, project_id: projectId, chat_id: chatId, title, kind, language, content, created: now, updated: now })
+})
+
+app.get('/artifacts/:id', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  const artifact = await c.env.DB.prepare(
+    'SELECT * FROM artifacts WHERE id=? AND user_id=?'
+  ).bind(c.req.param('id'), user.id).first()
+  if (!artifact) return json({ error: 'Not found' }, 404)
+  const revision = await c.env.DB.prepare(
+    'SELECT content FROM artifact_revisions WHERE id=?'
+  ).bind(artifact.latest_revision_id).first()
+  const { results: revisions } = await c.env.DB.prepare(
+    'SELECT id, created FROM artifact_revisions WHERE artifact_id=? ORDER BY created DESC LIMIT 100'
+  ).bind(artifact.id).all()
+  return json({
+    id: artifact.id,
+    project_id: artifact.project_id,
+    chat_id: artifact.chat_id,
+    title: artifact.title,
+    kind: artifact.kind,
+    language: artifact.language,
+    content: revision?.content ?? '',
+    created: artifact.created,
+    updated: artifact.updated,
+    revisions,
+  })
+})
+
+app.get('/artifacts/:id/revisions/:revId', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  const artifact = await c.env.DB.prepare(
+    'SELECT id FROM artifacts WHERE id=? AND user_id=?'
+  ).bind(c.req.param('id'), user.id).first()
+  if (!artifact) return json({ error: 'Not found' }, 404)
+  const revision = await c.env.DB.prepare(
+    'SELECT id, content, created FROM artifact_revisions WHERE id=? AND artifact_id=?'
+  ).bind(c.req.param('revId'), artifact.id).first()
+  if (!revision) return json({ error: 'Not found' }, 404)
+  return json(revision)
+})
+
+// Updating title alone doesn't create a revision. Updating content always
+// does, even if it's identical to the current one — a deliberate re-save
+// still marks a point in the artifact's history.
+app.put('/artifacts/:id', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  const artifact = await c.env.DB.prepare(
+    'SELECT id, latest_revision_id FROM artifacts WHERE id=? AND user_id=?'
+  ).bind(c.req.param('id'), user.id).first()
+  if (!artifact) return json({ error: 'Not found' }, 404)
+  const body = await c.req.json().catch(() => ({}))
+  const now = Date.now()
+  const hasTitle = typeof body?.title === 'string'
+  const hasContent = typeof body?.content === 'string'
+  if (!hasTitle && !hasContent) return json({ error: 'Nothing to update' }, 400)
+  if (hasContent && body.content.length > ARTIFACT_CONTENT_LIMIT) return json({ error: 'Content too large' }, 413)
+  const title = hasTitle ? body.title.trim().slice(0, 200) || 'Untitled' : null
+  if (hasContent) {
+    const revisionId = crypto.randomUUID()
+    const stmts = [
+      c.env.DB.prepare('INSERT INTO artifact_revisions (id, artifact_id, content, created) VALUES (?,?,?,?)')
+        .bind(revisionId, artifact.id, body.content, now),
+    ]
+    if (hasTitle) {
+      stmts.push(c.env.DB.prepare('UPDATE artifacts SET title=?, latest_revision_id=?, updated=? WHERE id=?')
+        .bind(title, revisionId, now, artifact.id))
+    } else {
+      stmts.push(c.env.DB.prepare('UPDATE artifacts SET latest_revision_id=?, updated=? WHERE id=?')
+        .bind(revisionId, now, artifact.id))
+    }
+    await c.env.DB.batch(stmts)
+    return json({ ok: true, updated: now, revision_id: revisionId })
+  }
+  await c.env.DB.prepare('UPDATE artifacts SET title=?, updated=? WHERE id=?').bind(title, now, artifact.id).run()
+  return json({ ok: true, updated: now })
+})
+
+app.delete('/artifacts/:id', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  const id = c.req.param('id')
+  const artifact = await c.env.DB.prepare('SELECT id FROM artifacts WHERE id=? AND user_id=?').bind(id, user.id).first()
+  if (!artifact) return json({ error: 'Not found' }, 404)
+  await c.env.DB.batch([
+    c.env.DB.prepare('DELETE FROM artifact_revisions WHERE artifact_id=?').bind(id),
+    c.env.DB.prepare('DELETE FROM artifacts WHERE id=?').bind(id),
+  ])
+  return json({ ok: true })
+})
 
 // Projects group chats together. A chat belongs to at most one project;
 // deleting a project unfiles its chats rather than deleting them.
