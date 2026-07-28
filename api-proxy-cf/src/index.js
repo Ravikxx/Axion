@@ -1200,6 +1200,7 @@ app.delete('/dashboard/account', async (c) => {
     // never purged, which defeats the point of an account-deletion request.
     db.prepare('DELETE FROM messages WHERE user_id=?').bind(user.id),
     db.prepare('DELETE FROM chats WHERE user_id=?').bind(user.id),
+    db.prepare('DELETE FROM projects WHERE user_id=?').bind(user.id),
     db.prepare('DELETE FROM email_prefs WHERE user_id=?').bind(user.id),
     db.prepare('DELETE FROM device_codes WHERE user_id=?').bind(user.id),
     db.prepare('DELETE FROM appeals WHERE user_id=?').bind(user.id),
@@ -1442,12 +1443,142 @@ function webChatTools(tools) {
   }]
 }
 
+// Projects group chats together. A chat belongs to at most one project;
+// deleting a project unfiles its chats rather than deleting them.
+app.get('/projects', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  const { results } = await c.env.DB.prepare(
+    `SELECT projects.id, projects.name, projects.created, projects.updated,
+            COUNT(chats.id) AS chat_count
+     FROM projects
+     LEFT JOIN chats ON chats.project_id = projects.id AND chats.deleted_at IS NULL
+     WHERE projects.user_id=?
+     GROUP BY projects.id
+     ORDER BY projects.updated DESC
+     LIMIT 500`
+  ).bind(user.id).all()
+  return json({
+    projects: results.map(row => ({
+      id: row.id,
+      name: row.name,
+      created: row.created,
+      updated: row.updated,
+      chat_count: row.chat_count,
+    })),
+  })
+})
+
+app.post('/projects', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  const body = await c.req.json().catch(() => ({}))
+  const name = String(body?.name || '').trim().slice(0, 200)
+  if (!name) return json({ error: 'name is required' }, 400)
+  const id = crypto.randomUUID()
+  const now = Date.now()
+  await c.env.DB.prepare(
+    'INSERT INTO projects (id, user_id, name, created, updated) VALUES (?, ?, ?, ?, ?)'
+  ).bind(id, user.id, name, now, now).run()
+  return json({ id, name, created: now, updated: now, chat_count: 0 })
+})
+
+app.put('/projects/:id', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  const body = await c.req.json().catch(() => ({}))
+  const name = String(body?.name || '').trim().slice(0, 200)
+  if (!name) return json({ error: 'name is required' }, 400)
+  const result = await c.env.DB.prepare(
+    'UPDATE projects SET name=?, updated=? WHERE id=? AND user_id=?'
+  ).bind(name, Date.now(), c.req.param('id'), user.id).run()
+  if (result.meta.changes === 0) return json({ error: 'Not found' }, 404)
+  return json({ ok: true })
+})
+
+// Deletes the project itself; member chats are unfiled (project_id -> NULL),
+// not deleted — a project is an organizational label, not a container.
+app.delete('/projects/:id', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  const id = c.req.param('id')
+  const project = await c.env.DB.prepare(
+    'SELECT id FROM projects WHERE id=? AND user_id=?'
+  ).bind(id, user.id).first()
+  if (!project) return json({ error: 'Not found' }, 404)
+  await c.env.DB.batch([
+    c.env.DB.prepare('UPDATE chats SET project_id=NULL WHERE project_id=? AND user_id=?').bind(id, user.id),
+    c.env.DB.prepare('DELETE FROM projects WHERE id=? AND user_id=?').bind(id, user.id),
+  ])
+  return json({ ok: true })
+})
+
+app.get('/projects/:id/chats', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  const id = c.req.param('id')
+  const project = await c.env.DB.prepare(
+    'SELECT id FROM projects WHERE id=? AND user_id=?'
+  ).bind(id, user.id).first()
+  if (!project) return json({ error: 'Not found' }, 404)
+  const { results } = await c.env.DB.prepare(
+    `SELECT chats.id, chats.title, chats.updated, chats.pinned, chats.pinned_at,
+            chats.branched_from_chat_id, chats.branched_from_seq, chats.project_id,
+            generations.id AS generation_id,
+            generations.status AS generation_status,
+            generations.error AS generation_error,
+            generations.created AS generation_created,
+            generations.started AS generation_started,
+            generations.completed AS generation_completed
+     FROM chats
+     LEFT JOIN chat_generations AS generations
+       ON generations.id = chats.active_generation_id
+     WHERE chats.project_id=? AND chats.user_id=? AND chats.deleted_at IS NULL
+     ORDER BY chats.updated DESC
+     LIMIT 500`
+  ).bind(id, user.id).all()
+  return json({
+    chats: results.map(row => ({
+      id: row.id,
+      title: row.title,
+      updated: row.updated,
+      pinned: !!row.pinned,
+      pinned_at: row.pinned_at || null,
+      branched_from_chat_id: row.branched_from_chat_id || null,
+      branched_from_seq: row.branched_from_seq || null,
+      project_id: row.project_id || null,
+      generation: generationFromRow(row),
+    })),
+  })
+})
+
+// Assigns or unfiles a chat: { project_id: string | null }.
+app.put('/chats/:id/project', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  const body = await c.req.json().catch(() => ({}))
+  const projectId = body?.project_id === null || body?.project_id === undefined
+    ? null
+    : String(body.project_id)
+  if (projectId !== null) {
+    const project = await c.env.DB.prepare(
+      'SELECT id FROM projects WHERE id=? AND user_id=?'
+    ).bind(projectId, user.id).first()
+    if (!project) return json({ error: 'Project not found' }, 404)
+  }
+  const result = await c.env.DB.prepare(
+    'UPDATE chats SET project_id=? WHERE id=? AND user_id=? AND deleted_at IS NULL'
+  ).bind(projectId, c.req.param('id'), user.id).run()
+  if (result.meta.changes === 0) return json({ error: 'Not found' }, 404)
+  return json({ ok: true, project_id: projectId })
+})
+
 app.get('/chats', async (c) => {
   const user = await requireAuth(c)
   if (!user) return json({ error: 'Not authenticated' }, 401)
   const { results } = await c.env.DB.prepare(
     `SELECT chats.id, chats.title, chats.updated, chats.pinned, chats.pinned_at,
-            chats.branched_from_chat_id, chats.branched_from_seq,
+            chats.branched_from_chat_id, chats.branched_from_seq, chats.project_id,
             generations.id AS generation_id,
             generations.status AS generation_status,
             generations.error AS generation_error,
@@ -1470,6 +1601,7 @@ app.get('/chats', async (c) => {
       pinned_at: row.pinned_at || null,
       branched_from_chat_id: row.branched_from_chat_id || null,
       branched_from_seq: row.branched_from_seq || null,
+      project_id: row.project_id || null,
       generation: generationFromRow(row),
     })),
   })
@@ -1509,7 +1641,7 @@ app.get('/chats/:id', async (c) => {
   const row = await c.env.DB.prepare(
     `SELECT chats.id, chats.title, chats.updated, chats.pinned, chats.pinned_at,
             chats.draft, chats.draft_updated_at,
-            chats.branched_from_chat_id, chats.branched_from_seq,
+            chats.branched_from_chat_id, chats.branched_from_seq, chats.project_id,
             generations.id AS generation_id,
             generations.status AS generation_status,
             generations.error AS generation_error,
@@ -1534,6 +1666,7 @@ app.get('/chats/:id', async (c) => {
     draft_updated_at: row.draft_updated_at || null,
     branched_from_chat_id: row.branched_from_chat_id || null,
     branched_from_seq: row.branched_from_seq || null,
+    project_id: row.project_id || null,
     generation: generationFromRow(row),
   })
 })
