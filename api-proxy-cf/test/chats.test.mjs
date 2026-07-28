@@ -1020,3 +1020,115 @@ test('sharing, checking status, or revoking a chat that is not yours 404s', asyn
   const revoke = await app.request('/chats/chat-2/share', { method: 'DELETE', headers }, env)
   assert.equal(revoke.status, 404)
 })
+
+test('POST /artifacts/:id/share in snapshot mode captures current content; later edits do not change it', async () => {
+  const { env, headers } = await setup()
+  const create = await app.request('/artifacts', {
+    method: 'POST', headers, body: JSON.stringify({ title: 'Doc', kind: 'code', language: 'python', content: 'v1' }),
+  }, env)
+  const { id } = await create.json()
+
+  const share = await app.request(`/artifacts/${id}/share`, {
+    method: 'POST', headers, body: JSON.stringify({ mode: 'snapshot' }),
+  }, env)
+  assert.equal(share.status, 200)
+  const { id: token } = await share.json()
+
+  await app.request(`/artifacts/${id}`, { method: 'PUT', headers, body: JSON.stringify({ content: 'v2' }) }, env)
+
+  const viewed = await app.request(`/shared/${token}`, {}, env)
+  const body = await viewed.json()
+  assert.equal(body.resource_type, 'artifact')
+  assert.equal(body.mode, 'snapshot')
+  assert.equal(body.content, 'v1')
+  assert.equal(body.kind, 'code')
+  assert.equal(body.language, 'python')
+})
+
+test('POST /artifacts/:id/share in live mode reflects later edits', async () => {
+  const { env, headers } = await setup()
+  const create = await app.request('/artifacts', {
+    method: 'POST', headers, body: JSON.stringify({ title: 'Doc', content: 'v1' }),
+  }, env)
+  const { id } = await create.json()
+  const share = await app.request(`/artifacts/${id}/share`, {
+    method: 'POST', headers, body: JSON.stringify({ mode: 'live' }),
+  }, env)
+  const { id: token } = await share.json()
+
+  await app.request(`/artifacts/${id}`, { method: 'PUT', headers, body: JSON.stringify({ content: 'v2' }) }, env)
+
+  const viewed = await app.request(`/shared/${token}`, {}, env)
+  assert.equal((await viewed.json()).content, 'v2')
+})
+
+test('a live artifact share 404s once the artifact is deleted', async () => {
+  const { env, headers } = await setup()
+  const create = await app.request('/artifacts', {
+    method: 'POST', headers, body: JSON.stringify({ title: 'Doc', content: 'v1' }),
+  }, env)
+  const { id } = await create.json()
+  const share = await app.request(`/artifacts/${id}/share`, {
+    method: 'POST', headers, body: JSON.stringify({ mode: 'live' }),
+  }, env)
+  const { id: token } = await share.json()
+
+  await app.request(`/artifacts/${id}`, { method: 'DELETE', headers }, env)
+
+  const res = await app.request(`/shared/${token}`, {}, env)
+  assert.equal(res.status, 404)
+})
+
+test('POST /shared/:token/continue on an artifact share creates an independent copy owned by the requester', async () => {
+  const { db, env, headers } = await setup()
+  const create = await app.request('/artifacts', {
+    method: 'POST', headers, body: JSON.stringify({ title: 'Doc', kind: 'markdown', content: 'v1' }),
+  }, env)
+  const { id } = await create.json()
+  const share = await app.request(`/artifacts/${id}/share`, {
+    method: 'POST', headers, body: JSON.stringify({ mode: 'snapshot' }),
+  }, env)
+  const { id: token } = await share.json()
+
+  const viewerHeaders = await headersFor('user-2')
+  const res = await app.request(`/shared/${token}/continue`, { method: 'POST', headers: viewerHeaders }, env)
+  assert.equal(res.status, 200)
+  const body = await res.json()
+  assert.equal(body.resource_type, 'artifact')
+  assert.notEqual(body.id, id)
+
+  const copy = db.prepare('SELECT user_id, title, kind FROM artifacts WHERE id=?').bind(body.id).first()
+  assert.equal(copy.user_id, 'user-2')
+  assert.equal(copy.title, 'Doc')
+  assert.equal(copy.kind, 'markdown')
+  const original = db.prepare('SELECT user_id FROM artifacts WHERE id=?').bind(id).first()
+  assert.equal(original.user_id, 'user-1')
+})
+
+test('chat and artifact shares are independent resource types and do not collide', async () => {
+  const { db, env, headers } = await setup()
+  db.prepare('INSERT INTO chats (id, user_id, title, updated, created) VALUES (?,?,?,?,?)')
+    .bind('shared-id', 'user-1', 'A chat', 1, 1).run()
+  const create = await app.request('/artifacts', {
+    method: 'POST', headers, body: JSON.stringify({ title: 'An artifact', content: 'x' }),
+  }, env)
+  const { id: artifactId } = await create.json()
+
+  await app.request('/chats/shared-id/share', { method: 'POST', headers, body: JSON.stringify({ mode: 'snapshot' }) }, env)
+  await app.request(`/artifacts/${artifactId}/share`, { method: 'POST', headers, body: JSON.stringify({ mode: 'snapshot' }) }, env)
+
+  assert.equal(db.prepare('SELECT COUNT(*) AS n FROM shares').first().n, 2)
+})
+
+test('sharing, checking status, or revoking an artifact that is not yours 404s', async () => {
+  const { db, env, headers } = await setup()
+  db.prepare('INSERT INTO artifacts (id, user_id, title, kind, latest_revision_id, created, updated) VALUES (?,?,?,?,?,?,?)')
+    .bind('art-2', 'user-2', 'Not yours', 'text', null, 1, 1).run()
+
+  const share = await app.request('/artifacts/art-2/share', { method: 'POST', headers, body: JSON.stringify({ mode: 'snapshot' }) }, env)
+  assert.equal(share.status, 404)
+  const status = await app.request('/artifacts/art-2/share', { headers }, env)
+  assert.equal(status.status, 404)
+  const revoke = await app.request('/artifacts/art-2/share', { method: 'DELETE', headers }, env)
+  assert.equal(revoke.status, 404)
+})

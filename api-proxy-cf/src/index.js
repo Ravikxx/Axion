@@ -1626,6 +1626,57 @@ app.delete('/artifacts/:id', async (c) => {
   return json({ ok: true })
 })
 
+app.post('/artifacts/:id/share', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  const artifactId = c.req.param('id')
+  const artifact = await c.env.DB.prepare(
+    'SELECT id, title, kind, language, latest_revision_id FROM artifacts WHERE id=? AND user_id=?'
+  ).bind(artifactId, user.id).first()
+  if (!artifact) return json({ error: 'Not found' }, 404)
+
+  const body = await c.req.json().catch(() => ({}))
+  const mode = SHARE_MODES.has(body?.mode) ? body.mode : 'snapshot'
+  const expiresAt = Number.isFinite(body?.expires_at) ? body.expires_at : null
+
+  let snapshotData = null
+  if (mode === 'snapshot') {
+    const revision = await c.env.DB.prepare('SELECT content FROM artifact_revisions WHERE id=?').bind(artifact.latest_revision_id).first()
+    snapshotData = JSON.stringify({ content: revision?.content ?? '', kind: artifact.kind, language: artifact.language })
+  }
+  const result = await upsertShare(c.env.DB, {
+    resourceType: 'artifact', resourceId: artifactId, ownerId: user.id, mode,
+    snapshotTitle: mode === 'snapshot' ? artifact.title : null, snapshotData, expiresAt,
+  })
+  return json(result)
+})
+
+app.get('/artifacts/:id/share', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  const artifactId = c.req.param('id')
+  const artifact = await c.env.DB.prepare('SELECT id FROM artifacts WHERE id=? AND user_id=?').bind(artifactId, user.id).first()
+  if (!artifact) return json({ error: 'Not found' }, 404)
+  const share = await c.env.DB.prepare(
+    'SELECT id, mode, expires_at, created, updated FROM shares WHERE resource_type=? AND resource_id=?'
+  ).bind('artifact', artifactId).first()
+  if (!share) return json({ error: 'Not shared' }, 404)
+  return json(share)
+})
+
+app.delete('/artifacts/:id/share', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  const artifactId = c.req.param('id')
+  const artifact = await c.env.DB.prepare('SELECT id FROM artifacts WHERE id=? AND user_id=?').bind(artifactId, user.id).first()
+  if (!artifact) return json({ error: 'Not found' }, 404)
+  const result = await c.env.DB.prepare(
+    'DELETE FROM shares WHERE resource_type=? AND resource_id=?'
+  ).bind('artifact', artifactId).run()
+  if (result.meta.changes === 0) return json({ error: 'Not shared' }, 404)
+  return json({ ok: true })
+})
+
 // Projects group chats together. A chat belongs to at most one project;
 // deleting a project unfiles its chats rather than deleting them.
 app.get('/projects', async (c) => {
@@ -1856,9 +1907,27 @@ app.get('/chats/:id', async (c) => {
 
 const SHARE_MODES = new Set(['snapshot', 'live'])
 
-// Only me <-> Anyone with the link is a single toggle per chat, not a list
-// of links — sharing again just updates the existing row (idx_shares_resource
-// is unique on (resource_type, resource_id)).
+// Only me <-> Anyone with the link is a single toggle per resource, not a
+// list of links — sharing again just updates the existing row
+// (idx_shares_resource is unique on (resource_type, resource_id)), and
+// snapshot mode always recaptures the resource as it stands right now, even
+// on a reshare of an already-snapshotted one — the owner explicitly asked
+// for the shared state to reflect this moment, not whatever it was before.
+async function upsertShare(db, { resourceType, resourceId, ownerId, mode, snapshotTitle, snapshotData, expiresAt }) {
+  const existing = await db.prepare(
+    'SELECT id FROM shares WHERE resource_type=? AND resource_id=?'
+  ).bind(resourceType, resourceId).first()
+  const id = existing?.id || crypto.randomUUID()
+  const now = Date.now()
+  await db.prepare(
+    `INSERT INTO shares (id, resource_type, resource_id, owner_user_id, mode, snapshot_title, snapshot_messages, expires_at, created, updated)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+     ON CONFLICT(id) DO UPDATE SET mode=excluded.mode, snapshot_title=excluded.snapshot_title,
+       snapshot_messages=excluded.snapshot_messages, expires_at=excluded.expires_at, updated=excluded.updated`
+  ).bind(id, resourceType, resourceId, ownerId, mode, snapshotTitle, snapshotData, expiresAt, now, now).run()
+  return { id, mode, expires_at: expiresAt, created: now, updated: now }
+}
+
 app.post('/chats/:id/share', async (c) => {
   const user = await requireAuth(c)
   if (!user) return json({ error: 'Not authenticated' }, 401)
@@ -1871,26 +1940,13 @@ app.post('/chats/:id/share', async (c) => {
   const body = await c.req.json().catch(() => ({}))
   const mode = SHARE_MODES.has(body?.mode) ? body.mode : 'snapshot'
   const expiresAt = Number.isFinite(body?.expires_at) ? body.expires_at : null
+  const snapshotData = mode === 'snapshot' ? JSON.stringify(await loadMessages(c.env.DB, chatId)) : null
 
-  const existing = await c.env.DB.prepare(
-    'SELECT id FROM shares WHERE resource_type=? AND resource_id=?'
-  ).bind('chat', chatId).first()
-  const id = existing?.id || crypto.randomUUID()
-  const now = Date.now()
-  // Snapshot mode always captures the chat as it stands right now, even on a
-  // reshare of an already-snapshotted chat — the owner explicitly asked for
-  // the shared state to reflect this moment, not whatever it was before.
-  const snapshotMessages = mode === 'snapshot' ? JSON.stringify(await loadMessages(c.env.DB, chatId)) : null
-  const snapshotTitle = mode === 'snapshot' ? chat.title : null
-
-  await c.env.DB.prepare(
-    `INSERT INTO shares (id, resource_type, resource_id, owner_user_id, mode, snapshot_title, snapshot_messages, expires_at, created, updated)
-     VALUES (?, 'chat', ?, ?, ?, ?, ?, ?, ?, ?)
-     ON CONFLICT(id) DO UPDATE SET mode=excluded.mode, snapshot_title=excluded.snapshot_title,
-       snapshot_messages=excluded.snapshot_messages, expires_at=excluded.expires_at, updated=excluded.updated`
-  ).bind(id, chatId, user.id, mode, snapshotTitle, snapshotMessages, expiresAt, now, now).run()
-
-  return json({ id, mode, expires_at: expiresAt, created: now, updated: now })
+  const result = await upsertShare(c.env.DB, {
+    resourceType: 'chat', resourceId: chatId, ownerId: user.id, mode,
+    snapshotTitle: mode === 'snapshot' ? chat.title : null, snapshotData, expiresAt,
+  })
+  return json(result)
 })
 
 app.get('/chats/:id/share', async (c) => {
@@ -1929,22 +1985,50 @@ async function resolveShare(db, token) {
   const share = await db.prepare('SELECT * FROM shares WHERE id=?').bind(token).first()
   if (!share) return null
   if (share.expires_at && share.expires_at < Date.now()) return null
+
+  if (share.resource_type === 'artifact') {
+    if (share.mode === 'snapshot') {
+      let data = {}
+      try { data = JSON.parse(share.snapshot_messages || '{}') } catch {}
+      return {
+        resource_type: 'artifact', mode: 'snapshot', title: share.snapshot_title || 'Shared artifact',
+        content: data.content || '', kind: data.kind || 'text', language: data.language || null, updated: share.updated,
+      }
+    }
+    const artifact = await db.prepare(
+      'SELECT id, title, kind, language, latest_revision_id, updated, user_id FROM artifacts WHERE id=?'
+    ).bind(share.resource_id).first()
+    if (!artifact) return null
+    const revision = await db.prepare('SELECT content FROM artifact_revisions WHERE id=?').bind(artifact.latest_revision_id).first()
+    return {
+      resource_type: 'artifact', mode: 'live', title: artifact.title, content: revision?.content ?? '',
+      kind: artifact.kind, language: artifact.language, updated: artifact.updated,
+      _artifactId: artifact.id, _ownerId: artifact.user_id,
+    }
+  }
+
   if (share.mode === 'snapshot') {
     let messages = []
     try { messages = JSON.parse(share.snapshot_messages || '[]') } catch {}
-    return { mode: 'snapshot', title: share.snapshot_title || 'Shared chat', messages, updated: share.updated }
+    return { resource_type: 'chat', mode: 'snapshot', title: share.snapshot_title || 'Shared chat', messages, updated: share.updated }
   }
   const chat = await db.prepare(
     'SELECT id, title, updated, user_id FROM chats WHERE id=? AND deleted_at IS NULL'
   ).bind(share.resource_id).first()
   if (!chat) return null
-  return { mode: 'live', title: chat.title, messages: await loadMessages(db, chat.id), updated: chat.updated, _chatId: chat.id, _ownerId: chat.user_id }
+  return { resource_type: 'chat', mode: 'live', title: chat.title, messages: await loadMessages(db, chat.id), updated: chat.updated, _chatId: chat.id, _ownerId: chat.user_id }
 }
 
 app.get('/shared/:token', async (c) => {
   const resolved = await resolveShare(c.env.DB, c.req.param('token'))
   if (!resolved) return json({ error: 'Not found' }, 404)
-  return json({ mode: resolved.mode, title: resolved.title, messages: resolved.messages, updated: resolved.updated })
+  if (resolved.resource_type === 'artifact') {
+    return json({
+      resource_type: 'artifact', mode: resolved.mode, title: resolved.title,
+      content: resolved.content, kind: resolved.kind, language: resolved.language, updated: resolved.updated,
+    })
+  }
+  return json({ resource_type: 'chat', mode: resolved.mode, title: resolved.title, messages: resolved.messages, updated: resolved.updated })
 })
 
 // Creates a private, independent copy owned by the requesting account.
@@ -1955,8 +2039,22 @@ app.post('/shared/:token/continue', async (c) => {
   const resolved = await resolveShare(c.env.DB, c.req.param('token'))
   if (!resolved) return json({ error: 'Not found' }, 404)
 
-  const newId = `c-shared-${crypto.randomUUID()}`
   const now = Date.now()
+  if (resolved.resource_type === 'artifact') {
+    const newId = crypto.randomUUID()
+    const revisionId = crypto.randomUUID()
+    await c.env.DB.batch([
+      c.env.DB.prepare('INSERT INTO artifact_revisions (id, artifact_id, content, created) VALUES (?,?,?,?)')
+        .bind(revisionId, newId, resolved.content, now),
+      c.env.DB.prepare(
+        `INSERT INTO artifacts (id, user_id, project_id, chat_id, title, kind, language, latest_revision_id, created, updated)
+         VALUES (?,?,?,?,?,?,?,?,?,?)`
+      ).bind(newId, user.id, null, null, resolved.title, resolved.kind, resolved.language, revisionId, now, now),
+    ])
+    return json({ resource_type: 'artifact', id: newId, title: resolved.title })
+  }
+
+  const newId = `c-shared-${crypto.randomUUID()}`
   await c.env.DB.batch([
     c.env.DB.prepare('INSERT INTO chats (id, user_id, title, updated, created) VALUES (?,?,?,?,?)')
       .bind(newId, user.id, resolved.title, now, now),
@@ -1966,7 +2064,7 @@ app.post('/shared/:token/continue', async (c) => {
     ).bind(`${newId}-${i + 1}`, newId, user.id, i + 1, m.role, m.content, m.tool_calls ? JSON.stringify(m.tool_calls) : null, m.tool_call_id || null, m.ts || now)),
   ])
 
-  return json({ id: newId, title: resolved.title })
+  return json({ resource_type: 'chat', id: newId, title: resolved.title })
 })
 
 // Creates a new, independent chat containing a copy of this chat's messages
