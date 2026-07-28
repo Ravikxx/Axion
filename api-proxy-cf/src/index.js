@@ -1871,7 +1871,7 @@ app.get('/projects/:id/chats', async (c) => {
   if (!project) return json({ error: 'Not found' }, 404)
   const { results } = await c.env.DB.prepare(
     `SELECT chats.id, chats.title, chats.updated, chats.pinned, chats.pinned_at,
-            chats.branched_from_chat_id, chats.branched_from_seq, chats.project_id,
+            chats.branched_from_chat_id, chats.branched_from_seq, chats.project_id, chats.title_rev,
             generations.id AS generation_id,
             generations.status AS generation_status,
             generations.error AS generation_error,
@@ -1895,6 +1895,7 @@ app.get('/projects/:id/chats', async (c) => {
       branched_from_chat_id: row.branched_from_chat_id || null,
       branched_from_seq: row.branched_from_seq || null,
       project_id: row.project_id || null,
+      title_rev: row.title_rev,
       generation: generationFromRow(row),
     })),
   })
@@ -1926,7 +1927,7 @@ app.get('/chats', async (c) => {
   if (!user) return json({ error: 'Not authenticated' }, 401)
   const { results } = await c.env.DB.prepare(
     `SELECT chats.id, chats.title, chats.updated, chats.pinned, chats.pinned_at,
-            chats.branched_from_chat_id, chats.branched_from_seq, chats.project_id,
+            chats.branched_from_chat_id, chats.branched_from_seq, chats.project_id, chats.title_rev,
             generations.id AS generation_id,
             generations.status AS generation_status,
             generations.error AS generation_error,
@@ -1950,6 +1951,7 @@ app.get('/chats', async (c) => {
       branched_from_chat_id: row.branched_from_chat_id || null,
       branched_from_seq: row.branched_from_seq || null,
       project_id: row.project_id || null,
+      title_rev: row.title_rev,
       generation: generationFromRow(row),
     })),
   })
@@ -1989,7 +1991,7 @@ app.get('/chats/:id', async (c) => {
   const row = await c.env.DB.prepare(
     `SELECT chats.id, chats.title, chats.updated, chats.pinned, chats.pinned_at,
             chats.draft, chats.draft_updated_at,
-            chats.branched_from_chat_id, chats.branched_from_seq, chats.project_id,
+            chats.branched_from_chat_id, chats.branched_from_seq, chats.project_id, chats.title_rev,
             generations.id AS generation_id,
             generations.status AS generation_status,
             generations.error AS generation_error,
@@ -2015,6 +2017,7 @@ app.get('/chats/:id', async (c) => {
     branched_from_chat_id: row.branched_from_chat_id || null,
     branched_from_seq: row.branched_from_seq || null,
     project_id: row.project_id || null,
+    title_rev: row.title_rev,
     generation: generationFromRow(row),
   })
 })
@@ -2264,20 +2267,59 @@ app.put('/chats/:id/draft', async (c) => {
 
 // Chat metadata only (title). Messages are managed one row at a time through
 // the /messages endpoints below.
+// Optimistic concurrency on rename: a client that passes expected_title_rev
+// only succeeds if nobody else has renamed the chat since it last read
+// title_rev — otherwise it gets a 409 with the current title/rev instead of
+// silently clobbering someone else's rename. Callers that omit
+// expected_title_rev (older clients, or the create-a-new-chat path) get the
+// prior always-wins behavior; there's nothing to conflict with on creation.
+async function upsertChatTitle(db, { id, userId, title, ts, expectedRev }) {
+  if (expectedRev === null) {
+    await db.prepare(
+      `INSERT INTO chats (id, user_id, title, updated, created, title_rev)
+       VALUES (?,?,?,?,?,1)
+       ON CONFLICT(id) DO UPDATE SET title=excluded.title, updated=excluded.updated, title_rev=chats.title_rev+1
+       WHERE chats.user_id = excluded.user_id`
+    ).bind(id, userId, title, ts, ts).run()
+    const row = await db.prepare('SELECT title, title_rev, updated FROM chats WHERE id=?').bind(id).first()
+    return { conflict: false, title: row.title, title_rev: row.title_rev, updated: row.updated }
+  }
+
+  const existing = await db.prepare('SELECT title, title_rev, updated FROM chats WHERE id=? AND user_id=?').bind(id, userId).first()
+  if (!existing) {
+    await db.prepare(
+      'INSERT INTO chats (id, user_id, title, updated, created, title_rev) VALUES (?,?,?,?,?,1)'
+    ).bind(id, userId, title, ts, ts).run()
+    return { conflict: false, title, title_rev: 1, updated: ts }
+  }
+  if (existing.title_rev !== expectedRev) {
+    return { conflict: true, title: existing.title, title_rev: existing.title_rev, updated: existing.updated }
+  }
+  const result = await db.prepare(
+    'UPDATE chats SET title=?, updated=?, title_rev=title_rev+1 WHERE id=? AND user_id=? AND title_rev=?'
+  ).bind(title, ts, id, userId, expectedRev).run()
+  if (result.meta.changes === 0) {
+    // Lost the race between the SELECT above and this UPDATE.
+    const now = await db.prepare('SELECT title, title_rev, updated FROM chats WHERE id=? AND user_id=?').bind(id, userId).first()
+    return { conflict: true, title: now.title, title_rev: now.title_rev, updated: now.updated }
+  }
+  return { conflict: false, title, title_rev: expectedRev + 1, updated: ts }
+}
+
 app.put('/chats/:id', async (c) => {
   const user = await requireAuth(c)
   if (!user) return json({ error: 'Not authenticated' }, 401)
   const id = c.req.param('id')
-  const { title, updated } = await c.req.json().catch(() => ({}))
-  const ts = updated || Date.now()
-  // Upsert; the WHERE guard stops one user from overwriting another's row id.
-  await c.env.DB.prepare(
-    `INSERT INTO chats (id, user_id, title, updated, created)
-     VALUES (?,?,?,?,?)
-     ON CONFLICT(id) DO UPDATE SET title=excluded.title, updated=excluded.updated
-     WHERE chats.user_id = excluded.user_id`
-  ).bind(id, user.id, (title || 'New chat').slice(0, 200), ts, ts).run()
-  return json({ ok: true, id, updated: ts })
+  const body = await c.req.json().catch(() => ({}))
+  const ts = body.updated || Date.now()
+  const title = (body.title || 'New chat').slice(0, 200)
+  const expectedRev = Number.isInteger(body.expected_title_rev) ? body.expected_title_rev : null
+
+  const result = await upsertChatTitle(c.env.DB, { id, userId: user.id, title, ts, expectedRev })
+  if (result.conflict) {
+    return json({ error: 'Title changed elsewhere', title: result.title, title_rev: result.title_rev, updated: result.updated }, 409)
+  }
+  return json({ ok: true, id, updated: result.updated, title_rev: result.title_rev })
 })
 
 // Appends one message. Used for the user's own turn and for {role:'tool'}
