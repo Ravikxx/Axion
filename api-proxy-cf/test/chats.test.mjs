@@ -39,7 +39,9 @@ class D1TestDatabase {
         pinned INTEGER NOT NULL DEFAULT 0,
         pinned_at INTEGER,
         draft TEXT,
-        draft_updated_at INTEGER
+        draft_updated_at INTEGER,
+        branched_from_chat_id TEXT,
+        branched_from_seq INTEGER
       );
       CREATE TABLE messages (
         id TEXT PRIMARY KEY,
@@ -105,6 +107,14 @@ async function setup() {
   const env = { DB: db, TOKEN_SECRET: SECRET }
   const headers = { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }
   return { db, env, headers }
+}
+
+function seedMessages(db, chatId, userId, items) {
+  items.forEach(([role, content], i) => {
+    const seq = i + 1
+    db.prepare('INSERT INTO messages (id, chat_id, user_id, seq, role, content, created_at) VALUES (?,?,?,?,?,?,?)')
+      .bind(`${chatId}-${seq}`, chatId, userId, seq, role, content, seq).run()
+  })
 }
 
 test('PUT creates a chat, POST appends messages one at a time, GET returns them in order', async () => {
@@ -327,4 +337,88 @@ test('a draft longer than the cap is truncated, not rejected', async () => {
   assert.equal(res.status, 200)
   const chat = db.prepare('SELECT draft FROM chats WHERE id=?').bind('chat-1').first()
   assert.equal(chat.draft.length, 50_000)
+})
+
+test('branching copies messages up to from_seq into a new chat and records the relationship', async () => {
+  const { db, env, headers } = await setup()
+  db.prepare('INSERT INTO chats (id, user_id, title, updated, created) VALUES (?,?,?,?,?)')
+    .bind('chat-1', 'user-1', 'Original', 1, 1).run()
+  seedMessages(db, 'chat-1', 'user-1', [
+    ['user', 'one'], ['assistant', 'two'], ['user', 'three'], ['assistant', 'four'],
+  ])
+
+  const res = await app.request('/chats/chat-1/branch', {
+    method: 'POST', headers, body: JSON.stringify({ from_seq: 2 }),
+  }, env)
+  assert.equal(res.status, 200)
+  const body = await res.json()
+  assert.equal(body.branched_from_chat_id, 'chat-1')
+  assert.equal(body.branched_from_seq, 2)
+  assert.equal(body.title, 'Original')
+
+  const chat = db.prepare('SELECT branched_from_chat_id, branched_from_seq FROM chats WHERE id=?').bind(body.id).first()
+  assert.equal(chat.branched_from_chat_id, 'chat-1')
+  assert.equal(chat.branched_from_seq, 2)
+
+  const messages = db.prepare('SELECT seq, role, content FROM messages WHERE chat_id=? ORDER BY seq').bind(body.id).all().results
+  assert.deepEqual(messages.map(m => [m.role, m.content]), [['user', 'one'], ['assistant', 'two']])
+
+  // The original chat is untouched.
+  const originalCount = db.prepare('SELECT COUNT(*) AS n FROM messages WHERE chat_id=?').bind('chat-1').first().n
+  assert.equal(originalCount, 4)
+})
+
+test('a branched copy does not carry generation_id forward, so it never collides with the source', async () => {
+  const { db, env, headers } = await setup()
+  db.prepare('INSERT INTO chats (id, user_id, title, updated, created) VALUES (?,?,?,?,?)')
+    .bind('chat-1', 'user-1', 'Original', 1, 1).run()
+  db.prepare('INSERT INTO messages (id, chat_id, user_id, seq, role, content, generation_id, created_at) VALUES (?,?,?,?,?,?,?,?)')
+    .bind('chat-1-1', 'chat-1', 'user-1', 1, 'assistant', 'reply', 'gen-1', 1).run()
+
+  const res = await app.request('/chats/chat-1/branch', {
+    method: 'POST', headers, body: JSON.stringify({ from_seq: 1 }),
+  }, env)
+  assert.equal(res.status, 200)
+  const body = await res.json()
+
+  const copy = db.prepare('SELECT generation_id FROM messages WHERE chat_id=? AND seq=1').bind(body.id).first()
+  assert.equal(copy.generation_id, null)
+  // The unique index on generation_id would have thrown on insert if this
+  // weren't null — reaching here at all is most of the assertion.
+})
+
+test('branching a chat owned by another user is rejected', async () => {
+  const { db, env, headers } = await setup()
+  db.prepare('INSERT INTO chats (id, user_id, title, updated, created) VALUES (?,?,?,?,?)')
+    .bind('chat-2', 'user-2', 'Not yours', 1, 1).run()
+  seedMessages(db, 'chat-2', 'user-2', [['user', 'hi']])
+
+  const res = await app.request('/chats/chat-2/branch', {
+    method: 'POST', headers, body: JSON.stringify({ from_seq: 1 }),
+  }, env)
+  assert.equal(res.status, 404)
+})
+
+test('an invalid from_seq is rejected', async () => {
+  const { db, env, headers } = await setup()
+  db.prepare('INSERT INTO chats (id, user_id, title, updated, created) VALUES (?,?,?,?,?)')
+    .bind('chat-1', 'user-1', 'Original', 1, 1).run()
+  seedMessages(db, 'chat-1', 'user-1', [['user', 'one']])
+
+  const res = await app.request('/chats/chat-1/branch', {
+    method: 'POST', headers, body: JSON.stringify({ from_seq: 0 }),
+  }, env)
+  assert.equal(res.status, 400)
+})
+
+test('branching from a seq past the end of the conversation is rejected, not silently clamped', async () => {
+  const { db, env, headers } = await setup()
+  db.prepare('INSERT INTO chats (id, user_id, title, updated, created) VALUES (?,?,?,?,?)')
+    .bind('chat-1', 'user-1', 'Original', 1, 1).run()
+  seedMessages(db, 'chat-1', 'user-1', [['user', 'one']])
+
+  const res = await app.request('/chats/chat-1/branch', {
+    method: 'POST', headers, body: JSON.stringify({ from_seq: 99 }),
+  }, env)
+  assert.equal(res.status, 400)
 })

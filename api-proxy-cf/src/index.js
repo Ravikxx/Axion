@@ -1443,6 +1443,7 @@ app.get('/chats', async (c) => {
   if (!user) return json({ error: 'Not authenticated' }, 401)
   const { results } = await c.env.DB.prepare(
     `SELECT chats.id, chats.title, chats.updated, chats.pinned, chats.pinned_at,
+            chats.branched_from_chat_id, chats.branched_from_seq,
             generations.id AS generation_id,
             generations.status AS generation_status,
             generations.error AS generation_error,
@@ -1463,6 +1464,8 @@ app.get('/chats', async (c) => {
       updated: row.updated,
       pinned: !!row.pinned,
       pinned_at: row.pinned_at || null,
+      branched_from_chat_id: row.branched_from_chat_id || null,
+      branched_from_seq: row.branched_from_seq || null,
       generation: generationFromRow(row),
     })),
   })
@@ -1474,6 +1477,7 @@ app.get('/chats/:id', async (c) => {
   const row = await c.env.DB.prepare(
     `SELECT chats.id, chats.title, chats.updated, chats.pinned, chats.pinned_at,
             chats.draft, chats.draft_updated_at,
+            chats.branched_from_chat_id, chats.branched_from_seq,
             generations.id AS generation_id,
             generations.status AS generation_status,
             generations.error AS generation_error,
@@ -1496,7 +1500,58 @@ app.get('/chats/:id', async (c) => {
     pinned_at: row.pinned_at || null,
     draft: row.draft || '',
     draft_updated_at: row.draft_updated_at || null,
+    branched_from_chat_id: row.branched_from_chat_id || null,
+    branched_from_seq: row.branched_from_seq || null,
     generation: generationFromRow(row),
+  })
+})
+
+// Creates a new, independent chat containing a copy of this chat's messages
+// up to and including from_seq. Copies never carry generation_id forward —
+// idx_messages_generation is unique across the whole table (it exists to make
+// one chat's own alarm retries idempotent), so reusing it on a copy in a
+// different chat would collide with the original row.
+app.post('/chats/:id/branch', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  const sourceId = c.req.param('id')
+  const source = await c.env.DB.prepare('SELECT id, title FROM chats WHERE id=? AND user_id=?').bind(sourceId, user.id).first()
+  if (!source) return json({ error: 'Chat not found' }, 404)
+
+  const { from_seq: fromSeq } = await c.req.json().catch(() => ({}))
+  if (!Number.isInteger(fromSeq) || fromSeq < 1) return json({ error: 'Invalid from_seq' }, 400)
+
+  const { results: rows } = await c.env.DB.prepare(
+    'SELECT seq, role, content, tool_calls, tool_call_id, created_at FROM messages WHERE chat_id=? AND seq<=? ORDER BY seq'
+  ).bind(sourceId, fromSeq).all()
+  // from_seq must land exactly on a real message — otherwise a typo'd or
+  // stale seq would silently clamp to whatever exists instead of failing,
+  // and the caller would believe it branched somewhere it didn't.
+  if (!rows.length || rows[rows.length - 1].seq !== fromSeq) {
+    return json({ error: 'Invalid from_seq' }, 400)
+  }
+
+  const newId = `c-branch-${crypto.randomUUID()}`
+  const now = Date.now()
+  const title = source.title || 'New chat'
+
+  await c.env.DB.batch([
+    c.env.DB.prepare(
+      `INSERT INTO chats (id, user_id, title, updated, created, branched_from_chat_id, branched_from_seq)
+       VALUES (?,?,?,?,?,?,?)`
+    ).bind(newId, user.id, title, now, now, sourceId, fromSeq),
+    ...rows.map(row => c.env.DB.prepare(
+      `INSERT INTO messages (id, chat_id, user_id, seq, role, content, tool_calls, tool_call_id, created_at)
+       VALUES (?,?,?,?,?,?,?,?,?)`
+    ).bind(`${newId}-${row.seq}`, newId, user.id, row.seq, row.role, row.content, row.tool_calls, row.tool_call_id, row.created_at)),
+  ])
+
+  return json({
+    id: newId,
+    title,
+    updated: now,
+    branched_from_chat_id: sourceId,
+    branched_from_seq: fromSeq,
   })
 })
 

@@ -43,7 +43,9 @@ class D1TestDatabase {
         pinned INTEGER NOT NULL DEFAULT 0,
         pinned_at INTEGER,
         draft TEXT,
-        draft_updated_at INTEGER
+        draft_updated_at INTEGER,
+        branched_from_chat_id TEXT,
+        branched_from_seq INTEGER
       );
       CREATE TABLE messages (
         id TEXT PRIMARY KEY,
