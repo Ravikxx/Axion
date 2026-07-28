@@ -43,7 +43,8 @@ class D1TestDatabase {
         branched_from_chat_id TEXT,
         branched_from_seq INTEGER,
         deleted_at INTEGER,
-        project_id TEXT
+        project_id TEXT,
+        title_rev INTEGER NOT NULL DEFAULT 0
       );
       CREATE TABLE projects (
         id TEXT PRIMARY KEY,
@@ -1273,4 +1274,64 @@ test('scheduled definitions only expose themselves to their owner', async () => 
   assert.equal(del.status, 404)
   const list = await app.request('/scheduled', { headers }, env)
   assert.deepEqual((await list.json()).scheduled, [])
+})
+
+test('creating a chat via PUT with no expected_title_rev starts it at title_rev 1', async () => {
+  const { env, headers } = await setup()
+  const res = await app.request('/chats/chat-1', {
+    method: 'PUT', headers, body: JSON.stringify({ title: 'Hello' }),
+  }, env)
+  assert.equal(res.status, 200)
+  assert.equal((await res.json()).title_rev, 1)
+
+  const get = await app.request('/chats/chat-1', { headers }, env)
+  assert.equal((await get.json()).title_rev, 1)
+})
+
+test('renaming with a stale expected_title_rev 409s instead of silently overwriting', async () => {
+  const { env, headers } = await setup()
+  await app.request('/chats/chat-1', { method: 'PUT', headers, body: JSON.stringify({ title: 'v1' }) }, env)
+  // Someone else (or another window) renames it first, advancing title_rev to 2.
+  await app.request('/chats/chat-1', {
+    method: 'PUT', headers, body: JSON.stringify({ title: 'v2', expected_title_rev: 1 }),
+  }, env)
+
+  // A stale client still thinks it's at rev 1 and tries to rename on top of it.
+  const stale = await app.request('/chats/chat-1', {
+    method: 'PUT', headers, body: JSON.stringify({ title: 'stale overwrite', expected_title_rev: 1 }),
+  }, env)
+  assert.equal(stale.status, 409)
+  const body = await stale.json()
+  assert.equal(body.title, 'v2')
+  assert.equal(body.title_rev, 2)
+
+  const get = await app.request('/chats/chat-1', { headers }, env)
+  assert.equal((await get.json()).title, 'v2')
+})
+
+test('renaming with the correct expected_title_rev succeeds and advances the revision', async () => {
+  const { env, headers } = await setup()
+  const create = await app.request('/chats/chat-1', { method: 'PUT', headers, body: JSON.stringify({ title: 'v1' }) }, env)
+  const { title_rev } = await create.json()
+
+  const rename = await app.request('/chats/chat-1', {
+    method: 'PUT', headers, body: JSON.stringify({ title: 'v2', expected_title_rev: title_rev }),
+  }, env)
+  assert.equal(rename.status, 200)
+  const body = await rename.json()
+  assert.equal(body.title_rev, title_rev + 1)
+
+  const get = await app.request('/chats/chat-1', { headers }, env)
+  assert.equal((await get.json()).title, 'v2')
+})
+
+test('renaming without expected_title_rev keeps the old always-wins behavior for backward compatibility', async () => {
+  const { env, headers } = await setup()
+  await app.request('/chats/chat-1', { method: 'PUT', headers, body: JSON.stringify({ title: 'v1' }) }, env)
+  await app.request('/chats/chat-1', { method: 'PUT', headers, body: JSON.stringify({ title: 'v2', expected_title_rev: 1 }) }, env)
+
+  const noCheck = await app.request('/chats/chat-1', { method: 'PUT', headers, body: JSON.stringify({ title: 'v3' }) }, env)
+  assert.equal(noCheck.status, 200)
+  const get = await app.request('/chats/chat-1', { headers }, env)
+  assert.equal((await get.json()).title, 'v3')
 })
