@@ -1379,6 +1379,44 @@ function webChatMessages(messages) {
     })
 }
 
+// Loads one chat's messages as the same {role, content, tool_calls?,
+// tool_call_id?, ts, generation_id?} shape the old JSON blob produced, so
+// nothing downstream of this (the client, webChatMessages) has to change.
+async function loadMessages(db, chatId) {
+  const { results } = await db.prepare(
+    'SELECT role, content, tool_calls, tool_call_id, generation_id, created_at FROM messages WHERE chat_id=? ORDER BY seq ASC'
+  ).bind(chatId).all()
+  return results.map(row => {
+    const out = { role: row.role, content: row.content, ts: row.created_at }
+    if (row.tool_calls) { try { out.tool_calls = JSON.parse(row.tool_calls) } catch {} }
+    if (row.tool_call_id) out.tool_call_id = row.tool_call_id
+    if (row.generation_id) out.generation_id = row.generation_id
+    return out
+  })
+}
+
+// Appends one message and returns its assigned seq. generation_id is unique
+// per chat (enforced by idx_messages_generation), so a retried Durable
+// Object alarm delivering the same assistant reply twice is a no-op the
+// second time rather than a duplicate row.
+async function appendMessage(db, { chatId, userId, role, content, toolCalls, toolCallId, generationId, createdAt }) {
+  const next = await db.prepare(
+    'SELECT COALESCE(MAX(seq), 0) + 1 AS seq FROM messages WHERE chat_id=?'
+  ).bind(chatId).first()
+  const seq = next.seq
+  const id = `${chatId}-${seq}`
+  await db.prepare(
+    `INSERT INTO messages (id, chat_id, user_id, seq, role, content, tool_calls, tool_call_id, generation_id, created_at)
+     VALUES (?,?,?,?,?,?,?,?,?,?)
+     ON CONFLICT(generation_id) WHERE generation_id IS NOT NULL DO NOTHING`
+  ).bind(
+    id, chatId, userId, seq, role, content ?? null,
+    toolCalls ? JSON.stringify(toolCalls) : null,
+    toolCallId || null, generationId || null, createdAt || Date.now(),
+  ).run()
+  return seq
+}
+
 function webChatTools(tools) {
   if (!Array.isArray(tools)) return undefined
   const runCode = tools.find(tool => tool?.type === 'function' && tool?.function?.name === 'run_code')
@@ -1432,7 +1470,7 @@ app.get('/chats/:id', async (c) => {
   const user = await requireAuth(c)
   if (!user) return json({ error: 'Not authenticated' }, 401)
   const row = await c.env.DB.prepare(
-    `SELECT chats.id, chats.title, chats.messages, chats.updated,
+    `SELECT chats.id, chats.title, chats.updated,
             generations.id AS generation_id,
             generations.status AS generation_status,
             generations.error AS generation_error,
@@ -1445,8 +1483,7 @@ app.get('/chats/:id', async (c) => {
      WHERE chats.id=? AND chats.user_id=?`
   ).bind(c.req.param('id'), user.id).first()
   if (!row) return json({ error: 'Not found' }, 404)
-  let messages = []
-  try { messages = JSON.parse(row.messages || '[]') } catch {}
+  const messages = await loadMessages(c.env.DB, row.id)
   return json({
     id: row.id,
     title: row.title,
@@ -1456,22 +1493,64 @@ app.get('/chats/:id', async (c) => {
   })
 })
 
+// Chat metadata only (title). Messages are managed one row at a time through
+// the /messages endpoints below.
 app.put('/chats/:id', async (c) => {
   const user = await requireAuth(c)
   if (!user) return json({ error: 'Not authenticated' }, 401)
   const id = c.req.param('id')
-  const { title, messages, updated } = await c.req.json().catch(() => ({}))
-  const msgJson = JSON.stringify(Array.isArray(messages) ? messages : [])
-  if (msgJson.length > 1_000_000) return json({ error: 'Conversation too large' }, 413)
+  const { title, updated } = await c.req.json().catch(() => ({}))
   const ts = updated || Date.now()
   // Upsert; the WHERE guard stops one user from overwriting another's row id.
   await c.env.DB.prepare(
-    `INSERT INTO chats (id, user_id, title, messages, updated, created)
-     VALUES (?,?,?,?,?,?)
-     ON CONFLICT(id) DO UPDATE SET title=excluded.title, messages=excluded.messages, updated=excluded.updated
+    `INSERT INTO chats (id, user_id, title, updated, created)
+     VALUES (?,?,?,?,?)
+     ON CONFLICT(id) DO UPDATE SET title=excluded.title, updated=excluded.updated
      WHERE chats.user_id = excluded.user_id`
-  ).bind(id, user.id, (title || 'New chat').slice(0, 200), msgJson, ts, ts).run()
+  ).bind(id, user.id, (title || 'New chat').slice(0, 200), ts, ts).run()
   return json({ ok: true, id, updated: ts })
+})
+
+// Appends one message. Used for the user's own turn and for {role:'tool'}
+// results — the assistant's reply is appended by the Durable Object instead,
+// since only it knows when the model finished.
+app.post('/chats/:id/messages', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  const chatId = c.req.param('id')
+  const chat = await c.env.DB.prepare('SELECT id FROM chats WHERE id=? AND user_id=?').bind(chatId, user.id).first()
+  if (!chat) return json({ error: 'Chat not found' }, 404)
+
+  const body = await c.req.json().catch(() => ({}))
+  if (!['user', 'assistant', 'tool'].includes(body.role)) return json({ error: 'Invalid role' }, 400)
+  const content = typeof body.content === 'string' ? body.content : null
+  if (content && content.length > 200_000) return json({ error: 'Message too large' }, 413)
+
+  const seq = await appendMessage(c.env.DB, {
+    chatId,
+    userId: user.id,
+    role: body.role,
+    content,
+    toolCalls: Array.isArray(body.tool_calls) ? body.tool_calls : undefined,
+    toolCallId: typeof body.tool_call_id === 'string' ? body.tool_call_id : undefined,
+  })
+  const ts = Date.now()
+  await c.env.DB.prepare('UPDATE chats SET updated=? WHERE id=?').bind(ts, chatId).run()
+  return json({ ok: true, seq, updated: ts })
+})
+
+// Deletes every message from `from_seq` onward, for editing or regenerating
+// an earlier turn.
+app.delete('/chats/:id/messages', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  const chatId = c.req.param('id')
+  const chat = await c.env.DB.prepare('SELECT id FROM chats WHERE id=? AND user_id=?').bind(chatId, user.id).first()
+  if (!chat) return json({ error: 'Chat not found' }, 404)
+  const fromSeq = Number(c.req.query('from_seq'))
+  if (!Number.isInteger(fromSeq) || fromSeq < 1) return json({ error: 'Invalid from_seq' }, 400)
+  await c.env.DB.prepare('DELETE FROM messages WHERE chat_id=? AND seq>=?').bind(chatId, fromSeq).run()
+  return json({ ok: true })
 })
 
 app.post('/chats/:id/generations', async (c) => {
@@ -1481,7 +1560,7 @@ app.post('/chats/:id/generations', async (c) => {
   const chatId = c.req.param('id')
   const request = await c.req.json().catch(() => ({}))
   const row = await c.env.DB.prepare(
-    `SELECT chats.messages, chats.active_generation_id,
+    `SELECT chats.id, chats.active_generation_id,
             generations.status AS generation_status
      FROM chats
      LEFT JOIN chat_generations AS generations
@@ -1497,9 +1576,8 @@ app.post('/chats/:id/generations', async (c) => {
     }, 409)
   }
 
-  let messages
-  try { messages = JSON.parse(row.messages || '[]') } catch { messages = null }
-  if (!Array.isArray(messages) || !messages.length) {
+  const messages = await loadMessages(c.env.DB, chatId)
+  if (!messages.length) {
     return json({ error: 'The chat has no messages to answer.' }, 400)
   }
   if (!['user', 'tool'].includes(messages[messages.length - 1]?.role)) {

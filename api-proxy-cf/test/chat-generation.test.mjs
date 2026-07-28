@@ -37,11 +37,24 @@ class D1TestDatabase {
         id TEXT PRIMARY KEY,
         user_id TEXT NOT NULL,
         title TEXT NOT NULL DEFAULT 'New chat',
-        messages TEXT NOT NULL DEFAULT '[]',
         updated INTEGER NOT NULL DEFAULT 0,
         created INTEGER NOT NULL DEFAULT 0,
         active_generation_id TEXT
       );
+      CREATE TABLE messages (
+        id TEXT PRIMARY KEY,
+        chat_id TEXT NOT NULL,
+        user_id TEXT NOT NULL,
+        seq INTEGER NOT NULL,
+        role TEXT NOT NULL,
+        content TEXT,
+        tool_calls TEXT,
+        tool_call_id TEXT,
+        generation_id TEXT,
+        created_at INTEGER NOT NULL
+      );
+      CREATE UNIQUE INDEX idx_messages_chat_seq ON messages (chat_id, seq);
+      CREATE UNIQUE INDEX idx_messages_generation ON messages (generation_id) WHERE generation_id IS NOT NULL;
       CREATE TABLE chat_generations (
         id TEXT PRIMARY KEY,
         chat_id TEXT NOT NULL,
@@ -129,15 +142,15 @@ async function sessionToken(uid, secret) {
 function seedChat(db, { userId = 'user-1', chatId = 'chat-1' } = {}) {
   db.prepare('INSERT INTO users (id, email) VALUES (?,?)').bind(userId, `${userId}@example.com`).run()
   db.prepare(
-    'INSERT INTO chats (id, user_id, title, messages, updated, created) VALUES (?,?,?,?,?,?)'
-  ).bind(
-    chatId,
-    userId,
-    'Test chat',
-    JSON.stringify([{ role: 'user', content: 'Hello', ts: 1 }]),
-    1,
-    1,
-  ).run()
+    'INSERT INTO chats (id, user_id, title, updated, created) VALUES (?,?,?,?,?)'
+  ).bind(chatId, userId, 'Test chat', 1, 1).run()
+  db.prepare(
+    'INSERT INTO messages (id, chat_id, user_id, seq, role, content, created_at) VALUES (?,?,?,?,?,?,?)'
+  ).bind(`${chatId}-1`, chatId, userId, 1, 'user', 'Hello', 1).run()
+}
+
+function chatMessages(db, chatId) {
+  return db.prepare('SELECT * FROM messages WHERE chat_id=? ORDER BY seq').bind(chatId).all()
 }
 
 test('creating a generation persists queued status and hands server-owned work to the Durable Object', async () => {
@@ -246,8 +259,7 @@ test('the Durable Object appends the assistant reply and completes the job after
   // tokens as they arrive rather than one block at the end.
   assert.equal(JSON.parse(requestSeen.options.body).stream, true)
 
-  const chat = db.prepare('SELECT messages FROM chats WHERE id=?').bind('chat-1').first()
-  const messages = JSON.parse(chat.messages)
+  const messages = chatMessages(db, 'chat-1').results
   assert.equal(messages.length, 2)
   assert.equal(messages[1].content, 'Server-owned reply')
   assert.equal(messages[1].generation_id, 'gen-1')
@@ -286,7 +298,7 @@ test('a stored result retries only the D1 commit and never calls the model twice
     globalThis.fetch = realFetch
   }
 
-  const messages = JSON.parse(db.prepare('SELECT messages FROM chats WHERE id=?').bind('chat-1').first().messages)
+  const messages = chatMessages(db, 'chat-1').results
   assert.equal(messages.at(-1).content, 'Recovered reply')
   assert.equal(db.prepare('SELECT status FROM chat_generations WHERE id=?').bind('gen-2').first().status, 'completed')
 })
@@ -420,10 +432,11 @@ test('streamed tool calls are reassembled from their fragments', async () => {
   })
   try { await generation.alarm() } finally { globalThis.fetch = realFetch }
 
-  const messages = JSON.parse(db.prepare('SELECT messages FROM chats WHERE id=?').bind('chat-1').first().messages)
+  const messages = chatMessages(db, 'chat-1').results
   const reply = messages.at(-1)
-  assert.equal(reply.tool_calls.length, 1)
-  assert.equal(reply.tool_calls[0].id, 'call_1')
-  assert.equal(reply.tool_calls[0].function.name, 'run_code')
-  assert.equal(reply.tool_calls[0].function.arguments, '{"code":"1"}')
+  const toolCalls = JSON.parse(reply.tool_calls)
+  assert.equal(toolCalls.length, 1)
+  assert.equal(toolCalls[0].id, 'call_1')
+  assert.equal(toolCalls[0].function.name, 'run_code')
+  assert.equal(toolCalls[0].function.arguments, '{"code":"1"}')
 })

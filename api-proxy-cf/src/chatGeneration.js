@@ -247,7 +247,7 @@ export class ChatGeneration {
     let row
     try {
       row = await this.env.DB.prepare(
-        'SELECT messages FROM chats WHERE id=? AND user_id=?'
+        'SELECT id FROM chats WHERE id=? AND user_id=?'
       ).bind(job.chatId, job.userId).first()
     } catch (error) {
       await this.retryCommit(job, error)
@@ -259,22 +259,29 @@ export class ChatGeneration {
       return
     }
 
-    let messages = []
-    try { messages = JSON.parse(row.messages || '[]') } catch {}
-    if (!Array.isArray(messages)) messages = []
-
-    // Alarm delivery is at-least-once. A generation id on the assistant
-    // message makes the D1 append idempotent if an alarm is retried.
-    if (!messages.some(message => message?.generation_id === job.id)) {
-      messages.push(job.resultMessage)
-    }
-
     const completed = Date.now()
+    const message = job.resultMessage
     try {
+      // Alarm delivery is at-least-once. idx_messages_generation makes this
+      // insert a no-op on a retried alarm instead of a duplicate row — the
+      // whole point of stamping generation_id on the assistant's message.
+      const next = await this.env.DB.prepare(
+        'SELECT COALESCE(MAX(seq), 0) + 1 AS seq FROM messages WHERE chat_id=?'
+      ).bind(job.chatId).first()
       await this.env.DB.batch([
         this.env.DB.prepare(
-          'UPDATE chats SET messages=?, updated=? WHERE id=? AND user_id=?'
-        ).bind(JSON.stringify(messages), completed, job.chatId, job.userId),
+          `INSERT INTO messages (id, chat_id, user_id, seq, role, content, tool_calls, generation_id, created_at)
+           VALUES (?,?,?,?,?,?,?,?,?)
+           ON CONFLICT(generation_id) WHERE generation_id IS NOT NULL DO NOTHING`
+        ).bind(
+          `${job.chatId}-${next.seq}`, job.chatId, job.userId, next.seq,
+          message.role, message.content ?? null,
+          message.tool_calls ? JSON.stringify(message.tool_calls) : null,
+          job.id, message.ts || completed,
+        ),
+        this.env.DB.prepare(
+          'UPDATE chats SET updated=? WHERE id=? AND user_id=?'
+        ).bind(completed, job.chatId, job.userId),
         this.env.DB.prepare(
           "UPDATE chat_generations SET status='completed', error=NULL, completed=? WHERE id=? AND user_id=?"
         ).bind(completed, job.id, job.userId),
