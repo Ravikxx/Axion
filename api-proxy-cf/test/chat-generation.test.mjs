@@ -41,7 +41,9 @@ class D1TestDatabase {
         created INTEGER NOT NULL DEFAULT 0,
         active_generation_id TEXT,
         pinned INTEGER NOT NULL DEFAULT 0,
-        pinned_at INTEGER
+        pinned_at INTEGER,
+        draft TEXT,
+        draft_updated_at INTEGER
       );
       CREATE TABLE messages (
         id TEXT PRIMARY KEY,
