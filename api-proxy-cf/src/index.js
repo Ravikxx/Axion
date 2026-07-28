@@ -1203,6 +1203,7 @@ app.delete('/dashboard/account', async (c) => {
     db.prepare('DELETE FROM projects WHERE user_id=?').bind(user.id),
     db.prepare('DELETE FROM artifact_revisions WHERE artifact_id IN (SELECT id FROM artifacts WHERE user_id=?)').bind(user.id),
     db.prepare('DELETE FROM artifacts WHERE user_id=?').bind(user.id),
+    db.prepare('DELETE FROM user_settings WHERE user_id=?').bind(user.id),
     db.prepare('DELETE FROM email_prefs WHERE user_id=?').bind(user.id),
     db.prepare('DELETE FROM device_codes WHERE user_id=?').bind(user.id),
     db.prepare('DELETE FROM appeals WHERE user_id=?').bind(user.id),
@@ -1444,6 +1445,44 @@ function webChatTools(tools) {
     },
   }]
 }
+
+// Cloud-authoritative preferences, so they follow the account across
+// devices/windows instead of living in one client's localStorage. No row
+// means defaults; a row is only created on first write.
+app.get('/settings', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  const row = await c.env.DB.prepare(
+    'SELECT selected_model, onboarding_completed_at, updated FROM user_settings WHERE user_id=?'
+  ).bind(user.id).first()
+  return json({
+    selected_model: row?.selected_model || null,
+    onboarding_completed_at: row?.onboarding_completed_at || null,
+    updated: row?.updated || null,
+  })
+})
+
+app.put('/settings', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  const body = await c.req.json().catch(() => ({}))
+  const hasModel = typeof body?.selected_model === 'string'
+  const hasOnboarding = body?.onboarding_completed === true
+  if (!hasModel && !hasOnboarding) return json({ error: 'Nothing to update' }, 400)
+  const now = Date.now()
+  const existing = await c.env.DB.prepare(
+    'SELECT selected_model, onboarding_completed_at FROM user_settings WHERE user_id=?'
+  ).bind(user.id).first()
+  const selectedModel = hasModel ? body.selected_model.slice(0, 100) : (existing?.selected_model ?? null)
+  const onboardingCompletedAt = hasOnboarding ? now : (existing?.onboarding_completed_at ?? null)
+  await c.env.DB.prepare(
+    `INSERT INTO user_settings (user_id, selected_model, onboarding_completed_at, updated)
+     VALUES (?, ?, ?, ?)
+     ON CONFLICT(user_id) DO UPDATE SET selected_model=excluded.selected_model,
+       onboarding_completed_at=excluded.onboarding_completed_at, updated=excluded.updated`
+  ).bind(user.id, selectedModel, onboardingCompletedAt, now).run()
+  return json({ selected_model: selectedModel, onboarding_completed_at: onboardingCompletedAt, updated: now })
+})
 
 const ARTIFACT_KINDS = new Set(['text', 'code', 'markdown'])
 const ARTIFACT_CONTENT_LIMIT = 500_000
