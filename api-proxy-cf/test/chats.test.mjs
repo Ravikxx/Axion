@@ -76,6 +76,19 @@ class D1TestDatabase {
         onboarding_completed_at INTEGER,
         updated INTEGER NOT NULL
       );
+      CREATE TABLE shares (
+        id TEXT PRIMARY KEY,
+        resource_type TEXT NOT NULL,
+        resource_id TEXT NOT NULL,
+        owner_user_id TEXT NOT NULL,
+        mode TEXT NOT NULL DEFAULT 'snapshot',
+        snapshot_title TEXT,
+        snapshot_messages TEXT,
+        expires_at INTEGER,
+        created INTEGER NOT NULL,
+        updated INTEGER NOT NULL
+      );
+      CREATE UNIQUE INDEX idx_shares_resource ON shares (resource_type, resource_id);
       CREATE TABLE messages (
         id TEXT PRIMARY KEY,
         chat_id TEXT NOT NULL,
@@ -842,4 +855,168 @@ test('settings are scoped per user', async () => {
     .bind('user-2', 'not-yours', 1).run()
   const res = await app.request('/settings', { headers }, env)
   assert.equal((await res.json()).selected_model, null)
+})
+
+async function headersFor(uid) {
+  const token = await sessionToken(uid, SECRET)
+  return { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }
+}
+
+test('POST /chats/:id/share in snapshot mode captures current messages; editing the chat after does not change the snapshot', async () => {
+  const { db, env, headers } = await setup()
+  db.prepare('INSERT INTO chats (id, user_id, title, updated, created) VALUES (?,?,?,?,?)')
+    .bind('chat-1', 'user-1', 'My chat', 1, 1).run()
+  seedMessages(db, 'chat-1', 'user-1', [['user', 'hi'], ['assistant', 'hello']])
+
+  const share = await app.request('/chats/chat-1/share', {
+    method: 'POST', headers, body: JSON.stringify({ mode: 'snapshot' }),
+  }, env)
+  assert.equal(share.status, 200)
+  const { id: token } = await share.json()
+
+  db.prepare('INSERT INTO messages (id, chat_id, user_id, seq, role, content, created_at) VALUES (?,?,?,?,?,?,?)')
+    .bind('chat-1-3', 'chat-1', 'user-1', 3, 'user', 'a new message that should not appear', 3).run()
+
+  const viewed = await app.request(`/shared/${token}`, {}, env)
+  assert.equal(viewed.status, 200)
+  const body = await viewed.json()
+  assert.equal(body.mode, 'snapshot')
+  assert.equal(body.messages.length, 2)
+})
+
+test('POST /chats/:id/share in live mode reflects later edits to the chat', async () => {
+  const { db, env, headers } = await setup()
+  db.prepare('INSERT INTO chats (id, user_id, title, updated, created) VALUES (?,?,?,?,?)')
+    .bind('chat-1', 'user-1', 'My chat', 1, 1).run()
+  seedMessages(db, 'chat-1', 'user-1', [['user', 'hi']])
+
+  const share = await app.request('/chats/chat-1/share', {
+    method: 'POST', headers, body: JSON.stringify({ mode: 'live' }),
+  }, env)
+  const { id: token } = await share.json()
+
+  db.prepare('INSERT INTO messages (id, chat_id, user_id, seq, role, content, created_at) VALUES (?,?,?,?,?,?,?)')
+    .bind('chat-1-2', 'chat-1', 'user-1', 2, 'assistant', 'a live reply', 2).run()
+
+  const viewed = await app.request(`/shared/${token}`, {}, env)
+  const body = await viewed.json()
+  assert.equal(body.mode, 'live')
+  assert.equal(body.messages.length, 2)
+})
+
+test('resharing an already-shared chat updates the same token rather than minting a new one', async () => {
+  const { db, env, headers } = await setup()
+  db.prepare('INSERT INTO chats (id, user_id, title, updated, created) VALUES (?,?,?,?,?)')
+    .bind('chat-1', 'user-1', 'My chat', 1, 1).run()
+
+  const first = await app.request('/chats/chat-1/share', { method: 'POST', headers, body: JSON.stringify({ mode: 'snapshot' }) }, env)
+  const second = await app.request('/chats/chat-1/share', { method: 'POST', headers, body: JSON.stringify({ mode: 'live' }) }, env)
+  assert.equal((await first.json()).id, (await second.json()).id)
+  assert.equal(db.prepare('SELECT COUNT(*) AS n FROM shares').first().n, 1)
+})
+
+test('GET /chats/:id/share reports current status', async () => {
+  const { db, env, headers } = await setup()
+  db.prepare('INSERT INTO chats (id, user_id, title, updated, created) VALUES (?,?,?,?,?)')
+    .bind('chat-1', 'user-1', 'My chat', 1, 1).run()
+  const share = await app.request('/chats/chat-1/share', { method: 'POST', headers, body: JSON.stringify({ mode: 'snapshot' }) }, env)
+  const { id: token } = await share.json()
+
+  const status = await app.request('/chats/chat-1/share', { headers }, env)
+  assert.equal(status.status, 200)
+  const body = await status.json()
+  assert.equal(body.id, token)
+  assert.equal(body.mode, 'snapshot')
+})
+
+test('DELETE /chats/:id/share revokes; the token then 404s from both the owner status check and the public endpoint', async () => {
+  const { db, env, headers } = await setup()
+  db.prepare('INSERT INTO chats (id, user_id, title, updated, created) VALUES (?,?,?,?,?)')
+    .bind('chat-1', 'user-1', 'My chat', 1, 1).run()
+  const share = await app.request('/chats/chat-1/share', { method: 'POST', headers, body: JSON.stringify({ mode: 'snapshot' }) }, env)
+  const { id: token } = await share.json()
+
+  const del = await app.request('/chats/chat-1/share', { method: 'DELETE', headers }, env)
+  assert.equal(del.status, 200)
+
+  const status = await app.request('/chats/chat-1/share', { headers }, env)
+  assert.equal(status.status, 404)
+  const viewed = await app.request(`/shared/${token}`, {}, env)
+  assert.equal(viewed.status, 404)
+  const redelete = await app.request('/chats/chat-1/share', { method: 'DELETE', headers }, env)
+  assert.equal(redelete.status, 404)
+})
+
+test('an expired share 404s from the public endpoint even though the row still exists', async () => {
+  const { db, env } = await setup()
+  db.prepare('INSERT INTO chats (id, user_id, title, updated, created) VALUES (?,?,?,?,?)')
+    .bind('chat-1', 'user-1', 'My chat', 1, 1).run()
+  db.prepare(
+    `INSERT INTO shares (id, resource_type, resource_id, owner_user_id, mode, snapshot_title, snapshot_messages, expires_at, created, updated)
+     VALUES (?,?,?,?,?,?,?,?,?,?)`
+  ).bind('tok-1', 'chat', 'chat-1', 'user-1', 'snapshot', 'My chat', '[]', Date.now() - 1000, 1, 1).run()
+
+  const res = await app.request('/shared/tok-1', {}, env)
+  assert.equal(res.status, 404)
+})
+
+test('a live share of a since-deleted chat 404s instead of exposing stale content', async () => {
+  const { db, env, headers } = await setup()
+  db.prepare('INSERT INTO chats (id, user_id, title, updated, created) VALUES (?,?,?,?,?)')
+    .bind('chat-1', 'user-1', 'My chat', 1, 1).run()
+  const share = await app.request('/chats/chat-1/share', { method: 'POST', headers, body: JSON.stringify({ mode: 'live' }) }, env)
+  const { id: token } = await share.json()
+
+  await app.request('/chats/chat-1', { method: 'DELETE', headers }, env)
+
+  const res = await app.request(`/shared/${token}`, {}, env)
+  assert.equal(res.status, 404)
+})
+
+test('POST /shared/:token/continue creates an independent copy owned by the requester, leaving the original untouched', async () => {
+  const { db, env, headers } = await setup()
+  db.prepare('INSERT INTO chats (id, user_id, title, updated, created) VALUES (?,?,?,?,?)')
+    .bind('chat-1', 'user-1', 'My chat', 1, 1).run()
+  seedMessages(db, 'chat-1', 'user-1', [['user', 'hi'], ['assistant', 'hello']])
+  const share = await app.request('/chats/chat-1/share', { method: 'POST', headers, body: JSON.stringify({ mode: 'snapshot' }) }, env)
+  const { id: token } = await share.json()
+
+  const viewerHeaders = await headersFor('user-2')
+  const res = await app.request(`/shared/${token}/continue`, { method: 'POST', headers: viewerHeaders }, env)
+  assert.equal(res.status, 200)
+  const { id: newChatId } = await res.json()
+  assert.notEqual(newChatId, 'chat-1')
+
+  const copy = db.prepare('SELECT user_id, title FROM chats WHERE id=?').bind(newChatId).first()
+  assert.equal(copy.user_id, 'user-2')
+  assert.equal(copy.title, 'My chat')
+  const copiedMessages = db.prepare('SELECT COUNT(*) AS n FROM messages WHERE chat_id=?').bind(newChatId).first().n
+  assert.equal(copiedMessages, 2)
+
+  const original = db.prepare('SELECT user_id FROM chats WHERE id=?').bind('chat-1').first()
+  assert.equal(original.user_id, 'user-1')
+})
+
+test('continuing a share requires authentication', async () => {
+  const { db, env, headers } = await setup()
+  db.prepare('INSERT INTO chats (id, user_id, title, updated, created) VALUES (?,?,?,?,?)')
+    .bind('chat-1', 'user-1', 'My chat', 1, 1).run()
+  const share = await app.request('/chats/chat-1/share', { method: 'POST', headers, body: JSON.stringify({ mode: 'snapshot' }) }, env)
+  const { id: token } = await share.json()
+
+  const res = await app.request(`/shared/${token}/continue`, { method: 'POST' }, env)
+  assert.equal(res.status, 401)
+})
+
+test('sharing, checking status, or revoking a chat that is not yours 404s', async () => {
+  const { db, env, headers } = await setup()
+  db.prepare('INSERT INTO chats (id, user_id, title, updated, created) VALUES (?,?,?,?,?)')
+    .bind('chat-2', 'user-2', 'Not yours', 1, 1).run()
+
+  const share = await app.request('/chats/chat-2/share', { method: 'POST', headers, body: JSON.stringify({ mode: 'snapshot' }) }, env)
+  assert.equal(share.status, 404)
+  const status = await app.request('/chats/chat-2/share', { headers }, env)
+  assert.equal(status.status, 404)
+  const revoke = await app.request('/chats/chat-2/share', { method: 'DELETE', headers }, env)
+  assert.equal(revoke.status, 404)
 })

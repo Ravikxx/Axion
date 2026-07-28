@@ -1204,6 +1204,7 @@ app.delete('/dashboard/account', async (c) => {
     db.prepare('DELETE FROM artifact_revisions WHERE artifact_id IN (SELECT id FROM artifacts WHERE user_id=?)').bind(user.id),
     db.prepare('DELETE FROM artifacts WHERE user_id=?').bind(user.id),
     db.prepare('DELETE FROM user_settings WHERE user_id=?').bind(user.id),
+    db.prepare('DELETE FROM shares WHERE owner_user_id=?').bind(user.id),
     db.prepare('DELETE FROM email_prefs WHERE user_id=?').bind(user.id),
     db.prepare('DELETE FROM device_codes WHERE user_id=?').bind(user.id),
     db.prepare('DELETE FROM appeals WHERE user_id=?').bind(user.id),
@@ -1853,6 +1854,121 @@ app.get('/chats/:id', async (c) => {
   })
 })
 
+const SHARE_MODES = new Set(['snapshot', 'live'])
+
+// Only me <-> Anyone with the link is a single toggle per chat, not a list
+// of links — sharing again just updates the existing row (idx_shares_resource
+// is unique on (resource_type, resource_id)).
+app.post('/chats/:id/share', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  const chatId = c.req.param('id')
+  const chat = await c.env.DB.prepare(
+    'SELECT id, title FROM chats WHERE id=? AND user_id=? AND deleted_at IS NULL'
+  ).bind(chatId, user.id).first()
+  if (!chat) return json({ error: 'Not found' }, 404)
+
+  const body = await c.req.json().catch(() => ({}))
+  const mode = SHARE_MODES.has(body?.mode) ? body.mode : 'snapshot'
+  const expiresAt = Number.isFinite(body?.expires_at) ? body.expires_at : null
+
+  const existing = await c.env.DB.prepare(
+    'SELECT id FROM shares WHERE resource_type=? AND resource_id=?'
+  ).bind('chat', chatId).first()
+  const id = existing?.id || crypto.randomUUID()
+  const now = Date.now()
+  // Snapshot mode always captures the chat as it stands right now, even on a
+  // reshare of an already-snapshotted chat — the owner explicitly asked for
+  // the shared state to reflect this moment, not whatever it was before.
+  const snapshotMessages = mode === 'snapshot' ? JSON.stringify(await loadMessages(c.env.DB, chatId)) : null
+  const snapshotTitle = mode === 'snapshot' ? chat.title : null
+
+  await c.env.DB.prepare(
+    `INSERT INTO shares (id, resource_type, resource_id, owner_user_id, mode, snapshot_title, snapshot_messages, expires_at, created, updated)
+     VALUES (?, 'chat', ?, ?, ?, ?, ?, ?, ?, ?)
+     ON CONFLICT(id) DO UPDATE SET mode=excluded.mode, snapshot_title=excluded.snapshot_title,
+       snapshot_messages=excluded.snapshot_messages, expires_at=excluded.expires_at, updated=excluded.updated`
+  ).bind(id, chatId, user.id, mode, snapshotTitle, snapshotMessages, expiresAt, now, now).run()
+
+  return json({ id, mode, expires_at: expiresAt, created: now, updated: now })
+})
+
+app.get('/chats/:id/share', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  const chatId = c.req.param('id')
+  const chat = await c.env.DB.prepare('SELECT id FROM chats WHERE id=? AND user_id=?').bind(chatId, user.id).first()
+  if (!chat) return json({ error: 'Not found' }, 404)
+  const share = await c.env.DB.prepare(
+    'SELECT id, mode, expires_at, created, updated FROM shares WHERE resource_type=? AND resource_id=?'
+  ).bind('chat', chatId).first()
+  if (!share) return json({ error: 'Not shared' }, 404)
+  return json(share)
+})
+
+// Revoking just means "back to Only me" — delete the row rather than
+// tracking a revoked state, since a revoked link and a never-created one
+// behave identically (both 404 from the public endpoint).
+app.delete('/chats/:id/share', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  const chatId = c.req.param('id')
+  const chat = await c.env.DB.prepare('SELECT id FROM chats WHERE id=? AND user_id=?').bind(chatId, user.id).first()
+  if (!chat) return json({ error: 'Not found' }, 404)
+  const result = await c.env.DB.prepare(
+    'DELETE FROM shares WHERE resource_type=? AND resource_id=?'
+  ).bind('chat', chatId).run()
+  if (result.meta.changes === 0) return json({ error: 'Not shared' }, 404)
+  return json({ ok: true })
+})
+
+// Resolves a share for public viewing — no auth required. Expired, revoked,
+// and never-existed links all return the same 404 so a probing request can't
+// distinguish "wrong token" from "this used to be shared."
+async function resolveShare(db, token) {
+  const share = await db.prepare('SELECT * FROM shares WHERE id=?').bind(token).first()
+  if (!share) return null
+  if (share.expires_at && share.expires_at < Date.now()) return null
+  if (share.mode === 'snapshot') {
+    let messages = []
+    try { messages = JSON.parse(share.snapshot_messages || '[]') } catch {}
+    return { mode: 'snapshot', title: share.snapshot_title || 'Shared chat', messages, updated: share.updated }
+  }
+  const chat = await db.prepare(
+    'SELECT id, title, updated, user_id FROM chats WHERE id=? AND deleted_at IS NULL'
+  ).bind(share.resource_id).first()
+  if (!chat) return null
+  return { mode: 'live', title: chat.title, messages: await loadMessages(db, chat.id), updated: chat.updated, _chatId: chat.id, _ownerId: chat.user_id }
+}
+
+app.get('/shared/:token', async (c) => {
+  const resolved = await resolveShare(c.env.DB, c.req.param('token'))
+  if (!resolved) return json({ error: 'Not found' }, 404)
+  return json({ mode: resolved.mode, title: resolved.title, messages: resolved.messages, updated: resolved.updated })
+})
+
+// Creates a private, independent copy owned by the requesting account.
+// Never modifies the creator's original or another viewer's copy.
+app.post('/shared/:token/continue', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  const resolved = await resolveShare(c.env.DB, c.req.param('token'))
+  if (!resolved) return json({ error: 'Not found' }, 404)
+
+  const newId = `c-shared-${crypto.randomUUID()}`
+  const now = Date.now()
+  await c.env.DB.batch([
+    c.env.DB.prepare('INSERT INTO chats (id, user_id, title, updated, created) VALUES (?,?,?,?,?)')
+      .bind(newId, user.id, resolved.title, now, now),
+    ...resolved.messages.map((m, i) => c.env.DB.prepare(
+      `INSERT INTO messages (id, chat_id, user_id, seq, role, content, tool_calls, tool_call_id, created_at)
+       VALUES (?,?,?,?,?,?,?,?,?)`
+    ).bind(`${newId}-${i + 1}`, newId, user.id, i + 1, m.role, m.content, m.tool_calls ? JSON.stringify(m.tool_calls) : null, m.tool_call_id || null, m.ts || now)),
+  ])
+
+  return json({ id: newId, title: resolved.title })
+})
+
 // Creates a new, independent chat containing a copy of this chat's messages
 // up to and including from_seq. Copies never carry generation_id forward —
 // idx_messages_generation is unique across the whole table (it exists to make
@@ -2171,6 +2287,13 @@ async function purgeExpiredTrashedChats(db) {
     ...results.map(row => db.prepare('DELETE FROM messages WHERE chat_id=?').bind(row.id)),
     db.prepare('DELETE FROM chats WHERE deleted_at IS NOT NULL AND deleted_at < ?').bind(cutoff),
   ])
+}
+
+// Called hourly. Expired share links aren't reachable through
+// resolveShare's own expiry check, but rows should still get cleaned up
+// rather than accumulating forever.
+async function purgeExpiredShares(db) {
+  await db.prepare('DELETE FROM shares WHERE expires_at IS NOT NULL AND expires_at < ?').bind(Date.now()).run()
 }
 
 // ── OpenAI-compatible proxy ────────────────────────────────────────────────
@@ -3944,6 +4067,7 @@ app.scheduled = async (event, env, ctx) => {
       purgeExpiredMessageLogs(env.DB),
       purgeExpiredDesktopAuthCodes(env.DB),
       purgeExpiredTrashedChats(env.DB),
+      purgeExpiredShares(env.DB),
     ]))
     return
   }
