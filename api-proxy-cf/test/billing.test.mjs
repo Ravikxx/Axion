@@ -139,6 +139,8 @@ class D1TestDatabase {
       CREATE TABLE chats (id TEXT PRIMARY KEY, user_id TEXT NOT NULL REFERENCES users(id));
       CREATE TABLE messages (id TEXT PRIMARY KEY, chat_id TEXT NOT NULL, user_id TEXT NOT NULL REFERENCES users(id));
       CREATE TABLE projects (id TEXT PRIMARY KEY, user_id TEXT NOT NULL REFERENCES users(id));
+      CREATE TABLE artifacts (id TEXT PRIMARY KEY, user_id TEXT NOT NULL REFERENCES users(id));
+      CREATE TABLE artifact_revisions (id TEXT PRIMARY KEY, artifact_id TEXT NOT NULL REFERENCES artifacts(id));
       CREATE TABLE email_prefs (user_id TEXT PRIMARY KEY REFERENCES users(id));
       CREATE TABLE device_codes (code TEXT PRIMARY KEY, user_id TEXT REFERENCES users(id));
       CREATE TABLE appeals (
@@ -930,6 +932,8 @@ test('account deletion removes audits, rate limits, and every key in an owned or
   db.prepare('INSERT INTO chats (id, user_id) VALUES (?,?)').bind('member-chat', 'member').run()
   db.prepare('INSERT INTO messages (id, chat_id, user_id) VALUES (?,?,?)').bind('member-chat-1', 'member-chat', 'member').run()
   db.prepare('INSERT INTO projects (id, user_id) VALUES (?,?)').bind('member-project', 'member').run()
+  db.prepare('INSERT INTO artifacts (id, user_id) VALUES (?,?)').bind('member-artifact', 'member').run()
+  db.prepare('INSERT INTO artifact_revisions (id, artifact_id) VALUES (?,?)').bind('member-artifact-1', 'member-artifact').run()
   db.prepare(
     `INSERT INTO admin_account_edits
      (id, user_id, admin_email, previous_plan, new_plan,
@@ -988,6 +992,8 @@ test('account deletion removes audits, rate limits, and every key in an owned or
   assert.equal(db.prepare('SELECT COUNT(*) AS count FROM chats WHERE user_id=?').bind('member').first().count, 0)
   assert.equal(db.prepare('SELECT COUNT(*) AS count FROM messages WHERE user_id=?').bind('member').first().count, 0)
   assert.equal(db.prepare('SELECT COUNT(*) AS count FROM projects WHERE user_id=?').bind('member').first().count, 0)
+  assert.equal(db.prepare('SELECT COUNT(*) AS count FROM artifacts WHERE user_id=?').bind('member').first().count, 0)
+  assert.equal(db.prepare('SELECT COUNT(*) AS count FROM artifact_revisions WHERE artifact_id=?').bind('member-artifact').first().count, 0)
   assert.equal(db.prepare('SELECT COUNT(*) AS count FROM admin_account_edits WHERE user_id=?').bind('member').first().count, 0)
   assert.equal(db.prepare("SELECT COUNT(*) AS count FROM rate_limits WHERE key LIKE '%:member'").first().count, 0)
   assert.equal(db.prepare("SELECT COUNT(*) AS count FROM rate_limits WHERE key='free:unrelated-ip'").first().count, 1)
