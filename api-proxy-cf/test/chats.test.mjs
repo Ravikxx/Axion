@@ -1157,7 +1157,7 @@ test('POST /scheduled creates a definition; GET /scheduled lists it', async () =
   const created = await create.json()
   assert.equal(created.name, 'Daily digest')
   assert.equal(created.enabled, true)
-  assert.equal(created.next_run_at, null)
+  assert.ok(created.next_run_at > Date.now())
 
   const list = await app.request('/scheduled', { headers }, env)
   const body = await list.json()
@@ -1334,4 +1334,69 @@ test('renaming without expected_title_rev keeps the old always-wins behavior for
   assert.equal(noCheck.status, 200)
   const get = await app.request('/chats/chat-1', { headers }, env)
   assert.equal((await get.json()).title, 'v3')
+})
+
+test('POST /scheduled populates next_run_at from the schedule when enabled', async () => {
+  const { env, headers } = await setup()
+  const before = Date.now()
+  const create = await app.request('/scheduled', {
+    method: 'POST', headers, body: JSON.stringify({ name: 'X', prompt: 'Y', schedule: '* * * * *' }),
+  }, env)
+  const body = await create.json()
+  assert.ok(body.next_run_at > before)
+  assert.ok(body.next_run_at <= before + 60_000)
+})
+
+test('POST /scheduled with enabled:false leaves next_run_at null', async () => {
+  const { env, headers } = await setup()
+  const create = await app.request('/scheduled', {
+    method: 'POST', headers, body: JSON.stringify({ name: 'X', prompt: 'Y', schedule: '* * * * *', enabled: false }),
+  }, env)
+  assert.equal((await create.json()).next_run_at, null)
+})
+
+test('PUT /scheduled/:id recomputes next_run_at when the schedule changes', async () => {
+  const { env, headers } = await setup()
+  const create = await app.request('/scheduled', {
+    method: 'POST', headers, body: JSON.stringify({ name: 'X', prompt: 'Y', schedule: '0 0 1 1 *' }),
+  }, env)
+  const { id, next_run_at: firstRun } = await create.json()
+
+  const update = await app.request(`/scheduled/${id}`, {
+    method: 'PUT', headers, body: JSON.stringify({ schedule: '* * * * *' }),
+  }, env)
+  assert.equal(update.status, 200)
+
+  const after = await app.request(`/scheduled/${id}`, { headers }, env)
+  const body = await after.json()
+  assert.notEqual(body.next_run_at, firstRun)
+  assert.ok(body.next_run_at <= Date.now() + 60_000)
+})
+
+test('PUT /scheduled/:id disabling a definition clears next_run_at; re-enabling recomputes it', async () => {
+  const { env, headers } = await setup()
+  const create = await app.request('/scheduled', {
+    method: 'POST', headers, body: JSON.stringify({ name: 'X', prompt: 'Y', schedule: '* * * * *' }),
+  }, env)
+  const { id } = await create.json()
+
+  await app.request(`/scheduled/${id}`, { method: 'PUT', headers, body: JSON.stringify({ enabled: false }) }, env)
+  const disabled = await app.request(`/scheduled/${id}`, { headers }, env)
+  assert.equal((await disabled.json()).next_run_at, null)
+
+  await app.request(`/scheduled/${id}`, { method: 'PUT', headers, body: JSON.stringify({ enabled: true }) }, env)
+  const reenabled = await app.request(`/scheduled/${id}`, { headers }, env)
+  assert.ok((await reenabled.json()).next_run_at > Date.now())
+})
+
+test('PUT /scheduled/:id with an unrelated field (name only) leaves next_run_at untouched', async () => {
+  const { env, headers } = await setup()
+  const create = await app.request('/scheduled', {
+    method: 'POST', headers, body: JSON.stringify({ name: 'X', prompt: 'Y', schedule: '* * * * *' }),
+  }, env)
+  const { id, next_run_at: firstRun } = await create.json()
+
+  await app.request(`/scheduled/${id}`, { method: 'PUT', headers, body: JSON.stringify({ name: 'Renamed' }) }, env)
+  const after = await app.request(`/scheduled/${id}`, { headers }, env)
+  assert.equal((await after.json()).next_run_at, firstRun)
 })

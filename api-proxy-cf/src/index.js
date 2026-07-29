@@ -1449,14 +1449,83 @@ function webChatTools(tools) {
 }
 
 // A loose cron-shape check (5 whitespace-separated fields, each restricted
-// to digits/*/-/,//), not a full parser — this table only stores the
-// definition. Actually computing next_run_at from the expression and
-// running it belongs to a future execution engine.
+// to digits/*/-/,//), not a full parser.
 const CRON_FIELD = /^[0-9*/,-]+$/
 function isValidCron(expr) {
   if (typeof expr !== 'string') return false
   const fields = expr.trim().split(/\s+/)
   return fields.length === 5 && fields.every(f => CRON_FIELD.test(f))
+}
+
+// Expands one cron field ("*", "5", "1-4", "*/15", "1,3,5", or combinations
+// via comma) into the set of values it allows, or null for "*" (unrestricted
+// — kept as null rather than the full range so the day-of-month/day-of-week
+// OR-vs-AND rule below can tell "restricted" from "wildcard").
+function parseCronField(expr, min, max) {
+  if (expr === '*') return null
+  const values = new Set()
+  for (const part of expr.split(',')) {
+    const match = part.match(/^(\*|\d+(?:-\d+)?)(?:\/(\d+))?$/)
+    if (!match) continue
+    const [, range, stepStr] = match
+    const step = stepStr ? parseInt(stepStr, 10) : 1
+    let lo, hi
+    if (range === '*') { lo = min; hi = max }
+    else if (range.includes('-')) { const [a, b] = range.split('-').map(Number); lo = a; hi = b }
+    else { lo = hi = parseInt(range, 10) }
+    for (let v = lo; v <= hi && step > 0; v += step) values.add(v)
+  }
+  return values
+}
+
+// Next occurrence at/after fromMs, interpreted in UTC (schedules have no
+// per-user timezone yet). Walks day-by-day for month/day-of-month/
+// day-of-week — cheap, since those rule out most days in O(1) — then
+// searches hour/minute only within a day that already matches, so the
+// common case (a handful of matching days, wide-open hour/minute) stays
+// fast; a schedule with no reachable occurrence (e.g. Feb 30) returns null
+// after searching a 4-year window instead of hanging.
+export function computeNextRun(cronExpr, fromMs) {
+  const fields = cronExpr.trim().split(/\s+/)
+  if (fields.length !== 5) return null
+  const [minField, hourField, domField, monField, dowField] = fields
+  const minutes = parseCronField(minField, 0, 59)
+  const hours = parseCronField(hourField, 0, 23)
+  const doms = parseCronField(domField, 1, 31)
+  const months = parseCronField(monField, 1, 12)
+  const dows = parseCronField(dowField, 0, 6)
+  if ([minutes, hours, doms, months, dows].some(s => s && s.size === 0)) return null
+
+  const domRestricted = domField !== '*'
+  const dowRestricted = dowField !== '*'
+
+  let d = new Date(fromMs)
+  d.setUTCSeconds(0, 0)
+  d.setUTCMinutes(d.getUTCMinutes() + 1)
+
+  for (let dayCount = 0; dayCount < 366 * 4; dayCount++) {
+    const month = d.getUTCMonth() + 1
+    const dom = d.getUTCDate()
+    const dow = d.getUTCDay()
+    const monthOk = !months || months.has(month)
+    const domOk = !doms || doms.has(dom)
+    const dowOk = !dows || dows.has(dow)
+    const dayOk = (domRestricted && dowRestricted) ? (domOk || dowOk) : (domOk && dowOk)
+
+    if (monthOk && dayOk) {
+      const startHour = d.getUTCHours()
+      for (let h = startHour; h <= 23; h++) {
+        if (hours && !hours.has(h)) continue
+        const startMinute = h === startHour ? d.getUTCMinutes() : 0
+        for (let m = startMinute; m <= 59; m++) {
+          if (minutes && !minutes.has(m)) continue
+          return Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate(), h, m, 0, 0)
+        }
+      }
+    }
+    d = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate() + 1, 0, 0, 0, 0))
+  }
+  return null
 }
 
 app.get('/scheduled', async (c) => {
@@ -1491,13 +1560,15 @@ app.post('/scheduled', async (c) => {
   }
   const id = crypto.randomUUID()
   const now = Date.now()
+  const schedule = body.schedule.trim()
+  const nextRunAt = enabled ? computeNextRun(schedule, now) : null
   await c.env.DB.prepare(
-    `INSERT INTO scheduled_definitions (id, user_id, project_id, chat_id, name, prompt, schedule, enabled, created, updated)
-     VALUES (?,?,?,?,?,?,?,?,?,?)`
-  ).bind(id, user.id, projectId, chatId, name, prompt, body.schedule.trim(), enabled ? 1 : 0, now, now).run()
+    `INSERT INTO scheduled_definitions (id, user_id, project_id, chat_id, name, prompt, schedule, enabled, next_run_at, created, updated)
+     VALUES (?,?,?,?,?,?,?,?,?,?,?)`
+  ).bind(id, user.id, projectId, chatId, name, prompt, schedule, enabled ? 1 : 0, nextRunAt, now, now).run()
   return json({
-    id, project_id: projectId, chat_id: chatId, name, prompt, schedule: body.schedule.trim(), enabled,
-    next_run_at: null, last_run_at: null, created: now, updated: now,
+    id, project_id: projectId, chat_id: chatId, name, prompt, schedule, enabled,
+    next_run_at: nextRunAt, last_run_at: null, created: now, updated: now,
   })
 })
 
@@ -1516,7 +1587,7 @@ app.put('/scheduled/:id', async (c) => {
   const user = await requireAuth(c)
   if (!user) return json({ error: 'Not authenticated' }, 401)
   const existing = await c.env.DB.prepare(
-    'SELECT id FROM scheduled_definitions WHERE id=? AND user_id=?'
+    'SELECT schedule, enabled FROM scheduled_definitions WHERE id=? AND user_id=?'
   ).bind(c.req.param('id'), user.id).first()
   if (!existing) return json({ error: 'Not found' }, 404)
   const body = await c.req.json().catch(() => ({}))
@@ -1533,16 +1604,28 @@ app.put('/scheduled/:id', async (c) => {
     if (!prompt) return json({ error: 'prompt cannot be empty' }, 400)
     sets.push('prompt=?'); values.push(prompt)
   }
+  let nextSchedule = existing.schedule
   if (body?.schedule !== undefined) {
     if (!isValidCron(body.schedule)) return json({ error: 'Invalid schedule' }, 400)
-    sets.push('schedule=?'); values.push(body.schedule.trim())
+    nextSchedule = body.schedule.trim()
+    sets.push('schedule=?'); values.push(nextSchedule)
   }
+  let nextEnabled = !!existing.enabled
   if (typeof body?.enabled === 'boolean') {
+    nextEnabled = body.enabled
     sets.push('enabled=?'); values.push(body.enabled ? 1 : 0)
   }
   if (!sets.length) return json({ error: 'Nothing to update' }, 400)
 
   const now = Date.now()
+  // Recompute next_run_at whenever the schedule or enabled state changed —
+  // a stale next_run_at from before the edit could point at a time the new
+  // schedule doesn't actually produce, or claim a disabled definition is
+  // still due.
+  if (body?.schedule !== undefined || typeof body?.enabled === 'boolean') {
+    const nextRunAt = nextEnabled ? computeNextRun(nextSchedule, now) : null
+    sets.push('next_run_at=?'); values.push(nextRunAt)
+  }
   sets.push('updated=?'); values.push(now)
   values.push(c.req.param('id'), user.id)
   await c.env.DB.prepare(
