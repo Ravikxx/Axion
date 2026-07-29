@@ -141,7 +141,7 @@ Or set them live inside the CLI:
 
 | Alias | Provider | Notes |
 |---|---|---|
-| `lumen` | Axion Labs | ⚠️ Temporarily suspended — safety retraining in progress. See [safety report](https://axionlabs.dev/lumen-suspension). |
+| `lumen` | Axion Labs | Lumen 1.2.5 — live. Safety-retrained 1.3 in progress; see [safety report](https://axionlabs.dev/lumen-suspension). |
 | `veil` | Axion Labs | No key required — free but slow (up to 100s) |
 | `openrouter` / `or` | OpenRouter | 200+ models via one key |
 | `fable` | Anthropic | claude-fable-5 |
