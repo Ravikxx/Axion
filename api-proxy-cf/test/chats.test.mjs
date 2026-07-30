@@ -165,9 +165,22 @@ async function setup() {
   db.prepare('INSERT INTO users (id, email) VALUES (?,?)').bind('user-1', 'a@example.com').run()
   db.prepare('INSERT INTO users (id, email) VALUES (?,?)').bind('user-2', 'b@example.com').run()
   const token = await sessionToken('user-1', SECRET)
-  const env = { DB: db, TOKEN_SECRET: SECRET }
+  const startedJobs = []
+  const env = {
+    DB: db,
+    TOKEN_SECRET: SECRET,
+    CHAT_GENERATIONS: {
+      idFromName: name => name,
+      get: () => ({
+        fetch: async (_url, options) => {
+          startedJobs.push(JSON.parse(options.body))
+          return Response.json({ ok: true }, { status: 202 })
+        },
+      }),
+    },
+  }
   const headers = { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }
-  return { db, env, headers }
+  return { db, env, headers, startedJobs }
 }
 
 function seedMessages(db, chatId, userId, items) {
@@ -1410,7 +1423,7 @@ test('dispatchScheduledDefinitions appends the prompt as a message and advances 
   }, env)
   const { id, next_run_at: firstRun } = await create.json()
 
-  const result = await dispatchScheduledDefinitions(db, firstRun)
+  const result = await dispatchScheduledDefinitions(env, firstRun)
   assert.equal(result.dispatched, 1)
 
   const { results: messages } = db.prepare('SELECT role, content FROM messages WHERE chat_id=?').bind('chat-1').all()
@@ -1432,7 +1445,7 @@ test('dispatchScheduledDefinitions lazily creates a chat when the definition has
   }, env)
   const { id, next_run_at: firstRun } = await create.json()
 
-  await dispatchScheduledDefinitions(db, firstRun)
+  await dispatchScheduledDefinitions(env, firstRun)
 
   const after = await app.request(`/scheduled/${id}`, { headers }, env)
   const afterBody = await after.json()
@@ -1454,7 +1467,7 @@ test('dispatchScheduledDefinitions ignores disabled definitions and ones not yet
     body: JSON.stringify({ name: 'Off', prompt: 'Never', schedule: '* * * * *', enabled: false }),
   }, env)
 
-  const result = await dispatchScheduledDefinitions(db, Date.now())
+  const result = await dispatchScheduledDefinitions(env, Date.now())
   assert.equal(result.dispatched, 0)
 })
 
@@ -1466,8 +1479,53 @@ test('dispatchScheduledDefinitions does not re-dispatch the same firing twice', 
   }, env)
   const { next_run_at: firstRun } = await create.json()
 
-  const first = await dispatchScheduledDefinitions(db, firstRun)
-  const second = await dispatchScheduledDefinitions(db, firstRun)
+  const first = await dispatchScheduledDefinitions(env, firstRun)
+  const second = await dispatchScheduledDefinitions(env, firstRun)
   assert.equal(first.dispatched, 1)
   assert.equal(second.dispatched, 0)
+})
+
+test('dispatchScheduledDefinitions triggers a real model reply through ChatGeneration', async () => {
+  const { db, env, headers, startedJobs } = await setup()
+  const create = await app.request('/scheduled', {
+    method: 'POST', headers,
+    body: JSON.stringify({ name: 'Standup', prompt: 'What happened yesterday?', schedule: '* * * * *' }),
+  }, env)
+  const { next_run_at: firstRun } = await create.json()
+
+  await dispatchScheduledDefinitions(env, firstRun)
+
+  assert.equal(startedJobs.length, 1)
+  assert.equal(startedJobs[0].requestBody.messages.at(-1).content, 'What happened yesterday?')
+
+  const { chat_id: chatId } = db.prepare('SELECT chat_id FROM scheduled_definitions').first()
+  const generation = db.prepare('SELECT status FROM chat_generations WHERE chat_id=?').bind(chatId).first()
+  assert.equal(generation.status, 'queued')
+  const chat = db.prepare('SELECT active_generation_id FROM chats WHERE id=?').bind(chatId).first()
+  assert.ok(chat.active_generation_id)
+})
+
+test('dispatchScheduledDefinitions still appends the message when a generation is already in progress', async () => {
+  const { db, env, headers } = await setup()
+  await app.request('/chats/chat-1', { method: 'PUT', headers, body: JSON.stringify({ title: 'Busy chat' }) }, env)
+  db.prepare(
+    `INSERT INTO chat_generations (id, chat_id, user_id, status, model, created) VALUES (?,?,?,?,?,?)`
+  ).bind('gen-in-progress', 'chat-1', 'user-1', 'running', 'lumen', Date.now()).run()
+  db.prepare('UPDATE chats SET active_generation_id=? WHERE id=?').bind('gen-in-progress', 'chat-1').run()
+
+  const create = await app.request('/scheduled', {
+    method: 'POST', headers,
+    body: JSON.stringify({ name: 'Busy', prompt: 'Another one', schedule: '* * * * *', chat_id: 'chat-1' }),
+  }, env)
+  const { next_run_at: firstRun } = await create.json()
+
+  const result = await dispatchScheduledDefinitions(env, firstRun)
+  assert.equal(result.dispatched, 1)
+
+  const { results: messages } = db.prepare('SELECT content FROM messages WHERE chat_id=?').bind('chat-1').all()
+  assert.equal(messages.length, 1)
+  assert.equal(messages[0].content, 'Another one')
+  // The pre-existing generation is left untouched — a new one was not forced to start.
+  const chat = db.prepare('SELECT active_generation_id FROM chats WHERE id=?').bind('chat-1').first()
+  assert.equal(chat.active_generation_id, 'gen-in-progress')
 })
