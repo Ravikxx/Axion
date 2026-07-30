@@ -73,6 +73,19 @@ class D1TestDatabase {
         started INTEGER,
         completed INTEGER
       );
+      CREATE TABLE email_prefs (
+        user_id TEXT PRIMARY KEY,
+        notify_limit INTEGER DEFAULT 1,
+        notify_announcements INTEGER DEFAULT 1,
+        notify_scheduled INTEGER DEFAULT 1
+      );
+      CREATE TABLE scheduled_definitions (
+        id TEXT PRIMARY KEY,
+        user_id TEXT NOT NULL,
+        name TEXT NOT NULL,
+        prompt TEXT NOT NULL,
+        schedule TEXT NOT NULL
+      );
     `)
   }
   prepare(sql) { return new Statement(this.database, sql) }
@@ -446,4 +459,131 @@ test('streamed tool calls are reassembled from their fragments', async () => {
   assert.equal(toolCalls[0].id, 'call_1')
   assert.equal(toolCalls[0].function.name, 'run_code')
   assert.equal(toolCalls[0].function.arguments, '{"code":"1"}')
+})
+
+test('a scheduled task that completes emails the user', async () => {
+  const db = new D1TestDatabase()
+  seedChat(db)
+  db.prepare('UPDATE users SET email=? WHERE id=?').bind('owner@example.com', 'user-1').run()
+  db.prepare(
+    'INSERT INTO scheduled_definitions (id, user_id, name, prompt, schedule) VALUES (?,?,?,?,?)'
+  ).bind('sched-1', 'user-1', 'Daily digest', 'Summarize today', '* * * * *').run()
+  db.prepare(
+    'INSERT INTO chat_generations (id, chat_id, user_id, status, model, created) VALUES (?,?,?,?,?,?)'
+  ).bind('gen-sched', 'chat-1', 'user-1', 'queued', 'lumen', 1).run()
+
+  const storage = new MemoryStorage()
+  await storage.put('job', {
+    id: 'gen-sched', chatId: 'chat-1', userId: 'user-1', token: 't',
+    requestBody: { model: 'lumen', messages: [{ role: 'user', content: 'Summarize today' }] },
+    scheduledDefinitionId: 'sched-1',
+  })
+  const generation = new ChatGeneration({ storage }, { DB: db, RESEND_API_KEY: 'test-key' })
+
+  const emailCalls = []
+  const realFetch = globalThis.fetch
+  globalThis.fetch = async (url, options) => {
+    if (String(url).includes('resend.com')) {
+      emailCalls.push(JSON.parse(options.body))
+      return Response.json({ id: 'email-1' }, { status: 200 })
+    }
+    return sseResponse(['Done for today'])
+  }
+  try { await generation.alarm() } finally { globalThis.fetch = realFetch }
+
+  assert.equal(emailCalls.length, 1)
+  assert.equal(emailCalls[0].to[0], 'owner@example.com')
+  assert.match(emailCalls[0].subject, /Daily digest.*finished/)
+})
+
+test('a scheduled task that fails emails the user with the failure reason', async () => {
+  const db = new D1TestDatabase()
+  seedChat(db)
+  db.prepare('UPDATE users SET email=? WHERE id=?').bind('owner@example.com', 'user-1').run()
+  db.prepare(
+    'INSERT INTO scheduled_definitions (id, user_id, name, prompt, schedule) VALUES (?,?,?,?,?)'
+  ).bind('sched-2', 'user-1', 'Broken task', 'Do a thing', '* * * * *').run()
+  db.prepare(
+    'INSERT INTO chat_generations (id, chat_id, user_id, status, model, created) VALUES (?,?,?,?,?,?)'
+  ).bind('gen-fail', 'chat-1', 'user-1', 'queued', 'lumen', 1).run()
+
+  const storage = new MemoryStorage()
+  await storage.put('job', {
+    id: 'gen-fail', chatId: 'chat-1', userId: 'user-1', token: 't',
+    requestBody: {},
+    scheduledDefinitionId: 'sched-2',
+  })
+  const generation = new ChatGeneration({ storage }, { DB: db, RESEND_API_KEY: 'test-key' })
+
+  const emailCalls = []
+  const realFetch = globalThis.fetch
+  globalThis.fetch = async (url, options) => {
+    if (String(url).includes('resend.com')) {
+      emailCalls.push(JSON.parse(options.body))
+      return Response.json({ id: 'email-1' }, { status: 200 })
+    }
+    return new Response('model error', { status: 500 })
+  }
+  try { await generation.alarm() } finally { globalThis.fetch = realFetch }
+
+  assert.equal(emailCalls.length, 1)
+  assert.match(emailCalls[0].subject, /Broken task.*failed/)
+  assert.equal(db.prepare('SELECT status FROM chat_generations WHERE id=?').bind('gen-fail').first().status, 'failed')
+})
+
+test('a regular, non-scheduled generation does not send a completion email', async () => {
+  const db = new D1TestDatabase()
+  seedChat(db)
+  db.prepare('UPDATE users SET email=? WHERE id=?').bind('owner@example.com', 'user-1').run()
+  db.prepare(
+    'INSERT INTO chat_generations (id, chat_id, user_id, status, model, created) VALUES (?,?,?,?,?,?)'
+  ).bind('gen-plain', 'chat-1', 'user-1', 'queued', 'lumen', 1).run()
+
+  const storage = new MemoryStorage()
+  await storage.put('job', {
+    id: 'gen-plain', chatId: 'chat-1', userId: 'user-1', token: 't',
+    requestBody: { model: 'lumen', messages: [{ role: 'user', content: 'Hi' }] },
+  })
+  const generation = new ChatGeneration({ storage }, { DB: db, RESEND_API_KEY: 'test-key' })
+
+  let emailCalled = false
+  const realFetch = globalThis.fetch
+  globalThis.fetch = async (url) => {
+    if (String(url).includes('resend.com')) { emailCalled = true; return Response.json({}, { status: 200 }) }
+    return sseResponse(['Hey there'])
+  }
+  try { await generation.alarm() } finally { globalThis.fetch = realFetch }
+
+  assert.equal(emailCalled, false)
+})
+
+test('a user who opted out of scheduled-task emails does not get one', async () => {
+  const db = new D1TestDatabase()
+  seedChat(db)
+  db.prepare('UPDATE users SET email=? WHERE id=?').bind('owner@example.com', 'user-1').run()
+  db.prepare('INSERT INTO email_prefs (user_id, notify_scheduled) VALUES (?,0)').bind('user-1').run()
+  db.prepare(
+    'INSERT INTO scheduled_definitions (id, user_id, name, prompt, schedule) VALUES (?,?,?,?,?)'
+  ).bind('sched-3', 'user-1', 'Quiet task', 'Do a thing quietly', '* * * * *').run()
+  db.prepare(
+    'INSERT INTO chat_generations (id, chat_id, user_id, status, model, created) VALUES (?,?,?,?,?,?)'
+  ).bind('gen-quiet', 'chat-1', 'user-1', 'queued', 'lumen', 1).run()
+
+  const storage = new MemoryStorage()
+  await storage.put('job', {
+    id: 'gen-quiet', chatId: 'chat-1', userId: 'user-1', token: 't',
+    requestBody: { model: 'lumen', messages: [{ role: 'user', content: 'Do a thing quietly' }] },
+    scheduledDefinitionId: 'sched-3',
+  })
+  const generation = new ChatGeneration({ storage }, { DB: db, RESEND_API_KEY: 'test-key' })
+
+  let emailCalled = false
+  const realFetch = globalThis.fetch
+  globalThis.fetch = async (url) => {
+    if (String(url).includes('resend.com')) { emailCalled = true; return Response.json({}, { status: 200 }) }
+    return sseResponse(['Quietly done'])
+  }
+  try { await generation.alarm() } finally { globalThis.fetch = realFetch }
+
+  assert.equal(emailCalled, false)
 })

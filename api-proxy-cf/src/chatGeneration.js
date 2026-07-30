@@ -20,6 +20,55 @@ function sse(event, data) {
   return `event: ${event}\ndata: ${JSON.stringify(data)}\n\n`
 }
 
+function escHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]))
+}
+
+async function sendEmail(resendKey, { to, subject, html }) {
+  const res = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${resendKey}` },
+    body: JSON.stringify({ from: 'Axion Labs <noreply@amplifiedsmp.org>', to: [to], subject, html }),
+  })
+  if (!res.ok) {
+    const body = await res.text().catch(() => '')
+    console.error(`[sendEmail] Resend API error ${res.status} sending to ${to}: ${body}`)
+  }
+}
+
+// Scheduled tasks fire with nobody watching the chat tab — unlike a reply the
+// user is looking at when it lands, they'd otherwise have no way to know a
+// scheduled task finished (or failed) without remembering to check back.
+// Regular, user-initiated generations don't get this: job.scheduledDefinitionId
+// is only set when startChatGeneration() was called from the dispatcher.
+async function notifyScheduledCompletion(env, job, { status, error }) {
+  if (!job.scheduledDefinitionId || !env.RESEND_API_KEY) return
+  try {
+    const [user, prefs, definition] = await Promise.all([
+      env.DB.prepare('SELECT email FROM users WHERE id=?').bind(job.userId).first(),
+      env.DB.prepare('SELECT notify_scheduled FROM email_prefs WHERE user_id=?').bind(job.userId).first(),
+      env.DB.prepare('SELECT name FROM scheduled_definitions WHERE id=?').bind(job.scheduledDefinitionId).first(),
+    ])
+    if (!user?.email || prefs?.notify_scheduled === 0) return
+    const name = escHtml(definition?.name || 'Scheduled task')
+    const ok = status === 'completed'
+    const body = ok
+      ? '<p style="color:#888;margin:0 0 16px">Your scheduled task ran and got a reply.</p>'
+      : `<p style="color:#888;margin:0 0 16px">${escHtml(String(error || 'The model did not return a reply.').slice(0, 300))}</p>`
+    await sendEmail(env.RESEND_API_KEY, {
+      to: user.email,
+      subject: ok ? `"${name}" finished` : `"${name}" failed`,
+      html: `<div style="font-family:system-ui,sans-serif;max-width:480px;margin:0 auto;padding:32px;background:#0f0f11;color:#e8e8f0">
+        <h2 style="margin:0 0 8px;color:#e8e8f0">"${name}" ${ok ? 'finished' : 'failed'}</h2>
+        ${body}
+        <a href="https://axion.amplifiedsmp.org/chat" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">Open Axion &rarr;</a>
+      </div>`,
+    })
+  } catch (err) {
+    console.error('[notifyScheduledCompletion] failed:', err?.message || err)
+  }
+}
+
 // One Durable Object instance owns one website-chat generation.
 //
 // The object starts work from an alarm rather than from the browser request
@@ -293,6 +342,7 @@ export class ChatGeneration {
 
     await this.settle({ status: 'completed' })
     await this.state.storage.delete('job')
+    await notifyScheduledCompletion(this.env, job, { status: 'completed' })
   }
 
   async retryCommit(job, error) {
@@ -308,6 +358,7 @@ export class ChatGeneration {
     ).bind(errorText(message), Date.now(), job.id, job.userId).run().catch(() => {})
     await this.settle({ status: 'failed', error: errorText(message) })
     await this.state.storage.delete('job')
+    await notifyScheduledCompletion(this.env, job, { status: 'failed', error: errorText(message) })
   }
 
   // Records how the generation ended and releases every reader. The terminal
