@@ -1206,6 +1206,8 @@ app.delete('/dashboard/account', async (c) => {
     db.prepare('DELETE FROM user_settings WHERE user_id=?').bind(user.id),
     db.prepare('DELETE FROM shares WHERE owner_user_id=?').bind(user.id),
     db.prepare('DELETE FROM scheduled_definitions WHERE user_id=?').bind(user.id),
+    db.prepare('DELETE FROM cloud_task_events WHERE task_id IN (SELECT id FROM cloud_tasks WHERE user_id=?)').bind(user.id),
+    db.prepare('DELETE FROM cloud_tasks WHERE user_id=?').bind(user.id),
     db.prepare('DELETE FROM email_prefs WHERE user_id=?').bind(user.id),
     db.prepare('DELETE FROM device_codes WHERE user_id=?').bind(user.id),
     db.prepare('DELETE FROM appeals WHERE user_id=?').bind(user.id),
@@ -1641,6 +1643,158 @@ app.delete('/scheduled/:id', async (c) => {
     'DELETE FROM scheduled_definitions WHERE id=? AND user_id=?'
   ).bind(c.req.param('id'), user.id).run()
   if (result.meta.changes === 0) return json({ error: 'Not found' }, 404)
+  return json({ ok: true })
+})
+
+// ── Cloud tasks ─────────────────────────────────────────────────────────
+//
+// Metadata and event history for cloud-run tasks. This is state only — no
+// execution engine lives here. Actually running a task against a workspace
+// with repository secrets is Increment 11 ("Secretless cloud beta") scope,
+// gated on its own secrets-policy decision unrelated to this table. A
+// future executor would create a task, transition its status, and append
+// events through these same endpoints — the same relationship
+// scheduled_definitions has to its own dispatcher.
+
+const CLOUD_TASK_STATUSES = new Set(['queued', 'running', 'completed', 'failed', 'canceled'])
+const CLOUD_TASK_TERMINAL_STATUSES = new Set(['completed', 'failed', 'canceled'])
+
+async function appendCloudTaskEvent(db, { taskId, type, message, data, createdAt }) {
+  const id = crypto.randomUUID()
+  await db.prepare(
+    `INSERT INTO cloud_task_events (id, task_id, type, message, data, created)
+     VALUES (?,?,?,?,?,?)`
+  ).bind(id, taskId, type, message ?? null, data !== undefined ? JSON.stringify(data) : null, createdAt).run()
+  return id
+}
+
+app.get('/cloud-tasks', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  const { results } = await c.env.DB.prepare(
+    `SELECT id, project_id, chat_id, title, status, error, created, updated, completed
+     FROM cloud_tasks WHERE user_id=? ORDER BY updated DESC LIMIT 500`
+  ).bind(user.id).all()
+  return json({ tasks: results })
+})
+
+app.post('/cloud-tasks', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  const body = await c.req.json().catch(() => ({}))
+  const title = String(body?.title || '').trim().slice(0, 200)
+  if (!title) return json({ error: 'title is required' }, 400)
+  const projectId = body?.project_id ? String(body.project_id) : null
+  const chatId = body?.chat_id ? String(body.chat_id) : null
+  if (projectId) {
+    const project = await c.env.DB.prepare('SELECT id FROM projects WHERE id=? AND user_id=?').bind(projectId, user.id).first()
+    if (!project) return json({ error: 'Project not found' }, 404)
+  }
+  if (chatId) {
+    const chat = await c.env.DB.prepare('SELECT id FROM chats WHERE id=? AND user_id=?').bind(chatId, user.id).first()
+    if (!chat) return json({ error: 'Chat not found' }, 404)
+  }
+  const id = crypto.randomUUID()
+  const now = Date.now()
+  await c.env.DB.prepare(
+    `INSERT INTO cloud_tasks (id, user_id, project_id, chat_id, title, status, created, updated)
+     VALUES (?,?,?,?,?, 'queued', ?,?)`
+  ).bind(id, user.id, projectId, chatId, title, now, now).run()
+  await appendCloudTaskEvent(c.env.DB, { taskId: id, type: 'created', message: 'Task created', createdAt: now })
+  return json({
+    id, project_id: projectId, chat_id: chatId, title, status: 'queued',
+    error: null, created: now, updated: now, completed: null,
+  })
+})
+
+app.get('/cloud-tasks/:id', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  const task = await c.env.DB.prepare(
+    `SELECT id, project_id, chat_id, title, status, error, created, updated, completed
+     FROM cloud_tasks WHERE id=? AND user_id=?`
+  ).bind(c.req.param('id'), user.id).first()
+  if (!task) return json({ error: 'Not found' }, 404)
+  const { results: events } = await c.env.DB.prepare(
+    `SELECT id, type, message, data, created FROM cloud_task_events WHERE task_id=? ORDER BY created ASC LIMIT 500`
+  ).bind(task.id).all()
+  return json({
+    ...task,
+    events: events.map(event => ({ ...event, data: event.data ? JSON.parse(event.data) : null })),
+  })
+})
+
+app.patch('/cloud-tasks/:id', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  const existing = await c.env.DB.prepare(
+    'SELECT status FROM cloud_tasks WHERE id=? AND user_id=?'
+  ).bind(c.req.param('id'), user.id).first()
+  if (!existing) return json({ error: 'Not found' }, 404)
+  const body = await c.req.json().catch(() => ({}))
+
+  const sets = []
+  const values = []
+  if (typeof body?.title === 'string') {
+    const title = body.title.trim().slice(0, 200)
+    if (!title) return json({ error: 'title cannot be empty' }, 400)
+    sets.push('title=?'); values.push(title)
+  }
+  let nextStatus = existing.status
+  if (typeof body?.status === 'string') {
+    if (!CLOUD_TASK_STATUSES.has(body.status)) return json({ error: 'Invalid status' }, 400)
+    nextStatus = body.status
+    sets.push('status=?'); values.push(nextStatus)
+  }
+  if (typeof body?.error === 'string' || body?.error === null) {
+    sets.push('error=?'); values.push(body.error || null)
+  }
+  if (!sets.length) return json({ error: 'Nothing to update' }, 400)
+
+  const now = Date.now()
+  sets.push('updated=?'); values.push(now)
+  if (nextStatus !== existing.status && CLOUD_TASK_TERMINAL_STATUSES.has(nextStatus)) {
+    sets.push('completed=?'); values.push(now)
+  }
+  values.push(c.req.param('id'), user.id)
+  await c.env.DB.prepare(
+    `UPDATE cloud_tasks SET ${sets.join(', ')} WHERE id=? AND user_id=?`
+  ).bind(...values).run()
+
+  if (nextStatus !== existing.status) {
+    await appendCloudTaskEvent(c.env.DB, {
+      taskId: c.req.param('id'), type: 'status_changed',
+      message: `${existing.status} -> ${nextStatus}`, createdAt: now,
+    })
+  }
+  return json({ ok: true, updated: now })
+})
+
+app.post('/cloud-tasks/:id/events', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  const task = await c.env.DB.prepare(
+    'SELECT id FROM cloud_tasks WHERE id=? AND user_id=?'
+  ).bind(c.req.param('id'), user.id).first()
+  if (!task) return json({ error: 'Not found' }, 404)
+  const body = await c.req.json().catch(() => ({}))
+  const type = String(body?.type || '').trim().slice(0, 100)
+  if (!type) return json({ error: 'type is required' }, 400)
+  const message = typeof body?.message === 'string' ? body.message.slice(0, 2000) : null
+  const now = Date.now()
+  const id = await appendCloudTaskEvent(c.env.DB, { taskId: task.id, type, message, data: body?.data, createdAt: now })
+  await c.env.DB.prepare('UPDATE cloud_tasks SET updated=? WHERE id=?').bind(now, task.id).run()
+  return json({ id, task_id: task.id, type, message, data: body?.data ?? null, created: now }, 201)
+})
+
+app.delete('/cloud-tasks/:id', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  const result = await c.env.DB.prepare(
+    'DELETE FROM cloud_tasks WHERE id=? AND user_id=?'
+  ).bind(c.req.param('id'), user.id).run()
+  if (result.meta.changes === 0) return json({ error: 'Not found' }, 404)
+  await c.env.DB.prepare('DELETE FROM cloud_task_events WHERE task_id=?').bind(c.req.param('id')).run()
   return json({ ok: true })
 })
 

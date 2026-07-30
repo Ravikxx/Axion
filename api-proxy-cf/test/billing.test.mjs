@@ -144,6 +144,8 @@ class D1TestDatabase {
       CREATE TABLE user_settings (user_id TEXT PRIMARY KEY REFERENCES users(id));
       CREATE TABLE shares (id TEXT PRIMARY KEY, owner_user_id TEXT NOT NULL REFERENCES users(id));
       CREATE TABLE scheduled_definitions (id TEXT PRIMARY KEY, user_id TEXT NOT NULL REFERENCES users(id));
+      CREATE TABLE cloud_tasks (id TEXT PRIMARY KEY, user_id TEXT NOT NULL REFERENCES users(id));
+      CREATE TABLE cloud_task_events (id TEXT PRIMARY KEY, task_id TEXT NOT NULL REFERENCES cloud_tasks(id));
       CREATE TABLE email_prefs (user_id TEXT PRIMARY KEY REFERENCES users(id));
       CREATE TABLE device_codes (code TEXT PRIMARY KEY, user_id TEXT REFERENCES users(id));
       CREATE TABLE appeals (
@@ -939,6 +941,8 @@ test('account deletion removes audits, rate limits, and every key in an owned or
   db.prepare('INSERT INTO artifact_revisions (id, artifact_id) VALUES (?,?)').bind('member-artifact-1', 'member-artifact').run()
   db.prepare('INSERT INTO shares (id, owner_user_id) VALUES (?,?)').bind('member-share', 'member').run()
   db.prepare('INSERT INTO scheduled_definitions (id, user_id) VALUES (?,?)').bind('member-scheduled', 'member').run()
+  db.prepare('INSERT INTO cloud_tasks (id, user_id) VALUES (?,?)').bind('member-cloud-task', 'member').run()
+  db.prepare('INSERT INTO cloud_task_events (id, task_id) VALUES (?,?)').bind('member-cloud-task-event', 'member-cloud-task').run()
   db.prepare('INSERT INTO user_settings (user_id) VALUES (?)').bind('member').run()
   db.prepare(
     `INSERT INTO admin_account_edits
@@ -1002,6 +1006,8 @@ test('account deletion removes audits, rate limits, and every key in an owned or
   assert.equal(db.prepare('SELECT COUNT(*) AS count FROM artifact_revisions WHERE artifact_id=?').bind('member-artifact').first().count, 0)
   assert.equal(db.prepare('SELECT COUNT(*) AS count FROM shares WHERE owner_user_id=?').bind('member').first().count, 0)
   assert.equal(db.prepare('SELECT COUNT(*) AS count FROM scheduled_definitions WHERE user_id=?').bind('member').first().count, 0)
+  assert.equal(db.prepare('SELECT COUNT(*) AS count FROM cloud_tasks WHERE user_id=?').bind('member').first().count, 0)
+  assert.equal(db.prepare('SELECT COUNT(*) AS count FROM cloud_task_events WHERE task_id=?').bind('member-cloud-task').first().count, 0)
   assert.equal(db.prepare('SELECT COUNT(*) AS count FROM user_settings WHERE user_id=?').bind('member').first().count, 0)
   assert.equal(db.prepare('SELECT COUNT(*) AS count FROM admin_account_edits WHERE user_id=?').bind('member').first().count, 0)
   assert.equal(db.prepare("SELECT COUNT(*) AS count FROM rate_limits WHERE key LIKE '%:member'").first().count, 0)
