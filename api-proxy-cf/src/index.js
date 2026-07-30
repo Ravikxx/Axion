@@ -1678,7 +1678,7 @@ export async function dispatchScheduledDefinitions(env, now = Date.now()) {
     }
 
     await appendMessage(db, { chatId, userId: def.user_id, role: 'user', content: def.prompt, createdAt: now })
-    await startChatGeneration(env, { chatId, userId: def.user_id })
+    await startChatGeneration(env, { chatId, userId: def.user_id, scheduledDefinitionId: def.id })
 
     const nextRunAt = computeNextRun(def.schedule, now)
     await db.prepare(
@@ -2497,7 +2497,7 @@ app.delete('/chats/:id/messages', async (c) => {
 // scheduled-task dispatcher. Returns {ok:false, reason, ...} instead of
 // throwing on any of the expected non-success cases, so callers outside an
 // HTTP request (like the dispatcher) don't need to catch a thrown Response.
-async function startChatGeneration(env, { chatId, userId, tokenVersion = 0, model, tools } = {}) {
+async function startChatGeneration(env, { chatId, userId, tokenVersion = 0, model, tools, scheduledDefinitionId } = {}) {
   const row = await env.DB.prepare(
     `SELECT chats.id, chats.active_generation_id,
             generations.status AS generation_status
@@ -2547,7 +2547,7 @@ async function startChatGeneration(env, { chatId, userId, tokenVersion = 0, mode
     const started = await stub.fetch('https://chat-generation.internal/start', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id, chatId, userId, token, requestBody }),
+      body: JSON.stringify({ id, chatId, userId, token, requestBody, scheduledDefinitionId: scheduledDefinitionId || undefined }),
     })
     if (!started.ok) throw new Error(`Generation worker returned HTTP ${started.status}`)
   } catch (error) {
@@ -3451,16 +3451,17 @@ app.get('/dashboard/prefs', async (c) => {
   const user = await requireAuth(c)
   if (!user) return json({ error: 'Not authenticated' }, 401)
   const prefs = await c.env.DB.prepare('SELECT * FROM email_prefs WHERE user_id=?').bind(user.id).first()
-  return json({ notify_limit: 1, notify_announcements: 1, ...prefs, sandbox_mode: user.sandbox_mode || 'ask' })
+  return json({ notify_limit: 1, notify_announcements: 1, notify_scheduled: 1, ...prefs, sandbox_mode: user.sandbox_mode || 'ask' })
 })
 
 app.put('/dashboard/prefs', async (c) => {
   const user = await requireAuth(c)
   if (!user) return json({ error: 'Not authenticated' }, 401)
-  const { notify_limit, notify_announcements, sandbox_mode } = await c.req.json().catch(() => ({}))
+  const { notify_limit, notify_announcements, notify_scheduled, sandbox_mode } = await c.req.json().catch(() => ({}))
   await c.env.DB.prepare(
-    'INSERT INTO email_prefs (user_id, notify_limit, notify_announcements) VALUES (?,?,?) ON CONFLICT (user_id) DO UPDATE SET notify_limit=excluded.notify_limit, notify_announcements=excluded.notify_announcements'
-  ).bind(user.id, notify_limit ? 1 : 0, notify_announcements ? 1 : 0).run()
+    `INSERT INTO email_prefs (user_id, notify_limit, notify_announcements, notify_scheduled) VALUES (?,?,?,?)
+     ON CONFLICT (user_id) DO UPDATE SET notify_limit=excluded.notify_limit, notify_announcements=excluded.notify_announcements, notify_scheduled=excluded.notify_scheduled`
+  ).bind(user.id, notify_limit ? 1 : 0, notify_announcements ? 1 : 0, notify_scheduled ? 1 : 0).run()
   if (sandbox_mode === 'ask' || sandbox_mode === 'auto') {
     await c.env.DB.prepare('UPDATE users SET sandbox_mode=? WHERE id=?').bind(sandbox_mode, user.id).run()
   }
