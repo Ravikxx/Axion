@@ -1649,11 +1649,17 @@ const SCHEDULED_DISPATCH_BATCH = 50
 // Runs on a per-minute cron. Finds enabled definitions whose next_run_at has
 // passed, appends their prompt as a user message to the associated chat
 // (creating one lazily on first run if the definition wasn't created with
-// one), and advances next_run_at/last_run_at so the same firing isn't picked
-// up again next minute. Triggering the actual model response is a later
-// sub-bite — this only puts the message in the chat, same as if the user had
-// typed it themselves.
-export async function dispatchScheduledDefinitions(db, now = Date.now()) {
+// one), triggers a real model reply through the same ChatGeneration path a
+// user's own message takes, and advances next_run_at/last_run_at so the same
+// firing isn't picked up again next minute.
+//
+// A generation that can't start (e.g. the chat already has one in progress)
+// is not treated as a dispatch failure — the message is already in the chat,
+// and the next firing will try again. `env` (not just a DB handle) is needed
+// here because starting a generation requires CHAT_GENERATIONS and
+// TOKEN_SECRET, not only D1 access.
+export async function dispatchScheduledDefinitions(env, now = Date.now()) {
+  const db = env.DB
   const { results: due } = await db.prepare(
     `SELECT id, user_id, project_id, chat_id, name, prompt, schedule
      FROM scheduled_definitions WHERE enabled=1 AND next_run_at IS NOT NULL AND next_run_at<=?
@@ -1672,6 +1678,7 @@ export async function dispatchScheduledDefinitions(db, now = Date.now()) {
     }
 
     await appendMessage(db, { chatId, userId: def.user_id, role: 'user', content: def.prompt, createdAt: now })
+    await startChatGeneration(env, { chatId, userId: def.user_id })
 
     const nextRunAt = computeNextRun(def.schedule, now)
     await db.prepare(
@@ -2485,98 +2492,99 @@ app.delete('/chats/:id/messages', async (c) => {
   return json({ ok: true })
 })
 
-app.post('/chats/:id/generations', async (c) => {
-  const user = await requireAuth(c)
-  if (!user) return json({ error: 'Not authenticated' }, 401)
-
-  const chatId = c.req.param('id')
-  const request = await c.req.json().catch(() => ({}))
-  const row = await c.env.DB.prepare(
+// Kicks off a server-owned reply for a chat via the ChatGeneration Durable
+// Object — the same path whether the caller is a human's POST or the
+// scheduled-task dispatcher. Returns {ok:false, reason, ...} instead of
+// throwing on any of the expected non-success cases, so callers outside an
+// HTTP request (like the dispatcher) don't need to catch a thrown Response.
+async function startChatGeneration(env, { chatId, userId, tokenVersion = 0, model, tools } = {}) {
+  const row = await env.DB.prepare(
     `SELECT chats.id, chats.active_generation_id,
             generations.status AS generation_status
      FROM chats
      LEFT JOIN chat_generations AS generations
        ON generations.id = chats.active_generation_id
      WHERE chats.id=? AND chats.user_id=?`
-  ).bind(chatId, user.id).first()
-  if (!row) return json({ error: 'Chat not found' }, 404)
+  ).bind(chatId, userId).first()
+  if (!row) return { ok: false, reason: 'not_found' }
 
   if (row.active_generation_id && ACTIVE_GENERATION_STATUSES.has(row.generation_status)) {
-    return json({
-      error: 'This chat already has a reply in progress.',
-      generation: { id: row.active_generation_id, status: row.generation_status },
-    }, 409)
+    return { ok: false, reason: 'already_active', generation: { id: row.active_generation_id, status: row.generation_status } }
   }
 
-  const messages = await loadMessages(c.env.DB, chatId)
+  const messages = await loadMessages(env.DB, chatId)
   if (!messages.length) {
-    return json({ error: 'The chat has no messages to answer.' }, 400)
+    return { ok: false, reason: 'no_messages' }
   }
   if (!['user', 'tool'].includes(messages[messages.length - 1]?.role)) {
-    return json({ error: 'The chat does not end with a user or tool message.' }, 409)
+    return { ok: false, reason: 'bad_last_role' }
   }
 
-  const model = typeof request.model === 'string' && request.model
-    ? request.model.slice(0, 100)
-    : 'lumen'
-  const tools = webChatTools(request.tools)
+  const resolvedModel = typeof model === 'string' && model ? model.slice(0, 100) : 'lumen'
+  const resolvedTools = webChatTools(tools)
   const requestBody = {
-    model,
+    model: resolvedModel,
     messages: [WEB_CHAT_CHART_HINT, ...webChatMessages(messages)],
-    ...(tools ? { tools } : {}),
+    ...(resolvedTools ? { tools: resolvedTools } : {}),
   }
   const id = `gen-${crypto.randomUUID()}`
   const created = Date.now()
-  const token = await makeToken(
-    user.id,
-    c.env.TOKEN_SECRET,
-    user.token_version || 0,
-    CHAT_JOB_TOKEN_TTL,
-  )
+  const token = await makeToken(userId, env.TOKEN_SECRET, tokenVersion, CHAT_JOB_TOKEN_TTL)
 
-  await c.env.DB.batch([
-    c.env.DB.prepare(
+  await env.DB.batch([
+    env.DB.prepare(
       `INSERT INTO chat_generations (id, chat_id, user_id, status, model, created)
        VALUES (?,?,?,?,?,?)`
-    ).bind(id, chatId, user.id, 'queued', model, created),
-    c.env.DB.prepare(
+    ).bind(id, chatId, userId, 'queued', resolvedModel, created),
+    env.DB.prepare(
       'UPDATE chats SET active_generation_id=? WHERE id=? AND user_id=?'
-    ).bind(id, chatId, user.id),
+    ).bind(id, chatId, userId),
   ])
 
   try {
-    const objectId = c.env.CHAT_GENERATIONS.idFromName(id)
-    const stub = c.env.CHAT_GENERATIONS.get(objectId)
+    const objectId = env.CHAT_GENERATIONS.idFromName(id)
+    const stub = env.CHAT_GENERATIONS.get(objectId)
     const started = await stub.fetch('https://chat-generation.internal/start', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        id,
-        chatId,
-        userId: user.id,
-        token,
-        requestBody,
-      }),
+      body: JSON.stringify({ id, chatId, userId, token, requestBody }),
     })
     if (!started.ok) throw new Error(`Generation worker returned HTTP ${started.status}`)
   } catch (error) {
     const detail = String(error?.message || error || 'Could not start generation').slice(0, 1000)
-    await c.env.DB.prepare(
+    await env.DB.prepare(
       "UPDATE chat_generations SET status='failed', error=?, completed=? WHERE id=? AND user_id=?"
-    ).bind(detail, Date.now(), id, user.id).run()
-    return json({ error: 'Could not start the server-side reply.', detail }, 500)
+    ).bind(detail, Date.now(), id, userId).run()
+    return { ok: false, reason: 'start_failed', detail }
   }
 
-  return json({
-    generation: {
-      id,
-      status: 'queued',
-      error: null,
-      created,
-      started: null,
-      completed: null,
-    },
-  }, 202)
+  return { ok: true, generation: { id, status: 'queued', error: null, created, started: null, completed: null } }
+}
+
+app.post('/chats/:id/generations', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+
+  const chatId = c.req.param('id')
+  const request = await c.req.json().catch(() => ({}))
+  const result = await startChatGeneration(c.env, {
+    chatId,
+    userId: user.id,
+    tokenVersion: user.token_version || 0,
+    model: request.model,
+    tools: request.tools,
+  })
+
+  if (!result.ok) {
+    switch (result.reason) {
+      case 'not_found': return json({ error: 'Chat not found' }, 404)
+      case 'already_active': return json({ error: 'This chat already has a reply in progress.', generation: result.generation }, 409)
+      case 'no_messages': return json({ error: 'The chat has no messages to answer.' }, 400)
+      case 'bad_last_role': return json({ error: 'The chat does not end with a user or tool message.' }, 409)
+      default: return json({ error: 'Could not start the server-side reply.', detail: result.detail }, 500)
+    }
+  }
+  return json({ generation: result.generation }, 202)
 })
 
 // Live view of a server-owned generation, as Server-Sent Events.
@@ -4447,7 +4455,7 @@ app.scheduled = async (event, env, ctx) => {
     return
   }
   if (event.cron === '* * * * *') {
-    ctx.waitUntil(dispatchScheduledDefinitions(env.DB))
+    ctx.waitUntil(dispatchScheduledDefinitions(env))
     return
   }
   ctx.waitUntil(runStatusChecks(env, fetch, (req) => app.fetch(req, env, ctx)))
