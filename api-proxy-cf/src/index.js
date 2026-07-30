@@ -1644,6 +1644,44 @@ app.delete('/scheduled/:id', async (c) => {
   return json({ ok: true })
 })
 
+const SCHEDULED_DISPATCH_BATCH = 50
+
+// Runs on a per-minute cron. Finds enabled definitions whose next_run_at has
+// passed, appends their prompt as a user message to the associated chat
+// (creating one lazily on first run if the definition wasn't created with
+// one), and advances next_run_at/last_run_at so the same firing isn't picked
+// up again next minute. Triggering the actual model response is a later
+// sub-bite — this only puts the message in the chat, same as if the user had
+// typed it themselves.
+export async function dispatchScheduledDefinitions(db, now = Date.now()) {
+  const { results: due } = await db.prepare(
+    `SELECT id, user_id, project_id, chat_id, name, prompt, schedule
+     FROM scheduled_definitions WHERE enabled=1 AND next_run_at IS NOT NULL AND next_run_at<=?
+     ORDER BY next_run_at ASC LIMIT ?`
+  ).bind(now, SCHEDULED_DISPATCH_BATCH).all()
+
+  let dispatched = 0
+  for (const def of due) {
+    let chatId = def.chat_id
+    if (!chatId) {
+      chatId = crypto.randomUUID()
+      await db.prepare(
+        `INSERT INTO chats (id, user_id, title, updated, created, project_id, title_rev)
+         VALUES (?,?,?,?,?,?,1)`
+      ).bind(chatId, def.user_id, def.name || 'Scheduled task', now, now, def.project_id || null).run()
+    }
+
+    await appendMessage(db, { chatId, userId: def.user_id, role: 'user', content: def.prompt, createdAt: now })
+
+    const nextRunAt = computeNextRun(def.schedule, now)
+    await db.prepare(
+      'UPDATE scheduled_definitions SET chat_id=?, next_run_at=?, last_run_at=?, updated=? WHERE id=?'
+    ).bind(chatId, nextRunAt, now, now, def.id).run()
+    dispatched++
+  }
+  return { dispatched }
+}
+
 // Cloud-authoritative preferences, so they follow the account across
 // devices/windows instead of living in one client's localStorage. No row
 // means defaults; a row is only created on first write.
@@ -4406,6 +4444,10 @@ app.scheduled = async (event, env, ctx) => {
       purgeExpiredTrashedChats(env.DB),
       purgeExpiredShares(env.DB),
     ]))
+    return
+  }
+  if (event.cron === '* * * * *') {
+    ctx.waitUntil(dispatchScheduledDefinitions(env.DB))
     return
   }
   ctx.waitUntil(runStatusChecks(env, fetch, (req) => app.fetch(req, env, ctx)))

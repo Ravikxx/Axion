@@ -2,7 +2,7 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 import { DatabaseSync } from 'node:sqlite'
 
-import app from '../src/index.js'
+import app, { dispatchScheduledDefinitions } from '../src/index.js'
 
 class Statement {
   constructor(database, sql, values = []) {
@@ -1399,4 +1399,75 @@ test('PUT /scheduled/:id with an unrelated field (name only) leaves next_run_at 
   await app.request(`/scheduled/${id}`, { method: 'PUT', headers, body: JSON.stringify({ name: 'Renamed' }) }, env)
   const after = await app.request(`/scheduled/${id}`, { headers }, env)
   assert.equal((await after.json()).next_run_at, firstRun)
+})
+
+test('dispatchScheduledDefinitions appends the prompt as a message and advances next_run_at/last_run_at', async () => {
+  const { db, env, headers } = await setup()
+  await app.request('/chats/chat-1', { method: 'PUT', headers, body: JSON.stringify({ title: 'Existing chat' }) }, env)
+  const create = await app.request('/scheduled', {
+    method: 'POST', headers,
+    body: JSON.stringify({ name: 'Daily digest', prompt: 'Summarize today', schedule: '* * * * *', chat_id: 'chat-1' }),
+  }, env)
+  const { id, next_run_at: firstRun } = await create.json()
+
+  const result = await dispatchScheduledDefinitions(db, firstRun)
+  assert.equal(result.dispatched, 1)
+
+  const { results: messages } = db.prepare('SELECT role, content FROM messages WHERE chat_id=?').bind('chat-1').all()
+  assert.equal(messages.length, 1)
+  assert.equal(messages[0].role, 'user')
+  assert.equal(messages[0].content, 'Summarize today')
+
+  const after = await app.request(`/scheduled/${id}`, { headers }, env)
+  const afterBody = await after.json()
+  assert.equal(afterBody.last_run_at, firstRun)
+  assert.ok(afterBody.next_run_at > firstRun)
+})
+
+test('dispatchScheduledDefinitions lazily creates a chat when the definition has none', async () => {
+  const { db, env, headers } = await setup()
+  const create = await app.request('/scheduled', {
+    method: 'POST', headers,
+    body: JSON.stringify({ name: 'Standalone reminder', prompt: 'Ping me', schedule: '* * * * *' }),
+  }, env)
+  const { id, next_run_at: firstRun } = await create.json()
+
+  await dispatchScheduledDefinitions(db, firstRun)
+
+  const after = await app.request(`/scheduled/${id}`, { headers }, env)
+  const afterBody = await after.json()
+  assert.ok(afterBody.chat_id)
+
+  const { results: messages } = db.prepare('SELECT content FROM messages WHERE chat_id=?').bind(afterBody.chat_id).all()
+  assert.equal(messages.length, 1)
+  assert.equal(messages[0].content, 'Ping me')
+})
+
+test('dispatchScheduledDefinitions ignores disabled definitions and ones not yet due', async () => {
+  const { db, env, headers } = await setup()
+  await app.request('/scheduled', {
+    method: 'POST', headers,
+    body: JSON.stringify({ name: 'Far future', prompt: 'Not yet', schedule: '0 0 1 1 *' }),
+  }, env)
+  await app.request('/scheduled', {
+    method: 'POST', headers,
+    body: JSON.stringify({ name: 'Off', prompt: 'Never', schedule: '* * * * *', enabled: false }),
+  }, env)
+
+  const result = await dispatchScheduledDefinitions(db, Date.now())
+  assert.equal(result.dispatched, 0)
+})
+
+test('dispatchScheduledDefinitions does not re-dispatch the same firing twice', async () => {
+  const { db, env, headers } = await setup()
+  const create = await app.request('/scheduled', {
+    method: 'POST', headers,
+    body: JSON.stringify({ name: 'Repeats', prompt: 'Tick', schedule: '* * * * *' }),
+  }, env)
+  const { next_run_at: firstRun } = await create.json()
+
+  const first = await dispatchScheduledDefinitions(db, firstRun)
+  const second = await dispatchScheduledDefinitions(db, firstRun)
+  assert.equal(first.dispatched, 1)
+  assert.equal(second.dispatched, 0)
 })
