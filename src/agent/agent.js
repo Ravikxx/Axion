@@ -1478,13 +1478,19 @@ One word only:`;
         }
         // No more fallbacks — show error
         this.onStreamEnd();
-        this.onMessage({ role: 'error', content: friendlyError(err, this.modelAlias) });
+        {
+          const { kind, message } = classifyProviderError(err, this.modelAlias);
+          this.onMessage({ role: 'error', content: message, errorKind: kind });
+        }
         return null;
       }
     }
     // Exhausted all fallback attempts
     this.onStreamEnd();
-    this.onMessage({ role: 'error', content: friendlyError(lastError, this.modelAlias) });
+    {
+      const { kind, message } = classifyProviderError(lastError, this.modelAlias);
+      this.onMessage({ role: 'error', content: message, errorKind: kind });
+    }
     return null;
   }
 
@@ -1822,23 +1828,38 @@ function formatResetTime(isoStr) {
   } catch { return 'soon'; }
 }
 
-function friendlyError(err, modelAlias) {
-  // Fast path: ProviderError carries structured data — use it directly
+// Maps a caught model-call error into one of the states a host application
+// (Desktop, specifically) can react to distinctly, alongside the existing
+// human-readable text — unchanged from before this was split out, so no
+// CLI-facing wording changes:
+//
+//   account      — invalid/expired/missing credentials, or a key restricted
+//                  to models it isn't scoped for
+//   quota        — included usage exhausted and no credits remain
+//   availability — the model/provider isn't reachable right now
+//   safety       — the account was suspended for a policy violation
+//   unknown      — anything else
+export function classifyProviderError(err, modelAlias) {
+  // Fast path: ProviderError carries structured data — use it directly.
+  // Every ProviderError thrown in this codebase today is a missing/unknown
+  // credential case with no status, which is why the status branches below
+  // are unreachable in practice — kept for any future throw site that does
+  // set one, with 'account' as the fallback since a credential problem is
+  // what every current throw site actually represents.
   if (NamedError.hasName(err, 'ProviderError')) {
     const { provider, message } = err.data;
     const providerLabel = provider || modelAlias;
-    // Still apply status-based classification if the error carried a status
     const status = err.data.status ?? err?.status ?? err?.response?.status;
     if (status === 401) {
-      if (modelAlias === 'other') return `Auth failed for custom endpoint. Use /endpoint <url> <model> <key> to set the API key.`;
-      if (modelAlias === 'lumen') return `Invalid or revoked Axion API key. Use /login or /axion-key <your-key> to authenticate.\n→ Sign up or get a key at axion.amplifiedsmp.org/keys`;
-      return `Invalid API key for "${modelAlias}". Use /api ${modelAlias} <your-key> to set it.`;
+      if (modelAlias === 'other') return { kind: 'account', message: `Auth failed for custom endpoint. Use /endpoint <url> <model> <key> to set the API key.` };
+      if (modelAlias === 'lumen') return { kind: 'account', message: `Invalid or revoked Axion API key. Use /login or /axion-key <your-key> to authenticate.\n→ Sign up or get a key at axion.amplifiedsmp.org/keys` };
+      return { kind: 'account', message: `Invalid API key for "${modelAlias}". Use /api ${modelAlias} <your-key> to set it.` };
     }
-    if (status === 429) return `Rate limited by "${providerLabel}". Wait a moment and try again.`;
-    if (status === 404) return `Model not found: "${modelAlias}". Try /model <name> to switch.`;
-    if (status === 403) return `Access denied for "${modelAlias}". Check that your API key has the right permissions.`;
-    if (status === 500 || status === 503) return `The "${providerLabel}" API returned a server error (${status}). Try again in a moment.`;
-    return message || `Provider error (${providerLabel})`;
+    if (status === 429) return { kind: 'quota', message: `Rate limited by "${providerLabel}". Wait a moment and try again.` };
+    if (status === 404) return { kind: 'availability', message: `Model not found: "${modelAlias}". Try /model <name> to switch.` };
+    if (status === 403) return { kind: /suspend/i.test(message || '') ? 'safety' : 'account', message: `Access denied for "${modelAlias}". Check that your API key has the right permissions.` };
+    if (status === 500 || status === 503) return { kind: 'availability', message: `The "${providerLabel}" API returned a server error (${status}). Try again in a moment.` };
+    return { kind: 'account', message: message || `Provider error (${providerLabel})` };
   }
 
   const status = err?.status ?? err?.response?.status;
@@ -1846,28 +1867,33 @@ function friendlyError(err, modelAlias) {
   const errObj = err?.error || {};
 
   if (status === 401 || /unauthorized|invalid.*key|api.?key/i.test(msg)) {
-    if (modelAlias === 'other') return `Auth failed for custom endpoint. Use /endpoint <url> <model> <key> to set the API key.`;
-    if (modelAlias === 'lumen') return `Invalid or revoked Axion API key. Use /login or /axion-key <your-key> to authenticate.\n→ Sign up or get a key at axion.amplifiedsmp.org/keys`;
-    return `Invalid API key for "${modelAlias}". Use /api ${modelAlias} <your-key> to set it.`;
+    if (modelAlias === 'other') return { kind: 'account', message: `Auth failed for custom endpoint. Use /endpoint <url> <model> <key> to set the API key.` };
+    if (modelAlias === 'lumen') return { kind: 'account', message: `Invalid or revoked Axion API key. Use /login or /axion-key <your-key> to authenticate.\n→ Sign up or get a key at axion.amplifiedsmp.org/keys` };
+    return { kind: 'account', message: `Invalid API key for "${modelAlias}". Use /api ${modelAlias} <your-key> to set it.` };
   }
   if (status === 429 || /rate.?limit|quota/i.test(msg)) {
     const resetStr = errObj.reset_at ? ` Resets ${formatResetTime(errObj.reset_at)}.` : '';
     const limitStr = Number.isFinite(Number(errObj.limit_usd)) ? ` ($${Number(errObj.limit_usd).toFixed(2)} included usage)` : '';
-    if (errObj.window)    return `Lumen two-hour allowance reached${limitStr} and no API credits remain.${resetStr}`;
-    if (/weekly/i.test(msg)) return `Lumen weekly allowance reached${limitStr} and no API credits remain.${resetStr}`;
-    return `Rate limited by "${modelAlias}".${resetStr || ' Wait a moment and try again.'}`;
+    if (errObj.window)    return { kind: 'quota', message: `Lumen two-hour allowance reached${limitStr} and no API credits remain.${resetStr}` };
+    if (/weekly/i.test(msg)) return { kind: 'quota', message: `Lumen weekly allowance reached${limitStr} and no API credits remain.${resetStr}` };
+    return { kind: 'quota', message: `Rate limited by "${modelAlias}".${resetStr || ' Wait a moment and try again.'}` };
   }
   if (status === 404 || /model.*not.*found|no.*model/i.test(msg)) {
-    return `Model not found: "${modelAlias}". Try /model <name> to switch.`;
+    return { kind: 'availability', message: `Model not found: "${modelAlias}". Try /model <name> to switch.` };
   }
   if (status === 403 || /forbidden|permission/i.test(msg)) {
-    return `Access denied for "${modelAlias}". Check that your API key has the right permissions.`;
+    if (/suspend/i.test(msg)) return { kind: 'safety', message: msg };
+    return { kind: 'account', message: `Access denied for "${modelAlias}". Check that your API key has the right permissions.` };
   }
   if (status === 500 || status === 503) {
     if (/gemini/i.test(modelAlias)) {
-      return `Gemini returned a server error. The model name "${modelAlias}" may be wrong or not yet available. Try "gemini-2.0-flash", "gemini-2.5-flash", or "gemini-1.5-pro".`;
+      return { kind: 'availability', message: `Gemini returned a server error. The model name "${modelAlias}" may be wrong or not yet available. Try "gemini-2.0-flash", "gemini-2.5-flash", or "gemini-1.5-pro".` };
     }
-    return `The "${modelAlias}" API returned a server error (${status}). Try again in a moment.`;
+    return { kind: 'availability', message: `The "${modelAlias}" API returned a server error (${status}). Try again in a moment.` };
   }
-  return `Model error (${modelAlias}): ${msg}`;
+  return { kind: 'unknown', message: `Model error (${modelAlias}): ${msg}` };
+}
+
+function friendlyError(err, modelAlias) {
+  return classifyProviderError(err, modelAlias).message;
 }
