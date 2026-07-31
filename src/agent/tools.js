@@ -9,6 +9,7 @@ import { captureScreen, captureScreenAnnotated, uiaClickElement, mouseClick, typ
 import { analyzeScreen, parseCoordinates } from './vision.js';
 import { executeGoogleTool, GOOGLE_TOOL_DEFINITIONS, GOOGLE_TOOL_DEFINITIONS_OPENAI } from './google.js';
 import { getOAuthToken } from '../oauth/oauth.js';
+import { resolveAxionAuth } from './models.js';
 import {
   goToDefinition, findReferences, hover, documentSymbol, workspaceSymbol, callHierarchy,
 } from '../services/lsp/manager.js';
@@ -826,6 +827,20 @@ export const TOOL_DEFINITIONS = [
       required: ['path'],
     },
   },
+  {
+    name: 'create_cloud_artifact',
+    description: 'Create a new artifact in the user\'s Axion cloud account (the same artifacts shown in the Axion Desktop/website Artifacts panel). Use this when the user asks you to save, create, or make an artifact — not for writing local project files, which is what write_file is for. Requires the user to be signed in to Axion; if they are not, this fails with a clear message telling them to sign in.',
+    input_schema: {
+      type: 'object',
+      properties: {
+        title:   { type: 'string', description: 'Artifact title (default: "Untitled")' },
+        kind:    { type: 'string', description: 'One of "text", "markdown", or "code" (default: "text")' },
+        language: { type: 'string', description: 'Language name, only meaningful when kind is "code"' },
+        content: { type: 'string', description: 'The artifact\'s full content' },
+      },
+      required: ['content'],
+    },
+  },
 ];
 
 export const TOOL_DEFINITIONS_OPENAI = TOOL_DEFINITIONS.map((t) => ({
@@ -1305,6 +1320,42 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
         } catch (e) {
           return { success: false, output: e.message };
         }
+      }
+
+      case 'create_cloud_artifact': {
+        const token = resolveAxionAuth();
+        if (!token) {
+          return { success: false, output: 'Not signed in to Axion — ask the user to sign in first, then try again.' };
+        }
+        const kind = ['text', 'code', 'markdown'].includes(input.kind) ? input.kind : 'text';
+        const body = {
+          title: (input.title || 'Untitled').toString().slice(0, 200),
+          kind,
+          content: typeof input.content === 'string' ? input.content : '',
+        };
+        if (kind === 'code' && input.language) body.language = String(input.language).slice(0, 50);
+
+        let response;
+        try {
+          response = await fetch('https://api.amplifiedsmp.org/artifacts', {
+            method: 'POST',
+            headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+            body: JSON.stringify(body),
+          });
+        } catch (e) {
+          return { success: false, output: `Could not reach Axion: ${e.message}` };
+        }
+
+        if (!response.ok) {
+          const errBody = await response.json().catch(() => ({}));
+          return {
+            success: false,
+            output: `Could not create the artifact (HTTP ${response.status}): ${errBody.error || 'unknown error'}`,
+          };
+        }
+        const data = await response.json().catch(() => null);
+        if (!data?.id) return { success: false, output: 'Could not parse the response from Axion.' };
+        return { success: true, output: `Created artifact "${data.title}" (id ${data.id}) in the user's Axion cloud account.` };
       }
 
       case 'snapshot_list': {
