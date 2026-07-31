@@ -98,7 +98,12 @@ export const BASE_URLS = {
   gemini:      'https://generativelanguage.googleapis.com/v1beta/openai/',
   openrouter:  'https://openrouter.ai/api/v1',
   ollama:        'http://localhost:11434/v1',
-  veil:          'https://axionlabsai-minecraftai-chat.hf.space/v1',
+  // Veil moved off its old HuggingFace Space onto the Worker's RunPod-backed
+  // proxy (api-proxy-cf/src/veil-upstream.js) — same endpoint as Lumen; the
+  // Worker dispatches on body.model. Veil is retiring 2026-08-17 with no
+  // replacement; remove the model entirely around that date rather than
+  // updating this URL again.
+  veil:          'https://api.amplifiedsmp.org/v1',
   lumen:         'https://api.amplifiedsmp.org/v1',
   'axion-vision': 'https://axionlabsai-lumenvision.hf.space/v1',
   opencode:      'https://opencode.ai/zen/v1',
