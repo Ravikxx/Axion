@@ -4,6 +4,34 @@ import { MODELS, MODEL_PROVIDERS, API_KEYS, BASE_URLS, CUSTOM_ENDPOINTS, REASONI
 import { getAxionKey } from '../persist.js';
 import { ProviderError } from '../utils/namedError.js';
 
+// ── Axion-hosted provider credential seam ─────────────────────────────────
+//
+// veil/lumen/axion-vision authenticate to the Worker with a Bearer credential
+// that can be either a persisted axion-sk- API key (set via /axion-key, the
+// CLI-native flow) or a host application's own account session token — the
+// Worker's /v1/chat/completions accepts both interchangeably. A host that
+// wants to supply the latter (e.g. Axion Desktop, which already holds an
+// OAuth session token in its main process for cloud sync) registers a
+// resolver here instead of reaching into persist.js's module state, which is
+// both a private implementation detail and, for a session token, the wrong
+// place to store something that must never touch disk unencrypted.
+//
+// The resolver is called fresh on every createClient(), not cached, so a
+// signed-in host picks up a refreshed or newly-cleared token without
+// restarting the agent. Returning a falsy value falls through to the
+// persisted CLI key, so a host can supply "no session token" (signed out)
+// without breaking a user who separately set one with /axion-key.
+let axionAuthResolver = null;
+
+export function setAxionAuthResolver(resolver) {
+  axionAuthResolver = typeof resolver === 'function' ? resolver : null;
+}
+
+function resolveAxionAuth() {
+  const resolved = axionAuthResolver ? axionAuthResolver() : null;
+  return resolved || getAxionKey();
+}
+
 // ── Per-model reasoning metadata and transport shim helpers ──────────────
 
 export function getModelReasoning(modelAlias) {
@@ -121,7 +149,7 @@ export function createClient(modelAlias) {
   }
 
   if (provider === 'veil') {
-    const axionKey = getAxionKey();
+    const axionKey = resolveAxionAuth();
     if (!axionKey) {
       throw new ProviderError({
         provider: 'veil',
@@ -144,7 +172,7 @@ export function createClient(modelAlias) {
   }
 
   if (provider === 'lumen') {
-    const axionKey = getAxionKey();
+    const axionKey = resolveAxionAuth();
     if (!axionKey) {
       throw new ProviderError({
         provider: 'lumen',
@@ -155,7 +183,7 @@ export function createClient(modelAlias) {
   }
 
   if (provider === 'axion-vision') {
-    const axionKey = getAxionKey();
+    const axionKey = resolveAxionAuth();
     if (!axionKey) {
       throw new ProviderError({
         provider: 'axion-vision',

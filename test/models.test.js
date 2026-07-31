@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { MODELS, MODEL_PROVIDERS, CONTEXT_WINDOWS } from '../src/config.js';
-import { resolveModel, resolveProvider } from '../src/agent/models.js';
+import { createClient, resolveModel, resolveProvider, setAxionAuthResolver } from '../src/agent/models.js';
 
 // ── Model list ─────────────────────────────────────────────────────────────────
 
@@ -79,5 +79,61 @@ test('context windows are positive integers', () => {
   for (const [alias, size] of Object.entries(CONTEXT_WINDOWS)) {
     assert.ok(Number.isInteger(size), `${alias} context window ${size} is not an integer`);
     assert.ok(size > 0, `${alias} context window ${size} is not positive`);
+  }
+});
+
+// ── Axion auth resolver seam ──────────────────────────────────────────────
+//
+// getAxionKey() reads a real ~/.axion/config.json, so these tests avoid
+// asserting a specific persisted-key value (environment-dependent) and
+// instead assert the resolver takes precedence when it returns something,
+// and that a falsy resolver result is indistinguishable from no resolver at
+// all having been registered.
+
+test('createClient prefers the registered Axion auth resolver for lumen/veil/axion-vision', () => {
+  setAxionAuthResolver(() => 'resolver-supplied-token');
+  try {
+    assert.equal(createClient('lumen').client.apiKey, 'resolver-supplied-token');
+    assert.equal(createClient('veil').client.apiKey, 'resolver-supplied-token');
+    assert.equal(createClient('axion-vision').client.apiKey, 'resolver-supplied-token');
+  } finally {
+    setAxionAuthResolver(null);
+  }
+});
+
+test('a resolver returning a falsy value behaves identically to no resolver registered', () => {
+  const attempt = () => {
+    try { return createClient('lumen'); } catch (error) { return error; }
+  };
+  const baseline = attempt();
+
+  setAxionAuthResolver(() => null);
+  const withFalsyResolver = attempt();
+  setAxionAuthResolver(null);
+
+  if (baseline instanceof Error) {
+    assert.ok(withFalsyResolver instanceof Error);
+    assert.equal(withFalsyResolver.message, baseline.message);
+  } else {
+    assert.equal(withFalsyResolver.client.apiKey, baseline.client.apiKey);
+  }
+});
+
+test('setAxionAuthResolver ignores a non-function argument instead of throwing', () => {
+  assert.doesNotThrow(() => setAxionAuthResolver('not-a-function'));
+  assert.doesNotThrow(() => setAxionAuthResolver(undefined));
+  setAxionAuthResolver(null);
+});
+
+test('providers unrelated to Axion accounts never see the resolver value', () => {
+  setAxionAuthResolver(() => 'should-never-leak-here');
+  try {
+    let result;
+    try { result = createClient('claude'); } catch (error) { result = error; }
+    if (!(result instanceof Error)) {
+      assert.notEqual(result.client.apiKey, 'should-never-leak-here');
+    }
+  } finally {
+    setAxionAuthResolver(null);
   }
 });
