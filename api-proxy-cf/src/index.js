@@ -18,6 +18,7 @@ import {
   WINDOW_MS,
 } from './billing.js'
 import { probeLumenHealth, proxyLumenRequest } from './lumen-upstream.js'
+import { probeVeilHealth, proxyVeilRequest } from './veil-upstream.js'
 import { runCode } from './sandbox.js'
 import { runStatusChecks, getStatusSnapshot } from './status.js'
 import {
@@ -2893,6 +2894,7 @@ function estimateTokensFromChars(text) {
   return Math.ceil((text || '').length / 4)
 }
 async function proxyUpstream(body, env) {
+  if ((body.model || '').toLowerCase() === 'veil') return proxyVeilRequest(body, env)
   return proxyLumenRequest(body, env)
 }
 
@@ -3219,7 +3221,10 @@ app.post('/v1/chat/completions', async (c) => {
 app.get('/v1/models', async (c) => {
   return json({
     object: 'list',
-    data: [{ id: 'lumen', object: 'model', created: 1750000000, owned_by: 'axion-labs' }],
+    data: [
+      { id: 'lumen', object: 'model', created: 1750000000, owned_by: 'axion-labs' },
+      { id: 'veil', object: 'model', created: 1785536086, owned_by: 'axion-labs' },
+    ],
   })
 })
 
