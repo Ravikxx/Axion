@@ -27,7 +27,7 @@ export function setAxionAuthResolver(resolver) {
   axionAuthResolver = typeof resolver === 'function' ? resolver : null;
 }
 
-function resolveAxionAuth() {
+export function resolveAxionAuth() {
   const resolved = axionAuthResolver ? axionAuthResolver() : null;
   return resolved || getAxionKey();
 }
