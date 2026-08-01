@@ -15,10 +15,13 @@ const agentSource = readFileSync(new URL('../src/agent/agent.js', import.meta.ur
 // safety benefit. Agent.NEVER_ASK exempts them from both 'ask' mode's
 // unconditional confirm and 'decide' mode's AI-judge gate.
 
-test('NEVER_ASK contains exactly the cloud artifact tools', () => {
+test('NEVER_ASK contains reversible cloud tools and user-interaction tools', () => {
   assert.deepEqual(
     [...Agent.NEVER_ASK].sort(),
-    ['create_cloud_artifact', 'delete_cloud_artifact', 'update_cloud_artifact'],
+    [
+      'ask_confirm', 'ask_multiple_choice', 'ask_question', 'ask_questions',
+      'create_cloud_artifact', 'delete_cloud_artifact', 'update_cloud_artifact',
+    ],
   );
 });
 

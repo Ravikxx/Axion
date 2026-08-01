@@ -804,6 +804,10 @@ CRITICAL RULES — follow these exactly:
   // which touch the user's real machine.
   static NEVER_ASK = new Set([
     'create_cloud_artifact', 'update_cloud_artifact', 'delete_cloud_artifact',
+    // These tools *are* the user interaction. Confirming permission to ask a
+    // question creates a redundant question before the real question and can
+    // deadlock non-terminal clients that render only one prompt at a time.
+    'ask_question', 'ask_multiple_choice', 'ask_confirm', 'ask_questions',
   ]);
 
   async _agentLoop(askConfirm, askUser) {
