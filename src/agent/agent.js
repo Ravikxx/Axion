@@ -344,6 +344,10 @@ export class Agent {
     this.goal = null;
     // Computer use — adds screen interaction tools when on
     this.computerUse  = false;
+    // One-time notice guard: computer-use tools are stripped from hosted
+    // models (see restrictToolsForHostedModel) — warn once per session
+    // rather than on every message.
+    this._warnedHostedComputerUse = false;
     // Adviser model — null means auto-pick
     this.adviserModel = null;
     // Messages typed while busy — injected at the next tool result
@@ -1546,6 +1550,21 @@ One word only:`;
     // Multi-Agent System: filter tools by the active agent's permission ruleset
     tools = AgentRegistry.filterTools(tools, this.agentInfo);
     tools = restrictToolsForHostedModel(tools, this.modelAlias);
+    // The cap silently drops every computer-use tool for hosted models (none
+    // are in the allowlist) — without a warning, /computer would look
+    // enabled while every action it needs quietly does nothing, the same
+    // silent-failure shape as the empty-response bug this cap exists to fix.
+    if (this.computerUse && !this._warnedHostedComputerUse) {
+      const computerToolNames = new Set(COMPUTER_TOOL_DEFINITIONS_OPENAI.map((t) => t.function.name));
+      const hasComputerTools = tools.some((t) => computerToolNames.has(t.function?.name));
+      if (!hasComputerTools) {
+        this._warnedHostedComputerUse = true;
+        this.onNotify?.({
+          role: 'notify',
+          content: '[Computer-use tools are unavailable on this model — Axion-hosted models use a reduced tool set. Switch to a different model to use /computer.]',
+        });
+      }
+    }
     return tools;
   }
 

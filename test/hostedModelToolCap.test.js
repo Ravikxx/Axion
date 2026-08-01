@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { restrictToolsForHostedModel, HOSTED_SMALL_MODEL_TOOL_NAMES } from '../src/agent/agent.js';
+import { Agent, restrictToolsForHostedModel, HOSTED_SMALL_MODEL_TOOL_NAMES } from '../src/agent/agent.js';
 import { TOOL_DEFINITIONS_OPENAI } from '../src/agent/tools.js';
 
 // Reproduced directly against the live Worker: sending the full ~70-tool
@@ -50,4 +50,33 @@ test('every allowlisted tool name actually exists in TOOL_DEFINITIONS_OPENAI', (
   for (const name of HOSTED_SMALL_MODEL_TOOL_NAMES) {
     assert.ok(realNames.has(name), `allowlisted "${name}" does not exist in TOOL_DEFINITIONS_OPENAI`);
   }
+});
+
+// Computer-use tools are all stripped by the hosted-model cap (none are in
+// the allowlist) — /computer would otherwise look enabled while every
+// action it needs quietly does nothing, the same silent-failure shape as
+// the bug this cap exists to fix. A flagged CodeRabbit review comment on
+// the original PR caught this before merge.
+test('warns once, not silently, when /computer is on for a hosted model', async () => {
+  const notices = [];
+  const agent = new Agent({ modelAlias: 'lumen', mode: 'auto', onNotify: (n) => notices.push(n), onTokens: () => {} });
+  agent.computerUse = true;
+
+  await agent._getToolListOpenAI();
+  await agent._getToolListOpenAI();
+
+  assert.equal(notices.length, 1, 'expected exactly one notice, not one per call');
+  assert.match(notices[0].content, /Computer-use tools are unavailable on this model/);
+});
+
+test('does not warn about computer-use when it is off, or for non-hosted models', async () => {
+  const notices = [];
+  const hostedButOff = new Agent({ modelAlias: 'lumen', mode: 'auto', onNotify: (n) => notices.push(n), onTokens: () => {} });
+  await hostedButOff._getToolListOpenAI();
+  assert.equal(notices.length, 0);
+
+  const nonHosted = new Agent({ modelAlias: 'claude', mode: 'auto', onNotify: (n) => notices.push(n), onTokens: () => {} });
+  nonHosted.computerUse = true;
+  await nonHosted._getToolListOpenAI();
+  assert.equal(notices.length, 0);
 });
