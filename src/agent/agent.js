@@ -18,6 +18,8 @@ import { wikiContent } from '../services/wiki/status.js';
 import { MCP } from './mcp.js';
 import { PLUGINS } from './plugins.js';
 import { GOOGLE_TOOL_DEFINITIONS, GOOGLE_TOOL_DEFINITIONS_OPENAI } from './google.js';
+import { listTeams, readTeamFile } from '../services/swarm/teamStore.js';
+import { partitionContext, getAllPartitionedMessages } from './contextPartitioning.js';
 import { getOAuthToken } from '../oauth/oauth.js';
 import { ensureLspManager, closeLspManager, getLspManager } from '../services/lsp/manager.js';
 import { homedir } from 'os';
@@ -313,13 +315,21 @@ const HOSTED_SMALL_MODEL_TOOL_NAMES = new Set([
   'create_cloud_artifact',
 ]);
 
+// lumen/veil authenticate with the account's own Axion sign-in (a session
+// token or axion-sk- key resolved via resolveAxionAuth in models.js), never
+// a third-party "API key" in the way every other provider means that term —
+// error messages that tell the user to check an "API key" are simply wrong
+// for these two and need their own wording wherever provider errors surface.
+function isAxionHostedProvider(provider) {
+  return provider === 'lumen' || provider === 'veil';
+}
+
 function restrictToolsForHostedModel(tools, modelAlias) {
-  const provider = resolveProvider(modelAlias);
-  if (provider !== 'lumen' && provider !== 'veil') return tools;
+  if (!isAxionHostedProvider(resolveProvider(modelAlias))) return tools;
   return tools.filter((t) => HOSTED_SMALL_MODEL_TOOL_NAMES.has(t.function?.name));
 }
 
-export { ThinkStreamFilter, restrictToolsForHostedModel, HOSTED_SMALL_MODEL_TOOL_NAMES };
+export { ThinkStreamFilter, restrictToolsForHostedModel, HOSTED_SMALL_MODEL_TOOL_NAMES, isAxionHostedProvider };
 
 export class Agent {
   constructor({ modelAlias, mode, label = 'main', todoScope = 'global', onToolCall, onToolResult, onMessage, onTokens, onStreamChunk, onStreamEnd, onNotify, agentId, workspaceId }) {
@@ -463,9 +473,7 @@ export class Agent {
   // should check this, not the raw flag, so the prompt and the tool list
   // never disagree about what's actually available.
   _computerUseActive() {
-    if (!this.computerUse) return false;
-    const provider = resolveProvider(this.modelAlias);
-    return provider !== 'lumen' && provider !== 'veil';
+    return this.computerUse && !isAxionHostedProvider(resolveProvider(this.modelAlias));
   }
   setAdviserModel(alias)   { this.adviserModel = alias || null; }
 
@@ -617,7 +625,6 @@ CRITICAL RULES — follow these exactly:
 
     // Team context — show available teams and members for multi-agent coordination
     try {
-      const { listTeams, readTeamFile } = require('../services/swarm/teamStore.js');
       const teams = listTeams();
       if (teams.length) {
         prompt += `\n\n## Available Teams\n`;
@@ -1439,7 +1446,6 @@ One word only:`;
     // Context partitioning: when history is large, partition into priority zones
     // and drop background messages that exceed their token budget.
     if (messages.length > 12) {
-      const { partitionContext, getAllPartitionedMessages } = require('../agent/contextPartitioning.js');
       const ctxWindow = CONTEXT_WINDOWS[resolveModel(this.modelAlias)] || 128_000;
       const partitioned = partitionContext(messages, { contextWindow: ctxWindow, zones: CONTEXT_ZONES });
       if (!partitioned.canFitInWindow) {
@@ -1921,12 +1927,18 @@ export function classifyProviderError(err, modelAlias) {
     const status = err.data.status ?? err?.status ?? err?.response?.status;
     if (status === 401) {
       if (modelAlias === 'other') return { kind: 'account', message: `Auth failed for custom endpoint. Use /endpoint <url> <model> <key> to set the API key.` };
-      if (modelAlias === 'lumen') return { kind: 'account', message: `Invalid or revoked Axion API key. Use /login or /axion-key <your-key> to authenticate.\n→ Sign up or get a key at axion.amplifiedsmp.org/keys` };
+      if (isAxionHostedProvider(resolveProvider(modelAlias))) return { kind: 'account', message: `Invalid or revoked Axion credentials. Use /login or /axion-key <your-key> to authenticate.\n→ Sign up or get a key at axion.amplifiedsmp.org/keys` };
       return { kind: 'account', message: `Invalid API key for "${modelAlias}". Use /api ${modelAlias} <your-key> to set it.` };
     }
     if (status === 429) return { kind: 'quota', message: `Rate limited by "${providerLabel}". Wait a moment and try again.` };
     if (status === 404) return { kind: 'availability', message: `Model not found: "${modelAlias}". Try /model <name> to switch.` };
-    if (status === 403) return { kind: /suspend/i.test(message || '') ? 'safety' : 'account', message: `Access denied for "${modelAlias}". Check that your API key has the right permissions.` };
+    if (status === 403) {
+      const kind = /suspend/i.test(message || '') ? 'safety' : 'account';
+      const text = isAxionHostedProvider(resolveProvider(modelAlias))
+        ? `Access denied for "${modelAlias}". Your Axion account may not have access to this model — try signing in again with /login, or contact support if this persists.`
+        : `Access denied for "${modelAlias}". Check that your API key has the right permissions.`;
+      return { kind, message: text };
+    }
     if (status === 500 || status === 503) return { kind: 'availability', message: `The "${providerLabel}" API returned a server error (${status}). Try again in a moment.` };
     return { kind: 'account', message: message || `Provider error (${providerLabel})` };
   }
@@ -1937,7 +1949,7 @@ export function classifyProviderError(err, modelAlias) {
 
   if (status === 401 || /unauthorized|invalid.*key|api.?key/i.test(msg)) {
     if (modelAlias === 'other') return { kind: 'account', message: `Auth failed for custom endpoint. Use /endpoint <url> <model> <key> to set the API key.` };
-    if (modelAlias === 'lumen') return { kind: 'account', message: `Invalid or revoked Axion API key. Use /login or /axion-key <your-key> to authenticate.\n→ Sign up or get a key at axion.amplifiedsmp.org/keys` };
+    if (isAxionHostedProvider(resolveProvider(modelAlias))) return { kind: 'account', message: `Invalid or revoked Axion credentials. Use /login or /axion-key <your-key> to authenticate.\n→ Sign up or get a key at axion.amplifiedsmp.org/keys` };
     return { kind: 'account', message: `Invalid API key for "${modelAlias}". Use /api ${modelAlias} <your-key> to set it.` };
   }
   if (status === 429 || /rate.?limit|quota/i.test(msg)) {
@@ -1952,6 +1964,9 @@ export function classifyProviderError(err, modelAlias) {
   }
   if (status === 403 || /forbidden|permission/i.test(msg)) {
     if (/suspend/i.test(msg)) return { kind: 'safety', message: msg };
+    if (isAxionHostedProvider(resolveProvider(modelAlias))) {
+      return { kind: 'account', message: `Access denied for "${modelAlias}". Your Axion account may not have access to this model — try signing in again with /login, or contact support if this persists.` };
+    }
     return { kind: 'account', message: `Access denied for "${modelAlias}". Check that your API key has the right permissions.` };
   }
   if (status === 500 || status === 503) {
