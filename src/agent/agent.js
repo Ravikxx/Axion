@@ -283,7 +283,34 @@ class ThinkStreamFilter {
 
 // ─────────────────────────────────────────────────────────────────────────────
 
-export { ThinkStreamFilter };
+// Axion-hosted models (lumen/veil) run on a shared RunPod/vLLM instance whose
+// guided-decoding tool-schema compiler breaks down — an HTTP 200 with a
+// completely empty streamed body, no error at all — once the combined tool
+// schema grows past roughly 52 of the CLI's ~70 tools. Confirmed by testing
+// directly against the live endpoint: 52 tools succeed, 54+ fail every time
+// regardless of which specific tools are included, so this is a total
+// schema-complexity/token limit on the vLLM side, not a fixed count — hence
+// a generous safety margin below the measured edge rather than trimming to
+// exactly 52. Until the RunPod/vLLM backend is fixed, hosted models get a
+// curated core subset instead of the full CLI arsenal.
+const HOSTED_SMALL_MODEL_TOOL_NAMES = new Set([
+  'read_file', 'write_file', 'patch_file', 'delete_file', 'move_file', 'copy_file',
+  'append_file', 'file_info', 'list_directory', 'create_directory', 'tree',
+  'glob', 'grep', 'find_files', 'grep_files',
+  'run_command',
+  'git_status', 'git_diff', 'git_log', 'git_commit',
+  'ask_question', 'ask_multiple_choice', 'ask_confirm',
+  'todo_add', 'todo_done', 'todo_list',
+  'create_cloud_artifact',
+]);
+
+function restrictToolsForHostedModel(tools, modelAlias) {
+  const provider = resolveProvider(modelAlias);
+  if (provider !== 'lumen' && provider !== 'veil') return tools;
+  return tools.filter((t) => HOSTED_SMALL_MODEL_TOOL_NAMES.has(t.function?.name));
+}
+
+export { ThinkStreamFilter, restrictToolsForHostedModel, HOSTED_SMALL_MODEL_TOOL_NAMES };
 
 export class Agent {
   constructor({ modelAlias, mode, label = 'main', todoScope = 'global', onToolCall, onToolResult, onMessage, onTokens, onStreamChunk, onStreamEnd, onNotify, agentId, workspaceId }) {
@@ -317,6 +344,10 @@ export class Agent {
     this.goal = null;
     // Computer use — adds screen interaction tools when on
     this.computerUse  = false;
+    // One-time notice guard: computer-use tools are stripped from hosted
+    // models (see restrictToolsForHostedModel) — warn once per session
+    // rather than on every message.
+    this._warnedHostedComputerUse = false;
     // Adviser model — null means auto-pick
     this.adviserModel = null;
     // Messages typed while busy — injected at the next tool result
@@ -414,6 +445,19 @@ export class Agent {
   setThinking(enabled, budget = 10000) { this.thinking = { enabled, budget }; }
   setGoal(description)     { this.goal = description || null; }
   setComputerUse(enabled)  { this.computerUse = !!enabled; }
+
+  // this.computerUse alone isn't enough to gate anything computer-use
+  // related — hosted models (lumen/veil) never get the actual tools (see
+  // restrictToolsForHostedModel), so telling them the tools exist anyway
+  // (system prompt, tool-fallback prompt) would have them hallucinate calls
+  // to tools that were never sent. Every computer-use-conditional spot
+  // should check this, not the raw flag, so the prompt and the tool list
+  // never disagree about what's actually available.
+  _computerUseActive() {
+    if (!this.computerUse) return false;
+    const provider = resolveProvider(this.modelAlias);
+    return provider !== 'lumen' && provider !== 'veil';
+  }
   setAdviserModel(alias)   { this.adviserModel = alias || null; }
 
   // Interrupt the current run: abort the in-flight API request and let the
@@ -518,7 +562,7 @@ export class Agent {
     if (this.goal) {
       prompt += `\n\nCURRENT GOAL: ${this.goal}\nWork autonomously until this goal is fully achieved. When the goal is complete, include exactly "GOAL_COMPLETE" on its own line at the end of your response.`;
     }
-    if (this.computerUse) {
+    if (this._computerUseActive()) {
       prompt += `\n\nCOMPUTER USE ENABLED: You can control the user's screen using the screenshot, click_on, click_at, type_text, press_key, scroll, and screen_size tools.
 
 CRITICAL RULES — follow these exactly:
@@ -1509,7 +1553,11 @@ One word only:`;
   }
 
   async _getToolListOpenAI() {
-    const base = this.computerUse
+    // _computerUseActive(), not the raw flag: hosted models never get
+    // computer-use tools (see restrictToolsForHostedModel below), so
+    // including them here — even to strip them straight back out — would
+    // desync from the system prompt, which uses the same check.
+    const base = this._computerUseActive()
       ? [...TOOL_DEFINITIONS_OPENAI, ...COMPUTER_TOOL_DEFINITIONS_OPENAI]
       : TOOL_DEFINITIONS_OPENAI;
     const google = getOAuthToken('google') ? GOOGLE_TOOL_DEFINITIONS_OPENAI : [];
@@ -1518,6 +1566,18 @@ One word only:`;
     tools = await PLUGINS.applyToolDefinitionHooks(tools);
     // Multi-Agent System: filter tools by the active agent's permission ruleset
     tools = AgentRegistry.filterTools(tools, this.agentInfo);
+    tools = restrictToolsForHostedModel(tools, this.modelAlias);
+    // this.computerUse (the raw, user-facing setting) is still true even
+    // though _computerUseActive() suppressed it above — tell the user why
+    // /computer isn't doing anything, once per session, rather than leaving
+    // it looking silently broken.
+    if (this.computerUse && !this._computerUseActive() && !this._warnedHostedComputerUse) {
+      this._warnedHostedComputerUse = true;
+      this.onNotify?.({
+        role: 'notify',
+        content: '[Computer-use tools are unavailable on this model — Axion-hosted models use a reduced tool set. Switch to a different model to use /computer.]',
+      });
+    }
     return tools;
   }
 
@@ -1674,7 +1734,7 @@ One word only:`;
     }
 
     // Non-streaming fallback for tool-call failures (some providers)
-    const fallbackMsgs = msgs.map((m, i) => i === 0 ? { ...m, content: m.content + getToolFallbackPrompt(this.computerUse) } : m);
+    const fallbackMsgs = msgs.map((m, i) => i === 0 ? { ...m, content: m.content + getToolFallbackPrompt(this._computerUseActive()) } : m);
     const fallbackBody = { model, messages: fallbackMsgs };
     fallbackBody[maxTokField] = maxTok;
     if (Object.keys(reasoningParams).length) Object.assign(fallbackBody, reasoningParams);
