@@ -3,12 +3,16 @@ import assert from 'node:assert/strict';
 import { Agent, restrictToolsForHostedModel, HOSTED_SMALL_MODEL_TOOL_NAMES } from '../src/agent/agent.js';
 import { TOOL_DEFINITIONS_OPENAI } from '../src/agent/tools.js';
 
-// Reproduced directly against the live Worker: sending the full ~70-tool
-// list to lumen/veil returns an HTTP 200 with a completely empty streamed
-// body (52 tools succeeds, 54+ fails every time) — the model call silently
-// produces nothing, which the retry loop in _callModel eventually surfaces
-// as "Model returned empty response". restrictToolsForHostedModel() caps
-// hosted models to a curated safe subset so the app is usable again.
+// Reproduced directly against the live Worker with the CLI's real system
+// prompt: the full ~70-tool list breaks lumen/veil (HTTP 200, completely
+// empty streamed body — the model call silently produces nothing, which
+// the retry loop in _callModel eventually surfaces as "Model returned
+// empty response"). The measured edge with the real system prompt was
+// between 26 (safe) and 27 (broken), confirmed deterministic 3/3 each way
+// — restrictToolsForHostedModel() caps hosted models to a 17-tool curated
+// subset, well under that edge with real margin, so the app is usable
+// again. See the allowlist's own comment for why this isn't trusted as a
+// stable "N tools is safe" number.
 
 test('restrictToolsForHostedModel leaves the full tool list untouched for non-hosted models', () => {
   const result = restrictToolsForHostedModel(TOOL_DEFINITIONS_OPENAI, 'claude');
@@ -19,9 +23,10 @@ test('restrictToolsForHostedModel caps lumen and veil to the curated safe subset
   for (const alias of ['lumen', 'veil']) {
     const result = restrictToolsForHostedModel(TOOL_DEFINITIONS_OPENAI, alias);
     assert.ok(result.length < TOOL_DEFINITIONS_OPENAI.length, `expected ${alias} to be capped`);
-    // Comfortably below the measured 52-tool failure edge, with real margin
-    // since the actual limit is schema-complexity/tokens, not a raw count.
-    assert.ok(result.length <= 30, `expected a generous safety margin, got ${result.length} tools`);
+    // Comfortably below the measured 26-safe/27-broken edge (with the real
+    // system prompt), with real margin since the actual limit is schema
+    // complexity against that specific prompt, not a portable raw count.
+    assert.ok(result.length <= 20, `expected a generous safety margin, got ${result.length} tools`);
     for (const tool of result) {
       assert.ok(HOSTED_SMALL_MODEL_TOOL_NAMES.has(tool.function.name), `${tool.function.name} is not in the allowlist`);
     }

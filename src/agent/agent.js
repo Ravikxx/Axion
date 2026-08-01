@@ -285,22 +285,31 @@ class ThinkStreamFilter {
 
 // Axion-hosted models (lumen/veil) run on a shared RunPod/vLLM instance whose
 // guided-decoding tool-schema compiler breaks down — an HTTP 200 with a
-// completely empty streamed body, no error at all — once the combined tool
-// schema grows past roughly 52 of the CLI's ~70 tools. Confirmed by testing
-// directly against the live endpoint: 52 tools succeed, 54+ fail every time
-// regardless of which specific tools are included, so this is a total
-// schema-complexity/token limit on the vLLM side, not a fixed count — hence
-// a generous safety margin below the measured edge rather than trimming to
-// exactly 52. Until the RunPod/vLLM backend is fixed, hosted models get a
+// completely empty streamed body, no error at all — once the combined
+// request (system prompt + tool schemas) crosses some complexity ceiling.
+//
+// IMPORTANT: this is NOT purely a tool-count limit. An earlier version of
+// this cap was calibrated with a trivial stub system prompt ("You are
+// Axion.") and measured a 52-tool edge — but with the CLI's *real* system
+// prompt (~2.6KB of agent instructions) in the request, the actual edge
+// was between 26 (safe) and 27 (broken), confirmed deterministic 3/3 on
+// each side. That boundary is almost certainly specific to this exact
+// system prompt + tool combination and could shift with either, so the
+// list below (17 tools) was chosen with real margin below the measured
+// edge, verified live 3/3, rather than riding the boundary. If this repo's
+// system prompt or tool schemas change meaningfully, re-verify against the
+// live endpoint rather than trusting this count to still hold.
+//
+// Until the RunPod/vLLM backend itself is fixed, hosted models get this
 // curated core subset instead of the full CLI arsenal.
 const HOSTED_SMALL_MODEL_TOOL_NAMES = new Set([
-  'read_file', 'write_file', 'patch_file', 'delete_file', 'move_file', 'copy_file',
-  'append_file', 'file_info', 'list_directory', 'create_directory', 'tree',
-  'glob', 'grep', 'find_files', 'grep_files',
+  'read_file', 'write_file', 'patch_file', 'delete_file',
+  'list_directory', 'create_directory', 'tree',
+  'glob', 'grep',
   'run_command',
-  'git_status', 'git_diff', 'git_log', 'git_commit',
-  'ask_question', 'ask_multiple_choice', 'ask_confirm',
-  'todo_add', 'todo_done', 'todo_list',
+  'git_status', 'git_diff',
+  'ask_question', 'ask_confirm',
+  'todo_add', 'todo_list',
   'create_cloud_artifact',
 ]);
 
