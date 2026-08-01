@@ -23,7 +23,6 @@ const TOOL_META = {
   git_status:        { concurrencySafe: true, readOnly: true },
   git_diff:          { concurrencySafe: true, readOnly: true },
   git_log:           { concurrencySafe: true, readOnly: true },
-  web_search:        { concurrencySafe: true, readOnly: true },
   get_working_dir:   { concurrencySafe: true, readOnly: true },
   todo_list:         { concurrencySafe: true, readOnly: true },
   snapshot_list:     { concurrencySafe: true, readOnly: true },
@@ -32,7 +31,6 @@ const TOOL_META = {
   plan_read:         { concurrencySafe: true, readOnly: true },
   wiki_read:         { concurrencySafe: true, readOnly: true },
   wiki_search:       { concurrencySafe: true, readOnly: true },
-  screenshot:        { concurrencySafe: true, readOnly: true },
   screen_size:       { concurrencySafe: true, readOnly: true },
 
   // Write / side-effecting tools: exclusive (one at a time)
@@ -69,6 +67,8 @@ const TOOL_META = {
   end_conversation:  { concurrencySafe: false, readOnly: false },
   schedule_followup: { concurrencySafe: false, readOnly: false },
   speak:             { concurrencySafe: false, readOnly: false },
+  web_search:        { concurrencySafe: false, readOnly: true },
+  screenshot:        { concurrencySafe: false, readOnly: true },
   analyze_video:     { concurrencySafe: false, readOnly: false },
   analyze_audio:     { concurrencySafe: false, readOnly: false },
   wait:              { concurrencySafe: false, readOnly: false },

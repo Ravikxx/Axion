@@ -26,6 +26,17 @@ import { writeFile, writeIfUnchanged, readFileWithMeta, fingerprintFile } from '
 import { detect as detectShell, buildShellArgs } from '../services/shell/detector.js';
 import { searchGlob, searchGrep, searchBackendInfo } from '../services/search/searchEngine.js';
 import { SHELL_CONFIG } from '../config.js';
+import { resolveContained, PathEscapeError } from './pathContainment.js';
+import {
+  authorizeWorkspaceTool,
+  ensureWorkspaceGrant,
+  getWorkspaceGrant,
+  getWorkspaceRoot as authorityWorkspaceRoot,
+  grantWorkspace,
+  requiresPermanentApproval,
+  setWorkspaceRoot as authoritySetWorkspaceRoot,
+  WorkspacePermissionError,
+} from './workspaceAuthority.js';
 
 // File-read tracking: agent must read a file before editing it.
 // Stored: absPath → { content, mtimeMs }
@@ -60,9 +71,32 @@ function _requireRead(absPath) {
 // Background tasks started via run_command background=true
 const BG_TASKS = new Map();
 let _bgCounter = 0;
+function terminateProcessTree(proc) {
+  if (!proc?.pid) return;
+  if (process.platform === 'win32') {
+    try {
+      execFileSync('taskkill', ['/pid', String(proc.pid), '/T', '/F'], { stdio: 'ignore', timeout: 5000 });
+      try { proc.stdin?.destroy(); proc.stdout?.destroy(); proc.stderr?.destroy(); proc.unref?.(); } catch {}
+      return;
+    } catch {}
+  }
+  try { proc.kill('SIGTERM'); } catch {}
+  try { proc.stdin?.destroy(); proc.stdout?.destroy(); proc.stderr?.destroy(); proc.unref?.(); } catch {}
+}
+export function cancelWorkspaceTasks(agentLabel = 'main') {
+  let cancelled = 0;
+  for (const [id, task] of BG_TASKS) {
+    if (task.agentLabel !== agentLabel || task.exitCode !== null) continue;
+    terminateProcessTree(task.proc);
+    if (task.expiryTimer) clearTimeout(task.expiryTimer);
+    BG_TASKS.delete(id);
+    cancelled++;
+  }
+  return cancelled;
+}
 process.on('exit', () => {
   for (const t of BG_TASKS.values()) {
-    if (t.exitCode === null) { try { t.proc.kill('SIGTERM'); } catch {} }
+    if (t.exitCode === null) terminateProcessTree(t.proc);
   }
 });
 
@@ -75,7 +109,23 @@ import { join } from 'path';
 // (Welcome banner, sidebar) had no way to read it since it lived only here.
 const CWD_BY_LABEL = new Map();
 export function getCwd(agentLabel = 'main') { return CWD_BY_LABEL.get(agentLabel) || process.cwd(); }
-export function setCwd(agentLabel, dir) { if (agentLabel) CWD_BY_LABEL.set(agentLabel, dir); }
+export function getWorkspaceRoot(agentLabel = 'main') { return authorityWorkspaceRoot(agentLabel); }
+export function setWorkspaceRoot(agentLabel = 'main', dir, { scope } = {}) {
+  const previous = getWorkspaceGrant(agentLabel);
+  const previousRoot = previous?.root || authorityWorkspaceRoot(agentLabel);
+  const root = authoritySetWorkspaceRoot(agentLabel, dir);
+  if (previousRoot !== root) cancelWorkspaceTasks(agentLabel);
+  CWD_BY_LABEL.set(agentLabel, root);
+  if (scope) grantWorkspace({ sessionId: agentLabel, root, scope });
+  else if (previous) grantWorkspace({ sessionId: agentLabel, root, scope: previous.scope, expiresAt: previous.expiresAt });
+  else ensureWorkspaceGrant(agentLabel, root);
+  return root;
+}
+export function setCwd(agentLabel, dir) {
+  if (!agentLabel) return;
+  const root = authorityWorkspaceRoot(agentLabel);
+  CWD_BY_LABEL.set(agentLabel, resolveContained(root, dir));
+}
 
 // ── Tool definitions ──────────────────────────────────────────────────────────
 
@@ -981,30 +1031,45 @@ export const COMPUTER_TOOL_DEFINITIONS_OPENAI = COMPUTER_TOOL_DEFINITIONS.map((t
 
 const MACRO_RECORDABLE = new Set(['click_on', 'click_at', 'type_text', 'press_key', 'scroll', 'find_text']);
 
-export async function executeTool(name, input, { agentLabel = 'main', onNotify = () => {}, askUser = null, todoScope = 'global' } = {}) {
+export async function executeTool(name, input, {
+  agentLabel = 'main', onNotify = () => {}, askUser = null,
+  todoScope = 'global', approvalGranted = false,
+} = {}) {
   // Log to active macro recording before executing
   if (MACRO_STATE.recording && MACRO_RECORDABLE.has(name)) {
     MACRO_STATE.steps.push({ name, input: { ...input } });
   }
 
   let cwd = getCwd(agentLabel);
-  const relPath = (p) => relative(cwd, resolve(cwd, p)) || '.';
+  const workspaceRoot = authorityWorkspaceRoot(agentLabel);
+  const containedPath = (p) => resolveContained(workspaceRoot, resolve(cwd, p));
+  const relPath = (p) => relative(cwd, containedPath(p)) || '.';
 
-  // Silently run formatter after a file write using config-driven formatter engine.
-  const tryAutoFormat = (absPath) => runFormatter(absPath, cwd);
+  let activeGrant = null;
+  // A formatter is a configured shell command. It may run only after an
+  // explicit approval and only at Full scope; otherwise a write tool could
+  // indirectly bypass both the command floor and a Read-write grant.
+  const tryAutoFormat = (absPath) => (
+    approvalGranted && activeGrant?.scope === 'full' ? runFormatter(absPath, cwd) : ''
+  );
 
   try {
+    ensureWorkspaceGrant(agentLabel, workspaceRoot);
+    activeGrant = authorizeWorkspaceTool(agentLabel, name);
+    if (requiresPermanentApproval(name) && !approvalGranted) {
+      throw new WorkspacePermissionError(`${name} requires explicit user approval.`, { tool: name });
+    }
     switch (name) {
 
       case 'read_file': {
-        const absPath = resolve(cwd, input.path);
+        const absPath = containedPath(input.path);
         const content = readFileSync(absPath, 'utf8');
         _trackRead(absPath);
         return { success: true, output: content };
       }
 
       case 'write_file': {
-        const absPath = resolve(cwd, input.path);
+        const absPath = containedPath(input.path);
         if (existsSync(absPath)) {
           const err = _requireRead(absPath);
           if (err) return err;
@@ -1023,7 +1088,7 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
       }
 
       case 'patch_file': {
-        const absPath = resolve(cwd, input.path);
+        const absPath = containedPath(input.path);
         {
           const err = _requireRead(absPath);
           if (err) return err;
@@ -1082,7 +1147,7 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
       }
 
       case 'delete_file': {
-        const absPath = resolve(cwd, input.path);
+        const absPath = containedPath(input.path);
         if (!existsSync(absPath)) return { success: false, output: `File not found: ${relPath(input.path)}` };
         {
           const err = _requireRead(absPath);
@@ -1097,8 +1162,8 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
       }
 
       case 'move_file': {
-        const src = resolve(cwd, input.from);
-        const dst = resolve(cwd, input.to);
+        const src = containedPath(input.from);
+        const dst = containedPath(input.to);
         if (!existsSync(src)) return { success: false, output: `Source not found: ${relPath(input.from)}` };
         const destDir = dirname(dst);
         if (!existsSync(destDir)) mkdirSync(destDir, { recursive: true });
@@ -1117,7 +1182,7 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
         const parts = [];
         for (const p of paths) {
           try {
-            const absPath = resolve(cwd, p);
+            const absPath = containedPath(p);
             const content = readFileSync(absPath, 'utf8');
             _trackRead(absPath);
             parts.push(`── ${relPath(p)} ──\n${content}`);
@@ -1136,7 +1201,7 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
         const changed = [];
         let totalHits = 0;
         for (const rel of matches) {
-          const absPath = resolve(cwd, rel);
+          const absPath = containedPath(rel);
           let content;
           try { content = readFileSync(absPath, 'utf8'); } catch { continue; }
           const count = content.split(input.find).length - 1;
@@ -1152,7 +1217,7 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
       }
 
       case 'tree': {
-        const root = input.path ? resolve(cwd, input.path) : cwd;
+        const root = input.path ? containedPath(input.path) : containedPath('.');
         if (!existsSync(root)) return { success: false, output: `Not found: ${relPath(input.path || '.')}` };
         const maxDepth = input.depth != null ? Math.max(1, Math.floor(input.depth)) : 3;
         const out = [];
@@ -1168,7 +1233,14 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
             const last = i === entries.length - 1;
             out.push(`${prefix}${last ? '└─ ' : '├─ '}${e.name}${e.isDirectory() ? '/' : ''}`);
             count++;
-            if (e.isDirectory()) walk(resolve(dir, e.name), prefix + (last ? '   ' : '│  '), depth + 1);
+            if (e.isDirectory()) {
+              try {
+                const child = containedPath(relative(cwd, resolve(dir, e.name)));
+                walk(child, prefix + (last ? '   ' : '│  '), depth + 1);
+              } catch (error) {
+                if (!(error instanceof PathEscapeError)) throw error;
+              }
+            }
           });
         };
         out.push(`${relPath(input.path || '.')}/`);
@@ -1178,14 +1250,14 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
       }
 
       case 'create_directory': {
-        const absPath = resolve(cwd, input.path);
+        const absPath = containedPath(input.path);
         mkdirSync(absPath, { recursive: true });
         return { success: true, output: `Created ${relPath(input.path)}` };
       }
 
       case 'copy_file': {
-        const src = resolve(cwd, input.from);
-        const dst = resolve(cwd, input.to);
+        const src = containedPath(input.from);
+        const dst = containedPath(input.to);
         if (!existsSync(src)) return { success: false, output: `Source not found: ${relPath(input.from)}` };
         const destDir = dirname(dst);
         if (!existsSync(destDir)) mkdirSync(destDir, { recursive: true });
@@ -1194,7 +1266,7 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
       }
 
       case 'append_file': {
-        const absPath = resolve(cwd, input.path);
+        const absPath = containedPath(input.path);
         const existed = existsSync(absPath);
         if (existed) {
           const err = _requireRead(absPath);
@@ -1211,7 +1283,7 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
       }
 
       case 'file_info': {
-        const absPath = resolve(cwd, input.path);
+        const absPath = containedPath(input.path);
         if (!existsSync(absPath)) return { success: false, output: `Not found: ${relPath(input.path)}` };
         const st = statSync(absPath);
         const lines = [
@@ -1227,7 +1299,7 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
       }
 
       case 'read_file_lines': {
-        const absPath = resolve(cwd, input.path);
+        const absPath = containedPath(input.path);
         if (!existsSync(absPath)) return { success: false, output: `Not found: ${relPath(input.path)}` };
         const all = readFileSync(absPath, 'utf8').split('\n');
         _trackRead(absPath);
@@ -1275,22 +1347,22 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
           let result;
           switch (op) {
             case 'goToDefinition':
-              result = await goToDefinition(input.filePath, input.line, input.col);
+              result = await goToDefinition(containedPath(input.filePath), input.line, input.col);
               break;
             case 'findReferences':
-              result = await findReferences(input.filePath, input.line, input.col);
+              result = await findReferences(containedPath(input.filePath), input.line, input.col);
               break;
             case 'hover':
-              result = await hover(input.filePath, input.line, input.col);
+              result = await hover(containedPath(input.filePath), input.line, input.col);
               break;
             case 'documentSymbol':
-              result = await documentSymbol(input.filePath);
+              result = await documentSymbol(containedPath(input.filePath));
               break;
             case 'workspaceSymbol':
               result = await workspaceSymbol(input.query);
               break;
             case 'callHierarchy':
-              result = await callHierarchy(input.filePath, input.line, input.col);
+              result = await callHierarchy(containedPath(input.filePath), input.line, input.col);
               break;
             default:
               return { success: false, output: `Unknown LSP operation: ${op}. Supported: goToDefinition, findReferences, hover, documentSymbol, workspaceSymbol, callHierarchy.` };
@@ -1327,7 +1399,7 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
       case 'workspace_select': {
         try {
           const ws = switchWorkspace(input.workspace_id);
-          setCwd(agentLabel, ws.path);
+          setWorkspaceRoot(agentLabel, ws.path);
           return { success: true, output: `Switched to workspace "${ws.id}" — ${ws.name} (${ws.path}). Working directory updated.` };
         } catch (e) {
           return { success: false, output: e.message };
@@ -1335,7 +1407,7 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
       }
 
       case 'workspace_create': {
-        const abs = resolve(cwd, input.path);
+        const abs = containedPath(input.path);
         try {
           const ws = createWorkspace({ name: input.name, path: abs });
           return { success: true, output: `Created workspace "${ws.id}" — ${ws.name} (${ws.path}). Use workspace_select to switch to it.` };
@@ -1456,6 +1528,8 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
       }
 
       case 'snapshot_restore': {
+        if (Array.isArray(input.files)) input.files.forEach((file) => containedPath(file));
+        previewRestore(cwd, input.id, input.files || []).forEach((change) => containedPath(change.file));
         const result = restoreSnapshot(cwd, input.id, input.files);
         if (result.failed.length) return { success: false, output: `Restore failed: ${result.failed.join(', ')}` };
         const files = result.restored;
@@ -1527,7 +1601,7 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
       }
 
       case 'change_working_dir': {
-        const target = resolve(cwd, input.path);
+        const target = containedPath(input.path);
         if (!existsSync(target)) return { success: false, output: `No such directory: ${relPath(input.path)}` };
         if (!statSync(target).isDirectory()) return { success: false, output: `Not a directory: ${relPath(input.path)}` };
         cwd = target;
@@ -1540,7 +1614,7 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
       }
 
       case 'list_directory': {
-        const dir = input.path ? resolve(cwd, input.path) : cwd;
+        const dir = input.path ? containedPath(input.path) : containedPath('.');
         const entries = readdirSync(dir, { withFileTypes: true });
         const annotated = entries.map((e) => e.isDirectory() ? `${e.name}/` : e.name);
         return { success: true, output: annotated.join('\n') };
@@ -1548,7 +1622,7 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
 
       case 'find_files':
       case 'glob': {
-        const root = input.path ? resolve(cwd, input.path) : cwd;
+        const root = input.path ? containedPath(input.path) : containedPath('.');
         const matches = await searchGlob({ cwd: root, pattern: input.pattern || '*', limit: 500 });
         if (!matches.length) return { success: true, output: 'No files found.' };
         return { success: true, output: matches.slice(0, 200).join('\n') + (matches.length > 200 ? `\n… (${matches.length - 200} more)` : '') };
@@ -1556,7 +1630,7 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
 
       case 'grep_files':
       case 'grep': {
-        const root = input.path ? resolve(cwd, input.path) : cwd;
+        const root = input.path ? containedPath(input.path) : containedPath('.');
         const hits = await searchGrep({ cwd: root, pattern: input.pattern, include: input.include || null, limit: 200 });
         if (!hits.length) return { success: true, output: 'No matches found.' };
         const lines = hits.slice(0, 100).map((h) => `${h.path}:${h.line}: ${h.text}`);
@@ -1597,7 +1671,7 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
         // Compound commands like `cd /tmp && ls` are left for the shell to handle.
         const cdMatch = input.command.trim().match(/^cd\s+((?:[^\s;&|`()\n]|\\.)+)\s*$/);
         if (cdMatch) {
-          const target = resolve(cwd, cdMatch[1].trim());
+          const target = containedPath(cdMatch[1].trim());
           if (!existsSync(target)) return { success: false, output: `cd: no such directory: ${target}` };
           cwd = target;
           setCwd(agentLabel, cwd);
@@ -1614,7 +1688,16 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
           const shell = detectShell(SHELL_CONFIG.defaultShell);
           const { shell: shellPath, args } = buildShellArgs(shell, input.command, cwd);
           const proc = spawn(shellPath, args, { cwd, detached: false, env: shellEnv });
-          const task = { id, command: input.command, proc, output: '', exitCode: null, startedAt: Date.now() };
+          const task = {
+            id, command: input.command, proc, output: '', exitCode: null,
+            startedAt: Date.now(), agentLabel, expiryTimer: null,
+          };
+          if (activeGrant?.expiresAt) {
+            const delay = Math.max(0, Date.parse(activeGrant.expiresAt) - Date.now());
+            task.expiryTimer = setTimeout(() => {
+              if (task.exitCode === null) terminateProcessTree(task.proc);
+            }, delay);
+          }
           const append = (chunk) => {
             task.output = (task.output + chunk.toString()).slice(-20000); // keep last 20k chars
           };
@@ -1622,6 +1705,7 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
           proc.stderr.on('data', append);
           proc.on('close', (code) => {
             task.exitCode = code;
+            if (task.expiryTimer) clearTimeout(task.expiryTimer);
             BUS.send('bgtask', agentLabel, {
               title: code === 0 ? '● Axion background task done' : '● Axion background task failed',
               text: `[Background task ${id} finished, exit code ${code}] \`${input.command}\`\n${task.output.slice(-2000) || '(no output)'}`,
@@ -1656,7 +1740,7 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
         const task = BG_TASKS.get(input.id);
         if (!task) return { success: false, output: `No such task: ${input.id}` };
         if (input.kill && task.exitCode === null) {
-          try { task.proc.kill('SIGTERM'); } catch {}
+          terminateProcessTree(task.proc);
           return { success: true, output: `Sent SIGTERM to ${input.id}.` };
         }
         const status = task.exitCode === null ? 'running' : `exited with code ${task.exitCode}`;
@@ -1687,17 +1771,17 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
       }
 
       case 'git_status': {
-        return { success: true, output: execSync('git status', { cwd, encoding: 'utf8' }) };
+        return { success: true, output: execFileSync('git', ['-c', 'core.fsmonitor=false', 'status'], { cwd, encoding: 'utf8' }) };
       }
 
       case 'git_diff': {
-        const out = execSync('git diff', { cwd, encoding: 'utf8' });
+        const out = execFileSync('git', ['--no-pager', 'diff', '--no-ext-diff', '--no-textconv'], { cwd, encoding: 'utf8' });
         return { success: true, output: out || '(no changes)' };
       }
 
       case 'git_log': {
         const n = Math.min(input.limit || 10, 50);
-        const out = execSync(`git log --oneline -${n}`, { cwd, encoding: 'utf8' });
+        const out = execFileSync('git', ['--no-pager', 'log', '--oneline', `-${n}`], { cwd, encoding: 'utf8' });
         return { success: true, output: out || '(no commits)' };
       }
 
@@ -1947,7 +2031,7 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
       }
 
       case 'ask_vision': {
-        const imgPath = resolve(cwd, input.path);
+        const imgPath = containedPath(input.path);
         if (!existsSync(imgPath)) return { success: false, output: `File not found: ${relPath(input.path)}` };
         const ext = extname(imgPath).toLowerCase();
         const MEDIA_MAP = { '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.gif': 'image/gif', '.webp': 'image/webp' };
@@ -1965,7 +2049,7 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
 
       case 'analyze_video': {
         const isUrl = /^https?:\/\//i.test(input.path || '');
-        const vidPath = isUrl ? input.path : resolve(cwd, input.path);
+        const vidPath = isUrl ? input.path : containedPath(input.path);
         if (!isUrl) {
           if (!existsSync(vidPath)) return { success: false, output: `File not found: ${relPath(input.path)}` };
           const ext = extname(vidPath).toLowerCase();
@@ -1988,7 +2072,7 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
 
       case 'analyze_audio': {
         const isUrl = /^https?:\/\//i.test(input.path || '');
-        const audioPath = isUrl ? input.path : resolve(cwd, input.path);
+        const audioPath = isUrl ? input.path : containedPath(input.path);
         if (!isUrl) {
           if (!existsSync(audioPath)) return { success: false, output: `File not found: ${relPath(input.path)}` };
           const ext = extname(audioPath).toLowerCase();
@@ -2145,10 +2229,10 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
         const { wikiContent, wikiIsInitialized } = await import('../services/wiki/status.js');
         const { readFileSync } = await import('fs');
         const { getWikiRoot, pagePath } = await import('../services/wiki/paths.js');
-        const root = getWikiRoot(cwd);
+        const root = containedPath(relative(cwd, getWikiRoot(cwd)));
         if (!wikiIsInitialized(cwd)) return { success: false, output: 'Wiki not initialized yet. Use wiki_write to create the first page and automatically initialize it.' };
         if (input.page) {
-          const p = pagePath(root, input.page);
+          const p = containedPath(relative(cwd, pagePath(root, input.page)));
           try {
             const content = readFileSync(p, 'utf8');
             return { success: true, output: content };
@@ -2164,17 +2248,18 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
         const { getWikiRoot, pagePath, logPath } = await import('../services/wiki/paths.js');
         const { writeFileSync, appendFileSync, existsSync, mkdirSync } = await import('fs');
         const { buildIndex } = await import('../services/wiki/indexBuilder.js');
-        const root = getWikiRoot(cwd);
+        const root = containedPath(relative(cwd, getWikiRoot(cwd)));
         if (!existsSync(root)) mkdirSync(root, { recursive: true });
-        const dest = pagePath(root, input.title);
+        const dest = containedPath(relative(cwd, pagePath(root, input.title)));
         const dir = dirname(dest);
         if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
         const content = `# ${input.title}\n\n*Created ${new Date().toLocaleString()}*\n\n${input.content}`;
         writeFileSync(dest, content, 'utf8');
-        if (!existsSync(logPath(root))) {
-          writeFileSync(logPath(root), `# Wiki Change Log\n\n`, 'utf8');
+        const changeLog = containedPath(relative(cwd, logPath(root)));
+        if (!existsSync(changeLog)) {
+          writeFileSync(changeLog, `# Wiki Change Log\n\n`, 'utf8');
         }
-        appendFileSync(logPath(root), `- ${new Date().toISOString()} — wrote page "${input.title}"\n`, 'utf8');
+        appendFileSync(changeLog, `- ${new Date().toISOString()} — wrote page "${input.title}"\n`, 'utf8');
         buildIndex(cwd);
         return { success: true, output: `Wiki page "${input.title}" written to ${dest}. Index rebuilt.` };
       }

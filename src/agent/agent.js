@@ -1,12 +1,16 @@
 import { readFileSync, existsSync } from 'fs';
 import { resolve, extname } from 'path';
-import { execSync } from 'child_process';
+import { execFileSync, execSync } from 'child_process';
 import { createClient, resolveModel, resolveProvider, getModelMaxTokensField, buildReasoningParams, applyTransportShim } from './models.js';
 import {
   TOOL_DEFINITIONS, TOOL_DEFINITIONS_OPENAI,
   COMPUTER_TOOL_DEFINITIONS, COMPUTER_TOOL_DEFINITIONS_OPENAI,
-  executeTool, parseToolCallsFromText, getCwd, setCwd,
+  executeTool, parseToolCallsFromText, getCwd, getWorkspaceRoot, setWorkspaceRoot,
 } from './tools.js';
+import {
+  authorizeWorkspaceTool, ensureWorkspaceGrant, filterToolsForWorkspaceScope,
+  getWorkspaceGrant, grantWorkspace, requiredScopeForTool, requiresPermanentApproval,
+} from './workspaceAuthority.js';
 import { API_KEYS, CONTEXT_WINDOWS, MAX_TOOL_CONCURRENCY, CONTEXT_ZONES } from '../config.js';
 import { StreamingToolExecutor } from '../services/tools/toolExecutor.js';
 import { allConcurrentSafe } from '../services/tools/toolOrchestration.js';
@@ -31,6 +35,7 @@ import { startWatching, stopAll, onFileChange, FileWatcherEvent } from '../servi
 import { FILE_WATCHER } from '../config.js';
 import { parseTokenBudget, stripTokenBudget, createBudgetTracker, checkTokenBudget } from './tokenBudget.js';
 import { initAutoDream, executeAutoDream, isAutoDreamRunning } from '../services/autoDream/autoDream.js';
+import { resolveContained } from './pathContainment.js';
 
 // Initialise the auto-dream closure once per process. The gates (enabled /
 // time / session / lock) inside executeAutoDream decide whether anything
@@ -41,8 +46,12 @@ import { activeWorkspace, activeWorkspacePath, switchWorkspace, listWorkspaces }
 
 // ── Project context (built per working directory, cached) ────────────────────
 
-function buildProjectContext(cwd = process.cwd()) {
+export function buildProjectContext(cwd = process.cwd(), workspaceRoot = cwd) {
   const hints = [];
+  let safeCwd;
+  try { safeCwd = resolveContained(workspaceRoot, cwd); }
+  catch { return ''; }
+  const projectPath = (...parts) => resolveContained(workspaceRoot, resolve(safeCwd, ...parts));
 
   // Persistent project instructions. AXION.md takes priority (global ~/.axion/AXION.md,
   // then project root, then ./.axion/AXION.md). If no AXION.md is found anywhere, fall
@@ -50,9 +59,10 @@ function buildProjectContext(cwd = process.cwd()) {
   let foundInstructions = false;
   for (const p of [
     resolve(homedir(), '.axion', 'AXION.md'),
-    resolve(cwd, 'AXION.md'),
-    resolve(cwd, '.axion', 'AXION.md'),
+    (() => { try { return projectPath('AXION.md'); } catch { return null; } })(),
+    (() => { try { return projectPath('.axion', 'AXION.md'); } catch { return null; } })(),
   ]) {
+    if (!p) continue;
     try {
       const text = readFileSync(p, 'utf8').trim();
       if (text) { hints.push(`Instructions from ${p} (follow these):\n${text.slice(0, 8000)}`); foundInstructions = true; }
@@ -60,7 +70,8 @@ function buildProjectContext(cwd = process.cwd()) {
   }
   if (!foundInstructions) {
     for (const name of ['AGENTS.md', 'CLAUDE.md']) {
-      const p = resolve(cwd, name);
+      let p;
+      try { p = projectPath(name); } catch { continue; }
       try {
         const text = readFileSync(p, 'utf8').trim();
         if (text) { hints.push(`Instructions from ${p} (follow these):\n${text.slice(0, 8000)}`); foundInstructions = true; break; }
@@ -70,7 +81,7 @@ function buildProjectContext(cwd = process.cwd()) {
 
   // package.json
   try {
-    const pkg = JSON.parse(readFileSync(resolve(cwd, 'package.json'), 'utf8'));
+    const pkg = JSON.parse(readFileSync(projectPath('package.json'), 'utf8'));
     hints.push(`Project: ${pkg.name || '(unnamed)'}${pkg.version ? ` v${pkg.version}` : ''}${pkg.description ? ` — ${pkg.description}` : ''}`);
     if (pkg.scripts && Object.keys(pkg.scripts).length) {
       hints.push(`npm scripts: ${Object.keys(pkg.scripts).join(', ')}`);
@@ -80,31 +91,36 @@ function buildProjectContext(cwd = process.cwd()) {
   } catch {}
 
   // pyproject.toml / setup.py
-  if (existsSync(resolve(cwd, 'pyproject.toml'))) hints.push('Stack: Python (pyproject.toml)');
-  else if (existsSync(resolve(cwd, 'Cargo.toml'))) hints.push('Stack: Rust (Cargo.toml)');
-  else if (existsSync(resolve(cwd, 'go.mod')))     hints.push('Stack: Go (go.mod)');
+  try {
+    if (existsSync(projectPath('pyproject.toml'))) hints.push('Stack: Python (pyproject.toml)');
+    else if (existsSync(projectPath('Cargo.toml'))) hints.push('Stack: Rust (Cargo.toml)');
+    else if (existsSync(projectPath('go.mod')))     hints.push('Stack: Go (go.mod)');
+  } catch {}
 
   // Git branch
   try {
-    const branch = execSync('git branch --show-current', { cwd, encoding: 'utf8', stdio: ['pipe','pipe','pipe'] }).trim();
+    const branch = execFileSync('git', ['-c', 'core.fsmonitor=false', 'branch', '--show-current'], {
+      cwd: safeCwd, encoding: 'utf8', stdio: ['pipe', 'pipe', 'pipe'],
+    }).trim();
     if (branch) hints.push(`Git branch: ${branch}`);
   } catch {}
 
   // README (first 300 chars)
   try {
-    const readme = readFileSync(resolve(cwd, 'README.md'), 'utf8').trim().slice(0, 300);
+    const readme = readFileSync(projectPath('README.md'), 'utf8').trim().slice(0, 300);
     if (readme) hints.push(`README: ${readme.replace(/\n+/g, ' ')}`);
   } catch {}
 
-  return hints.length ? `\n\nProject context (${cwd}):\n${hints.map(h => `• ${h}`).join('\n')}` : '';
+  return hints.length ? `\n\nProject context (${safeCwd}):\n${hints.map(h => `• ${h}`).join('\n')}` : '';
 }
 
 // Project context depends on the agent's working directory (sub-agents and
 // trajectory generation can run elsewhere), so build it per-cwd, cached.
 const PROJECT_CONTEXT_CACHE = new Map();
-function getProjectContext(cwd) {
-  if (!PROJECT_CONTEXT_CACHE.has(cwd)) PROJECT_CONTEXT_CACHE.set(cwd, buildProjectContext(cwd));
-  return PROJECT_CONTEXT_CACHE.get(cwd);
+function getProjectContext(cwd, workspaceRoot) {
+  const key = `${workspaceRoot}\0${cwd}`;
+  if (!PROJECT_CONTEXT_CACHE.has(key)) PROJECT_CONTEXT_CACHE.set(key, buildProjectContext(cwd, workspaceRoot));
+  return PROJECT_CONTEXT_CACHE.get(key);
 }
 
 // ── Vision — parse image paths from user messages ─────────────────────────────
@@ -112,13 +128,15 @@ function getProjectContext(cwd) {
 const IMAGE_EXTS = new Set(['.png', '.jpg', '.jpeg', '.gif', '.webp']);
 const MEDIA_TYPES = { '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png', '.gif': 'image/gif', '.webp': 'image/webp' };
 
-function extractImages(text) {
+function extractImages(text, cwd, workspaceRoot) {
   // Find any word that looks like an image path and exists on disk
   const images = [];
   const re = /\S+\.(?:png|jpg|jpeg|gif|webp)/gi;
   let m;
   while ((m = re.exec(text)) !== null) {
-    const abs = resolve(process.cwd(), m[0]);
+    let abs;
+    try { abs = resolveContained(workspaceRoot, resolve(cwd, m[0])); }
+    catch { continue; }
     if (existsSync(abs)) {
       const ext = extname(m[0]).toLowerCase();
       images.push({ path: m[0], abs, mediaType: MEDIA_TYPES[ext] || 'image/png' });
@@ -127,8 +145,8 @@ function extractImages(text) {
   return images;
 }
 
-function buildUserContent(text) {
-  const images = extractImages(text);
+function buildUserContent(text, cwd, workspaceRoot) {
+  const images = extractImages(text, cwd, workspaceRoot);
   if (!images.length) return text;
   // Anthropic content block format (converted for OpenAI in _historyToOpenAI)
   return [
@@ -336,6 +354,7 @@ export class Agent {
     this.modelAlias   = modelAlias;
     this.mode         = mode;
     this.label        = label;
+    ensureWorkspaceGrant(this.label, getWorkspaceRoot(this.label));
     // Multi-Agent System: resolve a named agent (role, permissions, model
     // override). Falls back to the default ("build") agent when unset.
     this.agentId      = agentId || AgentRegistry.default().id;
@@ -420,7 +439,7 @@ export class Agent {
     // File watcher — started lazily on first prompt when enabled via AXION_FILE_WATCHER=1
     this._watcherHandle = null;
     this._ensureWatcher = () => {
-      if (this._watcherHandle || !FILE_WATCHER.enabled) return;
+      if (this._watcherHandle || !FILE_WATCHER.enabled || !getWorkspaceGrant(this.label)) return;
       const cwd = getCwd(this.label);
       if (!cwd) return;
       this._watcherHandle = startWatching(cwd, {
@@ -458,7 +477,7 @@ export class Agent {
       try { ws = activeWorkspace(); } catch {}
     }
     this.workspaceInfo = ws || null;
-    if (this.workspaceId && ws?.path) setCwd(this.label, ws.path);
+    if (this.workspaceId && ws?.path) setWorkspaceRoot(this.label, ws.path);
   }
   setChatMode(enabled)     { this.chatMode = !!enabled; }
   setThinking(enabled, budget = 10000) { this.thinking = { enabled, budget }; }
@@ -476,6 +495,13 @@ export class Agent {
     return this.computerUse && !isAxionHostedProvider(resolveProvider(this.modelAlias));
   }
   setAdviserModel(alias)   { this.adviserModel = alias || null; }
+
+  suspendWorkspaceAccess() {
+    try { this._watcherHandle?.stop?.(); } catch {}
+    this._watcherHandle = null;
+    try { closeLspManager(); } catch {}
+    this._lspInitialized = false;
+  }
 
   // Interrupt the current run: abort the in-flight API request and let the
   // agent loop wind down. History stays consistent — pending tool calls get
@@ -549,7 +575,8 @@ export class Agent {
       return prompt;
     }
 
-    let prompt = SYSTEM_PROMPT + getProjectContext(getCwd(this.label));
+    const grant = getWorkspaceGrant(this.label);
+    let prompt = SYSTEM_PROMPT + (grant ? getProjectContext(getCwd(this.label), grant.root) : '');
 
     if (this.agentInfo?.roleDefinition) {
       prompt += `\n\n## Agent role: ${this.agentInfo.name}${this.agentInfo.description ? ` — ${this.agentInfo.description}` : ''}\n${this.agentInfo.roleDefinition}`;
@@ -745,7 +772,11 @@ CRITICAL RULES — follow these exactly:
       this._budgetCompletion = null;
     }
 
-    this.history.push({ role: 'user', content: buildUserContent(userMessage) });
+    const grant = getWorkspaceGrant(this.label);
+    this.history.push({
+      role: 'user',
+      content: grant ? buildUserContent(userMessage, getCwd(this.label), grant.root) : userMessage,
+    });
 
     if (this.mode === 'plan') {
       const plan = await this.planStep(userMessage);
@@ -782,8 +813,7 @@ CRITICAL RULES — follow these exactly:
   // fetch_url is deliberately NOT here: it reaches the network with a
   // model-chosen URL, so decide mode must evaluate it like any other tool.
   static PARALLEL_SAFE = new Set([
-    'read_file', 'list_directory', 'git_status', 'git_diff',
-    'web_search', 'screenshot', 'screen_size',
+    'read_file', 'list_directory', 'git_status', 'git_diff', 'screen_size',
     'grep', 'grep_files', 'glob', 'find_files',
   ]);
 
@@ -927,7 +957,11 @@ CRITICAL RULES — follow these exactly:
 
       // Capture a snapshot before executing tools so the user can undo
       const projPath = getCwd(this.label);
-      if (projPath) captureSnapshot(projPath, `before tools: ${toolCalls.map(t => t.name).join(', ')}`);
+      const activeGrant = getWorkspaceGrant(this.label);
+      const hasFileMutation = toolCalls.some((tool) => requiredScopeForTool(tool.name) === 'read-write');
+      if (projPath && activeGrant && hasFileMutation) {
+        captureSnapshot(projPath, `before tools: ${toolCalls.map(t => t.name).join(', ')}`);
+      }
 
       // ── Concurrent Tool Execution Engine ──────────────────────────────────
       // Tools are partitioned into batches: consecutive read-only tools run in
@@ -943,10 +977,33 @@ CRITICAL RULES — follow these exactly:
         executeFn: async (name, input, { signal } = {}) => {
           const tc = { name, input };
 
+          // The execution-layer scope check is independent of model-visible
+          // definitions, so a hallucinated, plugin-injected, or indirect call
+          // cannot invoke a tool hidden by the active workspace grant.
+          try {
+            authorizeWorkspaceTool(this.label, name);
+          } catch (error) {
+            return { output: error.message, success: false };
+          }
+
           // ── Permission checks (decide / ask mode) ──────────────────────
+          let floorApproved = false;
+          let userApproved = false;
+          if (requiresPermanentApproval(name)) {
+            if (!askConfirm) {
+              return { output: `${name} requires explicit user approval.`, success: false };
+            }
+            floorApproved = await askConfirm(tc);
+            if (!floorApproved) return { output: 'User declined.', success: false };
+            userApproved = true;
+          }
+
           if (Agent.NEVER_ASK.has(name)) {
             // Skip both the decide-mode judge and the ask-mode confirm —
             // neither one adds safety here (see NEVER_ASK's own comment).
+          } else if (floorApproved) {
+            // The permanent floor already collected approval; do not prompt a
+            // second time for the selected interaction mode.
           } else if (this.mode === 'decide' && !Agent.PARALLEL_SAFE.has(name)) {
             let decision = await this._decideToolSafety(tc);
             const permCtx = await PLUGINS.dispatch('permission.ask', { tool: name, input, decision });
@@ -957,11 +1014,15 @@ CRITICAL RULES — follow these exactly:
             if (decision === 'ask' && askConfirm) {
               const approved = await askConfirm(tc);
               if (!approved) return { output: 'User declined.', success: false };
+              userApproved = true;
             }
           } else if (this.mode === 'ask' && askConfirm) {
             const approved = await askConfirm(tc);
             if (!approved) return { output: 'User declined.', success: false };
+            userApproved = true;
           }
+
+          if (name === 'lsp') this._ensureLsp();
 
           // ── Validate required arguments ────────────────────────────────
           const def = TOOL_DEFINITIONS.find(t => t.name === name);
@@ -1002,7 +1063,13 @@ CRITICAL RULES — follow these exactly:
             if (beforeCtx.cancelled) {
               result = { output: 'Tool cancelled by plugin hook.', success: false };
             } else {
-              result = await executeTool(name, beforeCtx.input, { agentLabel: this.label, onNotify: this.onNotify, askUser, todoScope: this.todoScope });
+              result = await executeTool(name, beforeCtx.input, {
+                agentLabel: this.label,
+                onNotify: this.onNotify,
+                askUser,
+                todoScope: this.todoScope,
+                approvalGranted: userApproved,
+              });
               const afterCtx = await PLUGINS.dispatch('tool.execute.after', { tool: name, input: beforeCtx.input, result, agentLabel: this.label });
               result = afterCtx.result || result;
             }
@@ -1322,6 +1389,21 @@ One word only:`;
 
         BUS.register(agentLabel);
 
+        // Sub-agents inherit the exact repository authority boundary. Giving
+        // a new label an implicit Full grant would let spawn_agents bypass a
+        // narrower parent scope or its expiration.
+        const parentGrant = getWorkspaceGrant(this.label);
+        if (parentGrant) {
+          setWorkspaceRoot(agentLabel, parentGrant.root, { scope: parentGrant.scope });
+          grantWorkspace({
+            sessionId: agentLabel,
+            root: parentGrant.root,
+            scope: parentGrant.scope,
+            expiresAt: parentGrant.expiresAt,
+            repositoryId: parentGrant.repositoryId,
+          });
+        }
+
         // Full transcript of this sub-agent's run — streamed to the UI so it
         // can render a read-only chat view per agent.
         const transcript = [{ kind: 'task', text: task, role: role || null }];
@@ -1576,12 +1658,12 @@ One word only:`;
       ? [...TOOL_DEFINITIONS, ...COMPUTER_TOOL_DEFINITIONS]
       : TOOL_DEFINITIONS;
     const google = getOAuthToken('google') ? GOOGLE_TOOL_DEFINITIONS : [];
-    this._ensureLsp();
     let tools = [...base, ...google, ...MCP.getAnthropicTools(), ...PLUGINS.getAnthropicTools()];
     // Plugin hook: tool.definition — let plugins modify tool list before LLM call
     tools = await PLUGINS.applyToolDefinitionHooks(tools);
     // Multi-Agent System: filter tools by the active agent's permission ruleset
     tools = AgentRegistry.filterTools(tools, this.agentInfo);
+    tools = filterToolsForWorkspaceScope(tools, this.label);
     return tools;
   }
 
@@ -1600,6 +1682,7 @@ One word only:`;
     // Multi-Agent System: filter tools by the active agent's permission ruleset
     tools = AgentRegistry.filterTools(tools, this.agentInfo);
     tools = restrictToolsForHostedModel(tools, this.modelAlias);
+    tools = filterToolsForWorkspaceScope(tools, this.label);
     // this.computerUse (the raw, user-facing setting) is still true even
     // though _computerUseActive() suppressed it above — tell the user why
     // /computer isn't doing anything, once per session, rather than leaving

@@ -11,6 +11,7 @@ import { readFileSync, existsSync } from 'fs';
 import { join } from 'path';
 import { homedir } from 'os';
 import { writeJsonAtomic } from '../../tui/persistence.js';
+import { canonicalizeWorkspaceRoot } from '../../agent/workspaceAuthority.js';
 
 const DIR = join(homedir(), '.axion');
 const WORKSPACES_FILE = join(DIR, 'workspaces.json');
@@ -52,12 +53,13 @@ export function getWorkspace(id) {
 
 export function createWorkspace({ name, path }) {
   if (!path) throw new Error('Workspace requires a path');
+  const canonicalPath = canonicalizeWorkspaceRoot(path);
   const list = readAll();
   const id = ensureUniqueSlug(list, slug(name));
   const ws = {
     id,
     name: String(name || id),
-    path: String(path),
+    path: canonicalPath,
     createdAt: new Date().toISOString(),
     lastUsedAt: new Date().toISOString(),
   };
@@ -87,5 +89,9 @@ export function touchWorkspace(id) {
 // workspace on startup, rather than creating a duplicate).
 export function findWorkspaceByPath(path) {
   if (!path) return null;
-  return readAll().find(w => w.path === String(path)) || null;
+  let canonicalPath;
+  try { canonicalPath = canonicalizeWorkspaceRoot(path); } catch { return null; }
+  return readAll().find(w => {
+    try { return canonicalizeWorkspaceRoot(w.path) === canonicalPath; } catch { return false; }
+  }) || null;
 }
