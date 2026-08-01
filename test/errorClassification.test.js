@@ -71,6 +71,30 @@ test('a 403 for lumen/veil never tells the user to check an "API key"', () => {
   }
 });
 
+test('a 403 for a hosted model appends the Worker-relayed upstream detail, when present and distinct', () => {
+  // The Worker relays whatever the actual inference backend (RunPod) said
+  // verbatim as { error: { message } }, distinct from the SDK's own top-level
+  // .message (usually just "403 Forbidden"). That's the only lead toward
+  // diagnosing a hosted-model 403 that isn't the user's own fault, so it
+  // must survive classification instead of being replaced by canned text.
+  const err = {
+    status: 403,
+    message: '403 Forbidden',
+    error: { message: 'Veil rejected the request: endpoint access denied' },
+  };
+  const { kind, message } = classifyProviderError(err, 'veil');
+  assert.equal(kind, 'account');
+  assert.match(message, /Axion account/);
+  assert.match(message, /Veil rejected the request: endpoint access denied/);
+});
+
+test('a 403 with no distinct upstream detail does not append a redundant/empty parenthetical', () => {
+  const { kind, message } = classifyProviderError({ status: 403, message: 'forbidden' }, 'lumen');
+  assert.equal(kind, 'account');
+  assert.doesNotMatch(message, /\(\s*\)/);
+  assert.doesNotMatch(message, /\(forbidden\)/);
+});
+
 test('a 500/503 classifies as availability', () => {
   assert.equal(classifyProviderError({ status: 500 }, 'lumen').kind, 'availability');
   assert.equal(classifyProviderError({ status: 503 }, 'lumen').kind, 'availability');
