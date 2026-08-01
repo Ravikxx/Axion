@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { Agent } from '../src/agent/agent.js';
-import { listTeams } from '../src/services/swarm/teamStore.js';
+import { createTeam, deleteTeam, listTeams } from '../src/services/swarm/teamStore.js';
 
 // Every file under src/ is loaded as an ES module ("type": "module" in
 // package.json) — a bare require() inside one throws "ReferenceError:
@@ -46,8 +46,16 @@ test('_resolveHistory() does not throw once history exceeds the 12-message parti
   assert.ok(Array.isArray(resolved));
 });
 
-test('listTeams() does not throw when the teams directory exists', () => {
-  // Exercises the require('fs') call site directly — returns [] either way
-  // (no teams dir on a fresh test env), but must not throw.
-  assert.doesNotThrow(() => listTeams());
+test('listTeams() enumerates an existing teams directory', () => {
+  // A team fixture is required to actually reach readdirSync() — without
+  // one, listTeams() early-returns [] before touching the broken call site
+  // at all, and the test would pass whether or not the require() bug was
+  // still there.
+  const teamName = `require-regression-${Date.now()}`;
+  try {
+    createTeam(teamName, 'test-agent');
+    assert.ok(listTeams().includes(teamName));
+  } finally {
+    deleteTeam(teamName);
+  }
 });
