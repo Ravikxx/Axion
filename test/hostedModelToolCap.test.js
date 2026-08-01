@@ -69,6 +69,21 @@ test('warns once, not silently, when /computer is on for a hosted model', async 
   assert.match(notices[0].content, /Computer-use tools are unavailable on this model/);
 });
 
+test('the system prompt never claims computer-use tools exist for a hosted model', () => {
+  // Deeper issue CodeRabbit actually flagged: the tool list and the system
+  // prompt were checked independently (this.computerUse in both places), so
+  // a hosted model could be told "you can control the screen" in its system
+  // prompt while the tool list — correctly — contained none of those tools,
+  // leading it to hallucinate calls to tools that were never sent.
+  const hosted = new Agent({ modelAlias: 'lumen', mode: 'auto', onTokens: () => {} });
+  hosted.computerUse = true;
+  assert.doesNotMatch(hosted._getSystemPrompt(), /COMPUTER USE ENABLED/);
+
+  const nonHosted = new Agent({ modelAlias: 'claude', mode: 'auto', onTokens: () => {} });
+  nonHosted.computerUse = true;
+  assert.match(nonHosted._getSystemPrompt(), /COMPUTER USE ENABLED/);
+});
+
 test('does not warn about computer-use when it is off, or for non-hosted models', async () => {
   const notices = [];
   const hostedButOff = new Agent({ modelAlias: 'lumen', mode: 'auto', onNotify: (n) => notices.push(n), onTokens: () => {} });

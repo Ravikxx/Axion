@@ -445,6 +445,19 @@ export class Agent {
   setThinking(enabled, budget = 10000) { this.thinking = { enabled, budget }; }
   setGoal(description)     { this.goal = description || null; }
   setComputerUse(enabled)  { this.computerUse = !!enabled; }
+
+  // this.computerUse alone isn't enough to gate anything computer-use
+  // related — hosted models (lumen/veil) never get the actual tools (see
+  // restrictToolsForHostedModel), so telling them the tools exist anyway
+  // (system prompt, tool-fallback prompt) would have them hallucinate calls
+  // to tools that were never sent. Every computer-use-conditional spot
+  // should check this, not the raw flag, so the prompt and the tool list
+  // never disagree about what's actually available.
+  _computerUseActive() {
+    if (!this.computerUse) return false;
+    const provider = resolveProvider(this.modelAlias);
+    return provider !== 'lumen' && provider !== 'veil';
+  }
   setAdviserModel(alias)   { this.adviserModel = alias || null; }
 
   // Interrupt the current run: abort the in-flight API request and let the
@@ -549,7 +562,7 @@ export class Agent {
     if (this.goal) {
       prompt += `\n\nCURRENT GOAL: ${this.goal}\nWork autonomously until this goal is fully achieved. When the goal is complete, include exactly "GOAL_COMPLETE" on its own line at the end of your response.`;
     }
-    if (this.computerUse) {
+    if (this._computerUseActive()) {
       prompt += `\n\nCOMPUTER USE ENABLED: You can control the user's screen using the screenshot, click_on, click_at, type_text, press_key, scroll, and screen_size tools.
 
 CRITICAL RULES — follow these exactly:
@@ -1540,7 +1553,11 @@ One word only:`;
   }
 
   async _getToolListOpenAI() {
-    const base = this.computerUse
+    // _computerUseActive(), not the raw flag: hosted models never get
+    // computer-use tools (see restrictToolsForHostedModel below), so
+    // including them here — even to strip them straight back out — would
+    // desync from the system prompt, which uses the same check.
+    const base = this._computerUseActive()
       ? [...TOOL_DEFINITIONS_OPENAI, ...COMPUTER_TOOL_DEFINITIONS_OPENAI]
       : TOOL_DEFINITIONS_OPENAI;
     const google = getOAuthToken('google') ? GOOGLE_TOOL_DEFINITIONS_OPENAI : [];
@@ -1550,20 +1567,16 @@ One word only:`;
     // Multi-Agent System: filter tools by the active agent's permission ruleset
     tools = AgentRegistry.filterTools(tools, this.agentInfo);
     tools = restrictToolsForHostedModel(tools, this.modelAlias);
-    // The cap silently drops every computer-use tool for hosted models (none
-    // are in the allowlist) — without a warning, /computer would look
-    // enabled while every action it needs quietly does nothing, the same
-    // silent-failure shape as the empty-response bug this cap exists to fix.
-    if (this.computerUse && !this._warnedHostedComputerUse) {
-      const computerToolNames = new Set(COMPUTER_TOOL_DEFINITIONS_OPENAI.map((t) => t.function.name));
-      const hasComputerTools = tools.some((t) => computerToolNames.has(t.function?.name));
-      if (!hasComputerTools) {
-        this._warnedHostedComputerUse = true;
-        this.onNotify?.({
-          role: 'notify',
-          content: '[Computer-use tools are unavailable on this model — Axion-hosted models use a reduced tool set. Switch to a different model to use /computer.]',
-        });
-      }
+    // this.computerUse (the raw, user-facing setting) is still true even
+    // though _computerUseActive() suppressed it above — tell the user why
+    // /computer isn't doing anything, once per session, rather than leaving
+    // it looking silently broken.
+    if (this.computerUse && !this._computerUseActive() && !this._warnedHostedComputerUse) {
+      this._warnedHostedComputerUse = true;
+      this.onNotify?.({
+        role: 'notify',
+        content: '[Computer-use tools are unavailable on this model — Axion-hosted models use a reduced tool set. Switch to a different model to use /computer.]',
+      });
     }
     return tools;
   }
@@ -1721,7 +1734,7 @@ One word only:`;
     }
 
     // Non-streaming fallback for tool-call failures (some providers)
-    const fallbackMsgs = msgs.map((m, i) => i === 0 ? { ...m, content: m.content + getToolFallbackPrompt(this.computerUse) } : m);
+    const fallbackMsgs = msgs.map((m, i) => i === 0 ? { ...m, content: m.content + getToolFallbackPrompt(this._computerUseActive()) } : m);
     const fallbackBody = { model, messages: fallbackMsgs };
     fallbackBody[maxTokField] = maxTok;
     if (Object.keys(reasoningParams).length) Object.assign(fallbackBody, reasoningParams);
