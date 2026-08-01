@@ -8,10 +8,17 @@ import { ProviderError } from '../src/utils/namedError.js';
 // states." Every case here also checks the message text is unchanged from
 // the pre-split friendlyError(), since real CLI users depend on that wording.
 
-test('a 401 response classifies as account, with lumen-specific guidance', () => {
-  const { kind, message } = classifyProviderError({ status: 401, message: 'unauthorized' }, 'lumen');
-  assert.equal(kind, 'account');
-  assert.match(message, /Invalid or revoked Axion API key/);
+test('a 401 response classifies as account, with Axion-hosted-specific guidance for lumen and veil', () => {
+  // lumen/veil authenticate with the account's own Axion sign-in, never a
+  // third-party API key — "revoked API key" wording was wrong for these
+  // two specifically (reported live: "Access denied for veil" while
+  // signed in, no API key ever configured).
+  for (const alias of ['lumen', 'veil']) {
+    const { kind, message } = classifyProviderError({ status: 401, message: 'unauthorized' }, alias);
+    assert.equal(kind, 'account');
+    assert.match(message, /Invalid or revoked Axion credentials/);
+    assert.doesNotMatch(message, /API key/);
+  }
 });
 
 test('a 401 for a generic provider classifies as account with provider-specific guidance', () => {
@@ -52,6 +59,16 @@ test('a 403 mentioning account suspension classifies as safety, not account', ()
   const { kind, message } = classifyProviderError(err, 'lumen');
   assert.equal(kind, 'safety');
   assert.match(message, /suspended/i);
+});
+
+test('a 403 for lumen/veil never tells the user to check an "API key"', () => {
+  for (const alias of ['lumen', 'veil']) {
+    const { kind, message } = classifyProviderError({ status: 403, message: 'forbidden' }, alias);
+    assert.equal(kind, 'account');
+    assert.match(message, /Access denied/);
+    assert.match(message, /Axion account/);
+    assert.doesNotMatch(message, /API key/);
+  }
 });
 
 test('a 500/503 classifies as availability', () => {

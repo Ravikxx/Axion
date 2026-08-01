@@ -2,7 +2,12 @@ import { readFileSync, writeFileSync, readdirSync, statSync, existsSync, unlinkS
 import { execSync, execFileSync, spawn } from 'child_process';
 import { relative, resolve, dirname, basename, extname } from 'path';
 import { diffLines } from '../utils/diff.js';
-import { backupFile, recordFileChange, listSnapshots, snapshotChanges, snapshotDiff, previewRestore, restoreSnapshot, currentSnapshotId } from '../persist.js';
+import {
+  backupFile, recordFileChange, listSnapshots, snapshotChanges, snapshotDiff, previewRestore, restoreSnapshot,
+  currentSnapshotId, getCurrentWorkspaceId,
+} from '../persist.js';
+import { AgentRegistry } from './agentRegistry.js';
+import { listWorkspaces, switchWorkspace, createWorkspace } from '../services/workspaces/workspaceService.js';
 import { API_KEYS } from '../config.js';
 import { BUS } from './bus.js';
 import { captureScreen, captureScreenAnnotated, uiaClickElement, mouseClick, typeText, pressKey, scrollAt, getScreenSize, ocrFindText, cropScreenRegion, MACRO_STATE } from './computer.js';
@@ -1273,7 +1278,6 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
       }
 
       case 'agent_list': {
-        const { AgentRegistry } = require('./agentRegistry.js');
         const agents = AgentRegistry.list();
         if (!agents.length) return { success: true, output: 'No agents configured.' };
         const lines = agents.map(a => `• ${a.id} — ${a.name}${a.description ? ` — ${a.description}` : ''} (mode: ${a.mode})`);
@@ -1281,7 +1285,6 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
       }
 
       case 'agent_select': {
-        const { AgentRegistry } = require('./agentRegistry.js');
         const info = AgentRegistry.resolve(input.agent_id);
         if (!info || info.id !== input.agent_id) {
           return { success: false, output: `Unknown agent: ${input.agent_id}. Use agent_list to see available agents.` };
@@ -1290,8 +1293,6 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
       }
 
       case 'workspace_list': {
-        const { listWorkspaces } = require('../services/workspaces/workspaceService.js');
-        const { getCurrentWorkspaceId } = require('../persist.js');
         const wss = listWorkspaces();
         if (!wss.length) return { success: true, output: 'No workspaces configured. Use workspace_create or the /workspace command.' };
         const active = getCurrentWorkspaceId();
@@ -1300,7 +1301,6 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
       }
 
       case 'workspace_select': {
-        const { switchWorkspace } = require('../services/workspaces/workspaceService.js');
         try {
           const ws = switchWorkspace(input.workspace_id);
           setCwd(agentLabel, ws.path);
@@ -1311,9 +1311,7 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
       }
 
       case 'workspace_create': {
-        const { createWorkspace, activateForPath } = require('../services/workspaces/workspaceService.js');
-        const { resolve: pathResolve } = require('path');
-        const abs = pathResolve(cwd, input.path);
+        const abs = resolve(cwd, input.path);
         try {
           const ws = createWorkspace({ name: input.name, path: abs });
           return { success: true, output: `Created workspace "${ws.id}" — ${ws.name} (${ws.path}). Use workspace_select to switch to it.` };
