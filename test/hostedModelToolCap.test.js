@@ -9,10 +9,11 @@ import { TOOL_DEFINITIONS_OPENAI } from '../src/agent/tools.js';
 // the retry loop in _callModel eventually surfaces as "Model returned
 // empty response"). The measured edge with the real system prompt was
 // between 26 (safe) and 27 (broken), confirmed deterministic 3/3 each way
-// — restrictToolsForHostedModel() caps hosted models to a 17-tool curated
-// subset, well under that edge with real margin, so the app is usable
-// again. See the allowlist's own comment for why this isn't trusted as a
-// stable "N tools is safe" number.
+// — restrictToolsForHostedModel() caps hosted models to a curated subset
+// (19 tools as of the cloud-artifact edit/delete tools), well under that
+// edge with real margin, so the app is usable again. See the allowlist's
+// own comment for why this isn't trusted as a stable "N tools is safe"
+// number.
 
 test('restrictToolsForHostedModel leaves the full tool list untouched for non-hosted models', () => {
   const result = restrictToolsForHostedModel(TOOL_DEFINITIONS_OPENAI, 'claude');
@@ -33,12 +34,15 @@ test('restrictToolsForHostedModel caps lumen and veil to the curated safe subset
   }
 });
 
-test('restrictToolsForHostedModel keeps create_cloud_artifact available to hosted models', () => {
+test('restrictToolsForHostedModel keeps the cloud-artifact tools available to hosted models', () => {
   // The Desktop "make an artifact via chat" flow specifically targets the
   // hosted models (Lumen/Veil are the only two shown in Desktop's model
-  // picker by default) — this tool must survive the cap.
+  // picker by default) — these tools must survive the cap.
   const result = restrictToolsForHostedModel(TOOL_DEFINITIONS_OPENAI, 'lumen');
-  assert.ok(result.some((t) => t.function.name === 'create_cloud_artifact'));
+  const names = new Set(result.map((t) => t.function.name));
+  for (const tool of ['create_cloud_artifact', 'update_cloud_artifact', 'delete_cloud_artifact']) {
+    assert.ok(names.has(tool), `expected ${tool} to survive the cap`);
+  }
 });
 
 test('restrictToolsForHostedModel keeps the core file/search/git/exec tools available', () => {

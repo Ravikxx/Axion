@@ -312,7 +312,7 @@ const HOSTED_SMALL_MODEL_TOOL_NAMES = new Set([
   'git_status', 'git_diff',
   'ask_question', 'ask_confirm',
   'todo_add', 'todo_list',
-  'create_cloud_artifact',
+  'create_cloud_artifact', 'update_cloud_artifact', 'delete_cloud_artifact',
 ]);
 
 // lumen/veil authenticate with the account's own Axion sign-in (a session

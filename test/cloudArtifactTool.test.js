@@ -125,3 +125,131 @@ test('create_cloud_artifact reports a network failure instead of throwing', asyn
     setAxionAuthResolver(null);
   }
 });
+
+// ── update_cloud_artifact ──────────────────────────────────────────────────
+
+test('update_cloud_artifact fails clearly when not signed in, without making a network call', async (t) => {
+  if (getAxionKey()) {
+    t.skip('a persisted Axion key exists in this environment');
+    return;
+  }
+  setAxionAuthResolver(() => null);
+  const realFetch = globalThis.fetch;
+  globalThis.fetch = (() => { throw new Error('must not fetch without a token') });
+  try {
+    const result = await executeTool('update_cloud_artifact', { id: 'a1', title: 'New' }, {});
+    assert.equal(result.success, false);
+    assert.match(result.output, /not signed in/i);
+  } finally {
+    globalThis.fetch = realFetch;
+    setAxionAuthResolver(null);
+  }
+});
+
+test('update_cloud_artifact rejects a call with neither title nor content, without a network call', async () => {
+  setAxionAuthResolver(() => 'test-token');
+  const realFetch = globalThis.fetch;
+  globalThis.fetch = (() => { throw new Error('must not fetch with nothing to update') });
+  try {
+    const result = await executeTool('update_cloud_artifact', { id: 'a1' }, {});
+    assert.equal(result.success, false);
+    assert.match(result.output, /nothing to update/i);
+  } finally {
+    globalThis.fetch = realFetch;
+    setAxionAuthResolver(null);
+  }
+});
+
+test('update_cloud_artifact PUTs only the fields given, to the artifact\'s own URL', async () => {
+  setAxionAuthResolver(() => 'test-token');
+  const realFetch = globalThis.fetch;
+  let seenUrl;
+  let seenOptions;
+  globalThis.fetch = (async (url, options) => {
+    seenUrl = url;
+    seenOptions = options;
+    return new Response(JSON.stringify({ ok: true, updated: 1 }), { status: 200 });
+  });
+  try {
+    const result = await executeTool('update_cloud_artifact', { id: 'a1', content: 'new content' }, {});
+    assert.equal(seenUrl, 'https://api.amplifiedsmp.org/artifacts/a1');
+    assert.equal(seenOptions.method, 'PUT');
+    assert.equal(seenOptions.headers.Authorization, 'Bearer test-token');
+    assert.deepEqual(JSON.parse(seenOptions.body), { content: 'new content' });
+    assert.equal(result.success, true);
+  } finally {
+    globalThis.fetch = realFetch;
+    setAxionAuthResolver(null);
+  }
+});
+
+test('update_cloud_artifact reports a missing artifact as a clear error', async () => {
+  setAxionAuthResolver(() => 'test-token');
+  const realFetch = globalThis.fetch;
+  globalThis.fetch = (async () => new Response(JSON.stringify({ error: 'Not found' }), { status: 404 }));
+  try {
+    const result = await executeTool('update_cloud_artifact', { id: 'missing', title: 'X' }, {});
+    assert.equal(result.success, false);
+    assert.match(result.output, /No artifact found with id "missing"/);
+  } finally {
+    globalThis.fetch = realFetch;
+    setAxionAuthResolver(null);
+  }
+});
+
+// ── delete_cloud_artifact ──────────────────────────────────────────────────
+
+test('delete_cloud_artifact fails clearly when not signed in, without making a network call', async (t) => {
+  if (getAxionKey()) {
+    t.skip('a persisted Axion key exists in this environment');
+    return;
+  }
+  setAxionAuthResolver(() => null);
+  const realFetch = globalThis.fetch;
+  globalThis.fetch = (() => { throw new Error('must not fetch without a token') });
+  try {
+    const result = await executeTool('delete_cloud_artifact', { id: 'a1' }, {});
+    assert.equal(result.success, false);
+    assert.match(result.output, /not signed in/i);
+  } finally {
+    globalThis.fetch = realFetch;
+    setAxionAuthResolver(null);
+  }
+});
+
+test('delete_cloud_artifact DELETEs the artifact\'s own URL with the bearer token', async () => {
+  setAxionAuthResolver(() => 'test-token');
+  const realFetch = globalThis.fetch;
+  let seenUrl;
+  let seenOptions;
+  globalThis.fetch = (async (url, options) => {
+    seenUrl = url;
+    seenOptions = options;
+    return new Response(JSON.stringify({ ok: true }), { status: 200 });
+  });
+  try {
+    const result = await executeTool('delete_cloud_artifact', { id: 'a1' }, {});
+    assert.equal(seenUrl, 'https://api.amplifiedsmp.org/artifacts/a1');
+    assert.equal(seenOptions.method, 'DELETE');
+    assert.equal(seenOptions.headers.Authorization, 'Bearer test-token');
+    assert.equal(result.success, true);
+    assert.match(result.output, /Deleted artifact a1/);
+  } finally {
+    globalThis.fetch = realFetch;
+    setAxionAuthResolver(null);
+  }
+});
+
+test('delete_cloud_artifact reports a missing artifact as a clear error', async () => {
+  setAxionAuthResolver(() => 'test-token');
+  const realFetch = globalThis.fetch;
+  globalThis.fetch = (async () => new Response(JSON.stringify({ error: 'Not found' }), { status: 404 }));
+  try {
+    const result = await executeTool('delete_cloud_artifact', { id: 'missing' }, {});
+    assert.equal(result.success, false);
+    assert.match(result.output, /No artifact found with id "missing"/);
+  } finally {
+    globalThis.fetch = realFetch;
+    setAxionAuthResolver(null);
+  }
+});
