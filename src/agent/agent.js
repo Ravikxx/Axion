@@ -283,7 +283,34 @@ class ThinkStreamFilter {
 
 // ─────────────────────────────────────────────────────────────────────────────
 
-export { ThinkStreamFilter };
+// Axion-hosted models (lumen/veil) run on a shared RunPod/vLLM instance whose
+// guided-decoding tool-schema compiler breaks down — an HTTP 200 with a
+// completely empty streamed body, no error at all — once the combined tool
+// schema grows past roughly 52 of the CLI's ~70 tools. Confirmed by testing
+// directly against the live endpoint: 52 tools succeed, 54+ fail every time
+// regardless of which specific tools are included, so this is a total
+// schema-complexity/token limit on the vLLM side, not a fixed count — hence
+// a generous safety margin below the measured edge rather than trimming to
+// exactly 52. Until the RunPod/vLLM backend is fixed, hosted models get a
+// curated core subset instead of the full CLI arsenal.
+const HOSTED_SMALL_MODEL_TOOL_NAMES = new Set([
+  'read_file', 'write_file', 'patch_file', 'delete_file', 'move_file', 'copy_file',
+  'append_file', 'file_info', 'list_directory', 'create_directory', 'tree',
+  'glob', 'grep', 'find_files', 'grep_files',
+  'run_command',
+  'git_status', 'git_diff', 'git_log', 'git_commit',
+  'ask_question', 'ask_multiple_choice', 'ask_confirm',
+  'todo_add', 'todo_done', 'todo_list',
+  'create_cloud_artifact',
+]);
+
+function restrictToolsForHostedModel(tools, modelAlias) {
+  const provider = resolveProvider(modelAlias);
+  if (provider !== 'lumen' && provider !== 'veil') return tools;
+  return tools.filter((t) => HOSTED_SMALL_MODEL_TOOL_NAMES.has(t.function?.name));
+}
+
+export { ThinkStreamFilter, restrictToolsForHostedModel, HOSTED_SMALL_MODEL_TOOL_NAMES };
 
 export class Agent {
   constructor({ modelAlias, mode, label = 'main', todoScope = 'global', onToolCall, onToolResult, onMessage, onTokens, onStreamChunk, onStreamEnd, onNotify, agentId, workspaceId }) {
@@ -1518,6 +1545,7 @@ One word only:`;
     tools = await PLUGINS.applyToolDefinitionHooks(tools);
     // Multi-Agent System: filter tools by the active agent's permission ruleset
     tools = AgentRegistry.filterTools(tools, this.agentInfo);
+    tools = restrictToolsForHostedModel(tools, this.modelAlias);
     return tools;
   }
 
