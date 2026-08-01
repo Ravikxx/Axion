@@ -1,5 +1,10 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import { mkdtempSync } from 'node:fs';
+import { join } from 'node:path';
+import { tmpdir } from 'node:os';
+import { setWorkspaceRoot } from '../src/agent/tools.js';
+import { getWorkspaceGrant, grantWorkspace } from '../src/agent/workspaceAuthority.js';
 
 // _spawnAgents concurrency + event contract. Sub-agent runs are stubbed at
 // Agent.prototype.run so no model/API is touched — we drive each fake run's
@@ -9,6 +14,33 @@ let Agent;
 test('import Agent', async () => {
   const mod = await import('../src/agent/agent.js');
   Agent = mod.Agent;
+});
+
+test('sub-agents inherit the parent repository root, scope, and expiration', async () => {
+  const root = mkdtempSync(join(tmpdir(), 'axion-sub-scope-'));
+  const label = `parent-scope-${Date.now()}`;
+  setWorkspaceRoot(label, root);
+  const expiresAt = new Date(Date.now() + 60_000).toISOString();
+  grantWorkspace({ sessionId: label, root, scope: 'read-only', expiresAt, repositoryId: 'repo-scope-test' });
+  const parent = new Agent({ modelAlias: 'test-model', mode: 'auto', label, onTokens: () => {} });
+  const inherited = [];
+  const realRun = Agent.prototype.run;
+  Agent.prototype.run = async function () {
+    if (this !== parent) {
+      inherited.push(getWorkspaceGrant(this.label));
+      this.history.push({ role: 'assistant', content: 'done' });
+    }
+  };
+  try {
+    await parent._spawnAgents([{ task: 'inspect scope', label: 'scope-child' }]);
+    assert.equal(inherited.length, 1);
+    assert.equal(inherited[0].root, root);
+    assert.equal(inherited[0].scope, 'read-only');
+    assert.equal(inherited[0].expiresAt, expiresAt);
+    assert.equal(inherited[0].repositoryId, 'repo-scope-test');
+  } finally {
+    Agent.prototype.run = realRun;
+  }
 });
 
 // Build a parent agent whose sub-agents run `script(sub)` instead of a real loop.

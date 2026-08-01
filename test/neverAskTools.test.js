@@ -40,13 +40,15 @@ test('NEVER_ASK does not include destructive local-filesystem or shell tools', (
   }
 });
 
-test('the permission gate checks NEVER_ASK before the decide/ask mode branches', () => {
+test('the permission gate checks the permanent floor, then NEVER_ASK, before mode branches', () => {
   const start = agentSource.indexOf('// ── Permission checks');
   assert.notEqual(start, -1, 'expected to find the permission-check block');
-  const gate = agentSource.slice(start, start + 1100);
+  const gate = agentSource.slice(start, start + 2200);
   assert.match(gate, /if \(Agent\.NEVER_ASK\.has\(name\)\) \{/);
+  const floorIndex = gate.indexOf('requiresPermanentApproval(name)');
   const neverAskIndex = gate.indexOf('Agent.NEVER_ASK.has(name)');
   const decideIndex = gate.indexOf("this.mode === 'decide'");
   const askIndex = gate.indexOf("this.mode === 'ask'");
-  assert.ok(neverAskIndex < decideIndex && neverAskIndex < askIndex, 'NEVER_ASK must be checked first');
+  assert.ok(floorIndex >= 0 && floorIndex < neverAskIndex, 'permanent floor must be evaluated first');
+  assert.ok(neverAskIndex < decideIndex && neverAskIndex < askIndex, 'NEVER_ASK must precede mode-specific checks');
 });

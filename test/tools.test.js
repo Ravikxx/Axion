@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { existsSync, writeFileSync, unlinkSync, mkdirSync, readFileSync } from 'fs';
+import { existsSync, writeFileSync, unlinkSync, mkdirSync, readFileSync, mkdtempSync } from 'fs';
 import { join } from 'path';
 import { tmpdir } from 'os';
 import {
@@ -10,6 +10,7 @@ import {
   COMPUTER_TOOL_DEFINITIONS_OPENAI,
   executeTool,
   parseToolCallsFromText,
+  setWorkspaceRoot,
 } from '../src/agent/tools.js';
 
 const ASK_TOOL_NAMES = new Set(['ask_question', 'ask_multiple_choice', 'ask_confirm']);
@@ -194,13 +195,16 @@ test('parseToolCallsFromText skips calls missing name or input', () => {
 // ── read_file / write_file (file system) ──────────────────────────────────────
 
 test('write_file creates a file and read_file reads it back', async () => {
-  const tmp = join(tmpdir(), `axion-test-${Date.now()}.txt`);
+  const dir = mkdtempSync(join(tmpdir(), 'axion-tool-test-'));
+  const tmp = join(dir, 'file.txt');
+  const options = { agentLabel: `write-read-${Date.now()}` };
+  setWorkspaceRoot(options.agentLabel, dir);
   try {
-    const write = await executeTool('write_file', { path: tmp, content: 'hello world' });
+    const write = await executeTool('write_file', { path: tmp, content: 'hello world' }, options);
     assert.equal(write.success, true);
     assert.ok(existsSync(tmp));
 
-    const read = await executeTool('read_file', { path: tmp });
+    const read = await executeTool('read_file', { path: tmp }, options);
     assert.equal(read.success, true);
     assert.equal(read.output, 'hello world');
   } finally {
@@ -209,13 +213,15 @@ test('write_file creates a file and read_file reads it back', async () => {
 });
 
 test('write_file creates parent directories', async () => {
-  const dir = join(tmpdir(), `axion-test-dir-${Date.now()}`);
+  const dir = mkdtempSync(join(tmpdir(), 'axion-tool-dir-test-'));
   const file = join(dir, 'nested', 'test.txt');
+  const options = { agentLabel: `write-dir-${Date.now()}` };
+  setWorkspaceRoot(options.agentLabel, dir);
   try {
-    const result = await executeTool('write_file', { path: file, content: 'nested' });
+    const result = await executeTool('write_file', { path: file, content: 'nested' }, options);
     assert.equal(result.success, true);
     assert.ok(existsSync(file));
-    assert.equal(await executeTool('read_file', { path: file }).then(r => r.output), 'nested');
+    assert.equal(await executeTool('read_file', { path: file }, options).then(r => r.output), 'nested');
   } finally {
     try { unlinkSync(file); } catch {}
     try { unlinkSync(join(dir, 'nested', 'test.txt')); } catch {}
@@ -225,7 +231,7 @@ test('write_file creates parent directories', async () => {
 });
 
 test('read_file returns error for nonexistent file', async () => {
-  const result = await executeTool('read_file', { path: '/nonexistent/path/file.txt' });
+  const result = await executeTool('read_file', { path: 'nonexistent/path/file.txt' });
   assert.equal(result.success, false);
   assert.ok(result.output.includes('ENOENT') || result.output.includes('No such') || result.output.includes('not found'));
 });
