@@ -1934,8 +1934,13 @@ export function classifyProviderError(err, modelAlias) {
     if (status === 404) return { kind: 'availability', message: `Model not found: "${modelAlias}". Try /model <name> to switch.` };
     if (status === 403) {
       const kind = /suspend/i.test(message || '') ? 'safety' : 'account';
+      // For Axion-hosted models the 403 is opaque otherwise: the Worker
+      // relays whatever the upstream inference backend said verbatim, and
+      // that detail (e.g. a RunPod-side rejection unrelated to the user's
+      // own account) is the only lead toward the actual cause, so it's
+      // appended rather than discarded.
       const text = isAxionHostedProvider(resolveProvider(modelAlias))
-        ? `Access denied for "${modelAlias}". Your Axion account may not have access to this model — try signing in again with /login, or contact support if this persists.`
+        ? `Access denied for "${modelAlias}". Your Axion account may not have access to this model — try signing in again with /login, or contact support if this persists.${message ? `\n(${message})` : ''}`
         : `Access denied for "${modelAlias}". Check that your API key has the right permissions.`;
       return { kind, message: text };
     }
@@ -1965,7 +1970,15 @@ export function classifyProviderError(err, modelAlias) {
   if (status === 403 || /forbidden|permission/i.test(msg)) {
     if (/suspend/i.test(msg)) return { kind: 'safety', message: msg };
     if (isAxionHostedProvider(resolveProvider(modelAlias))) {
-      return { kind: 'account', message: `Access denied for "${modelAlias}". Your Axion account may not have access to this model — try signing in again with /login, or contact support if this persists.` };
+      // errObj.message is the Worker's relayed upstream text (e.g. the
+      // inference backend's own rejection reason) — the only signal that
+      // distinguishes "your account lacks access" from "the backend itself
+      // is misconfigured/down", which otherwise looks identical from here.
+      const detail = errObj.message && errObj.message !== msg ? errObj.message : null;
+      return {
+        kind: 'account',
+        message: `Access denied for "${modelAlias}". Your Axion account may not have access to this model — try signing in again with /login, or contact support if this persists.${detail ? `\n(${detail})` : ''}`,
+      };
     }
     return { kind: 'account', message: `Access denied for "${modelAlias}". Check that your API key has the right permissions.` };
   }
