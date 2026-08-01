@@ -795,6 +795,17 @@ CRITICAL RULES — follow these exactly:
     'run_command', 'delete_file', 'replace_in_files', 'git_push',
   ]);
 
+  // Never confirmed, in any permission mode: these touch only the user's own
+  // Axion cloud account (artifacts scoped to the signed-in user, never the
+  // local filesystem or another user's data), and every mutation is
+  // trivially reversible from that same account — including via
+  // delete_cloud_artifact itself. Asking permission here is friction with
+  // no corresponding safety benefit, unlike run_command or file deletion,
+  // which touch the user's real machine.
+  static NEVER_ASK = new Set([
+    'create_cloud_artifact', 'update_cloud_artifact', 'delete_cloud_artifact',
+  ]);
+
   async _agentLoop(askConfirm, askUser) {
     const MAX = 20;
     let iterations = 0;
@@ -929,7 +940,10 @@ CRITICAL RULES — follow these exactly:
           const tc = { name, input };
 
           // ── Permission checks (decide / ask mode) ──────────────────────
-          if (this.mode === 'decide' && !Agent.PARALLEL_SAFE.has(name)) {
+          if (Agent.NEVER_ASK.has(name)) {
+            // Skip both the decide-mode judge and the ask-mode confirm —
+            // neither one adds safety here (see NEVER_ASK's own comment).
+          } else if (this.mode === 'decide' && !Agent.PARALLEL_SAFE.has(name)) {
             let decision = await this._decideToolSafety(tc);
             const permCtx = await PLUGINS.dispatch('permission.ask', { tool: name, input, decision });
             if (permCtx.cancelled) return { output: 'Permission hook cancelled.', success: false };
