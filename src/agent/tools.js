@@ -834,16 +834,40 @@ export const TOOL_DEFINITIONS = [
   },
   {
     name: 'create_cloud_artifact',
-    description: 'Create a new artifact in the user\'s Axion cloud account (the same artifacts shown in the Axion Desktop/website Artifacts panel). Use this when the user asks you to save, create, or make an artifact — not for writing local project files, which is what write_file is for. Requires the user to be signed in to Axion; if they are not, this fails with a clear message telling them to sign in.',
+    description: 'Create a new artifact in the user\'s Axion cloud account (the same artifacts shown in the Axion Desktop/website Artifacts panel). Use this when the user asks you to save, create, or make an artifact — not for writing local project files, which is what write_file is for. Artifact content is always stored as text, but any file type can still be represented: set kind to "code" and language to the file\'s extension or name (e.g. "yaml", "dockerfile", "sh", "toml") — the Desktop/website download button uses that language value as the saved file\'s extension, so it is not limited to a fixed list of languages. Requires the user to be signed in to Axion; if they are not, this fails with a clear message telling them to sign in.',
     input_schema: {
       type: 'object',
       properties: {
         title:   { type: 'string', description: 'Artifact title (default: "Untitled")' },
-        kind:    { type: 'string', description: 'One of "text", "markdown", or "code" (default: "text")' },
-        language: { type: 'string', description: 'Language name, only meaningful when kind is "code"' },
+        kind:    { type: 'string', description: 'One of "text", "markdown", or "code" (default: "text"). Use "code" for any non-prose file type, pairing it with language.' },
+        language: { type: 'string', description: 'Free-text language or file extension, only stored when kind is "code" (e.g. "python", "yaml", "dockerfile", "sh") — not restricted to a fixed list.' },
         content: { type: 'string', description: 'The artifact\'s full content' },
       },
       required: ['content'],
+    },
+  },
+  {
+    name: 'update_cloud_artifact',
+    description: 'Update an existing artifact in the user\'s Axion cloud account — change its title, its content, or both. Updating content creates a new revision; the artifact\'s revision history is preserved. Use this instead of create_cloud_artifact when revising something already saved, so the user gets one evolving artifact rather than duplicates.',
+    input_schema: {
+      type: 'object',
+      properties: {
+        id:      { type: 'string', description: 'The artifact\'s id, from create_cloud_artifact\'s output or from the user' },
+        title:   { type: 'string', description: 'New title (omit to leave unchanged)' },
+        content: { type: 'string', description: 'New full content, replacing the previous revision (omit to leave unchanged)' },
+      },
+      required: ['id'],
+    },
+  },
+  {
+    name: 'delete_cloud_artifact',
+    description: 'Permanently delete an artifact from the user\'s Axion cloud account, including all of its revision history. Only use this when the user explicitly asks to delete a specific artifact — this cannot be undone.',
+    input_schema: {
+      type: 'object',
+      properties: {
+        id: { type: 'string', description: 'The artifact\'s id' },
+      },
+      required: ['id'],
     },
   },
 ];
@@ -1354,6 +1378,61 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
         const data = await response.json().catch(() => null);
         if (!data?.id) return { success: false, output: 'Could not parse the response from Axion.' };
         return { success: true, output: `Created artifact "${data.title}" (id ${data.id}) in the user's Axion cloud account.` };
+      }
+
+      case 'update_cloud_artifact': {
+        const token = resolveAxionAuth();
+        if (!token) {
+          return { success: false, output: 'Not signed in to Axion — ask the user to sign in first, then try again.' };
+        }
+        const body = {};
+        if (typeof input.title === 'string') body.title = input.title.slice(0, 200);
+        if (typeof input.content === 'string') body.content = input.content;
+        if (!('title' in body) && !('content' in body)) {
+          return { success: false, output: 'Nothing to update — pass a new title, new content, or both.' };
+        }
+
+        let response;
+        try {
+          response = await fetch(`https://api.amplifiedsmp.org/artifacts/${encodeURIComponent(input.id)}`, {
+            method: 'PUT',
+            headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+            body: JSON.stringify(body),
+          });
+        } catch (e) {
+          return { success: false, output: `Could not reach Axion: ${e.message}` };
+        }
+
+        if (response.status === 404) return { success: false, output: `No artifact found with id "${input.id}".` };
+        if (!response.ok) {
+          const errBody = await response.json().catch(() => ({}));
+          return { success: false, output: `Could not update the artifact (HTTP ${response.status}): ${errBody.error || 'unknown error'}` };
+        }
+        return { success: true, output: `Updated artifact ${input.id}.` };
+      }
+
+      case 'delete_cloud_artifact': {
+        const token = resolveAxionAuth();
+        if (!token) {
+          return { success: false, output: 'Not signed in to Axion — ask the user to sign in first, then try again.' };
+        }
+
+        let response;
+        try {
+          response = await fetch(`https://api.amplifiedsmp.org/artifacts/${encodeURIComponent(input.id)}`, {
+            method: 'DELETE',
+            headers: { Authorization: `Bearer ${token}` },
+          });
+        } catch (e) {
+          return { success: false, output: `Could not reach Axion: ${e.message}` };
+        }
+
+        if (response.status === 404) return { success: false, output: `No artifact found with id "${input.id}".` };
+        if (!response.ok) {
+          const errBody = await response.json().catch(() => ({}));
+          return { success: false, output: `Could not delete the artifact (HTTP ${response.status}): ${errBody.error || 'unknown error'}` };
+        }
+        return { success: true, output: `Deleted artifact ${input.id}.` };
       }
 
       case 'snapshot_list': {
