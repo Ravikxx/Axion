@@ -38,6 +38,7 @@ class D1TestDatabase {
         active_generation_id TEXT,
         pinned INTEGER NOT NULL DEFAULT 0,
         pinned_at INTEGER,
+        last_read_at INTEGER NOT NULL DEFAULT 0,
         draft TEXT,
         draft_updated_at INTEGER,
         branched_from_chat_id TEXT,
@@ -325,6 +326,58 @@ test('pinning a chat owned by another user is rejected', async () => {
     method: 'PUT', headers, body: JSON.stringify({ pinned: true }),
   }, env)
   assert.equal(res.status, 404)
+})
+
+test('chat lists are unread only when a newer assistant response has not been seen', async () => {
+  const { db, env, headers } = await setup()
+  db.prepare('INSERT INTO chats (id, user_id, title, updated, created, last_read_at) VALUES (?,?,?,?,?,?)')
+    .bind('chat-1', 'user-1', 'Test', 300, 1, 200).run()
+  db.prepare('INSERT INTO messages (id, chat_id, user_id, seq, role, content, created_at) VALUES (?,?,?,?,?,?,?)')
+    .bind('m-user', 'chat-1', 'user-1', 1, 'user', 'hello', 250).run()
+
+  let list = await app.request('/chats', { headers }, env)
+  assert.equal((await list.json()).chats[0].unread, false, 'a newer user message does not count')
+
+  db.prepare('INSERT INTO messages (id, chat_id, user_id, seq, role, content, created_at) VALUES (?,?,?,?,?,?,?)')
+    .bind('m-assistant', 'chat-1', 'user-1', 2, 'assistant', 'response', 300).run()
+  list = await app.request('/chats', { headers }, env)
+  assert.equal((await list.json()).chats[0].unread, true)
+
+  const read = await app.request('/chats/chat-1/read', {
+    method: 'PUT', headers, body: JSON.stringify({ read: true }),
+  }, env)
+  assert.equal(read.status, 200)
+  assert.equal((await read.json()).unread, false)
+  list = await app.request('/chats', { headers }, env)
+  assert.equal((await list.json()).chats[0].unread, false)
+
+  const unread = await app.request('/chats/chat-1/read', {
+    method: 'PUT', headers, body: JSON.stringify({ read: false }),
+  }, env)
+  assert.equal(unread.status, 200)
+  assert.equal((await unread.json()).unread, true)
+  list = await app.request('/chats', { headers }, env)
+  assert.equal((await list.json()).chats[0].unread, true)
+})
+
+test('read state is returned for project chats and cannot change another user\'s chat', async () => {
+  const { db, env, headers } = await setup()
+  db.prepare('INSERT INTO projects (id, user_id, name, created, updated) VALUES (?,?,?,?,?)')
+    .bind('proj-1', 'user-1', 'Project', 1, 1).run()
+  db.prepare('INSERT INTO chats (id, user_id, title, updated, created, project_id) VALUES (?,?,?,?,?,?)')
+    .bind('chat-1', 'user-1', 'Project chat', 20, 1, 'proj-1').run()
+  db.prepare('INSERT INTO messages (id, chat_id, user_id, seq, role, content, created_at) VALUES (?,?,?,?,?,?,?)')
+    .bind('m-assistant', 'chat-1', 'user-1', 1, 'assistant', 'response', 20).run()
+  db.prepare('INSERT INTO chats (id, user_id, title, updated, created) VALUES (?,?,?,?,?)')
+    .bind('chat-2', 'user-2', 'Not yours', 1, 1).run()
+
+  const projectList = await app.request('/projects/proj-1/chats', { headers }, env)
+  assert.equal((await projectList.json()).chats[0].unread, true)
+
+  const forbidden = await app.request('/chats/chat-2/read', {
+    method: 'PUT', headers, body: JSON.stringify({ read: true }),
+  }, env)
+  assert.equal(forbidden.status, 404)
 })
 
 test('pinning does not touch title, updated, or messages', async () => {
