@@ -70,9 +70,9 @@ export const MCP_MARKETPLACE = [
     description: 'Read and write Notion pages and databases',
     category: 'productivity',
     command: 'npx',
-    args: ['-y', '@modelcontextprotocol/server-notion'],
-    env: { NOTION_API_KEY: '$NOTION_API_KEY' },
-    envNote: 'Needs NOTION_API_KEY (get from notion.so/my-integrations)',
+    args: ['-y', '@notionhq/notion-mcp-server'],
+    env: { NOTION_TOKEN: '$NOTION_TOKEN' },
+    envNote: 'Needs NOTION_TOKEN (get from notion.so/my-integrations)',
     tags: ['notion', 'notes', 'documents', 'databases'],
   },
   {
