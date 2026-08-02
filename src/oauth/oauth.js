@@ -200,8 +200,13 @@ function openBrowser(url) {
 
 async function redirectFlow(provider, onStatus) {
   const cfg  = OAUTH_PROVIDERS[provider];
-  const port = await getFreePort();
-  const redirectUri = `http://localhost:${port}`;
+  // Google's "Desktop app" OAuth client type accepts any loopback port
+  // without pre-registration, so a fresh random port is fine there. GitHub
+  // (and most other providers) require the redirect_uri to exactly match a
+  // URL registered on the app, so those providers pin a fixed port instead
+  // — see cfg.redirectPort.
+  const port = cfg.redirectPort || await getFreePort();
+  const redirectUri = cfg.redirectPort ? `http://localhost:${port}/` : `http://localhost:${port}`;
 
   const authUrl = `${cfg.authURL}?${new URLSearchParams({
     client_id:     cfg.clientId,

@@ -3,8 +3,15 @@ export const OAUTH_PROVIDERS = {
     label:        'GitHub',
     clientId:     process.env.AXION_GITHUB_CLIENT_ID     || '',
     clientSecret: process.env.AXION_GITHUB_CLIENT_SECRET || '',
-    deviceCodeURL: 'https://github.com/login/device/code',
+    // Redirect flow ("click Connect, approve on github.com, done") — the
+    // same UX as Google. GitHub requires an exact redirect_uri match against
+    // the app's registered callback URL, so this pins a fixed local port
+    // rather than picking a random free one (see redirectFlow in oauth.js).
+    tokenFlow:     'redirect',
+    authURL:       'https://github.com/login/oauth/authorize',
     tokenURL:      'https://github.com/login/oauth/access_token',
+    redirectPort:  53219,
+    deviceCodeURL: 'https://github.com/login/device/code',
     verifyURL:     'https://github.com/login/device',
     scopes:        'repo read:org read:user',
     mcpServer:     '@modelcontextprotocol/server-github',
