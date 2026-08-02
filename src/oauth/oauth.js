@@ -156,12 +156,15 @@ export async function connectOAuth(service, { onStatus, onToken, pastedToken } =
   const cfg = OAUTH_PROVIDERS[service];
   if (!cfg) throw new Error(`Unknown service "${service}". Available: ${Object.keys(OAUTH_PROVIDERS).join(', ')}`);
 
-  // Fail fast when an app-based flow (device/redirect) has no client ID, rather
-  // than opening the browser onto the provider's cryptic "missing client_id"
-  // error page. Paste-token flows (Notion, Slack) don't need pre-registered apps.
-  if (cfg.tokenFlow !== 'paste' && !cfg.clientId) {
+  // Fail fast when an app-based flow (device/redirect) is missing either
+  // credential, rather than opening the browser onto the provider's cryptic
+  // "missing client_id" error page (or, for a redirect flow needing a
+  // secret to exchange the code, letting the user approve access only to
+  // have the token exchange fail afterward). Paste-token flows (Slack)
+  // don't need pre-registered apps.
+  if (cfg.tokenFlow !== 'paste' && (!cfg.clientId || !cfg.clientSecret)) {
     const U = service.toUpperCase();
-    throw new Error(`${cfg.label} OAuth isn't configured on this build — no client ID. Register an OAuth app and set AXION_${U}_CLIENT_ID and AXION_${U}_CLIENT_SECRET, or use a paste-token integration (notion, slack) instead.`);
+    throw new Error(`${cfg.label} OAuth isn't configured on this build — no client ID. Register an OAuth app and set AXION_${U}_CLIENT_ID and AXION_${U}_CLIENT_SECRET, or use a paste-token integration (slack) instead.`);
   }
 
   let tokenData;
@@ -233,17 +236,26 @@ async function redirectFlow(provider, onStatus) {
     throw new Error(`Could not start local callback server on port ${port}: ${err.message}`);
   }
 
-  const authUrl = `${cfg.authURL}?${new URLSearchParams({
+  // scope/access_type/prompt are Google-specific; extraAuthParams covers
+  // params other providers require instead (e.g. Notion's owner=user).
+  // Filtered for undefined so providers without a concept (Notion has no
+  // "scope") don't end up with a literal "undefined" string in the URL.
+  const authParams = {
     client_id:             cfg.clientId,
     redirect_uri:          redirectUri,
     response_type:         'code',
     scope:                 cfg.scopes,
-    access_type:           'offline',
-    prompt:                'consent',
+    access_type:           cfg.scopes ? 'offline' : undefined,
+    prompt:                cfg.scopes ? 'consent' : undefined,
     state,
-    code_challenge:        challenge,
-    code_challenge_method: 'S256',
-  })}`;
+    code_challenge:        cfg.pkce === false ? undefined : challenge,
+    code_challenge_method: cfg.pkce === false ? undefined : 'S256',
+    ...cfg.extraAuthParams,
+  };
+  for (const key of Object.keys(authParams)) {
+    if (authParams[key] === undefined) delete authParams[key];
+  }
+  const authUrl = `${cfg.authURL}?${new URLSearchParams(authParams)}`;
 
   onStatus({ authUrl, port });
   openBrowser(authUrl);
@@ -251,18 +263,27 @@ async function redirectFlow(provider, onStatus) {
   // Wait for browser to redirect back with ?code=...
   const code = await codeReceived;
 
-  // Exchange code for token
+  // Exchange code for token. Most providers accept client_id/client_secret
+  // in the POST body, but Notion requires them as an HTTP Basic
+  // Authorization header instead (cfg.tokenAuthStyle === 'basic') and
+  // rejects a body that also carries the secret.
+  const useBasicAuth = cfg.tokenAuthStyle === 'basic';
+  const tokenBody = {
+    code,
+    redirect_uri: redirectUri,
+    grant_type:   'authorization_code',
+    ...(cfg.pkce === false ? {} : { code_verifier: verifier }),
+    ...(useBasicAuth ? {} : { client_id: cfg.clientId, client_secret: cfg.clientSecret }),
+  };
   const tokenRes = await fetch(cfg.tokenURL, {
     method:  'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body:    new URLSearchParams({
-      code,
-      client_id:     cfg.clientId,
-      client_secret: cfg.clientSecret,
-      redirect_uri:  redirectUri,
-      grant_type:    'authorization_code',
-      code_verifier: verifier,
-    }),
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      ...(useBasicAuth
+        ? { Authorization: `Basic ${Buffer.from(`${cfg.clientId}:${cfg.clientSecret}`).toString('base64')}` }
+        : {}),
+    },
+    body: new URLSearchParams(tokenBody),
   });
   const tokenData = await tokenRes.json();
   if (tokenData.error) throw new Error(tokenData.error_description || tokenData.error);
