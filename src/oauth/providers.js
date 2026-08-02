@@ -26,10 +26,10 @@ export const OAUTH_PROVIDERS = {
     label:      'Notion',
     tokenFlow:  'paste',
     hint:       'Go to notion.so/my-integrations → New integration → copy the Internal Integration Token',
-    mcpServer:  '@modelcontextprotocol/server-notion',
-    mcpEnv:     (token) => ({ NOTION_API_KEY: token }),
+    mcpServer:  '@notionhq/notion-mcp-server',
+    mcpEnv:     (token) => ({ NOTION_TOKEN: token }),
     mcpCommand: 'npx',
-    mcpArgs:    ['-y', '@modelcontextprotocol/server-notion'],
+    mcpArgs:    ['-y', '@notionhq/notion-mcp-server'],
   },
   slack: {
     label:      'Slack',
