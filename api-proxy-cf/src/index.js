@@ -2154,6 +2154,12 @@ app.get('/projects/:id/chats', async (c) => {
   if (!project) return json({ error: 'Not found' }, 404)
   const { results } = await c.env.DB.prepare(
     `SELECT chats.id, chats.title, chats.updated, chats.pinned, chats.pinned_at,
+            EXISTS (
+              SELECT 1 FROM messages AS unread_messages
+              WHERE unread_messages.chat_id=chats.id
+                AND unread_messages.role='assistant'
+                AND unread_messages.created_at > COALESCE(chats.last_read_at, 0)
+            ) AS unread,
             chats.branched_from_chat_id, chats.branched_from_seq, chats.project_id, chats.title_rev,
             generations.id AS generation_id,
             generations.status AS generation_status,
@@ -2175,6 +2181,7 @@ app.get('/projects/:id/chats', async (c) => {
       updated: row.updated,
       pinned: !!row.pinned,
       pinned_at: row.pinned_at || null,
+      unread: !!row.unread,
       branched_from_chat_id: row.branched_from_chat_id || null,
       branched_from_seq: row.branched_from_seq || null,
       project_id: row.project_id || null,
@@ -2210,6 +2217,12 @@ app.get('/chats', async (c) => {
   if (!user) return json({ error: 'Not authenticated' }, 401)
   const { results } = await c.env.DB.prepare(
     `SELECT chats.id, chats.title, chats.updated, chats.pinned, chats.pinned_at,
+            EXISTS (
+              SELECT 1 FROM messages AS unread_messages
+              WHERE unread_messages.chat_id=chats.id
+                AND unread_messages.role='assistant'
+                AND unread_messages.created_at > COALESCE(chats.last_read_at, 0)
+            ) AS unread,
             chats.branched_from_chat_id, chats.branched_from_seq, chats.project_id, chats.title_rev,
             generations.id AS generation_id,
             generations.status AS generation_status,
@@ -2231,6 +2244,7 @@ app.get('/chats', async (c) => {
       updated: row.updated,
       pinned: !!row.pinned,
       pinned_at: row.pinned_at || null,
+      unread: !!row.unread,
       branched_from_chat_id: row.branched_from_chat_id || null,
       branched_from_seq: row.branched_from_seq || null,
       project_id: row.project_id || null,
@@ -2529,6 +2543,22 @@ app.put('/chats/:id/pin', async (c) => {
   ).bind(pinned ? 1 : 0, pinnedAt, id, user.id).run()
   if (result.meta.changes === 0) return json({ error: 'Chat not found' }, 404)
   return json({ ok: true, pinned: !!pinned, pinned_at: pinnedAt })
+})
+
+// Read state is independent of conversation metadata. `read: false` resets
+// the timestamp so an existing assistant response becomes visibly unread;
+// opening the chat sends `read: true` and advances it to now.
+app.put('/chats/:id/read', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Not authenticated' }, 401)
+  const id = c.req.param('id')
+  const { read } = await c.req.json().catch(() => ({}))
+  const lastReadAt = read === false ? 0 : Date.now()
+  const result = await c.env.DB.prepare(
+    'UPDATE chats SET last_read_at=? WHERE id=? AND user_id=? AND deleted_at IS NULL'
+  ).bind(lastReadAt, id, user.id).run()
+  if (result.meta.changes === 0) return json({ error: 'Chat not found' }, 404)
+  return json({ ok: true, unread: read === false, last_read_at: lastReadAt })
 })
 
 // The unsent composer text for this chat. Also independent of title/updated —
