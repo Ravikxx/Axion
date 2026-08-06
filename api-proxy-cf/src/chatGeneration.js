@@ -1,5 +1,9 @@
 const COMPLETIONS_URL = 'https://api.amplifiedsmp.org/v1/chat/completions'
 
+// Mirrors index.js's CORS allow-list. Duplicated rather than imported to
+// avoid a circular import (index.js imports ChatGeneration from this file).
+const ALLOWED_STREAM_ORIGINS = ['https://axion.amplifiedsmp.org', 'https://sennoric.com']
+
 // Partial text is written to storage at most this often. Frequent enough that a
 // reader attaching after an eviction sees almost everything, rare enough that a
 // fast token stream doesn't turn into a storage write per token.
@@ -98,7 +102,7 @@ export class ChatGeneration {
   async fetch(request) {
     const url = new URL(request.url)
     if (request.method === 'POST' && url.pathname === '/start') return this.start(request)
-    if (request.method === 'GET' && url.pathname === '/stream') return this.openStream()
+    if (request.method === 'GET' && url.pathname === '/stream') return this.openStream(request)
     return json({ error: 'Not found' }, 404)
   }
 
@@ -122,7 +126,16 @@ export class ChatGeneration {
   // Replays everything generated so far, then streams the rest live. A tab that
   // joins at any point gets the same complete reply as one that watched from
   // the start, so reconnecting never shows a half message.
-  async openStream() {
+  async openStream(request) {
+    // Credentialed CORS can't use '*', so reflect the caller's origin back
+    // only if it's one we actually allow — same allow-list as index.js's
+    // main CORS middleware, kept in sync so a Sennoric-origin stream isn't
+    // silently rejected once the frontend moves.
+    const requestOrigin = request.headers.get('Origin')
+    const allowOrigin = ALLOWED_STREAM_ORIGINS.includes(requestOrigin)
+      ? requestOrigin
+      : ALLOWED_STREAM_ORIGINS[0]
+
     const [job, partial, settled] = await Promise.all([
       this.state.storage.get('job'),
       this.state.storage.get('partial'),
@@ -158,7 +171,7 @@ export class ChatGeneration {
         'Content-Type': 'text/event-stream',
         'Cache-Control': 'no-cache, no-transform',
         Connection: 'keep-alive',
-        'Access-Control-Allow-Origin': 'https://axion.amplifiedsmp.org',
+        'Access-Control-Allow-Origin': allowOrigin,
         'Access-Control-Allow-Credentials': 'true',
       },
     })
