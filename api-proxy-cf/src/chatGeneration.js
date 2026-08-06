@@ -1,8 +1,6 @@
-const COMPLETIONS_URL = 'https://api.amplifiedsmp.org/v1/chat/completions'
+import { ALLOWED_WEB_ORIGINS } from './webOrigins.js'
 
-// Mirrors index.js's CORS allow-list. Duplicated rather than imported to
-// avoid a circular import (index.js imports ChatGeneration from this file).
-const ALLOWED_STREAM_ORIGINS = ['https://axion.amplifiedsmp.org', 'https://sennoric.com']
+const COMPLETIONS_URL = 'https://api.amplifiedsmp.org/v1/chat/completions'
 
 // Partial text is written to storage at most this often. Frequent enough that a
 // reader attaching after an eviction sees almost everything, rare enough that a
@@ -132,9 +130,9 @@ export class ChatGeneration {
     // main CORS middleware, kept in sync so a Sennoric-origin stream isn't
     // silently rejected once the frontend moves.
     const requestOrigin = request.headers.get('Origin')
-    const allowOrigin = ALLOWED_STREAM_ORIGINS.includes(requestOrigin)
+    const allowOrigin = ALLOWED_WEB_ORIGINS.includes(requestOrigin)
       ? requestOrigin
-      : ALLOWED_STREAM_ORIGINS[0]
+      : ALLOWED_WEB_ORIGINS[0]
 
     const [job, partial, settled] = await Promise.all([
       this.state.storage.get('job'),
@@ -173,6 +171,9 @@ export class ChatGeneration {
         Connection: 'keep-alive',
         'Access-Control-Allow-Origin': allowOrigin,
         'Access-Control-Allow-Credentials': 'true',
+        // The allowed-origin header now varies by request, so a shared cache
+        // must not reuse one origin's credentialed response for another.
+        Vary: 'Origin',
       },
     })
   }

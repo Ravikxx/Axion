@@ -29,6 +29,7 @@ import {
 import { reviewPendingMessages } from './messageReview.js'
 export { ChatGeneration } from './chatGeneration.js'
 import { avatarUrlForUser, installAvatarRoutes } from './avatar.js'
+import { WEB_ORIGIN, ALLOWED_WEB_ORIGINS } from './webOrigins.js'
 import {
   ModerationAdminError,
   banAccountFromModeration,
@@ -42,14 +43,11 @@ import {
 } from './moderationAdmin.js'
 
 const app = new Hono()
-const WEB_ORIGIN = 'https://axion.amplifiedsmp.org'
-// Sennoric is the new domain the frontend is moving to (not live yet as of
-// this change — DNS/GitHub Pages cutover pending). Accepted here ahead of
-// time so CORS doesn't need another deploy the moment it goes live; every
-// other WEB_ORIGIN use (building redirect/email links) deliberately still
-// points at the old domain until that cutover is confirmed, since changing
-// those before the new domain resolves would hand out dead links.
-const NEW_WEB_ORIGIN = 'https://sennoric.com'
+// WEB_ORIGIN/NEW_WEB_ORIGIN/ALLOWED_WEB_ORIGINS live in webOrigins.js so this
+// file and chatGeneration.js share one definition. Every WEB_ORIGIN use here
+// that builds redirect/email links deliberately still points at the old
+// domain until the sennoric.com cutover is confirmed, since changing those
+// before the new domain resolves would hand out dead links.
 
 app.use('*', async (c, next) => {
   await next()
@@ -61,7 +59,7 @@ app.use('*', async (c, next) => {
 })
 
 app.use('*', cors({
-  origin: [WEB_ORIGIN, NEW_WEB_ORIGIN],
+  origin: ALLOWED_WEB_ORIGINS,
   credentials: true,
   allowHeaders: ['Content-Type', 'Authorization'],
 }))
