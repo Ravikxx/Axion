@@ -43,6 +43,13 @@ import {
 
 const app = new Hono()
 const WEB_ORIGIN = 'https://axion.amplifiedsmp.org'
+// Sennoric is the new domain the frontend is moving to (not live yet as of
+// this change — DNS/GitHub Pages cutover pending). Accepted here ahead of
+// time so CORS doesn't need another deploy the moment it goes live; every
+// other WEB_ORIGIN use (building redirect/email links) deliberately still
+// points at the old domain until that cutover is confirmed, since changing
+// those before the new domain resolves would hand out dead links.
+const NEW_WEB_ORIGIN = 'https://sennoric.com'
 
 app.use('*', async (c, next) => {
   await next()
@@ -54,7 +61,7 @@ app.use('*', async (c, next) => {
 })
 
 app.use('*', cors({
-  origin: WEB_ORIGIN,
+  origin: [WEB_ORIGIN, NEW_WEB_ORIGIN],
   credentials: true,
   allowHeaders: ['Content-Type', 'Authorization'],
 }))
@@ -250,7 +257,7 @@ function json(data, status = 200) {
 function signupRequiredResponse() {
   return json({
     error: {
-      message: 'An Axion account is required. Sign up or sign in, then use your session or an Axion API key.',
+      message: 'An Sennoric account is required. Sign up or sign in, then use your session or an Sennoric API key.',
       type: 'authentication_error',
       signup_required: true,
       signup_url: 'https://axion.amplifiedsmp.org/chat',
@@ -342,7 +349,7 @@ async function sendEmail(resendKey, { to, subject, html, from, replyTo }) {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${resendKey}` },
     body: JSON.stringify({
-      from: from || 'Axion Labs <noreply@amplifiedsmp.org>',
+      from: from || 'Sennoric <noreply@amplifiedsmp.org>',
       to: [to],
       subject,
       html,
@@ -377,13 +384,13 @@ async function sendVerificationEmail(email, token, resendKey) {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${resendKey}` },
     body: JSON.stringify({
-      from: 'Axion Labs <noreply@amplifiedsmp.org>',
+      from: 'Sennoric <noreply@amplifiedsmp.org>',
       to: [email],
-      subject: 'Verify your Axion account',
+      subject: 'Verify your Sennoric account',
       html: `
         <div style="font-family:system-ui,sans-serif;max-width:480px;margin:0 auto;padding:32px">
           <h2 style="margin:0 0 8px">Verify your email</h2>
-          <p style="color:#555;margin:0 0 24px">Click the button below to activate your Axion Labs account and start using the API.</p>
+          <p style="color:#555;margin:0 0 24px">Click the button below to activate your Sennoric account and start using the API.</p>
           <a href="${link}" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">Verify email &rarr;</a>
           <p style="color:#999;font-size:12px;margin-top:24px">Link expires in 24 hours. If you didn't sign up, ignore this email.</p>
         </div>`,
@@ -438,7 +445,7 @@ app.post('/auth/register', async (c) => {
       const appealUrl = 'https://api.amplifiedsmp.org/appeal/' + token
       c.executionCtx.waitUntil(sendEmail(c.env.RESEND_API_KEY, {
         to: email.toLowerCase(),
-        subject: 'Your Axion account has been suspended',
+        subject: 'Your Sennoric account has been suspended',
         html: emailWrap(`
           <h2 style="margin:0 0 8px;color:#e8e8f0">Account suspended</h2>
           <p style="color:#ccc;margin:0 0 16px">Your account was suspended because another verified account already exists from your IP address.</p>
@@ -639,7 +646,7 @@ async function oauthFinish(c, { id_field, email, provider_id, return_to }) {
         const appealUrl = 'https://api.amplifiedsmp.org/appeal/' + appealToken
         c.executionCtx.waitUntil(sendEmail(c.env.RESEND_API_KEY, {
           to: email.toLowerCase(),
-          subject: 'Your Axion account has been suspended',
+          subject: 'Your Sennoric account has been suspended',
           html: emailWrap(`
             <h2 style="margin:0 0 8px;color:#e8e8f0">Account suspended</h2>
             <p style="color:#ccc;margin:0 0 16px">Your account was suspended because another verified account already exists from your IP address.</p>
@@ -704,7 +711,7 @@ async function oauthLinkFinish(c, { id_field, provider, provider_id, state }) {
   }
   const existing = await c.env.DB.prepare(`SELECT id FROM users WHERE ${id_field}=?`).bind(provider_id).first()
   if (existing && existing.id !== target.id) {
-    return new Response(`This ${provider} account is already linked to a different Axion account.`, { status: 409, headers: { 'Content-Type': 'text/plain' } })
+    return new Response(`This ${provider} account is already linked to a different Sennoric account.`, { status: 409, headers: { 'Content-Type': 'text/plain' } })
   }
   await c.env.DB.prepare(`UPDATE users SET ${id_field}=? WHERE id=?`).bind(provider_id, target.id).run()
   return new Response(null, { status: 302, headers: { Location: allowedReturn(state.return) } })
@@ -949,10 +956,10 @@ async function sendPasswordResetEmail(email, token, resendKey) {
   const link = `https://axion.amplifiedsmp.org/keys#reset=${token}`
   await sendEmail(resendKey, {
     to: email,
-    subject: 'Reset your Axion password',
+    subject: 'Reset your Sennoric password',
     html: emailWrap(`
       <h2 style="margin:0 0 8px;color:#e8e8f0">Reset your password</h2>
-      <p style="color:#ccc;margin:0 0 24px">Click the button below to choose a new password for your Axion account.</p>
+      <p style="color:#ccc;margin:0 0 24px">Click the button below to choose a new password for your Sennoric account.</p>
       <a href="${link}" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">Reset password &rarr;</a>
       <p style="color:#555;font-size:12px;margin-top:24px">This link expires in 1 hour and can only be used once. If you didn't request this, ignore this email — your password won't change.</p>
     `),
@@ -1223,7 +1230,7 @@ app.delete('/dashboard/account', async (c) => {
 })
 
 // ── Billing (Square) ────────────────────────────────────────────────────────
-// The "Axion Pro" subscription plan variation in the Square catalog — see
+// The "Sennoric Pro" subscription plan variation in the Square catalog — see
 // the Monthly variation under plan LQIOMJA3CQPO2EPLORLAHASG. A Quarterly
 // variation also exists in Square (XW3UTLEQKQ6VDNORQO6XTZIS) but Square's
 // API won't let it be deleted once created; it's simply never referenced
@@ -1254,10 +1261,10 @@ async function verifySquareSignature(rawBody, signatureHeader, signatureKey) {
   return timingSafeEqualStr(expected, signatureHeader)
 }
 
-// Mints a Square-hosted checkout page for the Axion Pro subscription. Square
+// Mints a Square-hosted checkout page for the Sennoric Pro subscription. Square
 // collects the card, creates the Customer + Card + Subscription itself once
 // payment succeeds — nothing here touches card data. The buyer is matched
-// back to their Axion account by email in the webhook handler below, same
+// back to their Sennoric account by email in the webhook handler below, same
 // pattern already used for OAuth account matching (oauthFinish).
 app.post('/billing/checkout', async (c) => {
   const user = await requireAuth(c)
@@ -1347,7 +1354,7 @@ app.post('/webhooks/square', async (c) => {
   if (!email) return json({ ok: true })
 
   const user = await c.env.DB.prepare('SELECT id FROM users WHERE email=?').bind(email.toLowerCase()).first()
-  if (!user) return json({ ok: true }) // no matching Axion account — nothing to do
+  if (!user) return json({ ok: true }) // no matching Sennoric account — nothing to do
 
   const active = subscription.status === 'ACTIVE'
   await c.env.DB.prepare(
@@ -1885,7 +1892,7 @@ app.put('/settings', async (c) => {
 const ARTIFACT_KINDS = new Set(['text', 'code', 'markdown'])
 const ARTIFACT_CONTENT_LIMIT = 500_000
 
-// Artifacts are a persistent library of Axion-created outputs (documents,
+// Artifacts are a persistent library of Sennoric-created outputs (documents,
 // code previews, generated files). Each edit creates a new revision rather
 // than overwriting content in place; the artifact row just tracks which
 // revision is current so listing doesn't require pulling revision content.
@@ -2868,7 +2875,7 @@ async function purgeExpiredShares(db) {
 
 const FREE_KEY_CAP      = 3     // max non-revoked API keys, free plan (pro is uncapped)
 
-// Lumen pricing — also the unit the pay-as-you-go credits feature will use.
+// Fresco pricing — also the unit the pay-as-you-go credits feature will use.
 const LUMEN_INPUT_PER_M_USD  = 0.15
 const LUMEN_OUTPUT_PER_M_USD = 0.50
 
@@ -2998,7 +3005,7 @@ function streamResponseTracked(upstream) {
 
 const SANDBOX_LANGUAGES = new Set(['python', 'javascript'])
 
-// Executes a Lumen-requested tool call in a Daytona sandbox. Gated to any
+// Executes a Fresco-requested tool call in a Daytona sandbox. Gated to any
 // request with a resolved billedUser (session token or API key) —
 // all hosted model and compute access requires an account. Mirrors
 // /v1/chat/completions's own billedUser resolution (duplicated rather than
@@ -3192,7 +3199,7 @@ app.post('/v1/chat/completions', async (c) => {
           const resetLabel = resetAt.toLocaleDateString('en-US', { month: 'long', day: 'numeric', timeZone: 'UTC' })
           await sendEmail(c.env.RESEND_API_KEY, {
             to: limitUser.email,
-            subject: `You've used 80% of your $${budgetUsd} weekly Axion usage`,
+            subject: `You've used 80% of your $${budgetUsd} weekly Sennoric usage`,
             html: emailWrap(`
               <h2 style="margin:0 0 8px;color:#e8e8f0">Usage alert</h2>
               <p style="color:#888;margin:0 0 16px">Your account${keyRow ? ` (API key <strong style="color:#e8e8f0">${keyRow.label}</strong>)` : ''} has used <strong style="color:#e8602c">$${usedUsd} / $${budgetUsd}</strong> this week (80%).</p>
@@ -3401,10 +3408,10 @@ app.post('/admin/moderation/messages/:id/ban', async (c) => {
       const appealUrl = `https://api.amplifiedsmp.org/appeal/${banned.appeal_token}`
       c.executionCtx.waitUntil(sendEmail(c.env.RESEND_API_KEY, {
         to: banned.email,
-        subject: 'Your Axion account has been suspended',
+        subject: 'Your Sennoric account has been suspended',
         html: emailWrap(`
           <h2 style="margin:0 0 8px;color:#e8e8f0">Account suspended</h2>
-          <p style="color:#ccc;margin:0 0 16px">An Axion administrator confirmed a safety-policy violation and suspended your account.</p>
+          <p style="color:#ccc;margin:0 0 16px">An Sennoric administrator confirmed a safety-policy violation and suspended your account.</p>
           <p style="color:#ccc;margin:0 0 24px">If you believe this decision is incorrect, use the link below to submit an appeal.</p>
           <a href="${appealUrl}" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">Submit appeal &rarr;</a>
         `),
@@ -3731,10 +3738,10 @@ app.post('/admin/waitlist/:id/approve', async (c) => {
     const link = `https://api.amplifiedsmp.org/waitlist/accept?token=${token}`
     c.executionCtx.waitUntil(sendEmail(c.env.RESEND_API_KEY, {
       to: entry.email,
-      subject: "You're in — your Axion invite is ready",
+      subject: "You're in — your Sennoric invite is ready",
       html: emailWrap(`
         <h2 style="margin:0 0 8px;color:#e8e8f0">You're approved!</h2>
-        <p style="color:#888;margin:0 0 24px">Your Axion Labs early access is ready. Click below to activate your account and get account-based included usage and redeemable API credits.</p>
+        <p style="color:#888;margin:0 0 24px">Your Sennoric early access is ready. Click below to activate your account and get account-based included usage and redeemable API credits.</p>
         <a href="${link}" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">Activate account &rarr;</a>
         <p style="color:#555;font-size:12px;margin-top:24px">This link expires in 7 days.</p>
       `),
@@ -3767,7 +3774,7 @@ app.post('/announcements/subscribe', async (c) => {
   await c.env.DB.prepare(
     'INSERT INTO subscribers (email) VALUES (?) ON CONFLICT (email) DO UPDATE SET active=1'
   ).bind(email.toLowerCase()).run()
-  return json({ ok: true, message: "You're subscribed to Axion Labs announcements." })
+  return json({ ok: true, message: "You're subscribed to Sennoric announcements." })
 })
 
 app.get('/announcements/unsubscribe', async (c) => {
@@ -3824,7 +3831,7 @@ app.post('/webhook/announce', async (c) => {
               : `https://axion.amplifiedsmp.org/keys`
             return sendEmail(c.env.RESEND_API_KEY, {
               to: r.email,
-              subject: `Axion Labs: ${titleStr}`,
+              subject: `Sennoric: ${titleStr}`,
               html: emailWrap(`
                 <h2 style="margin:0 0 8px;color:#e8e8f0">${titleStr}</h2>
                 <div style="color:#ccc;line-height:1.7;margin:0 0 24px;white-space:pre-wrap">${bodyStr}</div>
@@ -3907,12 +3914,12 @@ app.post('/admin/invite', async (c) => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${c.env.RESEND_API_KEY}` },
       body: JSON.stringify({
-        from: 'Axion Labs <noreply@amplifiedsmp.org>',
+        from: 'Sennoric <noreply@amplifiedsmp.org>',
         to: [email],
-        subject: `${user.email} invited you to the Axion admin panel`,
+        subject: `${user.email} invited you to the Sennoric admin panel`,
         html: `<div style="font-family:system-ui,sans-serif;max-width:480px;margin:0 auto;padding:32px;background:#0f0f11;color:#e8e8f0">
           <h2 style="margin:0 0 8px;color:#e8e8f0">You've been invited</h2>
-          <p style="color:#888;margin:0 0 24px">${user.email} has invited you to become an admin on Axion Labs.</p>
+          <p style="color:#888;margin:0 0 24px">${user.email} has invited you to become an admin on Sennoric.</p>
           <a href="${link}" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">Accept invitation &rarr;</a>
           <p style="color:#666;font-size:12px;margin-top:24px">This link expires in 7 days. If you didn't expect this, you can safely ignore it.</p>
         </div>`,
@@ -3960,7 +3967,7 @@ app.get('/appeal/:token', async (c) => {
       : 'Your appeal was reviewed and not approved at this time.'
     return new Response(`<!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Appeal — Axion Labs</title><style>
+<title>Appeal — Sennoric</title><style>
 body{font-family:system-ui,sans-serif;background:#110d08;color:#e8ddd0;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;padding:24px}
 .card{background:#1c1510;border:1px solid #2e2218;border-radius:16px;padding:36px 40px;max-width:480px;width:100%;text-align:center}
 .card h1{font-size:22px;margin:0 0 8px;color:#e8ddd0}
@@ -3977,7 +3984,7 @@ body{font-family:system-ui,sans-serif;background:#110d08;color:#e8ddd0;display:f
   const banned = user?.banned
   return new Response(`<!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Submit appeal — Axion Labs</title><style>
+<title>Submit appeal — Sennoric</title><style>
 body{font-family:system-ui,sans-serif;background:#110d08;color:#e8ddd0;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;padding:24px}
 .card{background:#1c1510;border:1px solid #2e2218;border-radius:16px;padding:36px 40px;max-width:480px;width:100%}
 .card h1{font-size:22px;margin:0 0 4px;color:#e8ddd0}
@@ -4027,7 +4034,7 @@ app.post('/appeal/:token', async (c) => {
   if (c.env.RESEND_API_KEY) {
     c.executionCtx.waitUntil(sendEmail(c.env.RESEND_API_KEY, {
       to: 'fearlessaviatorclan@gmail.com',
-      subject: '[Axion] New appeal from ' + appeal.email,
+      subject: '[Sennoric] New appeal from ' + appeal.email,
       html: emailWrap(`
         <h2 style="margin:0 0 8px;color:#e8e8f0">New appeal submitted</h2>
         <p style="color:#ccc;margin:0 0 4px"><strong>Email:</strong> ${escHtml(appeal.email)}</p>
@@ -4070,7 +4077,7 @@ app.post('/admin/appeals/:token/accept', async (c) => {
   if (c.env.RESEND_API_KEY) {
     c.executionCtx.waitUntil(sendEmail(c.env.RESEND_API_KEY, {
       to: appeal.email,
-      subject: 'Your Axion appeal has been approved',
+      subject: 'Your Sennoric appeal has been approved',
       html: emailWrap(`
         <h2 style="margin:0 0 8px;color:#e8e8f0">Appeal approved</h2>
         <p style="color:#ccc;margin:0 0 24px">Your account has been reinstated. You can now sign in and use the service normally.</p>
@@ -4098,11 +4105,11 @@ app.post('/admin/appeals/:token/reject', async (c) => {
   if (c.env.RESEND_API_KEY) {
     c.executionCtx.waitUntil(sendEmail(c.env.RESEND_API_KEY, {
       to: appeal.email,
-      subject: 'Your Axion appeal has been reviewed',
+      subject: 'Your Sennoric appeal has been reviewed',
       html: emailWrap(`
         <h2 style="margin:0 0 8px;color:#e8e8f0">Appeal not approved</h2>
         <p style="color:#ccc;margin:0 0 24px">After review, your appeal was not approved. Your account remains suspended. If you have additional information, please submit a new appeal.</p>
-        <p style="color:#555;font-size:12px">This decision was made by the Axion Labs team.</p>
+        <p style="color:#555;font-size:12px">This decision was made by the Sennoric team.</p>
       `),
     }))
   }
@@ -4396,14 +4403,14 @@ app.post('/orgs/:id/invite', async (c) => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${c.env.RESEND_API_KEY}` },
       body: JSON.stringify({
-        from: 'Axion Labs <noreply@amplifiedsmp.org>',
+        from: 'Sennoric <noreply@amplifiedsmp.org>',
         to: [email],
-        subject: `${ctx.user.email} invited you to ${org?.name || 'a team'} on Axion`,
+        subject: `${ctx.user.email} invited you to ${org?.name || 'a team'} on Sennoric`,
         html: `<div style="font-family:system-ui,sans-serif;max-width:480px;margin:0 auto;padding:32px;background:#0f0f11;color:#e8e8f0">
           <h2 style="margin:0 0 8px;color:#e8e8f0">You've been invited</h2>
-          <p style="color:#888;margin:0 0 24px">${ctx.user.email} invited you to join <strong style="color:#e8e8f0">${org?.name || 'a team'}</strong> on Axion Labs.</p>
+          <p style="color:#888;margin:0 0 24px">${ctx.user.email} invited you to join <strong style="color:#e8e8f0">${org?.name || 'a team'}</strong> on Sennoric.</p>
           <a href="${link}" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">Accept invitation &rarr;</a>
-          <p style="color:#666;font-size:12px;margin-top:24px">Expires in 7 days. You'll need to sign in or create an Axion account to accept.</p>
+          <p style="color:#666;font-size:12px;margin-top:24px">Expires in 7 days. You'll need to sign in or create an Sennoric account to accept.</p>
         </div>`,
       }),
     }))
@@ -4480,7 +4487,7 @@ app.post('/orgs/:id/keys', async (c) => {
 
 // ── CLI <-> mobile app bridge relay ─────────────────────────────────────────
 //
-// Lets the Axion CLI (running on a desktop) and the Axion mobile app pair up
+// Lets the Sennoric CLI (running on a desktop) and the Sennoric mobile app pair up
 // through this worker instead of requiring the phone to be on the same LAN.
 // One Durable Object instance per user id holds the live CLI socket and
 // relays terminal I/O to any attached app sockets. Auth accepts either an
@@ -4588,7 +4595,7 @@ async function notifyAdminsOfFlaggedMessages(env, runId, flagged) {
     subject: `${flagged.length} message${flagged.length === 1 ? '' : 's'} flagged for review`,
     html: emailWrap(`
       <h2 style="margin:0 0 8px;color:#e8e8f0">Automated safety review flagged ${flagged.length} exchange${flagged.length === 1 ? '' : 's'}</h2>
-      <p style="color:#888;margin:0 0 16px">Axion's Mistral-powered safety reviewer identified policy categories that need a human decision.</p>
+      <p style="color:#888;margin:0 0 16px">Sennoric's Mistral-powered safety reviewer identified policy categories that need a human decision.</p>
       <ul style="color:#ccc;padding-left:18px">${rows}</ul>
       <a href="${runUrl}" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">Review this run &rarr;</a>
     `),
