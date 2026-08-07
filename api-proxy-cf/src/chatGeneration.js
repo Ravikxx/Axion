@@ -1,3 +1,5 @@
+import { ALLOWED_WEB_ORIGINS } from './webOrigins.js'
+
 const COMPLETIONS_URL = 'https://api.amplifiedsmp.org/v1/chat/completions'
 
 // Partial text is written to storage at most this often. Frequent enough that a
@@ -28,7 +30,7 @@ async function sendEmail(resendKey, { to, subject, html }) {
   const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${resendKey}` },
-    body: JSON.stringify({ from: 'Axion Labs <noreply@amplifiedsmp.org>', to: [to], subject, html }),
+    body: JSON.stringify({ from: 'Sennoric <noreply@amplifiedsmp.org>', to: [to], subject, html }),
   })
   if (!res.ok) {
     const body = await res.text().catch(() => '')
@@ -61,7 +63,7 @@ async function notifyScheduledCompletion(env, job, { status, error }) {
       html: `<div style="font-family:system-ui,sans-serif;max-width:480px;margin:0 auto;padding:32px;background:#0f0f11;color:#e8e8f0">
         <h2 style="margin:0 0 8px;color:#e8e8f0">"${name}" ${ok ? 'finished' : 'failed'}</h2>
         ${body}
-        <a href="https://axion.amplifiedsmp.org/chat" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">Open Axion &rarr;</a>
+        <a href="https://axion.amplifiedsmp.org/chat" style="display:inline-block;background:#e8602c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">Open Sennoric &rarr;</a>
       </div>`,
     })
   } catch (err) {
@@ -98,7 +100,7 @@ export class ChatGeneration {
   async fetch(request) {
     const url = new URL(request.url)
     if (request.method === 'POST' && url.pathname === '/start') return this.start(request)
-    if (request.method === 'GET' && url.pathname === '/stream') return this.openStream()
+    if (request.method === 'GET' && url.pathname === '/stream') return this.openStream(request)
     return json({ error: 'Not found' }, 404)
   }
 
@@ -122,7 +124,16 @@ export class ChatGeneration {
   // Replays everything generated so far, then streams the rest live. A tab that
   // joins at any point gets the same complete reply as one that watched from
   // the start, so reconnecting never shows a half message.
-  async openStream() {
+  async openStream(request) {
+    // Credentialed CORS can't use '*', so reflect the caller's origin back
+    // only if it's one we actually allow — same allow-list as index.js's
+    // main CORS middleware, kept in sync so a Sennoric-origin stream isn't
+    // silently rejected once the frontend moves.
+    const requestOrigin = request.headers.get('Origin')
+    const allowOrigin = ALLOWED_WEB_ORIGINS.includes(requestOrigin)
+      ? requestOrigin
+      : ALLOWED_WEB_ORIGINS[0]
+
     const [job, partial, settled] = await Promise.all([
       this.state.storage.get('job'),
       this.state.storage.get('partial'),
@@ -158,8 +169,11 @@ export class ChatGeneration {
         'Content-Type': 'text/event-stream',
         'Cache-Control': 'no-cache, no-transform',
         Connection: 'keep-alive',
-        'Access-Control-Allow-Origin': 'https://axion.amplifiedsmp.org',
+        'Access-Control-Allow-Origin': allowOrigin,
         'Access-Control-Allow-Credentials': 'true',
+        // The allowed-origin header now varies by request, so a shared cache
+        // must not reuse one origin's credentialed response for another.
+        Vary: 'Origin',
       },
     })
   }
@@ -220,25 +234,25 @@ export class ChatGeneration {
         body: JSON.stringify({ ...job.requestBody, stream: true }),
       })
     } catch (error) {
-      await this.fail(job, `Could not reach Lumen: ${errorText(error)}`)
+      await this.fail(job, `Could not reach Fresco: ${errorText(error)}`)
       return
     }
 
     if (!response.ok || !response.body) {
       const detail = (await response.text().catch(() => '')).slice(0, 800)
-      await this.fail(job, detail || `Lumen returned HTTP ${response.status}`)
+      await this.fail(job, detail || `Fresco returned HTTP ${response.status}`)
       return
     }
 
     try {
       await this.consume(response.body)
     } catch (error) {
-      await this.fail(job, `Lost the connection to Lumen: ${errorText(error)}`)
+      await this.fail(job, `Lost the connection to Fresco: ${errorText(error)}`)
       return
     }
 
     if (!this.text && !this.toolCalls.length) {
-      await this.fail(job, 'Lumen returned an empty reply')
+      await this.fail(job, 'Fresco returned an empty reply')
       return
     }
 

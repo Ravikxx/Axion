@@ -76,7 +76,7 @@ test('a network failure reaching RunPod maps to a 502', async () => {
   const fetchImpl = async () => { throw new Error('fetch failed') }
   const response = await proxyVeilRequest({ messages: [{ role: 'user', content: 'Hi' }] }, env, fetchImpl)
   assert.equal(response.status, 502)
-  assert.match(await response.text(), /Could not reach Veil/)
+  assert.match(await response.text(), /Could not reach Glyph/)
 })
 
 test('health probe treats scale-to-zero (a reachable but cold endpoint) as healthy', async () => {

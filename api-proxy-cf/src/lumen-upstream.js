@@ -1,4 +1,4 @@
-// Lumen runs on a RunPod Serverless endpoint behind vLLM's OpenAI-compatible
+// Fresco runs on a RunPod Serverless endpoint behind vLLM's OpenAI-compatible
 // server, so unlike the old Hugging Face Gradio Space, no submit/poll/SSE
 // adapter is needed here — RunPod's /openai/... route already speaks the
 // exact chat-completions shape index.js and the billing layer expect. This
@@ -26,12 +26,12 @@ function errorResponse(message, status = 502) {
 // which underlying HF repo is actually running.
 const SERVED_MODEL_NAME = 'AxionLabsAI/Lumen-1.2.5'
 
-// Baseline safety/behavior system prompt sent with every Lumen request,
-// regardless of caller (web chat, playground, API keys, CLI). Lumen's own
+// Baseline safety/behavior system prompt sent with every Fresco request,
+// regardless of caller (web chat, playground, API keys, CLI). Fresco's own
 // DPO safety fine-tuning is the primary safety layer, and this runtime
 // instruction provides defense in depth. Account enforcement happens only
 // through the separate asynchronous human-review workflow.
-export const LUMEN_SYSTEM_PROMPT = `You are Lumen, an AI assistant made by Axion Labs. You're helpful, direct, and honest.
+export const LUMEN_SYSTEM_PROMPT = `You are Fresco, an AI assistant made by Sennoric. You're helpful, direct, and honest.
 - Answer questions clearly and concisely. Don't over-explain.
 - If you don't know something, say so — don't guess and present it as fact.
 - Refuse requests that would help harm people, violate someone's privacy, or carry out illegal activity — including sexual content involving minors, instructions for creating weapons or explosives, and malicious code meant to attack or compromise systems.
@@ -59,11 +59,11 @@ export async function proxyLumenRequest(body, env, fetchImpl = fetch) {
       body: JSON.stringify(requestBody),
     })
   } catch (error) {
-    return errorResponse(`Could not reach Lumen: ${error.message}`, 502)
+    return errorResponse(`Could not reach Fresco: ${error.message}`, 502)
   }
 
   if (!upstream.ok) {
-    return errorResponse(`Lumen rejected the request: ${await upstream.text()}`, upstream.status)
+    return errorResponse(`Fresco rejected the request: ${await upstream.text()}`, upstream.status)
   }
 
   if (body.stream) {

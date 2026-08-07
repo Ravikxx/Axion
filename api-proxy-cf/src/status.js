@@ -1,9 +1,9 @@
 import { probeLumenHealth } from './lumen-upstream.js'
 
 export const SERVICES = [
-  { key: 'axion_api', label: 'Axion API' },
-  { key: 'lumen', label: 'Lumen model' },
-  { key: 'website', label: 'Axion website' },
+  { key: 'axion_api', label: 'Sennoric API' },
+  { key: 'lumen', label: 'Fresco model' },
+  { key: 'website', label: 'Sennoric website' },
 ]
 
 // Real check cadence — used to turn a day's down-check count into an
@@ -23,7 +23,7 @@ function labelFor(service) {
 // is what caused a false "down" incident the first time this shipped).
 // Instead this calls the route handler in-process via the same `appFetch`
 // the request would normally go through, with no network hop at all.
-async function checkAxionApi(env, appFetch) {
+async function checkSennoricApi(env, appFetch) {
   try {
     const res = await appFetch(new Request('https://api.amplifiedsmp.org/v1/models'))
     return res.ok
@@ -74,7 +74,7 @@ async function alertAdmin(env, { subject, html }) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${env.RESEND_API_KEY}` },
       body: JSON.stringify({
-        from: 'Axion Status <status@amplifiedsmp.org>',
+        from: 'Sennoric Status <status@amplifiedsmp.org>',
         to: [env.ADMIN_ALERT_EMAIL],
         subject,
         html,
@@ -110,7 +110,7 @@ async function evaluateIncident(env, result, nowIso) {
       ])
       const editLink = `https://axion.amplifiedsmp.org/admin#incident-${id}`
       await alertAdmin(env, {
-        subject: `[Axion Status] ${title}`,
+        subject: `[Sennoric Status] ${title}`,
         html: emailWrap(`
           <h2 style="margin:0 0 8px;color:#fff">${title}</h2>
           <p style="color:#b8b8c8;line-height:1.6">${body}</p>
@@ -133,7 +133,7 @@ async function evaluateIncident(env, result, nowIso) {
       ])
       const editLink = `https://axion.amplifiedsmp.org/admin#incident-${existing.id}`
       await alertAdmin(env, {
-        subject: `[Axion Status] Resolved: ${existing.title}`,
+        subject: `[Sennoric Status] Resolved: ${existing.title}`,
         html: emailWrap(`
           <h2 style="margin:0 0 8px;color:#fff">Resolved: ${existing.title}</h2>
           <p style="color:#b8b8c8;line-height:1.6">${body}</p>
@@ -148,7 +148,7 @@ async function evaluateIncident(env, result, nowIso) {
 export async function runStatusChecks(env, fetchImpl = fetch, appFetch = fetchImpl) {
   const nowIso = new Date().toISOString()
   const results = await Promise.all([
-    checkAxionApi(env, appFetch),
+    checkSennoricApi(env, appFetch),
     checkLumen(env, fetchImpl),
     checkWebsite(env, fetchImpl),
   ])
