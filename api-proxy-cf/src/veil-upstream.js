@@ -1,7 +1,7 @@
-// Veil runs on its own RunPod Serverless endpoint behind vLLM's OpenAI-compatible
-// server, same setup as Lumen (see lumen-upstream.js) but a separate endpoint ID
-// and a much smaller/cheaper GPU tier, since Veil is a 3B GGUF model rather than
-// Lumen's 8B. Shares the same RUNPOD_API_KEY (one RunPod account, two endpoints).
+// Glyph runs on its own RunPod Serverless endpoint behind vLLM's OpenAI-compatible
+// server, same setup as Fresco (see lumen-upstream.js) but a separate endpoint ID
+// and a much smaller/cheaper GPU tier, since Glyph is a 3B GGUF model rather than
+// Fresco's 8B. Shares the same RUNPOD_API_KEY (one RunPod account, two endpoints).
 
 function runpodBaseUrl(env) {
   return `https://api.runpod.ai/v2/${env.RUNPOD_VEIL_ENDPOINT_ID}/openai/v1`
@@ -36,11 +36,11 @@ export async function proxyVeilRequest(body, env, fetchImpl = fetch) {
       body: JSON.stringify(requestBody),
     })
   } catch (error) {
-    return errorResponse(`Could not reach Veil: ${error.message}`, 502)
+    return errorResponse(`Could not reach Glyph: ${error.message}`, 502)
   }
 
   if (!upstream.ok) {
-    return errorResponse(`Veil rejected the request: ${await upstream.text()}`, upstream.status)
+    return errorResponse(`Glyph rejected the request: ${await upstream.text()}`, upstream.status)
   }
 
   if (body.stream) {
