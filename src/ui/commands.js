@@ -8,7 +8,7 @@ export const COMMANDS = [
   { cmd: 'model',           desc: '<name|id>  switch model' },
   { cmd: 'mode',            desc: '<name>  ask · plan · decide-for-me · bypass' },
   { cmd: 'theme',           desc: '[name]  switch accent color (no args = list)' },
-  { cmd: 'permissions',     desc: '[clear]  list/reset always-allowed tools' },
+  { cmd: 'permissions',     desc: '[scope <read-only|read-write|full>|revoke|clear]' },
   { cmd: 'skills',          desc: '[delete <name>]  list skills (auto-activate on triggers)' },
   { cmd: 'skill-generator', desc: '<name> <instructions>  AI-generate a skill .md' },
   { cmd: 'skill-delete',    desc: '<name>  delete a skill' },

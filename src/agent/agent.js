@@ -1,12 +1,16 @@
 import { readFileSync, existsSync } from 'fs';
 import { resolve, extname } from 'path';
-import { execSync } from 'child_process';
+import { execFileSync, execSync } from 'child_process';
 import { createClient, resolveModel, resolveProvider, getModelMaxTokensField, buildReasoningParams, applyTransportShim } from './models.js';
 import {
   TOOL_DEFINITIONS, TOOL_DEFINITIONS_OPENAI,
   COMPUTER_TOOL_DEFINITIONS, COMPUTER_TOOL_DEFINITIONS_OPENAI,
-  executeTool, parseToolCallsFromText, getCwd, setCwd,
+  executeTool, parseToolCallsFromText, getCwd, getWorkspaceRoot, setWorkspaceRoot,
 } from './tools.js';
+import {
+  authorizeWorkspaceTool, ensureWorkspaceGrant, filterToolsForWorkspaceScope,
+  getWorkspaceGrant, grantWorkspace, requiredScopeForTool, requiresPermanentApproval,
+} from './workspaceAuthority.js';
 import { API_KEYS, CONTEXT_WINDOWS, MAX_TOOL_CONCURRENCY, CONTEXT_ZONES } from '../config.js';
 import { StreamingToolExecutor } from '../services/tools/toolExecutor.js';
 import { allConcurrentSafe } from '../services/tools/toolOrchestration.js';
@@ -18,6 +22,8 @@ import { wikiContent } from '../services/wiki/status.js';
 import { MCP } from './mcp.js';
 import { PLUGINS } from './plugins.js';
 import { GOOGLE_TOOL_DEFINITIONS, GOOGLE_TOOL_DEFINITIONS_OPENAI } from './google.js';
+import { listTeams, readTeamFile } from '../services/swarm/teamStore.js';
+import { partitionContext, getAllPartitionedMessages } from './contextPartitioning.js';
 import { getOAuthToken } from '../oauth/oauth.js';
 import { ensureLspManager, closeLspManager, getLspManager } from '../services/lsp/manager.js';
 import { homedir } from 'os';
@@ -29,6 +35,7 @@ import { startWatching, stopAll, onFileChange, FileWatcherEvent } from '../servi
 import { FILE_WATCHER } from '../config.js';
 import { parseTokenBudget, stripTokenBudget, createBudgetTracker, checkTokenBudget } from './tokenBudget.js';
 import { initAutoDream, executeAutoDream, isAutoDreamRunning } from '../services/autoDream/autoDream.js';
+import { resolveContained } from './pathContainment.js';
 
 // Initialise the auto-dream closure once per process. The gates (enabled /
 // time / session / lock) inside executeAutoDream decide whether anything
@@ -39,8 +46,12 @@ import { activeWorkspace, activeWorkspacePath, switchWorkspace, listWorkspaces }
 
 // ── Project context (built per working directory, cached) ────────────────────
 
-function buildProjectContext(cwd = process.cwd()) {
+export function buildProjectContext(cwd = process.cwd(), workspaceRoot = cwd) {
   const hints = [];
+  let safeCwd;
+  try { safeCwd = resolveContained(workspaceRoot, cwd); }
+  catch { return ''; }
+  const projectPath = (...parts) => resolveContained(workspaceRoot, resolve(safeCwd, ...parts));
 
   // Persistent project instructions. AXION.md takes priority (global ~/.axion/AXION.md,
   // then project root, then ./.axion/AXION.md). If no AXION.md is found anywhere, fall
@@ -48,9 +59,10 @@ function buildProjectContext(cwd = process.cwd()) {
   let foundInstructions = false;
   for (const p of [
     resolve(homedir(), '.axion', 'AXION.md'),
-    resolve(cwd, 'AXION.md'),
-    resolve(cwd, '.axion', 'AXION.md'),
+    (() => { try { return projectPath('AXION.md'); } catch { return null; } })(),
+    (() => { try { return projectPath('.axion', 'AXION.md'); } catch { return null; } })(),
   ]) {
+    if (!p) continue;
     try {
       const text = readFileSync(p, 'utf8').trim();
       if (text) { hints.push(`Instructions from ${p} (follow these):\n${text.slice(0, 8000)}`); foundInstructions = true; }
@@ -58,7 +70,8 @@ function buildProjectContext(cwd = process.cwd()) {
   }
   if (!foundInstructions) {
     for (const name of ['AGENTS.md', 'CLAUDE.md']) {
-      const p = resolve(cwd, name);
+      let p;
+      try { p = projectPath(name); } catch { continue; }
       try {
         const text = readFileSync(p, 'utf8').trim();
         if (text) { hints.push(`Instructions from ${p} (follow these):\n${text.slice(0, 8000)}`); foundInstructions = true; break; }
@@ -68,7 +81,7 @@ function buildProjectContext(cwd = process.cwd()) {
 
   // package.json
   try {
-    const pkg = JSON.parse(readFileSync(resolve(cwd, 'package.json'), 'utf8'));
+    const pkg = JSON.parse(readFileSync(projectPath('package.json'), 'utf8'));
     hints.push(`Project: ${pkg.name || '(unnamed)'}${pkg.version ? ` v${pkg.version}` : ''}${pkg.description ? ` — ${pkg.description}` : ''}`);
     if (pkg.scripts && Object.keys(pkg.scripts).length) {
       hints.push(`npm scripts: ${Object.keys(pkg.scripts).join(', ')}`);
@@ -78,31 +91,36 @@ function buildProjectContext(cwd = process.cwd()) {
   } catch {}
 
   // pyproject.toml / setup.py
-  if (existsSync(resolve(cwd, 'pyproject.toml'))) hints.push('Stack: Python (pyproject.toml)');
-  else if (existsSync(resolve(cwd, 'Cargo.toml'))) hints.push('Stack: Rust (Cargo.toml)');
-  else if (existsSync(resolve(cwd, 'go.mod')))     hints.push('Stack: Go (go.mod)');
+  try {
+    if (existsSync(projectPath('pyproject.toml'))) hints.push('Stack: Python (pyproject.toml)');
+    else if (existsSync(projectPath('Cargo.toml'))) hints.push('Stack: Rust (Cargo.toml)');
+    else if (existsSync(projectPath('go.mod')))     hints.push('Stack: Go (go.mod)');
+  } catch {}
 
   // Git branch
   try {
-    const branch = execSync('git branch --show-current', { cwd, encoding: 'utf8', stdio: ['pipe','pipe','pipe'] }).trim();
+    const branch = execFileSync('git', ['-c', 'core.fsmonitor=false', 'branch', '--show-current'], {
+      cwd: safeCwd, encoding: 'utf8', stdio: ['pipe', 'pipe', 'pipe'],
+    }).trim();
     if (branch) hints.push(`Git branch: ${branch}`);
   } catch {}
 
   // README (first 300 chars)
   try {
-    const readme = readFileSync(resolve(cwd, 'README.md'), 'utf8').trim().slice(0, 300);
+    const readme = readFileSync(projectPath('README.md'), 'utf8').trim().slice(0, 300);
     if (readme) hints.push(`README: ${readme.replace(/\n+/g, ' ')}`);
   } catch {}
 
-  return hints.length ? `\n\nProject context (${cwd}):\n${hints.map(h => `• ${h}`).join('\n')}` : '';
+  return hints.length ? `\n\nProject context (${safeCwd}):\n${hints.map(h => `• ${h}`).join('\n')}` : '';
 }
 
 // Project context depends on the agent's working directory (sub-agents and
 // trajectory generation can run elsewhere), so build it per-cwd, cached.
 const PROJECT_CONTEXT_CACHE = new Map();
-function getProjectContext(cwd) {
-  if (!PROJECT_CONTEXT_CACHE.has(cwd)) PROJECT_CONTEXT_CACHE.set(cwd, buildProjectContext(cwd));
-  return PROJECT_CONTEXT_CACHE.get(cwd);
+function getProjectContext(cwd, workspaceRoot) {
+  const key = `${workspaceRoot}\0${cwd}`;
+  if (!PROJECT_CONTEXT_CACHE.has(key)) PROJECT_CONTEXT_CACHE.set(key, buildProjectContext(cwd, workspaceRoot));
+  return PROJECT_CONTEXT_CACHE.get(key);
 }
 
 // ── Vision — parse image paths from user messages ─────────────────────────────
@@ -110,13 +128,15 @@ function getProjectContext(cwd) {
 const IMAGE_EXTS = new Set(['.png', '.jpg', '.jpeg', '.gif', '.webp']);
 const MEDIA_TYPES = { '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png', '.gif': 'image/gif', '.webp': 'image/webp' };
 
-function extractImages(text) {
+function extractImages(text, cwd, workspaceRoot) {
   // Find any word that looks like an image path and exists on disk
   const images = [];
   const re = /\S+\.(?:png|jpg|jpeg|gif|webp)/gi;
   let m;
   while ((m = re.exec(text)) !== null) {
-    const abs = resolve(process.cwd(), m[0]);
+    let abs;
+    try { abs = resolveContained(workspaceRoot, resolve(cwd, m[0])); }
+    catch { continue; }
     if (existsSync(abs)) {
       const ext = extname(m[0]).toLowerCase();
       images.push({ path: m[0], abs, mediaType: MEDIA_TYPES[ext] || 'image/png' });
@@ -125,8 +145,8 @@ function extractImages(text) {
   return images;
 }
 
-function buildUserContent(text) {
-  const images = extractImages(text);
+function buildUserContent(text, cwd, workspaceRoot) {
+  const images = extractImages(text, cwd, workspaceRoot);
   if (!images.length) return text;
   // Anthropic content block format (converted for OpenAI in _historyToOpenAI)
   return [
@@ -283,13 +303,58 @@ class ThinkStreamFilter {
 
 // ─────────────────────────────────────────────────────────────────────────────
 
-export { ThinkStreamFilter };
+// Axion-hosted models (lumen/veil) run on a shared RunPod/vLLM instance whose
+// guided-decoding tool-schema compiler breaks down — an HTTP 200 with a
+// completely empty streamed body, no error at all — once the combined
+// request (system prompt + tool schemas) crosses some complexity ceiling.
+//
+// IMPORTANT: this is NOT purely a tool-count limit. An earlier version of
+// this cap was calibrated with a trivial stub system prompt ("You are
+// Axion.") and measured a 52-tool edge — but with the CLI's *real* system
+// prompt (~2.6KB of agent instructions) in the request, the actual edge
+// was between 26 (safe) and 27 (broken), confirmed deterministic 3/3 on
+// each side. That boundary is almost certainly specific to this exact
+// system prompt + tool combination and could shift with either, so the
+// list below (17 tools) was chosen with real margin below the measured
+// edge, verified live 3/3, rather than riding the boundary. If this repo's
+// system prompt or tool schemas change meaningfully, re-verify against the
+// live endpoint rather than trusting this count to still hold.
+//
+// Until the RunPod/vLLM backend itself is fixed, hosted models get this
+// curated core subset instead of the full CLI arsenal.
+const HOSTED_SMALL_MODEL_TOOL_NAMES = new Set([
+  'read_file', 'write_file', 'patch_file', 'delete_file',
+  'list_directory', 'create_directory', 'tree',
+  'glob', 'grep',
+  'run_command',
+  'git_status', 'git_diff',
+  'ask_question', 'ask_confirm',
+  'todo_add', 'todo_list',
+  'create_cloud_artifact', 'update_cloud_artifact', 'delete_cloud_artifact',
+]);
+
+// lumen/veil authenticate with the account's own Axion sign-in (a session
+// token or axion-sk- key resolved via resolveAxionAuth in models.js), never
+// a third-party "API key" in the way every other provider means that term —
+// error messages that tell the user to check an "API key" are simply wrong
+// for these two and need their own wording wherever provider errors surface.
+function isAxionHostedProvider(provider) {
+  return provider === 'lumen' || provider === 'veil';
+}
+
+function restrictToolsForHostedModel(tools, modelAlias) {
+  if (!isAxionHostedProvider(resolveProvider(modelAlias))) return tools;
+  return tools.filter((t) => HOSTED_SMALL_MODEL_TOOL_NAMES.has(t.function?.name));
+}
+
+export { ThinkStreamFilter, restrictToolsForHostedModel, HOSTED_SMALL_MODEL_TOOL_NAMES, isAxionHostedProvider };
 
 export class Agent {
   constructor({ modelAlias, mode, label = 'main', todoScope = 'global', onToolCall, onToolResult, onMessage, onTokens, onStreamChunk, onStreamEnd, onNotify, agentId, workspaceId }) {
     this.modelAlias   = modelAlias;
     this.mode         = mode;
     this.label        = label;
+    ensureWorkspaceGrant(this.label, getWorkspaceRoot(this.label));
     // Multi-Agent System: resolve a named agent (role, permissions, model
     // override). Falls back to the default ("build") agent when unset.
     this.agentId      = agentId || AgentRegistry.default().id;
@@ -317,6 +382,10 @@ export class Agent {
     this.goal = null;
     // Computer use — adds screen interaction tools when on
     this.computerUse  = false;
+    // One-time notice guard: computer-use tools are stripped from hosted
+    // models (see restrictToolsForHostedModel) — warn once per session
+    // rather than on every message.
+    this._warnedHostedComputerUse = false;
     // Adviser model — null means auto-pick
     this.adviserModel = null;
     // Messages typed while busy — injected at the next tool result
@@ -373,7 +442,7 @@ export class Agent {
     // File watcher — started lazily on first prompt when enabled via AXION_FILE_WATCHER=1
     this._watcherHandle = null;
     this._ensureWatcher = () => {
-      if (this._watcherHandle || !FILE_WATCHER.enabled) return;
+      if (this._watcherHandle || !FILE_WATCHER.enabled || !getWorkspaceGrant(this.label)) return;
       const cwd = getCwd(this.label);
       if (!cwd) return;
       this._watcherHandle = startWatching(cwd, {
@@ -411,13 +480,31 @@ export class Agent {
       try { ws = activeWorkspace(); } catch {}
     }
     this.workspaceInfo = ws || null;
-    if (this.workspaceId && ws?.path) setCwd(this.label, ws.path);
+    if (this.workspaceId && ws?.path) setWorkspaceRoot(this.label, ws.path);
   }
   setChatMode(enabled)     { this.chatMode = !!enabled; }
   setThinking(enabled, budget = 10000) { this.thinking = { enabled, budget }; }
   setGoal(description)     { this.goal = description || null; }
   setComputerUse(enabled)  { this.computerUse = !!enabled; }
+
+  // this.computerUse alone isn't enough to gate anything computer-use
+  // related — hosted models (lumen/veil) never get the actual tools (see
+  // restrictToolsForHostedModel), so telling them the tools exist anyway
+  // (system prompt, tool-fallback prompt) would have them hallucinate calls
+  // to tools that were never sent. Every computer-use-conditional spot
+  // should check this, not the raw flag, so the prompt and the tool list
+  // never disagree about what's actually available.
+  _computerUseActive() {
+    return this.computerUse && !isAxionHostedProvider(resolveProvider(this.modelAlias));
+  }
   setAdviserModel(alias)   { this.adviserModel = alias || null; }
+
+  suspendWorkspaceAccess() {
+    try { this._watcherHandle?.stop?.(); } catch {}
+    this._watcherHandle = null;
+    try { closeLspManager(); } catch {}
+    this._lspInitialized = false;
+  }
 
   // Interrupt the current run: abort the in-flight API request and let the
   // agent loop wind down. History stays consistent — pending tool calls get
@@ -496,7 +583,8 @@ export class Agent {
       return prompt;
     }
 
-    let prompt = SYSTEM_PROMPT + getProjectContext(getCwd(this.label));
+    const grant = getWorkspaceGrant(this.label);
+    let prompt = SYSTEM_PROMPT + (grant ? getProjectContext(getCwd(this.label), grant.root) : '');
 
     if (this.agentInfo?.roleDefinition) {
       prompt += `\n\n## Agent role: ${this.agentInfo.name}${this.agentInfo.description ? ` — ${this.agentInfo.description}` : ''}\n${this.agentInfo.roleDefinition}`;
@@ -526,7 +614,7 @@ export class Agent {
     if (this.goal) {
       prompt += `\n\nCURRENT GOAL: ${this.goal}\nWork autonomously until this goal is fully achieved. When the goal is complete, include exactly "GOAL_COMPLETE" on its own line at the end of your response.`;
     }
-    if (this.computerUse) {
+    if (this._computerUseActive()) {
       prompt += `\n\nCOMPUTER USE ENABLED: You can control the user's screen using the screenshot, click_on, click_at, type_text, press_key, scroll, and screen_size tools.
 
 CRITICAL RULES — follow these exactly:
@@ -572,7 +660,6 @@ CRITICAL RULES — follow these exactly:
 
     // Team context — show available teams and members for multi-agent coordination
     try {
-      const { listTeams, readTeamFile } = require('../services/swarm/teamStore.js');
       const teams = listTeams();
       if (teams.length) {
         prompt += `\n\n## Available Teams\n`;
@@ -694,7 +781,11 @@ CRITICAL RULES — follow these exactly:
       this._budgetCompletion = null;
     }
 
-    this.history.push({ role: 'user', content: buildUserContent(userMessage) });
+    const grant = getWorkspaceGrant(this.label);
+    this.history.push({
+      role: 'user',
+      content: grant ? buildUserContent(userMessage, getCwd(this.label), grant.root) : userMessage,
+    });
 
     if (this.mode === 'plan') {
       const plan = await this.planStep(userMessage);
@@ -735,8 +826,7 @@ CRITICAL RULES — follow these exactly:
   // fetch_url is deliberately NOT here: it reaches the network with a
   // model-chosen URL, so decide mode must evaluate it like any other tool.
   static PARALLEL_SAFE = new Set([
-    'read_file', 'list_directory', 'git_status', 'git_diff',
-    'web_search', 'screenshot', 'screen_size',
+    'read_file', 'list_directory', 'git_status', 'git_diff', 'screen_size',
     'grep', 'grep_files', 'glob', 'find_files',
     'chrome_status', 'chrome_tabs', 'chrome_read_page', 'chrome_screenshot',
     'chrome_find', 'chrome_html', 'chrome_value',
@@ -748,6 +838,21 @@ CRITICAL RULES — follow these exactly:
   // would for these. (write/patch are undoable via backups; these aren't.)
   static DECIDE_ALWAYS_ASK = new Set([
     'run_command', 'delete_file', 'replace_in_files', 'git_push',
+  ]);
+
+  // Never confirmed, in any permission mode: these touch only the user's own
+  // Axion cloud account (artifacts scoped to the signed-in user, never the
+  // local filesystem or another user's data), and every mutation is
+  // trivially reversible from that same account — including via
+  // delete_cloud_artifact itself. Asking permission here is friction with
+  // no corresponding safety benefit, unlike run_command or file deletion,
+  // which touch the user's real machine.
+  static NEVER_ASK = new Set([
+    'create_cloud_artifact', 'update_cloud_artifact', 'delete_cloud_artifact',
+    // These tools *are* the user interaction. Confirming permission to ask a
+    // question creates a redundant question before the real question and can
+    // deadlock non-terminal clients that render only one prompt at a time.
+    'ask_question', 'ask_multiple_choice', 'ask_confirm', 'ask_questions',
   ]);
 
   async _agentLoop(askConfirm, askUser) {
@@ -867,7 +972,11 @@ CRITICAL RULES — follow these exactly:
 
       // Capture a snapshot before executing tools so the user can undo
       const projPath = getCwd(this.label);
-      if (projPath) captureSnapshot(projPath, `before tools: ${toolCalls.map(t => t.name).join(', ')}`);
+      const activeGrant = getWorkspaceGrant(this.label);
+      const hasFileMutation = toolCalls.some((tool) => requiredScopeForTool(tool.name) === 'read-write');
+      if (projPath && activeGrant && hasFileMutation) {
+        captureSnapshot(projPath, `before tools: ${toolCalls.map(t => t.name).join(', ')}`);
+      }
 
       // ── Concurrent Tool Execution Engine ──────────────────────────────────
       // Tools are partitioned into batches: consecutive read-only tools run in
@@ -883,8 +992,34 @@ CRITICAL RULES — follow these exactly:
         executeFn: async (name, input, { signal } = {}) => {
           const tc = { name, input };
 
+          // The execution-layer scope check is independent of model-visible
+          // definitions, so a hallucinated, plugin-injected, or indirect call
+          // cannot invoke a tool hidden by the active workspace grant.
+          try {
+            authorizeWorkspaceTool(this.label, name);
+          } catch (error) {
+            return { output: error.message, success: false };
+          }
+
           // ── Permission checks (decide / ask mode) ──────────────────────
-          if (this.mode === 'decide' && !Agent.PARALLEL_SAFE.has(name)) {
+          let floorApproved = false;
+          let userApproved = false;
+          if (requiresPermanentApproval(name)) {
+            if (!askConfirm) {
+              return { output: `${name} requires explicit user approval.`, success: false };
+            }
+            floorApproved = await askConfirm(tc);
+            if (!floorApproved) return { output: 'User declined.', success: false };
+            userApproved = true;
+          }
+
+          if (Agent.NEVER_ASK.has(name)) {
+            // Skip both the decide-mode judge and the ask-mode confirm —
+            // neither one adds safety here (see NEVER_ASK's own comment).
+          } else if (floorApproved) {
+            // The permanent floor already collected approval; do not prompt a
+            // second time for the selected interaction mode.
+          } else if (this.mode === 'decide' && !Agent.PARALLEL_SAFE.has(name)) {
             let decision = await this._decideToolSafety(tc);
             const permCtx = await PLUGINS.dispatch('permission.ask', { tool: name, input, decision });
             if (permCtx.cancelled) return { output: 'Permission hook cancelled.', success: false };
@@ -894,11 +1029,15 @@ CRITICAL RULES — follow these exactly:
             if (decision === 'ask' && askConfirm) {
               const approved = await askConfirm(tc);
               if (!approved) return { output: 'User declined.', success: false };
+              userApproved = true;
             }
           } else if (this.mode === 'ask' && askConfirm) {
             const approved = await askConfirm(tc);
             if (!approved) return { output: 'User declined.', success: false };
+            userApproved = true;
           }
+
+          if (name === 'lsp') this._ensureLsp();
 
           // ── Validate required arguments ────────────────────────────────
           const def = TOOL_DEFINITIONS.find(t => t.name === name);
@@ -939,7 +1078,14 @@ CRITICAL RULES — follow these exactly:
             if (beforeCtx.cancelled) {
               result = { output: 'Tool cancelled by plugin hook.', success: false };
             } else {
-              result = await executeTool(name, beforeCtx.input, { agentLabel: this.label, onNotify: this.onNotify, askUser, todoScope: this.todoScope, signal });
+              result = await executeTool(name, beforeCtx.input, {
+                agentLabel: this.label,
+                onNotify: this.onNotify,
+                askUser,
+                todoScope: this.todoScope,
+                approvalGranted: userApproved,
+                signal,
+              });
               const afterCtx = await PLUGINS.dispatch('tool.execute.after', { tool: name, input: beforeCtx.input, result, agentLabel: this.label });
               result = afterCtx.result || result;
             }
@@ -1263,6 +1409,21 @@ One word only:`;
 
         BUS.register(agentLabel);
 
+        // Sub-agents inherit the exact repository authority boundary. Giving
+        // a new label an implicit Full grant would let spawn_agents bypass a
+        // narrower parent scope or its expiration.
+        const parentGrant = getWorkspaceGrant(this.label);
+        if (parentGrant) {
+          setWorkspaceRoot(agentLabel, parentGrant.root, { scope: parentGrant.scope });
+          grantWorkspace({
+            sessionId: agentLabel,
+            root: parentGrant.root,
+            scope: parentGrant.scope,
+            expiresAt: parentGrant.expiresAt,
+            repositoryId: parentGrant.repositoryId,
+          });
+        }
+
         // Full transcript of this sub-agent's run — streamed to the UI so it
         // can render a read-only chat view per agent.
         const transcript = [{ kind: 'task', text: task, role: role || null }];
@@ -1405,7 +1566,6 @@ One word only:`;
     // Context partitioning: when history is large, partition into priority zones
     // and drop background messages that exceed their token budget.
     if (messages.length > 12) {
-      const { partitionContext, getAllPartitionedMessages } = require('../agent/contextPartitioning.js');
       const ctxWindow = CONTEXT_WINDOWS[resolveModel(this.modelAlias)] || 128_000;
       const partitioned = partitionContext(messages, { contextWindow: ctxWindow, zones: CONTEXT_ZONES });
       if (!partitioned.canFitInWindow) {
@@ -1497,13 +1657,19 @@ One word only:`;
         }
         // No more fallbacks — show error
         this.onStreamEnd();
-        this.onMessage({ role: 'error', content: friendlyError(err, this.modelAlias) });
+        {
+          const { kind, message } = classifyProviderError(err, this.modelAlias);
+          this.onMessage({ role: 'error', content: message, errorKind: kind });
+        }
         return null;
       }
     }
     // Exhausted all fallback attempts
     this.onStreamEnd();
-    this.onMessage({ role: 'error', content: friendlyError(lastError, this.modelAlias) });
+    {
+      const { kind, message } = classifyProviderError(lastError, this.modelAlias);
+      this.onMessage({ role: 'error', content: message, errorKind: kind });
+    }
     return null;
   }
 
@@ -1512,17 +1678,21 @@ One word only:`;
       ? [...TOOL_DEFINITIONS, ...COMPUTER_TOOL_DEFINITIONS]
       : TOOL_DEFINITIONS;
     const google = getOAuthToken('google') ? GOOGLE_TOOL_DEFINITIONS : [];
-    this._ensureLsp();
     let tools = [...base, ...google, ...MCP.getAnthropicTools(), ...PLUGINS.getAnthropicTools()];
     // Plugin hook: tool.definition — let plugins modify tool list before LLM call
     tools = await PLUGINS.applyToolDefinitionHooks(tools);
     // Multi-Agent System: filter tools by the active agent's permission ruleset
     tools = AgentRegistry.filterTools(tools, this.agentInfo);
+    tools = filterToolsForWorkspaceScope(tools, this.label);
     return tools;
   }
 
   async _getToolListOpenAI() {
-    const base = this.computerUse
+    // _computerUseActive(), not the raw flag: hosted models never get
+    // computer-use tools (see restrictToolsForHostedModel below), so
+    // including them here — even to strip them straight back out — would
+    // desync from the system prompt, which uses the same check.
+    const base = this._computerUseActive()
       ? [...TOOL_DEFINITIONS_OPENAI, ...COMPUTER_TOOL_DEFINITIONS_OPENAI]
       : TOOL_DEFINITIONS_OPENAI;
     const google = getOAuthToken('google') ? GOOGLE_TOOL_DEFINITIONS_OPENAI : [];
@@ -1531,6 +1701,19 @@ One word only:`;
     tools = await PLUGINS.applyToolDefinitionHooks(tools);
     // Multi-Agent System: filter tools by the active agent's permission ruleset
     tools = AgentRegistry.filterTools(tools, this.agentInfo);
+    tools = restrictToolsForHostedModel(tools, this.modelAlias);
+    tools = filterToolsForWorkspaceScope(tools, this.label);
+    // this.computerUse (the raw, user-facing setting) is still true even
+    // though _computerUseActive() suppressed it above — tell the user why
+    // /computer isn't doing anything, once per session, rather than leaving
+    // it looking silently broken.
+    if (this.computerUse && !this._computerUseActive() && !this._warnedHostedComputerUse) {
+      this._warnedHostedComputerUse = true;
+      this.onNotify?.({
+        role: 'notify',
+        content: '[Computer-use tools are unavailable on this model — Axion-hosted models use a reduced tool set. Switch to a different model to use /computer.]',
+      });
+    }
     return tools;
   }
 
@@ -1687,7 +1870,7 @@ One word only:`;
     }
 
     // Non-streaming fallback for tool-call failures (some providers)
-    const fallbackMsgs = msgs.map((m, i) => i === 0 ? { ...m, content: m.content + getToolFallbackPrompt(this.computerUse) } : m);
+    const fallbackMsgs = msgs.map((m, i) => i === 0 ? { ...m, content: m.content + getToolFallbackPrompt(this._computerUseActive()) } : m);
     const fallbackBody = { model, messages: fallbackMsgs };
     fallbackBody[maxTokField] = maxTok;
     if (Object.keys(reasoningParams).length) Object.assign(fallbackBody, reasoningParams);
@@ -1841,23 +2024,49 @@ function formatResetTime(isoStr) {
   } catch { return 'soon'; }
 }
 
-function friendlyError(err, modelAlias) {
-  // Fast path: ProviderError carries structured data — use it directly
+// Maps a caught model-call error into one of the states a host application
+// (Desktop, specifically) can react to distinctly, alongside the existing
+// human-readable text — unchanged from before this was split out, so no
+// CLI-facing wording changes:
+//
+//   account      — invalid/expired/missing credentials, or a key restricted
+//                  to models it isn't scoped for
+//   quota        — included usage exhausted and no credits remain
+//   availability — the model/provider isn't reachable right now
+//   safety       — the account was suspended for a policy violation
+//   unknown      — anything else
+export function classifyProviderError(err, modelAlias) {
+  // Fast path: ProviderError carries structured data — use it directly.
+  // Every ProviderError thrown in this codebase today is a missing/unknown
+  // credential case with no status, which is why the status branches below
+  // are unreachable in practice — kept for any future throw site that does
+  // set one, with 'account' as the fallback since a credential problem is
+  // what every current throw site actually represents.
   if (NamedError.hasName(err, 'ProviderError')) {
     const { provider, message } = err.data;
     const providerLabel = provider || modelAlias;
-    // Still apply status-based classification if the error carried a status
     const status = err.data.status ?? err?.status ?? err?.response?.status;
     if (status === 401) {
-      if (modelAlias === 'other') return `Auth failed for custom endpoint. Use /endpoint <url> <model> <key> to set the API key.`;
-      if (modelAlias === 'lumen') return `Invalid or revoked Axion API key. Use /axion-key <your-key> to set it, or /axion-key remove to use the free tier.\n→ Get a key at axion.amplifiedsmp.org/keys`;
-      return `Invalid API key for "${modelAlias}". Use /api ${modelAlias} <your-key> to set it.`;
+      if (modelAlias === 'other') return { kind: 'account', message: `Auth failed for custom endpoint. Use /endpoint <url> <model> <key> to set the API key.` };
+      if (isAxionHostedProvider(resolveProvider(modelAlias))) return { kind: 'account', message: `Invalid or revoked Axion credentials. Use /login or /axion-key <your-key> to authenticate.\n→ Sign up or get a key at axion.amplifiedsmp.org/keys` };
+      return { kind: 'account', message: `Invalid API key for "${modelAlias}". Use /api ${modelAlias} <your-key> to set it.` };
     }
-    if (status === 429) return `Rate limited by "${providerLabel}". Wait a moment and try again.`;
-    if (status === 404) return `Model not found: "${modelAlias}". Try /model <name> to switch.`;
-    if (status === 403) return `Access denied for "${modelAlias}". Check that your API key has the right permissions.`;
-    if (status === 500 || status === 503) return `The "${providerLabel}" API returned a server error (${status}). Try again in a moment.`;
-    return message || `Provider error (${providerLabel})`;
+    if (status === 429) return { kind: 'quota', message: `Rate limited by "${providerLabel}". Wait a moment and try again.` };
+    if (status === 404) return { kind: 'availability', message: `Model not found: "${modelAlias}". Try /model <name> to switch.` };
+    if (status === 403) {
+      const kind = /suspend/i.test(message || '') ? 'safety' : 'account';
+      // For Axion-hosted models the 403 is opaque otherwise: the Worker
+      // relays whatever the upstream inference backend said verbatim, and
+      // that detail (e.g. a RunPod-side rejection unrelated to the user's
+      // own account) is the only lead toward the actual cause, so it's
+      // appended rather than discarded.
+      const text = isAxionHostedProvider(resolveProvider(modelAlias))
+        ? `Access denied for "${modelAlias}". Your Axion account may not have access to this model — try signing in again with /login, or contact support if this persists.${message ? `\n(${message})` : ''}`
+        : `Access denied for "${modelAlias}". Check that your API key has the right permissions.`;
+      return { kind, message: text };
+    }
+    if (status === 500 || status === 503) return { kind: 'availability', message: `The "${providerLabel}" API returned a server error (${status}). Try again in a moment.` };
+    return { kind: 'account', message: message || `Provider error (${providerLabel})` };
   }
 
   const status = err?.status ?? err?.response?.status;
@@ -1865,28 +2074,44 @@ function friendlyError(err, modelAlias) {
   const errObj = err?.error || {};
 
   if (status === 401 || /unauthorized|invalid.*key|api.?key/i.test(msg)) {
-    if (modelAlias === 'other') return `Auth failed for custom endpoint. Use /endpoint <url> <model> <key> to set the API key.`;
-    if (modelAlias === 'lumen') return `Invalid or revoked Axion API key. Use /axion-key <your-key> to set it, or /axion-key remove to use the free tier.\n→ Get a key at axion.amplifiedsmp.org/keys`;
-    return `Invalid API key for "${modelAlias}". Use /api ${modelAlias} <your-key> to set it.`;
+    if (modelAlias === 'other') return { kind: 'account', message: `Auth failed for custom endpoint. Use /endpoint <url> <model> <key> to set the API key.` };
+    if (isAxionHostedProvider(resolveProvider(modelAlias))) return { kind: 'account', message: `Invalid or revoked Axion credentials. Use /login or /axion-key <your-key> to authenticate.\n→ Sign up or get a key at axion.amplifiedsmp.org/keys` };
+    return { kind: 'account', message: `Invalid API key for "${modelAlias}". Use /api ${modelAlias} <your-key> to set it.` };
   }
   if (status === 429 || /rate.?limit|quota/i.test(msg)) {
     const resetStr = errObj.reset_at ? ` Resets ${formatResetTime(errObj.reset_at)}.` : '';
-    if (errObj.free_tier) return `Lumen free tier limit reached (50 req/day).${resetStr} Get a key at axion.amplifiedsmp.org/keys for 1,000/month.`;
-    if (errObj.window)    return `Lumen rate limit reached (40 req/2h).${resetStr}`;
-    if (/monthly/i.test(msg)) return `Lumen monthly limit reached (1,000/month).${resetStr}`;
-    return `Rate limited by "${modelAlias}".${resetStr || ' Wait a moment and try again.'}`;
+    const limitStr = Number.isFinite(Number(errObj.limit_usd)) ? ` ($${Number(errObj.limit_usd).toFixed(2)} included usage)` : '';
+    if (errObj.window)    return { kind: 'quota', message: `Lumen two-hour allowance reached${limitStr} and no API credits remain.${resetStr}` };
+    if (/weekly/i.test(msg)) return { kind: 'quota', message: `Lumen weekly allowance reached${limitStr} and no API credits remain.${resetStr}` };
+    return { kind: 'quota', message: `Rate limited by "${modelAlias}".${resetStr || ' Wait a moment and try again.'}` };
   }
   if (status === 404 || /model.*not.*found|no.*model/i.test(msg)) {
-    return `Model not found: "${modelAlias}". Try /model <name> to switch.`;
+    return { kind: 'availability', message: `Model not found: "${modelAlias}". Try /model <name> to switch.` };
   }
   if (status === 403 || /forbidden|permission/i.test(msg)) {
-    return `Access denied for "${modelAlias}". Check that your API key has the right permissions.`;
+    if (/suspend/i.test(msg)) return { kind: 'safety', message: msg };
+    if (isAxionHostedProvider(resolveProvider(modelAlias))) {
+      // errObj.message is the Worker's relayed upstream text (e.g. the
+      // inference backend's own rejection reason) — the only signal that
+      // distinguishes "your account lacks access" from "the backend itself
+      // is misconfigured/down", which otherwise looks identical from here.
+      const detail = errObj.message && errObj.message !== msg ? errObj.message : null;
+      return {
+        kind: 'account',
+        message: `Access denied for "${modelAlias}". Your Axion account may not have access to this model — try signing in again with /login, or contact support if this persists.${detail ? `\n(${detail})` : ''}`,
+      };
+    }
+    return { kind: 'account', message: `Access denied for "${modelAlias}". Check that your API key has the right permissions.` };
   }
   if (status === 500 || status === 503) {
     if (/gemini/i.test(modelAlias)) {
-      return `Gemini returned a server error. The model name "${modelAlias}" may be wrong or not yet available. Try "gemini-2.0-flash", "gemini-2.5-flash", or "gemini-1.5-pro".`;
+      return { kind: 'availability', message: `Gemini returned a server error. The model name "${modelAlias}" may be wrong or not yet available. Try "gemini-2.0-flash", "gemini-2.5-flash", or "gemini-1.5-pro".` };
     }
-    return `The "${modelAlias}" API returned a server error (${status}). Try again in a moment.`;
+    return { kind: 'availability', message: `The "${modelAlias}" API returned a server error (${status}). Try again in a moment.` };
   }
-  return `Model error (${modelAlias}): ${msg}`;
+  return { kind: 'unknown', message: `Model error (${modelAlias}): ${msg}` };
+}
+
+function friendlyError(err, modelAlias) {
+  return classifyProviderError(err, modelAlias).message;
 }

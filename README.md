@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="src/assets/logo.svg" width="96" height="96" alt="Axion logo">
+  <img src="assets/logo.svg" width="96" height="96" alt="Axion logo">
 </p>
 
 # Axion
@@ -7,6 +7,9 @@
 **Axion** is an open-source AI coding agent ecosystem built by Axion Labs. It includes a terminal CLI, a Chrome extension, a web UI, and an IDE integration — all sharing the same models, tools, and memory.
 
 > **v2.0** — the terminal UI is a modern, cell-rendered TUI (powered by [OpenTUI](https://github.com/sst/opentui)) with **tabs**, mouse support, inline diff review, `@file` mentions, terminal charts, and crash-safe session restore. It runs from source (no build step).
+
+The deployed public website is maintained separately in
+[Ravikxx/Axion-Website](https://github.com/Ravikxx/Axion-Website).
 
 ---
 
@@ -138,7 +141,7 @@ Or set them live inside the CLI:
 
 | Alias | Provider | Notes |
 |---|---|---|
-| `lumen` | Axion Labs | ⚠️ Temporarily suspended — safety retraining in progress. See [safety report](https://axionlabs.dev/lumen-suspension). |
+| `lumen` | Axion Labs | Lumen 1.2.5 — live. Safety-retrained 1.3 in progress; see [safety report](https://axionlabs.dev/lumen-suspension). |
 | `veil` | Axion Labs | No key required — free but slow (up to 100s) |
 | `openrouter` / `or` | OpenRouter | 200+ models via one key |
 | `fable` | Anthropic | claude-fable-5 |
@@ -440,18 +443,21 @@ axion-discord --model claude
 
 ## Chrome Extension
 
-The extension now lives in its own repository:
-[Ravikxx/Axion-Chrome-Extension](https://github.com/Ravikxx/Axion-Chrome-Extension).
+The Chrome extension is maintained in its own repository: [Ravikxx/Axion-Chrome-Extension](https://github.com/Ravikxx/Axion-Chrome-Extension).
 
-1. Clone or download the extension repository
-2. Open `chrome://extensions`
-3. Enable **Developer mode**
-4. Click **Load unpacked** and select the extension repository's root folder
+1. Open `chrome://extensions`
+2. Enable **Developer mode**
+3. Click **Load unpacked**
+4. Clone or download the extension repository and select its root folder
 5. Click the Axion icon or press `Alt+Shift+A`
 
-The extension sidebar lets you ask about the current page, run browser automation, take screenshots, and chat using any supported model — no API key required if using Veil. Links in AI responses are clickable and open in a new tab. Axion asks for one-time approval before clicking, typing, selecting options, navigating, or sending a screenshot to a model.
+The extension sidebar lets you ask about the current page, run browser automation, take screenshots, and chat using any supported model. To import the CLI's saved provider configuration into the extension, start the local web surface and paste its short-lived import URL and token into the extension settings:
 
-To import API keys and custom endpoints from the CLI, run `/web`, copy the short-lived **extension import token** printed in the terminal, then paste it into the extension's Settings panel. The import endpoint accepts only the exact session token, disables caching, and the extension refuses to send that token anywhere except a loopback address.
+```text
+/web
+```
+
+Axion Desktop can also pair with the extension for browser tools through the authenticated loopback connection shown in Desktop settings.
 
 ---
 
@@ -512,7 +518,6 @@ The CLI runs from source (no build step) — just relink:
 
 ```bash
 npm link            # (or: npm install -g .) — update the global `axion`
-node build-web.js   # rebuild the web UI only if you changed it
 ```
 
 ---
@@ -537,7 +542,7 @@ axion/
 │   └── collect-daemon.js  # axion-collect local dataset daemon
 ├── collect-worker/     # Cloudflare Worker for remote session collection
 ├── mcp-servers/        # Bundled MCP servers (Blender)
-└── build-web.js        # Web UI bundler (the CLI itself needs no build)
+└── assets/             # Repository documentation assets
 ```
 
 ---

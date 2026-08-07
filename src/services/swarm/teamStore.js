@@ -1,7 +1,7 @@
 // Team membership management with durable team files.
 // Team config stored at ~/.axion/teams/{team-name}/config.json
 
-import { readFileSync, writeFileSync, mkdirSync, existsSync, rmSync } from 'fs';
+import { readFileSync, writeFileSync, mkdirSync, existsSync, rmSync, readdirSync } from 'fs';
 import { join } from 'path';
 import { homedir } from 'os';
 import { writeJsonAtomic } from '../../tui/persistence.js';
@@ -166,7 +166,6 @@ export function updateMember(teamName, agentName, updates) {
 export function listTeams() {
   try {
     if (!existsSync(TEAMS_DIR)) return [];
-    const { readdirSync } = require('fs');
     return readdirSync(TEAMS_DIR).filter(d => {
       try {
         return existsSync(join(TEAMS_DIR, d, 'config.json'));

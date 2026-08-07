@@ -40,7 +40,7 @@ db.exec(`
 `);
 
 // ---------- Helpers ----------
-const HF_URL = 'https://axionlabsai-lumen.hf.space/v1/chat/completions';
+const HF_URL = 'https://axionlabsai-lumen.hf.space/gradio_api/v1/chat/completions';
 
 function genId() { return crypto.randomUUID(); }
 function genKey() {

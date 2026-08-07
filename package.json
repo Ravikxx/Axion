@@ -48,6 +48,7 @@
   },
   "files": [
     "src/",
+    "assets/",
     "vendor/",
     "mcp-servers/"
   ]

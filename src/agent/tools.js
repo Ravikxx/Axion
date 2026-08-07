@@ -2,13 +2,19 @@ import { readFileSync, writeFileSync, readdirSync, statSync, existsSync, unlinkS
 import { execSync, execFileSync, spawn } from 'child_process';
 import { relative, resolve, dirname, basename, extname } from 'path';
 import { diffLines } from '../utils/diff.js';
-import { backupFile, recordFileChange, listSnapshots, snapshotChanges, snapshotDiff, previewRestore, restoreSnapshot, currentSnapshotId } from '../persist.js';
+import {
+  backupFile, recordFileChange, listSnapshots, snapshotChanges, snapshotDiff, previewRestore, restoreSnapshot,
+  currentSnapshotId, getCurrentWorkspaceId,
+} from '../persist.js';
+import { AgentRegistry } from './agentRegistry.js';
+import { listWorkspaces, switchWorkspace, createWorkspace } from '../services/workspaces/workspaceService.js';
 import { API_KEYS } from '../config.js';
 import { BUS } from './bus.js';
 import { captureScreen, captureScreenAnnotated, uiaClickElement, mouseClick, typeText, pressKey, scrollAt, getScreenSize, ocrFindText, cropScreenRegion, MACRO_STATE } from './computer.js';
 import { analyzeScreen, parseCoordinates } from './vision.js';
 import { executeGoogleTool, GOOGLE_TOOL_DEFINITIONS, GOOGLE_TOOL_DEFINITIONS_OPENAI } from './google.js';
 import { getOAuthToken } from '../oauth/oauth.js';
+import { resolveAxionAuth } from './models.js';
 import {
   goToDefinition, findReferences, hover, documentSymbol, workspaceSymbol, callHierarchy,
 } from '../services/lsp/manager.js';
@@ -20,8 +26,19 @@ import { createFile, writeIfUnchanged, readFileWithMeta, fingerprintFile } from 
 import { detect as detectShell, buildShellArgs } from '../services/shell/detector.js';
 import { searchGlob, searchGrep, searchBackendInfo } from '../services/search/searchEngine.js';
 import { SHELL_CONFIG } from '../config.js';
-import { runManagedProcess, terminateProcessTree } from '../services/process/managedProcess.js';
+import { runManagedProcess } from '../services/process/managedProcess.js';
 import { BROWSER_EXTENSION } from './browserExtension.js';
+import { resolveContained, PathEscapeError } from './pathContainment.js';
+import {
+  authorizeWorkspaceTool,
+  ensureWorkspaceGrant,
+  getWorkspaceGrant,
+  getWorkspaceRoot as authorityWorkspaceRoot,
+  grantWorkspace,
+  requiresPermanentApproval,
+  setWorkspaceRoot as authoritySetWorkspaceRoot,
+  WorkspacePermissionError,
+} from './workspaceAuthority.js';
 
 const CHROME_TOOL_DEFINITIONS = [
   {
@@ -160,9 +177,32 @@ function _requireRead(absPath) {
 // Background tasks started via run_command background=true
 const BG_TASKS = new Map();
 let _bgCounter = 0;
+function terminateProcessTree(proc) {
+  if (!proc?.pid) return;
+  if (process.platform === 'win32') {
+    try {
+      execFileSync('taskkill', ['/pid', String(proc.pid), '/T', '/F'], { stdio: 'ignore', timeout: 5000 });
+      try { proc.stdin?.destroy(); proc.stdout?.destroy(); proc.stderr?.destroy(); proc.unref?.(); } catch {}
+      return;
+    } catch {}
+  }
+  try { proc.kill('SIGTERM'); } catch {}
+  try { proc.stdin?.destroy(); proc.stdout?.destroy(); proc.stderr?.destroy(); proc.unref?.(); } catch {}
+}
+export function cancelWorkspaceTasks(agentLabel = 'main') {
+  let cancelled = 0;
+  for (const [id, task] of BG_TASKS) {
+    if (task.agentLabel !== agentLabel || task.exitCode !== null) continue;
+    terminateProcessTree(task.proc);
+    if (task.expiryTimer) clearTimeout(task.expiryTimer);
+    BG_TASKS.delete(id);
+    cancelled++;
+  }
+  return cancelled;
+}
 process.on('exit', () => {
   for (const t of BG_TASKS.values()) {
-    if (t.exitCode === null) { try { t.proc.kill('SIGTERM'); } catch {} }
+    if (t.exitCode === null) terminateProcessTree(t.proc);
   }
 });
 
@@ -175,7 +215,23 @@ import { join } from 'path';
 // (Welcome banner, sidebar) had no way to read it since it lived only here.
 const CWD_BY_LABEL = new Map();
 export function getCwd(agentLabel = 'main') { return CWD_BY_LABEL.get(agentLabel) || process.cwd(); }
-export function setCwd(agentLabel, dir) { if (agentLabel) CWD_BY_LABEL.set(agentLabel, dir); }
+export function getWorkspaceRoot(agentLabel = 'main') { return authorityWorkspaceRoot(agentLabel); }
+export function setWorkspaceRoot(agentLabel = 'main', dir, { scope } = {}) {
+  const previous = getWorkspaceGrant(agentLabel);
+  const previousRoot = previous?.root || authorityWorkspaceRoot(agentLabel);
+  const root = authoritySetWorkspaceRoot(agentLabel, dir);
+  if (previousRoot !== root) cancelWorkspaceTasks(agentLabel);
+  CWD_BY_LABEL.set(agentLabel, root);
+  if (scope) grantWorkspace({ sessionId: agentLabel, root, scope });
+  else if (previous) grantWorkspace({ sessionId: agentLabel, root, scope: previous.scope, expiresAt: previous.expiresAt });
+  else ensureWorkspaceGrant(agentLabel, root);
+  return root;
+}
+export function setCwd(agentLabel, dir) {
+  if (!agentLabel) return;
+  const root = authorityWorkspaceRoot(agentLabel);
+  CWD_BY_LABEL.set(agentLabel, resolveContained(root, dir));
+}
 
 // ── Tool definitions ──────────────────────────────────────────────────────────
 
@@ -934,6 +990,44 @@ export const TOOL_DEFINITIONS = [
       required: ['path'],
     },
   },
+  {
+    name: 'create_cloud_artifact',
+    description: 'Create a new artifact in the user\'s Axion cloud account (the same artifacts shown in the Axion Desktop/website Artifacts panel). Use this when the user asks you to save, create, or make an artifact — not for writing local project files, which is what write_file is for. Artifact content is always stored as text, but any file type can still be represented: set kind to "code" and language to the file\'s extension or name (e.g. "yaml", "dockerfile", "sh", "toml") — the Desktop/website download button uses that language value as the saved file\'s extension, so it is not limited to a fixed list of languages. Requires the user to be signed in to Axion; if they are not, this fails with a clear message telling them to sign in.',
+    input_schema: {
+      type: 'object',
+      properties: {
+        title:   { type: 'string', description: 'Artifact title (default: "Untitled")' },
+        kind:    { type: 'string', description: 'One of "text", "markdown", or "code" (default: "text"). Use "code" for any non-prose file type, pairing it with language.' },
+        language: { type: 'string', description: 'Free-text language or file extension, only stored when kind is "code" (e.g. "python", "yaml", "dockerfile", "sh") — not restricted to a fixed list.' },
+        content: { type: 'string', description: 'The artifact\'s full content' },
+      },
+      required: ['content'],
+    },
+  },
+  {
+    name: 'update_cloud_artifact',
+    description: 'Update an existing artifact in the user\'s Axion cloud account — change its title, its content, or both. Updating content creates a new revision; the artifact\'s revision history is preserved. Use this instead of create_cloud_artifact when revising something already saved, so the user gets one evolving artifact rather than duplicates.',
+    input_schema: {
+      type: 'object',
+      properties: {
+        id:      { type: 'string', description: 'The artifact\'s id, from create_cloud_artifact\'s output or from the user' },
+        title:   { type: 'string', description: 'New title (omit to leave unchanged)' },
+        content: { type: 'string', description: 'New full content, replacing the previous revision (omit to leave unchanged)' },
+      },
+      required: ['id'],
+    },
+  },
+  {
+    name: 'delete_cloud_artifact',
+    description: 'Permanently delete an artifact from the user\'s Axion cloud account, including all of its revision history. Only use this when the user explicitly asks to delete a specific artifact — this cannot be undone.',
+    input_schema: {
+      type: 'object',
+      properties: {
+        id: { type: 'string', description: 'The artifact\'s id' },
+      },
+      required: ['id'],
+    },
+  },
 ];
 
 export const TOOL_DEFINITIONS_OPENAI = TOOL_DEFINITIONS.map((t) => ({
@@ -1045,19 +1139,34 @@ export const COMPUTER_TOOL_DEFINITIONS_OPENAI = COMPUTER_TOOL_DEFINITIONS.map((t
 
 const MACRO_RECORDABLE = new Set(['click_on', 'click_at', 'type_text', 'press_key', 'scroll', 'find_text']);
 
-export async function executeTool(name, input, { agentLabel = 'main', onNotify = () => {}, askUser = null, todoScope = 'global', signal = null } = {}) {
+export async function executeTool(name, input, {
+  agentLabel = 'main', onNotify = () => {}, askUser = null,
+  todoScope = 'global', approvalGranted = false, signal = null,
+} = {}) {
   // Log to active macro recording before executing
   if (MACRO_STATE.recording && MACRO_RECORDABLE.has(name)) {
     MACRO_STATE.steps.push({ name, input: { ...input } });
   }
 
   let cwd = getCwd(agentLabel);
-  const relPath = (p) => relative(cwd, resolve(cwd, p)) || '.';
+  const workspaceRoot = authorityWorkspaceRoot(agentLabel);
+  const containedPath = (p) => resolveContained(workspaceRoot, resolve(cwd, p));
+  const relPath = (p) => relative(cwd, containedPath(p)) || '.';
 
-  // Silently run formatter after a file write using config-driven formatter engine.
-  const tryAutoFormat = (absPath) => runFormatter(absPath, cwd);
+  let activeGrant = null;
+  // A formatter is a configured shell command. It may run only after an
+  // explicit approval and only at Full scope; otherwise a write tool could
+  // indirectly bypass both the command floor and a Read-write grant.
+  const tryAutoFormat = (absPath) => (
+    approvalGranted && activeGrant?.scope === 'full' ? runFormatter(absPath, cwd) : ''
+  );
 
   try {
+    ensureWorkspaceGrant(agentLabel, workspaceRoot);
+    activeGrant = authorizeWorkspaceTool(agentLabel, name);
+    if (requiresPermanentApproval(name) && !approvalGranted) {
+      throw new WorkspacePermissionError(`${name} requires explicit user approval.`, { tool: name });
+    }
     switch (name) {
 
       case 'chrome_status': {
@@ -1113,14 +1222,14 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
       }
 
       case 'read_file': {
-        const absPath = resolve(cwd, input.path);
+        const absPath = containedPath(input.path);
         const content = readFileSync(absPath, 'utf8');
         _trackRead(absPath);
         return { success: true, output: content };
       }
 
       case 'write_file': {
-        const absPath = resolve(cwd, input.path);
+        const absPath = containedPath(input.path);
         const existed = existsSync(absPath);
         if (existed) {
           const err = _requireRead(absPath);
@@ -1141,7 +1250,7 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
       }
 
       case 'patch_file': {
-        const absPath = resolve(cwd, input.path);
+        const absPath = containedPath(input.path);
         {
           const err = _requireRead(absPath);
           if (err) return err;
@@ -1200,7 +1309,7 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
       }
 
       case 'delete_file': {
-        const absPath = resolve(cwd, input.path);
+        const absPath = containedPath(input.path);
         if (!existsSync(absPath)) return { success: false, output: `File not found: ${relPath(input.path)}` };
         {
           const err = _requireRead(absPath);
@@ -1215,8 +1324,8 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
       }
 
       case 'move_file': {
-        const src = resolve(cwd, input.from);
-        const dst = resolve(cwd, input.to);
+        const src = containedPath(input.from);
+        const dst = containedPath(input.to);
         if (!existsSync(src)) return { success: false, output: `Source not found: ${relPath(input.from)}` };
         const destDir = dirname(dst);
         if (!existsSync(destDir)) mkdirSync(destDir, { recursive: true });
@@ -1235,7 +1344,7 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
         const parts = [];
         for (const p of paths) {
           try {
-            const absPath = resolve(cwd, p);
+            const absPath = containedPath(p);
             const content = readFileSync(absPath, 'utf8');
             _trackRead(absPath);
             parts.push(`── ${relPath(p)} ──\n${content}`);
@@ -1255,7 +1364,7 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
         const failed = [];
         let totalHits = 0;
         for (const rel of matches) {
-          const absPath = resolve(cwd, rel);
+          const absPath = containedPath(rel);
           let content;
           try { content = readFileSync(absPath, 'utf8'); } catch { continue; }
           const count = content.split(input.find).length - 1;
@@ -1280,7 +1389,7 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
       }
 
       case 'tree': {
-        const root = input.path ? resolve(cwd, input.path) : cwd;
+        const root = input.path ? containedPath(input.path) : containedPath('.');
         if (!existsSync(root)) return { success: false, output: `Not found: ${relPath(input.path || '.')}` };
         const maxDepth = input.depth != null ? Math.max(1, Math.floor(input.depth)) : 3;
         const out = [];
@@ -1296,7 +1405,14 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
             const last = i === entries.length - 1;
             out.push(`${prefix}${last ? '└─ ' : '├─ '}${e.name}${e.isDirectory() ? '/' : ''}`);
             count++;
-            if (e.isDirectory()) walk(resolve(dir, e.name), prefix + (last ? '   ' : '│  '), depth + 1);
+            if (e.isDirectory()) {
+              try {
+                const child = containedPath(relative(cwd, resolve(dir, e.name)));
+                walk(child, prefix + (last ? '   ' : '│  '), depth + 1);
+              } catch (error) {
+                if (!(error instanceof PathEscapeError)) throw error;
+              }
+            }
           });
         };
         out.push(`${relPath(input.path || '.')}/`);
@@ -1306,14 +1422,14 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
       }
 
       case 'create_directory': {
-        const absPath = resolve(cwd, input.path);
+        const absPath = containedPath(input.path);
         mkdirSync(absPath, { recursive: true });
         return { success: true, output: `Created ${relPath(input.path)}` };
       }
 
       case 'copy_file': {
-        const src = resolve(cwd, input.from);
-        const dst = resolve(cwd, input.to);
+        const src = containedPath(input.from);
+        const dst = containedPath(input.to);
         if (!existsSync(src)) return { success: false, output: `Source not found: ${relPath(input.from)}` };
         const destDir = dirname(dst);
         if (!existsSync(destDir)) mkdirSync(destDir, { recursive: true });
@@ -1322,7 +1438,7 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
       }
 
       case 'append_file': {
-        const absPath = resolve(cwd, input.path);
+        const absPath = containedPath(input.path);
         const existed = existsSync(absPath);
         if (existed) {
           const err = _requireRead(absPath);
@@ -1339,7 +1455,7 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
       }
 
       case 'file_info': {
-        const absPath = resolve(cwd, input.path);
+        const absPath = containedPath(input.path);
         if (!existsSync(absPath)) return { success: false, output: `Not found: ${relPath(input.path)}` };
         const st = statSync(absPath);
         const lines = [
@@ -1355,7 +1471,7 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
       }
 
       case 'read_file_lines': {
-        const absPath = resolve(cwd, input.path);
+        const absPath = containedPath(input.path);
         if (!existsSync(absPath)) return { success: false, output: `Not found: ${relPath(input.path)}` };
         const all = readFileSync(absPath, 'utf8').split('\n');
         _trackRead(absPath);
@@ -1403,22 +1519,22 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
           let result;
           switch (op) {
             case 'goToDefinition':
-              result = await goToDefinition(input.filePath, input.line, input.col);
+              result = await goToDefinition(containedPath(input.filePath), input.line, input.col);
               break;
             case 'findReferences':
-              result = await findReferences(input.filePath, input.line, input.col);
+              result = await findReferences(containedPath(input.filePath), input.line, input.col);
               break;
             case 'hover':
-              result = await hover(input.filePath, input.line, input.col);
+              result = await hover(containedPath(input.filePath), input.line, input.col);
               break;
             case 'documentSymbol':
-              result = await documentSymbol(input.filePath);
+              result = await documentSymbol(containedPath(input.filePath));
               break;
             case 'workspaceSymbol':
               result = await workspaceSymbol(input.query);
               break;
             case 'callHierarchy':
-              result = await callHierarchy(input.filePath, input.line, input.col);
+              result = await callHierarchy(containedPath(input.filePath), input.line, input.col);
               break;
             default:
               return { success: false, output: `Unknown LSP operation: ${op}. Supported: goToDefinition, findReferences, hover, documentSymbol, workspaceSymbol, callHierarchy.` };
@@ -1430,7 +1546,6 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
       }
 
       case 'agent_list': {
-        const { AgentRegistry } = require('./agentRegistry.js');
         const agents = AgentRegistry.list();
         if (!agents.length) return { success: true, output: 'No agents configured.' };
         const lines = agents.map(a => `• ${a.id} — ${a.name}${a.description ? ` — ${a.description}` : ''} (mode: ${a.mode})`);
@@ -1438,7 +1553,6 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
       }
 
       case 'agent_select': {
-        const { AgentRegistry } = require('./agentRegistry.js');
         const info = AgentRegistry.resolve(input.agent_id);
         if (!info || info.id !== input.agent_id) {
           return { success: false, output: `Unknown agent: ${input.agent_id}. Use agent_list to see available agents.` };
@@ -1447,8 +1561,6 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
       }
 
       case 'workspace_list': {
-        const { listWorkspaces } = require('../services/workspaces/workspaceService.js');
-        const { getCurrentWorkspaceId } = require('../persist.js');
         const wss = listWorkspaces();
         if (!wss.length) return { success: true, output: 'No workspaces configured. Use workspace_create or the /workspace command.' };
         const active = getCurrentWorkspaceId();
@@ -1457,10 +1569,9 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
       }
 
       case 'workspace_select': {
-        const { switchWorkspace } = require('../services/workspaces/workspaceService.js');
         try {
           const ws = switchWorkspace(input.workspace_id);
-          setCwd(agentLabel, ws.path);
+          setWorkspaceRoot(agentLabel, ws.path);
           return { success: true, output: `Switched to workspace "${ws.id}" — ${ws.name} (${ws.path}). Working directory updated.` };
         } catch (e) {
           return { success: false, output: e.message };
@@ -1468,15 +1579,104 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
       }
 
       case 'workspace_create': {
-        const { createWorkspace, activateForPath } = require('../services/workspaces/workspaceService.js');
-        const { resolve: pathResolve } = require('path');
-        const abs = pathResolve(cwd, input.path);
+        const abs = containedPath(input.path);
         try {
           const ws = createWorkspace({ name: input.name, path: abs });
           return { success: true, output: `Created workspace "${ws.id}" — ${ws.name} (${ws.path}). Use workspace_select to switch to it.` };
         } catch (e) {
           return { success: false, output: e.message };
         }
+      }
+
+      case 'create_cloud_artifact': {
+        const token = resolveAxionAuth();
+        if (!token) {
+          return { success: false, output: 'Not signed in to Axion — ask the user to sign in first, then try again.' };
+        }
+        const kind = ['text', 'code', 'markdown'].includes(input.kind) ? input.kind : 'text';
+        const body = {
+          title: (input.title || 'Untitled').toString().slice(0, 200),
+          kind,
+          content: typeof input.content === 'string' ? input.content : '',
+        };
+        if (kind === 'code' && input.language) body.language = String(input.language).slice(0, 50);
+
+        let response;
+        try {
+          response = await fetch('https://api.amplifiedsmp.org/artifacts', {
+            method: 'POST',
+            headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+            body: JSON.stringify(body),
+          });
+        } catch (e) {
+          return { success: false, output: `Could not reach Axion: ${e.message}` };
+        }
+
+        if (!response.ok) {
+          const errBody = await response.json().catch(() => ({}));
+          return {
+            success: false,
+            output: `Could not create the artifact (HTTP ${response.status}): ${errBody.error || 'unknown error'}`,
+          };
+        }
+        const data = await response.json().catch(() => null);
+        if (!data?.id) return { success: false, output: 'Could not parse the response from Axion.' };
+        return { success: true, output: `Created artifact "${data.title}" (id ${data.id}) in the user's Axion cloud account.` };
+      }
+
+      case 'update_cloud_artifact': {
+        const token = resolveAxionAuth();
+        if (!token) {
+          return { success: false, output: 'Not signed in to Axion — ask the user to sign in first, then try again.' };
+        }
+        const body = {};
+        if (typeof input.title === 'string') body.title = input.title.slice(0, 200);
+        if (typeof input.content === 'string') body.content = input.content;
+        if (!('title' in body) && !('content' in body)) {
+          return { success: false, output: 'Nothing to update — pass a new title, new content, or both.' };
+        }
+
+        let response;
+        try {
+          response = await fetch(`https://api.amplifiedsmp.org/artifacts/${encodeURIComponent(input.id)}`, {
+            method: 'PUT',
+            headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+            body: JSON.stringify(body),
+          });
+        } catch (e) {
+          return { success: false, output: `Could not reach Axion: ${e.message}` };
+        }
+
+        if (response.status === 404) return { success: false, output: `No artifact found with id "${input.id}".` };
+        if (!response.ok) {
+          const errBody = await response.json().catch(() => ({}));
+          return { success: false, output: `Could not update the artifact (HTTP ${response.status}): ${errBody.error || 'unknown error'}` };
+        }
+        return { success: true, output: `Updated artifact ${input.id}.` };
+      }
+
+      case 'delete_cloud_artifact': {
+        const token = resolveAxionAuth();
+        if (!token) {
+          return { success: false, output: 'Not signed in to Axion — ask the user to sign in first, then try again.' };
+        }
+
+        let response;
+        try {
+          response = await fetch(`https://api.amplifiedsmp.org/artifacts/${encodeURIComponent(input.id)}`, {
+            method: 'DELETE',
+            headers: { Authorization: `Bearer ${token}` },
+          });
+        } catch (e) {
+          return { success: false, output: `Could not reach Axion: ${e.message}` };
+        }
+
+        if (response.status === 404) return { success: false, output: `No artifact found with id "${input.id}".` };
+        if (!response.ok) {
+          const errBody = await response.json().catch(() => ({}));
+          return { success: false, output: `Could not delete the artifact (HTTP ${response.status}): ${errBody.error || 'unknown error'}` };
+        }
+        return { success: true, output: `Deleted artifact ${input.id}.` };
       }
 
       case 'snapshot_list': {
@@ -1500,6 +1700,8 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
       }
 
       case 'snapshot_restore': {
+        if (Array.isArray(input.files)) input.files.forEach((file) => containedPath(file));
+        previewRestore(cwd, input.id, input.files || []).forEach((change) => containedPath(change.file));
         const result = restoreSnapshot(cwd, input.id, input.files);
         if (result.failed.length) return { success: false, output: `Restore failed: ${result.failed.join(', ')}` };
         const files = result.restored;
@@ -1571,7 +1773,7 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
       }
 
       case 'change_working_dir': {
-        const target = resolve(cwd, input.path);
+        const target = containedPath(input.path);
         if (!existsSync(target)) return { success: false, output: `No such directory: ${relPath(input.path)}` };
         if (!statSync(target).isDirectory()) return { success: false, output: `Not a directory: ${relPath(input.path)}` };
         cwd = target;
@@ -1584,7 +1786,7 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
       }
 
       case 'list_directory': {
-        const dir = input.path ? resolve(cwd, input.path) : cwd;
+        const dir = input.path ? containedPath(input.path) : containedPath('.');
         const entries = readdirSync(dir, { withFileTypes: true });
         const annotated = entries.map((e) => e.isDirectory() ? `${e.name}/` : e.name);
         return { success: true, output: annotated.join('\n') };
@@ -1592,7 +1794,7 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
 
       case 'find_files':
       case 'glob': {
-        const root = input.path ? resolve(cwd, input.path) : cwd;
+        const root = input.path ? containedPath(input.path) : containedPath('.');
         const matches = await searchGlob({ cwd: root, pattern: input.pattern || '*', limit: 500 });
         if (!matches.length) return { success: true, output: 'No files found.' };
         return { success: true, output: matches.slice(0, 200).join('\n') + (matches.length > 200 ? `\n… (${matches.length - 200} more)` : '') };
@@ -1600,7 +1802,7 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
 
       case 'grep_files':
       case 'grep': {
-        const root = input.path ? resolve(cwd, input.path) : cwd;
+        const root = input.path ? containedPath(input.path) : containedPath('.');
         const hits = await searchGrep({ cwd: root, pattern: input.pattern, include: input.include || null, limit: 200 });
         if (!hits.length) return { success: true, output: 'No matches found.' };
         const lines = hits.slice(0, 100).map((h) => `${h.path}:${h.line}: ${h.text}`);
@@ -1641,7 +1843,7 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
         // Compound commands like `cd /tmp && ls` are left for the shell to handle.
         const cdMatch = input.command.trim().match(/^cd\s+((?:[^\s;&|`()\n]|\\.)+)\s*$/);
         if (cdMatch) {
-          const target = resolve(cwd, cdMatch[1].trim());
+          const target = containedPath(cdMatch[1].trim());
           if (!existsSync(target)) return { success: false, output: `cd: no such directory: ${target}` };
           cwd = target;
           setCwd(agentLabel, cwd);
@@ -1657,8 +1859,17 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
           const id = `task-${++_bgCounter}`;
           const shell = detectShell(SHELL_CONFIG.defaultShell);
           const { shell: shellPath, args } = buildShellArgs(shell, input.command, cwd);
-          const proc = spawn(shellPath, args, { cwd, detached: process.platform !== 'win32', env: shellEnv });
-          const task = { id, command: input.command, proc, output: '', exitCode: null, startedAt: Date.now() };
+          const proc = spawn(shellPath, args, { cwd, detached: false, env: shellEnv });
+          const task = {
+            id, command: input.command, proc, output: '', exitCode: null,
+            startedAt: Date.now(), agentLabel, expiryTimer: null,
+          };
+          if (activeGrant?.expiresAt) {
+            const delay = Math.max(0, Date.parse(activeGrant.expiresAt) - Date.now());
+            task.expiryTimer = setTimeout(() => {
+              if (task.exitCode === null) terminateProcessTree(task.proc);
+            }, delay);
+          }
           const append = (chunk) => {
             task.output = (task.output + chunk.toString()).slice(-20000); // keep last 20k chars
           };
@@ -1666,6 +1877,7 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
           proc.stderr.on('data', append);
           proc.on('close', (code) => {
             task.exitCode = code;
+            if (task.expiryTimer) clearTimeout(task.expiryTimer);
             BUS.send('bgtask', agentLabel, {
               title: code === 0 ? '● Axion background task done' : '● Axion background task failed',
               text: `[Background task ${id} finished, exit code ${code}] \`${input.command}\`\n${task.output.slice(-2000) || '(no output)'}`,
@@ -1749,17 +1961,17 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
       }
 
       case 'git_status': {
-        return { success: true, output: execSync('git status', { cwd, encoding: 'utf8' }) };
+        return { success: true, output: execFileSync('git', ['-c', 'core.fsmonitor=false', 'status'], { cwd, encoding: 'utf8' }) };
       }
 
       case 'git_diff': {
-        const out = execSync('git diff', { cwd, encoding: 'utf8' });
+        const out = execFileSync('git', ['--no-pager', 'diff', '--no-ext-diff', '--no-textconv'], { cwd, encoding: 'utf8' });
         return { success: true, output: out || '(no changes)' };
       }
 
       case 'git_log': {
         const n = Math.min(input.limit || 10, 50);
-        const out = execSync(`git log --oneline -${n}`, { cwd, encoding: 'utf8' });
+        const out = execFileSync('git', ['--no-pager', 'log', '--oneline', `-${n}`], { cwd, encoding: 'utf8' });
         return { success: true, output: out || '(no commits)' };
       }
 
@@ -2009,7 +2221,7 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
       }
 
       case 'ask_vision': {
-        const imgPath = resolve(cwd, input.path);
+        const imgPath = containedPath(input.path);
         if (!existsSync(imgPath)) return { success: false, output: `File not found: ${relPath(input.path)}` };
         const ext = extname(imgPath).toLowerCase();
         const MEDIA_MAP = { '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.gif': 'image/gif', '.webp': 'image/webp' };
@@ -2027,7 +2239,7 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
 
       case 'analyze_video': {
         const isUrl = /^https?:\/\//i.test(input.path || '');
-        const vidPath = isUrl ? input.path : resolve(cwd, input.path);
+        const vidPath = isUrl ? input.path : containedPath(input.path);
         if (!isUrl) {
           if (!existsSync(vidPath)) return { success: false, output: `File not found: ${relPath(input.path)}` };
           const ext = extname(vidPath).toLowerCase();
@@ -2050,7 +2262,7 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
 
       case 'analyze_audio': {
         const isUrl = /^https?:\/\//i.test(input.path || '');
-        const audioPath = isUrl ? input.path : resolve(cwd, input.path);
+        const audioPath = isUrl ? input.path : containedPath(input.path);
         if (!isUrl) {
           if (!existsSync(audioPath)) return { success: false, output: `File not found: ${relPath(input.path)}` };
           const ext = extname(audioPath).toLowerCase();
@@ -2207,10 +2419,10 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
         const { wikiContent, wikiIsInitialized } = await import('../services/wiki/status.js');
         const { readFileSync } = await import('fs');
         const { getWikiRoot, pagePath } = await import('../services/wiki/paths.js');
-        const root = getWikiRoot(cwd);
+        const root = containedPath(relative(cwd, getWikiRoot(cwd)));
         if (!wikiIsInitialized(cwd)) return { success: false, output: 'Wiki not initialized yet. Use wiki_write to create the first page and automatically initialize it.' };
         if (input.page) {
-          const p = pagePath(root, input.page);
+          const p = containedPath(relative(cwd, pagePath(root, input.page)));
           try {
             const content = readFileSync(p, 'utf8');
             return { success: true, output: content };
@@ -2226,17 +2438,18 @@ export async function executeTool(name, input, { agentLabel = 'main', onNotify =
         const { getWikiRoot, pagePath, logPath } = await import('../services/wiki/paths.js');
         const { writeFileSync, appendFileSync, existsSync, mkdirSync } = await import('fs');
         const { buildIndex } = await import('../services/wiki/indexBuilder.js');
-        const root = getWikiRoot(cwd);
+        const root = containedPath(relative(cwd, getWikiRoot(cwd)));
         if (!existsSync(root)) mkdirSync(root, { recursive: true });
-        const dest = pagePath(root, input.title);
+        const dest = containedPath(relative(cwd, pagePath(root, input.title)));
         const dir = dirname(dest);
         if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
         const content = `# ${input.title}\n\n*Created ${new Date().toLocaleString()}*\n\n${input.content}`;
         writeFileSync(dest, content, 'utf8');
-        if (!existsSync(logPath(root))) {
-          writeFileSync(logPath(root), `# Wiki Change Log\n\n`, 'utf8');
+        const changeLog = containedPath(relative(cwd, logPath(root)));
+        if (!existsSync(changeLog)) {
+          writeFileSync(changeLog, `# Wiki Change Log\n\n`, 'utf8');
         }
-        appendFileSync(logPath(root), `- ${new Date().toISOString()} — wrote page "${input.title}"\n`, 'utf8');
+        appendFileSync(changeLog, `- ${new Date().toISOString()} — wrote page "${input.title}"\n`, 'utf8');
         buildIndex(cwd);
         return { success: true, output: `Wiki page "${input.title}" written to ${dest}. Index rebuilt.` };
       }

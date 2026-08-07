@@ -1,51 +1,50 @@
-name: CLI CI
+name: CI
 
 on:
   pull_request:
   push:
-    branches: [main]
+    branches: [master]
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
 
-concurrency:
-  group: cli-ci-${{ github.ref }}
-  cancel-in-progress: true
-
 jobs:
-  test:
-    name: ${{ matrix.os }} / Node ${{ matrix.node }}
+  cli:
+    name: CLI tests (${{ matrix.os }})
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - os: ubuntu-latest
-            node: 18
-          - os: windows-latest
-            node: 20
-          - os: macos-latest
-            node: 22
+        os: [ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node }}
+          node-version: 24
           cache: npm
       - run: npm ci
+      - run: npm audit --audit-level=high
       - run: npm test
 
-  security:
-    name: Production dependency audit
+  api:
+    name: API tests
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: api-proxy-cf
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           cache: npm
+          cache-dependency-path: api-proxy-cf/package-lock.json
       - run: npm ci
-      - run: npm audit --omit=dev --audit-level=high
-
+      - run: npm audit --audit-level=high
+      - run: npm test
+      - run: npm run check
+      - run: npx wrangler deploy --dry-run

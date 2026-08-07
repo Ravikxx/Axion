@@ -67,7 +67,10 @@ import { DISCORD_STATE, startDiscord, stopDiscord } from '../agent/discord.js';
 import { OAUTH_PROVIDERS } from '../oauth/providers.js';
 import { connectOAuth, listOAuthTokens, revokeOAuthToken } from '../oauth/oauth.js';
 import { parseSchedule } from '../scheduler.js';
-import { executeTool, getCwd, setCwd } from '../agent/tools.js';
+import { cancelWorkspaceTasks, executeTool, getCwd, getWorkspaceRoot, setWorkspaceRoot } from '../agent/tools.js';
+import {
+  getWorkspaceGrant, grantWorkspace, revokeWorkspaceGrant, WORKSPACE_SCOPES,
+} from '../agent/workspaceAuthority.js';
 import { BUS } from '../agent/bus.js';
 import { pushStash, popStash, getAllStashes, deleteStash } from './promptStash.js';
 import { pushHistory, loadHistory } from './promptHistory.js';
@@ -134,7 +137,7 @@ let onboardingDone = false;
 // First-run welcome: one smart text question (key type is detected on submit).
 const ONBOARDING_FORM = {
   questions: [{
-    question: 'Welcome to Axion 👋  The free Lumen tier works right now. To use Claude or your own model, paste an API key (Anthropic sk-ant-…, OpenAI sk-…, or an Axion key). Leave blank to skip.',
+    question: 'Welcome to Axion 👋  Lumen requires a free Axion account. Paste an Axion API key, or an Anthropic/OpenAI key for those providers. Leave blank to sign in later with /login.',
     type: 'text',
     placeholder: 'paste an API key, or press Enter to skip',
   }],
@@ -773,8 +776,8 @@ function Session({
     // Restore this tab's working directory if the saved chat had one (falls
     // back to the real process cwd otherwise, via getCwd's default).
     if (initialResume?.cwd) {
-      setCwd(todoScope, initialResume.cwd);
-      setCwdState(initialResume.cwd);
+      const resumedRoot = setWorkspaceRoot(todoScope, initialResume.cwd);
+      setCwdState(resumedRoot);
     }
 
     // Resume: seed the agent history + message log from a saved/last session.
@@ -1632,7 +1635,7 @@ function Session({
           const { switchWorkspace } = await import('../services/workspaces/workspaceService.js');
           try {
             const ws = switchWorkspace(id);
-            if (agentRef.current) { setCwd(agentRef.current.label, ws.path); agentRef.current.setWorkspace(ws.id); }
+            if (agentRef.current) { setWorkspaceRoot(agentRef.current.label, ws.path); agentRef.current.setWorkspace(ws.id); }
             setCwdState(ws.path);
             push({ type: 'info', text: `workspace → ${ws.id} — ${ws.name} (${ws.path})` });
           } catch (e) { push({ type: 'error', text: e.message }); }
@@ -1835,9 +1838,38 @@ function Session({
       }
       case 'permissions': {
         if (arg === 'clear') { clearAllowedTools(); push({ type: 'info', text: 'Cleared all always-allow permissions for this project.' }); return; }
+        const label = agentRef.current?.label || todoScope;
+        if (arg === 'revoke') {
+          agentRef.current?.suspendWorkspaceAccess?.();
+          cancelWorkspaceTasks(label);
+          revokeWorkspaceGrant(label);
+          push({ type: 'info', text: 'Revoked this session\'s workspace grant. Use /permissions scope <read-only|read-write|full> to restore access.' });
+          return;
+        }
+        if (args[0] === 'scope') {
+          const scope = args[1];
+          if (!WORKSPACE_SCOPES.includes(scope)) {
+            push({ type: 'error', text: 'Usage: /permissions scope <read-only|read-write|full>' });
+            return;
+          }
+          const previousGrant = getWorkspaceGrant(label);
+          if (previousGrant?.scope === 'full' && scope !== 'full') {
+            agentRef.current?.suspendWorkspaceAccess?.();
+            cancelWorkspaceTasks(label);
+          }
+          const grant = grantWorkspace({ sessionId: label, root: getWorkspaceRoot(label), scope });
+          push({ type: 'info', text: `Workspace scope → ${grant.scope}\nRoot: ${grant.root}\nExpires: session end` });
+          return;
+        }
+        const grant = getWorkspaceGrant(label);
         const allowed = getAllowedTools();
-        if (!allowed.length) { push({ type: 'info', text: 'No always-allowed tools. Press "a" on any tool confirm to add one.\n/permissions clear to reset.' }); return; }
-        push({ type: 'info', text: `Always allowed:\n${allowed.map(k => `  • ${k}`).join('\n')}\n\n/permissions clear to reset` });
+        const grantSummary = grant
+          ? `Workspace scope: ${grant.scope}\nRoot: ${grant.root}\nExpires: ${grant.expiresAt || 'session end'}`
+          : 'Workspace scope: revoked';
+        const allowSummary = allowed.length
+          ? `Always allowed:\n${allowed.map(k => `  • ${k}`).join('\n')}`
+          : 'Always allowed: none';
+        push({ type: 'info', text: `${grantSummary}\n\n${allowSummary}\n\n/permissions scope <read-only|read-write|full>\n/permissions revoke\n/permissions clear` });
         return;
       }
       case 'adviser':
@@ -1873,8 +1905,9 @@ function Session({
         const target = args[0];
         const known = !!(MODELS[target] || MODELS[target.toLowerCase()] || CUSTOM_ENDPOINTS[target]);
         const provider = resolveProvider(target);
-        const noKeyNeeded = ['custom', 'ollama', 'lumen', 'axion-vision', 'veil'].includes(provider);
-        const hasKey = noKeyNeeded || !!API_KEYS[provider];
+        const noKeyNeeded = ['custom', 'ollama'].includes(provider);
+        const axionHosted = ['lumen', 'axion-vision', 'veil'].includes(provider);
+        const hasKey = noKeyNeeded || !!API_KEYS[provider] || (axionHosted && !!getAxionKey());
         agentRef.current?.setAdviserModel(target); saveAdviserModel(target);
         const note = !hasKey
           ? `\n⚠ no API key for provider "${provider}" — set one with /api ${provider} <key>, or the adviser will fail`
@@ -2108,10 +2141,10 @@ function Session({
         const [keyArg] = args;
         if (!keyArg) {
           const existing = getAxionKey();
-          push({ type: 'info', text: existing ? `Axion API key: ${existing.slice(0, 14)}••••••••` : 'No Axion API key set. Lumen works without a key (50 req/day free).\n/axion-key <your-axion-sk-key> to set one.' });
+          push({ type: 'info', text: existing ? `Axion API key: ${existing.slice(0, 14)}••••••••` : 'No Axion API key set. Lumen requires a free Axion account.\nUse /login, or /axion-key <your-axion-sk-key>.' });
           return;
         }
-        if (keyArg === 'remove') { saveAxionKey(null); push({ type: 'info', text: 'Axion API key removed. Lumen will use the free tier (50 req/day).' }); return; }
+        if (keyArg === 'remove') { saveAxionKey(null); push({ type: 'info', text: 'Axion API key removed. Lumen is unavailable until you use /login or set another Axion key.' }); return; }
         if (keyArg === 'test') {
           const testKey = getAxionKey();
           if (!testKey) { push({ type: 'error', text: 'No Axion key set.' }); return; }
@@ -3006,7 +3039,7 @@ function Session({
   // Save whatever key the user pasted during onboarding (type detected by prefix).
   const finishOnboarding = useCallback((key) => {
     const k = (key || '').trim();
-    if (!k) { push({ type: 'info', text: 'You\'re on the free Lumen tier. Add a key anytime with /api or /axion-key.' }); return; }
+    if (!k) { push({ type: 'info', text: 'No key saved. Use /login for a free Axion account before using Lumen, or add another provider with /api.' }); return; }
     if (k.startsWith('sk-ant-')) {
       saveApiKey('anthropic', k); API_KEYS.anthropic = k;
       setModel('claude'); agentRef.current?.setModel('claude'); try { saveModel('claude'); } catch {}

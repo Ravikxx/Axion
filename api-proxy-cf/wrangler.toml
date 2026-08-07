@@ -10,14 +10,29 @@ binding = "DB"
 database_name = "axion-db"
 database_id = "08b1ad36-8b1b-419d-8b3f-f93b04dd8723"
 
+[[r2_buckets]]
+binding = "AVATARS"
+bucket_name = "axion-profile-pictures"
+
 [[durable_objects.bindings]]
 name = "BRIDGE"
 class_name = "BridgeRelay"
+
+[[durable_objects.bindings]]
+name = "CHAT_GENERATIONS"
+class_name = "ChatGeneration"
 
 [[migrations]]
 tag = "v1"
 new_sqlite_classes = ["BridgeRelay"]
 
+[[migrations]]
+tag = "v2"
+new_sqlite_classes = ["ChatGeneration"]
+
 [[routes]]
 pattern = "api.amplifiedsmp.org/*"
 zone_name = "amplifiedsmp.org"
+
+[triggers]
+crons = ["*/5 * * * *", "0 * * * *", "* * * * *"]

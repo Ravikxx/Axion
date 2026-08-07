@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <!-- Dark warm background -->
+  <circle cx="64" cy="64" r="64" fill="#1A1208"/>
+
+  <!-- Three propeller blades (lighter orange, behind rings) -->
+  <!-- One blade path, repeated at 0° / 120° / 240° via single-element transform -->
+  <path d="M 65,62 C 66,54 70,44 68,38 C 64,34 57,39 56,47 C 55,54 61,63 65,62 Z"
+        fill="#FB923C"/>
+  <path d="M 65,62 C 66,54 70,44 68,38 C 64,34 57,39 56,47 C 55,54 61,63 65,62 Z"
+        fill="#FB923C" transform="rotate(120,64,64)"/>
+  <path d="M 65,62 C 66,54 70,44 68,38 C 64,34 57,39 56,47 C 55,54 61,63 65,62 Z"
+        fill="#FB923C" transform="rotate(240,64,64)"/>
+
+  <!-- Two crossed orbital ellipses (in front of blades) -->
+  <ellipse cx="64" cy="64" rx="45" ry="17"
+           fill="none" stroke="#EA580C" stroke-width="3.5"
+           transform="rotate(-38,64,64)"/>
+  <ellipse cx="64" cy="64" rx="45" ry="17"
+           fill="none" stroke="#EA580C" stroke-width="3.5"
+           transform="rotate(38,64,64)"/>
+
+  <!-- Dots at the four ellipse major-axis endpoints -->
+  <circle cx="99" cy="36" r="3.5" fill="#EA580C"/>
+  <circle cx="29" cy="92" r="3.5" fill="#EA580C"/>
+  <circle cx="99" cy="92" r="3.5" fill="#EA580C"/>
+  <circle cx="29" cy="36" r="3.5" fill="#EA580C"/>
+
+  <!-- Center pivot -->
+  <circle cx="64" cy="64" r="5"   fill="#1A1208"/>
+  <circle cx="64" cy="64" r="3"   fill="#EA580C"/>
+</svg>

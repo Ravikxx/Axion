@@ -650,6 +650,20 @@ export function loadChat(name) {
   try { return JSON.parse(readFileSync(file, 'utf8')); } catch { return null; }
 }
 
+// Sets a user-chosen title that overrides the derived-from-first-message
+// title a caller (e.g. Desktop's titleForSession) would otherwise compute.
+// Patches the field in place on disk rather than going through saveChat, so
+// a rename never touches agentHistory/displayMessages — just relabels an
+// existing save.
+export function renameChat(name, title) {
+  const file = join(CHATS_DIR, `${name}.json`);
+  if (!existsSync(file)) return false;
+  const data = JSON.parse(readFileSync(file, 'utf8'));
+  data.customTitle = String(title).slice(0, 200);
+  writeJsonAtomic(file, data);
+  return true;
+}
+
 export function deleteChat(name) {
   const file = join(CHATS_DIR, `${name}.json`);
   if (!existsSync(file)) return false;
