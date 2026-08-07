@@ -694,7 +694,7 @@ const PROVIDER_META = {
 function allowedReturn(url) {
   try {
     const u = new URL(url)
-    if (u.origin === WEB_ORIGIN) return url
+    if (ALLOWED_WEB_ORIGINS.includes(u.origin)) return url
   } catch {}
   return `${WEB_ORIGIN}/settings.html`
 }
@@ -2804,7 +2804,9 @@ app.get('/chats/:id/generations/:generationId/stream', async (c) => {
 
   const objectId = c.env.CHAT_GENERATIONS.idFromName(generationId)
   const stub = c.env.CHAT_GENERATIONS.get(objectId)
-  return stub.fetch('https://chat-generation.internal/stream')
+  return stub.fetch('https://chat-generation.internal/stream', {
+    headers: { Origin: c.req.header('Origin') || '' },
+  })
 })
 
 // Soft delete: moves the chat to Trash rather than removing it. Restore with
