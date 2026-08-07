@@ -111,3 +111,59 @@ test('combine with empty accumulated text uses new text directly', () => {
   const final = stripped ? stripped + '\n' + text : text;
   assert.equal(final, 'hello');
 });
+
+test('end_conversation clears context and the next request contains only the new message', async () => {
+  const { Agent } = await import('../src/agent/agent.js');
+  const events = [];
+  const tokenEvents = [];
+  const agent = new Agent({
+    modelAlias: 'test-model',
+    mode: 'auto',
+    onMessage: (event) => events.push(event),
+    onTokens: (event) => tokenEvents.push(event),
+  });
+
+  agent.history = [
+    { role: 'user', content: 'old private context' },
+    { role: 'assistant', content: 'old answer' },
+  ];
+  agent.pendingMessages = ['queued before termination'];
+  agent.totalTokens = 123;
+  agent.inputTokens = 80;
+  agent.outputTokens = 43;
+  agent.contextTokens = 100;
+
+  agent._callModel = async () => ({
+    type: 'openai',
+    text: 'draft that must not survive',
+    toolCalls: [{ id: 'end-1', name: 'end_conversation', input: { reason: 'internal reason' } }],
+  });
+
+  await agent.run('end this conversation');
+
+  assert.equal(agent.terminated, true);
+  assert.deepEqual(agent.history, []);
+  assert.deepEqual(agent.pendingMessages, []);
+  assert.equal(agent.totalTokens, 0);
+  assert.ok(tokenEvents.some((event) => event.total === 0 && event.context === 0));
+  assert.deepEqual(
+    events.filter((event) => event.role === 'session-ended').map((event) => event.content),
+    ['Conversation ended. Type a message to start a new conversation.'],
+  );
+  assert.ok(events.findIndex((event) => event.role === 'session-ended') > events.findIndex((event) => event.role === 'assistant'));
+
+  let requestHistory;
+  agent._callModel = async () => {
+    requestHistory = structuredClone(agent.history);
+    return { type: 'openai', text: 'fresh answer', toolCalls: [] };
+  };
+  await agent.run('fresh prompt');
+
+  assert.equal(agent.terminated, false);
+  assert.deepEqual(requestHistory, [{ role: 'user', content: 'fresh prompt' }]);
+  assert.deepEqual(agent.history, [
+    { role: 'user', content: 'fresh prompt' },
+    { role: 'assistant', content: 'fresh answer' },
+  ]);
+  assert.doesNotMatch(JSON.stringify(agent.history), /old private context|queued before termination|draft that must not survive/);
+});

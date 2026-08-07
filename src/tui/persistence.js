@@ -1,4 +1,7 @@
-import { writeFileSync, renameSync, mkdirSync, existsSync, readFileSync, unlinkSync, appendFileSync } from 'fs';
+import {
+  writeFileSync, renameSync, mkdirSync, existsSync, readFileSync, unlinkSync,
+  appendFileSync, openSync, closeSync, fsyncSync, statSync, chmodSync,
+} from 'fs';
 import { dirname } from 'path';
 import { randomUUID } from 'crypto';
 import { homedir } from 'os';
@@ -13,24 +16,33 @@ function tmpPath(target) {
 }
 
 export function writeJsonAtomic(target, data, space = 2) {
-  ensureDir(target);
-  const tmp = tmpPath(target);
-  try {
-    writeFileSync(tmp, JSON.stringify(data, null, space), 'utf8');
-    renameSync(tmp, target);
-  } catch (e) {
-    try { unlinkSync(tmp); } catch {}
-    throw e;
-  }
+  writeAtomic(target, JSON.stringify(data, null, space));
 }
 
 export function writeTextAtomic(target, text) {
+  writeAtomic(target, text);
+}
+
+function writeAtomic(target, text) {
   ensureDir(target);
   const tmp = tmpPath(target);
+  let fd = null;
+  let existingMode = null;
+  try { existingMode = statSync(target).mode; } catch {}
   try {
-    writeFileSync(tmp, text, 'utf8');
+    fd = openSync(tmp, 'wx', existingMode ?? 0o666);
+    writeFileSync(fd, text, 'utf8');
+    fsyncSync(fd);
+    closeSync(fd);
+    fd = null;
     renameSync(tmp, target);
+    if (existingMode != null) {
+      try { chmodSync(target, existingMode); } catch {}
+    }
   } catch (e) {
+    if (fd != null) {
+      try { closeSync(fd); } catch {}
+    }
     try { unlinkSync(tmp); } catch {}
     throw e;
   }

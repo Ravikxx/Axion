@@ -25,11 +25,11 @@ const PORT = Number(process.env.BRIDGE_PORT) || 3002;
 const TOKEN = process.env.BRIDGE_TOKEN || '';
 const RELAY_URL = process.env.AXION_BRIDGE_RELAY_URL || 'wss://api.amplifiedsmp.org/bridge/ws';
 
-const html = readFileSync(new URL('../docs/console.html', import.meta.url), 'utf-8');
+const html = readFileSync(new URL('./assets/console.html', import.meta.url), 'utf-8');
 const xtermJs = readFileSync(new URL('../vendor/xterm.js', import.meta.url), 'utf-8');
 const xtermCss = readFileSync(new URL('../vendor/xterm.css', import.meta.url), 'utf-8');
-const themeCss = readFileSync(new URL('../docs/assets/theme-dark.css', import.meta.url), 'utf-8');
-const mobileCss = readFileSync(new URL('../docs/assets/mobile.css', import.meta.url), 'utf-8');
+const themeCss = readFileSync(new URL('./assets/theme-dark.css', import.meta.url), 'utf-8');
+const mobileCss = readFileSync(new URL('./assets/mobile.css', import.meta.url), 'utf-8');
 
 const server = createServer((req, res) => {
   if (req.url === '/health') {

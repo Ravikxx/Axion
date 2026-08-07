@@ -9,6 +9,7 @@
 import { readFileSync, writeFileSync, unlinkSync, existsSync, mkdirSync } from 'fs';
 import { dirname } from 'path';
 import { contentFingerprint, hasBom, stripBom, prependBom } from '../patches/patchParser.js';
+import { writeTextAtomic } from '../../tui/persistence.js';
 
 /**
  * Create a new file. Fails if the file already exists.
@@ -21,10 +22,15 @@ export function createFile(absPath, content) {
   if (existsSync(absPath)) {
     return { success: false, error: `File already exists: ${absPath}` };
   }
-  const dir = dirname(absPath);
-  if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
-  writeFileSync(absPath, content, 'utf8');
-  return { success: true };
+  try {
+    const dir = dirname(absPath);
+    if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
+    writeFileSync(absPath, content, { encoding: 'utf8', flag: 'wx' });
+    return { success: true };
+  } catch (e) {
+    if (e.code === 'EEXIST') return { success: false, error: `File already exists: ${absPath}` };
+    return { success: false, error: e.message };
+  }
 }
 
 /**
@@ -50,7 +56,7 @@ export function writeFile(absPath, content, { preserveBom = true } = {}) {
       }
     }
 
-    writeFileSync(absPath, finalContent, 'utf8');
+    writeTextAtomic(absPath, finalContent);
     return { success: true, bom: hasBom(finalContent) };
   } catch (e) {
     return { success: false, error: e.message };
@@ -81,7 +87,7 @@ export function writeIfUnchanged(absPath, newContent, expectedFingerprint, { pre
     // Preserve BOM
     const { bom } = stripBom(current);
     const finalContent = preserveBom ? prependBom(newContent, bom) : newContent;
-    writeFileSync(absPath, finalContent, 'utf8');
+    writeTextAtomic(absPath, finalContent);
     return { success: true };
   } catch (e) {
     return { success: false, error: e.message };

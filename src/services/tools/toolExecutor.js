@@ -13,6 +13,31 @@
 
 import { partitionToolCalls } from './toolOrchestration.js';
 
+function combineAbortSignals(signals) {
+  const active = signals.filter(Boolean);
+  if (active.length === 1) return { signal: active[0], cleanup: () => {} };
+  const controller = new AbortController();
+  const listeners = [];
+  const abortFrom = (source) => {
+    if (!controller.signal.aborted) controller.abort(source.reason);
+  };
+  for (const source of active) {
+    if (source.aborted) {
+      abortFrom(source);
+      break;
+    }
+    const listener = () => abortFrom(source);
+    listeners.push([source, listener]);
+    source.addEventListener('abort', listener, { once: true });
+  }
+  return {
+    signal: controller.signal,
+    cleanup: () => {
+      for (const [source, listener] of listeners) source.removeEventListener('abort', listener);
+    },
+  };
+}
+
 export class StreamingToolExecutor {
   /**
    * @param {object} opts
@@ -61,6 +86,7 @@ export class StreamingToolExecutor {
       const batch = batches[bi];
       this.onBatchStart(bi, batch);
 
+      let batchResults;
       if (batch.length === 1) {
         // Single exclusive tool — run directly
         const tc = batch[0];
@@ -68,16 +94,17 @@ export class StreamingToolExecutor {
         const result = await this._runSingle(tc, signal);
         allResults.push(result);
         this.onToolResult(result);
+        batchResults = [result];
       } else {
         // Multiple concurrent-safe tools — run in parallel with concurrency cap
-        const batchResults = await this._runParallel(batch, signal);
+        batchResults = await this._runParallel(batch, signal);
         for (const result of batchResults) {
           allResults.push(result);
           this.onToolResult(result);
         }
       }
 
-      this.onBatchEnd(bi, batch);
+      this.onBatchEnd(bi, batchResults);
     }
 
     return allResults;
@@ -113,9 +140,8 @@ export class StreamingToolExecutor {
     const batchAbort = new AbortController();
 
     // Combine external signal with batch-local abort
-    const combinedSignal = signal
-      ? AbortSignal.any([signal, batchAbort.signal])
-      : batchAbort.signal;
+    const combined = combineAbortSignals([signal, batchAbort.signal]);
+    const combinedSignal = combined.signal;
 
     // Track whether any tool failed (for sibling abort)
     let siblingFailed = false;
@@ -163,6 +189,7 @@ export class StreamingToolExecutor {
       }
     }
 
+    combined.cleanup();
     return results;
   }
 }

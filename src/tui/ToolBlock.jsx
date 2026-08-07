@@ -149,8 +149,8 @@ function ThinkingStep({ input, pending }) {
   return (
     <box style={{ flexDirection: 'column', marginLeft: 2 }}>
       <text>
-        <span fg="#d2a8ff">{pending ? '◌ ' : '💭 '}</span>
-        <span fg="#d2a8ff">{`Thought ${num}/${total}`}</span>
+        <span fg={C.gray}>{pending ? '◌ ' : '💭 '}</span>
+        <span fg={C.gray}>{`Thought ${num}/${total}`}</span>
         {badge ? <span fg={C.gray}>{badge}</span> : null}
         {pending ? <span fg={C.pending}>  thinking…</span> : null}
       </text>

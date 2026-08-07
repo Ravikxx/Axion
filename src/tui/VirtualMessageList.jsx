@@ -27,6 +27,7 @@ export const JumpHandle = {
  * - columns: terminal width (for height invalidation on resize)
  * - itemKey: function(message) => string key
  * - renderItem: function(message, index) => ReactNode
+ * - jumpRef: ref receiving the exact-height transcript navigation handle
  * - onItemClick: optional click handler
  * - onSearchMatchesChange: fires when match count/current changes
  */
@@ -36,6 +37,7 @@ export function VirtualMessageList({
   columns,
   itemKey,
   renderItem,
+  jumpRef,
   onItemClick,
   onSearchMatchesChange,
 }) {
@@ -111,7 +113,7 @@ export function VirtualMessageList({
 
   // Expose jump handle
   useImperativeHandle(
-    useRef({}),
+    jumpRef,
     () => ({
       jumpToIndex(i) {
         scrollToIndex(i);

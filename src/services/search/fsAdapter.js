@@ -11,7 +11,7 @@ import { readdirSync, readFileSync, statSync } from 'fs';
 import { resolve, relative, sep, extname } from 'path';
 
 const SKIP_DIRS = new Set([
-  'node_modules', '.git', 'dist', 'build', '.next', '__pycache__',
+  'node_modules', 'dist', 'build', '.next', '__pycache__',
   '.cache', 'coverage', '.turbo', 'out', '.svelte-kit', 'vendor',
   '.venv', 'venv', 'target',
 ]);
