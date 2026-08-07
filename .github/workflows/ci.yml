@@ -44,6 +44,7 @@ jobs:
           cache: npm
           cache-dependency-path: api-proxy-cf/package-lock.json
       - run: npm ci
-      - run: npm audit --omit=dev --audit-level=high      - run: npm test
+      - run: npm audit --omit=dev --audit-level=high
+      - run: npm test
       - run: npm run check
       - run: npx wrangler deploy --dry-run
