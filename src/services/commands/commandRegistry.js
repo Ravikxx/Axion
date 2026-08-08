@@ -16,7 +16,7 @@ import { getCustomCommands } from '../../persist.js';
  *   $cwd            — current working directory
  *   $date           — ISO date string
  *
- * Config overrides (from Axion config, future use):
+ * Config overrides (from Sennoric config, future use):
  *   command.<name>.agent   — force a specific agent
  *   command.<name>.model   — force a specific model
  *   command.<name>.subtask — run as subtask (future)

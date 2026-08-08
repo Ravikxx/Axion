@@ -137,7 +137,7 @@ let onboardingDone = false;
 // First-run welcome: one smart text question (key type is detected on submit).
 const ONBOARDING_FORM = {
   questions: [{
-    question: 'Welcome to Axion 👋  Lumen requires a free Axion account. Paste an Axion API key, or an Anthropic/OpenAI key for those providers. Leave blank to sign in later with /login.',
+    question: 'Welcome to Sennoric 👋  Lumen requires a free Sennoric account. Paste an Sennoric API key, or an Anthropic/OpenAI key for those providers. Leave blank to sign in later with /login.',
     type: 'text',
     placeholder: 'paste an API key, or press Enter to skip',
   }],
@@ -285,7 +285,7 @@ const MessageRow = React.memo(function MessageRow({ msg, expanded = false, onTog
           style={{ flexDirection: 'column', marginTop: 1, paddingLeft: 1, paddingRight: 1 }}
         >
           <box style={{ flexDirection: 'row' }}>
-            <text><span fg={A}>✻ Axion</span></text>
+            <text><span fg={A}>✻ Sennoric</span></text>
             {hovered ? (
               <box style={{ flexDirection: 'row', marginLeft: 2 }}>
                 <ActionBtn label="⎘ copy" color={A} onClick={() => onCopy?.(index)} />
@@ -1335,7 +1335,7 @@ function Session({
         const skills = getSkills();
         const wiki = (await import('../services/wiki/status.js')).wikiContent(process.cwd());
         const { text: ctxText } = await renderContextBreakdown({
-          systemPrompt: '(Axion system prompt — see agent.js)',
+          systemPrompt: '(Sennoric system prompt — see agent.js)',
           toolDefinitions: [],
           messages: agentRef.current?.history || [],
           memoryFiles: mems.map(m => ({ name: 'memory', content: m })),
@@ -2141,13 +2141,13 @@ function Session({
         const [keyArg] = args;
         if (!keyArg) {
           const existing = getAxionKey();
-          push({ type: 'info', text: existing ? `Axion API key: ${existing.slice(0, 14)}••••••••` : 'No Axion API key set. Lumen requires a free Axion account.\nUse /login, or /axion-key <your-axion-sk-key>.' });
+          push({ type: 'info', text: existing ? `Sennoric API key: ${existing.slice(0, 14)}••••••••` : 'No Sennoric API key set. Lumen requires a free Sennoric account.\nUse /login, or /axion-key <your-axion-sk-key>.' });
           return;
         }
-        if (keyArg === 'remove') { saveAxionKey(null); push({ type: 'info', text: 'Axion API key removed. Lumen is unavailable until you use /login or set another Axion key.' }); return; }
+        if (keyArg === 'remove') { saveAxionKey(null); push({ type: 'info', text: 'Sennoric API key removed. Lumen is unavailable until you use /login or set another Sennoric key.' }); return; }
         if (keyArg === 'test') {
           const testKey = getAxionKey();
-          if (!testKey) { push({ type: 'error', text: 'No Axion key set.' }); return; }
+          if (!testKey) { push({ type: 'error', text: 'No Sennoric key set.' }); return; }
           push({ type: 'info', text: 'Testing key…' });
           fetch('https://api.amplifiedsmp.org/v1/chat/completions', {
             method: 'POST',
@@ -2162,7 +2162,7 @@ function Session({
           return;
         }
         saveAxionKey(keyArg);
-        push({ type: 'info', text: `Axion API key saved (${keyArg.slice(0, 14)}••••••••). /axion-key test to verify.` });
+        push({ type: 'info', text: `Sennoric API key saved (${keyArg.slice(0, 14)}••••••••). /axion-key test to verify.` });
         return;
       }
       case 'endpoint': {
@@ -2332,8 +2332,8 @@ function Session({
           let copied = false;
           try { copyToClipboard(pairing.token); copied = true; } catch {}
           push({ type: 'info', text:
-            `Axion Extension pairing\n  address  ws://${pairing.host}:${pairing.port}\n  token    ${pairing.token}` +
-            `\n\n${copied ? 'Token copied to clipboard.' : 'Copy the token above.'} Paste it into Extension → Settings → Connect to Axion.` });
+            `Sennoric Extension pairing\n  address  ws://${pairing.host}:${pairing.port}\n  token    ${pairing.token}` +
+            `\n\n${copied ? 'Token copied to clipboard.' : 'Copy the token above.'} Paste it into Extension → Settings → Connect to Sennoric.` });
           return;
         }
         if (action !== 'status') {
@@ -2342,7 +2342,7 @@ function Session({
         }
         const status = await BROWSER_EXTENSION.status();
         push({ type: 'info', text:
-          `Axion Extension\n  status  ${status.connected ? 'connected' : 'waiting for extension'}\n  port    ${status.port}` +
+          `Sennoric Extension\n  status  ${status.connected ? 'connected' : 'waiting for extension'}\n  port    ${status.port}` +
           `\n  tools   ${status.capabilities?.length ? status.capabilities.join(', ') : 'not reported'}` +
           `\n\nRun /extension pair to copy the pairing token.` });
         return;
@@ -2399,7 +2399,7 @@ function Session({
       }
       case 'login': {
         const AXION_API = 'https://api.amplifiedsmp.org';
-        push({ type: 'info', text: 'Opening browser to authorize your Axion account…' });
+        push({ type: 'info', text: 'Opening browser to authorize your Sennoric account…' });
         try {
           const res = await fetch(`${AXION_API}/auth/device`, { method: 'POST' });
           if (!res.ok) throw new Error('Failed to start login flow');
@@ -2668,7 +2668,7 @@ function Session({
       }
       case 'resolve': {
         if (arg === 'setup') {
-          push({ type: 'info', text: 'DaVinci Resolve setup:\n1. Install DaVinci Resolve 18+ (free from blackmagicdesign.com)\n2. Make sure Resolve is running\n3. FREE edition: in Resolve run Workspace → Scripts → Utility → resolve_bridge (Axion installs it there)\n   STUDIO: Preferences → System → General → "External scripting using" → Local, then /resolve auto-launches it\n4. Run /resolve — connects the MCP server (requires Python 3.13, detected automatically)' });
+          push({ type: 'info', text: 'DaVinci Resolve setup:\n1. Install DaVinci Resolve 18+ (free from blackmagicdesign.com)\n2. Make sure Resolve is running\n3. FREE edition: in Resolve run Workspace → Scripts → Utility → resolve_bridge (Sennoric installs it there)\n   STUDIO: Preferences → System → General → "External scripting using" → Local, then /resolve auto-launches it\n4. Run /resolve — connects the MCP server (requires Python 3.13, detected automatically)' });
           return;
         }
         push({ type: 'info', text: 'Starting DaVinci Resolve bridge & connecting MCP…' });
@@ -2745,7 +2745,7 @@ function Session({
       }
       case 'unity': {
         if (arg === 'setup') {
-          push({ type: 'info', text: 'Unity setup:\n1. Open your Unity project in the editor\n2. Run /unity from inside the project directory — Axion copies AxionBridge.cs into Assets/Editor/ automatically\n   (or copy mcp-servers/unity/AxionBridge.cs there yourself)\n3. Unity compiles it and the console shows "[AxionBridge] listening on 127.0.0.1:9877"\n4. Run /unity — connects the MCP server. Set AXION_UNITY_PORT to change the port.' });
+          push({ type: 'info', text: 'Unity setup:\n1. Open your Unity project in the editor\n2. Run /unity from inside the project directory — Sennoric copies AxionBridge.cs into Assets/Editor/ automatically\n   (or copy mcp-servers/unity/AxionBridge.cs there yourself)\n3. Unity compiles it and the console shows "[AxionBridge] listening on 127.0.0.1:9877"\n4. Run /unity — connects the MCP server. Set AXION_UNITY_PORT to change the port.' });
           return;
         }
         // If cwd looks like a Unity project, install/refresh the bridge script.
@@ -2996,7 +2996,7 @@ function Session({
       const msgs = BUS.read(todoScope);
       if (!msgs.length) return;
       for (const m of msgs) {
-        const title = m.content?.title || 'Axion';
+        const title = m.content?.title || 'Sennoric';
         const text = m.content?.text || '';
         try { writeSync(1, `\x1b]9;${title.replace(/[\x00-\x1f]/g, ' ')}\x07\x07`); } catch {}
         if (!text) continue;
@@ -3039,7 +3039,7 @@ function Session({
   // Save whatever key the user pasted during onboarding (type detected by prefix).
   const finishOnboarding = useCallback((key) => {
     const k = (key || '').trim();
-    if (!k) { push({ type: 'info', text: 'No key saved. Use /login for a free Axion account before using Lumen, or add another provider with /api.' }); return; }
+    if (!k) { push({ type: 'info', text: 'No key saved. Use /login for a free Sennoric account before using Lumen, or add another provider with /api.' }); return; }
     if (k.startsWith('sk-ant-')) {
       saveApiKey('anthropic', k); API_KEYS.anthropic = k;
       setModel('claude'); agentRef.current?.setModel('claude'); try { saveModel('claude'); } catch {}
@@ -3049,7 +3049,7 @@ function Session({
       push({ type: 'info', text: '● OpenAI key saved. Use /model to pick a GPT model.' });
     } else {
       saveAxionKey(k);
-      push({ type: 'info', text: '● Axion key saved.' });
+      push({ type: 'info', text: '● Sennoric key saved.' });
     }
   }, [push]);
 
@@ -3154,7 +3154,7 @@ function Session({
           />
           {streamText !== null && (
             <box style={{ flexDirection: 'column', marginTop: 1, paddingLeft: 1, paddingRight: 1 }}>
-              <text><span fg={A}>✻ Axion</span></text>
+              <text><span fg={A}>✻ Sennoric</span></text>
               <RichText maxWidth={transcriptColumns}>{streamText || ' '}</RichText>
             </box>
           )}
@@ -3310,8 +3310,8 @@ function Session({
             onSubmit={fileActive && fileMatches.length ? () => insertFile(fileMatches[Math.min(fileSel, fileMatches.length - 1)]) : submit}
             placeholder={
               inputMode === 'confirm-tool' || inputMode === 'confirm-plan' ? 'press y / n …' :
-              busy ? 'Axion is working…  (Esc to interrupt)' :
-              'ask Axion something…  (Enter to send · / for commands · Ctrl+S stash · Ctrl+C twice to quit)'
+              busy ? 'Sennoric is working…  (Esc to interrupt)' :
+              'ask Sennoric something…  (Enter to send · / for commands · Ctrl+S stash · Ctrl+C twice to quit)'
             }
           />
         </box>
@@ -3460,7 +3460,7 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
   // ── Terminal-title spinner + desktop "done" ping ───────────────────────────────
   // While any tab's agent is working, the terminal/PowerShell tab title shows a
   // spinner. When a tab finishes, the terminal bell pings the PowerShell window
-  // (taskbar attention flash) and an OSC 9 desktop toast says "Axion is done!".
+  // (taskbar attention flash) and an OSC 9 desktop toast says "Sennoric is done!".
   // No emoji in the title. Works for background tabs too.
   const renderer = useRenderer();
   const busyTabsRef = useRef(new Set());
@@ -3473,19 +3473,19 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
   const startSpinner = useCallback(() => {
     if (spinnerRef.current) return;
     spinnerRef.current = setInterval(() => {
-      setTitleBar(`${SPIN_FRAMES[spinFrameRef.current++ % SPIN_FRAMES.length]} Axion — working…`);
+      setTitleBar(`${SPIN_FRAMES[spinFrameRef.current++ % SPIN_FRAMES.length]} Sennoric — working…`);
     }, 120);
   }, [setTitleBar]);
   const notifyDone = useCallback(() => {
     // Terminal bell (BEL) — flashes the PowerShell window in the taskbar.
-    // On Windows, a real WinRT toast notification ("Axion is done!") fired via
+    // On Windows, a real WinRT toast notification ("Sennoric is done!") fired via
     // a detached PowerShell — shows regardless of focus, unlike OSC 9 which
     // Windows Terminal only surfaces when unfocused. Other platforms keep the
     // OSC 9 toast (iTerm2 etc.). All fire-and-forget; failures are silent.
     try { writeSync(1, '\x07'); } catch {}
     if (process.platform === 'win32') {
       // Register a per-user AppUserModelID (HKCU, no admin) so the toast is
-      // attributed to "Axion" with the Axion logo instead of Windows
+      // attributed to "Sennoric" with the Sennoric logo instead of Windows
       // PowerShell. The logo ships in src/assets/ with the npm package
       // and is copied once to ~/.axion so the registry points at a path that
       // survives package updates. Only fixed strings and the homedir-derived
@@ -3500,27 +3500,27 @@ export function App({ initialModel = 'lumen', initialMode = 'ask', initialResume
         logoPs = `Set-ItemProperty -Path $reg -Name IconUri -Value '${logoDst.replace(/'/g, "''")}'`;
       } catch {}
       const toastPs = `
-$appId = 'AxionLabs.Axion'
+$appId = 'AxionLabs.Sennoric'
 $reg = "HKCU:\\Software\\Classes\\AppUserModelId\\$appId"
 if (-not (Test-Path $reg)) { New-Item -Path $reg -Force | Out-Null }
-Set-ItemProperty -Path $reg -Name DisplayName -Value 'Axion'
+Set-ItemProperty -Path $reg -Name DisplayName -Value 'Sennoric'
 ${logoPs}
 [Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] | Out-Null
 $t = [Windows.UI.Notifications.ToastNotificationManager]::GetTemplateContent([Windows.UI.Notifications.ToastTemplateType]::ToastText02)
 $x = $t.GetElementsByTagName('text')
-$x.Item(0).AppendChild($t.CreateTextNode('Axion')) | Out-Null
-$x.Item(1).AppendChild($t.CreateTextNode('Axion is done!')) | Out-Null
+$x.Item(0).AppendChild($t.CreateTextNode('Sennoric')) | Out-Null
+$x.Item(1).AppendChild($t.CreateTextNode('Sennoric is done!')) | Out-Null
 [Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier($appId).Show([Windows.UI.Notifications.ToastNotification]::new($t))
 `;
       try {
         spawn('powershell.exe', ['-NoProfile', '-NonInteractive', '-WindowStyle', 'Hidden', '-Command', toastPs], { detached: true, stdio: 'ignore' }).unref();
       } catch {}
     } else {
-      try { writeSync(1, `\x1b]9;Axion is done!\x07`); } catch {}
+      try { writeSync(1, `\x1b]9;Sennoric is done!\x07`); } catch {}
     }
-    setTitleBar('Axion — done');
+    setTitleBar('Sennoric — done');
     if (pingTimerRef.current) clearTimeout(pingTimerRef.current);
-    pingTimerRef.current = setTimeout(() => { if (busyTabsRef.current.size === 0) setTitleBar('Axion'); }, 5000);
+    pingTimerRef.current = setTimeout(() => { if (busyTabsRef.current.size === 0) setTitleBar('Sennoric'); }, 5000);
   }, [setTitleBar]);
 
   const handleBusy = useCallback((tabId, busy) => {

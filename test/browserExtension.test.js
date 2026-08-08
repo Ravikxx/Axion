@@ -23,7 +23,7 @@ function openSocket(url) {
   });
 }
 
-test('browser extension broker serves both its owner and another Axion controller', async (t) => {
+test('browser extension broker serves both its owner and another Sennoric controller', async (t) => {
   const port = await freePort();
   const pairing = { host: '127.0.0.1', port, token: 'test-token-that-is-long-enough-for-auth' };
   const owner = new BrowserExtensionBridge({ pairing, requestTimeout: 2000 });

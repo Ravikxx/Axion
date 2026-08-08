@@ -4,13 +4,13 @@ import { MODELS, MODEL_PROVIDERS, API_KEYS, BASE_URLS, CUSTOM_ENDPOINTS, REASONI
 import { getAxionKey } from '../persist.js';
 import { ProviderError } from '../utils/namedError.js';
 
-// ── Axion-hosted provider credential seam ─────────────────────────────────
+// ── Sennoric-hosted provider credential seam ─────────────────────────────────
 //
 // veil/lumen/axion-vision authenticate to the Worker with a Bearer credential
 // that can be either a persisted axion-sk- API key (set via /axion-key, the
 // CLI-native flow) or a host application's own account session token — the
 // Worker's /v1/chat/completions accepts both interchangeably. A host that
-// wants to supply the latter (e.g. Axion Desktop, which already holds an
+// wants to supply the latter (e.g. Sennoric Desktop, which already holds an
 // OAuth session token in its main process for cloud sync) registers a
 // resolver here instead of reaching into persist.js's module state, which is
 // both a private implementation detail and, for a session token, the wrong
@@ -153,7 +153,7 @@ export function createClient(modelAlias) {
     if (!axionKey) {
       throw new ProviderError({
         provider: 'veil',
-        message: 'Axion-hosted models require an Axion account and API key — use /login, or set a key with /axion-key <your-key>.',
+        message: 'Sennoric-hosted models require an Sennoric account and API key — use /login, or set a key with /axion-key <your-key>.',
       });
     }
     return { type: 'veil', client: new OpenAI({ apiKey: axionKey, baseURL: BASE_URLS.veil }) };
@@ -176,7 +176,7 @@ export function createClient(modelAlias) {
     if (!axionKey) {
       throw new ProviderError({
         provider: 'lumen',
-        message: 'Lumen requires an Axion account and API key — use /login, or set a key with /axion-key <your-key>.',
+        message: 'Lumen requires an Sennoric account and API key — use /login, or set a key with /axion-key <your-key>.',
       });
     }
     return { type: 'openai', client: new OpenAI({ apiKey: axionKey, baseURL: BASE_URLS.lumen }) };
@@ -187,7 +187,7 @@ export function createClient(modelAlias) {
     if (!axionKey) {
       throw new ProviderError({
         provider: 'axion-vision',
-        message: 'Axion Vision requires an Axion account and API key — use /login, or set a key with /axion-key <your-key>.',
+        message: 'Sennoric Vision requires an Sennoric account and API key — use /login, or set a key with /axion-key <your-key>.',
       });
     }
     return { type: 'openai', client: new OpenAI({ apiKey: axionKey, baseURL: BASE_URLS['axion-vision'] }) };
@@ -207,7 +207,7 @@ export function createClient(modelAlias) {
       baseURL: BASE_URLS.openrouter,
       defaultHeaders: {
         'HTTP-Referer': 'https://axion.amplifiedsmp.org',
-        'X-Title': 'Axion',
+        'X-Title': 'Sennoric',
       },
     }) };
   }

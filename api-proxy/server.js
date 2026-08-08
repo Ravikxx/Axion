@@ -227,4 +227,4 @@ app.get('/v1/models', (req, res) => {
 app.get('/health', (req, res) => res.json({ ok: true, model: 'lumen-1.2.5' }));
 
 const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => console.log(`Axion API proxy running on :${PORT}`));
+app.listen(PORT, () => console.log(`Sennoric API proxy running on :${PORT}`));

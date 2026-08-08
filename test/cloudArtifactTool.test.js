@@ -4,7 +4,7 @@ import { executeTool } from '../src/agent/tools.js';
 import { setAxionAuthResolver } from '../src/agent/models.js';
 import { getAxionKey } from '../src/persist.js';
 
-// create_cloud_artifact lets the agent create a real Axion cloud artifact
+// create_cloud_artifact lets the agent create a real Sennoric cloud artifact
 // (POST /artifacts) from inside a chat, rather than only writing local
 // files. Auth is mocked through setAxionAuthResolver — the same seam Desktop
 // uses to supply its OAuth token — rather than touching persisted config.
@@ -15,7 +15,7 @@ import { getAxionKey } from '../src/persist.js';
 // negative in that case.
 test('create_cloud_artifact fails clearly when not signed in, without making a network call', async (t) => {
   if (getAxionKey()) {
-    t.skip('a persisted Axion key exists in this environment');
+    t.skip('a persisted Sennoric key exists in this environment');
     return;
   }
   setAxionAuthResolver(() => null);
@@ -130,7 +130,7 @@ test('create_cloud_artifact reports a network failure instead of throwing', asyn
 
 test('update_cloud_artifact fails clearly when not signed in, without making a network call', async (t) => {
   if (getAxionKey()) {
-    t.skip('a persisted Axion key exists in this environment');
+    t.skip('a persisted Sennoric key exists in this environment');
     return;
   }
   setAxionAuthResolver(() => null);
@@ -201,7 +201,7 @@ test('update_cloud_artifact reports a missing artifact as a clear error', async 
 
 test('delete_cloud_artifact fails clearly when not signed in, without making a network call', async (t) => {
   if (getAxionKey()) {
-    t.skip('a persisted Axion key exists in this environment');
+    t.skip('a persisted Sennoric key exists in this environment');
     return;
   }
   setAxionAuthResolver(() => null);

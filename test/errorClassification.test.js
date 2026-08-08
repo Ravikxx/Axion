@@ -8,15 +8,15 @@ import { ProviderError } from '../src/utils/namedError.js';
 // states." Every case here also checks the message text is unchanged from
 // the pre-split friendlyError(), since real CLI users depend on that wording.
 
-test('a 401 response classifies as account, with Axion-hosted-specific guidance for lumen and veil', () => {
-  // lumen/veil authenticate with the account's own Axion sign-in, never a
+test('a 401 response classifies as account, with Sennoric-hosted-specific guidance for lumen and veil', () => {
+  // lumen/veil authenticate with the account's own Sennoric sign-in, never a
   // third-party API key — "revoked API key" wording was wrong for these
   // two specifically (reported live: "Access denied for veil" while
   // signed in, no API key ever configured).
   for (const alias of ['lumen', 'veil']) {
     const { kind, message } = classifyProviderError({ status: 401, message: 'unauthorized' }, alias);
     assert.equal(kind, 'account');
-    assert.match(message, /Invalid or revoked Axion credentials/);
+    assert.match(message, /Invalid or revoked Sennoric credentials/);
     assert.doesNotMatch(message, /API key/);
   }
 });
@@ -66,7 +66,7 @@ test('a 403 for lumen/veil never tells the user to check an "API key"', () => {
     const { kind, message } = classifyProviderError({ status: 403, message: 'forbidden' }, alias);
     assert.equal(kind, 'account');
     assert.match(message, /Access denied/);
-    assert.match(message, /Axion account/);
+    assert.match(message, /Sennoric account/);
     assert.doesNotMatch(message, /API key/);
   }
 });
@@ -84,7 +84,7 @@ test('a 403 for a hosted model appends the Worker-relayed upstream detail, when 
   };
   const { kind, message } = classifyProviderError(err, 'veil');
   assert.equal(kind, 'account');
-  assert.match(message, /Axion account/);
+  assert.match(message, /Sennoric account/);
   assert.match(message, /Veil rejected the request: endpoint access denied/);
 });
 
@@ -113,10 +113,10 @@ test('an unrecognized error classifies as unknown', () => {
 });
 
 test('a missing-credential ProviderError (no status) classifies as account', () => {
-  const err = new ProviderError({ provider: 'lumen', message: 'Lumen requires an Axion account and API key — use /login, or set a key with /axion-key <your-key>.' });
+  const err = new ProviderError({ provider: 'lumen', message: 'Lumen requires an Sennoric account and API key — use /login, or set a key with /axion-key <your-key>.' });
   const { kind, message } = classifyProviderError(err, 'lumen');
   assert.equal(kind, 'account');
-  assert.match(message, /requires an Axion account/);
+  assert.match(message, /requires an Sennoric account/);
 });
 
 test('a ProviderError that does carry a status is still classified by it', () => {

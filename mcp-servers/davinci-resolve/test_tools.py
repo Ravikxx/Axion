@@ -1,7 +1,7 @@
 #!/usr/bin/env python3.13
 """Smoke-test the DaVinci Resolve MCP tools against the LIVE bridge.
 
-Talks directly to the bridge on 127.0.0.1:9876 — no Axion needed. Start the
+Talks directly to the bridge on 127.0.0.1:9876 — no Sennoric needed. Start the
 bridge first (in Resolve: Workspace -> Scripts -> Utility -> resolve_bridge),
 open any project with a timeline, then run:
 

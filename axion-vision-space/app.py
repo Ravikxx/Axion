@@ -20,7 +20,7 @@ MODEL_PATH   = "/tmp/vision-model.gguf"
 MMPROJ_PATH  = "/tmp/vision-mmproj.gguf"
 
 SYSTEM_PROMPT = (
-    "You are Axion Vision, a visual assistant by Axion Labs. "
+    "You are Sennoric Vision, a visual assistant by Sennoric Labs. "
     "You can read text in images, describe scenes, analyse diagrams, and answer questions about images. "
     "Be concise and accurate."
 )
@@ -110,15 +110,15 @@ def analyze_image(image, question, max_tokens):
 
 # ── Gradio UI ─────────────────────────────────────────────────────────────────
 
-with gr.Blocks(title="Axion Vision — Axion Labs") as demo:
+with gr.Blocks(title="Sennoric Vision — Sennoric Labs") as demo:
 
     gr.HTML("""
         <div style="padding:24px 0 8px;border-bottom:1px solid #2e2218;margin-bottom:16px">
             <h1 style="font-size:1.6em;font-weight:700;margin:0 0 2px;color:#e8ddd0">
-                ⚛ Axion <span style="color:#cc785c">Vision</span>
+                ⚛ Sennoric <span style="color:#cc785c">Vision</span>
             </h1>
             <p style="color:#7a6050;margin:0;font-size:0.85em">
-                Image understanding &amp; OCR · powered by GLM-OCR · by Axion Labs · free
+                Image understanding &amp; OCR · powered by GLM-OCR · by Sennoric Labs · free
             </p>
         </div>
     """)

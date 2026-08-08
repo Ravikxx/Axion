@@ -1,5 +1,5 @@
 // Accent color themes for the CLI. The accent is used for branding marks
-// (banner border, ✻ Axion wordmark, News header, model name).
+// (banner border, ✻ Sennoric wordmark, News header, model name).
 
 export const THEMES = {
   ember:  { accent: '#cc785c', desc: 'warm clay — the default' },

@@ -1,4 +1,4 @@
--- Artifacts: a persistent library of Axion-created outputs (documents, code
+-- Artifacts: a persistent library of Sennoric-created outputs (documents, code
 -- previews, charts, images, generated files). Each artifact has a chain of
 -- revisions; the artifact row itself just points at the latest one so
 -- listing doesn't require pulling revision content.

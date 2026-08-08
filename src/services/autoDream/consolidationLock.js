@@ -1,5 +1,5 @@
 // Consolidation lock — adapted from openclaude's consolidationLock.ts to
-// Axion's sync-fs style. The lock file's mtime IS lastConsolidatedAt (0 if
+// Sennoric's sync-fs style. The lock file's mtime IS lastConsolidatedAt (0 if
 // absent). Body is the holder's PID. Stale past HOLDER_STALE_MS even if the
 // PID is live (PID-reuse guard); a dead PID is reclaimed by overwriting the
 // file with our own PID; two reclaimers race-resolve by re-reading.

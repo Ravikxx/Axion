@@ -1,4 +1,4 @@
-# Axion — Feature Build Prompts
+# Sennoric — Feature Build Prompts
 
 Hand each section below to the model noted in **Best model**. Every prompt is
 self-contained: it names the real files, the pattern to copy, and the acceptance
@@ -131,7 +131,7 @@ Unset model → graceful fallback/clear error.
 ## #3 — PWA phone chat app  ·  **Best model: Sonnet (Opus to review)**
 
 **Goal.** An installable phone web app: add-to-home-screen, works offline-ish,
-**no external links** (self-contained), just a chat UI to the Axion models.
+**no external links** (self-contained), just a chat UI to the Sennoric models.
 
 **Context.** The old web UI was retired this session (`src/web/server.js`,
 `src/web/client/*` were deleted — see git history for the previous shape). This is
@@ -149,7 +149,7 @@ a fresh, PWA-focused rebuild, not a restore.
 - Model selection should map to the same aliases the CLI uses.
 
 **Constraints.** Mobile-first layout; installable (passes Lighthouse PWA install
-criteria); the chat must stream. Auth: reuse the Axion API key mechanism
+criteria); the chat must stream. Auth: reuse the Sennoric API key mechanism
 (`getAxionKey` in `src/persist.js`) or a simple server-side key — do not ship keys
 to the client.
 
@@ -161,7 +161,7 @@ loads its shell with the network throttled/offline.
 
 ## #5 — Music production feature  ·  **Best model: Fable 5 (DESIGN PASS FIRST)**
 
-**Goal.** Music/DAW capability in Axion. This is deliberately under-specified —
+**Goal.** Music/DAW capability in Sennoric. This is deliberately under-specified —
 **produce a short design doc before writing any code.**
 
 **Design pass — answer these first (write `../Website/music-design.md`):**
@@ -185,7 +185,7 @@ to create. No code until approved.
 
 ## #6 — Unity MCP server  ·  **Best model: Fable 5**
 
-**Goal.** Control the Unity editor from Axion via MCP — scene/GameObject
+**Goal.** Control the Unity editor from Sennoric via MCP — scene/GameObject
 inspection and manipulation, running editor commands.
 
 **Pattern to copy:** the DaVinci Resolve integration is the closest analog —
@@ -222,7 +222,7 @@ appears in the editor. Handshake completes instantly even when Unity is closed.
 
 ## #7 — Unreal MCP server  ·  **Best model: Fable 5 (Opus co-pilot)**
 
-**Goal.** Control Unreal Engine from Axion via MCP.
+**Goal.** Control Unreal Engine from Sennoric via MCP.
 
 **Pattern:** same MCP-server skeleton as #6 / the Resolve server. **Advantage over
 Unity:** Unreal ships a **built-in Python API** and the **Remote Control API**

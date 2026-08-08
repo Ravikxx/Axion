@@ -42,7 +42,7 @@ test('memoryStore: rebuildIndex produces INDEX.md with one-line entries', () => 
   memStore.writeMemoryDigest('# Topic Beta\nsecond', { filename: 'beta.md' });
   memStore.rebuildIndex();
   const idx = readFileSync(memStore.getMemoriesIndexFile(), 'utf8');
-  assert.match(idx, /# Axion Memory Index/);
+  assert.match(idx, /# Sennoric Memory Index/);
   assert.match(idx, /alpha\.md/);
   assert.match(idx, /beta\.md/);
   // each entry is a single line bullet

@@ -1,4 +1,4 @@
-// Axion PWA web server. Serves the app shell + proxies chat to providers.
+// Sennoric PWA web server. Serves the app shell + proxies chat to providers.
 // Run: node src/web/server.js   (or PORT=3001 node src/web/server.js)
 // Auth: set AXION_WEB_TOKEN to require a Bearer token for /api/* routes.
 import { createServer } from 'http';
@@ -51,7 +51,7 @@ const CSP = [
   "object-src 'none'",
 ].join('; ');
 
-const SYSTEM = 'You are Axion, a helpful AI assistant. Be concise and clear.';
+const SYSTEM = 'You are Sennoric, a helpful AI assistant. Be concise and clear.';
 
 function addSecurityHeaders(res) {
   res.setHeader('Content-Security-Policy', CSP);
@@ -68,7 +68,7 @@ function json(res, status, body) {
 function checkAuth(req, res) {
   if (!TOKEN) return true;
   if ((req.headers.authorization || '') === `Bearer ${TOKEN}`) return true;
-  res.writeHead(401, { 'WWW-Authenticate': 'Bearer realm="Axion"', 'Content-Type': 'text/plain' });
+  res.writeHead(401, { 'WWW-Authenticate': 'Bearer realm="Sennoric"', 'Content-Type': 'text/plain' });
   res.end('Unauthorized — set AXION_WEB_TOKEN and pass it as Bearer token.');
   return false;
 }
@@ -111,7 +111,7 @@ const server = createServer(async (req, res) => {
   // short-lived token is printed locally when /web starts and never cached.
   if (req.method === 'POST' && path === '/api/extension-config') {
     const result = createExtensionImportResponse({
-      providedToken: String(req.headers['x-axion-import-token'] || ''),
+      providedToken: String(req.headers['x-sennoric-import-token'] || ''),
       expectedToken: EXTENSION_IMPORT_TOKEN,
       apiKeys: savedKeys,
       customEndpoints: savedEndpoints,
@@ -215,7 +215,7 @@ const server = createServer(async (req, res) => {
 server.listen(PORT, () => {
   const address = server.address();
   const listeningPort = typeof address === 'object' && address ? address.port : PORT;
-  process.stdout.write(`Axion PWA  →  http://localhost:${listeningPort}\n`);
+  process.stdout.write(`Sennoric PWA  →  http://localhost:${listeningPort}\n`);
   process.stdout.write(TOKEN
     ? 'Auth: AXION_WEB_TOKEN set — include as Bearer token.\n'
     : 'Auth: none (set AXION_WEB_TOKEN to protect LAN access).\n');

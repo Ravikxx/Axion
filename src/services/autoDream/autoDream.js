@@ -1,5 +1,5 @@
 // Background memory consolidation — adapted from openclaude's autoDream.ts to
-// Axion's sync-fs + Agent model. Fires a consolidation pass after a sampling
+// Sennoric's sync-fs + Agent model. Fires a consolidation pass after a sampling
 // turn ONLY when:
 //   1. Enabled gate  — AXION_AUTO_DREAM flag is on
 //   2. Time gate    — hours since lastConsolidatedAt >= minHours

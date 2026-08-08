@@ -67,7 +67,7 @@ const rl = readline.createInterface({ input: process.stdin, output: process.stdo
 const ask = (q) => new Promise((res) => rl.question(q, res));
 
 process.stdout.write(
-  `${C.accent}✻ Axion${C.reset} ${C.dim}— compatibility mode (OpenTUI unavailable on this system)${C.reset}\n` +
+  `${C.accent}✻ Sennoric${C.reset} ${C.dim}— compatibility mode (OpenTUI unavailable on this system)${C.reset}\n` +
   `${C.dim}model ${model} · mode ${mode} · type a message, /exit to quit${C.reset}\n\n`
 );
 
@@ -76,7 +76,7 @@ while (running) {
   const line = (await ask(`${C.accent}you ›${C.reset} `)).trim();
   if (!line) continue;
   if (line === '/exit' || line === '/quit') break;
-  process.stdout.write(`\n${C.accent}✻ Axion${C.reset}\n`);
+  process.stdout.write(`\n${C.accent}✻ Sennoric${C.reset}\n`);
   try {
     await agent.run(line, {
       askConfirm: async (tc) => /^y/i.test(await ask(`${C.dim}  run ${tc.name}? (y/n) ${C.reset}`)),

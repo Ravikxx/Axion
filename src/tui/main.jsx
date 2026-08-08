@@ -1,4 +1,4 @@
-// OpenTUI entry point for the Axion TUI. Runs under Bun (OpenTUI's renderer
+// OpenTUI entry point for the Sennoric TUI. Runs under Bun (OpenTUI's renderer
 // requires Bun's FFI). Launched in production via src/tui/launch.js.
 import { createCliRenderer } from '@opentui/core';
 import { createRoot } from '@opentui/react';

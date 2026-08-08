@@ -6,7 +6,7 @@ import { formatFatalError, installFatalHandlers } from '../src/tui/runtimeLifecy
 test('fatal error formatting keeps useful stack information', () => {
   const error = new Error('boom');
   const text = formatFatalError(error, 'crashed');
-  assert.match(text, /Axion crashed/);
+  assert.match(text, /Sennoric crashed/);
   assert.match(text, /boom/);
 });
 

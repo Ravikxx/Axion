@@ -1,4 +1,4 @@
-// Axion PWA — vanilla JS, no framework, no external deps.
+// Sennoric PWA — vanilla JS, no framework, no external deps.
 // Streaming via fetch + ReadableStream reader (not EventSource — that's GET-only).
 
 const modelPick = document.getElementById('model-pick');

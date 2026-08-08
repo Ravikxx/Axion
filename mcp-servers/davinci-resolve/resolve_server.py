@@ -121,7 +121,7 @@ def _resolve_diagnose(msg):
         f'  2. FREE Resolve: start the bridge from inside Resolve —\n'
         f'     Workspace -> Scripts -> Utility -> resolve_bridge, then retry\n'
         f'  3. STUDIO: Preferences (Ctrl+,) -> System -> General ->\n'
-        f'     "External scripting using" -> Local -> Save, then run /resolve in Axion'
+        f'     "External scripting using" -> Local -> Save, then run /resolve in Sennoric'
     )
 
 def require_resolve():

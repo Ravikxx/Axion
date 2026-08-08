@@ -1,7 +1,7 @@
 // Consolidation prompt builder — adapted from openclaude's
 // consolidationPrompt.ts. Drops the openclaude memdir-specific guidance
-// (Axion's memoryStore is a flat dir with INDEX.md) and points the
-// consolidation sub-agent at the chats directory Axion actually persists
+// (Sennoric's memoryStore is a flat dir with INDEX.md) and points the
+// consolidation sub-agent at the chats directory Sennoric actually persists
 // sessions to. Used by the optional LLM-driven consolidation path
 // (`buildConsolidationLLMPrompt`); the heuristic path synthesizes a digest
 // directly without invoking a model.

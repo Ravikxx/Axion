@@ -320,7 +320,7 @@ export const AGENTS = (() => {
 export const MAX_TOOL_CONCURRENCY = parseInt(process.env.AXION_MAX_TOOL_CONCURRENCY, 10) || 10;
 
 // Ordered list of model aliases for automatic rate-limit fallback.
-// When the active model hits 429, Axion tries the next model in this list.
+// When the active model hits 429, Sennoric tries the next model in this list.
 // Set via AXION_FALLBACK_CHAIN env var (comma-separated) or directly in config.
 export function getProviderFallbackChain() {
   const env = process.env.AXION_FALLBACK_CHAIN;

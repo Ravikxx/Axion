@@ -131,7 +131,7 @@ export function ensureWorkspaceGrant(sessionId = 'main', root = getWorkspaceRoot
   if (revokedSessions.has(sessionId)) return null;
   const existing = getWorkspaceGrant(sessionId);
   if (existing && existing.root === canonicalizeWorkspaceRoot(root)) return existing;
-  // Full preserves existing Axion behavior for callers that have not added a
+  // Full preserves existing Sennoric behavior for callers that have not added a
   // scope picker yet; containment and the permanent approval floor still apply.
   return grantWorkspace({ sessionId, root, scope: 'full' });
 }

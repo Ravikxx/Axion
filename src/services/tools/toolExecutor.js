@@ -195,7 +195,7 @@ export class StreamingToolExecutor {
 }
 
 /**
- * Create a StreamingToolExecutor with Axion's default settings.
+ * Create a StreamingToolExecutor with Sennoric's default settings.
  */
 export function createToolExecutor(opts = {}) {
   return new StreamingToolExecutor({

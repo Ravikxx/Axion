@@ -771,7 +771,7 @@ def main():
         # binding, leaving the port free for a bridge that can actually reach
         # Resolve.
         print("=" * 64)
-        print("Axion Resolve bridge: no scripting handle in this launch context —")
+        print("Sennoric Resolve bridge: no scripting handle in this launch context —")
         print("exiting so it can't occupy port 9876 and mask the real bridge.")
         print("")
         print("Start the bridge from INSIDE Resolve so it gets a live handle:")
@@ -798,7 +798,7 @@ def main():
     server.listen(4)
     server.settimeout(1.0)
     print("Bridge listening on 127.0.0.1:" + str(BRIDGE_PORT))
-    print("Axion MCP server can now connect. Keep this window/console open.")
+    print("Sennoric MCP server can now connect. Keep this window/console open.")
     try:
         while True:
             try:

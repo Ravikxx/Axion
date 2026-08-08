@@ -84,14 +84,14 @@ test('web server protects the extension config route end to end', async (t) => {
 
   const rejected = await fetch(`http://127.0.0.1:${port}/api/extension-config`, {
     method: 'POST',
-    headers: { 'X-Axion-Import-Token': 'wrong' },
+    headers: { 'X-Sennoric-Import-Token': 'wrong' },
   });
   assert.equal(rejected.status, 403);
   assert.equal(rejected.headers.get('cache-control'), 'no-store, max-age=0');
 
   const allowed = await fetch(`http://127.0.0.1:${port}/api/extension-config`, {
     method: 'POST',
-    headers: { 'X-Axion-Import-Token': importToken },
+    headers: { 'X-Sennoric-Import-Token': importToken },
   });
   assert.equal(allowed.status, 200);
   assert.equal(allowed.headers.get('cache-control'), 'no-store, max-age=0');

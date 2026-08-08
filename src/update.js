@@ -20,7 +20,7 @@ export function runUpdate() {
     ? JSON.parse(readFileSync(pkgPath, 'utf8')).version || '?'
     : '?';
 
-  process.stdout.write('\n\x1b[1m◈ Axion Update\x1b[0m\n');
+  process.stdout.write('\n\x1b[1m◈ Sennoric Update\x1b[0m\n');
 
   // Capture the local HEAD before pulling so we can show a changelog after
   let oldHead = '';
@@ -59,7 +59,7 @@ export function runUpdate() {
 
   process.stdout.write(
     before !== after
-      ? `\n  \x1b[32m${before} → ${after}\x1b[0m  Axion updated successfully\n`
+      ? `\n  \x1b[32m${before} → ${after}\x1b[0m  Sennoric updated successfully\n`
       : `\n  \x1b[32mAxion is up to date (${after})\x1b[0m\n`
   );
 

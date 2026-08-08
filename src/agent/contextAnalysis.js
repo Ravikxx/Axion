@@ -1,7 +1,7 @@
 // Context budget analysis — decompose the context window into categorized
 // token usage with a three-tier accuracy fallback, then emit actionable
 // suggestions. Mirrors openclaudeAX/src/utils/analyzeContext.ts (1437 lines)
-// in a lean form suitable for Axion's runtime.
+// in a lean form suitable for Sennoric's runtime.
 
 import { estimateTokens } from '../utils/tokenEstimate.js';
 

@@ -1,4 +1,4 @@
-# Axion bash completion
+# Sennoric bash completion
 # Source this file or add to ~/.bashrc:
 #   source /path/to/axion/completions/axion.bash
 

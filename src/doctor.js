@@ -49,7 +49,7 @@ function checkApiKeys() {
     if (API_KEYS[key]) { ok(label); anySet = true; }
     else warn(`${label} — not set  (use /api or set env var)`);
   }
-  if (!anySet) fail('No API keys configured — set at least one to use Axion');
+  if (!anySet) fail('No API keys configured — set at least one to use Sennoric');
 }
 
 function checkGit() {
@@ -153,7 +153,7 @@ function checkAxionDir() {
   else warn('~/.axion not found — will be created on first run');
 
   if (existsSync(join(dir, 'config.json'))) ok('Saved config found');
-  else warn('No saved config yet — use /api, /model etc. inside Axion to persist settings');
+  else warn('No saved config yet — use /api, /model etc. inside Sennoric to persist settings');
 }
 
 function pingMcpServer(name, config) {
@@ -281,7 +281,7 @@ function checkUpdates() {
 // ── Entry point ───────────────────────────────────────────────────────────────
 
 export async function runDoctor() {
-  process.stdout.write('\n\x1b[1m◈ Axion Doctor\x1b[0m\n');
+  process.stdout.write('\n\x1b[1m◈ Sennoric Doctor\x1b[0m\n');
   await checkNpmVersion();
   checkNode();
   checkApiKeys();

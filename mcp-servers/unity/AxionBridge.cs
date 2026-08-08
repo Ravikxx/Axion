@@ -1,11 +1,11 @@
-// AxionBridge.cs — Axion's Unity editor bridge.
+// AxionBridge.cs — Sennoric's Unity editor bridge.
 //
 // Place this file in an Editor/ folder anywhere inside your project's Assets/
 // (e.g. Assets/Editor/AxionBridge.cs). Unity compiles it automatically and the
 // bridge starts listening on 127.0.0.1:9877 (override with the AXION_UNITY_PORT
 // environment variable, set before launching Unity).
 //
-// Protocol: newline-delimited JSON-RPC 2.0 over TCP. The Axion MCP server
+// Protocol: newline-delimited JSON-RPC 2.0 over TCP. The Sennoric MCP server
 // (unity_server.py) forwards tools/call requests here; all Unity API work is
 // marshaled onto the main thread via EditorApplication.update, because Unity
 // APIs throw when called from any other thread.
@@ -300,7 +300,7 @@ public static class AxionBridge
         }
         if (TryVec3(args, "position", out var pos)) go.transform.position = pos;
 
-        Undo.RegisterCreatedObjectUndo(go, "Axion create " + go.name);
+        Undo.RegisterCreatedObjectUndo(go, "Sennoric create " + go.name);
         Selection.activeGameObject = go;
         return $"Created {go.name} at {go.transform.position}";
     }
@@ -320,7 +320,7 @@ public static class AxionBridge
         var go = FindByPath(path);
         if (go == null) throw new Exception($"GameObject not found: {path}");
         var t = go.transform;
-        Undo.RecordObject(t, "Axion set transform");
+        Undo.RecordObject(t, "Sennoric set transform");
         var applied = new List<string>();
         if (TryVec3(args, "position", out var pos)) { t.position = pos; applied.Add($"position={pos}"); }
         if (TryVec3(args, "rotation", out var rot)) { t.eulerAngles = rot; applied.Add($"rotation={rot}"); }

@@ -103,7 +103,7 @@ async function callVideoModel({ alias, url, base64, mediaType, prompt }) {
 }
 
 /**
- * Analyze a video file and return a TEXT description/answer. The Axion agent
+ * Analyze a video file and return a TEXT description/answer. The Sennoric agent
  * turns that text into actions (e.g. DaVinci Resolve tool calls) — the video
  * model is an analyzer, not a tool-caller.
  *

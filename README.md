@@ -1,15 +1,15 @@
 <p align="center">
-  <img src="assets/logo.svg" width="96" height="96" alt="Axion logo">
+  <img src="assets/logo.svg" width="96" height="96" alt="Sennoric logo">
 </p>
 
-# Axion
+# Sennoric
 
-**Axion** is an open-source AI coding agent ecosystem built by Axion Labs. It includes a terminal CLI, a Chrome extension, a web UI, and an IDE integration — all sharing the same models, tools, and memory.
+**Sennoric** is an open-source AI coding agent ecosystem built by Sennoric Labs. It includes a terminal CLI, a Chrome extension, a web UI, and an IDE integration — all sharing the same models, tools, and memory.
 
 > **v2.0** — the terminal UI is a modern, cell-rendered TUI (powered by [OpenTUI](https://github.com/sst/opentui)) with **tabs**, mouse support, inline diff review, `@file` mentions, terminal charts, and crash-safe session restore. It runs from source (no build step).
 
 The deployed public website is maintained separately in
-[Ravikxx/Axion-Website](https://github.com/Ravikxx/Axion-Website).
+[Ravikxx/Sennoric-Website](https://github.com/Ravikxx/Sennoric-Website).
 
 ---
 
@@ -26,7 +26,7 @@ The deployed public website is maintained separately in
 | **Discord Bot** | Chat with the agent via Discord DMs (`/discord start`) |
 | **Dataset Collection** | Contribute sessions to improve future models (`/contribute`) |
 | **Plugins** | Extend the agent with browser, Docker, GitHub, and database tools (`/plugin`) |
-| **Axion Vision** | Free image understanding & OCR endpoint — read text in screenshots, analyse images |
+| **Sennoric Vision** | Free image understanding & OCR endpoint — read text in screenshots, analyse images |
 
 ---
 
@@ -141,8 +141,8 @@ Or set them live inside the CLI:
 
 | Alias | Provider | Notes |
 |---|---|---|
-| `lumen` | Axion Labs | Lumen 1.2.5 — live. Safety-retrained 1.3 in progress; see [safety report](https://axionlabs.dev/lumen-suspension). |
-| `veil` | Axion Labs | No key required — free but slow (up to 100s) |
+| `lumen` | Sennoric Labs | Lumen 1.2.5 — live. Safety-retrained 1.3 in progress; see [safety report](https://axionlabs.dev/lumen-suspension). |
+| `veil` | Sennoric Labs | No key required — free but slow (up to 100s) |
 | `openrouter` / `or` | OpenRouter | 200+ models via one key |
 | `fable` | Anthropic | claude-fable-5 |
 | `claude` | Anthropic | claude-sonnet-4-6 |
@@ -298,7 +298,7 @@ Switch with `/mode auto` or press `Ctrl+P` to cycle.
 
 # Blender
 /blender setup                     show Blender add-on install instructions
-/blender connect                   connect Blender MCP server to Axion
+/blender connect                   connect Blender MCP server to Sennoric
 
 # OAuth
 /oauth connect <service>           connect GitHub · Google · Notion · Slack
@@ -381,7 +381,7 @@ AXION_GOOGLE_CLIENT_SECRET=...
 
 ## Dataset Contribution
 
-Help improve future Axion models by sharing interesting sessions. Axion automatically suggests contributing after complex or frustrating conversations.
+Help improve future Sennoric models by sharing interesting sessions. Sennoric automatically suggests contributing after complex or frustrating conversations.
 
 ```
 /contribute           # share this session
@@ -389,7 +389,7 @@ Help improve future Axion models by sharing interesting sessions. Axion automati
 /contribute optout    # never ask again (run with "off" to re-enable)
 ```
 
-Sessions are sent to the Axion Labs collector automatically — no setup needed. If you're offline, they're saved locally in `~/.axion/donations/` and uploaded the next time Axion starts with a connection.
+Sessions are sent to the Sennoric Labs collector automatically — no setup needed. If you're offline, they're saved locally in `~/.axion/donations/` and uploaded the next time Sennoric starts with a connection.
 
 ### axion-collect (local daemon)
 
@@ -401,13 +401,13 @@ axion-collect --port 12345  # custom port
 axion-collect --out ~/data  # custom output directory
 ```
 
-Axion checks for the daemon on startup and routes sessions to it first when running.
+Sennoric checks for the daemon on startup and routes sessions to it first when running.
 
 ---
 
 ## Discord Bot
 
-Chat with the Axion agent directly from Discord DMs.
+Chat with the Sennoric agent directly from Discord DMs.
 
 ### Setup
 1. Create a bot at [discord.com/developers](https://discord.com/developers/applications)
@@ -443,13 +443,13 @@ axion-discord --model claude
 
 ## Chrome Extension
 
-The Chrome extension is maintained in its own repository: [Ravikxx/Axion-Chrome-Extension](https://github.com/Ravikxx/Axion-Chrome-Extension).
+The Chrome extension is maintained in its own repository: [Ravikxx/Sennoric-Chrome-Extension](https://github.com/Ravikxx/Sennoric-Chrome-Extension).
 
 1. Open `chrome://extensions`
 2. Enable **Developer mode**
 3. Click **Load unpacked**
 4. Clone or download the extension repository and select its root folder
-5. Click the Axion icon or press `Alt+Shift+A`
+5. Click the Sennoric icon or press `Alt+Shift+A`
 
 The extension sidebar lets you ask about the current page, run browser automation, take screenshots, and chat using any supported model. To import the CLI's saved provider configuration into the extension, start the local web surface and paste its short-lived import URL and token into the extension settings:
 
@@ -457,7 +457,7 @@ The extension sidebar lets you ask about the current page, run browser automatio
 /web
 ```
 
-Axion Desktop can also pair with the extension for browser tools through the authenticated loopback connection shown in Desktop settings.
+Sennoric Desktop can also pair with the extension for browser tools through the authenticated loopback connection shown in Desktop settings.
 
 ---
 
@@ -475,7 +475,7 @@ The web UI shares the same agent session as the CLI.
 
 ## MCP Servers
 
-Axion includes a built-in MCP marketplace with 13 curated servers:
+Sennoric includes a built-in MCP marketplace with 13 curated servers:
 
 ```
 /mcp browse               # see all available servers
@@ -499,7 +499,7 @@ Available marketplace IDs: `github`, `filesystem`, `fetch`, `postgres`, `sqlite`
 
 ---
 
-## Axion Vision
+## Sennoric Vision
 
 A free image understanding & OCR endpoint, hosted separately from Lumen.
 
@@ -558,8 +558,8 @@ Type any command in the CLI. All commands start with `/`. Tab completes the comm
 | `/model <name>` | Switch model (e.g. `claude`, `gpt`, `lumen`, `gemini`, `groq`) |
 | `/models` | List all available models and custom endpoints |
 | `/api <provider> <key>` | Set an API key (`claude`, `gpt`, `groq`, `mistral`, `gemini`, `glm`, `openrouter`) |
-| `/axion-key <key>` | Save your Axion API key for Lumen access |
-| `/axion-key remove` | Clear your Axion API key |
+| `/axion-key <key>` | Save your Sennoric API key for Lumen access |
+| `/axion-key remove` | Clear your Sennoric API key |
 | `/endpoint <name> <url> [model] [key]` | Add a custom OpenAI-compatible endpoint |
 | `/thinking [on\|off\|<tokens>]` | Toggle extended thinking (Claude only) |
 
@@ -655,4 +655,4 @@ Type any command in the CLI. All commands start with `/`. Tab completes the comm
 
 ## License
 
-MIT — made by [Axion Labs](https://github.com/AxionLabsAI)
+MIT — made by [Sennoric Labs](https://github.com/AxionLabsAI)

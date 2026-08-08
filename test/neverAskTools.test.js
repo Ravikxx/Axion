@@ -8,7 +8,7 @@ const agentSource = readFileSync(new URL('../src/agent/agent.js', import.meta.ur
 
 // User-reported bug: "the permissions thing still shows... where it can't
 // do anything except artifacts, which don't require asking ever." Cloud
-// artifact tools only touch the signed-in user's own Axion account, are
+// artifact tools only touch the signed-in user's own Sennoric account, are
 // fully reversible (including via delete_cloud_artifact itself), and never
 // touch the local filesystem or another user's data — so unlike
 // run_command/delete_file, asking permission adds friction with no matching

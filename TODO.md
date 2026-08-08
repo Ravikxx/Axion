@@ -1,6 +1,6 @@
-# Axion TODO — next features
+# Sennoric TODO — next features
 
-- **GitHub repo integration (Axion Electron app)** — let Axion select and operate directly inside a local
+- **GitHub repo integration (Sennoric Electron app)** — let Sennoric select and operate directly inside a local
   or GitHub-hosted repository from the desktop app.
   - Explore the integration split: use the local Git CLI for working-tree operations and the GitHub API
     for remote-only features such as repository discovery, pull requests, issues, and authentication.

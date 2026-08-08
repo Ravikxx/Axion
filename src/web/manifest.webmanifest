@@ -1,7 +1,7 @@
 {
-  "name": "Axion",
-  "short_name": "Axion",
-  "description": "AI chat powered by Axion",
+  "name": "Sennoric",
+  "short_name": "Sennoric",
+  "description": "AI chat powered by Sennoric",
   "display": "standalone",
   "start_url": "/",
   "scope": "/",

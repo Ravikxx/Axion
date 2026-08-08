@@ -1,7 +1,7 @@
 {
   "name": "axion-api-proxy",
   "version": "1.0.0",
-  "description": "OpenAI-compatible API proxy for Axion Labs / Lumen",
+  "description": "OpenAI-compatible API proxy for Sennoric Labs / Lumen",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

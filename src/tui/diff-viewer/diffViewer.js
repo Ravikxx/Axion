@@ -1,8 +1,8 @@
-// Text-oriented interactive diff viewer for the Axion TUI.
+// Text-oriented interactive diff viewer for the Sennoric TUI.
 //
 // Ports opencodeAX/packages/tui/src/feature-plugins/system/diff-viewer.tsx
 // (a Solid-based pane UI) into a print-friendly text renderer that runs
-// inside the existing Axion chat surface (mirrors how /context is rendered
+// inside the existing Sennoric chat surface (mirrors how /context is rendered
 // via contextViz.js). Supports the three diff sources from the reference:
 // working tree, main branch, and last-turn (snapshot-based) diffs, and
 // renders a file tree sidebar + split or unified per-file diff. Hunk markers

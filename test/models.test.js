@@ -82,7 +82,7 @@ test('context windows are positive integers', () => {
   }
 });
 
-// ── Axion auth resolver seam ──────────────────────────────────────────────
+// ── Sennoric auth resolver seam ──────────────────────────────────────────────
 //
 // getAxionKey() reads a real ~/.axion/config.json, so these tests avoid
 // asserting a specific persisted-key value (environment-dependent) and
@@ -90,7 +90,7 @@ test('context windows are positive integers', () => {
 // and that a falsy resolver result is indistinguishable from no resolver at
 // all having been registered.
 
-test('createClient prefers the registered Axion auth resolver for lumen/veil/axion-vision', () => {
+test('createClient prefers the registered Sennoric auth resolver for lumen/veil/axion-vision', () => {
   setAxionAuthResolver(() => 'resolver-supplied-token');
   try {
     assert.equal(createClient('lumen').client.apiKey, 'resolver-supplied-token');
@@ -125,7 +125,7 @@ test('setAxionAuthResolver ignores a non-function argument instead of throwing',
   setAxionAuthResolver(null);
 });
 
-test('providers unrelated to Axion accounts never see the resolver value', () => {
+test('providers unrelated to Sennoric accounts never see the resolver value', () => {
   setAxionAuthResolver(() => 'should-never-leak-here');
   try {
     let result;

@@ -1,5 +1,5 @@
 // Framework-agnostic keymap engine — adapted from opencode's keymap.tsx to
-// Axion's React + useKeyboard model. No UI imports.
+// Sennoric's React + useKeyboard model. No UI imports.
 //
 // Capabilities (minimal port):
 //   • Command registration with metadata (name, slashName, category, keybinding)

@@ -7,7 +7,7 @@ Usage
   python3 unity_server.py
 
 Requires the Unity editor open on a project that contains
-`AxionBridge.cs` in an `Editor/` folder (Axion copies it there via /unity).
+`AxionBridge.cs` in an `Editor/` folder (Sennoric copies it there via /unity).
 The bridge listens on localhost:9877.
 
 Environment
@@ -82,7 +82,7 @@ NO_BRIDGE_HELP = (
     'Make sure:\n'
     '  1. The Unity editor is open on your project\n'
     '  2. AxionBridge.cs is in an Editor/ folder of that project\n'
-    '     (run /unity in Axion to see setup instructions)\n'
+    '     (run /unity in Sennoric to see setup instructions)\n'
     '  3. The Unity console shows "[AxionBridge] listening on 127.0.0.1:'
     f'{BRIDGE_PORT}"\n'
     'Note: the bridge restarts automatically after script compilation and '
