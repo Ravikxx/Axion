@@ -28,6 +28,35 @@ function saveTokens(tokens) {
   writeJsonAtomic(TOKEN_FILE, encrypted);
 }
 
+// Stores a provider response obtained through another trusted OAuth transport
+// (for example the Desktop app's server-brokered flow). Keeping this in the
+// shared OAuth module means the agent, MCP adapters, and Desktop all read the
+// same encrypted credential record without exposing tokens to the renderer.
+export function storeOAuthToken(service, tokenData) {
+  const cfg = OAUTH_PROVIDERS[service];
+  if (!cfg) throw new Error(`Unknown service "${service}"`);
+  if (!tokenData || typeof tokenData.access_token !== 'string' || !tokenData.access_token.trim()) {
+    throw new Error(`No access token returned for "${service}"`);
+  }
+
+  const tokens = loadTokens();
+  tokens[service] = {
+    accessToken:  tokenData.access_token.trim(),
+    refreshToken: typeof tokenData.refresh_token === 'string' && tokenData.refresh_token
+      ? tokenData.refresh_token
+      : null,
+    expiresAt: Number.isFinite(Number(tokenData.expires_in))
+      ? Date.now() + Number(tokenData.expires_in) * 1000
+      : null,
+    connectedAt: new Date().toISOString(),
+    scopes: typeof tokenData.scope === 'string' && tokenData.scope
+      ? tokenData.scope
+      : cfg.scopes || 'custom',
+  };
+  saveTokens(tokens);
+  return tokens[service];
+}
+
 export function getOAuthToken(service) {
   return loadTokens()[service] || null;
 }
@@ -178,15 +207,7 @@ export async function connectOAuth(service, { onStatus, onToken, pastedToken } =
     tokenData = await deviceFlow(service, onStatus);
   }
 
-  const tokens = loadTokens();
-  tokens[service] = {
-    accessToken:  tokenData.access_token,
-    refreshToken: tokenData.refresh_token || null,
-    expiresAt:    tokenData.expires_in ? Date.now() + tokenData.expires_in * 1000 : null,
-    connectedAt:  new Date().toISOString(),
-    scopes:       tokenData.scope || cfg.scopes || 'custom',
-  };
-  saveTokens(tokens);
+  storeOAuthToken(service, tokenData);
 
   onToken?.(tokenData.access_token);
   return tokenData.access_token;

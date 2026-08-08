@@ -582,7 +582,148 @@ async function purgeExpiredDesktopAuthCodes(db) {
   // "invalid" rather than vanishing into a foreign-key error, then dropped.
   const cutoff = Date.now() - DESKTOP_CODE_TTL
   await db.prepare('DELETE FROM desktop_auth_codes WHERE expires_at < ?').bind(cutoff).run()
+  await db.prepare('DELETE FROM desktop_integration_codes WHERE expires_at < ?').bind(cutoff).run()
 }
+
+// ── Desktop integration OAuth broker ─────────────────────────────────────
+// Native apps cannot keep an OAuth client secret. The Worker already owns
+// the registered Google/GitHub credentials, so it performs the provider code
+// exchange and hands Desktop a short-lived, PKCE-bound one-time code. Provider
+// tokens are encrypted even during their brief stay in D1 and never travel in
+// a URL, renderer process, or log.
+
+const DESKTOP_INTEGRATION_CODE_TTL = 5 * 60 * 1000
+const DESKTOP_INTEGRATION_PROVIDERS = {
+  github: {
+    authURL: 'https://github.com/login/oauth/authorize',
+    redirectUri: 'https://api.amplifiedsmp.org/auth/github/callback',
+    scopes: 'repo read:org read:user user:email',
+  },
+  google: {
+    authURL: 'https://accounts.google.com/o/oauth2/v2/auth',
+    redirectUri: 'https://api.amplifiedsmp.org/auth/google/callback',
+    scopes: 'https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/calendar.events openid email profile',
+  },
+}
+
+function bytesToBase64(bytes) {
+  return btoa(String.fromCharCode(...bytes))
+}
+
+async function desktopIntegrationKey(secret, usages) {
+  const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(secret))
+  return crypto.subtle.importKey('raw', digest, { name: 'AES-GCM' }, false, usages)
+}
+
+async function encryptDesktopIntegrationToken(value, secret) {
+  const iv = crypto.getRandomValues(new Uint8Array(12))
+  const key = await desktopIntegrationKey(secret, ['encrypt'])
+  const ciphertext = new Uint8Array(await crypto.subtle.encrypt(
+    { name: 'AES-GCM', iv }, key, new TextEncoder().encode(JSON.stringify(value))
+  ))
+  return `${bytesToBase64(iv)}.${bytesToBase64(ciphertext)}`
+}
+
+async function decryptDesktopIntegrationToken(value, secret) {
+  const [ivPart, ciphertextPart] = String(value || '').split('.')
+  if (!ivPart || !ciphertextPart) throw new Error('Malformed integration token payload')
+  const iv = Uint8Array.from(atob(ivPart), ch => ch.charCodeAt(0))
+  const ciphertext = Uint8Array.from(atob(ciphertextPart), ch => ch.charCodeAt(0))
+  const key = await desktopIntegrationKey(secret, ['decrypt'])
+  const plaintext = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, key, ciphertext)
+  return JSON.parse(new TextDecoder().decode(plaintext))
+}
+
+function desktopIntegrationAuthUrl(provider, env, state) {
+  const cfg = DESKTOP_INTEGRATION_PROVIDERS[provider]
+  const clientId = provider === 'github' ? env.GITHUB_CLIENT_ID : env.GOOGLE_CLIENT_ID
+  if (!cfg || !clientId) return null
+  const params = new URLSearchParams({
+    client_id: clientId,
+    redirect_uri: cfg.redirectUri,
+    response_type: 'code',
+    scope: cfg.scopes,
+    state,
+  })
+  if (provider === 'google') {
+    params.set('access_type', 'offline')
+    params.set('prompt', 'consent select_account')
+  }
+  return `${cfg.authURL}?${params}`
+}
+
+app.post('/auth/desktop/integrations/:provider/start', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Sign in to Sennoric before connecting an app.' }, 401)
+  const provider = c.req.param('provider')
+  if (!DESKTOP_INTEGRATION_PROVIDERS[provider]) return json({ error: 'Unsupported connection.' }, 404)
+  const body = await c.req.json().catch(() => ({}))
+  const challenge = String(body.code_challenge || '')
+  const clientState = String(body.state || '')
+  if (!/^[A-Za-z0-9\-_]{43}$/.test(challenge) || !/^[A-Za-z0-9\-_]{20,128}$/.test(clientState)) {
+    return json({ error: 'Malformed connection request.' }, 400)
+  }
+  const state = await signState({
+    action: 'desktop_integration', uid: user.id, provider,
+    code_challenge: challenge, client_state: clientState,
+    exp: Date.now() + DESKTOP_INTEGRATION_CODE_TTL,
+  }, c.env.TOKEN_SECRET)
+  const authorizationUrl = desktopIntegrationAuthUrl(provider, c.env, state)
+  if (!authorizationUrl) return json({ error: `${provider === 'github' ? 'GitHub' : 'Google'} connections are temporarily unavailable.` }, 503)
+  return json({ authorization_url: authorizationUrl })
+})
+
+async function finishDesktopIntegration(c, state, provider, tokenData) {
+  if (state?.action !== 'desktop_integration' || state.provider !== provider || !state.uid) return null
+  const user = await c.env.DB.prepare('SELECT id, banned FROM users WHERE id=?').bind(state.uid).first()
+  if (!user || user.banned || !tokenData?.access_token) {
+    return new Response('Could not complete this connection. Return to Sennoric and try again.', { status: 400 })
+  }
+  const code = bytesToHex(crypto.getRandomValues(new Uint8Array(32)))
+  const now = Date.now()
+  const encrypted = await encryptDesktopIntegrationToken(tokenData, c.env.TOKEN_SECRET)
+  await c.env.DB.prepare(
+    'INSERT INTO desktop_integration_codes (code, user_id, provider, token_payload, code_challenge, created_at, expires_at) VALUES (?,?,?,?,?,?,?)'
+  ).bind(code, user.id, provider, encrypted, state.code_challenge, now, now + DESKTOP_INTEGRATION_CODE_TTL).run()
+  const callback = new URL('sennoric://integration')
+  callback.searchParams.set('provider', provider)
+  callback.searchParams.set('code', code)
+  callback.searchParams.set('state', state.client_state)
+  return new Response(null, { status: 302, headers: { Location: callback.toString() } })
+}
+
+function failDesktopIntegration(state, provider, error = 'access_denied') {
+  if (state?.action !== 'desktop_integration' || state.provider !== provider) return null
+  const callback = new URL('sennoric://integration')
+  callback.searchParams.set('provider', provider)
+  callback.searchParams.set('state', state.client_state || '')
+  callback.searchParams.set('error', error)
+  return new Response(null, { status: 302, headers: { Location: callback.toString() } })
+}
+
+app.post('/auth/desktop/integrations/token', async (c) => {
+  const user = await requireAuth(c)
+  if (!user) return json({ error: 'Sign in to Sennoric before connecting an app.' }, 401)
+  const body = await c.req.json().catch(() => ({}))
+  const code = String(body.code || '')
+  const verifier = String(body.code_verifier || '')
+  const provider = String(body.provider || '')
+  const invalid = () => json({ error: 'Invalid or expired connection code.' }, 400)
+  if (!/^[a-f0-9]{64}$/.test(code) || !/^[A-Za-z0-9\-._~]{43,128}$/.test(verifier)) return invalid()
+  const row = await c.env.DB.prepare('SELECT * FROM desktop_integration_codes WHERE code=?').bind(code).first()
+  if (!row || row.redeemed_at || row.expires_at < Date.now() || row.user_id !== user.id || row.provider !== provider) return invalid()
+  if (!timingSafeEqualStr(await sha256Base64Url(verifier), row.code_challenge)) return invalid()
+  const claim = await c.env.DB.prepare(
+    'UPDATE desktop_integration_codes SET redeemed_at=? WHERE code=? AND redeemed_at IS NULL'
+  ).bind(Date.now(), code).run()
+  if (!claim.meta?.changes) return invalid()
+  try {
+    const token = await decryptDesktopIntegrationToken(row.token_payload, c.env.TOKEN_SECRET)
+    return json({ token })
+  } catch {
+    return invalid()
+  }
+})
 
 // ── OAuth shared helper ────────────────────────────────────────────────────
 
@@ -797,7 +938,12 @@ app.get('/auth/google', (c) => {
 
 app.get('/auth/google/callback', async (c) => {
   const code = c.req.query('code')
-  if (!code) return new Response('Missing code', { status: 400 })
+  if (!code) {
+    const desktopFailure = failDesktopIntegration(
+      await parseToken(c.req.query('state'), c.env.TOKEN_SECRET), 'google', c.req.query('error') || 'access_denied'
+    )
+    return desktopFailure || new Response('Missing code', { status: 400 })
+  }
   const return_to = decodeState(c.req.query('state'))
 
   const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
@@ -813,6 +959,10 @@ app.get('/auth/google/callback', async (c) => {
   })
   const tokens = await tokenRes.json()
   if (!tokens.access_token) return new Response('OAuth failed', { status: 400 })
+
+  const signedState = await parseToken(c.req.query('state'), c.env.TOKEN_SECRET)
+  const desktopIntegration = await finishDesktopIntegration(c, signedState, 'google', tokens)
+  if (desktopIntegration) return desktopIntegration
 
   const userRes = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
     headers: { Authorization: `Bearer ${tokens.access_token}` },
@@ -847,7 +997,12 @@ app.get('/auth/github', (c) => {
 
 app.get('/auth/github/callback', async (c) => {
   const code = c.req.query('code')
-  if (!code) return new Response('Missing code', { status: 400 })
+  if (!code) {
+    const desktopFailure = failDesktopIntegration(
+      await parseToken(c.req.query('state'), c.env.TOKEN_SECRET), 'github', c.req.query('error') || 'access_denied'
+    )
+    return desktopFailure || new Response('Missing code', { status: 400 })
+  }
   const return_to = decodeState(c.req.query('state'))
 
   const tokenRes = await fetch('https://github.com/login/oauth/access_token', {
@@ -855,8 +1010,13 @@ app.get('/auth/github/callback', async (c) => {
     headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
     body: JSON.stringify({ client_id: c.env.GITHUB_CLIENT_ID, client_secret: c.env.GITHUB_CLIENT_SECRET, code }),
   })
-  const { access_token } = await tokenRes.json()
+  const githubTokens = await tokenRes.json()
+  const { access_token } = githubTokens
   if (!access_token) return new Response('GitHub OAuth failed', { status: 400 })
+
+  const signedState = await parseToken(c.req.query('state'), c.env.TOKEN_SECRET)
+  const desktopIntegration = await finishDesktopIntegration(c, signedState, 'github', githubTokens)
+  if (desktopIntegration) return desktopIntegration
 
   const [profileRes, emailsRes] = await Promise.all([
     fetch('https://api.github.com/user', { headers: { Authorization: `Bearer ${access_token}`, 'User-Agent': 'axion-api' } }),
