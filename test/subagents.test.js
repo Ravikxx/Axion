@@ -19,7 +19,7 @@ test('import Agent', async () => {
 test('sub-agents inherit the parent repository root, scope, and expiration', async () => {
   const root = mkdtempSync(join(tmpdir(), 'axion-sub-scope-'));
   const label = `parent-scope-${Date.now()}`;
-  setWorkspaceRoot(label, root);
+  const canonicalRoot = setWorkspaceRoot(label, root);
   const expiresAt = new Date(Date.now() + 60_000).toISOString();
   grantWorkspace({ sessionId: label, root, scope: 'read-only', expiresAt, repositoryId: 'repo-scope-test' });
   const parent = new Agent({ modelAlias: 'test-model', mode: 'auto', label, onTokens: () => {} });
@@ -34,7 +34,7 @@ test('sub-agents inherit the parent repository root, scope, and expiration', asy
   try {
     await parent._spawnAgents([{ task: 'inspect scope', label: 'scope-child' }]);
     assert.equal(inherited.length, 1);
-    assert.equal(inherited[0].root, root);
+    assert.equal(inherited[0].root, canonicalRoot);
     assert.equal(inherited[0].scope, 'read-only');
     assert.equal(inherited[0].expiresAt, expiresAt);
     assert.equal(inherited[0].repositoryId, 'repo-scope-test');

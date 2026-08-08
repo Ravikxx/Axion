@@ -76,6 +76,13 @@ class D1TestDatabase {
         user_id TEXT PRIMARY KEY,
         selected_model TEXT,
         onboarding_completed_at INTEGER,
+        legal_accepted_at INTEGER,
+        terms_version TEXT,
+        privacy_version TEXT,
+        onboarding_step TEXT,
+        onboarding_tour TEXT,
+        onboarding_preferences TEXT,
+        revision INTEGER NOT NULL DEFAULT 0,
         updated INTEGER NOT NULL
       );
       CREATE TABLE shares (
@@ -896,7 +903,19 @@ test('GET /settings returns defaults when no row exists yet', async () => {
   const { env, headers } = await setup()
   const res = await app.request('/settings', { headers }, env)
   assert.equal(res.status, 200)
-  assert.deepEqual(await res.json(), { selected_model: null, onboarding_completed_at: null, updated: null })
+  assert.deepEqual(await res.json(), {
+    selected_model: null,
+    legal_accepted_at: null,
+    legal_current: false,
+    terms_version: null,
+    privacy_version: null,
+    onboarding_step: null,
+    onboarding_tour: null,
+    onboarding_preferences: null,
+    onboarding_completed_at: null,
+    revision: 0,
+    updated: null,
+  })
 })
 
 test('PUT /settings creates the row on first write and GET reflects it', async () => {
@@ -916,8 +935,15 @@ test('PUT /settings creates the row on first write and GET reflects it', async (
 test('PUT /settings with only onboarding_completed does not clobber a previously set model', async () => {
   const { env, headers } = await setup()
   await app.request('/settings', { method: 'PUT', headers, body: JSON.stringify({ selected_model: 'lumen-pro' }) }, env)
+  const accepted = await app.request('/settings', {
+    method: 'PUT', headers, body: JSON.stringify({
+      expected_revision: 1,
+      legal_acceptance: { age_confirmed: true, terms_accepted: true, privacy_accepted: true },
+    }),
+  }, env)
+  assert.equal(accepted.status, 200)
   const res = await app.request('/settings', {
-    method: 'PUT', headers, body: JSON.stringify({ onboarding_completed: true }),
+    method: 'PUT', headers, body: JSON.stringify({ expected_revision: 2, onboarding_completed: true }),
   }, env)
   const body = await res.json()
   assert.equal(body.selected_model, 'lumen-pro')
@@ -928,6 +954,119 @@ test('PUT /settings with an empty body is rejected', async () => {
   const { env, headers } = await setup()
   const res = await app.request('/settings', { method: 'PUT', headers, body: JSON.stringify({}) }, env)
   assert.equal(res.status, 400)
+})
+
+test('local onboarding completion cannot bypass server-authoritative legal acceptance', async () => {
+  const { env, headers } = await setup()
+  const res = await app.request('/settings', {
+    method: 'PUT', headers, body: JSON.stringify({
+      expected_revision: 0,
+      onboarding: {
+        step: 'reference', tour: 'core', completed: true,
+        preferences: { theme: 'dark', notifications: ['desktop'], connections: [], permission: 'auto' },
+      },
+    }),
+  }, env)
+  assert.equal(res.status, 403)
+  assert.match((await res.json()).error, /legal acceptance/i)
+})
+
+test('legal acceptance records policy versions and allows revision-checked onboarding progress', async () => {
+  const { env, headers } = await setup()
+  const accepted = await app.request('/settings', {
+    method: 'PUT', headers, body: JSON.stringify({
+      expected_revision: 0,
+      legal_acceptance: { age_confirmed: true, terms_accepted: true, privacy_accepted: true },
+    }),
+  }, env)
+  assert.equal(accepted.status, 200)
+  const legal = await accepted.json()
+  assert.ok(legal.legal_accepted_at)
+  assert.equal(legal.legal_current, true)
+  assert.equal(legal.terms_version, '2026-07-25')
+  assert.equal(legal.privacy_version, '2026-07-26')
+  assert.equal(legal.revision, 1)
+
+  const progress = await app.request('/settings', {
+    method: 'PUT', headers, body: JSON.stringify({
+      expected_revision: 1,
+      onboarding: {
+        step: 'notifications', tour: 'comprehensive', completed: false,
+        preferences: {
+          theme: 'dark', notifications: ['desktop', 'in-app'],
+          connections: ['github', 'notion'], permission: 'ask',
+        },
+      },
+    }),
+  }, env)
+  assert.equal(progress.status, 200)
+  const saved = await progress.json()
+  assert.equal(saved.onboarding_step, 'notifications')
+  assert.deepEqual(saved.onboarding_preferences, {
+    theme: 'dark', notifications: ['desktop', 'in-app'],
+    connections: ['github', 'notion'], permission: 'ask',
+  })
+  assert.equal(saved.revision, 2)
+})
+
+test('stale onboarding revisions return the current server state without overwriting it', async () => {
+  const { env, headers } = await setup()
+  await app.request('/settings', {
+    method: 'PUT', headers, body: JSON.stringify({
+      expected_revision: 0,
+      legal_acceptance: { age_confirmed: true, terms_accepted: true, privacy_accepted: true },
+    }),
+  }, env)
+  const stale = await app.request('/settings', {
+    method: 'PUT', headers, body: JSON.stringify({ selected_model: 'stale', expected_revision: 0 }),
+  }, env)
+  assert.equal(stale.status, 409)
+  const body = await stale.json()
+  assert.equal(body.revision, 1)
+  assert.equal(body.selected_model, null)
+})
+
+test('malformed onboarding preferences are rejected', async () => {
+  const { env, headers } = await setup()
+  const res = await app.request('/settings', {
+    method: 'PUT', headers, body: JSON.stringify({
+      expected_revision: 0,
+      legal_acceptance: { age_confirmed: true, terms_accepted: true, privacy_accepted: true },
+      onboarding: {
+        step: 'tour', tour: 'core', completed: false,
+        preferences: { theme: 'neon', notifications: ['pager'], connections: [42], permission: 'root' },
+      },
+    }),
+  }, env)
+  assert.equal(res.status, 400)
+})
+
+test('accepting updated policies records the current versions and reopens incomplete onboarding', async () => {
+  const { db, env, headers } = await setup()
+  db.prepare(
+    `INSERT INTO user_settings (
+       user_id, legal_accepted_at, terms_version, privacy_version,
+       onboarding_completed_at, revision, updated
+     ) VALUES (?,?,?,?,?,?,?)`
+  ).bind('user-1', 100, 'old-terms', 'old-privacy', 200, 4, 200).run()
+
+  const res = await app.request('/settings', {
+    method: 'PUT', headers, body: JSON.stringify({
+      expected_revision: 4,
+      legal_acceptance: { age_confirmed: true, terms_accepted: true, privacy_accepted: true },
+      onboarding: {
+        step: 'tour', tour: null, completed: false,
+        preferences: { theme: 'system', notifications: ['in-app'], connections: [], permission: 'ask' },
+      },
+    }),
+  }, env)
+  assert.equal(res.status, 200)
+  const body = await res.json()
+  assert.equal(body.terms_version, '2026-07-25')
+  assert.equal(body.privacy_version, '2026-07-26')
+  assert.equal(body.legal_current, true)
+  assert.equal(body.onboarding_completed_at, null)
+  assert.equal(body.revision, 5)
 })
 
 test('settings are scoped per user', async () => {
