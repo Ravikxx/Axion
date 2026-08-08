@@ -34,7 +34,7 @@ export default {
 
     // ── Public endpoints ────────────────────────────────────────────────────
 
-    // POST /collect — receives a session from any Axion client
+    // POST /collect — receives a session from any Sennoric client
     if (request.method === 'POST' && pathname === '/collect') {
       try {
         const body     = await request.json();

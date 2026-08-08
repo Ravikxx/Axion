@@ -2,7 +2,7 @@ export function formatFatalError(reason, source = 'fatal error') {
   const detail = reason instanceof Error
     ? (reason.stack || reason.message)
     : String(reason ?? 'Unknown error');
-  return `Axion ${source}:\n${detail}`;
+  return `Sennoric ${source}:\n${detail}`;
 }
 
 export function installFatalHandlers({

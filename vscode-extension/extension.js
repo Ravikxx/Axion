@@ -52,7 +52,7 @@ class AxionViewProvider {
     connect-src ws://localhost:* wss://localhost:*;
     img-src data: https:;
   ">
-  <title>Axion</title>
+  <title>Sennoric</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -325,13 +325,13 @@ class AxionViewProvider {
 <div class="messages" id="messages">
   <div class="empty" id="empty">
     <div class="empty-logo">⚛</div>
-    <div class="empty-title">Axion</div>
+    <div class="empty-title">Sennoric</div>
     <div class="empty-sub">AI coding agent. Ask anything, edit files, run tools.</div>
     <div class="empty-tip">
       <b>Tips</b><br>
-      Right-click selected code → <b>Ask Axion about this</b><br>
+      Right-click selected code → <b>Ask Sennoric about this</b><br>
       <kbd>Ctrl+Shift+A</kbd> to send selection<br>
-      Right-click a file → <b>Add file to Axion context</b>
+      Right-click a file → <b>Add file to Sennoric context</b>
     </div>
   </div>
 </div>
@@ -343,7 +343,7 @@ class AxionViewProvider {
 </div>
 
 <div class="input-area">
-  <textarea id="input" placeholder="Ask Axion…" rows="1"></textarea>
+  <textarea id="input" placeholder="Ask Sennoric…" rows="1"></textarea>
   <button class="send-btn" id="send-btn" onclick="send()" title="Send (Enter)">↑</button>
 </div>
 
@@ -463,7 +463,7 @@ class AxionViewProvider {
     const div = document.createElement('div');
     div.className = 'msg ' + type;
 
-    const labels = { user: 'You', assistant: 'Axion', info: 'Info', error: 'Error' };
+    const labels = { user: 'You', assistant: 'Sennoric', info: 'Info', error: 'Error' };
     const label = document.createElement('div');
     label.className = 'msg-label';
     label.textContent = labels[type] || type;
@@ -633,7 +633,7 @@ function activate(context) {
     })
   );
 
-  // Send selected text to Axion
+  // Send selected text to Sennoric
   context.subscriptions.push(
     vscode.commands.registerCommand('axion.sendSelection', () => {
       const editor = vscode.window.activeTextEditor;
@@ -641,7 +641,7 @@ function activate(context) {
 
       const selection = editor.document.getText(editor.selection);
       if (!selection.trim()) {
-        vscode.window.showInformationMessage('Axion: Select some code first.');
+        vscode.window.showInformationMessage('Sennoric: Select some code first.');
         return;
       }
 
@@ -654,7 +654,7 @@ function activate(context) {
     })
   );
 
-  // Add entire file to Axion context
+  // Add entire file to Sennoric context
   context.subscriptions.push(
     vscode.commands.registerCommand('axion.addFile', () => {
       const editor = vscode.window.activeTextEditor;

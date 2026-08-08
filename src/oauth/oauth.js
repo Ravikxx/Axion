@@ -328,7 +328,7 @@ function startCallbackServer(port, expectedState) {
 
       res.writeHead(200, { 'Content-Type': 'text/html' });
       res.end(ok
-        ? '<html><body style="font-family:sans-serif;text-align:center;padding:60px"><h2>● Connected!</h2><p>You can close this tab and return to Axion.</p></body></html>'
+        ? '<html><body style="font-family:sans-serif;text-align:center;padding:60px"><h2>● Connected!</h2><p>You can close this tab and return to Sennoric.</p></body></html>'
         : '<html><body style="font-family:sans-serif;text-align:center;padding:60px"><h2>● Authorization failed</h2><p>You can close this tab.</p></body></html>');
 
       clearTimeout(timeout);

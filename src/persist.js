@@ -688,7 +688,7 @@ export function importSession(filePath) {
 
 export function exportChat(filename, messages) {
   const lines = [
-    `# Axion Chat Export`,
+    `# Sennoric Chat Export`,
     `*Exported: ${new Date().toLocaleString()}*`,
     '',
   ];
@@ -696,7 +696,7 @@ export function exportChat(filename, messages) {
     if (msg.type === 'user') {
       lines.push(`## You\n\n${msg.content}\n`);
     } else if (msg.type === 'assistant') {
-      lines.push(`## Axion\n\n${msg.content}\n`);
+      lines.push(`## Sennoric\n\n${msg.content}\n`);
     } else if (msg.type === 'plan') {
       lines.push(`## Plan\n\n${msg.content}\n`);
     } else if (msg.type === 'info') {
@@ -1195,7 +1195,7 @@ function _ensureSnapshotRepo(projectPath) {
     mkdirSync(repoPath, { recursive: true });
     execSync('git init', { cwd: repoPath, stdio: 'pipe', encoding: 'utf8' });
     execSync('git config user.email "axion@snapshot"', { cwd: repoPath, stdio: 'pipe', encoding: 'utf8' });
-    execSync('git config user.name "Axion Snapshot"', { cwd: repoPath, stdio: 'pipe', encoding: 'utf8' });
+    execSync('git config user.name "Sennoric Snapshot"', { cwd: repoPath, stdio: 'pipe', encoding: 'utf8' });
     execSync('git config commit.gpgsign false', { cwd: repoPath, stdio: 'pipe', encoding: 'utf8' });
   }
   return repoPath;

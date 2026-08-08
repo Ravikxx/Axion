@@ -1,9 +1,9 @@
 bl_info = {
-    "name": "Axion MCP Bridge",
-    "author": "Axion Labs",
+    "name": "Sennoric MCP Bridge",
+    "author": "Sennoric Labs",
     "version": (1, 0, 0),
     "blender": (3, 0, 0),
-    "description": "HTTP bridge that lets Axion AI control Blender via MCP",
+    "description": "HTTP bridge that lets Sennoric AI control Blender via MCP",
     "category": "System",
 }
 
@@ -408,7 +408,7 @@ def register():
     _server = HTTPServer(("127.0.0.1", PORT), _Handler)
     _server_thread = threading.Thread(target=_server.serve_forever, daemon=True)
     _server_thread.start()
-    print(f"[Axion] MCP bridge started on http://127.0.0.1:{PORT}")
+    print(f"[Sennoric] MCP bridge started on http://127.0.0.1:{PORT}")
 
 
 def unregister():
@@ -418,4 +418,4 @@ def unregister():
         _server = None
     if bpy.app.timers.is_registered(_process_queue):
         bpy.app.timers.unregister(_process_queue)
-    print("[Axion] MCP bridge stopped")
+    print("[Sennoric] MCP bridge stopped")

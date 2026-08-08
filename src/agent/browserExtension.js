@@ -161,7 +161,7 @@ export class BrowserExtensionBridge {
       const ws = new WebSocket(url, { maxPayload: 8 * 1024 * 1024 });
       const timer = setTimeout(() => {
         try { ws.terminate(); } catch {}
-        reject(new Error(`Could not connect to the Axion browser broker on port ${this.pairing.port}`));
+        reject(new Error(`Could not connect to the Sennoric browser broker on port ${this.pairing.port}`));
       }, 4_000);
       ws.once('open', () => {
         clearTimeout(timer);
@@ -178,7 +178,7 @@ export class BrowserExtensionBridge {
         if (this.controller === ws) {
           this.controller = null;
           this.mode = null;
-          this._rejectPending(new Error('Axion browser broker disconnected'));
+          this._rejectPending(new Error('Sennoric browser broker disconnected'));
         }
       });
     });
@@ -204,7 +204,7 @@ export class BrowserExtensionBridge {
       if (this.extension === ws) {
         this.extension = null;
         this.capabilities = [];
-        this._rejectPending(new Error('Axion Chrome Extension disconnected'), 'extension:');
+        this._rejectPending(new Error('Sennoric Chrome Extension disconnected'), 'extension:');
       }
     });
   }
@@ -232,13 +232,13 @@ export class BrowserExtensionBridge {
 
   _extensionRequest(method, params) {
     if (this.extension?.readyState !== WebSocket.OPEN) {
-      throw new Error('Axion Chrome Extension is not connected. Open its settings and pair it with /extension pair.');
+      throw new Error('Sennoric Chrome Extension is not connected. Open its settings and pair it with /extension pair.');
     }
     return this._request(this.extension, `extension:${++this._sequence}`, method, params);
   }
 
   _controllerRequest(method, params) {
-    if (this.controller?.readyState !== WebSocket.OPEN) throw new Error('Axion browser broker is not connected');
+    if (this.controller?.readyState !== WebSocket.OPEN) throw new Error('Sennoric browser broker is not connected');
     return this._request(this.controller, `controller:${++this._sequence}`, method, params);
   }
 

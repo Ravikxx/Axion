@@ -78,7 +78,7 @@ export const tools = [
 async function fetchPage(url) {
   const res = await fetch(url, {
     headers: {
-      'User-Agent': 'Mozilla/5.0 (compatible; Axion/1.0)',
+      'User-Agent': 'Mozilla/5.0 (compatible; Sennoric/1.0)',
       Accept: 'text/html,application/xhtml+xml,*/*',
     },
     signal: AbortSignal.timeout(15000),

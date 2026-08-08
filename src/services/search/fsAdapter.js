@@ -1,7 +1,7 @@
 // In-process search adapter — used when ripgrep is unavailable,disabled, or when targeting very small directories.
 //
 // Ports opencode's `ripgrepLayer` fallback (the `fffLayer` no-op case where
-// both binary backends are unavailable) to Axion: keep the project vows of
+// both binary backends are unavailable) to Sennoric: keep the project vows of
 // skipping node_modules/.git/dist and binary files, but stay fully in JS so
 // no external binary is needed. Mirrors the existing walkGlob/grepWalk logic
 // in src/agent/tools.js so behaviour matches what users see today when rg

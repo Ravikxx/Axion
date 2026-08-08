@@ -3,7 +3,7 @@ import { accent } from '../ui/theme.js';
 
 const fmtCtx = (n) => n >= 1_000_000 ? `${(n / 1_000_000).toFixed(1)}M` : `${(n / 1000).toFixed(0)}k`;
 
-// Right-hand workspace panel. Mirrors the data Axion already tracks:
+// Right-hand workspace panel. Mirrors the data Sennoric already tracks:
 // model, mode, context usage, session cost, pinned files, MCP tools, todos.
 export function Sidebar({
   model = '—',

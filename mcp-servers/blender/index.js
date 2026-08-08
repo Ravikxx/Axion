@@ -1,14 +1,14 @@
 #!/usr/bin/env node
 /**
- * Axion MCP server — Blender bridge
+ * Sennoric MCP server — Blender bridge
  *
- * Speaks MCP (stdio JSON-RPC) to Axion.
+ * Speaks MCP (stdio JSON-RPC) to Sennoric.
  * Forwards tool calls as HTTP POST to the Blender add-on running at BLENDER_URL.
  *
  * Usage (after npm install -g axion-cli):
- *   axion-blender                         (Axion spawns this automatically)
+ *   axion-blender                         (Sennoric spawns this automatically)
  *
- * Or add manually in Axion:
+ * Or add manually in Sennoric:
  *   /mcp add blender axion-blender
  */
 
@@ -445,7 +445,7 @@ async function handle(msg) {
     } catch (err) {
       const isConn = err.name === 'AbortError' || /ECONNREFUSED|ENOTFOUND/.test(err.message);
       const msg = isConn
-        ? `Cannot reach Blender at ${BLENDER_URL}.\n\nMake sure:\n1. Blender is open\n2. The Axion add-on is installed and enabled (Edit → Preferences → Add-ons → search "Axion")\n3. The add-on shows no errors in the Blender console`
+        ? `Cannot reach Blender at ${BLENDER_URL}.\n\nMake sure:\n1. Blender is open\n2. The Sennoric add-on is installed and enabled (Edit → Preferences → Add-ons → search "Sennoric")\n3. The add-on shows no errors in the Blender console`
         : `Error: ${err.message}`;
       return send({ jsonrpc: '2.0', id, result: textResult(msg, true) });
     }

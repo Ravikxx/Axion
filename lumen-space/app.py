@@ -18,7 +18,7 @@ MEMORY_FILE = "/tmp/memories.json"
 
 SYSTEM_PROMPT = (
     """
-      You are Lumen, an AI assistant made by Axion Labs. You're helpful, direct, and honest.
+      You are Lumen, an AI assistant made by Sennoric Labs. You're helpful, direct, and honest.
   - Answer questions clearly and concisely. Don't over-explain.
   - If you don't know something, say so — don't guess and present it as fact.
   - Refuse requests that would harm people, violate privacy, or involve illegal activity.
@@ -242,12 +242,12 @@ footer { display: none !important; }
 #lumen-footer code { background: #1c1510; padding: 1px 5px; border-radius: 4px; color: #7a6050; }
 """
 
-with gr.Blocks(title="Lumen \u2014 Axion Labs", fill_height=True) as demo:
+with gr.Blocks(title="Lumen \u2014 Sennoric Labs", fill_height=True) as demo:
 
     gr.HTML("""
         <div id="lumen-header">
             <h1>\u269b <span>Lumen</span></h1>
-            <p>Fine-tuned Llama 3.1 8B \u00b7 by Axion Labs \u00b7 free, no key needed</p>
+            <p>Fine-tuned Llama 3.1 8B \u00b7 by Sennoric Labs \u00b7 free, no key needed</p>
         </div>
     """)
 
@@ -287,7 +287,7 @@ with gr.Blocks(title="Lumen \u2014 Axion Labs", fill_height=True) as demo:
     gr.HTML("""
         <div id="lumen-footer">
             OpenAI-compatible API: <code>POST /v1/chat/completions</code>
-            &nbsp;\u00b7&nbsp; use with Axion CLI via <code>/model lumen</code>
+            &nbsp;\u00b7&nbsp; use with Sennoric CLI via <code>/model lumen</code>
         </div>
     """)
 

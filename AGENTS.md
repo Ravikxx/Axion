@@ -1,4 +1,4 @@
-# Axion — Agent Conventions
+# Sennoric — Agent Conventions
 
 ## Read first: standing instructions
 Before starting any task, read `STANDING-INSTRUCTIONS.md` in the repo root and obey it. It defines the working procedure for every answer — intent reading, verification, self-attack, and the final gate run before sending. It is not optional.

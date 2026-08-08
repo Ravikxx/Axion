@@ -1,6 +1,6 @@
 {
   "name": "axion",
-  "displayName": "Axion",
+  "displayName": "Sennoric",
   "description": "AI coding agent — chat, edit files, run tools, right in VS Code",
   "version": "0.1.0",
   "publisher": "axion-labs",
@@ -16,7 +16,7 @@
       "activitybar": [
         {
           "id": "axion-sidebar",
-          "title": "Axion",
+          "title": "Sennoric",
           "icon": "icons/icon-mono.svg"
         }
       ]
@@ -33,23 +33,23 @@
     "commands": [
       {
         "command": "axion.open",
-        "title": "Open Axion",
-        "category": "Axion"
+        "title": "Open Sennoric",
+        "category": "Sennoric"
       },
       {
         "command": "axion.sendSelection",
-        "title": "Ask Axion about this",
-        "category": "Axion"
+        "title": "Ask Sennoric about this",
+        "category": "Sennoric"
       },
       {
         "command": "axion.addFile",
-        "title": "Add file to Axion context",
-        "category": "Axion"
+        "title": "Add file to Sennoric context",
+        "category": "Sennoric"
       },
       {
         "command": "axion.newChat",
         "title": "New Chat",
-        "category": "Axion"
+        "category": "Sennoric"
       }
     ],
     "menus": {
@@ -81,12 +81,12 @@
       }
     ],
     "configuration": {
-      "title": "Axion",
+      "title": "Sennoric",
       "properties": {
         "axion.port": {
           "type": "number",
           "default": 3000,
-          "description": "Port for the Axion web server (axion-serve / axion --web)"
+          "description": "Port for the Sennoric web server (axion-serve / axion --web)"
         }
       }
     }

@@ -57,7 +57,7 @@ function makeEnv() {
   return { DB: new D1TestDatabase(), RUNPOD_ENDPOINT_ID: 'ep', RUNPOD_API_KEY: 'key' }
 }
 
-// fetchImpl stub: controls whether the Axion API worker, the Lumen (RunPod)
+// fetchImpl stub: controls whether the Sennoric API worker, the Lumen (RunPod)
 // health check, and the website reachability check each report healthy.
 function fetchStub({ axionApiUp = true, lumenUp = true, websiteUp = true } = {}) {
   return async (url) => {

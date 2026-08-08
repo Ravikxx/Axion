@@ -110,7 +110,7 @@ jitter, so it is likely real, but multi-seed would make it airtight.
 - If pursued for memory: use **cumulative gradual unfreezing** (never exclusive,
   never freeze the head), and test in the **SFT** regime, where lower layers are
   already trained and the early frozen-lower phases aren't wasted — the most
-  favorable case, and Axion's actual use case.
+  favorable case, and Sennoric's actual use case.
 - The two durable findings, independent of all the above:
   1. **Never freeze the output head** (large, mechanistic, reproducible).
   2. **The auto-plateau scheduler works** — it fires at sane points; it just

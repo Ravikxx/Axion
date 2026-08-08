@@ -43,12 +43,12 @@ import {
 const CHROME_TOOL_DEFINITIONS = [
   {
     name: 'chrome_status',
-    description: 'Check whether the paired Axion Chrome Extension is connected and ready for browser control.',
+    description: 'Check whether the paired Sennoric Chrome Extension is connected and ready for browser control.',
     input_schema: { type: 'object', properties: {}, required: [] },
   },
   {
     name: 'chrome_tabs',
-    description: 'List open Chrome tabs through the paired Axion Extension, including tab IDs, titles, URLs, and active state.',
+    description: 'List open Chrome tabs through the paired Sennoric Extension, including tab IDs, titles, URLs, and active state.',
     input_schema: { type: 'object', properties: {}, required: [] },
   },
   {
@@ -58,7 +58,7 @@ const CHROME_TOOL_DEFINITIONS = [
   },
   {
     name: 'chrome_screenshot',
-    description: 'Capture the visible area of a Chrome tab through the Axion Extension for visual inspection.',
+    description: 'Capture the visible area of a Chrome tab through the Sennoric Extension for visual inspection.',
     input_schema: { type: 'object', properties: { tab_id: { type: 'number' } }, required: [] },
   },
   {
@@ -90,7 +90,7 @@ const CHROME_TOOL_DEFINITIONS = [
   },
   {
     name: 'chrome_click',
-    description: 'Click a Chrome page element by CSS selector or visible text through the paired Axion Extension.',
+    description: 'Click a Chrome page element by CSS selector or visible text through the paired Sennoric Extension.',
     input_schema: {
       type: 'object',
       properties: { tab_id: { type: 'number' }, selector: { type: 'string' }, text: { type: 'string' } },
@@ -948,7 +948,7 @@ export const TOOL_DEFINITIONS = [
   },
   {
     name: 'agent_list',
-    description: 'List all named agents available in this Axion session, including their id, name, description, and mode. Use this to discover which agents can be selected with agent_select.',
+    description: 'List all named agents available in this Sennoric session, including their id, name, description, and mode. Use this to discover which agents can be selected with agent_select.',
     input_schema: { type: 'object', properties: {}, required: [] },
   },
   {
@@ -992,7 +992,7 @@ export const TOOL_DEFINITIONS = [
   },
   {
     name: 'create_cloud_artifact',
-    description: 'Create a new artifact in the user\'s Axion cloud account (the same artifacts shown in the Axion Desktop/website Artifacts panel). Use this when the user asks you to save, create, or make an artifact — not for writing local project files, which is what write_file is for. Artifact content is always stored as text, but any file type can still be represented: set kind to "code" and language to the file\'s extension or name (e.g. "yaml", "dockerfile", "sh", "toml") — the Desktop/website download button uses that language value as the saved file\'s extension, so it is not limited to a fixed list of languages. Requires the user to be signed in to Axion; if they are not, this fails with a clear message telling them to sign in.',
+    description: 'Create a new artifact in the user\'s Sennoric cloud account (the same artifacts shown in the Sennoric Desktop/website Artifacts panel). Use this when the user asks you to save, create, or make an artifact — not for writing local project files, which is what write_file is for. Artifact content is always stored as text, but any file type can still be represented: set kind to "code" and language to the file\'s extension or name (e.g. "yaml", "dockerfile", "sh", "toml") — the Desktop/website download button uses that language value as the saved file\'s extension, so it is not limited to a fixed list of languages. Requires the user to be signed in to Sennoric; if they are not, this fails with a clear message telling them to sign in.',
     input_schema: {
       type: 'object',
       properties: {
@@ -1006,7 +1006,7 @@ export const TOOL_DEFINITIONS = [
   },
   {
     name: 'update_cloud_artifact',
-    description: 'Update an existing artifact in the user\'s Axion cloud account — change its title, its content, or both. Updating content creates a new revision; the artifact\'s revision history is preserved. Use this instead of create_cloud_artifact when revising something already saved, so the user gets one evolving artifact rather than duplicates.',
+    description: 'Update an existing artifact in the user\'s Sennoric cloud account — change its title, its content, or both. Updating content creates a new revision; the artifact\'s revision history is preserved. Use this instead of create_cloud_artifact when revising something already saved, so the user gets one evolving artifact rather than duplicates.',
     input_schema: {
       type: 'object',
       properties: {
@@ -1019,7 +1019,7 @@ export const TOOL_DEFINITIONS = [
   },
   {
     name: 'delete_cloud_artifact',
-    description: 'Permanently delete an artifact from the user\'s Axion cloud account, including all of its revision history. Only use this when the user explicitly asks to delete a specific artifact — this cannot be undone.',
+    description: 'Permanently delete an artifact from the user\'s Sennoric cloud account, including all of its revision history. Only use this when the user explicitly asks to delete a specific artifact — this cannot be undone.',
     input_schema: {
       type: 'object',
       properties: {
@@ -1591,7 +1591,7 @@ export async function executeTool(name, input, {
       case 'create_cloud_artifact': {
         const token = resolveAxionAuth();
         if (!token) {
-          return { success: false, output: 'Not signed in to Axion — ask the user to sign in first, then try again.' };
+          return { success: false, output: 'Not signed in to Sennoric — ask the user to sign in first, then try again.' };
         }
         const kind = ['text', 'code', 'markdown'].includes(input.kind) ? input.kind : 'text';
         const body = {
@@ -1609,7 +1609,7 @@ export async function executeTool(name, input, {
             body: JSON.stringify(body),
           });
         } catch (e) {
-          return { success: false, output: `Could not reach Axion: ${e.message}` };
+          return { success: false, output: `Could not reach Sennoric: ${e.message}` };
         }
 
         if (!response.ok) {
@@ -1620,14 +1620,14 @@ export async function executeTool(name, input, {
           };
         }
         const data = await response.json().catch(() => null);
-        if (!data?.id) return { success: false, output: 'Could not parse the response from Axion.' };
-        return { success: true, output: `Created artifact "${data.title}" (id ${data.id}) in the user's Axion cloud account.` };
+        if (!data?.id) return { success: false, output: 'Could not parse the response from Sennoric.' };
+        return { success: true, output: `Created artifact "${data.title}" (id ${data.id}) in the user's Sennoric cloud account.` };
       }
 
       case 'update_cloud_artifact': {
         const token = resolveAxionAuth();
         if (!token) {
-          return { success: false, output: 'Not signed in to Axion — ask the user to sign in first, then try again.' };
+          return { success: false, output: 'Not signed in to Sennoric — ask the user to sign in first, then try again.' };
         }
         const body = {};
         if (typeof input.title === 'string') body.title = input.title.slice(0, 200);
@@ -1644,7 +1644,7 @@ export async function executeTool(name, input, {
             body: JSON.stringify(body),
           });
         } catch (e) {
-          return { success: false, output: `Could not reach Axion: ${e.message}` };
+          return { success: false, output: `Could not reach Sennoric: ${e.message}` };
         }
 
         if (response.status === 404) return { success: false, output: `No artifact found with id "${input.id}".` };
@@ -1658,7 +1658,7 @@ export async function executeTool(name, input, {
       case 'delete_cloud_artifact': {
         const token = resolveAxionAuth();
         if (!token) {
-          return { success: false, output: 'Not signed in to Axion — ask the user to sign in first, then try again.' };
+          return { success: false, output: 'Not signed in to Sennoric — ask the user to sign in first, then try again.' };
         }
 
         let response;
@@ -1668,7 +1668,7 @@ export async function executeTool(name, input, {
             headers: { Authorization: `Bearer ${token}` },
           });
         } catch (e) {
-          return { success: false, output: `Could not reach Axion: ${e.message}` };
+          return { success: false, output: `Could not reach Sennoric: ${e.message}` };
         }
 
         if (response.status === 404) return { success: false, output: `No artifact found with id "${input.id}".` };
@@ -1821,7 +1821,7 @@ export async function executeTool(name, input, {
           }
         } catch { return { success: false, output: `Invalid URL: ${input.url}` }; }
         const res = await fetch(input.url, {
-          headers: { 'User-Agent': 'Axion-CLI/1.0' },
+          headers: { 'User-Agent': 'Sennoric-CLI/1.0' },
           signal: AbortSignal.timeout(15000),
         });
         let text = await res.text();
@@ -1879,7 +1879,7 @@ export async function executeTool(name, input, {
             task.exitCode = code;
             if (task.expiryTimer) clearTimeout(task.expiryTimer);
             BUS.send('bgtask', agentLabel, {
-              title: code === 0 ? '● Axion background task done' : '● Axion background task failed',
+              title: code === 0 ? '● Sennoric background task done' : '● Sennoric background task failed',
               text: `[Background task ${id} finished, exit code ${code}] \`${input.command}\`\n${task.output.slice(-2000) || '(no output)'}`,
             });
           });
@@ -1955,7 +1955,7 @@ export async function executeTool(name, input, {
         const secs = Math.max(5, Number(input.seconds) || 60);
         const note = String(input.note || '').slice(0, 500);
         setTimeout(() => {
-          BUS.send('scheduler', agentLabel, { title: '⏰ Axion follow-up', text: `[Scheduled follow-up] ${note}` });
+          BUS.send('scheduler', agentLabel, { title: '⏰ Sennoric follow-up', text: `[Scheduled follow-up] ${note}` });
         }, secs * 1000);
         return { success: true, output: `Follow-up scheduled in ${secs}s: "${note}"` };
       }

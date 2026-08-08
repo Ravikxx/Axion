@@ -1,5 +1,5 @@
 #compdef axion
-# Axion zsh completion
+# Sennoric zsh completion
 # Add to ~/.zshrc:
 #   fpath=(/path/to/axion/completions $fpath)
 #   autoload -Uz compinit && compinit

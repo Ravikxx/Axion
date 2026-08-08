@@ -120,7 +120,7 @@ function attachShell(ws) {
 // ── App session (structured JSON frames over the relay) ─────────────────────
 //
 // The mobile app speaks JSON frames rather than raw terminal bytes, so it can
-// run the full Axion agent (every tool the CLI has) and switch between the
+// run the full Sennoric agent (every tool the CLI has) and switch between the
 // models saved in this CLI session. Frames:
 //
 //   app → cli:  {type:'chat',text} {type:'set_model',model} {type:'list_models'}
@@ -131,7 +131,7 @@ function attachShell(ws) {
 //               {type:'chat_start'} {type:'chat_done'} {type:'chat_error',message}
 //               {type:'term',data} (shell output) {type:'tokens',...}
 
-// Local/custom providers can be used without a hosted-provider key. Axion
+// Local/custom providers can be used without a hosted-provider key. Sennoric
 // hosted models require the account key created by /login or /axion-key.
 const KEYLESS_PROVIDERS = new Set(['ollama', 'custom']);
 const AXION_ACCOUNT_PROVIDERS = new Set(['lumen', 'veil', 'axion-vision']);
@@ -316,7 +316,7 @@ let relayRetryDelay = 2000;
 function connectRelay() {
   const key = getAxionKey();
   if (!key) {
-    console.log('  relay: no Axion account linked — run /login in axion, then restart the bridge to sync with the mobile app');
+    console.log('  relay: no Sennoric account linked — run /login in axion, then restart the bridge to sync with the mobile app');
     return;
   }
 
@@ -327,7 +327,7 @@ function connectRelay() {
 
   ws.on('open', () => {
     relayRetryDelay = 2000;
-    console.log('  relay: connected — reachable from the Axion mobile app');
+    console.log('  relay: connected — reachable from the Sennoric mobile app');
     attachAppSession(ws);
   });
 

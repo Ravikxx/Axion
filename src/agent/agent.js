@@ -158,7 +158,7 @@ function buildUserContent(text, cwd, workspaceRoot) {
   ];
 }
 
-const SYSTEM_PROMPT = `You are Axion, an expert AI coding agent made by Axion Labs. You help users write, debug, and understand code directly in their terminal.
+const SYSTEM_PROMPT = `You are Sennoric, an expert AI coding agent made by Sennoric Labs. You help users write, debug, and understand code directly in their terminal.
 
 You have access to tools that let you read/write files, run commands, work with git, and search the web. Always explain what you're about to do before taking an action. Be concise but thorough. When you encounter an error, explain what went wrong and how you're fixing it.
 
@@ -177,7 +177,7 @@ CHART OUTPUT: When the user asks for a chart (bar, pie, doughnut, or line), outp
 \`\`\`
 Supported types: bar (default), pie, doughnut, line, scatter, radar. Labels and colors are optional — the frontend provides defaults.`;
 
-const CHAT_SYSTEM_PROMPT = `You are Axion, a helpful AI assistant made by Axion Labs. You are having a conversation — help with questions, writing, brainstorming, explaining concepts, and general topics.
+const CHAT_SYSTEM_PROMPT = `You are Sennoric, a helpful AI assistant made by Sennoric Labs. You are having a conversation — help with questions, writing, brainstorming, explaining concepts, and general topics.
 
 You are in Chat mode. You have no access to files, the terminal, or any tools. Just talk. Be friendly, clear, and concise.
 
@@ -303,14 +303,14 @@ class ThinkStreamFilter {
 
 // ─────────────────────────────────────────────────────────────────────────────
 
-// Axion-hosted models (lumen/veil) run on a shared RunPod/vLLM instance whose
+// Sennoric-hosted models (lumen/veil) run on a shared RunPod/vLLM instance whose
 // guided-decoding tool-schema compiler breaks down — an HTTP 200 with a
 // completely empty streamed body, no error at all — once the combined
 // request (system prompt + tool schemas) crosses some complexity ceiling.
 //
 // IMPORTANT: this is NOT purely a tool-count limit. An earlier version of
 // this cap was calibrated with a trivial stub system prompt ("You are
-// Axion.") and measured a 52-tool edge — but with the CLI's *real* system
+// Sennoric.") and measured a 52-tool edge — but with the CLI's *real* system
 // prompt (~2.6KB of agent instructions) in the request, the actual edge
 // was between 26 (safe) and 27 (broken), confirmed deterministic 3/3 on
 // each side. That boundary is almost certainly specific to this exact
@@ -333,7 +333,7 @@ const HOSTED_SMALL_MODEL_TOOL_NAMES = new Set([
   'create_cloud_artifact', 'update_cloud_artifact', 'delete_cloud_artifact',
 ]);
 
-// lumen/veil authenticate with the account's own Axion sign-in (a session
+// lumen/veil authenticate with the account's own Sennoric sign-in (a session
 // token or axion-sk- key resolved via resolveAxionAuth in models.js), never
 // a third-party "API key" in the way every other provider means that term —
 // error messages that tell the user to check an "API key" are simply wrong
@@ -841,7 +841,7 @@ CRITICAL RULES — follow these exactly:
   ]);
 
   // Never confirmed, in any permission mode: these touch only the user's own
-  // Axion cloud account (artifacts scoped to the signed-in user, never the
+  // Sennoric cloud account (artifacts scoped to the signed-in user, never the
   // local filesystem or another user's data), and every mutation is
   // trivially reversible from that same account — including via
   // delete_cloud_artifact itself. Asking permission here is friction with
@@ -1149,7 +1149,7 @@ CRITICAL RULES — follow these exactly:
     let client, type, model;
     try { const r = createClient(this.modelAlias); client = r.client; type = r.type; model = resolveModel(this.modelAlias); } catch (e) { throw friendlyError(e, this.modelAlias); }
     const convText = this.history.map((m) => {
-      const role = m.role === 'assistant' ? 'Axion' : m.role === 'user' ? 'User' : m.role;
+      const role = m.role === 'assistant' ? 'Sennoric' : m.role === 'user' ? 'User' : m.role;
       const content = typeof m.content === 'string' ? m.content.slice(0, 600) : '[tool interaction]';
       return `${role}: ${content}`;
     }).join('\n\n');
@@ -1236,7 +1236,7 @@ One word only:`;
     const recentCtx = this.history.slice(-4)
       .map((m) => {
         if (m.role === 'user' && typeof m.content === 'string') return `User: ${m.content}`;
-        if (m.role === 'assistant' && typeof m.content === 'string') return `Axion: ${m.content}`;
+        if (m.role === 'assistant' && typeof m.content === 'string') return `Sennoric: ${m.content}`;
         return null;
       })
       .filter(Boolean)
@@ -1305,7 +1305,7 @@ One word only:`;
     this.onMessage({ role: 'adviser', content: `consulting ${adviser}…` });
 
     const recentCtx = this.history.slice(-8).map((m) => {
-      const role = m.role === 'assistant' ? 'Axion' : m.role === 'user' ? 'User' : m.role;
+      const role = m.role === 'assistant' ? 'Sennoric' : m.role === 'user' ? 'User' : m.role;
       const content = typeof m.content === 'string' ? m.content.slice(0, 400) : '[tool interaction]';
       return `[${role}]: ${content}`;
     }).join('\n');
@@ -1711,7 +1711,7 @@ One word only:`;
       this._warnedHostedComputerUse = true;
       this.onNotify?.({
         role: 'notify',
-        content: '[Computer-use tools are unavailable on this model — Axion-hosted models use a reduced tool set. Switch to a different model to use /computer.]',
+        content: '[Computer-use tools are unavailable on this model — Sennoric-hosted models use a reduced tool set. Switch to a different model to use /computer.]',
       });
     }
     return tools;
@@ -2048,20 +2048,20 @@ export function classifyProviderError(err, modelAlias) {
     const status = err.data.status ?? err?.status ?? err?.response?.status;
     if (status === 401) {
       if (modelAlias === 'other') return { kind: 'account', message: `Auth failed for custom endpoint. Use /endpoint <url> <model> <key> to set the API key.` };
-      if (isAxionHostedProvider(resolveProvider(modelAlias))) return { kind: 'account', message: `Invalid or revoked Axion credentials. Use /login or /axion-key <your-key> to authenticate.\n→ Sign up or get a key at axion.amplifiedsmp.org/keys` };
+      if (isAxionHostedProvider(resolveProvider(modelAlias))) return { kind: 'account', message: `Invalid or revoked Sennoric credentials. Use /login or /axion-key <your-key> to authenticate.\n→ Sign up or get a key at axion.amplifiedsmp.org/keys` };
       return { kind: 'account', message: `Invalid API key for "${modelAlias}". Use /api ${modelAlias} <your-key> to set it.` };
     }
     if (status === 429) return { kind: 'quota', message: `Rate limited by "${providerLabel}". Wait a moment and try again.` };
     if (status === 404) return { kind: 'availability', message: `Model not found: "${modelAlias}". Try /model <name> to switch.` };
     if (status === 403) {
       const kind = /suspend/i.test(message || '') ? 'safety' : 'account';
-      // For Axion-hosted models the 403 is opaque otherwise: the Worker
+      // For Sennoric-hosted models the 403 is opaque otherwise: the Worker
       // relays whatever the upstream inference backend said verbatim, and
       // that detail (e.g. a RunPod-side rejection unrelated to the user's
       // own account) is the only lead toward the actual cause, so it's
       // appended rather than discarded.
       const text = isAxionHostedProvider(resolveProvider(modelAlias))
-        ? `Access denied for "${modelAlias}". Your Axion account may not have access to this model — try signing in again with /login, or contact support if this persists.${message ? `\n(${message})` : ''}`
+        ? `Access denied for "${modelAlias}". Your Sennoric account may not have access to this model — try signing in again with /login, or contact support if this persists.${message ? `\n(${message})` : ''}`
         : `Access denied for "${modelAlias}". Check that your API key has the right permissions.`;
       return { kind, message: text };
     }
@@ -2075,7 +2075,7 @@ export function classifyProviderError(err, modelAlias) {
 
   if (status === 401 || /unauthorized|invalid.*key|api.?key/i.test(msg)) {
     if (modelAlias === 'other') return { kind: 'account', message: `Auth failed for custom endpoint. Use /endpoint <url> <model> <key> to set the API key.` };
-    if (isAxionHostedProvider(resolveProvider(modelAlias))) return { kind: 'account', message: `Invalid or revoked Axion credentials. Use /login or /axion-key <your-key> to authenticate.\n→ Sign up or get a key at axion.amplifiedsmp.org/keys` };
+    if (isAxionHostedProvider(resolveProvider(modelAlias))) return { kind: 'account', message: `Invalid or revoked Sennoric credentials. Use /login or /axion-key <your-key> to authenticate.\n→ Sign up or get a key at axion.amplifiedsmp.org/keys` };
     return { kind: 'account', message: `Invalid API key for "${modelAlias}". Use /api ${modelAlias} <your-key> to set it.` };
   }
   if (status === 429 || /rate.?limit|quota/i.test(msg)) {
@@ -2098,7 +2098,7 @@ export function classifyProviderError(err, modelAlias) {
       const detail = errObj.message && errObj.message !== msg ? errObj.message : null;
       return {
         kind: 'account',
-        message: `Access denied for "${modelAlias}". Your Axion account may not have access to this model — try signing in again with /login, or contact support if this persists.${detail ? `\n(${detail})` : ''}`,
+        message: `Access denied for "${modelAlias}". Your Sennoric account may not have access to this model — try signing in again with /login, or contact support if this persists.${detail ? `\n(${detail})` : ''}`,
       };
     }
     return { kind: 'account', message: `Access denied for "${modelAlias}". Check that your API key has the right permissions.` };

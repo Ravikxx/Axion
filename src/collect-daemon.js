@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * axion-collect — local dataset collection daemon
- * Receives conversation sessions from Axion and saves them as plain
+ * Receives conversation sessions from Sennoric and saves them as plain
  * training-format JSON ({messages:[{role,content}]}) to ~/.axion/dataset/.
  *
  * Usage:
@@ -99,7 +99,7 @@ server.listen(PORT, '127.0.0.1', () => {
   console.log(`axion-collect running on http://127.0.0.1:${PORT}`);
   console.log(`Dataset directory: ${DATASET}`);
   console.log(`Sessions collected so far: ${countSessions()}`);
-  console.log('Waiting for sessions from Axion...');
+  console.log('Waiting for sessions from Sennoric...');
 });
 
 server.on('error', (err) => {

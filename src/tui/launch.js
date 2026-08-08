@@ -1,7 +1,7 @@
 #!/usr/bin/env node
-// Production launcher. OpenTUI's renderer requires Bun, but Axion installs/launches
+// Production launcher. OpenTUI's renderer requires Bun, but Sennoric installs/launches
 // via Node. This Node entry re-execs the TUI under the bundled Bun binary — and
-// falls back to a plain Node readline UI when Bun/OpenTUI isn't usable, so Axion
+// falls back to a plain Node readline UI when Bun/OpenTUI isn't usable, so Sennoric
 // runs everywhere Node does (unsupported platforms, odd terminals, piped input).
 import { spawn, execFileSync } from 'child_process';
 import { fileURLToPath } from 'url';
@@ -76,7 +76,7 @@ function resolveBun() {
 function runFallback() {
   const child = spawn(process.execPath, [fallback, ...args], { stdio: 'inherit' });
   child.on('exit', (code) => process.exit(code ?? 0));
-  child.on('error', (err) => { console.error('Axion failed to start:', err.message); process.exit(1); });
+  child.on('error', (err) => { console.error('Sennoric failed to start:', err.message); process.exit(1); });
 }
 
 const bun = resolveBun();

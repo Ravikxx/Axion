@@ -1,5 +1,5 @@
 // Durable memory directory — adapted from openclaude's memdir + autoDream
-// memoryRoot concept to Axion's flat ~/.axion/ layout. Stores consolidation
+// memoryRoot concept to Sennoric's flat ~/.axion/ layout. Stores consolidation
 // digests written by the auto-dream background pass; lives outside chats/ so
 // it never appears in /resume but is human-readable and survives restarts.
 //
@@ -80,7 +80,7 @@ export function rebuildIndex() {
     const title = head.replace(/^#\s+/, '').slice(0, 140);
     return `- [${f.name}](${f.name}) — ${title}`;
   });
-  const body = `# Axion Memory Index\n\n${lines.join('\n')}\n`;
+  const body = `# Sennoric Memory Index\n\n${lines.join('\n')}\n`;
   writeTextAtomic(INDEX_FILE, body.slice(0, 25_000));
   return body;
 }

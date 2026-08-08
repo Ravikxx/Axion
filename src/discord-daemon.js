@@ -32,7 +32,7 @@ const modelAlias = argv.model || getSavedModel() || DEFAULT_MODEL;
 const token      = getDiscordToken();
 
 if (!token) {
-  console.error('No Discord bot token saved. Run /discord token <TOKEN> in the Axion CLI first.');
+  console.error('No Discord bot token saved. Run /discord token <TOKEN> in the Sennoric CLI first.');
   process.exit(1);
 }
 
@@ -48,7 +48,7 @@ async function reply(userId, userTag, content) {
   const { client, type } = createClient(modelAlias);
   const model = resolveModel(modelAlias);
 
-  const system = `You are Axion, an AI assistant made by Axion Labs running as a Discord bot. You are helpful, friendly, and concise. You can answer questions on any topic including coding, math, general knowledge, and creative tasks.
+  const system = `You are Sennoric, an AI assistant made by Sennoric Labs running as a Discord bot. You are helpful, friendly, and concise. You can answer questions on any topic including coding, math, general knowledge, and creative tasks.
 
 You support these slash commands (the user types them in Discord DMs, you do NOT register them with Discord — just detect them yourself):
   /help     — list available commands
@@ -93,7 +93,7 @@ await startDiscord(token, async (msg) => {
     const cmd = content.slice(1).split(/\s+/)[0].toLowerCase();
     let localReply = null;
     if (cmd === 'help') {
-      localReply = `**Axion Bot Commands**\n\`/help\` — show this list\n\`/clear\` — clear conversation history\n\`/reset\` — alias for /clear\n\`/model\` — show active AI model\n\`/ping\` — check if I'm online\n\`/about\` — about this bot\n\nOtherwise just chat — I can help with coding, math, writing, and more.`;
+      localReply = `**Sennoric Bot Commands**\n\`/help\` — show this list\n\`/clear\` — clear conversation history\n\`/reset\` — alias for /clear\n\`/model\` — show active AI model\n\`/ping\` — check if I'm online\n\`/about\` — about this bot\n\nOtherwise just chat — I can help with coding, math, writing, and more.`;
     } else if (cmd === 'clear' || cmd === 'reset') {
       if (histories.has(userId)) histories.delete(userId);
       localReply = 'Conversation history cleared. Starting fresh!';
@@ -102,7 +102,7 @@ await startDiscord(token, async (msg) => {
     } else if (cmd === 'ping') {
       localReply = `Pong! I'm online and ready. Model: **${modelAlias}**`;
     } else if (cmd === 'about') {
-      localReply = `I'm **Axion**, an AI assistant made by Axion Labs. I'm powered by **${modelAlias}** and can help with coding, math, general knowledge, creative writing, and more. Type \`/help\` to see commands.`;
+      localReply = `I'm **Sennoric**, an AI assistant made by Sennoric Labs. I'm powered by **${modelAlias}** and can help with coding, math, general knowledge, creative writing, and more. Type \`/help\` to see commands.`;
     }
     if (localReply) {
       try { await sendDM(msg, localReply); } catch {}
