@@ -25,6 +25,26 @@ function isWithin(root, candidate) {
 
 const MAX_SYMLINK_DEPTH = 40; // guards against symlink cycles, mirrors typical OS ELOOP limits
 
+// macOS exposes /var as a symlink to /private/var. A user or OS API can hand
+// us the alias while the workspace grant stores the canonical path. Resolve
+// the deepest existing ancestor so both names are compared in one namespace,
+// including files/directories that are about to be created.
+function resolveExistingAncestor(target) {
+  const missing = [];
+  let current = target;
+  for (;;) {
+    try {
+      const canonical = realpathSync(current);
+      return missing.reduceRight((path, segment) => join(path, segment), canonical);
+    } catch {
+      const parent = dirname(current);
+      if (parent === current) throw new PathEscapeError(target, target);
+      missing.push(current.slice(parent.length + (parent.endsWith(sep) ? 0 : 1)));
+      current = parent;
+    }
+  }
+}
+
 // Resolves `requestedPath` (relative or absolute) against `root` and returns
 // the fully-resolved absolute path, throwing PathEscapeError if it would
 // land outside the canonicalized root.
@@ -50,13 +70,15 @@ export function resolveContained(root, requestedPath) {
   // single call already captures both the relative-traversal case and the
   // absolute-path-elsewhere case — no special-casing needed, the containment
   // check below rejects both uniformly.
-  const target = resolve(root, requestedPath);
-
-  if (!isWithin(canonicalRoot, target) && !isWithin(root, target)) {
+  let target = resolve(root, requestedPath);
+  try {
+    target = resolveExistingAncestor(target);
+  } catch {
     throw new PathEscapeError(requestedPath, root);
   }
+  if (!isWithin(canonicalRoot, target)) throw new PathEscapeError(requestedPath, root);
 
-  const relFromRoot = relative(root, target);
+  const relFromRoot = relative(canonicalRoot, target);
   const segments = relFromRoot.length ? relFromRoot.split(sep).filter(Boolean) : [];
 
   let current = canonicalRoot;

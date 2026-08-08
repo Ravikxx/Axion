@@ -1852,17 +1852,70 @@ export async function dispatchScheduledDefinitions(env, now = Date.now()) {
 // Cloud-authoritative preferences, so they follow the account across
 // devices/windows instead of living in one client's localStorage. No row
 // means defaults; a row is only created on first write.
+const TERMS_VERSION = '2026-07-25'
+const PRIVACY_VERSION = '2026-07-26'
+const ONBOARDING_STEPS = new Set([
+  'legal', 'tour', 'theme', 'notifications', 'connections',
+  'permissions', 'references', 'reference',
+])
+const ONBOARDING_TOURS = new Set(['core', 'comprehensive'])
+const ONBOARDING_THEMES = new Set(['light', 'dark', 'system'])
+const ONBOARDING_NOTIFICATIONS = new Set(['in-app', 'desktop', 'email'])
+const ONBOARDING_PERMISSIONS = new Set(['ask', 'auto'])
+
+function parseOnboardingPreferences(value) {
+  if (!value || typeof value !== 'object') return null
+  if (!ONBOARDING_THEMES.has(value.theme)) return null
+  if (!Array.isArray(value.notifications)
+    || !value.notifications.every((item) => ONBOARDING_NOTIFICATIONS.has(item))) return null
+  if (!Array.isArray(value.connections)
+    || value.connections.length > 20
+    || !value.connections.every((item) => typeof item === 'string' && item.length <= 80)) return null
+  if (!ONBOARDING_PERMISSIONS.has(value.permission)) return null
+  return {
+    theme: value.theme,
+    notifications: [...new Set(value.notifications)].sort(),
+    connections: [...new Set(value.connections)].sort(),
+    permission: value.permission,
+  }
+}
+
+function settingsResponse(row) {
+  let onboardingPreferences = null
+  try {
+    onboardingPreferences = row?.onboarding_preferences
+      ? JSON.parse(row.onboarding_preferences)
+      : null
+  } catch { /* Invalid legacy data is ignored rather than trusted. */ }
+  return {
+    selected_model: row?.selected_model || null,
+    legal_accepted_at: row?.legal_accepted_at || null,
+    legal_current: Boolean(
+      row?.legal_accepted_at
+      && row?.terms_version === TERMS_VERSION
+      && row?.privacy_version === PRIVACY_VERSION
+    ),
+    terms_version: row?.terms_version || null,
+    privacy_version: row?.privacy_version || null,
+    onboarding_step: row?.onboarding_step || null,
+    onboarding_tour: row?.onboarding_tour || null,
+    onboarding_preferences: onboardingPreferences,
+    onboarding_completed_at: row?.onboarding_completed_at || null,
+    revision: Number(row?.revision) || 0,
+    updated: row?.updated || null,
+  }
+}
+
 app.get('/settings', async (c) => {
   const user = await requireAuth(c)
   if (!user) return json({ error: 'Not authenticated' }, 401)
   const row = await c.env.DB.prepare(
-    'SELECT selected_model, onboarding_completed_at, updated FROM user_settings WHERE user_id=?'
+    `SELECT selected_model, legal_accepted_at, terms_version, privacy_version,
+       onboarding_step, onboarding_tour, onboarding_preferences,
+       onboarding_completed_at, revision, updated
+     FROM user_settings WHERE user_id=?`
   ).bind(user.id).first()
-  return json({
-    selected_model: row?.selected_model || null,
-    onboarding_completed_at: row?.onboarding_completed_at || null,
-    updated: row?.updated || null,
-  })
+  return json(settingsResponse(row))
 })
 
 app.put('/settings', async (c) => {
@@ -1870,21 +1923,99 @@ app.put('/settings', async (c) => {
   if (!user) return json({ error: 'Not authenticated' }, 401)
   const body = await c.req.json().catch(() => ({}))
   const hasModel = typeof body?.selected_model === 'string'
-  const hasOnboarding = body?.onboarding_completed === true
-  if (!hasModel && !hasOnboarding) return json({ error: 'Nothing to update' }, 400)
+  const hasLegacyCompletion = body?.onboarding_completed === true
+  const legal = body?.legal_acceptance
+  const hasLegal = legal?.age_confirmed === true
+    && legal?.terms_accepted === true
+    && legal?.privacy_accepted === true
+  const hasOnboarding = body?.onboarding && typeof body.onboarding === 'object'
+  if (legal != null && !hasLegal) return json({ error: 'All legal confirmations are required' }, 400)
+  if (!hasModel && !hasLegacyCompletion && !hasLegal && !hasOnboarding) {
+    return json({ error: 'Nothing to update' }, 400)
+  }
   const now = Date.now()
   const existing = await c.env.DB.prepare(
-    'SELECT selected_model, onboarding_completed_at FROM user_settings WHERE user_id=?'
+    `SELECT selected_model, legal_accepted_at, terms_version, privacy_version,
+       onboarding_step, onboarding_tour, onboarding_preferences,
+       onboarding_completed_at, revision, updated
+     FROM user_settings WHERE user_id=?`
   ).bind(user.id).first()
+  const currentRevision = Number(existing?.revision) || 0
+  const expectedRevision = Number.isInteger(body?.expected_revision) ? body.expected_revision : null
+  if (expectedRevision !== null && expectedRevision !== currentRevision) {
+    return json({ error: 'Settings changed in another client', ...settingsResponse(existing) }, 409)
+  }
+
+  let preferences = existing?.onboarding_preferences || null
+  let onboardingStep = existing?.onboarding_step || null
+  let onboardingTour = existing?.onboarding_tour || null
+  const policyChanged = hasLegal && (
+    existing?.terms_version !== TERMS_VERSION || existing?.privacy_version !== PRIVACY_VERSION
+  )
+  let onboardingCompletedAt = policyChanged ? null : (existing?.onboarding_completed_at ?? null)
+  const legalAcceptedAt = hasLegal ? now : (existing?.legal_accepted_at || null)
+  const termsVersion = hasLegal ? TERMS_VERSION : (existing?.terms_version || null)
+  const privacyVersion = hasLegal ? PRIVACY_VERSION : (existing?.privacy_version || null)
+
+  if ((hasOnboarding || hasLegacyCompletion) && !legalAcceptedAt) {
+    return json({ error: 'Server-authoritative legal acceptance is required first' }, 403)
+  }
+  if (hasOnboarding) {
+    const next = body.onboarding
+    const parsedPreferences = parseOnboardingPreferences(next.preferences)
+    if (!ONBOARDING_STEPS.has(next.step)
+      || (next.tour !== null && !ONBOARDING_TOURS.has(next.tour))
+      || typeof next.completed !== 'boolean'
+      || !parsedPreferences) return json({ error: 'Invalid onboarding state' }, 400)
+    onboardingStep = next.step
+    onboardingTour = next.tour
+    preferences = JSON.stringify(parsedPreferences)
+    if (next.completed) onboardingCompletedAt ||= now
+  }
+  if (hasLegacyCompletion) onboardingCompletedAt ||= now
+
   const selectedModel = hasModel ? body.selected_model.slice(0, 100) : (existing?.selected_model ?? null)
-  const onboardingCompletedAt = hasOnboarding ? now : (existing?.onboarding_completed_at ?? null)
-  await c.env.DB.prepare(
-    `INSERT INTO user_settings (user_id, selected_model, onboarding_completed_at, updated)
-     VALUES (?, ?, ?, ?)
+  const revision = currentRevision + 1
+  const write = await c.env.DB.prepare(
+    `INSERT INTO user_settings (
+       user_id, selected_model, legal_accepted_at, terms_version, privacy_version,
+       onboarding_step, onboarding_tour, onboarding_preferences,
+       onboarding_completed_at, revision, updated
+     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
      ON CONFLICT(user_id) DO UPDATE SET selected_model=excluded.selected_model,
-       onboarding_completed_at=excluded.onboarding_completed_at, updated=excluded.updated`
-  ).bind(user.id, selectedModel, onboardingCompletedAt, now).run()
-  return json({ selected_model: selectedModel, onboarding_completed_at: onboardingCompletedAt, updated: now })
+       legal_accepted_at=excluded.legal_accepted_at,
+       terms_version=excluded.terms_version, privacy_version=excluded.privacy_version,
+       onboarding_step=excluded.onboarding_step, onboarding_tour=excluded.onboarding_tour,
+       onboarding_preferences=excluded.onboarding_preferences,
+       onboarding_completed_at=excluded.onboarding_completed_at,
+       revision=excluded.revision, updated=excluded.updated
+     ${expectedRevision === null ? '' : 'WHERE user_settings.revision = ?'}`
+  ).bind(
+    user.id, selectedModel, legalAcceptedAt, termsVersion, privacyVersion,
+    onboardingStep, onboardingTour, preferences, onboardingCompletedAt, revision, now,
+    ...(expectedRevision === null ? [] : [expectedRevision]),
+  ).run()
+  if (write.meta.changes === 0) {
+    const current = await c.env.DB.prepare(
+      `SELECT selected_model, legal_accepted_at, terms_version, privacy_version,
+         onboarding_step, onboarding_tour, onboarding_preferences,
+         onboarding_completed_at, revision, updated
+       FROM user_settings WHERE user_id=?`
+    ).bind(user.id).first()
+    return json({ error: 'Settings changed in another client', ...settingsResponse(current) }, 409)
+  }
+  return json(settingsResponse({
+    selected_model: selectedModel,
+    legal_accepted_at: legalAcceptedAt,
+    terms_version: termsVersion,
+    privacy_version: privacyVersion,
+    onboarding_step: onboardingStep,
+    onboarding_tour: onboardingTour,
+    onboarding_preferences: preferences,
+    onboarding_completed_at: onboardingCompletedAt,
+    revision,
+    updated: now,
+  }))
 })
 
 const ARTIFACT_KINDS = new Set(['text', 'code', 'markdown'])
